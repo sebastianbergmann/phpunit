@@ -679,9 +679,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $book4 = new stdClass;
         $book4->author = 'Terry Pratchett';
 
-        $object1 = new SampleClass( 4,  8, 15);
+        $object1 = new SampleClass( 4, 8, 15);
         $object2 = new SampleClass(16, 23, 42);
-        $object3 = new SampleClass( 4,  8, 15);
+        $object3 = new SampleClass( 4, 8, 15);
         $storage1 = new SplObjectStorage;
         $storage1->attach($object1);
         $storage2 = new SplObjectStorage;
@@ -1052,14 +1052,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertXmlFileEqualsXmlFile()
     {
         $this->assertXmlFileEqualsXmlFile(
-          $this->filesDirectory . 'foo.xml',
-          $this->filesDirectory . 'foo.xml'
+            $this->filesDirectory . 'foo.xml',
+            $this->filesDirectory . 'foo.xml'
         );
 
         try {
             $this->assertXmlFileEqualsXmlFile(
-              $this->filesDirectory . 'foo.xml',
-              $this->filesDirectory . 'bar.xml'
+                $this->filesDirectory . 'foo.xml',
+                $this->filesDirectory . 'bar.xml'
             );
         }
 
@@ -1076,14 +1076,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertXmlFileNotEqualsXmlFile()
     {
         $this->assertXmlFileNotEqualsXmlFile(
-          $this->filesDirectory . 'foo.xml',
-          $this->filesDirectory . 'bar.xml'
+            $this->filesDirectory . 'foo.xml',
+            $this->filesDirectory . 'bar.xml'
         );
 
         try {
             $this->assertXmlFileNotEqualsXmlFile(
-              $this->filesDirectory . 'foo.xml',
-              $this->filesDirectory . 'foo.xml'
+                $this->filesDirectory . 'foo.xml',
+                $this->filesDirectory . 'foo.xml'
             );
         }
 
@@ -1100,14 +1100,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertXmlStringEqualsXmlFile()
     {
         $this->assertXmlStringEqualsXmlFile(
-          $this->filesDirectory . 'foo.xml',
-          file_get_contents($this->filesDirectory . 'foo.xml')
+            $this->filesDirectory . 'foo.xml',
+            file_get_contents($this->filesDirectory . 'foo.xml')
         );
 
         try {
             $this->assertXmlStringEqualsXmlFile(
-              $this->filesDirectory . 'foo.xml',
-              file_get_contents($this->filesDirectory . 'bar.xml')
+                $this->filesDirectory . 'foo.xml',
+                file_get_contents($this->filesDirectory . 'bar.xml')
             );
         }
 
@@ -1124,14 +1124,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testXmlStringNotEqualsXmlFile()
     {
         $this->assertXmlStringNotEqualsXmlFile(
-          $this->filesDirectory . 'foo.xml',
-          file_get_contents($this->filesDirectory . 'bar.xml')
+            $this->filesDirectory . 'foo.xml',
+            file_get_contents($this->filesDirectory . 'bar.xml')
         );
 
         try {
             $this->assertXmlStringNotEqualsXmlFile(
-              $this->filesDirectory . 'foo.xml',
-              file_get_contents($this->filesDirectory . 'foo.xml')
+                $this->filesDirectory . 'foo.xml',
+                file_get_contents($this->filesDirectory . 'foo.xml')
             );
         }
 
@@ -1190,7 +1190,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $actual->load($this->filesDirectory . 'structureExpected.xml');
 
         $this->assertEqualXMLStructure(
-          $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
@@ -1207,7 +1207,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $actual->load($this->filesDirectory . 'structureWrongNumberOfAttributes.xml');
 
         $this->assertEqualXMLStructure(
-          $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
@@ -1224,7 +1224,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $actual->load($this->filesDirectory . 'structureWrongNumberOfNodes.xml');
 
         $this->assertEqualXMLStructure(
-          $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
@@ -1240,7 +1240,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $actual->load($this->filesDirectory . 'structureIsSameButDataIsNot.xml');
 
         $this->assertEqualXMLStructure(
-          $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
@@ -1256,7 +1256,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $actual->load($this->filesDirectory . 'structureAttributesAreSameButValuesAreNot.xml');
 
         $this->assertEqualXMLStructure(
-          $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
@@ -1272,7 +1272,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $actual->load($this->filesDirectory . 'structureIgnoreTextNodes.xml');
 
         $this->assertEqualXMLStructure(
-          $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild, $actual->firstChild, true
         );
     }
 
@@ -1591,8 +1591,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertSame(
-              new stdClass,
-              new stdClass
+                new stdClass,
+                new stdClass
             );
         }
 
@@ -1628,18 +1628,18 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertNotSame()
     {
         $this->assertNotSame(
-          new stdClass,
-          null
+            new stdClass,
+            null
         );
 
         $this->assertNotSame(
-          null,
-          new stdClass
+            null,
+            new stdClass
         );
 
         $this->assertNotSame(
-          new stdClass,
-          new stdClass
+            new stdClass,
+            new stdClass
         );
 
         $o = new stdClass;
@@ -1714,12 +1714,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAttributeGreaterThan()
     {
         $this->assertAttributeGreaterThan(
-          1, 'bar', new ClassWithNonPublicAttributes
+            1, 'bar', new ClassWithNonPublicAttributes
         );
 
         try {
             $this->assertAttributeGreaterThan(
-              1, 'foo', new ClassWithNonPublicAttributes
+                1, 'foo', new ClassWithNonPublicAttributes
             );
         }
 
@@ -1754,12 +1754,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAttributeGreaterThanOrEqual()
     {
         $this->assertAttributeGreaterThanOrEqual(
-          1, 'bar', new ClassWithNonPublicAttributes
+            1, 'bar', new ClassWithNonPublicAttributes
         );
 
         try {
             $this->assertAttributeGreaterThanOrEqual(
-              2, 'foo', new ClassWithNonPublicAttributes
+                2, 'foo', new ClassWithNonPublicAttributes
             );
         }
 
@@ -1794,12 +1794,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAttributeLessThan()
     {
         $this->assertAttributeLessThan(
-          2, 'foo', new ClassWithNonPublicAttributes
+            2, 'foo', new ClassWithNonPublicAttributes
         );
 
         try {
             $this->assertAttributeLessThan(
-              1, 'bar', new ClassWithNonPublicAttributes
+                1, 'bar', new ClassWithNonPublicAttributes
             );
         }
 
@@ -1834,12 +1834,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAttributeLessThanOrEqual()
     {
         $this->assertAttributeLessThanOrEqual(
-          2, 'foo', new ClassWithNonPublicAttributes
+            2, 'foo', new ClassWithNonPublicAttributes
         );
 
         try {
             $this->assertAttributeLessThanOrEqual(
-              1, 'bar', new ClassWithNonPublicAttributes
+                1, 'bar', new ClassWithNonPublicAttributes
             );
         }
 
@@ -2011,8 +2011,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testGetObjectAttributeWorksForInheritedAttributes()
     {
         $this->assertEquals(
-          'bar',
-          $this->getObjectAttribute(new ClassWithNonPublicAttributes, 'privateParentAttribute')
+            'bar',
+            $this->getObjectAttribute(new ClassWithNonPublicAttributes, 'privateParentAttribute')
         );
     }
 
@@ -2888,11 +2888,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatAttributeEquals()
     {
         $this->assertThat(
-          new ClassWithNonPublicAttributes,
-          $this->attribute(
-            $this->equalTo('foo'),
-            'publicAttribute'
-          )
+            new ClassWithNonPublicAttributes,
+            $this->attribute(
+                $this->equalTo('foo'),
+                'publicAttribute'
+            )
         );
     }
 
@@ -2905,11 +2905,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatAttributeEquals2()
     {
         $this->assertThat(
-          new ClassWithNonPublicAttributes,
-          $this->attribute(
-            $this->equalTo('bar'),
-            'publicAttribute'
-          )
+            new ClassWithNonPublicAttributes,
+            $this->attribute(
+                $this->equalTo('bar'),
+                'publicAttribute'
+            )
         );
     }
 
@@ -2921,8 +2921,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatAttributeEqualTo()
     {
         $this->assertThat(
-          new ClassWithNonPublicAttributes,
-          $this->attributeEqualTo('publicAttribute', 'foo')
+            new ClassWithNonPublicAttributes,
+            $this->attributeEqualTo('publicAttribute', 'foo')
         );
     }
 
@@ -2943,10 +2943,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatAnythingAndAnything()
     {
         $this->assertThat(
-          'anything',
-          $this->logicalAnd(
-            $this->anything(), $this->anything()
-          )
+            'anything',
+            $this->logicalAnd(
+                $this->anything(), $this->anything()
+            )
         );
     }
 
@@ -2958,10 +2958,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatAnythingOrAnything()
     {
         $this->assertThat(
-          'anything',
-          $this->logicalOr(
-            $this->anything(), $this->anything()
-          )
+            'anything',
+            $this->logicalOr(
+                $this->anything(), $this->anything()
+            )
         );
     }
 
@@ -2974,11 +2974,11 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatAnythingXorNotAnything()
     {
         $this->assertThat(
-          'anything',
-          $this->logicalXor(
-            $this->anything(),
-            $this->logicalNot($this->anything())
-          )
+            'anything',
+            $this->logicalXor(
+                $this->anything(),
+                $this->logicalNot($this->anything())
+            )
         );
     }
 
@@ -3033,8 +3033,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatClassHasAttribute()
     {
         $this->assertThat(
-          new ClassWithNonPublicAttributes,
-          $this->classHasAttribute('publicAttribute')
+            new ClassWithNonPublicAttributes,
+            $this->classHasAttribute('publicAttribute')
         );
     }
 
@@ -3045,8 +3045,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatClassHasStaticAttribute()
     {
         $this->assertThat(
-          new ClassWithNonPublicAttributes,
-          $this->classHasStaticAttribute('publicStaticAttribute')
+            new ClassWithNonPublicAttributes,
+            $this->classHasStaticAttribute('publicStaticAttribute')
         );
     }
 
@@ -3057,8 +3057,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatObjectHasAttribute()
     {
         $this->assertThat(
-          new ClassWithNonPublicAttributes,
-          $this->objectHasAttribute('publicAttribute')
+            new ClassWithNonPublicAttributes,
+            $this->objectHasAttribute('publicAttribute')
         );
     }
 
@@ -3170,7 +3170,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertThatCallback()
     {
-        $this->assertThat(null, $this->callback(function ($other) { return true; }));
+        $this->assertThat(null, $this->callback(function ($other) { return true;
+        }));
     }
 
     /**
@@ -3188,14 +3189,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertFileEquals()
     {
         $this->assertFileEquals(
-          $this->filesDirectory . 'foo.xml',
-          $this->filesDirectory . 'foo.xml'
+            $this->filesDirectory . 'foo.xml',
+            $this->filesDirectory . 'foo.xml'
         );
 
         try {
             $this->assertFileEquals(
-              $this->filesDirectory . 'foo.xml',
-              $this->filesDirectory . 'bar.xml'
+                $this->filesDirectory . 'foo.xml',
+                $this->filesDirectory . 'bar.xml'
             );
         }
 
@@ -3212,14 +3213,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertFileNotEquals()
     {
         $this->assertFileNotEquals(
-          $this->filesDirectory . 'foo.xml',
-          $this->filesDirectory . 'bar.xml'
+            $this->filesDirectory . 'foo.xml',
+            $this->filesDirectory . 'bar.xml'
         );
 
         try {
             $this->assertFileNotEquals(
-              $this->filesDirectory . 'foo.xml',
-              $this->filesDirectory . 'foo.xml'
+                $this->filesDirectory . 'foo.xml',
+                $this->filesDirectory . 'foo.xml'
             );
         }
 
@@ -3236,14 +3237,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertStringEqualsFile()
     {
         $this->assertStringEqualsFile(
-          $this->filesDirectory . 'foo.xml',
-          file_get_contents($this->filesDirectory . 'foo.xml')
+            $this->filesDirectory . 'foo.xml',
+            file_get_contents($this->filesDirectory . 'foo.xml')
         );
 
         try {
             $this->assertStringEqualsFile(
-              $this->filesDirectory . 'foo.xml',
-              file_get_contents($this->filesDirectory . 'bar.xml')
+                $this->filesDirectory . 'foo.xml',
+                file_get_contents($this->filesDirectory . 'bar.xml')
             );
         }
 
@@ -3260,14 +3261,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertStringNotEqualsFile()
     {
         $this->assertStringNotEqualsFile(
-          $this->filesDirectory . 'foo.xml',
-          file_get_contents($this->filesDirectory . 'bar.xml')
+            $this->filesDirectory . 'foo.xml',
+            file_get_contents($this->filesDirectory . 'bar.xml')
         );
 
         try {
             $this->assertStringNotEqualsFile(
-              $this->filesDirectory . 'foo.xml',
-              file_get_contents($this->filesDirectory . 'foo.xml')
+                $this->filesDirectory . 'foo.xml',
+                file_get_contents($this->filesDirectory . 'foo.xml')
             );
         }
 

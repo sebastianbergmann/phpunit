@@ -86,11 +86,11 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeCase(
-          'error',
-          $time,
-          PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-          $e->getMessage(),
-          $test
+            'error',
+            $time,
+            PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
+            $e->getMessage(),
+            $test
         );
 
         $this->currentTestPass = false;
@@ -106,11 +106,11 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->writeCase(
-          'fail',
-          $time,
-          PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-          $e->getMessage(),
-          $test
+            'fail',
+            $time,
+            PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
+            $e->getMessage(),
+            $test
         );
 
         $this->currentTestPass = false;
@@ -126,11 +126,11 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeCase(
-          'error',
-          $time,
-          PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-          'Incomplete Test: ' . $e->getMessage(),
-          $test
+            'error',
+            $time,
+            PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
+            'Incomplete Test: ' . $e->getMessage(),
+            $test
         );
 
         $this->currentTestPass = false;
@@ -147,11 +147,11 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeCase(
-          'error',
-          $time,
-          PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-          'Risky Test: ' . $e->getMessage(),
-          $test
+            'error',
+            $time,
+            PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
+            'Risky Test: ' . $e->getMessage(),
+            $test
         );
 
         $this->currentTestPass = false;
@@ -167,11 +167,11 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->writeCase(
-          'error',
-          $time,
-          PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-          'Skipped Test: ' . $e->getMessage(),
-          $test
+            'error',
+            $time,
+            PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
+            'Skipped Test: ' . $e->getMessage(),
+            $test
         );
 
         $this->currentTestPass = false;
@@ -188,11 +188,11 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
         $this->currentTestName      = '';
 
         $this->write(
-          array(
+            array(
             'event' => 'suiteStart',
             'suite' => $this->currentTestSuiteName,
             'tests' => count($suite)
-          )
+            )
         );
     }
 
@@ -218,11 +218,11 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
         $this->currentTestPass = true;
 
         $this->write(
-          array(
+            array(
             'event' => 'testStart',
             'suite' => $this->currentTestSuiteName,
             'test'  => $this->currentTestName
-          )
+            )
         );
     }
 
@@ -254,7 +254,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             $output = $test->getActualOutput();
         }
         $this->write(
-          array(
+            array(
             'event'   => 'test',
             'suite'   => $this->currentTestSuiteName,
             'test'    => $this->currentTestName,
@@ -263,7 +263,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             'trace'   => $trace,
             'message' => PHPUnit_Util_String::convertToUtf8($message),
             'output'  => $output,
-          )
+            )
         );
     }
 

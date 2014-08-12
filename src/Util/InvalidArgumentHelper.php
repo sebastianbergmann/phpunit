@@ -68,14 +68,14 @@ class PHPUnit_Util_InvalidArgumentHelper
         $stack = debug_backtrace(false);
 
         return new PHPUnit_Framework_Exception(
-          sprintf(
-            'Argument #%d%sof %s::%s() must be a %s',
-            $argument,
-            $value !== null ? ' (' . gettype($value) . '#' . $value . ')' : ' (No Value) ',
-            $stack[1]['class'],
-            $stack[1]['function'],
-            $type
-          )
+            sprintf(
+                'Argument #%d%sof %s::%s() must be a %s',
+                $argument,
+                $value !== null ? ' (' . gettype($value) . '#' . $value . ')' : ' (No Value) ',
+                $stack[1]['class'],
+                $stack[1]['function'],
+                $type
+            )
         );
     }
 }

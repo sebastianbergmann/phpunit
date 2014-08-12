@@ -140,8 +140,8 @@ class RequirementsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @requires	  extension	  spl	  
-     * @requires	  OS	  .*	      
+     * @requires	  extension	  spl
+     * @requires	  OS	  .*
      */
     public function testSpace()
     {

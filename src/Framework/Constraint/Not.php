@@ -85,7 +85,7 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
     public static function negate($string)
     {
         return str_replace(
-          array(
+            array(
             'contains ',
             'exists',
             'has ',
@@ -96,8 +96,8 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             'ends with ',
             'reference ',
             'not not '
-          ),
-          array(
+            ),
+            array(
             'does not contain ',
             'does not exist',
             'does not have ',
@@ -108,8 +108,8 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             'ends not with ',
             'don\'t reference ',
             'not '
-          ),
-          $string
+            ),
+            $string
         );
     }
 
@@ -158,14 +158,14 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             case 'PHPUnit_Framework_Constraint_Not':
             case 'PHPUnit_Framework_Constraint_Or': {
                 return 'not( ' . $this->constraint->failureDescription($other) . ' )';
-            }
+                }
             break;
 
             default: {
                 return self::negate(
-                  $this->constraint->failureDescription($other)
+                    $this->constraint->failureDescription($other)
                 );
-            }
+                }
         }
     }
 
@@ -181,14 +181,14 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             case 'PHPUnit_Framework_Constraint_Not':
             case 'PHPUnit_Framework_Constraint_Or': {
                 return 'not( ' . $this->constraint->toString() . ' )';
-            }
+                }
             break;
 
             default: {
                 return self::negate(
-                  $this->constraint->toString()
+                    $this->constraint->toString()
                 );
-            }
+                }
         }
     }
 

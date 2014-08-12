@@ -1,5 +1,8 @@
 <?php
-class ExceptionStackTestException extends Exception { }
+class ExceptionStackTestException extends Exception
+{
+
+}
 
 class ExceptionStackTest extends PHPUnit_Framework_TestCase
 {

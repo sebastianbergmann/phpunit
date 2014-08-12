@@ -73,7 +73,7 @@ class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
         foreach ($constraints as $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
                 $constraint = new PHPUnit_Framework_Constraint_IsEqual(
-                  $constraint
+                    $constraint
                 );
             }
 

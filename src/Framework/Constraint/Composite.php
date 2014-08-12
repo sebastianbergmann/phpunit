@@ -91,9 +91,9 @@ abstract class PHPUnit_Framework_Constraint_Composite extends PHPUnit_Framework_
     {
         try {
             return $this->innerConstraint->evaluate(
-              $other,
-              $description,
-              $returnResult
+                $other,
+                $description,
+                $returnResult
             );
         } catch (PHPUnit_Framework_ExpectationFailedException $e) {
             $this->fail($other, $description);

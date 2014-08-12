@@ -121,10 +121,10 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
             // if both values are strings, make sure a diff is generated
             if (is_string($this->value) && is_string($other)) {
                 $f = new SebastianBergmann\Comparator\ComparisonFailure(
-                  $this->value,
-                  $other,
-                  $this->value,
-                  $other
+                    $this->value,
+                    $other,
+                    $this->value,
+                    $other
                 );
             }
 

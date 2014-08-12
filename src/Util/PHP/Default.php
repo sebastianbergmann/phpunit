@@ -71,18 +71,18 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
         $runtime = new Runtime;
 
         $process = proc_open(
-          $runtime->getBinary() . $this->settingsToParameters($settings),
-          array(
+            $runtime->getBinary() . $this->settingsToParameters($settings),
+            array(
             0 => array('pipe', 'r'),
             1 => array('pipe', 'w'),
             2 => array('pipe', 'w')
-          ),
-          $pipes
+            ),
+            $pipes
         );
 
         if (!is_resource($process)) {
             throw new PHPUnit_Framework_Exception(
-              'Unable to spawn worker process'
+                'Unable to spawn worker process'
             );
         }
 

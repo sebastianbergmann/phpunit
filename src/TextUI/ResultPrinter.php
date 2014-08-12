@@ -218,14 +218,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         $this->write(
-          sprintf(
-            "There %s %d %s%s:\n",
-
-            ($count == 1) ? 'was' : 'were',
-            $count,
-            $type,
-            ($count == 1) ? '' : 's'
-          )
+            sprintf(
+                "There %s %d %s%s:\n",
+                ($count == 1) ? 'was' : 'were',
+                $count,
+                $type,
+                ($count == 1) ? '' : 's'
+            )
         );
 
         $i = 1;
@@ -260,12 +259,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         $this->write(
-          sprintf(
-            "\n%d) %s\n",
-
-            $count,
-            $testName
-          )
+            sprintf(
+                "\n%d) %s\n",
+                $count,
+                $testName
+            )
         );
     }
 
@@ -277,7 +275,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->write($defect->getExceptionAsString());
 
         $trace = PHPUnit_Util_Filter::getFilteredStacktrace(
-          $defect->thrownException()
+            $defect->thrownException()
         );
 
         if (!empty($trace)) {
@@ -287,13 +285,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $e = $defect->thrownException()->getPrevious();
 
         while ($e) {
-          $this->write(
-            "\nCaused by\n" .
-            PHPUnit_Framework_TestFailure::exceptionToString($e). "\n" .
-            PHPUnit_Util_Filter::getFilteredStacktrace($e)
-          );
+            $this->write(
+                "\nCaused by\n" .
+                PHPUnit_Framework_TestFailure::exceptionToString($e). "\n" .
+                PHPUnit_Util_Filter::getFilteredStacktrace($e)
+            );
 
-          $e = $e->getPrevious();
+            $e = $e->getPrevious();
         }
     }
 
@@ -351,8 +349,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         if (count($result) === 0) {
             $this->writeWithColor(
-              'fg-black, bg-yellow',
-              'No tests executed!'
+                'fg-black, bg-yellow',
+                'No tests executed!'
             );
         } elseif ($result->wasSuccessful() &&
                  $result->allHarmless() &&
@@ -360,56 +358,53 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                  $result->noneSkipped()) {
 
             $this->writeWithColor(
-              'fg-black, bg-green',
-              sprintf(
-                'OK (%d test%s, %d assertion%s)',
-
-                count($result),
-                (count($result) == 1) ? '' : 's',
-                $this->numAssertions,
-                ($this->numAssertions == 1) ? '' : 's'
-              )
+                'fg-black, bg-green',
+                sprintf(
+                    'OK (%d test%s, %d assertion%s)',
+                    count($result),
+                    (count($result) == 1) ? '' : 's',
+                    $this->numAssertions,
+                    ($this->numAssertions == 1) ? '' : 's'
+                )
             );
         } elseif ((!$result->allCompletelyImplemented() ||
                   !$result->allHarmless() ||
                   !$result->noneSkipped()) &&
                  $result->wasSuccessful()) {
             $this->writeWithColor(
-              'fg-black, bg-yellow',
-              sprintf(
-                "%sOK, but incomplete, skipped, or risky tests!\n" .
-                'Tests: %d, Assertions: %d%s%s%s.',
-
-                $this->verbose ? "\n" : '',
-                count($result),
-                $this->numAssertions,
-                $this->getCountString(
-                  $result->notImplementedCount(), 'Incomplete'
-                ),
-                $this->getCountString(
-                  $result->skippedCount(), 'Skipped'
-                ),
-                $this->getCountString(
-                  $result->riskyCount(), 'Risky'
+                'fg-black, bg-yellow',
+                sprintf(
+                    "%sOK, but incomplete, skipped, or risky tests!\n" .
+                    'Tests: %d, Assertions: %d%s%s%s.',
+                    $this->verbose ? "\n" : '',
+                    count($result),
+                    $this->numAssertions,
+                    $this->getCountString(
+                        $result->notImplementedCount(), 'Incomplete'
+                    ),
+                    $this->getCountString(
+                        $result->skippedCount(), 'Skipped'
+                    ),
+                    $this->getCountString(
+                        $result->riskyCount(), 'Risky'
+                    )
                 )
-              )
             );
         } else {
             $this->writeWithColor(
-              'fg-white, bg-red',
-              sprintf(
-                "\nFAILURES!\n" .
-                'Tests: %d, Assertions: %s%s%s%s%s.',
-
-                count($result),
-                $this->numAssertions,
-                $this->getCountString($result->failureCount(), 'Failures'),
-                $this->getCountString($result->errorCount(), 'Errors'),
-                $this->getCountString(
-                  $result->notImplementedCount(), 'Incomplete'
-                ),
-                $this->getCountString($result->skippedCount(), 'Skipped')
-              )
+                'fg-white, bg-red',
+                sprintf(
+                    "\nFAILURES!\n" .
+                    'Tests: %d, Assertions: %s%s%s%s%s.',
+                    count($result),
+                    $this->numAssertions,
+                    $this->getCountString($result->failureCount(), 'Failures'),
+                    $this->getCountString($result->errorCount(), 'Errors'),
+                    $this->getCountString(
+                        $result->notImplementedCount(), 'Incomplete'
+                    ),
+                    $this->getCountString($result->skippedCount(), 'Skipped')
+                )
             );
         }
     }
@@ -426,10 +421,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         if ($count > 0) {
             $string = sprintf(
-              ', %s: %d',
-
-              $name,
-              $count
+                ', %s: %d',
+                $name,
+                $count
             );
         }
 
@@ -544,9 +538,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         if ($this->debug) {
             $this->write(
-              sprintf(
-                "\nStarting test '%s'.\n", PHPUnit_Util_Test::describe($test)
-              )
+                sprintf(
+                    "\nStarting test '%s'.\n", PHPUnit_Util_Test::describe($test)
+                )
             );
         }
     }
@@ -589,14 +583,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         if ($this->column == $this->maxColumn) {
             $this->write(
-              sprintf(
-                ' %' . $this->numTestsWidth . 'd / %' .
-                       $this->numTestsWidth . 'd (%3s%%)',
-
-                $this->numTestsRun,
-                $this->numTests,
-                floor(($this->numTestsRun / $this->numTests) * 100)
-              )
+                sprintf(
+                    ' %' . $this->numTestsWidth . 'd / %' .
+                    $this->numTestsWidth . 'd (%3s%%)',
+                    $this->numTestsRun,
+                    $this->numTests,
+                    floor(($this->numTestsRun / $this->numTests) * 100)
+                )
             );
 
             $this->writeNewLine();

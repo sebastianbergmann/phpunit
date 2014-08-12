@@ -351,8 +351,8 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         }
 
         $this->assertNull($e, sprintf(
-          'PHPUnit_Util_XML::prepareString("\x%02x") should not crash DomDocument',
-          ord($char)
+            'PHPUnit_Util_XML::prepareString("\x%02x") should not crash DomDocument',
+            ord($char)
         ));
     }
 

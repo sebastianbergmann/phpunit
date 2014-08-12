@@ -147,6 +147,6 @@ class PHPUnit_Util_Blacklist
                 // @see http://php.net/manual/en/function.tempnam.php
                 self::$directories[] = sys_get_temp_dir() . '\\PHP';
             }
-       }
+        }
     }
 }

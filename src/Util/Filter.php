@@ -94,7 +94,7 @@ class PHPUnit_Util_Filter
 
         if (!self::frameExists($eTrace, $eFile, $eLine)) {
             array_unshift(
-              $eTrace, array('file' => $eFile, 'line' => $eLine)
+                $eTrace, array('file' => $eFile, 'line' => $eLine)
             );
         }
 
@@ -107,10 +107,9 @@ class PHPUnit_Util_Filter
                 $frame['file'] !== $script) {
                 if ($asString === true) {
                     $filteredStacktrace .= sprintf(
-                      "%s:%s\n",
-
-                      $frame['file'],
-                      isset($frame['line']) ? $frame['line'] : '?'
+                        "%s:%s\n",
+                        $frame['file'],
+                        isset($frame['line']) ? $frame['line'] : '?'
                     );
                 } else {
                     $filteredStacktrace[] = $frame;
