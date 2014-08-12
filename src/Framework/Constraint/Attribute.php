@@ -94,11 +94,11 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
     public function evaluate($other, $description = '', $returnResult = false)
     {
         return parent::evaluate(
-          PHPUnit_Framework_Assert::readAttribute(
-            $other, $this->attributeName
-          ),
-          $description,
-          $returnResult
+            PHPUnit_Framework_Assert::readAttribute(
+                $other, $this->attributeName
+            ),
+            $description,
+            $returnResult
         );
     }
 

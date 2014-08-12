@@ -90,7 +90,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
             !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
             $facade = new File_Iterator_Facade;
             $files  = $facade->getFilesAsArray(
-              $suiteClassName, $suffixes
+                $suiteClassName, $suffixes
             );
 
             $suite = new PHPUnit_Framework_TestSuite($suiteClassName);
@@ -101,7 +101,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
 
         try {
             $testClass = $this->loadSuiteClass(
-              $suiteClassName, $suiteClassFile
+                $suiteClassName, $suiteClassFile
             );
         } catch (PHPUnit_Framework_Exception $e) {
             $this->runFailed($e->getMessage());
@@ -114,7 +114,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
 
             if (!$suiteMethod->isStatic()) {
                 $this->runFailed(
-                  'suite() method must be static.'
+                    'suite() method must be static.'
                 );
 
                 return null;
@@ -124,11 +124,10 @@ abstract class PHPUnit_Runner_BaseTestRunner
                 $test = $suiteMethod->invoke(null, $testClass->getName());
             } catch (ReflectionException $e) {
                 $this->runFailed(
-                  sprintf(
-                    "Failed to invoke suite() method.\n%s",
-
-                    $e->getMessage()
-                  )
+                    sprintf(
+                        "Failed to invoke suite() method.\n%s",
+                        $e->getMessage()
+                    )
                 );
 
                 return null;

@@ -6,5 +6,4 @@ class ChangeCurrentWorkingDirectoryTest extends PHPUnit_Framework_TestCase
         chdir('../');
         $this->assertTrue(true);
     }
-
 }

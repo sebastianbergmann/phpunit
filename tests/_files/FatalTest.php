@@ -10,5 +10,4 @@ class FatalTest extends PHPUnit_Framework_TestCase
 
         non_existing_function();
     }
-
 }

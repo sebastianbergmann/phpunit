@@ -130,7 +130,7 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
     public function getChildren()
     {
         return new PHPUnit_Util_TestSuiteIterator(
-          $this->tests[$this->position]
+            $this->tests[$this->position]
         );
     }
 

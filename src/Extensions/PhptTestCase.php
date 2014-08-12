@@ -102,10 +102,10 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         if (!is_file($filename)) {
             throw new PHPUnit_Framework_Exception(
-              sprintf(
-                'File "%s" does not exist.',
-                $filename
-              )
+                sprintf(
+                    'File "%s" does not exist.',
+                    $filename
+                )
             );
         }
 
@@ -242,15 +242,15 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     private function render($code)
     {
         return str_replace(
-          array(
+            array(
             '__DIR__',
             '__FILE__'
-          ),
-          array(
+            ),
+            array(
             "'" . dirname($this->filename) . "'",
             "'" . $this->filename . "'"
-          ),
-          $code
+            ),
+            $code
         );
     }
 }

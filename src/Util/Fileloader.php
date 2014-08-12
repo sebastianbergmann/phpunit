@@ -70,7 +70,7 @@ class PHPUnit_Util_Fileloader
 
         if (!$includePathFilename || !is_readable($includePathFilename)) {
             throw new PHPUnit_Framework_Exception(
-              sprintf('Cannot open file "%s".' . "\n", $filename)
+                sprintf('Cannot open file "%s".' . "\n", $filename)
             );
         }
 
@@ -94,8 +94,8 @@ class PHPUnit_Util_Fileloader
 
         $newVariables     = get_defined_vars();
         $newVariableNames = array_diff(
-                              array_keys($newVariables), $oldVariableNames
-                            );
+            array_keys($newVariables), $oldVariableNames
+        );
 
         foreach ($newVariableNames as $variableName) {
             if ($variableName != 'oldVariableNames') {

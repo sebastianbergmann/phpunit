@@ -107,11 +107,11 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 
         if (!isset($this->types[$type])) {
             throw new PHPUnit_Framework_Exception(
-              sprintf(
-                'Type specified for PHPUnit_Framework_Constraint_IsType <%s> ' .
-                'is not a valid type.',
-                $type
-              )
+                sprintf(
+                    'Type specified for PHPUnit_Framework_Constraint_IsType <%s> ' .
+                    'is not a valid type.',
+                    $type
+                )
             );
         }
 
@@ -130,49 +130,49 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
         switch ($this->type) {
             case 'numeric': {
                 return is_numeric($other);
-            }
+                }
 
             case 'integer':
             case 'int': {
                 return is_integer($other);
-            }
+                }
 
             case 'float': {
                 return is_float($other);
-            }
+                }
 
             case 'string': {
                 return is_string($other);
-            }
+                }
 
             case 'boolean':
             case 'bool': {
                 return is_bool($other);
-            }
+                }
 
             case 'null': {
                 return is_null($other);
-            }
+                }
 
             case 'array': {
                 return is_array($other);
-            }
+                }
 
             case 'object': {
                 return is_object($other);
-            }
+                }
 
             case 'resource': {
                 return is_resource($other);
-            }
+                }
 
             case 'scalar': {
                 return is_scalar($other);
-            }
+                }
 
             case 'callable': {
                 return is_callable($other);
-            }
+                }
         }
     }
 
@@ -184,9 +184,8 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     public function toString()
     {
         return sprintf(
-          'is of type "%s"',
-
-          $this->type
+            'is of type "%s"',
+            $this->type
         );
     }
 }

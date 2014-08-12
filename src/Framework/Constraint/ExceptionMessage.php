@@ -94,9 +94,9 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
     protected function failureDescription($other)
     {
         return sprintf(
-          "exception message '%s' contains '%s'",
-          $other->getMessage(),
-          $this->expectedMessage
+            "exception message '%s' contains '%s'",
+            $other->getMessage(),
+            $this->expectedMessage
         );
     }
 

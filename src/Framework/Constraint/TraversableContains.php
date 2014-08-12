@@ -159,10 +159,9 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
     protected function failureDescription($other)
     {
         return sprintf(
-          '%s %s',
-
-           is_array($other) ? 'an array' : 'a traversable',
-           $this->toString()
+            '%s %s',
+            is_array($other) ? 'an array' : 'a traversable',
+            $this->toString()
         );
     }
 }

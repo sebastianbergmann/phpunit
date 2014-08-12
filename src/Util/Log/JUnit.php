@@ -176,7 +176,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                        PHPUnit_Util_Filter::getFilteredStacktrace($e);
 
             $error = $this->document->createElement(
-              'error', PHPUnit_Util_XML::prepareString($buffer)
+                'error', PHPUnit_Util_XML::prepareString($buffer)
             );
 
             $error->setAttribute('type', get_class($e));
@@ -209,7 +209,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                            PHPUnit_Util_Filter::getFilteredStacktrace($e);
 
                 $failure = $this->document->createElement(
-                  'failure', PHPUnit_Util_XML::prepareString($buffer)
+                    'failure', PHPUnit_Util_XML::prepareString($buffer)
                 );
 
                 $failure->setAttribute('type', get_class($e));
@@ -232,11 +232,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     {
         if ($this->logIncompleteSkipped && $this->currentTestCase !== null) {
             $error = $this->document->createElement(
-              'error',
-              PHPUnit_Util_XML::prepareString(
-                "Incomplete Test\n" .
-                PHPUnit_Util_Filter::getFilteredStacktrace($e)
-              )
+                'error',
+                PHPUnit_Util_XML::prepareString(
+                    "Incomplete Test\n" .
+                    PHPUnit_Util_Filter::getFilteredStacktrace($e)
+                )
             );
 
             $error->setAttribute('type', get_class($e));
@@ -261,11 +261,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     {
         if ($this->logIncompleteSkipped && $this->currentTestCase !== null) {
             $error = $this->document->createElement(
-              'error',
-              PHPUnit_Util_XML::prepareString(
-                "Risky Test\n" .
-                PHPUnit_Util_Filter::getFilteredStacktrace($e)
-              )
+                'error',
+                PHPUnit_Util_XML::prepareString(
+                    "Risky Test\n" .
+                    PHPUnit_Util_Filter::getFilteredStacktrace($e)
+                )
             );
 
             $error->setAttribute('type', get_class($e));
@@ -290,11 +290,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     {
         if ($this->logIncompleteSkipped && $this->currentTestCase !== null) {
             $error = $this->document->createElement(
-              'error',
-              PHPUnit_Util_XML::prepareString(
-                "Skipped Test\n" .
-                PHPUnit_Util_Filter::getFilteredStacktrace($e)
-              )
+                'error',
+                PHPUnit_Util_XML::prepareString(
+                    "Skipped Test\n" .
+                    PHPUnit_Util_Filter::getFilteredStacktrace($e)
+                )
             );
 
             $error->setAttribute('type', get_class($e));
@@ -351,23 +351,23 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
-          'tests', $this->testSuiteTests[$this->testSuiteLevel]
+            'tests', $this->testSuiteTests[$this->testSuiteLevel]
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
-          'assertions', $this->testSuiteAssertions[$this->testSuiteLevel]
+            'assertions', $this->testSuiteAssertions[$this->testSuiteLevel]
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
-          'failures', $this->testSuiteFailures[$this->testSuiteLevel]
+            'failures', $this->testSuiteFailures[$this->testSuiteLevel]
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
-          'errors', $this->testSuiteErrors[$this->testSuiteLevel]
+            'errors', $this->testSuiteErrors[$this->testSuiteLevel]
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
-          'time', sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel])
+            'time', sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel])
         );
 
         if ($this->testSuiteLevel > 1) {
@@ -424,16 +424,16 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                     $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
 
                     $this->currentTestCase->setAttribute(
-                      'assertions', $numAssertions
+                        'assertions', $numAssertions
                     );
                 }
 
                 $this->currentTestCase->setAttribute(
-                  'time', sprintf('%F', $time)
+                    'time', sprintf('%F', $time)
                 );
 
                 $this->testSuites[$this->testSuiteLevel]->appendChild(
-                  $this->currentTestCase
+                    $this->currentTestCase
                 );
 
                 $this->testSuiteTests[$this->testSuiteLevel]++;
@@ -442,7 +442,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                 if (method_exists($test, 'hasOutput') && $test->hasOutput()) {
                     $systemOut = $this->document->createElement('system-out');
                     $systemOut->appendChild(
-                      $this->document->createTextNode($test->getActualOutput())
+                        $this->document->createTextNode($test->getActualOutput())
                     );
                     $this->currentTestCase->appendChild($systemOut);
                 }

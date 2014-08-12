@@ -1,5 +1,6 @@
 <?php
-class TestIterator2 implements Iterator {
+class TestIterator2 implements Iterator
+{
 
     protected $data;
 

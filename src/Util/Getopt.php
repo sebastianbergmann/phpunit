@@ -93,11 +93,11 @@ class PHPUnit_Util_Getopt
                 break;
             } elseif (strlen($arg) > 1 && $arg[1] == '-') {
                 self::parseLongOption(
-                  substr($arg, 2), $long_options, $opts, $args
+                    substr($arg, 2), $long_options, $opts, $args
                 );
             } else {
                 self::parseShortOption(
-                  substr($arg, 1), $short_options, $opts, $args
+                    substr($arg, 1), $short_options, $opts, $args
                 );
             }
         }
@@ -116,7 +116,7 @@ class PHPUnit_Util_Getopt
             if (($spec = strstr($short_options, $opt)) === false ||
                 $arg[$i] == ':') {
                 throw new PHPUnit_Framework_Exception(
-                  "unrecognized option -- $opt"
+                    "unrecognized option -- $opt"
                 );
             }
 
@@ -133,7 +133,7 @@ class PHPUnit_Util_Getopt
                     } elseif (list(, $opt_arg) = each($args)) {
                     } else {
                         throw new PHPUnit_Framework_Exception(
-                          "option requires an argument -- $opt"
+                            "option requires an argument -- $opt"
                         );
                     }
                 }
@@ -169,7 +169,7 @@ class PHPUnit_Util_Getopt
             if ($opt_rest != '' && $opt[0] != '=' && $i + 1 < $count &&
                 $opt == substr($long_options[$i+1], 0, $opt_len)) {
                 throw new PHPUnit_Framework_Exception(
-                  "option --$opt is ambiguous"
+                    "option --$opt is ambiguous"
                 );
             }
 
@@ -178,13 +178,13 @@ class PHPUnit_Util_Getopt
                     if (!strlen($opt_arg) &&
                         !(list(, $opt_arg) = each($args))) {
                         throw new PHPUnit_Framework_Exception(
-                          "option --$opt requires an argument"
+                            "option --$opt requires an argument"
                         );
                     }
                 }
             } elseif ($opt_arg) {
                 throw new PHPUnit_Framework_Exception(
-                  "option --$opt doesn't allow an argument"
+                    "option --$opt doesn't allow an argument"
                 );
             }
 
