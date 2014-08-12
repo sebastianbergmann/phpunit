@@ -347,7 +347,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function getAnnotations()
     {
         return PHPUnit_Util_Test::parseTestMethodAnnotations(
-            get_class($this), $this->name
+            get_class($this),
+            $this->name
         );
     }
 
@@ -375,7 +376,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function getSize()
     {
         return PHPUnit_Util_Test::getSize(
-            get_class($this), $this->getName(false)
+            get_class($this),
+            $this->getName(false)
         );
     }
 
@@ -480,7 +482,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         try {
             $expectedException = PHPUnit_Util_Test::getExpectedException(
-                get_class($this), $this->name
+                get_class($this),
+                $this->name
             );
 
             if ($expectedException !== false) {
@@ -510,7 +513,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         try {
             $useErrorHandler = PHPUnit_Util_Test::getErrorHandlerSettings(
-                get_class($this), $this->name
+                get_class($this),
+                $this->name
             );
 
             if ($useErrorHandler !== null) {
@@ -527,7 +531,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         try {
             $requirements = PHPUnit_Util_Test::getRequirements(
-                get_class($this), $this->name
+                get_class($this),
+                $this->name
             );
 
             if (isset($requirements['PHP'])) {
@@ -953,7 +958,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         try {
             $testResult = $method->invokeArgs(
-                $this, array_merge($this->data, $this->dependencyInput)
+                $this,
+                array_merge($this->data, $this->dependencyInput)
             );
         } catch (Exception $e) {
             $checkException = false;
@@ -1267,7 +1273,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $this->locale[$category] = setlocale($category, null);
 
-        $result = call_user_func_array( 'setlocale', $args );
+        $result = call_user_func_array('setlocale', $args);
 
         if ($result === false) {
             throw new PHPUnit_Framework_Exception(
@@ -1326,7 +1332,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function getMockBuilder($className)
     {
         return new PHPUnit_Framework_MockObject_MockBuilder(
-            $this, $className
+            $this,
+            $className
         );
     }
 
@@ -1412,14 +1419,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         if ($originalClassName === '') {
             $originalClassName = str_replace(
-                '.wsdl', '', basename($wsdlFile)
+                '.wsdl',
+                '',
+                basename($wsdlFile)
             );
         }
 
         if (!class_exists($originalClassName)) {
             eval(
             $this->getMockObjectGenerator()->generateClassFromWsdl(
-                $wsdlFile, $originalClassName, $methods, $options
+                $wsdlFile,
+                $originalClassName,
+                $methods,
+                $options
             )
             );
         }
@@ -1821,7 +1833,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                         $this,
                         new PHPUnit_Framework_SkippedTestError(
                             sprintf(
-                                'This test depends on "%s" to pass.', $dependency
+                                'This test depends on "%s" to pass.',
+                                $dependency
                             )
                         ),
                         0
@@ -1984,7 +1997,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->output = $output;
         } else {
             $this->output = call_user_func_array(
-                $this->outputCallback, array($output)
+                $this->outputCallback,
+                array($output)
             );
         }
 

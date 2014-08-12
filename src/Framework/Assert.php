@@ -73,13 +73,15 @@ abstract class PHPUnit_Framework_Assert
     {
         if (!(is_integer($key) || is_string($key))) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                1, 'integer or string'
+                1,
+                'integer or string'
             );
         }
 
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                2, 'array or ArrayAccess'
+                2,
+                'array or ArrayAccess'
             );
         }
 
@@ -100,13 +102,15 @@ abstract class PHPUnit_Framework_Assert
     {
         if (!(is_integer($key) || is_string($key))) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                1, 'integer or string'
+                1,
+                'integer or string'
             );
         }
 
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                2, 'array or ArrayAccess'
+                2,
+                'array or ArrayAccess'
             );
         }
 
@@ -133,15 +137,19 @@ abstract class PHPUnit_Framework_Assert
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable) {
             $constraint = new PHPUnit_Framework_Constraint_TraversableContains(
-                $needle, $checkForObjectIdentity, $checkForNonObjectIdentity
+                $needle,
+                $checkForObjectIdentity,
+                $checkForNonObjectIdentity
             );
         } elseif (is_string($haystack)) {
             $constraint = new PHPUnit_Framework_Constraint_StringContains(
-                $needle, $ignoreCase
+                $needle,
+                $ignoreCase
             );
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                2, 'array, traversable or string'
+                2,
+                'array, traversable or string'
             );
         }
 
@@ -190,18 +198,22 @@ abstract class PHPUnit_Framework_Assert
             is_object($haystack) && $haystack instanceof Traversable) {
             $constraint = new PHPUnit_Framework_Constraint_Not(
                 new PHPUnit_Framework_Constraint_TraversableContains(
-                    $needle, $checkForObjectIdentity, $checkForNonObjectIdentity
+                    $needle,
+                    $checkForObjectIdentity,
+                    $checkForNonObjectIdentity
                 )
             );
         } elseif (is_string($haystack)) {
             $constraint = new PHPUnit_Framework_Constraint_Not(
                 new PHPUnit_Framework_Constraint_StringContains(
-                    $needle, $ignoreCase
+                    $needle,
+                    $ignoreCase
                 )
             );
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                2, 'array, traversable or string'
+                2,
+                'array, traversable or string'
             );
         }
 
@@ -247,7 +259,8 @@ abstract class PHPUnit_Framework_Assert
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                2, 'array or traversable'
+                2,
+                'array or traversable'
             );
         }
 
@@ -258,7 +271,8 @@ abstract class PHPUnit_Framework_Assert
         self::assertThat(
             $haystack,
             new PHPUnit_Framework_Constraint_TraversableContainsOnly(
-                $type, $isNativeType
+                $type,
+                $isNativeType
             ),
             $message
         );
@@ -276,14 +290,16 @@ abstract class PHPUnit_Framework_Assert
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                2, 'array or traversable'
+                2,
+                'array or traversable'
             );
         }
 
         self::assertThat(
             $haystack,
             new PHPUnit_Framework_Constraint_TraversableContainsOnly(
-                $classname, false
+                $classname,
+                false
             ),
             $message
         );
@@ -324,7 +340,8 @@ abstract class PHPUnit_Framework_Assert
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                2, 'array or traversable'
+                2,
+                'array or traversable'
             );
         }
 
@@ -336,7 +353,8 @@ abstract class PHPUnit_Framework_Assert
             $haystack,
             new PHPUnit_Framework_Constraint_Not(
                 new PHPUnit_Framework_Constraint_TraversableContainsOnly(
-                    $type, $isNativeType
+                    $type,
+                    $isNativeType
                 )
             ),
             $message
@@ -469,7 +487,11 @@ abstract class PHPUnit_Framework_Assert
     public static function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         $constraint = new PHPUnit_Framework_Constraint_IsEqual(
-            $expected, $delta, $maxDepth, $canonicalize, $ignoreCase
+            $expected,
+            $delta,
+            $maxDepth,
+            $canonicalize,
+            $ignoreCase
         );
 
         self::assertThat($actual, $constraint, $message);
@@ -516,7 +538,11 @@ abstract class PHPUnit_Framework_Assert
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
             new PHPUnit_Framework_Constraint_IsEqual(
-                $expected, $delta, $maxDepth, $canonicalize, $ignoreCase
+                $expected,
+                $delta,
+                $maxDepth,
+                $canonicalize,
+                $ignoreCase
             )
         );
 
@@ -648,7 +674,9 @@ abstract class PHPUnit_Framework_Assert
     public static function assertGreaterThanOrEqual($expected, $actual, $message = '')
     {
         self::assertThat(
-            $actual, self::greaterThanOrEqual($expected), $message
+            $actual,
+            self::greaterThanOrEqual($expected),
+            $message
         );
     }
 
@@ -1897,7 +1925,12 @@ abstract class PHPUnit_Framework_Assert
         trigger_error(__METHOD__ . ' is deprecated', E_USER_DEPRECATED);
 
         self::assertSelectEquals(
-            $selector, true, $count, $actual, $message, $isHtml
+            $selector,
+            true,
+            $count,
+            $actual,
+            $message,
+            $isHtml
         );
     }
 
@@ -1921,7 +1954,12 @@ abstract class PHPUnit_Framework_Assert
         trigger_error(__METHOD__ . ' is deprecated', E_USER_DEPRECATED);
 
         self::assertSelectEquals(
-            $selector, "regexp:$pattern", $count, $actual, $message, $isHtml
+            $selector,
+            "regexp:$pattern",
+            $count,
+            $actual,
+            $message,
+            $isHtml
         );
     }
 
@@ -1945,7 +1983,10 @@ abstract class PHPUnit_Framework_Assert
         trigger_error(__METHOD__ . ' is deprecated', E_USER_DEPRECATED);
 
         $tags = PHPUnit_Util_XML::cssSelect(
-            $selector, $content, $actual, $isHtml
+            $selector,
+            $content,
+            $actual,
+            $isHtml
         );
 
         // assert specific number of elements
@@ -2474,7 +2515,8 @@ abstract class PHPUnit_Framework_Assert
     public static function attribute(PHPUnit_Framework_Constraint $constraint, $attributeName)
     {
         return new PHPUnit_Framework_Constraint_Attribute(
-            $constraint, $attributeName
+            $constraint,
+            $attributeName
         );
     }
 
@@ -2544,7 +2586,11 @@ abstract class PHPUnit_Framework_Assert
     public static function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         return new PHPUnit_Framework_Constraint_IsEqual(
-            $value, $delta, $maxDepth, $canonicalize, $ignoreCase
+            $value,
+            $delta,
+            $maxDepth,
+            $canonicalize,
+            $ignoreCase
         );
     }
 
@@ -2566,7 +2612,11 @@ abstract class PHPUnit_Framework_Assert
     {
         return self::attribute(
             self::equalTo(
-                $value, $delta, $maxDepth, $canonicalize, $ignoreCase
+                $value,
+                $delta,
+                $maxDepth,
+                $canonicalize,
+                $ignoreCase
             ),
             $attributeName
         );
@@ -2835,7 +2885,8 @@ abstract class PHPUnit_Framework_Assert
         if (is_string($classOrObject)) {
             if (!class_exists($classOrObject)) {
                 throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                    1, 'class name'
+                    1,
+                    'class name'
                 );
             }
 
@@ -2850,7 +2901,8 @@ abstract class PHPUnit_Framework_Assert
             );
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                1, 'class name or object'
+                1,
+                'class name or object'
             );
         }
     }

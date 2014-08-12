@@ -236,21 +236,15 @@ class PHPUnit_Framework_TestResult implements Countable
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         if ($e instanceof PHPUnit_Framework_RiskyTest) {
-            $this->risky[] = new PHPUnit_Framework_TestFailure(
-                $test, $e
-            );
-
-            $notifyMethod = 'addRiskyTest';
+            $this->risky[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod  = 'addRiskyTest';
 
             if ($this->stopOnRisky) {
                 $this->stop();
             }
         } elseif ($e instanceof PHPUnit_Framework_IncompleteTest) {
-            $this->notImplemented[] = new PHPUnit_Framework_TestFailure(
-                $test, $e
-            );
-
-            $notifyMethod = 'addIncompleteTest';
+            $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod           = 'addIncompleteTest';
 
             if ($this->stopOnIncomplete) {
                 $this->stop();
@@ -290,21 +284,15 @@ class PHPUnit_Framework_TestResult implements Countable
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         if ($e instanceof PHPUnit_Framework_RiskyTest) {
-            $this->risky[] = new PHPUnit_Framework_TestFailure(
-                $test, $e
-            );
-
-            $notifyMethod = 'addRiskyTest';
+            $this->risky[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod  = 'addRiskyTest';
 
             if ($this->stopOnRisky) {
                 $this->stop();
             }
         } elseif ($e instanceof PHPUnit_Framework_IncompleteTest) {
-            $this->notImplemented[] = new PHPUnit_Framework_TestFailure(
-                $test, $e
-            );
-
-            $notifyMethod = 'addIncompleteTest';
+            $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod           = 'addIncompleteTest';
 
             if ($this->stopOnIncomplete) {
                 $this->stop();
@@ -397,7 +385,8 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->passed[$key] = array(
               'result' => $test->getResult(),
               'size'   => PHPUnit_Util_Test::getSize(
-                  $class, $test->getName(false)
+                  $class,
+                  $test->getName(false)
               )
             );
 
@@ -682,17 +671,21 @@ class PHPUnit_Framework_TestResult implements Countable
 
             if ($append && $test instanceof PHPUnit_Framework_TestCase) {
                 $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
-                    get_class($test), $test->getName(false)
+                    get_class($test),
+                    $test->getName(false)
                 );
 
                 $linesToBeUsed = PHPUnit_Util_Test::getLinesToBeUsed(
-                    get_class($test), $test->getName(false)
+                    get_class($test),
+                    $test->getName(false)
                 );
             }
 
             try {
                 $this->codeCoverage->stop(
-                    $append, $linesToBeCovered, $linesToBeUsed
+                    $append,
+                    $linesToBeCovered,
+                    $linesToBeUsed
                 );
             } catch (PHP_CodeCoverage_Exception_UnintentionallyCoveredCode $cce) {
                 $this->addFailure(
