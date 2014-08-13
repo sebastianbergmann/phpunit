@@ -656,6 +656,27 @@ class Framework_SelectorAssertionsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertTag
+     * @ticket 1380
+     */
+    public function testAssertTagWithMalformedHTML()
+    {
+        $matcher = array(
+            'tag' => 'form',
+            'descendant' => array(
+                'tag' => 'input',
+                'attributes' => array(
+                    'name' => 'property',
+                    'value' => 'Foo'
+                )
+            )
+        );
+
+        $html = '<form><input name="property" value="Foo"><hr></hr></form>';
+        $this->assertTag($matcher, $html);
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertNotTag
      */
     public function testAssertNotTagTypeIdFalse()
