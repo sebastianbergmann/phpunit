@@ -193,7 +193,7 @@ class PHPUnit_Util_Configuration
     protected function __construct($filename)
     {
         $this->filename = $filename;
-        $this->document = PHPUnit_Util_XML::loadFile($filename, false, true);
+        $this->document = PHPUnit_Util_XML::loadFile($filename, false, true, true);
         $this->xpath    = new DOMXPath($this->document);
     }
 

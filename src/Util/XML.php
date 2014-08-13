@@ -84,10 +84,11 @@ class PHPUnit_Util_XML
      * @param  string      $filename
      * @param  boolean     $isHtml
      * @param  boolean     $xinclude
+     * @param  boolean     $strict
      * @return DOMDocument
      * @since  Method available since Release 3.3.0
      */
-    public static function loadFile($filename, $isHtml = false, $xinclude = false)
+    public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
     {
         $reporting = error_reporting(0);
         $contents  = file_get_contents($filename);
@@ -102,7 +103,7 @@ class PHPUnit_Util_XML
             );
         }
 
-        return self::load($contents, $isHtml, $filename, $xinclude);
+        return self::load($contents, $isHtml, $filename, $xinclude, $strict);
     }
 
     /**
@@ -123,13 +124,14 @@ class PHPUnit_Util_XML
      * @param  boolean            $isHtml
      * @param  string             $filename
      * @param  boolean            $xinclude
+     * @param  boolean            $strict
      * @return DOMDocument
      * @since  Method available since Release 3.3.0
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      * @author Tobias Schlitt <toby@php.net>
      */
-    public static function load($actual, $isHtml = false, $filename = '', $xinclude = false)
+    public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false)
     {
         if ($actual instanceof DOMDocument) {
             return $actual;
@@ -173,7 +175,7 @@ class PHPUnit_Util_XML
             chdir($cwd);
         }
 
-        if ($loaded === false || $message !== '') {
+        if ($loaded === false || ($strict && $message !== '')) {
             if ($filename !== '') {
                 throw new PHPUnit_Framework_Exception(
                   sprintf(
