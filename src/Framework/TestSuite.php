@@ -378,7 +378,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         // a PEAR/PSR-0 prefixed shortname ('NameSpace_ShortName'), or as a
         // PSR-1 local shortname ('NameSpace\ShortName'). The comparison must be
         // anchored to prevent false-positive matches (e.g., 'OtherShortName').
-        $shortname = basename($filename, '.php');
+        $shortname = basename(basename($filename, '.hh'), '.php');
         $shortnameRegEx = '/(?:^|_|\\\\)' . preg_quote($shortname, '/') . '$/';
 
         foreach ($this->foundClasses as $i => $className) {
