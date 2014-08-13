@@ -212,15 +212,16 @@
   <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
 
   <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt"/>
+  <copy todir="${basedir}/build/phar" file="${basedir}/build/ca.pem" />
 
+  <copy file="${basedir}/vendor/phpunit/php-code-coverage/LICENSE" tofile="${basedir}/build/phar/php-code-coverage/LICENSE"/>
   <copy todir="${basedir}/build/phar/php-code-coverage">
    <fileset dir="${basedir}/vendor/phpunit/php-code-coverage/src">
     <include name="**/*" />
    </fileset>
   </copy>
 
-  <copy todir="${basedir}/build/phar" file="${basedir}/build/ca.pem" />
-
+  <copy file="${basedir}/vendor/phpunit/php-file-iterator/LICENSE" tofile="${basedir}/build/phar/php-file-iterator/LICENSE"/>
   <copy todir="${basedir}/build/phar/php-file-iterator">
    <fileset dir="${basedir}/vendor/phpunit/php-file-iterator/File">
     <include name="**/*.php" />
@@ -228,6 +229,7 @@
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/phpunit/php-text-template/LICENSE" tofile="${basedir}/build/phar/php-text-template/LICENSE"/>
   <copy todir="${basedir}/build/phar/php-text-template">
    <fileset dir="${basedir}/vendor/phpunit/php-text-template/Text">
     <include name="**/*.php" />
@@ -235,6 +237,7 @@
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/phpunit/php-timer/LICENSE" tofile="${basedir}/build/phar/php-timer/LICENSE"/>
   <copy todir="${basedir}/build/phar/php-timer">
    <fileset dir="${basedir}/vendor/phpunit/php-timer/PHP">
     <include name="**/*.php" />
@@ -242,6 +245,7 @@
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/phpunit/php-token-stream/LICENSE" tofile="${basedir}/build/phar/php-token-stream/LICENSE"/>
   <copy todir="${basedir}/build/phar/php-token-stream">
    <fileset dir="${basedir}/vendor/phpunit/php-token-stream/PHP">
     <include name="**/*.php" />
@@ -249,18 +253,21 @@
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/phpunit/phpunit-mock-objects/LICENSE" tofile="${basedir}/build/phar/phpunit-mock-objects/LICENSE"/>
   <copy todir="${basedir}/build/phar/phpunit-mock-objects">
    <fileset dir="${basedir}/vendor/phpunit/phpunit-mock-objects/src">
     <include name="**/*" />
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/sebastian/comparator/LICENSE" tofile="${basedir}/build/phar/sebastian-comparator/LICENSE"/>
   <copy todir="${basedir}/build/phar/sebastian-comparator">
    <fileset dir="${basedir}/vendor/sebastian/comparator/src">
     <include name="**/*.php" />
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/sebastian/diff/LICENSE" tofile="${basedir}/build/phar/sebastian-diff/LICENSE"/>
   <copy todir="${basedir}/build/phar/sebastian-diff">
    <fileset dir="${basedir}/vendor/sebastian/diff/src">
     <include name="**/*.php" />
@@ -268,12 +275,14 @@
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/sebastian/environment/LICENSE" tofile="${basedir}/build/phar/sebastian-environment/LICENSE"/>
   <copy todir="${basedir}/build/phar/sebastian-environment">
    <fileset dir="${basedir}/vendor/sebastian/environment/src">
     <include name="**/*.php" />
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/sebastian/exporter/LICENSE" tofile="${basedir}/build/phar/sebastian-exporter/LICENSE"/>
   <copy todir="${basedir}/build/phar/sebastian-exporter">
    <fileset dir="${basedir}/vendor/sebastian/exporter/src">
     <include name="**/*.php" />
@@ -281,6 +290,7 @@
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/sebastian/version/LICENSE" tofile="${basedir}/build/phar/sebastian-version/LICENSE"/>
   <copy todir="${basedir}/build/phar/sebastian-version">
    <fileset dir="${basedir}/vendor/sebastian/version/src">
     <include name="**/*.php" />
@@ -288,6 +298,7 @@
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/symfony/yaml/Symfony/Component/Yaml/LICENSE" tofile="${basedir}/build/phar/symfony/LICENSE"/>
   <copy todir="${basedir}/build/phar/symfony">
    <fileset dir="${basedir}/vendor/symfony">
     <include name="**/*.php" />
