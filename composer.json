@@ -67,9 +67,5 @@
         "branch-alias": {
             "dev-master": "4.4.x-dev"
         }
-    },
-    "include-path": [
-        "",
-        "../../symfony/yaml/"
-    ]
+    }
 }
