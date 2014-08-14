@@ -166,7 +166,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
             $this->markTestSkipped('Only for PHP < 5.4.0');
         }
 
-        $this->setExpectedException('PHPUnit_Framework_Error_Warning');
+        $this->setExpectedException('PHPUnit_Framework_MockObject_RuntimeException');
 
         // Probably, this should be moved to tests/autoload.php
         require_once __DIR__ . '/_fixture/SingletonClass.php';
