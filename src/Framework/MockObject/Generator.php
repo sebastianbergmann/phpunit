@@ -42,9 +42,9 @@
  * @since      File available since Release 1.0.0
  */
 
-use Instantiator\Instantiator;
-use Instantiator\Exception\InvalidArgumentException as InstantiatorInvalidArgumentException;
-use Instantiator\Exception\UnexpectedValueException as InstantiatorUnexpectedValueException;
+use Doctrine\Instantiator\Instantiator;
+use Doctrine\Instantiator\Exception\InvalidArgumentException as InstantiatorInvalidArgumentException;
+use Doctrine\Instantiator\Exception\UnexpectedValueException as InstantiatorUnexpectedValueException;
 
 if (!function_exists('trait_exists')) {
     function trait_exists($traitname, $autoload = true)
