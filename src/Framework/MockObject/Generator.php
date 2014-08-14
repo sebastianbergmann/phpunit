@@ -43,6 +43,8 @@
  */
 
 use Instantiator\Instantiator;
+use Instantiator\Exception\InvalidArgumentException as InstantiatorInvalidArgumentException;
+use Instantiator\Exception\UnexpectedValueException as InstantiatorUnexpectedValueException;
 
 if (!function_exists('trait_exists')) {
     function trait_exists($traitname, $autoload = true)
@@ -289,8 +291,22 @@ class PHPUnit_Framework_MockObject_Generator
                 $object = $class->newInstanceArgs($arguments);
             }
         } else {
-            $instantiator = new Instantiator;
-            $object       = $instantiator->instantiate($className);
+            try {
+                $instantiator = new Instantiator;
+                $object       = $instantiator->instantiate($className);
+            } catch (InstantiatorUnexpectedValueException $exception) {
+                if($exception->getPrevious()) {
+                    $exception = $exception->getPrevious();
+                }
+
+                throw new PHPUnit_Framework_MockObject_RuntimeException(
+                  $exception->getMessage()
+                );
+            } catch (InstantiatorInvalidArgumentException $exception) {
+                throw new PHPUnit_Framework_MockObject_RuntimeException(
+                  $exception->getMessage()
+                );
+            }
         }
 
         if ($callOriginalMethods) {
