@@ -298,16 +298,9 @@
    </fileset>
   </copy>
 
-  <copy file="${basedir}/vendor/ocramius/lazy-map/LICENSE" tofile="${basedir}/build/phar/ocramius-lazy-map/LICENSE"/>
-  <copy todir="${basedir}/build/phar/ocramius-lazy-map">
-   <fileset dir="${basedir}/vendor/ocramius/lazy-map/src">
-    <include name="**/*.php" />
-   </fileset>
-  </copy>
-
-  <copy file="${basedir}/vendor/ocramius/instantiator/LICENSE" tofile="${basedir}/build/phar/instantiator/LICENSE"/>
-  <copy todir="${basedir}/build/phar/ocramius-instantiator">
-   <fileset dir="${basedir}/vendor/ocramius/instantiator/src">
+  <copy file="${basedir}/vendor/doctrine/instantiator/LICENSE" tofile="${basedir}/build/phar/doctrine-instantiator/LICENSE"/>
+  <copy todir="${basedir}/build/phar/doctrine-instantiator">
+   <fileset dir="${basedir}/vendor/doctrine/instantiator/src">
     <include name="**/*.php" />
    </fileset>
   </copy>
