@@ -462,6 +462,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     {
         $className = $theClass->getName();
 
+        if(!$theClass->isSubClassOf('PHPUnit_Framework_TestCase') && !$theClass->isSubClassOf('PHPUnit_Framework_TestSuite')) {
+            return self::warning(
+                sprintf('The class "%s" does not inherit from PHPUnit_Framework_TestCase or PHPUnit_Framework_TestSuite. Please fix this.', $className)
+            );
+        }
+
         if (!$theClass->isInstantiable()) {
             return self::warning(
                 sprintf('Cannot instantiate class "%s".', $className)
