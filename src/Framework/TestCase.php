@@ -473,7 +473,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param mixed   $exceptionName
      * @param string  $exceptionMessageRegExp
      * @param integer $exceptionCode
-     * @since  Method available since Release 4.0.2
+     * @since Method available since Release 4.3.0
      */
     public function setExpectedExceptionRegExp($exceptionName, $exceptionMessageRegExp = '', $exceptionCode = null)
     {
@@ -1104,6 +1104,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @return boolean
+     * @since  Method available since Release 4.3.0
      */
     public function isInIsolation()
     {

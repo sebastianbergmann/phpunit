@@ -149,6 +149,7 @@ class PHPUnit_Framework_TestFailure
      * Returns the name of the failing test (including data set, if any).
      *
      * @return string
+     * @since  Method available since Release 4.3.0
      */
     public function getTestName()
     {
