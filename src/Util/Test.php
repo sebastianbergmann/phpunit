@@ -250,7 +250,7 @@ class PHPUnit_Util_Test
      * @param  string $className
      * @param  string $methodName
      * @return array
-     * @since  Method available since Release 4.2.0
+     * @since  Method available since Release 4.3.0
      */
     public static function getMissingRequirements($className, $methodName)
     {

@@ -921,10 +921,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * @param string $class
-     * @param string $methodName
-     * @param string $message
+     * @param  string $class
+     * @param  string $methodName
+     * @param  string $message
      * @return PHPUnit_Framework_SkippedTestCase
+     * @since  Method available since Release 4.3.0
      */
     protected static function skipTest($class, $methodName, $message)
     {
@@ -932,10 +933,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
-     * @param string $class
-     * @param string $methodName
-     * @param string $message
+     * @param  string $class
+     * @param  string $methodName
+     * @param  string $message
      * @return PHPUnit_Framework_IncompleteTestCase
+     * @since  Method available since Release 4.3.0
      */
     protected static function incompleteTest($class, $methodName, $message)
     {
