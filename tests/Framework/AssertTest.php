@@ -54,6 +54,10 @@
  * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
+
+class TestingException extends Exception { }
+class ChildTestingException extends TestingException { }
+
 class Framework_AssertTest extends PHPUnit_Framework_TestCase
 {
     private $filesDirectory;
@@ -4234,6 +4238,143 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $o->a = 1;
 
         $this->assertAttributeNotInternalType('string', 'a', $o);
+    }
+
+    public function testAssertException()
+    {
+        $this->assertException('TestingException', function() {
+            throw new TestingException;
+        });
+
+        $this->assertException(array('class' => 'TestingException'), function(){
+            throw new TestingException;
+        });
+
+        $this->assertException('TestingException', function() {
+            throw new ChildTestingException;
+        });
+
+        try {
+            $this->assertException('TestingException', function() {
+                throw new Exception;
+            });
+        }
+        catch(PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertException
+     */
+    public function testAssertExceptionMessage()
+    {
+        $match = array('msg' => '/green$/');
+        $this->assertException($match, function() {
+            throw new Exception('This assertion is green');
+        });
+
+        try {
+            $this->assertException($match, function() {
+                throw new Exception('This assertion is red');
+            });
+        }
+        catch(PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertException
+     */
+    public function testAssertExceptionCode()
+    {
+        $match = array('code' => 358);
+        $this->assertException($match, function() {
+            throw new Exception('Message', 358);
+        });
+
+        try {
+            $this->assertException($match, function() {
+                throw new Exception('Message', 1);
+            });
+        }
+        catch(PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertException
+     */
+    public function testAssertExceptionMultiMatcher()
+    {
+        $code  = 358;
+        $msg   = '/green$/';
+        $class = 'TestingException';
+
+        $matches = array(
+            array('msg' => $msg, 'code' => $code),
+            array('class' => $class, 'msg' => $msg),
+            array('class' => $class, 'code' => $code),
+            array('class' => $class, 'msg' => $msg, 'code' => $code),
+        );
+        foreach($matches as $match) {
+            $this->assertException($match, function() {
+                throw new TestingException('This assertion is green', 358);
+            });
+        }
+
+        $msg = 'Assertion green';
+        $inv_msg = 'Red'; $inv_code = 0; $inv_class = 'Exception';
+        $invalid = array(
+            array(
+                array('msg' => $inv_msg, 'code' => $code),
+                array('msg' => $msg, 'code' => $inv_code),
+                array('msg' => $inv_msg, 'code' => $inv_code),
+            ),
+            array(
+                array('class' => $inv_class, 'msg' => $msg),
+                array('class' => $class, 'msg' => $inv_msg),
+                array('class' => $inv_class, 'msg' => $inv_msg),
+            ),
+            array(
+                array('class' => $inv_class, 'code' => $code),
+                array('class' => $class, 'code' => $inv_code),
+                array('class' => $inv_class, 'code' => $inv_code),
+            ),
+            array(
+                array('class' => $inv_class, 'code' => $code, 'msg' => $msg),
+                array('class' => $class, 'code' => $inv_code, 'msg' => $msg),
+                array('class' => $class, 'code' => $code, 'msg' => $inv_msg),
+            )
+        );
+        foreach($matches as $i => $match) {
+            foreach($invalid[$i] as $inv) {
+                try {
+                    $this->assertException($match, function() use($inv) {
+                        $cls = @$inv['class'] ?: 'TestingException';
+                        $msg = @$inv['msg']   ?: 'Message';
+                        $cod = @$inv['code']  ?: 1;
+
+                        throw new $cls($msg, $cod);
+                    });
+                }
+                catch(PHPUnit_Framework_AssertionFailedError $e) {
+                    continue;
+                }
+
+                $err = "assertException should fail with matcher:\n"
+                     . var_export($match, true)
+                     . "\nAnd data:\n"
+                     . var_export($inv, true);
+
+                $this->fail($err);
+            }
+        }
     }
 
     public static function validInvalidJsonDataprovider()

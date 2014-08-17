@@ -2251,6 +2251,73 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Match an Exception by class, code and/or message regexp.
+     *
+     * In the simplest form, the expected exception class is passed as a
+     * string.
+     * Otherwise, $target can be an associative array with one or more of
+     * the following keys:
+     * - class: A string representing the exception class
+     * - code:  The exception's code expected
+     * - msg:   A regexp for matching the exception message
+     *
+     * Simple form, match by class name
+     * <code>
+     * $this->assertException('MyException', function() {
+     *      throw new MyException;
+     * });
+     * </code>
+     *
+     * Equivalent to:
+     * <code>
+     * $match = array('class' => 'MyException');
+     * $this->assertException($match, function() {
+     *      throw new MyException;
+     * });
+     * </code>
+     *
+     * Asserting by code and message:
+     * <code>
+     * $match = array('code' => 255, 'msg' => '/^Hello/');
+     * $this->assertException($match, function() {
+     *      throw new MyException('Hello World', 255);
+     * });
+     * </code>
+     *
+     * @param mixed    $match    Can be a string or an associative array.
+     * @param callback $snippet  Function that should raise the exception.
+     * @param string   $message
+     * @author Pelligra Salvatore <pelligra.s@gmail.com>
+     */
+    public static function assertException($match, $snippet, $message = '')
+    {
+        $ex = null;
+        try {
+            $snippet();
+        }
+        catch(Exception $ex) {
+        }
+
+        $c = array();
+        if (is_string($match)) {
+            $match = array('class' => $match);
+        }
+        if (isset($match['class'])) {
+            $class = $match['class'];
+            $c[] = new PHPUnit_Framework_Constraint_Exception($class);
+        }
+        if (isset($match['code'])) {
+            $c[] = new PHPUnit_Framework_Constraint_ExceptionCode($match['code']);
+        }
+        if (isset($match['msg'])) {
+            $c[] = new PHPUnit_Framework_Constraint_ExceptionMessageRegExp($match['msg']);
+        }
+
+        foreach($c as $constraint)
+            self::assertThat($ex, $constraint, $message);
+    }
+
+    /**
      * Asserts that a string is a valid JSON string.
      *
      * @param string $actualJson
