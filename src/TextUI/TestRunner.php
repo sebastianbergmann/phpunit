@@ -677,9 +677,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['disallowTestOutput'] = $phpunitConfiguration['disallowTestOutput'];
             }
 
-            if (isset($phpunitConfiguration['disallowTestOutput']) &&
-                !isset($arguments['disallowTestOutput'])) {
-                $arguments['disallowTestOutput'] = $phpunitConfiguration['disallowTestOutput'];
+            if (isset($phpunitConfiguration['enforceTimeLimit']) &&
+                !isset($arguments['enforceTimeLimit'])) {
+                $arguments['enforceTimeLimit'] = $phpunitConfiguration['enforceTimeLimit'];
             }
 
             if (isset($phpunitConfiguration['disallowTodoAnnotatedTests']) &&
