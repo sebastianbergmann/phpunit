@@ -80,9 +80,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     {
         try {
             $this->ba->withdrawMoney(1);
-        }
-
-        catch (BankAccountException $e) {
+        } catch (BankAccountException $e) {
             $this->assertEquals(0, $this->ba->getBalance());
 
             return;
@@ -100,9 +98,7 @@ class BankAccountTest extends PHPUnit_Framework_TestCase
     {
         try {
             $this->ba->depositMoney(-1);
-        }
-
-        catch (BankAccountException $e) {
+        } catch (BankAccountException $e) {
             $this->assertEquals(0, $this->ba->getBalance());
 
             return;

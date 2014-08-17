@@ -333,7 +333,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                  $result->allHarmless() &&
                  $result->allCompletelyImplemented() &&
                  $result->noneSkipped()) {
-
             $this->writeWithColor(
                 'fg-black, bg-green',
                 sprintf(

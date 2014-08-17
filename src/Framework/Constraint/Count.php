@@ -92,9 +92,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
     {
         if ($other instanceof Countable || is_array($other)) {
             return count($other);
-        }
-
-        elseif ($other instanceof Traversable) {
+        } elseif ($other instanceof Traversable) {
             if ($other instanceof IteratorAggregate) {
                 $iterator = $other->getIterator();
             } else {

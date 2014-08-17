@@ -491,9 +491,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             // TestCase() or TestCase($name)
             if (count($parameters) < 2) {
                 $test = new $className;
-            }
-
-            // TestCase($name, $data)
+            } // TestCase($name, $data)
             else {
                 try {
                     $data = PHPUnit_Util_Test::getProvidedData(
@@ -515,8 +513,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         }
 
                         $data = self::warning($message);
-                    }
-                    elseif ($e instanceof PHPUnit_Framework_SkippedTestError) {
+                    } elseif ($e instanceof PHPUnit_Framework_SkippedTestError) {
                         $message = sprintf(
                             'Test for %s::%s skipped by data provider',
                             $className,
@@ -530,8 +527,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         }
 
                         $data = self::skipTest($className, $name, $message);
-                    }
-                    elseif ($e instanceof PHPUnit_Framework_IncompleteTestError) {
+                    } elseif ($e instanceof PHPUnit_Framework_IncompleteTestError) {
                         $message = sprintf(
                             'Test for %s::%s marked incomplete by data provider',
                             $className,

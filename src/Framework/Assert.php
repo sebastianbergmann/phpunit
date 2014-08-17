@@ -2021,9 +2021,7 @@ abstract class PHPUnit_Framework_Assert
         if (is_numeric($count)) {
             $counted = $tags ? count($tags) : 0;
             self::assertEquals($count, $counted, $message);
-        }
-
-        // assert any elements exist if true, assert no elements exist if false
+        } // assert any elements exist if true, assert no elements exist if false
         elseif (is_bool($count)) {
             $any = count($tags) > 0 && $tags[0] instanceof DOMNode;
 
@@ -2032,9 +2030,7 @@ abstract class PHPUnit_Framework_Assert
             } else {
                 self::assertFalse($any, $message);
             }
-        }
-
-        // check for range number of elements
+        } // check for range number of elements
         elseif (is_array($count) &&
                 (isset($count['>']) || isset($count['<']) ||
                 isset($count['>=']) || isset($count['<=']))) {

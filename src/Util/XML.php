@@ -412,14 +412,10 @@ class PHPUnit_Util_XML
                     // id matched
                     if (substr($match, 0, 1) == '#') {
                         $tag['id'] = substr($match, 1);
-                    }
-
-                    // class matched
+                    } // class matched
                     elseif (substr($match, 0, 1) == '.') {
                         $classes[] = substr($match, 1);
-                    }
-
-                    // attribute matched
+                    } // attribute matched
                     elseif (substr($match, 0, 1) == '[' &&
                              substr($match, -1, 1) == ']') {
                         $attribute = substr($match, 1, strlen($match) - 2);
@@ -429,15 +425,11 @@ class PHPUnit_Util_XML
                         if (strstr($attribute, '~=')) {
                             list($key, $value) = explode('~=', $attribute);
                             $value             = "regexp:/.*\b$value\b.*/";
-                        }
-
-                        // match substring
+                        } // match substring
                         elseif (strstr($attribute, '*=')) {
                             list($key, $value) = explode('*=', $attribute);
                             $value             = "regexp:/.*$value.*/";
-                        }
-
-                        // exact match
+                        } // exact match
                         else {
                             list($key, $value) = explode('=', $attribute);
                         }
@@ -555,9 +547,7 @@ class PHPUnit_Util_XML
             if (empty($nodes)) {
                 return false;
             }
-        }
-
-        // no tag selected, get them all
+        } // no tag selected, get them all
         else {
             $tags = array(
               'a', 'abbr', 'acronym', 'address', 'area', 'b', 'base', 'bdo',
@@ -609,9 +599,7 @@ class PHPUnit_Util_XML
                         if (!preg_match($matches[1], $node->getAttribute($name))) {
                             $invalid = true;
                         }
-                    }
-
-                    // class can match only a part
+                    } // class can match only a part
                     elseif ($name == 'class') {
                         // split to individual classes
                         $findClasses = explode(
@@ -629,9 +617,7 @@ class PHPUnit_Util_XML
                                 $invalid = true;
                             }
                         }
-                    }
-
-                    // match by exact string
+                    } // match by exact string
                     else {
                         if ($node->getAttribute($name) != $value) {
                             $invalid = true;
@@ -663,16 +649,12 @@ class PHPUnit_Util_XML
                     if (!preg_match($matches[1], self::getNodeText($node))) {
                         $invalid = true;
                     }
-                }
-
-                // match empty string
+                } // match empty string
                 elseif ($options['content'] === '') {
                     if (self::getNodeText($node) !== '') {
                         $invalid = true;
                     }
-                }
-
-                // match by exact string
+                } // match by exact string
                 elseif (strstr(self::getNodeText($node), $options['content']) === false) {
                     $invalid = true;
                 }
@@ -838,25 +820,19 @@ class PHPUnit_Util_XML
                         if (count($children) !== $childOptions['count']) {
                             break;
                         }
-                    }
-
-                    // range count of children
+                    } // range count of children
                     elseif ($childOptions['less_than']    !== null &&
                             $childOptions['greater_than'] !== null) {
                         if (count($children) >= $childOptions['less_than'] ||
                             count($children) <= $childOptions['greater_than']) {
                             break;
                         }
-                    }
-
-                    // less than a given count
+                    } // less than a given count
                     elseif ($childOptions['less_than'] !== null) {
                         if (count($children) >= $childOptions['less_than']) {
                             break;
                         }
-                    }
-
-                    // more than a given count
+                    } // more than a given count
                     elseif ($childOptions['greater_than'] !== null) {
                         if (count($children) <= $childOptions['greater_than']) {
                             break;
