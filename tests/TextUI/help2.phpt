@@ -69,7 +69,7 @@ Test Execution Options:
   --repeat <times>          Runs the test(s) repeatedly.
   --tap                     Report test execution progress in TAP format.
   --testdox                 Report test execution progress in TestDox format.
-  --printer <printer>       TestSuiteListener implementation to use.
+  --printer <printer>       TestListener implementation to use.
 
 Configuration Options:
 
