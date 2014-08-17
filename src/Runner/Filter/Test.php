@@ -103,9 +103,7 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
                         $matches[2]
                     );
                 }
-            }
-
-            // Handles:
+            } // Handles:
             //  * testDetermineJsonError@JSON_ERROR_NONE
             //  * testDetermineJsonError@JSON.*
             elseif (preg_match('/^(.*?)@(.+)$/', $filter, $matches)) {

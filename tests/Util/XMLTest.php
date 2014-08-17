@@ -107,9 +107,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         try {
             $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
             $this->fail();
-        }
-
-        catch (PHPUnit_Framework_Exception $e) {
+        } catch (PHPUnit_Framework_Exception $e) {
             $this->assertEquals('Unknown key(s): testD', $e->getMessage());
         }
     }
@@ -122,9 +120,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         try {
             $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
             $this->fail();
-        }
-
-        catch (PHPUnit_Framework_Exception $e) {
+        } catch (PHPUnit_Framework_Exception $e) {
             $this->assertEquals('Unknown key(s): testD, testE', $e->getMessage());
         }
     }
@@ -345,9 +341,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
         try {
             $dom->loadXML($xml);
-        }
-
-        catch (Exception $e) {
+        } catch (Exception $e) {
         }
 
         $this->assertNull($e, sprintf(

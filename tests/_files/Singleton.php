@@ -7,7 +7,7 @@ class Singleton
     {
     }
 
-    private final function __clone()
+    final private function __clone()
     {
     }
 

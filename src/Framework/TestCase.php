@@ -500,7 +500,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     $expectedException['code']
                 );
 
-                if(!empty($expectedException['message_regex'])) {
+                if (!empty($expectedException['message_regex'])) {
                     $this->setExpectedExceptionRegExp(
                         $expectedException['class'],
                         $expectedException['message_regex'],
@@ -641,8 +641,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $constants     = '';
                 if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
                     $globals     = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
-                }
-                else {
+                } else {
                     $globals     = '';
                 }
                 $includedFiles = '';
