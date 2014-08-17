@@ -19,7 +19,7 @@ PHPUnit %s by Sebastian Bergmann.
   <testsuite name="BankAccountTest" file="%sBankAccountTest.php" tests="3" assertions="3" failures="0" errors="0" time="%f">
     <testcase name="testBalanceIsInitiallyZero" class="BankAccountTest" file="%sBankAccountTest.php" line="69" assertions="1" time="%f"/>
     <testcase name="testBalanceCannotBecomeNegative" class="BankAccountTest" file="%sBankAccountTest.php" line="79" assertions="1" time="%f"/>
-    <testcase name="testBalanceCannotBecomeNegative2" class="BankAccountTest" file="%sBankAccountTest.php" line="99" assertions="1" time="%f"/>
+    <testcase name="testBalanceCannotBecomeNegative2" class="BankAccountTest" file="%sBankAccountTest.php" line="97" assertions="1" time="%f"/>
   </testsuite>
 </testsuites>
 

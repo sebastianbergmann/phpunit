@@ -289,23 +289,15 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             $expected = array(
               TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines
             );
-        }
-
-        elseif ($test === 'CoverageNoneTest') {
+        } elseif ($test === 'CoverageNoneTest') {
             $expected = array();
-        }
-
-        elseif ($test === 'CoverageNothingTest') {
+        } elseif ($test === 'CoverageNothingTest') {
             $expected = false;
-        }
-
-        elseif ($test === 'CoverageFunctionTest') {
+        } elseif ($test === 'CoverageFunctionTest') {
             $expected = array(
               TEST_FILES_PATH . 'CoveredFunction.php' => $lines
             );
-        }
-
-        else {
+        } else {
             $expected = array(TEST_FILES_PATH . 'CoveredClass.php' => $lines);
         }
 

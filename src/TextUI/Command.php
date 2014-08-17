@@ -565,7 +565,6 @@ class PHPUnit_TextUI_Command
         $this->handleCustomTestSuite();
 
         if (!isset($this->arguments['test'])) {
-
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
             }

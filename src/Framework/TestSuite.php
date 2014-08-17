@@ -491,9 +491,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             // TestCase() or TestCase($name)
             if (count($parameters) < 2) {
                 $test = new $className;
-            }
-
-            // TestCase($name, $data)
+            } // TestCase($name, $data)
             else {
                 try {
                     $data = PHPUnit_Util_Test::getProvidedData(

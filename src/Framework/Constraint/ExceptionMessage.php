@@ -87,9 +87,7 @@ class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Co
         $match = PHPUnit_Util_Regex::pregMatchSafe($this->expectedMessage, $other->getMessage());
         if (false !== $match) {
             $this->regexBased = true;
-        }
-
-        else {
+        } else {
             $match = strpos($other->getMessage(), $this->expectedMessage) !== false;
         }
 
