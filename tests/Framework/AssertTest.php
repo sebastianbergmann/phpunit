@@ -224,13 +224,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertArraySubset(array('a' => 'bad value'), $array);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
         }
-        catch (PHPUnit_Framework_AssertionFailedError $e) {}
 
         try {
             $this->assertArraySubset(array('d' => array('a2' => array('bad index' => 'item b3'))), $array);
-        }
-        catch (PHPUnit_Framework_AssertionFailedError $e) {
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
 
@@ -260,8 +259,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         
         try {
             $this->assertArraySubset(array('path' => array('to' => array('the' => array('cake' => 'is not a lie')))), $array);
-        }
-        catch (PHPUnit_Framework_AssertionFailedError $e) {
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
 
@@ -296,8 +294,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertArraySubset(array('a' => new \stdClass), $array, true);
-        }
-        catch (PHPUnit_Framework_AssertionFailedError $e) {
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
 

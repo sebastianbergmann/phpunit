@@ -92,7 +92,7 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
     {
         $patched = array_replace_recursive($other, $this->subset);
 
-        if($this->strict) {
+        if ($this->strict) {
             return $other === $patched;
         } else {
             return $other == $patched;

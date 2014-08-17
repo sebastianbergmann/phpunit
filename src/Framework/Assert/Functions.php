@@ -115,8 +115,8 @@ function assertArrayHasKey($key, $array, $message = '')
 function assertArraySubset($subset, $array, $strict = false, $message = '')
 {
     return call_user_func_array(
-      'PHPUnit_Framework_Assert::assertArraySubset',
-      func_get_args()
+        'PHPUnit_Framework_Assert::assertArraySubset',
+        func_get_args()
     );
 }
 
