@@ -876,11 +876,11 @@ class PHPUnit_TextUI_Command
             unlink($caFile);
             unlink($tempFilename);
             print " done\n\n" . $e->getMessage() . "\n";
-            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+            exit(2);
         }
 
         print " done\n";
-        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+        exit(0);
     }
 
     /**
