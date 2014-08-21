@@ -808,6 +808,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         } catch (Exception $_e) {
             if (!isset($e)) {
                 $e = $_e;
+            } else {
+                $this->result->addError($this, $_e, 0);
             }
         }
 
