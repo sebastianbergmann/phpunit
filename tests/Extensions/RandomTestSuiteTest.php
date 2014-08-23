@@ -45,11 +45,6 @@
  */
 
 /**
- * Constraint that asserts that the array it is evaluated for has a specified subset.
- *
- * Uses array_replace_recursive() to check if a key value subset is part of the
- * subject array.
- *
  * @package    PHPUnit
  * @subpackage Extensions
  * @author     Jose Armesto <jose@armesto.net>
