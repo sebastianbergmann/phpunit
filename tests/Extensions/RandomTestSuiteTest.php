@@ -60,46 +60,50 @@ class Extensions_RandomTestSuiteTest extends PHPUnit_Framework_TestCase
 
     public function testItRandomizesOrderOfTestSuitesInsideMainTestSuite()
     {
+        $suite      = $this->givenTestSuiteWithFourTests();
         $randomizer = new PHPUnit_Extensions_RandomTestSuite;
-        $suite      = $this->givenTestSuiteWithThreeTestsNamed('suite1', 'suite2', 'suite3');
-
         $randomizer->randomizeTestSuite($suite, self::CONSTANT_SEED);
 
-        $tests = $suite->tests();
-        $this->assertEquals('suite3', $tests[0]->getName());
-        $this->assertEquals('suite1', $tests[1]->getName());
-        $this->assertEquals('suite2', $tests[2]->getName());
+        $this->assertOrderOfTestsIsNotTheSameAsBefore($suite->tests());
     }
 
     public function testItRandomizesOrderOfTestCasesInsideTestSuite()
     {
-        $suite = new PHPUnit_Framework_TestSuite('suite1');
+        $suite = new PHPUnit_Framework_TestSuite();
         $suite->addTest(new Success('test1'));
         $suite->addTest(new Success('test2'));
         $suite->addTest(new Success('test3'));
+        $suite->addTest(new Success('test4'));
         $randomizer = new PHPUnit_Extensions_RandomTestSuite;
 
         $randomizer->randomizeTestSuite($suite, self::CONSTANT_SEED);
 
-        $tests = $suite->tests();
-        $this->assertEquals('test2', $tests[0]->getName());
-        $this->assertEquals('test1', $tests[1]->getName());
-        $this->assertEquals('test3', $tests[2]->getName());
+        $this->assertOrderOfTestsIsNotTheSameAsBefore($suite->tests());
     }
 
-    private function givenTestSuiteWithThreeTestsNamed($test1, $test2, $test3)
+    private function givenTestSuiteWithFourTests()
     {
-        $suite1 = new PHPUnit_Framework_TestSuite('suite1');
+        $suite1 = new PHPUnit_Framework_TestSuite('test1');
         $suite1->addTest(new Success);
-        $suite2 = new PHPUnit_Framework_TestSuite('suite2');
+        $suite2 = new PHPUnit_Framework_TestSuite('test2');
         $suite2->addTest(new Success);
-        $suite3 = new PHPUnit_Framework_TestSuite('suite3');
+        $suite3 = new PHPUnit_Framework_TestSuite('test3');
         $suite3->addTest(new Success);
+        $suite4 = new PHPUnit_Framework_TestSuite('test4');
+        $suite4->addTest(new Success);
         $main_suite = new PHPUnit_Framework_TestSuite();
         $main_suite->addTest($suite1);
         $main_suite->addTest($suite2);
         $main_suite->addTest($suite3);
+        $main_suite->addTest($suite4);
 
         return $main_suite;
+    }
+
+    private function assertOrderOfTestsIsNotTheSameAsBefore(array $tests)
+    {
+        $tests_names    = array($tests[0]->getName(), $tests[1]->getName(), $tests[2]->getName(), $tests[3]->getName());
+        $default_order  = array('test1', 'test2', 'test3', 'test4');
+        $this->assertNotEquals($default_order, $tests_names, 'The order must be different');
     }
 }
