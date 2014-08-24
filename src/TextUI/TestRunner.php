@@ -212,6 +212,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite->addTest($test);
         }
 
+        if (isset($arguments['order']))
+        {
+            $this->addPrinter($arguments);
+            $randomizer = new PHPUnit_Extensions_RandomTestSuite();
+            $randomizer->randomizeTestSuite($suite, $arguments['seed']);
+        }
+
         $result = $this->createTestResult();
 
         if (!$arguments['convertErrorsToExceptions']) {
@@ -573,6 +580,27 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         return $this->loader;
+    }
+
+    /**
+     * Sets printer to show the seed used to randomize the TestSuite.
+     *
+     * @param array $arguments Arguments to use.
+     */
+    private function addPrinter($arguments)
+    {
+        $this->printer = new PHPUnit_Extensions_RandomTestSuitePrinter(
+            NULL,
+            $arguments['verbose'],
+            $arguments['colors'],
+            $arguments['debug'],
+            $arguments['seed']
+        );
+
+        if (isset($arguments['printer']) &&
+            $arguments['printer'] instanceof \PHPUnit_Util_Printer) {
+            $this->printer = $arguments['printer'];
+        }
     }
 
     /**

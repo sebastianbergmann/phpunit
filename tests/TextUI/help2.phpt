@@ -67,6 +67,7 @@ Test Execution Options:
 
   --loader <loader>         TestSuiteLoader implementation to use.
   --repeat <times>          Runs the test(s) repeatedly.
+  --order <rand[:seed]>     Randomize the order of the tests. Optionally accepts seed.
   --tap                     Report test execution progress in TAP format.
   --testdox                 Report test execution progress in TestDox format.
   --printer <printer>       TestListener implementation to use.

@@ -98,6 +98,7 @@ class PHPUnit_TextUI_Command
       'log-tap=' => null,
       'process-isolation' => null,
       'repeat=' => null,
+      'order=' => null,
       'stderr' => null,
       'stop-on-error' => null,
       'stop-on-failure' => null,
@@ -426,6 +427,11 @@ class PHPUnit_TextUI_Command
 
                 case '--repeat': {
                     $this->arguments['repeat'] = (int) $option[1];
+                    }
+                break;
+
+                case '--order': {
+                    $this->handleOrder($option[1]);
                     }
                 break;
 
@@ -887,6 +893,39 @@ class PHPUnit_TextUI_Command
     }
 
     /**
+     * Only called when 'order' argument is used.
+     *
+     * @param  string $order_parameter The order argument passed in command line.
+     */
+    protected function handleOrder($order_parameter)
+    {
+        list($order, $seed)         = $this->getOrderAndSeed($order_parameter);
+        $this->arguments['order']   = $order;
+        $this->arguments['seed']    = $seed;
+    }
+
+    /**
+     * Parses arguments to know if random order is desired, and if seed was chosen.
+     *
+     * @param  string $order String from command line parameter.
+     * @return array
+     */
+    private function getOrderAndSeed($order)
+    {
+        @list($order, $seed) = explode(':', $order, 2);
+
+        if (empty($seed)) {
+            $seed = rand(0, 9999);
+        }
+
+        if (!is_numeric($seed)) {
+            $this->showError("Could not use '$seed' as seed.");
+        }
+
+        return array($order, $seed);
+    }
+
+    /**
      * Show the help message.
      */
     protected function showHelp()
@@ -950,6 +989,7 @@ Test Execution Options:
 
   --loader <loader>         TestSuiteLoader implementation to use.
   --repeat <times>          Runs the test(s) repeatedly.
+  --order <rand[:seed]>     Randomize the order of the tests. Optionally accepts seed.
   --tap                     Report test execution progress in TAP format.
   --testdox                 Report test execution progress in TestDox format.
   --printer <printer>       TestListener implementation to use.
