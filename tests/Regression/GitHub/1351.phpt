@@ -1,5 +1,11 @@
 --TEST--
 GH-1351: Test result does not serialize test class in process isolation
+--SKIPIF--
+<?php
+if (!extension_loaded('pdo') || !in_array('sqlite', PDO::getAvailableDrivers())) {
+    print 'skip: PDO_SQLITE is required';
+}
+?>
 --FILE--
 <?php
 
