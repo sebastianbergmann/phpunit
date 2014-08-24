@@ -5,7 +5,7 @@ phpunit --log-json php://stdout BankAccountTest ../_files/BankAccountTest.php
 if (!defined('JSON_PRETTY_PRINT')) {
     print "skip: JSON_PRETTY_PRINT is required";
 } else if (json_encode(array(), JSON_PRETTY_PRINT) != '[]') {
-    print "skip: Does not have PHP #66021 (Blank line inside empty JSON array/object";
+    print "skip: Does not have PHP #66021 (Blank line inside empty JSON array/object)";
 }
 ?>
 --FILE--

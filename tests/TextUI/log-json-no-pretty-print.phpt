@@ -2,7 +2,9 @@
 phpunit --log-json php://stdout BankAccountTest ../_files/BankAccountTest.php
 --SKIPIF--
 <?php
-if (defined('JSON_PRETTY_PRINT')) print 'skip: JSON_PRETTY_PRINT is defined';
+if (defined('JSON_PRETTY_PRINT')) {
+    print 'skip: PHP without JSON_PRETTY_PRINT is required';
+}
 ?>
 --FILE--
 <?php
