@@ -200,9 +200,8 @@ class PHPUnit_Util_GlobalState
                 continue;
             }
 
-            // Skip invalid protocols (like custom stream wrappers)
-            // This should not interfere with Windows drives
-            if (preg_match('/^(?!file|phar)([a-z][a-z0-9.+-]+):/i', $file, $matches)) {
+            // Skip virtual file system protocols
+            if (preg_match('/^(php)?vfs([a-z0-9]+)?:/i', $file, $matches)) {
                 continue;
             }
 
