@@ -184,8 +184,12 @@ class PHPUnit_Util_GlobalState
 
     public static function getIncludedFilesAsString()
     {
+        return static::processIncludedFilesAsString(get_included_files());
+    }
+
+    public static function processIncludedFilesAsString(array $files)
+    {
         $blacklist = new PHPUnit_Util_Blacklist;
-        $files     = get_included_files();
         $prefix    = false;
         $result    = '';
 
@@ -197,6 +201,11 @@ class PHPUnit_Util_GlobalState
             $file = $files[$i];
 
             if ($prefix !== false && strpos($file, $prefix) === 0) {
+                continue;
+            }
+
+            // Skip virtual file system protocols
+            if (preg_match('/^(vfs|phpvfs[a-z0-9]+):/', $file)) {
                 continue;
             }
 
