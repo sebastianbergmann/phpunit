@@ -106,7 +106,7 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
             // moves pointer
             if ($key !== null) {
                 $iterator->rewind();
-                while ($key !== $iterator->key()) {
+                while ($iterator->valid() && $key !== $iterator->key()) {
                     $iterator->next();
                 }
             }
