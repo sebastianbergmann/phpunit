@@ -26,7 +26,7 @@
         "ocramius/instantiator": "~1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.2.*@dev"
+        "phpunit/phpunit": "~4.2"
     },
     "suggest": {
         "ext-soap": "*"
