@@ -3528,6 +3528,22 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_Assert::assertCount
      */
+    public function testAssertCountTraversable()
+    {
+        $this->assertCount(2, new ArrayIterator(array(1,2)));
+
+        try {
+            $this->assertCount(2, new ArrayIterator(array(1,2,3)));
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertCount
+     */
     public function testAssertCountThrowsExceptionIfExpectedCountIsNoInteger()
     {
         try {
