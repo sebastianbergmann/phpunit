@@ -247,9 +247,8 @@
 
   <copy file="${basedir}/vendor/phpunit/php-token-stream/LICENSE" tofile="${basedir}/build/phar/php-token-stream/LICENSE"/>
   <copy todir="${basedir}/build/phar/php-token-stream">
-   <fileset dir="${basedir}/vendor/phpunit/php-token-stream/PHP">
+   <fileset dir="${basedir}/vendor/phpunit/php-token-stream/src">
     <include name="**/*.php" />
-    <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
 
