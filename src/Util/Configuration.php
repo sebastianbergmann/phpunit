@@ -589,7 +589,7 @@ class PHPUnit_Util_Configuration
          */
         if ($root->hasAttribute('stderr')) {
             $result['stderr'] = $this->getBoolean(
-                (string)$root->getAttribute('stderr'), false
+                (string) $root->getAttribute('stderr'), false
             );
         }
 

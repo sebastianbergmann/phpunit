@@ -76,7 +76,6 @@ class Framework_Constraint_JsonMatchesTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('matches JSON string "' . $jsonValue . '"', $constraint->toString());
     }
 
-
     public static function evaluateDataprovider()
     {
         return array(

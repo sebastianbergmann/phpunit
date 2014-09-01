@@ -870,8 +870,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array('0', 0),
             array(2.3, '2.3'),
             array('2.3', 2.3),
-            array((string)(1/3), 1 - 2/3),
-            array(1/3, (string)(1 - 2/3)),
+            array((string) (1/3), 1 - 2/3),
+            array(1/3, (string) (1 - 2/3)),
             array('string representation', new ClassWithToString),
             array(new ClassWithToString, 'string representation'),
         );
