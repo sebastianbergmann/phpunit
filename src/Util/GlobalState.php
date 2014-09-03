@@ -59,16 +59,6 @@ class PHPUnit_Util_GlobalState
     /**
      * @var array
      */
-    protected static $globals = array();
-
-    /**
-     * @var array
-     */
-    protected static $staticAttributes = array();
-
-    /**
-     * @var array
-     */
     protected static $superGlobalArrays = array(
       '_ENV',
       '_POST',
@@ -90,97 +80,6 @@ class PHPUnit_Util_GlobalState
       'HTTP_SERVER_VARS',
       'HTTP_POST_FILES'
     );
-
-    public static function backupGlobals(array $blacklist)
-    {
-        self::$globals     = array();
-        $superGlobalArrays = self::getSuperGlobalArrays();
-
-        foreach ($superGlobalArrays as $superGlobalArray) {
-            if (!in_array($superGlobalArray, $blacklist)) {
-                self::backupSuperGlobalArray($superGlobalArray);
-            }
-        }
-
-        foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' &&
-                !in_array($key, $superGlobalArrays) &&
-                !in_array($key, $blacklist) &&
-                !$GLOBALS[$key] instanceof Closure) {
-                self::$globals['GLOBALS'][$key] = serialize($GLOBALS[$key]);
-            }
-        }
-    }
-
-    public static function restoreGlobals(array $blacklist)
-    {
-        if (ini_get('register_long_arrays') == '1') {
-            $superGlobalArrays = array_merge(
-                self::$superGlobalArrays, self::$superGlobalArraysLong
-            );
-        } else {
-            $superGlobalArrays = self::$superGlobalArrays;
-        }
-
-        foreach ($superGlobalArrays as $superGlobalArray) {
-            if (!in_array($superGlobalArray, $blacklist)) {
-                self::restoreSuperGlobalArray($superGlobalArray);
-            }
-        }
-
-        foreach (array_keys($GLOBALS) as $key) {
-            if ($key != 'GLOBALS' &&
-                !in_array($key, $superGlobalArrays) &&
-                !in_array($key, $blacklist)) {
-                if (isset(self::$globals['GLOBALS'][$key])) {
-                    $GLOBALS[$key] = unserialize(
-                        self::$globals['GLOBALS'][$key]
-                    );
-                } else {
-                    unset($GLOBALS[$key]);
-                }
-            }
-        }
-
-        self::$globals = array();
-    }
-
-    protected static function backupSuperGlobalArray($superGlobalArray)
-    {
-        self::$globals[$superGlobalArray] = array();
-
-        if (isset($GLOBALS[$superGlobalArray]) &&
-            is_array($GLOBALS[$superGlobalArray])) {
-            foreach ($GLOBALS[$superGlobalArray] as $key => $value) {
-                self::$globals[$superGlobalArray][$key] = serialize($value);
-            }
-        }
-    }
-
-    protected static function restoreSuperGlobalArray($superGlobalArray)
-    {
-        if (isset($GLOBALS[$superGlobalArray]) &&
-            is_array($GLOBALS[$superGlobalArray]) &&
-            isset(self::$globals[$superGlobalArray])) {
-            $keys = array_keys(
-                array_merge(
-                    $GLOBALS[$superGlobalArray], self::$globals[$superGlobalArray]
-                )
-            );
-
-            foreach ($keys as $key) {
-                if (isset(self::$globals[$superGlobalArray][$key])) {
-                    $GLOBALS[$superGlobalArray][$key] = unserialize(
-                        self::$globals[$superGlobalArray][$key]
-                    );
-                } else {
-                    unset($GLOBALS[$superGlobalArray][$key]);
-                }
-            }
-        }
-
-        self::$globals[$superGlobalArray] = array();
-    }
 
     public static function getIncludedFilesAsString()
     {
@@ -300,71 +199,6 @@ class PHPUnit_Util_GlobalState
         } else {
             return self::$superGlobalArrays;
         }
-    }
-
-    public static function backupStaticAttributes(array $blacklist)
-    {
-        self::$staticAttributes = array();
-        $declaredClasses        = get_declared_classes();
-        $declaredClassesNum     = count($declaredClasses);
-
-        for ($i = $declaredClassesNum - 1; $i >= 0; $i--) {
-            if (strpos($declaredClasses[$i], 'PHPUnit') !== 0 &&
-                strpos($declaredClasses[$i], 'File_Iterator') !== 0 &&
-                strpos($declaredClasses[$i], 'PHP_CodeCoverage') !== 0 &&
-                strpos($declaredClasses[$i], 'PHP_Invoker') !== 0 &&
-                strpos($declaredClasses[$i], 'PHP_Timer') !== 0 &&
-                strpos($declaredClasses[$i], 'PHP_Token_Stream') !== 0 &&
-                strpos($declaredClasses[$i], 'Symfony') !== 0 &&
-                strpos($declaredClasses[$i], 'Text_Template') !== 0 &&
-                strpos($declaredClasses[$i], 'Instantiator') !== 0 &&
-                strpos($declaredClasses[$i], 'LazyMap') !== 0) {
-                $class = new ReflectionClass($declaredClasses[$i]);
-
-                if ($class->isSubclassOf('PHPUnit_Framework_Test')) {
-                    continue;
-                }
-
-                if (!$class->isUserDefined()) {
-                    break;
-                }
-
-                $backup = array();
-
-                foreach ($class->getProperties() as $attribute) {
-                    if ($attribute->isStatic()) {
-                        $name = $attribute->getName();
-
-                        if (!isset($blacklist[$declaredClasses[$i]]) ||
-                           !in_array($name, $blacklist[$declaredClasses[$i]])) {
-                            $attribute->setAccessible(true);
-                            $value = $attribute->getValue();
-
-                            if (!$value instanceof Closure) {
-                                $backup[$name] = serialize($value);
-                            }
-                        }
-                    }
-                }
-
-                if (!empty($backup)) {
-                    self::$staticAttributes[$declaredClasses[$i]] = $backup;
-                }
-            }
-        }
-    }
-
-    public static function restoreStaticAttributes()
-    {
-        foreach (self::$staticAttributes as $className => $staticAttributes) {
-            foreach ($staticAttributes as $name => $value) {
-                $reflector = new ReflectionProperty($className, $name);
-                $reflector->setAccessible(true);
-                $reflector->setValue(unserialize($value));
-            }
-        }
-
-        self::$staticAttributes = array();
     }
 
     protected static function exportVariable($variable)

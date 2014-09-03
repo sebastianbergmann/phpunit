@@ -375,7 +375,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testStaticAttributesBackupPost()
     {
         $this->assertNotSame($GLOBALS['singleton'], Singleton::getInstance());
-        $this->assertSame(123, self::$_testStatic);
+        $this->assertSame(0, self::$_testStatic);
     }
 
     public function testIsInIsolationReturnsFalse()
