@@ -36,13 +36,15 @@
             "src/"
         ]
     },
+    "autoload-dev": {
+        "classmap": [
+            "tests/_fixture/"
+        ]
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "2.2.x-dev"
         }
-    },
-    "include-path": [
-        ""
-    ]
+    }
 }
 
