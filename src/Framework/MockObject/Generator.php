@@ -1059,6 +1059,14 @@ class PHPUnit_Framework_MockObject_Generator
                 $name = '$arg' . $i;
             }
 
+            if ($this->isVariadic($parameter)) {
+                if ($forCall) {
+                    continue;
+                } else {
+                    $name = '...' . $name;
+                }
+            }
+
             $default   = '';
             $reference = '';
             $typeHint  = '';
@@ -1090,11 +1098,13 @@ class PHPUnit_Framework_MockObject_Generator
                     }
                 }
 
-                if ($parameter->isDefaultValueAvailable()) {
-                    $value   = $parameter->getDefaultValue();
-                    $default = ' = ' . var_export($value, TRUE);
-                } elseif ($parameter->isOptional()) {
-                    $default = ' = null';
+                if (!$this->isVariadic($parameter)) {
+                    if ($parameter->isDefaultValueAvailable()) {
+                        $value = $parameter->getDefaultValue();
+                        $default = ' = ' . var_export($value, TRUE);
+                    } elseif ($parameter->isOptional()) {
+                        $default = ' = null';
+                    }
                 }
             }
 
@@ -1124,5 +1134,15 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         return false;
+    }
+
+    /**
+     * @param  ReflectionParameter $parameter
+     * @return boolean
+     * @since  Method available since Release 2.2.1
+     */
+    private function isVariadic(ReflectionParameter $parameter)
+    {
+        return method_exists('ReflectionParameter', 'isVariadic') && $parameter->isVariadic();
     }
 }
