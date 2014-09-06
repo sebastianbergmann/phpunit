@@ -1,5 +1,5 @@
 --TEST--
-PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', TRUE, TRUE)
+PHPUnit_Framework_MockObject_Generator::generate('NonExistentClass', array(), 'MockFoo', TRUE, TRUE)
 --FILE--
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
@@ -7,7 +7,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 $generator = new PHPUnit_Framework_MockObject_Generator;
 
 $mock = $generator->generate(
-  'Foo',
+  'NonExistentClass',
   array(),
   'MockFoo',
   TRUE,
@@ -17,11 +17,11 @@ $mock = $generator->generate(
 print $mock['code'];
 ?>
 --EXPECTF--
-class Foo
+class NonExistentClass
 {
 }
 
-class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
+class MockFoo extends NonExistentClass implements PHPUnit_Framework_MockObject_MockObject
 {
     private $__phpunit_invocationMocker;
     private $__phpunit_originalObject;

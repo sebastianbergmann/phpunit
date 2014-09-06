@@ -30,14 +30,6 @@
   </exec>
  </target>
 
- <target name="phpab" description="Generate autoloader script">
-  <exec executable="phpab">
-   <arg value="--output" />
-   <arg path="tests/autoload.php" />
-   <arg path="tests" />
-  </exec>
- </target>
-
  <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer">
   <exec executable="phpcs">
    <arg value="--standard=PSR2" />
