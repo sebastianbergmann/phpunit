@@ -1,5 +1,9 @@
 --TEST--
 PHPUnit_Framework_MockObject_Generator::generate('ClassWithMethodWithVariadicArguments', array(), 'MockFoo', TRUE, TRUE)
+--SKIPIF--
+<?php
+if (version_compare(PHP_VERSION, '5.6.0', '<')) print 'skip: PHP >= 5.6.0 required';
+?>
 --FILE--
 <?php
 class ClassWithMethodWithVariadicArguments
