@@ -43,7 +43,7 @@
  */
 
 /**
- * Invocation matcher which allos any parameters to a method.
+ * Invocation matcher which allows any parameters to a method.
  *
  * @package    PHPUnit_MockObject
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
