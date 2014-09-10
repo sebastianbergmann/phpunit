@@ -133,12 +133,19 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         }
 
         if (count($this->invocation->parameters) < count($this->parameters)) {
-            throw new PHPUnit_Framework_ExpectationFailedException(
-              sprintf(
-                'Parameter count for invocation %s is too low.',
+            $message = 'Parameter count for invocation %s is too low.';
 
-                $this->invocation->toString()
-              )
+            // The user called `->with($this->anything())`, but may have meant
+            // `->withAnyParameters()`.
+            //
+            // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/199
+            if (count($this->parameters) === 1 &&
+                get_class($this->parameters[0]) === 'PHPUnit_Framework_Constraint_IsAnything') {
+                $message .= "\nTo allow 0 or more parameters with any value, omit ->with() or use ->withAnyParameters() instead.";
+            }
+
+            throw new PHPUnit_Framework_ExpectationFailedException(
+              sprintf($message, $this->invocation->toString())
             );
         }
 
