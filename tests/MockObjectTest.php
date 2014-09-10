@@ -690,6 +690,31 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @ticket 199
+     */
+    public function testWithAnythingInsteadOfWithAnyParameters()
+    {
+        $mock = $this->getMock('SomeClass', array('right'), array(), '', TRUE, TRUE, TRUE);
+        $mock->expects($this->once())
+             ->method('right')
+             ->with($this->anything());
+
+        try {
+            $mock->right();
+            $this->fail('Expected exception');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertSame(
+                "Expectation failed for method name is equal to <string:right> when invoked 1 time(s)\n" .
+                "Parameter count for invocation SomeClass::right() is too low.\n" .
+                "To allow 0 or more parameters with any value, omit ->with() or use ->withAnyParameters() instead.",
+                $e->getMessage()
+            );
+        }
+
+        $this->resetMockObjects();
+    }
+
+    /**
      * See https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81
      */
     public function testMockArgumentsPassedByReference()
