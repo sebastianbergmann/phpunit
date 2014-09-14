@@ -42,6 +42,8 @@ foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/vendor/autoload.php'
     }
 }
 
+unset($file);
+
 if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
     die(
         'You need to set up the project dependencies using the following commands:' . PHP_EOL .
