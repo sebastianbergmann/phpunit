@@ -811,7 +811,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
         }
 
-        $this->stopOutputBuffering();
+        try {
+            $this->stopOutputBuffering();
+        } catch (PHPUnit_Framework_RiskyTestError $_e) {
+            if (!isset($e)) {
+                $e = $_e;
+            }
+        }
 
         // Clean up stat cache.
         clearstatcache();
