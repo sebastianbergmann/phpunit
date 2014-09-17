@@ -16,7 +16,7 @@ PHPUnit %s by Sebastian Bergmann.
 
 Starting test 'DataProviderDebugTest::testProvider with data set #0 (null, true, 1, 1.0)'.
 .
-Starting test 'DataProviderDebugTest::testProvider with data set #1 (1.2, resource(29) of type (stream), '1')'.
+Starting test 'DataProviderDebugTest::testProvider with data set #1 (1.2, resource(%d) of type (stream), '1')'.
 .
 Starting test 'DataProviderDebugTest::testProvider with data set #2 (array(array(1, 2, 3), array(3, 4, 5)))'.
 .
