@@ -46,6 +46,8 @@
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
+use SebastianBergmann\Exporter\Context;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * A TestCase defines the fixture to run multiple tests.
@@ -1652,45 +1654,40 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param  mixed  $data
+     * @param  mixed                              $data       The data to export as a string
+     * @param  SebastianBergmann\Exporter\Context $processed  Contains all objects and arrays that have previously been processed
      * @return string
      * @since  Method available since Release 3.2.1
      */
-    protected function dataToString($data)
+    protected function dataToString(&$data, $processed = NULL)
     {
         $result = array();
+        $exporter = new Exporter();
 
-        set_error_handler(function ($errno, $errstr, $errfile, $errline) {
-            throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
-        }, E_WARNING);
-
-        foreach ($data as $key => $_data) {
-            try {
-                // Detect array-recursions by using count
-                // http://php.net/manual/en/function.count.php
-                $iRecursiveCheck = count($_data, COUNT_RECURSIVE);
-
-                if (is_array($_data)) {
-                    $result[] = 'array(' . $this->dataToString($_data) . ')';
-                } elseif (is_object($_data)) {
-                    $object = new ReflectionObject($_data);
-
-                    if ($object->hasMethod('__toString')) {
-                        $result[] = (string) $_data;
-                    } else {
-                        $result[] = get_class($_data);
-                    }
-                } elseif (is_resource($_data)) {
-                    $result[] = '<resource>';
-                } else {
-                    $result[] = var_export($_data, true);
-                }
-            } catch (ErrorException $e) {
-                $result[] = '*RECURSION*';
-            }
+        if (!$processed) {
+            $processed = new Context();
         }
 
-        restore_error_handler();
+        $processed->add($data);
+
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                if ($processed->contains($data[$key]) !== false) {
+                    $result[] = '*RECURSION*';
+                }
+
+                else {
+                    $result[] = sprintf(
+                        'array(%s)',
+                        $this->dataToString($data[$key], $processed)
+                    );
+                }
+            }
+
+            else {
+                $result[] = $exporter->shortenedExport($value);
+            }
+        }
 
         return join(', ', $result);
     }
