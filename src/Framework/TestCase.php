@@ -1659,7 +1659,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return string
      * @since  Method available since Release 3.2.1
      */
-    protected function dataToString(&$data, $processed = NULL)
+    protected function dataToString(&$data, $processed = null)
     {
         $result = array();
         $exporter = new Exporter();
