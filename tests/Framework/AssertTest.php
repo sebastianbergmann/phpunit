@@ -256,7 +256,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertArraySubset(array('path' => array('to' => array())), $array);
         $this->assertArraySubset(array('path' => array('to' => array('the' => array()))), $array);
         $this->assertArraySubset(array('path' => array('to' => array('the' => array('cake' => 'is a lie')))), $array);
-        
+
         try {
             $this->assertArraySubset(array('path' => array('to' => array('the' => array('cake' => 'is not a lie')))), $array);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
@@ -275,7 +275,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $obj = new \stdClass;
         $reference = &$obj;
         $array = array('a' => $obj);
-        
+
         $this->assertArraySubset(array('a' => $reference), $array);
         $this->assertArraySubset(array('a' => new \stdClass), $array);
     }
@@ -3946,6 +3946,22 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertInternalType('string', 1);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertInternalType
+     */
+    public function testAssertInternalTypeDouble()
+    {
+        $this->assertInternalType('double', 1.0);
+
+        try {
+            $this->assertInternalType('double', 1);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
