@@ -26,7 +26,7 @@
         "doctrine/instantiator": "~1.0,>=1.0.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.3.*@dev"
+        "phpunit/phpunit": "4.4.*@dev"
     },
     "suggest": {
         "ext-soap": "*"
@@ -43,7 +43,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.3.x-dev"
+            "dev-master": "2.4.x-dev"
         }
     }
 }
