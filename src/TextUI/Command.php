@@ -278,8 +278,11 @@ class PHPUnit_TextUI_Command
 
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
-                case '--colors': {
-                    $this->arguments['colors'] = true;
+                case '--colors':
+                    if (function_exists("posix_isatty") && !posix_isatty(STDOUT)) {
+                        $this->arguments['colors'] = false;
+                    } else {
+                        $this->arguments['colors'] = true;
                     }
                 break;
 
