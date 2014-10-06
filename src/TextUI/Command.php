@@ -283,6 +283,11 @@ class PHPUnit_TextUI_Command
                     }
                 break;
 
+                case '--nocolor': {
+                    $this->arguments['colors'] = false;
+                    }
+                break;
+
                 case '--bootstrap': {
                     $this->arguments['bootstrap'] = $option[1];
                     }
