@@ -76,6 +76,7 @@ class PHPUnit_TextUI_Command
      */
     protected $longOptions = array(
       'colors' => null,
+      'nocolor' => null,
       'bootstrap=' => null,
       'configuration=' => null,
       'coverage-clover=' => null,
