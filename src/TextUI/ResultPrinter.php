@@ -43,6 +43,8 @@
  * @since      File available since Release 2.0.0
  */
 
+use SebastianBergmann\Environment\Console;
+
 /**
  * Prints the result of a TextUI TestRunner run.
  *
@@ -147,7 +149,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         if (is_bool($colors)) {
-            $this->colors = $colors;
+            $console = new Console;
+
+            $this->colors = $colors && $console->hasColorSupport();
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
         }

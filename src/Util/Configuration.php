@@ -582,9 +582,6 @@ class PHPUnit_Util_Configuration
             $result['colors'] = $this->getBoolean(
                 (string) $root->getAttribute('colors'), false
             );
-            if ($result['colors'] && function_exists("posix_isatty") && !posix_isatty(STDOUT)) {
-                $result['colors'] = false;
-            }
         }
 
         /**
