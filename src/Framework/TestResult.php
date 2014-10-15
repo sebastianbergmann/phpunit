@@ -720,20 +720,6 @@ class PHPUnit_Framework_TestResult implements Countable
             restore_error_handler();
         }
 
-        if ($this->beStrictAboutTodoAnnotatedTests && $test instanceof PHPUnit_Framework_TestCase) {
-            $annotations = $test->getAnnotations();
-
-            if (isset($annotations['method']['todo'])) {
-                $this->addFailure(
-                    $test,
-                    new PHPUnit_Framework_RiskyTestError(
-                        'Test method is annotated with @todo'
-                    ),
-                    $time
-                );
-            }
-        }
-
         if ($error === true) {
             $this->addError($test, $e, $time);
         } elseif ($failure === true) {
@@ -758,6 +744,18 @@ class PHPUnit_Framework_TestResult implements Countable
                 ),
                 $time
             );
+        } elseif ($this->beStrictAboutTodoAnnotatedTests && $test instanceof PHPUnit_Framework_TestCase) {
+            $annotations = $test->getAnnotations();
+
+            if (isset($annotations['method']['todo'])) {
+                $this->addFailure(
+                    $test,
+                    new PHPUnit_Framework_RiskyTestError(
+                        'Test method is annotated with @todo'
+                    ),
+                    $time
+                );
+            }
         }
 
         $this->endTest($test, $time);
