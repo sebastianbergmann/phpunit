@@ -274,11 +274,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $outputExpectedString = null;
 
     /**
-     * @var bool
-     */
-    private $hasPerformedExpectationsOnOutput = false;
-
-    /**
      * @var mixed
      */
     private $outputCallback = false;
@@ -409,9 +404,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             return false;
         }
 
-        if ($this->outputExpectedString !== null ||
-            $this->outputExpectedRegex  !== null ||
-            $this->hasPerformedExpectationsOnOutput) {
+        if ($this->hasExpectationOnOutput()) {
             return false;
         }
 
@@ -452,10 +445,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @return bool
      * @since Method available since Release 3.6.5
+     * @deprecated
      */
     public function hasPerformedExpectationsOnOutput()
     {
-        return $this->hasPerformedExpectationsOnOutput;
+        return $this->hasExpectationOnOutput();
+    }
+
+    /**
+     * @return bool
+     * @since Method available since Release 4.3.3
+     */
+    public function hasExpectationOnOutput()
+    {
+        return is_string($this->outputExpectedString) || is_string($this->outputExpectedRegex);
     }
 
     /**
@@ -834,13 +837,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (!isset($e)) {
             try {
                 if ($this->outputExpectedRegex !== null) {
-                    $this->hasPerformedExpectationsOnOutput = true;
                     $this->assertRegExp($this->outputExpectedRegex, $this->output);
-                    $this->outputExpectedRegex = null;
                 } elseif ($this->outputExpectedString !== null) {
-                    $this->hasPerformedExpectationsOnOutput = true;
                     $this->assertEquals($this->outputExpectedString, $this->output);
-                    $this->outputExpectedString = null;
                 }
             } catch (Exception $_e) {
                 $e = $_e;
