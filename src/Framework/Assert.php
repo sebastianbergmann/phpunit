@@ -1861,6 +1861,9 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = '')
     {
+        $expectedElement = clone $expectedElement;
+        $actualElement   = clone $actualElement;
+
         self::assertEquals(
             $expectedElement->tagName,
             $actualElement->tagName,
