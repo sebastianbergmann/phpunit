@@ -149,7 +149,25 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
-        $comparatorFactory = new SebastianBergmann\Comparator\Factory;
+        if ($this->value === $other)
+        {
+            /*
+             * Shortcut: if $this->value and $other are identical, they are also equal. This is the most common path
+             * and will allow us to skip initialization of all the comparators.
+             */
+            return true;
+        }
+
+        static $comparatorFactory;
+
+        if (NULL === $comparatorFactory)
+        {
+            /*
+             * Initializing the Comparator Factory is not free, keep a static copy around to avoid initializing it for
+             * every evaluation.
+             */
+            $comparatorFactory = new SebastianBergmann\Comparator\Factory;
+        }
 
         try {
             $comparator = $comparatorFactory->getComparatorFor(
