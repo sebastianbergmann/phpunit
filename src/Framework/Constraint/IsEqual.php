@@ -156,7 +156,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
             return true;
         }
 
-        $comparatorFactory = new SebastianBergmann\Comparator\Factory;
+        $comparatorFactory = SebastianBergmann\Comparator\Factory::getInstance();
 
         try {
             $comparator = $comparatorFactory->getComparatorFor(
