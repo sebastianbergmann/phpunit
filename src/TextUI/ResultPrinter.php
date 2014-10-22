@@ -147,27 +147,25 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         parent::__construct($out);
 
+        if (!is_bool($verbose)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
+        }
+
+        if (!is_bool($colors)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
+        }
+
+        if (!is_bool($debug)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
+        }
+
         $console = new Console;
 
         $this->numberOfColumns = $console->getNumberOfColumns();
 
-        if (is_bool($verbose)) {
-            $this->verbose = $verbose;
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
-        }
-
-        if (is_bool($colors)) {
-            $this->colors = $colors && $console->hasColorSupport();
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
-        }
-
-        if (is_bool($debug)) {
-            $this->debug = $debug;
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
-        }
+        $this->verbose         = $verbose;
+        $this->colors          = $colors && $console->hasColorSupport();
+        $this->debug           = $debug;
     }
 
     /**
