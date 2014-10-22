@@ -12,6 +12,7 @@ php:
 matrix:
   allow_failures:
     - php: hhvm
+    - php: hhvm-nightly
 
 install:
   - travis_retry composer install --no-interaction --prefer-source
@@ -29,3 +30,4 @@ notifications:
     on_success: always
     on_failure: always
     on_start: false
+
