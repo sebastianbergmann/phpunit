@@ -125,7 +125,8 @@ class PHPUnit_Util_ErrorHandler
     }
 
     /**
-     * Registers a one time self-destructing error handler
+     * Registers an error handler and returns a function that will restore
+     * the previous handler when invoked
      * @param  integer   $severity PHP predefined error constant
      * @link   http://www.php.net/manual/en/errorfunc.constants.php
      * @throws Exception if event of specified severity is emitted
@@ -141,10 +142,8 @@ class PHPUnit_Util_ErrorHandler
             }
         };
 
-        set_error_handler(function ($errno, $errstr) use ($severity, $terminator) {
+        set_error_handler(function ($errno, $errstr) use ($severity) {
             if ($errno === $severity) {
-                $terminator(); // bye
-
                 return;
             }
 
