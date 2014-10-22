@@ -140,10 +140,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  boolean                     $verbose
      * @param  boolean                     $colors
      * @param  boolean                     $debug
+     * @param  integer|string              $numberOfColumns
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.0.0
      */
-    public function __construct($out = null, $verbose = false, $colors = false, $debug = false)
+    public function __construct($out = null, $verbose = false, $colors = false, $debug = false, $numberOfColumns = 80)
     {
         parent::__construct($out);
 
@@ -159,10 +160,19 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
         }
 
+        if (!is_int($numberOfColumns) && $numberOfColumns != 'max') {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'integer or "max"');
+        }
+
         $console = new Console;
 
-        $this->numberOfColumns = $console->getNumberOfColumns();
+        $maxNumberOfColumns = $console->getNumberOfColumns();
 
+        if ($numberOfColumns == 'max' || $numberOfColumns > $maxNumberOfColumns) {
+            $numberOfColumns = $maxNumberOfColumns;
+        }
+
+        $this->numberOfColumns = $numberOfColumns;
         $this->verbose         = $verbose;
         $this->colors          = $colors && $console->hasColorSupport();
         $this->debug           = $debug;
