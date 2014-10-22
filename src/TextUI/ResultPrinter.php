@@ -129,6 +129,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     protected $verbose = false;
 
     /**
+     * @var integer
+     */
+    private $numberOfColumns;
+
+    /**
      * Constructor.
      *
      * @param  mixed                       $out
@@ -142,6 +147,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         parent::__construct($out);
 
+        $console = new Console;
+
+        $this->numberOfColumns = $console->getNumberOfColumns();
+
         if (is_bool($verbose)) {
             $this->verbose = $verbose;
         } else {
@@ -149,8 +158,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         if (is_bool($colors)) {
-            $console = new Console;
-
             $this->colors = $colors && $console->hasColorSupport();
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
@@ -495,7 +502,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         if ($this->numTests == -1) {
             $this->numTests      = count($suite);
             $this->numTestsWidth = strlen((string) $this->numTests);
-            $this->maxColumn     = 69 - (2 * $this->numTestsWidth);
+            $this->maxColumn     = $this->numberOfColumns - 11 - (2 * $this->numTestsWidth);
         }
     }
 
