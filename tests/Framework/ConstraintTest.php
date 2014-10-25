@@ -1436,6 +1436,31 @@ EOF
         $this->fail();
     }
 
+    public function resources()
+    {
+        $fh = fopen(__FILE__, 'r');
+        fclose($fh);
+
+        return array(
+            'open resource'     => array(fopen(__FILE__, 'r')),
+            'closed resource'   => array($fh),
+        );
+    }
+
+    /**
+     * @dataProvider resources
+     * @covers PHPUnit_Framework_Constraint_IsType
+     * @covers PHPUnit_Framework_Assert::isType
+     */
+    public function testConstraintIsResourceTypeEvaluatesCorrectlyWithResources($resource)
+    {
+        $constraint = PHPUnit_Framework_Assert::isType('resource');
+
+        $this->assertTrue($constraint->evaluate($resource, '', true));
+
+        @fclose($resource);
+    }
+
     /**
      * @covers PHPUnit_Framework_Constraint_IsType
      * @covers PHPUnit_Framework_Constraint_Not
