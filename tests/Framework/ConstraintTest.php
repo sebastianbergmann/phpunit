@@ -1441,10 +1441,10 @@ EOF
         $fh = fopen(__FILE__, 'r');
         fclose($fh);
 
-        return [
-            'open resource'     => [fopen(__FILE__, 'r')],
-            'closed resource'   => [$fh],
-        ];
+        return array(
+            'open resource'     => array(fopen(__FILE__, 'r')),
+            'closed resource'   => array($fh),
+        );
     }
 
     /**
