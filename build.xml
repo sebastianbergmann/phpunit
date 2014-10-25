@@ -289,6 +289,13 @@
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/sebastian/global-state/LICENSE" tofile="${basedir}/build/phar/sebastian-global-state/LICENSE"/>
+  <copy todir="${basedir}/build/phar/sebastian-global-state">
+   <fileset dir="${basedir}/vendor/sebastian/global-state/src">
+    <include name="**/*.php" />
+   </fileset>
+  </copy>
+
   <copy file="${basedir}/vendor/sebastian/version/LICENSE" tofile="${basedir}/build/phar/sebastian-version/LICENSE"/>
   <copy todir="${basedir}/build/phar/sebastian-version">
    <fileset dir="${basedir}/vendor/sebastian/version/src">
@@ -332,6 +339,20 @@
     <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
+
+  <copy todir="${basedir}/build/phar/phpdocumentor-reflection-docblock">
+   <fileset dir="${basedir}/vendor/phpdocumentor/reflection-docblock/src">
+    <include name="**/*.php" />
+   </fileset>
+  </copy>
+
+  <copy todir="${basedir}/build/phar/phpspec-prophecy">
+   <fileset dir="${basedir}/vendor/phpspec/prophecy/src">
+    <include name="**/*.php" />
+   </fileset>
+  </copy>
+
+  <copy file="${basedir}/vendor/phpspec/prophecy-phpunit/Prophecy/PhpUnit/ProphecyTestCase.php" todir="${basedir}/build/phar/phpspec-prophecy"/>
  </target>
 
  <target name="phar-build">
