@@ -786,7 +786,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->mockObjects = array();
 
         // Tear down the fixture. An exception raised in tearDown() will be
-        // caught and passed on when no exception was raised before.
+        // caught and passed on when no exception was raised before
+        // and added as an error to result otherwise.
         try {
             if ($hasMetRequirements) {
                 foreach ($hookMethods['after'] as $method) {
@@ -802,6 +803,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         } catch (Exception $_e) {
             if (!isset($e)) {
                 $e = $_e;
+            } else {
+                $this->result->addError($this, $_e, 0);
             }
         }
 
