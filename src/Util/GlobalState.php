@@ -308,8 +308,7 @@ class PHPUnit_Util_GlobalState
                 strpos($declaredClasses[$i], 'PHP_Token_Stream') !== 0 &&
                 strpos($declaredClasses[$i], 'Symfony') !== 0 &&
                 strpos($declaredClasses[$i], 'Text_Template') !== 0 &&
-                strpos($declaredClasses[$i], 'Instantiator') !== 0 &&
-                strpos($declaredClasses[$i], 'LazyMap') !== 0) {
+                strpos($declaredClasses[$i], 'Instantiator') !== 0) {
                 $class = new ReflectionClass($declaredClasses[$i]);
 
                 if ($class->isSubclassOf('PHPUnit_Framework_Test')) {

@@ -78,8 +78,7 @@ class PHPUnit_Util_Blacklist
         'SebastianBergmann\Exporter\Exporter' => 1,
         'SebastianBergmann\Version' => 1,
         'Composer\Autoload\ClassLoader' => 1,
-        'Doctrine\Instantiator\Instantiator' => 1,
-        'LazyMap\AbstractLazyMap' => 1
+        'Doctrine\Instantiator\Instantiator' => 1
     );
 
     /**
