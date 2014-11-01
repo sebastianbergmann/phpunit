@@ -45,7 +45,10 @@ function __phpunit_run_isolated_test()
 
     ob_end_clean();
     $test->run($result);
-    $output = $test->getActualOutput();
+    $output = '';
+    if (!$test->hasExpectationOnOutput()) {
+        $output = $test->getActualOutput();
+    }
 
     rewind(STDOUT);
     if ($stdout = stream_get_contents(STDOUT)) {
