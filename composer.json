@@ -35,7 +35,6 @@
         "sebastian/exporter": "~1.0",
         "sebastian/global-state": "1.0.*@dev",
         "sebastian/version": "~1.0",
-        "phpspec/prophecy-phpunit": "~1.0",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-pcre": "*",
