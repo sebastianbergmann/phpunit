@@ -346,7 +346,6 @@
    </fileset>
   </copy>
 
-  <copy file="${basedir}/vendor/phpspec/prophecy/LICENSE" tofile="${basedir}/build/phar/phpspec-prophecy/LICENSE"/>
   <copy todir="${basedir}/build/phar/phpspec-prophecy">
    <fileset dir="${basedir}/vendor/phpspec/prophecy/src">
     <include name="**/*.php" />
