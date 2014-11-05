@@ -697,14 +697,15 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         foreach ($tests as $test) {
             
-            if($test instanceof PHPUnit_Extensions_RepeatedTest){
-                $this->runTest($test, $result);
-            }
-            
             if ($result->shouldStop()) {
                 break;
             }
-
+            
+            if($test instanceof PHPUnit_Extensions_RepeatedTest){
+                $this->runTest($test, $result);
+                break;
+            }
+            
             if ($test instanceof PHPUnit_Framework_TestSuite) {
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
