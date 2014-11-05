@@ -48,6 +48,8 @@ use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
 use SebastianBergmann\Exporter\Context;
 use SebastianBergmann\Exporter\Exporter;
+use Prophecy\Exception\Prediction\PredictionException;
+use Prophecy\Prophet;
 
 /**
  * A TestCase defines the fixture to run multiple tests.
@@ -292,6 +294,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var SebastianBergmann\GlobalState\Snapshot
      */
     private $snapshot;
+
+    /**
+     * @var Prophecy\Prophet
+     */
+    private $prophet;
 
     /**
      * Constructs a test case with the given name.
@@ -966,6 +973,21 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             $mockObject->__phpunit_verify();
         }
+
+        if ($this->prophet !== null) {
+            foreach ($this->prophet->getProphecies() as $objectProphecy) {
+                foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
+                    foreach ($methodProphecies as $methodProphecy) {
+                        if ($methodProphecy->getPrediction() !== null) {
+                            $this->numAssertions++;
+                        }
+                    }
+                }
+            }
+
+            $this->prophet->checkPredictions();
+            $this->prophet = null;
+        }
     }
 
     /**
@@ -1437,6 +1459,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $callAutoload,
             $cloneArguments
         );
+    }
+
+    /**
+     * @param string|null $classOrInterface
+     * @return \Prophecy\Prophecy\ObjectProphecy
+     * @throws \LogicException
+     * @since  Method available since Release 4.5.0
+     */
+    protected function prophesize($classOrInterface = null)
+    {
+        return $this->getProphet()->prophesize($classOrInterface);
     }
 
     /**
@@ -2000,5 +2033,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->snapshot = null;
+    }
+
+    /**
+     * @return Prophecy\Prophet
+     * @since Method available since Release 4.5.0
+     */
+    private function getProphet()
+    {
+        if ($this->prophet === null) {
+            $this->prophet = new Prophet;
+        }
+
+        return $this->prophet;
     }
 }
