@@ -339,21 +339,6 @@
     <exclude name="**/Autoload.*" />
    </fileset>
   </copy>
-
-  <copy todir="${basedir}/build/phar/phpdocumentor-reflection-docblock">
-   <fileset dir="${basedir}/vendor/phpdocumentor/reflection-docblock/src">
-    <include name="**/*.php" />
-   </fileset>
-  </copy>
-
-  <copy file="${basedir}/vendor/phpspec/prophecy/LICENSE" tofile="${basedir}/build/phar/phpspec-prophecy/LICENSE"/>
-  <copy todir="${basedir}/build/phar/phpspec-prophecy">
-   <fileset dir="${basedir}/vendor/phpspec/prophecy/src">
-    <include name="**/*.php" />
-   </fileset>
-  </copy>
-
-  <copy file="${basedir}/vendor/phpspec/prophecy-phpunit/Prophecy/PhpUnit/ProphecyTestCase.php" todir="${basedir}/build/phar/phpspec-prophecy"/>
  </target>
 
  <target name="phar-build">
