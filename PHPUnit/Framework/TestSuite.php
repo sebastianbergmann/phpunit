@@ -696,6 +696,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         foreach ($tests as $test) {
+            
+            if($test instanceof PHPUnit_Extensions_RepeatedTest){
+                $this->runTest($test, $result);
+            }
+            
             if ($result->shouldStop()) {
                 break;
             }
