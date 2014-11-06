@@ -782,6 +782,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
             $this->statusMessage = $e->getMessage();
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+            $this->statusMessage = $e->getMessage();
+        } catch (PredictionException $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
         } catch (Exception $e) {
@@ -791,6 +794,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         // Clean up the mock objects.
         $this->mockObjects = array();
+        $this->prophet     = null;
 
         // Tear down the fixture. An exception raised in tearDown() will be
         // caught and passed on when no exception was raised before.
@@ -855,6 +859,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         // Workaround for missing "finally".
         if (isset($e)) {
+            if ($e instanceof PredictionException) {
+                $e = new PHPUnit_Framework_AssertionFailedError($e->getMessage());
+            }
+
             $this->onNotSuccessfulTest($e);
         }
     }
@@ -986,7 +994,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             $this->prophet->checkPredictions();
-            $this->prophet = null;
         }
     }
 
