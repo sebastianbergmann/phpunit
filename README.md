@@ -36,7 +36,7 @@ Thanks to everyone who has contributed to PHPUnit! You can find a detailed list 
 * [PHP_CodeCoverage](https://github.com/sebastianbergmann/php-code-coverage/graphs/contributors)
 * [PHPUnit_MockObject](https://github.com/sebastianbergmann/phpunit-mock-objects/graphs/contributors)
 
-A very special thanks to everyone who has contributed to the documentation and helps maintaining the translations:
+A very special thanks to everyone who has contributed to the documentation and helps maintain the translations:
 
 * [PHPUnit Documentation](https://github.com/sebastianbergmann/phpunit-documentation/graphs/contributors)
 
