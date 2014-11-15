@@ -986,9 +986,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             foreach ($this->prophet->getProphecies() as $objectProphecy) {
                 foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
                     foreach ($methodProphecies as $methodProphecy) {
-                        if ($methodProphecy->getPrediction() !== null) {
-                            $this->numAssertions++;
-                        }
+                        $this->numAssertions += count($methodProphecy->getCheckedPredictions());
                     }
                 }
             }
