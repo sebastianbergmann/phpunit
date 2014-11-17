@@ -983,6 +983,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         if ($this->prophet !== null) {
+            $this->prophet->checkPredictions();
+
             foreach ($this->prophet->getProphecies() as $objectProphecy) {
                 foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
                     foreach ($methodProphecies as $methodProphecy) {
@@ -990,8 +992,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     }
                 }
             }
-
-            $this->prophet->checkPredictions();
         }
     }
 
