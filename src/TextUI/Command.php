@@ -115,6 +115,7 @@ class PHPUnit_TextUI_Command
       'testdox' => null,
       'testdox-html=' => null,
       'testdox-text=' => null,
+      'testdox-text-show-incomplete' => NULL,
       'test-suffix=' => null,
       'no-configuration' => null,
       'no-globals-backup' => null,
@@ -487,6 +488,11 @@ class PHPUnit_TextUI_Command
                 case '--testdox-text': {
                     $this->arguments['testdoxTextFile'] = $option[1];
                     }
+                break;
+
+                case '--testdox-text-show-incomplete': {
+                    $this->arguments['printer'] = new PHPUnit_Util_TestDox_ResultPrinter_TextShowIncomplete;
+                }
                 break;
 
                 case '--no-configuration': {
