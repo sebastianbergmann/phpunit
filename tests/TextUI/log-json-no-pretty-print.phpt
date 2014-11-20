@@ -18,7 +18,7 @@ require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann.
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 {"event":"suiteStart","suite":"BankAccountTest","tests":3}{"event":"testStart","suite":"BankAccountTest","test":"BankAccountTest::testBalanceIsInitiallyZero"}.{"event":"test","suite":"BankAccountTest","test":"BankAccountTest::testBalanceIsInitiallyZero","status":"pass","time":%f,"trace":[],"message":"","output":""}{"event":"testStart","suite":"BankAccountTest","test":"BankAccountTest::testBalanceCannotBecomeNegative"}.{"event":"test","suite":"BankAccountTest","test":"BankAccountTest::testBalanceCannotBecomeNegative","status":"pass","time":%f,"trace":[],"message":"","output":""}{"event":"testStart","suite":"BankAccountTest","test":"BankAccountTest::testBalanceCannotBecomeNegative2"}.{"event":"test","suite":"BankAccountTest","test":"BankAccountTest::testBalanceCannotBecomeNegative2","status":"pass","time":%f,"trace":[],"message":"","output":""}
 
