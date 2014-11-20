@@ -83,7 +83,7 @@ class PHPUnit_Runner_Version
      */
     public static function getVersionString()
     {
-        return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann.';
+        return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann and contributors.';
     }
 
     /**
