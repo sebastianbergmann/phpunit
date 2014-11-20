@@ -12,8 +12,6 @@ require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann.
-
 ...<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="BankAccountTest" file="%sBankAccountTest.php" tests="3" assertions="3" failures="0" errors="0" time="%f">
