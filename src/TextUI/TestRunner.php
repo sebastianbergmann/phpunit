@@ -79,11 +79,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     protected $printer = null;
 
     /**
-     * @var boolean
-     */
-    protected static $versionStringPrinted = false;
-
-    /**
      * @var array
      */
     private $missingExtensions = array();
@@ -274,12 +269,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
-            $this->printer->write(
-                PHPUnit_Runner_Version::getVersionString() . "\n\n"
-            );
-
-            self::$versionStringPrinted = true;
-
             if (isset($arguments['configuration'])) {
                 $this->printer->write(
                     sprintf(
