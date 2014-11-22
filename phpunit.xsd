@@ -213,6 +213,7 @@
     <xs:attribute name="timeoutForMediumTests" type="xs:integer" default="10"/>
     <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>
     <xs:attribute name="verbose" type="xs:boolean" default="false"/>
+    <xs:attribute name="stderr" type="xs:boolean" default="false"/>
   </xs:attributeGroup>
   <xs:group name="configGroup">
     <xs:all>
