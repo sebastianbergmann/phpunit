@@ -45,58 +45,49 @@
  */
 
 /**
- * Constraint that asserts that the array it is evaluated for has a specified subset.
- *
- * Uses array_replace_recursive() to check if a key value subset is part of the
- * subject array.
+ * Constraint that asserts that the array is evaluated for having only elements of specified type.
  *
  * @package    PHPUnit
  * @subpackage Framework_Constraint
- * @author     Márcio Almada <marcio3w@gmail.com>
+ * @author     Tim Bezhashvyly <tim.bezhashvyly@gmail.com>
  * @copyright  2001-2014 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 4.4.0
+ * @since      Class available since Release 4.5.0
  */
-class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_ArrayOfAType extends PHPUnit_Framework_Constraint
 {
     /**
-     * @var array|ArrayAccess
+     * @var string
      */
-    protected $subset;
+    protected $type;
 
     /**
-     * @var boolean
+     * @param string $type
      */
-    protected $strict;
-
-    /**
-     * @param array|ArrayAccess $subset
-     * @param boolean           $strict Check for object identity
-     */
-    public function __construct($subset, $strict = false)
+    public function __construct($type)
     {
         parent::__construct();
-        $this->strict  = $strict;
-        $this->subset = $subset;
+
+        $this->type = $type;
     }
 
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  array|ArrayAccess $other  Array or ArrayAccess object to evaluate.
+     * @param array|ArrayAccess $other
      * @return bool
      */
     protected function matches($other)
     {
-        $patched = array_replace_recursive($other, $this->subset);
+	    foreach ($other as $element) {
+		    if (!($element instanceof $this->type)) {
+			    return false;
+		    }
+	    }
 
-        if ($this->strict) {
-            return $other === $patched;
-        } else {
-            return $other == $patched;
-        }
+	    return true;
     }
 
     /**
@@ -106,7 +97,7 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
      */
     public function toString()
     {
-        return 'has the subset ' . $this->exporter->export($this->subset);
+        return 'contains of ' . $this->exporter->export($this->type) . ' elements only';
     }
 
     /**
