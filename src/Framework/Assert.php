@@ -149,6 +149,28 @@ abstract class PHPUnit_Framework_Assert
         self::assertThat($array, $constraint, $message);
     }
 
+	/**
+	 * Assert that an array contains of elements of a specified type only
+	 *
+	 * @param $type
+	 * @param $array|ArrayAccess
+	 * @param string $message
+	 */
+	public function assertArrayOfAType($type, $array, $message = '')
+	{
+		if (!is_string($type)) {
+			throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+		}
+
+		if (!(is_array($array) || $array instanceof ArrayAccess)) {
+			throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'array or ArrayAccess');
+		}
+
+		$constraint = new PHPUnit_Framework_Constraint_ArrayOfAType($type);
+
+		self::assertThat($array, $constraint, $message);
+	}
+
     /**
      * Asserts that a haystack contains a needle.
      *

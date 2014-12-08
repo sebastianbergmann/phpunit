@@ -450,6 +450,65 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertArrayNotHasKey('bar', $array);
     }
 
+	/**
+	 * @covers PHPUnit_Framework_Assert::assertArrayOfAType
+	 * @covers PHPUnit_Framework_Constraint_ArrayOfAType
+	 */
+	public function testAssertArrayOfATypeAcceptsArrayContainingOnlyElementsOfSpecifiedType()
+	{
+		$foo = new stdClass;
+		$bar = new stdClass;
+		$stdClassArray = array($foo, $bar);
+
+		$this->assertArrayOfAType(stdClass::class, $stdClassArray);
+	}
+
+	/**
+	 * @covers PHPUnit_Framework_Assert::assertArrayOfAType
+	 * @covers PHPUnit_Framework_Constraint_ArrayOfAType
+	 */
+	public function testAssertArrayOfATypeAcceptsEmptyArray()
+	{
+		$this->assertArrayOfAType(stdClass::class, array());
+	}
+
+	/**
+	 * @covers PHPUnit_Framework_Assert::assertArrayOfAType
+	 * @covers PHPUnit_Framework_Constraint_ArrayOfAType
+	 * @expectedException PHPUnit_Framework_AssertionFailedError
+	 * @expectedExceptionMessage Failed asserting that an array contains of 'stdClass' elements only.
+	 */
+	public function testAssertArrayOfATypeProperlyFailsWithArrayContainingElementsOfOtherThenSpecifiedType()
+	{
+		$foo = new stdClass;
+		$bar = 1;
+		$mixedTypesArray = array($foo, $bar);
+
+		$this->assertArrayOfAType(stdClass::class, $mixedTypesArray);
+	}
+
+	/**
+	 * @covers PHPUnit_Framework_Assert::assertArrayOfAType
+	 * @expectedException PHPUnit_Framework_Exception
+	 * @expectedExceptionMessage Argument #2 (No Value) of PHPUnit_Framework_Assert::assertArrayOfAType() must be a array or ArrayAccess
+	 */
+	public function testAssertArrayOfATypeProperlyFailsWithNoValidArrayPassed()
+	{
+		$nonArray = new stdClass;
+
+		$this->assertArrayOfAType(stdClass::class, $nonArray);
+	}
+
+	/**
+	 * @covers PHPUnit_Framework_Assert::assertArrayOfAType
+	 * @expectedException PHPUnit_Framework_Exception
+	 * @expectedExceptionMessage Argument #1 (No Value) of PHPUnit_Framework_Assert::assertArrayOfAType() must be a string
+	 */
+	public function testAssertArrayOfATypeProperlyFailsIfSpecifiedTypeIsNotAString()
+	{
+		$this->assertArrayOfAType(1, array());
+	}
+
     /**
      * @covers            PHPUnit_Framework_Assert::assertContains
      * @expectedException PHPUnit_Framework_Exception
