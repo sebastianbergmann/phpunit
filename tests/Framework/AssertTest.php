@@ -443,7 +443,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-    public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue()
+    public function testAssertArrayNotHasKeyProperlyFailsWithArrayAccessValue()
     {
         $array = new ArrayObject();
         $array['bar'] = 'bar';
