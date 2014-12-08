@@ -460,7 +460,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 		$bar = new stdClass;
 		$stdClassArray = array($foo, $bar);
 
-		$this->assertArrayOfAType(stdClass::class, $stdClassArray);
+		$this->assertArrayOfAType('stdClass', $stdClassArray);
 	}
 
 	/**
@@ -469,7 +469,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 	 */
 	public function testAssertArrayOfATypeAcceptsEmptyArray()
 	{
-		$this->assertArrayOfAType(stdClass::class, array());
+		$this->assertArrayOfAType('stdClass', array());
 	}
 
 	/**
@@ -484,7 +484,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 		$bar = 1;
 		$mixedTypesArray = array($foo, $bar);
 
-		$this->assertArrayOfAType(stdClass::class, $mixedTypesArray);
+		$this->assertArrayOfAType('stdClass', $mixedTypesArray);
 	}
 
 	/**
@@ -496,7 +496,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 	{
 		$nonArray = new stdClass;
 
-		$this->assertArrayOfAType(stdClass::class, $nonArray);
+		$this->assertArrayOfAType('stdClass', $nonArray);
 	}
 
 	/**
