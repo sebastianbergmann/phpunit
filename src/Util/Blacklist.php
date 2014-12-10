@@ -131,6 +131,10 @@ class PHPUnit_Util_Blacklist
                 $reflector = new ReflectionClass($className);
                 $directory = $reflector->getFileName();
 
+                if ($directory === false) {
+                    continue; // Handle translate compoment in c extension
+                }
+
                 for ($i = 0; $i < $parent; $i++) {
                     $directory = dirname($directory);
                 }
