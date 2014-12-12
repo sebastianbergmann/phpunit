@@ -75,7 +75,7 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $longOptions = array(
-      'colors=' => null,
+      'colors==' => null,
       'bootstrap=' => null,
       'columns=' => null,
       'configuration=' => null,
