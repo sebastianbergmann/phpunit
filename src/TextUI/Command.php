@@ -283,12 +283,12 @@ class PHPUnit_TextUI_Command
                     if (is_null($option[1]) || in_array($option[1], array('always', 'force', 'yes'))) {
                         $this->arguments['colors'] = true;
                     } elseif (in_array($option[1], array('auto', 'tty', 'if-tty'))) {
-                        if (function_exists("posix_isatty") && !posix_isatty(STDOUT)) {
+                        if (function_exists('posix_isatty') && !posix_isatty(STDOUT)) {
                             $this->arguments['colors'] = false;
                         } else {
                             $this->arguments['colors'] = true;
                         }
-                    } elseif (in_array($option[1], array('never', 'no', 'none'))) {
+                    } else {
                         $this->arguments['colors'] = false;
                     }
                 }
