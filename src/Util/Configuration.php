@@ -590,8 +590,9 @@ class PHPUnit_Util_Configuration
         }
 
         if ($root->hasAttribute('colors')) {
-            $result['colors'] = $this->getBoolean(
-                (string) $root->getAttribute('colors'), false
+            $result['colors'] = $this->getColorFlag(
+                (string) $root->getAttribute('colors'),
+                PHPUnit_TextUI_ResultPrinter::COLOR_DEFAULT
             );
         }
 
@@ -977,6 +978,30 @@ class PHPUnit_Util_Configuration
         }
 
         return $suite;
+    }
+
+    /**
+     * @param  string  $value
+     * @param  boolean $default
+     * @return boolean
+     */
+    protected function getColorFlag($value, $default)
+    {
+        $currentValue = strtolower($value);
+
+        if (in_array($currentValue, array('true', 'auto'))) {
+            return PHPUnit_TextUI_ResultPrinter::COLOR_AUTO;
+        }
+
+        if (in_array($currentValue, array('false', 'never'))) {
+            return PHPUnit_TextUI_ResultPrinter::COLOR_NEVER;
+        }
+
+        if (in_array($currentValue, array('always'))) {
+            return PHPUnit_TextUI_ResultPrinter::COLOR_ALWAYS;
+        }
+
+        return $default;
     }
 
     /**
