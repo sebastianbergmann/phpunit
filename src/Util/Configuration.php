@@ -590,12 +590,12 @@ class PHPUnit_Util_Configuration
         }
 
         if ($root->hasAttribute('colors')) {
-            /* only allow boolean for compatibility with previous verions
+            /* only allow boolean for compatibility with previous versions
               'always' only allowed from command line */
             if ($this->getBoolean($root->getAttribute('colors'), false)) {
                 $result['colors'] = PHPUnit_TextUI_ResultPrinter::COLOR_AUTO;
             } else {
-                $result['colors'] = PHPUnit_TextUI_ResultPrinter::COLOR_DEFAULT;
+                $result['colors'] = PHPUnit_TextUI_ResultPrinter::COLOR_NEVER;
             }
         }
 
