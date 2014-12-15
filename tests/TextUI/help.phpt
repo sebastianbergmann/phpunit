@@ -54,7 +54,7 @@ Test Execution Options:
   --no-globals-backup       Do not backup and restore $GLOBALS for each test.
   --static-backup           Backup and restore static attributes for each test.
 
-  --colors                  Use colors in output.
+  --colors=<flag>           Use colors in output ("never", "auto" or "always").
   --columns <n>             Number of columns to use for progress outout.
   --columns max             Use maximum number of columns for progress outout.
   --stderr                  Write to STDERR instead of STDOUT.
