@@ -439,7 +439,7 @@ class PHPUnit_Util_XML
                 }
 
                 if ($classes) {
-                    $tag['class'] = join(' ', $classes);
+                    $tag['class'] = implode(' ', $classes);
                 }
 
                 if ($attrs) {
