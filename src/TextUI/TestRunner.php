@@ -112,32 +112,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @param  PHPUnit_Framework_Test|ReflectionClass $test
-     * @param  array                               $arguments
-     * @return PHPUnit_Framework_TestResult
-     * @throws PHPUnit_Framework_Exception
-     */
-    public static function run($test, array $arguments = array())
-    {
-        if ($test instanceof ReflectionClass) {
-            $test = new PHPUnit_Framework_TestSuite($test);
-        }
-
-        if ($test instanceof PHPUnit_Framework_Test) {
-            $aTestRunner = new PHPUnit_TextUI_TestRunner;
-
-            return $aTestRunner->doRun(
-                $test,
-                $arguments
-            );
-        } else {
-            throw new PHPUnit_Framework_Exception(
-                'No test case or test suite found.'
-            );
-        }
-    }
-
-    /**
      * @return PHPUnit_Framework_TestResult
      */
     protected function createTestResult()
