@@ -572,8 +572,6 @@ class PHPUnit_TextUI_Command
             }
         }
 
-        $this->handleCustomTestSuite();
-
         if (!isset($this->arguments['test'])) {
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
@@ -983,13 +981,6 @@ EOT;
         if (defined('__PHPUNIT_PHAR__')) {
             print "\n  --self-update             Update PHPUnit to the latest version.\n";
         }
-    }
-
-    /**
-     * Custom callback for test suite discovery.
-     */
-    protected function handleCustomTestSuite()
-    {
     }
 
     private function printVersionString()
