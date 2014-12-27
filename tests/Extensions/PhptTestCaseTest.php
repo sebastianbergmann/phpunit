@@ -103,6 +103,24 @@ EOF;
         $this->testCase->run();
     }
 
+    public function testShouldRunCleanSectionWhenDefined()
+    {
+        $cleanSection = '<?php unlink("/tmp/something"); ?>' . PHP_EOL;
+
+        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
+        $phptContent .= '--CLEAN--' . PHP_EOL;
+        $phptContent .= $cleanSection;
+
+        $this->setPhpContent($phptContent);
+
+        $this->phpUtil
+            ->expects($this->at(1))
+            ->method('runJob')
+            ->with($cleanSection);
+
+        $this->testCase->run();
+    }
+
     public function testParseIniSection()
     {
         $phptTestCase = new PhpTestCaseProxy(__FILE__);
