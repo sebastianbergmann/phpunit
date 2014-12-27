@@ -28,6 +28,36 @@ echo "Hello PHPUnit!";
 --EXPECT--
 Hello PHPUnit!
 EOF;
+
+    const EXPECTF_CONTENT = <<<EOF
+--TEST--
+EXPECTF test
+--FILE--
+<?php
+echo "Hello PHPUnit!";
+?>
+--EXPECTF--
+Hello %s!
+EOF;
+
+    const EXPECTREGEX_CONTENT = <<<EOF
+--TEST--
+EXPECTREGEX test
+--FILE--
+<?php
+echo "Hello PHPUnit!";
+?>
+--EXPECTREGEX--
+Hello [HPU]{4}[nit]{3}!
+EOF;
+
+    const FILE_SECTION = <<<EOF
+<?php
+echo "Hello PHPUnit!";
+?>
+
+EOF;
+
     protected $filename;
     protected $testCase;
     protected $phpUtil;
@@ -120,5 +150,98 @@ EOF;
             ->with($cleanSection);
 
         $this->testCase->run();
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Exception
+     * @expectedExceptionMessage Invalid PHPT file
+     */
+    public function testShouldThrowsAnExceptionWhenPhptFileIsEmpty()
+    {
+        file_put_contents($this->filename, '');
+        $this->testCase->run();
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Exception
+     * @expectedExceptionMessage Invalid PHPT file
+     */
+    public function testShouldThrowsAnExceptionWhenFileSectionIsMissing()
+    {
+        file_put_contents(
+            $this->filename,
+            <<<EOF
+--TEST--
+Something to decribe it
+--EXPECT--
+Something
+EOF
+        );
+        $this->testCase->run();
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Exception
+     * @expectedExceptionMessage Invalid PHPT file
+     */
+    public function testShouldThrowsAnExceptionWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile()
+    {
+        file_put_contents(
+            $this->filename,
+            <<<EOF
+--TEST--
+Something to decribe it
+--FILE--
+<?php
+echo "Hello world!\n";
+?>
+EOF
+        );
+        $this->testCase->run();
+    }
+
+    public function testShouldValidateExpectSession()
+    {
+        file_put_contents($this->filename, self::EXPECT_CONTENT);
+
+        $this->phpUtil
+            ->expects($this->once())
+            ->method('runJob')
+            ->with(self::FILE_SECTION)
+            ->will($this->returnValue(array('stdout' => 'Hello PHPUnit!', 'stderr' => '')));
+
+        $result = $this->testCase->run();
+
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testShouldValidateExpectfSession()
+    {
+        file_put_contents($this->filename, self::EXPECTF_CONTENT);
+
+        $this->phpUtil
+            ->expects($this->once())
+            ->method('runJob')
+            ->with(self::FILE_SECTION)
+            ->will($this->returnValue(array('stdout' => 'Hello PHPUnit!', 'stderr' => '')));
+
+        $result = $this->testCase->run();
+
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testShouldValidateExpectregexSession()
+    {
+        file_put_contents($this->filename, self::EXPECTREGEX_CONTENT);
+
+        $this->phpUtil
+            ->expects($this->once())
+            ->method('runJob')
+            ->with(self::FILE_SECTION)
+            ->will($this->returnValue(array('stdout' => 'Hello PHPUnit!', 'stderr' => '')));
+
+        $result = $this->testCase->run();
+
+        $this->assertTrue($result->wasSuccessful());
     }
 }
