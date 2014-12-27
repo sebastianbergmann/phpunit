@@ -180,6 +180,11 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             } catch (Exception $e) {
                 $result->addError($this, $e, $time);
             }
+
+            if (isset($sections['CLEAN'])) {
+                $cleanCode = $this->render($sections['CLEAN']);
+                $php->runJob($cleanCode, $this->settings);
+            }
         }
 
         $result->endTest($this, $time);
