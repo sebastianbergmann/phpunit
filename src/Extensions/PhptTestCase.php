@@ -21,6 +21,11 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     private $filename;
 
     /**
+     * @var PHPUnit_Util_PHP
+     */
+    private $phpUtil;
+
+    /**
      * @var array
      */
     private $settings = [
@@ -50,10 +55,12 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     /**
      * Constructs a test case with the given filename.
      *
-     * @param  string                      $filename
+     * @param  string           $filename
+     * @param  PHPUnit_Util_PHP $phpUtil
+     *
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($filename)
+    public function __construct($filename, $phpUtil = null)
     {
         if (!is_string($filename)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -69,6 +76,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         $this->filename = $filename;
+        $this->phpUtil = $phpUtil ?: PHPUnit_Util_PHP::factory();
     }
 
     /**
@@ -96,7 +104,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $result = new PHPUnit_Framework_TestResult;
         }
 
-        $php      = PHPUnit_Util_PHP::factory();
         $skip     = false;
         $time     = 0;
         $settings = $this->settings;
@@ -108,7 +115,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         if (isset($sections['SKIPIF'])) {
-            $jobResult = $php->runJob($sections['SKIPIF'], $settings);
+            $jobResult = $this->phpUtil->runJob($sections['SKIPIF'], $settings);
 
             if (!strncasecmp('skip', ltrim($jobResult['stdout']), 4)) {
                 if (preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $message)) {
@@ -125,7 +132,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         if (!$skip) {
             PHP_Timer::start();
-            $jobResult = $php->runJob($code, $settings);
+            $jobResult = $this->phpUtil->runJob($code, $settings);
             $time      = PHP_Timer::stop();
 
             if (isset($sections['EXPECT'])) {

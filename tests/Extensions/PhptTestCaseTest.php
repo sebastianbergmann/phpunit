@@ -10,6 +10,99 @@
 
 class Extensions_PhptTestCaseTest extends \PHPUnit_Framework_TestCase
 {
+    const EXPECT_CONTENT = <<<EOF
+--TEST--
+EXPECT test
+--FILE--
+<?php echo "Hello PHPUnit!"; ?>
+--EXPECT--
+Hello PHPUnit!
+EOF;
+    protected $filename;
+    protected $testCase;
+    protected $phpUtil;
+
+    protected function setUp()
+    {
+        $this->filename = sys_get_temp_dir().'/phpunit.phpt';
+        touch($this->filename);
+
+        $this->phpUtil = $this->getMockForAbstractClass('PHPUnit_Util_PHP', [], '', false);
+
+        $this->testCase = new PHPUnit_Extensions_PhptTestCase($this->filename, $this->phpUtil);
+    }
+
+    protected function tearDown()
+    {
+        @unlink($this->filename);
+
+        $this->filename = null;
+        $this->testCase = null;
+    }
+
+    /**
+     * Defines the content of the current PHPT test.
+     *
+     * @param string $content
+     */
+    private function setPhpContent($content)
+    {
+        file_put_contents($this->filename, $content);
+    }
+
+    public function testShouldRunFileSectionAsTest()
+    {
+        $this->setPhpContent(self::EXPECT_CONTENT);
+
+        $fileSection = '<?php echo "Hello PHPUnit!"; ?>'.PHP_EOL;
+
+        $this->phpUtil
+            ->expects($this->once())
+            ->method('runJob')
+            ->with($fileSection)
+            ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+
+        $this->testCase->run();
+    }
+
+    public function testShouldRunSkipifSectionWhenExists()
+    {
+        $skipifSection = '<?php /** Nothing **/ ?>'.PHP_EOL;
+
+        $phptContent = self::EXPECT_CONTENT.PHP_EOL;
+        $phptContent .= '--SKIPIF--'.PHP_EOL;
+        $phptContent .= $skipifSection;
+
+        $this->setPhpContent($phptContent);
+
+        $this->phpUtil
+            ->expects($this->at(0))
+            ->method('runJob')
+            ->with($skipifSection)
+            ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+
+        $this->testCase->run();
+    }
+
+    public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord()
+    {
+        $skipifSection = '<?php echo "skip: Reason"; ?>'.PHP_EOL;
+
+        $phptContent = self::EXPECT_CONTENT.PHP_EOL;
+        $phptContent .= '--SKIPIF--'.PHP_EOL;
+        $phptContent .= $skipifSection;
+
+        $this->setPhpContent($phptContent);
+
+        $this->phpUtil
+            ->expects($this->once())
+            ->method('runJob')
+            ->with($skipifSection)
+            ->will($this->returnValue(array('stdout' => 'skip: Reason', 'stderr' => '')));
+
+        $this->testCase->run();
+    }
+
     public function testParseIniSection()
     {
         $phptTestCase = new PhpTestCaseProxy(__FILE__);
@@ -24,7 +117,6 @@ class Extensions_PhptTestCaseTest extends \PHPUnit_Framework_TestCase
         ];
 
         $this->assertEquals($expected, $settings);
-
     }
 }
 
