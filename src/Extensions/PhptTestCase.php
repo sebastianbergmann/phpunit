@@ -90,6 +90,31 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     }
 
     /**
+     * @param  array  $sections
+     * @param  string $output
+     */
+    private function assertPhptExpectation(array $sections, $output)
+    {
+        $assertions = array(
+            'EXPECT'            => 'assertEquals',
+            'EXPECTF'           => 'assertStringMatchesFormat',
+            'EXPECTREGEX'       => 'assertRegExp',
+        );
+
+        $actual = preg_replace('/\r\n/', "\n", trim($output));
+        foreach ($assertions as $sectionName => $sectionAssertion) {
+            if (isset($sections[$sectionName])) {
+                $sectionContent = preg_replace('/\r\n/', "\n", trim($sections[$sectionName]));
+                $assertion      = $sectionAssertion;
+                $expected       = $sectionName == 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
+                break;
+            }
+        }
+
+        PHPUnit_Framework_Assert::$assertion($expected, $actual);
+    }
+
+    /**
      * Runs a test and collects its result in a TestResult instance.
      *
      * @param  PHPUnit_Framework_TestResult $result
@@ -135,19 +160,8 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $jobResult = $this->phpUtil->runJob($code, $settings);
             $time      = PHP_Timer::stop();
 
-            if (isset($sections['EXPECT'])) {
-                $assertion = 'assertEquals';
-                $expected  = $sections['EXPECT'];
-            } else {
-                $assertion = 'assertStringMatchesFormat';
-                $expected  = $sections['EXPECTF'];
-            }
-
-            $output   = preg_replace('/\r\n/', "\n", trim($jobResult['stdout']));
-            $expected = preg_replace('/\r\n/', "\n", trim($expected));
-
             try {
-                PHPUnit_Framework_Assert::$assertion($expected, $output);
+                $this->assertPhptExpectation($sections, $jobResult['stdout']);
             } catch (PHPUnit_Framework_AssertionFailedError $e) {
                 $result->addFailure($this, $e, $time);
             } catch (Throwable $t) {
@@ -209,7 +223,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         if (!isset($sections['FILE']) ||
-            (!isset($sections['EXPECT']) && !isset($sections['EXPECTF']))) {
+            (!isset($sections['EXPECT']) && !isset($sections['EXPECTF']) && !isset($sections['EXPECTREGEX']))) {
             throw new PHPUnit_Framework_Exception('Invalid PHPT file');
         }
 
