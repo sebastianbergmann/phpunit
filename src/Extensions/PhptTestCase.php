@@ -27,6 +27,11 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     private $filename;
 
     /**
+     * @var PHPUnit_Util_PHP
+     */
+    private $phpUtil;
+
+    /**
      * @var array
      */
     private $settings = array(
@@ -78,6 +83,34 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     }
 
     /**
+     * Defines the PHPUnit_Util_PHP instance to run PHP code.
+     *
+     * @param  PHPUnit_Util_PHP $phpUtil
+     *
+     * @return null
+     */
+    public function setPhpUtil(PHPUnit_Util_PHP $phpUtil)
+    {
+        $this->phpUtil = $phpUtil;
+    }
+
+    /**
+     * Returns the current instance of PHPUnit_Util_PHP which runs PHP code.
+     *
+     * If there is not defined instance creates one.
+     *
+     * @return PHPUnit_Util_PHP
+     */
+    public function getPhpUtil()
+    {
+        if (!$this->phpUtil instanceof PHPUnit_Util_PHP) {
+            $this->phpUtil = PHPUnit_Util_PHP::factory();
+        }
+
+        return $this->phpUtil;
+    }
+
+    /**
      * Counts the number of test cases executed by run(TestResult result).
      *
      * @return integer
@@ -102,7 +135,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $result = new PHPUnit_Framework_TestResult;
         }
 
-        $php  = PHPUnit_Util_PHP::factory();
+        $php = $this->getPhpUtil();
         $skip = false;
         $time = 0;
 
