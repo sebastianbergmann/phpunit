@@ -138,6 +138,9 @@ class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
      */
     public function toString()
     {
-        return 'count matches ';
+        return sprintf(
+            'count matches %d',
+            $this->expectedCount
+        );
     }
 }
