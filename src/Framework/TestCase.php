@@ -1944,20 +1944,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     private function stopOutputBuffering()
     {
+        $output = '';
+        $didNotClose = false;
         if (ob_get_level() != $this->outputBufferingLevel) {
-            while (ob_get_level() > $this->outputBufferingLevel-1) {
-                ob_end_clean();
+            $didNotClose = true;
+
+            while (ob_get_level() >= $this->outputBufferingLevel+1) {
+                $output .= ob_get_clean();
             }
-
-            $this->outputBufferingActive = false;
-            $this->outputBufferingLevel = null;
-
-            throw new PHPUnit_Framework_RiskyTestError(
-                'Test code or tested code did not (only) close its own output buffers'
-            );
         }
 
-        $output = ob_get_contents();
+        $output .= ob_get_clean();
 
         if ($this->outputCallback === false) {
             $this->output = $output;
@@ -1968,10 +1965,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
         }
 
-        ob_end_clean();
-
         $this->outputBufferingActive = false;
         $this->outputBufferingLevel  = null;
+
+        if ($didNotClose) {
+            throw new PHPUnit_Framework_RiskyTestError(
+                'Test code or tested code did not (only) close its own output buffers'
+            );
+        }
     }
 
     private function snapshotGlobalState()
