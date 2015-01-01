@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the PHPUnit_MockObject.
+ * This file is part of the PHPUnit_MockObject package.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
