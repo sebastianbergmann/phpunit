@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <xs:annotation>
     <xs:documentation source="http://www.phpunit.de/manual/4.1/en/appendixes.configuration.html">
       This Schema file defines the rules by which the XML configuration file of PHPUnit 4.2 may be structured.
@@ -190,6 +190,7 @@
     <xs:attribute name="bootstrap" type="xs:anyURI"/>
     <xs:attribute name="cacheTokens" type="xs:boolean"/>
     <xs:attribute name="colors" type="xs:boolean" default="false"/>
+    <xs:attribute name="columns" type="xs:integer" default="80"/>
     <xs:attribute name="convertErrorsToExceptions" type="xs:boolean" default="true"/>
     <xs:attribute name="convertNoticesToExceptions" type="xs:boolean" default="true"/>
     <xs:attribute name="convertWarningsToExceptions" type="xs:boolean" default="true"/>
@@ -245,7 +246,7 @@
   <xs:element name="testsuites" type="testSuitesType" substitutionGroup="testSuiteFacet"/>
   <xs:complexType name="testSuitesType">
     <xs:sequence>
-      <xs:element name="testsuite" type="testSuiteType"/>
+      <xs:element name="testsuite" type="testSuiteType" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="testSuiteType">
