@@ -79,6 +79,7 @@ The following commands can be used to check out the appropriate branches for PHP
     cd php-code-coverage && git checkout 1.1 && cd ..
     cd phpunit-mock-objects && git checkout 1.1 && cd ..
     cd phpunit-selenium && git checkout 1.1 && cd ..
+    cd php-token-stream && git checkout 1.1.8 && cd ..
 
 Contributing
 ------------
@@ -125,5 +126,5 @@ Note that you might have to change the path to your pear installation here point
 
 > @echo off
 >
-> php -d include_path='.;../phpunit/;../dbunit/;../php-code-coverage/;../php-file-iterator/;../php-invoker/;../php-text-template/;../php-timer;../php-token-stream;../phpunit-mock-objects/;../phpunit-selenium/;../phpunit-story/;C:/Program Files/PHP/pear' ../phpunit/phpunit.php %*
+> php -d "include_path='.;../phpunit/;../dbunit/;../php-code-coverage/;../php-file-iterator/;../php-invoker/;../php-text-template/;../php-timer;../php-token-stream;../phpunit-mock-objects/;../phpunit-selenium/;../phpunit-story/;C:/Program Files/PHP/pear'" ../phpunit/phpunit.php %*
 
