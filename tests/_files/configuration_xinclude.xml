@@ -18,7 +18,11 @@
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60"
-         strict="false"
+         beStrictAboutTestsThatDoNotTestAnything="false"
+         beStrictAboutOutputDuringTests="false"
+         beStrictAboutTestSize="false"
+         beStrictAboutTodoAnnotatedTests="false"
+         checkForUnintentionallyCoveredCode="false"
          verbose="false">
          <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
              href="configuration.xml"
