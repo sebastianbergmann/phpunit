@@ -253,6 +253,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     )
                 );
             }
+
+            if (isset($arguments['deprecatedStrictModeOption'])) {
+                print "Deprecated option \"--strict\" used\n\n";
+            }
+
+            if (isset($arguments['deprecatedStrictModeSetting'])) {
+                print "Deprecated configuration setting \"strict\" used\n\n";
+            }
         }
 
         foreach ($arguments['listeners'] as $listener) {
@@ -563,6 +571,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['configuration']->handlePHPConfiguration();
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
+
+            if (isset($phpunitConfiguration['deprecatedStrictModeSetting'])) {
+                $arguments['deprecatedStrictModeSetting'] = true;
+            }
 
             if (isset($phpunitConfiguration['backupGlobals']) &&
                 !isset($arguments['backupGlobals'])) {

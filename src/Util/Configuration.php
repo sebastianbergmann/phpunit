@@ -735,11 +735,12 @@ class PHPUnit_Util_Configuration
                 (string) $root->getAttribute('strict'), false
             );
 
-            $result['reportUselessTests']         = $flag;
-            $result['strictCoverage']             = $flag;
-            $result['disallowTestOutput']         = $flag;
-            $result['enforceTimeLimit']           = $flag;
-            $result['disallowTodoAnnotatedTests'] = $flag;
+            $result['reportUselessTests']          = $flag;
+            $result['strictCoverage']              = $flag;
+            $result['disallowTestOutput']          = $flag;
+            $result['enforceTimeLimit']            = $flag;
+            $result['disallowTodoAnnotatedTests']  = $flag;
+            $result['deprecatedStrictModeSetting'] = true;
         }
 
         if ($root->hasAttribute('verbose')) {
