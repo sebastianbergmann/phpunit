@@ -1,5 +1,12 @@
 --TEST--
 GH-1472: assertEqualXMLStructure modifies the tested elements
+--SKIPIF--
+<?php
+// See: https://github.com/facebook/hhvm/issues/4669
+if (defined('HHVM_VERSION')) {
+    print 'skip: HHVM does not support cloning DOM nodes';
+}
+?>
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
