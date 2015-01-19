@@ -18,7 +18,7 @@ class Issue1340Test extends PHPUnit_Framework_TestCase
         // STDERR of a phpt test is not caught/validated at this point, so this
         // error output does not cause this test to fail.
         // @see https://github.com/sebastianbergmann/phpunit/issues/1169
-        error_log("\n" . __FUNCTION__ . ": stderr:" . self::get4KB() . "\n", 4);
+        error_log("\n" . __FUNCTION__ . ": stderr:" . self::get4KB() . "\n");
         $this->assertTrue(true);
     }
 
@@ -27,7 +27,7 @@ class Issue1340Test extends PHPUnit_Framework_TestCase
      */
     public function testLargeStderrOutputDoesNotBlockInIsolation()
     {
-        error_log("\n" . __FUNCTION__ . ": stderr:" . self::get4KB() . "\n", 4);
+        error_log("\n" . __FUNCTION__ . ": stderr:" . self::get4KB() . "\n");
         $this->assertTrue(true);
     }
 
@@ -65,6 +65,6 @@ class Issue1340Test extends PHPUnit_Framework_TestCase
     public static function onShutdown()
     {
         echo "\nshutdown: stdout:", self::get4KB(), "\n";
-        error_log("\nshutdown: stderr:" . self::get4KB(), 4);
+        error_log("\nshutdown: stderr:" . self::get4KB());
     }
 }
