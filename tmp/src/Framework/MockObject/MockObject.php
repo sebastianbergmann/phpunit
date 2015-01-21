@@ -44,4 +44,9 @@ interface PHPUnit_Framework_MockObject_MockObject /*extends PHPUnit_Framework_Mo
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
     public function __phpunit_verify();
+
+    /**
+     * @return bool
+     */
+    public function __phpunit_hasMatchers();
 }
