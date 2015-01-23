@@ -11,7 +11,7 @@
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
-use SebastianBergmann\Exporter\Context;
+use SebastianBergmann\RecursionContext\Context;
 use SebastianBergmann\Exporter\Exporter;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophet;
