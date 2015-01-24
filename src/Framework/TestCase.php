@@ -1664,8 +1664,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param  mixed                              $data       The data to export as a string
-     * @param  SebastianBergmann\Exporter\Context $processed  Contains all objects and arrays that have previously been processed
+     * @param  mixed                                      $data       The data to export as a string
+     * @param  SebastianBergmann\RecursionContext\Context $processed  Contains all objects and arrays that have previously been processed
      * @return string
      * @since  Method available since Release 3.2.1
      */
@@ -1675,7 +1675,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $exporter = new Exporter();
 
         if (!$processed) {
-            $processed = new Context();
+            $processed = new Context;
         }
 
         $processed->add($data);
