@@ -289,6 +289,14 @@
    </fileset>
   </copy>
 
+  <copy file="${basedir}/vendor/sebastian/recursion-context/LICENSE" tofile="${basedir}/build/phar/sebastian-recursion-context/LICENSE"/>
+  <copy todir="${basedir}/build/phar/sebastian-recursion-context">
+   <fileset dir="${basedir}/vendor/sebastian/recursion-context/src">
+    <include name="**/*.php" />
+    <exclude name="**/autoload.php" />
+   </fileset>
+  </copy>
+
   <copy file="${basedir}/vendor/sebastian/global-state/LICENSE" tofile="${basedir}/build/phar/sebastian-global-state/LICENSE"/>
   <copy todir="${basedir}/build/phar/sebastian-global-state">
    <fileset dir="${basedir}/vendor/sebastian/global-state/src">
