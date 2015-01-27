@@ -11,7 +11,6 @@
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
-use SebastianBergmann\RecursionContext\Context;
 use SebastianBergmann\Exporter\Exporter;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophet;
@@ -1664,41 +1663,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param  mixed                                      $data       The data to export as a string
-     * @param  SebastianBergmann\RecursionContext\Context $processed  Contains all objects and arrays that have previously been processed
-     * @return string
-     * @since  Method available since Release 3.2.1
-     */
-    protected function dataToString(&$data, $processed = null)
-    {
-        $result = array();
-        $exporter = new Exporter();
-
-        if (!$processed) {
-            $processed = new Context;
-        }
-
-        $processed->add($data);
-
-        foreach ($data as $key => $value) {
-            if (is_array($value)) {
-                if ($processed->contains($data[$key]) !== false) {
-                    $result[] = '*RECURSION*';
-                } else {
-                    $result[] = sprintf(
-                        'array(%s)',
-                        $this->dataToString($data[$key], $processed)
-                    );
-                }
-            } else {
-                $result[] = $exporter->shortenedExport($value);
-            }
-        }
-
-        return implode(', ', $result);
-    }
-
-    /**
      * Gets the data set description of a TestCase.
      *
      * @param  boolean $includeData
@@ -1716,8 +1680,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $buffer .= sprintf(' with data set "%s"', $this->dataName);
             }
 
+            $exporter = new Exporter;
+
             if ($includeData) {
-                $buffer .= sprintf(' (%s)', $this->dataToString($this->data));
+                $buffer .= sprintf(' (%s)', $exporter->shortenedRecursiveExport($this->data));
             }
         }
 
