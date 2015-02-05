@@ -40,10 +40,6 @@ class PHPUnit_Util_Test
 
     private static $annotationCache = array();
 
-    private static $templateMethods = array(
-      'setUp', 'assertPreConditions', 'assertPostConditions', 'tearDown'
-    );
-
     private static $hookMethods = array();
 
     /**
