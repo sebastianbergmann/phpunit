@@ -26,7 +26,7 @@
 class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {
     /**
-     * @var array
+     * @var PHPUnit_Framework_Constraint[]
      */
     protected $parameters = array();
 
