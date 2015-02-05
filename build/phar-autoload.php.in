@@ -12,24 +12,7 @@ if (__FILE__ == realpath($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
 define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', $phar));
 define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
-spl_autoload_register(
-  function ($class)
-  {
-      static $classes = NULL;
-
-      if ($classes === NULL) {
-          $classes = array(
-            ___CLASSLIST___
-          );
-      }
-
-      $class = strtolower($class);
-
-      if (isset($classes[$class])) {
-          require __PHPUNIT_PHAR_ROOT__ . $classes[$class];
-      }
-  }
-);
+___FILELIST___
 
 Phar::mapPhar('___PHAR___');
 
