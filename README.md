@@ -26,8 +26,6 @@ Alternatively, you may use [Composer](http://getcomposer.org/) to download and i
 
 Please refer to [CONTRIBUTING.md](https://github.com/sebastianbergmann/phpunit/blob/master/CONTRIBUTING.md) for information on how to contribute to PHPUnit and its related projects.
 
-The development of PHPUnit is discussed on the [dev@phpunit.de](mailto:dev-subscribe@phpunit.de) mailing list as well as on the [#phpunit channel on the Freenode IRC network](irc://irc.freenode.net/phpunit).
-
 ## List of Contributors
 
 Thanks to everyone who has contributed to PHPUnit! You can find a detailed list of contributors on every PHPUnit related package on GitHub. This list shows only the major components:
