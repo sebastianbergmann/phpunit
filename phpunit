@@ -26,7 +26,7 @@ foreach ($directories as $file) {
         break;
     }
 }
-
+unset($directories);
 unset($file);
 
 if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
