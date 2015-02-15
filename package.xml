@@ -9,6 +9,7 @@
                       http://pear.php.net/dtd/package-2.0.xsd">
  <name>PHPUnit</name>
  <channel>pear.phpunit.de</channel>
+<<<<<<< HEAD
  <summary>The PHP Unit Testing framework.</summary>
  <description>The PHP Unit Testing framework.</description>
  <lead>
@@ -21,11 +22,27 @@
  <version>
   <release>3.7.27</release>
   <api>3.7.0</api>
+=======
+ <summary>Regression testing framework for unit tests.</summary>
+ <description>PHPUnit is a regression testing framework used by the developer who implements unit tests in PHP. This is the version to be used with PHP 4.
+ </description>
+ <lead>
+  <name>Sebastian Bergmann</name>
+  <user>sb</user>
+  <email>sb@sebastian-bergmann.de</email>
+  <active>yes</active>
+ </lead>
+ <date>2007-05-13</date>
+ <version>
+  <release>1.3.3</release>
+  <api>1.3</api>
+>>>>>>> FETCH_HEAD
  </version>
  <stability>
   <release>stable</release>
   <api>stable</api>
  </stability>
+<<<<<<< HEAD
  <license>The BSD 3-Clause License</license>
  <notes>http://github.com/sebastianbergmann/phpunit/blob/master/README.md</notes>
  <contents>
@@ -205,10 +222,64 @@
     <tasks:replace from="@bin_dir@" to="bin_dir" type="pear-config" />
    </file>
   </dir>
+=======
+ <license>BSD License</license>
+ <notes>http://www.phpunit.de/wiki/ChangeLog</notes>
+ <contents>
+  <dir name="/">
+   <dir name="PHPUnit">
+    <dir name="GUI">
+     <file name="Gtk.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="HTML.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="HTML.tpl" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+     <file name="SetupDecorator.php" role="php">
+      <tasks:replace from="@package_version@" to="version" type="package-info" />
+     </file>
+    </dir> <!-- //PHPUnit/GUI -->
+    <file name="Assert.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="RepeatedTest.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="Skeleton.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="TestCase.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="TestDecorator.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="TestFailure.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="TestListener.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="TestResult.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+    <file name="TestSuite.php" role="php">
+     <tasks:replace from="@package_version@" to="version" type="package-info" />
+    </file>
+   </dir> <!-- //PHPUnit -->
+   <file name="PHPUnit.php" role="php">
+    <tasks:replace from="@package_version@" to="version" type="package-info" />
+   </file>
+  </dir> <!-- / -->
+>>>>>>> FETCH_HEAD
  </contents>
  <dependencies>
   <required>
    <php>
+<<<<<<< HEAD
     <min>5.3.3</min>
    </php>
    <pearinstaller>
@@ -289,4 +360,20 @@
    <ignore name="phpunit.bat" />
   </filelist>
  </phprelease>
+=======
+    <min>4.1.0</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0b1</min>
+   </pearinstaller>
+  </required>
+  <optional>
+   <package>
+    <name>PHP_Compat</name>
+    <channel>pear.php.net</channel>
+   </package>
+  </optional>
+ </dependencies>
+ <phprelease />
+>>>>>>> FETCH_HEAD
 </package>
