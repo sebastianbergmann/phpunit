@@ -699,6 +699,15 @@ class PHPUnit_TextUI_Command
      */
     protected function handleLoader($loaderClass, $loaderFile = '')
     {
+        if (class_exists($loaderClass)) {
+            $class = new ReflectionClass($loaderClass);
+
+            if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
+                $class->isInstantiable()) {
+                return $class->newInstance();
+            }
+        }
+
         if (!class_exists($loaderClass, false)) {
             if ($loaderFile == '') {
                 $loaderFile = PHPUnit_Util_Filesystem::classNameToFilename(
@@ -710,15 +719,6 @@ class PHPUnit_TextUI_Command
 
             if ($loaderFile) {
                 require $loaderFile;
-            }
-        }
-
-        if (class_exists($loaderClass, false)) {
-            $class = new ReflectionClass($loaderClass);
-
-            if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
-                $class->isInstantiable()) {
-                return $class->newInstance();
             }
         }
 
@@ -743,20 +743,6 @@ class PHPUnit_TextUI_Command
      */
     protected function handlePrinter($printerClass, $printerFile = '')
     {
-        if (!class_exists($printerClass, false)) {
-            if ($printerFile == '') {
-                $printerFile = PHPUnit_Util_Filesystem::classNameToFilename(
-                    $printerClass
-                );
-            }
-
-            $printerFile = stream_resolve_include_path($printerFile);
-
-            if ($printerFile) {
-                require $printerFile;
-            }
-        }
-
         if (class_exists($printerClass)) {
             $class = new ReflectionClass($printerClass);
 
@@ -770,6 +756,20 @@ class PHPUnit_TextUI_Command
                 $outputStream = isset($this->arguments['stderr']) ? 'php://stderr' : null;
 
                 return $class->newInstance($outputStream);
+            }
+        }
+
+        if (!class_exists($printerClass, false)) {
+            if ($printerFile == '') {
+                $printerFile = PHPUnit_Util_Filesystem::classNameToFilename(
+                    $printerClass
+                );
+            }
+
+            $printerFile = stream_resolve_include_path($printerFile);
+
+            if ($printerFile) {
+                require $printerFile;
             }
         }
 
