@@ -25,7 +25,7 @@ class CountTest extends PHPUnit_Framework_TestCase
     public function testCount()
     {
         $countConstraint = new PHPUnit_Framework_Constraint_Count(3);
-        $this->assertTrue($countConstraint->evaluate(array(1,2,3), '', true));
+        $this->assertTrue($countConstraint->evaluate(array(1, 2, 3), '', true));
 
         $countConstraint = new PHPUnit_Framework_Constraint_Count(0);
         $this->assertTrue($countConstraint->evaluate(array(), '', true));

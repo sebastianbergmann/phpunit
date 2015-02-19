@@ -555,9 +555,13 @@ class PHPUnit_Util_Configuration
         }
 
         if ($root->hasAttribute('colors')) {
-            $result['colors'] = $this->getBoolean(
-                (string) $root->getAttribute('colors'), false
-            );
+            /* only allow boolean for compatibility with previous versions
+              'always' only allowed from command line */
+            if ($this->getBoolean($root->getAttribute('colors'), false)) {
+                $result['colors'] = PHPUnit_TextUI_ResultPrinter::COLOR_AUTO;
+            } else {
+                $result['colors'] = PHPUnit_TextUI_ResultPrinter::COLOR_NEVER;
+            }
         }
 
         /**

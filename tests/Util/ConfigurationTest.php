@@ -39,6 +39,54 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Util_Configuration::getPHPUnitConfiguration
+     */
+    public function testShouldReadColorsWhenTrueInConfigurationfile()
+    {
+        $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.true.xml';
+        $configurationInstance = PHPUnit_Util_Configuration::getInstance($configurationFilename);
+        $configurationValues = $configurationInstance->getPHPUnitConfiguration();
+
+        $this->assertEquals(PHPUnit_TextUI_ResultPrinter::COLOR_AUTO, $configurationValues['colors']);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Configuration::getPHPUnitConfiguration
+     */
+    public function testShouldReadColorsWhenFalseInConfigurationfile()
+    {
+        $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.false.xml';
+        $configurationInstance = PHPUnit_Util_Configuration::getInstance($configurationFilename);
+        $configurationValues = $configurationInstance->getPHPUnitConfiguration();
+
+        $this->assertEquals(PHPUnit_TextUI_ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Configuration::getPHPUnitConfiguration
+     */
+    public function testShouldReadColorsWhenEmptyInConfigurationfile()
+    {
+        $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.empty.xml';
+        $configurationInstance = PHPUnit_Util_Configuration::getInstance($configurationFilename);
+        $configurationValues = $configurationInstance->getPHPUnitConfiguration();
+
+        $this->assertEquals(PHPUnit_TextUI_ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+    }
+
+    /**
+     * @covers PHPUnit_Util_Configuration::getPHPUnitConfiguration
+     */
+    public function testShouldReadColorsWhenInvalidInConfigurationfile()
+    {
+        $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.invalid.xml';
+        $configurationInstance = PHPUnit_Util_Configuration::getInstance($configurationFilename);
+        $configurationValues = $configurationInstance->getPHPUnitConfiguration();
+
+        $this->assertEquals(PHPUnit_TextUI_ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+    }
+
+    /**
      * @covers PHPUnit_Util_Configuration::getFilterConfiguration
      */
     public function testFilterConfigurationIsReadCorrectly()
@@ -308,7 +356,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'bootstrap' => '/path/to/bootstrap.php',
             'cacheTokens' => false,
             'columns' => 80,
-            'colors' => false,
+            'colors' => 'never',
             'stderr' => false,
             'convertErrorsToExceptions' => true,
             'convertNoticesToExceptions' => true,

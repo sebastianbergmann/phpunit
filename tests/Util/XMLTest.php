@@ -102,7 +102,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
                                                                        'title' => 'xerox'),
                                                  'child'      => array('tag' => 'span',
                                                                        'adjacent-sibling' => array('tag' => 'h1'))));
-         $this->assertEquals($tag, $converted);
+        $this->assertEquals($tag, $converted);
     }
 
     public function testConvertAssertSelectElt()

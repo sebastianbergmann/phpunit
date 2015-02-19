@@ -40,7 +40,7 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $longOptions = array(
-      'colors' => null,
+      'colors==' => null,
       'bootstrap=' => null,
       'columns=' => null,
       'configuration=' => null,
@@ -245,7 +245,7 @@ class PHPUnit_TextUI_Command
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
                 case '--colors': {
-                    $this->arguments['colors'] = true;
+                    $this->arguments['colors'] = $option[1] ?: PHPUnit_TextUI_ResultPrinter::COLOR_AUTO;
                     }
                 break;
 
@@ -699,6 +699,15 @@ class PHPUnit_TextUI_Command
      */
     protected function handleLoader($loaderClass, $loaderFile = '')
     {
+        if (class_exists($loaderClass)) {
+            $class = new ReflectionClass($loaderClass);
+
+            if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
+                $class->isInstantiable()) {
+                return $class->newInstance();
+            }
+        }
+
         if (!class_exists($loaderClass, false)) {
             if ($loaderFile == '') {
                 $loaderFile = PHPUnit_Util_Filesystem::classNameToFilename(
@@ -710,15 +719,6 @@ class PHPUnit_TextUI_Command
 
             if ($loaderFile) {
                 require $loaderFile;
-            }
-        }
-
-        if (class_exists($loaderClass, false)) {
-            $class = new ReflectionClass($loaderClass);
-
-            if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
-                $class->isInstantiable()) {
-                return $class->newInstance();
             }
         }
 
@@ -743,20 +743,6 @@ class PHPUnit_TextUI_Command
      */
     protected function handlePrinter($printerClass, $printerFile = '')
     {
-        if (!class_exists($printerClass, false)) {
-            if ($printerFile == '') {
-                $printerFile = PHPUnit_Util_Filesystem::classNameToFilename(
-                    $printerClass
-                );
-            }
-
-            $printerFile = stream_resolve_include_path($printerFile);
-
-            if ($printerFile) {
-                require $printerFile;
-            }
-        }
-
         if (class_exists($printerClass)) {
             $class = new ReflectionClass($printerClass);
 
@@ -770,6 +756,20 @@ class PHPUnit_TextUI_Command
                 $outputStream = isset($this->arguments['stderr']) ? 'php://stderr' : null;
 
                 return $class->newInstance($outputStream);
+            }
+        }
+
+        if (!class_exists($printerClass, false)) {
+            if ($printerFile == '') {
+                $printerFile = PHPUnit_Util_Filesystem::classNameToFilename(
+                    $printerClass
+                );
+            }
+
+            $printerFile = stream_resolve_include_path($printerFile);
+
+            if ($printerFile) {
+                require $printerFile;
             }
         }
 
@@ -912,9 +912,9 @@ Test Execution Options:
   --no-globals-backup       Do not backup and restore \$GLOBALS for each test.
   --static-backup           Backup and restore static attributes for each test.
 
-  --colors                  Use colors in output.
-  --columns <n>             Number of columns to use for progress outout.
-  --columns max             Use maximum number of columns for progress outout.
+  --colors=<flag>           Use colors in output ("never", "auto" or "always").
+  --columns <n>             Number of columns to use for progress output.
+  --columns max             Use maximum number of columns for progress output.
   --stderr                  Write to STDERR instead of STDOUT.
   --stop-on-error           Stop execution upon first error.
   --stop-on-failure         Stop execution upon first error or failure.

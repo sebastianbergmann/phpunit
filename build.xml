@@ -377,13 +377,12 @@
 
   <exec executable="phpab">
    <arg value="--all" />
+   <arg value="--static" />
    <arg value="--phar" />
    <arg value="--output" />
    <arg path="${basedir}/build/phpunit-${_version}.phar" />
    <arg value="--template" />
    <arg path="${basedir}/build/phar-autoload.php.in" />
-   <arg value="--indent" />
-   <arg value="            " />
    <arg path="${basedir}/build/phar" />
   </exec>
 

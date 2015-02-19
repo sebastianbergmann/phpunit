@@ -71,7 +71,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
         } catch (PHPUnit_Framework_Exception $e) {
             $this->runFailed($e->getMessage());
 
-            return null;
+            return;
         }
 
         try {
@@ -82,7 +82,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
                     'suite() method must be static.'
                 );
 
-                return null;
+                return;
             }
 
             try {
@@ -95,7 +95,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
                     )
                 );
 
-                return null;
+                return;
             }
         } catch (ReflectionException $e) {
             try {

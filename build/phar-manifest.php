@@ -25,4 +25,3 @@ foreach ($lock->packages as $package) {
 
     print "\n";
 }
-

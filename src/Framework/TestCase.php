@@ -949,9 +949,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if ($this->prophet !== null) {
             try {
                 $this->prophet->checkPredictions();
-            }
-
-            catch (Exception $e) {
+            } catch (Exception $e) {
                 /** Intentionally left empty */
             }
 
@@ -1211,7 +1209,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $this->locale[$category] = setlocale($category, null);
 
-        $result = call_user_func_array( 'setlocale', $args );
+        $result = call_user_func_array('setlocale', $args);
 
         if ($result === false) {
             throw new PHPUnit_Framework_Exception(

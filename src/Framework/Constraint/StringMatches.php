@@ -63,8 +63,8 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
             }
         }
 
-        $this->string = join("\n", $from);
-        $other        = join("\n", $to);
+        $this->string = implode("\n", $from);
+        $other        = implode("\n", $to);
 
         $differ = new Differ("--- Expected\n+++ Actual\n");
 
