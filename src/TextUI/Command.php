@@ -53,6 +53,7 @@ class PHPUnit_TextUI_Command
       'debug' => null,
       'exclude-group=' => null,
       'filter=' => null,
+      'percentage-skip=' => null,
       'testsuite=' => null,
       'group=' => null,
       'help' => null,
@@ -333,6 +334,11 @@ class PHPUnit_TextUI_Command
                 case '--filter': {
                     $this->arguments['filter'] = $option[1];
                     }
+                break;
+
+                case '--percentage-skip': {
+                    $this->arguments['percentageSkip'] = $option[1];
+                }
                 break;
 
                 case '--testsuite': {
@@ -899,6 +905,7 @@ Test Selection Options:
   --list-groups             List available test groups.
   --test-suffix ...         Only search for test in files with specified
                             suffix(es). Default: Test.php,.phpt
+  --percentage-skip <n>     Skip an initial percentage of unit tests.
 
 Test Execution Options:
 

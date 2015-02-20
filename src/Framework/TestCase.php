@@ -544,6 +544,26 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @since Method available since Release 3.6.0
+     */
+    protected function checkPercentageSkip()
+    {
+        /**
+         * @var $result \PHPUnit_Framework_TestCase
+         */
+        $result = $this->getTestResultObject();
+        $topTestSuite = $result->topTestSuite();
+        $numTestsInTotal = $topTestSuite->count(true);
+        $numTestsRun = $topTestSuite->getNumTestsRun();
+        $skipPercentage = $result->getPercentageSkip();
+        $percentageOfTestsExecuted = floor(($numTestsRun / $numTestsInTotal) * 100);
+
+        if ($skipPercentage > $percentageOfTestsExecuted) {
+            $this->markTestSkipped("Skipped by jon");
+        }
+    }
+
+    /**
      * Returns the status of this test.
      *
      * @return integer
@@ -717,8 +737,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $hookMethods = PHPUnit_Util_Test::getHookMethods(get_class($this));
 
         try {
+
             $hasMetRequirements = false;
             $this->checkRequirements();
+            $this->checkPercentageSkip();
             $hasMetRequirements = true;
 
             if ($this->inIsolation) {
@@ -820,6 +842,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $e = $_e;
             }
         }
+
+        $this->getTestResultObject()->topTestSuite()->incNumTestsRun();
 
         // Workaround for missing "finally".
         if (isset($e)) {

@@ -47,6 +47,20 @@
 class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing, IteratorAggregate
 {
     /**
+     * Tracks number of tests run.
+     *
+     * @var integer
+     */
+    protected $numTestsRun = 0;
+
+    /**
+     * Last count of tests in this suite.
+     *
+     * @var integer|null
+     */
+    protected $cachedNumTests;
+
+    /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
      * @var boolean
@@ -131,6 +145,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function __construct($theClass = '', $name = '')
     {
+        $this->numTestsRun = 0;
+
         $argumentsValid = false;
 
         if (is_object($theClass) &&
@@ -404,14 +420,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Counts the number of test cases that will be run by this test.
      *
+     * @Param boolean $preferCache Indicates if cache is preferred.
      * @return integer
      */
-    public function count()
+    public function count($preferCache = false)
     {
-        $numTests = 0;
-
-        foreach ($this as $test) {
-            $numTests += count($test);
+        if ($preferCache && $this->cachedNumTests != null) {
+            $numTests = $this->cachedNumTests;
+        } else {
+            $numTests = 0;
+            foreach ($this as $test) {
+                $numTests += count($test);
+            }
+            $this->cachedNumTests = $numTests;
         }
 
         return $numTests;
@@ -701,7 +722,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return $result;
         }
 
+        /**
+         * Loops over each test "suite". Due to how we run PHPUnit, each suite corresponds to a unit test file.
+         */
         foreach ($this as $test) {
+
+            // echo $test->getName() . "\n"    ;
+
             if ($result->shouldStop()) {
                 break;
             }
@@ -727,6 +754,16 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $result->endTestSuite($this);
 
         return $result;
+    }
+
+    public function incNumTestsRun()
+    {
+        $this->numTestsRun++;
+    }
+
+    public function getNumTestsRun()
+    {
+        return $this->numTestsRun;
     }
 
     /**
