@@ -544,7 +544,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @since Method available since Release 3.6.0
+     * Skips the current test if --percentage-skip was used and the current PHPUnit test run is not the required
+     * percentage complete.
      */
     protected function checkPercentageSkip()
     {
@@ -555,11 +556,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $topTestSuite = $result->topTestSuite();
         $numTestsInTotal = $topTestSuite->count(true);
         $numTestsRun = $topTestSuite->getNumTestsRun();
-        $skipPercentage = $result->getPercentageSkip();
+        $percentageSkip = $result->getPercentageSkip();
         $percentageOfTestsExecuted = floor(($numTestsRun / $numTestsInTotal) * 100);
 
-        if ($skipPercentage > $percentageOfTestsExecuted) {
-            $this->markTestSkipped("Skipped by jon");
+        if ($percentageSkip > $percentageOfTestsExecuted) {
+            $this->markTestSkipped("Skipped because --percentage-skip is set to $percentageSkip but the current PHPUnit run is only $percentageOfTestsExecuted complete.");
         }
     }
 
@@ -737,7 +738,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $hookMethods = PHPUnit_Util_Test::getHookMethods(get_class($this));
 
         try {
-
             $hasMetRequirements = false;
             $this->checkRequirements();
             $this->checkPercentageSkip();

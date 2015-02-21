@@ -727,8 +727,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
          */
         foreach ($this as $test) {
 
-            // echo $test->getName() . "\n"    ;
-
             if ($result->shouldStop()) {
                 break;
             }
