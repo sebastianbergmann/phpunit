@@ -553,7 +553,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
          * @var $result \PHPUnit_Framework_TestCase
          */
         $result = $this->getTestResultObject();
+        if (!is_object($result)) {
+            return;
+        }
         $topTestSuite = $result->topTestSuite();
+        if (!is_object($topTestSuite)) {
+            return;
+        }
         $numTestsInTotal = $topTestSuite->count(true);
         $numTestsRun = $topTestSuite->getNumTestsRun();
         $percentageSkip = $result->getPercentageSkip();
@@ -843,7 +849,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
         }
 
-        $this->getTestResultObject()->topTestSuite()->incNumTestsRun();
+        if (is_object($this->getTestResultObject()) && is_object($this->getTestResultObject()->topTestSuite())) {
+            $topTestSuite = $this->getTestResultObject()->topTestSuite();
+            $topTestSuite->incNumTestsRun();
+        }
 
         // Workaround for missing "finally".
         if (isset($e)) {
