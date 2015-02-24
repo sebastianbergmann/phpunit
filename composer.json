@@ -1,5 +1,5 @@
 {
-    "name": "lyft/phpunit",
+    "name": "phpunit/phpunit",
     "description": "The PHP Unit Testing framework.",
     "type": "library",
     "keywords": [
