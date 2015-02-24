@@ -54,13 +54,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $numTestsRun = 0;
 
     /**
-     * Last count of tests in this suite.
-     *
-     * @var integer|null
-     */
-    protected $cachedNumTests;
-
-    /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
      * @var boolean
@@ -420,19 +413,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Counts the number of test cases that will be run by this test.
      *
-     * @Param boolean $preferCache Indicates if cache is preferred.
      * @return integer
      */
-    public function count($preferCache = false)
+    public function count()
     {
-        if ($preferCache && $this->cachedNumTests != null) {
-            $numTests = $this->cachedNumTests;
-        } else {
-            $numTests = 0;
-            foreach ($this as $test) {
-                $numTests += count($test);
-            }
-            $this->cachedNumTests = $numTests;
+        $numTests = 0;
+
+        foreach ($this as $test) {
+            $numTests += count($test);
         }
 
         return $numTests;
