@@ -24,7 +24,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var integer
      */
-    protected $percentageSkip = 0;
+    private $percentageSkip = 0;
 
     /**
      * @var array
