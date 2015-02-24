@@ -51,7 +51,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @var integer
      */
-    protected $numTestsRun = 0;
+    private $numTestsRun = 0;
 
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
