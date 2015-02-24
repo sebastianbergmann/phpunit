@@ -138,8 +138,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function __construct($theClass = '', $name = '')
     {
-        $this->numTestsRun = 0;
-
         $argumentsValid = false;
 
         if (is_object($theClass) &&
