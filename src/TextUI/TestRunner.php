@@ -203,6 +203,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $result->stopOnIncomplete(true);
         }
 
+        if ($arguments['percentageSkip']) {
+            $result->setPercentageSkip((int) $arguments['percentageSkip']);
+        }
+
         if ($arguments['stopOnRisky']) {
             $result->stopOnRisky(true);
         }
@@ -907,6 +911,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['enforceTimeLimit']                   = isset($arguments['enforceTimeLimit'])                   ? $arguments['enforceTimeLimit']                   : false;
         $arguments['disallowTodoAnnotatedTests']         = isset($arguments['disallowTodoAnnotatedTests'])         ? $arguments['disallowTodoAnnotatedTests']         : false;
         $arguments['verbose']                            = isset($arguments['verbose'])                            ? $arguments['verbose']                            : false;
+        $arguments['percentageSkip']                     = isset($arguments['percentageSkip'])                     ? $arguments['percentageSkip']                     : 0;
     }
 
     /**

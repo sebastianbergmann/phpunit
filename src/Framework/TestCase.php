@@ -544,6 +544,33 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Skips the current test if --percentage-skip was used and the current PHPUnit test run is not the required
+     * percentage complete.
+     */
+    private function checkPercentageSkip()
+    {
+        /**
+         * @var $result \PHPUnit_Framework_TestCase
+         */
+        $result = $this->getTestResultObject();
+        if (!is_object($result)) {
+            return;
+        }
+        $topTestSuite = $result->topTestSuite();
+        if (!is_object($topTestSuite)) {
+            return;
+        }
+        $numTestsInTotal = $topTestSuite->count(true);
+        $numTestsRun = $topTestSuite->getNumTestsRun();
+        $percentageSkip = $result->getPercentageSkip();
+        $percentageOfTestsExecuted = floor(($numTestsRun / $numTestsInTotal) * 100);
+
+        if ($percentageSkip > $percentageOfTestsExecuted) {
+            $this->markTestSkipped("Skipped because --percentage-skip is set to $percentageSkip but the current PHPUnit run is only $percentageOfTestsExecuted complete.");
+        }
+    }
+
+    /**
      * Returns the status of this test.
      *
      * @return integer
@@ -719,6 +746,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         try {
             $hasMetRequirements = false;
             $this->checkRequirements();
+            $this->checkPercentageSkip();
             $hasMetRequirements = true;
 
             if ($this->inIsolation) {
@@ -819,6 +847,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             } catch (Exception $_e) {
                 $e = $_e;
             }
+        }
+
+        if (is_object($this->getTestResultObject()) && is_object($this->getTestResultObject()->topTestSuite())) {
+            $topTestSuite = $this->getTestResultObject()->topTestSuite();
+            $topTestSuite->incNumTestsRun();
         }
 
         // Workaround for missing "finally".

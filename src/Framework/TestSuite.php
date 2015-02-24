@@ -47,6 +47,13 @@
 class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing, IteratorAggregate
 {
     /**
+     * Tracks number of tests run.
+     *
+     * @var integer
+     */
+    private $numTestsRun = 0;
+
+    /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
      * @var boolean
@@ -701,7 +708,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return $result;
         }
 
+        /**
+         * Loops over each test "suite". Due to how we run PHPUnit, each suite corresponds to a unit test file.
+         */
         foreach ($this as $test) {
+
             if ($result->shouldStop()) {
                 break;
             }
@@ -727,6 +738,16 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         $result->endTestSuite($this);
 
         return $result;
+    }
+
+    public function incNumTestsRun()
+    {
+        $this->numTestsRun++;
+    }
+
+    public function getNumTestsRun()
+    {
+        return $this->numTestsRun;
     }
 
     /**
