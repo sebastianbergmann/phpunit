@@ -547,7 +547,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Skips the current test if --percentage-skip was used and the current PHPUnit test run is not the required
      * percentage complete.
      */
-    protected function checkPercentageSkip()
+    private function checkPercentageSkip()
     {
         /**
          * @var $result \PHPUnit_Framework_TestCase
