@@ -47,6 +47,13 @@
 class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing, IteratorAggregate
 {
     /**
+     * Last count of tests in this suite.
+     *
+     * @var integer|null
+     */
+    private $cachedNumTests;
+
+    /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
      * @var boolean
@@ -404,14 +411,19 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Counts the number of test cases that will be run by this test.
      *
+     * @Param boolean $preferCache Indicates if cache is preferred.
      * @return integer
      */
-    public function count()
+    public function count($preferCache = false)
     {
-        $numTests = 0;
-
-        foreach ($this as $test) {
-            $numTests += count($test);
+        if ($preferCache && $this->cachedNumTests != null) {
+            $numTests = $this->cachedNumTests;
+        } else {
+            $numTests = 0;
+            foreach ($this as $test) {
+                $numTests += count($test);
+            }
+            $this->cachedNumTests = $numTests;
         }
 
         return $numTests;
