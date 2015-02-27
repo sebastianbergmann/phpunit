@@ -159,7 +159,8 @@ class PHPUnit_Util_GlobalState
     {
         if (ini_get('register_long_arrays') == '1') {
             return array_merge(
-                self::$superGlobalArrays, self::$superGlobalArraysLong
+                self::$superGlobalArrays,
+                self::$superGlobalArraysLong
             );
         } else {
             return self::$superGlobalArrays;

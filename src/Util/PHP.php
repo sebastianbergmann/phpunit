@@ -49,7 +49,10 @@ abstract class PHPUnit_Util_PHP
         $_result = $this->runJob($job);
 
         $this->processChildResult(
-            $test, $result, $_result['stdout'], $_result['stderr']
+            $test,
+            $result,
+            $_result['stdout'],
+            $_result['stderr']
         );
     }
 
@@ -95,7 +98,8 @@ abstract class PHPUnit_Util_PHP
         if (!empty($stderr)) {
             $result->addError(
                 $test,
-                new PHPUnit_Framework_Exception(trim($stderr)), $time
+                new PHPUnit_Framework_Exception(trim($stderr)),
+                $time
             );
         } else {
             set_error_handler(function ($errno, $errstr, $errfile, $errline) {
@@ -113,7 +117,9 @@ abstract class PHPUnit_Util_PHP
                 $childResult = false;
 
                 $result->addError(
-                    $test, new PHPUnit_Framework_Exception(trim($stdout), 0, $e), $time
+                    $test,
+                    new PHPUnit_Framework_Exception(trim($stdout), 0, $e),
+                    $time
                 );
             }
 
@@ -142,23 +148,33 @@ abstract class PHPUnit_Util_PHP
 
                 if (!empty($notImplemented)) {
                     $result->addError(
-                        $test, $this->getException($notImplemented[0]), $time
+                        $test,
+                        $this->getException($notImplemented[0]),
+                        $time
                     );
                 } elseif (!empty($risky)) {
                     $result->addError(
-                        $test, $this->getException($risky[0]), $time
+                        $test,
+                        $this->getException($risky[0]),
+                        $time
                     );
                 } elseif (!empty($skipped)) {
                     $result->addError(
-                        $test, $this->getException($skipped[0]), $time
+                        $test,
+                        $this->getException($skipped[0]),
+                        $time
                     );
                 } elseif (!empty($errors)) {
                     $result->addError(
-                        $test, $this->getException($errors[0]), $time
+                        $test,
+                        $this->getException($errors[0]),
+                        $time
                     );
                 } elseif (!empty($failures)) {
                     $result->addFailure(
-                        $test, $this->getException($failures[0]), $time
+                        $test,
+                        $this->getException($failures[0]),
+                        $time
                     );
                 }
             }
