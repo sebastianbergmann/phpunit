@@ -325,7 +325,8 @@ class PHPUnit_Util_Configuration
 
             if ($listener->getAttribute('file')) {
                 $file = $this->toAbsolutePath(
-                    (string) $listener->getAttribute('file'), true
+                    (string) $listener->getAttribute('file'),
+                    true
                 );
             }
 
@@ -540,7 +541,8 @@ class PHPUnit_Util_Configuration
 
         if ($root->hasAttribute('cacheTokens')) {
             $result['cacheTokens'] = $this->getBoolean(
-                (string) $root->getAttribute('cacheTokens'), false
+                (string) $root->getAttribute('cacheTokens'),
+                false
             );
         }
 
@@ -556,7 +558,8 @@ class PHPUnit_Util_Configuration
 
         if ($root->hasAttribute('colors')) {
             $result['colors'] = $this->getBoolean(
-                (string) $root->getAttribute('colors'), false
+                (string) $root->getAttribute('colors'),
+                false
             );
         }
 
@@ -565,19 +568,22 @@ class PHPUnit_Util_Configuration
          */
         if ($root->hasAttribute('stderr')) {
             $result['stderr'] = $this->getBoolean(
-                (string)$root->getAttribute('stderr'), false
+                (string)$root->getAttribute('stderr'),
+                false
             );
         }
 
         if ($root->hasAttribute('backupGlobals')) {
             $result['backupGlobals'] = $this->getBoolean(
-                (string) $root->getAttribute('backupGlobals'), true
+                (string) $root->getAttribute('backupGlobals'),
+                true
             );
         }
 
         if ($root->hasAttribute('backupStaticAttributes')) {
             $result['backupStaticAttributes'] = $this->getBoolean(
-                (string) $root->getAttribute('backupStaticAttributes'), false
+                (string) $root->getAttribute('backupStaticAttributes'),
+                false
             );
         }
 
@@ -589,25 +595,29 @@ class PHPUnit_Util_Configuration
 
         if ($root->hasAttribute('convertErrorsToExceptions')) {
             $result['convertErrorsToExceptions'] = $this->getBoolean(
-                (string) $root->getAttribute('convertErrorsToExceptions'), true
+                (string) $root->getAttribute('convertErrorsToExceptions'),
+                true
             );
         }
 
         if ($root->hasAttribute('convertNoticesToExceptions')) {
             $result['convertNoticesToExceptions'] = $this->getBoolean(
-                (string) $root->getAttribute('convertNoticesToExceptions'), true
+                (string) $root->getAttribute('convertNoticesToExceptions'),
+                true
             );
         }
 
         if ($root->hasAttribute('convertWarningsToExceptions')) {
             $result['convertWarningsToExceptions'] = $this->getBoolean(
-                (string) $root->getAttribute('convertWarningsToExceptions'), true
+                (string) $root->getAttribute('convertWarningsToExceptions'),
+                true
             );
         }
 
         if ($root->hasAttribute('forceCoversAnnotation')) {
             $result['forceCoversAnnotation'] = $this->getBoolean(
-                (string) $root->getAttribute('forceCoversAnnotation'), false
+                (string) $root->getAttribute('forceCoversAnnotation'),
+                false
             );
         }
 
@@ -620,37 +630,43 @@ class PHPUnit_Util_Configuration
 
         if ($root->hasAttribute('processIsolation')) {
             $result['processIsolation'] = $this->getBoolean(
-                (string) $root->getAttribute('processIsolation'), false
+                (string) $root->getAttribute('processIsolation'),
+                false
             );
         }
 
         if ($root->hasAttribute('stopOnError')) {
             $result['stopOnError'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnError'), false
+                (string) $root->getAttribute('stopOnError'),
+                false
             );
         }
 
         if ($root->hasAttribute('stopOnFailure')) {
             $result['stopOnFailure'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnFailure'), false
+                (string) $root->getAttribute('stopOnFailure'),
+                false
             );
         }
 
         if ($root->hasAttribute('stopOnIncomplete')) {
             $result['stopOnIncomplete'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnIncomplete'), false
+                (string) $root->getAttribute('stopOnIncomplete'),
+                false
             );
         }
 
         if ($root->hasAttribute('stopOnRisky')) {
             $result['stopOnRisky'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnRisky'), false
+                (string) $root->getAttribute('stopOnRisky'),
+                false
             );
         }
 
         if ($root->hasAttribute('stopOnSkipped')) {
             $result['stopOnSkipped'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnSkipped'), false
+                (string) $root->getAttribute('stopOnSkipped'),
+                false
             );
         }
 
@@ -680,55 +696,64 @@ class PHPUnit_Util_Configuration
 
         if ($root->hasAttribute('timeoutForSmallTests')) {
             $result['timeoutForSmallTests'] = $this->getInteger(
-                (string) $root->getAttribute('timeoutForSmallTests'), 1
+                (string) $root->getAttribute('timeoutForSmallTests'),
+                1
             );
         }
 
         if ($root->hasAttribute('timeoutForMediumTests')) {
             $result['timeoutForMediumTests'] = $this->getInteger(
-                (string) $root->getAttribute('timeoutForMediumTests'), 10
+                (string) $root->getAttribute('timeoutForMediumTests'),
+                10
             );
         }
 
         if ($root->hasAttribute('timeoutForLargeTests')) {
             $result['timeoutForLargeTests'] = $this->getInteger(
-                (string) $root->getAttribute('timeoutForLargeTests'), 60
+                (string) $root->getAttribute('timeoutForLargeTests'),
+                60
             );
         }
 
         if ($root->hasAttribute('beStrictAboutTestsThatDoNotTestAnything')) {
             $result['reportUselessTests'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTestsThatDoNotTestAnything'), false
+                (string) $root->getAttribute('beStrictAboutTestsThatDoNotTestAnything'),
+                false
             );
         }
 
         if ($root->hasAttribute('checkForUnintentionallyCoveredCode')) {
             $result['strictCoverage'] = $this->getBoolean(
-                (string) $root->getAttribute('checkForUnintentionallyCoveredCode'), false
+                (string) $root->getAttribute('checkForUnintentionallyCoveredCode'),
+                false
             );
         }
 
         if ($root->hasAttribute('beStrictAboutOutputDuringTests')) {
             $result['disallowTestOutput'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutOutputDuringTests'), false
+                (string) $root->getAttribute('beStrictAboutOutputDuringTests'),
+                false
             );
         }
 
         if ($root->hasAttribute('beStrictAboutTestSize')) {
             $result['enforceTimeLimit'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTestSize'), false
+                (string) $root->getAttribute('beStrictAboutTestSize'),
+                false
             );
         }
 
         if ($root->hasAttribute('beStrictAboutTodoAnnotatedTests')) {
             $result['disallowTodoAnnotatedTests'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTodoAnnotatedTests'), false
+                (string) $root->getAttribute('beStrictAboutTodoAnnotatedTests'),
+                false
             );
         }
 
         if ($root->hasAttribute('strict')) {
             $flag = $this->getBoolean(
-                (string) $root->getAttribute('strict'), false
+                (string) $root->getAttribute('strict'),
+                false
             );
 
             $result['reportUselessTests']          = $flag;
@@ -741,7 +766,8 @@ class PHPUnit_Util_Configuration
 
         if ($root->hasAttribute('verbose')) {
             $result['verbose'] = $this->getBoolean(
-                (string) $root->getAttribute('verbose'), false
+                (string) $root->getAttribute('verbose'),
+                false
             );
         }
 
@@ -770,7 +796,8 @@ class PHPUnit_Util_Configuration
 
             if ($config->hasAttribute('port')) {
                 $port = $this->getInteger(
-                    (string) $config->getAttribute('port'), 4444
+                    (string) $config->getAttribute('port'),
+                    4444
                 );
             } else {
                 $port = 4444;
@@ -778,7 +805,8 @@ class PHPUnit_Util_Configuration
 
             if ($config->hasAttribute('timeout')) {
                 $timeout = $this->getInteger(
-                    (string) $config->getAttribute('timeout'), 30000
+                    (string) $config->getAttribute('timeout'),
+                    30000
                 );
             } else {
                 $timeout = 30000;

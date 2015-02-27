@@ -340,13 +340,16 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                     count($result),
                     $this->numAssertions,
                     $this->getCountString(
-                        $result->notImplementedCount(), 'Incomplete'
+                        $result->notImplementedCount(),
+                        'Incomplete'
                     ),
                     $this->getCountString(
-                        $result->skippedCount(), 'Skipped'
+                        $result->skippedCount(),
+                        'Skipped'
                     ),
                     $this->getCountString(
-                        $result->riskyCount(), 'Risky'
+                        $result->riskyCount(),
+                        'Risky'
                     )
                 )
             );
@@ -361,7 +364,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                     $this->getCountString($result->failureCount(), 'Failures'),
                     $this->getCountString($result->errorCount(), 'Errors'),
                     $this->getCountString(
-                        $result->notImplementedCount(), 'Incomplete'
+                        $result->notImplementedCount(),
+                        'Incomplete'
                     ),
                     $this->getCountString($result->skippedCount(), 'Skipped')
                 )
@@ -499,7 +503,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         if ($this->debug) {
             $this->write(
                 sprintf(
-                    "\nStarting test '%s'.\n", PHPUnit_Util_Test::describe($test)
+                    "\nStarting test '%s'.\n",
+                    PHPUnit_Util_Test::describe($test)
                 )
             );
         }

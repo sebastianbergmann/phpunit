@@ -68,13 +68,15 @@ abstract class PHPUnit_Framework_Assert
     {
         if (!is_array($subset)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                1, 'array or ArrayAccess'
+                1,
+                'array or ArrayAccess'
             );
         }
 
         if (!is_array($array)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                2, 'array or ArrayAccess'
+                2,
+                'array or ArrayAccess'
             );
         }
 
