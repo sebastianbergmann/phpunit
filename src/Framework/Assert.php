@@ -2143,10 +2143,11 @@ abstract class Assert
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
-        $expected = json_decode($expectedJson);
-        $actual   = json_decode($actualJson);
+        $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
+            $expectedJson
+        );
 
-        static::assertEquals($expected, $actual, $message);
+        static::assertThat($actualJson, $constraint, $message);
     }
 
     /**
@@ -2161,10 +2162,11 @@ abstract class Assert
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
-        $expected = json_decode($expectedJson);
-        $actual   = json_decode($actualJson);
+        $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
+            $expectedJson
+        );
 
-        static::assertNotEquals($expected, $actual, $message);
+        static::assertThat($actualJson, new PHPUnit_Framework_Constraint_Not($constraint), $message);
     }
 
     /**
@@ -2182,7 +2184,6 @@ abstract class Assert
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
-        // call constraint
         $constraint = new JsonMatches(
             $expectedJson
         );
@@ -2205,7 +2206,6 @@ abstract class Assert
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
-        // call constraint
         $constraint = new JsonMatches(
             $expectedJson
         );
@@ -2231,7 +2231,6 @@ abstract class Assert
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
-        // call constraint
         $constraintExpected = new JsonMatches(
             $expectedJson
         );
@@ -2260,7 +2259,6 @@ abstract class Assert
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
-        // call constraint
         $constraintExpected = new JsonMatches(
             $expectedJson
         );
