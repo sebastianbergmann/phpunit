@@ -48,17 +48,50 @@ class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constra
      */
     protected function matches($other)
     {
-        $decodedOther = json_decode($other);
-        if (json_last_error()) {
+        list($error, $recodedOther) = $this->canonicalizeJson($other);
+        if ($error) {
             return false;
         }
 
-        $decodedValue = json_decode($this->value);
-        if (json_last_error()) {
+        list ($error, $recodedValue) = $this->canonicalizeJson($this->value);
+        if ($error) {
             return false;
         }
 
-        return $decodedOther == $decodedValue;
+        return $recodedOther == $recodedValue;
+    }
+
+    /*
+     * To allow comparison of JSON strings, first process them into a consistent
+     * format so that they can be compared as strings.
+     * @return array ($error, $canonicalized_json)  The $error parameter is used
+     * to indicate an error decoding the json.  This is used to avoid ambiguity
+     * with JSON strings consisting entirely of 'null' or 'false'.
+     */
+    private function canonicalizeJson($json)
+    {
+        $decodedJson = json_decode($json, true);
+        if (json_last_error()) {
+            return array(true, null);
+        }
+        $this->recursiveSort($decodedJson);
+        $reencodedJson = json_encode($decodedJson);
+        return array(false, $reencodedJson);
+    }
+
+    /*
+     * JSON object keys are unordered while PHP array keys are ordered.
+     * Sort all array keys to ensure both the expected and actual values have
+     * their keys in the same order.
+     */
+    private function recursiveSort(&$json)
+    {
+        if (is_array($json)) {
+            ksort($json);
+            foreach ($json as $key => &$value) {
+                $this->recursiveSort($value);
+            }
+        }
     }
 
     /**
