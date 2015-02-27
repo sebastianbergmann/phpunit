@@ -60,7 +60,8 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
             $this->timesRepeat = $timesRepeat;
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
-                2, 'positive integer'
+                2,
+                'positive integer'
             );
         }
 

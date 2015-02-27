@@ -314,11 +314,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if ($codeCoverageReports > 0 && (!extension_loaded('tokenizer') || !$this->canCollectCodeCoverage)) {
             if (!extension_loaded('tokenizer')) {
                 $this->showExtensionNotLoadedMessage(
-                    'tokenizer', 'No code coverage will be generated.'
+                    'tokenizer',
+                    'No code coverage will be generated.'
                 );
             } elseif (!extension_loaded('Xdebug')) {
                 $this->showExtensionNotLoadedMessage(
-                    'Xdebug', 'No code coverage will be generated.'
+                    'Xdebug',
+                    'No code coverage will be generated.'
                 );
             }
 
@@ -327,7 +329,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ($codeCoverageReports > 0) {
             $codeCoverage = new PHP_CodeCoverage(
-                null, $this->codeCoverageFilter
+                null,
+                $this->codeCoverageFilter
             );
 
             $codeCoverage->setAddUncoveredFilesFromWhitelist(
@@ -378,7 +381,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['junitLogfile'])) {
             $result->addListener(
                 new PHPUnit_Util_Log_JUnit(
-                    $arguments['junitLogfile'], $arguments['logIncompleteSkipped']
+                    $arguments['junitLogfile'],
+                    $arguments['logIncompleteSkipped']
                 )
             );
         }
@@ -781,7 +785,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($loggingConfiguration['plain'])) {
                 $arguments['listeners'][] = new PHPUnit_TextUI_ResultPrinter(
-                    $loggingConfiguration['plain'], true
+                    $loggingConfiguration['plain'],
+                    true
                 );
             }
 
@@ -835,7 +840,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                     foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
                         $this->codeCoverageFilter->addDirectoryToBlacklist(
-                            $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
+                            $dir['path'],
+                            $dir['suffix'],
+                            $dir['prefix'],
+                            $dir['group']
                         );
                     }
 
@@ -845,7 +853,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                     foreach ($filterConfiguration['blacklist']['exclude']['directory'] as $dir) {
                         $this->codeCoverageFilter->removeDirectoryFromBlacklist(
-                            $dir['path'], $dir['suffix'], $dir['prefix'], $dir['group']
+                            $dir['path'],
+                            $dir['suffix'],
+                            $dir['prefix'],
+                            $dir['group']
                         );
                     }
 
@@ -856,7 +867,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
                     $this->codeCoverageFilter->addDirectoryToWhitelist(
-                        $dir['path'], $dir['suffix'], $dir['prefix']
+                        $dir['path'],
+                        $dir['suffix'],
+                        $dir['prefix']
                     );
                 }
 
@@ -866,7 +879,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
                     $this->codeCoverageFilter->removeDirectoryFromWhitelist(
-                        $dir['path'], $dir['suffix'], $dir['prefix']
+                        $dir['path'],
+                        $dir['suffix'],
+                        $dir['prefix']
                     );
                 }
 
