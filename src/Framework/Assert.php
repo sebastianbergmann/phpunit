@@ -2242,10 +2242,11 @@ abstract class PHPUnit_Framework_Assert
         self::assertJson($expectedJson, $message);
         self::assertJson($actualJson, $message);
 
-        $expected = json_decode($expectedJson);
-        $actual   = json_decode($actualJson);
+        $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
+            $expectedJson
+        );
 
-        self::assertEquals($expected, $actual, $message);
+        self::assertThat($actualJson, $constraint, $message);
     }
 
     /**
@@ -2260,10 +2261,11 @@ abstract class PHPUnit_Framework_Assert
         self::assertJson($expectedJson, $message);
         self::assertJson($actualJson, $message);
 
-        $expected = json_decode($expectedJson);
-        $actual   = json_decode($actualJson);
+        $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
+            $expectedJson
+        );
 
-        self::assertNotEquals($expected, $actual, $message);
+        self::assertThat($actualJson, new PHPUnit_Framework_Constraint_Not($constraint), $message);
     }
 
     /**
@@ -2281,7 +2283,6 @@ abstract class PHPUnit_Framework_Assert
         self::assertJson($expectedJson, $message);
         self::assertJson($actualJson, $message);
 
-        // call constraint
         $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
             $expectedJson
         );
@@ -2304,7 +2305,6 @@ abstract class PHPUnit_Framework_Assert
         self::assertJson($expectedJson, $message);
         self::assertJson($actualJson, $message);
 
-        // call constraint
         $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
             $expectedJson
         );
@@ -2330,7 +2330,6 @@ abstract class PHPUnit_Framework_Assert
         self::assertJson($expectedJson, $message);
         self::assertJson($actualJson, $message);
 
-        // call constraint
         $constraintExpected = new PHPUnit_Framework_Constraint_JsonMatches(
             $expectedJson
         );
@@ -2359,7 +2358,6 @@ abstract class PHPUnit_Framework_Assert
         self::assertJson($expectedJson, $message);
         self::assertJson($actualJson, $message);
 
-        // call constraint
         $constraintExpected = new PHPUnit_Framework_Constraint_JsonMatches(
             $expectedJson
         );
