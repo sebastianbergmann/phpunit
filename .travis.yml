@@ -9,11 +9,6 @@ php:
   - hhvm
   - hhvm-nightly
 
-env:
-  matrix:
-    - PREFER_LOWEST="--prefer-lowest"
-    - PREFER_LOWEST=""
-
 matrix:
   allow_failures:
     - php: hhvm
@@ -25,7 +20,7 @@ before_install:
   - composer self-update
 
 install:
-  - travis_retry composer install --no-interaction --prefer-source $PREFER_LOWEST
+  - travis_retry composer install --no-interaction --prefer-source
 
 script:
   - ./phpunit
