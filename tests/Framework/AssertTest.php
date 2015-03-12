@@ -138,6 +138,76 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertContainsMatching
+     * @dataProvider assertContainsMatchingProvider
+     */
+    public function testAssertContainsMatching($partialResult1, $partialResult2, $expectedException = null)
+    {
+        $book1 = new Book();
+        $book2 = new Book();
+
+        $bookConstraint = $this->getMock('PHPUnit_Framework_Constraint', array(), array(), '', false);
+        $bookConstraint
+            ->expects($this->atLeastOnce())
+            ->method('evaluate')
+            ->withConsecutive(
+                array($this->identicalTo($book1)),
+                array($this->identicalTo($book2))
+            )
+            ->will($this->onConsecutiveCalls($partialResult1, $partialResult2))
+        ;
+
+        $this->setExpectedException($expectedException);
+
+        $this->assertContainsMatching($bookConstraint, array($book1, $book2));
+    }
+    
+    public function assertContainsMatchingProvider()
+    {
+        return array(
+            'item 1 mismatch, item 2 mismatch'  => array(false, false, 'PHPUnit_Framework_AssertionFailedError'),
+            'item 1 mismatch, item 2 match'     => array(false, true),
+            'item 1 match, item 2 mismatch'     => array(true, false),
+            'item 1 match, item 2 match'        => array(true, true),
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertContainsOnlyMatching
+     * @dataProvider assertContainsOnlyMatchingProvider
+     */
+    public function testAssertContainsOnlyMatching($partialResult1, $partialResult2, $expectedException = null)
+    {
+        $book1 = new Book();
+        $book2 = new Book();
+
+        $constraint = $this->getMock('PHPUnit_Framework_Constraint', array(), array(), '', false);
+        $constraint
+            ->expects($this->atLeastOnce())
+            ->method('evaluate')
+            ->withConsecutive(
+                array($this->identicalTo($book1)),
+                array($this->identicalTo($book2))
+            )
+            ->will($this->onConsecutiveCalls($partialResult1, $partialResult2))
+        ;
+
+        $this->setExpectedException($expectedException);
+
+        $this->assertContainsOnlyMatching($constraint, array($book1, $book2));
+    }
+
+    public function assertContainsOnlyMatchingProvider()
+    {
+        return array(
+            'item 1 mismatch, item 2 mismatch'  => array(false, false, 'PHPUnit_Framework_AssertionFailedError'),
+            'item 1 mismatch, item 2 match'     => array(false, true, 'PHPUnit_Framework_AssertionFailedError'),
+            'item 1 match, item 2 mismatch'     => array(true, false, 'PHPUnit_Framework_AssertionFailedError'),
+            'item 1 match, item 2 match'        => array(true, true),
+        );
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertArrayHasKey
      * @expectedException PHPUnit_Framework_Exception
      */
@@ -2909,6 +2979,27 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     public function testAssertThatContainsOnlyInstancesOf()
     {
         $this->assertThat(array(new Book), $this->containsOnlyInstancesOf('Book'));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::containsMatching
+     */
+    public function testAssertThatContainsMatching()
+    {
+        $book1 = new Book();
+        $book2 = new Book();
+        $this->assertThat(array($book1, $book2), $this->containsMatching($this->identicalTo($book2)));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::containsOnlyMatching
+     */
+    public function testAssertThatContainsOnlyMatching()
+    {
+        $book = new Book();
+        $this->assertThat(array($book, $book), $this->containsOnlyMatching($this->identicalTo($book)));
     }
 
     /**

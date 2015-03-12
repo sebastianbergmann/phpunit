@@ -1933,6 +1933,38 @@ function containsOnlyInstancesOf($classname)
 }
 
 /**
+ * Returns a PHPUnit_Framework_Constraint_TraversableContainsMatching
+ * matcher object.
+ *
+ * @param  PHPUnit_Framework_Constraint                             $itemConstraint
+ * @param  PHPUnit_Framework_Constraint|null                        $keyConstraint
+ * @return PHPUnit_Framework_Constraint_TraversableContainsMatching
+ */
+function containsMatching(PHPUnit_Framework_Constraint $itemConstraint, PHPUnit_Framework_Constraint $keyConstraint = null)
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::containsMatching',
+        func_get_args()
+    );
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_TraversableContainsMatchingOnly
+ * matcher object.
+ *
+ * @param  PHPUnit_Framework_Constraint                                 $itemConstraint
+ * @param  PHPUnit_Framework_Constraint|null                            $keyConstraint
+ * @return PHPUnit_Framework_Constraint_TraversableContainsMatchingOnly
+ */
+function containsOnlyMatching(PHPUnit_Framework_Constraint $itemConstraint, PHPUnit_Framework_Constraint $keyConstraint = null)
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::containsOnlyMatching',
+        func_get_args()
+    );
+}
+
+/**
  * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object.
  *
  * @param  mixed   $value
