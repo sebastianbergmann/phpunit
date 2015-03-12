@@ -123,4 +123,12 @@ class PHPUnit_Framework_Constraint_TraversableContainsMatching extends PHPUnit_F
     {
         return 'contains an item value of which %s and key %s';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count()
+    {
+        return count($this->itemConstraint) + count($this->keyConstraint);
+    }
 }
