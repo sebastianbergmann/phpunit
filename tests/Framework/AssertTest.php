@@ -146,7 +146,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $book1 = new Book();
         $book2 = new Book();
 
-        $bookConstraint = $this->getMock('PHPUnit_Framework_Constraint', array(), array(), '', false);
+        $bookConstraint = $this->getMock('PHPUnit_Framework_Constraint');
         $bookConstraint
             ->expects($this->atLeastOnce())
             ->method('evaluate')
@@ -181,7 +181,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $book1 = new Book();
         $book2 = new Book();
 
-        $constraint = $this->getMock('PHPUnit_Framework_Constraint', array(), array(), '', false);
+        $constraint = $this->getMock('PHPUnit_Framework_Constraint');
         $constraint
             ->expects($this->atLeastOnce())
             ->method('evaluate')
