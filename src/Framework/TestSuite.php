@@ -411,7 +411,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Counts the number of test cases that will be run by this test.
      *
-     * @Param boolean $preferCache Indicates if cache is preferred.
+     * @param boolean $preferCache Indicates if cache is preferred.
      * @return integer
      */
     public function count($preferCache = false)
