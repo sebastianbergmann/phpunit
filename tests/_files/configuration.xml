@@ -23,6 +23,7 @@
          beStrictAboutTestSize="false"
          beStrictAboutTodoAnnotatedTests="false"
          checkForUnintentionallyCoveredCode="false"
+         beStrictAboutChangesToGlobalState="false"
          verbose="false">
   <testsuites>
     <testsuite name="My Test Suite">

@@ -75,6 +75,7 @@ class PHPUnit_TextUI_Command
       'disallow-test-output' => null,
       'enforce-time-limit' => null,
       'disallow-todo-tests' => null,
+      'strict-global-state' => null,
       'strict' => null,
       'tap' => null,
       'testdox' => null,
@@ -491,6 +492,11 @@ class PHPUnit_TextUI_Command
                     }
                 break;
 
+                case '--strict-global-state': {
+                    $this->arguments['disallowChangesToGlobalState'] = true;
+                }
+                break;
+
                 case '--disallow-test-output': {
                     $this->arguments['disallowTestOutput'] = true;
                     }
@@ -904,6 +910,7 @@ Test Execution Options:
 
   --report-useless-tests    Be strict about tests that do not test anything.
   --strict-coverage         Be strict about unintentionally covered code.
+  --strict-global-state     Be strict about changes to global state
   --disallow-test-output    Be strict about output during tests.
   --enforce-time-limit      Enforce time limit based on test size.
   --disallow-todo-tests     Disallow @todo-annotated tests.
