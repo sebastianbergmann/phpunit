@@ -23,6 +23,7 @@
          beStrictAboutTestSize="false"
          beStrictAboutTodoAnnotatedTests="false"
          checkForUnintentionallyCoveredCode="false"
+         beStrictAboutChangesToGlobalState="false"
          verbose="false">
          <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
              href="configuration.xml"

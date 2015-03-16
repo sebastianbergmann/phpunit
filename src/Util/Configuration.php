@@ -43,6 +43,7 @@
  *          beStrictAboutTestSize="false"
  *          beStrictAboutTodoAnnotatedTests="false"
  *          checkForUnintentionallyCoveredCode="false"
+ *          disallowChangesToGlobalState="false"
  *          verbose="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
@@ -735,6 +736,13 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('beStrictAboutOutputDuringTests')) {
             $result['disallowTestOutput'] = $this->getBoolean(
                 (string) $root->getAttribute('beStrictAboutOutputDuringTests'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutChangesToGlobalState')) {
+            $result['disallowChangesToGlobalState'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutChangesToGlobalState'),
                 false
             );
         }
