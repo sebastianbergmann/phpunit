@@ -13,6 +13,7 @@ define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', $phar));
 define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
 ___FILELIST___
+require __PHPUNIT_PHAR_ROOT__ . '/phpunit/Framework/Assert/Functions.php';
 
 Phar::mapPhar('___PHAR___');
 
