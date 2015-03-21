@@ -1218,7 +1218,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function refuteSame($expected, $actual, $message = '')
     {
-        return call_user_func_array('self::assertNotSame', func_get_args());
+        return self::assertNotSame($expected, $actual, $message);
     }
 
     /**

@@ -1134,7 +1134,7 @@ function assertNotSame($expected, $actual, $message = '')
  */
 function refuteSame($expected, $actual, $message = '')
 {
-    return call_user_func_array('assertNotSame', func_get_args());
+    return assertNotSame($expected, $actual, $message);
 }
 
 /**
