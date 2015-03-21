@@ -1208,6 +1208,20 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Refutes that two variables have the same type and value.
+     * Used on objects, it refutes that two variables reference
+     * the same object. Alias for self::assertNotSame().
+     *
+     * @param mixed  $expected
+     * @param mixed  $actual
+     * @param string $message
+     */
+    public static function refuteSame($expected, $actual, $message = '')
+    {
+        return call_user_func_array('self::assertNotSame', func_get_args());
+    }
+
+    /**
      * Asserts that a variable and an attribute of an object do not have the
      * same type and value.
      *

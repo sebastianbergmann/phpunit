@@ -1077,6 +1077,30 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::refuteSame
+     * @dataProvider notSameProvider
+     */
+    public function testRefuteSameSucceeds($a, $b)
+    {
+        $this->refuteSame($a, $b);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::refuteSame
+     * @dataProvider sameProvider
+     */
+    public function testRefuteSameFails($a, $b)
+    {
+        try {
+            $this->refuteSame($a, $b);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertXmlFileEqualsXmlFile
      */
     public function testAssertXmlFileEqualsXmlFile()
