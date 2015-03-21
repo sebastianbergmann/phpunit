@@ -398,6 +398,25 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a haystack does not contain a needle matching a constraint.
+     *
+     * @param PHPUnit_Framework_Constraint $needleConstraint
+     * @param string                       $haystack
+     * @param string                       $message
+     */
+    public static function assertNotContainsMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+    {
+        if (!(is_array($haystack) || is_object($haystack) && $haystack instanceof Traversable)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                2,
+                'array or traversable'
+            );
+        }
+
+        self::assertThat($haystack, self::logicalNot(self::containsMatching($needleConstraint)), $message);
+    }
+
+    /**
      * Asserts that a haystack contains only needles matching a constraint.
      *
      * @param PHPUnit_Framework_Constraint $needleConstraint
@@ -414,6 +433,25 @@ abstract class PHPUnit_Framework_Assert
         }
 
         self::assertThat($haystack, self::containsOnlyMatching($needleConstraint), $message);
+    }
+
+    /**
+     * Asserts that a haystack does not contain only needles matching a constraint.
+     *
+     * @param PHPUnit_Framework_Constraint $needleConstraint
+     * @param string                       $haystack
+     * @param string                       $message
+     */
+    public static function assertNotContainsOnlyMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+    {
+        if (!(is_array($haystack) || is_object($haystack) && $haystack instanceof Traversable)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                2,
+                'array or traversable'
+            );
+        }
+
+        self::assertThat($haystack, self::logicalNot(self::containsOnlyMatching($needleConstraint)), $message);
     }
 
     /**

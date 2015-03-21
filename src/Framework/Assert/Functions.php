@@ -593,6 +593,21 @@ function assertContainsMatching(PHPUnit_Framework_Constraint $needleConstraint, 
 }
 
 /**
+ * Asserts that a haystack does not contain a needle matching a constraint.
+ *
+ * @param PHPUnit_Framework_Constraint $needleConstraint
+ * @param string                       $haystack
+ * @param string                       $message
+ */
+function assertNotContainsMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::assertNotContainsMatching',
+        func_get_args()
+    );
+}
+
+/**
  * Asserts that a haystack contains only needles matching a constraint.
  *
  * @param PHPUnit_Framework_Constraint $needleConstraint
@@ -603,6 +618,21 @@ function assertContainsOnlyMatching(PHPUnit_Framework_Constraint $needleConstrai
 {
     return call_user_func_array(
         'PHPUnit_Framework_Assert::assertContainsOnlyMatching',
+        func_get_args()
+    );
+}
+
+/**
+ * Asserts that a haystack does not contain only needles matching a constraint.
+ *
+ * @param PHPUnit_Framework_Constraint $needleConstraint
+ * @param string                       $haystack
+ * @param string                       $message
+ */
+function assertNotContainsOnlyMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::assertNotContainsOnlyMatching',
         func_get_args()
     );
 }
