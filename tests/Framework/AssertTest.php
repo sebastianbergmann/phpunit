@@ -321,6 +321,40 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            PHPUnit_Framework_Assert::refuteArrayHasKey
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testRefuteArrayHasKeyThrowsExceptionForInvalidFirstArgument()
+    {
+        $this->refuteArrayHasKey(null, array());
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::refuteArrayHasKey
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testRefuteArrayHasKeyThrowsExceptionForInvalidSecondArgument()
+    {
+        $this->refuteArrayHasKey(0, null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::refuteArrayHasKey
+     */
+    public function testRefuteArrayHasIntegerKey()
+    {
+        $this->refuteArrayHasKey(1, array('foo'));
+
+        try {
+            $this->refuteArrayHasKey(0, array('foo'));
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertArrayHasKey
      */
     public function testAssertArrayHasStringKey()
@@ -345,6 +379,22 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertArrayNotHasKey('foo', array('foo' => 'bar'));
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::refuteArrayHasKey
+     */
+    public function testRefuteArrayHasStringKey()
+    {
+        $this->refuteArrayHasKey('bar', array('foo' => 'bar'));
+
+        try {
+            $this->refuteArrayHasKey('foo', array('foo' => 'bar'));
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
@@ -408,11 +458,32 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
-    public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue()
+    public function testAssertArrayNotHasKeyPropertyFailsWithArrayAccessValue()
     {
         $array = new ArrayObject();
         $array['bar'] = 'bar';
         $this->assertArrayNotHasKey('bar', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::refuteArrayHasKey
+     */
+    public function testRefuteArrayHaskeyAcceptsArrayAccessValue()
+    {
+        $array = new ArrayObject();
+        $array['foo'] = 'bar';
+        $this->refuteArrayHasKey('bar', $array);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::refuteArrayHasKey
+     * @expectedException PHPUnit_Framework_AssertionFailedError
+     */
+    public function testRefuteArrayHaskeyProperlyFailsWithArrayAccessValue()
+    {
+        $array = new ArrayObject();
+        $array['bar'] = 'bar';
+        $this->refuteArrayHasKey('bar', $array);
     }
 
     /**
@@ -484,6 +555,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            PHPUnit_Framework_Assert::refuteContains
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testRefuteContainsContainsThrowsException()
+    {
+        $this->refuteContains(null, null);
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertNotContains
      */
     public function testAssertSplObjectStorageNotContainsObject()
@@ -497,6 +577,27 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertNotContains($a, $c);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::refuteContains
+     */
+    public function testRefuteSplObjectStorageContainsObject()
+    {
+        $a = new stdClass;
+        $b = new stdClass;
+        $c = new SplObjectStorage;
+        $c->attach($a);
+
+        $this->refuteContains($b, $c);
+
+        try {
+            $this->refuteContains($a, $c);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
@@ -524,6 +625,25 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::refuteContains
+     */
+    public function testRefuteArrayContainsObject()
+    {
+        $a = new stdClass;
+        $b = new stdClass;
+
+        $this->refuteContains($a, array($b));
+
+        try {
+            $this->refuteContains($a, array($a));
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertNotContains
      */
     public function testAssertArrayNotContainsString()
@@ -532,6 +652,22 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertNotContains('foo', array('foo'));
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::refuteContains
+     */
+    public function testRefuteArrayContainsString()
+    {
+        $this->refuteContains('foo', array('bar'));
+
+        try {
+            $this->refuteContains('foo', array('foo'));
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
@@ -556,6 +692,22 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::refuteArrayContains
+     */
+    public function testRefuteArrayContainsNonObject()
+    {
+        $this->refuteContains('foo', array(true), '', false, true, true);
+
+        try {
+            $this->refuteContains('foo', array(true));
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertNotContains
      */
     public function testAssertStringNotContainsString()
@@ -564,6 +716,22 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertNotContains('foo', 'foo');
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::refuteContains
+     */
+    public function testRefuteContainsString()
+    {
+        $this->refuteContains('foo', 'bar');
+
+        try {
+            $this->refuteContains('foo', 'foo');
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
