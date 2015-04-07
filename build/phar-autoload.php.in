@@ -15,7 +15,6 @@ define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 Phar::mapPhar('___PHAR___');
 
 ___FILELIST___
-require __PHPUNIT_PHAR_ROOT__ . '/phpunit/Framework/Assert/Functions.php';
 
 if ($execute) {
     if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
