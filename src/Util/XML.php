@@ -403,11 +403,11 @@ class PHPUnit_Util_XML
                     }
                 }
 
-                if ($classes) {
+                if (!empty($classes)) {
                     $tag['class'] = implode(' ', $classes);
                 }
 
-                if ($attrs) {
+                if (!empty($attrs)) {
                     $tag['attributes'] = $attrs;
                 }
             }
