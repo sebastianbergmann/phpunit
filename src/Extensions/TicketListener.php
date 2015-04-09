@@ -191,5 +191,11 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     }
 
     abstract protected function getTicketInfo($ticketId = null);
+
+    /**
+     * @param string $newStatus
+     * @param string $message
+     * @param string $resolution
+     */
     abstract protected function updateTicket($ticketId, $newStatus, $message, $resolution);
 }
