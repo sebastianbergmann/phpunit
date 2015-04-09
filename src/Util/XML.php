@@ -495,6 +495,8 @@ class PHPUnit_Util_XML
             $options['attributes']['class'] = $options['class'];
         }
 
+        $nodes = array();
+
         // find the element by a tag type
         if ($options['tag']) {
             if ($isHtml) {
