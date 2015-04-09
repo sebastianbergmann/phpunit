@@ -346,14 +346,14 @@ class PHPUnit_Framework_TestResult implements Countable
 
         if (!$this->lastTestFailed && $test instanceof PHPUnit_Framework_TestCase) {
             $class  = get_class($test);
-            $key    =  $class . '::' . $test->getName();
+            $key    = $class . '::' . $test->getName();
 
             $this->passed[$key] = array(
-              'result' => $test->getResult(),
-              'size'   => PHPUnit_Util_Test::getSize(
-                  $class,
-                  $test->getName(false)
-              )
+                'result' => $test->getResult(),
+                'size'   => PHPUnit_Util_Test::getSize(
+                    $class,
+                    $test->getName(false)
+                )
             );
 
             $this->time += $time;
@@ -1065,10 +1065,10 @@ class PHPUnit_Framework_TestResult implements Countable
         while (!$done) {
             if ($asReflectionObjects) {
                 $class = new ReflectionClass(
-                    $classes[count($classes)-1]->getName()
+                    $classes[count($classes) - 1]->getName()
                 );
             } else {
-                $class = new ReflectionClass($classes[count($classes)-1]);
+                $class = new ReflectionClass($classes[count($classes) - 1]);
             }
 
             $parent = $class->getParentClass();
