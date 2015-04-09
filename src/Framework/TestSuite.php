@@ -313,15 +313,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * added, a <code>PHPUnit_Framework_Warning</code> will be created instead,
      * leaving the current test run untouched.
      *
-     * @param  string                      $filename
-     * @param  array                       $phptOptions Array with ini settings for the php instance
-     *                                                  run, key being the name if the setting,
-     *                                                  value the ini value.
+     * @param  string $filename
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 2.3.0
      * @author Stefano F. Rausch <stefano@rausch-e.net>
      */
-    public function addTestFile($filename, $phptOptions = array())
+    public function addTestFile($filename)
     {
         if (!is_string($filename)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
@@ -329,7 +326,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if (file_exists($filename) && substr($filename, -5) == '.phpt') {
             $this->addTest(
-                new PHPUnit_Extensions_PhptTestCase($filename, $phptOptions)
+                new PHPUnit_Extensions_PhptTestCase($filename)
             );
             return;
         }
