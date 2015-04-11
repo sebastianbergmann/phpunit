@@ -66,7 +66,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public function __construct(PHPUnit_Runner_TestSuiteLoader $loader = null, PHP_CodeCoverage_Filter $filter = null)
     {
         if ($filter === null) {
-            $filter = new PHP_CodeCoverage_Filter;
+            $filter = $this->getCodeCoverageFilter();
         }
 
         $this->codeCoverageFilter = $filter;
@@ -837,16 +837,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 if (empty($filterConfiguration['whitelist']['include']['directory']) &&
                     empty($filterConfiguration['whitelist']['include']['file'])) {
-                    if (defined('__PHPUNIT_PHAR__')) {
-                        $this->codeCoverageFilter->addFileToBlacklist(__PHPUNIT_PHAR__);
-                    }
-
-                    $blacklist = new PHPUnit_Util_Blacklist;
-
-                    foreach ($blacklist->getBlacklistedDirectories() as $directory) {
-                        $this->codeCoverageFilter->addDirectoryToBlacklist($directory);
-                    }
-
                     foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
                         $this->codeCoverageFilter->addDirectoryToBlacklist(
                             $dir['path'],
@@ -970,5 +960,25 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if ($exit) {
             exit(self::EXCEPTION_EXIT);
         }
+    }
+
+    /**
+     * @return PHP_CodeCoverage_Filter
+     */
+    private function getCodeCoverageFilter()
+    {
+        $filter = new PHP_CodeCoverage_Filter;
+
+        if (defined('__PHPUNIT_PHAR__')) {
+            $filter->addFileToBlacklist(__PHPUNIT_PHAR__);
+        }
+
+        $blacklist = new PHPUnit_Util_Blacklist;
+
+        foreach ($blacklist->getBlacklistedDirectories() as $directory) {
+            $filter->addDirectoryToBlacklist($directory);
+        }
+
+        return $filter;
     }
 }

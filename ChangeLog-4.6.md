@@ -1,5 +1,13 @@
 # Changes in PHPUnit 4.6
 
+## PHPUnit 4.6.4
+
+* The default list of blacklisted classes is now always passed to PHP_CodeCoverage
+
+## PHPUnit 4.6.3
+
+* Updated the default list of blacklisted classes
+
 ## PHPUnit 4.6.2
 
 * Fixed [#1667](https://github.com/sebastianbergmann/phpunit/issues/1667): Loading `src/Framework/Assert/Functions.php` by default causes collisions
