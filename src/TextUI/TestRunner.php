@@ -44,6 +44,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     protected $printer = null;
 
     /**
+     * @var PHPUnit_Util_Printer_Factory
+     */
+    protected $printerFactory = null;
+
+    /**
      * @var boolean
      */
     protected static $versionStringPrinted = false;
@@ -108,6 +113,18 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     protected function createTestResult()
     {
         return new PHPUnit_Framework_TestResult;
+    }
+
+    /**
+     * @return PHPUnit_Util_Printer_Factory
+     */
+    protected function getPrinterFactory()
+    {
+        if (!$this->printerFactory instanceof PHPUnit_Util_Printer_Factory) {
+            $this->printerFactory = new PHPUnit_Util_Printer_Factory();
+        }
+
+        return $this->printerFactory;
     }
 
     private function processSuiteFilters(PHPUnit_Framework_TestSuite $suite, array $arguments)
@@ -216,30 +233,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if ($this->printer === null) {
-            if (isset($arguments['printer']) &&
-                $arguments['printer'] instanceof PHPUnit_Util_Printer) {
-                $this->printer = $arguments['printer'];
-            } else {
-                $printerClass = 'PHPUnit_TextUI_ResultPrinter';
-
-                if (isset($arguments['printer']) &&
-                    is_string($arguments['printer']) &&
-                    class_exists($arguments['printer'], false)) {
-                    $class = new ReflectionClass($arguments['printer']);
-
-                    if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
-                        $printerClass = $arguments['printer'];
-                    }
-                }
-
-                $this->printer = new $printerClass(
-                  isset($arguments['stderr']) ? 'php://stderr' : null,
-                  $arguments['verbose'],
-                  $arguments['colors'],
-                  $arguments['debug'],
-                  $arguments['columns']
-                );
-            }
+            $this->printer = $this->getPrinterFactory()->getPrinter($arguments);
         }
 
         if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
@@ -582,6 +576,21 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($phpunitConfiguration['deprecatedStrictModeSetting'])) {
                 $arguments['deprecatedStrictModeSetting'] = true;
+            }
+
+            if (isset($phpunitConfiguration['stderr']) &&
+                !isset($this->arguments['stderr'])) {
+                $this->arguments['stderr'] = $phpunitConfiguration['stderr'];
+            }
+
+            if (isset($phpunitConfiguration['printerClass']) &&
+                !isset($this->arguments['printerClass'])) {
+                $this->arguments['printerClass'] = $phpunitConfiguration['printerClass'];
+            }
+
+            if (isset($phpunitConfiguration['printerFile']) &&
+                !isset($this->arguments['printerFile'])) {
+                $this->arguments['printerFile'] = $phpunitConfiguration['printerFile'];
             }
 
             if (isset($phpunitConfiguration['backupGlobals']) &&

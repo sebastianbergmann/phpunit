@@ -628,25 +628,6 @@ class PHPUnit_TextUI_Command
                 $this->handleBootstrap($phpunit['bootstrap']);
             }
 
-            /**
-             * Issue #657
-             */
-            if (isset($phpunit['stderr']) && ! isset($this->arguments['stderr'])) {
-                $this->arguments['stderr'] = $phpunit['stderr'];
-            }
-
-            if (isset($phpunit['printerClass'])) {
-                if (isset($phpunit['printerFile'])) {
-                    $file = $phpunit['printerFile'];
-                } else {
-                    $file = '';
-                }
-
-                $this->arguments['printer'] = $this->handlePrinter(
-                    $phpunit['printerClass'], $file
-                );
-            }
-
             if (isset($phpunit['testSuiteLoaderClass'])) {
                 if (isset($phpunit['testSuiteLoaderFile'])) {
                     $file = $phpunit['testSuiteLoaderFile'];
@@ -675,11 +656,6 @@ class PHPUnit_TextUI_Command
             }
         } elseif (isset($this->arguments['bootstrap'])) {
             $this->handleBootstrap($this->arguments['bootstrap']);
-        }
-
-        if (isset($this->arguments['printer']) &&
-            is_string($this->arguments['printer'])) {
-            $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
         }
 
         if (isset($this->arguments['test']) && is_string($this->arguments['test']) && substr($this->arguments['test'], -5, 5) == '.phpt') {
@@ -736,53 +712,6 @@ class PHPUnit_TextUI_Command
             sprintf(
                 'Could not use "%s" as loader.',
                 $loaderClass
-            )
-        );
-    }
-
-    /**
-     * Handles the loading of the PHPUnit_Util_Printer implementation.
-     *
-     * @param  string               $printerClass
-     * @param  string               $printerFile
-     * @return PHPUnit_Util_Printer
-     */
-    protected function handlePrinter($printerClass, $printerFile = '')
-    {
-        if (!class_exists($printerClass, false)) {
-            if ($printerFile == '') {
-                $printerFile = PHPUnit_Util_Filesystem::classNameToFilename(
-                    $printerClass
-                );
-            }
-
-            $printerFile = stream_resolve_include_path($printerFile);
-
-            if ($printerFile) {
-                require $printerFile;
-            }
-        }
-
-        if (class_exists($printerClass)) {
-            $class = new ReflectionClass($printerClass);
-
-            if ($class->implementsInterface('PHPUnit_Framework_TestListener') &&
-                $class->isSubclassOf('PHPUnit_Util_Printer') &&
-                $class->isInstantiable()) {
-                if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
-                    return $printerClass;
-                }
-
-                $outputStream = isset($this->arguments['stderr']) ? 'php://stderr' : null;
-
-                return $class->newInstance($outputStream);
-            }
-        }
-
-        $this->showError(
-            sprintf(
-                'Could not use "%s" as printer.',
-                $printerClass
             )
         );
     }
