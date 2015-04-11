@@ -41,10 +41,13 @@ class PHPUnit_Util_Blacklist
         'SebastianBergmann\Environment\Runtime' => 1,
         'SebastianBergmann\Comparator\Comparator' => 1,
         'SebastianBergmann\Exporter\Exporter' => 1,
+        'SebastianBergmann\GlobalState\Snapshot' => 1,
         'SebastianBergmann\RecursionContext\Context' => 1,
         'SebastianBergmann\Version' => 1,
         'Composer\Autoload\ClassLoader' => 1,
-        'Doctrine\Instantiator\Instantiator' => 1
+        'Doctrine\Instantiator\Instantiator' => 1,
+        'phpDocumentor\Reflection\DocBlock' => 1,
+        'Prophecy\Prophet' => 1
     );
 
     /**
