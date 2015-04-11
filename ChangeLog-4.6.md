@@ -1,5 +1,9 @@
 # Changes in PHPUnit 4.6
 
+## PHPUnit 4.6.4
+
+* The default list of blacklisted classes is now always passed to PHP_CodeCoverage
+
 ## PHPUnit 4.6.3
 
 * Updated the default list of blacklisted classes
