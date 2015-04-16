@@ -584,6 +584,7 @@ class PHPUnit_Framework_TestResult implements Countable
 
         try {
             if (!$test instanceof PHPUnit_Framework_Warning &&
+                $test->getSize() != PHPUnit_Util_Test::UNKNOWN &&
                 $this->beStrictAboutTestSize &&
                 extension_loaded('pcntl') && class_exists('PHP_Invoker')) {
                 switch ($test->getSize()) {

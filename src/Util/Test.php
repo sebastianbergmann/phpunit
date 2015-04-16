@@ -34,9 +34,10 @@ class PHPUnit_Util_Test
     const REGEX_REQUIRES_OS        = '/@requires\s+OS\s+(?P<value>.+?)[ \t]*\r?$/m';
     const REGEX_REQUIRES           = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))[ \t]*\r?$/m';
 
-    const SMALL  = 0;
-    const MEDIUM = 1;
-    const LARGE  = 2;
+    const UNKNOWN = -1;
+    const SMALL   = 0;
+    const MEDIUM  = 1;
+    const LARGE   = 2;
 
     private static $annotationCache = array();
 
@@ -596,18 +597,19 @@ class PHPUnit_Util_Test
     public static function getSize($className, $methodName)
     {
         $groups = array_flip(self::getGroups($className, $methodName));
-        $size   = self::SMALL;
+        $size   = self::UNKNOWN;
         $class  = new ReflectionClass($className);
 
-        if ((class_exists('PHPUnit_Extensions_Database_TestCase', false) &&
+        if (isset($groups['large']) ||
+            (class_exists('PHPUnit_Extensions_Database_TestCase', false) &&
              $class->isSubclassOf('PHPUnit_Extensions_Database_TestCase')) ||
             (class_exists('PHPUnit_Extensions_SeleniumTestCase', false) &&
              $class->isSubclassOf('PHPUnit_Extensions_SeleniumTestCase'))) {
             $size = self::LARGE;
         } elseif (isset($groups['medium'])) {
             $size = self::MEDIUM;
-        } elseif (isset($groups['large'])) {
-            $size = self::LARGE;
+        } elseif (isset($groups['small'])) {
+            $size = self::SMALL;
         }
 
         return $size;
