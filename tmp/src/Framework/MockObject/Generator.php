@@ -142,7 +142,7 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if (!is_array($methods) && !is_null($methods)) {
-            throw new InvalidArgumentException;
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'array', $methods);
         }
 
         if ($type === 'Traversable' || $type === '\\Traversable') {
