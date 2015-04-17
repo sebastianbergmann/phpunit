@@ -249,6 +249,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             self::$versionStringPrinted = true;
 
+            $this->printer->write(
+                sprintf("Using PHP version %s\n", PHP_VERSION)
+            );
+
             if (isset($arguments['configuration'])) {
                 $this->printer->write(
                     sprintf(
