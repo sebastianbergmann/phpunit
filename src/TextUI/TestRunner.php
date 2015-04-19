@@ -859,8 +859,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                         $this->codeCoverageFilter->addDirectoryToBlacklist(
                             $dir['path'],
                             $dir['suffix'],
-                            $dir['prefix'],
-                            $dir['group']
+                            $dir['prefix']
                         );
                     }
 
@@ -872,8 +871,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                         $this->codeCoverageFilter->removeDirectoryFromBlacklist(
                             $dir['path'],
                             $dir['suffix'],
-                            $dir['prefix'],
-                            $dir['group']
+                            $dir['prefix']
                         );
                     }
 
