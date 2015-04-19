@@ -104,7 +104,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
      */
     public function testNoTestCaseClass()
     {
-        $suite = new PHPUnit_Framework_TestSuite('NoTestCaseClass');
+        new PHPUnit_Framework_TestSuite('NoTestCaseClass');
     }
 
     public function testNotExistingTestCase()
@@ -181,7 +181,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         );
 
         BeforeAndAfterTest::resetProperties();
-        $result = $test->run();
+        $test->run();
 
         $this->assertEquals(2, BeforeAndAfterTest::$beforeWasRun);
         $this->assertEquals(2, BeforeAndAfterTest::$afterWasRun);
