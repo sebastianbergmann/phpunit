@@ -9,7 +9,8 @@
  */
 
 /**
- * Returns a matcher that matches when the method is executed zero or more times.
+ * Returns a matcher that matches when the method is executed
+ * zero or more times.
  *
  * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
  * @since  Method available since Release 3.0.0
@@ -1769,7 +1770,8 @@ function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = 
 }
 
 /**
- * Returns a matcher that matches when the method is executed at the given $index.
+ * Returns a matcher that matches when the method is executed
+ * at the given $index.
  *
  * @param  integer $index
  * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
@@ -1949,7 +1951,8 @@ function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $i
 }
 
 /**
- * Returns a matcher that matches when the method is executed exactly $count times.
+ * Returns a matcher that matches when the method is executed
+ * exactly $count times.
  *
  * @param  integer $count
  * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
