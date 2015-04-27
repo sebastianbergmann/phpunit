@@ -372,7 +372,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 'fg-white, bg-red',
                 sprintf(
                     "\nFAILURES!\n" .
-                    'Tests: %d, Assertions: %s%s%s%s%s.',
+                    'Tests: %d, Assertions: %d%s%s%s%s.',
                     count($result),
                     $this->numAssertions,
                     $this->getCountString($result->failureCount(), 'Failures'),
