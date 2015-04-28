@@ -123,6 +123,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         $availableColors = array(self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS);
+
         if (!in_array($colors, $availableColors)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
                 3,
@@ -138,8 +139,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'integer or "max"');
         }
 
-        $console = new Console;
-
+        $console            = new Console;
         $maxNumberOfColumns = $console->getNumberOfColumns();
 
         if ($numberOfColumns == 'max' || $numberOfColumns > $maxNumberOfColumns) {
@@ -596,17 +596,19 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             return $buffer;
         }
 
-        $codes = array_map('trim', explode(',', $color));
-        $lines = explode("\n", $buffer);
+        $codes   = array_map('trim', explode(',', $color));
+        $lines   = explode("\n", $buffer);
         $padding = max(array_map('strlen', $lines));
+        $styles  = array();
 
-        $styles = array();
         foreach ($codes as $code) {
             $styles[] = self::$ansiCodes[$code];
         }
+
         $style = sprintf("\x1b[%sm", implode(';', $styles));
 
         $styledLines = array();
+
         foreach ($lines as $line) {
             $styledLines[] = $style . str_pad($line, $padding) . "\x1b[0m";
         }
