@@ -338,7 +338,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                     count($result),
                     (count($result) == 1) ? '' : 's',
                     $this->numAssertions,
-                    ($this->numAssertions == 1) ? '' : 's'
+                    ($this->numAssertions <= 1) ? '' : 's'
                 )
             );
         } else {
