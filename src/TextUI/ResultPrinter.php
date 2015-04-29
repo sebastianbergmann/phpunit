@@ -360,14 +360,19 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 $this->writeWithColor($color, 'FAILURES!');
             }
 
-            $this->writeCountString(count($result), 'Tests', $color, true);
-            $this->writeCountString($this->numAssertions, 'Assertions', $color, true);
-            $this->writeCountString($result->errorCount(), 'Errors', $color);
-            $this->writeCountString($result->failureCount(), 'Failures', $color);
-            $this->writeCountString($result->skippedCount(), 'Skipped', $color);
-            $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
-            $this->writeCountString($result->riskyCount(), 'Risky', $color);
-            $this->write(".\n");
+            $this->writeWithColor(
+                $color,
+                sprintf(
+                    "Tests: %d, Assertions: %d%s%s%s%s%s.",
+                    count($result),
+                    $this->numAssertions,
+                    $this->getCountString($result->errorCount(), 'Errors'),
+                    $this->getCountString($result->failureCount(), 'Failures'),
+                    $this->getCountString($result->skippedCount(), 'Skipped'),
+                    $this->getCountString($result->notImplementedCount(), 'Incomplete'),
+                    $this->getCountString($result->riskyCount(), 'Risky')
+                )
+            );
         }
     }
 
