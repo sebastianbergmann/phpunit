@@ -45,4 +45,4 @@ There was 1 failure:
 Expected failure.
 %A
 FAILURES!
-Tests: 5, Assertions: 5, Failures: 1, Errors: 2.
+Tests: 5, Assertions: 5, Errors: 2, Failures: 1.
