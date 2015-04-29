@@ -3,6 +3,7 @@
 ## PHPUnit 4.6.5
 
 * Fixed [#1677](https://github.com/sebastianbergmann/phpunit/issues/1677): Number of risky tests not printed when there are failing tests
+* Fixed [#1688](https://github.com/sebastianbergmann/phpunit/issues/1688): Self-Update operation does not work due to outdated SSL certificate
 
 ## PHPUnit 4.6.4
 
