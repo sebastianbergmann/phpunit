@@ -10,10 +10,11 @@
 
 // Workaround for http://bugs.php.net/bug.php?id=47987,
 // see https://github.com/sebastianbergmann/phpunit/issues#issue/125 for details
-require_once __DIR__ . '/../Framework/Error.php';
-require_once __DIR__ . '/../Framework/Error/Notice.php';
-require_once __DIR__ . '/../Framework/Error/Warning.php';
-require_once __DIR__ . '/../Framework/Error/Deprecated.php';
+// Use dirname(__DIR__) instead of using /../ because of https://github.com/facebook/hhvm/issues/5215
+require_once dirname(__DIR__) . '/Framework/Error.php';
+require_once dirname(__DIR__) . '/Framework/Error/Notice.php';
+require_once dirname(__DIR__) . '/Framework/Error/Warning.php';
+require_once dirname(__DIR__) . '/Framework/Error/Deprecated.php';
 
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
