@@ -372,27 +372,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     }
 
     /**
-     * @param  integer $count
-     * @param  string  $name
-     * @return string
-     * @since  Method available since Release 3.0.0
-     */
-    protected function getCountString($count, $name)
-    {
-        $string = '';
-
-        if ($count > 0) {
-            $string = sprintf(
-                ', %s: %d',
-                $name,
-                $count
-            );
-        }
-
-        return $string;
-    }
-
-    /**
      */
     public function printWaitPrompt()
     {
