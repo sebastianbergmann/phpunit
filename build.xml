@@ -223,7 +223,7 @@
 
   <copy file="${basedir}/vendor/phpunit/php-file-iterator/LICENSE" tofile="${basedir}/build/phar/php-file-iterator/LICENSE"/>
   <copy todir="${basedir}/build/phar/php-file-iterator">
-   <fileset dir="${basedir}/vendor/phpunit/php-file-iterator/File">
+   <fileset dir="${basedir}/vendor/phpunit/php-file-iterator/src">
     <include name="**/*.php" />
     <exclude name="**/Autoload.*" />
    </fileset>

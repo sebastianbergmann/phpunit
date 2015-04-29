@@ -38,7 +38,9 @@ class PHPUnit_Util_XML
             '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
             '',
             htmlspecialchars(
-                PHPUnit_Util_String::convertToUtf8($string), ENT_QUOTES, 'UTF-8'
+                PHPUnit_Util_String::convertToUtf8($string),
+                ENT_QUOTES,
+                'UTF-8'
             )
         );
     }
@@ -221,7 +223,7 @@ class PHPUnit_Util_XML
                         $variable[] = $value;
                     }
                 }
-                }
+            }
             break;
 
             case 'object': {
@@ -242,12 +244,12 @@ class PHPUnit_Util_XML
                 } else {
                     $variable = new $className;
                 }
-                }
+            }
             break;
 
             case 'boolean': {
                 $variable = $element->nodeValue == 'true' ? true : false;
-                }
+            }
             break;
 
             case 'integer':
@@ -256,7 +258,7 @@ class PHPUnit_Util_XML
                 $variable = $element->nodeValue;
 
                 settype($variable, $element->tagName);
-                }
+            }
             break;
         }
 
@@ -327,7 +329,9 @@ class PHPUnit_Util_XML
         // substitute spaces within attribute value
         while (preg_match('/\[[^\]]+"[^"]+\s[^"]+"\]/', $selector)) {
             $selector = preg_replace(
-                '/(\[[^\]]+"[^"]+)\s([^"]+"\])/', "$1__SPACE__$2", $selector
+                '/(\[[^\]]+"[^"]+)\s([^"]+"\])/',
+                "$1__SPACE__$2",
+                $selector
             );
         }
 
@@ -366,7 +370,9 @@ class PHPUnit_Util_XML
             // match attributes (\[[^\]]*\]*), ids (#[^\.#\[]*),
             // and classes (\.[^\.#\[]*))
             preg_match_all(
-                "/(\[[^\]]*\]*|#[^\.#\[]*|\.[^\.#\[]*)/", $element, $matches
+                "/(\[[^\]]*\]*|#[^\.#\[]*|\.[^\.#\[]*)/",
+                $element,
+                $matches
             );
 
             if (!empty($matches[1])) {
@@ -403,11 +409,11 @@ class PHPUnit_Util_XML
                     }
                 }
 
-                if ($classes) {
+                if (!empty($classes)) {
                     $tag['class'] = implode(' ', $classes);
                 }
 
-                if ($attrs) {
+                if (!empty($attrs)) {
                     $tag['attributes'] = $attrs;
                 }
             }
@@ -495,11 +501,14 @@ class PHPUnit_Util_XML
             $options['attributes']['class'] = $options['class'];
         }
 
+        $nodes = array();
+
         // find the element by a tag type
         if ($options['tag']) {
             if ($isHtml) {
                 $elements = self::getElementsByCaseInsensitiveTagName(
-                    $dom, $options['tag']
+                    $dom,
+                    $options['tag']
                 );
             } else {
                 $elements = $dom->getElementsByTagName($options['tag']);
@@ -537,7 +546,8 @@ class PHPUnit_Util_XML
             foreach ($tags as $tag) {
                 if ($isHtml) {
                     $elements = self::getElementsByCaseInsensitiveTagName(
-                        $dom, $tag
+                        $dom,
+                        $tag
                     );
                 } else {
                     $elements = $dom->getElementsByTagName($tag);
@@ -568,7 +578,8 @@ class PHPUnit_Util_XML
                     elseif ($name == 'class') {
                         // split to individual classes
                         $findClasses = explode(
-                            ' ', preg_replace("/\s+/", " ", $value)
+                            ' ',
+                            preg_replace("/\s+/", " ", $value)
                         );
 
                         $allClasses = explode(
@@ -765,7 +776,8 @@ class PHPUnit_Util_XML
         if ($options['children']) {
             $validChild   = array('count', 'greater_than', 'less_than', 'only');
             $childOptions = self::assertValidKeys(
-                $options['children'], $validChild
+                $options['children'],
+                $validChild
             );
 
             foreach ($nodes as $node) {
@@ -807,7 +819,9 @@ class PHPUnit_Util_XML
                     // match each child against a specific tag
                     if ($childOptions['only']) {
                         $onlyNodes = self::findNodes(
-                            $dom, $childOptions['only'], $isHtml
+                            $dom,
+                            $childOptions['only'],
+                            $isHtml
                         );
 
                         // try to match each child to one of the 'only' nodes

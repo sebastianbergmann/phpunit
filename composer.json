@@ -23,7 +23,7 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=5.3.3",
-        "phpunit/php-file-iterator": "~1.3",
+        "phpunit/php-file-iterator": "~1.4",
         "phpunit/php-text-template": "~1.2",
         "phpunit/php-code-coverage": "~2.0,>=2.0.11",
         "phpunit/php-timer": "~1.0",
@@ -48,15 +48,9 @@
     "bin": [
         "phpunit"
     ],
-    "config": {
-        "bin-dir": "bin"
-    },
     "autoload": {
         "classmap": [
             "src/"
-        ],
-        "files": [
-            "src/Framework/Assert/Functions.php"
         ]
     },
     "autoload-dev": {
@@ -64,12 +58,13 @@
             "tests/"
         ],
         "files": [
+            "src/Framework/Assert/Functions.php",
             "tests/_files/CoveredFunction.php"
         ]
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "4.7.x-dev"
+            "dev-master": "4.8.x-dev"
         }
     }
 }

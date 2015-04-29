@@ -54,9 +54,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     private $missingExtensions = array();
 
     /**
-     * @var boolean
+     * @var Runtime
      */
-    private $canCollectCodeCoverage;
+    private $runtime;
 
     /**
      * @param PHPUnit_Runner_TestSuiteLoader $loader
@@ -66,14 +66,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public function __construct(PHPUnit_Runner_TestSuiteLoader $loader = null, PHP_CodeCoverage_Filter $filter = null)
     {
         if ($filter === null) {
-            $filter = new PHP_CodeCoverage_Filter;
+            $filter = $this->getCodeCoverageFilter();
         }
 
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
-
-        $runtime = new Runtime;
-        $this->canCollectCodeCoverage = $runtime->canCollectCodeCoverage();
+        $this->runtime            = new Runtime;
     }
 
     /**
@@ -244,27 +242,47 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
             $this->printer->write(
-                PHPUnit_Runner_Version::getVersionString() . "\n\n"
+                PHPUnit_Runner_Version::getVersionString() . "\n"
             );
 
             self::$versionStringPrinted = true;
 
-            if (isset($arguments['configuration'])) {
+            if ($arguments['verbose']) {
                 $this->printer->write(
                     sprintf(
-                        "Configuration read from %s\n\n",
-                        $arguments['configuration']->getFilename()
+                        "\nRuntime:\t%s",
+                        $this->runtime->getNameWithVersion()
                     )
                 );
+
+                if ($this->runtime->hasXdebug()) {
+                    $this->printer->write(
+                        sprintf(
+                            " with Xdebug %s",
+                            phpversion('xdebug')
+                        )
+                    );
+                }
+
+                if (isset($arguments['configuration'])) {
+                    $this->printer->write(
+                        sprintf(
+                            "\nConfiguration:\t%s",
+                            $arguments['configuration']->getFilename()
+                        )
+                    );
+                }
+
+                $this->printer->write("\n");
             }
 
             if (isset($arguments['deprecatedStrictModeOption'])) {
-                print "Deprecated option \"--strict\" used\n\n";
+                print "Warning:\tDeprecated option \"--strict\" used\n";
+            } elseif (isset($arguments['deprecatedStrictModeSetting'])) {
+                print "Warning:\tDeprecated configuration setting \"strict\" used\n";
             }
 
-            if (isset($arguments['deprecatedStrictModeSetting'])) {
-                print "Deprecated configuration setting \"strict\" used\n\n";
-            }
+            $this->printer->write("\n");
         }
 
         foreach ($arguments['listeners'] as $listener) {
@@ -315,7 +333,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $codeCoverageReports++;
         }
 
-        if ($codeCoverageReports > 0 && (!extension_loaded('tokenizer') || !$this->canCollectCodeCoverage)) {
+        if ($codeCoverageReports > 0 && (!extension_loaded('tokenizer') || !$this->runtime->canCollectCodeCoverage())) {
             if (!extension_loaded('tokenizer')) {
                 $this->showExtensionNotLoadedMessage(
                     'tokenizer',
@@ -830,23 +848,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 isset($arguments['coveragePHP']) ||
                 isset($arguments['coverageText']) ||
                 isset($arguments['coverageXml'])) &&
-                $this->canCollectCodeCoverage) {
+                $this->runtime->canCollectCodeCoverage()) {
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
                 $arguments['addUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
                 $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
 
                 if (empty($filterConfiguration['whitelist']['include']['directory']) &&
                     empty($filterConfiguration['whitelist']['include']['file'])) {
-                    if (defined('__PHPUNIT_PHAR__')) {
-                        $this->codeCoverageFilter->addFileToBlacklist(__PHPUNIT_PHAR__);
-                    }
-
-                    $blacklist = new PHPUnit_Util_Blacklist;
-
-                    foreach ($blacklist->getBlacklistedDirectories() as $directory) {
-                        $this->codeCoverageFilter->addDirectoryToBlacklist($directory);
-                    }
-
                     foreach ($filterConfiguration['blacklist']['include']['directory'] as $dir) {
                         $this->codeCoverageFilter->addDirectoryToBlacklist(
                             $dir['path'],
@@ -970,5 +978,25 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if ($exit) {
             exit(self::EXCEPTION_EXIT);
         }
+    }
+
+    /**
+     * @return PHP_CodeCoverage_Filter
+     */
+    private function getCodeCoverageFilter()
+    {
+        $filter = new PHP_CodeCoverage_Filter;
+
+        if (defined('__PHPUNIT_PHAR__')) {
+            $filter->addFileToBlacklist(__PHPUNIT_PHAR__);
+        }
+
+        $blacklist = new PHPUnit_Util_Blacklist;
+
+        foreach ($blacklist->getBlacklistedDirectories() as $directory) {
+            $filter->addDirectoryToBlacklist($directory);
+        }
+
+        return $filter;
     }
 }

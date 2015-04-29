@@ -1,5 +1,26 @@
 # Changes in PHPUnit 4.6
 
+## PHPUnit 4.6.5
+
+* Fixed [#1677](https://github.com/sebastianbergmann/phpunit/issues/1677): Number of risky tests not printed when there are failing tests
+* Fixed [#1688](https://github.com/sebastianbergmann/phpunit/issues/1688): Self-Update operation does not work due to outdated SSL certificate
+
+## PHPUnit 4.6.4
+
+* The default list of blacklisted classes is now always passed to PHP_CodeCoverage
+
+## PHPUnit 4.6.3
+
+* Updated the default list of blacklisted classes
+
+## PHPUnit 4.6.2
+
+* Fixed [#1667](https://github.com/sebastianbergmann/phpunit/issues/1667): Loading `src/Framework/Assert/Functions.php` by default causes collisions
+
+## PHPUnit 4.6.1
+
+* Fixed [#1665](https://github.com/sebastianbergmann/phpunit/issues/1665): PHPUnit 4.6.0 PHAR does not work when renamed to `phpunit`
+
 ## PHPUnit 4.6.0
 
 * Added the `--strict-global-state` command-line option and the `beStrictAboutChangesToGlobalState` configuration setting for enabling a check that global variabes, super-global variables, and static attributes in user-defined classes are not modified during a test

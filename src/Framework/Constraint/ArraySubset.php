@@ -41,7 +41,7 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
     public function __construct($subset, $strict = false)
     {
         parent::__construct();
-        $this->strict  = $strict;
+        $this->strict = $strict;
         $this->subset = $subset;
     }
 
