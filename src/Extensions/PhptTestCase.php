@@ -108,6 +108,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         $result->startTest($this);
 
+        // Redirects STDERR to STDOUT
+        $php->setUseStderrRedirection(true);
+
         if (isset($sections['SKIPIF'])) {
             $jobResult = $php->runJob($sections['SKIPIF'], $this->settings);
 
