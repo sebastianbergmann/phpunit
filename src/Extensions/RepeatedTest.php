@@ -127,7 +127,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
                         }
                         $testsToRepeat = array_merge(
                             $testsToRepeat,
-                            $this->getkWhichTestsToRepeat($tests, $result, $i)
+                            $this->getWhichTestsToRepeat($tests, $result, $i)
                         );
                     }
                     $this->test->setTests($testsToRepeat);
