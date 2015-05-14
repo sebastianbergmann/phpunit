@@ -379,6 +379,17 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     }
 
     /**
+     * nothing occurred.
+     *
+     * @param PHPUnit_Framework_Test $test
+     * @param float $time
+     */
+    public function addSuccess(PHPUnit_Framework_Test $test, $time)
+    {
+        $this->writeProgress('.');
+    }
+
+    /**
      * An error occurred.
      *
      * @param PHPUnit_Framework_Test $test
@@ -496,7 +507,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if (!$this->lastTestFailed) {
-            $this->writeProgress('.');
+            $this->addSuccess($test, $time);
         }
 
         if ($test instanceof PHPUnit_Framework_TestCase) {
