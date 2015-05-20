@@ -281,8 +281,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             } elseif (isset($arguments['deprecatedStrictModeSetting'])) {
                 print "Warning:\tDeprecated configuration setting \"strict\" used\n";
             }
-
-            $this->printer->write("\n");
         }
 
         foreach ($arguments['listeners'] as $listener) {
@@ -331,6 +329,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (isset($arguments['coverageXml'])) {
             $codeCoverageReports++;
+        }
+
+        if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
+            if ($codeCoverageReports > 0 && !$this->codeCoverageFilter->hasWhitelist()) {
+                $this->printer->write("Warning:\tNo whitelist configured for code coverage\n");
+            }
+
+            $this->printer->write("\n");
         }
 
         if ($codeCoverageReports > 0 && (!extension_loaded('tokenizer') || !$this->runtime->canCollectCodeCoverage())) {
