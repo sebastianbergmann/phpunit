@@ -105,11 +105,16 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         $php  = PHPUnit_Util_PHP::factory();
         $skip = false;
         $time = 0;
+        $settings = $this->settings;
 
         $result->startTest($this);
 
+        if (isset($sections['INI'])) {
+            $settings = array_merge($settings, $this->parseIniSection($sections['INI']));
+        }
+
         if (isset($sections['SKIPIF'])) {
-            $jobResult = $php->runJob($sections['SKIPIF'], $this->settings);
+            $jobResult = $php->runJob($sections['SKIPIF'], $settings);
 
             if (!strncasecmp('skip', ltrim($jobResult['stdout']), 4)) {
                 if (preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $message)) {
@@ -126,7 +131,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         if (!$skip) {
             PHP_Timer::start();
-            $jobResult = $php->runJob($code, $this->settings);
+            $jobResult = $php->runJob($code, $settings);
             $time = PHP_Timer::stop();
 
             if (isset($sections['EXPECT'])) {
@@ -220,5 +225,28 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             ),
             $code
         );
+    }
+
+    /**
+     * Parse --INI-- section key value pairs and return as array.
+     *
+     * @param string
+     * @return array
+     */
+    protected function parseIniSection($content)
+    {
+        $lines = preg_split('/\n|\r/', $content, -1, PREG_SPLIT_NO_EMPTY);
+        $settings = array();
+
+        foreach ($lines as $line) {
+            if (strpos($line, '=') === false) {
+                continue;
+            }
+
+            list ($name, $value) = explode('=', $line);
+            $settings[trim($name)] = trim($value);
+        }
+
+        return $settings;
     }
 }
