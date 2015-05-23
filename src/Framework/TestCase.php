@@ -130,6 +130,13 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $expectedExceptionCode;
 
     /**
+     * The callback to validate the expected Exception.
+     *
+     * @var null|callable
+     */
+    private $expectedExceptionCallback;
+
+    /**
      * @var string
      */
     private $name = '';
@@ -519,6 +526,17 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->expectException(\get_class($exception));
         $this->expectExceptionMessage($exception->getMessage());
         $this->expectExceptionCode($exception->getCode());
+    }
+
+    public function expectExceptionCallback(callable $callback): void
+    {
+        if (!$this->expectedException) {
+            // TODO: If we could find the argument type of the callback,
+            // we could both tighten this expectation to provide better
+            // diagnostics and validate the callback argument.
+            $this->expectedException = \Exception::class;
+        }
+        $this->expectedExceptionCallback = $callback;
     }
 
     public function expectNotToPerformAssertions(): void
@@ -1445,6 +1463,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                         $this->expectedExceptionCode
                     )
                 );
+            }
+
+            if ($this->expectedExceptionCallback !== null) {
+                ($this->expectedExceptionCallback)($exception);
             }
 
             return;

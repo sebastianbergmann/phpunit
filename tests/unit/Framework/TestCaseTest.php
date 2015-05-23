@@ -428,7 +428,32 @@ final class TestCaseTest extends TestCase
         $test->expectExceptionObject($exception);
 
         $result = $test->run();
+        $this->assertFalse($result->wasSuccessful());
+    }
 
+    public function testExpectExceptionCallback(): void
+    {
+        $test = new \ThrowExceptionTestCase('test');
+        $test->expectExceptionCallback(function (\RuntimeException $e): void {
+            $this->assertInstanceof(\RuntimeException::class, $e);
+        });
+
+        $result = $test->run();
+
+        $this->assertCount(1, $result);
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExpectExceptionCallbackFailure(): void
+    {
+        $test = new \ThrowExceptionTestCase('test');
+        $test->expectExceptionCallback(function (\RuntimeException $e): void {
+            $this->fail('test failure');
+        });
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->failureCount());
         $this->assertCount(1, $result);
         $this->assertFalse($result->wasSuccessful());
     }
