@@ -442,18 +442,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = null)
     {
         $this->expectedException = $exceptionName;
-        $this->expectedExceptionCallback = function ($e) use ($exceptionMessage, $exceptionCode) {
+        $self = $this; // workaround for PHP < 5.4 which doesn't bind $this to closures automatically
+        $this->expectedExceptionCallback = function ($e) use ($self, $exceptionMessage, $exceptionCode) {
             // validate exception itself
-            $this->assertThat(
+            $self->assertThat(
                 $e,
                 new PHPUnit_Framework_Constraint_Exception(
-                    $this->expectedException
+                    $self->expectedException
                 )
             );
 
             // validate exception message
             if (!empty($exceptionMessage)) {
-                $this->assertThat(
+                $self->assertThat(
                     $e,
                     new PHPUnit_Framework_Constraint_ExceptionMessage(
                         $exceptionMessage
@@ -463,7 +464,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             // validate exception code
             if ($exceptionCode !== null) {
-                $this->assertThat(
+                $self->assertThat(
                     $e,
                     new PHPUnit_Framework_Constraint_ExceptionCode(
                         $exceptionCode
@@ -482,18 +483,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function setExpectedExceptionRegExp($exceptionName, $exceptionMessageRegExp = '', $exceptionCode = null)
     {
         $this->expectedException = $exceptionName;
-        $this->expectedExceptionCallback = function ($e) use ($exceptionMessageRegExp, $exceptionCode) {
+        $self = $this; // workaround for PHP < 5.4 which doesn't bind $this to closures automatically
+        $this->expectedExceptionCallback = function ($e) use ($self, $exceptionMessageRegExp, $exceptionCode) {
             // validate exception itself
-            $this->assertThat(
+            $self->assertThat(
                 $e,
                 new PHPUnit_Framework_Constraint_Exception(
-                    $this->expectedException
+                    $self->expectedException
                 )
             );
 
             // match with regular expression
             if (!empty($exceptionMessageRegExp)) {
-                $this->assertThat(
+                $self->assertThat(
                     $e,
                     new PHPUnit_Framework_Constraint_ExceptionMessageRegExp(
                         $exceptionMessageRegExp
@@ -503,7 +505,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             // validate exception code
             if ($exceptionCode !== null) {
-                $this->assertThat(
+                $self->assertThat(
                     $e,
                     new PHPUnit_Framework_Constraint_ExceptionCode(
                         $exceptionCode
