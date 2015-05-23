@@ -260,6 +260,33 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($result));
     }
 
+    public function testExceptionCallback()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedExceptionCallback('RuntimeException', function ($e) {
+            $this->assertInstanceof('RuntimeException', $e);
+        });
+
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExceptionCallbackFailure()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedExceptionCallback('RuntimeException', function ($e) {
+            $this->fail("test failure");
+        });
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->failureCount());
+        $this->assertEquals(1, count($result));
+        $this->assertFalse($result->wasSuccessful());
+    }
+
     /**
      * @backupGlobals enabled
      */

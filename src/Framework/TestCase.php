@@ -143,25 +143,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $expectedException = null;
 
     /**
-     * The message of the expected Exception.
+     * The callback to validate the expected Exception, if any is expected.
      *
-     * @var string
+     * @var Callable
      */
-    private $expectedExceptionMessage = '';
-
-    /**
-     * The regex pattern to validate the expected Exception message.
-     *
-     * @var string
-     */
-    private $expectedExceptionMessageRegExp = '';
-
-    /**
-     * The code of the expected Exception.
-     *
-     * @var integer
-     */
-    private $expectedExceptionCode;
+    private $expectedExceptionCallback = null;
 
     /**
      * The name of the test case.
@@ -455,9 +441,36 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function setExpectedException($exceptionName, $exceptionMessage = '', $exceptionCode = null)
     {
-        $this->expectedException        = $exceptionName;
-        $this->expectedExceptionMessage = $exceptionMessage;
-        $this->expectedExceptionCode    = $exceptionCode;
+        $this->expectedException = $exceptionName;
+        $this->expectedExceptionCallback = function ($e) use ($exceptionMessage, $exceptionCode) {
+            // validate exception itself
+            $this->assertThat(
+                $e,
+                new PHPUnit_Framework_Constraint_Exception(
+                    $this->expectedException
+                )
+            );
+
+            // validate exception message
+            if (!empty($exceptionMessage)) {
+                $this->assertThat(
+                    $e,
+                    new PHPUnit_Framework_Constraint_ExceptionMessage(
+                        $exceptionMessage
+                    )
+                );
+            }
+
+            // validate exception code
+            if ($exceptionCode !== null) {
+                $this->assertThat(
+                    $e,
+                    new PHPUnit_Framework_Constraint_ExceptionCode(
+                        $exceptionCode
+                    )
+                );
+            }
+        };
     }
 
     /**
@@ -468,9 +481,46 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function setExpectedExceptionRegExp($exceptionName, $exceptionMessageRegExp = '', $exceptionCode = null)
     {
-        $this->expectedException              = $exceptionName;
-        $this->expectedExceptionMessageRegExp = $exceptionMessageRegExp;
-        $this->expectedExceptionCode          = $exceptionCode;
+        $this->expectedException = $exceptionName;
+        $this->expectedExceptionCallback = function ($e) use ($exceptionMessageRegExp, $exceptionCode) {
+            // validate exception itself
+            $this->assertThat(
+                $e,
+                new PHPUnit_Framework_Constraint_Exception(
+                    $this->expectedException
+                )
+            );
+
+            // match with regular expression
+            if (!empty($exceptionMessageRegExp)) {
+                $this->assertThat(
+                    $e,
+                    new PHPUnit_Framework_Constraint_ExceptionMessageRegExp(
+                        $exceptionMessageRegExp
+                    )
+                );
+            }
+
+            // validate exception code
+            if ($exceptionCode !== null) {
+                $this->assertThat(
+                    $e,
+                    new PHPUnit_Framework_Constraint_ExceptionCode(
+                        $exceptionCode
+                    )
+                );
+            }
+        };
+    }
+
+    /**
+     * @param mixed    $exceptionName
+     * @param Callable $callback
+     */
+    public function setExpectedExceptionCallback($exceptionName, Callable $callback)
+    {
+        $this->expectedException = $exceptionName;
+        $this->expectedExceptionCallback = $callback;
     }
 
     /**
@@ -883,41 +933,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             if ($checkException) {
-                $this->assertThat(
-                    $e,
-                    new PHPUnit_Framework_Constraint_Exception(
-                        $this->expectedException
-                    )
-                );
-
-                if (is_string($this->expectedExceptionMessage) &&
-                    !empty($this->expectedExceptionMessage)) {
-                    $this->assertThat(
-                        $e,
-                        new PHPUnit_Framework_Constraint_ExceptionMessage(
-                            $this->expectedExceptionMessage
-                        )
-                    );
+                $callback = $this->expectedExceptionCallback;
+                if ($callback === 0) {
+                    // shouldn't happen, callback should always be set when an exception is expected
+                    throw $e;
                 }
-
-                if (is_string($this->expectedExceptionMessageRegExp) &&
-                    !empty($this->expectedExceptionMessageRegExp)) {
-                    $this->assertThat(
-                        $e,
-                        new PHPUnit_Framework_Constraint_ExceptionMessageRegExp(
-                            $this->expectedExceptionMessageRegExp
-                        )
-                    );
-                }
-
-                if ($this->expectedExceptionCode !== null) {
-                    $this->assertThat(
-                        $e,
-                        new PHPUnit_Framework_Constraint_ExceptionCode(
-                            $this->expectedExceptionCode
-                        )
-                    );
-                }
+                $callback($e);
 
                 return;
             } else {
