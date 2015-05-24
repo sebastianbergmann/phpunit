@@ -11,6 +11,7 @@
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'BeforeAndAfterTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'BeforeClassAndAfterClassTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TestWithTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'BeforeClassWithOnlyDataProviderTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DataProviderSkippedTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DataProviderIncompleteTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'InheritedTestCase.php';
@@ -55,6 +56,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         $suite->addTest(new Framework_SuiteTest('testOneTestCase'));
         $suite->addTest(new Framework_SuiteTest('testShadowedTests'));
         $suite->addTest(new Framework_SuiteTest('testBeforeClassAndAfterClassAnnotations'));
+        $suite->addTest(new Framework_SuiteTest('testBeforeClassWithDataProviders'));
         $suite->addTest(new Framework_SuiteTest('testBeforeAnnotation'));
         $suite->addTest(new Framework_SuiteTest('testTestWithAnnotation'));
         $suite->addTest(new Framework_SuiteTest('testSkippedTestDataProvider'));
@@ -174,6 +176,19 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(1, BeforeClassAndAfterClassTest::$beforeClassWasRun, "@beforeClass method was not run once for the whole suite.");
         $this->assertEquals(1, BeforeClassAndAfterClassTest::$afterClassWasRun, "@afterClass method was not run once for the whole suite.");
+    }
+
+    public function testBeforeClassWithDataProviders()
+    {
+        $suite = new PHPUnit_Framework_TestSuite(
+            'BeforeClassWithOnlyDataProviderTest'
+        );
+
+        BeforeClassWithOnlyDataProviderTest::resetProperties();
+        $suite->run($this->result);
+
+        $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$setUpBeforeClassWasCalled, "setUpBeforeClass method was not run.");
+        $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$beforeClassWasCalled, "@beforeClass method was not run.");
     }
 
     public function testBeforeAnnotation()
