@@ -724,6 +724,7 @@ class PHPUnit_Util_Test
             } catch (ReflectionException $e) {
             }
         }
+        self::$hookMethods[$className]['before'][] = 'setUp';
 
         return self::$hookMethods[$className];
     }
@@ -736,7 +737,7 @@ class PHPUnit_Util_Test
     {
         return array(
             'beforeClass' => array('setUpBeforeClass'),
-            'before' => array('setUp'),
+            'before' => array(),
             'after' => array('tearDown'),
             'afterClass' => array('tearDownAfterClass')
         );
