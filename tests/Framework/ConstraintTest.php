@@ -832,7 +832,6 @@ EOF
             ),
         );
 
-        // TODO: Port this test to PHP 7
         if (PHP_MAJOR_VERSION < 7) {
             $data[] = array($storage1, $storage2, <<<EOF
 Failed asserting that two objects are equal.
@@ -850,6 +849,29 @@ Failed asserting that two objects are equal.
          'inf' => null
      )
 -    '$bhash' => Array &0
+ )
+
+EOF
+            );
+        } else {
+            $data[] = array($storage1, $storage2, <<<EOF
+Failed asserting that two objects are equal.
+--- Expected
++++ Actual
+@@ @@
+-SplObjectStorage Object &$storage1hash (
+-    '$ahash' => Array &0 (
+-        'obj' => stdClass Object &$ahash (
+-            'foo' => 'bar'
+-        )
+-        'inf' => null
+-    )
+-    '$bhash' => Array &1 (
++SplObjectStorage Object &$storage2hash (
++    '$bhash' => Array &0 (
+         'obj' => stdClass Object &$bhash ()
+         'inf' => null
+     )
  )
 
 EOF
