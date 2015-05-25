@@ -1,5 +1,11 @@
 --TEST--
 GH-1340: Process isolation blocks infinitely upon fatal error
+--SKIPIF--
+<?php
+if (PHP_MAJOR_VERSION < 7) {
+    print "skip: PHP 7 is required";
+}
+?>
 --FILE--
 <?php
 
@@ -28,7 +34,7 @@ PHPUnit_Framework_Exception: testLargeStderrOutputDoesNotBlockInIsolation: stder
 PHPUnit_Framework_Exception: shutdown: stderr:%d
 %A
 3) Issue1340Test::testFatalErrorDoesNotPass
-PHPUnit_Framework_Exception: Fatal error: Call to undefined function undefined_function() in %s on line %d
+PHPUnit_Framework_Exception: Fatal error: Uncaught EngineException: Call to undefined function undefined_function() in %s:%d
 %A
 shutdown: stderr:%d
 %A
