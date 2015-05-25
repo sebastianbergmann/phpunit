@@ -36,7 +36,7 @@ class PHPUnit_Runner_Version
         }
 
         if (self::$version === null) {
-            $version = new SebastianBergmann\Version('4.6.6', dirname(dirname(__DIR__)));
+            $version = new SebastianBergmann\Version('4.6.7', dirname(dirname(__DIR__)));
             self::$version = $version->getVersion();
         }
 

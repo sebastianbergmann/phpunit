@@ -1,5 +1,9 @@
 # Changes in PHPUnit 4.6
 
+## PHPUnit 4.6.7
+
+* New PHAR release due to updated dependencies
+
 ## PHPUnit 4.6.6
 
 * Fixed [#1684](https://github.com/sebastianbergmann/phpunit/issues/1684): PHAR does not work on HHVM
