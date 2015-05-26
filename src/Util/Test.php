@@ -425,10 +425,7 @@ class PHPUnit_Util_Test
      */
     public static function getDataFromTestWithAnnotation($docComment)
     {
-        //removing initial '   * ' for docComment
-        $docComment = preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
-        $docComment = substr($docComment, 0, -1);
-        $docComment = rtrim($docComment, "\n");
+        $docComment = self::cleanUpMultiLineAnnotation($docComment);
         if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
             $offset = strlen($matches[0][0]) + $matches[0][1];
             $annotationContent = substr($docComment, $offset);
@@ -443,8 +440,15 @@ class PHPUnit_Util_Test
 
             return $data;
         }
+    }
 
-        return null;
+    private static function cleanUpMultiLineAnnotation($docComment)
+    {
+        //removing initial '   * ' for docComment
+        $docComment = preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
+        $docComment = substr($docComment, 0, -1);
+        $docComment = rtrim($docComment, "\n");
+        return $docComment;
     }
 
     /**
