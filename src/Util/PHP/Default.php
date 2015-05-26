@@ -34,9 +34,14 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
     public function runJob($job, array $settings = array())
     {
         $runtime = new Runtime;
+        $bin = $runtime->getBinary();
+
+        if (ini_get('safe_mode')) {
+            $bin = str_replace("'", "", $bin);
+        }
 
         $process = proc_open(
-            $runtime->getBinary() . $this->settingsToParameters($settings),
+            $bin . $this->settingsToParameters($settings),
             array(
             0 => array('pipe', 'r'),
             1 => array('pipe', 'w'),
