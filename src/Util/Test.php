@@ -347,7 +347,6 @@ class PHPUnit_Util_Test
      * @param  string           $className
      * @param  string           $methodName
      * @return array|Iterator when a data provider is specified and exists
-     *         false          when a data provider is specified but does not exist
      *         null           when no data provider is specified
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.2.0
@@ -386,6 +385,16 @@ class PHPUnit_Util_Test
         return $data;
     }
 
+    /**
+     * Returns the provided data for a method.
+     *
+     * @param  string           $docComment
+     * @param  string           $className
+     * @param  string           $methodName
+     * @return array|Iterator when a data provider is specified and exists
+     *         null           when no data provider is specified
+     * @throws PHPUnit_Framework_Exception
+     */
     private static function getDataFromDataProviderAnnotation($docComment, $className, $methodName)
     {
         if (preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
