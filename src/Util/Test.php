@@ -447,6 +447,7 @@ class PHPUnit_Util_Test
         if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
             $offset = strlen($matches[0][0]) + $matches[0][1];
             $annotationContent = substr($docComment, $offset);
+            $data = [];
             foreach (explode("\n", $annotationContent) as $candidateRow) {
                 $candidateRow = trim($candidateRow);
                 $dataSet = json_decode($candidateRow, true);
@@ -454,6 +455,10 @@ class PHPUnit_Util_Test
                     break;
                 }
                 $data[] = $dataSet;
+            }
+
+            if (!$data) {
+                throw new PHPUnit_Framework_Exception("The dataset for the @testWith annotation cannot be parsed.");
             }
 
             return $data;
