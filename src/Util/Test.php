@@ -393,6 +393,10 @@ class PHPUnit_Util_Test
             }
         }
 
+        if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches)) {
+            $data = self::getDataFromTestWithAnnotation($docComment);
+        }
+
         if ($data !== null) {
             if (is_object($data)) {
                 $data = iterator_to_array($data);
