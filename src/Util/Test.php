@@ -393,8 +393,8 @@ class PHPUnit_Util_Test
             }
         }
 
-        if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches)) {
-            $data = self::getDataFromTestWithAnnotation($docComment);
+        if ($testWithData = self::getDataFromTestWithAnnotation($docComment)) {
+            $data = $testWithData;
         }
 
         if ($data !== null) {
@@ -426,50 +426,19 @@ class PHPUnit_Util_Test
     public static function getDataFromTestWithAnnotation($docComment)
     {
         //removing initial '   * ' for docComment
-        $docComment = preg_replace('/\n\s*\*\s?/', "\n", $docComment);
+        $docComment = preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
+        $docComment = substr($docComment, 0, -1);
+        $docComment = rtrim($docComment, "\n");
         if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
             $offset = strlen($matches[0][0]) + $matches[0][1];
-            $nestLvl = 0;
-            $maxOffset = strlen($docComment);
-            $stringStop = false;
-            $outputStr = '';
-            $jsonEscape = array("\t" => '\t', "\n" => '\n', "\r" => '\r');
-            while ($offset < $maxOffset) {
-                $currentCharacter = substr($docComment, $offset, 1);
-                if ($stringStop) {
-                    if ($currentCharacter === $stringStop) {
-                        $stringStop = false;
-                        $outputStr .= '"';
-                    } elseif ($currentCharacter === '\\') {
-                        $outputStr .= $currentCharacter . $docComment[$offset + 1];
-                        $offset++;
-                    } elseif(isset($jsonEscape[$currentCharacter])) {
-                        $outputStr .= $jsonEscape[$currentCharacter];
-                    } else {
-                        $outputStr .= $currentCharacter;
-                    }
-                } else {
-                    if ($currentCharacter === '"' || $currentCharacter === "'") {
-                        $stringStop = $currentCharacter;
-                        $outputStr .= '"';
-                    } elseif ($currentCharacter === '(') {
-                        $outputStr .= ($outputStr ? ',' : '') . '[';
-                        $nestLvl++;
-                    } elseif ($currentCharacter === ')') {
-                        $outputStr .= ']';
-                        $nestLvl--;
-                    } elseif (!preg_match('/\s/', $currentCharacter) && $nestLvl === 0) {
-                        break;
-                    } else {
-                        $outputStr .= $currentCharacter;
-                    }
+            $annotationContent = substr($docComment, $offset);
+            foreach (explode("\n", $annotationContent) as $candidateRow) {
+                $candidateRow = trim($candidateRow);
+                $dataSet = json_decode($candidateRow, true);
+                if (json_last_error() != JSON_ERROR_NONE) {
+                    break;
                 }
-                $offset++;
-            }
-
-            $data = json_decode('[' . $outputStr . ']', true);
-            if ($data === null) {
-                throw new PHPUnit_Framework_Exception('Data set in invalid');
+                $data[] = $dataSet;
             }
 
             return $data;

@@ -274,7 +274,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testTestWithSimpleCase()
     {
         $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
-                                                                     * @testWith (1)
+                                                                     * @testWith [1]
                                                                      */");
         $this->assertEquals(array(array(1)), $result);
     }
@@ -285,21 +285,10 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testTestWithMultiLineMultiParameterCase()
     {
         $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
-                                                                     * @testWith (1, 2)
-                                                                     * (3, 4)
+                                                                     * @testWith [1, 2]
+                                                                     * [3, 4]
                                                                      */");
         $this->assertEquals(array(array(1, 2), array(3, 4)), $result);
-    }
-
-    /**
-     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
-     */
-    public function testTestWithMultiCaseInSingleLine()
-    {
-        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
-                                                                     * @testWith (1) (2) (3)
-                                                                     */");
-        $this->assertEquals(array(array(1), array(2), array(3)), $result);
     }
 
     /**
@@ -308,8 +297,10 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testTestWithVariousTypes()
     {
         $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
-                                                                     * @testWith ("ab") (true) (null)
-                                                                     */');
+            * @testWith ["ab"]
+            *           [true]
+            *           [null]
+         */');
         $this->assertEquals(array(array("ab"), array(true), array(null)), $result);
     }
 
@@ -319,8 +310,8 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testTestWithAnnotationAfter()
     {
         $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
-                                                                     * @testWith (1)
-                                                                     *           (2)
+                                                                     * @testWith [1]
+                                                                     *           [2]
                                                                      * @annotation
                                                                      */");
         $this->assertEquals(array(array(1), array(2)), $result);
@@ -332,8 +323,8 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testTestWithSimpleTextAfter()
     {
         $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
-                                                                     * @testWith (1)
-                                                                     *           (2)
+                                                                     * @testWith [1]
+                                                                     *           [2]
                                                                      * blah blah
                                                                      */");
         $this->assertEquals(array(array(1), array(2)), $result);
@@ -342,37 +333,12 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
      */
-    public function testTestWithBraces()
-    {
-        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
-                                                                     * @testWith (")", "(")
-                                                                     *           ("(", ")")
-                                                                     */');
-        $this->assertEquals(array(array(")", "("), array("(", ")")), $result);
-    }
-
-    /**
-     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
-     */
     public function testTestWithCharacterEscape()
     {
         $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
-                                                                     * @testWith ("\"", "\"")
+                                                                     * @testWith ["\"", "\""]
                                                                      */');
         $this->assertEquals(array(array('"', '"')), $result);
-    }
-
-    /**
-     * @covers PHPUnit_Util_Test::getDataFromTestWithAnnotation
-     */
-    public function testTestWithMultiLineText()
-    {
-        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
-                                                                     * @testWith ('a
-                                                                     *             bc')
-                                                                     */");
-
-        $this->assertEquals(array(array("a\n            bc")), $result);
     }
 
     /**
