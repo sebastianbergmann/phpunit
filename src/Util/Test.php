@@ -358,6 +358,36 @@ class PHPUnit_Util_Test
         $docComment = $reflector->getDocComment();
         $data       = null;
 
+        if ($dataProviderData = self::getDataFromDataProviderAnnotation($docComment, $className, $methodName)) {
+            $data = $dataProviderData;
+        }
+
+        if ($testWithData = self::getDataFromTestWithAnnotation($docComment)) {
+            $data = $testWithData;
+        }
+
+        if ($data !== null) {
+            if (is_object($data)) {
+                $data = iterator_to_array($data);
+            }
+
+            foreach ($data as $key => $value) {
+                if (!is_array($value)) {
+                    throw new PHPUnit_Framework_Exception(
+                        sprintf(
+                            'Data set %s is invalid.',
+                            is_int($key) ? '#' . $key : '"' . $key . '"'
+                        )
+                    );
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    private static function getDataFromDataProviderAnnotation($docComment, $className, $methodName)
+    {
         if (preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             $dataProviderMethodNameNamespace = explode('\\', $matches[1]);
             $leaf                            = explode('::', array_pop($dataProviderMethodNameNamespace));
@@ -391,30 +421,9 @@ class PHPUnit_Util_Test
             } else {
                 $data = $dataProviderMethod->invoke($object, $methodName);
             }
+
+            return $data;
         }
-
-        if ($testWithData = self::getDataFromTestWithAnnotation($docComment)) {
-            $data = $testWithData;
-        }
-
-        if ($data !== null) {
-            if (is_object($data)) {
-                $data = iterator_to_array($data);
-            }
-
-            foreach ($data as $key => $value) {
-                if (!is_array($value)) {
-                    throw new PHPUnit_Framework_Exception(
-                        sprintf(
-                            'Data set %s is invalid.',
-                            is_int($key) ? '#' . $key : '"' . $key . '"'
-                        )
-                    );
-                }
-            }
-        }
-
-        return $data;
     }
 
     /**
