@@ -367,7 +367,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->writeCountString($result->skippedCount(), 'Skipped', $color);
             $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
             $this->writeCountString($result->riskyCount(), 'Risky', $color);
-            $this->write(".\n");
+            $this->writeWithColor($color, '.', true);
         }
     }
 

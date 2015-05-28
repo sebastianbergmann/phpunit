@@ -1,5 +1,9 @@
 # Changes in PHPUnit 4.6
 
+## PHPUnit 4.6.9
+
+* Fixed [#1731](https://github.com/sebastianbergmann/phpunit/issues/1731): `.` after failure count has no background color when `--colors` is used
+
 ## PHPUnit 4.6.8
 
 * New PHAR release due to updated dependencies
