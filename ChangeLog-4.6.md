@@ -1,5 +1,9 @@
 # Changes in PHPUnit 4.6
 
+## PHPUnit 4.6.8
+
+* New PHAR release due to updated dependencies
+
 ## PHPUnit 4.6.7
 
 * New PHAR release due to updated dependencies
