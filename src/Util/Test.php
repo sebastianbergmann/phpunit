@@ -29,6 +29,7 @@ if (!function_exists('trait_exists')) {
 class PHPUnit_Util_Test
 {
     const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
+    const REGEX_TEST_WITH          = '/@testWith\s+/';
     const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
     const REGEX_REQUIRES_VERSION   = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<value>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
     const REGEX_REQUIRES_OS        = '/@requires\s+OS\s+(?P<value>.+?)[ \t]*\r?$/m';
@@ -346,7 +347,6 @@ class PHPUnit_Util_Test
      * @param  string           $className
      * @param  string           $methodName
      * @return array|Iterator when a data provider is specified and exists
-     *         false          when a data provider is specified but does not exist
      *         null           when no data provider is specified
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.2.0
@@ -357,6 +357,46 @@ class PHPUnit_Util_Test
         $docComment = $reflector->getDocComment();
         $data       = null;
 
+        if ($dataProviderData = self::getDataFromDataProviderAnnotation($docComment, $className, $methodName)) {
+            $data = $dataProviderData;
+        }
+
+        if ($testWithData = self::getDataFromTestWithAnnotation($docComment)) {
+            $data = $testWithData;
+        }
+
+        if ($data !== null) {
+            if (is_object($data)) {
+                $data = iterator_to_array($data);
+            }
+
+            foreach ($data as $key => $value) {
+                if (!is_array($value)) {
+                    throw new PHPUnit_Framework_Exception(
+                        sprintf(
+                            'Data set %s is invalid.',
+                            is_int($key) ? '#' . $key : '"' . $key . '"'
+                        )
+                    );
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Returns the provided data for a method.
+     *
+     * @param  string           $docComment
+     * @param  string           $className
+     * @param  string           $methodName
+     * @return array|Iterator when a data provider is specified and exists
+     *         null           when no data provider is specified
+     * @throws PHPUnit_Framework_Exception
+     */
+    private static function getDataFromDataProviderAnnotation($docComment, $className, $methodName)
+    {
         if (preg_match(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             $dataProviderMethodNameNamespace = explode('\\', $matches[1]);
             $leaf                            = explode('::', array_pop($dataProviderMethodNameNamespace));
@@ -390,26 +430,48 @@ class PHPUnit_Util_Test
             } else {
                 $data = $dataProviderMethod->invoke($object, $methodName);
             }
+
+            return $data;
         }
+    }
 
-        if ($data !== null) {
-            if (is_object($data)) {
-                $data = iterator_to_array($data);
-            }
-
-            foreach ($data as $key => $value) {
-                if (!is_array($value)) {
-                    throw new PHPUnit_Framework_Exception(
-                        sprintf(
-                            'Data set %s is invalid.',
-                            is_int($key) ? '#' . $key : '"' . $key . '"'
-                        )
-                    );
+    /**
+     * @param string $docComment full docComment string
+     * @return array when @testWith annotation is defined
+     *         null  when @testWith annotation is omitted
+     * @throws PHPUnit_Framework_Exception when @testWith annotation is defined but cannot be parsed
+     */
+    public static function getDataFromTestWithAnnotation($docComment)
+    {
+        $docComment = self::cleanUpMultiLineAnnotation($docComment);
+        if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
+            $offset = strlen($matches[0][0]) + $matches[0][1];
+            $annotationContent = substr($docComment, $offset);
+            $data = array();
+            foreach (explode("\n", $annotationContent) as $candidateRow) {
+                $candidateRow = trim($candidateRow);
+                $dataSet = json_decode($candidateRow, true);
+                if (json_last_error() != JSON_ERROR_NONE) {
+                    break;
                 }
+                $data[] = $dataSet;
             }
-        }
 
-        return $data;
+            if (!$data) {
+                throw new PHPUnit_Framework_Exception("The dataset for the @testWith annotation cannot be parsed.");
+            }
+
+            return $data;
+        }
+    }
+
+    private static function cleanUpMultiLineAnnotation($docComment)
+    {
+        //removing initial '   * ' for docComment
+        $docComment = preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
+        $docComment = substr($docComment, 0, -1);
+        $docComment = rtrim($docComment, "\n");
+        return $docComment;
     }
 
     /**
