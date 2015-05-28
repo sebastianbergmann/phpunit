@@ -164,7 +164,5 @@ class PHPUnit_Util_Getopt
 
             return;
         }
-
-        throw new PHPUnit_Framework_Exception("unrecognized option --$opt");
     }
 }
