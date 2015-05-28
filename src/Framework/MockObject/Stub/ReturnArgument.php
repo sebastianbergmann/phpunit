@@ -33,7 +33,7 @@ class PHPUnit_Framework_MockObject_Stub_ReturnArgument extends PHPUnit_Framework
         if (isset($invocation->parameters[$this->argumentIndex])) {
             return $invocation->parameters[$this->argumentIndex];
         } else {
-            return NULL;
+            return null;
         }
     }
 

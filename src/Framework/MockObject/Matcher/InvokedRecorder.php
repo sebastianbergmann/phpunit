@@ -68,6 +68,6 @@ abstract class PHPUnit_Framework_MockObject_Matcher_InvokedRecorder implements P
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
-        return TRUE;
+        return true;
     }
 }

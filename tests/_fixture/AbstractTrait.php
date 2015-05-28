@@ -5,11 +5,11 @@ trait AbstractTrait
 
     public function mockableMethod()
     {
-        return TRUE;
+        return true;
     }
 
     public function anotherMockableMethod()
     {
-        return TRUE;
+        return true;
     }
 }
