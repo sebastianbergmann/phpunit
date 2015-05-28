@@ -43,7 +43,7 @@ class PHPUnit_Framework_MockObject_Stub_ReturnValueMap implements PHPUnit_Framew
             }
         }
 
-        return NULL;
+        return null;
     }
 
     public function toString()

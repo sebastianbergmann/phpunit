@@ -1,11 +1,11 @@
 <?php
 class PartialMockTestClass
 {
-    public $constructorCalled = FALSE;
+    public $constructorCalled = false;
 
     public function __construct()
     {
-        $this->constructorCalled = TRUE;
+        $this->constructorCalled = true;
     }
 
     public function doSomething()
