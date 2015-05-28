@@ -675,7 +675,7 @@ class PHPUnit_Framework_MockObject_Generator
 
                 $additionalInterfaces[] = $_type;
 
-                foreach (get_class_methods($_type) as $method) {
+                foreach ($this->getClassMethods($_type) as $method) {
                     if (in_array($method, $methods)) {
                         throw new PHPUnit_Framework_Exception(
                             sprintf(
@@ -752,7 +752,7 @@ class PHPUnit_Framework_MockObject_Generator
 
         if (is_array($methods) && empty($methods) &&
             ($isClass || $isInterface)) {
-            $methods = get_class_methods($mockClassName['fullClassName']);
+            $methods = $this->getClassMethods($mockClassName['fullClassName']);
         }
 
         if (!is_array($methods)) {
@@ -767,7 +767,7 @@ class PHPUnit_Framework_MockObject_Generator
                 !$class->implementsInterface('Iterator') &&
                 !$class->implementsInterface('IteratorAggregate')) {
                 $additionalInterfaces[] = 'Iterator';
-                $methods = array_merge($methods, get_class_methods('Iterator'));
+                $methods = array_merge($methods, $this->getClassMethods('Iterator'));
             }
 
             foreach ($methods as $methodName) {
@@ -1009,6 +1009,7 @@ class PHPUnit_Framework_MockObject_Generator
     {
         if ($method->isConstructor() ||
             $method->isFinal() ||
+            $method->isPrivate() ||
             isset($this->blacklistedMethodNames[$method->getName()])) {
             return false;
         }
@@ -1106,5 +1107,22 @@ class PHPUnit_Framework_MockObject_Generator
     private function isVariadic(ReflectionParameter $parameter)
     {
         return method_exists('ReflectionParameter', 'isVariadic') && $parameter->isVariadic();
+    }
+
+    /**
+     * @param  string $className
+     * @return array
+     * @since  Method available since Release 2.3.2
+     */
+    private function getClassMethods($className)
+    {
+        $class   = new ReflectionClass($className);
+        $methods = array();
+
+        foreach ($class->getMethods() as $method) {
+            $methods[] = $method->getName();
+        }
+
+        return $methods;
     }
 }
