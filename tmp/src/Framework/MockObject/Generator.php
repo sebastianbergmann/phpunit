@@ -1120,7 +1120,9 @@ class PHPUnit_Framework_MockObject_Generator
         $methods = array();
 
         foreach ($class->getMethods() as $method) {
-            $methods[] = $method->getName();
+            if ($method->isPublic() || $method->isAbstract()) {
+                $methods[] = $method->getName();
+            }
         }
 
         return $methods;
