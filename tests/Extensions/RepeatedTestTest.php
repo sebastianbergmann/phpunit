@@ -29,24 +29,56 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
 
         $this->suite->addTest(new Success);
         $this->suite->addTest(new Success);
+        $this->suite->addTest(new Failure);
     }
 
     public function testRepeatedOnce()
     {
         $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 1);
-        $this->assertEquals(2, count($test));
+        $this->assertEquals(3, count($test));
 
         $result = $test->run();
-        $this->assertEquals(2, count($result));
+        $this->assertEquals(3, count($result));
     }
 
     public function testRepeatedMoreThanOnce()
     {
         $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 3);
-        $this->assertEquals(6, count($test));
+        $this->assertEquals(9, count($test));
 
         $result = $test->run();
-        $this->assertEquals(6, count($result));
+        $this->assertEquals(9, count($result));
+    }
+
+    public function testRepeatedMoreThanOnceOnlyFailed()
+    {
+        $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 3, false, true);
+        // Intends to run 9 tests.
+        $this->assertEquals(9, count($test));
+
+        $result = $test->run();
+        // But eventually skips 4 because the Success test already succeeded
+        // the first time it ran, and we chose to only repeat the failed tests.
+        $this->assertEquals(4, $result->skippedCount());
+    }
+
+    public function testRepeatedTestCaseSuccessMoreThanOnceOnlyFailed()
+    {
+        $test = new PHPUnit_Extensions_RepeatedTest(new Success, 3, false, true);
+        $this->assertEquals(3, count($test));
+
+        $result = $test->run();
+        $this->assertEquals(2, $result->skippedCount());
+    }
+
+    public function testRepeatedTestCaseFailureMoreThanOnceOnlyFailed()
+    {
+        $test = new PHPUnit_Extensions_RepeatedTest(new Failure, 3, false, true);
+        $this->assertEquals(3, count($test));
+
+        $result = $test->run();
+        // Test case didn't get skipped because it kept failing.
+        $this->assertEquals(0, $result->skippedCount());
     }
 
     public function testRepeatedZero()

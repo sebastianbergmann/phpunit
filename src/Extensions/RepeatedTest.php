@@ -41,6 +41,11 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected $processIsolation = false;
 
     /**
+     * @var boolean
+     */
+    protected $onlyRepeatFailed = false;
+
+    /**
      * @var integer
      */
     protected $timesRepeat = 1;
@@ -49,9 +54,10 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  PHPUnit_Framework_Test      $test
      * @param  integer                     $timesRepeat
      * @param  boolean                     $processIsolation
+     * @param  boolean                     $onlyRepeatFailed
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = false)
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = false, $onlyRepeatFailed = false)
     {
         parent::__construct($test);
 
@@ -66,6 +72,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         }
 
         $this->processIsolation = $processIsolation;
+        $this->onlyRepeatFailed = $onlyRepeatFailed;
     }
 
     /**
@@ -95,13 +102,89 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 
         //@codingStandardsIgnoreStart
         for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
+            if ($this->onlyRepeatFailed &&
+                $i > 0 &&
+                $this->test instanceof PHPUnit_Framework_TestCase &&
+                !$result->failureCount()) {
+                // The previous test case run succeeded.
+                $this->markNextRepeatedTestsAsSkipped($i, $result, $this->test);
+                // Don't repeat it any more.
+                break;
+            }
             //@codingStandardsIgnoreEnd
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
                 $this->test->setRunTestInSeparateProcess($this->processIsolation);
+
+                if ($this->onlyRepeatFailed && $i > 0) {
+                    $testsToRepeat = array();
+                    foreach ($this->test->tests() as $test) {
+                        if ($test instanceof PHPUnit_Framework_TestSuite) {
+                            // If the test itself is another test suite, then
+                            // get its tests to check.
+                            $tests = $test->tests();
+                        } else {
+                            $tests = array($test);
+                        }
+                        $testsToRepeat = array_merge(
+                            $testsToRepeat,
+                            $this->getWhichTestsToRepeat($tests, $result, $i)
+                        );
+                    }
+                    $this->test->setTests($testsToRepeat);
+                }
             }
             $this->test->run($result);
         }
 
         return $result;
+    }
+
+    /**
+     * Get which tests failed, and thus should be repeated.
+     *
+     * @param PHPUnit_Framework_Test[] $tests
+     * @param PHPUnit_Framework_TestResult $result
+     * @param int $ranCount
+     *   How many times did the tests already run?
+     * @return PHPUnit_Framework_Test[]
+     */
+    protected function getWhichTestsToRepeat($tests, $result, $ranCount)
+    {
+        $testsToRepeat = array();
+
+        foreach ($tests as $test) {
+            $failed = false;
+
+            foreach ($result->failures() as $failure) {
+                /** @var $failure PHPUnit_Framework_TestFailure */
+                if ($test === $failure->failedTest()) {
+                    $failed = true;
+                }
+            }
+            if ($failed) {
+                $testsToRepeat[] = $test;
+            } else {
+                // The previous test case run succeeded.
+                $this->markNextRepeatedTestsAsSkipped($ranCount, $result, $test);
+            }
+        }
+
+        return $testsToRepeat;
+    }
+
+    /**
+     * Mark the remaining repeated tests as skipped.
+     *
+     * @param int $ranCount
+     *   How many times did the test already run?
+     * @param PHPUnit_Framework_TestResult $result
+     * @param PHPUnit_Framework_Test $test
+     */
+    protected function markNextRepeatedTestsAsSkipped($ranCount, $result, $test)
+    {
+        $skipped = new PHPUnit_Framework_SkippedTestError('Test already succeeded during previous run.');
+        for ($j = 0; $j < $this->timesRepeat - $ranCount; $j++) {
+            $result->addFailure($test, $skipped, 0);
+        }
     }
 }
