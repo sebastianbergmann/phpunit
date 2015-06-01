@@ -107,7 +107,7 @@ class PHPUnit_Util_XML
         // Required for XInclude on Windows.
         if ($xinclude) {
             $cwd = getcwd();
-            chdir(dirname($filename));
+            @chdir(dirname($filename));
         }
 
         $document  = new DOMDocument;
@@ -139,7 +139,7 @@ class PHPUnit_Util_XML
         error_reporting($reporting);
 
         if ($xinclude) {
-            chdir($cwd);
+            @chdir($cwd);
         }
 
         if ($loaded === false || ($strict && $message !== '')) {
