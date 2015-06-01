@@ -281,6 +281,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             } elseif (isset($arguments['deprecatedStrictModeSetting'])) {
                 print "Warning:\tDeprecated configuration setting \"strict\" used\n";
             }
+
+            if (isset($arguments['deprecatedSeleniumConfiguration'])) {
+                print "Warning:\tDeprecated configuration setting \"selenium\" used\n";
+            }
         }
 
         foreach ($arguments['listeners'] as $listener) {
