@@ -772,6 +772,11 @@ class PHPUnit_TextUI_Command
         );
 
         $localFilename = realpath($_SERVER['argv'][0]);
+        if (!is_writable($localFilename)) {
+            print "No write permission to update " . $localFilename . "\n";
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+        }
+
         $tempFilename  = basename($localFilename, '.phar') . '-temp.phar';
 
         // Workaround for https://bugs.php.net/bug.php?id=65538
