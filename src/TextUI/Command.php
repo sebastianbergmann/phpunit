@@ -26,9 +26,9 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $arguments = array(
-      'listGroups'              => false,
-      'loader'                  => null,
-      'useDefaultConfiguration' => true
+        'listGroups'              => false,
+        'loader'                  => null,
+        'useDefaultConfiguration' => true
     );
 
     /**
@@ -40,54 +40,54 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $longOptions = array(
-      'colors==' => null,
-      'bootstrap=' => null,
-      'columns=' => null,
-      'configuration=' => null,
-      'coverage-clover=' => null,
-      'coverage-crap4j=' => null,
-      'coverage-html=' => null,
-      'coverage-php=' => null,
-      'coverage-text==' => null,
-      'coverage-xml=' => null,
-      'debug' => null,
-      'exclude-group=' => null,
-      'filter=' => null,
-      'testsuite=' => null,
-      'group=' => null,
-      'help' => null,
-      'include-path=' => null,
-      'list-groups' => null,
-      'loader=' => null,
-      'log-json=' => null,
-      'log-junit=' => null,
-      'log-tap=' => null,
-      'process-isolation' => null,
-      'repeat=' => null,
-      'stderr' => null,
-      'stop-on-error' => null,
-      'stop-on-failure' => null,
-      'stop-on-incomplete' => null,
-      'stop-on-risky' => null,
-      'stop-on-skipped' => null,
-      'report-useless-tests' => null,
-      'strict-coverage' => null,
-      'disallow-test-output' => null,
-      'enforce-time-limit' => null,
-      'disallow-todo-tests' => null,
-      'strict-global-state' => null,
-      'strict' => null,
-      'tap' => null,
-      'testdox' => null,
-      'testdox-html=' => null,
-      'testdox-text=' => null,
-      'test-suffix=' => null,
-      'no-configuration' => null,
-      'no-globals-backup' => null,
-      'printer=' => null,
-      'static-backup' => null,
-      'verbose' => null,
-      'version' => null
+        'colors==' => null,
+        'bootstrap=' => null,
+        'columns=' => null,
+        'configuration=' => null,
+        'coverage-clover=' => null,
+        'coverage-crap4j=' => null,
+        'coverage-html=' => null,
+        'coverage-php=' => null,
+        'coverage-text==' => null,
+        'coverage-xml=' => null,
+        'debug' => null,
+        'exclude-group=' => null,
+        'filter=' => null,
+        'testsuite=' => null,
+        'group=' => null,
+        'help' => null,
+        'include-path=' => null,
+        'list-groups' => null,
+        'loader=' => null,
+        'log-json=' => null,
+        'log-junit=' => null,
+        'log-tap=' => null,
+        'process-isolation' => null,
+        'repeat=' => null,
+        'stderr' => null,
+        'stop-on-error' => null,
+        'stop-on-failure' => null,
+        'stop-on-incomplete' => null,
+        'stop-on-risky' => null,
+        'stop-on-skipped' => null,
+        'report-useless-tests' => null,
+        'strict-coverage' => null,
+        'disallow-test-output' => null,
+        'enforce-time-limit' => null,
+        'disallow-todo-tests' => null,
+        'strict-global-state' => null,
+        'strict' => null,
+        'tap' => null,
+        'testdox' => null,
+        'testdox-html=' => null,
+        'testdox-text=' => null,
+        'test-suffix=' => null,
+        'no-configuration' => null,
+        'no-globals-backup' => null,
+        'printer=' => null,
+        'static-backup' => null,
+        'verbose' => null,
+        'version' => null
     );
 
     /**
@@ -316,7 +316,7 @@ class PHPUnit_TextUI_Command
                 case '--help':
                     $this->showHelp();
                     exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-                break;
+                    break;
 
                 case '--filter':
                     $this->arguments['filter'] = $option[1];
@@ -440,7 +440,7 @@ class PHPUnit_TextUI_Command
                 case '--version':
                     $this->printVersionString();
                     exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-                break;
+                    break;
 
                 case '--report-useless-tests':
                     $this->arguments['reportUselessTests'] = true;
@@ -533,8 +533,7 @@ class PHPUnit_TextUI_Command
 
         if (isset($this->arguments['configuration']) &&
             is_dir($this->arguments['configuration'])) {
-            $configurationFile = $this->arguments['configuration'] .
-                                 '/phpunit.xml';
+            $configurationFile = $this->arguments['configuration'] . '/phpunit.xml';
 
             if (file_exists($configurationFile)) {
                 $this->arguments['configuration'] = realpath(
@@ -546,7 +545,7 @@ class PHPUnit_TextUI_Command
                 );
             }
         } elseif (!isset($this->arguments['configuration']) &&
-                 $this->arguments['useDefaultConfiguration']) {
+                  $this->arguments['useDefaultConfiguration']) {
             if (file_exists('phpunit.xml')) {
                 $this->arguments['configuration'] = realpath('phpunit.xml');
             } elseif (file_exists('phpunit.xml.dist')) {
