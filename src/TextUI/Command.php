@@ -50,6 +50,7 @@ class PHPUnit_TextUI_Command
       'coverage-php=' => null,
       'coverage-text==' => null,
       'coverage-xml=' => null,
+      'disable-coverage=' => null,
       'debug' => null,
       'exclude-group=' => null,
       'filter=' => null,
@@ -294,6 +295,10 @@ class PHPUnit_TextUI_Command
 
                 case '--coverage-xml':
                     $this->arguments['coverageXml'] = $option[1];
+                    break;
+
+                case '--disable-coverage':
+                    $this->arguments['coverageDisable'] = true;
                     break;
 
                 case 'd':
@@ -843,6 +848,8 @@ Code Coverage Options:
   --coverage-text=<file>    Generate code coverage report in text format.
                             Default: Standard output.
   --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
+  --disable-coverage        Disable code coverage report (overrides
+                            configuration XML file)
 
 Logging Options:
 

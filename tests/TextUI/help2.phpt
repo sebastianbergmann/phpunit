@@ -23,6 +23,8 @@ Code Coverage Options:
   --coverage-text=<file>    Generate code coverage report in text format.
                             Default: Standard output.
   --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
+  --disable-coverage        Disable code coverage report (overrides
+                            configuration XML file)
 
 Logging Options:
 
