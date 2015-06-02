@@ -83,6 +83,7 @@ class PHPUnit_TextUI_Command
         'testdox-text=' => null,
         'test-suffix=' => null,
         'no-configuration' => null,
+        'no-coverage' => null,
         'no-globals-backup' => null,
         'printer=' => null,
         'static-backup' => null,
@@ -422,6 +423,10 @@ class PHPUnit_TextUI_Command
 
                 case '--no-configuration':
                     $this->arguments['useDefaultConfiguration'] = false;
+                    break;
+
+                case '--no-coverage':
+                    $this->arguments['noCoverage'] = true;
                     break;
 
                 case '--no-globals-backup':
@@ -897,6 +902,7 @@ Configuration Options:
   --bootstrap <file>        A "bootstrap" PHP file that is run before the tests.
   -c|--configuration <file> Read configuration from XML file.
   --no-configuration        Ignore default configuration file (phpunit.xml).
+  --no-coverage             Ignore code coverage configuration.
   --include-path <path(s)>  Prepend PHP's include_path with given path(s).
   -d key[=value]            Sets a php.ini value.
 
