@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<phpdox xmlns="http://phpdox.net/config">
+<phpdox xmlns="http://xml.phpdox.net/config">
  <project name="PHPUnit" source="src" workdir="build/phpdox">
   <collector publiconly="false">
    <include mask="*.php" />
