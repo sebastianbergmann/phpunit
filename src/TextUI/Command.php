@@ -230,8 +230,9 @@ class PHPUnit_TextUI_Command
     protected function handleArguments(array $argv)
     {
         if (defined('__PHPUNIT_PHAR__')) {
-            $this->longOptions['selfupdate']  = null;
-            $this->longOptions['self-update'] = null;
+            $this->longOptions['check-version'] = null;
+            $this->longOptions['selfupdate']    = null;
+            $this->longOptions['self-update']   = null;
         }
 
         try {
@@ -478,6 +479,10 @@ class PHPUnit_TextUI_Command
                     $this->arguments['enforceTimeLimit']           = true;
                     $this->arguments['disallowTodoAnnotatedTests'] = true;
                     $this->arguments['deprecatedStrictModeOption'] = true;
+                    break;
+
+                case '--check-version':
+                    $this->handleVersionCheck();
                     break;
 
                 case '--selfupdate':
@@ -834,6 +839,26 @@ class PHPUnit_TextUI_Command
     }
 
     /**
+     * @since Method available since Release 4.8.0
+     */
+    protected function handleVersionCheck()
+    {
+        $this->printVersionString();
+
+        $latestVersion = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit');
+        $isOutdated    = version_compare($latestVersion, PHPUnit_Runner_Version::id(), '>');
+
+        if ($isOutdated) {
+            print "You are not using the latest version of PHPUnit.\n";
+            print 'Use "phpunit --self-update" to install PHPUnit ' . $latestVersion . "\n";
+        } else {
+            print "You are using the latest version of PHPUnit.\n";
+        }
+
+        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+    }
+
+    /**
      * Show the help message.
      */
     protected function showHelp()
@@ -920,6 +945,7 @@ Miscellaneous Options:
 EOT;
 
         if (defined('__PHPUNIT_PHAR__')) {
+            print "\n  --check-version           Check whether PHPUnit is the latest version.";
             print "\n  --self-update             Update PHPUnit to the latest version.\n";
         }
     }
