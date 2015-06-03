@@ -761,6 +761,13 @@ class PHPUnit_TextUI_Command
     {
         $this->printVersionString();
 
+        $localFilename = realpath($_SERVER['argv'][0]);
+
+        if (!is_writable($localFilename)) {
+            print "No write permission to update " . $localFilename . "\n";
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+        }
+
         if (!extension_loaded('openssl')) {
             print "The OpenSSL extension is not loaded.\n";
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
@@ -770,13 +777,6 @@ class PHPUnit_TextUI_Command
             'https://phar.phpunit.de/phpunit%s.phar',
             PHPUnit_Runner_Version::getReleaseChannel()
         );
-
-        $localFilename = realpath($_SERVER['argv'][0]);
-
-        if (!is_writable($localFilename)) {
-            print "No write permission to update " . $localFilename . "\n";
-            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-        }
 
         $tempFilename = basename($localFilename, '.phar') . '-temp.phar';
 
