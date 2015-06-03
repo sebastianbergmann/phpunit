@@ -768,6 +768,13 @@ class PHPUnit_TextUI_Command
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
+        $tempFilename = basename($localFilename, '.phar') . '-temp.phar';
+
+        if (!is_writable($tempFilename)) {
+            print "No write permission to download to " . $tempFilename . "\n";
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+        }
+
         if (!extension_loaded('openssl')) {
             print "The OpenSSL extension is not loaded.\n";
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
@@ -777,8 +784,6 @@ class PHPUnit_TextUI_Command
             'https://phar.phpunit.de/phpunit%s.phar',
             PHPUnit_Runner_Version::getReleaseChannel()
         );
-
-        $tempFilename = basename($localFilename, '.phar') . '-temp.phar';
 
         // Workaround for https://bugs.php.net/bug.php?id=65538
         $caFile = dirname($tempFilename) . '/ca.pem';
