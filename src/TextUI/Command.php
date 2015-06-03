@@ -768,6 +768,13 @@ class PHPUnit_TextUI_Command
     {
         $this->printVersionString();
 
+        $localFilename = realpath($_SERVER['argv'][0]);
+
+        if (!is_writable($localFilename)) {
+            print "No write permission to update " . $localFilename . "\n";
+            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+        }
+
         if (!extension_loaded('openssl')) {
             print "The OpenSSL extension is not loaded.\n";
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
@@ -778,8 +785,7 @@ class PHPUnit_TextUI_Command
             PHPUnit_Runner_Version::getReleaseChannel()
         );
 
-        $localFilename = realpath($_SERVER['argv'][0]);
-        $tempFilename  = basename($localFilename, '.phar') . '-temp.phar';
+        $tempFilename = basename($localFilename, '.phar') . '-temp.phar';
 
         // Workaround for https://bugs.php.net/bug.php?id=65538
         $caFile = dirname($tempFilename) . '/ca.pem';
@@ -824,7 +830,7 @@ class PHPUnit_TextUI_Command
         }
 
         print " done\n";
-        exit(0);
+        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
     }
 
     /**

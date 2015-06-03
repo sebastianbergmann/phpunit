@@ -319,7 +319,7 @@
    </fileset>
   </copy>
 
-  <copy file="${basedir}/vendor/symfony/yaml/Symfony/Component/Yaml/LICENSE" tofile="${basedir}/build/phar/symfony/LICENSE"/>
+  <copy file="${basedir}/vendor/symfony/yaml/LICENSE" tofile="${basedir}/build/phar/symfony/LICENSE"/>
   <copy todir="${basedir}/build/phar/symfony">
    <fileset dir="${basedir}/vendor/symfony">
     <include name="**/*.php" />
