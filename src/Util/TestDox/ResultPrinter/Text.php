@@ -22,22 +22,12 @@
 class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_ResultPrinter
 {
     /**
-     * @var bool
-     */
-    private $isWarning = false;
-
-    /**
      * Handler for 'start class' event.
      *
      * @param string $name
      */
     protected function startClass($name)
     {
-        if ($name == 'PHPUnit_Framework_Warning') {
-            $this->isWarning = true;
-            return;
-        }
-
         $this->write($this->currentTestClassPrettified . "\n");
     }
 
@@ -49,10 +39,6 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
      */
     protected function onTest($name, $success = true)
     {
-        if ($this->isWarning) {
-            return;
-        }
-
         if ($success) {
             $this->write(' [x] ');
         } else {
@@ -69,11 +55,6 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
      */
     protected function endClass($name)
     {
-        if ($this->isWarning) {
-            $this->isWarning = false;
-            return;
-        }
-
         $this->write("\n");
     }
 }
