@@ -828,7 +828,7 @@ class PHPUnit_TextUI_Command
         }
 
         print " done\n";
-        exit(0);
+        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
     }
 
     /**
