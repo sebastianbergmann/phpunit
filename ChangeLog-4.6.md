@@ -7,6 +7,7 @@
 * Merged [#1725](https://github.com/sebastianbergmann/phpunit/pull/1725): Update phpDox XSD URI
 * Merged [#1735](https://github.com/sebastianbergmann/phpunit/pull/1735): Mute `chdir()` failures in XInclude handling of XML configuration file
 * Merged [#1736](https://github.com/sebastianbergmann/phpunit/pull/1736): Verify that phar file can be overwritten before attempting self update
+* Fixed [#1737](https://github.com/sebastianbergmann/phpunit/issues/1737): Confusing output from `--testdox` for empty test class
 
 ## PHPUnit 4.6.9
 
