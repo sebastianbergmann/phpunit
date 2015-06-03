@@ -780,7 +780,7 @@ class PHPUnit_TextUI_Command
             PHPUnit_Runner_Version::getReleaseChannel()
         );
 
-        $tempFilename = basename($localFilename, '.phar') . '-temp.phar';
+        $tempFilename = tempnam(sys_get_temp_dir(), 'phpunit') . '.phar';
 
         // Workaround for https://bugs.php.net/bug.php?id=65538
         $caFile = dirname($tempFilename) . '/ca.pem';
