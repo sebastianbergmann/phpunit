@@ -54,8 +54,8 @@ class PHPUnit_Util_Getopt
 
             if ($arg[0] != '-' ||
                 (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
-                $non_opts = array_merge($non_opts, array_slice($args, $i));
-                break;
+                $non_opts[] = $args[$i];
+                continue;
             } elseif (strlen($arg) > 1 && $arg[1] == '-') {
                 self::parseLongOption(
                     substr($arg, 2),
