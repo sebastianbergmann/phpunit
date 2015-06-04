@@ -46,20 +46,45 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns true if the
-     * constraint is met, false otherwise.
+     * Evaluates the constraint for parameter $other
      *
-     * @param  array|ArrayAccess $other  Array or ArrayAcess object to evaluate.
-     * @return bool
+     * If $returnResult is set to false (the default), an exception is thrown
+     * in case of a failure. null is returned otherwise.
+     *
+     * If $returnResult is true, the result of the evaluation is returned as
+     * a boolean value instead: true in case of success, false in case of a
+     * failure.
+     *
+     * @param  mixed                                        $other        Value or object to evaluate.
+     * @param  string                                       $description  Additional information about the test
+     * @param  bool                                         $returnResult Whether to return a result or throw an exception
+     * @return mixed
+     * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    protected function matches($other)
+    public function evaluate($other, $description = '', $returnResult = false)
     {
+        $success = false;
+
         $patched = array_replace_recursive($other, $this->subset);
 
         if ($this->strict) {
-            return $other === $patched;
+            $success = $other === $patched;
         } else {
-            return $other == $patched;
+            $success = $other == $patched;
+        }
+
+        if ($returnResult) {
+            return $success;
+        }
+
+        if (!$success) {
+            $f = new SebastianBergmann\Comparator\ComparisonFailure(
+                $patched,
+                $other,
+                print_r($patched, true),
+                print_r($other, true)
+            );
+            $this->fail($other, $description, $f);
         }
     }
 
