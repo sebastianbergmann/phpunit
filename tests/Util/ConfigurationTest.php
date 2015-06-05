@@ -382,26 +382,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Util_Configuration::getSeleniumBrowserConfiguration
-     */
-    public function testSeleniumBrowserConfigurationIsReadCorrectly()
-    {
-        $this->assertEquals(
-            array(
-            0 =>
-            array(
-              'name' => 'Firefox on Linux',
-              'browser' => '*firefox /usr/lib/firefox/firefox-bin',
-              'host' => 'my.linux.box',
-              'port' => 4444,
-              'timeout' => 30000,
-            ),
-            ),
-            $this->configuration->getSeleniumBrowserConfiguration()
-        );
-    }
-
-    /**
      * @covers PHPUnit_Util_Configuration::getInstance
      */
     public function testXincludeInConfiguration()
@@ -493,11 +473,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(
             $expectedConfiguration->getPHPUnitConfiguration(),
             $actualConfiguration->getPHPUnitConfiguration()
-        );
-
-        $this->assertEquals(
-            $expectedConfiguration->getSeleniumBrowserConfiguration(),
-            $actualConfiguration->getSeleniumBrowserConfiguration()
         );
 
         $this->assertEquals(

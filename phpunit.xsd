@@ -227,21 +227,8 @@
       <xs:element name="logging" type="loggersType" minOccurs="0"/>
       <xs:element name="listeners" type="listenersType" minOccurs="0"/>
       <xs:element name="php" type="phpType" minOccurs="0"/>
-      <xs:element name="selenium" type="seleniumType" minOccurs="0"/>
     </xs:all>
   </xs:group>
-  <xs:complexType name="seleniumType">
-    <xs:sequence>
-      <xs:element name="browser" type="browserType"/>
-    </xs:sequence>
-  </xs:complexType>
-  <xs:complexType name="browserType">
-    <xs:attribute name="name" type="xs:string"/>
-    <xs:attribute name="browser" type="xs:string"/>
-    <xs:attribute name="host" type="xs:anyURI"/>
-    <xs:attribute name="port" type="xs:nonNegativeInteger"/>
-    <xs:attribute name="timeout" type="xs:nonNegativeInteger"/>
-  </xs:complexType>
   <xs:element name="testSuiteFacet" abstract="true"/>
   <xs:element name="testsuite" type="testSuiteType" substitutionGroup="testSuiteFacet"/>
   <xs:element name="testsuites" type="testSuitesType" substitutionGroup="testSuiteFacet"/>

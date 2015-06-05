@@ -108,13 +108,5 @@
     <files name="foo" value="bar"/>
     <request name="foo" value="bar"/>
   </php>
-
-  <selenium>
-    <browser name="Firefox on Linux"
-             browser="*firefox /usr/lib/firefox/firefox-bin"
-             host="my.linux.box"
-             port="4444"
-             timeout="30000"/>
-  </selenium>
 </phpunit>
 

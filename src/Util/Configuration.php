@@ -126,14 +126,6 @@
  *     <files name="foo" value="bar"/>
  *     <request name="foo" value="bar"/>
  *   </php>
- *
- *   <selenium>
- *     <browser name="Firefox on Linux"
- *              browser="*firefox /usr/lib/firefox/firefox-bin"
- *              host="my.linux.box"
- *              port="4444"
- *              timeout="30000"/>
- *   </selenium>
  * </phpunit>
  * </code>
  *
@@ -779,56 +771,6 @@ class PHPUnit_Util_Configuration
             $result['verbose'] = $this->getBoolean(
                 (string) $root->getAttribute('verbose'),
                 false
-            );
-        }
-
-        return $result;
-    }
-
-    /**
-     * Returns the SeleniumTestCase browser configuration.
-     *
-     * @return array
-     * @since  Method available since Release 3.2.9
-     */
-    public function getSeleniumBrowserConfiguration()
-    {
-        $result = array();
-
-        foreach ($this->xpath->query('selenium/browser') as $config) {
-            $name    = (string) $config->getAttribute('name');
-            $browser = (string) $config->getAttribute('browser');
-
-            if ($config->hasAttribute('host')) {
-                $host = (string) $config->getAttribute('host');
-            } else {
-                $host = 'localhost';
-            }
-
-            if ($config->hasAttribute('port')) {
-                $port = $this->getInteger(
-                    (string) $config->getAttribute('port'),
-                    4444
-                );
-            } else {
-                $port = 4444;
-            }
-
-            if ($config->hasAttribute('timeout')) {
-                $timeout = $this->getInteger(
-                    (string) $config->getAttribute('timeout'),
-                    30000
-                );
-            } else {
-                $timeout = 30000;
-            }
-
-            $result[] = array(
-              'name'    => $name,
-              'browser' => $browser,
-              'host'    => $host,
-              'port'    => $port,
-              'timeout' => $timeout
             );
         }
 

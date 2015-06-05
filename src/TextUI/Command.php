@@ -621,16 +621,6 @@ class PHPUnit_TextUI_Command
                 );
             }
 
-            $browsers = $configuration->getSeleniumBrowserConfiguration();
-
-            if (!empty($browsers)) {
-                $this->arguments['deprecatedSeleniumConfiguration'] = true;
-
-                if (class_exists('PHPUnit_Extensions_SeleniumTestCase')) {
-                    PHPUnit_Extensions_SeleniumTestCase::$browsers = $browsers;
-                }
-            }
-
             if (!isset($this->arguments['test'])) {
                 $testSuite = $configuration->getTestSuiteConfiguration(isset($this->arguments['testsuite']) ? $this->arguments['testsuite'] : null);
 

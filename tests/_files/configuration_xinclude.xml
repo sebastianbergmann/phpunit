@@ -66,10 +66,5 @@
     <files name="foo" value="bar"/>
     <request name="foo" value="bar"/>
   </php>
-
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-      href="configuration.xml"
-      parse="xml"
-      xpointer="xpointer(/phpunit/selenium)" />
 </phpunit>
 
