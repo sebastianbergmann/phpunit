@@ -204,7 +204,7 @@
   <exec executable="php">
    <arg value="composer.phar"/>
    <arg value="require"/>
-   <arg value="phpunit/dbunit:~1.3"/>
+   <arg value="phpunit/dbunit:~1.4"/>
    <arg value="phpunit/phpunit-selenium:~1.4"/>
    <arg value="phpunit/php-invoker:~1.1"/>
   </exec>
