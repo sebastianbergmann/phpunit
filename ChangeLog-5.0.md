@@ -2,5 +2,6 @@
 
 ## PHPUnit 5.0.0
 
+* The `assertSelectCount()`, `assertSelectRegExp()`, `assertSelectEquals()`, `assertTag()`, `assertNotTag()` assertions have been removed
 * PHP is no longer supported on PHP 5.3, PHP 5.4, and PHP 5.5
 
