@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <xs:annotation>
-    <xs:documentation source="https://phpunit.de/manual/4.6/en/appendixes.configuration.html">
-      This Schema file defines the rules by which the XML configuration file of PHPUnit 4.6 may be structured.
+    <xs:documentation source="https://phpunit.de/manual/4.7/en/appendixes.configuration.html">
+      This Schema file defines the rules by which the XML configuration file of PHPUnit 4.7 may be structured.
     </xs:documentation>
     <xs:appinfo source="http://www.phpunit.de/manual/current/en/appendixes.configuration.html"/>
   </xs:annotation>
