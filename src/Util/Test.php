@@ -15,6 +15,12 @@ if (!function_exists('trait_exists')) {
     }
 }
 
+use Eloquent\Cosmos\Resolution\Context\Persistence\ResolutionContextReader;
+use Eloquent\Cosmos\Resolution\Context\ResolutionContextInterface;
+use Eloquent\Cosmos\Resolution\SymbolResolver;
+use Eloquent\Cosmos\Symbol\Factory\SymbolFactory;
+use Eloquent\Pathogen\Exception\InvalidPathAtomExceptionInterface;
+
 /**
  * Test helpers.
  *
@@ -118,6 +124,9 @@ class PHPUnit_Util_Test
             $className,
             $methodName
         );
+        $symbolFactory = SymbolFactory::instance();
+        $context = ResolutionContextReader::instance()->readFromSymbol($className);
+        $symbolResolver = SymbolResolver::instance();
 
         $classShortcut = null;
 
@@ -132,7 +141,9 @@ class PHPUnit_Util_Test
                 );
             }
 
-            $classShortcut = $annotations['class'][$mode . 'DefaultClass'][0];
+            $classShortcut = $symbolResolver
+                ->resolveAgainstContext($context, $symbolFactory->create($annotations['class'][$mode . 'DefaultClass'][0]))
+                ->string();
         }
 
         $list = array();
@@ -156,7 +167,7 @@ class PHPUnit_Util_Test
 
             $codeList = array_merge(
                 $codeList,
-                self::resolveElementToReflectionObjects($element)
+                self::resolveElementToReflectionObjects($symbolFactory, $symbolResolver, $context, $element)
             );
         }
 
@@ -279,7 +290,14 @@ class PHPUnit_Util_Test
                 $methodName
             );
 
-            $class   = $matches[1];
+            $symbolFactory = SymbolFactory::instance();
+            $context = ResolutionContextReader::instance()->readFromClass($reflector->getDeclaringClass());
+            $symbolResolver = SymbolResolver::instance();
+            $class = ltrim(
+                $symbolResolver->resolveAgainstContext($context, $symbolFactory->create($matches[1]))->string(),
+                '\\'
+            );
+
             $code    = null;
             $message = '';
             $messageRegExp = '';
@@ -288,12 +306,18 @@ class PHPUnit_Util_Test
                 $message = trim($matches[2]);
             } elseif (isset($annotations['method']['expectedExceptionMessage'])) {
                 $message = self::parseAnnotationContent(
+                    $symbolFactory,
+                    $symbolResolver,
+                    $context,
                     $annotations['method']['expectedExceptionMessage'][0]
                 );
             }
 
             if (isset($annotations['method']['expectedExceptionMessageRegExp'])) {
                 $messageRegExp = self::parseAnnotationContent(
+                    $symbolFactory,
+                    $symbolResolver,
+                    $context,
                     $annotations['method']['expectedExceptionMessageRegExp'][0]
                 );
             }
@@ -302,6 +326,9 @@ class PHPUnit_Util_Test
                 $code = $matches[3];
             } elseif (isset($annotations['method']['expectedExceptionCode'])) {
                 $code = self::parseAnnotationContent(
+                    $symbolFactory,
+                    $symbolResolver,
+                    $context,
                     $annotations['method']['expectedExceptionCode'][0]
                 );
             }
@@ -327,14 +354,34 @@ class PHPUnit_Util_Test
      *
      * If the constant is not found the string is used as is to ensure maximum BC.
      *
-     * @param  string $message
+     * @param  SymbolFactory              $symbolFactory
+     * @param  SymbolResolver             $symbolResolver
+     * @param  ResolutionContextInterface $context
+     * @param  string                     $message
      * @return string
      */
-    private static function parseAnnotationContent($message)
-    {
-        if (strpos($message, '::') !== false && count(explode('::', $message) == 2)) {
-            if (defined($message)) {
-                $message = constant($message);
+    private static function parseAnnotationContent(
+        SymbolFactory $symbolFactory,
+        SymbolResolver $symbolResolver,
+        ResolutionContextInterface $context,
+        $message
+    ) {
+        if (strpos($message, '::')) {
+            $parts = explode('::', $message);
+
+            if (2 == count($parts)) {
+                try {
+                    $parts[0] = $symbolResolver
+                      ->resolveAgainstContext($context, $symbolFactory->create($parts[0]))
+                      ->string();
+                } catch (InvalidPathAtomExceptionInterface $e) {
+                    // ignore invalid symbols
+                }
+
+                $constant = implode('::', $parts);
+                if (defined($constant)) {
+                    $message = constant($constant);
+                }
             }
         }
 
@@ -840,17 +887,30 @@ class PHPUnit_Util_Test
     }
 
     /**
-     * @param  string $element
+     * @param  SymbolFactory              $symbolFactory
+     * @param  SymbolResolver             $symbolResolver
+     * @param  ResolutionContextInterface $context
+     * @param  string                     $element
      * @return array
      * @throws PHPUnit_Framework_InvalidCoversTargetException
      * @since  Method available since Release 4.0.0
      */
-    private static function resolveElementToReflectionObjects($element)
-    {
+    private static function resolveElementToReflectionObjects(
+        SymbolFactory $symbolFactory,
+        SymbolResolver $symbolResolver,
+        ResolutionContextInterface $context,
+        $element
+    ) {
         $codeToCoverList = array();
 
         if (strpos($element, '::') !== false) {
             list($className, $methodName) = explode('::', $element);
+
+            if ('' !== trim($className)) {
+                $className = $symbolResolver
+                    ->resolveAgainstContext($context, $symbolFactory->create($className))
+                    ->string();
+            }
 
             if (isset($methodName[0]) && $methodName[0] == '<') {
                 $classes = array($className);
@@ -923,6 +983,10 @@ class PHPUnit_Util_Test
                 $element  = str_replace('<extended>', '', $element);
                 $extended = true;
             }
+
+            $element = $symbolResolver
+                ->resolveAgainstContext($context, $symbolFactory->create($element))
+                ->string();
 
             $classes = array($element);
 
