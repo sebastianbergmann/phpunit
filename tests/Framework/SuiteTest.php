@@ -186,6 +186,10 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         $result = $test->run();
 
         $this->assertEquals(2, BeforeAndAfterTest::$beforeWasRun);
+        $this->assertTrue(
+            BeforeAndAfterTest::$setUpWasRunAfterBeforeAnnotatedMethods,
+            "setUp() was not run after @before methods"
+        );
         $this->assertEquals(2, BeforeAndAfterTest::$afterWasRun);
     }
 
