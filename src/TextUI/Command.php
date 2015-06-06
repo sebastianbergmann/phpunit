@@ -794,11 +794,6 @@ class PHPUnit_TextUI_Command
             ]
         ];
 
-        if (PHP_VERSION_ID < 50600) {
-            $options['ssl']['CN_match']        = 'phar.phpunit.de';
-            $options['ssl']['SNI_server_name'] = 'phar.phpunit.de';
-        }
-
         file_put_contents(
             $tempFilename,
             file_get_contents(
