@@ -26,19 +26,19 @@ class Issue498Test extends PHPUnit_Framework_TestCase
     {
 
         //throw new Exception("Can't create the data");
-        return array(
-            array(true),
-            array(false)
-        );
+        return [
+            [true],
+            [false]
+        ];
     }
 
     public function shouldBeFalseDataProvider()
     {
         throw new Exception("Can't create the data");
 
-        return array(
-            array(true),
-            array(false)
-        );
+        return [
+            [true],
+            [false]
+        ];
     }
 }

@@ -3,7 +3,7 @@ class StackTest extends PHPUnit_Framework_TestCase
 {
     public function testPush()
     {
-        $stack = array();
+        $stack = [];
         $this->assertEquals(0, count($stack));
 
         array_push($stack, 'foo');

@@ -20,7 +20,7 @@ class PHPUnit_Runner_Filter_Factory
     /**
      * @var array
      */
-    private $filters = array();
+    private $filters = [];
 
     /**
      * @param ReflectionClass $filter
@@ -37,7 +37,7 @@ class PHPUnit_Runner_Filter_Factory
             );
         }
 
-        $this->filters[] = array($filter, $args);
+        $this->filters[] = [$filter, $args];
     }
 
     /**

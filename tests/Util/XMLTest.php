@@ -22,9 +22,9 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 {
     public function testAssertValidKeysValidKeys()
     {
-        $options   = array('testA' => 1, 'testB' => 2, 'testC' => 3);
-        $valid     = array('testA', 'testB', 'testC');
-        $expected  = array('testA' => 1, 'testB' => 2, 'testC' => 3);
+        $options   = ['testA' => 1, 'testB' => 2, 'testC' => 3];
+        $valid     = ['testA', 'testB', 'testC'];
+        $expected  = ['testA' => 1, 'testB' => 2, 'testC' => 3];
         $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
 
         $this->assertEquals($expected, $validated);
@@ -32,9 +32,9 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
     public function testAssertValidKeysValidKeysEmpty()
     {
-        $options   = array('testA' => 1, 'testB' => 2);
-        $valid     = array('testA', 'testB', 'testC');
-        $expected  = array('testA' => 1, 'testB' => 2, 'testC' => null);
+        $options   = ['testA' => 1, 'testB' => 2];
+        $valid     = ['testA', 'testB', 'testC'];
+        $expected  = ['testA' => 1, 'testB' => 2, 'testC' => null];
         $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
 
         $this->assertEquals($expected, $validated);
@@ -42,9 +42,9 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
     public function testAssertValidKeysDefaultValuesA()
     {
-        $options   = array('testA' => 1, 'testB' => 2);
-        $valid     = array('testA' => 23, 'testB' => 24, 'testC' => 25);
-        $expected  = array('testA' => 1, 'testB' => 2, 'testC' => 25);
+        $options   = ['testA' => 1, 'testB' => 2];
+        $valid     = ['testA' => 23, 'testB' => 24, 'testC' => 25];
+        $expected  = ['testA' => 1, 'testB' => 2, 'testC' => 25];
         $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
 
         $this->assertEquals($expected, $validated);
@@ -52,9 +52,9 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
     public function testAssertValidKeysDefaultValuesB()
     {
-        $options   = array();
-        $valid     = array('testA' => 23, 'testB' => 24, 'testC' => 25);
-        $expected  = array('testA' => 23, 'testB' => 24, 'testC' => 25);
+        $options   = [];
+        $valid     = ['testA' => 23, 'testB' => 24, 'testC' => 25];
+        $expected  = ['testA' => 23, 'testB' => 24, 'testC' => 25];
         $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
 
         $this->assertEquals($expected, $validated);
@@ -62,8 +62,8 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
     public function testAssertValidKeysInvalidKey()
     {
-        $options = array('testA' => 1, 'testB' => 2, 'testD' => 3);
-        $valid   = array('testA', 'testB', 'testC');
+        $options = ['testA' => 1, 'testB' => 2, 'testD' => 3];
+        $valid   = ['testA', 'testB', 'testC'];
 
         try {
             $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
@@ -75,8 +75,8 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
     public function testAssertValidKeysInvalidKeys()
     {
-        $options = array('testA' => 1, 'testD' => 2, 'testE' => 3);
-        $valid   = array('testA', 'testB', 'testC');
+        $options = ['testA' => 1, 'testD' => 2, 'testE' => 3];
+        $valid   = ['testA', 'testB', 'testC'];
 
         try {
             $validated = PHPUnit_Util_XML::assertValidKeys($options, $valid);
@@ -90,15 +90,15 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div#folder.open a[href="http://www.xerox.com"][title="xerox"].selected.big > span + h1';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag'        => 'div',
+        $tag       = ['tag'             => 'div',
                            'id'         => 'folder',
                            'class'      => 'open',
-                           'descendant' => array('tag'        => 'a',
+                           'descendant' => ['tag'             => 'a',
                                                  'class'      => 'selected big',
-                                                 'attributes' => array('href'             => 'http://www.xerox.com',
-                                                                       'title'            => 'xerox'),
-                                                 'child'      => array('tag'              => 'span',
-                                                                       'adjacent-sibling' => array('tag' => 'h1'))));
+                                                 'attributes' => ['href'                  => 'http://www.xerox.com',
+                                                                       'title'            => 'xerox'],
+                                                 'child'      => ['tag'                   => 'span',
+                                                                       'adjacent-sibling' => ['tag' => 'h1']]]];
         $this->assertEquals($tag, $converted);
     }
 
@@ -106,7 +106,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div');
+        $tag       = ['tag' => 'div'];
 
         $this->assertEquals($tag, $converted);
     }
@@ -115,7 +115,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = '.foo';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('class' => 'foo');
+        $tag       = ['class' => 'foo'];
 
         $this->assertEquals($tag, $converted);
     }
@@ -124,7 +124,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = '#foo';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('id' => 'foo');
+        $tag       = ['id' => 'foo'];
 
         $this->assertEquals($tag, $converted);
     }
@@ -133,7 +133,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = '[foo="bar"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('attributes' => array('foo' => 'bar'));
+        $tag       = ['attributes' => ['foo' => 'bar']];
 
         $this->assertEquals($tag, $converted);
     }
@@ -142,9 +142,9 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = '[foo="bar baz"] div[value="foo bar"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('attributes' => array('foo'        => 'bar baz'),
-                           'descendant' => array('tag'        => 'div',
-                                                 'attributes' => array('value' => 'foo bar')));
+        $tag       = ['attributes'      => ['foo'             => 'bar baz'],
+                           'descendant' => ['tag'             => 'div',
+                                                 'attributes' => ['value' => 'foo bar']]];
         $this->assertEquals($tag, $converted);
     }
 
@@ -152,9 +152,9 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = '[foo="bar baz"] div[value="foo bar baz"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('attributes' => array('foo'        => 'bar baz'),
-                          'descendant'  => array('tag'        => 'div',
-                                                'attributes'  => array('value' => 'foo bar baz')));
+        $tag       = ['attributes'      => ['foo'             => 'bar baz'],
+                          'descendant'  => ['tag'             => 'div',
+                                                'attributes'  => ['value' => 'foo bar baz']]];
         $this->assertEquals($tag, $converted);
     }
 
@@ -162,7 +162,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div.foo';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'class' => 'foo');
+        $tag       = ['tag' => 'div', 'class' => 'foo'];
 
         $this->assertEquals($tag, $converted);
     }
@@ -171,7 +171,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div#foo';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'id' => 'foo');
+        $tag       = ['tag' => 'div', 'id' => 'foo'];
 
         $this->assertEquals($tag, $converted);
     }
@@ -180,7 +180,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div[foo="bar"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'attributes' => array('foo' => 'bar'));
+        $tag       = ['tag' => 'div', 'attributes' => ['foo' => 'bar']];
 
         $this->assertEquals($tag, $converted);
     }
@@ -189,7 +189,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div[foo="bar"][baz="fob"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'attributes' => array('foo' => 'bar', 'baz' => 'fob'));
+        $tag       = ['tag' => 'div', 'attributes' => ['foo' => 'bar', 'baz' => 'fob']];
 
         $this->assertEquals($tag, $converted);
     }
@@ -198,7 +198,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div[foo~="bar"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'attributes' => array('foo' => 'regexp:/.*\bbar\b.*/'));
+        $tag       = ['tag' => 'div', 'attributes' => ['foo' => 'regexp:/.*\bbar\b.*/']];
 
         $this->assertEquals($tag, $converted);
     }
@@ -207,7 +207,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div[foo*="bar"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'attributes' => array('foo' => 'regexp:/.*bar.*/'));
+        $tag       = ['tag' => 'div', 'attributes' => ['foo' => 'regexp:/.*bar.*/']];
 
         $this->assertEquals($tag, $converted);
     }
@@ -216,7 +216,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div > a';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'child' => array('tag' => 'a'));
+        $tag       = ['tag' => 'div', 'child' => ['tag' => 'a']];
 
         $this->assertEquals($tag, $converted);
     }
@@ -225,7 +225,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div + a';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'adjacent-sibling' => array('tag' => 'a'));
+        $tag       = ['tag' => 'div', 'adjacent-sibling' => ['tag' => 'a']];
 
         $this->assertEquals($tag, $converted);
     }
@@ -234,7 +234,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div a';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag' => 'div', 'descendant' => array('tag' => 'a'));
+        $tag       = ['tag' => 'div', 'descendant' => ['tag' => 'a']];
 
         $this->assertEquals($tag, $converted);
     }
@@ -244,7 +244,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $selector  = '#foo';
         $content   = 'div contents';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector, $content);
-        $tag       = array('id' => 'foo', 'content' => 'div contents');
+        $tag       = ['id' => 'foo', 'content' => 'div contents'];
 
         $this->assertEquals($tag, $converted);
     }
@@ -254,7 +254,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $selector  = '#foo';
         $content   = true;
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector, $content);
-        $tag       = array('id' => 'foo');
+        $tag       = ['id' => 'foo'];
 
         $this->assertEquals($tag, $converted);
     }
@@ -264,7 +264,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $selector  = '#foo';
         $content   = false;
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector, $content);
-        $tag       = array('id' => 'foo');
+        $tag       = ['id' => 'foo'];
 
         $this->assertEquals($tag, $converted);
     }
@@ -274,7 +274,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $selector  = '.foo';
         $content   = 3;
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector, $content);
-        $tag       = array('class' => 'foo');
+        $tag       = ['class' => 'foo'];
 
         $this->assertEquals($tag, $converted);
     }
@@ -282,9 +282,9 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     public function testConvertAssertRange()
     {
         $selector  = '#foo';
-        $content   = array('greater_than' => 5, 'less_than' => 10);
+        $content   = ['greater_than' => 5, 'less_than' => 10];
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector, $content);
-        $tag       = array('id' => 'foo');
+        $tag       = ['id' => 'foo'];
 
         $this->assertEquals($tag, $converted);
     }
@@ -313,10 +313,10 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
     public function charProvider()
     {
-        $data = array();
+        $data = [];
 
         for ($i = 0; $i < 256; $i++) {
-            $data[] = array(chr($i));
+            $data[] = [chr($i)];
         }
 
         return $data;

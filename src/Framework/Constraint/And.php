@@ -23,7 +23,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
     /**
      * @var PHPUnit_Framework_Constraint[]
      */
-    protected $constraints = array();
+    protected $constraints = [];
 
     /**
      * @var PHPUnit_Framework_Constraint
@@ -36,7 +36,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
      */
     public function setConstraints(array $constraints)
     {
-        $this->constraints = array();
+        $this->constraints = [];
 
         foreach ($constraints as $constraint) {
             if (!($constraint instanceof PHPUnit_Framework_Constraint)) {

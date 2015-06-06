@@ -15,13 +15,13 @@ class Extensions_PhptTestCaseTest extends \PHPUnit_Framework_TestCase
         $phptTestCase = new PhpTestCaseProxy(__FILE__);
         $settings     = $phptTestCase->parseIniSection("foo=1\nbar = 2\rbaz = 3\r\nempty=\nignore");
 
-        $expected = array(
+        $expected = [
             'foo=1',
             'bar = 2',
             'baz = 3',
             'empty=',
             'ignore',
-        );
+        ];
 
         $this->assertEquals($expected, $settings);
 

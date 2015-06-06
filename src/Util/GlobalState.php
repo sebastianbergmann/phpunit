@@ -20,7 +20,7 @@ class PHPUnit_Util_GlobalState
     /**
      * @var array
      */
-    protected static $superGlobalArrays = array(
+    protected static $superGlobalArrays = [
       '_ENV',
       '_POST',
       '_GET',
@@ -28,19 +28,19 @@ class PHPUnit_Util_GlobalState
       '_SERVER',
       '_FILES',
       '_REQUEST'
-    );
+    ];
 
     /**
      * @var array
      */
-    protected static $superGlobalArraysLong = array(
+    protected static $superGlobalArraysLong = [
       'HTTP_ENV_VARS',
       'HTTP_POST_VARS',
       'HTTP_GET_VARS',
       'HTTP_COOKIE_VARS',
       'HTTP_SERVER_VARS',
       'HTTP_POST_FILES'
-    );
+    ];
 
     public static function getIncludedFilesAsString()
     {

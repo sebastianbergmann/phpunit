@@ -23,11 +23,11 @@ class PHPUnit_Util_Getopt
     public static function getopt(array $args, $short_options, $long_options = null)
     {
         if (empty($args)) {
-            return array(array(), array());
+            return [[], []];
         }
 
-        $opts     = array();
-        $non_opts = array();
+        $opts     = [];
+        $non_opts = [];
 
         if ($long_options) {
             sort($long_options);
@@ -71,7 +71,7 @@ class PHPUnit_Util_Getopt
             }
         }
 
-        return array($opts, $non_opts);
+        return [$opts, $non_opts];
     }
 
     protected static function parseShortOption($arg, $short_options, &$opts, &$args)
@@ -92,12 +92,12 @@ class PHPUnit_Util_Getopt
             if (strlen($spec) > 1 && $spec[1] == ':') {
                 if (strlen($spec) > 2 && $spec[2] == ':') {
                     if ($i + 1 < $argLen) {
-                        $opts[] = array($opt, substr($arg, $i + 1));
+                        $opts[] = [$opt, substr($arg, $i + 1)];
                         break;
                     }
                 } else {
                     if ($i + 1 < $argLen) {
-                        $opts[] = array($opt, substr($arg, $i + 1));
+                        $opts[] = [$opt, substr($arg, $i + 1)];
                         break;
                     } elseif (list(, $opt_arg) = each($args)) {
                     } else {
@@ -108,7 +108,7 @@ class PHPUnit_Util_Getopt
                 }
             }
 
-            $opts[] = array($opt, $opt_arg);
+            $opts[] = [$opt, $opt_arg];
         }
     }
 
@@ -158,7 +158,7 @@ class PHPUnit_Util_Getopt
             }
 
             $full_option = '--' . preg_replace('/={1,2}$/', '', $long_opt);
-            $opts[]      = array($full_option, $opt_arg);
+            $opts[]      = [$full_option, $opt_arg];
 
             return;
         }

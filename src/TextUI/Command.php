@@ -23,21 +23,21 @@ class PHPUnit_TextUI_Command
     /**
      * @var array
      */
-    protected $arguments = array(
+    protected $arguments = [
         'listGroups'              => false,
         'loader'                  => null,
         'useDefaultConfiguration' => true
-    );
+    ];
 
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * @var array
      */
-    protected $longOptions = array(
+    protected $longOptions = [
         'colors=='             => null,
         'bootstrap='           => null,
         'columns='             => null,
@@ -87,7 +87,7 @@ class PHPUnit_TextUI_Command
         'static-backup'        => null,
         'verbose'              => null,
         'version'              => null
-    );
+    ];
 
     /**
      * @var bool
@@ -497,7 +497,7 @@ class PHPUnit_TextUI_Command
                         $handler = $this->longOptions[$optionName . '='];
                     }
 
-                    if (isset($handler) && is_callable(array($this, $handler))) {
+                    if (isset($handler) && is_callable([$this, $handler])) {
                         $this->$handler($option[1]);
                     }
             }
@@ -525,7 +525,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (!isset($this->arguments['testSuffixes'])) {
-            $this->arguments['testSuffixes'] = array('Test.php', '.phpt');
+            $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
         }
 
         if (isset($includePath)) {
@@ -786,13 +786,13 @@ class PHPUnit_TextUI_Command
 
         print 'Updating the PHPUnit PHAR ... ';
 
-        $options = array(
-            'ssl' => array(
+        $options = [
+            'ssl' => [
                 'allow_self_signed' => false,
                 'cafile'            => $caFile,
                 'verify_peer'       => true
-            )
-        );
+            ]
+        ];
 
         if (PHP_VERSION_ID < 50600) {
             $options['ssl']['CN_match']        = 'phar.phpunit.de';

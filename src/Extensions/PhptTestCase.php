@@ -27,7 +27,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     /**
      * @var array
      */
-    private $settings = array(
+    private $settings = [
         'allow_url_fopen=1',
         'auto_append_file=',
         'auto_prepend_file=',
@@ -49,7 +49,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         'safe_mode=0',
         'track_errors=1',
         'xdebug.default_enable=0'
-    );
+    ];
 
     /**
      * Constructs a test case with the given filename.
@@ -183,7 +183,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      */
     private function parse()
     {
-        $sections = array();
+        $sections = [];
         $section  = '';
 
         foreach (file($this->filename) as $line) {
@@ -213,14 +213,14 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     private function render($code)
     {
         return str_replace(
-            array(
+            [
             '__DIR__',
             '__FILE__'
-            ),
-            array(
+            ],
+            [
             "'" . dirname($this->filename) . "'",
             "'" . $this->filename . "'"
-            ),
+            ],
             $code
         );
     }

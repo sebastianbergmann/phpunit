@@ -44,32 +44,32 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * @var DOMElement[]
      */
-    protected $testSuites = array();
+    protected $testSuites = [];
 
     /**
      * @var integer[]
      */
-    protected $testSuiteTests = array(0);
+    protected $testSuiteTests = [0];
 
     /**
      * @var integer[]
      */
-    protected $testSuiteAssertions = array(0);
+    protected $testSuiteAssertions = [0];
 
     /**
      * @var integer[]
      */
-    protected $testSuiteErrors = array(0);
+    protected $testSuiteErrors = [0];
 
     /**
      * @var integer[]
      */
-    protected $testSuiteFailures = array(0);
+    protected $testSuiteFailures = [0];
 
     /**
      * @var integer[]
      */
-    protected $testSuiteTimes = array(0);
+    protected $testSuiteTimes = [0];
 
     /**
      * @var int

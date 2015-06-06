@@ -18,6 +18,6 @@ class Issue1021Test extends PHPUnit_Framework_TestCase
 
     public function provider()
     {
-        return array(array(true));
+        return [[true]];
     }
 }

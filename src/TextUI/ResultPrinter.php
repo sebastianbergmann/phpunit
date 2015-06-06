@@ -34,7 +34,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * @var array
      */
-    private static $ansiCodes = array(
+    private static $ansiCodes = [
       'bold'       => 1,
       'fg-black'   => 30,
       'fg-red'     => 31,
@@ -52,7 +52,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
       'bg-magenta' => 45,
       'bg-cyan'    => 46,
       'bg-white'   => 47
-    );
+    ];
 
     /**
      * @var int
@@ -128,7 +128,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
         }
 
-        $availableColors = array(self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS);
+        $availableColors = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
 
         if (!in_array($colors, $availableColors)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
@@ -568,7 +568,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $codes   = array_map('trim', explode(',', $color));
         $lines   = explode("\n", $buffer);
         $padding = max(array_map('strlen', $lines));
-        $styles  = array();
+        $styles  = [];
 
         foreach ($codes as $code) {
             $styles[] = self::$ansiCodes[$code];
@@ -576,7 +576,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $style = sprintf("\x1b[%sm", implode(';', $styles));
 
-        $styledLines = array();
+        $styledLines = [];
 
         foreach ($lines as $line) {
             $styledLines[] = $style . str_pad($line, $padding) . "\x1b[0m";

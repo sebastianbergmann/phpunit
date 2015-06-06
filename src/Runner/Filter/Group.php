@@ -20,7 +20,7 @@ abstract class PHPUnit_Runner_Filter_GroupFilterIterator extends RecursiveFilter
     /**
      * @var array
      */
-    protected $groupTests = array();
+    protected $groupTests = [];
 
     /**
      * @param RecursiveIterator           $iterator

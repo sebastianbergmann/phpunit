@@ -93,7 +93,7 @@ class PHPUnit_Util_Printer
                 $this->outTarget,
                 tidy_repair_file(
                     $this->outTarget,
-                    array('indent' => true, 'wrap' => 0),
+                    ['indent' => true, 'wrap' => 0],
                     'utf8'
                 )
             );

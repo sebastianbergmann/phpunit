@@ -38,9 +38,9 @@ class PHPUnit_Util_Test
     const MEDIUM  = 1;
     const LARGE   = 2;
 
-    private static $annotationCache = array();
+    private static $annotationCache = [];
 
-    private static $hookMethods = array();
+    private static $hookMethods = [];
 
     /**
      * @param  PHPUnit_Framework_Test $test
@@ -57,13 +57,13 @@ class PHPUnit_Util_Test
             }
         } else {
             if ($test instanceof PHPUnit_Framework_TestCase) {
-                return array(
+                return [
                   get_class($test), $test->getName()
-                );
+                ];
             } elseif ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                return array('', $test->toString());
+                return ['', $test->toString()];
             } else {
-                return array('', get_class($test));
+                return ['', get_class($test)];
             }
         }
     }
@@ -133,7 +133,7 @@ class PHPUnit_Util_Test
             $classShortcut = $annotations['class'][$mode . 'DefaultClass'][0];
         }
 
-        $list = array();
+        $list = [];
 
         if (isset($annotations['class'][$mode])) {
             $list = $annotations['class'][$mode];
@@ -143,7 +143,7 @@ class PHPUnit_Util_Test
             $list = array_merge($list, $annotations['method'][$mode]);
         }
 
-        $codeList = array();
+        $codeList = [];
 
         foreach (array_unique($list) as $element) {
             if ($classShortcut && strncmp($element, '::', 2) === 0) {
@@ -175,7 +175,7 @@ class PHPUnit_Util_Test
         $docComment = $reflector->getDocComment();
         $reflector  = new ReflectionMethod($className, $methodName);
         $docComment .= "\n" . $reflector->getDocComment();
-        $requires   = array();
+        $requires   = [];
 
         if ($count = preg_match_all(self::REGEX_REQUIRES_OS, $docComment, $matches)) {
             $requires['OS'] = sprintf(
@@ -190,13 +190,13 @@ class PHPUnit_Util_Test
         }
 
         // https://bugs.php.net/bug.php?id=63055
-        $matches = array();
+        $matches = [];
 
         if ($count = preg_match_all(self::REGEX_REQUIRES, $docComment, $matches)) {
             for ($i = 0; $i < $count; $i++) {
                 $name = $matches['name'][$i] . 's';
                 if (!isset($requires[$name])) {
-                    $requires[$name] = array();
+                    $requires[$name] = [];
                 }
                 $requires[$name][] = $matches['value'][$i];
             }
@@ -216,7 +216,7 @@ class PHPUnit_Util_Test
     public static function getMissingRequirements($className, $methodName)
     {
         $required = static::getRequirements($className, $methodName);
-        $missing  = array();
+        $missing  = [];
 
         if (!empty($required['PHP']) && version_compare(PHP_VERSION, $required['PHP'], '<')) {
             $missing[] = sprintf('PHP %s (or later) is required.', $required['PHP']);
@@ -310,9 +310,9 @@ class PHPUnit_Util_Test
                 $code = (int) constant($code);
             }
 
-            return array(
+            return [
               'class' => $class, 'code' => $code, 'message' => $message, 'message_regex' => $messageRegExp
-            );
+            ];
         }
 
         return false;
@@ -445,7 +445,7 @@ class PHPUnit_Util_Test
         if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
             $offset            = strlen($matches[0][0]) + $matches[0][1];
             $annotationContent = substr($docComment, $offset);
-            $data              = array();
+            $data              = [];
             foreach (explode("\n", $annotationContent) as $candidateRow) {
                 $candidateRow = trim($candidateRow);
                 $dataSet      = json_decode($candidateRow, true);
@@ -492,15 +492,15 @@ class PHPUnit_Util_Test
                 $method      = new ReflectionMethod($className, $methodName);
                 $annotations = self::parseAnnotations($method->getDocComment());
             } catch (ReflectionException $e) {
-                $annotations = array();
+                $annotations = [];
             }
             self::$annotationCache[$className . '::' . $methodName] = $annotations;
         }
 
-        return array(
+        return [
           'class'  => self::$annotationCache[$className],
-          'method' => !empty($methodName) ? self::$annotationCache[$className . '::' . $methodName] : array()
-        );
+          'method' => !empty($methodName) ? self::$annotationCache[$className . '::' . $methodName] : []
+        ];
     }
 
     /**
@@ -510,7 +510,7 @@ class PHPUnit_Util_Test
      */
     private static function parseAnnotations($docblock)
     {
-        $annotations = array();
+        $annotations = [];
         // Strip away the docblock header and footer to ease parsing of one line annotations
         $docblock = substr($docblock, 3, -2);
 
@@ -535,7 +535,7 @@ class PHPUnit_Util_Test
      */
     public static function getBackupSettings($className, $methodName)
     {
-        return array(
+        return [
           'backupGlobals' => self::getBooleanAnnotationSetting(
               $className,
               $methodName,
@@ -546,7 +546,7 @@ class PHPUnit_Util_Test
               $methodName,
               'backupStaticAttributes'
           )
-        );
+        ];
     }
 
     /**
@@ -564,7 +564,7 @@ class PHPUnit_Util_Test
             $methodName
         );
 
-        $dependencies = array();
+        $dependencies = [];
 
         if (isset($annotations['class']['depends'])) {
             $dependencies = $annotations['class']['depends'];
@@ -612,7 +612,7 @@ class PHPUnit_Util_Test
             $methodName
         );
 
-        $groups = array();
+        $groups = [];
 
         if (isset($annotations['method']['author'])) {
             $groups = $annotations['method']['author'];
@@ -636,7 +636,7 @@ class PHPUnit_Util_Test
             $groups = array_merge($groups, $annotations['method']['ticket']);
         }
 
-        foreach (array('small', 'medium', 'large') as $size) {
+        foreach (['small', 'medium', 'large'] as $size) {
             if (isset($annotations['method'][$size])) {
                 $groups[] = $size;
             } elseif (isset($annotations['class'][$size])) {
@@ -691,7 +691,7 @@ class PHPUnit_Util_Test
             $methodName
         );
 
-        $tickets = array();
+        $tickets = [];
 
         if (isset($annotations['class']['ticket'])) {
             $tickets = $annotations['class']['ticket'];
@@ -795,12 +795,12 @@ class PHPUnit_Util_Test
      */
     private static function emptyHookMethodsArray()
     {
-        return array(
-            'beforeClass' => array('setUpBeforeClass'),
-            'before'      => array('setUp'),
-            'after'       => array('tearDown'),
-            'afterClass'  => array('tearDownAfterClass')
-        );
+        return [
+            'beforeClass' => ['setUpBeforeClass'],
+            'before'      => ['setUp'],
+            'after'       => ['tearDown'],
+            'afterClass'  => ['tearDownAfterClass']
+        ];
     }
 
     /**
@@ -846,13 +846,13 @@ class PHPUnit_Util_Test
      */
     private static function resolveElementToReflectionObjects($element)
     {
-        $codeToCoverList = array();
+        $codeToCoverList = [];
 
         if (strpos($element, '::') !== false) {
             list($className, $methodName) = explode('::', $element);
 
             if (isset($methodName[0]) && $methodName[0] == '<') {
-                $classes = array($className);
+                $classes = [$className];
 
                 foreach ($classes as $className) {
                     if (!class_exists($className) &&
@@ -887,7 +887,7 @@ class PHPUnit_Util_Test
                     }
                 }
             } else {
-                $classes = array($className);
+                $classes = [$className];
 
                 foreach ($classes as $className) {
                     if ($className == '' && function_exists($methodName)) {
@@ -923,7 +923,7 @@ class PHPUnit_Util_Test
                 $extended = true;
             }
 
-            $classes = array($element);
+            $classes = [$element];
 
             if ($extended) {
                 $classes = array_merge(
@@ -959,13 +959,13 @@ class PHPUnit_Util_Test
      */
     private static function resolveReflectionObjectsToLines(array $reflectors)
     {
-        $result = array();
+        $result = [];
 
         foreach ($reflectors as $reflector) {
             $filename = $reflector->getFileName();
 
             if (!isset($result[$filename])) {
-                $result[$filename] = array();
+                $result[$filename] = [];
             }
 
             $result[$filename] = array_unique(

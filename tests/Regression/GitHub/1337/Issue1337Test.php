@@ -11,9 +11,9 @@ class Issue1337Test extends PHPUnit_Framework_TestCase
 
     public function dataProvider()
     {
-        return array(
-          'c:\\'=> array(true),
-          0.9   => array(true)
-        );
+        return [
+          'c:\\'=> [true],
+          0.9   => [true]
+        ];
     }
 }

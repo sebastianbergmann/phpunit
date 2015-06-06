@@ -34,7 +34,7 @@ class Framework_Constraint_JsonMatchesTest extends PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-        $jsonValue  = json_encode(array('Mascott' => 'Tux'));
+        $jsonValue  = json_encode(['Mascott' => 'Tux']);
         $constraint = new PHPUnit_Framework_Constraint_JsonMatches($jsonValue);
 
         $this->assertEquals('matches JSON string "' . $jsonValue . '"', $constraint->toString());
@@ -42,11 +42,11 @@ class Framework_Constraint_JsonMatchesTest extends PHPUnit_Framework_TestCase
 
     public static function evaluateDataprovider()
     {
-        return array(
-            'valid JSON'                          => array(true, json_encode(array('Mascott' => 'Tux')), json_encode(array('Mascott' => 'Tux'))),
-            'error syntax'                        => array(false, '{"Mascott"::}', json_encode(array('Mascott' => 'Tux'))),
-            'error UTF-8'                         => array(false, json_encode('\xB1\x31'), json_encode(array('Mascott' => 'Tux'))),
-            'invalid JSON in class instantiation' => array(false, json_encode(array('Mascott' => 'Tux')), '{"Mascott"::}'),
-        );
+        return [
+            'valid JSON'                          => [true, json_encode(['Mascott' => 'Tux']), json_encode(['Mascott' => 'Tux'])],
+            'error syntax'                        => [false, '{"Mascott"::}', json_encode(['Mascott' => 'Tux'])],
+            'error UTF-8'                         => [false, json_encode('\xB1\x31'), json_encode(['Mascott' => 'Tux'])],
+            'invalid JSON in class instantiation' => [false, json_encode(['Mascott' => 'Tux']), '{"Mascott"::}'],
+        ];
     }
 }

@@ -137,7 +137,7 @@
  */
 class PHPUnit_Util_Configuration
 {
-    private static $instances = array();
+    private static $instances = [];
 
     protected $document;
     protected $xpath;
@@ -233,46 +233,46 @@ class PHPUnit_Util_Configuration
             }
         }
 
-        return array(
-          'blacklist' => array(
-            'include' => array(
+        return [
+          'blacklist' => [
+            'include' => [
               'directory' => $this->readFilterDirectories(
                   'filter/blacklist/directory'
               ),
               'file' => $this->readFilterFiles(
                   'filter/blacklist/file'
               )
-            ),
-            'exclude' => array(
+            ],
+            'exclude' => [
               'directory' => $this->readFilterDirectories(
                   'filter/blacklist/exclude/directory'
               ),
               'file' => $this->readFilterFiles(
                   'filter/blacklist/exclude/file'
               )
-            )
-          ),
-          'whitelist' => array(
+            ]
+          ],
+          'whitelist' => [
             'addUncoveredFilesFromWhitelist'     => $addUncoveredFilesFromWhitelist,
             'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
-            'include'                            => array(
+            'include'                            => [
               'directory' => $this->readFilterDirectories(
                   'filter/whitelist/directory'
               ),
               'file' => $this->readFilterFiles(
                   'filter/whitelist/file'
               )
-            ),
-            'exclude' => array(
+            ],
+            'exclude' => [
               'directory' => $this->readFilterDirectories(
                   'filter/whitelist/exclude/directory'
               ),
               'file' => $this->readFilterFiles(
                   'filter/whitelist/exclude/file'
               )
-            )
-          )
-        );
+            ]
+          ]
+        ];
     }
 
     /**
@@ -283,10 +283,10 @@ class PHPUnit_Util_Configuration
      */
     public function getGroupConfiguration()
     {
-        $groups = array(
-          'include' => array(),
-          'exclude' => array()
-        );
+        $groups = [
+          'include' => [],
+          'exclude' => []
+        ];
 
         foreach ($this->xpath->query('groups/include/group') as $group) {
             $groups['include'][] = (string) $group->nodeValue;
@@ -307,12 +307,12 @@ class PHPUnit_Util_Configuration
      */
     public function getListenerConfiguration()
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->xpath->query('listeners/listener') as $listener) {
             $class     = (string) $listener->getAttribute('class');
             $file      = '';
-            $arguments = array();
+            $arguments = [];
 
             if ($listener->getAttribute('file')) {
                 $file = $this->toAbsolutePath(
@@ -336,11 +336,11 @@ class PHPUnit_Util_Configuration
                 }
             }
 
-            $result[] = array(
+            $result[] = [
               'class'     => $class,
               'file'      => $file,
               'arguments' => $arguments
-            );
+            ];
         }
 
         return $result;
@@ -353,7 +353,7 @@ class PHPUnit_Util_Configuration
      */
     public function getLoggingConfiguration()
     {
-        $result = array();
+        $result = [];
 
         foreach ($this->xpath->query('logging/log') as $log) {
             $type   = (string) $log->getAttribute('type');
@@ -409,19 +409,19 @@ class PHPUnit_Util_Configuration
      */
     public function getPHPConfiguration()
     {
-        $result = array(
-          'include_path' => array(),
-          'ini'          => array(),
-          'const'        => array(),
-          'var'          => array(),
-          'env'          => array(),
-          'post'         => array(),
-          'get'          => array(),
-          'cookie'       => array(),
-          'server'       => array(),
-          'files'        => array(),
-          'request'      => array()
-        );
+        $result = [
+          'include_path' => [],
+          'ini'          => [],
+          'const'        => [],
+          'var'          => [],
+          'env'          => [],
+          'post'         => [],
+          'get'          => [],
+          'cookie'       => [],
+          'server'       => [],
+          'files'        => [],
+          'request'      => []
+        ];
 
         foreach ($this->xpath->query('php/includePath') as $includePath) {
             $path = (string) $includePath->nodeValue;
@@ -444,7 +444,7 @@ class PHPUnit_Util_Configuration
             $result['const'][$name] = $this->getBoolean($value, $value);
         }
 
-        foreach (array('var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
+        foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($this->xpath->query('php/' . $array) as $var) {
                 $name  = (string) $var->getAttribute('name');
                 $value = (string) $var->getAttribute('value');
@@ -488,7 +488,7 @@ class PHPUnit_Util_Configuration
             }
         }
 
-        foreach (array('var', 'post', 'get', 'cookie', 'server', 'files', 'request') as $array) {
+        foreach (['var', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             // See https://github.com/sebastianbergmann/phpunit/issues/277
             switch ($array) {
                 case 'var':
@@ -527,7 +527,7 @@ class PHPUnit_Util_Configuration
      */
     public function getPHPUnitConfiguration()
     {
-        $result = array();
+        $result = [];
         $root   = $this->document->documentElement;
 
         if ($root->hasAttribute('cacheTokens')) {
@@ -821,7 +821,7 @@ class PHPUnit_Util_Configuration
             $suite = new PHPUnit_Framework_TestSuite;
         }
 
-        $exclude = array();
+        $exclude = [];
 
         foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
             $excludeFile = (string) $excludeNode->nodeValue;
@@ -963,7 +963,7 @@ class PHPUnit_Util_Configuration
      */
     protected function readFilterDirectories($query)
     {
-        $directories = array();
+        $directories = [];
 
         foreach ($this->xpath->query($query) as $directory) {
             $directoryPath = (string) $directory->nodeValue;
@@ -990,12 +990,12 @@ class PHPUnit_Util_Configuration
                 $group = 'DEFAULT';
             }
 
-            $directories[] = array(
+            $directories[] = [
               'path'   => $this->toAbsolutePath($directoryPath),
               'prefix' => $prefix,
               'suffix' => $suffix,
               'group'  => $group
-            );
+            ];
         }
 
         return $directories;
@@ -1008,7 +1008,7 @@ class PHPUnit_Util_Configuration
      */
     protected function readFilterFiles($query)
     {
-        $files = array();
+        $files = [];
 
         foreach ($this->xpath->query($query) as $file) {
             $filePath = (string) $file->nodeValue;

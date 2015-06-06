@@ -38,7 +38,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     /**
      * @var array
      */
-    protected $types = array(
+    protected $types = [
         'array'    => true,
         'boolean'  => true,
         'bool'     => true,
@@ -53,7 +53,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
         'string'   => true,
         'scalar'   => true,
         'callable' => true
-    );
+    ];
 
     /**
      * @var string

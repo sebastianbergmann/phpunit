@@ -76,19 +76,19 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
             PHPUnit_Framework_TestFailure::exceptionToString($e)
         );
 
-        $diagnostic = array(
+        $diagnostic = [
           'message'  => $message[0],
           'severity' => 'fail'
-        );
+        ];
 
         if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
             $cf = $e->getComparisonFailure();
 
             if ($cf !== null) {
-                $diagnostic['data'] = array(
+                $diagnostic['data'] = [
                   'got'      => $cf->getActual(),
                   'expected' => $cf->getExpected()
-                );
+                ];
             }
         }
 

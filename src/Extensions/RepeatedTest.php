@@ -27,12 +27,12 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     /**
      * @var array
      */
-    protected $groups = array();
+    protected $groups = [];
 
     /**
      * @var array
      */
-    protected $excludeGroups = array();
+    protected $excludeGroups = [];
 
     /**
      * @var bool

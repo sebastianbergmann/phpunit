@@ -30,7 +30,7 @@ class PHPUnit_Extensions_GroupTestSuite extends PHPUnit_Framework_TestSuite
 {
     public function __construct(PHPUnit_Framework_TestSuite $suite, array $groups)
     {
-        $groupSuites = array();
+        $groupSuites = [];
         $name        = $suite->getName();
 
         foreach ($groups as $group) {

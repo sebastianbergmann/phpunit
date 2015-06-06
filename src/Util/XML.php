@@ -206,7 +206,7 @@ class PHPUnit_Util_XML
 
         switch ($element->tagName) {
             case 'array': {
-                $variable = array();
+                $variable = [];
 
                 foreach ($element->getElementsByTagName('element') as $element) {
                     $value = self::xmlToVariable($element->childNodes->item(1));
@@ -225,7 +225,7 @@ class PHPUnit_Util_XML
 
                 if ($element->hasChildNodes()) {
                     $arguments       = $element->childNodes->item(1)->childNodes;
-                    $constructorArgs = array();
+                    $constructorArgs = [];
 
                     foreach ($arguments as $argument) {
                         if ($argument instanceof DOMElement) {
@@ -272,7 +272,7 @@ class PHPUnit_Util_XML
      */
     public static function assertValidKeys(array $hash, array $validKeys)
     {
-        $valids = array();
+        $valids = [];
 
         // Normalize validation keys so that we can use both indexed and
         // associative arrays.
@@ -332,27 +332,27 @@ class PHPUnit_Util_XML
         if (strstr($selector, ' ')) {
             $elements = explode(' ', $selector);
         } else {
-            $elements = array($selector);
+            $elements = [$selector];
         }
 
-        $previousTag = array();
+        $previousTag = [];
 
         foreach (array_reverse($elements) as $element) {
             $element = str_replace('__SPACE__', ' ', $element);
 
             // child selector
             if ($element == '>') {
-                $previousTag = array('child' => $previousTag['descendant']);
+                $previousTag = ['child' => $previousTag['descendant']];
                 continue;
             }
 
             // adjacent-sibling selector
             if ($element == '+') {
-                $previousTag = array('adjacent-sibling' => $previousTag['descendant']);
+                $previousTag = ['adjacent-sibling' => $previousTag['descendant']];
                 continue;
             }
 
-            $tag = array();
+            $tag = [];
 
             // match element tag
             preg_match("/^([^\.#\[]*)/", $element, $eltMatches);
@@ -370,8 +370,8 @@ class PHPUnit_Util_XML
             );
 
             if (!empty($matches[1])) {
-                $classes = array();
-                $attrs   = array();
+                $classes = [];
+                $attrs   = [];
 
                 foreach ($matches[1] as $match) {
                     // id matched
@@ -427,7 +427,7 @@ class PHPUnit_Util_XML
                 unset($tag['content']);
             }
 
-            $previousTag = array('descendant' => $tag);
+            $previousTag = ['descendant' => $tag];
         }
 
         return $tag;
@@ -478,12 +478,12 @@ class PHPUnit_Util_XML
      */
     public static function findNodes(DOMDocument $dom, array $options, $isHtml = true)
     {
-        $valid = array(
+        $valid = [
           'id', 'class', 'tag', 'content', 'attributes', 'parent',
           'child', 'ancestor', 'descendant', 'children', 'adjacent-sibling'
-        );
+        ];
 
-        $filtered = array();
+        $filtered = [];
         $options  = self::assertValidKeys($options, $valid);
 
         // find the element by id
@@ -495,7 +495,7 @@ class PHPUnit_Util_XML
             $options['attributes']['class'] = $options['class'];
         }
 
-        $nodes = array();
+        $nodes = [];
 
         // find the element by a tag type
         if ($options['tag']) {
@@ -517,7 +517,7 @@ class PHPUnit_Util_XML
             }
         } // no tag selected, get them all
         else {
-            $tags = array(
+            $tags = [
               'a', 'abbr', 'acronym', 'address', 'area', 'b', 'base', 'bdo',
               'big', 'blockquote', 'body', 'br', 'button', 'caption', 'cite',
               'code', 'col', 'colgroup', 'dd', 'del', 'div', 'dfn', 'dl',
@@ -535,7 +535,7 @@ class PHPUnit_Util_XML
               'footer', 'header', 'hgroup', 'keygen', 'mark', 'meter', 'nav',
               'output', 'progress', 'ruby', 'rt', 'rp', 'track', 'section',
               'source', 'summary', 'time', 'video', 'wbr'
-            );
+            ];
 
             foreach ($tags as $tag) {
                 if ($isHtml) {
@@ -602,7 +602,7 @@ class PHPUnit_Util_XML
             }
 
             $nodes    = $filtered;
-            $filtered = array();
+            $filtered = [];
 
             if (empty($nodes)) {
                 return false;
@@ -635,7 +635,7 @@ class PHPUnit_Util_XML
             }
 
             $nodes    = $filtered;
-            $filtered = array();
+            $filtered = [];
 
             if (empty($nodes)) {
                 return false;
@@ -656,7 +656,7 @@ class PHPUnit_Util_XML
             }
 
             $nodes    = $filtered;
-            $filtered = array();
+            $filtered = [];
 
             if (empty($nodes)) {
                 return false;
@@ -666,7 +666,7 @@ class PHPUnit_Util_XML
         // filter by child node
         if ($options['child']) {
             $childNodes = self::findNodes($dom, $options['child'], $isHtml);
-            $childNodes = !empty($childNodes) ? $childNodes : array();
+            $childNodes = !empty($childNodes) ? $childNodes : [];
 
             foreach ($nodes as $node) {
                 foreach ($node->childNodes as $child) {
@@ -679,7 +679,7 @@ class PHPUnit_Util_XML
             }
 
             $nodes    = $filtered;
-            $filtered = array();
+            $filtered = [];
 
             if (empty($nodes)) {
                 return false;
@@ -689,7 +689,7 @@ class PHPUnit_Util_XML
         // filter by adjacent-sibling
         if ($options['adjacent-sibling']) {
             $adjacentSiblingNodes = self::findNodes($dom, $options['adjacent-sibling'], $isHtml);
-            $adjacentSiblingNodes = !empty($adjacentSiblingNodes) ? $adjacentSiblingNodes : array();
+            $adjacentSiblingNodes = !empty($adjacentSiblingNodes) ? $adjacentSiblingNodes : [];
 
             foreach ($nodes as $node) {
                 $sibling = $node;
@@ -711,7 +711,7 @@ class PHPUnit_Util_XML
             }
 
             $nodes    = $filtered;
-            $filtered = array();
+            $filtered = [];
 
             if (empty($nodes)) {
                 return false;
@@ -736,7 +736,7 @@ class PHPUnit_Util_XML
             }
 
             $nodes    = $filtered;
-            $filtered = array();
+            $filtered = [];
 
             if (empty($nodes)) {
                 return false;
@@ -746,7 +746,7 @@ class PHPUnit_Util_XML
         // filter by descendant
         if ($options['descendant']) {
             $descendantNodes = self::findNodes($dom, $options['descendant'], $isHtml);
-            $descendantNodes = !empty($descendantNodes) ? $descendantNodes : array();
+            $descendantNodes = !empty($descendantNodes) ? $descendantNodes : [];
 
             foreach ($nodes as $node) {
                 foreach (self::getDescendants($node) as $descendant) {
@@ -759,7 +759,7 @@ class PHPUnit_Util_XML
             }
 
             $nodes    = $filtered;
-            $filtered = array();
+            $filtered = [];
 
             if (empty($nodes)) {
                 return false;
@@ -768,7 +768,7 @@ class PHPUnit_Util_XML
 
         // filter by children
         if ($options['children']) {
-            $validChild   = array('count', 'greater_than', 'less_than', 'only');
+            $validChild   = ['count', 'greater_than', 'less_than', 'only'];
             $childOptions = self::assertValidKeys(
                 $options['children'],
                 $validChild
@@ -846,7 +846,7 @@ class PHPUnit_Util_XML
         }
 
         // return the first node that matches all criteria
-        return !empty($nodes) ? $nodes : array();
+        return !empty($nodes) ? $nodes : [];
     }
 
     /**
@@ -860,8 +860,8 @@ class PHPUnit_Util_XML
      */
     protected static function getDescendants(DOMNode $node)
     {
-        $allChildren = array();
-        $childNodes  = $node->childNodes ? $node->childNodes : array();
+        $allChildren = [];
+        $childNodes  = $node->childNodes ? $node->childNodes : [];
 
         foreach ($childNodes as $child) {
             if ($child->nodeType === XML_CDATA_SECTION_NODE ||
@@ -870,10 +870,10 @@ class PHPUnit_Util_XML
             }
 
             $children    = self::getDescendants($child);
-            $allChildren = array_merge($allChildren, $children, array($child));
+            $allChildren = array_merge($allChildren, $children, [$child]);
         }
 
-        return isset($allChildren) ? $allChildren : array();
+        return isset($allChildren) ? $allChildren : [];
     }
 
     /**

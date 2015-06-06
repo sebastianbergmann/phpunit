@@ -150,11 +150,11 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
         $this->currentTestName      = '';
 
         $this->write(
-            array(
+            [
             'event' => 'suiteStart',
             'suite' => $this->currentTestSuiteName,
             'tests' => count($suite)
-            )
+            ]
         );
     }
 
@@ -180,11 +180,11 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
         $this->currentTestPass = true;
 
         $this->write(
-            array(
+            [
             'event' => 'testStart',
             'suite' => $this->currentTestSuiteName,
             'test'  => $this->currentTestName
-            )
+            ]
         );
     }
 
@@ -197,7 +197,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         if ($this->currentTestPass) {
-            $this->writeCase('pass', $time, array(), '', $test);
+            $this->writeCase('pass', $time, [], '', $test);
         }
     }
 
@@ -208,7 +208,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * @param string                          $message
      * @param PHPUnit_Framework_TestCase|null $test
      */
-    protected function writeCase($status, $time, array $trace = array(), $message = '', $test = null)
+    protected function writeCase($status, $time, array $trace = [], $message = '', $test = null)
     {
         $output = '';
         // take care of TestSuite producing error (e.g. by running into exception) as TestSuite doesn't have hasOutput
@@ -216,7 +216,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             $output = $test->getActualOutput();
         }
         $this->write(
-            array(
+            [
             'event'   => 'test',
             'suite'   => $this->currentTestSuiteName,
             'test'    => $this->currentTestName,
@@ -225,7 +225,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             'trace'   => $trace,
             'message' => PHPUnit_Util_String::convertToUtf8($message),
             'output'  => $output,
-            )
+            ]
         );
     }
 
