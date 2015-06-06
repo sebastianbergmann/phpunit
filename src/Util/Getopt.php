@@ -11,8 +11,6 @@
 /**
  * Command-line options parsing class.
  *
- * @package    PHPUnit
- * @subpackage Util
  * @author     Andrei Zmievski <andrei@php.net>
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
@@ -160,7 +158,7 @@ class PHPUnit_Util_Getopt
             }
 
             $full_option = '--' . preg_replace('/={1,2}$/', '', $long_opt);
-            $opts[] = array($full_option, $opt_arg);
+            $opts[]      = array($full_option, $opt_arg);
 
             return;
         }

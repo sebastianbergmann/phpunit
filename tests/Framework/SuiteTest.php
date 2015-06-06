@@ -21,9 +21,6 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsClassBeforeClassHookTest.php';
 
 /**
- *
- *
- * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -44,21 +41,21 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
     {
         $suite = new PHPUnit_Framework_TestSuite;
 
-        $suite->addTest(new Framework_SuiteTest('testAddTestSuite'));
-        $suite->addTest(new Framework_SuiteTest('testInheritedTests'));
-        $suite->addTest(new Framework_SuiteTest('testNoTestCases'));
-        $suite->addTest(new Framework_SuiteTest('testNoTestCaseClass'));
-        $suite->addTest(new Framework_SuiteTest('testNotExistingTestCase'));
-        $suite->addTest(new Framework_SuiteTest('testNotPublicTestCase'));
-        $suite->addTest(new Framework_SuiteTest('testNotVoidTestCase'));
-        $suite->addTest(new Framework_SuiteTest('testOneTestCase'));
-        $suite->addTest(new Framework_SuiteTest('testShadowedTests'));
-        $suite->addTest(new Framework_SuiteTest('testBeforeClassAndAfterClassAnnotations'));
-        $suite->addTest(new Framework_SuiteTest('testBeforeAnnotation'));
-        $suite->addTest(new Framework_SuiteTest('testSkippedTestDataProvider'));
-        $suite->addTest(new Framework_SuiteTest('testIncompleteTestDataProvider'));
-        $suite->addTest(new Framework_SuiteTest('testRequirementsBeforeClassHook'));
-        $suite->addTest(new Framework_SuiteTest('testDontSkipInheritedClass'));
+        $suite->addTest(new self('testAddTestSuite'));
+        $suite->addTest(new self('testInheritedTests'));
+        $suite->addTest(new self('testNoTestCases'));
+        $suite->addTest(new self('testNoTestCaseClass'));
+        $suite->addTest(new self('testNotExistingTestCase'));
+        $suite->addTest(new self('testNotPublicTestCase'));
+        $suite->addTest(new self('testNotVoidTestCase'));
+        $suite->addTest(new self('testOneTestCase'));
+        $suite->addTest(new self('testShadowedTests'));
+        $suite->addTest(new self('testBeforeClassAndAfterClassAnnotations'));
+        $suite->addTest(new self('testBeforeAnnotation'));
+        $suite->addTest(new self('testSkippedTestDataProvider'));
+        $suite->addTest(new self('testIncompleteTestDataProvider'));
+        $suite->addTest(new self('testRequirementsBeforeClassHook'));
+        $suite->addTest(new self('testDontSkipInheritedClass'));
 
         return $suite;
     }
@@ -109,7 +106,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
 
     public function testNotExistingTestCase()
     {
-        $suite = new Framework_SuiteTest('notExistingMethod');
+        $suite = new self('notExistingMethod');
 
         $suite->run($this->result);
 
@@ -170,8 +167,8 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         BeforeClassAndAfterClassTest::resetProperties();
         $suite->run($this->result);
 
-        $this->assertEquals(1, BeforeClassAndAfterClassTest::$beforeClassWasRun, "@beforeClass method was not run once for the whole suite.");
-        $this->assertEquals(1, BeforeClassAndAfterClassTest::$afterClassWasRun, "@afterClass method was not run once for the whole suite.");
+        $this->assertEquals(1, BeforeClassAndAfterClassTest::$beforeClassWasRun, '@beforeClass method was not run once for the whole suite.');
+        $this->assertEquals(1, BeforeClassAndAfterClassTest::$afterClassWasRun, '@afterClass method was not run once for the whole suite.');
     }
 
     public function testBeforeAnnotation()
@@ -227,8 +224,8 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
 
         $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Inheritance' . DIRECTORY_SEPARATOR;
 
-        $suite->addTestFile($dir.'InheritanceA.php');
-        $suite->addTestFile($dir.'InheritanceB.php');
+        $suite->addTestFile($dir . 'InheritanceA.php');
+        $suite->addTestFile($dir . 'InheritanceB.php');
         $result = $suite->run();
         $this->assertEquals(2, count($result));
     }

@@ -12,8 +12,6 @@
  * Constraint that asserts that the Traversable it is applied to contains
  * a given value.
  *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
@@ -24,12 +22,12 @@
 class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework_Constraint
 {
     /**
-     * @var boolean
+     * @var bool
      */
     protected $checkForObjectIdentity;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $checkForNonObjectIdentity;
 
@@ -40,8 +38,8 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
 
     /**
      * @param  mixed                       $value
-     * @param  boolean                     $checkForObjectIdentity
-     * @param  boolean                     $checkForNonObjectIdentity
+     * @param  bool                        $checkForObjectIdentity
+     * @param  bool                        $checkForNonObjectIdentity
      * @throws PHPUnit_Framework_Exception
      */
     public function __construct($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)

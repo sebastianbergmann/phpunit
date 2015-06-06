@@ -11,8 +11,6 @@
 /**
  * Runner for PHPT test cases.
  *
- * @package    PHPUnit
- * @subpackage Extensions_PhptTestCase
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -80,7 +78,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     /**
      * Counts the number of test cases executed by run(TestResult result).
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {
@@ -102,9 +100,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $result = new PHPUnit_Framework_TestResult;
         }
 
-        $php  = PHPUnit_Util_PHP::factory();
-        $skip = false;
-        $time = 0;
+        $php      = PHPUnit_Util_PHP::factory();
+        $skip     = false;
+        $time     = 0;
         $settings = $this->settings;
 
         $result->startTest($this);
@@ -132,7 +130,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         if (!$skip) {
             PHP_Timer::start();
             $jobResult = $php->runJob($code, $settings);
-            $time = PHP_Timer::stop();
+            $time      = PHP_Timer::stop();
 
             if (isset($sections['EXPECT'])) {
                 $assertion = 'assertEquals';
@@ -142,7 +140,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
                 $expected  = $sections['EXPECTF'];
             }
 
-            $output = preg_replace('/\r\n/', "\n", trim($jobResult['stdout']));
+            $output   = preg_replace('/\r\n/', "\n", trim($jobResult['stdout']));
             $expected = preg_replace('/\r\n/', "\n", trim($expected));
 
             try {

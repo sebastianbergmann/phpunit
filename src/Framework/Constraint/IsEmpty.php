@@ -11,8 +11,6 @@
 /**
  * Constraint that checks whether a variable is empty().
  *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>

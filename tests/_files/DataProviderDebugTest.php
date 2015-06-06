@@ -11,7 +11,7 @@ class DataProviderDebugTest extends PHPUnit_Framework_TestCase
 
     public static function provider()
     {
-        $obj2 = new \stdClass();
+        $obj2      = new \stdClass();
         $obj2->foo = 'bar';
 
         $obj3 = (object) array(1,2,"Test\r\n",4,5,6,7,8);
@@ -20,15 +20,15 @@ class DataProviderDebugTest extends PHPUnit_Framework_TestCase
         //@codingStandardsIgnoreStart
         $obj->null = null;
         //@codingStandardsIgnoreEnd
-        $obj->boolean = true;
-        $obj->integer = 1;
-        $obj->double = 1.2;
-        $obj->string = '1';
-        $obj->text = "this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext";
-        $obj->object = $obj2;
+        $obj->boolean     = true;
+        $obj->integer     = 1;
+        $obj->double      = 1.2;
+        $obj->string      = '1';
+        $obj->text        = "this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext";
+        $obj->object      = $obj2;
         $obj->objectagain = $obj2;
-        $obj->array = array('foo' => 'bar');
-        $obj->self = $obj;
+        $obj->array       = array('foo' => 'bar');
+        $obj->self        = $obj;
 
         $storage = new \SplObjectStorage();
         $storage->attach($obj2);

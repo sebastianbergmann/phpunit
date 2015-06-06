@@ -11,8 +11,6 @@
 /**
  * Prettifies class and method names for use in TestDox documentation.
  *
- * @package    PHPUnit
- * @subpackage Util_TestDox
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -22,17 +20,17 @@
 class PHPUnit_Util_TestDox_NamePrettifier
 {
     /**
-     * @var    string
+     * @var string
      */
     protected $prefix = 'Test';
 
     /**
-     * @var    string
+     * @var string
      */
     protected $suffix = 'Test';
 
     /**
-     * @var    array
+     * @var array
      */
     protected $strings = array();
 

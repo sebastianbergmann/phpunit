@@ -11,8 +11,6 @@
 /**
  * Base class for test listeners that interact with an issue tracker.
  *
- * @package    PHPUnit
- * @subpackage Extensions_TicketListener
  * @author     Sean Coates <sean@caedmon.net>
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
@@ -28,7 +26,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     protected $ticketCounts = array();
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $ran = false;
 

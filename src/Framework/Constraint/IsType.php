@@ -14,8 +14,6 @@
  *
  * The expected value is passed in the constructor.
  *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
@@ -41,19 +39,19 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
      * @var array
      */
     protected $types = array(
-      'array' => true,
-      'boolean' => true,
-      'bool' => true,
-      'double' => true,
-      'float' => true,
-      'integer' => true,
-      'int' => true,
-      'null' => true,
-      'numeric' => true,
-      'object' => true,
+      'array'    => true,
+      'boolean'  => true,
+      'bool'     => true,
+      'double'   => true,
+      'float'    => true,
+      'integer'  => true,
+      'int'      => true,
+      'null'     => true,
+      'numeric'  => true,
+      'object'   => true,
       'resource' => true,
-      'string' => true,
-      'scalar' => true,
+      'string'   => true,
+      'scalar'   => true,
       'callable' => true
     );
 

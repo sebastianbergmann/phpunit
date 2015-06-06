@@ -13,10 +13,10 @@ class FailureTest extends PHPUnit_Framework_TestCase
 
     public function testAssertObjectEqualsObject()
     {
-        $a = new StdClass;
+        $a      = new StdClass;
         $a->foo = 'bar';
 
-        $b = new StdClass;
+        $b      = new StdClass;
         $b->bar = 'foo';
 
         $this->assertEquals($a, $b, 'message');
