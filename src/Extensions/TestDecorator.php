@@ -15,8 +15,6 @@
  * test decorators. Test decorator subclasses can be introduced
  * to add behaviour before or after a test is run.
  *
- * @package    PHPUnit
- * @subpackage Extensions
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -28,7 +26,7 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
     /**
      * The Test to be decorated.
      *
-     * @var    object
+     * @var object
      */
     protected $test = null;
 
@@ -67,7 +65,7 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * Counts the number of test cases that
      * will be run by this test.
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {

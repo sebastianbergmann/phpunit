@@ -11,8 +11,6 @@
 /**
  * Filesystem helpers.
  *
- * @package    PHPUnit
- * @subpackage Util
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License

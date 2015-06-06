@@ -11,8 +11,6 @@
 /**
  * A skipped test case
  *
- * @package    PHPUnit
- * @subpackage Framework
  * @author     Davey Shafik <me@daveyshafik.com>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -27,27 +25,27 @@ class PHPUnit_Framework_SkippedTestCase extends PHPUnit_Framework_TestCase
     protected $message = '';
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $backupGlobals = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $backupStaticAttributes = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $runTestInSeparateProcess = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $useErrorHandler = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $useOutputBuffering = false;
 

@@ -12,8 +12,6 @@
  * Constraint that asserts that the string it is evaluated for begins with a
  * given prefix.
  *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>

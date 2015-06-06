@@ -13,8 +13,6 @@
  * with just a few lines of code.
  * @see PHPUnit_Framework_TestListener for documentation on the API methods.
  *
- * @package    PHPUnit
- * @subpackage Framework
  * @author     Giorgio Sironi<info@giorgiosironi.com>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License

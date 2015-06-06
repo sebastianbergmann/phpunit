@@ -9,8 +9,6 @@
  */
 
 /**
- * @package    PHPUnit
- * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -25,11 +23,11 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
     protected $filter = null;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $filterMin;
     /**
-     * @var integer
+     * @var int
      */
     protected $filterMax;
 
@@ -92,7 +90,7 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function accept()
     {
@@ -113,7 +111,7 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
         $accepted = preg_match($this->filter, $name, $matches);
 
         if ($accepted && isset($this->filterMax)) {
-            $set = end($matches);
+            $set      = end($matches);
             $accepted = $set >= $this->filterMin && $set <= $this->filterMax;
         }
 

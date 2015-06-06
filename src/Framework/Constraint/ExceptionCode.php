@@ -9,10 +9,6 @@
  */
 
 /**
- *
- *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -22,12 +18,12 @@
 class PHPUnit_Framework_Constraint_ExceptionCode extends PHPUnit_Framework_Constraint
 {
     /**
-     * @var integer
+     * @var int
      */
     protected $expectedCode;
 
     /**
-     * @param integer $expected
+     * @param int $expected
      */
     public function __construct($expected)
     {
@@ -40,7 +36,7 @@ class PHPUnit_Framework_Constraint_ExceptionCode extends PHPUnit_Framework_Const
      * constraint is met, false otherwise.
      *
      * @param  Exception $other
-     * @return boolean
+     * @return bool
      */
     protected function matches($other)
     {

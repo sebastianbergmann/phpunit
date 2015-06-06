@@ -11,8 +11,6 @@
 /**
  * Constraint that evaluates against a specified closure.
  *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Timon Rapp <timon@zaeda.net>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>

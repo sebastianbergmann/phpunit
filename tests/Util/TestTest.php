@@ -17,9 +17,6 @@ if (!defined('TEST_FILES_PATH')) {
 }
 
 /**
- *
- *
- * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -152,15 +149,15 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
               'testSpace',
               array(
                 'extensions' => array('spl'),
-                'OS' => '/.*/i'
+                'OS'         => '/.*/i'
               )
             ),
             array(
               'testAllPossibleRequirements',
               array(
-                'PHP' => '99-dev',
-                'PHPUnit' => '9-dev',
-                'OS' => '/DOESNOTEXIST/i',
+                'PHP'       => '99-dev',
+                'PHPUnit'   => '9-dev',
+                'OS'        => '/DOESNOTEXIST/i',
                 'functions' => array(
                   'testFuncOne',
                   'testFuncTwo',
@@ -180,9 +177,9 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testGetRequirementsMergesClassAndMethodDocBlocks()
     {
         $expectedAnnotations = array(
-            'PHP' => '5.4',
-            'PHPUnit' => '3.7',
-            'OS' => '/WINNT/i',
+            'PHP'       => '5.4',
+            'PHPUnit'   => '3.7',
+            'OS'        => '/WINNT/i',
             'functions' => array(
               'testFuncClass',
               'testFuncMethod',
@@ -273,9 +270,9 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      */
     public function testTestWithSimpleCase()
     {
-        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1]
-                                                                     */");
+                                                                     */');
         $this->assertEquals(array(array(1)), $result);
     }
 
@@ -284,10 +281,10 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      */
     public function testTestWithMultiLineMultiParameterCase()
     {
-        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1, 2]
                                                                      * [3, 4]
-                                                                     */");
+                                                                     */');
         $this->assertEquals(array(array(1, 2), array(3, 4)), $result);
     }
 
@@ -301,7 +298,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             *           [true]
             *           [null]
          */');
-        $this->assertEquals(array(array("ab"), array(true), array(null)), $result);
+        $this->assertEquals(array(array('ab'), array(true), array(null)), $result);
     }
 
     /**
@@ -309,11 +306,11 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      */
     public function testTestWithAnnotationAfter()
     {
-        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1]
                                                                      *           [2]
                                                                      * @annotation
-                                                                     */");
+                                                                     */');
         $this->assertEquals(array(array(1), array(2)), $result);
     }
 
@@ -322,11 +319,11 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      */
     public function testTestWithSimpleTextAfter()
     {
-        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+        $result = PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1]
                                                                      *           [2]
                                                                      * blah blah
-                                                                     */");
+                                                                     */');
         $this->assertEquals(array(array(1), array(2)), $result);
     }
 
@@ -347,12 +344,12 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed()
     {
         $this->setExpectedExceptionRegExp(
-            "PHPUnit_Framework_Exception",
-            "/^The dataset for the @testWith annotation cannot be parsed.$/"
+            'PHPUnit_Framework_Exception',
+            '/^The dataset for the @testWith annotation cannot be parsed.$/'
         );
-        PHPUnit_Util_Test::getDataFromTestWithAnnotation("/**
+        PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
                                                            * @testWith [s]
-                                                           */");
+                                                           */');
     }
 
     /**

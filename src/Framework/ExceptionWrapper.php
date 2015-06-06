@@ -17,8 +17,6 @@
  * Unlike PHPUnit_Framework_Exception, the complete stack of previous Exceptions
  * is processed.
  *
- * @package    PHPUnit
- * @subpackage Framework
  * @author     Daniel F. Kudwien <sun@unleashedmind.com>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -44,8 +42,8 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
         parent::__construct($e->getMessage(), (int) $e->getCode());
 
         $this->classname = get_class($e);
-        $this->file = $e->getFile();
-        $this->line = $e->getLine();
+        $this->file      = $e->getFile();
+        $this->line      = $e->getLine();
 
         $this->serializableTrace = $e->getTrace();
         foreach ($this->serializableTrace as $i => $call) {

@@ -9,9 +9,6 @@
  */
 
 /**
- *
- *
- * @package    PHPUnit
  * @author     Giorgio Sironi <info@giorgiosironi.com>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -31,7 +28,7 @@ class Framework_BaseTestListenerTest extends PHPUnit_Framework_TestCase
     public function testEndEventsAreCounted()
     {
         $this->result = new PHPUnit_Framework_TestResult;
-        $listener = new BaseTestListenerSample();
+        $listener     = new BaseTestListenerSample();
         $this->result->addListener($listener);
         $test = new Success;
         $test->run($this->result);

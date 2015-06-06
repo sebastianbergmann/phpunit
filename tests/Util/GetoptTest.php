@@ -9,8 +9,6 @@
  */
 
 /**
- *
- * @package    PHPUnit
  * @author     Yannick Voyer (http://github.com/yvoyer)
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License

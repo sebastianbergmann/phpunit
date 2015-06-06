@@ -11,8 +11,6 @@
 /**
  * A warning.
  *
- * @package    PHPUnit
- * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -27,22 +25,22 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
     protected $message = '';
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $backupGlobals = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $backupStaticAttributes = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $runTestInSeparateProcess = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $useErrorHandler = false;
 
