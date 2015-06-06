@@ -20,58 +20,6 @@
 class PHPUnit_Util_XML
 {
     /**
-     * Escapes a string for the use in XML documents
-     * Any Unicode character is allowed, excluding the surrogate blocks, FFFE,
-     * and FFFF (not even as character reference).
-     * See http://www.w3.org/TR/xml/#charsets
-     *
-     * @param  string $string
-     * @return string
-     * @author Kore Nordmann <mail@kore-nordmann.de>
-     * @since  Method available since Release 3.4.6
-     */
-    public static function prepareString($string)
-    {
-        return preg_replace(
-            '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
-            '',
-            htmlspecialchars(
-                PHPUnit_Util_String::convertToUtf8($string),
-                ENT_QUOTES,
-                'UTF-8'
-            )
-        );
-    }
-
-    /**
-     * Loads an XML (or HTML) file into a DOMDocument object.
-     *
-     * @param  string      $filename
-     * @param  bool        $isHtml
-     * @param  bool        $xinclude
-     * @param  bool        $strict
-     * @return DOMDocument
-     * @since  Method available since Release 3.3.0
-     */
-    public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
-    {
-        $reporting = error_reporting(0);
-        $contents  = file_get_contents($filename);
-        error_reporting($reporting);
-
-        if ($contents === false) {
-            throw new PHPUnit_Framework_Exception(
-                sprintf(
-                    'Could not read "%s".',
-                    $filename
-                )
-            );
-        }
-
-        return self::load($contents, $isHtml, $filename, $xinclude, $strict);
-    }
-
-    /**
      * Load an $actual document into a DOMDocument.  This is called
      * from the selector assertions.
      *
@@ -158,6 +106,34 @@ class PHPUnit_Util_XML
     }
 
     /**
+     * Loads an XML (or HTML) file into a DOMDocument object.
+     *
+     * @param  string      $filename
+     * @param  bool        $isHtml
+     * @param  bool        $xinclude
+     * @param  bool        $strict
+     * @return DOMDocument
+     * @since  Method available since Release 3.3.0
+     */
+    public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
+    {
+        $reporting = error_reporting(0);
+        $contents  = file_get_contents($filename);
+        error_reporting($reporting);
+
+        if ($contents === false) {
+            throw new PHPUnit_Framework_Exception(
+                sprintf(
+                    'Could not read "%s".',
+                    $filename
+                )
+            );
+        }
+
+        return self::load($contents, $isHtml, $filename, $xinclude, $strict);
+    }
+
+    /**
      * @param DOMNode $node
      * @since  Method available since Release 3.3.0
      * @author Mattis Stordalen Flister <mattis@xait.no>
@@ -171,6 +147,30 @@ class PHPUnit_Util_XML
                 }
             }
         }
+    }
+
+    /**
+     * Escapes a string for the use in XML documents
+     * Any Unicode character is allowed, excluding the surrogate blocks, FFFE,
+     * and FFFF (not even as character reference).
+     * See http://www.w3.org/TR/xml/#charsets
+     *
+     * @param  string $string
+     * @return string
+     * @author Kore Nordmann <mail@kore-nordmann.de>
+     * @since  Method available since Release 3.4.6
+     */
+    public static function prepareString($string)
+    {
+        return preg_replace(
+            '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
+            '',
+            htmlspecialchars(
+                PHPUnit_Util_String::convertToUtf8($string),
+                ENT_QUOTES,
+                'UTF-8'
+            )
+        );
     }
 
     /**
