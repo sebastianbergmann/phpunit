@@ -8,13 +8,6 @@
  * file that was distributed with this source code.
  */
 
-if (!function_exists('trait_exists')) {
-    function trait_exists($traitname, $autoload = true)
-    {
-        return false;
-    }
-}
-
 /**
  * Test helpers.
  *
