@@ -9,9 +9,6 @@
  */
 
 /**
- *
- *
- * @package    PHPUnit
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
@@ -237,9 +234,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testassertArraySubsetWithNoStrictCheckAndObjects()
     {
-        $obj = new \stdClass;
+        $obj       = new \stdClass;
         $reference = &$obj;
-        $array = array('a' => $obj);
+        $array     = array('a' => $obj);
 
         $this->assertArraySubset(array('a' => $reference), $array);
         $this->assertArraySubset(array('a' => new \stdClass), $array);
@@ -251,9 +248,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testassertArraySubsetWithStrictCheckAndObjects()
     {
-        $obj = new \stdClass;
+        $obj       = new \stdClass;
         $reference = &$obj;
-        $array = array('a' => $obj);
+        $array     = array('a' => $obj);
 
         $this->assertArraySubset(array('a' => $reference), $array, true);
 
@@ -357,7 +354,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayHasKeyAcceptsArrayObjectValue()
     {
-        $array = new ArrayObject();
+        $array        = new ArrayObject();
         $array['foo'] = 'bar';
         $this->assertArrayHasKey('foo', $array);
     }
@@ -368,7 +365,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayHasKeyProperlyFailsWithArrayObjectValue()
     {
-        $array = new ArrayObject();
+        $array        = new ArrayObject();
         $array['bar'] = 'bar';
         $this->assertArrayHasKey('foo', $array);
     }
@@ -378,7 +375,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayHasKeyAcceptsArrayAccessValue()
     {
-        $array = new SampleArrayAccess();
+        $array        = new SampleArrayAccess();
         $array['foo'] = 'bar';
         $this->assertArrayHasKey('foo', $array);
     }
@@ -389,7 +386,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue()
     {
-        $array = new SampleArrayAccess();
+        $array        = new SampleArrayAccess();
         $array['bar'] = 'bar';
         $this->assertArrayHasKey('foo', $array);
     }
@@ -399,7 +396,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayNotHasKeyAcceptsArrayAccessValue()
     {
-        $array = new ArrayObject();
+        $array        = new ArrayObject();
         $array['foo'] = 'bar';
         $this->assertArrayNotHasKey('bar', $array);
     }
@@ -410,7 +407,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue()
     {
-        $array = new ArrayObject();
+        $array        = new ArrayObject();
         $array['bar'] = 'bar';
         $this->assertArrayNotHasKey('bar', $array);
     }
@@ -606,7 +603,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertContainsOnly('integer', array(1, 2, 3));
 
         try {
-            $this->assertContainsOnly('integer', array("1", 2, 3));
+            $this->assertContainsOnly('integer', array('1', 2, 3));
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
@@ -619,7 +616,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayNotContainsOnlyIntegers()
     {
-        $this->assertNotContainsOnly('integer', array("1", 2, 3));
+        $this->assertNotContainsOnly('integer', array('1', 2, 3));
 
         try {
             $this->assertNotContainsOnly('integer', array(1, 2, 3));
@@ -664,7 +661,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     protected function createDOMDocument($content)
     {
-        $document = new DOMDocument;
+        $document                     = new DOMDocument;
         $document->preserveWhiteSpace = false;
         $document->loadXML($content);
 
@@ -676,7 +673,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $object = new SampleClass(4, 8, 15);
         // cannot use $filesDirectory, because neither setUp() nor
         // setUpBeforeClass() are executed before the data providers
-        $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml';
+        $file     = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml';
         $resource = fopen($file, 'r');
 
         return array(
@@ -705,21 +702,21 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     protected function notEqualValues()
     {
         // cyclic dependencies
-        $book1 = new Book;
-        $book1->author = new Author('Terry Pratchett');
+        $book1                  = new Book;
+        $book1->author          = new Author('Terry Pratchett');
         $book1->author->books[] = $book1;
-        $book2 = new Book;
-        $book2->author = new Author('Terry Pratch');
+        $book2                  = new Book;
+        $book2->author          = new Author('Terry Pratch');
         $book2->author->books[] = $book2;
 
-        $book3 = new Book;
+        $book3         = new Book;
         $book3->author = 'Terry Pratchett';
-        $book4 = new stdClass;
+        $book4         = new stdClass;
         $book4->author = 'Terry Pratchett';
 
-        $object1 = new SampleClass(4, 8, 15);
-        $object2 = new SampleClass(16, 23, 42);
-        $object3 = new SampleClass(4, 8, 15);
+        $object1  = new SampleClass(4, 8, 15);
+        $object2  = new SampleClass(16, 23, 42);
+        $object3  = new SampleClass(4, 8, 15);
         $storage1 = new SplObjectStorage;
         $storage1->attach($object1);
         $storage2 = new SplObjectStorage;
@@ -848,15 +845,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     protected function equalValues()
     {
         // cyclic dependencies
-        $book1 = new Book;
-        $book1->author = new Author('Terry Pratchett');
+        $book1                  = new Book;
+        $book1->author          = new Author('Terry Pratchett');
         $book1->author->books[] = $book1;
-        $book2 = new Book;
-        $book2->author = new Author('Terry Pratchett');
+        $book2                  = new Book;
+        $book2->author          = new Author('Terry Pratchett');
         $book2->author->books[] = $book2;
 
-        $object1 = new SampleClass(4, 8, 15);
-        $object2 = new SampleClass(4, 8, 15);
+        $object1  = new SampleClass(4, 8, 15);
+        $object2  = new SampleClass(4, 8, 15);
         $storage1 = new SplObjectStorage;
         $storage1->attach($object1);
         $storage2 = new SplObjectStorage;
@@ -950,8 +947,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array('0', 0),
             array(2.3, '2.3'),
             array('2.3', 2.3),
-            array((string)(1/3), 1 - 2/3),
-            array(1/3, (string)(1 - 2/3)),
+            array((string) (1/3), 1 - 2/3),
+            array(1/3, (string) (1 - 2/3)),
             array('string representation', new ClassWithToString),
             array(new ClassWithToString, 'string representation'),
         );
@@ -1459,7 +1456,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->assertNotTrue(false);
         $this->assertNotTrue(1);
-        $this->assertNotTrue("true");
+        $this->assertNotTrue('true');
 
         try {
             $this->assertNotTrue(true);
@@ -1493,7 +1490,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $this->assertNotFalse(true);
         $this->assertNotFalse(0);
-        $this->assertNotFalse("");
+        $this->assertNotFalse('');
 
         try {
             $this->assertNotFalse(false);
@@ -2669,7 +2666,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testObjectHasOnTheFlyAttribute()
     {
-        $obj = new StdClass;
+        $obj      = new StdClass;
         $obj->foo = 'bar';
 
         $this->assertObjectHasAttribute('foo', $obj);
@@ -2688,7 +2685,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testObjectNotHasOnTheFlyAttribute()
     {
-        $obj = new StdClass;
+        $obj      = new StdClass;
         $obj->foo = 'bar';
 
         $this->assertObjectNotHasAttribute('bar', $obj);
@@ -3742,8 +3739,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonStringEqualsJsonFile()
     {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        $actual = json_encode(array("Mascott" => "Tux"));
+        $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
+        $actual  = json_encode(array('Mascott' => 'Tux'));
         $message = '';
         $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
     }
@@ -3753,8 +3750,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonStringEqualsJsonFileExpectingExpectationFailedException()
     {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        $actual = json_encode(array("Mascott" => "Beastie"));
+        $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
+        $actual  = json_encode(array('Mascott' => 'Beastie'));
         $message = '';
         try {
             $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
@@ -3763,6 +3760,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
                 'Failed asserting that \'{"Mascott":"Beastie"}\' matches JSON string "{"Mascott":"Tux"}".',
                 $e->getMessage()
             );
+
             return;
         }
 
@@ -3788,8 +3786,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonStringNotEqualsJsonFile()
     {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        $actual = json_encode(array("Mascott" => "Beastie"));
+        $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
+        $actual  = json_encode(array('Mascott' => 'Beastie'));
         $message = '';
         $this->assertJsonStringNotEqualsJsonFile($file, $actual, $message);
     }
@@ -3815,7 +3813,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     {
         $fileExpected = __DIR__ . '/../_files/JsonData/simpleObject.json';
         $fileActual   = __DIR__ . '/../_files/JsonData/arrayObject.json';
-        $message = '';
+        $message      = '';
         $this->assertJsonFileNotEqualsJsonFile($fileExpected, $fileActual, $message);
     }
 
@@ -3824,7 +3822,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertJsonFileEqualsJsonFile()
     {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
+        $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
         $message = '';
         $this->assertJsonFileEqualsJsonFile($file, $file, $message);
     }

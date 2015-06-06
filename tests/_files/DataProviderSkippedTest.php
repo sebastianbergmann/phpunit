@@ -19,7 +19,7 @@ class DataProviderSkippedTest extends PHPUnit_Framework_TestCase
 
     public function skippedTestProviderMethod()
     {
-        $this->markTestSkipped("skipped");
+        $this->markTestSkipped('skipped');
 
         return array(
           array(0, 0, 0),

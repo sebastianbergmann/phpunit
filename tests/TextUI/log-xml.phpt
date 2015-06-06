@@ -17,9 +17,9 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 ...<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="BankAccountTest" file="%sBankAccountTest.php" tests="3" assertions="3" failures="0" errors="0" time="%f">
-    <testcase name="testBalanceIsInitiallyZero" class="BankAccountTest" file="%sBankAccountTest.php" line="35" assertions="1" time="%f"/>
-    <testcase name="testBalanceCannotBecomeNegative" class="BankAccountTest" file="%sBankAccountTest.php" line="45" assertions="1" time="%f"/>
-    <testcase name="testBalanceCannotBecomeNegative2" class="BankAccountTest" file="%sBankAccountTest.php" line="63" assertions="1" time="%f"/>
+    <testcase name="testBalanceIsInitiallyZero" class="BankAccountTest" file="%sBankAccountTest.php" line="34" assertions="1" time="%f"/>
+    <testcase name="testBalanceCannotBecomeNegative" class="BankAccountTest" file="%sBankAccountTest.php" line="44" assertions="1" time="%f"/>
+    <testcase name="testBalanceCannotBecomeNegative2" class="BankAccountTest" file="%sBankAccountTest.php" line="62" assertions="1" time="%f"/>
   </testsuite>
 </testsuites>
 

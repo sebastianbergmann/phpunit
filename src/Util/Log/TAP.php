@@ -12,8 +12,6 @@
  * A TestListener that generates a logfile of the
  * test execution using the Test Anything Protocol (TAP).
  *
- * @package    PHPUnit
- * @subpackage Util_Log
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
@@ -23,17 +21,17 @@
 class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
     /**
-     * @var    integer
+     * @var int
      */
     protected $testNumber = 0;
 
     /**
-     * @var    integer
+     * @var int
      */
     protected $testSuiteLevel = 0;
 
     /**
-     * @var    boolean
+     * @var bool
      */
     protected $testSuccessful = true;
 

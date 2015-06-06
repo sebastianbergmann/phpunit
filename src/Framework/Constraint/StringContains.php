@@ -17,8 +17,6 @@
  *
  * The sub-string is passed in the constructor.
  *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
@@ -34,13 +32,13 @@ class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Cons
     protected $string;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $ignoreCase;
 
     /**
-     * @param string  $string
-     * @param boolean $ignoreCase
+     * @param string $string
+     * @param bool   $ignoreCase
      */
     public function __construct($string, $ignoreCase = false)
     {

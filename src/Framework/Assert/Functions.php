@@ -73,7 +73,7 @@ function assertArrayHasKey($key, $array, $message = '')
  *
  * @param array|ArrayAccess  $subset
  * @param array|ArrayAccess  $array
- * @param boolean            $strict  Check for object identity
+ * @param bool            $strict  Check for object identity
  * @param string             $message
  * @since Method available since Release 4.4.0
  */
@@ -109,9 +109,9 @@ function assertArrayNotHasKey($key, $array, $message = '')
  * @param  string  $haystackAttributeName
  * @param  mixed   $haystackClassOrObject
  * @param  string  $message
- * @param  boolean $ignoreCase
- * @param  boolean $checkForObjectIdentity
- * @param  boolean $checkForNonObjectIdentity
+ * @param  bool $ignoreCase
+ * @param  bool $checkForObjectIdentity
+ * @param  bool $checkForNonObjectIdentity
  * @since  Method available since Release 3.0.0
  */
 function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
@@ -129,7 +129,7 @@ function assertAttributeContains($needle, $haystackAttributeName, $haystackClass
  * @param  string  $type
  * @param  string  $haystackAttributeName
  * @param  mixed   $haystackClassOrObject
- * @param  boolean $isNativeType
+ * @param  bool $isNativeType
  * @param  string  $message
  * @since  Method available since Release 3.1.4
  */
@@ -145,7 +145,7 @@ function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackCla
  * Asserts the number of elements of an array, Countable or Traversable
  * that is stored in an attribute.
  *
- * @param integer $expectedCount
+ * @param int $expectedCount
  * @param string  $haystackAttributeName
  * @param mixed   $haystackClassOrObject
  * @param string  $message
@@ -184,9 +184,9 @@ function assertAttributeEmpty($haystackAttributeName, $haystackClassOrObject, $m
  * @param  string  $actualClassOrObject
  * @param  string  $message
  * @param  float   $delta
- * @param  integer $maxDepth
- * @param  boolean $canonicalize
- * @param  boolean $ignoreCase
+ * @param  int $maxDepth
+ * @param  bool $canonicalize
+ * @param  bool $ignoreCase
  */
 function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
@@ -306,9 +306,9 @@ function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actual
  * @param  string  $haystackAttributeName
  * @param  mixed   $haystackClassOrObject
  * @param  string  $message
- * @param  boolean $ignoreCase
- * @param  boolean $checkForObjectIdentity
- * @param  boolean $checkForNonObjectIdentity
+ * @param  bool $ignoreCase
+ * @param  bool $checkForObjectIdentity
+ * @param  bool $checkForNonObjectIdentity
  * @since  Method available since Release 3.0.0
  */
 function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
@@ -327,7 +327,7 @@ function assertAttributeNotContains($needle, $haystackAttributeName, $haystackCl
  * @param  string  $type
  * @param  string  $haystackAttributeName
  * @param  mixed   $haystackClassOrObject
- * @param  boolean $isNativeType
+ * @param  bool $isNativeType
  * @param  string  $message
  * @since  Method available since Release 3.1.4
  */
@@ -343,7 +343,7 @@ function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystack
  * Asserts the number of elements of an array, Countable or Traversable
  * that is stored in an attribute.
  *
- * @param integer $expectedCount
+ * @param int $expectedCount
  * @param string  $haystackAttributeName
  * @param mixed   $haystackClassOrObject
  * @param string  $message
@@ -382,9 +382,9 @@ function assertAttributeNotEmpty($haystackAttributeName, $haystackClassOrObject,
  * @param  string  $actualClassOrObject
  * @param  string  $message
  * @param  float   $delta
- * @param  integer $maxDepth
- * @param  boolean $canonicalize
- * @param  boolean $ignoreCase
+ * @param  int $maxDepth
+ * @param  bool $canonicalize
+ * @param  bool $ignoreCase
  */
 function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
@@ -532,9 +532,9 @@ function assertClassNotHasStaticAttribute($attributeName, $className, $message =
  * @param  mixed   $needle
  * @param  mixed   $haystack
  * @param  string  $message
- * @param  boolean $ignoreCase
- * @param  boolean $checkForObjectIdentity
- * @param  boolean $checkForNonObjectIdentity
+ * @param  bool $ignoreCase
+ * @param  bool $checkForObjectIdentity
+ * @param  bool $checkForNonObjectIdentity
  * @since  Method available since Release 2.1.0
  */
 function assertContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
@@ -550,7 +550,7 @@ function assertContains($needle, $haystack, $message = '', $ignoreCase = false, 
  *
  * @param  string  $type
  * @param  mixed   $haystack
- * @param  boolean $isNativeType
+ * @param  bool $isNativeType
  * @param  string  $message
  * @since  Method available since Release 3.1.4
  */
@@ -580,7 +580,7 @@ function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
 /**
  * Asserts the number of elements of an array, Countable or Traversable.
  *
- * @param integer $expectedCount
+ * @param int $expectedCount
  * @param mixed   $haystack
  * @param string  $message
  */
@@ -612,7 +612,7 @@ function assertEmpty($actual, $message = '')
  *
  * @param DOMElement $expectedElement
  * @param DOMElement $actualElement
- * @param boolean $checkAttributes
+ * @param bool $checkAttributes
  * @param string  $message
  * @author Mattis Stordalen Flister <mattis@xait.no>
  * @since  Method available since Release 3.3.0
@@ -632,9 +632,9 @@ function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actual
  * @param  mixed   $actual
  * @param  string  $message
  * @param  float   $delta
- * @param  integer $maxDepth
- * @param  boolean $canonicalize
- * @param  boolean $ignoreCase
+ * @param  int $maxDepth
+ * @param  bool $canonicalize
+ * @param  bool $ignoreCase
  */
 function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
@@ -647,7 +647,7 @@ function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth
 /**
  * Asserts that a condition is not true.
  *
- * @param  boolean  $condition
+ * @param  bool  $condition
  * @param  string   $message
  * @throws PHPUnit_Framework_AssertionFailedError
  */
@@ -662,7 +662,7 @@ function assertNotTrue($condition, $message = '')
 /**
  * Asserts that a condition is false.
  *
- * @param  boolean  $condition
+ * @param  bool  $condition
  * @param  string   $message
  * @throws PHPUnit_Framework_AssertionFailedError
  */
@@ -681,8 +681,8 @@ function assertFalse($condition, $message = '')
  * @param  string  $expected
  * @param  string  $actual
  * @param  string  $message
- * @param  boolean $canonicalize
- * @param  boolean $ignoreCase
+ * @param  bool $canonicalize
+ * @param  bool $ignoreCase
  * @since  Method available since Release 3.2.14
  */
 function assertFileEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false)
@@ -715,8 +715,8 @@ function assertFileExists($filename, $message = '')
  * @param  string  $expected
  * @param  string  $actual
  * @param  string  $message
- * @param  boolean $canonicalize
- * @param  boolean $ignoreCase
+ * @param  bool $canonicalize
+ * @param  bool $ignoreCase
  * @since  Method available since Release 3.2.14
  */
 function assertFileNotEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false)
@@ -949,9 +949,9 @@ function assertLessThanOrEqual($expected, $actual, $message = '')
  * @param  mixed   $needle
  * @param  mixed   $haystack
  * @param  string  $message
- * @param  boolean $ignoreCase
- * @param  boolean $checkForObjectIdentity
- * @param  boolean $checkForNonObjectIdentity
+ * @param  bool $ignoreCase
+ * @param  bool $checkForObjectIdentity
+ * @param  bool $checkForNonObjectIdentity
  * @since  Method available since Release 2.1.0
  */
 function assertNotContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
@@ -967,7 +967,7 @@ function assertNotContains($needle, $haystack, $message = '', $ignoreCase = fals
  *
  * @param  string  $type
  * @param  mixed   $haystack
- * @param  boolean $isNativeType
+ * @param  bool $isNativeType
  * @param  string  $message
  * @since  Method available since Release 3.1.4
  */
@@ -982,7 +982,7 @@ function assertNotContainsOnly($type, $haystack, $isNativeType = null, $message 
 /**
  * Asserts the number of elements of an array, Countable or Traversable.
  *
- * @param integer $expectedCount
+ * @param int $expectedCount
  * @param mixed   $haystack
  * @param string  $message
  */
@@ -1016,9 +1016,9 @@ function assertNotEmpty($actual, $message = '')
  * @param  mixed   $actual
  * @param  string  $message
  * @param  float   $delta
- * @param  integer $maxDepth
- * @param  boolean $canonicalize
- * @param  boolean $ignoreCase
+ * @param  int $maxDepth
+ * @param  bool $canonicalize
+ * @param  bool $ignoreCase
  * @since  Method available since Release 2.3.0
  */
 function assertNotEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
@@ -1064,7 +1064,7 @@ function assertNotInternalType($expected, $actual, $message = '')
 /**
  * Asserts that a condition is not false.
  *
- * @param  boolean  $condition
+ * @param  bool  $condition
  * @param  string   $message
  * @throws PHPUnit_Framework_AssertionFailedError
  */
@@ -1272,8 +1272,8 @@ function assertStringEndsWith($suffix, $string, $message = '')
  * @param  string  $expectedFile
  * @param  string  $actualString
  * @param  string  $message
- * @param  boolean $canonicalize
- * @param  boolean $ignoreCase
+ * @param  bool $canonicalize
+ * @param  bool $ignoreCase
  * @since  Method available since Release 3.3.0
  */
 function assertStringEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false)
@@ -1323,8 +1323,8 @@ function assertStringMatchesFormatFile($formatFile, $string, $message = '')
  * @param  string  $expectedFile
  * @param  string  $actualString
  * @param  string  $message
- * @param  boolean $canonicalize
- * @param  boolean $ignoreCase
+ * @param  bool $canonicalize
+ * @param  bool $ignoreCase
  * @since  Method available since Release 3.3.0
  */
 function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false)
@@ -1418,7 +1418,7 @@ function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message =
 /**
  * Asserts that a condition is true.
  *
- * @param  boolean $condition
+ * @param  bool $condition
  * @param  string  $message
  * @throws PHPUnit_Framework_AssertionFailedError
  */
@@ -1530,7 +1530,7 @@ function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = 
  * Returns a matcher that matches when the method is executed
  * at the given $index.
  *
- * @param  integer $index
+ * @param  int $index
  * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
  * @since  Method available since Release 3.0.0
  */
@@ -1580,9 +1580,9 @@ function attribute(PHPUnit_Framework_Constraint $constraint, $attributeName)
  * @param  string  $attributeName
  * @param  mixed   $value
  * @param  float   $delta
- * @param  integer $maxDepth
- * @param  boolean $canonicalize
- * @param  boolean $ignoreCase
+ * @param  int $maxDepth
+ * @param  bool $canonicalize
+ * @param  bool $ignoreCase
  * @return PHPUnit_Framework_Constraint_Attribute
  * @since  Method available since Release 3.1.0
  */
@@ -1644,8 +1644,8 @@ function classHasStaticAttribute($attributeName)
  * object.
  *
  * @param  mixed   $value
- * @param  boolean $checkForObjectIdentity
- * @param  boolean $checkForNonObjectIdentity
+ * @param  bool $checkForObjectIdentity
+ * @param  bool $checkForNonObjectIdentity
  * @return PHPUnit_Framework_Constraint_TraversableContains
  * @since  Method available since Release 3.0.0
  */
@@ -1693,9 +1693,9 @@ function containsOnlyInstancesOf($classname)
  *
  * @param  mixed   $value
  * @param  float   $delta
- * @param  integer $maxDepth
- * @param  boolean $canonicalize
- * @param  boolean $ignoreCase
+ * @param  int $maxDepth
+ * @param  bool $canonicalize
+ * @param  bool $ignoreCase
  * @return PHPUnit_Framework_Constraint_IsEqual
  * @since  Method available since Release 3.0.0
  */
@@ -1711,7 +1711,7 @@ function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $i
  * Returns a matcher that matches when the method is executed
  * exactly $count times.
  *
- * @param  integer $count
+ * @param  int $count
  * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
  * @since  Method available since Release 3.0.0
  */
@@ -2060,9 +2060,7 @@ function once()
 }
 
 /**
- *
- *
- * @param  integer $argumentIndex
+ * @param  int $argumentIndex
  * @return PHPUnit_Framework_MockObject_Stub_ReturnArgument
  * @since  Method available since Release 3.3.0
  */
@@ -2075,8 +2073,6 @@ function returnArgument($argumentIndex)
 }
 
 /**
- *
- *
  * @param  mixed $callback
  * @return PHPUnit_Framework_MockObject_Stub_ReturnCallback
  * @since  Method available since Release 3.3.0
@@ -2106,8 +2102,6 @@ function returnSelf()
 }
 
 /**
- *
- *
  * @param  mixed $value
  * @return PHPUnit_Framework_MockObject_Stub_Return
  * @since  Method available since Release 3.0.0
@@ -2121,8 +2115,6 @@ function returnValue($value)
 }
 
 /**
- *
- *
  * @param  array $valueMap
  * @return PHPUnit_Framework_MockObject_Stub_ReturnValueMap
  * @since  Method available since Release 3.6.0
@@ -2139,7 +2131,7 @@ function returnValueMap(array $valueMap)
  * Returns a PHPUnit_Framework_Constraint_StringContains matcher object.
  *
  * @param  string  $string
- * @param  boolean $case
+ * @param  bool $case
  * @return PHPUnit_Framework_Constraint_StringContains
  * @since  Method available since Release 3.0.0
  */
@@ -2182,8 +2174,6 @@ function stringStartsWith($prefix)
 }
 
 /**
- *
- *
  * @param  Exception $exception
  * @return PHPUnit_Framework_MockObject_Stub_Exception
  * @since  Method available since Release 3.1.0

@@ -17,8 +17,6 @@
  *
  * The expected value is passed in the constructor.
  *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
  * @author     Kore Nordmann <kn@ez.no>
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @author     Bernhard Schussek <bschussek@2bepublished.at>
@@ -40,17 +38,17 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     protected $delta = 0.0;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $maxDepth = 10;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $canonicalize = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $ignoreCase = false;
 
@@ -62,9 +60,9 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     /**
      * @param  mixed                       $value
      * @param  float                       $delta
-     * @param  integer                     $maxDepth
-     * @param  boolean                     $canonicalize
-     * @param  boolean                     $ignoreCase
+     * @param  int                         $maxDepth
+     * @param  bool                        $canonicalize
+     * @param  bool                        $ignoreCase
      * @throws PHPUnit_Framework_Exception
      */
     public function __construct($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)

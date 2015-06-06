@@ -12,8 +12,6 @@
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
  * case of a test that is skipped because of an invalid @covers annotation.
  *
- * @package    PHPUnit
- * @subpackage Framework
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License

@@ -1,5 +1,9 @@
 # Changes in PHPUnit 4.7
 
+## PHPUnit 4.7.1
+
+* New PHAR release due to updated dependencies
+
 ## PHPUnit 4.7.0
 
 * Merged [#1718](https://github.com/sebastianbergmann/phpunit/issues/1718): Support for `--INI--` section in PHPT tests

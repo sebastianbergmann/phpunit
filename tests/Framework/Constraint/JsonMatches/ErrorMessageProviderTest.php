@@ -9,7 +9,6 @@
  */
 
 /**
- * @package    PHPUnit
  * @author     Bastian Feder <php@bastian-feder.de>
  * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
@@ -81,8 +80,8 @@ class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends PHPUnit_
     {
         return array(
             'expected' => array('Expected value JSON decode error - ', 'expected'),
-            'actual' => array('Actual value JSON decode error - ', 'actual'),
-            'default' => array('', ''),
+            'actual'   => array('Actual value JSON decode error - ', 'actual'),
+            'default'  => array('', ''),
         );
     }
 }
