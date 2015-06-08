@@ -335,12 +335,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ($codeCoverageReports > 0 && (!extension_loaded('tokenizer') || !$this->runtime->canCollectCodeCoverage())) {
             if (!extension_loaded('tokenizer')) {
-                $this->showExtensionNotLoadedMessage(
+                $this->showExtensionNotLoadedWarning(
                     'tokenizer',
                     'No code coverage will be generated.'
                 );
             } elseif (!extension_loaded('Xdebug')) {
-                $this->showExtensionNotLoadedMessage(
+                $this->showExtensionNotLoadedWarning(
                     'Xdebug',
                     'No code coverage will be generated.'
                 );
@@ -953,39 +953,21 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     /**
      * @param $extension
      * @param string $message
-     * @since Method available since Release 4.0.0
+     * @since Method available since Release 4.7.3
      */
-    private function showExtensionNotLoadedMessage($extension, $message = '')
+    private function showExtensionNotLoadedWarning($extension, $message = '')
     {
         if (isset($this->missingExtensions[$extension])) {
             return;
         }
 
-        if (!empty($message)) {
-            $message = ' ' . $message;
-        }
+        $this->write("Warning:\t" . 'The ' . $extension . ' extension is not loaded' . "\n");
 
-        $this->showMessage(
-            "\n" . 'The ' . $extension . ' extension is not loaded.' . $message
-        );
+        if (!empty($message)) {
+            $this->write("\t\t" . $message . "\n");
+        }
 
         $this->missingExtensions[$extension] = true;
-    }
-
-    /**
-     * Shows a message.
-     *
-     * @param string $message
-     * @param bool   $exit
-     * @since Method available since Release 4.0.0
-     */
-    private function showMessage($message, $exit = false)
-    {
-        $this->write($message . "\n");
-
-        if ($exit) {
-            exit(self::EXCEPTION_EXIT);
-        }
     }
 
     /**
