@@ -1,5 +1,9 @@
 # Changes in PHPUnit 4.7
 
+## PHPUnit 4.7.3
+
+* Fixed an [issue](https://github.com/sebastianbergmann/php-code-coverage/issues/347) where the warning that no whitelist is used is displayed when it should not
+
 ## PHPUnit 4.7.2
 
 * New PHAR release due to updated dependencies
