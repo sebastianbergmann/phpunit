@@ -126,28 +126,30 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($this->currentTestCase !== null) {
-            if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                $buffer = $test->toString() . "\n";
-            } else {
-                $buffer = '';
-            }
-
-            $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
-                       "\n" .
-                       PHPUnit_Util_Filter::getFilteredStacktrace($e);
-
-            $error = $this->document->createElement(
-                'error',
-                PHPUnit_Util_XML::prepareString($buffer)
-            );
-
-            $error->setAttribute('type', get_class($e));
-
-            $this->currentTestCase->appendChild($error);
-
-            $this->testSuiteErrors[$this->testSuiteLevel]++;
+        if ($this->currentTestCase === null) {
+            return;
         }
+
+        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+            $buffer = $test->toString() . "\n";
+        } else {
+            $buffer = '';
+        }
+
+        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
+                   "\n" .
+                   PHPUnit_Util_Filter::getFilteredStacktrace($e);
+
+        $error = $this->document->createElement(
+            'error',
+            PHPUnit_Util_XML::prepareString($buffer)
+        );
+
+        $error->setAttribute('type', get_class($e));
+
+        $this->currentTestCase->appendChild($error);
+
+        $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
 
     /**
@@ -159,28 +161,30 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        if ($this->currentTestCase !== null) {
-            if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-                $buffer = $test->toString() . "\n";
-            } else {
-                $buffer = '';
-            }
-
-            $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
-                       "\n" .
-                       PHPUnit_Util_Filter::getFilteredStacktrace($e);
-
-            $failure = $this->document->createElement(
-                'failure',
-                PHPUnit_Util_XML::prepareString($buffer)
-            );
-
-            $failure->setAttribute('type', get_class($e));
-
-            $this->currentTestCase->appendChild($failure);
-
-            $this->testSuiteFailures[$this->testSuiteLevel]++;
+        if ($this->currentTestCase === null) {
+            return;
         }
+
+        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+            $buffer = $test->toString() . "\n";
+        } else {
+            $buffer = '';
+        }
+
+        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
+                   "\n" .
+                   PHPUnit_Util_Filter::getFilteredStacktrace($e);
+
+        $failure = $this->document->createElement(
+            'failure',
+            PHPUnit_Util_XML::prepareString($buffer)
+        );
+
+        $failure->setAttribute('type', get_class($e));
+
+        $this->currentTestCase->appendChild($failure);
+
+        $this->testSuiteFailures[$this->testSuiteLevel]++;
     }
 
     /**
