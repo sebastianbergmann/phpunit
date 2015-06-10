@@ -2,6 +2,7 @@
 
 ## PHPUnit 4.7.3
 
+* Fixed [#1317](https://github.com/sebastianbergmann/phpunit/issues/1317): JUnit XML logfiles does not contain warnings
 * Fixed an [issue](https://github.com/sebastianbergmann/php-code-coverage/issues/347) where the warning that no whitelist is used is displayed when it should not
 
 ## PHPUnit 4.7.2
