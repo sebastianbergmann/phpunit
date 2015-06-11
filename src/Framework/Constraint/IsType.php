@@ -49,6 +49,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
       'null'     => true,
       'numeric'  => true,
       'object'   => true,
+      'real'     => true,
       'resource' => true,
       'string'   => true,
       'scalar'   => true,
@@ -100,6 +101,7 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 
             case 'double':
             case 'float':
+            case 'real':
                 return is_float($other);
 
             case 'string':
