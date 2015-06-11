@@ -91,52 +91,41 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     protected function matches($other)
     {
         switch ($this->type) {
-            case 'numeric': {
+            case 'numeric':
                 return is_numeric($other);
-                }
 
             case 'integer':
-            case 'int': {
+            case 'int':
                 return is_integer($other);
-                }
 
             case 'double':
-            case 'float': {
+            case 'float':
                 return is_float($other);
-                }
 
-            case 'string': {
+            case 'string':
                 return is_string($other);
-                }
 
             case 'boolean':
-            case 'bool': {
+            case 'bool':
                 return is_bool($other);
-                }
 
-            case 'null': {
+            case 'null':
                 return is_null($other);
-                }
 
-            case 'array': {
+            case 'array':
                 return is_array($other);
-                }
 
-            case 'object': {
+            case 'object':
                 return is_object($other);
-                }
 
-            case 'resource': {
+            case 'resource':
                 return is_resource($other) || is_string(@get_resource_type($other));
-                }
 
-            case 'scalar': {
+            case 'scalar':
                 return is_scalar($other);
-                }
 
-            case 'callable': {
+            case 'callable':
                 return is_callable($other);
-                }
         }
     }
 

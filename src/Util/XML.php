@@ -185,7 +185,7 @@ class PHPUnit_Util_XML
         $variable = null;
 
         switch ($element->tagName) {
-            case 'array': {
+            case 'array':
                 $variable = [];
 
                 foreach ($element->getElementsByTagName('element') as $element) {
@@ -197,10 +197,9 @@ class PHPUnit_Util_XML
                         $variable[] = $value;
                     }
                 }
-            }
-            break;
+                break;
 
-            case 'object': {
+            case 'object':
                 $className = $element->getAttribute('class');
 
                 if ($element->hasChildNodes()) {
@@ -218,22 +217,19 @@ class PHPUnit_Util_XML
                 } else {
                     $variable = new $className;
                 }
-            }
-            break;
+                break;
 
-            case 'boolean': {
+            case 'boolean':
                 $variable = $element->nodeValue == 'true' ? true : false;
-            }
-            break;
+                break;
 
             case 'integer':
             case 'double':
-            case 'string': {
+            case 'string':
                 $variable = $element->nodeValue;
 
                 settype($variable, $element->tagName);
-            }
-            break;
+                break;
         }
 
         return $variable;
