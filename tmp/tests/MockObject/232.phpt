@@ -1,5 +1,9 @@
 --TEST--
 PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', TRUE, TRUE)
+--SKIPIF--
+<?php
+if (version_compare(PHP_VERSION, '5.4.0', '<')) print 'skip: PHP >= 5.4.0 required';
+?>
 --FILE--
 <?php
 trait BaseTrait
