@@ -1,6 +1,11 @@
 # Contributing to PHPUnit
 
-Contributions to PHPUnit, its related modules, and its documentation are always welcome. You make our lives easier by sending us your contributions through GitHub pull requests.
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+* Fork the project.
+* Make your bug fix or feature addition.
+* Add tests for it. This is important so we don't break it in a future version unintentionally.
+* Send a pull request. Bonus points for topic branches.
 
 Pull requests for bug fixes must be based on the current stable branch whereas pull requests for new features must be based on `master`.
 
@@ -8,7 +13,7 @@ We are trying to keep backwards compatibility breaks in PHPUnit to an absolute m
 
 Due to time constraints, we are not always able to respond as quickly as we would like. Please do not take delays personal and feel free to remind us here or on IRC if you feel that we forgot to respond.
 
-## Using PHPUnit From a Git Checkout
+## Using PHPUnit from a Git checkout
 
 The following commands can be used to perform the initial checkout of PHPUnit:
 
@@ -21,3 +26,16 @@ Retrieve PHPUnit's dependencies using [Composer](http://getcomposer.org/):
     php composer.phar install
 
 The `phpunit` script can be used to invoke the PHPUnit test runner.
+
+## Reporting issues
+
+Please use the most specific issue tracker to search for existing tickets and to open new tickets:
+
+* [General problems](https://github.com/sebastianbergmann/phpunit/issues)
+* [Code Coverage](https://github.com/sebastianbergmann/php-code-coverage/issues)
+* [Stub and Mock Objects](https://github.com/sebastianbergmann/phpunit-mock-objects/issues)
+* [DbUnit](https://github.com/sebastianbergmann/dbunit/issues)
+* [PHPUnit_Selenium](https://github.com/sebastianbergmann/phpunit-selenium/issues)
+* [Documentation](https://github.com/sebastianbergmann/phpunit-documentation/issues)
+* [Website](https://github.com/sebastianbergmann/phpunit-website/issues)
+
