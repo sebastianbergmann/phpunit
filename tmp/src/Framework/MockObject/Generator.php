@@ -1048,18 +1048,18 @@ class PHPUnit_Framework_MockObject_Generator
                 }
             }
 
-            $default   = '';
-            $reference = '';
-            $typeHint  = '';
+            $default         = '';
+            $reference       = '';
+            $typeDeclaration = '';
 
             if (!$forCall) {
                 if ($this->hasType($parameter)) {
-                    $typeHint = (string) $parameter->getType() . ' ';
+                    $typeDeclaration = (string) $parameter->getType() . ' ';
                 } elseif ($parameter->isArray()) {
-                    $typeHint = 'array ';
+                    $typeDeclaration = 'array ';
                 } elseif ((defined('HHVM_VERSION') || version_compare(PHP_VERSION, '5.4.0', '>='))
                           && $parameter->isCallable()) {
-                    $typeHint = 'callable ';
+                    $typeDeclaration = 'callable ';
                 } else {
                     try {
                         $class = $parameter->getClass();
@@ -1077,7 +1077,7 @@ class PHPUnit_Framework_MockObject_Generator
                     }
 
                     if ($class !== null) {
-                        $typeHint = $class->getName() . ' ';
+                        $typeDeclaration = $class->getName() . ' ';
                     }
                 }
 
@@ -1095,7 +1095,7 @@ class PHPUnit_Framework_MockObject_Generator
                 $reference = '&';
             }
 
-            $parameters[] = $typeHint . $reference . $name . $default;
+            $parameters[] = $typeDeclaration . $reference . $name . $default;
         }
 
         return join(', ', $parameters);
