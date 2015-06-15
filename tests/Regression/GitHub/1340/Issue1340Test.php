@@ -38,7 +38,7 @@ class Issue1340Test extends PHPUnit_Framework_TestCase
      */
     public function testPhpNoticeIsCaught()
     {
-        $bar = $foo['foo'];
+        $foo['foo'];
     }
 
     /**
@@ -49,7 +49,7 @@ class Issue1340Test extends PHPUnit_Framework_TestCase
     public function testPhpNoticeWithStderrOutputIsAnError()
     {
         register_shutdown_function(__CLASS__ . '::onShutdown');
-        $bar = $foo['foo'];
+        $foo['foo'];
     }
 
     /**

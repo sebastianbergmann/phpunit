@@ -58,7 +58,7 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
     public function testRepeatedNegative()
     {
         try {
-            $test = new PHPUnit_Extensions_RepeatedTest($this->suite, -1);
+            new PHPUnit_Extensions_RepeatedTest($this->suite, -1);
         } catch (Exception $e) {
             return;
         }

@@ -79,7 +79,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionInSetUp()
     {
         $test   = new ExceptionInSetUpTest('testSomething');
-        $result = $test->run();
+        $test->run();
 
         $this->assertTrue($test->setUp);
         $this->assertFalse($test->assertPreConditions);
@@ -91,7 +91,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionInAssertPreConditions()
     {
         $test   = new ExceptionInAssertPreConditionsTest('testSomething');
-        $result = $test->run();
+        $test->run();
 
         $this->assertTrue($test->setUp);
         $this->assertTrue($test->assertPreConditions);
@@ -103,7 +103,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionInTest()
     {
         $test   = new ExceptionInTest('testSomething');
-        $result = $test->run();
+        $test->run();
 
         $this->assertTrue($test->setUp);
         $this->assertTrue($test->assertPreConditions);
@@ -115,7 +115,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionInAssertPostConditions()
     {
         $test   = new ExceptionInAssertPostConditionsTest('testSomething');
-        $result = $test->run();
+        $test->run();
 
         $this->assertTrue($test->setUp);
         $this->assertTrue($test->assertPreConditions);
@@ -127,7 +127,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionInTearDown()
     {
         $test   = new ExceptionInTearDownTest('testSomething');
-        $result = $test->run();
+        $test->run();
 
         $this->assertTrue($test->setUp);
         $this->assertTrue($test->assertPreConditions);
@@ -227,7 +227,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test = new ThrowExceptionTestCase('test');
         $test->setExpectedExceptionRegExp('RuntimeException', '#runtime .*? occurred/'); // wrong delimiter
 
-        $result = $test->run();
+        $test->run();
 
         $this->assertEquals(
             "Invalid expected exception message regex given: '#runtime .*? occurred/'",
@@ -447,7 +447,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testSkipsIfRequiresNonExistingExtension()
     {
         $test   = new RequirementsTest('testTen');
-        $result = $test->run();
+        $test->run();
 
         $this->assertEquals(
             'Extension testExt is required.',
@@ -458,7 +458,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testSkipsProvidesMessagesForAllSkippingReasons()
     {
         $test   = new RequirementsTest('testAllPossibleRequirements');
-        $result = $test->run();
+        $test->run();
 
         $this->assertEquals(
             'PHP 99-dev (or later) is required.' . PHP_EOL .

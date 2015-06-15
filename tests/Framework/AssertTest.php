@@ -172,7 +172,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
-    public function testassertArraySubset()
+    public function testAssertArraySubset()
     {
         $array = array(
             'a' => 'item a',
@@ -202,7 +202,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
-    public function testassertArraySubsetWithDeepNestedArrays()
+    public function testAssertArraySubsetWithDeepNestedArrays()
     {
         $array = array(
             'path' => array(
@@ -232,7 +232,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
-    public function testassertArraySubsetWithNoStrictCheckAndObjects()
+    public function testAssertArraySubsetWithNoStrictCheckAndObjects()
     {
         $obj       = new \stdClass;
         $reference = &$obj;
@@ -246,7 +246,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
-    public function testassertArraySubsetWithStrictCheckAndObjects()
+    public function testAssertArraySubsetWithStrictCheckAndObjects()
     {
         $obj       = new \stdClass;
         $reference = &$obj;
@@ -270,7 +270,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @expectedExceptionMessage array or ArrayAccess
      * @dataProvider assertArraySubsetInvalidArgumentProvider
      */
-    public function testassertArraySubsetRaisesExceptionForInvalidArguments($partial, $subject)
+    public function testAssertArraySubsetRaisesExceptionForInvalidArguments($partial, $subject)
     {
         $this->assertArraySubset($partial, $subject);
     }
