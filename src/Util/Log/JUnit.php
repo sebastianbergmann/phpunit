@@ -126,29 +126,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($this->currentTestCase === null) {
-            return;
-        }
-
-        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-            $buffer = $test->toString() . "\n";
-        } else {
-            $buffer = '';
-        }
-
-        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
-                   "\n" .
-                   PHPUnit_Util_Filter::getFilteredStacktrace($e);
-
-        $error = $this->document->createElement(
-            'error',
-            PHPUnit_Util_XML::prepareString($buffer)
-        );
-
-        $error->setAttribute('type', get_class($e));
-
-        $this->currentTestCase->appendChild($error);
-
+        $this->doAddFault($test, $e, $time, 'error');
         $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
 
@@ -161,29 +139,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        if ($this->currentTestCase === null) {
-            return;
-        }
-
-        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-            $buffer = $test->toString() . "\n";
-        } else {
-            $buffer = '';
-        }
-
-        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
-                   "\n" .
-                   PHPUnit_Util_Filter::getFilteredStacktrace($e);
-
-        $failure = $this->document->createElement(
-            'failure',
-            PHPUnit_Util_XML::prepareString($buffer)
-        );
-
-        $failure->setAttribute('type', get_class($e));
-
-        $this->currentTestCase->appendChild($failure);
-
+        $this->doAddFault($test, $e, $time, 'failure');
         $this->testSuiteFailures[$this->testSuiteLevel]++;
     }
 
@@ -448,5 +404,38 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
         if (is_bool($flag)) {
             $this->writeDocument = $flag;
         }
+    }
+
+    /**
+     * Method which generalizes addError() and addFailure()
+     * 
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
+     * @param string                 $type
+     */
+    private function doAddFault(PHPUnit_Framework_Test $test, Exception $e, $time, $type)
+    {
+        if ($this->currentTestCase === null) {
+            return;
+        }
+		
+        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+            $buffer = $test->toString() . "\n";
+        } else {
+            $buffer = '';
+        }
+	
+        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
+                   "\n" .
+                   PHPUnit_Util_Filter::getFilteredStacktrace($e);
+        
+        $fault = $this->document->createElement(
+            $type,
+            PHPUnit_Util_XML::prepareString($buffer)
+        );
+        
+        $fault->setAttribute('type', get_class($e));		
+        $this->currentTestCase->appendChild($fault);
     }
 }
