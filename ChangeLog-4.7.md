@@ -1,5 +1,7 @@
 # Changes in PHPUnit 4.7
 
+* Fixed [#1749](https://github.com/sebastianbergmann/phpunit/issues/1749): `stopOnError` configuration setting does not work
+
 ## PHPUnit 4.7.3
 
 * Fixed [#1317](https://github.com/sebastianbergmann/phpunit/issues/1317): JUnit XML logfiles does not contain warnings
