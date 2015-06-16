@@ -3987,6 +3987,40 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertAttributeNotInternalType('string', 'a', $o);
     }
 
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormatFile
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument()
+    {
+        $this->assertStringMatchesFormatFile('not_existing_file', '');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormatFile
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument2()
+    {
+        $this->assertStringMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormatFile
+     */
+    public function testAssertStringMatchesFormatFile()
+    {
+        $this->assertStringMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "FOO\n");
+
+        try {
+            $this->assertStringMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "BAR\n");
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     public static function validInvalidJsonDataprovider()
     {
         return array(
