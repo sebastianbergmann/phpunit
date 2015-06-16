@@ -408,7 +408,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
 
     /**
      * Method which generalizes addError() and addFailure()
-     * 
+     *
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
@@ -419,23 +419,23 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
         if ($this->currentTestCase === null) {
             return;
         }
-		
+
         if ($test instanceof PHPUnit_Framework_SelfDescribing) {
             $buffer = $test->toString() . "\n";
         } else {
             $buffer = '';
         }
-	
+
         $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
                    "\n" .
                    PHPUnit_Util_Filter::getFilteredStacktrace($e);
-        
+
         $fault = $this->document->createElement(
             $type,
             PHPUnit_Util_XML::prepareString($buffer)
         );
-        
-        $fault->setAttribute('type', get_class($e));		
+
+        $fault->setAttribute('type', get_class($e));
         $this->currentTestCase->appendChild($fault);
     }
 }
