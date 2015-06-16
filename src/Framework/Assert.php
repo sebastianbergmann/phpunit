@@ -1915,6 +1915,7 @@ abstract class PHPUnit_Framework_Assert
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      * @deprecated
+     * @codeCoverageIgnore
      */
     public static function assertSelectCount($selector, $count, $actual, $message = '', $isHtml = true)
     {
@@ -1944,6 +1945,7 @@ abstract class PHPUnit_Framework_Assert
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      * @deprecated
+     * @codeCoverageIgnore
      */
     public static function assertSelectRegExp($selector, $pattern, $count, $actual, $message = '', $isHtml = true)
     {
@@ -1973,6 +1975,7 @@ abstract class PHPUnit_Framework_Assert
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      * @deprecated
+     * @codeCoverageIgnore
      */
     public static function assertSelectEquals($selector, $content, $count, $actual, $message = '', $isHtml = true)
     {
@@ -2161,6 +2164,7 @@ abstract class PHPUnit_Framework_Assert
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      * @deprecated
+     * @codeCoverageIgnore
      */
     public static function assertTag($matcher, $actual, $message = '', $isHtml = true)
     {
@@ -2187,6 +2191,7 @@ abstract class PHPUnit_Framework_Assert
      * @author Mike Naberezny <mike@maintainable.com>
      * @author Derek DeVries <derek@maintainable.com>
      * @deprecated
+     * @codeCoverageIgnore
      */
     public static function assertNotTag($matcher, $actual, $message = '', $isHtml = true)
     {
