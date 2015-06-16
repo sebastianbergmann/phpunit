@@ -3683,6 +3683,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertJson
+     */
+    public function testAssertJson()
+    {
+        $this->assertJson('{}');
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString
      */
     public function testAssertJsonStringEqualsJsonString()
