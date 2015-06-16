@@ -2846,6 +2846,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::isJson
+     */
+    public function testAssertThatIsJson()
+    {
+        $this->assertThat('{}', $this->isJson());
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
      * @covers PHPUnit_Framework_Assert::anything
      * @covers PHPUnit_Framework_Assert::logicalAnd
      */
