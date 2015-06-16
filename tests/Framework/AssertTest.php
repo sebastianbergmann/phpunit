@@ -2828,6 +2828,33 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::isTrue
+     */
+    public function testAssertThatIsTrue()
+    {
+        $this->assertThat(true, $this->isTrue());
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::isFalse
+     */
+    public function testAssertThatIsFalse()
+    {
+        $this->assertThat(false, $this->isFalse());
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::isJson
+     */
+    public function testAssertThatIsJson()
+    {
+        $this->assertThat('{}', $this->isJson());
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
      * @covers PHPUnit_Framework_Assert::anything
      * @covers PHPUnit_Framework_Assert::logicalAnd
      */
@@ -3683,6 +3710,14 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertJson
+     */
+    public function testAssertJson()
+    {
+        $this->assertJson('{}');
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString
      */
     public function testAssertJsonStringEqualsJsonString()
@@ -3985,6 +4020,74 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $o->a = 1;
 
         $this->assertAttributeNotInternalType('string', 'a', $o);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormatFile
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument()
+    {
+        $this->assertStringMatchesFormatFile('not_existing_file', '');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormatFile
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument2()
+    {
+        $this->assertStringMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormatFile
+     */
+    public function testAssertStringMatchesFormatFile()
+    {
+        $this->assertStringMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "FOO\n");
+
+        try {
+            $this->assertStringMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "BAR\n");
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormatFile
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument()
+    {
+        $this->assertStringNotMatchesFormatFile('not_existing_file', '');
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormatFile
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument2()
+    {
+        $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormatFile
+     */
+    public function testAssertStringNotMatchesFormatFile()
+    {
+        $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "BAR\n");
+
+        try {
+            $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "FOO\n");
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
     }
 
     public static function validInvalidJsonDataprovider()
