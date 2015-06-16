@@ -2828,6 +2828,15 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::isTrue
+     */
+    public function testAssertThatIsTrue()
+    {
+        $this->assertThat(true, $this->isTrue());
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
      * @covers PHPUnit_Framework_Assert::anything
      * @covers PHPUnit_Framework_Assert::logicalAnd
      */
