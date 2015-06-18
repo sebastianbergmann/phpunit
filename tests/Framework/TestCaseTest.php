@@ -68,7 +68,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
     public function testError()
     {
-        $test   = new Error;
+        $test   = new TestError;
         $result = $test->run();
 
         $this->assertEquals(1, $result->errorCount());

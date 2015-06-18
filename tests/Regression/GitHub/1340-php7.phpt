@@ -34,7 +34,7 @@ PHPUnit_Framework_Exception: testLargeStderrOutputDoesNotBlockInIsolation: stder
 PHPUnit_Framework_Exception: shutdown: stderr:%d
 %A
 3) Issue1340Test::testFatalErrorDoesNotPass
-PHPUnit_Framework_Exception: Fatal error: Uncaught EngineException: Call to undefined function undefined_function() in %s:%d
+PHPUnit_Framework_Exception: Fatal error: Uncaught Error: Call to undefined function undefined_function() in %s:%d
 %A
 shutdown: stderr:%d
 %A
