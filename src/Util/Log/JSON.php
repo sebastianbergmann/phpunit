@@ -8,10 +8,6 @@
  * file that was distributed with this source code.
  */
 
-if (!defined('JSON_PRETTY_PRINT')) {
-    define('JSON_PRETTY_PRINT', 128);
-}
-
 /**
  * A TestListener that generates JSON messages.
  *
@@ -240,6 +236,12 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             }
         });
 
-        parent::write(json_encode($buffer, JSON_PRETTY_PRINT));
+        $flags = 0;
+
+        if (defined('JSON_PRETTY_PRINT')) {
+            $flags |= JSON_PRETTY_PRINT;
+        }
+
+        parent::write(json_encode($buffer, $flags));
     }
 }
