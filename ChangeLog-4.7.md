@@ -1,6 +1,8 @@
 # Changes in PHPUnit 4.7
 
 * Fixed [#1749](https://github.com/sebastianbergmann/phpunit/issues/1749): `stopOnError` configuration setting does not work
+* The `PHPUnit_Framework_Constraint_IsType` constraint now knows about the `real` type (which is an alias for `float`)
+* Various work on compatibility with PHP 7
 
 ## PHPUnit 4.7.3
 
