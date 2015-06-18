@@ -236,12 +236,6 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             }
         });
 
-        $flags = 0;
-
-        if (defined('JSON_PRETTY_PRINT')) {
-            $flags |= JSON_PRETTY_PRINT;
-        }
-
-        parent::write(json_encode($buffer, $flags));
+        parent::write(json_encode($buffer, JSON_PRETTY_PRINT));
     }
 }
