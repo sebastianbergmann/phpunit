@@ -49,6 +49,7 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
         $this->line      = $e->getLine();
 
         $this->serializableTrace = $e->getTrace();
+
         foreach ($this->serializableTrace as $i => $call) {
             unset($this->serializableTrace[$i]['args']);
         }
