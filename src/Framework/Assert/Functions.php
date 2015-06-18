@@ -944,6 +944,48 @@ function assertLessThanOrEqual($expected, $actual, $message = '')
 }
 
 /**
+ * Asserts that a variable is finite.
+ *
+ * @param  mixed  $actual
+ * @param  string $message
+ */
+function assertFinite($actual, $message = '')
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::assertFinite',
+        func_get_args()
+    );
+}
+
+/**
+ * Asserts that a variable is infinite.
+ *
+ * @param  mixed  $actual
+ * @param  string $message
+ */
+function assertInfinite($actual, $message = '')
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::assertInfinite',
+        func_get_args()
+    );
+}
+
+/**
+ * Asserts that a variable is nan.
+ *
+ * @param  mixed  $actual
+ * @param  string $message
+ */
+function assertNan($actual, $message = '')
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::assertNan',
+        func_get_args()
+    );
+}
+
+/**
  * Asserts that a haystack does not contain a needle.
  *
  * @param  mixed   $needle
