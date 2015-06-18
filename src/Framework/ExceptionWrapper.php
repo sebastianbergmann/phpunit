@@ -35,7 +35,10 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
      */
     protected $previous;
 
-    public function __construct(Exception $e)
+    /**
+     * @param Throwable|Exception $e
+     */
+    public function __construct($e)
     {
         // PDOException::getCode() is a string.
         // @see http://php.net/manual/en/class.pdoexception.php#95812
