@@ -968,6 +968,42 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a variable is finite.
+     *
+     * @param mixed  $actual
+     * @param string $message
+     */
+    public static function assertFinite($actual, $message = '')
+    {
+        self::assertThat($actual, self::isFinite(), $message);
+
+    }
+
+    /**
+     * Asserts that a variable is infinite.
+     *
+     * @param mixed  $actual
+     * @param string $message
+     */
+    public static function assertInfinite($actual, $message = '')
+    {
+        self::assertThat($actual, self::isInfinite(), $message);
+
+    }
+
+    /**
+     * Asserts that a variable is nan.
+     *
+     * @param mixed  $actual
+     * @param string $message
+     */
+    public static function assertNan($actual, $message = '')
+    {
+        self::assertThat($actual, self::isNan(), $message);
+
+    }
+
+    /**
      * Asserts that a class has a specified attribute.
      *
      * @param string $attributeName
@@ -2186,6 +2222,39 @@ abstract class PHPUnit_Framework_Assert
     public static function isNull()
     {
         return new PHPUnit_Framework_Constraint_IsNull;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_IsFinite matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_IsFinite
+     * @since  Method available since Release 4.8.0
+     */
+    public static function isFinite()
+    {
+        return new PHPUnit_Framework_Constraint_IsFinite;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_IsInfinite matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_IsInfinite
+     * @since  Method available since Release 4.8.0
+     */
+    public static function isInfinite()
+    {
+        return new PHPUnit_Framework_Constraint_IsInfinite;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_IsNan matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_IsNan
+     * @since  Method available since Release 4.8.0
+     */
+    public static function isNan()
+    {
+        return new PHPUnit_Framework_Constraint_IsNan;
     }
 
     /**
