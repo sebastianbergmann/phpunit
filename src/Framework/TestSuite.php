@@ -476,50 +476,54 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         $className,
                         $name
                     );
-                } catch (Exception $e) {
-                    if (!($e instanceof PHPUnit_Framework_SkippedTestError || $e instanceof PHPUnit_Framework_IncompleteTestError)) {
-                        $message = sprintf(
-                            'The data provider specified for %s::%s is invalid.',
-                            $className,
-                            $name
-                        );
+                } catch (PHPUnit_Framework_IncompleteTestError $e) {
+                    $message = sprintf(
+                        'Test for %s::%s marked incomplete by data provider',
+                        $className,
+                        $name
+                    );
 
-                        $_message = $e->getMessage();
+                    $_message = $e->getMessage();
 
-                        if (!empty($_message)) {
-                            $message .= "\n" . $_message;
-                        }
-
-                        $data = self::warning($message);
-                    } elseif ($e instanceof PHPUnit_Framework_SkippedTestError) {
-                        $message = sprintf(
-                            'Test for %s::%s skipped by data provider',
-                            $className,
-                            $name
-                        );
-
-                        $_message = $e->getMessage();
-
-                        if (!empty($_message)) {
-                            $message .= "\n" . $_message;
-                        }
-
-                        $data = self::skipTest($className, $name, $message);
-                    } elseif ($e instanceof PHPUnit_Framework_IncompleteTestError) {
-                        $message = sprintf(
-                            'Test for %s::%s marked incomplete by data provider',
-                            $className,
-                            $name
-                        );
-
-                        $_message = $e->getMessage();
-
-                        if (!empty($_message)) {
-                            $message .= "\n" . $_message;
-                        }
-
-                        $data = self::incompleteTest($className, $name, $message);
+                    if (!empty($_message)) {
+                        $message .= "\n" . $_message;
                     }
+
+                    $data = self::incompleteTest($className, $name, $message);
+                } catch (PHPUnit_Framework_SkippedTestError $e) {
+                    $message = sprintf(
+                        'Test for %s::%s skipped by data provider',
+                        $className,
+                        $name
+                    );
+
+                    $_message = $e->getMessage();
+
+                    if (!empty($_message)) {
+                        $message .= "\n" . $_message;
+                    }
+
+                    $data = self::skipTest($className, $name, $message);
+                } catch (Throwable $_t) {
+                    $t = $_t;
+                } catch (Exception $_t) {
+                    $t = $_t;
+                }
+
+                if (isset($t)) {
+                    $message = sprintf(
+                        'The data provider specified for %s::%s is invalid.',
+                        $className,
+                        $name
+                    );
+
+                    $_message = $t->getMessage();
+
+                    if (!empty($_message)) {
+                        $message .= "\n" . $_message;
+                    }
+
+                    $data = self::warning($message);
                 }
 
                 // Test method with @dataProvider.
@@ -699,12 +703,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $result->endTestSuite($this);
 
             return $result;
-        } catch (Exception $e) {
+        } catch (Throwable $_t) {
+            $t = $_t;
+        } catch (Exception $_t) {
+            $t = $_t;
+        }
+
+        if (isset($t)) {
             $numTests = count($this);
 
             for ($i = 0; $i < $numTests; $i++) {
                 $result->startTest($this);
-                $result->addError($this, $e, 0);
+                $result->addError($this, $t, 0);
                 $result->endTest($this, 0);
             }
 

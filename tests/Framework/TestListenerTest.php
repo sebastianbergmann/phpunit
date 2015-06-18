@@ -85,7 +85,7 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
 
     public function testError()
     {
-        $test = new Error;
+        $test = new TestError;
         $test->run($this->result);
 
         $this->assertEquals(1, $this->errorCount);

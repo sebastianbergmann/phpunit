@@ -35,7 +35,10 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
      */
     protected $previous;
 
-    public function __construct(Exception $e)
+    /**
+     * @param Throwable|Exception $e
+     */
+    public function __construct($e)
     {
         // PDOException::getCode() is a string.
         // @see http://php.net/manual/en/class.pdoexception.php#95812
@@ -46,6 +49,7 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
         $this->line      = $e->getLine();
 
         $this->serializableTrace = $e->getTrace();
+
         foreach ($this->serializableTrace as $i => $call) {
             unset($this->serializableTrace[$i]['args']);
         }
