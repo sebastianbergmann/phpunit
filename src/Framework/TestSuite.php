@@ -507,14 +507,20 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     }
 
                     $data = self::skipTest($className, $name, $message);
-                } catch (Exception $e) {
+                } catch (Throwable $_t) {
+                    $t = $_t;
+                } catch (Exception $_t) {
+                    $t = $_t;
+                }
+
+                if (isset($t)) {
                     $message = sprintf(
                         'The data provider specified for %s::%s is invalid.',
                         $className,
                         $name
                     );
 
-                    $_message = $e->getMessage();
+                    $_message = $t->getMessage();
 
                     if (!empty($_message)) {
                         $message .= "\n" . $_message;
@@ -700,12 +706,18 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             $result->endTestSuite($this);
 
             return $result;
-        } catch (Exception $e) {
+        } catch (Throwable $_t) {
+            $t = $_t;
+        } catch (Exception $_t) {
+            $t = $_t;
+        }
+
+        if (isset($t)) {
             $numTests = count($this);
 
             for ($i = 0; $i < $numTests; $i++) {
                 $result->startTest($this);
-                $result->addError($this, $e, 0);
+                $result->addError($this, $t, 0);
                 $result->endTest($this, 0);
             }
 
