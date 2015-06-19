@@ -1,5 +1,7 @@
 # Changes in PHPUnit 4.7
 
+* Fixed [#1704](https://github.com/sebastianbergmann/phpunit/issues/1704): Output printed during test missing when using TAP
+
 ## PHPUnit 4.7.4
 
 * Fixed [#1749](https://github.com/sebastianbergmann/phpunit/issues/1749): `stopOnError` configuration setting does not work
