@@ -614,7 +614,6 @@ function assertEmpty($actual, $message = '')
  * @param DOMElement $actualElement
  * @param bool $checkAttributes
  * @param string  $message
- * @author Mattis Stordalen Flister <mattis@xait.no>
  * @since  Method available since Release 3.3.0
  */
 function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = '')
@@ -1150,8 +1149,6 @@ function assertNotSameSize($expected, $actual, $message = '')
  * @param  string  $message
  * @param  bool $isHtml
  * @since  Method available since Release 3.3.0
- * @author Mike Naberezny <mike@maintainable.com>
- * @author Derek DeVries <derek@maintainable.com>
  */
 function assertNotTag($matcher, $actual, $message = '', $isHtml = true)
 {
@@ -1276,8 +1273,6 @@ function assertSameSize($expected, $actual, $message = '')
  * @param  string  $message
  * @param  bool $isHtml
  * @since  Method available since Release 3.3.0
- * @author Mike Naberezny <mike@maintainable.com>
- * @author Derek DeVries <derek@maintainable.com>
  */
 function assertSelectCount($selector, $count, $actual, $message = '', $isHtml = true)
 {
@@ -1298,8 +1293,6 @@ function assertSelectCount($selector, $count, $actual, $message = '', $isHtml = 
  * @param  string  $message
  * @param  bool $isHtml
  * @since  Method available since Release 3.3.0
- * @author Mike Naberezny <mike@maintainable.com>
- * @author Derek DeVries <derek@maintainable.com>
  */
 function assertSelectEquals($selector, $content, $count, $actual, $message = '', $isHtml = true)
 {
@@ -1320,8 +1313,6 @@ function assertSelectEquals($selector, $content, $count, $actual, $message = '',
  * @param  string  $message
  * @param  bool $isHtml
  * @since  Method available since Release 3.3.0
- * @author Mike Naberezny <mike@maintainable.com>
- * @author Derek DeVries <derek@maintainable.com>
  */
 function assertSelectRegExp($selector, $pattern, $count, $actual, $message = '', $isHtml = true)
 {
@@ -1631,8 +1622,6 @@ function assertStringStartsWith($prefix, $string, $message = '')
  * @param  string  $message
  * @param  bool $isHtml
  * @since  Method available since Release 3.3.0
- * @author Mike Naberezny <mike@maintainable.com>
- * @author Derek DeVries <derek@maintainable.com>
  */
 function assertTag($matcher, $actual, $message = '', $isHtml = true)
 {
