@@ -976,7 +976,6 @@ abstract class PHPUnit_Framework_Assert
     public static function assertFinite($actual, $message = '')
     {
         self::assertThat($actual, self::isFinite(), $message);
-
     }
 
     /**
@@ -988,7 +987,6 @@ abstract class PHPUnit_Framework_Assert
     public static function assertInfinite($actual, $message = '')
     {
         self::assertThat($actual, self::isInfinite(), $message);
-
     }
 
     /**
@@ -1000,7 +998,6 @@ abstract class PHPUnit_Framework_Assert
     public static function assertNan($actual, $message = '')
     {
         self::assertThat($actual, self::isNan(), $message);
-
     }
 
     /**
