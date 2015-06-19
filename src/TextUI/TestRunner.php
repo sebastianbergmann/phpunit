@@ -737,6 +737,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             $groupCliArgs = array();
+
             if (!empty($arguments['groups'])) {
                 $groupCliArgs = $arguments['groups'];
             }
