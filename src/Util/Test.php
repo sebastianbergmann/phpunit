@@ -632,11 +632,17 @@ class PHPUnit_Util_Test
             $groups = array_merge($groups, $annotations['method']['ticket']);
         }
 
-        foreach (array('small', 'medium', 'large') as $size) {
-            if (isset($annotations['method'][$size])) {
-                $groups[] = $size;
-            } elseif (isset($annotations['class'][$size])) {
-                $groups[] = $size;
+        foreach (array('method', 'class') as $element) {
+            foreach (array('small', 'medium', 'large') as $size) {
+                if (isset($annotations[$element][$size])) {
+                    $groups[] = $size;
+                    break 2;
+                }
+
+                if (isset($annotations[$element][$size])) {
+                    $groups[] = $size;
+                    break 2;
+                }
             }
         }
 
