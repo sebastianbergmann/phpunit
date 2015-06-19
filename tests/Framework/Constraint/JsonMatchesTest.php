@@ -9,10 +9,6 @@
  */
 
 /**
- * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
- * @link       http://www.phpunit.de/
  * @since      File available since Release 3.7.0
  */
 class Framework_Constraint_JsonMatchesTest extends PHPUnit_Framework_TestCase

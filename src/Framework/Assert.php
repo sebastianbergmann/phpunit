@@ -11,10 +11,6 @@
 /**
  * A set of assert methods.
  *
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
 abstract class PHPUnit_Framework_Assert
@@ -1821,7 +1817,6 @@ abstract class PHPUnit_Framework_Assert
      * @param DOMElement $actualElement
      * @param bool       $checkAttributes
      * @param string     $message
-     * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.3.0
      */
     public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = '')
@@ -1912,8 +1907,6 @@ abstract class PHPUnit_Framework_Assert
      * @param string         $message
      * @param bool           $isHtml
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
      * @deprecated
      * @codeCoverageIgnore
      */
@@ -1942,8 +1935,6 @@ abstract class PHPUnit_Framework_Assert
      * @param string         $message
      * @param bool           $isHtml
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
      * @deprecated
      * @codeCoverageIgnore
      */
@@ -1972,8 +1963,6 @@ abstract class PHPUnit_Framework_Assert
      * @param string         $message
      * @param bool           $isHtml
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
      * @deprecated
      * @codeCoverageIgnore
      */
@@ -2161,8 +2150,6 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @param bool   $isHtml
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
      * @deprecated
      * @codeCoverageIgnore
      */
@@ -2188,8 +2175,6 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @param bool   $isHtml
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
      * @deprecated
      * @codeCoverageIgnore
      */
