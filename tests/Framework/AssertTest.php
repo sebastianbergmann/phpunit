@@ -1402,6 +1402,54 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertFinite
+     */
+    public function testAssertFinite()
+    {
+        $this->assertFinite(1);
+
+        try {
+            $this->assertFinite(INF);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertInfinite
+     */
+    public function testAssertInfinite()
+    {
+        $this->assertInfinite(INF);
+
+        try {
+            $this->assertInfinite(1);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNan
+     */
+    public function testAssertNan()
+    {
+        $this->assertNan(NAN);
+
+        try {
+            $this->assertNan(1);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertNull
      */
     public function testAssertNull()
