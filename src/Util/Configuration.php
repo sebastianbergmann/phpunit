@@ -371,11 +371,17 @@ class PHPUnit_Util_Configuration
 
             if ($type == 'coverage-html') {
                 if ($log->hasAttribute('lowUpperBound')) {
-                    $result['lowUpperBound'] = (string) $log->getAttribute('lowUpperBound');
+                    $result['lowUpperBound'] = $this->getInteger(
+                        (string) $log->getAttribute('lowUpperBound'),
+                        50
+                    );
                 }
 
                 if ($log->hasAttribute('highLowerBound')) {
-                    $result['highLowerBound'] = (string) $log->getAttribute('highLowerBound');
+                    $result['highLowerBound'] = $this->getInteger(
+                        (string) $log->getAttribute('highLowerBound'),
+                        90
+                    );
                 }
             } elseif ($type == 'junit') {
                 if ($log->hasAttribute('logIncompleteSkipped')) {
