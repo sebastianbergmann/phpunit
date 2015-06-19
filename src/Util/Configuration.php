@@ -104,13 +104,13 @@
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report" lowUpperBound="50" highLowerBound="90"/>
  *     <log type="coverage-clover" target="/tmp/clover.xml"/>
+ *     <log type="coverage-crap4j" target="/tmp/crap.xml" threshold="30"/>
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
  *     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
- *     <log type="coverage-crap4j" target="/tmp/crap.xml"/>
  *   </logging>
  *
  *   <php>
@@ -376,6 +376,13 @@ class PHPUnit_Util_Configuration
 
                 if ($log->hasAttribute('highLowerBound')) {
                     $result['highLowerBound'] = (string) $log->getAttribute('highLowerBound');
+                }
+            } elseif ($type == 'coverage-crap4j') {
+                if ($log->hasAttribute('threshold')) {
+                    $result['crap4jThreshold'] = $this->getInteger(
+                        (string) $log->getAttribute('threshold'),
+                        30
+                    );
                 }
             } elseif ($type == 'junit') {
                 if ($log->hasAttribute('logIncompleteSkipped')) {
