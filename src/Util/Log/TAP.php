@@ -208,6 +208,8 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
                 )
             );
         }
+
+        $this->writeDiagnostics($test);
     }
 
     /**
@@ -228,5 +230,28 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
         );
 
         $this->testSuccessful = false;
+    }
+
+    /**
+     * @param PHPUnit_Framework_Test $test
+     */
+    private function writeDiagnostics(PHPUnit_Framework_Test $test)
+    {
+        if (!$test instanceof PHPUnit_Framework_TestCase) {
+            return;
+        }
+
+        if (!$test->hasOutput()) {
+            return;
+        }
+
+        foreach (explode("\n", trim($test->getActualOutput())) as $line) {
+            $this->write(
+                sprintf(
+                    "# %s\n",
+                    $line
+                )
+            );
+        }
     }
 }
