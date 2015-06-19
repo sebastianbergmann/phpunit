@@ -11,10 +11,6 @@
 /**
  * Constraint that accepts finite.
  *
- * @author     Stefan Hüsges <tronsha@gmail.com>
- * @copyright  Stefan Hüsges <tronsha@gmail.com>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Class available since Release 4.8.0
  */
 class PHPUnit_Framework_Constraint_IsFinite extends PHPUnit_Framework_Constraint

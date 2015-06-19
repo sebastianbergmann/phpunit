@@ -614,7 +614,6 @@ function assertEmpty($actual, $message = '')
  * @param DOMElement $actualElement
  * @param bool $checkAttributes
  * @param string  $message
- * @author Mattis Stordalen Flister <mattis@xait.no>
  * @since  Method available since Release 3.3.0
  */
 function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = '')

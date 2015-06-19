@@ -13,10 +13,6 @@
  *
  * The XML markup used is the same as the one that is used by the JUnit Ant task.
  *
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.1.0
  */
 class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
