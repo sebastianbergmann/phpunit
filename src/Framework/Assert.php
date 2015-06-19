@@ -2225,7 +2225,7 @@ abstract class PHPUnit_Framework_Assert
      * Returns a PHPUnit_Framework_Constraint_IsFinite matcher object.
      *
      * @return PHPUnit_Framework_Constraint_IsFinite
-     * @since  Method available since Release 4.8.0
+     * @since  Method available since Release 5.0.0
      */
     public static function isFinite()
     {
@@ -2236,7 +2236,7 @@ abstract class PHPUnit_Framework_Assert
      * Returns a PHPUnit_Framework_Constraint_IsInfinite matcher object.
      *
      * @return PHPUnit_Framework_Constraint_IsInfinite
-     * @since  Method available since Release 4.8.0
+     * @since  Method available since Release 5.0.0
      */
     public static function isInfinite()
     {
@@ -2247,7 +2247,7 @@ abstract class PHPUnit_Framework_Assert
      * Returns a PHPUnit_Framework_Constraint_IsNan matcher object.
      *
      * @return PHPUnit_Framework_Constraint_IsNan
-     * @since  Method available since Release 4.8.0
+     * @since  Method available since Release 5.0.0
      */
     public static function isNan()
     {
