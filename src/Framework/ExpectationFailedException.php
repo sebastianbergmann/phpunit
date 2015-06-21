@@ -15,7 +15,7 @@
  * SebastianBergmann\Comparator\ComparisonFailure which is used to
  * generate diff output of the failed expectations.
  *
- * @since      Class available since Release 3.0.0
+ * @since Class available since Release 3.0.0
  */
 class PHPUnit_Framework_ExpectationFailedException extends PHPUnit_Framework_AssertionFailedError
 {

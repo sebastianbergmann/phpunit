@@ -11,7 +11,7 @@
 /**
  * Utility class that can print to STDOUT or write to a file.
  *
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_Util_Printer
 {

@@ -11,7 +11,7 @@
 /**
  * Utility methods for PHP sub-processes.
  *
- * @since      Class available since Release 3.4.0
+ * @since Class available since Release 3.4.0
  */
 abstract class PHPUnit_Util_PHP
 {

@@ -36,7 +36,7 @@
  * This constructor creates a suite with all the methods starting with
  * "test" that take no arguments.
  *
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing, IteratorAggregate
 {

@@ -11,7 +11,7 @@
 /**
  * Prints TestDox documentation in text format.
  *
- * @since      Class available since Release 2.1.0
+ * @since Class available since Release 2.1.0
  */
 class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_ResultPrinter
 {

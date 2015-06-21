@@ -11,7 +11,7 @@
 /**
  * A TestResult collects the results of executing a test case.
  *
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_Framework_TestResult implements Countable
 {
@@ -616,7 +616,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $e     = new PHPUnit_Framework_ExceptionWrapper($e);
             $error = true;
         } catch (Exception $e) {
-            $e = new PHPUnit_Framework_ExceptionWrapper($e);
+            $e     = new PHPUnit_Framework_ExceptionWrapper($e);
             $error = true;
         }
 

@@ -15,7 +15,7 @@
  * test decorators. Test decorator subclasses can be introduced
  * to add behaviour before or after a test is run.
  *
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {

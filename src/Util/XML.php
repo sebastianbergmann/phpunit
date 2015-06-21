@@ -11,7 +11,7 @@
 /**
  * XML helpers.
  *
- * @since      Class available since Release 3.2.0
+ * @since Class available since Release 3.2.0
  */
 class PHPUnit_Util_XML
 {

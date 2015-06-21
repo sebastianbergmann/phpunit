@@ -11,7 +11,7 @@
 /**
  * Constraint that checks whether a variable is empty().
  *
- * @since      Class available since Release 3.5.0
+ * @since Class available since Release 3.5.0
  */
 class PHPUnit_Framework_Constraint_IsEmpty extends PHPUnit_Framework_Constraint
 {

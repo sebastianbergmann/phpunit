@@ -11,7 +11,7 @@
 /**
  * A TestFailure collects a failed test together with the caught exception.
  *
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_Framework_TestFailure
 {

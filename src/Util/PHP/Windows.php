@@ -13,7 +13,7 @@ use SebastianBergmann\Environment\Runtime;
 /**
  * Windows utility for PHP sub-processes.
  *
- * @since      Class available since Release 3.5.12
+ * @since Class available since Release 3.5.12
  */
 class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
 {

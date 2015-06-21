@@ -9,7 +9,7 @@
  */
 
 /**
- * @since      Class available since Release 3.6.0
+ * @since Class available since Release 3.6.0
  */
 class PHPUnit_Framework_Constraint_SameSize extends PHPUnit_Framework_Constraint_Count
 {

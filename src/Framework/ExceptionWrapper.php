@@ -17,7 +17,7 @@
  * Unlike PHPUnit_Framework_Exception, the complete stack of previous Exceptions
  * is processed.
  *
- * @since      Class available since Release 4.3.0
+ * @since Class available since Release 4.3.0
  */
 class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
 {

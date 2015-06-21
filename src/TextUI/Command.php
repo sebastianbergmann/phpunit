@@ -12,7 +12,7 @@
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
  *
- * @since      Class available since Release 3.0.0
+ * @since Class available since Release 3.0.0
  */
 class PHPUnit_TextUI_Command
 {
