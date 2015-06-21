@@ -105,15 +105,13 @@
         <copy todir="${basedir}/build/phar/php-file-iterator">
             <fileset dir="${basedir}/vendor/phpunit/php-file-iterator/src">
                 <include name="**/*.php" />
-                <exclude name="**/Autoload.*" />
             </fileset>
         </copy>
 
         <copy file="${basedir}/vendor/phpunit/php-text-template/LICENSE" tofile="${basedir}/build/phar/php-text-template/LICENSE"/>
         <copy todir="${basedir}/build/phar/php-text-template">
-            <fileset dir="${basedir}/vendor/phpunit/php-text-template/Text">
+            <fileset dir="${basedir}/vendor/phpunit/php-text-template/src">
                 <include name="**/*.php" />
-                <exclude name="**/Autoload.*" />
             </fileset>
         </copy>
 
