@@ -16,21 +16,6 @@
 class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 {
     /**
-     * @var mixed
-     */
-    protected $filter = false;
-
-    /**
-     * @var array
-     */
-    protected $groups = array();
-
-    /**
-     * @var array
-     */
-    protected $excludeGroups = array();
-
-    /**
      * @var bool
      */
     protected $processIsolation = false;
