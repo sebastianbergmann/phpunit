@@ -11,7 +11,7 @@
 /**
  * Utility class for code filtering.
  *
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_Util_Filter
 {

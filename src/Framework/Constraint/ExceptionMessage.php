@@ -9,7 +9,7 @@
  */
 
 /**
- * @since      Class available since Release 3.6.6
+ * @since Class available since Release 3.6.6
  */
 class PHPUnit_Framework_Constraint_ExceptionMessage extends PHPUnit_Framework_Constraint
 {

@@ -13,7 +13,7 @@
  *
  * The file path to check is passed as $other in evaluate().
  *
- * @since      Class available since Release 3.0.0
+ * @since Class available since Release 3.0.0
  */
 class PHPUnit_Framework_Constraint_FileExists extends PHPUnit_Framework_Constraint
 {

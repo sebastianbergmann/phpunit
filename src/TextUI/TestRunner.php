@@ -14,7 +14,7 @@ use SebastianBergmann\Environment\Runtime;
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
  *
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 {

@@ -11,7 +11,7 @@
 /**
  * Base class for test listeners that interact with an issue tracker.
  *
- * @since      Class available since Release 3.4.0
+ * @since Class available since Release 3.4.0
  */
 abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_TestListener
 {

@@ -11,7 +11,7 @@
 /**
  * This class defines the current version of PHPUnit.
  *
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_Runner_Version
 {

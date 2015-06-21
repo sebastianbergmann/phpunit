@@ -9,7 +9,7 @@
  */
 
 /**
- * @since      Class available since Release 3.1.0
+ * @since Class available since Release 3.1.0
  */
 class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constraint_Composite
 {

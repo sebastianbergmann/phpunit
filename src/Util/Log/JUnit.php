@@ -13,7 +13,7 @@
  *
  * The XML markup used is the same as the one that is used by the JUnit Ant task.
  *
- * @since      Class available since Release 2.1.0
+ * @since Class available since Release 2.1.0
  */
 class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {

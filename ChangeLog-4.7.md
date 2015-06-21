@@ -1,5 +1,8 @@
 # Changes in PHPUnit 4.7
 
+## PHPUnit 4.7.5
+
+* Fixed [#490](https://github.com/sebastianbergmann/phpunit/issues/490): Ensure that a test can only be one of `@small`, `@medium`, or `@large`.
 * Fixed [#1704](https://github.com/sebastianbergmann/phpunit/issues/1704): Output printed during test missing when using TAP
 
 ## PHPUnit 4.7.4

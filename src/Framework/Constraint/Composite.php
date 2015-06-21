@@ -9,7 +9,7 @@
  */
 
 /**
- * @since      Class available since Release 3.1.0
+ * @since Class available since Release 3.1.0
  */
 abstract class PHPUnit_Framework_Constraint_Composite extends PHPUnit_Framework_Constraint
 {

@@ -9,7 +9,7 @@
  */
 
 /**
- * @since      Class available since Release 4.0.0
+ * @since Class available since Release 4.0.0
  */
 class PHPUnit_Runner_Filter_Group_Include extends PHPUnit_Runner_Filter_GroupFilterIterator
 {

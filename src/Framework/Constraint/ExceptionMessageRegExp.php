@@ -9,7 +9,7 @@
  */
 
 /**
- * @since      Class available since Release 4.3.0
+ * @since Class available since Release 4.3.0
  */
 class PHPUnit_Framework_Constraint_ExceptionMessageRegExp extends PHPUnit_Framework_Constraint
 {

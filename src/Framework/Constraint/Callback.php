@@ -10,7 +10,6 @@
 
 /**
  * Constraint that evaluates against a specified closure.
- *
  */
 class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
 {
