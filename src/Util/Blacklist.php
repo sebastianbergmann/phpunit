@@ -11,7 +11,7 @@
 /**
  * Utility class for blacklisting PHPUnit's own source code files.
  *
- * @since      Class available since Release 4.0.0
+ * @since Class available since Release 4.0.0
  */
 class PHPUnit_Util_Blacklist
 {

@@ -12,7 +12,7 @@
  * Factory for PHPUnit_Framework_Exception objects that are used to describe
  * invalid arguments passed to a function or method.
  *
- * @since      Class available since Release 3.4.0
+ * @since Class available since Release 3.4.0
  */
 class PHPUnit_Util_InvalidArgumentHelper
 {

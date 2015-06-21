@@ -11,7 +11,7 @@
 /**
  * Runner for PHPT test cases.
  *
- * @since      Class available since Release 3.1.4
+ * @since Class available since Release 3.1.4
  */
 class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {

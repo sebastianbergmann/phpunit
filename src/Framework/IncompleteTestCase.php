@@ -11,7 +11,7 @@
 /**
  * An incomplete test case
  *
- * @since      Class available since Release 4.3.0
+ * @since Class available since Release 4.3.0
  */
 class PHPUnit_Framework_IncompleteTestCase extends PHPUnit_Framework_TestCase
 {

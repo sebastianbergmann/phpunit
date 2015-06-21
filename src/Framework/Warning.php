@@ -11,7 +11,7 @@
 /**
  * A warning.
  *
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
 {

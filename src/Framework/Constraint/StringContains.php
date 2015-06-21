@@ -17,7 +17,7 @@
  *
  * The sub-string is passed in the constructor.
  *
- * @since      Class available since Release 3.0.0
+ * @since Class available since Release 3.0.0
  */
 class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Constraint
 {
