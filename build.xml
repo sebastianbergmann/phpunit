@@ -215,9 +215,8 @@
         </copy>
 
         <copy todir="${basedir}/build/phar/php-invoker">
-            <fileset dir="${basedir}/vendor/phpunit/php-invoker/PHP">
+            <fileset dir="${basedir}/vendor/phpunit/php-invoker/src">
                 <include name="**/*.php" />
-                <exclude name="**/Autoload.*" />
             </fileset>
         </copy>
 
