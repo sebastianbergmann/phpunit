@@ -17,30 +17,22 @@
  *
  * It takes a list of match groups and and increases a call index after each invocation.
  * So the first invocation uses the first group of constraints, the second the next and so on.
- *
- * @package    PHPUnit_MockObject
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @version    Release: @package_version@
- * @link       http://github.com/sebastianbergmann/phpunit-mock-objects
  */
 class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {
-
-  /**
-   * @var array
-   */
+    /**
+     * @var array
+     */
     private $_parameterGroups = array();
 
-  /**
-   * @var array
-   */
+    /**
+     * @var array
+     */
     private $_invocations = array();
 
-  /**
-   * @param array $parameterGroups
-   */
+    /**
+     * @param array $parameterGroups
+     */
     public function __construct(array $parameterGroups)
     {
         foreach ($parameterGroups as $index => $parameters) {
@@ -63,15 +55,16 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
         return $text;
     }
 
-  /**
-   * @param PHPUnit_Framework_MockObject_Invocation $invocation
-   * @return bool
-   */
+    /**
+     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @return bool
+     */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $this->_invocations[] = $invocation;
-        $callIndex = count($this->_invocations) - 1;
+        $callIndex            = count($this->_invocations) - 1;
         $this->verifyInvocation($invocation, $callIndex);
+
         return false;
     }
 
@@ -82,13 +75,13 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
         }
     }
 
-  /**
-   * Verify a single invocation
-   *
-   * @param PHPUnit_Framework_MockObject_Invocation $invocation
-   * @param int $callIndex
-   * @throws PHPUnit_Framework_ExpectationFailedException
-   */
+    /**
+     * Verify a single invocation
+     *
+     * @param  PHPUnit_Framework_MockObject_Invocation      $invocation
+     * @param  int                                          $callIndex
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
     private function verifyInvocation(PHPUnit_Framework_MockObject_Invocation $invocation, $callIndex)
     {
 

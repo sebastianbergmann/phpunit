@@ -11,12 +11,6 @@
 /**
  * Implementation of the Builder pattern for Mock objects.
  *
- * @package    PHPUnit_MockObject
- * @author     Giorgio Sironi <piccoloprincipeazzurro@gmail.com>
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://github.com/sebastianbergmann/phpunit-mock-objects
  * @since      File available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_MockBuilder
@@ -47,27 +41,27 @@ class PHPUnit_Framework_MockObject_MockBuilder
     private $constructorArgs = array();
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $originalConstructor = true;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $originalClone = true;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $autoload = true;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $cloneArguments = false;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $callOriginalMethods = false;
 

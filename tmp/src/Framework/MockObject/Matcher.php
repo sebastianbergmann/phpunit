@@ -17,13 +17,7 @@
  *
  * All properties are public so that they can easily be accessed by the builder.
  *
- * @package    PHPUnit_MockObject
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @version    Release: @package_version@
- * @link       http://github.com/sebastianbergmann/phpunit-mock-objects
- * @since      Class available since Release 1.0.0
+ * @since Class available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
@@ -38,7 +32,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
     public $afterMatchBuilderId = null;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $afterMatchBuilderIsInvoked = false;
 
@@ -92,7 +86,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
             $list[] = 'will ' . $this->stub->toString();
         }
 
-        return join(' ', $list);
+        return implode(' ', $list);
     }
 
     /**
@@ -155,12 +149,12 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
             return $this->stub->invoke($invocation);
         }
 
-        return null;
+        return;
     }
 
     /**
      * @param  PHPUnit_Framework_MockObject_Invocation $invocation
-     * @return boolean
+     * @return bool
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
@@ -245,7 +239,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
                 $this->parametersMatcher = new PHPUnit_Framework_MockObject_Matcher_AnyParameters;
             }
 
-            $invocationIsAny = get_class($this->invocationMatcher) === 'PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount';
+            $invocationIsAny   = get_class($this->invocationMatcher) === 'PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount';
             $invocationIsNever = get_class($this->invocationMatcher) === 'PHPUnit_Framework_MockObject_Matcher_InvokedCount' && $this->invocationMatcher->isNever();
             if (!$invocationIsAny && !$invocationIsNever) {
                 $this->parametersMatcher->verify();
