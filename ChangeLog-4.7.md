@@ -1,5 +1,7 @@
 # Changes in PHPUnit 4.7
 
+* Fixed [#1692](https://github.com/sebastianbergmann/phpunit/issues/1692): Clean up `PHPUnit_Extensions_RepeatedTest` after refactoring
+
 ## PHPUnit 4.7.5
 
 * Fixed [#490](https://github.com/sebastianbergmann/phpunit/issues/490): Ensure that a test can only be one of `@small`, `@medium`, or `@large`.
