@@ -106,6 +106,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     private $numberOfColumns;
 
     /**
+     * @var bool
+     */
+    private $reverse = false;
+
+    /**
      * Constructor.
      *
      * @param  mixed                       $out
@@ -113,10 +118,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  string                      $colors
      * @param  bool                        $debug
      * @param  int|string                  $numberOfColumns
+     * @param  bool                        $reverse
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.0.0
      */
-    public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80)
+    public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80, $reverse = false)
     {
         parent::__construct($out);
 
@@ -141,6 +147,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'integer or "max"');
         }
 
+        if (!is_bool($reverse)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(6, 'boolean');
+        }
+
         $console            = new Console;
         $maxNumberOfColumns = $console->getNumberOfColumns();
 
@@ -151,6 +161,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->numberOfColumns = $numberOfColumns;
         $this->verbose         = $verbose;
         $this->debug           = $debug;
+        $this->reverse         = $reverse;
 
         if ($colors === self::COLOR_AUTO && $console->hasColorSupport()) {
             $this->colors = true;
@@ -228,6 +239,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         );
 
         $i = 1;
+
+        if ($this->reverse) {
+            $defects = array_reverse($defects);
+        }
 
         foreach ($defects as $defect) {
             $this->printDefect($defect, $i++);

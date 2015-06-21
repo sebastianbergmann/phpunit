@@ -229,7 +229,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['verbose'],
                     $arguments['colors'],
                     $arguments['debug'],
-                    $arguments['columns']
+                    $arguments['columns'],
+                    $arguments['reverseList']
                 );
             }
         }
@@ -726,6 +727,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['verbose'] = $phpunitConfiguration['verbose'];
             }
 
+            if (isset($phpunitConfiguration['reverseDefectList']) &&
+                !isset($arguments['reverseList'])) {
+                $arguments['reverseList'] = $phpunitConfiguration['reverseDefectList'];
+            }
+
             if (isset($phpunitConfiguration['forceCoversAnnotation']) &&
                 !isset($arguments['forceCoversAnnotation'])) {
                 $arguments['forceCoversAnnotation'] = $phpunitConfiguration['forceCoversAnnotation'];
@@ -970,6 +976,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['disallowTestOutput']                 = isset($arguments['disallowTestOutput'])                 ? $arguments['disallowTestOutput']                 : false;
         $arguments['enforceTimeLimit']                   = isset($arguments['enforceTimeLimit'])                   ? $arguments['enforceTimeLimit']                   : false;
         $arguments['disallowTodoAnnotatedTests']         = isset($arguments['disallowTodoAnnotatedTests'])         ? $arguments['disallowTodoAnnotatedTests']         : false;
+        $arguments['reverseList']                        = isset($arguments['reverseList'])                        ? $arguments['reverseList']                        : false;
         $arguments['verbose']                            = isset($arguments['verbose'])                            ? $arguments['verbose']                            : false;
     }
 

@@ -44,7 +44,8 @@
  *          beStrictAboutTodoAnnotatedTests="false"
  *          checkForUnintentionallyCoveredCode="false"
  *          disallowChangesToGlobalState="false"
- *          verbose="false">
+ *          verbose="false"
+ *          reverseDefectList="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
  *       <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
@@ -772,6 +773,13 @@ class PHPUnit_Util_Configuration
             $result['enforceTimeLimit']            = $flag;
             $result['disallowTodoAnnotatedTests']  = $flag;
             $result['deprecatedStrictModeSetting'] = true;
+        }
+
+        if ($root->hasAttribute('reverseDefectList')) {
+            $result['reverseDefectList'] = $this->getBoolean(
+                (string) $root->getAttribute('reverseDefectList'),
+                false
+            );
         }
 
         if ($root->hasAttribute('verbose')) {

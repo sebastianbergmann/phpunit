@@ -65,6 +65,7 @@ class PHPUnit_TextUI_Command
         'process-isolation'    => null,
         'repeat='              => null,
         'report-useless-tests' => null,
+        'reverse-list'         => null,
         'static-backup'        => null,
         'stderr'               => null,
         'stop-on-error'        => null,
@@ -475,6 +476,10 @@ class PHPUnit_TextUI_Command
                     $this->arguments['deprecatedStrictModeOption'] = true;
                     break;
 
+                case '--reverse-list':
+                    $this->arguments['reverseList'] = true;
+                    break;
+
                 case '--check-version':
                     $this->handleVersionCheck();
                     break;
@@ -874,6 +879,7 @@ Logging Options:
   --log-json <file>         Log test execution in JSON format.
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
+  --reverse-list            Print defects in reverse order
 
 Test Selection Options:
 
