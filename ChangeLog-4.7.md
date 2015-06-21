@@ -1,5 +1,6 @@
 # Changes in PHPUnit 4.7
 
+* Fixed [#1681](https://github.com/sebastianbergmann/phpunit/issues/1681): Code Coverage filter configuration is not passed to child processes
 * Fixed [#1692](https://github.com/sebastianbergmann/phpunit/issues/1692): Clean up `PHPUnit_Extensions_RepeatedTest` after refactoring
 
 ## PHPUnit 4.7.5

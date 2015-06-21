@@ -651,37 +651,46 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $phar = '\'\'';
             }
 
-            $data            = var_export(serialize($this->data), true);
-            $dataName        = var_export($this->dataName, true);
-            $dependencyInput = var_export(serialize($this->dependencyInput), true);
-            $includePath     = var_export(get_include_path(), true);
+            if ($result->getCodeCoverage()) {
+                $codeCoverageFilter = $result->getCodeCoverage()->filter();
+            } else {
+                $codeCoverageFilter = null;
+            }
+
+            $data               = var_export(serialize($this->data), true);
+            $dataName           = var_export($this->dataName, true);
+            $dependencyInput    = var_export(serialize($this->dependencyInput), true);
+            $includePath        = var_export(get_include_path(), true);
+            $codeCoverageFilter = var_export(serialize($codeCoverageFilter), true);
             // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
             // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
-            $data            = "'." . $data . ".'";
-            $dataName        = "'.(" . $dataName . ").'";
-            $dependencyInput = "'." . $dependencyInput . ".'";
-            $includePath     = "'." . $includePath . ".'";
+            $data               = "'." . $data . ".'";
+            $dataName           = "'.(" . $dataName . ").'";
+            $dependencyInput    = "'." . $dependencyInput . ".'";
+            $includePath        = "'." . $includePath . ".'";
+            $codeCoverageFilter = "'." . $codeCoverageFilter . ".'";
 
             $template->setVar(
                 [
-                'composerAutoload'                        => $composerAutoload,
-                'phar'                                    => $phar,
-                'filename'                                => $class->getFileName(),
-                'className'                               => $class->getName(),
-                'methodName'                              => $this->name,
-                'collectCodeCoverageInformation'          => $coverage,
-                'data'                                    => $data,
-                'dataName'                                => $dataName,
-                'dependencyInput'                         => $dependencyInput,
-                'constants'                               => $constants,
-                'globals'                                 => $globals,
-                'include_path'                            => $includePath,
-                'included_files'                          => $includedFiles,
-                'iniSettings'                             => $iniSettings,
-                'isStrictAboutTestsThatDoNotTestAnything' => $isStrictAboutTestsThatDoNotTestAnything,
-                'isStrictAboutOutputDuringTests'          => $isStrictAboutOutputDuringTests,
-                'isStrictAboutTestSize'                   => $isStrictAboutTestSize,
-                'isStrictAboutTodoAnnotatedTests'         => $isStrictAboutTodoAnnotatedTests
+                    'composerAutoload'                        => $composerAutoload,
+                    'phar'                                    => $phar,
+                    'filename'                                => $class->getFileName(),
+                    'className'                               => $class->getName(),
+                    'methodName'                              => $this->name,
+                    'collectCodeCoverageInformation'          => $coverage,
+                    'data'                                    => $data,
+                    'dataName'                                => $dataName,
+                    'dependencyInput'                         => $dependencyInput,
+                    'constants'                               => $constants,
+                    'globals'                                 => $globals,
+                    'include_path'                            => $includePath,
+                    'included_files'                          => $includedFiles,
+                    'iniSettings'                             => $iniSettings,
+                    'isStrictAboutTestsThatDoNotTestAnything' => $isStrictAboutTestsThatDoNotTestAnything,
+                    'isStrictAboutOutputDuringTests'          => $isStrictAboutOutputDuringTests,
+                    'isStrictAboutTestSize'                   => $isStrictAboutTestSize,
+                    'isStrictAboutTodoAnnotatedTests'         => $isStrictAboutTodoAnnotatedTests,
+                    'codeCoverageFilter'                      => $codeCoverageFilter
                 ]
             );
 
