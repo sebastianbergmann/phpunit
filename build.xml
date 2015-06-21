@@ -106,7 +106,6 @@
         <copy todir="${basedir}/build/phar/php-file-iterator">
             <fileset dir="${basedir}/vendor/phpunit/php-file-iterator/src">
                 <include name="**/*.php" />
-                <exclude name="**/Autoload.*" />
             </fileset>
         </copy>
 
