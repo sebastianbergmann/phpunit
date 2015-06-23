@@ -764,10 +764,6 @@ class PHPUnit_Util_Test
                 $class = new ReflectionClass($className);
 
                 foreach ($class->getMethods() as $method) {
-                    if ($method->getDeclaringClass()->getName() != $className) {
-                        continue;
-                    }
-
                     if (self::isBeforeClassMethod($method)) {
                         self::$hookMethods[$className]['beforeClass'][] = $method->getName();
                     }
