@@ -351,7 +351,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
             if ($codeCoverageReports > 0 && !$this->codeCoverageFilter->hasWhitelist()) {
-                $this->printer->write("Warning:\tNo whitelist configured for code coverage\n");
+                $this->printer->write("\nWarning:\tNo whitelist configured for code coverage\n");
             }
 
             $this->printer->write("\n");
