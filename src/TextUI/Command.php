@@ -38,6 +38,7 @@ class PHPUnit_TextUI_Command
         'colors=='             => null,
         'columns='             => null,
         'configuration='       => null,
+        'loaderConfigs='       => null,
         'coverage-clover='     => null,
         'coverage-crap4j='     => null,
         'coverage-html='       => null,
@@ -261,6 +262,10 @@ class PHPUnit_TextUI_Command
                 case 'c':
                 case '--configuration':
                     $this->arguments['configuration'] = $option[1];
+                    break;
+
+                case '--loaderConfig':
+                    $this->arguments['configurationClass'] = $option[1];
                     break;
 
                 case '--coverage-clover':
@@ -566,8 +571,10 @@ class PHPUnit_TextUI_Command
 
         if (isset($this->arguments['configuration'])) {
             try {
+                $configurationClass = isset($this->arguments['configurationClass']) ? $this->arguments['configurationClass'] : NULL;
                 $configuration = PHPUnit_Util_Configuration::getInstance(
-                    $this->arguments['configuration']
+                    $this->arguments['configuration'],
+                    $configurationClass
                 );
             } catch (Throwable $e) {
                 print $e->getMessage() . "\n";
