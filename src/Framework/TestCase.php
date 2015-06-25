@@ -1858,13 +1858,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function onNotSuccessfulTest($e)
     {
-        $expected = (PHP_MAJOR_VERSION >= 7 ? 'Throwable' : 'Exception');
+        $expected = PHP_MAJOR_VERSION >= 7 ? 'Throwable' : 'Exception';
+
         if ($e instanceof $expected) {
             throw $e;
         }
-        throw new InvalidArgumentException(sprintf(
-            'Argument 1 passed to %s must be an instance of %s, %s given',
-            __METHOD__, $expected, (is_object($e) ? get_class($e) : gettype($e))));
+
+        throw PHPUnit_Util_InvalidArgumentHelper::factory(
+            1,
+            'Throwable or Exception'
+        );
     }
 
     /**
