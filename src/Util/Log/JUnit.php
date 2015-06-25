@@ -311,6 +311,9 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
+        $this->attachCurrentTestCase = true;
+        $this->currentTestCase       = null;
+
         $testCase = $this->document->createElement('testcase');
         $testCase->setAttribute('name', $test->getName());
 
@@ -369,9 +372,6 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
                 $this->currentTestCase->appendChild($systemOut);
             }
         }
-
-        $this->attachCurrentTestCase = true;
-        $this->currentTestCase       = null;
     }
 
     /**
