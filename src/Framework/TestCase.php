@@ -1852,13 +1852,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * This method is called when a test method did not execute successfully.
      *
-     * @param Exception $e
+     * @param Exception|Throwable $e
      * @since Method available since Release 3.4.0
-     * @throws Exception
+     * @throws Exception|Throwable
      */
-    protected function onNotSuccessfulTest(Exception $e)
+    protected function onNotSuccessfulTest($e)
     {
-        throw $e;
+        $expected = PHP_MAJOR_VERSION >= 7 ? 'Throwable' : 'Exception';
+
+        if ($e instanceof $expected) {
+            throw $e;
+        }
+
+        throw PHPUnit_Util_InvalidArgumentHelper::factory(
+            1,
+            'Throwable or Exception'
+        );
     }
 
     /**
