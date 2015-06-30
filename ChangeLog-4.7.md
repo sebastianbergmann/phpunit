@@ -1,5 +1,7 @@
 # Changes in PHPUnit 4.7
 
+## PHPUnit 4.7.6
+
 * Fixed [#1681](https://github.com/sebastianbergmann/phpunit/issues/1681): Code Coverage filter configuration is not passed to child processes
 * Fixed [#1692](https://github.com/sebastianbergmann/phpunit/issues/1692): Clean up `PHPUnit_Extensions_RepeatedTest` after refactoring
 * Fixed [#1763](https://github.com/sebastianbergmann/phpunit/issues/1763): `@before` and `@after` annotations do not work when inherited
