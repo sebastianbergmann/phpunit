@@ -41,7 +41,8 @@ class PHPUnit_Util_Blacklist
         'Composer\Autoload\ClassLoader'              => 1,
         'Doctrine\Instantiator\Instantiator'         => 1,
         'phpDocumentor\Reflection\DocBlock'          => 1,
-        'Prophecy\Prophet'                           => 1
+        'Prophecy\Prophet'                           => 1,
+        'DeepCopy\DeepCopy'                          => 1
     ];
 
     /**

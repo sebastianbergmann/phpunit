@@ -226,6 +226,13 @@
                 <include name="**/*.php" />
             </fileset>
         </copy>
+
+        <copy file="${basedir}/vendor/myclabs/deep-copy/LICENSE" tofile="${basedir}/build/phar/myclabs-deep-copy/LICENSE"/>
+        <copy todir="${basedir}/build/phar/myclabs-deep-copy">
+            <fileset dir="${basedir}/vendor/myclabs/deep-copy/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
     </target>
 
     <target name="phar-build">

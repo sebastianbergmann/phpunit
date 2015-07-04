@@ -15,6 +15,7 @@ use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Exporter\Exporter;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophet;
+use DeepCopy\DeepCopy;
 
 /**
  * A TestCase defines the fixture to run multiple tests.
@@ -1747,6 +1748,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $passedKeys = array_flip(array_unique($passedKeys));
 
             foreach ($this->dependencies as $dependency) {
+                $clone = false;
+
+                if (strpos($dependency, 'clone ') === 0) {
+                    $clone      = true;
+                    $dependency = substr($dependency, strlen('clone '));
+                } elseif (strpos($dependency, '!clone ') === 0) {
+                    $clone      = false;
+                    $dependency = substr($dependency, strlen('!clone '));
+                }
+
                 if (strpos($dependency, '::') === false) {
                     $dependency = $className . '::' . $dependency;
                 }
@@ -1781,7 +1792,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                         return false;
                     }
 
-                    $this->dependencyInput[$dependency] = $passed[$dependency]['result'];
+                    if ($clone) {
+                        $deepCopy   = new DeepCopy;
+                        $deepCopy->skipUncloneable(false);
+
+                        $this->dependencyInput[$dependency] = $deepCopy->copy($passed[$dependency]['result']);
+                    } else {
+                        $this->dependencyInput[$dependency] = $passed[$dependency]['result'];
+                    }
                 } else {
                     $this->dependencyInput[$dependency] = null;
                 }
