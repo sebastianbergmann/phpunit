@@ -14,9 +14,16 @@ class DependencyFailureTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @depends testTwo
+     * @depends !clone testTwo
      */
     public function testThree()
+    {
+    }
+
+    /**
+     * @depends clone testOne
+     */
+    public function testFour()
     {
     }
 }
