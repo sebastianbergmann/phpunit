@@ -22,7 +22,8 @@
     "require": {
         "php": ">=5.3.3",
         "phpunit/php-text-template": "~1.2",
-        "doctrine/instantiator": "~1.0,>=1.0.2"
+        "doctrine/instantiator": "~1.0,>=1.0.2",
+        "sebastian/exporter": "~1.2"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.4"
