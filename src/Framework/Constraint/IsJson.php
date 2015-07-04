@@ -24,6 +24,10 @@ class PHPUnit_Framework_Constraint_IsJson extends PHPUnit_Framework_Constraint
      */
     protected function matches($other)
     {
+        if ($other === '') {
+            return false;
+        }
+
         json_decode($other);
         if (json_last_error()) {
             return false;
@@ -43,6 +47,10 @@ class PHPUnit_Framework_Constraint_IsJson extends PHPUnit_Framework_Constraint
      */
     protected function failureDescription($other)
     {
+        if ($other === '') {
+            return 'an empty string is valid JSON';
+        }
+
         json_decode($other);
         $error = PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
             json_last_error()
