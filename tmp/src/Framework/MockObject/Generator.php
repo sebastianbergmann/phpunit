@@ -113,11 +113,6 @@ class PHPUnit_Framework_MockObject_Generator
     );
 
     /**
-     * @var bool
-     */
-    protected $soapLoaded = null;
-
-    /**
      * Returns a mock object for the specified class.
      *
      * @param  array|string                                  $type
@@ -537,93 +532,82 @@ class PHPUnit_Framework_MockObject_Generator
      */
     public function generateClassFromWsdl($wsdlFile, $className, array $methods = array(), array $options = array())
     {
-        if ($this->soapLoaded === null) {
-            $this->soapLoaded = extension_loaded('soap');
+        if (!extension_loaded('soap')) {
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
+                'The SOAP extension is required to generate a mock object from WSDL.'
+            );
         }
 
-        if ($this->soapLoaded) {
-            $options  = array_merge($options, array('cache_wsdl' => WSDL_CACHE_NONE));
-            $client   = new SoapClient($wsdlFile, $options);
-            $_methods = array_unique($client->__getFunctions());
-            unset($client);
+        $options  = array_merge($options, array('cache_wsdl' => WSDL_CACHE_NONE));
+        $client   = new SoapClient($wsdlFile, $options);
+        $_methods = array_unique($client->__getFunctions());
+        unset($client);
 
-            sort($_methods);
+        sort($_methods);
 
-            $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR .
-                              'Generator' . DIRECTORY_SEPARATOR;
-            $methodTemplate = new Text_Template(
-                $templateDir . 'wsdl_method.tpl'
-            );
-            $methodsBuffer  = '';
+        $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
+        $methodTemplate = new Text_Template($templateDir . 'wsdl_method.tpl');
+        $methodsBuffer  = '';
 
-            foreach ($_methods as $method) {
-                $nameStart = strpos($method, ' ') + 1;
-                $nameEnd   = strpos($method, '(');
-                $name      = substr($method, $nameStart, $nameEnd - $nameStart);
+        foreach ($_methods as $method) {
+            $nameStart = strpos($method, ' ') + 1;
+            $nameEnd   = strpos($method, '(');
+            $name      = substr($method, $nameStart, $nameEnd - $nameStart);
 
-                if (empty($methods) || in_array($name, $methods)) {
-                    $args    = explode(
-                        ',',
-                        substr(
-                            $method,
-                            $nameEnd + 1,
-                            strpos($method, ')') - $nameEnd - 1
-                        )
-                    );
-                    $numArgs = count($args);
+            if (empty($methods) || in_array($name, $methods)) {
+                $args    = explode(
+                    ',',
+                    substr(
+                        $method,
+                        $nameEnd + 1,
+                        strpos($method, ')') - $nameEnd - 1
+                    )
+                );
+                $numArgs = count($args);
 
-                    for ($i = 0; $i < $numArgs; $i++) {
-                        $args[$i] = substr($args[$i], strpos($args[$i], '$'));
-                    }
+                for ($i = 0; $i < $numArgs; $i++) {
+                    $args[$i] = substr($args[$i], strpos($args[$i], '$'));
+                }
 
-                    $methodTemplate->setVar(
-                        array(
+                $methodTemplate->setVar(
+                    array(
                         'method_name' => $name,
                         'arguments'   => implode(', ', $args)
-                        )
-                    );
+                    )
+                );
 
-                    $methodsBuffer .= $methodTemplate->render();
-                }
+                $methodsBuffer .= $methodTemplate->render();
             }
+        }
 
-            $optionsBuffer = 'array(';
+        $optionsBuffer = 'array(';
 
-            foreach ($options as $key => $value) {
-                $optionsBuffer .= $key . ' => ' . $value;
-            }
+        foreach ($options as $key => $value) {
+            $optionsBuffer .= $key . ' => ' . $value;
+        }
 
-            $optionsBuffer .= ')';
+        $optionsBuffer .= ')';
 
-            $classTemplate = new Text_Template(
-                $templateDir . 'wsdl_class.tpl'
-            );
+        $classTemplate = new Text_Template($templateDir . 'wsdl_class.tpl');
+        $namespace     = '';
 
-            $namespace = '';
+        if (strpos($className, '\\') !== false) {
+            $parts     = explode('\\', $className);
+            $className = array_pop($parts);
+            $namespace = 'namespace ' . implode('\\', $parts) . ';' . "\n\n";
+        }
 
-            if (strpos($className, '\\') !== false) {
-                $parts     = explode('\\', $className);
-                $className = array_pop($parts);
-                $namespace = 'namespace ' . implode('\\', $parts) . ';' . "\n\n";
-            }
-
-            $classTemplate->setVar(
-                array(
+        $classTemplate->setVar(
+            array(
                 'namespace'  => $namespace,
                 'class_name' => $className,
                 'wsdl'       => $wsdlFile,
                 'options'    => $optionsBuffer,
                 'methods'    => $methodsBuffer
-                )
-            );
+            )
+        );
 
-            return $classTemplate->render();
-        } else {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
-                'The SOAP extension is required to generate a mock object ' .
-                'from WSDL.'
-            );
-        }
+        return $classTemplate->render();
     }
 
     /**
