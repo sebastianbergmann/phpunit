@@ -505,4 +505,14 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($expectedCwd, getcwd());
     }
+
+    /**
+     * @requires PHP 7
+     * @expectedException TypeError
+     */
+    public function testTypeErrorCanBeExpected()
+    {
+        $o = new ClassWithScalarTypeDeclarations;
+        $o->foo(null, null);
+    }
 }
