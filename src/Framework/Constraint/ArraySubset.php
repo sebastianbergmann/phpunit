@@ -43,7 +43,7 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  array|ArrayAccess $other Array or ArrayAcess object to evaluate.
+     * @param  array|ArrayAccess $other Array or ArrayAccess object to evaluate.
      * @return bool
      */
     protected function matches($other)
