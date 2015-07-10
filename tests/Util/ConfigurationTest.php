@@ -32,6 +32,17 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Util_Configuration::getInstance
+     */
+    public function testShouldLoadCustomConfigurator()
+    {
+        $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.yaml';
+        $configurationInstance = PHPUnit_Util_Configuration::getInstance($configurationFilename, 'ConfigurationTestClass');
+        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $this->assertTrue($configurationValues['configurationTestValue']);
+    }
+
+    /**
      * @covers PHPUnit_Util_Configuration::getPHPUnitConfiguration
      */
     public function testShouldReadColorsWhenTrueInConfigurationfile()

@@ -9,6 +9,86 @@
  */
 
 /**
+ * A PHPUnit configuration class to load all tests and settings.
+ *
+ * @since      Interface available since Release 5.0.0
+ */
+interface PHPUnit_Util_Configuration_Interface {
+
+    /**
+     * Returns the realpath to the configuration file.
+     *
+     * @return string
+     * @since  Method available since Release 3.6.0
+     */
+    public function getFilename();
+
+    /**
+     * Returns the configuration for SUT filtering.
+     *
+     * @return array
+     * @since  Method available since Release 3.2.1
+     */
+    public function getFilterConfiguration();
+
+    /**
+     * Returns the configuration for groups.
+     *
+     * @return array
+     * @since  Method available since Release 3.2.1
+     */
+    public function getGroupConfiguration();
+
+    /**
+     * Returns the configuration for listeners.
+     *
+     * @return array
+     * @since  Method available since Release 3.4.0
+     */
+    public function getListenerConfiguration();
+
+    /**
+     * Returns the logging configuration.
+     *
+     * @return array
+     */
+    public function getLoggingConfiguration();
+
+    /**
+     * Returns the PHP configuration.
+     *
+     * @return array
+     * @since  Method available since Release 3.2.1
+     */
+    public function getPHPConfiguration();
+
+    /**
+     * Handles the PHP configuration.
+     *
+     * @since  Method available since Release 3.2.20
+     */
+    public function handlePHPConfiguration();
+
+    /**
+     * Returns the PHPUnit configuration.
+     *
+     * @return array
+     * @since  Method available since Release 3.2.14
+     */
+    public function getPHPUnitConfiguration();
+
+    /**
+     * Returns the test suite configuration.
+     *
+     * @return PHPUnit_Framework_TestSuite
+     * @since  Method available since Release 3.2.1
+     */
+    public function getTestSuiteConfiguration($testSuiteFilter = null);
+
+
+}
+
+/**
  * Wrapper for the PHPUnit XML configuration file.
  *
  * Example XML configuration file:
@@ -132,7 +212,7 @@
  *
  * @since Class available since Release 3.2.0
  */
-class PHPUnit_Util_Configuration
+class PHPUnit_Util_Configuration implements PHPUnit_Util_Configuration_Interface
 {
     private static $instances = [];
 
@@ -163,10 +243,10 @@ class PHPUnit_Util_Configuration
      * Returns a PHPUnit configuration object.
      *
      * @param  string                     $filename
-     * @return PHPUnit_Util_Configuration
+     * @return PHPUnit_Util_Configuration_Interface
      * @since  Method available since Release 3.4.0
      */
-    public static function getInstance($filename)
+    public static function getInstance($filename, $configurationClass = NULL)
     {
         $realpath = realpath($filename);
 
@@ -180,7 +260,12 @@ class PHPUnit_Util_Configuration
         }
 
         if (!isset(self::$instances[$realpath])) {
-            self::$instances[$realpath] = new self($realpath);
+            if (isset($configurationClass) && class_exists($configurationClass) && in_array('PHPUnit_Util_Configuration_Interface', class_implements($configurationClass))) {
+              self::$instances[$realpath] = new $configurationClass($realpath);
+            }
+            else {
+              self::$instances[$realpath] = new self($realpath);
+            }
         }
 
         return self::$instances[$realpath];
