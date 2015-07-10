@@ -1,15 +1,16 @@
 --TEST--
-PHPUnit_Framework_MockObject_Generator::generate('Foo', NULL, 'ProxyFoo', TRUE, TRUE, TRUE, TRUE)
+PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', TRUE, TRUE)
+--SKIPIF--
+<?php
+if (!method_exists('ReflectionMethod', 'getReturnType')) print 'skip: PHP >= 7.0.0 required';
+?>
 --FILE--
 <?php
 class Foo
 {
-    public function bar(Foo $foo)
+    public static function bar(string $baz): Bar
     {
-    }
-
-    public function baz(Foo $foo)
-    {
+        return 'test';
     }
 }
 
@@ -18,13 +19,17 @@ require __DIR__ . '/../../vendor/autoload.php';
 $generator = new PHPUnit_Framework_MockObject_Generator;
 
 $mock = $generator->generate(
-  'Foo', array(), 'ProxyFoo', TRUE, TRUE, TRUE, TRUE
+  'Foo',
+  array(),
+  'MockFoo',
+  TRUE,
+  TRUE
 );
 
 print $mock['code'];
 ?>
 --EXPECTF--
-class ProxyFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
+class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
 {
     private $__phpunit_invocationMocker;
     private $__phpunit_originalObject;
@@ -34,48 +39,9 @@ class ProxyFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
         $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationMocker();
     }
 
-    public function bar(Foo $foo)
+    public static function bar(string $baz): Bar
     {
-        $arguments = array($foo);
-        $count     = func_num_args();
-
-        if ($count > 1) {
-            $_arguments = func_get_args();
-
-            for ($i = 1; $i < $count; $i++) {
-                $arguments[] = $_arguments[$i];
-            }
-        }
-
-        $this->__phpunit_getInvocationMocker()->invoke(
-          new PHPUnit_Framework_MockObject_Invocation_Object(
-            'Foo', 'bar', $arguments, '', $this, TRUE
-          )
-        );
-
-        return call_user_func_array(array($this->__phpunit_originalObject, "bar"), $arguments);
-    }
-
-    public function baz(Foo $foo)
-    {
-        $arguments = array($foo);
-        $count     = func_num_args();
-
-        if ($count > 1) {
-            $_arguments = func_get_args();
-
-            for ($i = 1; $i < $count; $i++) {
-                $arguments[] = $_arguments[$i];
-            }
-        }
-
-        $this->__phpunit_getInvocationMocker()->invoke(
-          new PHPUnit_Framework_MockObject_Invocation_Object(
-            'Foo', 'baz', $arguments, '', $this, TRUE
-          )
-        );
-
-        return call_user_func_array(array($this->__phpunit_originalObject, "baz"), $arguments);
+        throw new PHPUnit_Framework_MockObject_BadMethodCallException;
     }
 
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
