@@ -168,8 +168,8 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
                 return $generator();
 
             default:
-                return (new PHPUnit_Framework_MockObject_Generator())
-                    ->getMock($invocation->returnType);
+                $generator = new PHPUnit_Framework_MockObject_Generator();
+                return $generator->getMock($invocation->returnType);
         }
     }
 
