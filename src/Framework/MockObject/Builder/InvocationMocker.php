@@ -131,7 +131,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
      */
     public function willReturnSelf()
     {
-        $stub = new PHPUnit_Framework_MockObject_Stub_ReturnSelf();
+        $stub = new PHPUnit_Framework_MockObject_Stub_ReturnSelf;
 
         return $this->will($stub);
     }
