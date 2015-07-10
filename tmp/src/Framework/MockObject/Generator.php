@@ -923,6 +923,12 @@ class PHPUnit_Framework_MockObject_Generator
             $reference = '';
         }
 
+        if ($this->hasReturnType($method)) {
+            $returnType = (string) $method->getReturnType();
+        } else {
+            $returnType = '';
+        }
+
         return $this->generateMockedMethodDefinition(
             $templateDir,
             $method->getDeclaringClass()->getName(),
@@ -931,6 +937,7 @@ class PHPUnit_Framework_MockObject_Generator
             $modifier,
             $this->getMethodParameters($method),
             $this->getMethodParameters($method, true),
+            $returnType,
             $reference,
             $callOriginalMethods,
             $method->isStatic()
@@ -945,12 +952,13 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string $modifier
      * @param  string $arguments_decl
      * @param  string $arguments_call
+     * @param  string $return_type
      * @param  string $reference
      * @param  bool   $callOriginalMethods
      * @param  bool   $static
      * @return string
      */
-    protected function generateMockedMethodDefinition($templateDir, $className, $methodName, $cloneArguments = true, $modifier = 'public', $arguments_decl = '', $arguments_call = '', $reference = '', $callOriginalMethods = false, $static = false)
+    protected function generateMockedMethodDefinition($templateDir, $className, $methodName, $cloneArguments = true, $modifier = 'public', $arguments_decl = '', $arguments_call = '', $return_type = '', $reference = '', $callOriginalMethods = false, $static = false)
     {
         if ($static) {
             $templateFile = 'mocked_static_method.tpl';
@@ -967,6 +975,8 @@ class PHPUnit_Framework_MockObject_Generator
             array(
             'arguments_decl'  => $arguments_decl,
             'arguments_call'  => $arguments_call,
+            'return_delim'    => $return_type ? ': ' : '',
+            'return_type'     => $return_type,
             'arguments_count' => !empty($arguments_call) ? count(explode(',', $arguments_call)) : 0,
             'class_name'      => $className,
             'method_name'     => $methodName,
@@ -1097,6 +1107,15 @@ class PHPUnit_Framework_MockObject_Generator
     private function hasType(ReflectionParameter $parameter)
     {
         return method_exists('ReflectionParameter', 'hasType') && $parameter->hasType();
+    }
+
+    /**
+     * @param  ReflectionMethod $method
+     * @return bool
+     */
+    private function hasReturnType(ReflectionMethod $method)
+    {
+        return method_exists('ReflectionMethod', 'hasReturnType') && $method->hasReturnType();
     }
 
     /**

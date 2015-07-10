@@ -8,7 +8,8 @@ class Framework_MockObject_Invocation_ObjectTest extends PHPUnit_Framework_TestC
             'FooClass',
             'FooMethod',
             array('an_argument'),
-        new StdClass
+            'ReturnType',
+            new StdClass
         );
     }
 
@@ -18,6 +19,7 @@ class Framework_MockObject_Invocation_ObjectTest extends PHPUnit_Framework_TestC
             'FooClass',
             'FooMethod',
             array('an_argument'),
+            'ReturnType',
             new StdClass
         );
 
@@ -30,6 +32,7 @@ class Framework_MockObject_Invocation_ObjectTest extends PHPUnit_Framework_TestC
             'FooClass',
             'FooMethod',
             array('an_argument'),
+            'ReturnType',
             new StdClass
         );
 
@@ -44,6 +47,7 @@ class Framework_MockObject_Invocation_ObjectTest extends PHPUnit_Framework_TestC
             'FooClass',
             'FooMethod',
             array('an_argument'),
+            'ReturnType',
             $expectedObject
         );
 
@@ -60,6 +64,7 @@ class Framework_MockObject_Invocation_ObjectTest extends PHPUnit_Framework_TestC
             'FooClass',
             'FooMethod',
             $expectedParameters,
+            'ReturnType',
             new StdClass
         );
 
@@ -75,11 +80,27 @@ class Framework_MockObject_Invocation_ObjectTest extends PHPUnit_Framework_TestC
             'FooClass',
             'FooMethod',
             $parameters,
+            'ReturnType',
             new StdClass,
             $cloneObjects
         );
 
         $this->assertEquals($parameters, $invocation->parameters);
         $this->assertNotSame($parameters, $invocation->parameters);
+    }
+
+    public function testAllowToGetReturnTypeSetInConstructor()
+    {
+        $expectedReturnType = 'string';
+
+        $invocation = new PHPUnit_Framework_MockObject_Invocation_Object(
+            'FooClass',
+            'FooMethod',
+            array('an_argument'),
+            $expectedReturnType,
+            new StdClass
+        );
+
+        $this->assertSame($expectedReturnType, $invocation->returnType);
     }
 }

@@ -58,16 +58,23 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
     public $parameters;
 
     /**
+     * @var string
+     */
+    public $returnType;
+
+    /**
      * @param string $className
      * @param string $methodname
      * @param array  $parameters
+     * @param string $returnType
      * @param bool   $cloneObjects
      */
-    public function __construct($className, $methodName, array $parameters, $cloneObjects = false)
+    public function __construct($className, $methodName, array $parameters, $returnType, $cloneObjects = false)
     {
         $this->className  = $className;
         $this->methodName = $methodName;
         $this->parameters = $parameters;
+        $this->returnType = $returnType;
 
         if (!$cloneObjects) {
             return;
@@ -88,7 +95,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
         $exporter = new Exporter;
 
         return sprintf(
-            '%s::%s(%s)',
+            '%s::%s(%s)%s',
             $this->className,
             $this->methodName,
             implode(
@@ -97,7 +104,8 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
                     array($exporter, 'shortenedExport'),
                     $this->parameters
                 )
-            )
+            ),
+            $this->returnType ? sprintf(': %s', $this->returnType) : ''
         );
     }
 

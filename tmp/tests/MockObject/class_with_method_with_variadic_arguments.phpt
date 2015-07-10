@@ -53,7 +53,7 @@ class MockFoo extends ClassWithMethodWithVariadicArguments implements PHPUnit_Fr
 
         $result = $this->__phpunit_getInvocationMocker()->invoke(
           new PHPUnit_Framework_MockObject_Invocation_Object(
-            'ClassWithMethodWithVariadicArguments', 'methodWithVariadicArguments', $arguments, $this, TRUE
+            'ClassWithMethodWithVariadicArguments', 'methodWithVariadicArguments', $arguments, '', $this, TRUE
           )
         );
 
