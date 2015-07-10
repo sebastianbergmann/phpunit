@@ -150,7 +150,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         }
 
         switch ($invocation->returnType) {
-            case '':       return null;
+            case '':       return;
             case 'string': return '';
             case 'float':  return 0.0;
             case 'int':    return 0;
@@ -165,10 +165,12 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
             case 'Generator':
                 // Remove eval() when minimum version is 5.5+
                 $generator = eval('return function () { yield; };');
+
                 return $generator();
 
             default:
                 $generator = new PHPUnit_Framework_MockObject_Generator();
+
                 return $generator->getMock($invocation->returnType);
         }
     }

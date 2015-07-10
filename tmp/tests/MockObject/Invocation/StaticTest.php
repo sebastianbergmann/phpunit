@@ -54,7 +54,7 @@ class Framework_MockObject_Invocation_StaticTest extends PHPUnit_Framework_TestC
 
     public function testConstructorAllowToSetFlagCloneObjectsInParameters()
     {
-        $parameters = [new StdClass];
+        $parameters   = [new StdClass];
         $cloneObjects = true;
 
         $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(

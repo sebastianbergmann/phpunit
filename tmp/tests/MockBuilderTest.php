@@ -70,8 +70,8 @@ class Framework_MockBuilderTest extends PHPUnit_Framework_TestCase
 
     public function testByDefaultOriginalCloneIsPreserved()
     {
-        $spec = $this->getMockBuilder('Mockable');
-        $mock = $spec->getMock();
+        $spec   = $this->getMockBuilder('Mockable');
+        $mock   = $spec->getMock();
         $cloned = clone $mock;
         $this->assertTrue($cloned->cloned);
     }
@@ -80,9 +80,9 @@ class Framework_MockBuilderTest extends PHPUnit_Framework_TestCase
     {
         $spec = $this->getMockBuilder('Mockable');
         $spec->disableOriginalClone();
-        $mock = $spec->getMock();
+        $mock         = $spec->getMock();
         $mock->cloned = false;
-        $cloned = clone $mock;
+        $cloned       = clone $mock;
         $this->assertFalse($cloned->cloned);
     }
 

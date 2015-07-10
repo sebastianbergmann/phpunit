@@ -116,7 +116,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     public static function getMockForAbstractClassExpectsInvalidArgumentExceptionDataprovider()
     {
         return [
-            'className not a string' => [[], ''],
+            'className not a string'     => [[], ''],
             'mockClassName not a string' => ['Countable', new StdClass],
         ];
     }
