@@ -22,7 +22,7 @@ abstract class PHPUnit_Framework_MockObject_Matcher_InvokedRecorder implements P
     /**
      * @var PHPUnit_Framework_MockObject_Invocation[]
      */
-    protected $invocations = array();
+    protected $invocations = [];
 
     /**
      * @return int

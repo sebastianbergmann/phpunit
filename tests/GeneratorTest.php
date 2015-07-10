@@ -17,7 +17,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockFailsWhenInvalidFunctionNameIsPassedInAsAFunctionToMock()
     {
-        $this->generator->getMock('StdClass', array(0));
+        $this->generator->getMock('StdClass', [0]);
     }
 
     /**
@@ -25,7 +25,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockCanCreateNonExistingFunctions()
     {
-        $mock = $this->generator->getMock('StdClass', array('testFunction'));
+        $mock = $this->generator->getMock('StdClass', ['testFunction']);
         $this->assertTrue(method_exists($mock, 'testFunction'));
     }
 
@@ -36,7 +36,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockGeneratorFails()
     {
-        $mock = $this->generator->getMock('StdClass', array('foo', 'foo'));
+        $mock = $this->generator->getMock('StdClass', ['foo', 'foo']);
     }
 
     /**
@@ -64,12 +64,12 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     {
         $mock = $this->generator->getMockForAbstractClass(
             'AbstractMockTestClass',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('nonexistentMethod')
+            ['nonexistentMethod']
         );
 
         $this->assertTrue(method_exists($mock, 'nonexistentMethod'));
@@ -98,7 +98,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockForAbstractClassExpectingInvalidArgumentException($className, $mockClassName)
     {
-        $mock = $this->generator->getMockForAbstractClass($className, array(), $mockClassName);
+        $mock = $this->generator->getMockForAbstractClass($className, [], $mockClassName);
     }
 
     /**
@@ -115,10 +115,10 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public static function getMockForAbstractClassExpectsInvalidArgumentExceptionDataprovider()
     {
-        return array(
-            'className not a string' => array(array(), ''),
-            'mockClassName not a string' => array('Countable', new StdClass),
-        );
+        return [
+            'className not a string' => [[], ''],
+            'mockClassName not a string' => ['Countable', new StdClass],
+        ];
     }
 
     /**
@@ -129,12 +129,12 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     {
         $mock = $this->generator->getMockForTrait(
             'AbstractTrait',
-            array(),
+            [],
             '',
             true,
             true,
             true,
-            array('nonexistentMethod')
+            ['nonexistentMethod']
         );
 
         $this->assertTrue(method_exists($mock, 'nonexistentMethod'));
@@ -161,7 +161,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
         // Probably, this should be moved to tests/autoload.php
         require_once __DIR__ . '/_fixture/SingletonClass.php';
 
-        $mock = $this->generator->getMock('SingletonClass', array('doSomething'), array(), '', false);
+        $mock = $this->generator->getMock('SingletonClass', ['doSomething'], [], '', false);
         $this->assertInstanceOf('SingletonClass', $mock);
     }
 
@@ -181,6 +181,6 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
         // Probably, this should be moved to tests/autoload.php
         require_once __DIR__ . '/_fixture/SingletonClass.php';
 
-        $mock = $this->generator->getMock('SingletonClass', array('doSomething'), array(), '', false);
+        $mock = $this->generator->getMock('SingletonClass', ['doSomething'], [], '', false);
     }
 }
