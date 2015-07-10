@@ -163,8 +163,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
 
             case 'Traversable':
             case 'Generator':
-                // Remove eval() when minimum version is 5.5+
-                $generator = eval('return function () { yield; };');
+                $generator = function () { yield; };
 
                 return $generator();
 
