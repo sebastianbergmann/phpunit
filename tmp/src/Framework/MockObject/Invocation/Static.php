@@ -20,19 +20,19 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
     /**
      * @var array
      */
-    protected static $uncloneableExtensions = array(
+    protected static $uncloneableExtensions = [
       'mysqli'    => true,
       'SQLite'    => true,
       'sqlite3'   => true,
       'tidy'      => true,
       'xmlwriter' => true,
       'xsl'       => true
-    );
+    ];
 
     /**
      * @var array
      */
-    protected static $uncloneableClasses = array(
+    protected static $uncloneableClasses = [
       'Closure',
       'COMPersistHelper',
       'IteratorIterator',
@@ -40,7 +40,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
       'SplFileObject',
       'PDORow',
       'ZipArchive'
-    );
+    ];
 
     /**
      * @var string
@@ -101,7 +101,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
             implode(
                 ', ',
                 array_map(
-                    array($exporter, 'shortenedExport'),
+                    [$exporter, 'shortenedExport'],
                     $this->parameters
                 )
             ),

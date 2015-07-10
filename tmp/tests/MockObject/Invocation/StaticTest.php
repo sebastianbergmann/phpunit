@@ -7,7 +7,7 @@ class Framework_MockObject_Invocation_StaticTest extends PHPUnit_Framework_TestC
         new PHPUnit_Framework_MockObject_Invocation_Static(
             'FooClass',
             'FooMethod',
-            array('an_argument'),
+            ['an_argument'],
             'ReturnType'
         );
     }
@@ -17,7 +17,7 @@ class Framework_MockObject_Invocation_StaticTest extends PHPUnit_Framework_TestC
         $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(
             'FooClass',
             'FooMethod',
-            array('an_argument'),
+            ['an_argument'],
             'ReturnType'
         );
 
@@ -29,7 +29,7 @@ class Framework_MockObject_Invocation_StaticTest extends PHPUnit_Framework_TestC
         $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(
             'FooClass',
             'FooMethod',
-            array('an_argument'),
+            ['an_argument'],
             'ReturnType'
         );
 
@@ -38,9 +38,9 @@ class Framework_MockObject_Invocation_StaticTest extends PHPUnit_Framework_TestC
 
     public function testAllowToGetMethodParametersSetInConstructor()
     {
-        $expectedParameters = array(
-          'foo', 5, array('a', 'b'), new StdClass, null, false
-        );
+        $expectedParameters = [
+          'foo', 5, ['a', 'b'], new StdClass, null, false
+        ];
 
         $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(
             'FooClass',
@@ -54,7 +54,7 @@ class Framework_MockObject_Invocation_StaticTest extends PHPUnit_Framework_TestC
 
     public function testConstructorAllowToSetFlagCloneObjectsInParameters()
     {
-        $parameters = array(new StdClass);
+        $parameters = [new StdClass];
         $cloneObjects = true;
 
         $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(
@@ -76,7 +76,7 @@ class Framework_MockObject_Invocation_StaticTest extends PHPUnit_Framework_TestC
         $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(
             'FooClass',
             'FooMethod',
-            array('an_argument'),
+            ['an_argument'],
             $expectedReturnType
         );
 

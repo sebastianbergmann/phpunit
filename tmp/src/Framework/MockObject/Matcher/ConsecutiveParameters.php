@@ -23,12 +23,12 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
     /**
      * @var array
      */
-    private $_parameterGroups = array();
+    private $_parameterGroups = [];
 
     /**
      * @var array
      */
-    private $_invocations = array();
+    private $_invocations = [];
 
     /**
      * @param array $parameterGroups

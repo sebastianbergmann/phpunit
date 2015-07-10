@@ -3,13 +3,13 @@ class Framework_MockObject_Matcher_ConsecutiveParametersTest extends PHPUnit_Fra
 {
     public function testIntegration()
     {
-        $mock = $this->getMock('stdClass', array('foo'));
+        $mock = $this->getMock('stdClass', ['foo']);
         $mock
             ->expects($this->any())
             ->method('foo')
             ->withConsecutive(
-                array('bar'),
-                array(21, 42)
+                ['bar'],
+                [21, 42]
             );
         $mock->foo('bar');
         $mock->foo(21, 42);
@@ -17,12 +17,12 @@ class Framework_MockObject_Matcher_ConsecutiveParametersTest extends PHPUnit_Fra
 
     public function testIntegrationWithLessAssertionsThenMethodCalls()
     {
-        $mock = $this->getMock('stdClass', array('foo'));
+        $mock = $this->getMock('stdClass', ['foo']);
         $mock
             ->expects($this->any())
             ->method('foo')
             ->withConsecutive(
-                array('bar')
+                ['bar']
             );
         $mock->foo('bar');
         $mock->foo(21, 42);
@@ -30,13 +30,13 @@ class Framework_MockObject_Matcher_ConsecutiveParametersTest extends PHPUnit_Fra
 
     public function testIntegrationExpectingException()
     {
-        $mock = $this->getMock('stdClass', array('foo'));
+        $mock = $this->getMock('stdClass', ['foo']);
         $mock
             ->expects($this->any())
             ->method('foo')
             ->withConsecutive(
-                array('bar'),
-                array(21, 42)
+                ['bar'],
+                [21, 42]
             );
         $mock->foo('bar');
         $this->setExpectedException('PHPUnit_Framework_ExpectationFailedException');

@@ -64,7 +64,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
      */
     public function toString()
     {
-        $list = array();
+        $list = [];
 
         if ($this->invocationMatcher !== null) {
             $list[] = $this->invocationMatcher->toString();
@@ -155,7 +155,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
             case 'float':  return 0.0;
             case 'int':    return 0;
             case 'bool':   return false;
-            case 'array':  return array();
+            case 'array':  return [];
 
             case 'callable':
             case 'Closure':

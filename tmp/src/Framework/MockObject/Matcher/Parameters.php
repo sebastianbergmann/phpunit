@@ -22,7 +22,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     /**
      * @var PHPUnit_Framework_Constraint[]
      */
-    protected $parameters = array();
+    protected $parameters = [];
 
     /**
      * @var PHPUnit_Framework_MockObject_Invocation

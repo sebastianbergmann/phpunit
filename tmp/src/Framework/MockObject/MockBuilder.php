@@ -28,7 +28,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * @var array
      */
-    private $methods = array();
+    private $methods = [];
 
     /**
      * @var string
@@ -38,7 +38,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * @var array
      */
-    private $constructorArgs = array();
+    private $constructorArgs = [];
 
     /**
      * @var bool
