@@ -9,8 +9,6 @@
  */
 
 /**
- *
- *
  * @since      Class available since Release 3.0.0
  */
 class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
@@ -579,7 +577,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
             $this->assertSame(
                 "Expectation failed for method name is equal to <string:right> when invoked 1 time(s)\n"
                 . "Parameter 0 for invocation SomeClass::right(Array (...)) does not match expected value.\n"
-                . "Failed asserting that two arrays are equal.",
+                . 'Failed asserting that two arrays are equal.',
                 $e->getMessage()
             );
         }
@@ -664,7 +662,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
             $this->assertSame(
                 "Expectation failed for method name is equal to <string:right> when invoked 1 time(s)\n" .
                 "Parameter count for invocation SomeClass::right() is too low.\n" .
-                "To allow 0 or more parameters with any value, omit ->with() or use ->withAnyParameters() instead.",
+                'To allow 0 or more parameters with any value, omit ->with() or use ->withAnyParameters() instead.',
                 $e->getMessage()
             );
         }
@@ -757,7 +755,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
         $foo->expects($this->any())
             ->method('bar')
-            ->with($this->isInstanceOf("stdClass"), $b, $c)
+            ->with($this->isInstanceOf('stdClass'), $b, $c)
             ->will($this->returnCallback([$foo, 'callback']));
 
         $foo->bar($a, $b, $c);
