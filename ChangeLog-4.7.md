@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 4.7 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.7.7] - 2015-07-13
+
+New PHAR release due to updated dependencies
+
 ## [4.7.6] - 2015-06-30
 
 ### Fixed
@@ -56,6 +60,7 @@ New PHAR release due to updated dependencies
 * To be consistent with the printing of PHP runtime information, the configuration file used is only printed in verbose mode
 * A warning is now printed when code coverage data is collected but no whitelist is configured
 
+[4.7.7]: https://github.com/sebastianbergmann/phpunit/compare/4.7.6...4.7.7
 [4.7.6]: https://github.com/sebastianbergmann/phpunit/compare/4.7.5...4.7.6
 [4.7.5]: https://github.com/sebastianbergmann/phpunit/compare/4.7.4...4.7.5
 [4.7.4]: https://github.com/sebastianbergmann/phpunit/compare/4.7.3...4.7.4
