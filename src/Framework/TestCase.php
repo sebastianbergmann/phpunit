@@ -63,7 +63,7 @@ use DeepCopy\DeepCopy;
  *
  * @since Class available since Release 2.0.0
  */
-abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
+abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Expect implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
@@ -718,7 +718,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function runBare()
     {
         $this->numAssertions = 0;
-
+        self::resetFailedExpectations();
         $this->snapshotGlobalState();
         $this->startOutputBuffering();
         clearstatcache();
@@ -748,7 +748,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->verifyMockObjects();
             $this->assertPostConditions();
 
-            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
+            $failedExpectations = self::getFailedExpectations();
+            if ($failedExpectations) {
+                $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+                $e = new PHPUnit_Framework_ExpectationFailedError($failedExpectations);
+                $this->statusMessage = $e->getMessage();
+            } else {
+                $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
+            }
         } catch (PHPUnit_Framework_IncompleteTest $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
             $this->statusMessage = $e->getMessage();
