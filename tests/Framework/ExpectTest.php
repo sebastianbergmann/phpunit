@@ -20,7 +20,6 @@ class Framework_ExpectTest extends PHPUnit_Framework_TestCase
             $this->expectEquals(1, 2);
             $this->expectEquals(2, 3);
         } catch (Exception $e) {
-            echo $e;
             $this->fail("No exceptions should be thrown!!!");
         }
         $expectations = self::getFailedExpectations();
