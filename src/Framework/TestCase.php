@@ -749,7 +749,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Expect imple
             $this->assertPostConditions();
 
             $failedExpectations = self::getFailedExpectations();
-            if ($failedExpectations) {
+            if (!empty($failedExpectations)) {
                 $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
                 $e = new PHPUnit_Framework_ExpectationFailedError($failedExpectations);
                 $this->statusMessage = $e->getMessage();
