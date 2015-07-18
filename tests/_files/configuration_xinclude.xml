@@ -20,7 +20,7 @@
          timeoutForLargeTests="60"
          beStrictAboutTestsThatDoNotTestAnything="false"
          beStrictAboutOutputDuringTests="false"
-         beStrictAboutTestSize="false"
+         enforceTimeLimit="false"
          beStrictAboutTodoAnnotatedTests="false"
          checkForUnintentionallyCoveredCode="false"
          beStrictAboutChangesToGlobalState="false"

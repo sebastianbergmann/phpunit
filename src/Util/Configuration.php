@@ -40,7 +40,7 @@
  *          timeoutForLargeTests="60"
  *          beStrictAboutTestsThatDoNotTestAnything="false"
  *          beStrictAboutOutputDuringTests="false"
- *          beStrictAboutTestSize="false"
+ *          enforceTimeLimit="false"
  *          beStrictAboutTodoAnnotatedTests="false"
  *          checkForUnintentionallyCoveredCode="false"
  *          disallowChangesToGlobalState="false"
@@ -747,9 +747,9 @@ class PHPUnit_Util_Configuration
             );
         }
 
-        if ($root->hasAttribute('beStrictAboutTestSize')) {
+        if ($root->hasAttribute('enforceTimeLimit')) {
             $result['enforceTimeLimit'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTestSize'),
+                (string) $root->getAttribute('enforceTimeLimit'),
                 false
             );
         }

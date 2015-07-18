@@ -417,7 +417,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $result->beStrictAboutTestsThatDoNotTestAnything($arguments['reportUselessTests']);
         $result->beStrictAboutOutputDuringTests($arguments['disallowTestOutput']);
         $result->beStrictAboutTodoAnnotatedTests($arguments['disallowTodoAnnotatedTests']);
-        $result->beStrictAboutTestSize($arguments['enforceTimeLimit']);
+        $result->enforceTimeLimit($arguments['enforceTimeLimit']);
         $result->setTimeoutForSmallTests($arguments['timeoutForSmallTests']);
         $result->setTimeoutForMediumTests($arguments['timeoutForMediumTests']);
         $result->setTimeoutForLargeTests($arguments['timeoutForLargeTests']);

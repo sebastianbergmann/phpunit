@@ -637,7 +637,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $coverage                                = $result->getCollectCodeCoverageInformation()       ? 'true' : 'false';
             $isStrictAboutTestsThatDoNotTestAnything = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
             $isStrictAboutOutputDuringTests          = $result->isStrictAboutOutputDuringTests()          ? 'true' : 'false';
-            $isStrictAboutTestSize                   = $result->isStrictAboutTestSize()                   ? 'true' : 'false';
+            $enforcesTimeLimit                       = $result->enforcesTimeLimit()                       ? 'true' : 'false';
             $isStrictAboutTodoAnnotatedTests         = $result->isStrictAboutTodoAnnotatedTests()         ? 'true' : 'false';
 
             if (defined('PHPUNIT_COMPOSER_INSTALL')) {
@@ -689,7 +689,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     'iniSettings'                             => $iniSettings,
                     'isStrictAboutTestsThatDoNotTestAnything' => $isStrictAboutTestsThatDoNotTestAnything,
                     'isStrictAboutOutputDuringTests'          => $isStrictAboutOutputDuringTests,
-                    'isStrictAboutTestSize'                   => $isStrictAboutTestSize,
+                    'enforcesTimeLimit'                       => $enforcesTimeLimit,
                     'isStrictAboutTodoAnnotatedTests'         => $isStrictAboutTodoAnnotatedTests,
                     'codeCoverageFilter'                      => $codeCoverageFilter
                 ]

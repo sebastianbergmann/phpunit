@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 ### Changed
 
 * Merged [#1781](https://github.com/sebastianbergmann/phpunit/issues/1781): Empty string is not treated as a valid JSON string anymore
+* Renamed the `beStrictAboutTestSize` configuration option to `enforceTimeLimit`
 
 ### Removed
 

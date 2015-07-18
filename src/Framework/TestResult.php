@@ -105,7 +105,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var bool
      */
-    protected $beStrictAboutTestSize = false;
+    protected $enforceTimeLimit = false;
 
     /**
      * @var bool
@@ -579,7 +579,7 @@ class PHPUnit_Framework_TestResult implements Countable
         try {
             if (!$test instanceof PHPUnit_Framework_Warning &&
                 $test->getSize() != PHPUnit_Util_Test::UNKNOWN &&
-                $this->beStrictAboutTestSize &&
+                $this->enforceTimeLimit &&
                 extension_loaded('pcntl') && class_exists('PHP_Invoker')) {
                 switch ($test->getSize()) {
                     case PHPUnit_Util_Test::SMALL:
@@ -880,24 +880,24 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @param  bool                        $flag
      * @throws PHPUnit_Framework_Exception
-     * @since  Method available since Release 4.0.0
+     * @since  Method available since Release 5.0.0
      */
-    public function beStrictAboutTestSize($flag)
+    public function enforceTimeLimit($flag)
     {
         if (!is_bool($flag)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
         }
 
-        $this->beStrictAboutTestSize = $flag;
+        $this->enforceTimeLimit = $flag;
     }
 
     /**
      * @return bool
-     * @since  Method available since Release 4.0.0
+     * @since  Method available since Release 5.0.0
      */
-    public function isStrictAboutTestSize()
+    public function enforcesTimeLimit()
     {
-        return $this->beStrictAboutTestSize;
+        return $this->enforceTimeLimit;
     }
 
     /**
