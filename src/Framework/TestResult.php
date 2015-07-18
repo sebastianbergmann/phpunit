@@ -105,12 +105,27 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var bool
      */
-    protected $enforceTimeLimit = false;
+    protected $beStrictAboutTodoAnnotatedTests = false;
 
     /**
      * @var bool
      */
-    protected $beStrictAboutTodoAnnotatedTests = false;
+    protected $enforceTimeLimit = false;
+
+    /**
+     * @var int
+     */
+    protected $timeoutForSmallTests = 1;
+
+    /**
+     * @var int
+     */
+    protected $timeoutForMediumTests = 10;
+
+    /**
+     * @var int
+     */
+    protected $timeoutForLargeTests = 60;
 
     /**
      * @var bool
@@ -131,21 +146,6 @@ class PHPUnit_Framework_TestResult implements Countable
      * @var bool
      */
     protected $lastTestFailed = false;
-
-    /**
-     * @var int
-     */
-    protected $timeoutForSmallTests = 1;
-
-    /**
-     * @var int
-     */
-    protected $timeoutForMediumTests = 10;
-
-    /**
-     * @var int
-     */
-    protected $timeoutForLargeTests = 60;
 
     /**
      * Registers a TestListener.
