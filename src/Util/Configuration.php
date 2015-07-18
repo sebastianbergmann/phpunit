@@ -698,6 +698,48 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($root->hasAttribute('beStrictAboutChangesToGlobalState')) {
+            $result['beStrictAboutChangesToGlobalState'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutChangesToGlobalState'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutOutputDuringTests')) {
+            $result['disallowTestOutput'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutOutputDuringTests'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutTestsThatDoNotTestAnything')) {
+            $result['reportUselessTests'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutTestsThatDoNotTestAnything'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutTodoAnnotatedTests')) {
+            $result['disallowTodoAnnotatedTests'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutTodoAnnotatedTests'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('checkForUnintentionallyCoveredCode')) {
+            $result['strictCoverage'] = $this->getBoolean(
+                (string) $root->getAttribute('checkForUnintentionallyCoveredCode'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('enforceTimeLimit')) {
+            $result['enforceTimeLimit'] = $this->getBoolean(
+                (string) $root->getAttribute('enforceTimeLimit'),
+                false
+            );
+        }
+
         if ($root->hasAttribute('timeoutForSmallTests')) {
             $result['timeoutForSmallTests'] = $this->getInteger(
                 (string) $root->getAttribute('timeoutForSmallTests'),
@@ -716,48 +758,6 @@ class PHPUnit_Util_Configuration
             $result['timeoutForLargeTests'] = $this->getInteger(
                 (string) $root->getAttribute('timeoutForLargeTests'),
                 60
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutTestsThatDoNotTestAnything')) {
-            $result['reportUselessTests'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTestsThatDoNotTestAnything'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('checkForUnintentionallyCoveredCode')) {
-            $result['strictCoverage'] = $this->getBoolean(
-                (string) $root->getAttribute('checkForUnintentionallyCoveredCode'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutOutputDuringTests')) {
-            $result['disallowTestOutput'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutOutputDuringTests'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutChangesToGlobalState')) {
-            $result['beStrictAboutChangesToGlobalState'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutChangesToGlobalState'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('enforceTimeLimit')) {
-            $result['enforceTimeLimit'] = $this->getBoolean(
-                (string) $root->getAttribute('enforceTimeLimit'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutTodoAnnotatedTests')) {
-            $result['disallowTodoAnnotatedTests'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTodoAnnotatedTests'),
-                false
             );
         }
 

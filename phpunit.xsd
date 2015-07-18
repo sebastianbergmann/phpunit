@@ -205,18 +205,18 @@
     <xs:attribute name="stopOnIncomplete" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnRisky" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
-    <xs:attribute name="beStrictAboutTestsThatDoNotTestAnything" type="xs:boolean" default="false"/>
-    <xs:attribute name="beStrictAboutOutputDuringTests" type="xs:boolean" default="false"/>
-    <xs:attribute name="enforceTimeLimit" type="xs:boolean" default="false"/>
-    <xs:attribute name="beStrictAboutTodoAnnotatedTests" type="xs:boolean" default="false"/>
     <xs:attribute name="beStrictAboutChangesToGlobalState" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutOutputDuringTests" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutTestsThatDoNotTestAnything" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutTodoAnnotatedTests" type="xs:boolean" default="false"/>
     <xs:attribute name="checkForUnintentionallyCoveredCode" type="xs:boolean" default="false"/>
-    <xs:attribute name="strict" type="xs:boolean" default="false"/>
-    <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit_Runner_StandardTestSuiteLoader"/>
-    <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>
+    <xs:attribute name="enforceTimeLimit" type="xs:boolean" default="false"/>
     <xs:attribute name="timeoutForSmallTests" type="xs:integer" default="1"/>
     <xs:attribute name="timeoutForMediumTests" type="xs:integer" default="10"/>
     <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>
+    <xs:attribute name="strict" type="xs:boolean" default="false"/>
+    <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit_Runner_StandardTestSuiteLoader"/>
+    <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>
     <xs:attribute name="verbose" type="xs:boolean" default="false"/>
     <xs:attribute name="stderr" type="xs:boolean" default="false"/>
     <xs:attribute name="reverseDefectList" type="xs:boolean" default="false"/>

@@ -15,15 +15,15 @@
          printerClass="PHPUnit_TextUI_ResultPrinter"
          stopOnFailure="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+         beStrictAboutChangesToGlobalState="false"
+         beStrictAboutOutputDuringTests="false"
+         beStrictAboutTestsThatDoNotTestAnything="false"
+         beStrictAboutTodoAnnotatedTests="false"
+         checkForUnintentionallyCoveredCode="false"
+         enforceTimeLimit="false"
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60"
-         beStrictAboutTestsThatDoNotTestAnything="false"
-         beStrictAboutOutputDuringTests="false"
-         enforceTimeLimit="false"
-         beStrictAboutTodoAnnotatedTests="false"
-         checkForUnintentionallyCoveredCode="false"
-         beStrictAboutChangesToGlobalState="false"
          verbose="false">
   <testsuites>
     <testsuite name="My Test Suite">
