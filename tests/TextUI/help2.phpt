@@ -49,6 +49,7 @@ Test Execution Options:
   --strict-coverage         Be strict about unintentionally covered code.
   --strict-global-state     Be strict about changes to global state
   --disallow-test-output    Be strict about output during tests.
+  --disallow-resource-usage Be strict about resource usage during small tests.
   --enforce-time-limit      Enforce time limit based on test size.
   --disallow-todo-tests     Disallow @todo-annotated tests.
 

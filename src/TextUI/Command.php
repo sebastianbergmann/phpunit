@@ -34,55 +34,56 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $longOptions = [
-        'bootstrap='           => null,
-        'colors=='             => null,
-        'columns='             => null,
-        'configuration='       => null,
-        'coverage-clover='     => null,
-        'coverage-crap4j='     => null,
-        'coverage-html='       => null,
-        'coverage-php='        => null,
-        'coverage-text=='      => null,
-        'coverage-xml='        => null,
-        'debug'                => null,
-        'disallow-test-output' => null,
-        'disallow-todo-tests'  => null,
-        'enforce-time-limit'   => null,
-        'exclude-group='       => null,
-        'filter='              => null,
-        'group='               => null,
-        'help'                 => null,
-        'include-path='        => null,
-        'list-groups'          => null,
-        'loader='              => null,
-        'log-json='            => null,
-        'log-junit='           => null,
-        'log-tap='             => null,
-        'no-configuration'     => null,
-        'no-coverage'          => null,
-        'no-globals-backup'    => null,
-        'printer='             => null,
-        'process-isolation'    => null,
-        'repeat='              => null,
-        'report-useless-tests' => null,
-        'reverse-list'         => null,
-        'static-backup'        => null,
-        'stderr'               => null,
-        'stop-on-error'        => null,
-        'stop-on-failure'      => null,
-        'stop-on-incomplete'   => null,
-        'stop-on-risky'        => null,
-        'stop-on-skipped'      => null,
-        'strict-coverage'      => null,
-        'strict-global-state'  => null,
-        'tap'                  => null,
-        'testdox'              => null,
-        'testdox-html='        => null,
-        'testdox-text='        => null,
-        'test-suffix='         => null,
-        'testsuite='           => null,
-        'verbose'              => null,
-        'version'              => null
+        'bootstrap='              => null,
+        'colors=='                => null,
+        'columns='                => null,
+        'configuration='          => null,
+        'coverage-clover='        => null,
+        'coverage-crap4j='        => null,
+        'coverage-html='          => null,
+        'coverage-php='           => null,
+        'coverage-text=='         => null,
+        'coverage-xml='           => null,
+        'debug'                   => null,
+        'disallow-test-output'    => null,
+        'disallow-resource-usage' => null,
+        'disallow-todo-tests'     => null,
+        'enforce-time-limit'      => null,
+        'exclude-group='          => null,
+        'filter='                 => null,
+        'group='                  => null,
+        'help'                    => null,
+        'include-path='           => null,
+        'list-groups'             => null,
+        'loader='                 => null,
+        'log-json='               => null,
+        'log-junit='              => null,
+        'log-tap='                => null,
+        'no-configuration'        => null,
+        'no-coverage'             => null,
+        'no-globals-backup'       => null,
+        'printer='                => null,
+        'process-isolation'       => null,
+        'repeat='                 => null,
+        'report-useless-tests'    => null,
+        'reverse-list'            => null,
+        'static-backup'           => null,
+        'stderr'                  => null,
+        'stop-on-error'           => null,
+        'stop-on-failure'         => null,
+        'stop-on-incomplete'      => null,
+        'stop-on-risky'           => null,
+        'stop-on-skipped'         => null,
+        'strict-coverage'         => null,
+        'strict-global-state'     => null,
+        'tap'                     => null,
+        'testdox'                 => null,
+        'testdox-html='           => null,
+        'testdox-text='           => null,
+        'test-suffix='            => null,
+        'testsuite='              => null,
+        'verbose'                 => null,
+        'version'                 => null
     ];
 
     /**
@@ -456,6 +457,10 @@ class PHPUnit_TextUI_Command
 
                 case '--disallow-test-output':
                     $this->arguments['disallowTestOutput'] = true;
+                    break;
+
+                case '--disallow-resource-usage':
+                    $this->arguments['beStrictAboutResourceUsageDuringSmallTests'] = true;
                     break;
 
                 case '--enforce-time-limit':
@@ -887,6 +892,7 @@ Test Execution Options:
   --strict-coverage         Be strict about unintentionally covered code.
   --strict-global-state     Be strict about changes to global state
   --disallow-test-output    Be strict about output during tests.
+  --disallow-resource-usage Be strict about resource usage during small tests.
   --enforce-time-limit      Enforce time limit based on test size.
   --disallow-todo-tests     Disallow @todo-annotated tests.
 

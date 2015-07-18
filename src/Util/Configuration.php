@@ -37,6 +37,7 @@
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
  *          beStrictAboutChangesToGlobalState="false"
  *          beStrictAboutOutputDuringTests="false"
+ *          beStrictAboutResourceUsageDuringSmallTests="false"
  *          beStrictAboutTestsThatDoNotTestAnything="false"
  *          beStrictAboutTodoAnnotatedTests="false"
  *          checkForUnintentionallyCoveredCode="false"
@@ -708,6 +709,13 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('beStrictAboutOutputDuringTests')) {
             $result['disallowTestOutput'] = $this->getBoolean(
                 (string) $root->getAttribute('beStrictAboutOutputDuringTests'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutResourceUsageDuringSmallTests')) {
+            $result['beStrictAboutResourceUsageDuringSmallTests'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutResourceUsageDuringSmallTests'),
                 false
             );
         }

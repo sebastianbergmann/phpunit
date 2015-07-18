@@ -110,6 +110,11 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var bool
      */
+    protected $beStrictAboutResourceUsageDuringSmallTests = false;
+
+    /**
+     * @var bool
+     */
     protected $enforceTimeLimit = false;
 
     /**
@@ -875,6 +880,29 @@ class PHPUnit_Framework_TestResult implements Countable
     public function isStrictAboutOutputDuringTests()
     {
         return $this->beStrictAboutOutputDuringTests;
+    }
+
+    /**
+     * @param  bool                        $flag
+     * @throws PHPUnit_Framework_Exception
+     * @since  Method available since Release 5.0.0
+     */
+    public function beStrictAboutResourceUsageDuringSmallTests($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->beStrictAboutResourceUsageDuringSmallTests = $flag;
+    }
+
+    /**
+     * @return bool
+     * @since  Method available since Release 5.0.0
+     */
+    public function isStrictAboutResourceUsageDuringSmallTests()
+    {
+        return $this->beStrictAboutResourceUsageDuringSmallTests;
     }
 
     /**

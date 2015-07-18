@@ -17,6 +17,7 @@
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
          beStrictAboutChangesToGlobalState="false"
          beStrictAboutOutputDuringTests="false"
+         beStrictAboutResourceUsageDuringSmallTests="false"
          beStrictAboutTestsThatDoNotTestAnything="false"
          beStrictAboutTodoAnnotatedTests="false"
          checkForUnintentionallyCoveredCode="false"
