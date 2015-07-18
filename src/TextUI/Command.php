@@ -75,7 +75,6 @@ class PHPUnit_TextUI_Command
         'stop-on-skipped'      => null,
         'strict-coverage'      => null,
         'strict-global-state'  => null,
-        'strict'               => null,
         'tap'                  => null,
         'testdox'              => null,
         'testdox-html='        => null,
@@ -465,15 +464,6 @@ class PHPUnit_TextUI_Command
 
                 case '--disallow-todo-tests':
                     $this->arguments['disallowTodoAnnotatedTests'] = true;
-                    break;
-
-                case '--strict':
-                    $this->arguments['reportUselessTests']         = true;
-                    $this->arguments['strictCoverage']             = true;
-                    $this->arguments['disallowTestOutput']         = true;
-                    $this->arguments['enforceTimeLimit']           = true;
-                    $this->arguments['disallowTodoAnnotatedTests'] = true;
-                    $this->arguments['deprecatedStrictModeOption'] = true;
                     break;
 
                 case '--reverse-list':

@@ -270,12 +270,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 $this->printer->write("\n");
             }
-
-            if (isset($arguments['deprecatedStrictModeOption'])) {
-                print "Warning:\tDeprecated option \"--strict\" used\n";
-            } elseif (isset($arguments['deprecatedStrictModeSetting'])) {
-                print "Warning:\tDeprecated configuration setting \"strict\" used\n";
-            }
         }
 
         foreach ($arguments['listeners'] as $listener) {
@@ -602,10 +596,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['configuration']->handlePHPConfiguration();
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
-
-            if (isset($phpunitConfiguration['deprecatedStrictModeSetting'])) {
-                $arguments['deprecatedStrictModeSetting'] = true;
-            }
 
             if (isset($phpunitConfiguration['backupGlobals']) &&
                 !isset($arguments['backupGlobals'])) {
