@@ -158,8 +158,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite->setBackupStaticAttributes(true);
         }
 
-        if ($arguments['disallowChangesToGlobalState'] === true) {
-            $suite->setDisallowChangesToGlobalState(true);
+        if ($arguments['beStrictAboutChangesToGlobalState'] === true) {
+            $suite->setbeStrictAboutChangesToGlobalState(true);
         }
 
         if (is_integer($arguments['repeat'])) {
@@ -617,9 +617,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['backupStaticAttributes'] = $phpunitConfiguration['backupStaticAttributes'];
             }
 
-            if (isset($phpunitConfiguration['disallowChangesToGlobalState']) &&
-                !isset($arguments['disallowChangesToGlobalState'])) {
-                $arguments['disallowChangesToGlobalState'] = $phpunitConfiguration['disallowChangesToGlobalState'];
+            if (isset($phpunitConfiguration['beStrictAboutChangesToGlobalState']) &&
+                !isset($arguments['beStrictAboutChangesToGlobalState'])) {
+                $arguments['beStrictAboutChangesToGlobalState'] = $phpunitConfiguration['beStrictAboutChangesToGlobalState'];
             }
 
             if (isset($phpunitConfiguration['bootstrap']) &&
@@ -948,7 +948,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['processUncoveredFilesFromWhitelist'] = isset($arguments['processUncoveredFilesFromWhitelist']) ? $arguments['processUncoveredFilesFromWhitelist'] : false;
         $arguments['backupGlobals']                      = isset($arguments['backupGlobals'])                      ? $arguments['backupGlobals']                      : null;
         $arguments['backupStaticAttributes']             = isset($arguments['backupStaticAttributes'])             ? $arguments['backupStaticAttributes']             : null;
-        $arguments['disallowChangesToGlobalState']       = isset($arguments['disallowChangesToGlobalState'])       ? $arguments['disallowChangesToGlobalState']       : null;
+        $arguments['beStrictAboutChangesToGlobalState']  = isset($arguments['beStrictAboutChangesToGlobalState'])  ? $arguments['beStrictAboutChangesToGlobalState']  : null;
         $arguments['cacheTokens']                        = isset($arguments['cacheTokens'])                        ? $arguments['cacheTokens']                        : false;
         $arguments['columns']                            = isset($arguments['columns'])                            ? $arguments['columns']                            : 80;
         $arguments['colors']                             = isset($arguments['colors'])                             ? $arguments['colors']                             : PHPUnit_TextUI_ResultPrinter::COLOR_DEFAULT;

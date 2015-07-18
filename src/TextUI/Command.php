@@ -452,7 +452,7 @@ class PHPUnit_TextUI_Command
                     break;
 
                 case '--strict-global-state':
-                    $this->arguments['disallowChangesToGlobalState'] = true;
+                    $this->arguments['beStrictAboutChangesToGlobalState'] = true;
                     break;
 
                 case '--disallow-test-output':

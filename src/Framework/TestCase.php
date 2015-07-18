@@ -263,7 +263,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @var bool
      */
-    private $disallowChangesToGlobalState = false;
+    private $beStrictAboutChangesToGlobalState = false;
 
     /**
      * Constructs a test case with the given name.
@@ -1041,12 +1041,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param bool $disallowChangesToGlobalState
+     * @param bool $beStrictAboutChangesToGlobalState
      * @since Method available since Release 4.6.0
      */
-    public function setDisallowChangesToGlobalState($disallowChangesToGlobalState)
+    public function setbeStrictAboutChangesToGlobalState($beStrictAboutChangesToGlobalState)
     {
-        $this->disallowChangesToGlobalState = $disallowChangesToGlobalState;
+        $this->beStrictAboutChangesToGlobalState = $beStrictAboutChangesToGlobalState;
     }
 
     /**
@@ -1979,7 +1979,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
 
-        if ($this->disallowChangesToGlobalState) {
+        if ($this->beStrictAboutChangesToGlobalState) {
             $this->compareGlobalStateSnapshots(
                 $this->snapshot,
                 $this->createGlobalStateSnapshot($backupGlobals)

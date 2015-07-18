@@ -35,15 +35,15 @@
  *          stopOnRisky="false"
  *          stopOnSkipped="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+ *          beStrictAboutChangesToGlobalState="false"
+ *          beStrictAboutOutputDuringTests="false"
+ *          beStrictAboutTestsThatDoNotTestAnything="false"
+ *          beStrictAboutTodoAnnotatedTests="false"
+ *          checkForUnintentionallyCoveredCode="false"
+ *          enforceTimeLimit="false"
  *          timeoutForSmallTests="1"
  *          timeoutForMediumTests="10"
  *          timeoutForLargeTests="60"
- *          beStrictAboutTestsThatDoNotTestAnything="false"
- *          beStrictAboutOutputDuringTests="false"
- *          enforceTimeLimit="false"
- *          beStrictAboutTodoAnnotatedTests="false"
- *          checkForUnintentionallyCoveredCode="false"
- *          disallowChangesToGlobalState="false"
  *          verbose="false"
  *          reverseDefectList="false">
  *   <testsuites>
@@ -741,7 +741,7 @@ class PHPUnit_Util_Configuration
         }
 
         if ($root->hasAttribute('beStrictAboutChangesToGlobalState')) {
-            $result['disallowChangesToGlobalState'] = $this->getBoolean(
+            $result['beStrictAboutChangesToGlobalState'] = $this->getBoolean(
                 (string) $root->getAttribute('beStrictAboutChangesToGlobalState'),
                 false
             );

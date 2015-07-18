@@ -346,7 +346,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             [
             'backupGlobals'                      => true,
             'backupStaticAttributes'             => false,
-            'disallowChangesToGlobalState'       => false,
+            'beStrictAboutChangesToGlobalState'  => false,
             'bootstrap'                          => '/path/to/bootstrap.php',
             'cacheTokens'                        => false,
             'columns'                            => 80,
