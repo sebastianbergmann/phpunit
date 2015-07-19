@@ -207,6 +207,7 @@
     <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
     <xs:attribute name="beStrictAboutChangesToGlobalState" type="xs:boolean" default="false"/>
     <xs:attribute name="beStrictAboutOutputDuringTests" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutResourceUsageDuringSmallTests" type="xs:boolean" default="false"/>
     <xs:attribute name="beStrictAboutTestsThatDoNotTestAnything" type="xs:boolean" default="false"/>
     <xs:attribute name="beStrictAboutTodoAnnotatedTests" type="xs:boolean" default="false"/>
     <xs:attribute name="checkForUnintentionallyCoveredCode" type="xs:boolean" default="false"/>
