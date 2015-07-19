@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+use SebastianBergmann\ResourceOperations\ResourceOperations;
+
 /**
  * A TestResult collects the results of executing a test case.
  *
@@ -579,6 +581,15 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->codeCoverage->start($test);
         }
 
+        $monitorFunctions = $this->beStrictAboutResourceUsageDuringSmallTests &&
+                            !$test instanceof PHPUnit_Framework_Warning &&
+                            $test->getSize() == PHPUnit_Util_Test::SMALL &&
+                            function_exists('xdebug_start_function_monitor');
+
+        if ($monitorFunctions) {
+            xdebug_start_function_monitor(ResourceOperations::getFunctions());
+        }
+
         PHP_Timer::start();
 
         try {
@@ -627,6 +638,29 @@ class PHPUnit_Framework_TestResult implements Countable
 
         $time = PHP_Timer::stop();
         $test->addToAssertionCount(PHPUnit_Framework_Assert::getCount());
+
+        if ($monitorFunctions) {
+            $blacklist = new PHPUnit_Util_Blacklist;
+            $functions = xdebug_get_monitored_functions();
+            xdebug_stop_function_monitor();
+
+            foreach ($functions as $function) {
+                if (!$blacklist->isBlacklisted($function['filename'])) {
+                    $this->addFailure(
+                        $test,
+                        new PHPUnit_Framework_RiskyTestError(
+                            sprintf(
+                                '%s() used in %s:%s',
+                                $function['function'],
+                                $function['filename'],
+                                $function['lineno']
+                            )
+                        ),
+                        $time
+                    );
+                }
+            }
+        }
 
         if ($this->beStrictAboutTestsThatDoNotTestAnything &&
             $test->getNumAssertions() == 0) {
