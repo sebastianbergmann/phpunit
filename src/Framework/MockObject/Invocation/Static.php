@@ -110,6 +110,36 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
     }
 
     /**
+     * @return mixed Mocked return value.
+     */
+    public function generateReturnValue()
+    {
+        switch ($this->returnType) {
+            case '':       return;
+            case 'string': return '';
+            case 'float':  return 0.0;
+            case 'int':    return 0;
+            case 'bool':   return false;
+            case 'array':  return [];
+
+            case 'callable':
+            case 'Closure':
+                return function () {};
+
+            case 'Traversable':
+            case 'Generator':
+                $generator = function () { yield; };
+
+                return $generator();
+
+            default:
+                $generator = new PHPUnit_Framework_MockObject_Generator;
+
+                return $generator->getMock($this->returnType);
+        }
+    }
+
+    /**
      * @param  object $original
      * @return object
      */
