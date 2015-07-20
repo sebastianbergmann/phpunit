@@ -45,6 +45,11 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var array
      */
+    protected $bullshit = [];
+
+    /**
+     * @var array
+     */
     protected $skipped = [];
 
     /**
@@ -88,6 +93,11 @@ class PHPUnit_Framework_TestResult implements Countable
      * @var bool
      */
     protected $stopOnError = false;
+
+    /**
+     * @var bool
+     */
+    protected $stopOnBullshit = false;
 
     /**
      * @var bool
@@ -269,6 +279,13 @@ class PHPUnit_Framework_TestResult implements Countable
             $notifyMethod    = 'addSkippedTest';
 
             if ($this->stopOnSkipped) {
+                $this->stop();
+            }
+        } elseif ($e instanceof PHPUnit_Framework_BullshitTest) {
+            $this->bullshit[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $notifyMethod    = 'addBullshitTest';
+
+            if ($this->stopOnBullshit) {
                 $this->stop();
             }
         } else {

@@ -3542,6 +3542,22 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::markTestBullshit
+     */
+    public function testMarkTestBullshit()
+    {
+        try {
+            $this->markTestBullshit('bullshit');
+        } catch (PHPUnit_Framework_BullshitTestError $e) {
+            $this->assertEquals('bullshit', $e->getMessage());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertCount
      */
     public function testAssertCount()

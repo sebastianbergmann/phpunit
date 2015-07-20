@@ -463,6 +463,19 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     }
 
     /**
+     * Bullshit test.
+     *
+     * @param PHPUnit_Framework_Test $test
+     * @param Exception              $e
+     * @param float                  $time
+     */
+    public function addBullshitTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    {
+        $this->writeProgressWithColor('fg-cyan, bold', 'B');
+        $this->lastTestFailed = true;
+    }
+
+    /**
      * A testsuite started.
      *
      * @param PHPUnit_Framework_TestSuite $suite
