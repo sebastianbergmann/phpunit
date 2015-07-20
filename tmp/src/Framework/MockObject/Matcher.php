@@ -149,29 +149,7 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
             return $this->stub->invoke($invocation);
         }
 
-        switch ($invocation->returnType) {
-            case '':       return;
-            case 'string': return '';
-            case 'float':  return 0.0;
-            case 'int':    return 0;
-            case 'bool':   return false;
-            case 'array':  return [];
-
-            case 'callable':
-            case 'Closure':
-                return function () {};
-
-            case 'Traversable':
-            case 'Generator':
-                $generator = function () { yield; };
-
-                return $generator();
-
-            default:
-                $generator = new PHPUnit_Framework_MockObject_Generator;
-
-                return $generator->getMock($invocation->returnType);
-        }
+        return $invocation->generateReturnValue();
     }
 
     /**
