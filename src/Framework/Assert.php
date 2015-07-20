@@ -2783,6 +2783,17 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Mark the test as bullshit.
+     *
+     * @param  string                             $message
+     * @throws PHPUnit_Framework_BullshitTestError
+     */
+    public static function markTestBullshit($message = '')
+    {
+        throw new PHPUnit_Framework_BullshitTestError($message);
+    }
+
+    /**
      * Return the current assertion count.
      *
      * @return int
