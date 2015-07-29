@@ -238,7 +238,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
 
             if (empty($groups)) {
-                $groups = array('__nogroup__');
+                $groups = array('default');
             }
 
             foreach ($groups as $group) {
