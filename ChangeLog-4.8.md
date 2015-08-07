@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.2] - 2015-08-07
+
+### Fixed
+
+* Fixed [#1816](https://github.com/sebastianbergmann/phpunit/issues/1816): PHPUnit 4.8.1 shows "4.8.0" as version number
+
 ## [4.8.1] - 2015-08-07
 
 ### Fixed
