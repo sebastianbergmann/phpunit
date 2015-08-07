@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.1] - 2015-08-07
+
+### Fixed
+
+* Fixed [#1815](https://github.com/sebastianbergmann/phpunit/issues/1815): `phpunit --self-update` does not work in PHPUnit 4.8.0
+
 ## [4.8.0] - 2015-08-07
 
 ### Added
@@ -17,5 +23,6 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.1]: https://github.com/sebastianbergmann/phpunit/compare/4.8.0...4.8.1
 [4.8.0]: https://github.com/sebastianbergmann/phpunit/compare/4.7...4.8.0
 
