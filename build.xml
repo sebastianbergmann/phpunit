@@ -171,6 +171,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/sebastian/resource-operations/LICENSE" tofile="${basedir}/build/phar/sebastian-resource-operations/LICENSE"/>
+        <copy todir="${basedir}/build/phar/sebastian-resource-operations">
+            <fileset dir="${basedir}/vendor/sebastian/resource-operations/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/sebastian/global-state/LICENSE" tofile="${basedir}/build/phar/sebastian-global-state/LICENSE"/>
         <copy todir="${basedir}/build/phar/sebastian-global-state">
             <fileset dir="${basedir}/vendor/sebastian/global-state/src">
