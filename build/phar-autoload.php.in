@@ -17,6 +17,15 @@ Phar::mapPhar('___PHAR___');
 ___FILELIST___
 
 if ($execute) {
+    if (version_compare('5.3.3', PHP_VERSION, '>')) {
+        fwrite(
+            STDERR,
+            'This version of PHPUnit requires PHP 5.3.3; using the latest version of PHP is highly recommended.' . PHP_EOL
+        );
+
+        die(1);
+    }
+
     if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
         print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
         exit;
