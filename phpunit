@@ -16,6 +16,7 @@ if (!ini_get('date.timezone')) {
 foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
     if (file_exists($file)) {
         define('PHPUNIT_COMPOSER_INSTALL', $file);
+
         break;
     }
 }
@@ -28,6 +29,7 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
         'wget http://getcomposer.org/composer.phar' . PHP_EOL .
         'php composer.phar install' . PHP_EOL
     );
+
     die(1);
 }
 
