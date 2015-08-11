@@ -1,5 +1,5 @@
 <?php
-abstract class AbstractMockTestClass
+abstract class AbstractMockTestClass implements MockTestInterface
 {
     abstract public function doSomething();
 
