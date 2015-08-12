@@ -2119,7 +2119,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * @param  PHPUnit_Framework_MockObject_MockObject $mock
      * @return bool
-     * @since  Method available since Release 5.1.0
+     * @since  Method available since Release 5.0.0
      */
     private function shouldInvocationMockerBeReset(PHPUnit_Framework_MockObject_MockObject $mock)
     {
@@ -2140,7 +2140,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @param array $testArguments
-     * @since Method available since Release 5.1.0
+     * @since Method available since Release 5.0.0
      */
     private function registerMockObjectsFromTestArguments(array $testArguments)
     {
