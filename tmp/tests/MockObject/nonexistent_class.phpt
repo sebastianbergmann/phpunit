@@ -25,6 +25,7 @@ class MockFoo extends NonExistentClass implements PHPUnit_Framework_MockObject_M
 {
     private $__phpunit_invocationMocker;
     private $__phpunit_originalObject;
+    private $__phpunit_unsetInvocationMocker = true;
 
     public function __clone()
     {
@@ -62,11 +63,16 @@ class MockFoo extends NonExistentClass implements PHPUnit_Framework_MockObject_M
         return $this->__phpunit_getInvocationMocker()->hasMatchers();
     }
 
-    public function __phpunit_verify($unsetInvocationMocker = true)
+    public function __phpunit_unsetInvocationMocker($flag)
+    {
+        $this->__phpunit_unsetInvocationMocker = $flag;
+    }
+
+    public function __phpunit_verify()
     {
         $this->__phpunit_getInvocationMocker()->verify();
 
-        if ($unsetInvocationMocker) {
+        if ($this->__phpunit_unsetInvocationMocker) {
             $this->__phpunit_invocationMocker = null;
         }
     }
