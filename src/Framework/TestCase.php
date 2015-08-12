@@ -877,11 +877,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->fail($e->getMessage());
         }
 
+        $testArguments = array_merge($this->data, $this->dependencyInput);
+
+        $this->registerMockObjectsFromTestArguments($testArguments);
+
         try {
-            $testResult = $method->invokeArgs(
-                $this,
-                array_merge($this->data, $this->dependencyInput)
-            );
+            $testResult = $method->invokeArgs($this, $testArguments);
         } catch (Throwable $_e) {
             $e = $_e;
         } catch (Exception $_e) {
@@ -973,7 +974,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $this->numAssertions++;
             }
 
-            $mockObject->__phpunit_verify();
+            $mockObject->__phpunit_verify(
+                $this->shouldInvocationMockerBeReset($mockObject)
+            );
         }
 
         if ($this->prophet !== null) {
@@ -2111,5 +2114,42 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         return $this->prophet;
+    }
+
+    /**
+     * @param  PHPUnit_Framework_MockObject_MockObject $mock
+     * @return bool
+     * @since  Method available since Release 5.1.0
+     */
+    private function shouldInvocationMockerBeReset(PHPUnit_Framework_MockObject_MockObject $mock)
+    {
+        if ($this->testResult === $mock) {
+            return false;
+        }
+
+        if (is_array($this->testResult)) {
+            foreach ($this->testResult as $_testResult) {
+                if ($this->testResult === $_testResult) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param array $testArguments
+     * @since Method available since Release 5.1.0
+     */
+    private function registerMockObjectsFromTestArguments(array $testArguments)
+    {
+        foreach ($testArguments as $testArgument) {
+            if ($testArgument instanceof PHPUnit_Framework_MockObject_MockObject) {
+                $this->mockObjects[] = $testArgument;
+            } elseif (is_array($testArgument)) {
+                $this->registerMockObjectsFromTestArguments($testArgument);
+            }
+        }
     }
 }
