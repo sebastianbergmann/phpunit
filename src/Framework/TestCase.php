@@ -2128,10 +2128,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         if (is_array($this->testResult)) {
-            foreach ($this->testResult as $_testResult) {
-                if ($this->testResult === $_testResult) {
+            foreach ($this->testResult as $testResult) {
+                if ($testResult === $mock) {
                     return false;
                 }
+            }
+        }
+
+        foreach ($this->dependencyInput as $dependencyInput) {
+            if ($dependencyInput === $mock) {
+                return false;
             }
         }
 
