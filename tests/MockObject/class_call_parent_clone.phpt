@@ -27,7 +27,6 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
 {
     private $__phpunit_invocationMocker;
     private $__phpunit_originalObject;
-    private $__phpunit_unsetInvocationMocker = true;
 
     public function __clone()
     {
@@ -66,16 +65,11 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
         return $this->__phpunit_getInvocationMocker()->hasMatchers();
     }
 
-    public function __phpunit_unsetInvocationMocker($flag)
-    {
-        $this->__phpunit_unsetInvocationMocker = $flag;
-    }
-
-    public function __phpunit_verify()
+    public function __phpunit_verify($unsetInvocationMocker = true)
     {
         $this->__phpunit_getInvocationMocker()->verify();
 
-        if ($this->__phpunit_unsetInvocationMocker) {
+        if ($unsetInvocationMocker) {
             $this->__phpunit_invocationMocker = null;
         }
     }
