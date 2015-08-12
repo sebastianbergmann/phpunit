@@ -1,5 +1,5 @@
 --TEST--
-PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', TRUE)
+PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', true)
 --FILE--
 <?php
 class Foo
@@ -14,10 +14,10 @@ require __DIR__ . '/../../vendor/autoload.php';
 $generator = new PHPUnit_Framework_MockObject_Generator;
 
 $mock = $generator->generate(
-  'Foo',
-  array(),
-  'MockFoo',
-  TRUE
+    'Foo',
+    array(),
+    'MockFoo',
+    true
 );
 
 print $mock['code'];
@@ -52,7 +52,7 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
 
     public function __phpunit_getInvocationMocker()
     {
-        if ($this->__phpunit_invocationMocker === NULL) {
+        if ($this->__phpunit_invocationMocker === null) {
             $this->__phpunit_invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;
         }
 
@@ -67,6 +67,6 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
     public function __phpunit_verify()
     {
         $this->__phpunit_getInvocationMocker()->verify();
-        $this->__phpunit_invocationMocker = NULL;
+        $this->__phpunit_invocationMocker = null;
     }
 }
