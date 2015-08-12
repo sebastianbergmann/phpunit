@@ -109,9 +109,12 @@ class ProxyFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
         return $this->__phpunit_getInvocationMocker()->hasMatchers();
     }
 
-    public function __phpunit_verify()
+    public function __phpunit_verify($unsetInvocationMocker = true)
     {
         $this->__phpunit_getInvocationMocker()->verify();
-        $this->__phpunit_invocationMocker = null;
+
+        if ($unsetInvocationMocker) {
+            $this->__phpunit_invocationMocker = null;
+        }
     }
 }
