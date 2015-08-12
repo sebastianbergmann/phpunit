@@ -1,5 +1,5 @@
 --TEST--
-PHPUnit_Framework_MockObject_Generator::generate('NonExistentClass', array(), 'MockFoo', TRUE, TRUE)
+PHPUnit_Framework_MockObject_Generator::generate('NonExistentClass', array(), 'MockFoo', true, true)
 --FILE--
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
@@ -7,11 +7,11 @@ require __DIR__ . '/../../vendor/autoload.php';
 $generator = new PHPUnit_Framework_MockObject_Generator;
 
 $mock = $generator->generate(
-  'NonExistentClass',
-  array(),
-  'MockFoo',
-  TRUE,
-  TRUE
+    'NonExistentClass',
+    array(),
+    'MockFoo',
+    true,
+    true
 );
 
 print $mock['code'];
@@ -50,7 +50,7 @@ class MockFoo extends NonExistentClass implements PHPUnit_Framework_MockObject_M
 
     public function __phpunit_getInvocationMocker()
     {
-        if ($this->__phpunit_invocationMocker === NULL) {
+        if ($this->__phpunit_invocationMocker === null) {
             $this->__phpunit_invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;
         }
 
@@ -65,6 +65,6 @@ class MockFoo extends NonExistentClass implements PHPUnit_Framework_MockObject_M
     public function __phpunit_verify()
     {
         $this->__phpunit_getInvocationMocker()->verify();
-        $this->__phpunit_invocationMocker = NULL;
+        $this->__phpunit_invocationMocker = null;
     }
 }
