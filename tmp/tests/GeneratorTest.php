@@ -123,7 +123,6 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForTrait
-     * @requires PHP 5.4.0
      */
     public function testGetMockForTraitWithNonExistentMethodsAndNonAbstractMethods()
     {
@@ -144,8 +143,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers   PHPUnit_Framework_MockObject_Generator::getMockForTrait
-     * @requires PHP 5.4.0
+     * @covers PHPUnit_Framework_MockObject_Generator::getMockForTrait
      */
     public function testGetMockForTraitStubbingAbstractMethod()
     {
@@ -153,9 +151,6 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(method_exists($mock, 'doSomething'));
     }
 
-    /**
-     * @requires PHP 5.4.0
-     */
     public function testGetMockForSingletonWithReflectionSuccess()
     {
         // Probably, this should be moved to tests/autoload.php
@@ -163,24 +158,5 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
         $mock = $this->generator->getMock('SingletonClass', ['doSomething'], [], '', false);
         $this->assertInstanceOf('SingletonClass', $mock);
-    }
-
-    /**
-     * Same as "testGetMockForSingletonWithReflectionSuccess", but we expect
-     * warning for PHP < 5.4.0 since PHPUnit will try to execute private __wakeup
-     * on unserialize
-     */
-    public function testGetMockForSingletonWithUnserializeFail()
-    {
-        if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
-            $this->markTestSkipped('Only for PHP < 5.4.0');
-        }
-
-        $this->setExpectedException('PHPUnit_Framework_MockObject_RuntimeException');
-
-        // Probably, this should be moved to tests/autoload.php
-        require_once __DIR__ . '/_fixture/SingletonClass.php';
-
-        $mock = $this->generator->getMock('SingletonClass', ['doSomething'], [], '', false);
     }
 }
