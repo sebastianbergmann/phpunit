@@ -540,7 +540,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->column++;
         $this->numTestsRun++;
 
-        if ($this->column == $this->maxColumn) {
+        if ($this->column == $this->maxColumn
+            || $this->numTestsRun == $this->numTests
+        ) {
+            if ($this->numTestsRun == $this->numTests) {
+                $this->write(str_repeat(' ', $this->maxColumn - $this->column));
+            }
+
             $this->write(
                 sprintf(
                     ' %' . $this->numTestsWidth . 'd / %' .
@@ -551,7 +557,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 )
             );
 
-            $this->writeNewLine();
+            if ($this->column == $this->maxColumn) {
+                $this->writeNewLine();
+            }
         }
     }
 
