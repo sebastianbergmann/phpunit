@@ -75,9 +75,9 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
-     * @param	mixed	$value
-     * @param 	mixed	$nextValues, ...
-     * @return 	PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @param  mixed                                                 $value
+     * @param  mixed                                                 $nextValues, ...
+     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
      */
     public function willReturn($value, ...$nextValues)
     {
