@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.1 release series are documented in this fil
 ### Added
 
 * Merged [#1824](https://github.com/sebastianbergmann/phpunit/issues/1824): Added support for the `--CLEAN--` and `--EXPECTREGEX--` sections for PHPT test cases
+* Merged [#1825](https://github.com/sebastianbergmann/phpunit/issues/1825): Redirect STDERR to STDOUT when running PHPT test cases
 
 [5.1.0]: https://github.com/sebastianbergmann/phpunit/compare/5.0...5.1.0
 
