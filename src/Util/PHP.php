@@ -42,7 +42,7 @@ abstract class PHPUnit_Util_PHP
      *
      * @throws PHPUnit_Framework_Exception
      *
-     * @param boolean $stderrRedirection
+     * @param bool $stderrRedirection
      */
     public function setUseStderrRedirection($stderrRedirection)
     {
@@ -56,7 +56,7 @@ abstract class PHPUnit_Util_PHP
     /**
      * Returns TRUE if uses STDERR redirection or FALSE if not.
      *
-     * @return boolean
+     * @return bool
      */
     public function useStderrRedirection()
     {
