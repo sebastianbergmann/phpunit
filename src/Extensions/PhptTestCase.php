@@ -140,6 +140,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $settings = array_merge($settings, $this->parseIniSection($sections['INI']));
         }
 
+        // Redirects STDERR to STDOUT
+        $this->phpUtil->setUseStderrRedirection(true);
+
         if (isset($sections['SKIPIF'])) {
             $jobResult = $this->phpUtil->runJob($sections['SKIPIF'], $settings);
 
