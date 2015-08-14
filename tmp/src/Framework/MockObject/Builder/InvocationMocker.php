@@ -75,22 +75,17 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @param	mixed	$value
+     * @param 	mixed	$nextValues, ...
+     * @return 	PHPUnit_Framework_MockObject_Builder_InvocationMocker
      */
-    public function willReturn()
+    public function willReturn($value, ...$nextValues)
     {
-        $args = func_get_args();
-        $argCount = count($args);
-
-        if ($argCount === 0) {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
-                'At least one argument is expected, none given'
+        $stub = count($nextValues) === 0 ?
+            new PHPUnit_Framework_MockObject_Stub_Return($value) :
+            new PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls(
+               array_merge([$value], $nextValues)
             );
-        } elseif ($argCount === 1) {
-            $stub = new PHPUnit_Framework_MockObject_Stub_Return($args[0]);
-        } else {
-            $stub = new PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($args);
-        }
 
         return $this->will($stub);
     }
@@ -145,14 +140,12 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
-     * @param  mixed                                                 $value, ...
+     * @param  mixed                                                 $values, ...
      * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
      */
-    public function willReturnOnConsecutiveCalls()
+    public function willReturnOnConsecutiveCalls(...$values)
     {
-        $args = func_get_args();
-
-        $stub = new PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($args);
+        $stub = new PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($values);
 
         return $this->will($stub);
     }
