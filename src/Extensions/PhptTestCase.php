@@ -55,8 +55,8 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     /**
      * Constructs a test case with the given filename.
      *
-     * @param  string           $filename
-     * @param  PHPUnit_Util_PHP $phpUtil
+     * @param string           $filename
+     * @param PHPUnit_Util_PHP $phpUtil
      *
      * @throws PHPUnit_Framework_Exception
      */
@@ -76,7 +76,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         $this->filename = $filename;
-        $this->phpUtil = $phpUtil ?: PHPUnit_Util_PHP::factory();
+        $this->phpUtil  = $phpUtil ?: PHPUnit_Util_PHP::factory();
     }
 
     /**
@@ -90,16 +90,16 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     }
 
     /**
-     * @param  array  $sections
-     * @param  string $output
+     * @param array  $sections
+     * @param string $output
      */
     private function assertPhptExpectation(array $sections, $output)
     {
-        $assertions = array(
-            'EXPECT'            => 'assertEquals',
-            'EXPECTF'           => 'assertStringMatchesFormat',
-            'EXPECTREGEX'       => 'assertRegExp',
-        );
+        $assertions = [
+            'EXPECT'      => 'assertEquals',
+            'EXPECTF'     => 'assertStringMatchesFormat',
+            'EXPECTREGEX' => 'assertRegExp',
+        ];
 
         $actual = preg_replace('/\r\n/', "\n", trim($output));
         foreach ($assertions as $sectionName => $sectionAssertion) {
@@ -107,6 +107,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
                 $sectionContent = preg_replace('/\r\n/', "\n", trim($sections[$sectionName]));
                 $assertion      = $sectionAssertion;
                 $expected       = $sectionName == 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
+
                 break;
             }
         }
@@ -157,6 +158,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         if (!$skip) {
             PHP_Timer::start();
+
             $jobResult = $this->phpUtil->runJob($code, $settings);
             $time      = PHP_Timer::stop();
 
@@ -172,6 +174,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
             if (isset($sections['CLEAN'])) {
                 $cleanCode = $this->render($sections['CLEAN']);
+
                 $this->phpUtil->runJob($cleanCode, $this->settings);
             }
         }
@@ -214,6 +217,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             if (preg_match('/^--([_A-Z]+)--/', $line, $result)) {
                 $section            = $result[1];
                 $sections[$section] = '';
+
                 continue;
             } elseif (empty($section)) {
                 throw new PHPUnit_Framework_Exception('Invalid PHPT file');
@@ -238,12 +242,12 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     {
         return str_replace(
             [
-            '__DIR__',
-            '__FILE__'
+                '__DIR__',
+                '__FILE__'
             ],
             [
-            "'" . dirname($this->filename) . "'",
-            "'" . $this->filename . "'"
+                "'" . dirname($this->filename) . "'",
+                "'" . $this->filename . "'"
             ],
             $code
         );
