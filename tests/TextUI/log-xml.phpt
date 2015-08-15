@@ -14,7 +14,7 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-...<?xml version="1.0" encoding="UTF-8"?>
+...                                                                 3 / 3 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="BankAccountTest" file="%sBankAccountTest.php" tests="3" assertions="3" failures="0" errors="0" time="%f">
     <testcase name="testBalanceIsInitiallyZero" class="BankAccountTest" file="%sBankAccountTest.php" line="30" assertions="1" time="%f"/>

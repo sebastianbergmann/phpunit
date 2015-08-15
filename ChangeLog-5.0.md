@@ -15,6 +15,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 ### Changed
 
 * Merged [#1781](https://github.com/sebastianbergmann/phpunit/issues/1781): Empty string is not treated as a valid JSON string anymore
+* Merged [#1822](https://github.com/sebastianbergmann/phpunit/issues/1822): Always output progress totals on last line
 * Renamed the `beStrictAboutTestSize` configuration option to `enforceTimeLimit`
 
 ### Removed
