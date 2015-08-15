@@ -27,7 +27,7 @@ Starting test 'DataProviderDebugTest::testProvider with data set #4 (stdClass Ob
 Starting test 'DataProviderDebugTest::testProvider with data set #5 (Binary String: 0x000102030405, Binary String: 0x0e0f101112131...c1d1e1f)'.
 .
 Starting test 'DataProviderDebugTest::testProvider with data set #6 (Binary String: 0x0009)'.
-.
+.                                                             7 / 7 (100%)
 
 Time: %s, Memory: %sMb
 

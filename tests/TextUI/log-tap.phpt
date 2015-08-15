@@ -17,7 +17,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 TAP version 13
 .ok 1 - BankAccountTest::testBalanceIsInitiallyZero
 .ok 2 - BankAccountTest::testBalanceCannotBecomeNegative
-.ok 3 - BankAccountTest::testBalanceCannotBecomeNegative2
+.                                                                 3 / 3 (100%)ok 3 - BankAccountTest::testBalanceCannotBecomeNegative2
 1..3
 
 

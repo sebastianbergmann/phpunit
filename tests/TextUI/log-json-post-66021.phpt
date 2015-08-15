@@ -56,7 +56,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
     "event": "testStart",
     "suite": "BankAccountTest",
     "test": "BankAccountTest::testBalanceCannotBecomeNegative2"
-}.{
+}.                                                                 3 / 3 (100%){
     "event": "test",
     "suite": "BankAccountTest",
     "test": "BankAccountTest::testBalanceCannotBecomeNegative2",

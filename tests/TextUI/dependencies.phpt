@@ -15,7 +15,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:	%s
 
-...FSSS
+...FSSS                                                             7 / 7 (100%)
 
 Time: %s, Memory: %sMb
 

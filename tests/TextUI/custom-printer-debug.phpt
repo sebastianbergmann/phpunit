@@ -20,7 +20,7 @@ Starting test 'BankAccountTest::testBalanceIsInitiallyZero'.
 Starting test 'BankAccountTest::testBalanceCannotBecomeNegative'.
 .
 Starting test 'BankAccountTest::testBalanceCannotBecomeNegative2'.
-.
+.                                                                 3 / 3 (100%)
 
 Time: %s, Memory: %sMb
 

@@ -14,7 +14,7 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 <html><body>
-<h2 id="BankAccountTest">BankAccount</h2><ul>...<li>Balance is initially zero</li><li>Balance cannot become negative</li></ul></body></html>
+<h2 id="BankAccountTest">BankAccount</h2><ul>...                                                                 3 / 3 (100%)<li>Balance is initially zero</li><li>Balance cannot become negative</li></ul></body></html>
 
 Time: %s, Memory: %sMb
 
