@@ -27,7 +27,7 @@ if ($execute) {
     }
 
     if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
-        print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
+        print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/phar/manifest.txt');
         exit;
     }
 
