@@ -143,6 +143,10 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         // Redirects STDERR to STDOUT
         $this->phpUtil->setUseStderrRedirection(true);
 
+        if ($result->enforcesTimeLimit()) {
+            $this->phpUtil->setTimeout($result->getTimeoutForLargeTests());
+        }
+
         if (isset($sections['SKIPIF'])) {
             $jobResult = $this->phpUtil->runJob($sections['SKIPIF'], $settings);
 
