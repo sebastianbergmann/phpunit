@@ -160,10 +160,22 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         if (!$skip) {
+            if ($result->getCollectCodeCoverageInformation()) {
+                $code = $this->renderForCoverage($code);
+            }
+
             PHP_Timer::start();
 
             $jobResult = $this->phpUtil->runJob($code, $settings);
             $time      = PHP_Timer::stop();
+
+            if ($result->getCollectCodeCoverageInformation()) {
+                $rawResult = @unserialize($jobResult['stdout']);
+                if ($rawResult !== false) {
+                    $jobResult['stdout'] = $rawResult['output'];
+                    $result->getCodeCoverage()->append($rawResult['coverage'], $this);
+                }
+            }
 
             try {
                 $this->assertPhptExpectation($sections, $jobResult['stdout']);
@@ -254,6 +266,35 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             ],
             $code
         );
+    }
+
+    private function renderForCoverage($code)
+    {
+        $hasClosingPhpTag = preg_match('/\?>\s*$/m', $code) == 1;
+        $template = new Text_Template(
+            __DIR__ . '/../Util/PHP/Template/PhptTestCase.tpl'
+        );
+
+        if (defined('PHPUNIT_COMPOSER_INSTALL')) {
+            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
+        } else {
+            $composerAutoload = '\'\'';
+        }
+
+        if (defined('__PHPUNIT_PHAR__')) {
+            $phar = var_export(__PHPUNIT_PHAR__, true);
+        } else {
+            $phar = '\'\'';
+        }
+
+        $template->setVar([
+            'composerAutoload' => $composerAutoload,
+            'phar' => $phar,
+            'job' => $code,
+            'optionalPhpTag' => $hasClosingPhpTag ? '' : '?>'
+        ]);
+
+        return $template->render();
     }
 
     /**

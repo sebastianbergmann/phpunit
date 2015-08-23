@@ -1,0 +1,25 @@
+<?php
+$composerAutoload = {composerAutoload};
+$phar             = {phar};
+
+ob_start();
+
+if ($composerAutoload) {
+    require_once $composerAutoload;
+    define('PHPUNIT_COMPOSER_INSTALL', $composerAutoload);
+} else if ($phar) {
+    require $phar;
+}
+
+$coverage =	new PHP_CodeCoverage();
+$coverage->start(__FILE__);
+
+ob_end_clean();
+ob_start()
+?>
+{job}
+{optionalPhpTag}<?php
+echo serialize(array(
+	'coverage' => $coverage->stop(),
+	'output' => ob_get_clean(),
+));
