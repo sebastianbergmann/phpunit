@@ -231,6 +231,36 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     {
         $sections = [];
         $section  = '';
+        $allowExternalSections = [
+            'FILE',
+            'EXPECT',
+            'EXPECTF',
+            'EXPECTREGEX',
+        ];
+        $requiredSections = [
+            'FILE',
+            [
+                'EXPECT',
+                'EXPECTF',
+                'EXPECTREGEX',
+            ],
+        ];
+        $unsupportedSections = [
+            'REDIRECTTEST',
+            'REQUEST',
+            'POST',
+            'PUT',
+            'POST_RAW',
+            'GZIP_POST',
+            'DEFLATE_POST',
+            'GET',
+            'COOKIE',
+            'HEADERS',
+            'CGI',
+            'EXPECTHEADERS',
+            'EXTENSIONS',
+            'PHPDBG',
+        ];
 
         foreach (file($this->filename) as $line) {
             if (preg_match('/^--([_A-Z]+)--/', $line, $result)) {
@@ -245,9 +275,64 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $sections[$section] .= $line;
         }
 
-        if (!isset($sections['FILE']) ||
-            (!isset($sections['EXPECT']) && !isset($sections['EXPECTF']) && !isset($sections['EXPECTREGEX']))) {
+        if (isset($sections['FILEEOF'])) {
+            $sections['FILE'] = rtrim($sections['FILEEOF'], "\r\n");
+            unset($sections['FILEEOF']);
+        }
+
+        $testDirectory = dirname($this->filename) . DIRECTORY_SEPARATOR;
+
+        foreach ($allowExternalSections as $section) {
+            if (isset($sections[$section . '_EXTERNAL'])) {
+                // do not allow directory traversal
+                $externalFilename = str_replace('..', '', trim($sections[$section . '_EXTERNAL']));
+
+                // only allow files from the test directory
+                if (!is_file($testDirectory . $externalFilename) || !is_readable($testDirectory . $externalFilename)) {
+                    throw new PHPUnit_Framework_Exception(sprintf(
+                        'Could not load --%s-- %s for PHPT file',
+                        $section . '_EXTERNAL',
+                        $testDirectory . $externalFilename
+                    ));
+                }
+
+                $sections[$section] = file_get_contents($externalFilename);
+                unset($section[$section . '_EXTERNAL']);
+            }
+        }
+
+        $isValid = true;
+        foreach ($requiredSections as $section) {
+            if (is_array($section)) {
+                $foundSection = false;
+
+                foreach ($section as $anySection) {
+                    if (isset($sections[$anySection])) {
+                        $foundSection = true;
+                        break;
+                    }
+                }
+
+                if (!$foundSection) {
+                    $isValid = false;
+                    break;
+                }
+            } else {
+                if (!isset($sections[$section])) {
+                    $isValid = false;
+                    break;
+                }
+            }
+        }
+
+        if (!$isValid) {
             throw new PHPUnit_Framework_Exception('Invalid PHPT file');
+        }
+
+        foreach ($unsupportedSections as $section) {
+            if (isset($sections[$section])) {
+                throw new PHPUnit_Framework_Exception('PHPUnit does not support this PHPT file');
+            }
         }
 
         return $sections;
