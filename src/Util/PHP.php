@@ -28,6 +28,26 @@ abstract class PHPUnit_Util_PHP
     protected $stderrRedirection = false;
 
     /**
+     * @var string
+     */
+    protected $stdin = '';
+
+    /**
+     * @var string
+     */
+    protected $args = '';
+
+    /**
+     * @var array
+     */
+    protected $env = [];
+
+    /**
+     * @var int
+     */
+    protected $timeout = 0;
+
+    /**
      * Creates internal Runtime instance.
      */
     public function __construct()
@@ -61,6 +81,86 @@ abstract class PHPUnit_Util_PHP
     public function useStderrRedirection()
     {
         return $this->stderrRedirection;
+    }
+
+    /**
+     * Sets the input string to be sent via STDIN
+     *
+     * @param string $stdin
+     */
+    public function setStdin($stdin)
+    {
+        $this->stdin = (string) $stdin;
+    }
+
+    /**
+     * Returns the input string to be sent via STDIN
+     *
+     * @return string
+     */
+    public function getStdin()
+    {
+        return $this->stdin;
+    }
+
+    /**
+     * Sets the string of arguments to pass to the php job
+     *
+     * @param string $args
+     */
+    public function setArgs($args)
+    {
+        $this->args = (string) $args;
+    }
+
+    /**
+     * Returns the string of arguments to pass to the php job
+     *
+     * @retrun string
+     */
+    public function getArgs()
+    {
+        return $this->args;
+    }
+
+    /**
+     * Sets the array of environment variables to start the child process with
+     *
+     * @param array $env
+     */
+    public function setEnv(array $env)
+    {
+        $this->env = $env;
+    }
+
+    /**
+     * Returns the array of environment variables to start the child process with
+     *
+     * @return array
+     */
+    public function getEnv()
+    {
+        return $this->env;
+    }
+
+    /**
+     * Sets the amount of seconds to wait before timing out
+     *
+     * @param int $timeout
+     */
+    public function setTimeout($timeout)
+    {
+        $this->env = (int) $timeout;
+    }
+
+    /**
+     * Returns the amount of seconds to wait before timing out
+     *
+     * @return int
+     */
+    public function getTimeout()
+    {
+        return $this->timeout;
     }
 
     /**
@@ -102,13 +202,22 @@ abstract class PHPUnit_Util_PHP
      * Returns the command based into the configurations.
      *
      * @param array $settings
+     * @param string|null $file
      *
      * @return string
      */
-    public function getCommand(array $settings)
+    public function getCommand(array $settings, $file = null)
     {
         $command = $this->runtime->getBinary();
         $command .= $this->settingsToParameters($settings);
+
+        if ($file) {
+            $command .= ' -f ' . escapeshellarg($file);
+        }
+
+        if ($this->args) {
+            $command .= ' -- ' . $this->args;
+        }
 
         if (true === $this->stderrRedirection) {
             $command .= ' 2>&1';
