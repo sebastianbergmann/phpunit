@@ -1102,6 +1102,16 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Returns the set timeout for large tests.
+     *
+     * @return int
+     */
+    public function getTimeoutForLargeTests()
+    {
+        return $this->timeoutForLargeTests;
+    }
+
+    /**
      * Returns the class hierarchy for a given class.
      *
      * @param  string $className
