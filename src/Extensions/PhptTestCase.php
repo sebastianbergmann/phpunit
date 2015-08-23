@@ -325,8 +325,8 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
                     ));
                 }
 
-                $sections[$section] = file_get_contents($externalFilename);
-                unset($section[$section . '_EXTERNAL']);
+                $sections[$section] = file_get_contents($testDirectory . $externalFilename);
+                unset($sections[$section . '_EXTERNAL']);
             }
         }
 
