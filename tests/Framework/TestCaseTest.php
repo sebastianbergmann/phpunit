@@ -47,8 +47,10 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test   = new Success;
         $result = $test->run();
 
+        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $test->getStatus());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
+        $this->assertEquals(0, $result->skippedCount());
         $this->assertEquals(1, count($result));
     }
 
@@ -57,8 +59,10 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test   = new Failure;
         $result = $test->run();
 
+        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE, $test->getStatus());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(1, $result->failureCount());
+        $this->assertEquals(0, $result->skippedCount());
         $this->assertEquals(1, count($result));
     }
 
@@ -67,8 +71,36 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test   = new TestError;
         $result = $test->run();
 
+        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_ERROR, $test->getStatus());
         $this->assertEquals(1, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
+        $this->assertEquals(0, $result->skippedCount());
+        $this->assertEquals(1, count($result));
+    }
+
+    public function testSkipped()
+    {
+        $test   = new TestSkipped();
+        $result = $test->run();
+
+        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED, $test->getStatus());
+        $this->assertEquals('Skipped test', $test->getStatusMessage());
+        $this->assertEquals(0, $result->errorCount());
+        $this->assertEquals(0, $result->failureCount());
+        $this->assertEquals(1, $result->skippedCount());
+        $this->assertEquals(1, count($result));
+    }
+
+    public function testIncomplete()
+    {
+        $test   = new TestIncomplete();
+        $result = $test->run();
+
+        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE, $test->getStatus());
+        $this->assertEquals('Incomplete test', $test->getStatusMessage());
+        $this->assertEquals(0, $result->errorCount());
+        $this->assertEquals(0, $result->failureCount());
+        $this->assertEquals(0, $result->skippedCount());
         $this->assertEquals(1, count($result));
     }
 
