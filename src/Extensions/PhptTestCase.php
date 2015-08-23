@@ -131,6 +131,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         $skip     = false;
+        $xfail    = false;
         $time     = 0;
         $settings = $this->settings;
 
@@ -138,6 +139,11 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         if (isset($sections['INI'])) {
             $settings = array_merge($settings, $this->parseIniSection($sections['INI']));
+        }
+
+        if (isset($sections['ENV'])) {
+            $env = $this->parseEnvSection($sections['ENV']);
+            $this->phpUtil->setEnv($env);
         }
 
         // Redirects STDERR to STDOUT
@@ -163,7 +169,19 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             }
         }
 
+        if (isset($sections['XFAIL'])) {
+            $xfail = trim($sections['XFAIL']);
+        }
+
         if (!$skip) {
+            if (isset($sections['STDIN'])) {
+                $this->phpUtil->setStdin($sections['STDIN']);
+            }
+
+            if (isset($sections['ARGS'])) {
+                $this->phpUtil->setArgs($sections['ARGS']);
+            }
+
             if ($result->getCollectCodeCoverageInformation()) {
                 $code = $this->renderForCoverage($code);
             }
@@ -184,12 +202,23 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             try {
                 $this->assertPhptExpectation($sections, $jobResult['stdout']);
             } catch (PHPUnit_Framework_AssertionFailedError $e) {
-                $result->addFailure($this, $e, $time);
+                if ($xfail !== false) {
+                    $result->addFailure($this, new PHPUnit_Framework_IncompleteTestError($xfail, 0, $e), $time);
+                } else {
+                    $result->addFailure($this, $e, $time);
+                }
             } catch (Throwable $t) {
                 $result->addError($this, $t, $time);
             } catch (Exception $e) {
                 $result->addError($this, $e, $time);
             }
+
+            if ($result->allCompletelyImplemented() && $xfail !== false) {
+                $result->addFailure($this, new PHPUnit_Framework_IncompleteTestError('XFAIL section but test passes'), $time);
+            }
+
+            $this->phpUtil->setStdin('');
+            $this->phpUtil->setArgs('');
 
             if (isset($sections['CLEAN'])) {
                 $cleanCode = $this->render($sections['CLEAN']);
@@ -395,5 +424,19 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     protected function parseIniSection($content)
     {
         return preg_split('/\n|\r/', $content, -1, PREG_SPLIT_NO_EMPTY);
+    }
+
+    protected function parseEnvSection($content)
+    {
+        $env = [];
+
+        foreach(explode("\n", trim($content)) as $e) {
+            $e = explode('=', trim($e), 2);
+            if (!empty($e[0]) && isset($e[1])) {
+                $env[$e[0]] = $e[1];
+            }
+        }
+
+        return $env;
     }
 }
