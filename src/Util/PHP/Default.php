@@ -76,10 +76,11 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
             $env = isset($_SERVER) ? $_SERVER : [];
             unset($env['argv'], $env['argc']);
             $env = array_merge($env, $this->env);
-        }
-        foreach ($env as $envKey => $envVar) {
-            if (is_array($envVar)) {
-                unset($env[$envKey]);
+
+            foreach ($env as $envKey => $envVar) {
+                if (is_array($envVar)) {
+                    unset($env[$envKey]);
+                }
             }
         }
 
