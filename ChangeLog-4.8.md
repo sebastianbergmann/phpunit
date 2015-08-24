@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+### Fixed
+
+* Fixed [#1835](https://github.com/sebastianbergmann/phpunit/issues/1835): Skipped test reported as errored since PHPUnit 4.7.4
+
 ## [4.8.5] - 2015-08-19
 
 ### Fixed
