@@ -13,7 +13,7 @@
  *
  * @since Class available since Release 2.1.0
  */
-abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
+abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_TextUI_ResultPrinter implements PHPUnit_Framework_TestListener
 {
     /**
      * @var PHPUnit_Util_TestDox_NamePrettifier
@@ -74,8 +74,10 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * Constructor.
      *
      * @param resource $out
+     * @param  bool                        $verbose
+     * @param  string                      $colors
      */
-    public function __construct($out = null)
+    public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT)
     {
         parent::__construct($out);
 

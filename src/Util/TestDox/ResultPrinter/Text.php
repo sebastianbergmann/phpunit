@@ -34,12 +34,13 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
     protected function onTest($name, $success = true)
     {
         if ($success) {
-            $this->write(' [x] ');
+            $this->write(' [x] '. $name );
         } else {
-            $this->write(' [ ] ');
+            $buffer = $this->formatWithColor('fg-red, bold', ' [ ] ' . $name );
+            $this->write($buffer);
         }
 
-        $this->write($name . "\n");
+        $this->write("\n");
     }
 
     /**
