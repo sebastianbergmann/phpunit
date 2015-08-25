@@ -79,7 +79,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_TextUI_ResultP
      */
     public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT)
     {
-        parent::__construct($out);
+        parent::__construct($out, $verbose, $colors);
 
         $this->prettifier = new PHPUnit_Util_TestDox_NamePrettifier;
         $this->startRun();
