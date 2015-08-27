@@ -31,6 +31,7 @@
  *          processIsolation="false"
  *          stopOnError="false"
  *          stopOnFailure="false"
+ *          stopOnWarning="false"
  *          stopOnIncomplete="false"
  *          stopOnRisky="false"
  *          stopOnSkipped="false"
@@ -650,6 +651,13 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('stopOnFailure')) {
             $result['stopOnFailure'] = $this->getBoolean(
                 (string) $root->getAttribute('stopOnFailure'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('stopOnWarning')) {
+            $result['stopOnWarning'] = $this->getBoolean(
+                (string) $root->getAttribute('stopOnWarning'),
                 false
             );
         }
