@@ -179,13 +179,19 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $this->printErrors($result);
         $printSeparator = $result->errorCount() > 0;
+        $hasFailures    = $result->failureCount() > 0;
+        $hasWarnings    = $result->warningCount() > 0;
 
-        if ($printSeparator && $result->failureCount() > 0) {
+        if ($printSeparator && ($hasFailures || $hasWarnings)) {
             $this->write("\n--\n\n");
         }
 
-        $printSeparator = $printSeparator || $result->failureCount() > 0;
-        $this->printFailures($result);
+        $printSeparator = $printSeparator || $hasFailures || $hasWarnings;
+        if ($hasWarnings){
+            $this->printWarnings($result);
+        } else {
+            $this->printFailures($result);
+        }
 
         if ($this->verbose) {
             if ($printSeparator && $result->riskyCount() > 0) {
@@ -306,6 +312,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * @param PHPUnit_Framework_TestResult $result
      */
+    protected function printWarnings(PHPUnit_Framework_TestResult $result)
+    {
+        $this->printDefects($result->warnings(), 'warning');
+    }
+
+    /**
+     * @param PHPUnit_Framework_TestResult $result
+     */
     protected function printIncompletes(PHPUnit_Framework_TestResult $result)
     {
         $this->printDefects($result->notImplemented(), 'incomplete test');
@@ -371,16 +385,32 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                     'OK, but incomplete, skipped, or risky tests!'
                 );
             } else {
-                $color = 'fg-white, bg-red';
+                $showFailures = (
+                    $result->errors() ||
+                    $result->failures() ||
+                    $result->skipped() ||
+                    $result->notImplemented() ||
+                    $result->risky()) &&
+                    !$result->warnings()
+                ;
+
+                if ($showFailures){
+                    $color = 'fg-white, bg-red';
+                    $text  = 'FAILURES!';
+                } else {
+                    $color = 'fg-black, bg-yellow';
+                    $text  = 'WARNINGS!';
+                }
 
                 $this->write("\n");
-                $this->writeWithColor($color, 'FAILURES!');
+                $this->writeWithColor($color, $text);
             }
 
             $this->writeCountString(count($result), 'Tests', $color, true);
             $this->writeCountString($this->numAssertions, 'Assertions', $color, true);
             $this->writeCountString($result->errorCount(), 'Errors', $color);
             $this->writeCountString($result->failureCount(), 'Failures', $color);
+            $this->writeCountString($result->warningCount(), 'Warnings', $color);
             $this->writeCountString($result->skippedCount(), 'Skipped', $color);
             $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
             $this->writeCountString($result->riskyCount(), 'Risky', $color);
@@ -418,6 +448,20 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->writeProgressWithColor('bg-red, fg-white', 'F');
+        $this->lastTestFailed = true;
+    }
+
+    /**
+     * A warning occurred.
+     *
+     * @param PHPUnit_Framework_Test             $test
+     * @param PHPUnit_Framework_AssertionWarning $e
+     * @param float                              $time
+     * @since Method available since Release 5.0.0
+     */
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionWarning $e, $time)
+    {
+        $this->writeProgressWithColor('fg-yellow, bold', 'W');
         $this->lastTestFailed = true;
     }
 

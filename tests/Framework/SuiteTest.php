@@ -90,7 +90,8 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         $suite->run($this->result);
 
         $this->assertTrue(!$this->result->wasSuccessful());
-        $this->assertEquals(1, $this->result->failureCount());
+        $this->assertEquals(0, $this->result->failureCount());
+        $this->assertEquals(1, $this->result->warningCount());
         $this->assertEquals(1, count($this->result));
     }
 

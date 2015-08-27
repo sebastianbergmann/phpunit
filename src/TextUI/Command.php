@@ -71,6 +71,7 @@ class PHPUnit_TextUI_Command
         'stderr'                  => null,
         'stop-on-error'           => null,
         'stop-on-failure'         => null,
+        'stop-on-warning'         => null,
         'stop-on-incomplete'      => null,
         'stop-on-risky'           => null,
         'stop-on-skipped'         => null,
@@ -387,6 +388,10 @@ class PHPUnit_TextUI_Command
 
                 case '--stop-on-failure':
                     $this->arguments['stopOnFailure'] = true;
+                    break;
+
+                case '--stop-on-warning':
+                    $this->arguments['stopOnWarning'] = true;
                     break;
 
                 case '--stop-on-incomplete':
@@ -910,6 +915,7 @@ Test Execution Options:
   --stderr                  Write to STDERR instead of STDOUT.
   --stop-on-error           Stop execution upon first error.
   --stop-on-failure         Stop execution upon first error or failure.
+  --stop-on-warning         Stop execution upon first warning.
   --stop-on-risky           Stop execution upon first risky test.
   --stop-on-skipped         Stop execution upon first skipped test.
   --stop-on-incomplete      Stop execution upon first incomplete test.
