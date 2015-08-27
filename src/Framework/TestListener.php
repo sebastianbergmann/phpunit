@@ -25,6 +25,16 @@ interface PHPUnit_Framework_TestListener
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time);
 
     /**
+     * A warning occurred.
+     *
+     * @param PHPUnit_Framework_Test                 $test
+     * @param PHPUnit_Framework_AssertionWarning $e
+     * @param float                                  $time
+     * @since  Method available since Release 5.0.0
+     */
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionWarning $e, $time);
+    
+    /**
      * A failure occurred.
      *
      * @param PHPUnit_Framework_Test                 $test

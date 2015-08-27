@@ -54,7 +54,7 @@ class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
      */
     protected function runTest()
     {
-        $this->fail($this->message);
+        throw new PHPUnit_Framework_AssertionWarning($this->message);
     }
 
     /**
