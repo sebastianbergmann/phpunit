@@ -109,7 +109,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
-        if (!$test instanceof PHPUnit_Framework_Warning) {
+        if (!$test instanceof PHPUnit_Framework_WarningTestCase) {
             if ($this->ran) {
                 return;
             }
@@ -133,7 +133,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        if (!$test instanceof PHPUnit_Framework_Warning) {
+        if (!$test instanceof PHPUnit_Framework_WarningTestCase) {
             if ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
                 $ifStatus   = ['assigned', 'new', 'reopened'];
                 $newStatus  = 'closed';

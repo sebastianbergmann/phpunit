@@ -594,7 +594,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result = $this->createResult();
         }
 
-        if (!$this instanceof PHPUnit_Framework_Warning) {
+        if (!$this instanceof PHPUnit_Framework_WarningTestCase) {
             $this->setTestResultObject($result);
             $this->setUseErrorHandlerFromAnnotation();
         }
@@ -604,7 +604,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result->convertErrorsToExceptions($this->useErrorHandler);
         }
 
-        if (!$this instanceof PHPUnit_Framework_Warning && !$this->handleDependencies()) {
+        if (!$this instanceof PHPUnit_Framework_WarningTestCase && !$this->handleDependencies()) {
             return;
         }
 
@@ -756,6 +756,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->statusMessage = $e->getMessage();
         } catch (PHPUnit_Framework_SkippedTest $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
+            $this->statusMessage = $e->getMessage();
+        } catch (PHPUnit_Framework_Warning $e) {
+            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_WARNING;
             $this->statusMessage = $e->getMessage();
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;

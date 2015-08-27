@@ -195,6 +195,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $result->stopOnFailure(true);
         }
 
+        if ($arguments['stopOnWarning']) {
+            $result->stopOnWarning(true);
+        }
+
         if ($arguments['stopOnIncomplete']) {
             $result->stopOnIncomplete(true);
         }
@@ -658,6 +662,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
             }
 
+            if (isset($phpunitConfiguration['stopOnWarning']) &&
+                !isset($arguments['stopOnWarning'])) {
+                $arguments['stopOnWarning'] = $phpunitConfiguration['stopOnWarning'];
+            }
+
             if (isset($phpunitConfiguration['stopOnIncomplete']) &&
                 !isset($arguments['stopOnIncomplete'])) {
                 $arguments['stopOnIncomplete'] = $phpunitConfiguration['stopOnIncomplete'];
@@ -961,6 +970,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['crap4jThreshold']                            = isset($arguments['crap4jThreshold'])                            ? $arguments['crap4jThreshold']                            : 30;
         $arguments['stopOnError']                                = isset($arguments['stopOnError'])                                ? $arguments['stopOnError']                                : false;
         $arguments['stopOnFailure']                              = isset($arguments['stopOnFailure'])                              ? $arguments['stopOnFailure']                              : false;
+        $arguments['stopOnWarning']                              = isset($arguments['stopOnWarning'])                              ? $arguments['stopOnWarning']                              : false;
         $arguments['stopOnIncomplete']                           = isset($arguments['stopOnIncomplete'])                           ? $arguments['stopOnIncomplete']                           : false;
         $arguments['stopOnRisky']                                = isset($arguments['stopOnRisky'])                                ? $arguments['stopOnRisky']                                : false;
         $arguments['stopOnSkipped']                              = isset($arguments['stopOnSkipped'])                              ? $arguments['stopOnSkipped']                              : false;
