@@ -27,13 +27,13 @@ interface PHPUnit_Framework_TestListener
     /**
      * A warning occurred.
      *
-     * @param PHPUnit_Framework_Test                 $test
+     * @param PHPUnit_Framework_Test             $test
      * @param PHPUnit_Framework_AssertionWarning $e
-     * @param float                                  $time
-     * @since  Method available since Release 5.0.0
+     * @param float                              $time
+     * @since Method available since Release 5.0.0
      */
     public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionWarning $e, $time);
-    
+
     /**
      * A failure occurred.
      *

@@ -179,8 +179,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $this->printErrors($result);
         $printSeparator = $result->errorCount() > 0;
-        $hasFailures = $result->failureCount() > 0;
-        $hasWarnings = $result->warningCount() > 0;
+        $hasFailures    = $result->failureCount() > 0;
+        $hasWarnings    = $result->warningCount() > 0;
 
         if ($printSeparator && ($hasFailures || $hasWarnings)) {
             $this->write("\n--\n\n");
@@ -396,10 +396,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
                 if ($showFailures){
                     $color = 'fg-white, bg-red';
-                    $text = 'FAILURES!';
+                    $text  = 'FAILURES!';
                 } else {
-                    $color = "fg-black, bg-yellow";
-                    $text = 'WARNINGS!';
+                    $color = 'fg-black, bg-yellow';
+                    $text  = 'WARNINGS!';
                 }
 
                 $this->write("\n");
@@ -452,11 +452,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     }
 
     /**
-     * A failure occurred.
+     * A warning occurred.
      *
-     * @param PHPUnit_Framework_Test                 $test
-     * @param PHPUnit_Framework_AssertionFailedError $e
-     * @param float                                  $time
+     * @param PHPUnit_Framework_Test             $test
+     * @param PHPUnit_Framework_AssertionWarning $e
+     * @param float                              $time
      * @since Method available since Release 5.0.0
      */
     public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionWarning $e, $time)

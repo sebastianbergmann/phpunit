@@ -53,9 +53,9 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
     /**
      * A warning occurred.
      *
-     * @param PHPUnit_Framework_Test                 $test
-     * @param PHPUnit_Framework_AssertionWarning     $e
-     * @param float                                  $time
+     * @param PHPUnit_Framework_Test             $test
+     * @param PHPUnit_Framework_AssertionWarning $e
+     * @param float                              $time
      * @since  Method available since Release 5.0.0
      */
     public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionWarning $e, $time)

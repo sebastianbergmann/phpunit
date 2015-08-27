@@ -250,16 +250,17 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Adds a failure to the list of failures.
-     * The passed in exception caused the failure.
+     * Adds a warning to the list of warnings.
+     * The passed in exception caused the warning.
      *
-     * @param PHPUnit_Framework_Test                 $test
+     * @param PHPUnit_Framework_Test             $test
      * @param PHPUnit_Framework_AssertionWarning $e
-     * @param float                                  $time
+     * @param float                              $time
      * @since Method available since Release 5.0.0
      */
-    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionWarning $e, $time){
-        if ($this->stopOnWarning){
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionWarning $e, $time) 
+    {
+        if ($this->stopOnWarning) {
             $this->stop();
         }
 
@@ -682,7 +683,7 @@ class PHPUnit_Framework_TestResult implements Countable
             } elseif ($e instanceof PHPUnit_Framework_SkippedTestError) {
                 $skipped = true;
             }
-        } catch(PHPUnit_Framework_AssertionWarning $e){
+        } catch (PHPUnit_Framework_AssertionWarning $e) {
             $warning = true;
         } catch (PHPUnit_Framework_Exception $e) {
             $error = true;
