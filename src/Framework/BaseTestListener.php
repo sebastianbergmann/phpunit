@@ -21,6 +21,10 @@ abstract class PHPUnit_Framework_BaseTestListener implements PHPUnit_Framework_T
     {
     }
 
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    {
+    }
+
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
     }

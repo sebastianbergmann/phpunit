@@ -9,71 +9,19 @@
  */
 
 /**
- * A warning.
+ * Thrown when an there is a warning.
  *
- * @since Class available since Release 2.0.0
+ * @since Class available since Release 5.0.0
  */
-class PHPUnit_Framework_Warning extends PHPUnit_Framework_TestCase
+class PHPUnit_Framework_Warning extends PHPUnit_Framework_Exception implements PHPUnit_Framework_SelfDescribing
 {
     /**
-     * @var string
-     */
-    protected $message = '';
-
-    /**
-     * @var bool
-     */
-    protected $backupGlobals = false;
-
-    /**
-     * @var bool
-     */
-    protected $backupStaticAttributes = false;
-
-    /**
-     * @var bool
-     */
-    protected $runTestInSeparateProcess = false;
-
-    /**
-     * @var bool
-     */
-    protected $useErrorHandler = false;
-
-    /**
-     * @param string $message
-     */
-    public function __construct($message = '')
-    {
-        $this->message = $message;
-        parent::__construct('Warning');
-    }
-
-    /**
-     * @throws PHPUnit_Framework_Exception
-     */
-    protected function runTest()
-    {
-        $this->fail($this->message);
-    }
-
-    /**
-     * @return string
-     * @since  Method available since Release 3.0.0
-     */
-    public function getMessage()
-    {
-        return $this->message;
-    }
-
-    /**
-     * Returns a string representation of the test case.
+     * Wrapper for getMessage() which is declared as final.
      *
      * @return string
-     * @since  Method available since Release 3.4.0
      */
     public function toString()
     {
-        return 'Warning';
+        return $this->getMessage();
     }
 }
