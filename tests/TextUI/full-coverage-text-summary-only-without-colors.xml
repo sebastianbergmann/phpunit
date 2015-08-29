@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.4/phpunit.xsd"
+         colors="never">
+
+    <filter>
+        <whitelist>
+            <file>../_files/FullCoverageClass.php</file>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-text"
+             target="php://stdout"
+             lowUpperBound="100"
+             highLowerBound="100"
+             showUncoveredFiles="false"
+             showOnlySummary="true" />
+    </logging>
+</phpunit>
+
