@@ -37,7 +37,8 @@ return Symfony\CS\Config\Config::create()
             'whitespacy_lines',
             'align_double_arrow',
             'align_equals',
-            'concat_with_spaces'
+            'concat_with_spaces',
+            'short_array_syntax'
         )
     )
     ->finder($finder);

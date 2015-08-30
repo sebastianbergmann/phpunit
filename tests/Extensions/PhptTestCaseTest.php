@@ -48,7 +48,7 @@ EOF;
 
     protected function setUp()
     {
-        $this->filename = sys_get_temp_dir().'/phpunit.phpt';
+        $this->filename = sys_get_temp_dir() . '/phpunit.phpt';
         touch($this->filename);
 
         $this->phpUtil = $this->getMockForAbstractClass('PHPUnit_Util_PHP', [], '', false);
@@ -78,7 +78,7 @@ EOF;
     {
         $this->setPhpContent(self::EXPECT_CONTENT);
 
-        $fileSection = '<?php echo "Hello PHPUnit!"; ?>'.PHP_EOL;
+        $fileSection = '<?php echo "Hello PHPUnit!"; ?>' . PHP_EOL;
 
         $this->phpUtil
             ->expects($this->once())
@@ -91,10 +91,10 @@ EOF;
 
     public function testShouldRunSkipifSectionWhenExists()
     {
-        $skipifSection = '<?php /** Nothing **/ ?>'.PHP_EOL;
+        $skipifSection = '<?php /** Nothing **/ ?>' . PHP_EOL;
 
-        $phptContent = self::EXPECT_CONTENT.PHP_EOL;
-        $phptContent .= '--SKIPIF--'.PHP_EOL;
+        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
+        $phptContent .= '--SKIPIF--' . PHP_EOL;
         $phptContent .= $skipifSection;
 
         $this->setPhpContent($phptContent);
@@ -110,10 +110,10 @@ EOF;
 
     public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord()
     {
-        $skipifSection = '<?php echo "skip: Reason"; ?>'.PHP_EOL;
+        $skipifSection = '<?php echo "skip: Reason"; ?>' . PHP_EOL;
 
-        $phptContent = self::EXPECT_CONTENT.PHP_EOL;
-        $phptContent .= '--SKIPIF--'.PHP_EOL;
+        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
+        $phptContent .= '--SKIPIF--' . PHP_EOL;
         $phptContent .= $skipifSection;
 
         $this->setPhpContent($phptContent);

@@ -3,7 +3,7 @@ phpunit -c ../_files/configuration_stop_on_warning.xml --stop-on-warning StopOnW
 --FILE--
 <?php
 $_SERVER['argv'][1] = '-c';
-$_SERVER['argv'][2] = dirname(__FILE__).'/../_files/configuration_stop_on_warning.xml';
+$_SERVER['argv'][2] = dirname(__FILE__) . '/../_files/configuration_stop_on_warning.xml';
 $_SERVER['argv'][3] = '--stop-on-warning';
 $_SERVER['argv'][4] = 'StopOnWarningTestSuite';
 $_SERVER['argv'][5] = dirname(dirname(__FILE__)) . '/_files/StopOnWarningTestSuite.php';
