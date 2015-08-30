@@ -3,7 +3,7 @@ phpunit BankAccountTest ../_files/BankAccountTest.php --colors
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = __DIR__.'/../_files/BankAccountTest.php';
+$_SERVER['argv'][2] = __DIR__ . '/../_files/BankAccountTest.php';
 $_SERVER['argv'][3] = '--colors=always';
 
 require __DIR__ . '/../bootstrap.php';

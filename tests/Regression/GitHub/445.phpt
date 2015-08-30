@@ -6,7 +6,7 @@ GH-455: expectOutputString not working in strict mode
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--disallow-test-output';
 $_SERVER['argv'][3] = 'Issue445Test';
-$_SERVER['argv'][4] = dirname(__FILE__).'/445/Issue445Test.php';
+$_SERVER['argv'][4] = dirname(__FILE__) . '/445/Issue445Test.php';
 
 require __DIR__ . '/../../bootstrap.php';
 PHPUnit_TextUI_Command::main();
