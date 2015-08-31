@@ -21,7 +21,7 @@ Due to time constraints, we are not always able to respond as quickly as we woul
 
 This project comes with a configuration file for [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (`.php_cs`) that you can use to (re)format your sourcecode for compliance with this project's coding guidelines:
 
-```
+```bash
 $ wget http://get.sensiolabs.org/php-cs-fixer.phar
 
 $ php php-cs-fixer.phar fix
@@ -31,7 +31,7 @@ $ php php-cs-fixer.phar fix
 
 The following commands can be used to perform the initial checkout of PHPUnit:
 
-```
+```bash
 $ git clone git://github.com/sebastianbergmann/phpunit.git
 
 $ cd phpunit
@@ -39,7 +39,7 @@ $ cd phpunit
 
 Retrieve PHPUnit's dependencies using [Composer](http://getcomposer.org/):
 
-```
+```bash
 $ wget http://getcomposer.org/composer.phar
 
 $ php composer.phar install
@@ -47,7 +47,7 @@ $ php composer.phar install
 
 The `phpunit` script can be used to invoke the PHPUnit test runner:
 
-```
+```bash
 $ ./phpunit --version
 ```
 
