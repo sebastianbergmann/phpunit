@@ -40,6 +40,27 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_MockObject_Generator::getMock
+     * @covers PHPUnit_Framework_MockObject_Generator::isMethodNameBlacklisted
+     */
+    public function testGetMockBlacklistedMethodNamesPhp7()
+    {
+        if (PHP_MAJOR_VERSION < 7) {
+            $this->markTestSkipped('PHP >= 7.0.0 required');
+
+            return;
+        }
+
+        // Probably, this should be moved to tests/autoload.php
+        require_once __DIR__ . '/_fixture/InterfaceWithSemiReservedMethodName.php';
+
+        $mock = $this->generator->getMock('InterfaceWithSemiReservedMethodName');
+
+        $this->assertTrue(method_exists($mock, 'unset'));
+        $this->assertInstanceOf('InterfaceWithSemiReservedMethodName', $mock);
+    }
+
+    /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMockForAbstractClass
      */
     public function testGetMockForAbstractClassDoesNotFailWhenFakingInterfaces()
