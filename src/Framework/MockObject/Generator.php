@@ -34,7 +34,7 @@ class PHPUnit_Framework_MockObject_Generator
     /**
      * @var array
      */
-    protected $blacklistedMethodNames = [
+    protected $legacyBlacklistedMethodNames = [
       '__CLASS__'       => true,
       '__DIR__'         => true,
       '__FILE__'        => true,
@@ -110,6 +110,22 @@ class PHPUnit_Framework_MockObject_Generator
       'var'             => true,
       'while'           => true,
       'xor'             => true
+    ];
+
+    /**
+     * @var array
+     */
+    protected $blacklistedMethodNames = [
+      '__CLASS__'       => true,
+      '__DIR__'         => true,
+      '__FILE__'        => true,
+      '__FUNCTION__'    => true,
+      '__LINE__'        => true,
+      '__METHOD__'      => true,
+      '__NAMESPACE__'   => true,
+      '__TRAIT__'       => true,
+      '__clone'         => true,
+      '__halt_compiler' => true,
     ];
 
     /**
@@ -998,11 +1014,32 @@ class PHPUnit_Framework_MockObject_Generator
         if ($method->isConstructor() ||
             $method->isFinal() ||
             $method->isPrivate() ||
-            isset($this->blacklistedMethodNames[$method->getName()])) {
+            $this->isMethodNameBlacklisted($method->getName())) {
             return false;
         }
 
         return true;
+    }
+
+    /**
+     * Returns whether i method name is blacklisted
+     *
+     * Since PHP 7 the only names that are still reserved for method names are the ones that start with an underscore
+     *
+     * @param string   $name
+     * @return boolean
+     */
+    protected function isMethodNameBlacklisted($name)
+    {
+        if (PHP_MAJOR_VERSION < 7 && isset($this->legacyBlacklistedMethodNames[$name])) {
+            return true;
+        }
+
+        if (PHP_MAJOR_VERSION >= 7 && isset($this->blacklistedMethodNames[$name])) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
