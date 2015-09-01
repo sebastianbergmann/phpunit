@@ -690,7 +690,7 @@ class PHPUnit_Framework_TestResult implements Countable
                     $linesToBeCovered,
                     $linesToBeUsed
                 );
-            } catch (PHP_CodeCoverage_Exception_UnintentionallyCoveredCode $cce) {
+            } catch (PHP_CodeCoverage_UnintentionallyCoveredCodeException $cce) {
                 $this->addFailure(
                     $test,
                     new PHPUnit_Framework_UnintentionallyCoveredCodeError(
