@@ -1026,8 +1026,8 @@ class PHPUnit_Framework_MockObject_Generator
      *
      * Since PHP 7 the only names that are still reserved for method names are the ones that start with an underscore
      *
-     * @param string   $name
-     * @return boolean
+     * @param  string $name
+     * @return bool
      */
     protected function isMethodNameBlacklisted($name)
     {
