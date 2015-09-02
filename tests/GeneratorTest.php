@@ -51,9 +51,6 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
             return;
         }
 
-        // Probably, this should be moved to tests/autoload.php
-        require_once __DIR__ . '/_fixture/InterfaceWithSemiReservedMethodName.php';
-
         $mock = $this->generator->getMock('InterfaceWithSemiReservedMethodName');
 
         $this->assertTrue(method_exists($mock, 'unset'));
