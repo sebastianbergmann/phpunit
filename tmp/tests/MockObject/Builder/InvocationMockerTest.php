@@ -4,7 +4,7 @@ class Framework_MockObject_Builder_InvocationMockerTest extends PHPUnit_Framewor
 {
     public function testWillReturnWithOneValue()
     {
-        $mock = $this->getMock('stdClass', array('foo'));
+        $mock = $this->getMock('stdClass', ['foo']);
         $mock
             ->expects($this->any())
             ->method('foo')
@@ -14,7 +14,7 @@ class Framework_MockObject_Builder_InvocationMockerTest extends PHPUnit_Framewor
 
     public function testWillReturnWithMultipleValues()
     {
-        $mock = $this->getMock('stdClass', array('foo'));
+        $mock = $this->getMock('stdClass', ['foo']);
         $mock
             ->expects($this->any())
             ->method('foo')
@@ -26,7 +26,7 @@ class Framework_MockObject_Builder_InvocationMockerTest extends PHPUnit_Framewor
 
     public function testWillReturnOnConsecutiveCalls()
     {
-        $mock = $this->getMock('stdClass', array('foo'));
+        $mock = $this->getMock('stdClass', ['foo']);
         $mock
             ->expects($this->any())
             ->method('foo')
