@@ -27,7 +27,7 @@ class PHPUnit_Framework_MockObject_Generator
     /**
      * @var array
      */
-    protected $legacyBlacklistedMethodNames = [
+    private $legacyBlacklistedMethodNames = [
       '__CLASS__'       => true,
       '__DIR__'         => true,
       '__FILE__'        => true,
@@ -108,7 +108,7 @@ class PHPUnit_Framework_MockObject_Generator
     /**
      * @var array
      */
-    protected $blacklistedMethodNames = [
+    private $blacklistedMethodNames = [
       '__CLASS__'       => true,
       '__DIR__'         => true,
       '__FILE__'        => true,
@@ -241,7 +241,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  object       $proxyTarget
      * @return object
      */
-    protected function getObject($code, $className, $type = '', $callOriginalConstructor = false, $callAutoload = false, array $arguments = [], $callOriginalMethods = false, $proxyTarget = null)
+    private function getObject($code, $className, $type = '', $callOriginalConstructor = false, $callAutoload = false, array $arguments = [], $callOriginalMethods = false, $proxyTarget = null)
     {
         $this->evalClass($code, $className);
 
@@ -293,7 +293,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param string $code
      * @param string $className
      */
-    protected function evalClass($code, $className)
+    private function evalClass($code, $className)
     {
         if (!class_exists($className, false)) {
             eval($code);
@@ -630,7 +630,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @return array
      * @throws PHPUnit_Framework_Exception
      */
-    protected function generateMock($type, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
+    private function generateMock($type, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
     {
         $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' .
                          DIRECTORY_SEPARATOR;
@@ -827,7 +827,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string       $prefix
      * @return array
      */
-    protected function generateClassName($type, $className, $prefix)
+    private function generateClassName($type, $className, $prefix)
     {
         if (is_array($type)) {
             $type = implode('_', $type);
@@ -869,7 +869,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  array $additionalInterfaces
      * @return array
      */
-    protected function generateMockClassDeclaration(array $mockClassName, $isInterface, array $additionalInterfaces = [])
+    private function generateMockClassDeclaration(array $mockClassName, $isInterface, array $additionalInterfaces = [])
     {
         $buffer = 'class ';
 
@@ -912,7 +912,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  bool             $callOriginalMethods
      * @return string
      */
-    protected function generateMockedMethodDefinitionFromExisting($templateDir, ReflectionMethod $method, $cloneArguments, $callOriginalMethods)
+    private function generateMockedMethodDefinitionFromExisting($templateDir, ReflectionMethod $method, $cloneArguments, $callOriginalMethods)
     {
         if ($method->isPrivate()) {
             $modifier = 'private';
@@ -967,7 +967,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  bool   $static
      * @return string
      */
-    protected function generateMockedMethodDefinition($templateDir, $className, $methodName, $cloneArguments = true, $modifier = 'public', $arguments_decl = '', $arguments_call = '', $return_type = '', $reference = '', $callOriginalMethods = false, $static = false)
+    private function generateMockedMethodDefinition($templateDir, $className, $methodName, $cloneArguments = true, $modifier = 'public', $arguments_decl = '', $arguments_call = '', $return_type = '', $reference = '', $callOriginalMethods = false, $static = false)
     {
         if ($static) {
             $templateFile = 'mocked_static_method.tpl';
@@ -1002,7 +1002,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  ReflectionMethod $method
      * @return bool
      */
-    protected function canMockMethod(ReflectionMethod $method)
+    private function canMockMethod(ReflectionMethod $method)
     {
         if ($method->isConstructor() ||
             $method->isFinal() ||
@@ -1022,7 +1022,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param  string $name
      * @return bool
      */
-    protected function isMethodNameBlacklisted($name)
+    private function isMethodNameBlacklisted($name)
     {
         if (PHP_MAJOR_VERSION < 7 && isset($this->legacyBlacklistedMethodNames[$name])) {
             return true;
@@ -1044,7 +1044,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @throws PHPUnit_Framework_MockObject_RuntimeException
      * @since  Method available since Release 2.0.0
      */
-    protected function getMethodParameters(ReflectionMethod $method, $forCall = false)
+    private function getMethodParameters(ReflectionMethod $method, $forCall = false)
     {
         $parameters = [];
 
