@@ -17,7 +17,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockFailsWhenInvalidFunctionNameIsPassedInAsAFunctionToMock()
     {
-        $this->generator->getMock('StdClass', [0]);
+        $this->generator->getMock(StdClass::class, [0]);
     }
 
     /**
@@ -25,7 +25,8 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockCanCreateNonExistingFunctions()
     {
-        $mock = $this->generator->getMock('StdClass', ['testFunction']);
+        $mock = $this->generator->getMock(StdClass::class, ['testFunction']);
+
         $this->assertTrue(method_exists($mock, 'testFunction'));
     }
 
@@ -36,25 +37,20 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockGeneratorFails()
     {
-        $mock = $this->generator->getMock('StdClass', ['foo', 'foo']);
+        $this->generator->getMock(StdClass::class, ['foo', 'foo']);
     }
 
     /**
-     * @covers PHPUnit_Framework_MockObject_Generator::getMock
-     * @covers PHPUnit_Framework_MockObject_Generator::isMethodNameBlacklisted
+     * @covers   PHPUnit_Framework_MockObject_Generator::getMock
+     * @covers   PHPUnit_Framework_MockObject_Generator::isMethodNameBlacklisted
+     * @requires PHP 7
      */
     public function testGetMockBlacklistedMethodNamesPhp7()
     {
-        if (PHP_MAJOR_VERSION < 7) {
-            $this->markTestSkipped('PHP >= 7.0.0 required');
-
-            return;
-        }
-
-        $mock = $this->generator->getMock('InterfaceWithSemiReservedMethodName');
+        $mock = $this->generator->getMock(InterfaceWithSemiReservedMethodName::class);
 
         $this->assertTrue(method_exists($mock, 'unset'));
-        $this->assertInstanceOf('InterfaceWithSemiReservedMethodName', $mock);
+        $this->assertInstanceOf(InterfaceWithSemiReservedMethodName::class, $mock);
     }
 
     /**
@@ -62,7 +58,8 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockForAbstractClassDoesNotFailWhenFakingInterfaces()
     {
-        $mock = $this->generator->getMockForAbstractClass('Countable');
+        $mock = $this->generator->getMockForAbstractClass(Countable::class);
+
         $this->assertTrue(method_exists($mock, 'count'));
     }
 
@@ -71,7 +68,8 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockForAbstractClassStubbingAbstractClass()
     {
-        $mock = $this->generator->getMockForAbstractClass('AbstractMockTestClass');
+        $mock = $this->generator->getMockForAbstractClass(AbstractMockTestClass::class);
+
         $this->assertTrue(method_exists($mock, 'doSomething'));
     }
 
@@ -81,7 +79,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     public function testGetMockForAbstractClassWithNonExistentMethods()
     {
         $mock = $this->generator->getMockForAbstractClass(
-            'AbstractMockTestClass',
+            AbstractMockTestClass::class,
             [],
             '',
             true,
@@ -99,7 +97,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockForAbstractClassShouldCreateStubsOnlyForAbstractMethodWhenNoMethodsWereInformed()
     {
-        $mock = $this->generator->getMockForAbstractClass('AbstractMockTestClass');
+        $mock = $this->generator->getMockForAbstractClass(AbstractMockTestClass::class);
 
         $mock->expects($this->any())
              ->method('doSomething')
@@ -116,7 +114,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockForAbstractClassExpectingInvalidArgumentException($className, $mockClassName)
     {
-        $mock = $this->generator->getMockForAbstractClass($className, [], $mockClassName);
+        $this->generator->getMockForAbstractClass($className, [], $mockClassName);
     }
 
     /**
@@ -125,17 +123,14 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockForAbstractClassAbstractClassDoesNotExist()
     {
-        $mock = $this->generator->getMockForAbstractClass('Tux');
+        $this->generator->getMockForAbstractClass('Tux');
     }
 
-    /**
-     * Dataprovider for test "testGetMockForAbstractClassExpectingInvalidArgumentException"
-     */
-    public static function getMockForAbstractClassExpectsInvalidArgumentExceptionDataprovider()
+    public function getMockForAbstractClassExpectsInvalidArgumentExceptionDataprovider()
     {
         return [
             'className not a string'     => [[], ''],
-            'mockClassName not a string' => ['Countable', new StdClass],
+            'mockClassName not a string' => [Countable::class, new StdClass],
         ];
     }
 
@@ -145,7 +140,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     public function testGetMockForTraitWithNonExistentMethodsAndNonAbstractMethods()
     {
         $mock = $this->generator->getMockForTrait(
-            'AbstractTrait',
+            AbstractTrait::class,
             [],
             '',
             true,
@@ -165,16 +160,15 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockForTraitStubbingAbstractMethod()
     {
-        $mock = $this->generator->getMockForTrait('AbstractTrait');
+        $mock = $this->generator->getMockForTrait(AbstractTrait::class);
+
         $this->assertTrue(method_exists($mock, 'doSomething'));
     }
 
     public function testGetMockForSingletonWithReflectionSuccess()
     {
-        // Probably, this should be moved to tests/autoload.php
-        require_once __DIR__ . '/_fixture/SingletonClass.php';
+        $mock = $this->generator->getMock(SingletonClass::class, ['doSomething'], [], '', false);
 
-        $mock = $this->generator->getMock('SingletonClass', ['doSomething'], [], '', false);
         $this->assertInstanceOf('SingletonClass', $mock);
     }
 }
