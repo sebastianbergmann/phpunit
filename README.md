@@ -2,25 +2,31 @@
 
 PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of the xUnit architecture for unit testing frameworks.
 
-[![Latest Stable Version](https://poser.pugx.org/phpunit/phpunit/v/stable.png)](https://packagist.org/packages/phpunit/phpunit)
-[![Build Status](https://travis-ci.org/sebastianbergmann/phpunit.svg?branch=master)](https://travis-ci.org/sebastianbergmann/phpunit)
-[![Dependency Status](https://www.versioneye.com/php/phpunit:phpunit/dev-master/badge.png)](https://www.versioneye.com/php/phpunit:phpunit/dev-master)
-[![Reference Status](https://www.versioneye.com/php/phpunit:phpunit/reference_badge.svg)](https://www.versioneye.com/php/phpunit:phpunit/references)
+[![Latest Stable Version](https://img.shields.io/packagist/v/phpunit/phpunit.svg?style=flat-square)](https://packagist.org/packages/phpunit/phpunit)
+[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%205.6-8892BF.svg?style=flat-square)](https://php.net/)
+[![Build Status](https://img.shields.io/travis/sebastianbergmann/phpunit/master.svg?style=flat-square)](https://travis-ci.org/sebastianbergmann/phpunit)
 
 ## Installation
 
-We distribute a [PHP Archive (PHAR)](http://php.net/phar) that has all required (as well as some optional) dependencies of PHPUnit bundled in a single file:
+We distribute a [PHP Archive (PHAR)](https://php.net/phar) that has all required (as well as some optional) dependencies of PHPUnit bundled in a single file:
 
-    wget https://phar.phpunit.de/phpunit.phar
-    chmod +x phpunit.phar
-    mv phpunit.phar /usr/local/bin/phpunit
+```bash
+$ wget https://phar.phpunit.de/phpunit.phar
+
+$ chmod +x phpunit.phar
+
+$ mv phpunit.phar /usr/local/bin/phpunit
+```
 
 You can also immediately use the PHAR after you have downloaded it, of course:
 
-    wget https://phar.phpunit.de/phpunit.phar
-    php phpunit.phar
+```bash
+$ wget https://phar.phpunit.de/phpunit.phar
 
-Alternatively, you may use [Composer](http://getcomposer.org/) to download and install PHPUnit as well as its dependencies. Please refer to the [documentation](https://phpunit.de/documentation.html) for details on how to do this.
+$ php phpunit.phar
+```
+
+Alternatively, you may use [Composer](https://getcomposer.org/) to download and install PHPUnit as well as its dependencies. Please refer to the [documentation](https://phpunit.de/documentation.html) for details on how to do this.
 
 ## Contribute
 

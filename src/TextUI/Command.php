@@ -12,11 +12,7 @@
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
  *
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since Class available since Release 3.0.0
  */
 class PHPUnit_TextUI_Command
 {
@@ -38,55 +34,57 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $longOptions = [
-        'colors=='             => null,
-        'bootstrap='           => null,
-        'columns='             => null,
-        'configuration='       => null,
-        'coverage-clover='     => null,
-        'coverage-crap4j='     => null,
-        'coverage-html='       => null,
-        'coverage-php='        => null,
-        'coverage-text=='      => null,
-        'coverage-xml='        => null,
-        'debug'                => null,
-        'exclude-group='       => null,
-        'filter='              => null,
-        'testsuite='           => null,
-        'group='               => null,
-        'help'                 => null,
-        'include-path='        => null,
-        'list-groups'          => null,
-        'loader='              => null,
-        'log-json='            => null,
-        'log-junit='           => null,
-        'log-tap='             => null,
-        'process-isolation'    => null,
-        'repeat='              => null,
-        'stderr'               => null,
-        'stop-on-error'        => null,
-        'stop-on-failure'      => null,
-        'stop-on-incomplete'   => null,
-        'stop-on-risky'        => null,
-        'stop-on-skipped'      => null,
-        'report-useless-tests' => null,
-        'strict-coverage'      => null,
-        'disallow-test-output' => null,
-        'enforce-time-limit'   => null,
-        'disallow-todo-tests'  => null,
-        'strict-global-state'  => null,
-        'strict'               => null,
-        'tap'                  => null,
-        'testdox'              => null,
-        'testdox-html='        => null,
-        'testdox-text='        => null,
-        'test-suffix='         => null,
-        'no-configuration'     => null,
-        'no-coverage'          => null,
-        'no-globals-backup'    => null,
-        'printer='             => null,
-        'static-backup'        => null,
-        'verbose'              => null,
-        'version'              => null
+        'bootstrap='              => null,
+        'colors=='                => null,
+        'columns='                => null,
+        'configuration='          => null,
+        'coverage-clover='        => null,
+        'coverage-crap4j='        => null,
+        'coverage-html='          => null,
+        'coverage-php='           => null,
+        'coverage-text=='         => null,
+        'coverage-xml='           => null,
+        'debug'                   => null,
+        'disallow-test-output'    => null,
+        'disallow-resource-usage' => null,
+        'disallow-todo-tests'     => null,
+        'enforce-time-limit'      => null,
+        'exclude-group='          => null,
+        'filter='                 => null,
+        'group='                  => null,
+        'help'                    => null,
+        'include-path='           => null,
+        'list-groups'             => null,
+        'loader='                 => null,
+        'log-json='               => null,
+        'log-junit='              => null,
+        'log-tap='                => null,
+        'no-configuration'        => null,
+        'no-coverage'             => null,
+        'no-globals-backup'       => null,
+        'printer='                => null,
+        'process-isolation'       => null,
+        'repeat='                 => null,
+        'report-useless-tests'    => null,
+        'reverse-list'            => null,
+        'static-backup'           => null,
+        'stderr'                  => null,
+        'stop-on-error'           => null,
+        'stop-on-failure'         => null,
+        'stop-on-warning'         => null,
+        'stop-on-incomplete'      => null,
+        'stop-on-risky'           => null,
+        'stop-on-skipped'         => null,
+        'strict-coverage'         => null,
+        'strict-global-state'     => null,
+        'tap'                     => null,
+        'testdox'                 => null,
+        'testdox-html='           => null,
+        'testdox-text='           => null,
+        'test-suffix='            => null,
+        'testsuite='              => null,
+        'verbose'                 => null,
+        'version'                 => null
     ];
 
     /**
@@ -392,6 +390,10 @@ class PHPUnit_TextUI_Command
                     $this->arguments['stopOnFailure'] = true;
                     break;
 
+                case '--stop-on-warning':
+                    $this->arguments['stopOnWarning'] = true;
+                    break;
+
                 case '--stop-on-incomplete':
                     $this->arguments['stopOnIncomplete'] = true;
                     break;
@@ -455,11 +457,15 @@ class PHPUnit_TextUI_Command
                     break;
 
                 case '--strict-global-state':
-                    $this->arguments['disallowChangesToGlobalState'] = true;
+                    $this->arguments['beStrictAboutChangesToGlobalState'] = true;
                     break;
 
                 case '--disallow-test-output':
                     $this->arguments['disallowTestOutput'] = true;
+                    break;
+
+                case '--disallow-resource-usage':
+                    $this->arguments['beStrictAboutResourceUsageDuringSmallTests'] = true;
                     break;
 
                 case '--enforce-time-limit':
@@ -470,13 +476,8 @@ class PHPUnit_TextUI_Command
                     $this->arguments['disallowTodoAnnotatedTests'] = true;
                     break;
 
-                case '--strict':
-                    $this->arguments['reportUselessTests']         = true;
-                    $this->arguments['strictCoverage']             = true;
-                    $this->arguments['disallowTestOutput']         = true;
-                    $this->arguments['enforceTimeLimit']           = true;
-                    $this->arguments['disallowTodoAnnotatedTests'] = true;
-                    $this->arguments['deprecatedStrictModeOption'] = true;
+                case '--reverse-list':
+                    $this->arguments['reverseList'] = true;
                     break;
 
                 case '--check-version':
@@ -568,6 +569,9 @@ class PHPUnit_TextUI_Command
                 $configuration = PHPUnit_Util_Configuration::getInstance(
                     $this->arguments['configuration']
                 );
+            } catch (Throwable $e) {
+                print $e->getMessage() . "\n";
+                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
             } catch (Exception $e) {
                 print $e->getMessage() . "\n";
                 exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
@@ -591,6 +595,10 @@ class PHPUnit_TextUI_Command
              */
             if (isset($phpunit['stderr']) && ! isset($this->arguments['stderr'])) {
                 $this->arguments['stderr'] = $phpunit['stderr'];
+            }
+
+            if (isset($phpunit['columns']) && ! isset($this->arguments['columns'])) {
+                $this->arguments['columns'] = $phpunit['columns'];
             }
 
             if (isset($phpunit['printerClass'])) {
@@ -782,7 +790,7 @@ class PHPUnit_TextUI_Command
 
         // Workaround for https://bugs.php.net/bug.php?id=65538
         $caFile = dirname($tempFilename) . '/ca.pem';
-        copy(__PHPUNIT_PHAR_ROOT__ . '/ca.pem', $caFile);
+        copy(__PHPUNIT_PHAR_ROOT__ . '/phar/ca.pem', $caFile);
 
         print 'Updating the PHPUnit PHAR ... ';
 
@@ -810,7 +818,13 @@ class PHPUnit_TextUI_Command
             unset($phar);
             rename($tempFilename, $localFilename);
             unlink($caFile);
-        } catch (Exception $e) {
+        } catch (Throwable $_e) {
+            $e = $_e;
+        } catch (Exception $_e) {
+            $e = $_e;
+        }
+
+        if (isset($e)) {
             unlink($caFile);
             unlink($tempFilename);
             print " done\n\n" . $e->getMessage() . "\n";
@@ -869,6 +883,7 @@ Logging Options:
   --log-json <file>         Log test execution in JSON format.
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
+  --reverse-list            Print defects in reverse order
 
 Test Selection Options:
 
@@ -886,6 +901,7 @@ Test Execution Options:
   --strict-coverage         Be strict about unintentionally covered code.
   --strict-global-state     Be strict about changes to global state
   --disallow-test-output    Be strict about output during tests.
+  --disallow-resource-usage Be strict about resource usage during small tests.
   --enforce-time-limit      Enforce time limit based on test size.
   --disallow-todo-tests     Disallow @todo-annotated tests.
 
@@ -899,6 +915,7 @@ Test Execution Options:
   --stderr                  Write to STDERR instead of STDOUT.
   --stop-on-error           Stop execution upon first error.
   --stop-on-failure         Stop execution upon first error or failure.
+  --stop-on-warning         Stop execution upon first warning.
   --stop-on-risky           Stop execution upon first risky test.
   --stop-on-skipped         Stop execution upon first skipped test.
   --stop-on-incomplete      Stop execution upon first incomplete test.

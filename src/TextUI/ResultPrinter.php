@@ -13,11 +13,7 @@ use SebastianBergmann\Environment\Console;
 /**
  * Prints the result of a TextUI TestRunner run.
  *
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
@@ -110,6 +106,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     private $numberOfColumns;
 
     /**
+     * @var bool
+     */
+    private $reverse = false;
+
+    /**
      * Constructor.
      *
      * @param  mixed                       $out
@@ -117,10 +118,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param  string                      $colors
      * @param  bool                        $debug
      * @param  int|string                  $numberOfColumns
+     * @param  bool                        $reverse
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.0.0
      */
-    public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80)
+    public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80, $reverse = false)
     {
         parent::__construct($out);
 
@@ -145,6 +147,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'integer or "max"');
         }
 
+        if (!is_bool($reverse)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(6, 'boolean');
+        }
+
         $console            = new Console;
         $maxNumberOfColumns = $console->getNumberOfColumns();
 
@@ -155,6 +161,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->numberOfColumns = $numberOfColumns;
         $this->verbose         = $verbose;
         $this->debug           = $debug;
+        $this->reverse         = $reverse;
 
         if ($colors === self::COLOR_AUTO && $console->hasColorSupport()) {
             $this->colors = true;
@@ -172,13 +179,19 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $this->printErrors($result);
         $printSeparator = $result->errorCount() > 0;
+        $hasFailures    = $result->failureCount() > 0;
+        $hasWarnings    = $result->warningCount() > 0;
 
-        if ($printSeparator && $result->failureCount() > 0) {
+        if ($printSeparator && ($hasFailures || $hasWarnings)) {
             $this->write("\n--\n\n");
         }
 
-        $printSeparator = $printSeparator || $result->failureCount() > 0;
-        $this->printFailures($result);
+        $printSeparator = $printSeparator || $hasFailures || $hasWarnings;
+        if ($hasWarnings){
+            $this->printWarnings($result);
+        } else {
+            $this->printFailures($result);
+        }
 
         if ($this->verbose) {
             if ($printSeparator && $result->riskyCount() > 0) {
@@ -232,6 +245,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         );
 
         $i = 1;
+
+        if ($this->reverse) {
+            $defects = array_reverse($defects);
+        }
 
         foreach ($defects as $defect) {
             $this->printDefect($defect, $i++);
@@ -290,6 +307,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     protected function printFailures(PHPUnit_Framework_TestResult $result)
     {
         $this->printDefects($result->failures(), 'failure');
+    }
+
+    /**
+     * @param PHPUnit_Framework_TestResult $result
+     */
+    protected function printWarnings(PHPUnit_Framework_TestResult $result)
+    {
+        $this->printDefects($result->warnings(), 'warning');
     }
 
     /**
@@ -360,16 +385,32 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                     'OK, but incomplete, skipped, or risky tests!'
                 );
             } else {
-                $color = 'fg-white, bg-red';
+                $showFailures = (
+                    $result->errors() ||
+                    $result->failures() ||
+                    $result->skipped() ||
+                    $result->notImplemented() ||
+                    $result->risky()) &&
+                    !$result->warnings()
+                ;
+
+                if ($showFailures){
+                    $color = 'fg-white, bg-red';
+                    $text  = 'FAILURES!';
+                } else {
+                    $color = 'fg-black, bg-yellow';
+                    $text  = 'WARNINGS!';
+                }
 
                 $this->write("\n");
-                $this->writeWithColor($color, 'FAILURES!');
+                $this->writeWithColor($color, $text);
             }
 
             $this->writeCountString(count($result), 'Tests', $color, true);
             $this->writeCountString($this->numAssertions, 'Assertions', $color, true);
             $this->writeCountString($result->errorCount(), 'Errors', $color);
             $this->writeCountString($result->failureCount(), 'Failures', $color);
+            $this->writeCountString($result->warningCount(), 'Warnings', $color);
             $this->writeCountString($result->skippedCount(), 'Skipped', $color);
             $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
             $this->writeCountString($result->riskyCount(), 'Risky', $color);
@@ -407,6 +448,20 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
         $this->writeProgressWithColor('bg-red, fg-white', 'F');
+        $this->lastTestFailed = true;
+    }
+
+    /**
+     * A warning occurred.
+     *
+     * @param PHPUnit_Framework_Test    $test
+     * @param PHPUnit_Framework_Warning $e
+     * @param float                     $time
+     * @since Method available since Release 5.1.0
+     */
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    {
+        $this->writeProgressWithColor('fg-yellow, bold', 'W');
         $this->lastTestFailed = true;
     }
 
@@ -529,7 +584,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->column++;
         $this->numTestsRun++;
 
-        if ($this->column == $this->maxColumn) {
+        if ($this->column == $this->maxColumn
+            || $this->numTestsRun == $this->numTests
+        ) {
+            if ($this->numTestsRun == $this->numTests) {
+                $this->write(str_repeat(' ', $this->maxColumn - $this->column));
+            }
+
             $this->write(
                 sprintf(
                     ' %' . $this->numTestsWidth . 'd / %' .
@@ -540,7 +601,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 )
             );
 
-            $this->writeNewLine();
+            if ($this->column == $this->maxColumn) {
+                $this->writeNewLine();
+            }
         }
     }
 

@@ -9,11 +9,6 @@
  */
 
 /**
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  */
 class Framework_AssertTest extends PHPUnit_Framework_TestCase
@@ -1394,6 +1389,54 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
         try {
             $this->assertObjectNotHasAttribute('name', $o);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertFinite
+     */
+    public function testAssertFinite()
+    {
+        $this->assertFinite(1);
+
+        try {
+            $this->assertFinite(INF);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertInfinite
+     */
+    public function testAssertInfinite()
+    {
+        $this->assertInfinite(INF);
+
+        try {
+            $this->assertInfinite(1);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNan
+     */
+    public function testAssertNan()
+    {
+        $this->assertNan(NAN);
+
+        try {
+            $this->assertNan(1);
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }

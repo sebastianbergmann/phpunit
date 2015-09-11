@@ -19,11 +19,7 @@ require_once dirname(__DIR__) . '/Framework/Error/Deprecated.php';
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
  *
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.3.0
+ * @since Class available since Release 3.3.0
  */
 class PHPUnit_Util_ErrorHandler
 {
@@ -91,8 +87,7 @@ class PHPUnit_Util_ErrorHandler
     /**
      * Registers an error handler and returns a function that will restore
      * the previous handler when invoked
-     * @param int $severity PHP predefined error constant
-     * @link   http://www.php.net/manual/en/errorfunc.constants.php
+     * @param  int       $severity PHP predefined error constant
      * @throws Exception if event of specified severity is emitted
      */
     public static function handleErrorOnce($severity = E_WARNING)

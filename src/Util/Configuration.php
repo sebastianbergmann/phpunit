@@ -31,20 +31,23 @@
  *          processIsolation="false"
  *          stopOnError="false"
  *          stopOnFailure="false"
+ *          stopOnWarning="false"
  *          stopOnIncomplete="false"
  *          stopOnRisky="false"
  *          stopOnSkipped="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+ *          beStrictAboutChangesToGlobalState="false"
+ *          beStrictAboutOutputDuringTests="false"
+ *          beStrictAboutResourceUsageDuringSmallTests="false"
+ *          beStrictAboutTestsThatDoNotTestAnything="false"
+ *          beStrictAboutTodoAnnotatedTests="false"
+ *          checkForUnintentionallyCoveredCode="false"
+ *          enforceTimeLimit="false"
  *          timeoutForSmallTests="1"
  *          timeoutForMediumTests="10"
  *          timeoutForLargeTests="60"
- *          beStrictAboutTestsThatDoNotTestAnything="false"
- *          beStrictAboutOutputDuringTests="false"
- *          beStrictAboutTestSize="false"
- *          beStrictAboutTodoAnnotatedTests="false"
- *          checkForUnintentionallyCoveredCode="false"
- *          disallowChangesToGlobalState="false"
- *          verbose="false">
+ *          verbose="false"
+ *          reverseDefectList="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
  *       <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
@@ -104,13 +107,13 @@
  *   <logging>
  *     <log type="coverage-html" target="/tmp/report" lowUpperBound="50" highLowerBound="90"/>
  *     <log type="coverage-clover" target="/tmp/clover.xml"/>
+ *     <log type="coverage-crap4j" target="/tmp/crap.xml" threshold="30"/>
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
  *     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
- *     <log type="coverage-crap4j" target="/tmp/crap.xml"/>
  *   </logging>
  *
  *   <php>
@@ -129,11 +132,7 @@
  * </phpunit>
  * </code>
  *
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @since Class available since Release 3.2.0
  */
 class PHPUnit_Util_Configuration
 {
@@ -367,11 +366,24 @@ class PHPUnit_Util_Configuration
 
             if ($type == 'coverage-html') {
                 if ($log->hasAttribute('lowUpperBound')) {
-                    $result['lowUpperBound'] = (string) $log->getAttribute('lowUpperBound');
+                    $result['lowUpperBound'] = $this->getInteger(
+                        (string) $log->getAttribute('lowUpperBound'),
+                        50
+                    );
                 }
 
                 if ($log->hasAttribute('highLowerBound')) {
-                    $result['highLowerBound'] = (string) $log->getAttribute('highLowerBound');
+                    $result['highLowerBound'] = $this->getInteger(
+                        (string) $log->getAttribute('highLowerBound'),
+                        90
+                    );
+                }
+            } elseif ($type == 'coverage-crap4j') {
+                if ($log->hasAttribute('threshold')) {
+                    $result['crap4jThreshold'] = $this->getInteger(
+                        (string) $log->getAttribute('threshold'),
+                        30
+                    );
                 }
             } elseif ($type == 'junit') {
                 if ($log->hasAttribute('logIncompleteSkipped')) {
@@ -643,6 +655,13 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($root->hasAttribute('stopOnWarning')) {
+            $result['stopOnWarning'] = $this->getBoolean(
+                (string) $root->getAttribute('stopOnWarning'),
+                false
+            );
+        }
+
         if ($root->hasAttribute('stopOnIncomplete')) {
             $result['stopOnIncomplete'] = $this->getBoolean(
                 (string) $root->getAttribute('stopOnIncomplete'),
@@ -688,6 +707,55 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($root->hasAttribute('beStrictAboutChangesToGlobalState')) {
+            $result['beStrictAboutChangesToGlobalState'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutChangesToGlobalState'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutOutputDuringTests')) {
+            $result['disallowTestOutput'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutOutputDuringTests'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutResourceUsageDuringSmallTests')) {
+            $result['beStrictAboutResourceUsageDuringSmallTests'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutResourceUsageDuringSmallTests'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutTestsThatDoNotTestAnything')) {
+            $result['reportUselessTests'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutTestsThatDoNotTestAnything'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('beStrictAboutTodoAnnotatedTests')) {
+            $result['disallowTodoAnnotatedTests'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutTodoAnnotatedTests'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('checkForUnintentionallyCoveredCode')) {
+            $result['strictCoverage'] = $this->getBoolean(
+                (string) $root->getAttribute('checkForUnintentionallyCoveredCode'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('enforceTimeLimit')) {
+            $result['enforceTimeLimit'] = $this->getBoolean(
+                (string) $root->getAttribute('enforceTimeLimit'),
+                false
+            );
+        }
+
         if ($root->hasAttribute('timeoutForSmallTests')) {
             $result['timeoutForSmallTests'] = $this->getInteger(
                 (string) $root->getAttribute('timeoutForSmallTests'),
@@ -709,60 +777,11 @@ class PHPUnit_Util_Configuration
             );
         }
 
-        if ($root->hasAttribute('beStrictAboutTestsThatDoNotTestAnything')) {
-            $result['reportUselessTests'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTestsThatDoNotTestAnything'),
+        if ($root->hasAttribute('reverseDefectList')) {
+            $result['reverseDefectList'] = $this->getBoolean(
+                (string) $root->getAttribute('reverseDefectList'),
                 false
             );
-        }
-
-        if ($root->hasAttribute('checkForUnintentionallyCoveredCode')) {
-            $result['strictCoverage'] = $this->getBoolean(
-                (string) $root->getAttribute('checkForUnintentionallyCoveredCode'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutOutputDuringTests')) {
-            $result['disallowTestOutput'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutOutputDuringTests'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutChangesToGlobalState')) {
-            $result['disallowChangesToGlobalState'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutChangesToGlobalState'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutTestSize')) {
-            $result['enforceTimeLimit'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTestSize'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutTodoAnnotatedTests')) {
-            $result['disallowTodoAnnotatedTests'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTodoAnnotatedTests'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('strict')) {
-            $flag = $this->getBoolean(
-                (string) $root->getAttribute('strict'),
-                false
-            );
-
-            $result['reportUselessTests']          = $flag;
-            $result['strictCoverage']              = $flag;
-            $result['disallowTestOutput']          = $flag;
-            $result['enforceTimeLimit']            = $flag;
-            $result['disallowTodoAnnotatedTests']  = $flag;
-            $result['deprecatedStrictModeSetting'] = true;
         }
 
         if ($root->hasAttribute('verbose')) {

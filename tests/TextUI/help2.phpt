@@ -31,6 +31,7 @@ Logging Options:
   --log-json <file>         Log test execution in JSON format.
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
+  --reverse-list            Print defects in reverse order
 
 Test Selection Options:
 
@@ -48,6 +49,7 @@ Test Execution Options:
   --strict-coverage         Be strict about unintentionally covered code.
   --strict-global-state     Be strict about changes to global state
   --disallow-test-output    Be strict about output during tests.
+  --disallow-resource-usage Be strict about resource usage during small tests.
   --enforce-time-limit      Enforce time limit based on test size.
   --disallow-todo-tests     Disallow @todo-annotated tests.
 
@@ -61,6 +63,7 @@ Test Execution Options:
   --stderr                  Write to STDERR instead of STDOUT.
   --stop-on-error           Stop execution upon first error.
   --stop-on-failure         Stop execution upon first error or failure.
+  --stop-on-warning         Stop execution upon first warning.
   --stop-on-risky           Stop execution upon first risky test.
   --stop-on-skipped         Stop execution upon first skipped test.
   --stop-on-incomplete      Stop execution upon first incomplete test.

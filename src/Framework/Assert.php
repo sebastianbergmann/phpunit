@@ -11,11 +11,7 @@
 /**
  * A set of assert methods.
  *
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 abstract class PHPUnit_Framework_Assert
 {
@@ -135,6 +131,13 @@ abstract class PHPUnit_Framework_Assert
                 $checkForNonObjectIdentity
             );
         } elseif (is_string($haystack)) {
+            if (!is_string($needle)) {
+                throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                    1,
+                    'string'
+                );
+            }
+
             $constraint = new PHPUnit_Framework_Constraint_StringContains(
                 $needle,
                 $ignoreCase
@@ -197,6 +200,13 @@ abstract class PHPUnit_Framework_Assert
                 )
             );
         } elseif (is_string($haystack)) {
+            if (!is_string($needle)) {
+                throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                    1,
+                    'string'
+                );
+            }
+
             $constraint = new PHPUnit_Framework_Constraint_Not(
                 new PHPUnit_Framework_Constraint_StringContains(
                     $needle,
@@ -965,6 +975,39 @@ abstract class PHPUnit_Framework_Assert
     public static function assertNull($actual, $message = '')
     {
         self::assertThat($actual, self::isNull(), $message);
+    }
+
+    /**
+     * Asserts that a variable is finite.
+     *
+     * @param mixed  $actual
+     * @param string $message
+     */
+    public static function assertFinite($actual, $message = '')
+    {
+        self::assertThat($actual, self::isFinite(), $message);
+    }
+
+    /**
+     * Asserts that a variable is infinite.
+     *
+     * @param mixed  $actual
+     * @param string $message
+     */
+    public static function assertInfinite($actual, $message = '')
+    {
+        self::assertThat($actual, self::isInfinite(), $message);
+    }
+
+    /**
+     * Asserts that a variable is nan.
+     *
+     * @param mixed  $actual
+     * @param string $message
+     */
+    public static function assertNan($actual, $message = '')
+    {
+        self::assertThat($actual, self::isNan(), $message);
     }
 
     /**
@@ -1821,7 +1864,6 @@ abstract class PHPUnit_Framework_Assert
      * @param DOMElement $actualElement
      * @param bool       $checkAttributes
      * @param string     $message
-     * @author Mattis Stordalen Flister <mattis@xait.no>
      * @since  Method available since Release 3.3.0
      */
     public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = '')
@@ -2186,6 +2228,39 @@ abstract class PHPUnit_Framework_Assert
     public static function isNull()
     {
         return new PHPUnit_Framework_Constraint_IsNull;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_IsFinite matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_IsFinite
+     * @since  Method available since Release 5.0.0
+     */
+    public static function isFinite()
+    {
+        return new PHPUnit_Framework_Constraint_IsFinite;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_IsInfinite matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_IsInfinite
+     * @since  Method available since Release 5.0.0
+     */
+    public static function isInfinite()
+    {
+        return new PHPUnit_Framework_Constraint_IsInfinite;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_IsNan matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_IsNan
+     * @since  Method available since Release 5.0.0
+     */
+    public static function isNan()
+    {
+        return new PHPUnit_Framework_Constraint_IsNan;
     }
 
     /**

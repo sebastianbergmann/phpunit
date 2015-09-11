@@ -11,12 +11,7 @@
 /**
  * Base class for test listeners that interact with an issue tracker.
  *
- * @author     Sean Coates <sean@caedmon.net>
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.4.0
+ * @since Class available since Release 3.4.0
  */
 abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_TestListener
 {
@@ -114,7 +109,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
-        if (!$test instanceof PHPUnit_Framework_Warning) {
+        if (!$test instanceof PHPUnit_Framework_WarningTestCase) {
             if ($this->ran) {
                 return;
             }
@@ -138,7 +133,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        if (!$test instanceof PHPUnit_Framework_Warning) {
+        if (!$test instanceof PHPUnit_Framework_WarningTestCase) {
             if ($test->getStatus() == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
                 $ifStatus   = ['assigned', 'new', 'reopened'];
                 $newStatus  = 'closed';

@@ -11,11 +11,7 @@
 /**
  * Base class for printers of TestDox documentation.
  *
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.1.0
+ * @since Class available since Release 2.1.0
  */
 abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
@@ -43,6 +39,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @var int
      */
     protected $successful = 0;
+
+    /**
+     * @var int
+     */
+    protected $warned = 0;
 
     /**
      * @var int
@@ -113,6 +114,24 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
 
         $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
         $this->failed++;
+    }
+
+    /**
+     * A warning occurred.
+     *
+     * @param PHPUnit_Framework_Test    $test
+     * @param PHPUnit_Framework_Warning $e
+     * @param float                     $time
+     * @since Method available since Release 5.1.0
+     */
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    {
+        if (!$this->isOfInterest($test)) {
+            return;
+        }
+
+        $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_WARNING;
+        $this->warned++;
     }
 
     /**
@@ -334,6 +353,6 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
 
     private function isOfInterest(PHPUnit_Framework_Test $test)
     {
-        return $test instanceof PHPUnit_Framework_TestCase && get_class($test) != 'PHPUnit_Framework_Warning';
+        return $test instanceof PHPUnit_Framework_TestCase && get_class($test) != 'PHPUnit_Framework_WarningTestCase';
     }
 }

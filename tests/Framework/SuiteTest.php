@@ -22,10 +22,6 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'RequirementsClassBeforeClassHookTest.php';
 
 /**
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  * @covers     PHPUnit_Framework_TestSuite
  */
@@ -94,7 +90,8 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         $suite->run($this->result);
 
         $this->assertTrue(!$this->result->wasSuccessful());
-        $this->assertEquals(1, $this->result->failureCount());
+        $this->assertEquals(0, $this->result->failureCount());
+        $this->assertEquals(1, $this->result->warningCount());
         $this->assertEquals(1, count($this->result));
     }
 

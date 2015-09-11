@@ -11,10 +11,6 @@
 /**
  * A Listener for test progress.
  *
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Interface available since Release 2.0.0
  */
 interface PHPUnit_Framework_TestListener
@@ -27,6 +23,16 @@ interface PHPUnit_Framework_TestListener
      * @param float                  $time
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time);
+
+    /**
+     * A warning occurred.
+     *
+     * @param PHPUnit_Framework_Test    $test
+     * @param PHPUnit_Framework_Warning $e
+     * @param float                     $time
+     * @since Method available since Release 5.1.0
+     */
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time);
 
     /**
      * A failure occurred.

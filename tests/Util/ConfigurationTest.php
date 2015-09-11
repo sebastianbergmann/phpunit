@@ -9,10 +9,6 @@
  */
 
 /**
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.3.0
  */
 class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
@@ -348,31 +344,33 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             [
-            'backupGlobals'                      => true,
-            'backupStaticAttributes'             => false,
-            'disallowChangesToGlobalState'       => false,
-            'bootstrap'                          => '/path/to/bootstrap.php',
-            'cacheTokens'                        => false,
-            'columns'                            => 80,
-            'colors'                             => 'never',
-            'stderr'                             => false,
-            'convertErrorsToExceptions'          => true,
-            'convertNoticesToExceptions'         => true,
-            'convertWarningsToExceptions'        => true,
-            'forceCoversAnnotation'              => false,
-            'mapTestClassNameToCoveredClassName' => false,
-            'printerClass'                       => 'PHPUnit_TextUI_ResultPrinter',
-            'stopOnFailure'                      => false,
-            'reportUselessTests'                 => false,
-            'strictCoverage'                     => false,
-            'disallowTestOutput'                 => false,
-            'enforceTimeLimit'                   => false,
-            'disallowTodoAnnotatedTests'         => false,
-            'testSuiteLoaderClass'               => 'PHPUnit_Runner_StandardTestSuiteLoader',
-            'verbose'                            => false,
-            'timeoutForSmallTests'               => 1,
-            'timeoutForMediumTests'              => 10,
-            'timeoutForLargeTests'               => 60
+            'backupGlobals'                              => true,
+            'backupStaticAttributes'                     => false,
+            'beStrictAboutChangesToGlobalState'          => false,
+            'bootstrap'                                  => '/path/to/bootstrap.php',
+            'cacheTokens'                                => false,
+            'columns'                                    => 80,
+            'colors'                                     => 'never',
+            'stderr'                                     => false,
+            'convertErrorsToExceptions'                  => true,
+            'convertNoticesToExceptions'                 => true,
+            'convertWarningsToExceptions'                => true,
+            'forceCoversAnnotation'                      => false,
+            'mapTestClassNameToCoveredClassName'         => false,
+            'printerClass'                               => 'PHPUnit_TextUI_ResultPrinter',
+            'stopOnFailure'                              => false,
+            'stopOnWarning'                              => false,
+            'reportUselessTests'                         => false,
+            'strictCoverage'                             => false,
+            'disallowTestOutput'                         => false,
+            'enforceTimeLimit'                           => false,
+            'testSuiteLoaderClass'                       => 'PHPUnit_Runner_StandardTestSuiteLoader',
+            'verbose'                                    => false,
+            'timeoutForSmallTests'                       => 1,
+            'timeoutForMediumTests'                      => 10,
+            'timeoutForLargeTests'                       => 60,
+            'beStrictAboutResourceUsageDuringSmallTests' => false,
+            'disallowTodoAnnotatedTests'                 => false
             ],
             $this->configuration->getPHPUnitConfiguration()
         );

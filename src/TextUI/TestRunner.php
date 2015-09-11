@@ -14,11 +14,7 @@ use SebastianBergmann\Environment\Runtime;
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
  *
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.0.0
+ * @since Class available since Release 2.0.0
  */
 class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 {
@@ -162,8 +158,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite->setBackupStaticAttributes(true);
         }
 
-        if ($arguments['disallowChangesToGlobalState'] === true) {
-            $suite->setDisallowChangesToGlobalState(true);
+        if ($arguments['beStrictAboutChangesToGlobalState'] === true) {
+            $suite->setbeStrictAboutChangesToGlobalState(true);
         }
 
         if (is_integer($arguments['repeat'])) {
@@ -199,6 +195,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $result->stopOnFailure(true);
         }
 
+        if ($arguments['stopOnWarning']) {
+            $result->stopOnWarning(true);
+        }
+
         if ($arguments['stopOnIncomplete']) {
             $result->stopOnIncomplete(true);
         }
@@ -229,11 +229,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
 
                 $this->printer = new $printerClass(
-                  isset($arguments['stderr']) ? 'php://stderr' : null,
-                  $arguments['verbose'],
-                  $arguments['colors'],
-                  $arguments['debug'],
-                  $arguments['columns']
+                    isset($arguments['stderr']) ? 'php://stderr' : null,
+                    $arguments['verbose'],
+                    $arguments['colors'],
+                    $arguments['debug'],
+                    $arguments['columns'],
+                    $arguments['reverseList']
                 );
             }
         }
@@ -272,12 +273,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
 
                 $this->printer->write("\n");
-            }
-
-            if (isset($arguments['deprecatedStrictModeOption'])) {
-                print "Warning:\tDeprecated option \"--strict\" used\n";
-            } elseif (isset($arguments['deprecatedStrictModeSetting'])) {
-                print "Warning:\tDeprecated configuration setting \"strict\" used\n";
             }
         }
 
@@ -420,7 +415,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $result->beStrictAboutTestsThatDoNotTestAnything($arguments['reportUselessTests']);
         $result->beStrictAboutOutputDuringTests($arguments['disallowTestOutput']);
         $result->beStrictAboutTodoAnnotatedTests($arguments['disallowTodoAnnotatedTests']);
-        $result->beStrictAboutTestSize($arguments['enforceTimeLimit']);
+        $result->beStrictAboutResourceUsageDuringSmallTests($arguments['beStrictAboutResourceUsageDuringSmallTests']);
+        $result->enforceTimeLimit($arguments['enforceTimeLimit']);
         $result->setTimeoutForSmallTests($arguments['timeoutForSmallTests']);
         $result->setTimeoutForMediumTests($arguments['timeoutForMediumTests']);
         $result->setTimeoutForLargeTests($arguments['timeoutForLargeTests']);
@@ -456,7 +452,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     "\nGenerating Crap4J report XML file ..."
                 );
 
-                $writer = new PHP_CodeCoverage_Report_Crap4j;
+                $writer = new PHP_CodeCoverage_Report_Crap4j($arguments['crap4jThreshold']);
                 $writer->process($codeCoverage, $arguments['coverageCrap4J']);
 
                 $this->printer->write(" done\n");
@@ -606,10 +602,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
 
-            if (isset($phpunitConfiguration['deprecatedStrictModeSetting'])) {
-                $arguments['deprecatedStrictModeSetting'] = true;
-            }
-
             if (isset($phpunitConfiguration['backupGlobals']) &&
                 !isset($arguments['backupGlobals'])) {
                 $arguments['backupGlobals'] = $phpunitConfiguration['backupGlobals'];
@@ -620,9 +612,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['backupStaticAttributes'] = $phpunitConfiguration['backupStaticAttributes'];
             }
 
-            if (isset($phpunitConfiguration['disallowChangesToGlobalState']) &&
-                !isset($arguments['disallowChangesToGlobalState'])) {
-                $arguments['disallowChangesToGlobalState'] = $phpunitConfiguration['disallowChangesToGlobalState'];
+            if (isset($phpunitConfiguration['beStrictAboutChangesToGlobalState']) &&
+                !isset($arguments['beStrictAboutChangesToGlobalState'])) {
+                $arguments['beStrictAboutChangesToGlobalState'] = $phpunitConfiguration['beStrictAboutChangesToGlobalState'];
             }
 
             if (isset($phpunitConfiguration['bootstrap']) &&
@@ -668,6 +660,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($phpunitConfiguration['stopOnFailure']) &&
                 !isset($arguments['stopOnFailure'])) {
                 $arguments['stopOnFailure'] = $phpunitConfiguration['stopOnFailure'];
+            }
+
+            if (isset($phpunitConfiguration['stopOnWarning']) &&
+                !isset($arguments['stopOnWarning'])) {
+                $arguments['stopOnWarning'] = $phpunitConfiguration['stopOnWarning'];
             }
 
             if (isset($phpunitConfiguration['stopOnIncomplete']) &&
@@ -725,9 +722,19 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['disallowTodoAnnotatedTests'] = $phpunitConfiguration['disallowTodoAnnotatedTests'];
             }
 
+            if (isset($phpunitConfiguration['beStrictAboutResourceUsageDuringSmallTests']) &&
+                !isset($arguments['beStrictAboutResourceUsageDuringSmallTests'])) {
+                $arguments['beStrictAboutResourceUsageDuringSmallTests'] = $phpunitConfiguration['beStrictAboutResourceUsageDuringSmallTests'];
+            }
+
             if (isset($phpunitConfiguration['verbose']) &&
                 !isset($arguments['verbose'])) {
                 $arguments['verbose'] = $phpunitConfiguration['verbose'];
+            }
+
+            if (isset($phpunitConfiguration['reverseDefectList']) &&
+                !isset($arguments['reverseList'])) {
+                $arguments['reverseList'] = $phpunitConfiguration['reverseDefectList'];
             }
 
             if (isset($phpunitConfiguration['forceCoversAnnotation']) &&
@@ -741,6 +748,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             $groupCliArgs = [];
+
             if (!empty($arguments['groups'])) {
                 $groupCliArgs = $arguments['groups'];
             }
@@ -791,6 +799,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['coverage-crap4j']) &&
                 !isset($arguments['coverageCrap4J'])) {
                 $arguments['coverageCrap4J'] = $loggingConfiguration['coverage-crap4j'];
+
+                if (isset($loggingConfiguration['crap4jThreshold']) &&
+                    !isset($arguments['crap4jThreshold'])) {
+                    $arguments['crap4jThreshold'] = $loggingConfiguration['crap4jThreshold'];
+                }
             }
 
             if (isset($loggingConfiguration['coverage-html']) &&
@@ -936,38 +949,42 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        $arguments['addUncoveredFilesFromWhitelist']     = isset($arguments['addUncoveredFilesFromWhitelist'])     ? $arguments['addUncoveredFilesFromWhitelist']     : true;
-        $arguments['processUncoveredFilesFromWhitelist'] = isset($arguments['processUncoveredFilesFromWhitelist']) ? $arguments['processUncoveredFilesFromWhitelist'] : false;
-        $arguments['backupGlobals']                      = isset($arguments['backupGlobals'])                      ? $arguments['backupGlobals']                      : null;
-        $arguments['backupStaticAttributes']             = isset($arguments['backupStaticAttributes'])             ? $arguments['backupStaticAttributes']             : null;
-        $arguments['disallowChangesToGlobalState']       = isset($arguments['disallowChangesToGlobalState'])       ? $arguments['disallowChangesToGlobalState']       : null;
-        $arguments['cacheTokens']                        = isset($arguments['cacheTokens'])                        ? $arguments['cacheTokens']                        : false;
-        $arguments['columns']                            = isset($arguments['columns'])                            ? $arguments['columns']                            : 80;
-        $arguments['colors']                             = isset($arguments['colors'])                             ? $arguments['colors']                             : PHPUnit_TextUI_ResultPrinter::COLOR_DEFAULT;
-        $arguments['convertErrorsToExceptions']          = isset($arguments['convertErrorsToExceptions'])          ? $arguments['convertErrorsToExceptions']          : true;
-        $arguments['convertNoticesToExceptions']         = isset($arguments['convertNoticesToExceptions'])         ? $arguments['convertNoticesToExceptions']         : true;
-        $arguments['convertWarningsToExceptions']        = isset($arguments['convertWarningsToExceptions'])        ? $arguments['convertWarningsToExceptions']        : true;
-        $arguments['excludeGroups']                      = isset($arguments['excludeGroups'])                      ? $arguments['excludeGroups']                      : [];
-        $arguments['groups']                             = isset($arguments['groups'])                             ? $arguments['groups']                             : [];
-        $arguments['logIncompleteSkipped']               = isset($arguments['logIncompleteSkipped'])               ? $arguments['logIncompleteSkipped']               : false;
-        $arguments['processIsolation']                   = isset($arguments['processIsolation'])                   ? $arguments['processIsolation']                   : false;
-        $arguments['repeat']                             = isset($arguments['repeat'])                             ? $arguments['repeat']                             : false;
-        $arguments['reportHighLowerBound']               = isset($arguments['reportHighLowerBound'])               ? $arguments['reportHighLowerBound']               : 90;
-        $arguments['reportLowUpperBound']                = isset($arguments['reportLowUpperBound'])                ? $arguments['reportLowUpperBound']                : 50;
-        $arguments['stopOnError']                        = isset($arguments['stopOnError'])                        ? $arguments['stopOnError']                        : false;
-        $arguments['stopOnFailure']                      = isset($arguments['stopOnFailure'])                      ? $arguments['stopOnFailure']                      : false;
-        $arguments['stopOnIncomplete']                   = isset($arguments['stopOnIncomplete'])                   ? $arguments['stopOnIncomplete']                   : false;
-        $arguments['stopOnRisky']                        = isset($arguments['stopOnRisky'])                        ? $arguments['stopOnRisky']                        : false;
-        $arguments['stopOnSkipped']                      = isset($arguments['stopOnSkipped'])                      ? $arguments['stopOnSkipped']                      : false;
-        $arguments['timeoutForSmallTests']               = isset($arguments['timeoutForSmallTests'])               ? $arguments['timeoutForSmallTests']               : 1;
-        $arguments['timeoutForMediumTests']              = isset($arguments['timeoutForMediumTests'])              ? $arguments['timeoutForMediumTests']              : 10;
-        $arguments['timeoutForLargeTests']               = isset($arguments['timeoutForLargeTests'])               ? $arguments['timeoutForLargeTests']               : 60;
-        $arguments['reportUselessTests']                 = isset($arguments['reportUselessTests'])                 ? $arguments['reportUselessTests']                 : false;
-        $arguments['strictCoverage']                     = isset($arguments['strictCoverage'])                     ? $arguments['strictCoverage']                     : false;
-        $arguments['disallowTestOutput']                 = isset($arguments['disallowTestOutput'])                 ? $arguments['disallowTestOutput']                 : false;
-        $arguments['enforceTimeLimit']                   = isset($arguments['enforceTimeLimit'])                   ? $arguments['enforceTimeLimit']                   : false;
-        $arguments['disallowTodoAnnotatedTests']         = isset($arguments['disallowTodoAnnotatedTests'])         ? $arguments['disallowTodoAnnotatedTests']         : false;
-        $arguments['verbose']                            = isset($arguments['verbose'])                            ? $arguments['verbose']                            : false;
+        $arguments['addUncoveredFilesFromWhitelist']             = isset($arguments['addUncoveredFilesFromWhitelist'])             ? $arguments['addUncoveredFilesFromWhitelist']             : true;
+        $arguments['processUncoveredFilesFromWhitelist']         = isset($arguments['processUncoveredFilesFromWhitelist'])         ? $arguments['processUncoveredFilesFromWhitelist']         : false;
+        $arguments['backupGlobals']                              = isset($arguments['backupGlobals'])                              ? $arguments['backupGlobals']                              : null;
+        $arguments['backupStaticAttributes']                     = isset($arguments['backupStaticAttributes'])                     ? $arguments['backupStaticAttributes']                     : null;
+        $arguments['beStrictAboutChangesToGlobalState']          = isset($arguments['beStrictAboutChangesToGlobalState'])          ? $arguments['beStrictAboutChangesToGlobalState']          : null;
+        $arguments['cacheTokens']                                = isset($arguments['cacheTokens'])                                ? $arguments['cacheTokens']                                : false;
+        $arguments['columns']                                    = isset($arguments['columns'])                                    ? $arguments['columns']                                    : 80;
+        $arguments['colors']                                     = isset($arguments['colors'])                                     ? $arguments['colors']                                     : PHPUnit_TextUI_ResultPrinter::COLOR_DEFAULT;
+        $arguments['convertErrorsToExceptions']                  = isset($arguments['convertErrorsToExceptions'])                  ? $arguments['convertErrorsToExceptions']                  : true;
+        $arguments['convertNoticesToExceptions']                 = isset($arguments['convertNoticesToExceptions'])                 ? $arguments['convertNoticesToExceptions']                 : true;
+        $arguments['convertWarningsToExceptions']                = isset($arguments['convertWarningsToExceptions'])                ? $arguments['convertWarningsToExceptions']                : true;
+        $arguments['excludeGroups']                              = isset($arguments['excludeGroups'])                              ? $arguments['excludeGroups']                              : [];
+        $arguments['groups']                                     = isset($arguments['groups'])                                     ? $arguments['groups']                                     : [];
+        $arguments['logIncompleteSkipped']                       = isset($arguments['logIncompleteSkipped'])                       ? $arguments['logIncompleteSkipped']                       : false;
+        $arguments['processIsolation']                           = isset($arguments['processIsolation'])                           ? $arguments['processIsolation']                           : false;
+        $arguments['repeat']                                     = isset($arguments['repeat'])                                     ? $arguments['repeat']                                     : false;
+        $arguments['reportHighLowerBound']                       = isset($arguments['reportHighLowerBound'])                       ? $arguments['reportHighLowerBound']                       : 90;
+        $arguments['reportLowUpperBound']                        = isset($arguments['reportLowUpperBound'])                        ? $arguments['reportLowUpperBound']                        : 50;
+        $arguments['crap4jThreshold']                            = isset($arguments['crap4jThreshold'])                            ? $arguments['crap4jThreshold']                            : 30;
+        $arguments['stopOnError']                                = isset($arguments['stopOnError'])                                ? $arguments['stopOnError']                                : false;
+        $arguments['stopOnFailure']                              = isset($arguments['stopOnFailure'])                              ? $arguments['stopOnFailure']                              : false;
+        $arguments['stopOnWarning']                              = isset($arguments['stopOnWarning'])                              ? $arguments['stopOnWarning']                              : false;
+        $arguments['stopOnIncomplete']                           = isset($arguments['stopOnIncomplete'])                           ? $arguments['stopOnIncomplete']                           : false;
+        $arguments['stopOnRisky']                                = isset($arguments['stopOnRisky'])                                ? $arguments['stopOnRisky']                                : false;
+        $arguments['stopOnSkipped']                              = isset($arguments['stopOnSkipped'])                              ? $arguments['stopOnSkipped']                              : false;
+        $arguments['timeoutForSmallTests']                       = isset($arguments['timeoutForSmallTests'])                       ? $arguments['timeoutForSmallTests']                       : 1;
+        $arguments['timeoutForMediumTests']                      = isset($arguments['timeoutForMediumTests'])                      ? $arguments['timeoutForMediumTests']                      : 10;
+        $arguments['timeoutForLargeTests']                       = isset($arguments['timeoutForLargeTests'])                       ? $arguments['timeoutForLargeTests']                       : 60;
+        $arguments['reportUselessTests']                         = isset($arguments['reportUselessTests'])                         ? $arguments['reportUselessTests']                         : false;
+        $arguments['strictCoverage']                             = isset($arguments['strictCoverage'])                             ? $arguments['strictCoverage']                             : false;
+        $arguments['disallowTestOutput']                         = isset($arguments['disallowTestOutput'])                         ? $arguments['disallowTestOutput']                         : false;
+        $arguments['enforceTimeLimit']                           = isset($arguments['enforceTimeLimit'])                           ? $arguments['enforceTimeLimit']                           : false;
+        $arguments['disallowTodoAnnotatedTests']                 = isset($arguments['disallowTodoAnnotatedTests'])                 ? $arguments['disallowTodoAnnotatedTests']                 : false;
+        $arguments['beStrictAboutResourceUsageDuringSmallTests'] = isset($arguments['beStrictAboutResourceUsageDuringSmallTests']) ? $arguments['beStrictAboutResourceUsageDuringSmallTests'] : false;
+        $arguments['reverseList']                                = isset($arguments['reverseList'])                                ? $arguments['reverseList']                                : false;
+        $arguments['verbose']                                    = isset($arguments['verbose'])                                    ? $arguments['verbose']                                    : false;
     }
 
     /**

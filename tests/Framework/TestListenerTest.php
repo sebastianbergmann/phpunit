@@ -9,10 +9,6 @@
  */
 
 /**
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Class available since Release 2.0.0
  * @covers     PHPUnit_Framework_TestCase
  */
@@ -21,6 +17,7 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
     protected $endCount;
     protected $errorCount;
     protected $failureCount;
+    protected $warningCount;
     protected $notImplementedCount;
     protected $riskyCount;
     protected $skippedCount;
@@ -30,6 +27,11 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
         $this->errorCount++;
+    }
+
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    {
+        $this->warningCount++;
     }
 
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
@@ -85,7 +87,7 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
 
     public function testError()
     {
-        $test = new Error;
+        $test = new TestError;
         $test->run($this->result);
 
         $this->assertEquals(1, $this->errorCount);
