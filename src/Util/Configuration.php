@@ -287,11 +287,11 @@ class PHPUnit_Util_Configuration
         ];
 
         foreach ($this->xpath->query('groups/include/group') as $group) {
-            $groups['include'][] = (string) $group->nodeValue;
+            $groups['include'][] = (string) $group->textContent;
         }
 
         foreach ($this->xpath->query('groups/exclude/group') as $group) {
-            $groups['exclude'][] = (string) $group->nodeValue;
+            $groups['exclude'][] = (string) $group->textContent;
         }
 
         return $groups;
@@ -325,7 +325,7 @@ class PHPUnit_Util_Configuration
                         if ($argument instanceof DOMElement) {
                             if ($argument->tagName == 'file' ||
                             $argument->tagName == 'directory') {
-                                $arguments[] = $this->toAbsolutePath((string) $argument->nodeValue);
+                                $arguments[] = $this->toAbsolutePath((string) $argument->textContent);
                             } else {
                                 $arguments[] = PHPUnit_Util_XML::xmlToVariable($argument);
                             }
@@ -435,7 +435,7 @@ class PHPUnit_Util_Configuration
         ];
 
         foreach ($this->xpath->query('php/includePath') as $includePath) {
-            $path = (string) $includePath->nodeValue;
+            $path = (string) $includePath->textContent;
             if ($path) {
                 $result['include_path'][] = $this->toAbsolutePath($path);
             }
@@ -835,7 +835,7 @@ class PHPUnit_Util_Configuration
         $exclude = [];
 
         foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
-            $excludeFile = (string) $excludeNode->nodeValue;
+            $excludeFile = (string) $excludeNode->textContent;
             if ($excludeFile) {
                 $exclude[] = $this->toAbsolutePath($excludeFile);
             }
@@ -848,7 +848,7 @@ class PHPUnit_Util_Configuration
                 continue;
             }
 
-            $directory = (string) $directoryNode->nodeValue;
+            $directory = (string) $directoryNode->textContent;
 
             if (empty($directory)) {
                 continue;
@@ -896,7 +896,7 @@ class PHPUnit_Util_Configuration
                 continue;
             }
 
-            $file = (string) $fileNode->nodeValue;
+            $file = (string) $fileNode->textContent;
 
             if (empty($file)) {
                 continue;
@@ -977,7 +977,7 @@ class PHPUnit_Util_Configuration
         $directories = [];
 
         foreach ($this->xpath->query($query) as $directory) {
-            $directoryPath = (string) $directory->nodeValue;
+            $directoryPath = (string) $directory->textContent;
 
             if (!$directoryPath) {
                 continue;
@@ -1022,7 +1022,7 @@ class PHPUnit_Util_Configuration
         $files = [];
 
         foreach ($this->xpath->query($query) as $file) {
-            $filePath = (string) $file->nodeValue;
+            $filePath = (string) $file->textContent;
             if ($filePath) {
                 $files[] = $this->toAbsolutePath($filePath);
             }

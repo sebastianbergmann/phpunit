@@ -211,13 +211,13 @@ class PHPUnit_Util_XML
                 break;
 
             case 'boolean':
-                $variable = $element->nodeValue == 'true' ? true : false;
+                $variable = $element->textContent == 'true' ? true : false;
                 break;
 
             case 'integer':
             case 'double':
             case 'string':
-                $variable = $element->nodeValue;
+                $variable = $element->textContent;
 
                 settype($variable, $element->tagName);
                 break;
