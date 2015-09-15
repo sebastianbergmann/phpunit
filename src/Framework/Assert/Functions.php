@@ -1165,6 +1165,20 @@ function assertNotSame($expected, $actual, $message = '')
 }
 
 /**
+ * Refutes that two variables have the same type and value.
+ * Used on objects, it refutes that two variables reference
+ * the same object. assertNotSame().
+ *
+ * @param mixed  $expected
+ * @param mixed  $actual
+ * @param string $message
+ */
+function refuteSame($expected, $actual, $message = '')
+{
+    return assertNotSame($expected, $actual, $message);
+}
+
+/**
  * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
  * is not the same.
  *

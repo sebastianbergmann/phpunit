@@ -111,6 +111,19 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Refutes that an array has a specified key. Alias of self::assertArrayNotHasKey()
+     *
+     * @param mixed             $key
+     * @param array|ArrayAccess $array
+     * @param string            $message
+     * @since  Method available since Release 4.7.0
+     */
+    public static function refuteArrayHasKey($key, $array, $message = '')
+    {
+        return self::assertArrayNotHasKey($key, $array, $message);
+    }
+
+    /**
      * Asserts that a haystack contains a needle.
      *
      * @param mixed  $needle
@@ -221,6 +234,22 @@ abstract class PHPUnit_Framework_Assert
         }
 
         self::assertThat($haystack, $constraint, $message);
+    }
+
+    /**
+     * Refutes that a haystack contains a needle.
+     *
+     * @param mixed   $needle
+     * @param mixed   $haystack
+     * @param string  $message
+     * @param boolean $ignoreCase
+     * @param boolean $checkForObjectIdentity
+     * @param boolean $checkForNonObjectIdentity
+     * @since  Method available since Release 4.7.0
+     */
+    public static function refuteContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    {
+        return self::assertNotContains($needle, $haystack, $message, $ignoreCase, $checkForObjectIdentity, $checkForNonObjectIdentity);
     }
 
     /**
@@ -1246,6 +1275,20 @@ abstract class PHPUnit_Framework_Assert
 
             self::assertThat($actual, $constraint, $message);
         }
+    }
+
+    /**
+     * Refutes that two variables have the same type and value.
+     * Used on objects, it refutes that two variables reference
+     * the same object. Alias for self::assertNotSame().
+     *
+     * @param mixed  $expected
+     * @param mixed  $actual
+     * @param string $message
+     */
+    public static function refuteSame($expected, $actual, $message = '')
+    {
+        return self::assertNotSame($expected, $actual, $message);
     }
 
     /**
