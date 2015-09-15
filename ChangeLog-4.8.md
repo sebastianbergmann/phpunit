@@ -2,6 +2,8 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+* Fixed [#1852](https://github.com/sebastianbergmann/phpunit/issues/1852): `DOMElement::nodeValue` needs to be replaced by `DOMElement::textContent`
+
 ## [4.8.7] - 2015-09-14
 
 New PHAR release due to updated dependencies
