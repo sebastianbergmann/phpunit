@@ -1,5 +1,4 @@
 <?php
-
 /*
  * This file is part of PHPUnit.
  *
@@ -9,20 +8,31 @@
  * file that was distributed with this source code.
  */
 
+use SebastianBergmann\Comparator\ComparisonFailure;
+
 /**
  * A TestListener that generates a logfile of the test execution using the
  * TeamCity format (for use with PhpStorm, for instance).
  *
- * @since Class available since Release 5.0
+ * @since Class available since Release 5.0.0
  */
 class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
 {
+    /**
+     * @var bool
+     */
     private $isSummaryTestCountPrinted = false;
+
+    /**
+     * @var string
+     */
     private $startedTestName;
 
+    /**
+     * @param string $progress
+     */
     protected function writeProgress($progress)
     {
-        //ignore
     }
 
     /**
@@ -43,11 +53,14 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        $this->printEvent('testFailed', array(
-            'name' => $test->getName(),
-            'message' => self::getMessage($e),
-            'details' => self::getDetails($e),
-        ));
+        $this->printEvent(
+            'testFailed',
+            [
+                'name'    => $test->getName(),
+                'message' => self::getMessage($e),
+                'details' => self::getDetails($e),
+            ]
+        );
     }
 
     /**
@@ -59,31 +72,36 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
-        $params = array(
-            'name' => $test->getName(),
+        $parameters = [
+            'name'    => $test->getName(),
             'message' => self::getMessage($e),
             'details' => self::getDetails($e),
-        );
+        ];
+
         if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
             $comparisonFailure = $e->getComparisonFailure();
-            if ($comparisonFailure instanceof \SebastianBergmann\Comparator\ComparisonFailure) {
+
+            if ($comparisonFailure instanceof ComparisonFailure) {
                 $expectedString = $comparisonFailure->getExpectedAsString();
+
                 if (is_null($expectedString) || empty($expectedString)) {
                     $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
                 }
 
                 $actualString = $comparisonFailure->getActualAsString();
+
                 if (is_null($actualString) || empty($actualString)) {
                     $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
                 }
 
                 if (!is_null($actualString) && !is_null($expectedString)) {
-                    $params['actual'] = $actualString;
-                    $params['expected'] = $expectedString;
+                    $parameters['actual']   = $actualString;
+                    $parameters['expected'] = $expectedString;
                 }
             }
         }
-        $this->printEvent('testFailed', $params);
+
+        $this->printEvent('testFailed', $parameters);
     }
 
     /**
@@ -104,8 +122,6 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
-     *
-     * @since  Method available since Release 4.0.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -118,8 +134,6 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
-     *
-     * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -135,11 +149,14 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
 
     public function printIgnoredTest($testName, Exception $e)
     {
-        $this->printEvent('testIgnored', array(
-            'name' => $testName,
-            'message' => self::getMessage($e),
-            'details' => self::getDetails($e),
-        ));
+        $this->printEvent(
+            'testIgnored',
+            [
+                'name'    => $testName,
+                'message' => self::getMessage($e),
+                'details' => self::getDetails($e),
+            ]
+        );
     }
 
     /**
@@ -151,31 +168,35 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     {
         if (!$this->isSummaryTestCountPrinted) {
             $this->isSummaryTestCountPrinted = true;
-            //print tests count
-            $this->printEvent('testCount', array(
-                'count' => count($suite),
-            ));
+
+            $this->printEvent(
+                'testCount',
+                ['count' => count($suite)]
+            );
         }
 
         $suiteName = $suite->getName();
+
         if (empty($suiteName)) {
             return;
         }
-        $params = array(
-            'name' => $suiteName,
-        );
+
+        $parameters = ['name' => $suiteName];
+
         if (class_exists($suiteName, false)) {
-            $fileName = self::getFileName($suiteName);
-            $params['locationHint'] = "php_qn://$fileName::\\$suiteName";
+            $fileName                   = self::getFileName($suiteName);
+            $parameters['locationHint'] = "php_qn://$fileName::\\$suiteName";
         } else {
             $split = preg_split('/::/', $suiteName);
-            if (sizeof($split) == 2 && method_exists($split[0], $split[1])) {
-                $fileName = self::getFileName($split[0]);
-                $params['locationHint'] = "php_qn://$fileName::\\$suiteName";
-                $params['name'] = $split[1];
+
+            if (count($split) == 2 && method_exists($split[0], $split[1])) {
+                $fileName                   = self::getFileName($split[0]);
+                $parameters['locationHint'] = "php_qn://$fileName::\\$suiteName";
+                $parameters['name']         = $split[1];
             }
         }
-        $this->printEvent('testSuiteStarted', $params);
+
+        $this->printEvent('testSuiteStarted', $parameters);
     }
 
     /**
@@ -186,21 +207,22 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
         $suiteName = $suite->getName();
+
         if (empty($suiteName)) {
             return;
         }
 
-        $params = array(
-            'name' => $suiteName,
-        );
+        $parameters = ['name' => $suiteName];
 
         if (!class_exists($suiteName, false)) {
             $split = preg_split('/::/', $suiteName);
-            if (sizeof($split) == 2 && method_exists($split[0], $split[1])) {
-                $params['name'] = $split[1];
+
+            if (count($split) == 2 && method_exists($split[0], $split[1])) {
+                $parameters['name'] = $split[1];
             }
         }
-        $this->printEvent('testSuiteFinished', $params);
+
+        $this->printEvent('testSuiteFinished', $parameters);
     }
 
     /**
@@ -210,16 +232,16 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
-        $testName = $test->getName();
+        $testName              = $test->getName();
         $this->startedTestName = $testName;
-        $params = array(
-            'name' => $testName,
-        );
+        $params                = ['name' => $testName];
+
         if ($test instanceof PHPUnit_Framework_TestCase) {
-            $className = get_class($test);
-            $fileName = self::getFileName($className);
+            $className              = get_class($test);
+            $fileName               = self::getFileName($className);
             $params['locationHint'] = "php_qn://$fileName::\\$className::$testName";
         }
+
         $this->printEvent('testStarted', $params);
     }
 
@@ -232,52 +254,77 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
         parent::endTest($test, $time);
-        $this->printEvent('testFinished', array(
-            'name' => $test->getName(),
-            'duration' => (int) (round($time, 2) * 1000),
-        ));
+
+        $this->printEvent(
+            'testFinished',
+            [
+                'name'     => $test->getName(),
+                'duration' => (int) (round($time, 2) * 1000)
+            ]
+        );
     }
 
-    private function printEvent($eventName, $params = array())
+    /**
+     * @param string $eventName
+     * @param array  $params
+     */
+    private function printEvent($eventName, $params = [])
     {
         $this->write("\n##teamcity[$eventName");
+
         foreach ($params as $key => $value) {
             $escapedValue = self::escapeValue($value);
             $this->write(" $key='$escapedValue'");
         }
+
         $this->write("]\n");
     }
 
+    /**
+     * @param  Exception $e
+     * @return string
+     */
     private static function getMessage(Exception $e)
     {
         $message = '';
-        if (!($e instanceof PHPUnit_Framework_Exception)) {
+
+        if (!$e instanceof PHPUnit_Framework_Exception) {
             if (strlen(get_class($e)) != 0) {
-                $message = $message.get_class($e);
+                $message = $message . get_class($e);
             }
+
             if (strlen($message) != 0 && strlen($e->getMessage()) != 0) {
-                $message = $message.' : ';
+                $message = $message . ' : ';
             }
         }
 
-        return $message.$e->getMessage();
+        return $message . $e->getMessage();
     }
 
+    /**
+     * @param  Exception $e
+     * @return string
+     */
     private static function getDetails(Exception $e)
     {
         $stackTrace = PHPUnit_Util_Filter::getFilteredStacktrace($e);
+        $previous   = $e->getPrevious();
 
-        $previous = $e->getPrevious();
         while ($previous) {
-            $stackTrace .= "\nCaused by\n".
-                PHPUnit_Framework_TestFailure::exceptionToString($previous)."\n".
+            $stackTrace .= "\nCaused by\n" .
+                PHPUnit_Framework_TestFailure::exceptionToString($previous) . "\n" .
                 PHPUnit_Util_Filter::getFilteredStacktrace($previous);
+
             $previous = $previous->getPrevious();
         }
 
-        return ' '.str_replace("\n", "\n ", $stackTrace);
+        return ' ' . str_replace("\n", "\n ", $stackTrace);
     }
 
+    /**
+     * @param  mixed  $value
+     * @return string
+     */
     private static function getPrimitiveValueAsString($value)
     {
         if (is_null($value)) {
@@ -291,6 +338,10 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
         return;
     }
 
+    /**
+     * @param  $text
+     * @return string
+     */
     private static function escapeValue($text)
     {
         $text = str_replace('|', '||', $text);
@@ -303,10 +354,14 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
         return $text;
     }
 
+    /**
+     * @param  string $className
+     * @return string
+     */
     private static function getFileName($className)
     {
         $reflectionClass = new ReflectionClass($className);
-        $fileName = $reflectionClass->getFileName();
+        $fileName        = $reflectionClass->getFileName();
 
         return $fileName;
     }
