@@ -59,6 +59,7 @@ class PHPUnit_TextUI_Command
         'log-json='               => null,
         'log-junit='              => null,
         'log-tap='                => null,
+        'log-teamcity='           => null,
         'no-configuration'        => null,
         'no-coverage'             => null,
         'no-globals-backup'       => null,
@@ -77,6 +78,7 @@ class PHPUnit_TextUI_Command
         'strict-coverage'         => null,
         'strict-global-state'     => null,
         'tap'                     => null,
+        'teamcity'                => null,
         'testdox'                 => null,
         'testdox-html='           => null,
         'testdox-text='           => null,
@@ -369,6 +371,10 @@ class PHPUnit_TextUI_Command
                     $this->arguments['tapLogfile'] = $option[1];
                     break;
 
+                case '--log-teamcity':
+                    $this->arguments['teamcityLogfile'] = $option[1];
+                    break;
+
                 case '--process-isolation':
                     $this->arguments['processIsolation'] = true;
                     break;
@@ -403,6 +409,10 @@ class PHPUnit_TextUI_Command
 
                 case '--tap':
                     $this->arguments['printer'] = 'PHPUnit_Util_Log_TAP';
+                    break;
+
+                case '--teamcity':
+                    $this->arguments['printer'] = 'PHPUnit_Util_Log_TeamCity';
                     break;
 
                 case '--testdox':
@@ -875,6 +885,7 @@ Logging Options:
 
   --log-junit <file>        Log test execution in JUnit XML format to file.
   --log-tap <file>          Log test execution in TAP format to file.
+  --log-teamcity <file>     Log test execution in TeamCity format to file.
   --log-json <file>         Log test execution in JSON format.
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
@@ -919,6 +930,7 @@ Test Execution Options:
   --loader <loader>         TestSuiteLoader implementation to use.
   --repeat <times>          Runs the test(s) repeatedly.
   --tap                     Report test execution progress in TAP format.
+  --teamcity                Report test execution progress in TeamCity format.
   --testdox                 Report test execution progress in TestDox format.
   --printer <printer>       TestListener implementation to use.
 

@@ -27,6 +27,7 @@ Logging Options:
 
   --log-junit <file>        Log test execution in JUnit XML format to file.
   --log-tap <file>          Log test execution in TAP format to file.
+  --log-teamcity <file>     Log test execution in TeamCity format to file.
   --log-json <file>         Log test execution in JSON format.
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
@@ -71,6 +72,7 @@ Test Execution Options:
   --loader <loader>         TestSuiteLoader implementation to use.
   --repeat <times>          Runs the test(s) repeatedly.
   --tap                     Report test execution progress in TAP format.
+  --teamcity                Report test execution progress in TeamCity format.
   --testdox                 Report test execution progress in TestDox format.
   --printer <printer>       TestListener implementation to use.
 

@@ -399,6 +399,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
+        if (isset($arguments['teamcityLogfile'])) {
+            $result->addListener(
+                new PHPUnit_Util_Log_TeamCity($arguments['teamcityLogfile'])
+            );
+        }
+
         if (isset($arguments['junitLogfile'])) {
             $result->addListener(
                 new PHPUnit_Util_Log_JUnit(
@@ -852,6 +858,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['tap']) &&
                 !isset($arguments['tapLogfile'])) {
                 $arguments['tapLogfile'] = $loggingConfiguration['tap'];
+            }
+
+            if (isset($loggingConfiguration['teamcity']) &&
+                !isset($arguments['teamcityLogfile'])) {
+                $arguments['teamcityLogfile'] = $loggingConfiguration['teamcity'];
             }
 
             if (isset($loggingConfiguration['junit']) &&
