@@ -1825,6 +1825,9 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
     {
+        new SimpleXMLElement($expectedXml);
+        new SimpleXMLElement($actualXml);
+        
         $expected                     = new DOMDocument;
         $expected->preserveWhiteSpace = false;
         $expected->loadXML($expectedXml);
