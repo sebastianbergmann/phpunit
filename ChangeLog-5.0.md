@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 * Implemented [#1780](https://github.com/sebastianbergmann/phpunit/issues/1780): Support for deep-cloning of results passed between tests using `@depends`
 * Implemented [#1821](https://github.com/sebastianbergmann/phpunit/issues/1821): Expectations on mock objects passed via `@depends` are now also evaluated for the depending test
 * Added convenience wrapper `getMockWithoutInvokingTheOriginalConstructor()` to create a test double without invoking the original class' constructor
+* Added TeamCity test result logger for more seamless integration of PHPUnit with PhpStorm
 
 ### Changed
 
