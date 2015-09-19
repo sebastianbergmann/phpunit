@@ -587,7 +587,7 @@ class PHPUnit_TextUI_Command
                 exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
             }
 
-            $phpunit = $configuration->getPHPUnitConfiguration();
+            $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
 
             $configuration->handlePHPConfiguration();
 
@@ -596,43 +596,43 @@ class PHPUnit_TextUI_Command
              */
             if (isset($this->arguments['bootstrap'])) {
                 $this->handleBootstrap($this->arguments['bootstrap']);
-            } elseif (isset($phpunit['bootstrap'])) {
-                $this->handleBootstrap($phpunit['bootstrap']);
+            } elseif (isset($phpunitConfiguration['bootstrap'])) {
+                $this->handleBootstrap($phpunitConfiguration['bootstrap']);
             }
 
             /*
              * Issue #657
              */
-            if (isset($phpunit['stderr']) && ! isset($this->arguments['stderr'])) {
-                $this->arguments['stderr'] = $phpunit['stderr'];
+            if (isset($phpunitConfiguration['stderr']) && ! isset($this->arguments['stderr'])) {
+                $this->arguments['stderr'] = $phpunitConfiguration['stderr'];
             }
 
-            if (isset($phpunit['columns']) && ! isset($this->arguments['columns'])) {
-                $this->arguments['columns'] = $phpunit['columns'];
+            if (isset($phpunitConfiguration['columns']) && ! isset($this->arguments['columns'])) {
+                $this->arguments['columns'] = $phpunitConfiguration['columns'];
             }
 
-            if (isset($phpunit['printerClass'])) {
-                if (isset($phpunit['printerFile'])) {
-                    $file = $phpunit['printerFile'];
+            if (!isset($this->arguments['printer']) && isset($phpunitConfiguration['printerClass'])) {
+                if (isset($phpunitConfiguration['printerFile'])) {
+                    $file = $phpunitConfiguration['printerFile'];
                 } else {
                     $file = '';
                 }
 
                 $this->arguments['printer'] = $this->handlePrinter(
-                    $phpunit['printerClass'],
+                    $phpunitConfiguration['printerClass'],
                     $file
                 );
             }
 
-            if (isset($phpunit['testSuiteLoaderClass'])) {
-                if (isset($phpunit['testSuiteLoaderFile'])) {
-                    $file = $phpunit['testSuiteLoaderFile'];
+            if (isset($phpunitConfiguration['testSuiteLoaderClass'])) {
+                if (isset($phpunitConfiguration['testSuiteLoaderFile'])) {
+                    $file = $phpunitConfiguration['testSuiteLoaderFile'];
                 } else {
                     $file = '';
                 }
 
                 $this->arguments['loader'] = $this->handleLoader(
-                    $phpunit['testSuiteLoaderClass'],
+                    $phpunitConfiguration['testSuiteLoaderClass'],
                     $file
                 );
             }
