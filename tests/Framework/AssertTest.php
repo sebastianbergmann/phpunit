@@ -270,6 +270,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertArraySubset($partial, $subject);
     }
 
+    /**
+     * @return array
+     */
     public function assertArraySubsetInvalidArgumentProvider()
     {
         return array(
