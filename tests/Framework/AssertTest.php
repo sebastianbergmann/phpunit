@@ -657,15 +657,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
-    protected function createDOMDocument($content)
-    {
-        $document                     = new DOMDocument;
-        $document->preserveWhiteSpace = false;
-        $document->loadXML($content);
-
-        return $document;
-    }
-
     protected function sameValues()
     {
         $object = new SampleClass(4, 8, 15);
@@ -759,24 +750,24 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array($storage1, $storage2),
             // DOMDocument
             array(
-                $this->createDOMDocument('<root></root>'),
-                $this->createDOMDocument('<bar/>'),
+                PHPUnit_Util_XML::load('<root></root>'),
+                PHPUnit_Util_XML::load('<bar/>'),
             ),
             array(
-                $this->createDOMDocument('<foo attr1="bar"/>'),
-                $this->createDOMDocument('<foo attr1="foobar"/>'),
+                PHPUnit_Util_XML::load('<foo attr1="bar"/>'),
+                PHPUnit_Util_XML::load('<foo attr1="foobar"/>'),
             ),
             array(
-                $this->createDOMDocument('<foo> bar </foo>'),
-                $this->createDOMDocument('<foo />'),
+                PHPUnit_Util_XML::load('<foo> bar </foo>'),
+                PHPUnit_Util_XML::load('<foo />'),
             ),
             array(
-                $this->createDOMDocument('<foo xmlns="urn:myns:bar"/>'),
-                $this->createDOMDocument('<foo xmlns="urn:notmyns:bar"/>'),
+                PHPUnit_Util_XML::load('<foo xmlns="urn:myns:bar"/>'),
+                PHPUnit_Util_XML::load('<foo xmlns="urn:notmyns:bar"/>'),
             ),
             array(
-                $this->createDOMDocument('<foo> bar </foo>'),
-                $this->createDOMDocument('<foo> bir </foo>'),
+                PHPUnit_Util_XML::load('<foo> bar </foo>'),
+                PHPUnit_Util_XML::load('<foo> bir </foo>'),
             ),
             array(
                 new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
@@ -879,20 +870,20 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array($storage1, $storage2),
             // DOMDocument
             array(
-                $this->createDOMDocument('<root></root>'),
-                $this->createDOMDocument('<root/>'),
+                PHPUnit_Util_XML::load('<root></root>'),
+                PHPUnit_Util_XML::load('<root/>'),
             ),
             array(
-                $this->createDOMDocument('<root attr="bar"></root>'),
-                $this->createDOMDocument('<root attr="bar"/>'),
+                PHPUnit_Util_XML::load('<root attr="bar"></root>'),
+                PHPUnit_Util_XML::load('<root attr="bar"/>'),
             ),
             array(
-                $this->createDOMDocument('<root><foo attr="bar"></foo></root>'),
-                $this->createDOMDocument('<root><foo attr="bar"/></root>'),
+                PHPUnit_Util_XML::load('<root><foo attr="bar"></foo></root>'),
+                PHPUnit_Util_XML::load('<root><foo attr="bar"/></root>'),
             ),
             array(
-                $this->createDOMDocument("<root>\n  <child/>\n</root>"),
-                $this->createDOMDocument('<root><child/></root>'),
+                PHPUnit_Util_XML::load("<root>\n  <child/>\n</root>"),
+                PHPUnit_Util_XML::load('<root><child/></root>'),
             ),
             array(
                 new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
