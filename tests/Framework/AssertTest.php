@@ -13,6 +13,9 @@
  */
 class Framework_AssertTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var string
+     */
     private $filesDirectory;
 
     protected function setUp()
@@ -4091,6 +4094,9 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->fail();
     }
 
+    /**
+     * @return array
+     */
     public static function validInvalidJsonDataprovider()
     {
         return array(
