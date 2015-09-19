@@ -1173,6 +1173,16 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @expectedException PHPUnit_Framework_Exception
+     * @covers            PHPUnit_Framework_Assert::assertXmlStringEqualsXmlString
+     * @ticket            1860
+     */
+    public function testAssertXmlStringEqualsXmlString2()
+    {
+        $this->assertXmlStringEqualsXmlString('<a></b>', '<c></d>');
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertXmlStringNotEqualsXmlString
      */
     public function testAssertXmlStringNotEqualsXmlString()
