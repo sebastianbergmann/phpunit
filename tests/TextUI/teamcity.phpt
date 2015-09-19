@@ -16,17 +16,17 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ##teamcity[testCount count='3']
 
-##teamcity[testSuiteStarted name='BankAccountTest' locationHint='php_qn:///usr/local/src/phpunit/tests/_files/BankAccountTest.php::\BankAccountTest']
+##teamcity[testSuiteStarted name='BankAccountTest' locationHint='php_qn://%s/tests/_files/BankAccountTest.php::\BankAccountTest']
 
-##teamcity[testStarted name='testBalanceIsInitiallyZero' locationHint='php_qn:///usr/local/src/phpunit/tests/_files/BankAccountTest.php::\BankAccountTest::testBalanceIsInitiallyZero']
+##teamcity[testStarted name='testBalanceIsInitiallyZero' locationHint='php_qn://%s/tests/_files/BankAccountTest.php::\BankAccountTest::testBalanceIsInitiallyZero']
 
 ##teamcity[testFinished name='testBalanceIsInitiallyZero' duration='0']
 
-##teamcity[testStarted name='testBalanceCannotBecomeNegative' locationHint='php_qn:///usr/local/src/phpunit/tests/_files/BankAccountTest.php::\BankAccountTest::testBalanceCannotBecomeNegative']
+##teamcity[testStarted name='testBalanceCannotBecomeNegative' locationHint='php_qn://%s/tests/_files/BankAccountTest.php::\BankAccountTest::testBalanceCannotBecomeNegative']
 
 ##teamcity[testFinished name='testBalanceCannotBecomeNegative' duration='0']
 
-##teamcity[testStarted name='testBalanceCannotBecomeNegative2' locationHint='php_qn:///usr/local/src/phpunit/tests/_files/BankAccountTest.php::\BankAccountTest::testBalanceCannotBecomeNegative2']
+##teamcity[testStarted name='testBalanceCannotBecomeNegative2' locationHint='php_qn://%s/tests/_files/BankAccountTest.php::\BankAccountTest::testBalanceCannotBecomeNegative2']
 
 ##teamcity[testFinished name='testBalanceCannotBecomeNegative2' duration='0']
 
