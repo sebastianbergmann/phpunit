@@ -606,7 +606,7 @@ class PHPUnit_TextUI_Command
                 $this->arguments['columns'] = $phpunitConfiguration['columns'];
             }
 
-            if (isset($phpunitConfiguration['printerClass'])) {
+            if (!isset($this->arguments['printer']) && isset($phpunitConfiguration['printerClass'])) {
                 if (isset($phpunitConfiguration['printerFile'])) {
                     $file = $phpunitConfiguration['printerFile'];
                 } else {
