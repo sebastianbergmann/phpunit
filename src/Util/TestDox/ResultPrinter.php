@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+use SebastianBergmann\Environment\Console;
+
 /**
  * Base class for printers of TestDox documentation.
  *
@@ -15,6 +17,34 @@
  */
 abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
+    const COLOR_NEVER   = 'never';
+    const COLOR_AUTO    = 'auto';
+    const COLOR_ALWAYS  = 'always';
+    const COLOR_DEFAULT = self::COLOR_NEVER;
+
+    /**
+     * @var array
+     */
+    private static $ansiCodes = [
+        'bold'       => 1,
+        'fg-black'   => 30,
+        'fg-red'     => 31,
+        'fg-green'   => 32,
+        'fg-yellow'  => 33,
+        'fg-blue'    => 34,
+        'fg-magenta' => 35,
+        'fg-cyan'    => 36,
+        'fg-white'   => 37,
+        'bg-black'   => 40,
+        'bg-red'     => 41,
+        'bg-green'   => 42,
+        'bg-yellow'  => 43,
+        'bg-blue'    => 44,
+        'bg-magenta' => 45,
+        'bg-cyan'    => 46,
+        'bg-white'   => 47
+    ];
+
     /**
      * @var PHPUnit_Util_TestDox_NamePrettifier
      */
@@ -76,16 +106,40 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     protected $currentTestMethodPrettified;
 
     /**
+     * @var bool
+     */
+    protected $colors = false;
+
+    /**
      * Constructor.
      *
      * @param resource $out
+     * @param  bool                        $verbose
+     * @param  string                      $colors
      */
-    public function __construct($out = null)
+    public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT)
     {
         parent::__construct($out);
 
         $this->prettifier = new PHPUnit_Util_TestDox_NamePrettifier;
         $this->startRun();
+
+        $availableColors = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
+
+        if (!in_array($colors, $availableColors)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                3,
+                vsprintf('value from "%s", "%s" or "%s"', $availableColors)
+            );
+        }
+
+        $console            = new Console;
+
+        if ($colors === self::COLOR_AUTO && $console->hasColorSupport()) {
+            $this->colors = true;
+        } else {
+            $this->colors = (self::COLOR_ALWAYS === $colors);
+        }
     }
 
     /**
@@ -349,6 +403,41 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      */
     protected function endRun()
     {
+    }
+
+    /**
+     * Formats a buffer with a specified ANSI color sequence if colors are
+     * enabled.
+     *
+     * @param  string $color
+     * @param  string $buffer
+     * @return string
+     * @since  Method available since Release 4.0.0
+     */
+    protected function formatWithColor($color, $buffer)
+    {
+        if (!$this->colors) {
+            return $buffer;
+        }
+
+        $codes   = array_map('trim', explode(',', $color));
+        $lines   = explode("\n", $buffer);
+        $padding = max(array_map('strlen', $lines));
+        $styles  = [];
+
+        foreach ($codes as $code) {
+            $styles[] = self::$ansiCodes[$code];
+        }
+
+        $style = sprintf("\x1b[%sm", implode(';', $styles));
+
+        $styledLines = [];
+
+        foreach ($lines as $line) {
+            $styledLines[] = $style . str_pad($line, $padding) . "\x1b[0m";
+        }
+
+        return implode("\n", $styledLines);
     }
 
     private function isOfInterest(PHPUnit_Framework_Test $test)
