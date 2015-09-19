@@ -3087,8 +3087,10 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertThatCallback()
     {
-        $this->assertThat(null, $this->callback(function ($other) { return true;
-        }));
+        $this->assertThat(
+            null,
+            $this->callback(function ($other) { return true; })
+        );
     }
 
     /**
