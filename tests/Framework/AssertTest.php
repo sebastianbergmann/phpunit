@@ -630,7 +630,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertArrayContainsOnlyStdClass()
     {
-        $this->assertContainsOnly('StdClass', array(new StdClass));
+        $this->assertContainsOnly('StdClass', array(new stdClass));
 
         try {
             $this->assertContainsOnly('StdClass', array('StdClass'));
@@ -649,7 +649,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $this->assertNotContainsOnly('StdClass', array('StdClass'));
 
         try {
-            $this->assertNotContainsOnly('StdClass', array(new StdClass));
+            $this->assertNotContainsOnly('StdClass', array(new stdClass));
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             return;
         }
@@ -2674,7 +2674,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testObjectHasOnTheFlyAttribute()
     {
-        $obj      = new StdClass;
+        $obj      = new stdClass;
         $obj->foo = 'bar';
 
         $this->assertObjectHasAttribute('foo', $obj);
@@ -2693,7 +2693,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testObjectNotHasOnTheFlyAttribute()
     {
-        $obj      = new StdClass;
+        $obj      = new stdClass;
         $obj->foo = 'bar';
 
         $this->assertObjectNotHasAttribute('bar', $obj);
@@ -3003,7 +3003,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertThatIdenticalTo()
     {
-        $value      = new StdClass;
+        $value      = new stdClass;
         $constraint = $this->identicalTo($value);
 
         $this->assertThat($value, $constraint);
@@ -3015,7 +3015,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertThatIsInstanceOf()
     {
-        $this->assertThat(new StdClass, $this->isInstanceOf('StdClass'));
+        $this->assertThat(new stdClass, $this->isInstanceOf('StdClass'));
     }
 
     /**
@@ -3439,7 +3439,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertAttributeEmpty()
     {
-        $o    = new StdClass;
+        $o    = new stdClass;
         $o->a = array();
 
         $this->assertAttributeEmpty('a', $o);
@@ -3459,7 +3459,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      */
     public function testAssertAttributeNotEmpty()
     {
-        $o    = new StdClass;
+        $o    = new stdClass;
         $o->a = array('b');
 
         $this->assertAttributeNotEmpty('a', $o);
