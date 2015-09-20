@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Provides human readable messages for each JSON error.
  *

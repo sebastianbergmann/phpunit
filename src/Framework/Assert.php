@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * A set of assert methods.
  *
@@ -28,7 +30,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string            $message
      * @since Method available since Release 3.0.0
      */
-    public static function assertArrayHasKey($key, $array, $message = '')
+    public static function assertArrayHasKey($key, $array, string $message = '')
     {
         if (!(is_integer($key) || is_string($key))) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
@@ -58,16 +60,16 @@ abstract class PHPUnit_Framework_Assert
      * @param string            $message
      * @since Method available since Release 4.4.0
      */
-    public static function assertArraySubset($subset, $array, $strict = false, $message = '')
+    public static function assertArraySubset($subset, $array, $strict = false, string $message = '')
     {
-        if (!is_array($subset)) {
+        if (!is_array($subset) && !$subset instanceof ArrayAccess) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
                 1,
                 'array or ArrayAccess'
             );
         }
 
-        if (!is_array($array)) {
+        if (!is_array($array) && !$array instanceof ArrayAccess) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
                 2,
                 'array or ArrayAccess'
@@ -87,7 +89,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string            $message
      * @since  Method available since Release 3.0.0
      */
-    public static function assertArrayNotHasKey($key, $array, $message = '')
+    public static function assertArrayNotHasKey($key, $array, string $message = '')
     {
         if (!(is_integer($key) || is_string($key))) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
@@ -119,9 +121,9 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $ignoreCase
      * @param bool   $checkForObjectIdentity
      * @param bool   $checkForNonObjectIdentity
-     * @since  Method available since Release 2.1.0
+     * @since Method available since Release 2.1.0
      */
-    public static function assertContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public static function assertContains($needle, $haystack, string $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable) {
@@ -165,7 +167,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $checkForNonObjectIdentity
      * @since  Method available since Release 3.0.0
      */
-    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, string $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
     {
         self::assertContains(
             $needle,
@@ -188,7 +190,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $checkForNonObjectIdentity
      * @since  Method available since Release 2.1.0
      */
-    public static function assertNotContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public static function assertNotContains($needle, $haystack, string $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable) {
@@ -236,7 +238,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $checkForNonObjectIdentity
      * @since  Method available since Release 3.0.0
      */
-    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, string $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
     {
         self::assertNotContains(
             $needle,
@@ -255,9 +257,9 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $haystack
      * @param bool   $isNativeType
      * @param string $message
-     * @since  Method available since Release 3.1.4
+     * @since Method available since Release 3.1.4
      */
-    public static function assertContainsOnly($type, $haystack, $isNativeType = null, $message = '')
+    public static function assertContainsOnly(string $type, $haystack, $isNativeType = null, string $message = '')
     {
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
@@ -288,7 +290,7 @@ abstract class PHPUnit_Framework_Assert
      * @param array|Traversable $haystack
      * @param string            $message
      */
-    public static function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
+    public static function assertContainsOnlyInstancesOf($classname, $haystack, string $message = '')
     {
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
@@ -319,7 +321,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.4
      */
-    public static function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, $message = '')
+    public static function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, string $message = '')
     {
         self::assertContainsOnly(
             $type,
@@ -338,7 +340,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.4
      */
-    public static function assertNotContainsOnly($type, $haystack, $isNativeType = null, $message = '')
+    public static function assertNotContainsOnly($type, $haystack, $isNativeType = null, string $message = '')
     {
         if (!(is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable)) {
@@ -376,7 +378,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.4
      */
-    public static function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, $message = '')
+    public static function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, string $message = '')
     {
         self::assertNotContainsOnly(
             $type,
@@ -393,12 +395,8 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $haystack
      * @param string $message
      */
-    public static function assertCount($expectedCount, $haystack, $message = '')
+    public static function assertCount(int $expectedCount, $haystack, string $message = '')
     {
-        if (!is_int($expectedCount)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
-        }
-
         if (!$haystack instanceof Countable &&
             !$haystack instanceof Traversable &&
             !is_array($haystack)) {
@@ -422,7 +420,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.6.0
      */
-    public static function assertAttributeCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, string $message = '')
     {
         self::assertCount(
             $expectedCount,
@@ -438,12 +436,8 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $haystack
      * @param string $message
      */
-    public static function assertNotCount($expectedCount, $haystack, $message = '')
+    public static function assertNotCount(int $expectedCount, $haystack, string $message = '')
     {
-        if (!is_int($expectedCount)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
-        }
-
         if (!$haystack instanceof Countable &&
             !$haystack instanceof Traversable &&
             !is_array($haystack)) {
@@ -467,7 +461,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.6.0
      */
-    public static function assertAttributeNotCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeNotCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, string $message = '')
     {
         self::assertNotCount(
             $expectedCount,
@@ -487,7 +481,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $canonicalize
      * @param bool   $ignoreCase
      */
-    public static function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertEquals($expected, $actual, string $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         $constraint = new PHPUnit_Framework_Constraint_IsEqual(
             $expected,
@@ -512,7 +506,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $canonicalize
      * @param bool   $ignoreCase
      */
-    public static function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, string $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         self::assertEquals(
             $expected,
@@ -537,7 +531,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $ignoreCase
      * @since  Method available since Release 2.3.0
      */
-    public static function assertNotEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertNotEquals($expected, $actual, string $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
             new PHPUnit_Framework_Constraint_IsEqual(
@@ -564,7 +558,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $canonicalize
      * @param bool   $ignoreCase
      */
-    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, string $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         self::assertNotEquals(
             $expected,
@@ -584,7 +578,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  string                                 $message
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public static function assertEmpty($actual, $message = '')
+    public static function assertEmpty($actual, string $message = '')
     {
         self::assertThat($actual, self::isEmpty(), $message);
     }
@@ -598,7 +592,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.5.0
      */
-    public static function assertAttributeEmpty($haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeEmpty($haystackAttributeName, $haystackClassOrObject, string $message = '')
     {
         self::assertEmpty(
             self::readAttribute($haystackClassOrObject, $haystackAttributeName),
@@ -613,7 +607,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  string                                 $message
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public static function assertNotEmpty($actual, $message = '')
+    public static function assertNotEmpty($actual, string $message = '')
     {
         self::assertThat($actual, self::logicalNot(self::isEmpty()), $message);
     }
@@ -627,7 +621,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.5.0
      */
-    public static function assertAttributeNotEmpty($haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeNotEmpty($haystackAttributeName, $haystackClassOrObject, string $message = '')
     {
         self::assertNotEmpty(
             self::readAttribute($haystackClassOrObject, $haystackAttributeName),
@@ -643,7 +637,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertGreaterThan($expected, $actual, $message = '')
+    public static function assertGreaterThan($expected, $actual, string $message = '')
     {
         self::assertThat($actual, self::greaterThan($expected), $message);
     }
@@ -657,7 +651,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertAttributeGreaterThan($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeGreaterThan($expected, $actualAttributeName, $actualClassOrObject, string $message = '')
     {
         self::assertGreaterThan(
             $expected,
@@ -674,7 +668,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertGreaterThanOrEqual($expected, $actual, $message = '')
+    public static function assertGreaterThanOrEqual($expected, $actual, string $message = '')
     {
         self::assertThat(
             $actual,
@@ -692,7 +686,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertAttributeGreaterThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeGreaterThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, string $message = '')
     {
         self::assertGreaterThanOrEqual(
             $expected,
@@ -709,7 +703,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertLessThan($expected, $actual, $message = '')
+    public static function assertLessThan($expected, $actual, string $message = '')
     {
         self::assertThat($actual, self::lessThan($expected), $message);
     }
@@ -723,7 +717,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertAttributeLessThan($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeLessThan($expected, $actualAttributeName, $actualClassOrObject, string $message = '')
     {
         self::assertLessThan(
             $expected,
@@ -740,7 +734,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertLessThanOrEqual($expected, $actual, $message = '')
+    public static function assertLessThanOrEqual($expected, $actual, string $message = '')
     {
         self::assertThat($actual, self::lessThanOrEqual($expected), $message);
     }
@@ -754,7 +748,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, string $message = '')
     {
         self::assertLessThanOrEqual(
             $expected,
@@ -774,7 +768,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $ignoreCase
      * @since  Method available since Release 3.2.14
      */
-    public static function assertFileEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false)
+    public static function assertFileEquals($expected, $actual, string $message = '', $canonicalize = false, $ignoreCase = false)
     {
         self::assertFileExists($expected, $message);
         self::assertFileExists($actual, $message);
@@ -801,7 +795,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $ignoreCase
      * @since  Method available since Release 3.2.14
      */
-    public static function assertFileNotEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false)
+    public static function assertFileNotEquals($expected, $actual, string $message = '', $canonicalize = false, $ignoreCase = false)
     {
         self::assertFileExists($expected, $message);
         self::assertFileExists($actual, $message);
@@ -828,7 +822,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $ignoreCase
      * @since  Method available since Release 3.3.0
      */
-    public static function assertStringEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false)
+    public static function assertStringEqualsFile($expectedFile, $actualString, string $message = '', $canonicalize = false, $ignoreCase = false)
     {
         self::assertFileExists($expectedFile, $message);
 
@@ -854,7 +848,7 @@ abstract class PHPUnit_Framework_Assert
      * @param bool   $ignoreCase
      * @since  Method available since Release 3.3.0
      */
-    public static function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false)
+    public static function assertStringNotEqualsFile($expectedFile, $actualString, string $message = '', $canonicalize = false, $ignoreCase = false)
     {
         self::assertFileExists($expectedFile, $message);
 
@@ -874,14 +868,10 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param string $filename
      * @param string $message
-     * @since  Method available since Release 3.0.0
+     * @since Method available since Release 3.0.0
      */
-    public static function assertFileExists($filename, $message = '')
+    public static function assertFileExists(string $filename, string $message = '')
     {
-        if (!is_string($filename)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_FileExists;
 
         self::assertThat($filename, $constraint, $message);
@@ -892,14 +882,10 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param string $filename
      * @param string $message
-     * @since  Method available since Release 3.0.0
+     * @since Method available since Release 3.0.0
      */
-    public static function assertFileNotExists($filename, $message = '')
+    public static function assertFileNotExists(string $filename, string $message = '')
     {
-        if (!is_string($filename)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_Not(
             new PHPUnit_Framework_Constraint_FileExists
         );
@@ -914,7 +900,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  string                                 $message
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public static function assertTrue($condition, $message = '')
+    public static function assertTrue($condition, string $message = '')
     {
         self::assertThat($condition, self::isTrue(), $message);
     }
@@ -926,7 +912,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  string                                 $message
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public static function assertNotTrue($condition, $message = '')
+    public static function assertNotTrue($condition, string $message = '')
     {
         self::assertThat($condition, self::logicalNot(self::isTrue()), $message);
     }
@@ -938,7 +924,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  string                                 $message
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public static function assertFalse($condition, $message = '')
+    public static function assertFalse($condition, string $message = '')
     {
         self::assertThat($condition, self::isFalse(), $message);
     }
@@ -950,7 +936,7 @@ abstract class PHPUnit_Framework_Assert
      * @param  string                                 $message
      * @throws PHPUnit_Framework_AssertionFailedError
      */
-    public static function assertNotFalse($condition, $message = '')
+    public static function assertNotFalse($condition, string $message = '')
     {
         self::assertThat($condition, self::logicalNot(self::isFalse()), $message);
     }
@@ -961,7 +947,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertNotNull($actual, $message = '')
+    public static function assertNotNull($actual, string $message = '')
     {
         self::assertThat($actual, self::logicalNot(self::isNull()), $message);
     }
@@ -972,7 +958,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertNull($actual, $message = '')
+    public static function assertNull($actual, string $message = '')
     {
         self::assertThat($actual, self::isNull(), $message);
     }
@@ -983,7 +969,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertFinite($actual, $message = '')
+    public static function assertFinite($actual, string $message = '')
     {
         self::assertThat($actual, self::isFinite(), $message);
     }
@@ -994,7 +980,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertInfinite($actual, $message = '')
+    public static function assertInfinite($actual, string $message = '')
     {
         self::assertThat($actual, self::isInfinite(), $message);
     }
@@ -1005,7 +991,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertNan($actual, $message = '')
+    public static function assertNan($actual, string $message = '')
     {
         self::assertThat($actual, self::isNan(), $message);
     }
@@ -1016,19 +1002,15 @@ abstract class PHPUnit_Framework_Assert
      * @param string $attributeName
      * @param string $className
      * @param string $message
-     * @since  Method available since Release 3.1.0
+     * @since Method available since Release 3.1.0
      */
-    public static function assertClassHasAttribute($attributeName, $className, $message = '')
+    public static function assertClassHasAttribute(string $attributeName, string $className, string $message = '')
     {
-        if (!is_string($attributeName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+        if (!self::isAttributeName($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
-        if (!is_string($className) || !class_exists($className)) {
+        if (!class_exists($className)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
@@ -1045,19 +1027,15 @@ abstract class PHPUnit_Framework_Assert
      * @param string $attributeName
      * @param string $className
      * @param string $message
-     * @since  Method available since Release 3.1.0
+     * @since Method available since Release 3.1.0
      */
-    public static function assertClassNotHasAttribute($attributeName, $className, $message = '')
+    public static function assertClassNotHasAttribute(string $attributeName, string $className, string $message = '')
     {
-        if (!is_string($attributeName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+        if (!self::isAttributeName($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
-        if (!is_string($className) || !class_exists($className)) {
+        if (!class_exists($className)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
@@ -1074,19 +1052,15 @@ abstract class PHPUnit_Framework_Assert
      * @param string $attributeName
      * @param string $className
      * @param string $message
-     * @since  Method available since Release 3.1.0
+     * @since Method available since Release 3.1.0
      */
-    public static function assertClassHasStaticAttribute($attributeName, $className, $message = '')
+    public static function assertClassHasStaticAttribute(string $attributeName, string $className, string $message = '')
     {
-        if (!is_string($attributeName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+        if (!self::isAttributeName($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
-        if (!is_string($className) || !class_exists($className)) {
+        if (!class_exists($className)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
@@ -1103,19 +1077,15 @@ abstract class PHPUnit_Framework_Assert
      * @param string $attributeName
      * @param string $className
      * @param string $message
-     * @since  Method available since Release 3.1.0
+     * @since Method available since Release 3.1.0
      */
-    public static function assertClassNotHasStaticAttribute($attributeName, $className, $message = '')
+    public static function assertClassNotHasStaticAttribute(string $attributeName, string $className, string $message = '')
     {
-        if (!is_string($attributeName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+        if (!self::isAttributeName($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
-        if (!is_string($className) || !class_exists($className)) {
+        if (!class_exists($className)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
@@ -1134,15 +1104,11 @@ abstract class PHPUnit_Framework_Assert
      * @param string $attributeName
      * @param object $object
      * @param string $message
-     * @since  Method available since Release 3.0.0
+     * @since Method available since Release 3.0.0
      */
-    public static function assertObjectHasAttribute($attributeName, $object, $message = '')
+    public static function assertObjectHasAttribute(string $attributeName, $object, string $message = '')
     {
-        if (!is_string($attributeName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+        if (!self::isAttributeName($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
@@ -1163,15 +1129,11 @@ abstract class PHPUnit_Framework_Assert
      * @param string $attributeName
      * @param object $object
      * @param string $message
-     * @since  Method available since Release 3.0.0
+     * @since Method available since Release 3.0.0
      */
-    public static function assertObjectNotHasAttribute($attributeName, $object, $message = '')
+    public static function assertObjectNotHasAttribute(string $attributeName, $object, string $message = '')
     {
-        if (!is_string($attributeName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+        if (!self::isAttributeName($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
@@ -1195,7 +1157,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertSame($expected, $actual, $message = '')
+    public static function assertSame($expected, $actual, string $message = '')
     {
         if (is_bool($expected) && is_bool($actual)) {
             self::assertEquals($expected, $actual, $message);
@@ -1217,7 +1179,7 @@ abstract class PHPUnit_Framework_Assert
      * @param object $actualClassOrObject
      * @param string $message
      */
-    public static function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeSame($expected, string $actualAttributeName, $actualClassOrObject, string $message = '')
     {
         self::assertSame(
             $expected,
@@ -1235,7 +1197,7 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertNotSame($expected, $actual, $message = '')
+    public static function assertNotSame($expected, $actual, string $message = '')
     {
         if (is_bool($expected) && is_bool($actual)) {
             self::assertNotEquals($expected, $actual, $message);
@@ -1257,7 +1219,7 @@ abstract class PHPUnit_Framework_Assert
      * @param object $actualClassOrObject
      * @param string $message
      */
-    public static function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrObject, string $message = '')
     {
         self::assertNotSame(
             $expected,
@@ -1274,9 +1236,9 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.5.0
      */
-    public static function assertInstanceOf($expected, $actual, $message = '')
+    public static function assertInstanceOf(string $expected, $actual, string $message = '')
     {
-        if (!(is_string($expected) && (class_exists($expected) || interface_exists($expected)))) {
+        if (!class_exists($expected) && !interface_exists($expected)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class or interface name');
         }
 
@@ -1296,7 +1258,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.5.0
      */
-    public static function assertAttributeInstanceOf($expected, $attributeName, $classOrObject, $message = '')
+    public static function assertAttributeInstanceOf($expected, $attributeName, $classOrObject, string $message = '')
     {
         self::assertInstanceOf(
             $expected,
@@ -1313,9 +1275,9 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.5.0
      */
-    public static function assertNotInstanceOf($expected, $actual, $message = '')
+    public static function assertNotInstanceOf(string $expected, $actual, string $message = '')
     {
-        if (!(is_string($expected) && (class_exists($expected) || interface_exists($expected)))) {
+        if (!class_exists($expected) && !interface_exists($expected)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class or interface name');
         }
 
@@ -1335,7 +1297,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.5.0
      */
-    public static function assertAttributeNotInstanceOf($expected, $attributeName, $classOrObject, $message = '')
+    public static function assertAttributeNotInstanceOf($expected, $attributeName, $classOrObject, string $message = '')
     {
         self::assertNotInstanceOf(
             $expected,
@@ -1352,12 +1314,8 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.5.0
      */
-    public static function assertInternalType($expected, $actual, $message = '')
+    public static function assertInternalType(string $expected, $actual, string $message = '')
     {
-        if (!is_string($expected)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_IsType(
             $expected
         );
@@ -1374,7 +1332,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.5.0
      */
-    public static function assertAttributeInternalType($expected, $attributeName, $classOrObject, $message = '')
+    public static function assertAttributeInternalType($expected, $attributeName, $classOrObject, string $message = '')
     {
         self::assertInternalType(
             $expected,
@@ -1391,12 +1349,8 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.5.0
      */
-    public static function assertNotInternalType($expected, $actual, $message = '')
+    public static function assertNotInternalType(string $expected, $actual, string $message = '')
     {
-        if (!is_string($expected)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_Not(
             new PHPUnit_Framework_Constraint_IsType($expected)
         );
@@ -1413,7 +1367,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since Method available since Release 3.5.0
      */
-    public static function assertAttributeNotInternalType($expected, $attributeName, $classOrObject, $message = '')
+    public static function assertAttributeNotInternalType($expected, $attributeName, $classOrObject, string $message = '')
     {
         self::assertNotInternalType(
             $expected,
@@ -1429,16 +1383,8 @@ abstract class PHPUnit_Framework_Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertRegExp($pattern, $string, $message = '')
+    public static function assertRegExp(string $pattern, string $string, string $message = '')
     {
-        if (!is_string($pattern)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_PCREMatch($pattern);
 
         self::assertThat($string, $constraint, $message);
@@ -1450,18 +1396,10 @@ abstract class PHPUnit_Framework_Assert
      * @param string $pattern
      * @param string $string
      * @param string $message
-     * @since  Method available since Release 2.1.0
+     * @since Method available since Release 2.1.0
      */
-    public static function assertNotRegExp($pattern, $string, $message = '')
+    public static function assertNotRegExp(string $pattern, string $string, string $message = '')
     {
-        if (!is_string($pattern)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_Not(
             new PHPUnit_Framework_Constraint_PCREMatch($pattern)
         );
@@ -1477,7 +1415,7 @@ abstract class PHPUnit_Framework_Assert
      * @param array|Countable|Traversable $actual
      * @param string                      $message
      */
-    public static function assertSameSize($expected, $actual, $message = '')
+    public static function assertSameSize($expected, $actual, string $message = '')
     {
         if (!$expected instanceof Countable &&
             !$expected instanceof Traversable &&
@@ -1506,7 +1444,7 @@ abstract class PHPUnit_Framework_Assert
      * @param array|Countable|Traversable $actual
      * @param string                      $message
      */
-    public static function assertNotSameSize($expected, $actual, $message = '')
+    public static function assertNotSameSize($expected, $actual, string $message = '')
     {
         if (!$expected instanceof Countable &&
             !$expected instanceof Traversable &&
@@ -1533,18 +1471,10 @@ abstract class PHPUnit_Framework_Assert
      * @param string $format
      * @param string $string
      * @param string $message
-     * @since  Method available since Release 3.5.0
+     * @since Method available since Release 3.5.0
      */
-    public static function assertStringMatchesFormat($format, $string, $message = '')
+    public static function assertStringMatchesFormat(string $format, string $string, string $message = '')
     {
-        if (!is_string($format)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_StringMatches($format);
 
         self::assertThat($string, $constraint, $message);
@@ -1556,18 +1486,10 @@ abstract class PHPUnit_Framework_Assert
      * @param string $format
      * @param string $string
      * @param string $message
-     * @since  Method available since Release 3.5.0
+     * @since Method available since Release 3.5.0
      */
-    public static function assertStringNotMatchesFormat($format, $string, $message = '')
+    public static function assertStringNotMatchesFormat(string $format, string $string, string $message = '')
     {
-        if (!is_string($format)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_Not(
             new PHPUnit_Framework_Constraint_StringMatches($format)
         );
@@ -1581,15 +1503,11 @@ abstract class PHPUnit_Framework_Assert
      * @param string $formatFile
      * @param string $string
      * @param string $message
-     * @since  Method available since Release 3.5.0
+     * @since Method available since Release 3.5.0
      */
-    public static function assertStringMatchesFormatFile($formatFile, $string, $message = '')
+    public static function assertStringMatchesFormatFile(string $formatFile, string $string, string $message = '')
     {
         self::assertFileExists($formatFile, $message);
-
-        if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
 
         $constraint = new PHPUnit_Framework_Constraint_StringMatches(
             file_get_contents($formatFile)
@@ -1604,15 +1522,11 @@ abstract class PHPUnit_Framework_Assert
      * @param string $formatFile
      * @param string $string
      * @param string $message
-     * @since  Method available since Release 3.5.0
+     * @since Method available since Release 3.5.0
      */
-    public static function assertStringNotMatchesFormatFile($formatFile, $string, $message = '')
+    public static function assertStringNotMatchesFormatFile(string $formatFile, string $string, string $message = '')
     {
         self::assertFileExists($formatFile, $message);
-
-        if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
             new PHPUnit_Framework_Constraint_StringMatches(
@@ -1629,18 +1543,10 @@ abstract class PHPUnit_Framework_Assert
      * @param string $prefix
      * @param string $string
      * @param string $message
-     * @since  Method available since Release 3.4.0
+     * @since Method available since Release 3.4.0
      */
-    public static function assertStringStartsWith($prefix, $string, $message = '')
+    public static function assertStringStartsWith(string $prefix, string $string, string $message = '')
     {
-        if (!is_string($prefix)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_StringStartsWith(
             $prefix
         );
@@ -1654,18 +1560,10 @@ abstract class PHPUnit_Framework_Assert
      * @param string $prefix
      * @param string $string
      * @param string $message
-     * @since  Method available since Release 3.4.0
+     * @since Method available since Release 3.4.0
      */
-    public static function assertStringStartsNotWith($prefix, $string, $message = '')
+    public static function assertStringStartsNotWith(string $prefix, string $string, string $message = '')
     {
-        if (!is_string($prefix)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_Not(
             new PHPUnit_Framework_Constraint_StringStartsWith($prefix)
         );
@@ -1681,16 +1579,8 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.4.0
      */
-    public static function assertStringEndsWith($suffix, $string, $message = '')
+    public static function assertStringEndsWith(string $suffix, string $string, string $message = '')
     {
-        if (!is_string($suffix)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_StringEndsWith($suffix);
 
         self::assertThat($string, $constraint, $message);
@@ -1702,18 +1592,10 @@ abstract class PHPUnit_Framework_Assert
      * @param string $suffix
      * @param string $string
      * @param string $message
-     * @since  Method available since Release 3.4.0
+     * @since Method available since Release 3.4.0
      */
-    public static function assertStringEndsNotWith($suffix, $string, $message = '')
+    public static function assertStringEndsNotWith(string $suffix, string $string, string $message = '')
     {
-        if (!is_string($suffix)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
-        if (!is_string($string)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
         $constraint = new PHPUnit_Framework_Constraint_Not(
             new PHPUnit_Framework_Constraint_StringEndsWith($suffix)
         );
@@ -1729,7 +1611,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertXmlFileEqualsXmlFile($expectedFile, $actualFile, $message = '')
+    public static function assertXmlFileEqualsXmlFile($expectedFile, $actualFile, string $message = '')
     {
         $expected = PHPUnit_Util_XML::loadFile($expectedFile);
         $actual   = PHPUnit_Util_XML::loadFile($actualFile);
@@ -1745,7 +1627,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = '')
+    public static function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, string $message = '')
     {
         $expected = PHPUnit_Util_XML::loadFile($expectedFile);
         $actual   = PHPUnit_Util_XML::loadFile($actualFile);
@@ -1761,7 +1643,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.3.0
      */
-    public static function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
+    public static function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, string $message = '')
     {
         $expected = PHPUnit_Util_XML::loadFile($expectedFile);
         $actual   = PHPUnit_Util_XML::load($actualXml);
@@ -1777,7 +1659,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.3.0
      */
-    public static function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '')
+    public static function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, string $message = '')
     {
         $expected = PHPUnit_Util_XML::loadFile($expectedFile);
         $actual   = PHPUnit_Util_XML::load($actualXml);
@@ -1793,7 +1675,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
+    public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, string $message = '')
     {
         $expected = PHPUnit_Util_XML::load($expectedXml);
         $actual   = PHPUnit_Util_XML::load($actualXml);
@@ -1809,7 +1691,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $message
      * @since  Method available since Release 3.1.0
      */
-    public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
+    public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, string $message = '')
     {
         $expected = PHPUnit_Util_XML::load($expectedXml);
         $actual   = PHPUnit_Util_XML::load($actualXml);
@@ -1826,7 +1708,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string     $message
      * @since  Method available since Release 3.3.0
      */
-    public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = '')
+    public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, string $message = '')
     {
         $expectedElement = clone $expectedElement;
         $actualElement   = clone $actualElement;
@@ -1901,7 +1783,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string                       $message
      * @since  Method available since Release 3.0.0
      */
-    public static function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
+    public static function assertThat($value, PHPUnit_Framework_Constraint $constraint, string $message = '')
     {
         self::$count += count($constraint);
 
@@ -1913,14 +1795,10 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param string $actualJson
      * @param string $message
-     * @since  Method available since Release 3.7.20
+     * @since Method available since Release 3.7.20
      */
-    public static function assertJson($actualJson, $message = '')
+    public static function assertJson(string $actualJson, string $message = '')
     {
-        if (!is_string($actualJson)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
         self::assertThat($actualJson, self::isJson(), $message);
     }
 
@@ -1931,7 +1809,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $actualJson
      * @param string $message
      */
-    public static function assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message = '')
+    public static function assertJsonStringEqualsJsonString($expectedJson, $actualJson, string $message = '')
     {
         self::assertJson($expectedJson, $message);
         self::assertJson($actualJson, $message);
@@ -1949,7 +1827,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $actualJson
      * @param string $message
      */
-    public static function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message = '')
+    public static function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, string $message = '')
     {
         self::assertJson($expectedJson, $message);
         self::assertJson($actualJson, $message);
@@ -1967,7 +1845,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $actualJson
      * @param string $message
      */
-    public static function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '')
+    public static function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, string $message = '')
     {
         self::assertFileExists($expectedFile, $message);
         $expectedJson = file_get_contents($expectedFile);
@@ -1990,7 +1868,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $actualJson
      * @param string $message
      */
-    public static function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message = '')
+    public static function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, string $message = '')
     {
         self::assertFileExists($expectedFile, $message);
         $expectedJson = file_get_contents($expectedFile);
@@ -2013,7 +1891,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $actualFile
      * @param string $message
      */
-    public static function assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = '')
+    public static function assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, string $message = '')
     {
         self::assertFileExists($expectedFile, $message);
         self::assertFileExists($actualFile, $message);
@@ -2042,7 +1920,7 @@ abstract class PHPUnit_Framework_Assert
      * @param string $actualFile
      * @param string $message
      */
-    public static function assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message = '')
+    public static function assertJsonFileEqualsJsonFile($expectedFile, $actualFile, string $message = '')
     {
         self::assertFileExists($expectedFile, $message);
         self::assertFileExists($actualFile, $message);
@@ -2591,13 +2469,9 @@ abstract class PHPUnit_Framework_Assert
      * @return mixed
      * @throws PHPUnit_Framework_Exception
      */
-    public static function readAttribute($classOrObject, $attributeName)
+    public static function readAttribute($classOrObject, string $attributeName)
     {
-        if (!is_string($attributeName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
-        if (!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+        if (!self::isAttributeName($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'valid attribute name');
         }
 
@@ -2636,21 +2510,13 @@ abstract class PHPUnit_Framework_Assert
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 4.0.0
      */
-    public static function getStaticAttribute($className, $attributeName)
+    public static function getStaticAttribute(string $className, string $attributeName)
     {
-        if (!is_string($className)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
         if (!class_exists($className)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name');
         }
 
-        if (!is_string($attributeName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
-        if (!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+        if (!self::isAttributeName($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'valid attribute name');
         }
 
@@ -2684,17 +2550,13 @@ abstract class PHPUnit_Framework_Assert
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 4.0.0
      */
-    public static function getObjectAttribute($object, $attributeName)
+    public static function getObjectAttribute($object, string $attributeName)
     {
         if (!is_object($object)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'object');
         }
 
-        if (!is_string($attributeName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
-        if (!preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
+        if (!self::isAttributeName($attributeName)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'valid attribute name');
         }
 
@@ -2775,5 +2637,14 @@ abstract class PHPUnit_Framework_Assert
     public static function resetCount()
     {
         self::$count = 0;
+    }
+
+    /**
+     * @param  string $string
+     * @return bool
+     */
+    private static function isAttributeName(string $string) : bool
+    {
+        return preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $string) === 1;
     }
 }

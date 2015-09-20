@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * A Decorator that runs a test repeatedly.
  *
@@ -31,20 +33,18 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param  bool                        $processIsolation
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = false)
+    public function __construct(PHPUnit_Framework_Test $test, int $timesRepeat = 1, $processIsolation = false)
     {
-        parent::__construct($test);
-
-        if (is_integer($timesRepeat) &&
-            $timesRepeat >= 0) {
-            $this->timesRepeat = $timesRepeat;
-        } else {
+        if ($timesRepeat < 1) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
                 2,
                 'positive integer'
             );
         }
 
+        parent::__construct($test);
+
+        $this->timesRepeat      = $timesRepeat;
         $this->processIsolation = $processIsolation;
     }
 

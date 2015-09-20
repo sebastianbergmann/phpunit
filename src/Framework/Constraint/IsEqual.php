@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Constraint that checks if one value is equal to another.
  *
@@ -52,32 +54,15 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
     protected $lastFailure;
 
     /**
-     * @param  mixed                       $value
-     * @param  float                       $delta
-     * @param  int                         $maxDepth
-     * @param  bool                        $canonicalize
-     * @param  bool                        $ignoreCase
-     * @throws PHPUnit_Framework_Exception
+     * @param mixed $value
+     * @param float $delta
+     * @param int   $maxDepth
+     * @param bool  $canonicalize
+     * @param bool  $ignoreCase
      */
-    public function __construct($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public function __construct($value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false)
     {
         parent::__construct();
-
-        if (!is_numeric($delta)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'numeric');
-        }
-
-        if (!is_int($maxDepth)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'integer');
-        }
-
-        if (!is_bool($canonicalize)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
-        }
-
-        if (!is_bool($ignoreCase)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'boolean');
-        }
 
         $this->value        = $value;
         $this->delta        = $delta;

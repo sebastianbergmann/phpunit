@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Constraint that asserts that the object it is evaluated for is an instance
  * of a given class.

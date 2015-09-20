@@ -42,23 +42,11 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(6, count($result));
     }
 
-    public function testRepeatedZero()
-    {
-        $test = new PHPUnit_Extensions_RepeatedTest($this->suite, 0);
-        $this->assertEquals(0, count($test));
-
-        $result = $test->run();
-        $this->assertEquals(0, count($result));
-    }
-
+    /**
+     * @expectedException PHPUnit_Framework_Exception
+     */
     public function testRepeatedNegative()
     {
-        try {
-            $test = new PHPUnit_Extensions_RepeatedTest($this->suite, -1);
-        } catch (Exception $e) {
-            return;
-        }
-
-        $this->fail('Should throw an Exception');
+        new PHPUnit_Extensions_RepeatedTest($this->suite, -1);
     }
 }

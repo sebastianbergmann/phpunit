@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Constraint that asserts that the value it is evaluated for is of a
  * specified type.

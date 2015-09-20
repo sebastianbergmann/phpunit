@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Suite for .phpt test cases.
  *
@@ -21,19 +23,19 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
      * @param  string                      $directory
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($directory)
+    public function __construct(string $directory)
     {
-        if (is_string($directory) && is_dir($directory)) {
-            $this->setName($directory);
-
-            $facade = new File_Iterator_Facade;
-            $files  = $facade->getFilesAsArray($directory, '.phpt');
-
-            foreach ($files as $file) {
-                $this->addTestFile($file);
-            }
-        } else {
+        if (!is_dir($directory)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'directory name');
+        }
+
+        $this->setName($directory);
+
+        $facade = new File_Iterator_Facade;
+        $files  = $facade->getFilesAsArray($directory, '.phpt');
+
+        foreach ($files as $file) {
+            $this->addTestFile($file);
         }
     }
 }

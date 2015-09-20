@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Returns a matcher that matches when the method is executed
  * zero or more times.

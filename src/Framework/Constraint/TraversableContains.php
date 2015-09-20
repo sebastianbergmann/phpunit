@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Constraint that asserts that the Traversable it is applied to contains
  * a given value.
@@ -32,22 +34,13 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
     protected $value;
 
     /**
-     * @param  mixed                       $value
-     * @param  bool                        $checkForObjectIdentity
-     * @param  bool                        $checkForNonObjectIdentity
-     * @throws PHPUnit_Framework_Exception
+     * @param mixed $value
+     * @param bool  $checkForObjectIdentity
+     * @param bool  $checkForNonObjectIdentity
      */
-    public function __construct($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public function __construct($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false)
     {
         parent::__construct();
-
-        if (!is_bool($checkForObjectIdentity)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
-        }
-
-        if (!is_bool($checkForNonObjectIdentity)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
-        }
 
         $this->checkForObjectIdentity    = $checkForObjectIdentity;
         $this->checkForNonObjectIdentity = $checkForNonObjectIdentity;

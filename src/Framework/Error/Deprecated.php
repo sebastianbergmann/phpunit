@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Wrapper for PHP deprecated errors.
  * You can disable deprecated-to-exception conversion by setting

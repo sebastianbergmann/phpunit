@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Constraint that asserts that the Traversable it is applied to contains
  * only values of a given type.

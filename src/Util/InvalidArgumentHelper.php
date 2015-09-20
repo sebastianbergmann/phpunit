@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Factory for PHPUnit_Framework_Exception objects that are used to describe
  * invalid arguments passed to a function or method.
@@ -24,7 +26,7 @@ class PHPUnit_Util_InvalidArgumentHelper
      */
     public static function factory($argument, $type, $value = null)
     {
-        $stack = debug_backtrace(false);
+        $stack = debug_backtrace(0);
 
         return new PHPUnit_Framework_Exception(
             sprintf(

@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 use SebastianBergmann\Environment\Console;
 
 /**
@@ -122,13 +124,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @throws PHPUnit_Framework_Exception
      * @since  Method available since Release 3.0.0
      */
-    public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80, $reverse = false)
+    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out);
-
-        if (!is_bool($verbose)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
-        }
 
         $availableColors = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
 
@@ -139,16 +137,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             );
         }
 
-        if (!is_bool($debug)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
-        }
-
         if (!is_int($numberOfColumns) && $numberOfColumns != 'max') {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'integer or "max"');
-        }
-
-        if (!is_bool($reverse)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(6, 'boolean');
         }
 
         $console            = new Console;

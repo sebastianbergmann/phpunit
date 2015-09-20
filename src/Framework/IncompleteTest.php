@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * A marker interface for marking any exception/error as result of an unit
  * test as incomplete implementation or currently not implemented.

@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * We have a TestSuite object A.
  * In TestSuite object A we have Tests tagged with @group.
