@@ -51,7 +51,8 @@ class PHPUnit_Util_XML
             @chdir(dirname($filename));
         }
 
-        $document  = new DOMDocument;
+        $document = new DOMDocument;
+        $document->preserveWhiteSpace = false;
 
         $internal  = libxml_use_internal_errors(true);
         $message   = '';
@@ -182,7 +183,13 @@ class PHPUnit_Util_XML
                 $variable = [];
 
                 foreach ($element->getElementsByTagName('element') as $element) {
-                    $value = self::xmlToVariable($element->childNodes->item(1));
+                    $item = $element->childNodes->item(0);
+
+                    if ($item instanceof DOMText) {
+                        $item = $element->childNodes->item(1);
+                    }
+
+                    $value = self::xmlToVariable($item);
 
                     if ($element->hasAttribute('key')) {
                         $variable[(string) $element->getAttribute('key')] = $value;
