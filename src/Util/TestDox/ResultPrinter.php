@@ -255,16 +255,10 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             $this->tests     = [];
         }
 
-        $prettified = false;
-
         $annotations = $test->getAnnotations();
-
         if (isset($annotations['method']['testdox'][0])) {
             $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
-            $prettified                        = true;
-        }
-
-        if (!$prettified) {
+        } else {
             $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(false));
         }
 
