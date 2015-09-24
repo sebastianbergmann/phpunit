@@ -14,7 +14,6 @@
   <xs:complexType name="filtersType">
     <xs:choice>
       <xs:sequence>
-        <xs:element name="blacklist" type="filterType"/>
         <xs:element name="whitelist" type="whiteListType" minOccurs="0"/>
       </xs:sequence>
       <xs:sequence>
