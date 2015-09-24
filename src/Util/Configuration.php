@@ -66,14 +66,6 @@
  *   </groups>
  *
  *   <filter>
- *     <blacklist>
- *       <directory suffix=".php">/path/to/files</directory>
- *       <file>/path/to/file</file>
- *       <exclude>
- *         <directory suffix=".php">/path/to/files</directory>
- *         <file>/path/to/file</file>
- *       </exclude>
- *     </blacklist>
  *     <whitelist addUncoveredFilesFromWhitelist="true"
  *                processUncoveredFilesFromWhitelist="false">
  *       <directory suffix=".php">/path/to/files</directory>
@@ -234,24 +226,6 @@ class PHPUnit_Util_Configuration
         }
 
         return [
-          'blacklist' => [
-            'include' => [
-              'directory' => $this->readFilterDirectories(
-                  'filter/blacklist/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                  'filter/blacklist/file'
-              )
-            ],
-            'exclude' => [
-              'directory' => $this->readFilterDirectories(
-                  'filter/blacklist/exclude/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                  'filter/blacklist/exclude/file'
-              )
-            ]
-          ],
           'whitelist' => [
             'addUncoveredFilesFromWhitelist'     => $addUncoveredFilesFromWhitelist,
             'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,

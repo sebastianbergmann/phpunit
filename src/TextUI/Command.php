@@ -86,7 +86,8 @@ class PHPUnit_TextUI_Command
         'test-suffix='            => null,
         'testsuite='              => null,
         'verbose'                 => null,
-        'version'                 => null
+        'version'                 => null,
+        'whitelist='              => null
     ];
 
     /**
@@ -499,6 +500,10 @@ class PHPUnit_TextUI_Command
                     $this->handleSelfUpdate();
                     break;
 
+                case '--whitelist':
+                    $this->arguments['whitelist'] = $option[1];
+                    break;
+
                 default:
                     $optionName = str_replace('--', '', $option[0]);
 
@@ -885,6 +890,7 @@ Code Coverage Options:
   --coverage-text=<file>    Generate code coverage report in text format.
                             Default: Standard output.
   --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
+  --whitelist <dir>         Whitelist <dir> for code coverage analysis.
 
 Logging Options:
 

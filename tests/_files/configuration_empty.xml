@@ -20,14 +20,6 @@
   </groups>
 
   <filter>
-    <blacklist>
-      <directory></directory>
-      <file></file>
-      <exclude>
-        <directory></directory>
-        <file></file>
-      </exclude>
-    </blacklist>
     <whitelist>
       <directory></directory>
       <file></file>

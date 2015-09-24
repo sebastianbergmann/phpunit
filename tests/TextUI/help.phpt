@@ -22,6 +22,7 @@ Code Coverage Options:
   --coverage-text=<file>    Generate code coverage report in text format.
                             Default: Standard output.
   --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
+  --whitelist <dir>         Whitelist <dir> for code coverage analysis.
 
 Logging Options:
 

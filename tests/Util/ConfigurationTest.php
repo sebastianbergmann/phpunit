@@ -86,43 +86,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             [
-            'blacklist' =>
-            [
-              'include' =>
-              [
-                'directory' =>
-                [
-                  0 =>
-                  [
-                    'path'   => '/path/to/files',
-                    'prefix' => '',
-                    'suffix' => '.php',
-                    'group'  => 'DEFAULT'
-                  ],
-                ],
-                'file' =>
-                [
-                  0 => '/path/to/file',
-                ],
-              ],
-              'exclude' =>
-              [
-                'directory' =>
-                [
-                  0 =>
-                  [
-                    'path'   => '/path/to/files',
-                    'prefix' => '',
-                    'suffix' => '.php',
-                    'group'  => 'DEFAULT'
-                  ],
-                ],
-                'file' =>
-                [
-                  0 => '/path/to/file',
-                ],
-              ],
-            ],
             'whitelist' =>
             [
               'addUncoveredFilesFromWhitelist'     => true,
@@ -421,10 +384,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($suite->getGroups());
 
         $filter = $emptyConfiguration->getFilterConfiguration();
-        $this->assertEmpty($filter['blacklist']['include']['directory']);
-        $this->assertEmpty($filter['blacklist']['include']['file']);
-        $this->assertEmpty($filter['blacklist']['exclude']['directory']);
-        $this->assertEmpty($filter['blacklist']['exclude']['file']);
         $this->assertEmpty($filter['whitelist']['include']['directory']);
         $this->assertEmpty($filter['whitelist']['include']['file']);
         $this->assertEmpty($filter['whitelist']['exclude']['directory']);
