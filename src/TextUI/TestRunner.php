@@ -43,14 +43,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     protected static $versionStringPrinted = false;
 
     /**
-     * @var array
-     */
-    private $missingExtensions = [];
-
-    /**
      * @var Runtime
      */
     private $runtime;
+
+    /**
+     * @var bool
+     */
+    private $messagePrinted = false;
 
     /**
      * @param PHPUnit_Runner_TestSuiteLoader $loader
@@ -243,32 +243,23 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             self::$versionStringPrinted = true;
 
             if ($arguments['verbose']) {
-                $this->printer->write(
-                    sprintf(
-                        "\nRuntime:\t%s",
-                        $this->runtime->getNameWithVersion()
-                    )
-                );
+                $runtime = $this->runtime->getNameWithVersion();
 
                 if ($this->runtime->hasXdebug()) {
-                    $this->printer->write(
-                        sprintf(
-                            ' with Xdebug %s',
-                            phpversion('xdebug')
-                        )
+                    $runtime .= sprintf(
+                        ' with Xdebug %s',
+                        phpversion('xdebug')
                     );
                 }
+
+                $this->writeMessage('Runtime', $runtime);
 
                 if (isset($arguments['configuration'])) {
-                    $this->printer->write(
-                        sprintf(
-                            "\nConfiguration:\t%s",
-                            $arguments['configuration']->getFilename()
-                        )
+                    $this->writeMessage(
+                        'Configuration',
+                        $arguments['configuration']->getFilename()
                     );
                 }
-
-                $this->printer->write("\n");
             }
         }
 
@@ -324,20 +315,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $codeCoverageReports = 0;
         }
 
-        if ($codeCoverageReports > 0 && (!extension_loaded('tokenizer') || !$this->runtime->canCollectCodeCoverage())) {
-            if (!extension_loaded('tokenizer')) {
-                $this->showExtensionNotLoadedWarning(
-                    'tokenizer',
-                    'No code coverage will be generated.'
-                );
-            } elseif (!extension_loaded('Xdebug')) {
-                $this->showExtensionNotLoadedWarning(
-                    'Xdebug',
-                    'No code coverage will be generated.'
-                );
-            }
+        if ($codeCoverageReports > 0) {
+            if (!$this->runtime->canCollectCodeCoverage()) {
+                $this->writeMessage('Error', 'No code coverage driver is available');
 
-            $codeCoverageReports = 0;
+                $codeCoverageReports = 0;
+            }
         }
 
         if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
@@ -989,26 +972,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @param $extension
-     * @param string $message
-     * @since Method available since Release 4.7.3
-     */
-    private function showExtensionNotLoadedWarning($extension, $message = '')
-    {
-        if (isset($this->missingExtensions[$extension])) {
-            return;
-        }
-
-        $this->write("Warning:\t" . 'The ' . $extension . ' extension is not loaded' . "\n");
-
-        if (!empty($message)) {
-            $this->write("\t\t" . $message . "\n");
-        }
-
-        $this->missingExtensions[$extension] = true;
-    }
-
-    /**
      * @return PHP_CodeCoverage_Filter
      */
     private function getCodeCoverageFilter()
@@ -1026,5 +989,27 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         return $filter;
+    }
+
+    /**
+     * @param string $type
+     * @param string $message
+     * @since Method available since Release 5.0.0
+     */
+    private function writeMessage($type, $message)
+    {
+        if (!$this->messagePrinted) {
+            $this->write("\n");
+        }
+
+        if (strlen($type) > 7) {
+            $separator = "\t";
+        } else {
+            $separator = "\t\t";
+        }
+
+        $this->write($type . ':' . $separator . $message . "\n");
+
+        $this->messagePrinted = true;
     }
 }
