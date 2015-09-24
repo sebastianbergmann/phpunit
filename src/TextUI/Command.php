@@ -229,6 +229,10 @@ class PHPUnit_TextUI_Command
      */
     protected function handleArguments(array $argv)
     {
+        // todo Uncomment when all options and args are supported, Suggested usage:
+        // $input = new ArgvInput($argv, new PHPUnit_TextUI_InputDefinition());
+        // $this->arguments['colors'] = $input->getOption('colors');
+
         if (defined('__PHPUNIT_PHAR__')) {
             $this->longOptions['check-version'] = null;
             $this->longOptions['selfupdate']    = null;
