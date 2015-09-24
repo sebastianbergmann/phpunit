@@ -62,7 +62,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public function __construct(PHPUnit_Runner_TestSuiteLoader $loader = null, PHP_CodeCoverage_Filter $filter = null)
     {
         if ($filter === null) {
-            $filter = $this->getCodeCoverageFilter();
+            $filter = new PHP_CodeCoverage_Filter;
         }
 
         $this->codeCoverageFilter = $filter;
@@ -958,26 +958,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['beStrictAboutResourceUsageDuringSmallTests'] = isset($arguments['beStrictAboutResourceUsageDuringSmallTests']) ? $arguments['beStrictAboutResourceUsageDuringSmallTests'] : false;
         $arguments['reverseList']                                = isset($arguments['reverseList'])                                ? $arguments['reverseList']                                : false;
         $arguments['verbose']                                    = isset($arguments['verbose'])                                    ? $arguments['verbose']                                    : false;
-    }
-
-    /**
-     * @return PHP_CodeCoverage_Filter
-     */
-    private function getCodeCoverageFilter()
-    {
-        $filter = new PHP_CodeCoverage_Filter;
-
-        if (defined('__PHPUNIT_PHAR__')) {
-            $filter->addFileToBlacklist(__PHPUNIT_PHAR__);
-        }
-
-        $blacklist = new PHPUnit_Util_Blacklist;
-
-        foreach ($blacklist->getBlacklistedDirectories() as $directory) {
-            $filter->addDirectoryToBlacklist($directory);
-        }
-
-        return $filter;
     }
 
     /**
