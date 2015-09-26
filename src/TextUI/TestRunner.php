@@ -322,7 +322,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $codeCoverageReports = 0;
             }
 
-            if (!$this->codeCoverageFilter->hasWhitelist()) {
+            if (!isset($arguments['whitelist']) && !$this->codeCoverageFilter->hasWhitelist()) {
                 $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
 
                 $codeCoverageReports = 0;
