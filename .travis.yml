@@ -24,7 +24,7 @@ install:
 
 script:
   - ./phpunit
-  - ./phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; exit 1; else echo "fail checked"; fi;
+  - ./phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
   - xmllint --noout --schema phpunit.xsd phpunit.xml.dist
   - xmllint --noout --schema phpunit.xsd tests/_files/configuration.xml
   - xmllint --noout --schema phpunit.xsd tests/_files/configuration_empty.xml
