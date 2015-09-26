@@ -14,7 +14,7 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Runtime:		%s
+Runtime:	%s
 Configuration:	%sconfiguration.custom-printer.xml
 
 I                                                                   1 / 1 (100%)
