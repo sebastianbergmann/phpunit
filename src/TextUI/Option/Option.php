@@ -8,13 +8,24 @@
  * file that was distributed with this source code.
  */
 
+use Symfony\Component\Console\Input\InputOption;
+
 /**
- * Class InputDefinition
- *
  * @author Yannick Voyer <star.yvoyer@gmail.com> (http://github.com/yvoyer)
  *
  * @since Class available since Release 6.0.0
  */
-interface PHPUnit_TextUI_InputDefinition
+abstract class PHPUnit_TextUI_Option_Option extends InputOption
 {
+    /**
+     * Convert a value to another format supported by the option.
+     *
+     * @param mixed $value
+     *
+     * @return mixed
+     */
+    public function convertValue($value)
+    {
+        return $value;
+    }
 }

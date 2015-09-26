@@ -8,13 +8,22 @@
  * file that was distributed with this source code.
  */
 
+use Symfony\Component\Console\Input\InputOption;
+
 /**
- * Class InputDefinition
- *
  * @author Yannick Voyer <star.yvoyer@gmail.com> (http://github.com/yvoyer)
  *
  * @since Class available since Release 6.0.0
  */
-interface PHPUnit_TextUI_InputDefinition
+final class PHPUnit_TextUI_Option_CoveragePHP extends PHPUnit_TextUI_Option_Option
 {
+    public function __construct()
+    {
+        parent::__construct(
+            'coverage-php',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Export PHP_CodeCoverage object to file.'
+        );
+    }
 }

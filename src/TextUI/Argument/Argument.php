@@ -8,13 +8,13 @@
  * file that was distributed with this source code.
  */
 
+use Symfony\Component\Console\Input\InputArgument;
+
 /**
- * Class InputDefinition
- *
  * @author Yannick Voyer <star.yvoyer@gmail.com> (http://github.com/yvoyer)
  *
  * @since Class available since Release 6.0.0
  */
-interface PHPUnit_TextUI_InputDefinition
+abstract class PHPUnit_TextUI_Argument_Argument extends InputArgument
 {
 }
