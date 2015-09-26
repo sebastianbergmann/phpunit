@@ -969,7 +969,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->write("\n");
         }
 
-        if (strlen($type) > 7) {
+        if (strlen($type) >= 6) {
             $separator = "\t";
         } else {
             $separator = "\t\t";
