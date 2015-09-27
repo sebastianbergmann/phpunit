@@ -969,13 +969,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $this->write("\n");
         }
 
-        if (strlen($type) >= 6) {
-            $separator = "\t";
-        } else {
-            $separator = "\t\t";
-        }
-
-        $this->write($type . ':' . $separator . $message . "\n");
+        $this->write(
+            sprintf(
+                "%-15s%s\n",
+                $type . ':',
+                $message
+            )
+        );
 
         $this->messagePrinted = true;
     }
