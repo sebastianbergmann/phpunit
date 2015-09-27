@@ -14,7 +14,7 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Runtime:	%s
+Runtime:       %s
 
 ...FSSS                                                             7 / 7 (100%)
 
