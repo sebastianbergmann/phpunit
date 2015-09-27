@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 * Implemented [#1604](https://github.com/sebastianbergmann/phpunit/issues/1604): A `@small` test should be marked as risky when it executes code that performs I/O operations
 * Implemented [#1656](https://github.com/sebastianbergmann/phpunit/issues/1656): Allow sorting test failures in reverse
 * Merged [#1753](https://github.com/sebastianbergmann/phpunit/issues/1753): Added the `assertFinite()`, `assertInfinite()` and `assertNan()` assertions
+* Merged [#1876](https://github.com/sebastianbergmann/phpunit/issues/1876): Added the `--atleast-version` commandline option
 * Implemented [#1780](https://github.com/sebastianbergmann/phpunit/issues/1780): Support for deep-cloning of results passed between tests using `@depends`
 * Implemented [#1821](https://github.com/sebastianbergmann/phpunit/issues/1821): Expectations on mock objects passed via `@depends` are now also evaluated for the depending test
 * Added `--whitelist` commandline option to configure a whitelist for code coverage analysis

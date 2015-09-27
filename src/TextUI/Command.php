@@ -34,6 +34,7 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $longOptions = [
+        'atleast-version='        => null,
         'bootstrap='              => null,
         'colors=='                => null,
         'columns='                => null,
@@ -452,6 +453,13 @@ class PHPUnit_TextUI_Command
                 case 'v':
                 case '--verbose':
                     $this->arguments['verbose'] = true;
+                    break;
+
+                case '--atleast-version':
+                    exit (version_compare(PHPUnit_Runner_Version::id(), $option[1], '>=')
+                        ? PHPUnit_TextUI_TestRunner::SUCCESS_EXIT
+                        : PHPUnit_TextUI_TestRunner::FAILURE_EXIT
+                    );
                     break;
 
                 case '--version':
@@ -959,6 +967,7 @@ Miscellaneous Options:
 
   -h|--help                 Prints this usage information.
   --version                 Prints the version and exits.
+  --atleast-version <min>   Checks that version is greater than min and exits.
 
 EOT;
 
