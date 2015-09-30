@@ -71,6 +71,13 @@ function __phpunit_run_isolated_test()
     );
 }
 
+$configurationFile = '{configurationFile}';
+
+if('' !== $configurationFile) {
+    $configuration = PHPUnit_Util_Configuration::getInstance($configurationFile);
+    $configuration->handlePHPConfiguration();
+}
+
 {constants}
 {included_files}
 {globals}
