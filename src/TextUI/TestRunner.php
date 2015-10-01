@@ -142,6 +142,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      */
     public function doRun(PHPUnit_Framework_Test $suite, array $arguments = array())
     {
+        if (isset($arguments['configuration'])) {
+            $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
+        }
+
         $this->handleConfiguration($arguments);
 
         $this->processSuiteFilters($suite, $arguments);
@@ -592,7 +596,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     {
         if (isset($arguments['configuration']) &&
             !$arguments['configuration'] instanceof PHPUnit_Util_Configuration) {
-            $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
             $arguments['configuration'] = PHPUnit_Util_Configuration::getInstance(
                 $arguments['configuration']
             );
