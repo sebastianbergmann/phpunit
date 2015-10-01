@@ -848,6 +848,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $e = new PHPUnit_Framework_AssertionFailedError($e->getMessage());
             }
 
+            if (!$e instanceof Exception) {
+                // Rethrow Error directly on PHP 7 as onNotSuccessfulTest does not support it
+                throw $e;
+            }
+
             $this->onNotSuccessfulTest($e);
         }
     }
