@@ -690,7 +690,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     'isStrictAboutOutputDuringTests'          => $isStrictAboutOutputDuringTests,
                     'isStrictAboutTestSize'                   => $isStrictAboutTestSize,
                     'isStrictAboutTodoAnnotatedTests'         => $isStrictAboutTodoAnnotatedTests,
-                    'codeCoverageFilter'                      => $codeCoverageFilter
+                    'codeCoverageFilter'                      => $codeCoverageFilter,
+                    'configurationFile'                       => (isset($GLOBALS['__PHPUNIT_CONFIGURATION_FILE']) ? $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] : '')
                 )
             );
 
