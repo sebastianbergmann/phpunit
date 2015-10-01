@@ -592,6 +592,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     {
         if (isset($arguments['configuration']) &&
             !$arguments['configuration'] instanceof PHPUnit_Util_Configuration) {
+            $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
             $arguments['configuration'] = PHPUnit_Util_Configuration::getInstance(
                 $arguments['configuration']
             );
