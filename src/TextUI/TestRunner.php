@@ -368,6 +368,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['mapTestClassNameToCoveredClassName']
                 );
             }
+            
+            if (isset($arguments['disableCodeCoverageIgnore'])) {
+                $codeCoverage->setDisableIgnoredLines(true);
+            }
 
             if (isset($arguments['whitelist'])) {
                 $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
@@ -491,7 +495,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['coverageText'])) {
                 if ($arguments['coverageText'] == 'php://stdout') {
                     $outputStream = $this->printer;
-                    $colors       = $arguments['colors'];
+                    $colors       = $arguments['colors'] !== PHPUnit_TextUI_ResultPrinter::COLOR_NEVER;
                 } else {
                     $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
                     $colors       = false;
@@ -742,6 +746,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($phpunitConfiguration['mapTestClassNameToCoveredClassName']) &&
                 !isset($arguments['mapTestClassNameToCoveredClassName'])) {
                 $arguments['mapTestClassNameToCoveredClassName'] = $phpunitConfiguration['mapTestClassNameToCoveredClassName'];
+            }
+
+            if (isset($phpunitConfiguration['disableCodeCoverageIgnore']) &&
+                !isset($arguments['disableCodeCoverageIgnore'])) {
+                $arguments['disableCodeCoverageIgnore'] = $phpunitConfiguration['disableCodeCoverageIgnore'];
             }
 
             $groupCliArgs = [];
