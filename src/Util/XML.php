@@ -100,7 +100,7 @@ class PHPUnit_Util_XML
             @chdir(dirname($filename));
         }
 
-        $document = new DOMDocument;
+        $document                     = new DOMDocument;
         $document->preserveWhiteSpace = false;
 
         $internal  = libxml_use_internal_errors(true);
