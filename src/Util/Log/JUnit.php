@@ -337,7 +337,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
             if ($class->hasMethod($methodName)) {
                 $method = $class->getMethod($test->getName());
 
-                $testCase->setAttribute('class', $class->getName());
+                $testCase->setAttribute('classname', $class->getName());
                 $testCase->setAttribute('file', $class->getFileName());
                 $testCase->setAttribute('line', $method->getStartLine());
             }
