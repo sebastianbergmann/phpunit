@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.10] - 2015-10-01
+
+### Fixed
+
+* Merged [#1884](https://github.com/sebastianbergmann/phpunit/issues/1884): Avoid passing `Error` to `onNotSuccessfulTest()` on PHP 7
+
 ## [4.8.9] - 2015-09-20
 
 ### Fixed
@@ -69,6 +75,7 @@ New PHAR release due to updated dependencies
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.10]: https://github.com/sebastianbergmann/phpunit/compare/4.8.9...4.8.10
 [4.8.9]: https://github.com/sebastianbergmann/phpunit/compare/4.8.8...4.8.9
 [4.8.8]: https://github.com/sebastianbergmann/phpunit/compare/4.8.7...4.8.8
 [4.8.7]: https://github.com/sebastianbergmann/phpunit/compare/4.8.6...4.8.7
