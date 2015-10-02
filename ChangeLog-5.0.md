@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.0.2] - 2015-10-DD
+
+### Fixed
+
+* Fixed [#1879](https://github.com/sebastianbergmann/phpunit/issues/1879): `assertEqualXMLStructure()` cannot compare nodes with an ID
+
 ## [5.0.1] - 2015-10-02
 
 ### Fixed
@@ -40,6 +46,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 * The PHPUnit_Selenium component can no longer be configured using the `<selenium/browser>` element of PHPUnit's configuration file
 * PHPUnit is no longer supported on PHP 5.3, PHP 5.4, and PHP 5.5
 
+[5.0.2]: https://github.com/sebastianbergmann/phpunit/compare/5.0.1...5.0.2
 [5.0.1]: https://github.com/sebastianbergmann/phpunit/compare/5.0.0...5.0.1
 [5.0.0]: https://github.com/sebastianbergmann/phpunit/compare/4.8...5.0.0
 
