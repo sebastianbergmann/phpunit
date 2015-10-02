@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 ### Fixed
 
 * Fixed [#1879](https://github.com/sebastianbergmann/phpunit/issues/1879): `assertEqualXMLStructure()` cannot compare nodes with an ID
+* Fixed [#1887](https://github.com/sebastianbergmann/phpunit/issues/1887): PHAR distribution of PHPUnit 5.0.1 does not work
 
 ## [5.0.1] - 2015-10-02
 
