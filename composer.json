@@ -21,6 +21,7 @@
         "irc": "irc://irc.freenode.net/phpunit"
     },
     "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
         "php": ">=7.0",
         "phpunit/php-file-iterator": "~1.4",
