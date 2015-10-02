@@ -1,5 +1,14 @@
 #!/usr/bin/env php
 <?php
+if (PHP_MAJOR_VERSION < 7) {
+    fwrite(
+        STDERR,
+        'This version of PHPUnit requires PHP 7; using the latest version of PHP is highly recommended.' . PHP_EOL
+    );
+
+    die(1);
+}
+
 if (__FILE__ == realpath($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
     $phar    = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
     $execute = true;
