@@ -244,23 +244,23 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
                 $this->doEndClass();
             }
 
-            $this->currentTestClassPrettified = $this->prettifier->prettifyTestClass($class);
+            $classAnnotations = PHPUnit_Util_Test::parseTestMethodAnnotations($class);
+            if (isset($classAnnotations['class']['testdox'][0])) {
+                $this->currentTestClassPrettified = $classAnnotations['class']['testdox'][0];
+            } else {
+                $this->currentTestClassPrettified = $this->prettifier->prettifyTestClass($class);
+            }
+
             $this->startClass($class);
 
             $this->testClass = $class;
             $this->tests     = [];
         }
 
-        $prettified = false;
-
         $annotations = $test->getAnnotations();
-
         if (isset($annotations['method']['testdox'][0])) {
             $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
-            $prettified                        = true;
-        }
-
-        if (!$prettified) {
+        } else {
             $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(false));
         }
 
