@@ -256,6 +256,7 @@
 
         <exec executable="phpab">
             <arg value="--all" />
+            <arg value="--nolower" />
             <arg value="--static" />
             <arg value="--phar" />
             <arg value="--output" />
