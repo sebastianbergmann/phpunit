@@ -210,7 +210,6 @@
         <copy todir="${basedir}/build/phar/dbunit">
             <fileset dir="${basedir}/vendor/phpunit/dbunit/src">
                 <include name="**/*.php" />
-                <exclude name="**/Autoload.*" />
             </fileset>
         </copy>
 
