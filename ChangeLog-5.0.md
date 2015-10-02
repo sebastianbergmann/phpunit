@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 ### Fixed
 
 * Merged [#1885](https://github.com/sebastianbergmann/phpunit/issues/1885): Fixed handling of PHP configuration settings for process isolation
+* An outdated version of DbUnit was bundled in the PHAR distribution of PHPUnit
 
 ## [5.0.0] - 2015-10-02
 
