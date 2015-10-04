@@ -796,7 +796,7 @@ class PHPUnit_TextUI_Command
 
         // Workaround for https://bugs.php.net/bug.php?id=65538
         $caFile = dirname($tempFilename) . '/ca.pem';
-        copy(__PHPUNIT_PHAR_ROOT__ . '/phar/ca.pem', $caFile);
+        copy(__PHPUNIT_PHAR_ROOT__ . '/ca.pem', $caFile);
 
         print 'Updating the PHPUnit PHAR ... ';
 
