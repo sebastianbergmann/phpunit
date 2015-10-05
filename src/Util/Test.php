@@ -148,6 +148,8 @@ class PHPUnit_Util_Test
 
             $element = preg_replace('/[\s()]+$/', '', $element);
 
+            $element = explode(' ', $element)[0];
+
             $codeList = array_merge(
                 $codeList,
                 self::resolveElementToReflectionObjects($element)
