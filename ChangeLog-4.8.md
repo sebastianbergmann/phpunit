@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 ### Fixed
 
 * Merged [#1885](https://github.com/sebastianbergmann/phpunit/issues/1885): Fixed handling of PHP configuration settings for process isolation
+* Fixed [#1857](https://github.com/sebastianbergmann/phpunit/issues/1857): `@covers` and `@uses` should only take a single word
 * Fixed [#1879](https://github.com/sebastianbergmann/phpunit/issues/1879): `assertEqualXMLStructure()` cannot compare nodes with an ID
 
 ## [4.8.10] - 2015-10-01
