@@ -16,6 +16,9 @@ if (!defined('TEST_FILES_PATH')) {
     );
 }
 
+require TEST_FILES_PATH . 'CoverageNamespacedFunctionTest.php';
+require TEST_FILES_PATH . 'NamespaceCoveredFunction.php';
+
 /**
  * @since      Class available since Release 3.3.6
  */
@@ -541,6 +544,23 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             PHPUnit_Util_Test::getLinesToBeCovered(
                 'CoverageMethodParenthesesWhitespaceTest',
                 'testSomething'
+            )
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getLinesToBeCovered
+     * @covers PHPUnit_Util_Test::getLinesToBeCoveredOrUsed
+     */
+    public function testNamespacedFunctionCanBeCoveredOrUsed()
+    {
+        $this->assertEquals(
+            array(
+                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(4, 7)
+            ),
+            PHPUnit_Util_Test::getLinesToBeCovered(
+                'CoverageNamespacedFunctionTest',
+                'testFunc'
             )
         );
     }
