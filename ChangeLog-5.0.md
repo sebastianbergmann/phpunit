@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 ### Fixed
 
 * Fixed [#1857](https://github.com/sebastianbergmann/phpunit/issues/1857): `@covers` and `@uses` should only take a single word
+* Fixed [#1898](https://github.com/sebastianbergmann/phpunit/issues/1898): `@covers` and `@uses` cannot be used for namespaced functions
 
 ## [5.0.3] - 2015-10-02
 
