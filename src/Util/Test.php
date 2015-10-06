@@ -853,7 +853,9 @@ class PHPUnit_Util_Test
     {
         $codeToCoverList = [];
 
-        if (strpos($element, '::') !== false) {
+        if (strpos($element, '\\') !== false && function_exists($element)) {
+            $codeToCoverList[] = new ReflectionFunction($element);
+        } else if (strpos($element, '::') !== false) {
             list($className, $methodName) = explode('::', $element);
 
             if (isset($methodName[0]) && $methodName[0] == '<') {
