@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [4.8.11] - 2015-10-DD
+## [4.8.11] - 2015-10-07
 
 ### Fixed
 
@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 * Fixed [#1857](https://github.com/sebastianbergmann/phpunit/issues/1857): `@covers` and `@uses` should only take a single word
 * Fixed [#1879](https://github.com/sebastianbergmann/phpunit/issues/1879): `assertEqualXMLStructure()` cannot compare nodes with an ID
 * Fixed [#1898](https://github.com/sebastianbergmann/phpunit/issues/1898): `@covers` and `@uses` cannot be used for namespaced functions
+* Fixed [#1901](https://github.com/sebastianbergmann/phpunit/issues/1901): `--self-update` updates to PHPUnit 5, even on PHP < 5.6
 
 ## [4.8.10] - 2015-10-01
 
