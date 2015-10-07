@@ -1,5 +1,11 @@
 --TEST--
 phpunit --configuration=../_files/configuration.coverage-text.only-summary.colors-never.xml CoveredClass ../_files/CoverageClassTest.php
+--SKIPIF--
+<?php
+if (PHP_MAJOR_VERSION == 7) {
+    print 'skip: PHP 7 has no code coverage driver';
+}
+?>
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--configuration=' . dirname(__FILE__) . '/../_files/configuration.coverage-text.only-summary.colors-never.xml';
