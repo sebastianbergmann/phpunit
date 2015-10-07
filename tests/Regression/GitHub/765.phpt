@@ -13,14 +13,14 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-.F                                                                  2 / 2 (100%)
+.W                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %sMb
 
-There was 1 failure:
+There was 1 warning:
 
 1) Warning
 The data provider specified for Issue765Test::testDependent is invalid.
 
-FAILURES!
-Tests: 2, Assertions: 1, Failures: 1.
+WARNINGS!
+Tests: 2, Assertions: 1, Warnings: 1.

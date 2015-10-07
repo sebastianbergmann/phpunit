@@ -21,6 +21,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
     const STATUS_FAILURE    = 3;
     const STATUS_ERROR      = 4;
     const STATUS_RISKY      = 5;
+    const STATUS_WARNING    = 6;
     const SUITE_METHODNAME  = 'suite';
 
     /**

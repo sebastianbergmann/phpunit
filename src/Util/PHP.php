@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+use SebastianBergmann\Environment\Runtime;
+
 /**
  * Utility methods for PHP sub-processes.
  *
@@ -15,6 +17,52 @@
  */
 abstract class PHPUnit_Util_PHP
 {
+    /**
+     * @var Runtime
+     */
+    protected $runtime;
+
+    /**
+     * @var bool
+     */
+    protected $stderrRedirection = false;
+
+    /**
+     * Creates internal Runtime instance.
+     */
+    public function __construct()
+    {
+        $this->runtime = new Runtime();
+    }
+
+    /**
+     * Defines if should use STDERR redirection or not.
+     *
+     * Then $stderrRedirection is TRUE, STDERR is redirected to STDOUT.
+     *
+     * @throws PHPUnit_Framework_Exception
+     *
+     * @param bool $stderrRedirection
+     */
+    public function setUseStderrRedirection($stderrRedirection)
+    {
+        if (!is_bool($stderrRedirection)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->stderrRedirection = $stderrRedirection;
+    }
+
+    /**
+     * Returns TRUE if uses STDERR redirection or FALSE if not.
+     *
+     * @return bool
+     */
+    public function useStderrRedirection()
+    {
+        return $this->stderrRedirection;
+    }
+
     /**
      * @return PHPUnit_Util_PHP
      * @since  Method available since Release 3.5.12
@@ -48,6 +96,25 @@ abstract class PHPUnit_Util_PHP
             $_result['stdout'],
             $_result['stderr']
         );
+    }
+
+    /**
+     * Returns the command based into the configurations.
+     *
+     * @param array $settings
+     *
+     * @return string
+     */
+    public function getCommand(array $settings)
+    {
+        $command = $this->runtime->getBinary();
+        $command .= $this->settingsToParameters($settings);
+
+        if (true === $this->stderrRedirection) {
+            $command .= ' 2>&1';
+        }
+
+        return $command;
     }
 
     /**

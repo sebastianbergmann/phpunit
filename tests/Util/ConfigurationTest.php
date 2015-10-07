@@ -322,6 +322,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'mapTestClassNameToCoveredClassName'         => false,
             'printerClass'                               => 'PHPUnit_TextUI_ResultPrinter',
             'stopOnFailure'                              => false,
+            'stopOnWarning'                              => false,
             'reportUselessTests'                         => false,
             'strictCoverage'                             => false,
             'disallowTestOutput'                         => false,
