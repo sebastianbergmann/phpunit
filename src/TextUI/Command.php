@@ -786,10 +786,11 @@ class PHPUnit_TextUI_Command
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
-        $remoteFilename = sprintf(
-            'https://phar.phpunit.de/phpunit%s.phar',
-            PHPUnit_Runner_Version::getReleaseChannel()
-        );
+        if (PHP_VERSION_ID < 50600) {
+            $remoteFilename = sprintf('https://phar.phpunit.de/phpunit-old.phar');
+        } else {
+            $remoteFilename = sprintf('https://phar.phpunit.de/phpunit.phar');
+        }
 
         $tempFilename = tempnam(sys_get_temp_dir(), 'phpunit') . '.phar';
 
