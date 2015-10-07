@@ -272,6 +272,8 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     {
         $this->write("\n##teamcity[$eventName");
 
+        $params['flowId'] = getmypid();
+
         foreach ($params as $key => $value) {
             $escapedValue = self::escapeValue($value);
             $this->write(" $key='$escapedValue'");
