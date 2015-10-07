@@ -11,8 +11,6 @@
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * @author Yannick Voyer <star.yvoyer@gmail.com> (http://github.com/yvoyer)
- *
  * @since Class available since Release 6.0.0
  */
 abstract class PHPUnit_TextUI_Argument_Argument extends InputArgument

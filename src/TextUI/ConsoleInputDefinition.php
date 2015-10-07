@@ -11,8 +11,6 @@
 use Symfony\Component\Console\Input\InputDefinition;
 
 /**
- * @author Yannick Voyer <star.yvoyer@gmail.com> (http://github.com/yvoyer)
- *
  * @since Class available since Release 6.0.0
  *
  * Definition of all options and arguments supported by PHPUnit
@@ -20,9 +18,9 @@ use Symfony\Component\Console\Input\InputDefinition;
 class PHPUnit_TextUI_ConsoleInputDefinition extends InputDefinition implements PHPUnit_TextUI_InputDefinition
 {
     /**
-     * @param $PHPUnit_TextUI_Argument_Argument[]|PHPUnit_TextUI_Option_Option[] $definitions
+     * @param PHPUnit_TextUI_Argument_Argument[]|PHPUnit_TextUI_Option_Option[] $definitions
      *
-     * @throws RuntimeException
+     * @throws PHPUnit_Framework_Exception
      */
     public function __construct(array $definitions = [])
     {
@@ -33,7 +31,7 @@ class PHPUnit_TextUI_ConsoleInputDefinition extends InputDefinition implements P
                 $this->registerOption($input);
             } else {
                 $class = get_class($input);
-                throw new RuntimeException("Invalid definition given '{$class}'.");
+                throw new PHPUnit_Framework_Exception("Invalid definition given '{$class}'.");
             }
         }
     }

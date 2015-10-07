@@ -229,9 +229,7 @@ class PHPUnit_TextUI_Command
      */
     protected function handleArguments(array $argv)
     {
-        // todo Uncomment when all options and args are supported, Suggested usage:
-        // $input = new ArgvInput($argv, new PHPUnit_TextUI_InputDefinition());
-        // $this->arguments['colors'] = $input->getOption('colors');
+        $input = new PHPUnit_TextUI_Input($argv);
 
         if (defined('__PHPUNIT_PHAR__')) {
             $this->longOptions['check-version'] = null;
@@ -252,7 +250,7 @@ class PHPUnit_TextUI_Command
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
                 case '--colors':
-                    $this->arguments['colors'] = $option[1] ?: PHPUnit_TextUI_ResultPrinter::COLOR_AUTO;
+                    $this->arguments['colors'] = $input->getOption('colors');
                     break;
 
                 case '--bootstrap':

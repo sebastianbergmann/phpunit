@@ -9,10 +9,6 @@
  */
 
 /**
- * Class InputDefinition
- *
- * @author Yannick Voyer <star.yvoyer@gmail.com> (http://github.com/yvoyer)
- *
  * @since Class available since Release 6.0.0
  */
 interface PHPUnit_TextUI_InputDefinition
