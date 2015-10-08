@@ -2795,7 +2795,9 @@ abstract class PHPUnit_Framework_Assert
             $parent = $class->getParentClass();
 
             if ($parent === false || !$parent->isAbstract()) {
-                return;
+                throw new PHPUnit_Framework_RiskyTestError(
+                    'This test performed an assertion on a test double'
+                );
             }
         }
 
