@@ -37,6 +37,8 @@ declare(strict_types=1);
  *          stopOnIncomplete="false"
  *          stopOnRisky="false"
  *          stopOnSkipped="false"
+ *          failOnWarning="false"
+ *          failOnRisky="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
  *          beStrictAboutChangesToGlobalState="false"
  *          beStrictAboutOutputDuringTests="false"
@@ -656,6 +658,20 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('stopOnSkipped')) {
             $result['stopOnSkipped'] = $this->getBoolean(
                 (string) $root->getAttribute('stopOnSkipped'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('failOnWarning')) {
+            $result['failOnWarning'] = $this->getBoolean(
+                (string) $root->getAttribute('failOnWarning'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('failOnRisky')) {
+            $result['failOnRisky'] = $this->getBoolean(
+                (string) $root->getAttribute('failOnRisky'),
                 false
             );
         }
