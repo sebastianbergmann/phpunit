@@ -1908,7 +1908,7 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
     {
-        self::$count += count($constraint);
+        self::updateAssertionCounter($value, $constraint);
 
         $constraint->evaluate($value, $message);
     }
@@ -2780,5 +2780,25 @@ abstract class PHPUnit_Framework_Assert
     public static function resetCount()
     {
         self::$count = 0;
+    }
+
+    /**
+     * @param mixed                        $value
+     * @param PHPUnit_Framework_Constraint $constraint
+     * @since Method available since Release 5.2.0
+     */
+    private static function updateAssertionCounter($value, PHPUnit_Framework_Constraint $constraint)
+    {
+        if ($value instanceof PHPUnit_Framework_MockObject_MockObject ||
+            $value instanceof Prophecy\Prophecy\ProphecySubjectInterface) {
+            $class  = new ReflectionClass($value);
+            $parent = $class->getParentClass();
+
+            if ($parent === false || !$parent->isAbstract()) {
+                return;
+            }
+        }
+
+        self::$count += count($constraint);
     }
 }
