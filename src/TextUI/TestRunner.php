@@ -138,9 +138,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     /**
      * @param  PHPUnit_Framework_Test       $suite
      * @param  array                        $arguments
+     * @param  bool                         $exit
      * @return PHPUnit_Framework_TestResult
      */
-    public function doRun(PHPUnit_Framework_Test $suite, array $arguments = [])
+    public function doRun(PHPUnit_Framework_Test $suite, array $arguments = [], $exit)
     {
         if (isset($arguments['configuration'])) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
@@ -524,6 +525,28 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
+        if ($exit) {
+            if ($result->wasSuccessful()) {
+                if ($arguments['failOnRisky'] && !$result->allHarmless()) {
+                    exit(self::FAILURE_EXIT);
+                }
+
+                if ($arguments['failOnWarning'] && $result->warningCount() > 0) {
+                    exit(self::FAILURE_EXIT);
+                }
+
+                exit(self::SUCCESS_EXIT);
+            }
+
+            if ($result->errorCount() > 0) {
+                exit(self::EXCEPTION_EXIT);
+            }
+
+            if ($result->failureCount() > 0) {
+                exit(self::FAILURE_EXIT);
+            }
+        }
+
         return $result;
     }
 
@@ -679,6 +702,16 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($phpunitConfiguration['stopOnSkipped']) &&
                 !isset($arguments['stopOnSkipped'])) {
                 $arguments['stopOnSkipped'] = $phpunitConfiguration['stopOnSkipped'];
+            }
+
+            if (isset($phpunitConfiguration['failOnWarning']) &&
+                !isset($arguments['failOnWarning'])) {
+                $arguments['failOnWarning'] = $phpunitConfiguration['failOnWarning'];
+            }
+
+            if (isset($phpunitConfiguration['failOnRisky']) &&
+                !isset($arguments['failOnRisky'])) {
+                $arguments['failOnRisky'] = $phpunitConfiguration['failOnRisky'];
             }
 
             if (isset($phpunitConfiguration['timeoutForSmallTests']) &&
@@ -949,6 +982,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['stopOnIncomplete']                           = isset($arguments['stopOnIncomplete'])                           ? $arguments['stopOnIncomplete']                           : false;
         $arguments['stopOnRisky']                                = isset($arguments['stopOnRisky'])                                ? $arguments['stopOnRisky']                                : false;
         $arguments['stopOnSkipped']                              = isset($arguments['stopOnSkipped'])                              ? $arguments['stopOnSkipped']                              : false;
+        $arguments['failOnWarning']                              = isset($arguments['failOnWarning'])                              ? $arguments['failOnWarning']                              : false;
+        $arguments['failOnRisky']                                = isset($arguments['failOnRisky'])                                ? $arguments['failOnRisky']                                : false;
         $arguments['timeoutForSmallTests']                       = isset($arguments['timeoutForSmallTests'])                       ? $arguments['timeoutForSmallTests']                       : 1;
         $arguments['timeoutForMediumTests']                      = isset($arguments['timeoutForMediumTests'])                      ? $arguments['timeoutForMediumTests']                      : 10;
         $arguments['timeoutForLargeTests']                       = isset($arguments['timeoutForLargeTests'])                       ? $arguments['timeoutForLargeTests']                       : 60;

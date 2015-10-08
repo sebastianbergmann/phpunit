@@ -333,7 +333,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'timeoutForMediumTests'                      => 10,
             'timeoutForLargeTests'                       => 60,
             'beStrictAboutResourceUsageDuringSmallTests' => false,
-            'disallowTodoAnnotatedTests'                 => false
+            'disallowTodoAnnotatedTests'                 => false,
+            'failOnWarning'                              => false,
+            'failOnRisky'                                => false
             ],
             $this->configuration->getPHPUnitConfiguration()
         );
