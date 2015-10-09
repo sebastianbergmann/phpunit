@@ -43,27 +43,27 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     protected $testSuites = array();
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $testSuiteTests = array(0);
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $testSuiteAssertions = array(0);
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $testSuiteErrors = array(0);
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $testSuiteFailures = array(0);
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $testSuiteTimes = array(0);
 
