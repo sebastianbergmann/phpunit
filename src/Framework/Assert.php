@@ -1828,11 +1828,11 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = '')
     {
-        $tmp = new DOMDocument;
+        $tmp             = new DOMDocument;
         $expectedElement = $tmp->importNode($expectedElement, true);
 
-        $tmp = new DOMDocument;
-        $actualElement= $tmp->importNode($actualElement, true);
+        $tmp           = new DOMDocument;
+        $actualElement = $tmp->importNode($actualElement, true);
 
         unset($tmp);
 

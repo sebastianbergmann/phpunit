@@ -555,9 +555,9 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testNamespacedFunctionCanBeCoveredOrUsed()
     {
         $this->assertEquals(
-            array(
+            [
                 TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(4, 7)
-            ),
+            ],
             PHPUnit_Util_Test::getLinesToBeCovered(
                 'CoverageNamespacedFunctionTest',
                 'testFunc'
