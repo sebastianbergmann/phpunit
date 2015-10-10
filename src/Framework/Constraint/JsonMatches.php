@@ -37,7 +37,8 @@ class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constra
      *
      * This method can be overridden to implement the evaluation algorithm.
      *
-     * @param  mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
+     *
      * @return bool
      */
     protected function matches($other)
