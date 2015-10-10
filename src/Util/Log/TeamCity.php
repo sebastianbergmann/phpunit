@@ -281,7 +281,8 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     }
 
     /**
-     * @param  Exception $e
+     * @param Exception $e
+     *
      * @return string
      */
     private static function getMessage(Exception $e)
@@ -302,7 +303,8 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     }
 
     /**
-     * @param  Exception $e
+     * @param Exception $e
+     *
      * @return string
      */
     private static function getDetails(Exception $e)
@@ -322,7 +324,8 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     }
 
     /**
-     * @param  mixed  $value
+     * @param mixed $value
+     *
      * @return string
      */
     private static function getPrimitiveValueAsString($value)
@@ -340,6 +343,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
 
     /**
      * @param  $text
+     *
      * @return string
      */
     private static function escapeValue($text)
@@ -355,7 +359,8 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     }
 
     /**
-     * @param  string $className
+     * @param string $className
+     *
      * @return string
      */
     private static function getFileName($className)

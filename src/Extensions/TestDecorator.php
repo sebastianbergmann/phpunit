@@ -92,7 +92,8 @@ class PHPUnit_Extensions_TestDecorator extends PHPUnit_Framework_Assert implemen
      * Runs the decorated test and collects the
      * result in a TestResult.
      *
-     * @param  PHPUnit_Framework_TestResult $result
+     * @param PHPUnit_Framework_TestResult $result
+     *
      * @return PHPUnit_Framework_TestResult
      */
     public function run(PHPUnit_Framework_TestResult $result = null)
