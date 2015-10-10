@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * A marker interface for marking a unit test as being skipped.

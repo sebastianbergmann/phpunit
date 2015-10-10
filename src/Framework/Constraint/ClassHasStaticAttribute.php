@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Constraint that asserts that the class it is evaluated for has a given
@@ -24,7 +24,8 @@ class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends PHPUnit_Frame
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
+     *
      * @return bool
      */
     protected function matches($other)
@@ -44,6 +45,7 @@ class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends PHPUnit_Frame
      * Returns a string representation of the constraint.
      *
      * @return string
+     *
      * @since  Method available since Release 3.3.0
      */
     public function toString()

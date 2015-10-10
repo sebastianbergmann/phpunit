@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Windows utility for PHP sub-processes.
@@ -72,9 +72,11 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
     }
 
     /**
-     * @param  resource                    $pipe
-     * @param  string                      $job
+     * @param resource $pipe
+     * @param string   $job
+     *
      * @throws PHPUnit_Framework_Exception
+     *
      * @since  Method available since Release 3.5.12
      */
     protected function process($pipe, $job)

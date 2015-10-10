@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Suite for .phpt test cases.
@@ -20,7 +20,8 @@ class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
     /**
      * Constructs a new TestSuite for .phpt test cases.
      *
-     * @param  string                      $directory
+     * @param string $directory
+     *
      * @throws PHPUnit_Framework_Exception
      */
     public function __construct(string $directory)

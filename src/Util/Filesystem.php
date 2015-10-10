@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Filesystem helpers.
@@ -27,8 +27,10 @@ class PHPUnit_Util_Filesystem
      *   - PEAR CS:   Foo_Bar_Baz -> Foo/Bar/Baz.php
      *   - Namespace: Foo\Bar\Baz -> Foo/Bar/Baz.php
      *
-     * @param  string $className
+     * @param string $className
+     *
      * @return string
+     *
      * @since  Method available since Release 3.4.0
      */
     public static function classNameToFilename($className)

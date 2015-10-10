@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Factory for PHPUnit_Framework_Exception objects that are used to describe
@@ -19,9 +19,10 @@ declare(strict_types=1);
 class PHPUnit_Util_InvalidArgumentHelper
 {
     /**
-     * @param  int                         $argument
-     * @param  string                      $type
-     * @param  mixed                       $value
+     * @param int    $argument
+     * @param string $type
+     * @param mixed  $value
+     *
      * @return PHPUnit_Framework_Exception
      */
     public static function factory($argument, $type, $value = null)

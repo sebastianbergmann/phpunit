@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * A Test can be run and collect its results.
@@ -20,7 +20,8 @@ interface PHPUnit_Framework_Test extends Countable
     /**
      * Runs a test and collects its result in a TestResult instance.
      *
-     * @param  PHPUnit_Framework_TestResult $result
+     * @param PHPUnit_Framework_TestResult $result
+     *
      * @return PHPUnit_Framework_TestResult
      */
     public function run(PHPUnit_Framework_TestResult $result = null);

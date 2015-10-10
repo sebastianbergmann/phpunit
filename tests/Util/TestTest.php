@@ -26,6 +26,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers PHPUnit_Util_Test::getExpectedException
+     *
      * @todo   Split up in separate tests
      */
     public function testGetExpectedException()
@@ -230,6 +231,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @coversNothing
+     *
      * @todo   This test does not really test functionality of PHPUnit_Util_Test
      */
     public function testGetProvidedDataRegEx()
@@ -353,6 +355,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Util_Test::getDependencies
+     *
      * @todo   Not sure what this test tests (name is misleading at least)
      */
     public function testParseAnnotation()
@@ -366,6 +369,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     /**
      * @depends Foo
      * @depends ほげ
+     *
      * @todo    Remove fixture from test class
      */
     public function methodForTestParseAnnotation()

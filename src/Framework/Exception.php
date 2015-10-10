@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Base class for all PHPUnit Framework exceptions.
@@ -29,7 +29,6 @@ declare(strict_types=1);
  * the parent would break the intended encapsulation of process isolation.
  *
  * @see http://fabien.potencier.org/article/9/php-serialization-stack-traces-and-exceptions
- *
  * @since Class available since Release 3.4.0
  */
 class PHPUnit_Framework_Exception extends RuntimeException implements PHPUnit_Exception

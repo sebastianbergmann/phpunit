@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * We have a TestSuite object A.
@@ -16,6 +16,7 @@ declare(strict_types=1);
  * We want a TestSuite object B that contains TestSuite objects C, D, ...
  * for the Tests tagged with @group C, @group D, ...
  * Running the Tests from TestSuite object B results in Tests tagged with both
+ *
  * @group C and @group D in TestSuite object A to be run twice .
  *
  * <code>

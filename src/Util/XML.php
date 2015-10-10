@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * XML helpers.
@@ -31,12 +31,14 @@ class PHPUnit_Util_XML
      * not a string as it currently does.  To load a file into a
      * DOMDocument, use loadFile() instead.
      *
-     * @param  string|DOMDocument $actual
-     * @param  bool               $isHtml
-     * @param  string             $filename
-     * @param  bool               $xinclude
-     * @param  bool               $strict
+     * @param string|DOMDocument $actual
+     * @param bool               $isHtml
+     * @param string             $filename
+     * @param bool               $xinclude
+     * @param bool               $strict
+     *
      * @return DOMDocument
+     *
      * @since  Method available since Release 3.3.0
      */
     public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false)
@@ -104,11 +106,13 @@ class PHPUnit_Util_XML
     /**
      * Loads an XML (or HTML) file into a DOMDocument object.
      *
-     * @param  string      $filename
-     * @param  bool        $isHtml
-     * @param  bool        $xinclude
-     * @param  bool        $strict
+     * @param string $filename
+     * @param bool   $isHtml
+     * @param bool   $xinclude
+     * @param bool   $strict
+     *
      * @return DOMDocument
+     *
      * @since  Method available since Release 3.3.0
      */
     public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
@@ -131,6 +135,7 @@ class PHPUnit_Util_XML
 
     /**
      * @param DOMNode $node
+     *
      * @since  Method available since Release 3.3.0
      */
     public static function removeCharacterDataNodes(DOMNode $node)
@@ -150,8 +155,10 @@ class PHPUnit_Util_XML
      * and FFFF (not even as character reference).
      * See http://www.w3.org/TR/xml/#charsets
      *
-     * @param  string $string
+     * @param string $string
+     *
      * @return string
+     *
      * @since  Method available since Release 3.4.6
      */
     public static function prepareString($string)
@@ -170,8 +177,10 @@ class PHPUnit_Util_XML
     /**
      * "Convert" a DOMElement object into a PHP variable.
      *
-     * @param  DOMElement $element
+     * @param DOMElement $element
+     *
      * @return mixed
+     *
      * @since  Method available since Release 3.4.0
      */
     public static function xmlToVariable(DOMElement $element)

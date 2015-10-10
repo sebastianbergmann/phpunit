@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * A TestListener that generates a logfile of the
@@ -36,8 +36,10 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
     /**
      * Constructor.
      *
-     * @param  mixed                       $out
+     * @param mixed $out
+     *
      * @throws PHPUnit_Framework_Exception
+     *
      * @since  Method available since Release 3.3.4
      */
     public function __construct($out = null)
@@ -64,6 +66,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @param PHPUnit_Framework_Test    $test
      * @param PHPUnit_Framework_Warning $e
      * @param float                     $time
+     *
      * @since Method available since Release 5.1.0
      */
     public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
@@ -131,6 +134,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
+     *
      * @since  Method available since Release 4.0.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -152,6 +156,7 @@ class PHPUnit_Util_Log_TAP extends PHPUnit_Util_Printer implements PHPUnit_Frame
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
+     *
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)

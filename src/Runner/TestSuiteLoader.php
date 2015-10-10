@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * An interface to define how a test suite should be loaded.
@@ -18,14 +18,16 @@ declare(strict_types=1);
 interface PHPUnit_Runner_TestSuiteLoader
 {
     /**
-     * @param  string          $suiteClassName
-     * @param  string          $suiteClassFile
+     * @param string $suiteClassName
+     * @param string $suiteClassFile
+     *
      * @return ReflectionClass
      */
     public function load($suiteClassName, $suiteClassFile = '');
 
     /**
-     * @param  ReflectionClass $aClass
+     * @param ReflectionClass $aClass
+     *
      * @return ReflectionClass
      */
     public function reload(ReflectionClass $aClass);

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * This class defines the current version of PHPUnit.
@@ -49,6 +49,7 @@ class PHPUnit_Runner_Version
 
     /**
      * @return string
+     *
      * @since  Method available since Release 4.0.0
      */
     public static function getReleaseChannel()

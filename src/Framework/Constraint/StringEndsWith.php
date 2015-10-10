@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Constraint that asserts that the string it is evaluated for ends with a given
@@ -36,7 +36,8 @@ class PHPUnit_Framework_Constraint_StringEndsWith extends PHPUnit_Framework_Cons
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
+     *
      * @return bool
      */
     protected function matches($other)

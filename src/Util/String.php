@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * String helpers.
@@ -20,7 +20,8 @@ class PHPUnit_Util_String
     /**
      * Converts a string to UTF-8 encoding.
      *
-     * @param  string $string
+     * @param string $string
+     *
      * @return string
      */
     public static function convertToUtf8($string)
@@ -39,7 +40,8 @@ class PHPUnit_Util_String
     /**
      * Checks a string for UTF-8 encoding.
      *
-     * @param  string $string
+     * @param string $string
+     *
      * @return bool
      */
     protected static function isUtf8($string)

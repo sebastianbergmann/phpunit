@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Provides human readable messages for each JSON error.
@@ -20,8 +20,9 @@ class PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider
     /**
      * Translates JSON error to a human readable string.
      *
-     * @param  string $error
-     * @param  string $prefix
+     * @param string $error
+     * @param string $prefix
+     *
      * @return string
      */
     public static function determineJsonError($error, $prefix = '')
@@ -47,7 +48,8 @@ class PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider
     /**
      * Translates a given type to a human readable message prefix.
      *
-     * @param  string $type
+     * @param string $type
+     *
      * @return string
      */
     public static function translateTypeToPrefix($type)

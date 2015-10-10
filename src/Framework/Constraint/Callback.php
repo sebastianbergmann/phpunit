@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Constraint that evaluates against a specified closure.
@@ -31,7 +31,8 @@ class PHPUnit_Framework_Constraint_Callback extends PHPUnit_Framework_Constraint
      * Evaluates the constraint for parameter $value. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
+     *
      * @return bool
      */
     protected function matches($other)

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Base class for all test runners.
@@ -41,9 +41,10 @@ abstract class PHPUnit_Runner_BaseTestRunner
      * This is a template method, subclasses override
      * the runFailed() and clearStatus() methods.
      *
-     * @param  string                 $suiteClassName
-     * @param  string                 $suiteClassFile
-     * @param  mixed                  $suffixes
+     * @param string $suiteClassName
+     * @param string $suiteClassFile
+     * @param mixed  $suffixes
+     *
      * @return PHPUnit_Framework_Test
      */
     public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = '')
@@ -113,8 +114,9 @@ abstract class PHPUnit_Runner_BaseTestRunner
     /**
      * Returns the loaded ReflectionClass for a suite name.
      *
-     * @param  string          $suiteClassName
-     * @param  string          $suiteClassFile
+     * @param string $suiteClassName
+     * @param string $suiteClassFile
+     *
      * @return ReflectionClass
      */
     protected function loadSuiteClass($suiteClassName, $suiteClassFile = '')

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
+declare (strict_types=1);
 
 /**
  * Base class for printers of TestDox documentation.
@@ -124,6 +124,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param PHPUnit_Framework_Test    $test
      * @param PHPUnit_Framework_Warning $e
      * @param float                     $time
+     *
      * @since Method available since Release 5.1.0
      */
     public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
@@ -176,6 +177,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
+     *
      * @since  Method available since Release 4.0.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -194,6 +196,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
+     *
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -210,6 +213,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * A testsuite started.
      *
      * @param PHPUnit_Framework_TestSuite $suite
+     *
      * @since  Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -220,6 +224,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * A testsuite ended.
      *
      * @param PHPUnit_Framework_TestSuite $suite
+     *
      * @since  Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
