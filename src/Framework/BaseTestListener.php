@@ -11,8 +11,8 @@
 /**
  * An empty Listener that can be extended to implement TestListener
  * with just a few lines of code.
- * @see PHPUnit_Framework_TestListener for documentation on the API methods.
  *
+ * @see PHPUnit_Framework_TestListener for documentation on the API methods.
  * @since Class available since Release 4.0.0
  */
 abstract class PHPUnit_Framework_BaseTestListener implements PHPUnit_Framework_TestListener

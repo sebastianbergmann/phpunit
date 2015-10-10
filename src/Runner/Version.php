@@ -47,6 +47,7 @@ class PHPUnit_Runner_Version
 
     /**
      * @return string
+     *
      * @since  Method available since Release 4.0.0
      */
     public static function getReleaseChannel()
