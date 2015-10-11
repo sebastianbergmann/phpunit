@@ -118,6 +118,9 @@ class PHPUnit_TextUI_ConsoleInputDefinition extends InputDefinition implements P
             new PHPUnit_TextUI_Option_IncludePath(),
             new PHPUnit_TextUI_Option_IniSet(),
             new PHPUnit_TextUI_Option_Help(),
+            new PHPUnit_TextUI_Option_Strict(),
+            new PHPUnit_TextUI_Option_CheckVersion(),
+            new PHPUnit_TextUI_Option_SelfUpdate(),
         ];
 
         return new self($default);

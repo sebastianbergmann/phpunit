@@ -45,6 +45,9 @@
         "ext-reflection": "*",
         "ext-spl": "*"
     },
+    "require-dev": {
+        "mikey179/vfsStream": "~1.0"
+    },
     "suggest": {
         "phpunit/php-invoker": "~1.1"
     },

@@ -13,16 +13,15 @@ use Symfony\Component\Console\Input\InputOption;
 /**
  * @since Class available since Release 6.0.0
  */
-final class PHPUnit_TextUI_Option_CoverageText extends PHPUnit_TextUI_Option_Option
+final class PHPUnit_TextUI_Option_Strict extends PHPUnit_TextUI_Option_Option
 {
     public function __construct()
     {
         parent::__construct(
-            'coverage-text',
+            'strict',
             null,
-            InputOption::VALUE_OPTIONAL,
-            'Generate code coverage report in text format.',
-            'php://stdout'
+            InputOption::VALUE_NONE,
+            'Shortcut for "--report-useless-tests --strict-coverage --disallow-test-output --enforce-time-limit --disallow-todo-annotated-tests"'
         );
     }
 }

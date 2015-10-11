@@ -13,16 +13,15 @@ use Symfony\Component\Console\Input\InputOption;
 /**
  * @since Class available since Release 6.0.0
  */
-final class PHPUnit_TextUI_Option_CoverageText extends PHPUnit_TextUI_Option_Option
+final class PHPUnit_TextUI_Option_CheckVersion extends PHPUnit_TextUI_Option_Option
 {
     public function __construct()
     {
         parent::__construct(
-            'coverage-text',
+            'check-version',
             null,
-            InputOption::VALUE_OPTIONAL,
-            'Generate code coverage report in text format.',
-            'php://stdout'
+            InputOption::VALUE_NONE,
+            'Check the currently installed PHPUnit version, and warn when outdated version used.'
         );
     }
 }

@@ -113,7 +113,9 @@ class PHPUnit_TextUI_Command
      */
     public function run(array $argv, $exit = true)
     {
-        $this->handleArguments($argv);
+        $input = new PHPUnit_TextUI_Input($argv);
+
+        $this->handleArguments($argv, $input);
 
         $runner = $this->createRunner();
 
@@ -226,11 +228,10 @@ class PHPUnit_TextUI_Command
      * </code>
      *
      * @param array $argv
+     * @param PHPUnit_TextUI_Input $input
      */
-    protected function handleArguments(array $argv)
+    protected function handleArguments(array $argv, PHPUnit_TextUI_Input $input)
     {
-        $input = new PHPUnit_TextUI_Input($argv);
-
         if (defined('__PHPUNIT_PHAR__')) {
             $this->longOptions['check-version'] = null;
             $this->longOptions['selfupdate']    = null;
@@ -247,45 +248,17 @@ class PHPUnit_TextUI_Command
             $this->showError($e->getMessage());
         }
 
+        $this->arguments['colors'] = $input->getOption('colors');
+        $this->arguments['bootstrap'] = $input->getOption('bootstrap');
+        $this->arguments['columns'] = $input->getOption('columns');
+        $this->arguments['configuration'] = $input->getOption('configuration');
+        $this->arguments['coverageClover'] = $input->getOption('coverage-clover');
+        $this->arguments['coverageCrap4J'] = $input->getOption('coverage-crap4j');
+        $this->arguments['coverageHtml'] = $input->getOption('coverage-html');
+        $this->arguments['coveragePHP'] = $input->getOption('coverage-php');
+
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
-                case '--colors':
-                    $this->arguments['colors'] = $input->getOption('colors');
-                    break;
-
-                case '--bootstrap':
-                    $this->arguments['bootstrap'] = $option[1];
-                    break;
-
-                case '--columns':
-                    if (is_numeric($option[1])) {
-                        $this->arguments['columns'] = (int) $option[1];
-                    } elseif ($option[1] == 'max') {
-                        $this->arguments['columns'] = 'max';
-                    }
-                    break;
-
-                case 'c':
-                case '--configuration':
-                    $this->arguments['configuration'] = $option[1];
-                    break;
-
-                case '--coverage-clover':
-                    $this->arguments['coverageClover'] = $option[1];
-                    break;
-
-                case '--coverage-crap4j':
-                    $this->arguments['coverageCrap4J'] = $option[1];
-                    break;
-
-                case '--coverage-html':
-                    $this->arguments['coverageHtml'] = $option[1];
-                    break;
-
-                case '--coverage-php':
-                    $this->arguments['coveragePHP'] = $option[1];
-                    break;
-
                 case '--coverage-text':
                     if ($option[1] === null) {
                         $option[1] = 'php://stdout';
@@ -346,10 +319,6 @@ class PHPUnit_TextUI_Command
                         ',',
                         $option[1]
                     );
-                    break;
-
-                case '--include-path':
-                    $includePath = $option[1];
                     break;
 
                 case '--list-groups':
@@ -518,7 +487,7 @@ class PHPUnit_TextUI_Command
             }
         }
 
-        $this->handleCustomTestSuite();
+        $this->handleCustomTestSuite($input);
 
         if (!isset($this->arguments['test'])) {
             if (isset($this->options[1][0])) {
@@ -543,10 +512,12 @@ class PHPUnit_TextUI_Command
             $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
         }
 
+        $includePath = $input->getOption('include-path');
         if (isset($includePath)) {
+            $includePath[] = ini_get('include_path');
             ini_set(
                 'include_path',
-                $includePath . PATH_SEPARATOR . ini_get('include_path')
+                implode(PATH_SEPARATOR, $includePath)
             );
         }
 
@@ -964,7 +935,7 @@ EOT;
     /**
      * Custom callback for test suite discovery.
      */
-    protected function handleCustomTestSuite()
+    protected function handleCustomTestSuite(PHPUnit_TextUI_Input $input)
     {
     }
 

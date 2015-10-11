@@ -96,10 +96,17 @@ final class PHPUnit_TextUI_InputDefinitionTest extends PHPUnit_Framework_TestCas
         $this->assertSame('file', $input->getOption('coverage-php'));
     }
 
+    /**
+     * This use case is difficult to implement without introducing a BC break,
+     * since the feature is currently being developed
+     * @see https://github.com/symfony/symfony/pull/12773
+     */
     public function test_it_should_support_coverage_text_option()
     {
         $input = new PHPUnit_TextUI_Input(['command']);
-        // todo add constant for COVERAGE_TEXT_STANDARD_OUTPUT = 'php://stdout'
+        $this->assertNull($input->getOption('coverage-text'));
+
+        $input = new PHPUnit_TextUI_Input(['command', '--coverage-text']);
         $this->assertSame('php://stdout', $input->getOption('coverage-text'));
 
         $input = new PHPUnit_TextUI_Input(['command', '--coverage-text=format']);
@@ -366,5 +373,32 @@ final class PHPUnit_TextUI_InputDefinitionTest extends PHPUnit_Framework_TestCas
     {
         $input = new PHPUnit_TextUI_Input(['command', '--conf=file']);
         $this->assertSame('file', $input->getOption('configuration'), 'Should resolve to the configuration option.');
+    }
+
+    public function test_it_should_support_strict_option()
+    {
+        $input = new PHPUnit_TextUI_Input(['command']);
+        $this->assertFalse($input->getOption('strict'));
+
+        $input = new PHPUnit_TextUI_Input(['command', '--strict']);
+        $this->assertTrue($input->getOption('strict'));
+    }
+
+    public function test_it_should_support_check_version_option()
+    {
+        $input = new PHPUnit_TextUI_Input(['command']);
+        $this->assertFalse($input->getOption('check-version'));
+
+        $input = new PHPUnit_TextUI_Input(['command', '--check-version']);
+        $this->assertTrue($input->getOption('check-version'));
+    }
+
+    public function test_it_should_support_self_update_option()
+    {
+        $input = new PHPUnit_TextUI_Input(['command']);
+        $this->assertFalse($input->getOption('self-update'));
+
+        $input = new PHPUnit_TextUI_Input(['command', '--self-update']);
+        $this->assertTrue($input->getOption('self-update'));
     }
 }
