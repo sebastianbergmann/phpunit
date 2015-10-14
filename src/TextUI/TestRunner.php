@@ -332,9 +332,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->writeMessage('Error', 'No code coverage driver is available');
 
                 $codeCoverageReports = 0;
-            }
-
-            if (!isset($arguments['whitelist']) && !$this->codeCoverageFilter->hasWhitelist()) {
+            } elseif (!isset($arguments['whitelist']) && !$this->codeCoverageFilter->hasWhitelist()) {
                 $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
 
                 $codeCoverageReports = 0;
