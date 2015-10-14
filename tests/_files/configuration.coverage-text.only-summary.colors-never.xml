@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="never">
+    <filter>
+        <whitelist>
+            <file>../_files/CoveredClass.php</file>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-text"
+             target="php://stdout"
+             showUncoveredFiles="false"
+             showOnlySummary="true"/>
+    </logging>
+</phpunit>
