@@ -834,4 +834,11 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         $prop->setAccessible(true);
         $prop->setValue($this, []);
     }
+
+    public function testStringableClassDoesNotThrow()
+    {
+        $mock = $this->getMock('StringableClass');
+
+        $this->assertInternalType('string', (string) $mock);
+    }
 }
