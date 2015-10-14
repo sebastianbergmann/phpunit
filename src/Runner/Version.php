@@ -39,6 +39,16 @@ class PHPUnit_Runner_Version
 
     /**
      * @return string
+     *
+     * @since Method available since Release 4.8.13
+     */
+    public static function series()
+    {
+        return join('.', array_slice(explode('.', self::id()), 0, 2));
+    }
+
+    /**
+     * @return string
      */
     public static function getVersionString()
     {

@@ -4,6 +4,14 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 
 ## [5.0.6] - 2015-10-DD
 
+### Added
+
+* Added the `--self-upgrade` commandline switch for upgrading a PHPUnit PHAR to the latest version
+
+### Changed
+
+* The `--self-update` commandline switch now updates a PHPUnit PHAR to the latest version within the same release series
+
 ### Fixed
 
 * Fixed [#1892](https://github.com/sebastianbergmann/phpunit/issues/1892): `--coverage-text` does not honor color settings
@@ -70,6 +78,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 * The PHPUnit_Selenium component can no longer be configured using the `<selenium/browser>` element of PHPUnit's configuration file
 * PHPUnit is no longer supported on PHP 5.3, PHP 5.4, and PHP 5.5
 
+[5.0.6]: https://github.com/sebastianbergmann/phpunit/compare/5.0.5...5.0.6
 [5.0.5]: https://github.com/sebastianbergmann/phpunit/compare/5.0.4...5.0.5
 [5.0.4]: https://github.com/sebastianbergmann/phpunit/compare/5.0.3...5.0.4
 [5.0.3]: https://github.com/sebastianbergmann/phpunit/compare/5.0.2...5.0.3
