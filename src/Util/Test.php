@@ -818,11 +818,17 @@ class PHPUnit_Util_Test
 
                 foreach ($class->getMethods() as $method) {
                     if (self::isBeforeClassMethod($method)) {
-                        self::$hookMethods[$className]['beforeClass'][] = $method->getName();
+                        array_unshift(
+                            self::$hookMethods[$className]['beforeClass'],
+                            $method->getName()
+                        );
                     }
 
                     if (self::isBeforeMethod($method)) {
-                        self::$hookMethods[$className]['before'][] = $method->getName();
+                        array_unshift(
+                            self::$hookMethods[$className]['before'],
+                            $method->getName()
+                        );
                     }
 
                     if (self::isAfterMethod($method)) {
