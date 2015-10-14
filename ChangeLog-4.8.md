@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.12] - 2015-10-12
+
+### Changed
+
+* Merged [#1893](https://github.com/sebastianbergmann/phpunit/issues/1893): Removed workaround for phpab bug
+
 ## [4.8.11] - 2015-10-07
 
 ### Fixed
@@ -85,6 +91,7 @@ New PHAR release due to updated dependencies
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.12]: https://github.com/sebastianbergmann/phpunit/compare/4.8.11...4.8.12
 [4.8.11]: https://github.com/sebastianbergmann/phpunit/compare/4.8.10...4.8.11
 [4.8.10]: https://github.com/sebastianbergmann/phpunit/compare/4.8.9...4.8.10
 [4.8.9]: https://github.com/sebastianbergmann/phpunit/compare/4.8.8...4.8.9
