@@ -229,6 +229,8 @@ class PHPUnit_TextUI_Command
             $this->longOptions['check-version'] = null;
             $this->longOptions['selfupdate']    = null;
             $this->longOptions['self-update']   = null;
+            $this->longOptions['selfupgrade']   = null;
+            $this->longOptions['self-upgrade']  = null;
         }
 
         try {
@@ -484,6 +486,15 @@ class PHPUnit_TextUI_Command
                 case '--selfupdate':
                 case '--self-update':
                     $this->handleSelfUpdate();
+                    break;
+
+                case '--selfupgrade':
+                case '--self-upgrade':
+                    $this->handleSelfUpdate(true);
+                    break;
+
+                case '--whitelist':
+                    $this->arguments['whitelist'] = $option[1];
                     break;
 
                 default:
@@ -774,7 +785,7 @@ class PHPUnit_TextUI_Command
     /**
      * @since Method available since Release 4.0.0
      */
-    protected function handleSelfUpdate()
+    protected function handleSelfUpdate($upgrade = false)
     {
         $this->printVersionString();
 
@@ -790,10 +801,21 @@ class PHPUnit_TextUI_Command
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
-        if (PHP_VERSION_ID < 50600) {
-            $remoteFilename = sprintf('https://phar.phpunit.de/phpunit-old.phar');
+        if (!$upgrade) {
+            $remoteFilename = sprintf(
+                'https://phar.phpunit.de/phpunit-%s.phar',
+                file_get_contents(
+                    sprintf(
+                        'https://phar.phpunit.de/latest-version-of/phpunit-%s',
+                        PHPUnit_Runner_Version::series()
+                    )
+                )
+            );
         } else {
-            $remoteFilename = sprintf('https://phar.phpunit.de/phpunit.phar');
+            $remoteFilename = sprintf(
+                'https://phar.phpunit.de/phpunit%s.phar',
+                PHPUnit_Runner_Version::getReleaseChannel()
+            );
         }
 
         $tempFilename = tempnam(sys_get_temp_dir(), 'phpunit') . '.phar';
@@ -862,7 +884,7 @@ class PHPUnit_TextUI_Command
 
         if ($isOutdated) {
             print "You are not using the latest version of PHPUnit.\n";
-            print 'Use "phpunit --self-update" to install PHPUnit ' . $latestVersion . "\n";
+            print 'Use "phpunit --self-upgrade" to install PHPUnit ' . $latestVersion . "\n";
         } else {
             print "You are using the latest version of PHPUnit.\n";
         }
@@ -958,7 +980,8 @@ EOT;
 
         if (defined('__PHPUNIT_PHAR__')) {
             print "\n  --check-version           Check whether PHPUnit is the latest version.";
-            print "\n  --self-update             Update PHPUnit to the latest version.\n";
+            print "\n  --self-update             Update PHPUnit to the latest version within the same\n                            release series.\n";
+            print "\n  --self-upgrade            Upgrade PHPUnit to the latest version.\n";
         }
     }
 
