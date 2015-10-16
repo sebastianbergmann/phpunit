@@ -984,6 +984,13 @@ class PHPUnit_Framework_MockObject_Generator
             );
         }
 
+        // Mocked interfaces returning 'self' must explicitly declare the
+        // interface name as the return type. See
+        // https://bugs.php.net/bug.php?id=70722
+        if ($return_type === 'self') {
+            $return_type = $className;
+        }
+
         $template = new Text_Template($templateDir . $templateFile);
 
         $template->setVar(
