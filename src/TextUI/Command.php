@@ -34,6 +34,7 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $longOptions = [
+        'atleast-version='        => null,
         'bootstrap='              => null,
         'colors=='                => null,
         'columns='                => null,
@@ -59,6 +60,7 @@ class PHPUnit_TextUI_Command
         'log-json='               => null,
         'log-junit='              => null,
         'log-tap='                => null,
+        'log-teamcity='           => null,
         'no-configuration'        => null,
         'no-coverage'             => null,
         'no-globals-backup'       => null,
@@ -71,19 +73,24 @@ class PHPUnit_TextUI_Command
         'stderr'                  => null,
         'stop-on-error'           => null,
         'stop-on-failure'         => null,
+        'stop-on-warning'         => null,
         'stop-on-incomplete'      => null,
         'stop-on-risky'           => null,
         'stop-on-skipped'         => null,
+        'fail-on-warning'         => null,
+        'fail-on-risky'           => null,
         'strict-coverage'         => null,
         'strict-global-state'     => null,
         'tap'                     => null,
+        'teamcity'                => null,
         'testdox'                 => null,
         'testdox-html='           => null,
         'testdox-text='           => null,
         'test-suffix='            => null,
         'testsuite='              => null,
         'verbose'                 => null,
-        'version'                 => null
+        'version'                 => null,
+        'whitelist='              => null
     ];
 
     /**
@@ -102,8 +109,9 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @param  array $argv
-     * @param  bool  $exit
+     * @param array $argv
+     * @param bool  $exit
+     *
      * @return int
      */
     public function run(array $argv, $exit = true)
@@ -146,30 +154,27 @@ class PHPUnit_TextUI_Command
         unset($this->arguments['testFile']);
 
         try {
-            $result = $runner->doRun($suite, $this->arguments);
+            $result = $runner->doRun($suite, $this->arguments, $exit);
         } catch (PHPUnit_Framework_Exception $e) {
             print $e->getMessage() . "\n";
         }
 
-        $ret = PHPUnit_TextUI_TestRunner::FAILURE_EXIT;
+        $return = PHPUnit_TextUI_TestRunner::FAILURE_EXIT;
 
         if (isset($result) && $result->wasSuccessful()) {
-            $ret = PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
+            $return = PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
         } elseif (!isset($result) || $result->errorCount() > 0) {
-            $ret = PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT;
+            $return = PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT;
         }
 
-        if ($exit) {
-            exit($ret);
-        } else {
-            return $ret;
-        }
+        return $return;
     }
 
     /**
      * Create a TestRunner, override in subclasses.
      *
      * @return PHPUnit_TextUI_TestRunner
+     *
      * @since  Method available since Release 3.6.0
      */
     protected function createRunner()
@@ -228,6 +233,8 @@ class PHPUnit_TextUI_Command
             $this->longOptions['check-version'] = null;
             $this->longOptions['selfupdate']    = null;
             $this->longOptions['self-update']   = null;
+            $this->longOptions['selfupgrade']   = null;
+            $this->longOptions['self-upgrade']  = null;
         }
 
         try {
@@ -369,6 +376,10 @@ class PHPUnit_TextUI_Command
                     $this->arguments['tapLogfile'] = $option[1];
                     break;
 
+                case '--log-teamcity':
+                    $this->arguments['teamcityLogfile'] = $option[1];
+                    break;
+
                 case '--process-isolation':
                     $this->arguments['processIsolation'] = true;
                     break;
@@ -389,6 +400,10 @@ class PHPUnit_TextUI_Command
                     $this->arguments['stopOnFailure'] = true;
                     break;
 
+                case '--stop-on-warning':
+                    $this->arguments['stopOnWarning'] = true;
+                    break;
+
                 case '--stop-on-incomplete':
                     $this->arguments['stopOnIncomplete'] = true;
                     break;
@@ -401,8 +416,20 @@ class PHPUnit_TextUI_Command
                     $this->arguments['stopOnSkipped'] = true;
                     break;
 
+                case '--fail-on-warning':
+                    $this->arguments['failOnWarning'] = true;
+                    break;
+
+                case '--fail-on-risky':
+                    $this->arguments['failOnRisky'] = true;
+                    break;
+
                 case '--tap':
                     $this->arguments['printer'] = 'PHPUnit_Util_Log_TAP';
+                    break;
+
+                case '--teamcity':
+                    $this->arguments['printer'] = 'PHPUnit_Util_Log_TeamCity';
                     break;
 
                 case '--testdox':
@@ -436,6 +463,13 @@ class PHPUnit_TextUI_Command
                 case 'v':
                 case '--verbose':
                     $this->arguments['verbose'] = true;
+                    break;
+
+                case '--atleast-version':
+                    exit(version_compare(PHPUnit_Runner_Version::id(), $option[1], '>=')
+                        ? PHPUnit_TextUI_TestRunner::SUCCESS_EXIT
+                        : PHPUnit_TextUI_TestRunner::FAILURE_EXIT
+                    );
                     break;
 
                 case '--version':
@@ -482,6 +516,15 @@ class PHPUnit_TextUI_Command
                 case '--selfupdate':
                 case '--self-update':
                     $this->handleSelfUpdate();
+                    break;
+
+                case '--selfupgrade':
+                case '--self-upgrade':
+                    $this->handleSelfUpdate(true);
+                    break;
+
+                case '--whitelist':
+                    $this->arguments['whitelist'] = $option[1];
                     break;
 
                 default:
@@ -572,7 +615,7 @@ class PHPUnit_TextUI_Command
                 exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
             }
 
-            $phpunit = $configuration->getPHPUnitConfiguration();
+            $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
 
             $configuration->handlePHPConfiguration();
 
@@ -581,43 +624,43 @@ class PHPUnit_TextUI_Command
              */
             if (isset($this->arguments['bootstrap'])) {
                 $this->handleBootstrap($this->arguments['bootstrap']);
-            } elseif (isset($phpunit['bootstrap'])) {
-                $this->handleBootstrap($phpunit['bootstrap']);
+            } elseif (isset($phpunitConfiguration['bootstrap'])) {
+                $this->handleBootstrap($phpunitConfiguration['bootstrap']);
             }
 
             /*
              * Issue #657
              */
-            if (isset($phpunit['stderr']) && ! isset($this->arguments['stderr'])) {
-                $this->arguments['stderr'] = $phpunit['stderr'];
+            if (isset($phpunitConfiguration['stderr']) && ! isset($this->arguments['stderr'])) {
+                $this->arguments['stderr'] = $phpunitConfiguration['stderr'];
             }
 
-            if (isset($phpunit['columns']) && ! isset($this->arguments['columns'])) {
-                $this->arguments['columns'] = $phpunit['columns'];
+            if (isset($phpunitConfiguration['columns']) && ! isset($this->arguments['columns'])) {
+                $this->arguments['columns'] = $phpunitConfiguration['columns'];
             }
 
-            if (isset($phpunit['printerClass'])) {
-                if (isset($phpunit['printerFile'])) {
-                    $file = $phpunit['printerFile'];
+            if (!isset($this->arguments['printer']) && isset($phpunitConfiguration['printerClass'])) {
+                if (isset($phpunitConfiguration['printerFile'])) {
+                    $file = $phpunitConfiguration['printerFile'];
                 } else {
                     $file = '';
                 }
 
                 $this->arguments['printer'] = $this->handlePrinter(
-                    $phpunit['printerClass'],
+                    $phpunitConfiguration['printerClass'],
                     $file
                 );
             }
 
-            if (isset($phpunit['testSuiteLoaderClass'])) {
-                if (isset($phpunit['testSuiteLoaderFile'])) {
-                    $file = $phpunit['testSuiteLoaderFile'];
+            if (isset($phpunitConfiguration['testSuiteLoaderClass'])) {
+                if (isset($phpunitConfiguration['testSuiteLoaderFile'])) {
+                    $file = $phpunitConfiguration['testSuiteLoaderFile'];
                 } else {
                     $file = '';
                 }
 
                 $this->arguments['loader'] = $this->handleLoader(
-                    $phpunit['testSuiteLoaderClass'],
+                    $phpunitConfiguration['testSuiteLoaderClass'],
                     $file
                 );
             }
@@ -655,8 +698,9 @@ class PHPUnit_TextUI_Command
     /**
      * Handles the loading of the PHPUnit_Runner_TestSuiteLoader implementation.
      *
-     * @param  string                         $loaderClass
-     * @param  string                         $loaderFile
+     * @param string $loaderClass
+     * @param string $loaderFile
+     *
      * @return PHPUnit_Runner_TestSuiteLoader
      */
     protected function handleLoader($loaderClass, $loaderFile = '')
@@ -699,8 +743,9 @@ class PHPUnit_TextUI_Command
     /**
      * Handles the loading of the PHPUnit_Util_Printer implementation.
      *
-     * @param  string               $printerClass
-     * @param  string               $printerFile
+     * @param string $printerClass
+     * @param string $printerFile
+     *
      * @return PHPUnit_Util_Printer
      */
     protected function handlePrinter($printerClass, $printerFile = '')
@@ -760,7 +805,7 @@ class PHPUnit_TextUI_Command
     /**
      * @since Method available since Release 4.0.0
      */
-    protected function handleSelfUpdate()
+    protected function handleSelfUpdate($upgrade = false)
     {
         $this->printVersionString();
 
@@ -776,16 +821,28 @@ class PHPUnit_TextUI_Command
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
 
-        $remoteFilename = sprintf(
-            'https://phar.phpunit.de/phpunit%s.phar',
-            PHPUnit_Runner_Version::getReleaseChannel()
-        );
+        if (!$upgrade) {
+            $remoteFilename = sprintf(
+                'https://phar.phpunit.de/phpunit-%s.phar',
+                file_get_contents(
+                    sprintf(
+                        'https://phar.phpunit.de/latest-version-of/phpunit-%s',
+                        PHPUnit_Runner_Version::series()
+                    )
+                )
+            );
+        } else {
+            $remoteFilename = sprintf(
+                'https://phar.phpunit.de/phpunit%s.phar',
+                PHPUnit_Runner_Version::getReleaseChannel()
+            );
+        }
 
         $tempFilename = tempnam(sys_get_temp_dir(), 'phpunit') . '.phar';
 
         // Workaround for https://bugs.php.net/bug.php?id=65538
         $caFile = dirname($tempFilename) . '/ca.pem';
-        copy(__PHPUNIT_PHAR_ROOT__ . '/phar/ca.pem', $caFile);
+        copy(__PHPUNIT_PHAR_ROOT__ . '/ca.pem', $caFile);
 
         print 'Updating the PHPUnit PHAR ... ';
 
@@ -842,7 +899,7 @@ class PHPUnit_TextUI_Command
 
         if ($isOutdated) {
             print "You are not using the latest version of PHPUnit.\n";
-            print 'Use "phpunit --self-update" to install PHPUnit ' . $latestVersion . "\n";
+            print 'Use "phpunit --self-upgrade" to install PHPUnit ' . $latestVersion . "\n";
         } else {
             print "You are using the latest version of PHPUnit.\n";
         }
@@ -870,11 +927,13 @@ Code Coverage Options:
   --coverage-text=<file>    Generate code coverage report in text format.
                             Default: Standard output.
   --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
+  --whitelist <dir>         Whitelist <dir> for code coverage analysis.
 
 Logging Options:
 
   --log-junit <file>        Log test execution in JUnit XML format to file.
   --log-tap <file>          Log test execution in TAP format to file.
+  --log-teamcity <file>     Log test execution in TeamCity format to file.
   --log-json <file>         Log test execution in JSON format.
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
@@ -910,15 +969,19 @@ Test Execution Options:
   --stderr                  Write to STDERR instead of STDOUT.
   --stop-on-error           Stop execution upon first error.
   --stop-on-failure         Stop execution upon first error or failure.
+  --stop-on-warning         Stop execution upon first warning.
   --stop-on-risky           Stop execution upon first risky test.
   --stop-on-skipped         Stop execution upon first skipped test.
   --stop-on-incomplete      Stop execution upon first incomplete test.
+  --fail-on-warning         Treat tests with warnings as failures.
+  --fail-on-risky           Treat risky tests as failures.
   -v|--verbose              Output more verbose information.
   --debug                   Display debugging information during test execution.
 
   --loader <loader>         TestSuiteLoader implementation to use.
   --repeat <times>          Runs the test(s) repeatedly.
   --tap                     Report test execution progress in TAP format.
+  --teamcity                Report test execution progress in TeamCity format.
   --testdox                 Report test execution progress in TestDox format.
   --printer <printer>       TestListener implementation to use.
 
@@ -935,12 +998,14 @@ Miscellaneous Options:
 
   -h|--help                 Prints this usage information.
   --version                 Prints the version and exits.
+  --atleast-version <min>   Checks that version is greater than min and exits.
 
 EOT;
 
         if (defined('__PHPUNIT_PHAR__')) {
             print "\n  --check-version           Check whether PHPUnit is the latest version.";
-            print "\n  --self-update             Update PHPUnit to the latest version.\n";
+            print "\n  --self-update             Update PHPUnit to the latest version within the same\n                            release series.\n";
+            print "\n  --self-upgrade            Upgrade PHPUnit to the latest version.\n";
         }
     }
 

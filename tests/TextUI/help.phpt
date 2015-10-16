@@ -22,11 +22,13 @@ Code Coverage Options:
   --coverage-text=<file>    Generate code coverage report in text format.
                             Default: Standard output.
   --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
+  --whitelist <dir>         Whitelist <dir> for code coverage analysis.
 
 Logging Options:
 
   --log-junit <file>        Log test execution in JUnit XML format to file.
   --log-tap <file>          Log test execution in TAP format to file.
+  --log-teamcity <file>     Log test execution in TeamCity format to file.
   --log-json <file>         Log test execution in JSON format.
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
@@ -62,15 +64,19 @@ Test Execution Options:
   --stderr                  Write to STDERR instead of STDOUT.
   --stop-on-error           Stop execution upon first error.
   --stop-on-failure         Stop execution upon first error or failure.
+  --stop-on-warning         Stop execution upon first warning.
   --stop-on-risky           Stop execution upon first risky test.
   --stop-on-skipped         Stop execution upon first skipped test.
   --stop-on-incomplete      Stop execution upon first incomplete test.
+  --fail-on-warning         Treat tests with warnings as failures.
+  --fail-on-risky           Treat risky tests as failures.
   -v|--verbose              Output more verbose information.
   --debug                   Display debugging information during test execution.
 
   --loader <loader>         TestSuiteLoader implementation to use.
   --repeat <times>          Runs the test(s) repeatedly.
   --tap                     Report test execution progress in TAP format.
+  --teamcity                Report test execution progress in TeamCity format.
   --testdox                 Report test execution progress in TestDox format.
   --printer <printer>       TestListener implementation to use.
 
@@ -87,3 +93,4 @@ Miscellaneous Options:
 
   -h|--help                 Prints this usage information.
   --version                 Prints the version and exits.
+  --atleast-version <min>   Checks that version is greater than min and exits.

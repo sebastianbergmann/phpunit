@@ -16,6 +16,9 @@ if (!defined('TEST_FILES_PATH')) {
     );
 }
 
+require TEST_FILES_PATH . 'CoverageNamespacedFunctionTest.php';
+require TEST_FILES_PATH . 'NamespaceCoveredFunction.php';
+
 /**
  * @since      Class available since Release 3.3.6
  */
@@ -23,6 +26,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers PHPUnit_Util_Test::getExpectedException
+     *
      * @todo   Split up in separate tests
      */
     public function testGetExpectedException()
@@ -227,6 +231,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @coversNothing
+     *
      * @todo   This test does not really test functionality of PHPUnit_Util_Test
      */
     public function testGetProvidedDataRegEx()
@@ -350,6 +355,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Util_Test::getDependencies
+     *
      * @todo   Not sure what this test tests (name is misleading at least)
      */
     public function testParseAnnotation()
@@ -363,6 +369,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     /**
      * @depends Foo
      * @depends ほげ
+     *
      * @todo    Remove fixture from test class
      */
     public function methodForTestParseAnnotation()
@@ -541,6 +548,23 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             PHPUnit_Util_Test::getLinesToBeCovered(
                 'CoverageMethodParenthesesWhitespaceTest',
                 'testSomething'
+            )
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Test::getLinesToBeCovered
+     * @covers PHPUnit_Util_Test::getLinesToBeCoveredOrUsed
+     */
+    public function testNamespacedFunctionCanBeCoveredOrUsed()
+    {
+        $this->assertEquals(
+            [
+                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(4, 7)
+            ],
+            PHPUnit_Util_Test::getLinesToBeCovered(
+                'CoverageNamespacedFunctionTest',
+                'testFunc'
             )
         );
     }

@@ -14,6 +14,9 @@
          mapTestClassNameToCoveredClassName="false"
          printerClass="PHPUnit_TextUI_ResultPrinter"
          stopOnFailure="false"
+         stopOnWarning="false"
+         failOnWarning="false"
+         failOnRisky="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
          beStrictAboutChangesToGlobalState="false"
          beStrictAboutOutputDuringTests="false"
@@ -43,14 +46,6 @@
   </groups>
 
   <filter>
-    <blacklist>
-      <directory suffix=".php">/path/to/files</directory>
-      <file>/path/to/file</file>
-      <exclude>
-        <directory suffix=".php">/path/to/files</directory>
-        <file>/path/to/file</file>
-      </exclude>
-    </blacklist>
     <whitelist addUncoveredFilesFromWhitelist="true"
                processUncoveredFilesFromWhitelist="false">
       <directory suffix=".php">/path/to/files</directory>

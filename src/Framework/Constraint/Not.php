@@ -35,7 +35,8 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
     }
 
     /**
-     * @param  string $string
+     * @param string $string
+     *
      * @return string
      */
     public static function negate($string)
@@ -79,10 +80,12 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param  mixed                                        $other        Value or object to evaluate.
-     * @param  string                                       $description  Additional information about the test
-     * @param  bool                                         $returnResult Whether to return a result or throw an exception
+     * @param mixed  $other        Value or object to evaluate.
+     * @param string $description  Additional information about the test
+     * @param bool   $returnResult Whether to return a result or throw an exception
+     *
      * @return mixed
+     *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
     public function evaluate($other, $description = '', $returnResult = false)
@@ -104,7 +107,8 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param  mixed  $other Evaluated value or object.
+     * @param mixed $other Evaluated value or object.
+     *
      * @return string
      */
     protected function failureDescription($other)
@@ -146,6 +150,7 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      * Counts the number of constraint elements.
      *
      * @return int
+     *
      * @since  Method available since Release 3.4.0
      */
     public function count()

@@ -3,7 +3,7 @@ GH-873: PHPUnit suppresses exceptions thrown outside of test case function
 --SKIPIF--
 <?php
 if (PHP_MAJOR_VERSION > 5) {
-    print "skip: PHP 5 is required";
+    print 'skip: PHP 5 is required';
 }
 ?>
 --FILE--

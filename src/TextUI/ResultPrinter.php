@@ -113,13 +113,15 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * Constructor.
      *
-     * @param  mixed                       $out
-     * @param  bool                        $verbose
-     * @param  string                      $colors
-     * @param  bool                        $debug
-     * @param  int|string                  $numberOfColumns
-     * @param  bool                        $reverse
+     * @param mixed      $out
+     * @param bool       $verbose
+     * @param string     $colors
+     * @param bool       $debug
+     * @param int|string $numberOfColumns
+     * @param bool       $reverse
+     *
      * @throws PHPUnit_Framework_Exception
+     *
      * @since  Method available since Release 3.0.0
      */
     public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80, $reverse = false)
@@ -179,13 +181,19 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $this->printErrors($result);
         $printSeparator = $result->errorCount() > 0;
+        $hasFailures    = $result->failureCount() > 0;
+        $hasWarnings    = $result->warningCount() > 0;
 
-        if ($printSeparator && $result->failureCount() > 0) {
+        if ($printSeparator && ($hasFailures || $hasWarnings)) {
             $this->write("\n--\n\n");
         }
 
-        $printSeparator = $printSeparator || $result->failureCount() > 0;
-        $this->printFailures($result);
+        $printSeparator = $printSeparator || $hasFailures || $hasWarnings;
+        if ($hasWarnings) {
+            $this->printWarnings($result);
+        } else {
+            $this->printFailures($result);
+        }
 
         if ($this->verbose) {
             if ($printSeparator && $result->riskyCount() > 0) {
@@ -306,6 +314,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * @param PHPUnit_Framework_TestResult $result
      */
+    protected function printWarnings(PHPUnit_Framework_TestResult $result)
+    {
+        $this->printDefects($result->warnings(), 'warning');
+    }
+
+    /**
+     * @param PHPUnit_Framework_TestResult $result
+     */
     protected function printIncompletes(PHPUnit_Framework_TestResult $result)
     {
         $this->printDefects($result->notImplemented(), 'incomplete test');
@@ -313,6 +329,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param PHPUnit_Framework_TestResult $result
+     *
      * @since  Method available since Release 4.0.0
      */
     protected function printRisky(PHPUnit_Framework_TestResult $result)
@@ -322,6 +339,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
     /**
      * @param PHPUnit_Framework_TestResult $result
+     *
      * @since  Method available since Release 3.0.0
      */
     protected function printSkipped(PHPUnit_Framework_TestResult $result)
@@ -371,16 +389,32 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                     'OK, but incomplete, skipped, or risky tests!'
                 );
             } else {
-                $color = 'fg-white, bg-red';
+                $showFailures = (
+                    $result->errors() ||
+                    $result->failures() ||
+                    $result->skipped() ||
+                    $result->notImplemented() ||
+                    $result->risky()) &&
+                    !$result->warnings()
+                ;
+
+                if ($showFailures) {
+                    $color = 'fg-white, bg-red';
+                    $text  = 'FAILURES!';
+                } else {
+                    $color = 'fg-black, bg-yellow';
+                    $text  = 'WARNINGS!';
+                }
 
                 $this->write("\n");
-                $this->writeWithColor($color, 'FAILURES!');
+                $this->writeWithColor($color, $text);
             }
 
             $this->writeCountString(count($result), 'Tests', $color, true);
             $this->writeCountString($this->numAssertions, 'Assertions', $color, true);
             $this->writeCountString($result->errorCount(), 'Errors', $color);
             $this->writeCountString($result->failureCount(), 'Failures', $color);
+            $this->writeCountString($result->warningCount(), 'Warnings', $color);
             $this->writeCountString($result->skippedCount(), 'Skipped', $color);
             $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
             $this->writeCountString($result->riskyCount(), 'Risky', $color);
@@ -422,6 +456,21 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     }
 
     /**
+     * A warning occurred.
+     *
+     * @param PHPUnit_Framework_Test    $test
+     * @param PHPUnit_Framework_Warning $e
+     * @param float                     $time
+     *
+     * @since Method available since Release 5.1.0
+     */
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    {
+        $this->writeProgressWithColor('fg-yellow, bold', 'W');
+        $this->lastTestFailed = true;
+    }
+
+    /**
      * Incomplete test.
      *
      * @param PHPUnit_Framework_Test $test
@@ -440,6 +489,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
+     *
      * @since  Method available since Release 4.0.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -454,6 +504,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
+     *
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -466,6 +517,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * A testsuite started.
      *
      * @param PHPUnit_Framework_TestSuite $suite
+     *
      * @since  Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -481,6 +533,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * A testsuite ended.
      *
      * @param PHPUnit_Framework_TestSuite $suite
+     *
      * @since  Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -573,9 +626,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * Formats a buffer with a specified ANSI color sequence if colors are
      * enabled.
      *
-     * @param  string $color
-     * @param  string $buffer
+     * @param string $color
+     * @param string $buffer
+     *
      * @return string
+     *
      * @since  Method available since Release 4.0.0
      */
     protected function formatWithColor($color, $buffer)
@@ -610,6 +665,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param string $color
      * @param string $buffer
      * @param bool   $lf
+     *
      * @since  Method available since Release 4.0.0
      */
     protected function writeWithColor($color, $buffer, $lf = true)
@@ -626,6 +682,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      *
      * @param string $color
      * @param string $buffer
+     *
      * @since  Method available since Release 4.0.0
      */
     protected function writeProgressWithColor($color, $buffer)
@@ -639,6 +696,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @param string $name
      * @param string $color
      * @param bool   $always
+     *
      * @since  Method available since Release 4.6.5
      */
     private function writeCountString($count, $name, $color, $always = false)

@@ -2,6 +2,60 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.13] - 2015-10-DD
+
+### Added
+
+* Added the `--self-upgrade` commandline switch for upgrading a PHPUnit PHAR to the latest version
+
+### Changed
+
+* The `--self-update` commandline switch now updates a PHPUnit PHAR to the latest version within the same release series
+
+## [4.8.12] - 2015-10-12
+
+### Changed
+
+* Merged [#1893](https://github.com/sebastianbergmann/phpunit/issues/1893): Removed workaround for phpab bug
+
+## [4.8.11] - 2015-10-07
+
+### Fixed
+
+* Merged [#1885](https://github.com/sebastianbergmann/phpunit/issues/1885): Fixed handling of PHP configuration settings for process isolation
+* Fixed [#1857](https://github.com/sebastianbergmann/phpunit/issues/1857): `@covers` and `@uses` should only take a single word
+* Fixed [#1879](https://github.com/sebastianbergmann/phpunit/issues/1879): `assertEqualXMLStructure()` cannot compare nodes with an ID
+* Fixed [#1898](https://github.com/sebastianbergmann/phpunit/issues/1898): `@covers` and `@uses` cannot be used for namespaced functions
+* Fixed [#1901](https://github.com/sebastianbergmann/phpunit/issues/1901): `--self-update` updates to PHPUnit 5, even on PHP < 5.6
+
+## [4.8.10] - 2015-10-01
+
+### Fixed
+
+* Merged [#1884](https://github.com/sebastianbergmann/phpunit/issues/1884): Avoid passing `Error` to `onNotSuccessfulTest()` on PHP 7
+
+## [4.8.9] - 2015-09-20
+
+### Fixed
+
+* Fixed regression introduced in PHPUnit 4.8.8
+
+## [4.8.8] - 2015-09-19
+
+### Fixed
+
+* Fixed [#1860](https://github.com/sebastianbergmann/phpunit/issues/1860): Not well-formed XML strings are always considered equal by `PHPUnit_Framework_Assert::assertXmlStringEqualsXmlString()`
+
+## [4.8.7] - 2015-09-14
+
+New PHAR release due to updated dependencies
+
+## [4.8.6] - 2015-08-24
+
+### Fixed
+
+* Fixed [#1835](https://github.com/sebastianbergmann/phpunit/issues/1835): Skipped test reported as errored since PHPUnit 4.7.4
+
 ## [4.8.5] - 2015-08-19
 
 ### Fixed
@@ -47,6 +101,14 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.13]: https://github.com/sebastianbergmann/phpunit/compare/4.8.12...4.8.13
+[4.8.12]: https://github.com/sebastianbergmann/phpunit/compare/4.8.11...4.8.12
+[4.8.11]: https://github.com/sebastianbergmann/phpunit/compare/4.8.10...4.8.11
+[4.8.10]: https://github.com/sebastianbergmann/phpunit/compare/4.8.9...4.8.10
+[4.8.9]: https://github.com/sebastianbergmann/phpunit/compare/4.8.8...4.8.9
+[4.8.8]: https://github.com/sebastianbergmann/phpunit/compare/4.8.7...4.8.8
+[4.8.7]: https://github.com/sebastianbergmann/phpunit/compare/4.8.6...4.8.7
+[4.8.6]: https://github.com/sebastianbergmann/phpunit/compare/4.8.5...4.8.6
 [4.8.5]: https://github.com/sebastianbergmann/phpunit/compare/4.8.4...4.8.5
 [4.8.4]: https://github.com/sebastianbergmann/phpunit/compare/4.8.3...4.8.4
 [4.8.3]: https://github.com/sebastianbergmann/phpunit/compare/4.8.2...4.8.3

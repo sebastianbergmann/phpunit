@@ -28,7 +28,6 @@ class PHPUnit_Util_Blacklist
         'PHPUnit_Extensions_Database_TestCase'       => 2,
         'PHPUnit_Framework_MockObject_Generator'     => 2,
         'PHPUnit_Extensions_SeleniumTestCase'        => 2,
-        'PHPUnit_Extensions_Story_TestCase'          => 2,
         'Text_Template'                              => 1,
         'Symfony\Component\Yaml\Yaml'                => 1,
         'SebastianBergmann\Diff\Diff'                => 1,
@@ -52,6 +51,7 @@ class PHPUnit_Util_Blacklist
 
     /**
      * @return array
+     *
      * @since  Method available since Release 4.1.0
      */
     public function getBlacklistedDirectories()
@@ -62,7 +62,8 @@ class PHPUnit_Util_Blacklist
     }
 
     /**
-     * @param  string $file
+     * @param string $file
+     *
      * @return bool
      */
     public function isBlacklisted($file)

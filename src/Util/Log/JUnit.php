@@ -43,27 +43,27 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     protected $testSuites = [];
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $testSuiteTests = [0];
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $testSuiteAssertions = [0];
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $testSuiteErrors = [0];
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $testSuiteFailures = [0];
 
     /**
-     * @var integer[]
+     * @var int[]
      */
     protected $testSuiteTimes = [0];
 
@@ -127,6 +127,21 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     }
 
     /**
+     * A warning occurred.
+     *
+     * @param PHPUnit_Framework_Test    $test
+     * @param PHPUnit_Framework_Warning $e
+     * @param float                     $time
+     *
+     * @since Method available since Release 5.1.0
+     */
+    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    {
+        $this->doAddFault($test, $e, $time, 'warning');
+        $this->testSuiteFailures[$this->testSuiteLevel]++;
+    }
+
+    /**
      * A failure occurred.
      *
      * @param PHPUnit_Framework_Test                 $test
@@ -173,6 +188,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
+     *
      * @since  Method available since Release 4.0.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -202,6 +218,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
+     *
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -229,6 +246,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * A testsuite started.
      *
      * @param PHPUnit_Framework_TestSuite $suite
+     *
      * @since  Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -264,6 +282,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * A testsuite ended.
      *
      * @param PHPUnit_Framework_TestSuite $suite
+     *
      * @since  Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -378,6 +397,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * Returns the XML as a string.
      *
      * @return string
+     *
      * @since  Method available since Release 2.2.0
      */
     public function getXML()
@@ -393,6 +413,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      * PHPUnit with Phing.
      *
      * @return string
+     *
      * @since  Method available since Release 2.2.0
      */
     public function setWriteDocument($flag)
