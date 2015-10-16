@@ -171,4 +171,13 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('SingletonClass', $mock);
     }
+
+    /**
+     * @covers PHPUnit_Framework_MockObject_Generator::getMock
+     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
+     */
+    public function testExceptionIsRaisedForMutuallyExclusiveOptions()
+    {
+        $this->generator->getMock(StdClass::class, [], [], '', false, true, true, true, true);
+    }
 }

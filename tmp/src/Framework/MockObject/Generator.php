@@ -208,6 +208,12 @@ class PHPUnit_Framework_MockObject_Generator
             }
         }
 
+        if ($callOriginalConstructor === false && $callOriginalMethods === true) {
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
+                'Proxying to original methods requires invoking the original constructor'
+            );
+        }
+
         $mock = $this->generate(
             $type,
             $methods,
