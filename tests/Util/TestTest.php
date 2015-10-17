@@ -135,16 +135,16 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     {
         return array(
             array('testOne',    array()),
-            array('testTwo',    array('PHPUnit' => '1.0')),
-            array('testThree',  array('PHP' => '2.0')),
-            array('testFour',   array('PHPUnit'=>'2.0', 'PHP' => '1.0')),
-            array('testFive',   array('PHP' => '5.4.0RC6')),
-            array('testSix',    array('PHP' => '5.4.0-alpha1')),
-            array('testSeven',  array('PHP' => '5.4.0beta2')),
-            array('testEight',  array('PHP' => '5.4-dev')),
-            array('testNine',   array('functions' => array('testFunc'))),
+            array('testTwo',    array('PHPUnit'    => '1.0')),
+            array('testThree',  array('PHP'        => '2.0')),
+            array('testFour',   array('PHPUnit'    => '2.0', 'PHP' => '1.0')),
+            array('testFive',   array('PHP'        => '5.4.0RC6')),
+            array('testSix',    array('PHP'        => '5.4.0-alpha1')),
+            array('testSeven',  array('PHP'        => '5.4.0beta2')),
+            array('testEight',  array('PHP'        => '5.4-dev')),
+            array('testNine',   array('functions'  => array('testFunc'))),
             array('testTen',    array('extensions' => array('testExt'))),
-            array('testEleven', array('OS' => '/Linux/i')),
+            array('testEleven', array('OS'         => '/Linux/i')),
             array(
               'testSpace',
               array(

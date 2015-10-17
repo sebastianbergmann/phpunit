@@ -44,7 +44,7 @@ class PHPUnit_Runner_Version
      */
     public static function series()
     {
-        return join('.', array_slice(explode('.', self::id()), 0, 2));
+        return implode('.', array_slice(explode('.', self::id()), 0, 2));
     }
 
     /**
