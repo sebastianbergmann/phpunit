@@ -135,16 +135,16 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     {
         return [
             ['testOne',    []],
-            ['testTwo',    ['PHPUnit' => '1.0']],
-            ['testThree',  ['PHP' => '2.0']],
-            ['testFour',   ['PHPUnit'=>'2.0', 'PHP' => '1.0']],
-            ['testFive',   ['PHP' => '5.4.0RC6']],
-            ['testSix',    ['PHP' => '5.4.0-alpha1']],
-            ['testSeven',  ['PHP' => '5.4.0beta2']],
-            ['testEight',  ['PHP' => '5.4-dev']],
-            ['testNine',   ['functions' => ['testFunc']]],
+            ['testTwo',    ['PHPUnit'    => '1.0']],
+            ['testThree',  ['PHP'        => '2.0']],
+            ['testFour',   ['PHPUnit'    => '2.0', 'PHP' => '1.0']],
+            ['testFive',   ['PHP'        => '5.4.0RC6']],
+            ['testSix',    ['PHP'        => '5.4.0-alpha1']],
+            ['testSeven',  ['PHP'        => '5.4.0beta2']],
+            ['testEight',  ['PHP'        => '5.4-dev']],
+            ['testNine',   ['functions'  => ['testFunc']]],
             ['testTen',    ['extensions' => ['testExt']]],
-            ['testEleven', ['OS' => '/Linux/i']],
+            ['testEleven', ['OS'         => '/Linux/i']],
             [
               'testSpace',
               [
