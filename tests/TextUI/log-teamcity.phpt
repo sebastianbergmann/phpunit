@@ -21,15 +21,15 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ##teamcity[testStarted name='testBalanceIsInitiallyZero' locationHint='php_qn://%s/tests/_files/BankAccountTest.php::\BankAccountTest::testBalanceIsInitiallyZero']
 .
-##teamcity[testFinished name='testBalanceIsInitiallyZero' duration='0']
+##teamcity[testFinished name='testBalanceIsInitiallyZero' duration='%s']
 
 ##teamcity[testStarted name='testBalanceCannotBecomeNegative' locationHint='php_qn://%s/tests/_files/BankAccountTest.php::\BankAccountTest::testBalanceCannotBecomeNegative']
 .
-##teamcity[testFinished name='testBalanceCannotBecomeNegative' duration='0']
+##teamcity[testFinished name='testBalanceCannotBecomeNegative' duration='%s']
 
 ##teamcity[testStarted name='testBalanceCannotBecomeNegative2' locationHint='php_qn://%s/tests/_files/BankAccountTest.php::\BankAccountTest::testBalanceCannotBecomeNegative2']
 .                                                                 3 / 3 (100%)
-##teamcity[testFinished name='testBalanceCannotBecomeNegative2' duration='0']
+##teamcity[testFinished name='testBalanceCannotBecomeNegative2' duration='%s']
 
 ##teamcity[testSuiteFinished name='BankAccountTest']
 
