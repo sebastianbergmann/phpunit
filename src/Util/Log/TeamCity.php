@@ -31,7 +31,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
 	/**
 	 * @var string
 	 */
-	private $flowId;
+	private $suiteName;
 
     /**
      * @param string $progress
@@ -64,6 +64,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
                 'name'    => $test->getName(),
                 'message' => self::getMessage($e),
                 'details' => self::getDetails($e),
+                'flowId'  => $this->suiteName
             ]
         );
     }
@@ -105,6 +106,8 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
                 }
             }
         }
+
+        $parameters['flowId'] = $this->suiteName.$test->getName();
 
         $this->printEvent('testFailed', $parameters);
     }
@@ -160,6 +163,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
                 'name'    => $testName,
                 'message' => self::getMessage($e),
                 'details' => self::getDetails($e),
+                'flowId'  => $this->suiteName.$testName
             ]
         );
     }
@@ -171,8 +175,6 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-	    $this->flowId = uniqid(getmypid());
-
         if (!$this->isSummaryTestCountPrinted) {
             $this->isSummaryTestCountPrinted = true;
 
@@ -183,6 +185,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
         }
 
         $suiteName = $suite->getName();
+        $this->suiteName = $suiteName;
 
         if (empty($suiteName)) {
             return;
@@ -249,6 +252,8 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
             $params['locationHint'] = "php_qn://$fileName::\\$className::$testName";
         }
 
+        $params['flowId'] = $this->suiteName.$testName;
+
         $this->printEvent('testStarted', $params);
     }
 
@@ -262,11 +267,14 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     {
         parent::endTest($test, $time);
 
+        $testName = $test->getName();
+
         $this->printEvent(
             'testFinished',
             [
-                'name'     => $test->getName(),
-                'duration' => (int) (round($time, 2) * 1000)
+                'name'     => $testName,
+                'duration' => (int) (round($time, 2) * 1000),
+                'flowId'   => $this->suiteName.$testName
             ]
         );
     }
@@ -278,8 +286,6 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     private function printEvent($eventName, $params = [])
     {
         $this->write("\n##teamcity[$eventName");
-
-        $params['flowId'] = $this->flowId;
 
         foreach ($params as $key => $value) {
             $escapedValue = self::escapeValue($value);
