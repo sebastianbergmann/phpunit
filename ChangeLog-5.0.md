@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.0.7] - 2015-10-DD
+
+### Fixed
+
+* The backup of global state is now properly restored when changes to global state are disallowed
+
 ## [5.0.6] - 2015-10-14
 
 ### Added
@@ -78,6 +84,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 * The PHPUnit_Selenium component can no longer be configured using the `<selenium/browser>` element of PHPUnit's configuration file
 * PHPUnit is no longer supported on PHP 5.3, PHP 5.4, and PHP 5.5
 
+[5.0.7]: https://github.com/sebastianbergmann/phpunit/compare/5.0.6...5.0.7
 [5.0.6]: https://github.com/sebastianbergmann/phpunit/compare/5.0.5...5.0.6
 [5.0.5]: https://github.com/sebastianbergmann/phpunit/compare/5.0.4...5.0.5
 [5.0.4]: https://github.com/sebastianbergmann/phpunit/compare/5.0.3...5.0.4
