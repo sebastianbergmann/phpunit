@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 ### Fixed
 
 * The backup of global state is now properly restored when changes to global state are disallowed
+* The `__PHPUNIT_PHAR__` constant is now properly set when the PHPUnit PHAR is used as a library
 
 ## [4.8.14] - 2015-10-17
 
