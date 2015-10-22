@@ -45,6 +45,12 @@
         <exec executable="gpg" failonerror="true">
             <arg value="--armor" />
             <arg value="--detach-sign" />
+            <arg path="${basedir}/build/phpunit-library-${version}.phar" />
+        </exec>
+
+        <exec executable="gpg" failonerror="true">
+            <arg value="--armor" />
+            <arg value="--detach-sign" />
             <arg path="${basedir}/build/phpunit-${version}.phar" />
         </exec>
     </target>
@@ -251,11 +257,23 @@
         <exec executable="phpab">
             <arg value="--all" />
             <arg value="--static" />
+            <arg value="--once" />
+            <arg value="--phar" />
+            <arg value="--output" />
+            <arg path="${basedir}/build/phpunit-library-${_version}.phar" />
+            <arg value="--template" />
+            <arg path="${basedir}/build/library-phar-autoload.php.in" />
+            <arg path="${basedir}/build/phar" />
+        </exec>
+
+        <exec executable="phpab">
+            <arg value="--all" />
+            <arg value="--static" />
             <arg value="--phar" />
             <arg value="--output" />
             <arg path="${basedir}/build/phpunit-${_version}.phar" />
             <arg value="--template" />
-            <arg path="${basedir}/build/phar-autoload.php.in" />
+            <arg path="${basedir}/build/binary-phar-autoload.php.in" />
             <arg path="${basedir}/build/phar" />
         </exec>
 
