@@ -1,5 +1,7 @@
 <?php
-define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', $phar));
+$files = get_included_files();
+
+define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', $files[0]));
 define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
 Phar::mapPhar('___PHAR___');
