@@ -171,7 +171,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-	    $this->flowId = uniqid(getmypid());
+	    $this->flowId = getmypid();
 
         if (!$this->isSummaryTestCountPrinted) {
             $this->isSummaryTestCountPrinted = true;
