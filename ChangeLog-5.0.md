@@ -2,11 +2,12 @@
 
 All notable changes of the PHPUnit 5.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.0.7] - 2015-10-DD
+## [5.0.7] - 2015-10-22
 
 ### Fixed
 
 * The backup of global state is now properly restored when changes to global state are disallowed
+* The `__PHPUNIT_PHAR__` constant is now properly set when the PHPUnit PHAR is used as a library
 
 ## [5.0.6] - 2015-10-14
 
