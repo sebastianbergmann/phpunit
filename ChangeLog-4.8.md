@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.16] - 2015-10-DD
+
+### Added
+
+* Implemented [#1925](https://github.com/sebastianbergmann/phpunit/issues/1925): Provide a library-only PHAR
+
 ## [4.8.15] - 2015-10-22
 
 ### Fixed
@@ -114,6 +120,7 @@ New PHAR release due to updated dependencies
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.16]: https://github.com/sebastianbergmann/phpunit/compare/4.8.15...4.8.16
 [4.8.15]: https://github.com/sebastianbergmann/phpunit/compare/4.8.14...4.8.15
 [4.8.14]: https://github.com/sebastianbergmann/phpunit/compare/4.8.13...4.8.14
 [4.8.13]: https://github.com/sebastianbergmann/phpunit/compare/4.8.12...4.8.13
