@@ -621,6 +621,13 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($root->hasAttribute('disableCodeCoverageIgnore')) {
+            $result['disableCodeCoverageIgnore'] = $this->getBoolean(
+                (string) $root->getAttribute('disableCodeCoverageIgnore'),
+                false
+            );
+        }
+
         if ($root->hasAttribute('processIsolation')) {
             $result['processIsolation'] = $this->getBoolean(
                 (string) $root->getAttribute('processIsolation'),
