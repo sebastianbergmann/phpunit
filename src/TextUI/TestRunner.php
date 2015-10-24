@@ -373,6 +373,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['mapTestClassNameToCoveredClassName']
                 );
             }
+            
+            if (isset($arguments['disableCodeCoverageIgnore'])) {
+                $codeCoverage->setDisableIgnoredLines(true);
+            }
 
             if (isset($arguments['whitelist'])) {
                 $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
@@ -812,6 +816,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($phpunitConfiguration['mapTestClassNameToCoveredClassName']) &&
                 !isset($arguments['mapTestClassNameToCoveredClassName'])) {
                 $arguments['mapTestClassNameToCoveredClassName'] = $phpunitConfiguration['mapTestClassNameToCoveredClassName'];
+            }
+
+            if (isset($phpunitConfiguration['disableCodeCoverageIgnore']) &&
+                !isset($arguments['disableCodeCoverageIgnore'])) {
+                $arguments['disableCodeCoverageIgnore'] = $phpunitConfiguration['disableCodeCoverageIgnore'];
             }
 
             $groupCliArgs = [];
