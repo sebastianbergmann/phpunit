@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.0.9] - 2015-MM-DD
+
+### Removed
+
+* Removed leftover references to PHPUnit_Selenium
+
 ## [5.0.8] - 2015-10-23
 
 ### Added
@@ -91,6 +97,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 * The PHPUnit_Selenium component can no longer be configured using the `<selenium/browser>` element of PHPUnit's configuration file
 * PHPUnit is no longer supported on PHP 5.3, PHP 5.4, and PHP 5.5
 
+[5.0.9]: https://github.com/sebastianbergmann/phpunit/compare/5.0.8...5.0.9
 [5.0.8]: https://github.com/sebastianbergmann/phpunit/compare/5.0.7...5.0.8
 [5.0.7]: https://github.com/sebastianbergmann/phpunit/compare/5.0.6...5.0.7
 [5.0.6]: https://github.com/sebastianbergmann/phpunit/compare/5.0.5...5.0.6
