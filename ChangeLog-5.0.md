@@ -2,7 +2,40 @@
 
 All notable changes of the PHPUnit 5.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.0.4] - 2015-10-DD
+## [5.0.8] - 2015-10-23
+
+### Added
+
+* Implemented [#1925](https://github.com/sebastianbergmann/phpunit/issues/1925): Provide a library-only PHAR
+
+## [5.0.7] - 2015-10-22
+
+### Fixed
+
+* The backup of global state is now properly restored when changes to global state are disallowed
+* The `__PHPUNIT_PHAR__` constant is now properly set when the PHPUnit PHAR is used as a library
+
+## [5.0.6] - 2015-10-14
+
+### Added
+
+* Added the `--self-upgrade` commandline switch for upgrading a PHPUnit PHAR to the latest version
+
+### Changed
+
+* The `--self-update` commandline switch now updates a PHPUnit PHAR to the latest version within the same release series
+
+### Fixed
+
+* Fixed [#1892](https://github.com/sebastianbergmann/phpunit/issues/1892): `--coverage-text` does not honor color settings
+
+## [5.0.5] - 2015-10-12
+
+### Changed
+
+* Merged [#1893](https://github.com/sebastianbergmann/phpunit/issues/1893): Removed workaround for phpab bug
+
+## [5.0.4] - 2015-10-07
 
 ### Fixed
 
@@ -58,6 +91,10 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 * The PHPUnit_Selenium component can no longer be configured using the `<selenium/browser>` element of PHPUnit's configuration file
 * PHPUnit is no longer supported on PHP 5.3, PHP 5.4, and PHP 5.5
 
+[5.0.8]: https://github.com/sebastianbergmann/phpunit/compare/5.0.7...5.0.8
+[5.0.7]: https://github.com/sebastianbergmann/phpunit/compare/5.0.6...5.0.7
+[5.0.6]: https://github.com/sebastianbergmann/phpunit/compare/5.0.5...5.0.6
+[5.0.5]: https://github.com/sebastianbergmann/phpunit/compare/5.0.4...5.0.5
 [5.0.4]: https://github.com/sebastianbergmann/phpunit/compare/5.0.3...5.0.4
 [5.0.3]: https://github.com/sebastianbergmann/phpunit/compare/5.0.2...5.0.3
 [5.0.2]: https://github.com/sebastianbergmann/phpunit/compare/5.0.1...5.0.2

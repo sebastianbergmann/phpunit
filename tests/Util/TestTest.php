@@ -26,6 +26,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers PHPUnit_Util_Test::getExpectedException
+     *
      * @todo   Split up in separate tests
      */
     public function testGetExpectedException()
@@ -134,16 +135,16 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     {
         return [
             ['testOne',    []],
-            ['testTwo',    ['PHPUnit' => '1.0']],
-            ['testThree',  ['PHP' => '2.0']],
-            ['testFour',   ['PHPUnit'=>'2.0', 'PHP' => '1.0']],
-            ['testFive',   ['PHP' => '5.4.0RC6']],
-            ['testSix',    ['PHP' => '5.4.0-alpha1']],
-            ['testSeven',  ['PHP' => '5.4.0beta2']],
-            ['testEight',  ['PHP' => '5.4-dev']],
-            ['testNine',   ['functions' => ['testFunc']]],
+            ['testTwo',    ['PHPUnit'    => '1.0']],
+            ['testThree',  ['PHP'        => '2.0']],
+            ['testFour',   ['PHPUnit'    => '2.0', 'PHP' => '1.0']],
+            ['testFive',   ['PHP'        => '5.4.0RC6']],
+            ['testSix',    ['PHP'        => '5.4.0-alpha1']],
+            ['testSeven',  ['PHP'        => '5.4.0beta2']],
+            ['testEight',  ['PHP'        => '5.4-dev']],
+            ['testNine',   ['functions'  => ['testFunc']]],
             ['testTen',    ['extensions' => ['testExt']]],
-            ['testEleven', ['OS' => '/Linux/i']],
+            ['testEleven', ['OS'         => '/Linux/i']],
             [
               'testSpace',
               [
@@ -230,6 +231,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @coversNothing
+     *
      * @todo   This test does not really test functionality of PHPUnit_Util_Test
      */
     public function testGetProvidedDataRegEx()
@@ -353,6 +355,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Util_Test::getDependencies
+     *
      * @todo   Not sure what this test tests (name is misleading at least)
      */
     public function testParseAnnotation()
@@ -366,6 +369,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     /**
      * @depends Foo
      * @depends ほげ
+     *
      * @todo    Remove fixture from test class
      */
     public function methodForTestParseAnnotation()
@@ -555,9 +559,9 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     public function testNamespacedFunctionCanBeCoveredOrUsed()
     {
         $this->assertEquals(
-            array(
+            [
                 TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(4, 7)
-            ),
+            ],
             PHPUnit_Util_Test::getLinesToBeCovered(
                 'CoverageNamespacedFunctionTest',
                 'testFunc'

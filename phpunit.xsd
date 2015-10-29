@@ -215,7 +215,6 @@
     <xs:attribute name="timeoutForSmallTests" type="xs:integer" default="1"/>
     <xs:attribute name="timeoutForMediumTests" type="xs:integer" default="10"/>
     <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>
-    <xs:attribute name="strict" type="xs:boolean" default="false"/>
     <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit_Runner_StandardTestSuiteLoader"/>
     <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>
     <xs:attribute name="verbose" type="xs:boolean" default="false"/>
