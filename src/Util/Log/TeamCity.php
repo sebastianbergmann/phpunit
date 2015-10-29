@@ -171,7 +171,12 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-	    $this->flowId = getmypid();
+	    if (!stripos(ini_get("disable_functions"), "getmypid")) {
+		    $this->flowId = getmypid();
+	    } else {
+		    $this->flowId = false;
+	    }
+
 
         if (!$this->isSummaryTestCountPrinted) {
             $this->isSummaryTestCountPrinted = true;
@@ -279,7 +284,9 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     {
         $this->write("\n##teamcity[$eventName");
 
-        $params['flowId'] = $this->flowId;
+        if ($this->flowId) {
+	        $params['flowId'] = $this->flowId;
+        }
 
         foreach ($params as $key => $value) {
             $escapedValue = self::escapeValue($value);
