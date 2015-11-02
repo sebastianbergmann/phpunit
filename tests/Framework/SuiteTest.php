@@ -212,9 +212,11 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
 
         $suite->run($this->result);
 
-        $message = $this->result->skipped()[0]->thrownException()->getMessage();
+        $skipped           = $this->result->skipped();
+        $lastSkippedResult = array_pop($skipped);
+        $message           = $lastSkippedResult->thrownException()->getMessage();
 
-        $this->assertContains('DataProviderDependencyTest', $message);
+        $this->assertContains('Test for DataProviderDependencyTest::testDependency skipped by data provider', $message);
     }
 
     public function testIncompleteTestDataProvider()
