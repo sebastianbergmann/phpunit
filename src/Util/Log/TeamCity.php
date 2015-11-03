@@ -28,10 +28,10 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      */
     private $startedTestName;
 
-	/**
-	 * @var string
-	 */
-	private $flowId;
+    /**
+     * @var string
+     */
+    private $flowId;
 
     /**
      * @param string $progress
@@ -171,12 +171,11 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-	    if (!stripos(ini_get("disable_functions"), "getmypid")) {
-		    $this->flowId = getmypid();
-	    } else {
-		    $this->flowId = false;
-	    }
-
+        if (stripos(ini_get("disable_functions"), "getmypid") === false) {
+            $this->flowId = getmypid();
+        } else {
+            $this->flowId = false;
+        }
 
         if (!$this->isSummaryTestCountPrinted) {
             $this->isSummaryTestCountPrinted = true;
@@ -285,7 +284,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
         $this->write("\n##teamcity[$eventName");
 
         if ($this->flowId) {
-	        $params['flowId'] = $this->flowId;
+            $params['flowId'] = $this->flowId;
         }
 
         foreach ($params as $key => $value) {
