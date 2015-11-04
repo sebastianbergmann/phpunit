@@ -21,6 +21,11 @@
 class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 {
     /**
+     * @var array
+     */
+    protected $testCaseChildren = array();
+
+    /**
      * @var mixed
      */
     protected $filter = false;
@@ -116,20 +121,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
                 $this->test->setRunTestInSeparateProcess($this->processIsolation);
 
                 if ($this->onlyRepeatFailed && $i > 0) {
-                    $testsToRepeat = array();
-                    foreach ($this->test->tests() as $test) {
-                        if ($test instanceof PHPUnit_Framework_TestSuite) {
-                            // If the test itself is another test suite, then
-                            // get its tests to check.
-                            $tests = $test->tests();
-                        } else {
-                            $tests = array($test);
-                        }
-                        $testsToRepeat = array_merge(
-                            $testsToRepeat,
-                            $this->getWhichTestsToRepeat($tests, $result, $i)
-                        );
-                    }
+                    $this->testCaseChildren = array();
+                    $this->getAllTestCaseChildren($this->test);
+                    $testsToRepeat = $this->getWhichTestsToRepeat($result, $i);
                     $this->test->setTests($testsToRepeat);
                     // Don't filter tests any more, we just filtered them.
                     // Reset the filter.
@@ -142,21 +136,32 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         return $result;
     }
 
+    public function getAllTestCaseChildren(PHPUnit_Framework_TestSuite $test)
+    {
+        foreach ($test as $testChild) {
+            if ($testChild instanceof PHPUnit_Framework_TestSuite) {
+                // If the test itself is another test suite, then recurse.
+                $this->getAllTestCaseChildren($testChild);
+            } else {
+                $this->testCaseChildren[] = $testChild;
+            }
+        }
+    }
+
     /**
      * Get which tests failed, and thus should be repeated.
      *
-     * @param PHPUnit_Framework_Test[] $tests
      * @param PHPUnit_Framework_TestResult $result
      * @param int $ranCount
      *   How many times did the tests already run?
      * @return PHPUnit_Framework_Test[]
      */
-    protected function getWhichTestsToRepeat($tests, $result, $ranCount)
+    protected function getWhichTestsToRepeat($result, $ranCount)
     {
         $testsToRepeat = array();
         $unSuccessfulTests = array_merge($result->failures(), $result->errors());
 
-        foreach ($tests as $test) {
+        foreach ($this->testCaseChildren as $test) {
             $testWasSuccessful = true;
 
             foreach ($unSuccessfulTests as $failure) {
