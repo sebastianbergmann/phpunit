@@ -161,6 +161,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
                 if ($test === $failure->failedTest()) {
                     $testWasSuccessful = false;
                     $testsToRepeat[] = $test;
+                    // Only repeat the test once. Don't repeat it as many times
+                    // as it already failed.
+                    break;
                 }
             }
             if ($testWasSuccessful) {
