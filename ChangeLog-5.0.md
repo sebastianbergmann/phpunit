@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 
 ## [5.0.9] - 2015-MM-DD
 
+### Fixed
+
+* Fixed [#1935](https://github.com/sebastianbergmann/phpunit/issues/1935): `PHP_CodeCoverage_Exception` not handled properly
+
 ### Removed
 
 * Removed leftover references to PHPUnit_Selenium
