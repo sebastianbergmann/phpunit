@@ -248,6 +248,10 @@ class PHPUnit_TextUI_Command
             $this->showError($e->getMessage());
         }
 
+        /*
+         * todo Convert argument list to object with explicit configs methods
+         * (ie. debugIsEnabled(), hasCoveragePHP(), getCoveragePHP())
+         */
         $this->arguments['colors'] = $input->getOption('colors');
         $this->arguments['bootstrap'] = $input->getOption('bootstrap');
         $this->arguments['columns'] = $input->getOption('columns');
@@ -256,23 +260,42 @@ class PHPUnit_TextUI_Command
         $this->arguments['coverageCrap4J'] = $input->getOption('coverage-crap4j');
         $this->arguments['coverageHtml'] = $input->getOption('coverage-html');
         $this->arguments['coveragePHP'] = $input->getOption('coverage-php');
+        $this->arguments['coverageXml'] = $input->getOption('coverage-xml');
+        $coverageText = $input->getOption('coverage-text');
+        if (! $coverageText) {
+            $coverageText = $input->getOption('coverage-text-stdout');
+        }
+        $this->arguments['coverageText']                   = $coverageText;
+        $this->arguments['coverageTextShowUncoveredFiles'] = false;
+        $this->arguments['coverageTextShowOnlySummary']    = false;
+        $this->arguments['debug'] = $input->getOption('debug');
+        if ($input->getOption('help')) {
+            $this->showHelp();
+            exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+        }
+        $this->arguments['filter'] = $input->getOption('filter');
+        $this->arguments['testsuite'] = $input->getOption('testsuite');
+        $this->arguments['groups'] = $input->getOption('group');
+        $this->arguments['excludeGroups'] = $input->getOption('exclude-group');
+        $this->arguments['listGroups'] = $input->getOption('list-groups');
+        $this->arguments['printer'] = $input->getOption('printer');
+        $this->arguments['verbose'] = $input->getOption('verbose');
+        if ($input->getOption('version')) {
+            $this->printVersionString();
+            exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+        }
+
+        if ($input->getOption('stderr')) {
+            $this->arguments['stderr'] = true;
+        }
+        $this->arguments['stopOnError'] = $input->getOption('stop-on-error');
+        $this->arguments['stopOnFailure'] = $input->getOption('stop-on-failure');
+        $this->arguments['stopOnIncomplete'] = $input->getOption('stop-on-incomplete');
+        $this->arguments['stopOnRisky'] = $input->getOption('stop-on-risky');
+        $this->arguments['stopOnSkipped'] = $input->getOption('stop-on-skipped');
 
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
-                case '--coverage-text':
-                    if ($option[1] === null) {
-                        $option[1] = 'php://stdout';
-                    }
-
-                    $this->arguments['coverageText']                   = $option[1];
-                    $this->arguments['coverageTextShowUncoveredFiles'] = false;
-                    $this->arguments['coverageTextShowOnlySummary']    = false;
-                    break;
-
-                case '--coverage-xml':
-                    $this->arguments['coverageXml'] = $option[1];
-                    break;
-
                 case 'd':
                     $ini = explode('=', $option[1]);
 
@@ -285,48 +308,11 @@ class PHPUnit_TextUI_Command
                     }
                     break;
 
-                case '--debug':
-                    $this->arguments['debug'] = true;
-                    break;
-
-                case 'h':
-                case '--help':
-                    $this->showHelp();
-                    exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-                    break;
-
-                case '--filter':
-                    $this->arguments['filter'] = $option[1];
-                    break;
-
-                case '--testsuite':
-                    $this->arguments['testsuite'] = $option[1];
-                    break;
-
-                case '--group':
-                    $this->arguments['groups'] = explode(',', $option[1]);
-                    break;
-
-                case '--exclude-group':
-                    $this->arguments['excludeGroups'] = explode(
-                        ',',
-                        $option[1]
-                    );
-                    break;
-
                 case '--test-suffix':
                     $this->arguments['testSuffixes'] = explode(
                         ',',
                         $option[1]
                     );
-                    break;
-
-                case '--list-groups':
-                    $this->arguments['listGroups'] = true;
-                    break;
-
-                case '--printer':
-                    $this->arguments['printer'] = $option[1];
                     break;
 
                 case '--loader':
@@ -355,34 +341,6 @@ class PHPUnit_TextUI_Command
 
                 case '--repeat':
                     $this->arguments['repeat'] = (int) $option[1];
-                    break;
-
-                case '--stderr':
-                    $this->arguments['stderr'] = true;
-                    break;
-
-                case '--stop-on-error':
-                    $this->arguments['stopOnError'] = true;
-                    break;
-
-                case '--stop-on-failure':
-                    $this->arguments['stopOnFailure'] = true;
-                    break;
-
-                case '--stop-on-warning':
-                    $this->arguments['stopOnWarning'] = true;
-                    break;
-
-                case '--stop-on-incomplete':
-                    $this->arguments['stopOnIncomplete'] = true;
-                    break;
-
-                case '--stop-on-risky':
-                    $this->arguments['stopOnRisky'] = true;
-                    break;
-
-                case '--stop-on-skipped':
-                    $this->arguments['stopOnSkipped'] = true;
                     break;
 
                 case '--tap':
@@ -419,16 +377,6 @@ class PHPUnit_TextUI_Command
 
                 case '--static-backup':
                     $this->arguments['backupStaticAttributes'] = true;
-                    break;
-
-                case 'v':
-                case '--verbose':
-                    $this->arguments['verbose'] = true;
-                    break;
-
-                case '--version':
-                    $this->printVersionString();
-                    exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
                     break;
 
                 case '--report-useless-tests':

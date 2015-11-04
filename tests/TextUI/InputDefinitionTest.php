@@ -106,11 +106,22 @@ final class PHPUnit_TextUI_InputDefinitionTest extends PHPUnit_Framework_TestCas
         $input = new PHPUnit_TextUI_Input(['command']);
         $this->assertNull($input->getOption('coverage-text'));
 
-        $input = new PHPUnit_TextUI_Input(['command', '--coverage-text']);
-        $this->assertSame('php://stdout', $input->getOption('coverage-text'));
+        $input = new PHPUnit_TextUI_Input(['command', '--coverage-text=value']);
+        $this->assertSame('value', $input->getOption('coverage-text'));
+    }
 
-        $input = new PHPUnit_TextUI_Input(['command', '--coverage-text=format']);
-        $this->assertSame('format', $input->getOption('coverage-text'));
+    /**
+     * This use case is difficult to implement without introducing a BC break,
+     * since the feature is currently being developed
+     * @see https://github.com/symfony/symfony/pull/12773
+     */
+    public function test_it_should_support_coverage_text_stdout_option()
+    {
+        $input = new PHPUnit_TextUI_Input(['command']);
+        $this->assertFalse($input->getOption('coverage-text-stdout'));
+
+        $input = new PHPUnit_TextUI_Input(['command', '--coverage-text-stdout']);
+        $this->assertSame('php://stdout', $input->getOption('coverage-text-stdout'));
     }
 
     public function test_it_should_support_coverage_xml_option()

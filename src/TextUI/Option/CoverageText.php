@@ -20,9 +20,8 @@ final class PHPUnit_TextUI_Option_CoverageText extends PHPUnit_TextUI_Option_Opt
         parent::__construct(
             'coverage-text',
             null,
-            InputOption::VALUE_OPTIONAL,
-            'Generate code coverage report in text format.',
-            'php://stdout'
+            InputOption::VALUE_REQUIRED,
+            'Generate code coverage report in text format.'
         );
     }
 }

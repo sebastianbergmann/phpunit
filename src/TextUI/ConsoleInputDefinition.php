@@ -67,6 +67,7 @@ class PHPUnit_TextUI_ConsoleInputDefinition extends InputDefinition implements P
             new PHPUnit_TextUI_Option_CoverageHtml(),
             new PHPUnit_TextUI_Option_CoveragePHP(),
             new PHPUnit_TextUI_Option_CoverageText(),
+            new PHPUnit_TextUI_Option_CoverageTextStdOut(),
             new PHPUnit_TextUI_Option_CoverageXml(),
             new PHPUnit_TextUI_Option_StrictCoverage(),
 
