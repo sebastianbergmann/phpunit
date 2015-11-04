@@ -38,12 +38,12 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     /**
      * @var boolean
      */
-    protected $processIsolation = false;
+    protected $onlyRepeatFailed = false;
 
     /**
      * @var boolean
      */
-    protected $onlyRepeatFailed = false;
+    protected $processIsolation = false;
 
     /**
      * @var integer
