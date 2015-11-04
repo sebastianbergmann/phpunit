@@ -452,11 +452,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     "\nGenerating code coverage report in Clover XML format ..."
                 );
 
-                $writer = new PHP_CodeCoverage_Report_Clover;
-                $writer->process($codeCoverage, $arguments['coverageClover']);
+                try {
+                    $writer = new PHP_CodeCoverage_Report_Clover;
+                    $writer->process($codeCoverage, $arguments['coverageClover']);
 
-                $this->printer->write(" done\n");
-                unset($writer);
+                    $this->printer->write(" done\n");
+                    unset($writer);
+                } catch (PHP_CodeCoverage_Exception $e) {
+                    $this->printer->write(
+                        " failed\n" . $e->getMessage() . "\n"
+                    );
+                }
             }
 
             if (isset($arguments['coverageCrap4J'])) {
@@ -464,11 +470,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     "\nGenerating Crap4J report XML file ..."
                 );
 
-                $writer = new PHP_CodeCoverage_Report_Crap4j($arguments['crap4jThreshold']);
-                $writer->process($codeCoverage, $arguments['coverageCrap4J']);
+                try {
+                    $writer = new PHP_CodeCoverage_Report_Crap4j($arguments['crap4jThreshold']);
+                    $writer->process($codeCoverage, $arguments['coverageCrap4J']);
 
-                $this->printer->write(" done\n");
-                unset($writer);
+                    $this->printer->write(" done\n");
+                    unset($writer);
+                } catch (PHP_CodeCoverage_Exception $e) {
+                    $this->printer->write(
+                        " failed\n" . $e->getMessage() . "\n"
+                    );
+                }
             }
 
             if (isset($arguments['coverageHtml'])) {
@@ -476,19 +488,25 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     "\nGenerating code coverage report in HTML format ..."
                 );
 
-                $writer = new PHP_CodeCoverage_Report_HTML(
-                    $arguments['reportLowUpperBound'],
-                    $arguments['reportHighLowerBound'],
-                    sprintf(
-                        ' and <a href="http://phpunit.de/">PHPUnit %s</a>',
-                        PHPUnit_Runner_Version::id()
-                    )
-                );
+                try {
+                    $writer = new PHP_CodeCoverage_Report_HTML(
+                        $arguments['reportLowUpperBound'],
+                        $arguments['reportHighLowerBound'],
+                        sprintf(
+                            ' and <a href="http://phpunit.de/">PHPUnit %s</a>',
+                            PHPUnit_Runner_Version::id()
+                        )
+                    );
 
-                $writer->process($codeCoverage, $arguments['coverageHtml']);
+                    $writer->process($codeCoverage, $arguments['coverageHtml']);
 
-                $this->printer->write(" done\n");
-                unset($writer);
+                    $this->printer->write(" done\n");
+                    unset($writer);
+                } catch (PHP_CodeCoverage_Exception $e) {
+                    $this->printer->write(
+                        " failed\n" . $e->getMessage() . "\n"
+                    );
+                }
             }
 
             if (isset($arguments['coveragePHP'])) {
@@ -496,11 +514,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     "\nGenerating code coverage report in PHP format ..."
                 );
 
-                $writer = new PHP_CodeCoverage_Report_PHP;
-                $writer->process($codeCoverage, $arguments['coveragePHP']);
+                try {
+                    $writer = new PHP_CodeCoverage_Report_PHP;
+                    $writer->process($codeCoverage, $arguments['coveragePHP']);
 
-                $this->printer->write(" done\n");
-                unset($writer);
+                    $this->printer->write(" done\n");
+                    unset($writer);
+                } catch (PHP_CodeCoverage_Exception $e) {
+                    $this->printer->write(
+                        " failed\n" . $e->getMessage() . "\n"
+                    );
+                }
             }
 
             if (isset($arguments['coverageText'])) {
@@ -529,11 +553,17 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     "\nGenerating code coverage report in PHPUnit XML format ..."
                 );
 
-                $writer = new PHP_CodeCoverage_Report_XML;
-                $writer->process($codeCoverage, $arguments['coverageXml']);
+                try {
+                    $writer = new PHP_CodeCoverage_Report_XML;
+                    $writer->process($codeCoverage, $arguments['coverageXml']);
 
-                $this->printer->write(" done\n");
-                unset($writer);
+                    $this->printer->write(" done\n");
+                    unset($writer);
+                } catch (PHP_CodeCoverage_Exception $e) {
+                    $this->printer->write(
+                        " failed\n" . $e->getMessage() . "\n"
+                    );
+                }
             }
         }
 
