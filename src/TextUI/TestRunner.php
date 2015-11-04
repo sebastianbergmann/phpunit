@@ -493,7 +493,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                         $arguments['reportLowUpperBound'],
                         $arguments['reportHighLowerBound'],
                         sprintf(
-                            ' and <a href="http://phpunit.de/">PHPUnit %s</a>',
+                            ' and <a href="https://phpunit.de/">PHPUnit %s</a>',
                             PHPUnit_Runner_Version::id()
                         )
                     );
