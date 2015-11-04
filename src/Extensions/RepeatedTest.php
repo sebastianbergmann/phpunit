@@ -105,7 +105,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
             if ($this->onlyRepeatFailed &&
                 $i > 0 &&
                 $this->test instanceof PHPUnit_Framework_TestCase &&
-                !$result->failureCount()) {
+                $result->wasSuccessful()) {
                 // The previous test case run succeeded.
                 $this->markNextRepeatedTestsAsSkipped($i, $result, $this->test);
                 // Don't repeat it any more.
@@ -153,17 +153,23 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         $testsToRepeat = array();
 
         foreach ($tests as $test) {
-            $failed = false;
+            $testWasSuccessful = true;
 
             foreach ($result->failures() as $failure) {
                 /** @var $failure PHPUnit_Framework_TestFailure */
                 if ($test === $failure->failedTest()) {
-                    $failed = true;
+                    $testWasSuccessful = false;
+                    $testsToRepeat[] = $test;
                 }
             }
-            if ($failed) {
-                $testsToRepeat[] = $test;
-            } else {
+            foreach ($result->errors() as $error) {
+                /** @var $error PHPUnit_Framework_TestFailure */
+                if ($test === $error->failedTest()) {
+                    $testWasSuccessful = false;
+                    $testsToRepeat[] = $test;
+                }
+            }
+            if ($testWasSuccessful) {
                 // The previous test case run succeeded.
                 $this->markNextRepeatedTestsAsSkipped($ranCount, $result, $test);
             }

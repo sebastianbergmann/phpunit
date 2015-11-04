@@ -62,6 +62,18 @@ class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(4, $result->skippedCount());
     }
 
+    public function testRepeatedDataProviderMoreThanOnceOnlyFailed()
+    {
+        $test = new PHPUnit_Extensions_RepeatedTest(new DataProviderTest, 3, false, true);
+        // Intends to run 3 times 1 test with 1 test method with 4 data sets
+        // provided. 2 sets cause an error. 2 sets cause a success.
+        $this->assertEquals(3, count($test));
+
+        $result = $test->run();
+        // Test case didn't get skipped because it kept failing.
+        $this->assertEquals(0, $result->skippedCount());
+    }
+
     public function testRepeatedTestCaseSuccessMoreThanOnceOnlyFailed()
     {
         $test = new PHPUnit_Extensions_RepeatedTest(new Success, 3, false, true);
