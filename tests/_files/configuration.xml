@@ -44,8 +44,7 @@
   </groups>
 
   <filter>
-    <whitelist addUncoveredFilesFromWhitelist="true"
-               processUncoveredFilesFromWhitelist="false">
+    <whitelist addUncoveredFilesFromWhitelist="true">
       <directory suffix=".php">/path/to/files</directory>
       <file>/path/to/file</file>
       <exclude>
