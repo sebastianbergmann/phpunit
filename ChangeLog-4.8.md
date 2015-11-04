@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 
 ## [4.8.17] - 2015-11-DD
 
+### Fixed
+
+* Fixed [#1935](https://github.com/sebastianbergmann/phpunit/issues/1935): `PHP_CodeCoverage_Exception` not handled properly
+
 ### Changed
 
 * DbUnit >= 2.0.2 is now bundled in the PHAR distribution
