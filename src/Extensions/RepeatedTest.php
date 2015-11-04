@@ -131,6 +131,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
                         );
                     }
                     $this->test->setTests($testsToRepeat);
+                    // Don't filter tests any more, we just filtered them.
+                    // Reset the filter.
+                    $this->test->injectFilter(new PHPUnit_Runner_Filter_Factory());
                 }
             }
             $this->test->run($result);
