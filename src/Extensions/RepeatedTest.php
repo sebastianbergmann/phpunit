@@ -151,20 +151,14 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected function getWhichTestsToRepeat($tests, $result, $ranCount)
     {
         $testsToRepeat = array();
+        $unSuccessfulTests = array_merge($result->failures(), $result->errors());
 
         foreach ($tests as $test) {
             $testWasSuccessful = true;
 
-            foreach ($result->failures() as $failure) {
+            foreach ($unSuccessfulTests as $failure) {
                 /** @var $failure PHPUnit_Framework_TestFailure */
                 if ($test === $failure->failedTest()) {
-                    $testWasSuccessful = false;
-                    $testsToRepeat[] = $test;
-                }
-            }
-            foreach ($result->errors() as $error) {
-                /** @var $error PHPUnit_Framework_TestFailure */
-                if ($test === $error->failedTest()) {
                     $testWasSuccessful = false;
                     $testsToRepeat[] = $test;
                 }
