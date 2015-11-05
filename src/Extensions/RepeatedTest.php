@@ -199,7 +199,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected function markNextRepeatedTestsAsSkipped($ranCount, $result, $test)
     {
         $skipped = new PHPUnit_Framework_SkippedTestError('Test already succeeded during previous run.');
-        for ($j = 0; $j < $this->timesRepeat - $ranCount; $j++) {
+        for ($i = 0; $i < $this->timesRepeat - $ranCount; $i++) {
             $result->addFailure($test, $skipped, 0);
         }
     }
