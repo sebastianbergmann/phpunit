@@ -136,6 +136,11 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         return $result;
     }
 
+    /**
+     * Get all children test cases from a test suite.
+     *
+     * @param PHPUnit_Framework_TestSuite $test
+     */
     public function getAllTestCaseChildren(PHPUnit_Framework_TestSuite $test)
     {
         foreach ($test as $testChild) {
