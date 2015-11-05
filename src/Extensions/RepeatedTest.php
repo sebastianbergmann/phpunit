@@ -192,7 +192,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * Mark the remaining repeated tests as skipped.
      *
      * @param int $ranCount
-     *   How many times did the test already run?
+     *   How many times the test already run.
      * @param PHPUnit_Framework_TestResult $result
      * @param PHPUnit_Framework_Test $test
      */
