@@ -71,7 +71,7 @@ declare (strict_types=1);
  *
  *   <filter>
  *     <whitelist addUncoveredFilesFromWhitelist="true"
- *                processUncoveredFilesFromWhitelist="false">
+ *                enablePathCoverage="false">
  *       <directory suffix=".php">/path/to/files</directory>
  *       <file>/path/to/file</file>
  *       <exclude>
@@ -209,7 +209,7 @@ class PHPUnit_Util_Configuration
     public function getFilterConfiguration()
     {
         $addUncoveredFilesFromWhitelist     = true;
-        $processUncoveredFilesFromWhitelist = false;
+        $enablePathCoverage                 = false;
 
         $tmp = $this->xpath->query('filter/whitelist');
 
@@ -223,10 +223,10 @@ class PHPUnit_Util_Configuration
                 );
             }
 
-            if ($tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
-                $processUncoveredFilesFromWhitelist = $this->getBoolean(
+            if ($tmp->item(0)->hasAttribute('enablePathCoverage')) {
+                $enablePathCoverage = $this->getBoolean(
                     (string) $tmp->item(0)->getAttribute(
-                        'processUncoveredFilesFromWhitelist'
+                        'enablePathCoverage'
                     ),
                     false
                 );
@@ -236,7 +236,7 @@ class PHPUnit_Util_Configuration
         return [
           'whitelist' => [
             'addUncoveredFilesFromWhitelist'     => $addUncoveredFilesFromWhitelist,
-            'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
+            'enablePathCoverage'                 => $enablePathCoverage,
             'include'                            => [
               'directory' => $this->readFilterDirectories(
                   'filter/whitelist/directory'
