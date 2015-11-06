@@ -47,6 +47,7 @@
 
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true"
+               enablePathCoverage="false"
                processUncoveredFilesFromWhitelist="false">
       <directory suffix=".php">/path/to/files</directory>
       <file>/path/to/file</file>
