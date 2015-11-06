@@ -349,7 +349,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if ($codeCoverageReports > 0) {
             $codeCoverage = new PHP_CodeCoverage(
                 null,
-                $this->codeCoverageFilter
+                $this->codeCoverageFilter,
+                $arguments['enablePathCoverage']
             );
 
             $codeCoverage->setAddUncoveredFilesFromWhitelist(
@@ -358,10 +359,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             $codeCoverage->setCheckForUnintentionallyCoveredCode(
                 $arguments['strictCoverage']
-            );
-
-            $codeCoverage->setProcessUncoveredFilesFromWhitelist(
-                $arguments['processUncoveredFilesFromWhitelist']
             );
 
             if (isset($arguments['forceCoversAnnotation'])) {
@@ -966,7 +963,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->runtime->canCollectCodeCoverage()) {
                 $filterConfiguration                             = $arguments['configuration']->getFilterConfiguration();
                 $arguments['addUncoveredFilesFromWhitelist']     = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
-                $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
+                $arguments['enablePathCoverage']                 = $filterConfiguration['whitelist']['enablePathCoverage'];
 
                 foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
                     $this->codeCoverageFilter->addDirectoryToWhitelist(
@@ -995,7 +992,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         $arguments['addUncoveredFilesFromWhitelist']             = isset($arguments['addUncoveredFilesFromWhitelist'])             ? $arguments['addUncoveredFilesFromWhitelist']             : true;
-        $arguments['processUncoveredFilesFromWhitelist']         = isset($arguments['processUncoveredFilesFromWhitelist'])         ? $arguments['processUncoveredFilesFromWhitelist']         : false;
+        $arguments['enablePathCoverage']                         = isset($arguments['enablePathCoverage'])         ? $arguments['enablePathCoverage']         : false;
         $arguments['backupGlobals']                              = isset($arguments['backupGlobals'])                              ? $arguments['backupGlobals']                              : null;
         $arguments['backupStaticAttributes']                     = isset($arguments['backupStaticAttributes'])                     ? $arguments['backupStaticAttributes']                     : null;
         $arguments['beStrictAboutChangesToGlobalState']          = isset($arguments['beStrictAboutChangesToGlobalState'])          ? $arguments['beStrictAboutChangesToGlobalState']          : null;
