@@ -1351,7 +1351,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * Returns a mock object for the specified class.
+     * Returns a mock with disabled constructor object for the specified class.
      *
      * @param string $originalClassName
      *
