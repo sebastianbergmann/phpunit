@@ -194,7 +194,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
-        if (stripos(ini_get("disable_functions"), "getmypid") === false) {
+        if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
             $this->flowId = getmypid();
         } else {
             $this->flowId = false;
