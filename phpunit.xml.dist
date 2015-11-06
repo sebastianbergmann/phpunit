@@ -3,6 +3,7 @@
          xsi:noNamespaceSchemaLocation="phpunit.xsd"
          bootstrap="tests/bootstrap.php"
          backupGlobals="false"
+         enablePathCoverage="true"
          verbose="true">
   <testsuites>
     <testsuite name="small">
@@ -19,7 +20,7 @@
   </testsuites>
 
   <filter>
-    <whitelist processUncoveredFilesFromWhitelist="true" enablePathCoverage="true">
+    <whitelist processUncoveredFilesFromWhitelist="true">
       <directory suffix=".php">src</directory>
       <exclude>
        <file>src/Framework/Assert/Functions.php</file>

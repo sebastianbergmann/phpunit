@@ -10,6 +10,7 @@
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
+         enablePathCoverage="false"
          forceCoversAnnotation="false"
          mapTestClassNameToCoveredClassName="false"
          printerClass="PHPUnit_TextUI_ResultPrinter"
@@ -47,7 +48,6 @@
 
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true"
-               enablePathCoverage="false"
                processUncoveredFilesFromWhitelist="false">
       <directory suffix=".php">/path/to/files</directory>
       <file>/path/to/file</file>

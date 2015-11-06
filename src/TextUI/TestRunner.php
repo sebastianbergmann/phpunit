@@ -965,7 +965,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->runtime->canCollectCodeCoverage()) {
                 $filterConfiguration                             = $arguments['configuration']->getFilterConfiguration();
                 $arguments['addUncoveredFilesFromWhitelist']     = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
-                $arguments['enablePathCoverage']                 = $filterConfiguration['whitelist']['enablePathCoverage'];
+                $arguments['enablePathCoverage']                 = $phpunitConfiguration['enablePathCoverage'];
                 $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
 
                 foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {

@@ -89,7 +89,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'whitelist' =>
             [
               'addUncoveredFilesFromWhitelist'     => true,
-              'enablePathCoverage'                 => false,
               'processUncoveredFilesFromWhitelist' => false,
               'include'                            =>
               [
@@ -321,6 +320,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'convertErrorsToExceptions'                  => true,
             'convertNoticesToExceptions'                 => true,
             'convertWarningsToExceptions'                => true,
+            'enablePathCoverage'                         => false,
             'forceCoversAnnotation'                      => false,
             'mapTestClassNameToCoveredClassName'         => false,
             'printerClass'                               => 'PHPUnit_TextUI_ResultPrinter',
