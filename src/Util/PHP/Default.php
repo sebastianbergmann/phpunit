@@ -86,7 +86,6 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
           $pipe,
           '<?php require_once ' . var_export($this->tempFile, true) .  '; ?>'
         );
-        fwrite($pipe, $job);
     }
 
     /**
