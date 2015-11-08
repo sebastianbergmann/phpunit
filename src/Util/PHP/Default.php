@@ -18,6 +18,11 @@ declare (strict_types=1);
 class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
 {
     /**
+     * @var string
+     */
+    private $tempFile;
+
+    /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
      * @param string $job
@@ -70,6 +75,17 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
      */
     protected function process($pipe, $job)
     {
+        if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
+          file_put_contents($this->tempFile, $job) === false) {
+            throw new PHPUnit_Framework_Exception(
+              'Unable to write temporary file'
+            );
+        }
+
+        fwrite(
+          $pipe,
+          '<?php require_once ' . var_export($this->tempFile, true) .  '; ?>'
+        );
         fwrite($pipe, $job);
     }
 
@@ -78,5 +94,6 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
      */
     protected function cleanup()
     {
+        unlink($this->tempFile);
     }
 }
