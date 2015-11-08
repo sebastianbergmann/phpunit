@@ -15,10 +15,6 @@
  */
 class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
 {
-    /**
-     * @var string
-     */
-    private $tempFile;
 
     /**
      * {@inheritdoc}
@@ -67,36 +63,5 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
         $this->cleanup();
 
         return ['stdout' => $stdout, 'stderr' => $stderr];
-    }
-
-    /**
-     * @param resource $pipe
-     * @param string   $job
-     *
-     * @throws PHPUnit_Framework_Exception
-     *
-     * @since  Method available since Release 3.5.12
-     */
-    protected function process($pipe, $job)
-    {
-        if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
-            file_put_contents($this->tempFile, $job) === false) {
-            throw new PHPUnit_Framework_Exception(
-                'Unable to write temporary file'
-            );
-        }
-
-        fwrite(
-            $pipe,
-            '<?php require_once ' . var_export($this->tempFile, true) .  '; ?>'
-        );
-    }
-
-    /**
-     * @since Method available since Release 3.5.12
-     */
-    protected function cleanup()
-    {
-        unlink($this->tempFile);
     }
 }
