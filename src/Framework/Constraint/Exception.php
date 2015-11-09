@@ -54,7 +54,8 @@ class PHPUnit_Framework_Constraint_Exception extends PHPUnit_Framework_Constrain
     {
         if ($other !== null) {
             $message = '';
-            if ($other instanceof Exception) {
+            $throwable = 'Throwable';
+            if ($other instanceof Exception || $other instanceof $throwable) {
                 $message = '. Message was: "' . $other->getMessage() . '" at'
                         . "\n" . $other->getTraceAsString();
             }
