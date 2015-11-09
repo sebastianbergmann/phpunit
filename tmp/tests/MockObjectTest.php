@@ -841,4 +841,12 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
         $this->assertInternalType('string', (string) $mock);
     }
+
+    public function testStringableClassCanBeMocked()
+    {
+        $mock = $this->getMock('StringableClass');
+        $mock->method('__toString')->willReturn('foo');
+
+        $this->assertSame('foo', (string) $mock);
+    }
 }
