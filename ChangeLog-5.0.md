@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 ### Fixed
 
 * Fixed [#1935](https://github.com/sebastianbergmann/phpunit/issues/1935): `PHP_CodeCoverage_Exception` not handled properly
+* Fixed [#1944](https://github.com/sebastianbergmann/phpunit/issues/1944): Exceptions are not handled correctly on PHP 7 when an exception is expected
 
 ### Removed
 
