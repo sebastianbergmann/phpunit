@@ -21,4 +21,11 @@ class NotExistingCoveredElementTest extends PHPUnit_Framework_TestCase
     public function testThree()
     {
     }
+
+    /**
+     * @covers NotExistingClass<extended>
+     */
+    public function testFour()
+    {
+    }
 }
