@@ -3454,7 +3454,7 @@ EOF
     {
         $constraint = new PHPUnit_Framework_Constraint_Exception('FoobarException');
         $exception  = new DummyException('Test');
-        $stackTrace = $exception->getTraceAsString();
+        $stackTrace = PHPUnit_Util_Filter::getFilteredStacktrace($exception);
 
         try {
             $constraint->evaluate($exception);
