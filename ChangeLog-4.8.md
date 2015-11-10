@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 ### Fixed
 
 * Fixed [#1935](https://github.com/sebastianbergmann/phpunit/issues/1935): `PHP_CodeCoverage_Exception` not handled properly
+* Fixed [#1948](https://github.com/sebastianbergmann/phpunit/issues/1948): Unable to use PHAR due to unsupported signature error
 
 ### Changed
 

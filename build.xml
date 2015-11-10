@@ -258,6 +258,8 @@
             <arg value="--static" />
             <arg value="--once" />
             <arg value="--phar" />
+            <arg value="--hash" />
+            <arg value="SHA-1" />
             <arg value="--output" />
             <arg path="${basedir}/build/phpunit-library-${_version}.phar" />
             <arg value="--template" />
@@ -269,6 +271,8 @@
             <arg value="--all" />
             <arg value="--static" />
             <arg value="--phar" />
+            <arg value="--hash" />
+            <arg value="SHA-1" />
             <arg value="--output" />
             <arg path="${basedir}/build/phpunit-${_version}.phar" />
             <arg value="--template" />
