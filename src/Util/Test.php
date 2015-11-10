@@ -971,6 +971,18 @@ class PHPUnit_Util_Test
             $classes = [$element];
 
             if ($extended) {
+                if (!class_exists($element) &&
+                    !interface_exists($element) &&
+                    !trait_exists($element)) {
+                    throw new PHPUnit_Framework_InvalidCoversTargetException(
+                        sprintf(
+                            'Trying to @cover or @use not existing class or ' .
+                            'interface "%s".',
+                            $element
+                        )
+                    );
+                }
+
                 $classes = array_merge(
                     $classes,
                     class_implements($element),
