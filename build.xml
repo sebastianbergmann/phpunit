@@ -91,7 +91,7 @@
         <exec executable="php">
             <arg value="composer.phar"/>
             <arg value="require"/>
-            <arg value="phpunit/dbunit:~2.0.2"/>
+            <arg value="phpunit/dbunit:~1.4"/>
             <arg value="phpunit/phpunit-selenium:~1.4"/>
             <arg value="phpunit/php-invoker:~1.1"/>
         </exec>
@@ -208,8 +208,9 @@
         </copy>
 
         <copy todir="${basedir}/build/phar/dbunit">
-            <fileset dir="${basedir}/vendor/phpunit/dbunit/src">
+            <fileset dir="${basedir}/vendor/phpunit/dbunit/PHPUnit">
                 <include name="**/*.php" />
+                <exclude name="**/Autoload.*" />
             </fileset>
         </copy>
 
