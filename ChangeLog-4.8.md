@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.18] - 2015-11-11
+
+### Changed
+
+* DbUnit 1.4 is bundled again in the PHAR distribution
+
 ## [4.8.17] - 2015-11-10
 
 ### Fixed
@@ -131,6 +137,7 @@ New PHAR release due to updated dependencies
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.18]: https://github.com/sebastianbergmann/phpunit/compare/4.8.17...4.8.18
 [4.8.17]: https://github.com/sebastianbergmann/phpunit/compare/4.8.16...4.8.17
 [4.8.16]: https://github.com/sebastianbergmann/phpunit/compare/4.8.15...4.8.16
 [4.8.15]: https://github.com/sebastianbergmann/phpunit/compare/4.8.14...4.8.15
