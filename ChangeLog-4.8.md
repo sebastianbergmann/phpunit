@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [4.8.18] - 2015-11-DD
+## [4.8.18] - 2015-11-11
 
 ### Changed
 
