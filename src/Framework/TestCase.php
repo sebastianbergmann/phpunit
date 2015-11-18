@@ -1011,8 +1011,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 }
             }
 
-            if (isset($e)) {
-                throw $e;
+            if (isset($t)) {
+                throw $t;
             }
         }
     }
