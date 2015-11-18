@@ -180,6 +180,6 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected function skipTestCase($test, $result, $ranCount)
     {
         $message = sprintf('Test skipped in run number %d because it succeeded during a previous run.', $ranCount + 1);
-        $result->addFailure(new PHPUnit_Framework_SkippedTestError($message), $skipped, 0);
+        $result->addFailure($test, new PHPUnit_Framework_SkippedTestError($message), 0);
     }
 }
