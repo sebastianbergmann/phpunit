@@ -177,22 +177,31 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 
         $failuresSinceLastRun = array_slice($result->failures(), count($this->processedFailures), null, true);
         $errorsSinceLastRun = array_slice($result->errors(), count($this->processedErrors), null, true);
-        $newUnsuccessfulTests = array_merge($failuresSinceLastRun, $errorsSinceLastRun);
 
         foreach ($this->testCaseChildren as $test) {
-            $testWasSuccessful = true;
+            $testHasFailure = $testHasError = false;
 
-            foreach ($newUnsuccessfulTests as $failure) {
+            foreach ($failuresSinceLastRun as $failure) {
                 /** @var $failure PHPUnit_Framework_TestFailure */
                 if ($test === $failure->failedTest()) {
-                    $testWasSuccessful = false;
-                    $testsToRepeat[] = $test;
-                    // Only repeat the test once. Don't repeat it as many times
-                    // as it already failed.
+                    $testHasFailure = true;
+                    // Quit the foreach because we found a match.
                     break;
                 }
             }
-            if ($testWasSuccessful) {
+            if (!$testHasFailure) {
+                foreach ($errorsSinceLastRun as $failure) {
+                    /** @var $failure PHPUnit_Framework_TestFailure */
+                    if ($test === $failure->failedTest()) {
+                        $testHasError = true;
+                        // Quit the foreach because we found a match.
+                        break;
+                    }
+                }
+            }
+            if ($testHasFailure || $testHasError) {
+                $testsToRepeat[] = $test;
+            } else {
                 // The previous test case run succeeded.
                 $this->markNextRepeatedTestsAsSkipped($ranCount, $result, $test);
             }
