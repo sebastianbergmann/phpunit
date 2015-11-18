@@ -21,7 +21,7 @@
 class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 {
     /**
-     * @var array
+     * @var PHPUnit_Framework_TestCase[]
      */
     protected $testCaseChildren = array();
 
