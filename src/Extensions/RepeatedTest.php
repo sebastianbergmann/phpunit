@@ -51,6 +51,16 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected $processIsolation = false;
 
     /**
+     * @var array
+     */
+    protected $processedErrors = array();
+
+    /**
+     * @var array
+     */
+    protected $processedFailures = array();
+
+    /**
      * @var integer
      */
     protected $timesRepeat = 1;
@@ -164,12 +174,15 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected function getWhichTestsToRepeat($result, $ranCount)
     {
         $testsToRepeat = array();
-        $unsuccessfulTests = array_merge($result->failures(), $result->errors());
+
+        $failuresSinceLastRun = array_slice($result->failures(), count($this->processedFailures), null, true);
+        $errorsSinceLastRun = array_slice($result->errors(), count($this->processedErrors), null, true);
+        $newUnsuccessfulTests = array_merge($failuresSinceLastRun, $errorsSinceLastRun);
 
         foreach ($this->testCaseChildren as $test) {
             $testWasSuccessful = true;
 
-            foreach ($unsuccessfulTests as $failure) {
+            foreach ($newUnsuccessfulTests as $failure) {
                 /** @var $failure PHPUnit_Framework_TestFailure */
                 if ($test === $failure->failedTest()) {
                     $testWasSuccessful = false;
@@ -184,6 +197,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
                 $this->markNextRepeatedTestsAsSkipped($ranCount, $result, $test);
             }
         }
+
+        $this->processedFailures += $failuresSinceLastRun;
+        $this->processedErrors += $errorsSinceLastRun;
 
         return $testsToRepeat;
     }
