@@ -51,16 +51,6 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected $processIsolation = false;
 
     /**
-     * @var array
-     */
-    protected $processedErrors = array();
-
-    /**
-     * @var array
-     */
-    protected $processedFailures = array();
-
-    /**
      * @var integer
      */
     protected $timesRepeat = 1;
@@ -88,6 +78,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 
         $this->processIsolation = $processIsolation;
         $this->onlyRepeatFailed = $onlyRepeatFailed;
+        if ($test instanceof PHPUnit_Framework_TestSuite) {
+            $this->getAllTestCaseChildren($test);
+        }
     }
 
     /**
@@ -122,18 +115,31 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
                 $this->test instanceof PHPUnit_Framework_TestCase &&
                 $result->wasSuccessful()) {
                 // The previous test case run succeeded.
-                $this->markNextRepeatedTestsAsSkipped($i, $result, $this->test);
-                // Don't repeat it any more.
-                break;
+                $this->skipTestCase($this->test, $result, $i);
             }
             //@codingStandardsIgnoreEnd
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
                 $this->test->setRunTestInSeparateProcess($this->processIsolation);
 
                 if ($this->onlyRepeatFailed && $i > 0) {
-                    $this->testCaseChildren = array();
-                    $this->getAllTestCaseChildren($this->test);
-                    $testsToRepeat = $this->getWhichTestsToRepeat($result, $i);
+                    $testsToRepeat = array();
+                    foreach ($this->testCaseChildren as $test) {
+                        $skipped = false;
+                        foreach ($result->passed() as $key => $data) {
+                            // The 'passed' array is keyed by test key.
+                            // @see TestResult::endTest()
+                            if ($key == get_class($test) . '::' . $test->getName()) {
+                                // A previous test run succeeded.
+                                $this->skipTestCase($test, $result, $i);
+                                $skipped = true;
+                                // Quit the foreach because we found a match.
+                                break;
+                            }
+                        }
+                        if (!$skipped) {
+                            $testsToRepeat[] = $test;
+                        }
+                    }
                     $this->test->setTests($testsToRepeat);
                     // Don't filter tests any more, we just filtered them.
                     // Reset the filter.
@@ -164,68 +170,16 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     }
 
     /**
-     * Get which tests failed, and thus should be repeated.
+     * Skip the given test case once.
      *
-     * @param PHPUnit_Framework_TestResult $result
-     * @param int $ranCount
-     *   How many times did the tests already run?
-     * @return PHPUnit_Framework_Test[]
-     */
-    protected function getWhichTestsToRepeat($result, $ranCount)
-    {
-        $testsToRepeat = array();
-
-        $failuresSinceLastRun = array_slice($result->failures(), count($this->processedFailures), null, true);
-        $errorsSinceLastRun = array_slice($result->errors(), count($this->processedErrors), null, true);
-
-        foreach ($this->testCaseChildren as $test) {
-            $testHasFailure = $testHasError = false;
-
-            foreach ($failuresSinceLastRun as $failure) {
-                /** @var $failure PHPUnit_Framework_TestFailure */
-                if ($test === $failure->failedTest()) {
-                    $testHasFailure = true;
-                    // Quit the foreach because we found a match.
-                    break;
-                }
-            }
-            if (!$testHasFailure) {
-                foreach ($errorsSinceLastRun as $failure) {
-                    /** @var $failure PHPUnit_Framework_TestFailure */
-                    if ($test === $failure->failedTest()) {
-                        $testHasError = true;
-                        // Quit the foreach because we found a match.
-                        break;
-                    }
-                }
-            }
-            if ($testHasFailure || $testHasError) {
-                $testsToRepeat[] = $test;
-            } else {
-                // The previous test case run succeeded.
-                $this->markNextRepeatedTestsAsSkipped($ranCount, $result, $test);
-            }
-        }
-
-        $this->processedFailures += $failuresSinceLastRun;
-        $this->processedErrors += $errorsSinceLastRun;
-
-        return $testsToRepeat;
-    }
-
-    /**
-     * Mark the remaining repeated tests as skipped.
-     *
-     * @param int $ranCount
-     *   How many times the test already run.
-     * @param PHPUnit_Framework_TestResult $result
      * @param PHPUnit_Framework_Test $test
+     * @param PHPUnit_Framework_TestResult $result
+     * @param int $ranCount
+     *   How many times the test already ran or got skipped.
      */
-    protected function markNextRepeatedTestsAsSkipped($ranCount, $result, $test)
+    protected function skipTestCase($test, $result, $ranCount)
     {
-        $skipped = new PHPUnit_Framework_SkippedTestError('Test already succeeded during previous run.');
-        for ($i = 0; $i < $this->timesRepeat - $ranCount; $i++) {
-            $result->addFailure($test, $skipped, 0);
-        }
+        $message = sprintf('Test skipped in run number %d because it succeeded during a previous run.', $ranCount + 1);
+        $result->addFailure(new PHPUnit_Framework_SkippedTestError($message), $skipped, 0);
     }
 }
