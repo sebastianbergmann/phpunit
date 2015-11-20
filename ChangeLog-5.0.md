@@ -2,6 +2,13 @@
 
 All notable changes of the PHPUnit 5.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.0.10] - 2015-MM-DD
+
+### Fixed
+
+* Fixed [#1953](https://github.com/sebastianbergmann/phpunit/issues/1953): `Error`s raised outside the scope of a test method are not handled properly
+* Fixed [#1955](https://github.com/sebastianbergmann/phpunit/issues/1955): Process isolation fails when running tests with `phpdbg -qrr`
+
 ## [5.0.9] - 2015-11-10
 
 ### Added
@@ -107,6 +114,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 * The PHPUnit_Selenium component can no longer be configured using the `<selenium/browser>` element of PHPUnit's configuration file
 * PHPUnit is no longer supported on PHP 5.3, PHP 5.4, and PHP 5.5
 
+[5.0.10]: https://github.com/sebastianbergmann/phpunit/compare/5.0.9...5.0.10
 [5.0.9]: https://github.com/sebastianbergmann/phpunit/compare/5.0.8...5.0.9
 [5.0.8]: https://github.com/sebastianbergmann/phpunit/compare/5.0.7...5.0.8
 [5.0.7]: https://github.com/sebastianbergmann/phpunit/compare/5.0.6...5.0.7
