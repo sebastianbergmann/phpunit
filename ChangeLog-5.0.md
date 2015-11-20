@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#1953](https://github.com/sebastianbergmann/phpunit/issues/1953): `Error`s raised outside the scope of a test method are not handled properly
 * Fixed [#1955](https://github.com/sebastianbergmann/phpunit/issues/1955): Process isolation fails when running tests with `phpdbg -qrr`
 
 ## [5.0.9] - 2015-11-10
