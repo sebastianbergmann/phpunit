@@ -53,7 +53,7 @@ class PHPUnit_Util_ErrorHandler
 
         self::$errorStack[] = [$errno, $errstr, $errfile, $errline];
 
-        $trace = debug_backtrace(false);
+        $trace = debug_backtrace(0);
         array_shift($trace);
 
         foreach ($trace as $frame) {

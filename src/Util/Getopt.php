@@ -114,7 +114,7 @@ class PHPUnit_Util_Getopt
         $count   = count($long_options);
         $list    = explode('=', $arg);
         $opt     = $list[0];
-        $opt_arg = null;
+        $opt_arg = '';
 
         if (count($list) > 1) {
             $opt_arg = $list[1];
