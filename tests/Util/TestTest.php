@@ -670,4 +670,36 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           ]
         ];
     }
+
+    /**
+     * @covers PHPUnit_Util_Test::evaluateRuntimeExpression
+     */
+    public function testEvaluateRuntimeExpression()
+    {
+        $php53 = $this->getMock('\SebastianBergmann\Environment\Runtime');
+        $php53->method('isPHP')->willReturn(true);
+        $php53->method('isHHVM')->willReturn(false);
+        $php53->method('getVersion')->willReturn('5.3.12');
+
+        $php56 = $this->getMock('\SebastianBergmann\Environment\Runtime');
+        $php56->method('isPHP')->willReturn(true);
+        $php56->method('isHHVM')->willReturn(false);
+        $php56->method('getVersion')->willReturn('5.6.4');
+
+        $hhvm = $this->getMock('\SebastianBergmann\Environment\Runtime');
+        $hhvm->method('isPHP')->willReturn(false);
+        $hhvm->method('isHHVM')->willReturn(true);
+        $hhvm->method('getVersion')->willReturn('5.6.99');        
+
+        $this->assertTrue(PHPUnit_Util_Test::evaluateRuntimeExpression('PHP', $php53));
+        $this->assertFalse(PHPUnit_Util_Test::evaluateRuntimeExpression('! PHP', $php53));
+        $this->assertTrue(PHPUnit_Util_Test::evaluateRuntimeExpression('PHP > 3.5', $php53));
+        $this->assertFalse(PHPUnit_Util_Test::evaluateRuntimeExpression('PHP >= 5.3.14', $php53));
+
+        $this->assertFalse(PHPUnit_Util_Test::evaluateRuntimeExpression('HHVM', $php53));
+        $this->assertFalse(PHPUnit_Util_Test::evaluateRuntimeExpression('HHVM > 5', $php53));
+        $this->assertTrue(PHPUnit_Util_Test::evaluateRuntimeExpression('! HHVM', $php53));
+
+        $this->assertTrue(PHPUnit_Util_Test::evaluateRuntimeExpression('PHP > 5.4', $php56));
+    }
 }
