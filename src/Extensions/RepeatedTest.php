@@ -109,9 +109,9 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         }
 
         //@codingStandardsIgnoreStart
-        for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
+        for ($i = 1; $i <= $this->timesRepeat && !$result->shouldStop(); $i++) {
             if ($this->onlyRepeatFailed &&
-                $i > 0 &&
+                $i > 1 &&
                 $this->test instanceof PHPUnit_Framework_TestCase &&
                 $result->wasSuccessful()) {
                 // The previous test case run succeeded.
@@ -121,7 +121,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
                 $this->test->setRunTestInSeparateProcess($this->processIsolation);
 
-                if ($this->onlyRepeatFailed && $i > 0) {
+                if ($this->onlyRepeatFailed && $i > 1) {
                     $testsToRepeat = array();
                     foreach ($this->testCaseChildren as $test) {
                         $skipped = false;
