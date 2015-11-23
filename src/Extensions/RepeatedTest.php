@@ -146,7 +146,7 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
                     $this->test->injectFilter(new PHPUnit_Runner_Filter_Factory());
                 }
             }
-            $this->test->run($result);
+            $this->basicRun($result);
         }
 
         return $result;
