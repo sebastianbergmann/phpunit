@@ -11,14 +11,7 @@
 /**
  * Base class for test listeners that interact with an issue tracker.
  *
- * @package    PHPUnit
- * @subpackage Extensions_TicketListener
- * @author     Sean Coates <sean@caedmon.net>
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.4.0
+ * @since Class available since Release 3.4.0
  */
 abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_TestListener
 {
@@ -28,7 +21,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     protected $ticketCounts = array();
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $ran = false;
 
@@ -71,6 +64,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
+     *
      * @since  Method available since Release 4.0.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -83,6 +77,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
+     *
      * @since  Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
@@ -93,6 +88,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      * A test suite started.
      *
      * @param PHPUnit_Framework_TestSuite $suite
+     *
      * @since  Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -103,6 +99,7 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      * A test suite ended.
      *
      * @param PHPUnit_Framework_TestSuite $suite
+     *
      * @since  Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
@@ -191,7 +188,8 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
     }
 
     /**
-     * @param  mixed $ticketId
+     * @param mixed $ticketId
+     *
      * @return mixed
      */
     abstract protected function getTicketInfo($ticketId = null);

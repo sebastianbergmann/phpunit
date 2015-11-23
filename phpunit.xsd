@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <xs:annotation>
-    <xs:documentation source="https://phpunit.de/manual/4.6/en/appendixes.configuration.html">
-      This Schema file defines the rules by which the XML configuration file of PHPUnit 4.6 may be structured.
+    <xs:documentation source="https://phpunit.de/manual/4.8/en/appendixes.configuration.html">
+      This Schema file defines the rules by which the XML configuration file of PHPUnit 4.8 may be structured.
     </xs:documentation>
     <xs:appinfo source="http://www.phpunit.de/manual/current/en/appendixes.configuration.html"/>
   </xs:annotation>
@@ -132,6 +132,7 @@
     <xs:attribute name="highLowerBound" type="xs:nonNegativeInteger" default="70"/>
     <xs:attribute name="logIncompleteSkipped" type="xs:boolean" default="false"/>
     <xs:attribute name="showUncoveredFiles" type="xs:boolean" default="false"/>
+    <xs:attribute name="threshold" type="xs:nonNegativeInteger" default="30"/>
   </xs:complexType>
   <xs:group name="pathGroup">
     <xs:sequence>

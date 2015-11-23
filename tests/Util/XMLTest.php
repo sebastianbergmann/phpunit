@@ -9,15 +9,6 @@
  */
 
 /**
- *
- *
- * @package    PHPUnit
- * @author     Mike Naberezny <mike@maintainable.com>
- * @author     Derek DeVries <derek@maintainable.com>
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.3.0
  * @covers     PHPUnit_Util_XML
  */
@@ -93,14 +84,14 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = 'div#folder.open a[href="http://www.xerox.com"][title="xerox"].selected.big > span + h1';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('tag'   => 'div',
-                           'id'    => 'folder',
-                           'class' => 'open',
+        $tag       = array('tag'        => 'div',
+                           'id'         => 'folder',
+                           'class'      => 'open',
                            'descendant' => array('tag'        => 'a',
                                                  'class'      => 'selected big',
-                                                 'attributes' => array('href'  => 'http://www.xerox.com',
-                                                                       'title' => 'xerox'),
-                                                 'child'      => array('tag' => 'span',
+                                                 'attributes' => array('href'             => 'http://www.xerox.com',
+                                                                       'title'            => 'xerox'),
+                                                 'child'      => array('tag'              => 'span',
                                                                        'adjacent-sibling' => array('tag' => 'h1'))));
         $this->assertEquals($tag, $converted);
     }
@@ -145,7 +136,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         $selector  = '[foo="bar baz"] div[value="foo bar"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag       = array('attributes' => array('foo' => 'bar baz'),
+        $tag       = array('attributes' => array('foo'        => 'bar baz'),
                            'descendant' => array('tag'        => 'div',
                                                  'attributes' => array('value' => 'foo bar')));
         $this->assertEquals($tag, $converted);
@@ -153,11 +144,11 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
 
     public function testConvertAssertAttributeMultipleSpaces()
     {
-        $selector = '[foo="bar baz"] div[value="foo bar baz"]';
+        $selector  = '[foo="bar baz"] div[value="foo bar baz"]';
         $converted = PHPUnit_Util_XML::convertSelectToTag($selector);
-        $tag      = array('attributes' => array('foo' => 'bar baz'),
-                          'descendant' => array('tag' => 'div',
-                                                'attributes' => array('value' => 'foo bar baz')));
+        $tag       = array('attributes' => array('foo'        => 'bar baz'),
+                          'descendant'  => array('tag'        => 'div',
+                                                'attributes'  => array('value' => 'foo bar baz')));
         $this->assertEquals($tag, $converted);
     }
 
@@ -300,8 +291,8 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $e = null;
 
         $escapedString = PHPUnit_Util_XML::prepareString($char);
-        $xml = "<?xml version='1.0' encoding='UTF-8' ?><tag>$escapedString</tag>";
-        $dom = new DomDocument('1.0', 'UTF-8');
+        $xml           = "<?xml version='1.0' encoding='UTF-8' ?><tag>$escapedString</tag>";
+        $dom           = new DomDocument('1.0', 'UTF-8');
 
         try {
             $dom->loadXML($xml);

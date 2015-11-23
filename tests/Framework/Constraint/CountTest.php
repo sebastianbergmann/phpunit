@@ -9,14 +9,6 @@
  */
 
 /**
- *
- *
- * @package    PHPUnit
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Jeroen Versteeg <jversteeg@gmail.com>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Class available since Release 3.7.30
  * @covers     PHPUnit_Framework_Constraint_Count
  */
@@ -31,7 +23,7 @@ class CountTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($countConstraint->evaluate(array(), '', true));
 
         $countConstraint = new PHPUnit_Framework_Constraint_Count(2);
-        $it = new TestIterator(array(1, 2));
+        $it              = new TestIterator(array(1, 2));
         $this->assertTrue($countConstraint->evaluate($it, '', true));
     }
 

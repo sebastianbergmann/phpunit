@@ -11,13 +11,7 @@
 /**
  * XML helpers.
  *
- * @package    PHPUnit
- * @subpackage Util
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.2.0
+ * @since Class available since Release 3.2.0
  */
 class PHPUnit_Util_XML
 {
@@ -27,9 +21,10 @@ class PHPUnit_Util_XML
      * and FFFF (not even as character reference).
      * See http://www.w3.org/TR/xml/#charsets
      *
-     * @param  string $string
+     * @param string $string
+     *
      * @return string
-     * @author Kore Nordmann <mail@kore-nordmann.de>
+     *
      * @since  Method available since Release 3.4.6
      */
     public static function prepareString($string)
@@ -48,11 +43,13 @@ class PHPUnit_Util_XML
     /**
      * Loads an XML (or HTML) file into a DOMDocument object.
      *
-     * @param  string      $filename
-     * @param  boolean     $isHtml
-     * @param  boolean     $xinclude
-     * @param  boolean     $strict
+     * @param string $filename
+     * @param bool   $isHtml
+     * @param bool   $xinclude
+     * @param bool   $strict
+     *
      * @return DOMDocument
+     *
      * @since  Method available since Release 3.3.0
      */
     public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
@@ -87,16 +84,15 @@ class PHPUnit_Util_XML
      * not a string as it currently does.  To load a file into a
      * DOMDocument, use loadFile() instead.
      *
-     * @param  string|DOMDocument $actual
-     * @param  boolean            $isHtml
-     * @param  string             $filename
-     * @param  boolean            $xinclude
-     * @param  boolean            $strict
+     * @param string|DOMDocument $actual
+     * @param bool               $isHtml
+     * @param string             $filename
+     * @param bool               $xinclude
+     * @param bool               $strict
+     *
      * @return DOMDocument
+     *
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
-     * @author Tobias Schlitt <toby@php.net>
      */
     public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false)
     {
@@ -107,10 +103,11 @@ class PHPUnit_Util_XML
         // Required for XInclude on Windows.
         if ($xinclude) {
             $cwd = getcwd();
-            chdir(dirname($filename));
+            @chdir(dirname($filename));
         }
 
-        $document  = new DOMDocument;
+        $document                     = new DOMDocument;
+        $document->preserveWhiteSpace = false;
 
         $internal  = libxml_use_internal_errors(true);
         $message   = '';
@@ -139,7 +136,7 @@ class PHPUnit_Util_XML
         error_reporting($reporting);
 
         if ($xinclude) {
-            chdir($cwd);
+            @chdir($cwd);
         }
 
         if ($loaded === false || ($strict && $message !== '')) {
@@ -160,16 +157,16 @@ class PHPUnit_Util_XML
     }
 
     /**
+     * @param DOMNode $node
      *
-     *
-     * @param  DOMNode $node
      * @return string
+     *
      * @since  Method available since Release 3.4.0
      */
     public static function nodeToText(DOMNode $node)
     {
         if ($node->childNodes->length == 1) {
-            return $node->nodeValue;
+            return $node->textContent;
         }
 
         $result = '';
@@ -182,11 +179,9 @@ class PHPUnit_Util_XML
     }
 
     /**
-     *
-     *
      * @param DOMNode $node
+     *
      * @since  Method available since Release 3.3.0
-     * @author Mattis Stordalen Flister <mattis@xait.no>
      */
     public static function removeCharacterDataNodes(DOMNode $node)
     {
@@ -202,8 +197,10 @@ class PHPUnit_Util_XML
     /**
      * "Convert" a DOMElement object into a PHP variable.
      *
-     * @param  DOMElement $element
+     * @param DOMElement $element
+     *
      * @return mixed
+     *
      * @since  Method available since Release 3.4.0
      */
     public static function xmlToVariable(DOMElement $element)
@@ -211,11 +208,17 @@ class PHPUnit_Util_XML
         $variable = null;
 
         switch ($element->tagName) {
-            case 'array': {
+            case 'array':
                 $variable = array();
 
                 foreach ($element->getElementsByTagName('element') as $element) {
-                    $value = self::xmlToVariable($element->childNodes->item(1));
+                    $item = $element->childNodes->item(0);
+
+                    if ($item instanceof DOMText) {
+                        $item = $element->childNodes->item(1);
+                    }
+
+                    $value = self::xmlToVariable($item);
 
                     if ($element->hasAttribute('key')) {
                         $variable[(string) $element->getAttribute('key')] = $value;
@@ -223,10 +226,9 @@ class PHPUnit_Util_XML
                         $variable[] = $value;
                     }
                 }
-            }
-            break;
+                break;
 
-            case 'object': {
+            case 'object':
                 $className = $element->getAttribute('class');
 
                 if ($element->hasChildNodes()) {
@@ -244,22 +246,19 @@ class PHPUnit_Util_XML
                 } else {
                     $variable = new $className;
                 }
-            }
-            break;
+                break;
 
-            case 'boolean': {
-                $variable = $element->nodeValue == 'true' ? true : false;
-            }
-            break;
+            case 'boolean':
+                $variable = $element->textContent == 'true' ? true : false;
+                break;
 
             case 'integer':
             case 'double':
-            case 'string': {
-                $variable = $element->nodeValue;
+            case 'string':
+                $variable = $element->textContent;
 
                 settype($variable, $element->tagName);
-            }
-            break;
+                break;
         }
 
         return $variable;
@@ -268,13 +267,14 @@ class PHPUnit_Util_XML
     /**
      * Validate list of keys in the associative array.
      *
-     * @param  array                       $hash
-     * @param  array                       $validKeys
+     * @param array $hash
+     * @param array $validKeys
+     *
      * @return array
+     *
      * @throws PHPUnit_Framework_Exception
+     *
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function assertValidKeys(array $hash, array $validKeys)
     {
@@ -315,22 +315,22 @@ class PHPUnit_Util_XML
      * Parse a CSS selector into an associative array suitable for
      * use with findNodes().
      *
-     * @param  string $selector
-     * @param  mixed  $content
+     * @param string $selector
+     * @param mixed  $content
+     *
      * @return array
+     *
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
      */
     public static function convertSelectToTag($selector, $content = true)
     {
-        $selector = trim(preg_replace("/\s+/", " ", $selector));
+        $selector = trim(preg_replace("/\s+/", ' ', $selector));
 
         // substitute spaces within attribute value
         while (preg_match('/\[[^\]]+"[^"]+\s[^"]+"\]/', $selector)) {
             $selector = preg_replace(
                 '/(\[[^\]]+"[^"]+)\s([^"]+"\])/',
-                "$1__SPACE__$2",
+                '$1__SPACE__$2',
                 $selector
             );
         }
@@ -451,15 +451,14 @@ class PHPUnit_Util_XML
      * The $actual document may be a DOMDocument or a string
      * containing XML or HTML, identified by $isHtml.
      *
-     * @param  array         $selector
-     * @param  string        $content
-     * @param  mixed         $actual
-     * @param  boolean       $isHtml
-     * @return boolean|array
+     * @param array  $selector
+     * @param string $content
+     * @param mixed  $actual
+     * @param bool   $isHtml
+     *
+     * @return bool|array
+     *
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
-     * @author Tobias Schlitt <toby@php.net>
      */
     public static function cssSelect($selector, $content, $actual, $isHtml = true)
     {
@@ -473,14 +472,13 @@ class PHPUnit_Util_XML
     /**
      * Parse out the options from the tag using DOM object tree.
      *
-     * @param  DOMDocument $dom
-     * @param  array       $options
-     * @param  boolean     $isHtml
+     * @param DOMDocument $dom
+     * @param array       $options
+     * @param bool        $isHtml
+     *
      * @return array
+     *
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
-     * @author Tobias Schlitt <toby@php.net>
      */
     public static function findNodes(DOMDocument $dom, array $options, $isHtml = true)
     {
@@ -579,12 +577,12 @@ class PHPUnit_Util_XML
                         // split to individual classes
                         $findClasses = explode(
                             ' ',
-                            preg_replace("/\s+/", " ", $value)
+                            preg_replace("/\s+/", ' ', $value)
                         );
 
                         $allClasses = explode(
                             ' ',
-                            preg_replace("/\s+/", " ", $node->getAttribute($name))
+                            preg_replace("/\s+/", ' ', $node->getAttribute($name))
                         );
 
                         // make sure each class given is in the actual node
@@ -858,11 +856,11 @@ class PHPUnit_Util_XML
     /**
      * Recursively get flat array of all descendants of this node.
      *
-     * @param  DOMNode $node
+     * @param DOMNode $node
+     *
      * @return array
+     *
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
      */
     protected static function getDescendants(DOMNode $node)
     {
@@ -885,9 +883,11 @@ class PHPUnit_Util_XML
     /**
      * Gets elements by case insensitive tagname.
      *
-     * @param  DOMDocument $dom
-     * @param  string      $tag
+     * @param DOMDocument $dom
+     * @param string      $tag
+     *
      * @return DOMNodeList
+     *
      * @since  Method available since Release 3.4.0
      */
     protected static function getElementsByCaseInsensitiveTagName(DOMDocument $dom, $tag)
@@ -904,11 +904,11 @@ class PHPUnit_Util_XML
     /**
      * Get the text value of this node's child text node.
      *
-     * @param  DOMNode $node
+     * @param DOMNode $node
+     *
      * @return string
+     *
      * @since  Method available since Release 3.3.0
-     * @author Mike Naberezny <mike@maintainable.com>
-     * @author Derek DeVries <derek@maintainable.com>
      */
     protected static function getNodeText(DOMNode $node)
     {

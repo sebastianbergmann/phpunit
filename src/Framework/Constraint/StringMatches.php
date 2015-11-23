@@ -13,14 +13,7 @@ use SebastianBergmann\Diff\Differ;
 /**
  * ...
  *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.0
+ * @since Class available since Release 3.5.0
  */
 class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Constraint_PCREMatch
 {
@@ -45,7 +38,7 @@ class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Const
 
     protected function failureDescription($other)
     {
-        return "format description matches text";
+        return 'format description matches text';
     }
 
     protected function additionalFailureDescription($other)

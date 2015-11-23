@@ -13,13 +13,6 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * Abstract base class for constraints. which are placed upon any value.
  *
- * @package    PHPUnit
- * @subpackage Framework
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
  * @since      Interface available since Release 3.0.0
  */
 abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framework_SelfDescribing
@@ -41,10 +34,12 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param  mixed                                        $other        Value or object to evaluate.
-     * @param  string                                       $description  Additional information about the test
-     * @param  bool                                         $returnResult Whether to return a result or throw an exception
+     * @param mixed  $other        Value or object to evaluate.
+     * @param string $description  Additional information about the test
+     * @param bool   $returnResult Whether to return a result or throw an exception
+     *
      * @return mixed
+     *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
     public function evaluate($other, $description = '', $returnResult = false)
@@ -70,7 +65,8 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      *
      * This method can be overridden to implement the evaluation algorithm.
      *
-     * @param  mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
+     *
      * @return bool
      */
     protected function matches($other)
@@ -81,7 +77,8 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     /**
      * Counts the number of constraint elements.
      *
-     * @return integer
+     * @return int
+     *
      * @since  Method available since Release 3.4.0
      */
     public function count()
@@ -92,9 +89,10 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
     /**
      * Throws an exception for the given compared value and test description
      *
-     * @param  mixed $other Evaluated value or object.
-     * @param  string $description Additional information about the test
-     * @param  SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure
+     * @param mixed                                          $other             Evaluated value or object.
+     * @param string                                         $description       Additional information about the test
+     * @param SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure
+     *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
     protected function fail($other, $description, SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure = null)
@@ -126,7 +124,8 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      * The function can be overridden to provide additional failure
      * information like a diff
      *
-     * @param  mixed  $other Evaluated value or object.
+     * @param mixed $other Evaluated value or object.
+     *
      * @return string
      */
     protected function additionalFailureDescription($other)
@@ -143,7 +142,8 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      * To provide additional failure information additionalFailureDescription
      * can be used.
      *
-     * @param  mixed  $other Evaluated value or object.
+     * @param mixed $other Evaluated value or object.
+     *
      * @return string
      */
     protected function failureDescription($other)

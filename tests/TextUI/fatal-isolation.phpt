@@ -1,5 +1,5 @@
 --TEST--
-phpunit FatalTest ../_files/FatalTest.php
+phpunit FatalTest --process-isolation ../_files/FatalTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';

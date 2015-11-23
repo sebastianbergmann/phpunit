@@ -13,13 +13,7 @@ use SebastianBergmann\Environment\Runtime;
 /**
  * Windows utility for PHP sub-processes.
  *
- * @package    PHPUnit
- * @subpackage Util
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.12
+ * @since Class available since Release 3.5.12
  */
 class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
 {
@@ -80,9 +74,11 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
     }
 
     /**
-     * @param  resource                    $pipe
-     * @param  string                      $job
+     * @param resource $pipe
+     * @param string   $job
+     *
      * @throws PHPUnit_Framework_Exception
+     *
      * @since  Method available since Release 3.5.12
      */
     protected function process($pipe, $job)
@@ -96,7 +92,7 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
 
         fwrite(
             $pipe,
-            "<?php require_once " . var_export($this->tempFile, true) .  "; ?>"
+            '<?php require_once ' . var_export($this->tempFile, true) .  '; ?>'
         );
     }
 

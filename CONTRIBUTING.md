@@ -1,23 +1,67 @@
 # Contributing to PHPUnit
 
-Contributions to PHPUnit, its related modules, and its documentation are always welcome. You make our lives easier by sending us your contributions through GitHub pull requests.
+## Contributor Code of Conduct
 
-Pull requests for bug fixes must be based on the current stable branch whereas pull requests for new features must be based on `master`.
+Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms.
+
+## Workflow
+
+* Fork the project.
+* Make your bug fix or feature addition.
+* Add tests for it. This is important so we don't break it in a future version unintentionally.
+* Send a pull request. Bonus points for topic branches.
+
+Please make sure that you have [set up your user name and email address](http://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) for use with Git. Strings such as `silly nick name <root@localhost>` look really stupid in the commit history of a project.
+
+Pull requests for bug fixes must be based on the current stable branch whereas pull requests for new features must be based on the current alpha branch (when `5.0` is the current stable branch, then `5.1` is the current beta branch and `5.2` is the current alpha branch).
 
 We are trying to keep backwards compatibility breaks in PHPUnit to an absolute minimum. Please take this into account when proposing changes.
 
-Due to time constraints, we are not always able to respond as quickly as we would like. Please do not take delays personal and feel free to remind us here or on IRC if you feel that we forgot to respond.
+Due to time constraints, we are not always able to respond as quickly as we would like. Please do not take delays personal and feel free to remind us if you feel that we forgot to respond.
 
-## Using PHPUnit From a Git Checkout
+## Coding Guidelines
+
+This project comes with a configuration file for [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (`.php_cs`) that you can use to (re)format your sourcecode for compliance with this project's coding guidelines:
+
+```bash
+$ wget http://get.sensiolabs.org/php-cs-fixer.phar
+
+$ php php-cs-fixer.phar fix
+```
+
+## Using PHPUnit from a Git checkout
 
 The following commands can be used to perform the initial checkout of PHPUnit:
 
-    git clone git://github.com/sebastianbergmann/phpunit.git
-    cd phpunit
+```bash
+$ git clone git://github.com/sebastianbergmann/phpunit.git
+
+$ cd phpunit
+```
 
 Retrieve PHPUnit's dependencies using [Composer](http://getcomposer.org/):
 
-    wget http://getcomposer.org/composer.phar
-    php composer.phar install
+```bash
+$ wget http://getcomposer.org/composer.phar
 
-The `phpunit` script can be used to invoke the PHPUnit test runner.
+$ php composer.phar install
+```
+
+The `phpunit` script can be used to invoke the PHPUnit test runner:
+
+```bash
+$ ./phpunit --version
+```
+
+## Reporting issues
+
+Please use the most specific issue tracker to search for existing tickets and to open new tickets:
+
+* [General problems](https://github.com/sebastianbergmann/phpunit/issues)
+* [Code Coverage](https://github.com/sebastianbergmann/php-code-coverage/issues)
+* [Stub and Mock Objects](https://github.com/sebastianbergmann/phpunit-mock-objects/issues)
+* [DbUnit](https://github.com/sebastianbergmann/dbunit/issues)
+* [PHPUnit_Selenium](https://github.com/sebastianbergmann/phpunit-selenium/issues)
+* [Documentation](https://github.com/sebastianbergmann/phpunit-documentation/issues)
+* [Website](https://github.com/sebastianbergmann/phpunit-website/issues)
+

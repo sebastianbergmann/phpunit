@@ -1,15 +1,12 @@
 #!/usr/bin/env php
 <?php
 if (__FILE__ == realpath($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
-    $phar    = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
     $execute = true;
 } else {
-    $files   = get_included_files();
-    $phar    = $files[0];
     $execute = false;
 }
 
-define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', $phar));
+define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', __FILE__));
 define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
 Phar::mapPhar('___PHAR___');
@@ -17,6 +14,15 @@ Phar::mapPhar('___PHAR___');
 ___FILELIST___
 
 if ($execute) {
+    if (version_compare('5.3.3', PHP_VERSION, '>')) {
+        fwrite(
+            STDERR,
+            'This version of PHPUnit requires PHP 5.3.3; using the latest version of PHP is highly recommended.' . PHP_EOL
+        );
+
+        die(1);
+    }
+
     if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
         print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
         exit;

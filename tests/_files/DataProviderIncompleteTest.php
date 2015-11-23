@@ -19,7 +19,7 @@ class DataProviderIncompleteTest extends PHPUnit_Framework_TestCase
 
     public function incompleteTestProviderMethod()
     {
-        $this->markTestIncomplete("incomplete");
+        $this->markTestIncomplete('incomplete');
 
         return array(
           array(0, 0, 0),

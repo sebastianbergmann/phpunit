@@ -14,14 +14,7 @@
  *
  * The expected value is passed in the constructor.
  *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @author     Bernhard Schussek <bschussek@2bepublished.at>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.0.0
+ * @since Class available since Release 3.0.0
  */
 class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
 {
@@ -41,19 +34,20 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
      * @var array
      */
     protected $types = array(
-        'array' => true,
-        'boolean' => true,
-        'bool' => true,
-        'double' => true,
-        'float' => true,
-        'integer' => true,
-        'int' => true,
-        'null' => true,
-        'numeric' => true,
-        'object' => true,
+        'array'    => true,
+        'boolean'  => true,
+        'bool'     => true,
+        'double'   => true,
+        'float'    => true,
+        'integer'  => true,
+        'int'      => true,
+        'null'     => true,
+        'numeric'  => true,
+        'object'   => true,
+        'real'     => true,
         'resource' => true,
-        'string' => true,
-        'scalar' => true,
+        'string'   => true,
+        'scalar'   => true,
         'callable' => true
     );
 
@@ -63,7 +57,8 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
     protected $type;
 
     /**
-     * @param  string                      $type
+     * @param string $type
+     *
      * @throws PHPUnit_Framework_Exception
      */
     public function __construct($type)
@@ -87,58 +82,49 @@ class PHPUnit_Framework_Constraint_IsType extends PHPUnit_Framework_Constraint
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param  mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
+     *
      * @return bool
      */
     protected function matches($other)
     {
         switch ($this->type) {
-            case 'numeric': {
+            case 'numeric':
                 return is_numeric($other);
-                }
 
             case 'integer':
-            case 'int': {
+            case 'int':
                 return is_integer($other);
-                }
 
             case 'double':
-            case 'float': {
+            case 'float':
+            case 'real':
                 return is_float($other);
-                }
 
-            case 'string': {
+            case 'string':
                 return is_string($other);
-                }
 
             case 'boolean':
-            case 'bool': {
+            case 'bool':
                 return is_bool($other);
-                }
 
-            case 'null': {
+            case 'null':
                 return is_null($other);
-                }
 
-            case 'array': {
+            case 'array':
                 return is_array($other);
-                }
 
-            case 'object': {
+            case 'object':
                 return is_object($other);
-                }
 
-            case 'resource': {
+            case 'resource':
                 return is_resource($other) || is_string(@get_resource_type($other));
-                }
 
-            case 'scalar': {
+            case 'scalar':
                 return is_scalar($other);
-                }
 
-            case 'callable': {
+            case 'callable':
                 return is_callable($other);
-                }
         }
     }
 

@@ -11,13 +11,7 @@
 /**
  * Creates a synthetic failed assertion.
  *
- * @package    PHPUnit
- * @subpackage Framework
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.5.0
+ * @since Class available since Release 3.5.0
  */
 class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailedError
 {
@@ -31,7 +25,7 @@ class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailed
     /**
      * The synthetic line number.
      *
-     * @var integer
+     * @var int
      */
     protected $syntheticLine = 0;
 
@@ -45,11 +39,11 @@ class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailed
     /**
      * Constructor.
      *
-     * @param string  $message
-     * @param integer $code
-     * @param string  $file
-     * @param integer $line
-     * @param array   $trace
+     * @param string $message
+     * @param int    $code
+     * @param string $file
+     * @param int    $line
+     * @param array  $trace
      */
     public function __construct($message, $code, $file, $line, $trace)
     {
@@ -69,7 +63,7 @@ class PHPUnit_Framework_SyntheticError extends PHPUnit_Framework_AssertionFailed
     }
 
     /**
-     * @return integer
+     * @return int
      */
     public function getSyntheticLine()
     {

@@ -11,13 +11,7 @@
 /**
  * Asserts whether or not two JSON objects are equal.
  *
- * @package    PHPUnit
- * @subpackage Framework_Constraint
- * @author     Bastian Feder <php@bastian-feder.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.7.0
+ * @since Class available since Release 3.7.0
  */
 class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constraint
 {
@@ -43,7 +37,8 @@ class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constra
      *
      * This method can be overridden to implement the evaluation algorithm.
      *
-     * @param  mixed $other Value or object to evaluate.
+     * @param mixed $other Value or object to evaluate.
+     *
      * @return bool
      */
     protected function matches($other)

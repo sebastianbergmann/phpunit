@@ -11,20 +11,15 @@
 /**
  * Suite for .phpt test cases.
  *
- * @package    PHPUnit
- * @subpackage Extensions_PhptTestCase
- * @author     Sebastian Bergmann <sebastian@phpunit.de>
- * @copyright  Sebastian Bergmann <sebastian@phpunit.de>
- * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
- * @link       http://www.phpunit.de/
- * @since      Class available since Release 3.1.4
+ * @since Class available since Release 3.1.4
  */
 class PHPUnit_Extensions_PhptTestSuite extends PHPUnit_Framework_TestSuite
 {
     /**
      * Constructs a new TestSuite for .phpt test cases.
      *
-     * @param  string $directory
+     * @param string $directory
+     *
      * @throws PHPUnit_Framework_Exception
      */
     public function __construct($directory)
