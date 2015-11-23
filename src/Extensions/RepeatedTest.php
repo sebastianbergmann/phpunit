@@ -116,6 +116,8 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
                 $result->wasSuccessful()) {
                 // The previous test case run succeeded.
                 $this->skipTestCase($this->test, $result, $i);
+                // Go to the next repeat at once, skipping the execution of the test.
+                continue;
             }
             //@codingStandardsIgnoreEnd
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
