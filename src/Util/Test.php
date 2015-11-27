@@ -20,7 +20,7 @@ class PHPUnit_Util_Test
     const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
     const REGEX_REQUIRES_VERSION   = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<value>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
     const REGEX_REQUIRES_OS        = '/@requires\s+OS\s+(?P<value>.+?)[ \t]*\r?$/m';
-    const REGEX_REQUIRES           = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))[ \t]*\r?$/m';
+    const REGEX_REQUIRES           = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
 
     const UNKNOWN = -1;
     const SMALL   = 0;
@@ -201,6 +201,10 @@ class PHPUnit_Util_Test
                     $requires[$name] = [];
                 }
                 $requires[$name][] = $matches['value'][$i];
+                if (empty($matches['version'][$i]) || $name != 'extensions') {
+                    continue;
+                }
+                $requires['extension_versions'][$matches['value'][$i]] = $matches['version'][$i];
             }
         }
 
@@ -252,8 +256,20 @@ class PHPUnit_Util_Test
 
         if (!empty($required['extensions'])) {
             foreach ($required['extensions'] as $extension) {
+                if (isset($required['extension_versions'][$extension])) {
+                    continue;
+                }
                 if (!extension_loaded($extension)) {
                     $missing[] = sprintf('Extension %s is required.', $extension);
+                }
+            }
+        }
+
+        if (!empty($required['extension_versions'])) {
+            foreach ($required['extension_versions'] as $extension => $minVersion) {
+                $actualVersion = phpversion($extension);
+                if (false === $actualVersion || version_compare($actualVersion, $minVersion, '<')) {
+                    $missing[] = sprintf('Extension %s %s (or later) is required.', $extension, $minVersion);
                 }
             }
         }
