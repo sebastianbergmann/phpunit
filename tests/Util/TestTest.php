@@ -175,7 +175,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             ['testSpecificExtensionVersion',
                 [
                     'extension_versions' => ['testExt' => '1.8.0'],
-                    'extensions' => ['testExt']
+                    'extensions'         => ['testExt']
                 ]
             ],
         ];
