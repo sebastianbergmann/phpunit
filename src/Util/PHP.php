@@ -113,7 +113,7 @@ abstract class PHPUnit_Util_PHP
         $command .= $this->settingsToParameters($settings);
 
         if ('phpdbg' === PHP_SAPI) {
-            $command .= ' -qrr '.escapeshellarg(__DIR__ . '/PHP/eval-stdin.php');
+            $command .= ' -qrr ' . escapeshellarg(__DIR__ . '/PHP/eval-stdin.php');
         }
         if (true === $this->stderrRedirection) {
             $command .= ' 2>&1';
