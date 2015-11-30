@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 /**
  * Runner for PHPT test cases.
  *
@@ -60,12 +62,8 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      *
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($filename, $phpUtil = null)
+    public function __construct(string $filename, $phpUtil = null)
     {
-        if (!is_string($filename)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
-        }
-
         if (!is_file($filename)) {
             throw new PHPUnit_Framework_Exception(
                 sprintf(
@@ -172,8 +170,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
                 $result->addFailure($this, $e, $time);
             } catch (Throwable $t) {
                 $result->addError($this, $t, $time);
-            } catch (Exception $e) {
-                $result->addError($this, $e, $time);
             }
 
             if (isset($sections['CLEAN'])) {

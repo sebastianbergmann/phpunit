@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 /**
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
  * case of a risky test.

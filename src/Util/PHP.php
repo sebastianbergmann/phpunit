@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -40,16 +42,10 @@ abstract class PHPUnit_Util_PHP
      *
      * Then $stderrRedirection is TRUE, STDERR is redirected to STDOUT.
      *
-     * @throws PHPUnit_Framework_Exception
-     *
      * @param bool $stderrRedirection
      */
-    public function setUseStderrRedirection($stderrRedirection)
+    public function setUseStderrRedirection(bool $stderrRedirection)
     {
-        if (!is_bool($stderrRedirection)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->stderrRedirection = $stderrRedirection;
     }
 

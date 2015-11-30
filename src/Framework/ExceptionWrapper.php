@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 /**
  * Wraps Exceptions thrown by code under test.
  *
@@ -32,26 +34,26 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
     protected $previous;
 
     /**
-     * @param Throwable|Exception $e
+     * @param Throwable $t
      */
-    public function __construct($e)
+    public function __construct(Throwable $t)
     {
         // PDOException::getCode() is a string.
         // @see http://php.net/manual/en/class.pdoexception.php#95812
-        parent::__construct($e->getMessage(), (int) $e->getCode());
+        parent::__construct($t->getMessage(), (int) $t->getCode());
 
-        $this->classname = get_class($e);
-        $this->file      = $e->getFile();
-        $this->line      = $e->getLine();
+        $this->classname = get_class($t);
+        $this->file      = $t->getFile();
+        $this->line      = $t->getLine();
 
-        $this->serializableTrace = $e->getTrace();
+        $this->serializableTrace = $t->getTrace();
 
         foreach ($this->serializableTrace as $i => $call) {
             unset($this->serializableTrace[$i]['args']);
         }
 
-        if ($e->getPrevious()) {
-            $this->previous = new self($e->getPrevious());
+        if ($t->getPrevious()) {
+            $this->previous = new self($t->getPrevious());
         }
     }
 

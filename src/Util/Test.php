@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 /**
  * Test helpers.
  *
@@ -289,11 +291,16 @@ class PHPUnit_Util_Test
      */
     public static function getExpectedException($className, $methodName)
     {
-        $reflector  = new ReflectionMethod($className, $methodName);
-        $docComment = $reflector->getDocComment();
-        $docComment = substr($docComment, 3, -2);
+        $reflector = new ReflectionMethod($className, $methodName);
+        $docblock  = $reflector->getDocComment();
 
-        if (preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
+        if ($docblock === false) {
+            return false;
+        }
+
+        $docblock = substr($docblock, 3, -2);
+
+        if (preg_match(self::REGEX_EXPECTED_EXCEPTION, $docblock, $matches)) {
             $annotations = self::parseTestMethodAnnotations(
                 $className,
                 $methodName
@@ -546,6 +553,11 @@ class PHPUnit_Util_Test
     private static function parseAnnotations($docblock)
     {
         $annotations = [];
+
+        if ($docblock === false) {
+            return $annotations;
+        }
+
         // Strip away the docblock header and footer to ease parsing of one line annotations
         $docblock = substr($docblock, 3, -2);
 
@@ -1057,7 +1069,9 @@ class PHPUnit_Util_Test
      */
     private static function isBeforeClassMethod(ReflectionMethod $method)
     {
-        return $method->isStatic() && strpos($method->getDocComment(), '@beforeClass') !== false;
+        $docblock = $method->getDocComment();
+
+        return $docblock && $method->isStatic() && strpos($method->getDocComment(), '@beforeClass') !== false;
     }
 
     /**
@@ -1069,7 +1083,9 @@ class PHPUnit_Util_Test
      */
     private static function isBeforeMethod(ReflectionMethod $method)
     {
-        return preg_match('/@before\b/', $method->getDocComment());
+        $docblock = $method->getDocComment();
+
+        return $docblock && preg_match('/@before\b/', $docblock);
     }
 
     /**
@@ -1081,7 +1097,9 @@ class PHPUnit_Util_Test
      */
     private static function isAfterClassMethod(ReflectionMethod $method)
     {
-        return $method->isStatic() && strpos($method->getDocComment(), '@afterClass') !== false;
+        $docblock = $method->getDocComment();
+
+        return $docblock && $method->isStatic() && strpos($method->getDocComment(), '@afterClass') !== false;
     }
 
     /**
@@ -1093,6 +1111,8 @@ class PHPUnit_Util_Test
      */
     private static function isAfterMethod(ReflectionMethod $method)
     {
-        return preg_match('/@after\b/', $method->getDocComment());
+        $docblock = $method->getDocComment();
+
+        return $docblock && preg_match('/@after\b/', $method->getDocComment());
     }
 }

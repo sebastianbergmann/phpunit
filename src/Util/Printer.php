@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 /**
  * Utility class that can print to STDOUT or write to a file.
  *
@@ -161,12 +163,8 @@ class PHPUnit_Util_Printer
      *
      * @since  Method available since Release 3.3.0
      */
-    public function setAutoFlush($autoFlush)
+    public function setAutoFlush(bool $autoFlush)
     {
-        if (is_bool($autoFlush)) {
-            $this->autoFlush = $autoFlush;
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
-        }
+        $this->autoFlush = $autoFlush;
     }
 }

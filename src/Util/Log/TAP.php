@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 /**
  * A TestListener that generates a logfile of the
  * test execution using the Test Anything Protocol (TAP).

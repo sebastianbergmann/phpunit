@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * Constraint that checks if one value is equal to another.
  *
@@ -57,28 +59,10 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      * @param int   $maxDepth
      * @param bool  $canonicalize
      * @param bool  $ignoreCase
-     *
-     * @throws PHPUnit_Framework_Exception
      */
-    public function __construct($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public function __construct($value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false)
     {
         parent::__construct();
-
-        if (!is_numeric($delta)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'numeric');
-        }
-
-        if (!is_int($maxDepth)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'integer');
-        }
-
-        if (!is_bool($canonicalize)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
-        }
-
-        if (!is_bool($ignoreCase)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'boolean');
-        }
 
         $this->value        = $value;
         $this->delta        = $delta;
@@ -97,12 +81,10 @@ class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param mixed  $other        Value or object to evaluate.
-     * @param string $description  Additional information about the test
-     * @param bool   $returnResult Whether to return a result or throw an exception
-     *
+     * @param  mixed                                        $other        Value or object to evaluate.
+     * @param  string                                       $description  Additional information about the test
+     * @param  bool                                         $returnResult Whether to return a result or throw an exception
      * @return mixed
-     *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
     public function evaluate($other, $description = '', $returnResult = false)

@@ -41,16 +41,6 @@ class PHPUnit_Util_PHPTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($phpMock->useStderrRedirection());
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage Argument #1 (No Value) of PHPUnit_Util_PHP::setUseStderrRedirection() must be a boolean
-     */
-    public function testShouldThrowsExceptionWhenStderrRedirectionVariableIsNotABoolean()
-    {
-        $phpMock = $this->getMockForAbstractClass('PHPUnit_Util_PHP');
-        $phpMock->setUseStderrRedirection(null);
-    }
-
     public function testShouldUseGivenSettingsToCreateCommand()
     {
         $phpMock = $this->getMockForAbstractClass('PHPUnit_Util_PHP');

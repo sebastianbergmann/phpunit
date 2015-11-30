@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
  *
@@ -510,8 +512,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     $data = self::skipTest($className, $name, $message);
                 } catch (Throwable $_t) {
                     $t = $_t;
-                } catch (Exception $_t) {
-                    $t = $_t;
                 }
 
                 if (isset($t)) {
@@ -712,8 +712,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             return $result;
         } catch (Throwable $_t) {
             $t = $_t;
-        } catch (Exception $_t) {
-            $t = $_t;
         }
 
         if (isset($t)) {
@@ -905,10 +903,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         // @scenario on TestCase::testMethod()
         // @test     on TestCase::testMethod()
-        $doc_comment = $method->getDocComment();
+        $docblock = $method->getDocComment();
 
-        return strpos($doc_comment, '@test')     !== false ||
-               strpos($doc_comment, '@scenario') !== false;
+        return $docblock &&
+               (strpos($docblock, '@test') !== false || strpos($docblock, '@scenario') !== false);
     }
 
     /**
