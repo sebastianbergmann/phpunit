@@ -23,7 +23,7 @@ class PHPUnit_Util_Filter
      *
      * @return string
      */
-    public static function getFilteredStacktrace(Exception $e, $asString = true)
+    public static function getFilteredStacktrace($e, $asString = true)
     {
         $prefix = false;
         $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);

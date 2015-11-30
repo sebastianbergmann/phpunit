@@ -84,6 +84,7 @@ class RequirementsTest extends PHPUnit_Framework_TestCase
      * @requires function testFuncTwo
      * @requires extension testExtOne
      * @requires extension testExtTwo
+     * @requires extension testExtThree 2.0
      */
     public function testAllPossibleRequirements()
     {
@@ -143,6 +144,13 @@ class RequirementsTest extends PHPUnit_Framework_TestCase
      * @requires	  OS	  .*
      */
     public function testSpace()
+    {
+    }
+
+    /**
+     * @requires extension testExt 1.8.0
+     */
+    public function testSpecificExtensionVersion()
     {
     }
 }
