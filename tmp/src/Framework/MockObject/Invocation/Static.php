@@ -135,7 +135,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
             default:
                 $generator = new PHPUnit_Framework_MockObject_Generator;
 
-                return $generator->getMock($this->returnType);
+                return $generator->getMock($this->returnType, [], [], '', false);
         }
     }
 
