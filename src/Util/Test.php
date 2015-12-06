@@ -188,7 +188,7 @@ class PHPUnit_Util_Test
         if ($count = preg_match_all(self::REGEX_REQUIRES_VERSION, $docComment, $matches)) {
             for ($i = 0; $i < $count; $i++) {
                 $requires[$matches['name'][$i]] = [
-                    'version' => $matches['version'][$i],
+                    'version'  => $matches['version'][$i],
                     'operator' => $matches['operator'][$i]
                 ];
             }
@@ -208,7 +208,7 @@ class PHPUnit_Util_Test
                     continue;
                 }
                 $requires['extension_versions'][$matches['value'][$i]] = [
-                    'version' => $matches['version'][$i],
+                    'version'  => $matches['version'][$i],
                     'operator' => $matches['operator'][$i]
                 ];
             }

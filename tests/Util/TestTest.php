@@ -139,7 +139,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             ['testThree',  ['PHP'        => ['version' => '2.0', 'operator' => '']]],
             ['testFour',   [
                 'PHPUnit'    => ['version' => '2.0', 'operator' => ''],
-                'PHP' => ['version' => '1.0', 'operator' => '']]
+                'PHP'        => ['version' => '1.0', 'operator' => '']]
             ],
             ['testFive',   ['PHP'        => ['version' => '5.4.0RC6', 'operator' => '']]],
             ['testSix',    ['PHP'        => ['version' => '5.4.0-alpha1', 'operator' => '']]],
@@ -273,49 +273,49 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             ],
             ['testExtensionVersionOperatorLessThanEquals',
                 [
-                    'extensions' => ['testExtOne'],
+                    'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '<=']]
                 ]
             ],
             ['testExtensionVersionOperatorGreaterThan',
                 [
-                    'extensions' => ['testExtOne'],
+                    'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>']]
                 ]
             ],
             ['testExtensionVersionOperatorGreaterThanEquals',
                 [
-                    'extensions' => ['testExtOne'],
+                    'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']]
                 ]
             ],
             ['testExtensionVersionOperatorEquals',
                 [
-                    'extensions' => ['testExtOne'],
+                    'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '=']]
                 ]
             ],
             ['testExtensionVersionOperatorDoubleEquals',
                 [
-                    'extensions' => ['testExtOne'],
+                    'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '==']]
                 ]
             ],
             ['testExtensionVersionOperatorBangEquals',
                 [
-                    'extensions' => ['testExtOne'],
+                    'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '!=']]
                 ]
             ],
             ['testExtensionVersionOperatorNotEquals',
                 [
-                    'extensions' => ['testExtOne'],
+                    'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '<>']]
                 ]
             ],
             ['testExtensionVersionOperatorNoSpace',
                 [
-                    'extensions' => ['testExtOne'],
+                    'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']]
                 ]
             ],
