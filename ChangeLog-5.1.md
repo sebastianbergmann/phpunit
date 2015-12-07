@@ -2,7 +2,13 @@
 
 All notable changes of the PHPUnit 5.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.1.1] - 2015-12-DD
+## [5.1.2] - 2015-12-07
+
+### Fixed
+
+* Fixed a backwards compatibility break related to the execution order of `@before` and `setUp()` introduced in PHPUnit 5.1.0
+
+## [5.1.1] - 2015-12-07
 
 ### Fixed
 
@@ -18,11 +24,7 @@ All notable changes of the PHPUnit 5.1 release series are documented in this fil
 * Merged [#1871](https://github.com/sebastianbergmann/phpunit/issues/1871): Added support for `@testdox` annotations on classes
 * Merged [#1917](https://github.com/sebastianbergmann/phpunit/issues/1917): Allow `@coversDefaultClass` annotation to work on traits
 
-### Changed
-
-* `setUpBeforeClass()` is now invoked after all methods annotated with `@beforeClass`
-* `setUp()` is now invoked after all methods annotated with `@before`
-
+[5.1.2]: https://github.com/sebastianbergmann/phpunit/compare/5.1.1...5.1.2
 [5.1.1]: https://github.com/sebastianbergmann/phpunit/compare/5.1.0...5.1.1
 [5.1.0]: https://github.com/sebastianbergmann/phpunit/compare/5.0...5.1.0
 
