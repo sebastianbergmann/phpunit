@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 5.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.0.10] - 2015-MM-DD
+## [5.0.10] - 2015-11-30
 
 ### Fixed
 
