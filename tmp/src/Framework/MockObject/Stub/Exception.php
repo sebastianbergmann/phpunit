@@ -21,6 +21,7 @@ class PHPUnit_Framework_MockObject_Stub_Exception implements PHPUnit_Framework_M
 
     public function __construct($exception)
     {
+        // TODO Replace check with type declaration when support for PHP 5 is dropped
         if (!$exception instanceof Throwable && !$exception instanceof Exception) {
             throw new PHPUnit_Framework_Exception(
                 'Exception must be an instance of Throwable (PHP 7) or Exception (PHP 5)'
