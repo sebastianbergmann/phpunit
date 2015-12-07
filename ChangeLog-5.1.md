@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.1.1] - 2015-12-DD
+
+### Fixed
+
+* Fixed a backwards compatibility break in the `PHPUnit_Framework_TestListener` interface introduced in PHPUnit 5.1.0
+
 ## [5.1.0] - 2015-12-04
 
 ### Added
@@ -17,5 +23,6 @@ All notable changes of the PHPUnit 5.1 release series are documented in this fil
 * `setUpBeforeClass()` is now invoked after all methods annotated with `@beforeClass`
 * `setUp()` is now invoked after all methods annotated with `@before`
 
+[5.1.1]: https://github.com/sebastianbergmann/phpunit/compare/5.1.0...5.1.1
 [5.1.0]: https://github.com/sebastianbergmann/phpunit/compare/5.0...5.1.0
 
