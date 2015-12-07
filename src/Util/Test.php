@@ -804,17 +804,11 @@ class PHPUnit_Util_Test
 
                 foreach ($class->getMethods() as $method) {
                     if (self::isBeforeClassMethod($method)) {
-                        array_unshift(
-                            self::$hookMethods[$className]['beforeClass'],
-                            $method->getName()
-                        );
+                        self::$hookMethods[$className]['beforeClass'][] = $method->getName();
                     }
 
                     if (self::isBeforeMethod($method)) {
-                        array_unshift(
-                            self::$hookMethods[$className]['before'],
-                            $method->getName()
-                        );
+                        self::$hookMethods[$className]['before'][] = $method->getName();
                     }
 
                     if (self::isAfterMethod($method)) {
