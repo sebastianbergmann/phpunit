@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 5.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.1.1] - 2015-12-DD
+## [5.1.1] - 2015-12-07
 
 ### Fixed
 
