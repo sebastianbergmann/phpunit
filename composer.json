@@ -45,6 +45,11 @@
         "ext-reflection": "*",
         "ext-spl": "*"
     },
+    "config": {
+        "platform": {
+            "php": "5.6.0"
+        }
+    },
     "suggest": {
         "phpunit/php-invoker": "~1.1"
     },
