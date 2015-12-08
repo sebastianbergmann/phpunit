@@ -826,6 +826,11 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetMockForClassWithSelfTypeHint()
+    {
+        $this->getMock('ClassWithSelfTypeHint');
+    }
+
     private function resetMockObjects()
     {
         $refl = new ReflectionObject($this);
