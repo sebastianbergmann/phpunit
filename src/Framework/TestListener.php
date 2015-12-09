@@ -32,7 +32,9 @@ interface PHPUnit_Framework_TestListener
      * @param float                     $time
      *
      * @since Method available since Release 6.0.0
+     *
      * @todo  Uncomment in time for PHPUnit 6.0.0
+     *
      * @see   https://github.com/sebastianbergmann/phpunit/pull/1840#issuecomment-162535997
      */
 //  public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time);
