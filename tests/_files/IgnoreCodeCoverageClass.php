@@ -8,7 +8,7 @@ class IgnoreCodeCoverageClass
     {
         return true;
     }
-    
+
     public function returnFalse()
     {
         return false;
