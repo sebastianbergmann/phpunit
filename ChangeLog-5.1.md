@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.1.4] - 2015-12-DD
+
+* Fixed [#1959](https://github.com/sebastianbergmann/phpunit/issues/1959): Prophecy errors are not handled correctly
+
+### Fixed
+
 ## [5.1.3] - 2015-12-10
 
 ### Added
@@ -30,6 +36,7 @@ All notable changes of the PHPUnit 5.1 release series are documented in this fil
 * Merged [#1871](https://github.com/sebastianbergmann/phpunit/issues/1871): Added support for `@testdox` annotations on classes
 * Merged [#1917](https://github.com/sebastianbergmann/phpunit/issues/1917): Allow `@coversDefaultClass` annotation to work on traits
 
+[5.1.4]: https://github.com/sebastianbergmann/phpunit/compare/5.1.3...5.1.4
 [5.1.3]: https://github.com/sebastianbergmann/phpunit/compare/5.1.2...5.1.3
 [5.1.2]: https://github.com/sebastianbergmann/phpunit/compare/5.1.1...5.1.2
 [5.1.1]: https://github.com/sebastianbergmann/phpunit/compare/5.1.0...5.1.1
