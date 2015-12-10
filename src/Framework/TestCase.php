@@ -1009,7 +1009,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 $this->prophet->checkPredictions();
             } catch (Throwable $t) {
                 /* Intentionally left empty */
-            } catch (Exception $e) {
+            } catch (Exception $t) {
                 /* Intentionally left empty */
             }
 
@@ -1021,8 +1021,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 }
             }
 
-            if (isset($e)) {
-                throw $e;
+            if (isset($t)) {
+                throw $t;
             }
         }
     }
