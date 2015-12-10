@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.1.3] - 2015-12-DD
+
+### Added
+
+* Added support for `Throwable` to `PHPUnit_Framework_TestCase::throwsException()`
+
 ## [5.1.2] - 2015-12-07
 
 ### Fixed
