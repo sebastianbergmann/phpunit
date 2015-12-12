@@ -23,15 +23,6 @@ if ($execute) {
         die(1);
     }
 
-    if (PHP_MAJOR_VERSION === 7) {
-        fwrite(
-            STDERR,
-            'This version of PHPUnit is not supported on PHP 7.' . PHP_EOL
-        );
-
-        die(1);
-    }
-
     if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
         print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
         exit;

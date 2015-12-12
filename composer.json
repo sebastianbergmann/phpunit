@@ -21,7 +21,7 @@
         "irc": "irc://irc.freenode.net/phpunit"
     },
     "require": {
-        "php": "~5.3.3|~5.4|~5.5|~5.6",
+        "php": ">=5.3.3",
         "phpunit/php-file-iterator": "~1.4",
         "phpunit/php-text-template": "~1.2",
         "phpunit/php-code-coverage": "~2.1",
