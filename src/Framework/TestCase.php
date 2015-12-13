@@ -454,31 +454,32 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param  mixed      $exception
-     * @param  string     $message
-     * @param  int|string $code
+     * @param mixed      $exception
+     * @param string     $message
+     * @param int|string $code
      *
      * @throws PHPUnit_Framework_Exception
      *
      * @since  Method available since Release 3.2.0
+     * @deprecated
      */
     public function setExpectedException($exception, $message = '', $code = null)
     {
         $this->expectedException = $exception;
 
         if ($message !== '') {
-            $this->setExpectedExceptionMessage($message);
+            $this->expectExceptionMessage($message);
         }
 
         if ($code !== null) {
-            $this->setExpectedExceptionCode($code);
+            $this->expectExceptionCode($code);
         }
     }
 
     /**
-     * @param  mixed  $exception
-     * @param  string $messageRegExp
-     * @param  int    $code
+     * @param mixed  $exception
+     * @param string $messageRegExp
+     * @param int    $code
      *
      * @throws PHPUnit_Framework_Exception
      *
@@ -494,18 +495,28 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->expectedExceptionMessageRegExp = $messageRegExp;
 
         if ($code !== null) {
-            $this->setExpectedExceptionCode($code);
+            $this->expectExceptionCode($code);
         }
     }
 
     /**
-     * @param  int|string $code
+     * @param mixed $exception
+     *
+     * @since  Method available since Release 5.2.0
+     */
+    public function expectException($exception)
+    {
+        $this->expectedException = $exception;
+    }
+
+    /**
+     * @param int|string $code
      *
      * @throws PHPUnit_Framework_Exception
      *
      * @since  Method available since Release 5.2.0
      */
-    public function setExpectedExceptionCode($code)
+    public function expectExceptionCode($code)
     {
         if (!is_int($code) && !is_string($code)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer or string');
@@ -515,19 +526,35 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param  string $message
+     * @param string $message
      *
      * @throws PHPUnit_Framework_Exception
      *
      * @since  Method available since Release 5.2.0
      */
-    public function setExpectedExceptionMessage($message)
+    public function expectExceptionMessage($message)
     {
         if (!is_string($message)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
         $this->expectedExceptionMessage = $message;
+    }
+
+    /**
+     * @param string $messageRegExp
+     *
+     * @throws PHPUnit_Framework_Exception
+     *
+     * @since  Method available since Release 5.2.0
+     */
+    public function expectExceptionMessageRegExp($messageRegExp)
+    {
+        if (!is_string($messageRegExp)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->expectedExceptionMessageRegExp = $messageRegExp;
     }
 
     /**
@@ -542,18 +569,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
 
             if ($expectedException !== false) {
-                $this->setExpectedException(
-                    $expectedException['class'],
-                    $expectedException['message'],
-                    $expectedException['code']
-                );
+                $this->expectException($expectedException['class']);
 
-                if (!empty($expectedException['message_regex'])) {
-                    $this->setExpectedExceptionRegExp(
-                        $expectedException['class'],
-                        $expectedException['message_regex'],
-                        $expectedException['code']
-                    );
+                if ($expectedException['code'] !== null) {
+                    $this->expectExceptionCode($expectedException['code']);
+                }
+
+                if ($expectedException['message'] !== '') {
+                    $this->expectExceptionMessage($expectedException['message']);
+                } elseif ($expectedException['message_regex'] !== '') {
+                    $this->expectExceptionMessageRegExp($expectedException['message_regex']);
                 }
             }
         } catch (ReflectionException $e) {
