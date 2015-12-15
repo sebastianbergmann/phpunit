@@ -82,6 +82,7 @@ class PHPUnit_TextUI_Command
         'fail-on-warning'         => null,
         'fail-on-risky'           => null,
         'strict-coverage'         => null,
+        'disable-coverage-ignore' => null,
         'strict-global-state'     => null,
         'tap'                     => null,
         'teamcity'                => null,
@@ -485,6 +486,10 @@ class PHPUnit_TextUI_Command
 
                 case '--strict-coverage':
                     $this->arguments['strictCoverage'] = true;
+                    break;
+
+                case '--disable-coverage-ignore':
+                    $this->arguments['disableCodeCoverageIgnore'] = true;
                     break;
 
                 case '--strict-global-state':
@@ -925,6 +930,7 @@ Code Coverage Options:
                             Default: Standard output.
   --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
   --whitelist <dir>         Whitelist <dir> for code coverage analysis.
+  --disable-coverage-ignore Disable annotations for ignoring code coverage.
 
 Logging Options:
 
