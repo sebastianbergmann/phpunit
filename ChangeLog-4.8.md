@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.21] - 2015-12-12
+
+### Changed
+
+* Reverted the changes introduced in PHPUnit 4.8.20 as the only thing the new version constraint in `composer.json` achieved was locking PHP 7 users to PHPUnit 4.8.19
+
 ## [4.8.20] - 2015-12-10
 
 ### Changed
@@ -150,6 +156,7 @@ New PHAR release due to updated dependencies
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.21]: https://github.com/sebastianbergmann/phpunit/compare/4.8.20...4.8.21
 [4.8.20]: https://github.com/sebastianbergmann/phpunit/compare/4.8.19...4.8.20
 [4.8.19]: https://github.com/sebastianbergmann/phpunit/compare/4.8.18...4.8.19
 [4.8.18]: https://github.com/sebastianbergmann/phpunit/compare/4.8.17...4.8.18
