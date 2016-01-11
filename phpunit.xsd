@@ -196,7 +196,6 @@
     <xs:attribute name="convertNoticesToExceptions" type="xs:boolean" default="true"/>
     <xs:attribute name="convertWarningsToExceptions" type="xs:boolean" default="true"/>
     <xs:attribute name="forceCoversAnnotation" type="xs:boolean" default="false"/>
-    <xs:attribute name="mapTestClassNameToCoveredClassName" type="xs:boolean" default="false"/>
     <xs:attribute name="printerClass" type="xs:string" default="PHPUnit_TextUI_ResultPrinter"/>
     <xs:attribute name="printerFile" type="xs:anyURI"/>
     <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>

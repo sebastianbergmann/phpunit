@@ -26,7 +26,6 @@
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
  *          forceCoversAnnotation="false"
- *          mapTestClassNameToCoveredClassName="false"
  *          printerClass="PHPUnit_TextUI_ResultPrinter"
  *          processIsolation="false"
  *          stopOnError="false"
@@ -608,13 +607,6 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('forceCoversAnnotation')) {
             $result['forceCoversAnnotation'] = $this->getBoolean(
                 (string) $root->getAttribute('forceCoversAnnotation'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('mapTestClassNameToCoveredClassName')) {
-            $result['mapTestClassNameToCoveredClassName'] = $this->getBoolean(
-                (string) $root->getAttribute('mapTestClassNameToCoveredClassName'),
                 false
             );
         }
