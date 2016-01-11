@@ -372,12 +372,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
             }
 
-            if (isset($arguments['mapTestClassNameToCoveredClassName'])) {
-                $codeCoverage->setMapTestClassNameToCoveredClassName(
-                    $arguments['mapTestClassNameToCoveredClassName']
-                );
-            }
-
             if (isset($arguments['disableCodeCoverageIgnore'])) {
                 $codeCoverage->setDisableIgnoredLines(true);
             }
@@ -815,11 +809,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($phpunitConfiguration['forceCoversAnnotation']) &&
                 !isset($arguments['forceCoversAnnotation'])) {
                 $arguments['forceCoversAnnotation'] = $phpunitConfiguration['forceCoversAnnotation'];
-            }
-
-            if (isset($phpunitConfiguration['mapTestClassNameToCoveredClassName']) &&
-                !isset($arguments['mapTestClassNameToCoveredClassName'])) {
-                $arguments['mapTestClassNameToCoveredClassName'] = $phpunitConfiguration['mapTestClassNameToCoveredClassName'];
             }
 
             if (isset($phpunitConfiguration['disableCodeCoverageIgnore']) &&
