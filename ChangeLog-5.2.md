@@ -16,6 +16,7 @@ All notable changes of the PHPUnit 5.2 release series are documented in this fil
 ### Changed
 
 * Deprecated `PHPUnit_Framework_TestCase::setExpectedException()`
+* Deprecated the `checkForUnintentionallyCoveredCode` configuration setting (use `beStrictAboutCoversAnnotation` instead)
 
 ### Removed
 

@@ -22,7 +22,7 @@
          beStrictAboutResourceUsageDuringSmallTests="false"
          beStrictAboutTestsThatDoNotTestAnything="false"
          beStrictAboutTodoAnnotatedTests="false"
-         checkForUnintentionallyCoveredCode="false"
+         beStrictAboutCoversAnnotation="false"
          enforceTimeLimit="false"
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
