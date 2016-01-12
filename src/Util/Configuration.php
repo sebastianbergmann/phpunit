@@ -38,6 +38,7 @@
  *          failOnRisky="false"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
  *          beStrictAboutChangesToGlobalState="false"
+ *          beStrictAboutCoversAnnotation="false"
  *          beStrictAboutOutputDuringTests="false"
  *          beStrictAboutResourceUsageDuringSmallTests="false"
  *          beStrictAboutTestsThatDoNotTestAnything="false"
@@ -740,11 +741,18 @@ class PHPUnit_Util_Configuration
             );
         }
 
-        if ($root->hasAttribute('checkForUnintentionallyCoveredCode')) {
+        if ($root->hasAttribute('beStrictAboutCoversAnnotation')) {
+            $result['strictCoverage'] = $this->getBoolean(
+                (string) $root->getAttribute('beStrictAboutCoversAnnotation'),
+                false
+            );
+        } elseif ($root->hasAttribute('checkForUnintentionallyCoveredCode')) {
             $result['strictCoverage'] = $this->getBoolean(
                 (string) $root->getAttribute('checkForUnintentionallyCoveredCode'),
                 false
             );
+
+            $result['deprecatedCheckForUnintentionallyCoveredCodeSettingUsed'] = true;
         }
 
         if ($root->hasAttribute('enforceTimeLimit')) {
