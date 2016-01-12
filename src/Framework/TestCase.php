@@ -1788,6 +1788,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_Stub_Exception
      *
      * @since  Method available since Release 3.1.0
+     *
      * @todo   Add type declaration when support for PHP 5 is dropped
      */
     public static function throwException($exception)
