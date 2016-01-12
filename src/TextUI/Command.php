@@ -52,6 +52,7 @@ class PHPUnit_TextUI_Command
         'enforce-time-limit'      => null,
         'exclude-group='          => null,
         'filter='                 => null,
+        'generate-configuration'  => null,
         'group='                  => null,
         'help'                    => null,
         'include-path='           => null,
@@ -329,6 +330,55 @@ class PHPUnit_TextUI_Command
 
                 case '--testsuite':
                     $this->arguments['testsuite'] = $option[1];
+                    break;
+
+                case '--generate-configuration':
+                    $this->printVersionString();
+
+                    printf(
+                        "Generating phpunit.xml in %s\n\n",
+                        getcwd()
+                    );
+
+                    print "Bootstrap script (relative to path shown above; default: vendor/autoload.php): ";
+                    $bootstrapScript = trim(fgets(STDIN));
+
+                    print "Tests directory (relative to path shown above; default: tests): ";
+                    $testsDirectory = trim(fgets(STDIN));
+
+                    print "Source directory (relative to path shown above; default: src): ";
+                    $src = trim(fgets(STDIN));
+
+                    if ($bootstrapScript == '') {
+                        $bootstrapScript = 'vendor/autoload.php';
+                    }
+
+                    if ($testsDirectory == '') {
+                        $testsDirectory = 'tests';
+                    }
+
+                    if ($src == '') {
+                        $src = 'src';
+                    }
+
+                    $generator = new ConfigurationGenerator;
+
+                    file_put_contents(
+                        'phpunit.xml',
+                        $generator->generateDefaultConfiguration(
+                            PHPUnit_Runner_Version::series(),
+                            $bootstrapScript,
+                            $testsDirectory,
+                            $src
+                        )
+                    );
+
+                    printf(
+                        "\nGenerated phpunit.xml in %s\n",
+                        getcwd()
+                    );
+
+                    exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
                     break;
 
                 case '--group':
@@ -999,6 +1049,7 @@ Configuration Options:
   --no-coverage             Ignore code coverage configuration.
   --include-path <path(s)>  Prepend PHP's include_path with given path(s).
   -d key[=value]            Sets a php.ini value.
+  --generate-configuration  Generate configuration file with suggested settings.
 
 Miscellaneous Options:
 

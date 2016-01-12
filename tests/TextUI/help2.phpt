@@ -90,6 +90,7 @@ Configuration Options:
   --no-coverage             Ignore code coverage configuration.
   --include-path <path(s)>  Prepend PHP's include_path with given path(s).
   -d key[=value]            Sets a php.ini value.
+  --generate-configuration  Generate configuration file with suggested settings.
 
 Miscellaneous Options:
 
