@@ -61,12 +61,25 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      */
     public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
     {
+        $data = null;
+        if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
+            $cf = $e->getComparisonFailure();
+
+            if ($cf !== null) {
+                $data = [
+                    'got'      => $cf->getActual(),
+                    'expected' => $cf->getExpected()
+                ];
+            }
+        }
+
         $this->writeCase(
             'warning',
             $time,
             PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
             $e->getMessage(),
-            $test
+            $test,
+            $data
         );
 
         $this->currentTestPass = false;
@@ -223,7 +236,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * @param string                          $message
      * @param PHPUnit_Framework_TestCase|null $test
      */
-    protected function writeCase($status, $time, array $trace = [], $message = '', $test = null)
+    protected function writeCase($status, $time, array $trace = [], $message = '', $test = null, $data = null)
     {
         $output = '';
         // take care of TestSuite producing error (e.g. by running into exception) as TestSuite doesn't have hasOutput
@@ -240,6 +253,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             'trace'   => $trace,
             'message' => PHPUnit_Util_String::convertToUtf8($message),
             'output'  => $output,
+            'data'    => $data,
             ]
         );
     }
