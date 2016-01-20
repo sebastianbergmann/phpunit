@@ -654,7 +654,7 @@ EOF
         $dom2->preserveWhiteSpace = false;
         $dom2->loadXML('<root><foo/></root>');
 
-        $data = [
+        return [
             [1, 0, <<<EOF
 Failed asserting that 0 matches expected 1.
 
@@ -822,53 +822,27 @@ Failed asserting that two DateTime objects are equal.
 
 EOF
             ],
+            [$storage1, $storage2, <<<EOF
+Failed asserting that two objects are equal.
+--- Expected
++++ Actual
+@@ @@
+-SplObjectStorage Object &$storage1hash (
+-    '$ahash' => Array &0 (
+-        'obj' => stdClass Object &$ahash (
+-            'foo' => 'bar'
+-        )
++SplObjectStorage Object &$storage2hash (
++    '$bhash' => Array &0 (
++        'obj' => stdClass Object &$bhash ()
+         'inf' => null
+     )
+-    '$bhash' => Array &0
+ )
+
+EOF
+            ]
         ];
-
-        if (PHP_MAJOR_VERSION < 7) {
-            $data[] = [$storage1, $storage2, <<<EOF
-Failed asserting that two objects are equal.
---- Expected
-+++ Actual
-@@ @@
--SplObjectStorage Object &$storage1hash (
--    '$ahash' => Array &0 (
--        'obj' => stdClass Object &$ahash (
--            'foo' => 'bar'
--        )
-+SplObjectStorage Object &$storage2hash (
-+    '$bhash' => Array &0 (
-+        'obj' => stdClass Object &$bhash ()
-         'inf' => null
-     )
--    '$bhash' => Array &0
- )
-
-EOF
-            ];
-        } else {
-            $data[] = [$storage1, $storage2, <<<EOF
-Failed asserting that two objects are equal.
---- Expected
-+++ Actual
-@@ @@
--SplObjectStorage Object &$storage1hash (
--    '$ahash' => Array &0 (
--        'obj' => stdClass Object &$ahash (
--            'foo' => 'bar'
--        )
-+SplObjectStorage Object &$storage2hash (
-+    '$bhash' => Array &0 (
-+        'obj' => stdClass Object &$bhash ()
-         'inf' => null
-     )
--    '$bhash' => Array &0
- )
-
-EOF
-            ];
-        }
-
-        return $data;
     }
 
     /**

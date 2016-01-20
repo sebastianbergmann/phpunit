@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 /**
  * A TestFailure collects a failed test together with the caught exception.
  *

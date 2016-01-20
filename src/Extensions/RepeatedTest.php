@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 /**
  * A Decorator that runs a test repeatedly.
  *
@@ -26,26 +28,23 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
     protected $timesRepeat = 1;
 
     /**
-     * @param PHPUnit_Framework_Test $test
-     * @param int                    $timesRepeat
-     * @param bool                   $processIsolation
-     *
+     * @param  PHPUnit_Framework_Test      $test
+     * @param  int                         $timesRepeat
+     * @param  bool                        $processIsolation
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = false)
+    public function __construct(PHPUnit_Framework_Test $test, int $timesRepeat = 1, $processIsolation = false)
     {
-        parent::__construct($test);
-
-        if (is_integer($timesRepeat) &&
-            $timesRepeat >= 0) {
-            $this->timesRepeat = $timesRepeat;
-        } else {
+        if ($timesRepeat < 1) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
                 2,
                 'positive integer'
             );
         }
 
+        parent::__construct($test);
+
+        $this->timesRepeat      = $timesRepeat;
         $this->processIsolation = $processIsolation;
     }
 
@@ -64,10 +63,8 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * Runs the decorated test and collects the
      * result in a TestResult.
      *
-     * @param PHPUnit_Framework_TestResult $result
-     *
+     * @param  PHPUnit_Framework_TestResult $result
      * @return PHPUnit_Framework_TestResult
-     *
      * @throws PHPUnit_Framework_Exception
      */
     public function run(PHPUnit_Framework_TestResult $result = null)

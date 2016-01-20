@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 /**
  * Wrapper for PHP notices.
  * You can disable notice-to-exception conversion by setting

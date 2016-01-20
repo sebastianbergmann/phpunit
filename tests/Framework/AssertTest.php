@@ -570,15 +570,6 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertContainsOnly
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertContainsOnlyThrowsException()
-    {
-        $this->assertContainsOnly(null, null);
-    }
-
-    /**
      * @covers            PHPUnit_Framework_Assert::assertNotContainsOnly
      * @expectedException PHPUnit_Framework_Exception
      */
@@ -1341,15 +1332,6 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertFileExists
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertFileExistsThrowsException()
-    {
-        $this->assertFileExists(null);
-    }
-
-    /**
      * @covers PHPUnit_Framework_Assert::assertFileExists
      */
     public function testAssertFileExists()
@@ -1363,15 +1345,6 @@ XML;
         }
 
         $this->fail();
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertFileNotExists
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertFileNotExistsThrowsException()
-    {
-        $this->assertFileNotExists(null);
     }
 
     /**
@@ -1572,42 +1545,6 @@ XML;
         }
 
         $this->fail();
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertRegExp
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertRegExpThrowsException()
-    {
-        $this->assertRegExp(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertRegExp
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertRegExpThrowsException2()
-    {
-        $this->assertRegExp('', null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertNotRegExp
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertNotRegExpThrowsException()
-    {
-        $this->assertNotRegExp(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertNotRegExp
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertNotRegExpThrowsException2()
-    {
-        $this->assertNotRegExp('', null);
     }
 
     /**
@@ -1922,17 +1859,6 @@ XML;
      * @covers            PHPUnit_Framework_Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testReadAttribute3()
-    {
-        $this->readAttribute('StdClass', null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::readAttribute
-     * @covers            PHPUnit_Framework_Assert::getStaticAttribute
-     * @covers            PHPUnit_Framework_Assert::getObjectAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
     public function testReadAttribute4()
     {
         $this->readAttribute('NotExistingClass', 'foo');
@@ -1966,15 +1892,6 @@ XML;
      */
     public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument()
     {
-        $this->getStaticAttribute(null, 'foo');
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::getStaticAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument2()
-    {
         $this->getStaticAttribute('NotExistingClass', 'foo');
     }
 
@@ -1984,15 +1901,6 @@ XML;
      */
     public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument()
     {
-        $this->getStaticAttribute('stdClass', null);
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::getStaticAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument2()
-    {
         $this->getStaticAttribute('stdClass', '0');
     }
 
@@ -2000,7 +1908,7 @@ XML;
      * @covers PHPUnit_Framework_Assert::getStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument3()
+    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument2()
     {
         $this->getStaticAttribute('stdClass', 'foo');
     }
@@ -2019,15 +1927,6 @@ XML;
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument()
-    {
-        $this->getObjectAttribute(new stdClass, null);
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::getObjectAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument2()
     {
         $this->getObjectAttribute(new stdClass, '0');
     }
@@ -2476,45 +2375,9 @@ XML;
      * @covers            PHPUnit_Framework_Assert::assertClassHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassHasAttributeThrowsException()
-    {
-        $this->assertClassHasAttribute(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertClassHasAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertClassHasAttributeThrowsException2()
-    {
-        $this->assertClassHasAttribute('foo', null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertClassHasAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
     public function testAssertClassHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
     {
         $this->assertClassHasAttribute('1', 'ClassWithNonPublicAttributes');
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertClassNotHasAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertClassNotHasAttributeThrowsException()
-    {
-        $this->assertClassNotHasAttribute(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertClassNotHasAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertClassNotHasAttributeThrowsException2()
-    {
-        $this->assertClassNotHasAttribute('foo', null);
     }
 
     /**
@@ -2530,45 +2393,9 @@ XML;
      * @covers            PHPUnit_Framework_Assert::assertClassHasStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
-    public function testAssertClassHasStaticAttributeThrowsException()
-    {
-        $this->assertClassHasStaticAttribute(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertClassHasStaticAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertClassHasStaticAttributeThrowsException2()
-    {
-        $this->assertClassHasStaticAttribute('foo', null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertClassHasStaticAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
     public function testAssertClassHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid()
     {
         $this->assertClassHasStaticAttribute('1', 'ClassWithNonPublicAttributes');
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertClassNotHasStaticAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertClassNotHasStaticAttributeThrowsException()
-    {
-        $this->assertClassNotHasStaticAttribute(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertClassNotHasStaticAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertClassNotHasStaticAttributeThrowsException2()
-    {
-        $this->assertClassNotHasStaticAttribute('foo', null);
     }
 
     /**
@@ -2586,34 +2413,7 @@ XML;
      */
     public function testAssertObjectHasAttributeThrowsException()
     {
-        $this->assertObjectHasAttribute(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertObjectHasAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertObjectHasAttributeThrowsException2()
-    {
         $this->assertObjectHasAttribute('foo', null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertObjectHasAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertObjectHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
-    {
-        $this->assertObjectHasAttribute('1', 'ClassWithNonPublicAttributes');
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertObjectNotHasAttribute
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertObjectNotHasAttributeThrowsException()
-    {
-        $this->assertObjectNotHasAttribute(null, null);
     }
 
     /**
@@ -3265,78 +3065,6 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertStringStartsWith
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringStartsWithThrowsException()
-    {
-        $this->assertStringStartsWith(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertStringStartsWith
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringStartsWithThrowsException2()
-    {
-        $this->assertStringStartsWith('', null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertStringStartsNotWith
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringStartsNotWithThrowsException()
-    {
-        $this->assertStringStartsNotWith(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertStringStartsNotWith
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringStartsNotWithThrowsException2()
-    {
-        $this->assertStringStartsNotWith('', null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertStringEndsWith
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringEndsWithThrowsException()
-    {
-        $this->assertStringEndsWith(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertStringEndsWith
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringEndsWithThrowsException2()
-    {
-        $this->assertStringEndsWith('', null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertStringEndsNotWith
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringEndsNotWithThrowsException()
-    {
-        $this->assertStringEndsNotWith(null, null);
-    }
-
-    /**
-     * @covers            PHPUnit_Framework_Assert::assertStringEndsNotWith
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringEndsNotWithThrowsException2()
-    {
-        $this->assertStringEndsNotWith('', null);
-    }
-
-    /**
      * @covers PHPUnit_Framework_Assert::assertStringStartsWith
      */
     public function testAssertStringStartsWith()
@@ -3402,24 +3130,6 @@ XML;
 
     /**
      * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringMatchesFormatRaisesExceptionForInvalidFirstArgument()
-    {
-        $this->assertStringMatchesFormat(null, '');
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringMatchesFormatRaisesExceptionForInvalidSecondArgument()
-    {
-        $this->assertStringMatchesFormat('', null);
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
      */
     public function testAssertStringMatchesFormat()
     {
@@ -3433,24 +3143,6 @@ XML;
     public function testAssertStringMatchesFormatFailure()
     {
         $this->assertStringMatchesFormat('*%s*', '**');
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormat
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidFirstArgument()
-    {
-        $this->assertStringNotMatchesFormat(null, '');
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormat
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidSecondArgument()
-    {
-        $this->assertStringNotMatchesFormat('', null);
     }
 
     /**
@@ -3608,22 +3300,6 @@ XML;
     /**
      * @covers PHPUnit_Framework_Assert::assertCount
      */
-    public function testAssertCountThrowsExceptionIfExpectedCountIsNoInteger()
-    {
-        try {
-            $this->assertCount('a', []);
-        } catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #1 (No Value) of PHPUnit_Framework_Assert::assertCount() must be a integer', $e->getMessage());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertCount
-     */
     public function testAssertCountThrowsExceptionIfElementIsNotCountable()
     {
         try {
@@ -3662,24 +3338,6 @@ XML;
         }
 
         $this->fail();
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertNotCount
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertNotCountThrowsExceptionIfExpectedCountIsNoInteger()
-    {
-        $this->assertNotCount('a', []);
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertNotCount
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertNotCountThrowsExceptionIfElementIsNotCountable()
-    {
-        $this->assertNotCount(2, '');
     }
 
     /**
@@ -3777,15 +3435,6 @@ XML;
 
     /**
      * @covers PHPUnit_Framework_Assert::assertJson
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertJsonRaisesExceptionForInvalidArgument()
-    {
-        $this->assertJson(null);
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertJson
      */
     public function testAssertJson()
     {
@@ -3878,20 +3527,6 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile
-     */
-    public function testAssertJsonStringEqualsJsonFileExpectingException()
-    {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        try {
-            $this->assertJsonStringEqualsJsonFile($file, null);
-        } catch (PHPUnit_Framework_Exception $e) {
-            return;
-        }
-        $this->fail('Expected Exception not thrown.');
-    }
-
-    /**
      * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonFile
      */
     public function testAssertJsonStringNotEqualsJsonFile()
@@ -3900,20 +3535,6 @@ XML;
         $actual  = json_encode(['Mascott' => 'Beastie']);
         $message = '';
         $this->assertJsonStringNotEqualsJsonFile($file, $actual, $message);
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonFile
-     */
-    public function testAssertJsonStringNotEqualsJsonFileExpectingException()
-    {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        try {
-            $this->assertJsonStringNotEqualsJsonFile($file, null);
-        } catch (PHPUnit_Framework_Exception $e) {
-            return;
-        }
-        $this->fail('Expected exception not found.');
     }
 
     /**
@@ -3954,15 +3575,6 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertInstanceOf
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertInstanceOfThrowsExceptionForInvalidArgument()
-    {
-        $this->assertInstanceOf(null, new stdClass);
-    }
-
-    /**
      * @covers PHPUnit_Framework_Assert::assertAttributeInstanceOf
      */
     public function testAssertAttributeInstanceOf()
@@ -3987,15 +3599,6 @@ XML;
         }
 
         $this->fail();
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertNotInstanceOf
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertNotInstanceOfThrowsExceptionForInvalidArgument()
-    {
-        $this->assertNotInstanceOf(null, new stdClass);
     }
 
     /**
@@ -4042,15 +3645,6 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertInternalType
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertInternalTypeThrowsExceptionForInvalidArgument()
-    {
-        $this->assertInternalType(null, 1);
-    }
-
-    /**
      * @covers PHPUnit_Framework_Assert::assertAttributeInternalType
      */
     public function testAssertAttributeInternalType()
@@ -4078,15 +3672,6 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotInternalType
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertNotInternalTypeThrowsExceptionForInvalidArgument()
-    {
-        $this->assertNotInternalType(null, 1);
-    }
-
-    /**
      * @covers PHPUnit_Framework_Assert::assertAttributeNotInternalType
      */
     public function testAssertAttributeNotInternalType()
@@ -4104,15 +3689,6 @@ XML;
     public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument()
     {
         $this->assertStringMatchesFormatFile('not_existing_file', '');
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormatFile
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument2()
-    {
-        $this->assertStringMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', null);
     }
 
     /**
@@ -4138,15 +3714,6 @@ XML;
     public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument()
     {
         $this->assertStringNotMatchesFormatFile('not_existing_file', '');
-    }
-
-    /**
-     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormatFile
-     * @expectedException PHPUnit_Framework_Exception
-     */
-    public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument2()
-    {
-        $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', null);
     }
 
     /**

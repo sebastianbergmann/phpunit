@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+declare (strict_types=1);
+
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
@@ -665,9 +667,6 @@ class PHPUnit_TextUI_Command
             } catch (Throwable $e) {
                 print $e->getMessage() . "\n";
                 exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
-            } catch (Exception $e) {
-                print $e->getMessage() . "\n";
-                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
             }
 
             $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
@@ -926,8 +925,6 @@ class PHPUnit_TextUI_Command
             rename($tempFilename, $localFilename);
             unlink($caFile);
         } catch (Throwable $_e) {
-            $e = $_e;
-        } catch (Exception $_e) {
             $e = $_e;
         }
 
