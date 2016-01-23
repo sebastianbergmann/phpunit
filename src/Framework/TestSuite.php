@@ -899,8 +899,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public static function isTestMethod(ReflectionMethod $method)
     {
-        if (strpos($method->name, 'test') === 0) {
-            return true;
+        $testMethodPrefixes = ['test', 'it_', 'its_'];
+
+        foreach ($testMethodPrefixes as $prefix) {
+            if (strpos($method->name, $prefix) === 0) {
+                return true;
+            }
         }
 
         // @scenario on TestCase::testMethod()
