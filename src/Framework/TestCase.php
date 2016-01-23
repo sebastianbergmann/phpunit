@@ -2369,4 +2369,26 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
         }
     }
+
+    /**
+     * Call a protected or private method on an object. Useful to unit test methods which are tagged as protected and
+     * private.
+     *
+     * @param mixed $object
+     * @param string $methodName
+     * @param array $methodArgs
+     * @return mixed
+     */
+    protected static function callNonPublicMethod($object, $methodName, $methodArgs = array())
+    {
+        $objectClassName = get_class($object);
+        $reflectionMethod = new \ReflectionMethod(
+            $objectClassName,
+            $methodName
+        );
+        // Coerce to being a public function.
+        $reflectionMethod->setAccessible(true);
+        $result = $reflectionMethod->invokeArgs($object, $methodArgs);
+        return $result;
+    }
 }
