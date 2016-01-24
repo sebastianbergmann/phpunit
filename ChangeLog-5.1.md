@@ -4,9 +4,14 @@ All notable changes of the PHPUnit 5.1 release series are documented in this fil
 
 ## [5.1.5] - 2016-MM-DD
 
+### Fixed
+
+* An exception is now raised when non-existant directories or files are to be added to the code coverage whitelist
 * Fixed a bug in `PHPUnit_Runner_Version::series()`
 
 ## [5.1.4] - 2016-01-11
+
+### Fixed
 
 * Fixed [#1959](https://github.com/sebastianbergmann/phpunit/issues/1959): Prophecy errors are not handled correctly
 
