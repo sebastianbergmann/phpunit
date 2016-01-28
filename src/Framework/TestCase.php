@@ -13,6 +13,7 @@ use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Exporter\Exporter;
+use SebastianBergmann\ObjectEnumerator\Enumerator;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophet;
 use DeepCopy\DeepCopy;
@@ -2333,20 +2334,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     private function shouldInvocationMockerBeReset(PHPUnit_Framework_MockObject_MockObject $mock)
     {
-        if ($this->testResult === $mock) {
-            return false;
-        }
+        $enumerator = new Enumerator;
 
-        if (is_array($this->testResult)) {
-            foreach ($this->testResult as $testResult) {
-                if ($testResult === $mock) {
-                    return false;
-                }
+        foreach ($enumerator->enumerate($this->dependencyInput) as $object) {
+            if ($mock === $object) {
+                return false;
             }
         }
 
-        foreach ($this->dependencyInput as $dependencyInput) {
-            if ($dependencyInput === $mock) {
+        if (!is_array($this->testResult) && !is_object($this->testResult)) {
+            return true;
+        }
+
+        foreach ($enumerator->enumerate($this->testResult) as $object) {
+            if ($mock === $object) {
                 return false;
             }
         }
@@ -2361,11 +2362,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     private function registerMockObjectsFromTestArguments(array $testArguments)
     {
-        foreach ($testArguments as $testArgument) {
-            if ($testArgument instanceof PHPUnit_Framework_MockObject_MockObject) {
-                $this->mockObjects[] = $testArgument;
-            } elseif (is_array($testArgument)) {
-                $this->registerMockObjectsFromTestArguments($testArgument);
+        $enumerator = new Enumerator;
+
+        foreach ($enumerator->enumerate($testArguments) as $object) {
+            if ($object instanceof PHPUnit_Framework_MockObject_MockObject) {
+                $this->mockObjects[] = $object;
             }
         }
     }

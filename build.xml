@@ -191,6 +191,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/sebastian/object-enumerator/LICENSE" tofile="${basedir}/build/phar/object-enumerator/LICENSE"/>
+        <copy todir="${basedir}/build/phar/sebastian-object-enumerator">
+            <fileset dir="${basedir}/vendor/sebastian/object-enumerator/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/sebastian/version/LICENSE" tofile="${basedir}/build/phar/sebastian-version/LICENSE"/>
         <copy todir="${basedir}/build/phar/sebastian-version">
             <fileset dir="${basedir}/vendor/sebastian/version/src">
