@@ -20,7 +20,7 @@ All notable changes of the PHPUnit 5.2 release series are documented in this fil
 
 ### Removed
 
-The `mapTestClassNameToCoveredClassName` configuration setting has been removed
+* The `mapTestClassNameToCoveredClassName` configuration setting has been removed
 
 [5.2.0]: https://github.com/sebastianbergmann/phpunit/compare/5.1...5.2.0
 
