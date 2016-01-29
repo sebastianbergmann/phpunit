@@ -10,10 +10,10 @@
 
 /**
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
- * case of a test that unintentionally covers code.
+ * case of a test that does not execute the code it wants to cover.
  *
- * @since Class available since Release 4.0.0
+ * @since Class available since Release 5.2.0
  */
-class PHPUnit_Framework_UnintentionallyCoveredCodeError extends PHPUnit_Framework_RiskyTestError
+class PHPUnit_Framework_CoveredCodeNotExecutedException extends PHPUnit_Framework_RiskyTestError
 {
 }

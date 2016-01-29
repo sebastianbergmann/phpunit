@@ -769,6 +769,15 @@ class PHPUnit_Framework_TestResult implements Countable
                     ),
                     $time
                 );
+            } catch (PHP_CodeCoverage_CoveredCodeNotExecutedException $cce) {
+                $this->addFailure(
+                    $test,
+                    new PHPUnit_Framework_CoveredCodeNotExecutedException(
+                        'This test did not execute all the code that is listed as code to be covered:' .
+                        PHP_EOL . $cce->getMessage()
+                    ),
+                    $time
+                );
             } catch (PHPUnit_Framework_InvalidCoversTargetException $cce) {
                 $this->addFailure(
                     $test,
