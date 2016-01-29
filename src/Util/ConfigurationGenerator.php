@@ -23,10 +23,10 @@ class ConfigurationGenerator
          bootstrap="{bootstrap_script}"
          backupGlobals="false"
          backupStaticAttributes="false"
+         beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutTodoAnnotatedTests="true"
-         checkForUnintentionallyCoveredCode="true"
          verbose="true">
     <testsuite>
         <directory suffix="Test.php">{tests_directory}</directory>
