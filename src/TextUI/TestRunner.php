@@ -934,15 +934,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
 
                 foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                    if (!is_dir($dir['path'])) {
-                        throw new PHPUnit_Runner_Exception(
-                            sprintf(
-                                'Whitelisted directory "%s" does not exist',
-                                $dir['path']
-                            )
-                        );
-                    }
-
                     $this->codeCoverageFilter->addDirectoryToWhitelist(
                         $dir['path'],
                         $dir['suffix'],
@@ -951,15 +942,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
 
                 foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                    if (!is_file($file)) {
-                        throw new PHPUnit_Runner_Exception(
-                            sprintf(
-                                'Whitelisted file "%s" does not exist',
-                                $file
-                            )
-                        );
-                    }
-
                     $this->codeCoverageFilter->addFileToWhitelist($file);
                 }
 
