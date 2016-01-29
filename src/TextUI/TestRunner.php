@@ -276,7 +276,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             if (isset($arguments['deprecatedCheckForUnintentionallyCoveredCodeSettingUsed'])) {
-                print "Warning:\tDeprecated configuration setting \"checkForUnintentionallyCoveredCode\" used\n";
+                print "Warning:       Deprecated configuration setting \"checkForUnintentionallyCoveredCode\" used\n";
             }
         }
 
