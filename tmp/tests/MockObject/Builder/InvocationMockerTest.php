@@ -43,4 +43,19 @@ class Framework_MockObject_Builder_InvocationMockerTest extends PHPUnit_Framewor
         $this->assertEquals(2, $mock->foo());
         $this->assertEquals(3, $mock->foo());
     }
+
+    public function testWillReturnByReference()
+    {
+        $mock = $this->getMock('stdClass', ['foo']);
+        $mock
+            ->expects($this->any())
+            ->method('foo')
+            ->willReturnReference($value);
+
+        $this->assertSame(null, $mock->foo());
+        $value = 'foo';
+        $this->assertSame('foo', $mock->foo());
+        $value = 'bar';
+        $this->assertSame('bar', $mock->foo());
+    }
 }
