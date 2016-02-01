@@ -100,6 +100,14 @@ class PHPUnit_Util_XML
             return $actual;
         }
 
+        if (!is_string($actual)) {
+            throw new PHPUnit_Framework_Exception('Could not load XML from ' . gettype($actual));
+        }
+
+        if ($actual === '') {
+            throw new PHPUnit_Framework_Exception('Could not load XML from empty string');
+        }
+
         // Required for XInclude on Windows.
         if ($xinclude) {
             $cwd = getcwd();
@@ -149,6 +157,9 @@ class PHPUnit_Util_XML
                     )
                 );
             } else {
+                if ($message === '') {
+                    $message = 'Could not load XML for unknown reason';
+                }
                 throw new PHPUnit_Framework_Exception($message);
             }
         }
