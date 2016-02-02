@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.1.7] - 2016-02-02
+
+### Fixed
+
+* Fixed [#2050](https://github.com/sebastianbergmann/phpunit/issues/2050): `PHPUnit_Util_XML::load()` raises exception with empty message when XML string is empty
+
 ## [5.1.6] - 2016-01-29
 
 ### Fixed
