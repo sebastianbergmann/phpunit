@@ -2063,9 +2063,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     $this->snapshot,
                     $this->createGlobalStateSnapshot($backupGlobals)
                 );
-            }
-
-            catch (PHPUnit_Framework_RiskyTestError $rte) {
+            } catch (PHPUnit_Framework_RiskyTestError $rte) {
                 // Intentionally left empty
             }
         }

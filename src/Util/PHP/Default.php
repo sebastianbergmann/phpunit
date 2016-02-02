@@ -33,7 +33,7 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
         $runtime = $runtime->getBinary() . $this->settingsToParameters($settings);
 
         if ('phpdbg' === PHP_SAPI) {
-            $runtime .= ' -qrr '.escapeshellarg(__DIR__ . '/eval-stdin.php');
+            $runtime .= ' -qrr ' . escapeshellarg(__DIR__ . '/eval-stdin.php');
         }
 
         $process = proc_open(
