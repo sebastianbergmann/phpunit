@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 
 ### Changed
 
+* Fixed [#2050](https://github.com/sebastianbergmann/phpunit/issues/2050): `PHPUnit_Util_XML::load()` raises exception with empty message when XML string is empty
 * Fixed a bug in `PHPUnit_Runner_Version::series()`
 
 ## [4.8.21] - 2015-12-12
