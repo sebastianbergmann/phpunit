@@ -118,6 +118,7 @@
           <xs:enumeration value="coverage-text"/>
           <xs:enumeration value="coverage-clover"/>
           <xs:enumeration value="coverage-crap4j"/>
+          <xs:enumeration value="coverage-xml"/>
           <xs:enumeration value="json"/>
           <xs:enumeration value="plain"/>
           <xs:enumeration value="tap"/>
