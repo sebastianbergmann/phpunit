@@ -18,7 +18,7 @@ class PHPUnit_Util_Test
     const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
     const REGEX_TEST_WITH          = '/@testWith\s+/';
     const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
-    const REGEX_REQUIRES_VERSION   = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
+    const REGEX_REQUIRES_VERSION   = '/@requires\s+(?P<name>(?:!)?(?:PHP|HHVM)(?:Unit)?)($|\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$)/m';
     const REGEX_REQUIRES_OS        = '/@requires\s+OS\s+(?P<value>.+?)[ \t]*\r?$/m';
     const REGEX_REQUIRES           = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
 
@@ -232,9 +232,34 @@ class PHPUnit_Util_Test
         $required = static::getRequirements($className, $methodName);
         $missing  = [];
 
+        if (!empty($required['!PHP']) && !defined('HHVM_VERSION')) {
+            $missing[] = 'Test requires an alternative PHP runtime.';
+        }
+
         $operator = empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator'];
-        if (!empty($required['PHP']) && !version_compare(PHP_VERSION, $required['PHP']['version'], $operator)) {
-            $missing[] = sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
+        if (!empty($required['PHP'])) {
+            if (!empty($required['PHP']['version']) && !version_compare(PHP_VERSION, $required['PHP']['version'], $operator)) {
+                $missing[] = sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
+            }
+
+            if (empty($required['PHP']['version']) && defined('HHVM_VERSION')) {
+                $missing[] = 'PHP is required (detected: HHVM).';
+            }
+        }
+
+        if (!empty($required['!HHVM']) && defined('HHVM_VERSION')) {
+            $missing[] = 'Test skipped on HHVM';
+        }
+
+        $operator = empty($required['HHVM']['operator']) ? '>=' : $required['HHVM']['operator'];
+        if (!empty($required['HHVM'])) {
+            if (!empty($required['HHVM']['version']) && !version_compare(constant('HHVM_VERSION'), $required['HHVM']['version'], $operator)) {
+                $missing[] = sprintf('HHVM %s %s is required.', $operator, $required['HHVM']['version']);
+            }
+
+            if (empty($required['HHVM']['version']) && !defined('HHVM_VERSION')) {
+                $missing[] = 'HHVM is required.';
+            }
         }
 
         if (!empty($required['PHPUnit'])) {

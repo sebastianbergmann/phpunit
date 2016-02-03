@@ -155,6 +155,20 @@ class RequirementsTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @requires PHP
+     */
+    public function testPHPRequired()
+    {
+    }
+
+    /**
+     * @requires !PHP
+     */
+    public function testPHPNotRequired()
+    {
+    }
+
+    /**
      * @requires PHP < 5.4
      */
     public function testPHPVersionOperatorLessThan()
@@ -340,6 +354,83 @@ class RequirementsTest extends PHPUnit_Framework_TestCase
      * @requires extension testExtOne >=99
      */
     public function testExtensionVersionOperatorNoSpace()
+    {
+    }
+
+    /**
+     * @requires HHVM
+     */
+    public function testHHVMRequired()
+    {
+    }
+
+    /**
+     * @requires !HHVM
+     */
+    public function testHHVMNotRequired()
+    {
+    }
+
+    /**
+     * @requires HHVM < 3.0
+     */
+    public function testHHVMVersionOperatorLessThan()
+    {
+    }
+
+    /**
+     * @requires HHVM <= 3.0
+     */
+    public function testHHVMVersionOperatorLessThanEquals()
+    {
+    }
+
+    /**
+     * @requires HHVM > 99
+     */
+    public function testHHVMVersionOperatorGreaterThan()
+    {
+    }
+
+    /**
+     * @requires HHVM >= 99
+     */
+    public function testHHVMVersionOperatorGreaterThanEquals()
+    {
+    }
+
+    /**
+     * @requires HHVM = 3.0
+     */
+    public function testHHVMVersionOperatorEquals()
+    {
+    }
+
+    /**
+     * @requires HHVM == 3.0
+     */
+    public function testHHVMVersionOperatorDoubleEquals()
+    {
+    }
+
+    /**
+     * @requires HHVM != 99
+     */
+    public function testHHVMVersionOperatorBangEquals()
+    {
+    }
+
+    /**
+     * @requires HHVM <> 99
+     */
+    public function testHHVMVersionOperatorNotEquals()
+    {
+    }
+
+    /**
+     * @requires HHVM >=99
+     */
+    public function testHHVMVersionOperatorNoSpace()
     {
     }
 }
