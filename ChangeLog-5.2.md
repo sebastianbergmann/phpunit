@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.2.1] - 2016-02-DD
+
+### Fixed
+
+* Fixed [#2060](https://github.com/sebastianbergmann/phpunit/issues/2060): Allow usage of `sebastian/version` in version 1
+
 ## [5.2.0] - 2016-02-05
 
 ### Added
@@ -22,5 +28,6 @@ All notable changes of the PHPUnit 5.2 release series are documented in this fil
 
 * The `mapTestClassNameToCoveredClassName` configuration setting has been removed
 
+[5.2.1]: https://github.com/sebastianbergmann/phpunit/compare/5.2.0...5.2.1
 [5.2.0]: https://github.com/sebastianbergmann/phpunit/compare/5.1...5.2.0
 
