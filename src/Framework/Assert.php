@@ -518,7 +518,7 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param mixed  $expected
      * @param string $actualAttributeName
-     * @param string $actualClassOrObject
+     * @param mixed  $actualClassOrObject
      * @param string $message
      * @param float  $delta
      * @param int    $maxDepth
@@ -571,7 +571,7 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param mixed  $expected
      * @param string $actualAttributeName
-     * @param string $actualClassOrObject
+     * @param mixed  $actualClassOrObject
      * @param string $message
      * @param float  $delta
      * @param int    $maxDepth
@@ -672,7 +672,7 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param mixed  $expected
      * @param string $actualAttributeName
-     * @param string $actualClassOrObject
+     * @param mixed  $actualClassOrObject
      * @param string $message
      *
      * @since  Method available since Release 3.1.0
@@ -709,7 +709,7 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param mixed  $expected
      * @param string $actualAttributeName
-     * @param string $actualClassOrObject
+     * @param mixed  $actualClassOrObject
      * @param string $message
      *
      * @since  Method available since Release 3.1.0
@@ -742,7 +742,7 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param mixed  $expected
      * @param string $actualAttributeName
-     * @param string $actualClassOrObject
+     * @param mixed  $actualClassOrObject
      * @param string $message
      *
      * @since  Method available since Release 3.1.0
@@ -775,7 +775,7 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param mixed  $expected
      * @param string $actualAttributeName
-     * @param string $actualClassOrObject
+     * @param mixed  $actualClassOrObject
      * @param string $message
      *
      * @since  Method available since Release 3.1.0
@@ -1256,7 +1256,7 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param mixed  $expected
      * @param string $actualAttributeName
-     * @param object $actualClassOrObject
+     * @param mixed  $actualClassOrObject
      * @param string $message
      */
     public static function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
@@ -1296,7 +1296,7 @@ abstract class PHPUnit_Framework_Assert
      *
      * @param mixed  $expected
      * @param string $actualAttributeName
-     * @param object $actualClassOrObject
+     * @param mixed  $actualClassOrObject
      * @param string $message
      */
     public static function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
