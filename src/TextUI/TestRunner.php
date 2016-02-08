@@ -362,10 +362,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['strictCoverage']
             );
 
-            $codeCoverage->setCheckForUnexecutedCoveredCode(
-                $arguments['strictCoverage']
-            );
-
             $codeCoverage->setCheckForMissingCoversAnnotation(
                 $arguments['strictCoverage']
             );
