@@ -778,6 +778,14 @@ class PHPUnit_Framework_TestResult implements Countable
                     ),
                     $time
                 );
+            } catch (PHP_CodeCoverage_MissingCoversAnnotationException $cce) {
+                $this->addFailure(
+                    $test,
+                    new PHPUnit_Framework_MissingCoversAnnotationException(
+                        'This test does not have a @covers annotation but is expected to have one'
+                    ),
+                    $time
+                );
             } catch (PHPUnit_Framework_InvalidCoversTargetException $cce) {
                 $this->addFailure(
                     $test,
