@@ -992,17 +992,6 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
-     * Asserts that a variable is not null.
-     *
-     * @param mixed  $actual
-     * @param string $message
-     */
-    public static function assertNotNull($actual, $message = '')
-    {
-        self::assertThat($actual, self::logicalNot(self::isNull()), $message);
-    }
-
-    /**
      * Asserts that a variable is null.
      *
      * @param mixed  $actual
@@ -1011,6 +1000,17 @@ abstract class PHPUnit_Framework_Assert
     public static function assertNull($actual, $message = '')
     {
         self::assertThat($actual, self::isNull(), $message);
+    }
+
+    /**
+     * Asserts that a variable is not null.
+     *
+     * @param mixed  $actual
+     * @param string $message
+     */
+    public static function assertNotNull($actual, $message = '')
+    {
+        self::assertThat($actual, self::logicalNot(self::isNull()), $message);
     }
 
     /**
