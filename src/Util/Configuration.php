@@ -1017,6 +1017,7 @@ class PHPUnit_Util_Configuration
 
         foreach ($this->xpath->query($query) as $file) {
             $filePath = (string) $file->textContent;
+
             if ($filePath) {
                 $files[] = $this->toAbsolutePath($filePath);
             }
@@ -1035,6 +1036,8 @@ class PHPUnit_Util_Configuration
      */
     protected function toAbsolutePath($path, $useIncludePath = false)
     {
+        $path = trim($path);
+
         if ($path[0] === '/') {
             return $path;
         }
