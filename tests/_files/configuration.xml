@@ -45,6 +45,9 @@
     <blacklist>
       <directory suffix=".php">/path/to/files</directory>
       <file>/path/to/file</file>
+      <file>
+          /path/to/file
+      </file>
       <exclude>
         <directory suffix=".php">/path/to/files</directory>
         <file>/path/to/file</file>
