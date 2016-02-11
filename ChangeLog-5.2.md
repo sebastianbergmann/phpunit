@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.2.4] - 2016-MM-DD
+
+### Fixed
+
+* Fixed [#2072](https://github.com/sebastianbergmann/phpunit/issues/2072): Paths in XML configuration file were not handled correctly when they have whitespace around them
+
 ## [5.2.3] - 2016-02-08
 
 ### Removed
@@ -40,6 +46,7 @@ All notable changes of the PHPUnit 5.2 release series are documented in this fil
 
 * The `mapTestClassNameToCoveredClassName` configuration setting has been removed
 
+[5.2.4]: https://github.com/sebastianbergmann/phpunit/compare/5.2.3...5.2.4
 [5.2.3]: https://github.com/sebastianbergmann/phpunit/compare/5.2.2...5.2.3
 [5.2.2]: https://github.com/sebastianbergmann/phpunit/compare/5.2.1...5.2.2
 [5.2.1]: https://github.com/sebastianbergmann/phpunit/compare/5.2.0...5.2.1
