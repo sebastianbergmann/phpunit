@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.2.5] - 2016-02-13
+
+### Fixed
+
+* Fixed [#2076](https://github.com/sebastianbergmann/phpunit/issues/2076): Code of custom comparators should not result in a test being marked as risky when PHPUnit is strict about @covers annotation usage
+
 ## [5.2.4] - 2016-02-11
 
 ### Fixed
@@ -46,6 +52,7 @@ All notable changes of the PHPUnit 5.2 release series are documented in this fil
 
 * The `mapTestClassNameToCoveredClassName` configuration setting has been removed
 
+[5.2.5]: https://github.com/sebastianbergmann/phpunit/compare/5.2.4...5.2.5
 [5.2.4]: https://github.com/sebastianbergmann/phpunit/compare/5.2.3...5.2.4
 [5.2.3]: https://github.com/sebastianbergmann/phpunit/compare/5.2.2...5.2.3
 [5.2.2]: https://github.com/sebastianbergmann/phpunit/compare/5.2.1...5.2.2
