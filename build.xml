@@ -142,6 +142,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/sebastian/code-unit-reverse-lookup/LICENSE" tofile="${basedir}/build/phar/sebastian-code-unit-reverse-lookup/LICENSE"/>
+        <copy todir="${basedir}/build/phar/sebastian-code-unit-reverse-lookup">
+            <fileset dir="${basedir}/vendor/sebastian/code-unit-reverse-lookup/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/sebastian/comparator/LICENSE" tofile="${basedir}/build/phar/sebastian-comparator/LICENSE"/>
         <copy todir="${basedir}/build/phar/sebastian-comparator">
             <fileset dir="${basedir}/vendor/sebastian/comparator/src">
