@@ -744,15 +744,25 @@ class PHPUnit_Framework_TestResult implements Countable
             $linesToBeUsed    = [];
 
             if ($append && $test instanceof PHPUnit_Framework_TestCase) {
-                $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
-                    get_class($test),
-                    $test->getName(false)
-                );
+                try {
+                    $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
+                        get_class($test),
+                        $test->getName(false)
+                    );
 
-                $linesToBeUsed = PHPUnit_Util_Test::getLinesToBeUsed(
-                    get_class($test),
-                    $test->getName(false)
-                );
+                    $linesToBeUsed = PHPUnit_Util_Test::getLinesToBeUsed(
+                        get_class($test),
+                        $test->getName(false)
+                    );
+                } catch (PHPUnit_Framework_InvalidCoversTargetException $cce) {
+                    $this->addWarning(
+                        $test,
+                        new PHPUnit_Framework_Warning(
+                            $cce->getMessage()
+                        ),
+                        $time
+                    );
+                }
             }
 
             try {
@@ -778,14 +788,6 @@ class PHPUnit_Framework_TestResult implements Countable
                     new PHPUnit_Framework_CoveredCodeNotExecutedException(
                         'This test did not execute all the code that is listed as code to be covered:' .
                         PHP_EOL . $cce->getMessage()
-                    ),
-                    $time
-                );
-            } catch (PHPUnit_Framework_InvalidCoversTargetException $cce) {
-                $this->addFailure(
-                    $test,
-                    new PHPUnit_Framework_InvalidCoversTargetError(
-                        $cce->getMessage()
                     ),
                     $time
                 );
