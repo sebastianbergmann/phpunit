@@ -20,18 +20,18 @@ class PHPUnit_Util_Type
         return in_array(
             $type,
             [
-            'numeric',
-            'integer',
-            'int',
-            'float',
-            'string',
-            'boolean',
-            'bool',
-            'null',
-            'array',
-            'object',
-            'resource',
-            'scalar'
+                'numeric',
+                'integer',
+                'int',
+                'float',
+                'string',
+                'boolean',
+                'bool',
+                'null',
+                'array',
+                'object',
+                'resource',
+                'scalar'
             ]
         );
     }
