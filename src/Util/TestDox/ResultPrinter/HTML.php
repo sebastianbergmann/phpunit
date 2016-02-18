@@ -54,6 +54,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_Resul
             }
 
             ul {
+                list-style: none;
                 margin-bottom: 1em;
             }
         </style>
@@ -119,15 +120,14 @@ EOT;
      */
     protected function onTest($name, $success = true)
     {
-        if (!$success) {
-            $strikeOpen  = '<span style="text-decoration:line-through;">';
-            $strikeClose = '</span>';
-        } else {
-            $strikeOpen  = '';
-            $strikeClose = '';
-        }
-
-        $this->write('            <li>' . $strikeOpen . $name . $strikeClose . "</li>\n");
+        $this->write(
+            sprintf(
+                "            <li style=\"color: %s;\">%s %s</li>\n",
+                $success ? '#555753' : '#ef2929',
+                $success ? '✓' : '❌',
+                $name
+            )
+        );
     }
 
     /**
