@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 5.2 release series are documented in this fil
 
 * Improved the TestDox HTML report
 
+### Fixed
+
+* Fixed [#2083](https://github.com/sebastianbergmann/phpunit/issues/2083): Restored backwards compatibility in deprecated `setExpectedException()` method
+
 ## [5.2.8] - 2016-02-18
 
 ### Changed
