@@ -195,6 +195,28 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->wasSuccessful());
     }
 
+    public function testExceptionWithEmptyMessage()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedException('RuntimeException', '');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExceptionWithNullMessage()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->setExpectedException('RuntimeException', NULL);
+
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
     public function testExceptionWithMessage()
     {
         $test = new ThrowExceptionTestCase('test');

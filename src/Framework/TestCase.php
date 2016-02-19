@@ -467,7 +467,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         $this->expectedException = $exception;
 
-        if ($message !== '') {
+        if ($message !== null && $message !== '') {
             $this->expectExceptionMessage($message);
         }
 
