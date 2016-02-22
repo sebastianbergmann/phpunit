@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.2.10] - 2016-MM-DD
+
+### Fixed
+
+* Fixed [#2039](https://github.com/sebastianbergmann/phpunit/issues/2039): TestDox does not handle snake_case test methods properly
+
 ## [5.2.9] - 2016-02-19
 
 ### Changed
@@ -80,6 +86,7 @@ All notable changes of the PHPUnit 5.2 release series are documented in this fil
 
 * The `mapTestClassNameToCoveredClassName` configuration setting has been removed
 
+[5.2.10]: https://github.com/sebastianbergmann/phpunit/compare/5.2.9...5.2.10
 [5.2.9]: https://github.com/sebastianbergmann/phpunit/compare/5.2.8...5.2.9
 [5.2.8]: https://github.com/sebastianbergmann/phpunit/compare/5.2.7...5.2.8
 [5.2.7]: https://github.com/sebastianbergmann/phpunit/compare/5.2.6...5.2.7
