@@ -35,6 +35,7 @@ class PHPUnit_TextUI_Command
      */
     protected $longOptions = [
         'atleast-version='        => null,
+        'only-print-tests'        => null,
         'bootstrap='              => null,
         'colors=='                => null,
         'columns='                => null,
@@ -143,6 +144,20 @@ class PHPUnit_TextUI_Command
 
             foreach ($groups as $group) {
                 print " - $group\n";
+            }
+
+            if ($exit) {
+                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+            } else {
+                return PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
+            }
+        }
+
+        if (!empty($this->arguments['onlyPrintTests'])) {
+            $processedSuite = $suite->asTestArray();
+
+            foreach ($processedSuite as $no => $test) {
+                echo ($no + 1) . '. ' . get_class($test) . '::' . $test->getName() . "\n";
             }
 
             if ($exit) {
@@ -521,6 +536,10 @@ class PHPUnit_TextUI_Command
                         ? PHPUnit_TextUI_TestRunner::SUCCESS_EXIT
                         : PHPUnit_TextUI_TestRunner::FAILURE_EXIT
                     );
+                    break;
+
+                case '--only-print-tests':
+                    $this->arguments['onlyPrintTests'] = true;
                     break;
 
                 case '--version':
@@ -1056,6 +1075,7 @@ Miscellaneous Options:
   -h|--help                 Prints this usage information.
   --version                 Prints the version and exits.
   --atleast-version <min>   Checks that version is greater than min and exits.
+  --only-print-tests        Prints all available test names in order without executing them.
 
 EOT;
 

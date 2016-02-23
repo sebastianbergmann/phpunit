@@ -96,3 +96,4 @@ Miscellaneous Options:
   -h|--help                 Prints this usage information.
   --version                 Prints the version and exits.
   --atleast-version <min>   Checks that version is greater than min and exits.
+  --only-print-tests        Prints all available test names in order without executing them.

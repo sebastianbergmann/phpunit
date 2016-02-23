@@ -1015,6 +1015,28 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     }
 
     /**
+     * Returns a (recursively) calculated array of tests for this test suite.
+     *
+     * @return array
+     *
+     * @since  Method available since Release ...
+     */
+    public function asTestArray()
+    {
+        $list = array();
+
+        foreach ($this->tests() as $test) {
+            if ($test instanceof PHPUnit_Framework_TestSuite) {
+                $list = array_merge($list, $test->asTestArray());
+            } else {
+                $list[] = $test;
+            }
+        }
+
+        return $list;
+    }
+
+    /**
      * Template Method that is called before the tests
      * of this test suite are run.
      *
