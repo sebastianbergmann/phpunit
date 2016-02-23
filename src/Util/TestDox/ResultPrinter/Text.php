@@ -36,10 +36,10 @@ class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_Resul
         if ($success) {
             $this->write(' [x] ');
         } else {
-            $this->write(' [ ] ');
+            $this->write("\033[31m [ ] ");
         }
 
-        $this->write($name . "\n");
+        $this->write($name . "\033[0m\n");
     }
 
     /**
