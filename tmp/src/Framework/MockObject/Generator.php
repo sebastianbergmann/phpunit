@@ -807,17 +807,17 @@ class PHPUnit_Framework_MockObject_Generator
 
         $classTemplate->setVar(
             [
-            'prologue'          => isset($prologue) ? $prologue : '',
-            'epilogue'          => isset($epilogue) ? $epilogue : '',
-            'class_declaration' => $this->generateMockClassDeclaration(
-                $mockClassName,
-                $isInterface,
-                $additionalInterfaces
-            ),
-            'clone'             => $cloneTemplate,
-            'mock_class_name'   => $mockClassName['className'],
-            'mocked_methods'    => $mockedMethods,
-            'method'            => $method
+                'prologue'          => isset($prologue) ? $prologue : '',
+                'epilogue'          => isset($epilogue) ? $epilogue : '',
+                'class_declaration' => $this->generateMockClassDeclaration(
+                    $mockClassName,
+                    $isInterface,
+                    $additionalInterfaces
+                ),
+                'clone'             => $cloneTemplate,
+                'mock_class_name'   => $mockClassName['className'],
+                'mocked_methods'    => $mockedMethods,
+                'method'            => $method
             ]
         );
 
