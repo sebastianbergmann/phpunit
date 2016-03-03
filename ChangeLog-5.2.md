@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.2 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2039](https://github.com/sebastianbergmann/phpunit/issues/2039): TestDox does not handle snake_case test methods properly
+* Fixed a bug that caused no code coverage to be generated for tests that execute custom comparators
 
 ## [5.2.9] - 2016-02-19
 
