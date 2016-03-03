@@ -85,6 +85,10 @@ class PHPUnit_Util_TestDox_NamePrettifier
             $name = substr($name, 4);
         }
 
+        if (strlen($name) == 0) {
+            return $buffer;
+        }
+
         $name[0] = strtoupper($name[0]);
 
         if (strpos($name, '_') !== false) {
