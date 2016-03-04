@@ -13,7 +13,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMock
-     * @expectedException PHPUnit_Framework_Exception
+     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
      */
     public function testGetMockFailsWhenInvalidFunctionNameIsPassedInAsAFunctionToMock()
     {
