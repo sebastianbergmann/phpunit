@@ -31,10 +31,16 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     protected $matcher;
 
     /**
+     * @var string[]
+     */
+    private $configurableMethods = [];
+
+    /**
      * @param PHPUnit_Framework_MockObject_Stub_MatcherCollection $collection
      * @param PHPUnit_Framework_MockObject_Matcher_Invocation     $invocationMatcher
+     * @param array                                               $configurableMethods
      */
-    public function __construct(PHPUnit_Framework_MockObject_Stub_MatcherCollection $collection, PHPUnit_Framework_MockObject_Matcher_Invocation $invocationMatcher)
+    public function __construct(PHPUnit_Framework_MockObject_Stub_MatcherCollection $collection, PHPUnit_Framework_MockObject_Matcher_Invocation $invocationMatcher, array $configurableMethods)
     {
         $this->collection = $collection;
         $this->matcher    = new PHPUnit_Framework_MockObject_Matcher(
@@ -42,6 +48,8 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         );
 
         $this->collection->addMatcher($this->matcher);
+
+        $this->configurableMethods = $configurableMethods;
     }
 
     /**
@@ -246,6 +254,15 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         if ($this->matcher->methodNameMatcher !== null) {
             throw new PHPUnit_Framework_Exception(
                 'Method name matcher is already defined, cannot redefine'
+            );
+        }
+
+        if (is_string($constraint) && !in_array($constraint, $this->configurableMethods)) {
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
+                sprintf(
+                    'Trying to configure method "%s" which cannot be configured',
+                    $constraint
+                )
             );
         }
 

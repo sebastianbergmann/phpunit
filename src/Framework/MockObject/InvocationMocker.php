@@ -30,6 +30,19 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     protected $builderMap = [];
 
     /**
+     * @var string[]
+     */
+    private $configurableMethods = [];
+
+    /**
+     * @param array $configurableMethods
+     */
+    public function __construct(array $configurableMethods)
+    {
+        $this->configurableMethods = $configurableMethods;
+    }
+
+    /**
      * @param PHPUnit_Framework_MockObject_Matcher_Invocation $matcher
      */
     public function addMatcher(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
@@ -88,7 +101,8 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     {
         return new PHPUnit_Framework_MockObject_Builder_InvocationMocker(
             $this,
-            $matcher
+            $matcher,
+            $this->configurableMethods
         );
     }
 

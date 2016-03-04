@@ -753,6 +753,13 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         $mockedMethods = '';
+        $configurable  = [];
+
+        foreach ($methods as $methodName) {
+            if ($methodName != '__construct' && $methodName != '__clone') {
+                $configurable[] = $methodName;
+            }
+        }
 
         if (isset($class)) {
             // https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
@@ -817,7 +824,8 @@ class PHPUnit_Framework_MockObject_Generator
                 'clone'             => $cloneTemplate,
                 'mock_class_name'   => $mockClassName['className'],
                 'mocked_methods'    => $mockedMethods,
-                'method'            => $method
+                'method'            => $method,
+                'configurable'      => '[' . implode(', ', array_map(function ($m) { return '\'' . $m . '\'';}, $configurable)) . ']'
             ]
         );
 
