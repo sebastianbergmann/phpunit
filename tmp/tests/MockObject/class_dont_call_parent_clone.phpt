@@ -27,6 +27,7 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
 {
     private $__phpunit_invocationMocker;
     private $__phpunit_originalObject;
+    private $__phpunit_configurable = [];
 
     public function __clone()
     {
@@ -53,7 +54,7 @@ class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
     public function __phpunit_getInvocationMocker()
     {
         if ($this->__phpunit_invocationMocker === null) {
-            $this->__phpunit_invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker;
+            $this->__phpunit_invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker($this->__phpunit_configurable);
         }
 
         return $this->__phpunit_invocationMocker;
