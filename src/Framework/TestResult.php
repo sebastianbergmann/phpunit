@@ -685,6 +685,12 @@ class PHPUnit_Framework_TestResult implements Countable
             } else {
                 $test->runBare();
             }
+        } catch (PHPUnit_Framework_MockObject_Exception $e) {
+            $e = new PHPUnit_Framework_Warning(
+                $e->getMessage()
+            );
+
+            $warning = true;
         } catch (PHPUnit_Framework_AssertionFailedError $e) {
             $failure = true;
 
