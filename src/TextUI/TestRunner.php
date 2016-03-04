@@ -354,6 +354,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->codeCoverageFilter
             );
 
+            $codeCoverage->setUnintentionallyCoveredSubclassesWhitelist(
+                [SebastianBergmann\Comparator\Comparator::class]
+            );
+
             $codeCoverage->setAddUncoveredFilesFromWhitelist(
                 $arguments['addUncoveredFilesFromWhitelist']
             );
