@@ -191,8 +191,9 @@ class PHPUnit_Framework_MockObject_Generator
             if ($methods != array_unique($methods)) {
                 throw new PHPUnit_Framework_MockObject_RuntimeException(
                     sprintf(
-                        'Cannot stub or mock using a method list that contains duplicates: "%s"',
-                        implode(', ', $methods)
+                        'Cannot stub or mock using a method list that contains duplicates: "%s" (duplicate: "%s")',
+                        implode(', ', $methods),
+                        implode(', ', array_unique(array_diff_assoc($methods, array_unique($methods))))
                     )
                 );
             }
