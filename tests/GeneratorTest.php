@@ -33,11 +33,11 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMock
      * @expectedException PHPUnit_Framework_MockObject_RuntimeException
-     * @expectedExceptionMessage duplicates: "foo, foo"
+     * @expectedExceptionMessage duplicates: "foo, bar, foo" (duplicate: "foo")
      */
     public function testGetMockGeneratorFails()
     {
-        $this->generator->getMock(StdClass::class, ['foo', 'foo']);
+        $this->generator->getMock(StdClass::class, ['foo', 'bar', 'foo']);
     }
 
     /**
