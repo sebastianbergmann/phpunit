@@ -26,6 +26,7 @@ class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_
 
     /**
      * @param  PHPUnit_Framework_Constraint|string
+     *
      * @throws PHPUnit_Framework_Constraint
      */
     public function __construct($constraint)
@@ -56,7 +57,8 @@ class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_
     }
 
     /**
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     *
      * @return bool
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
