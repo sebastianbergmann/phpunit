@@ -65,7 +65,8 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     }
 
     /**
-     * @param  mixed     $id
+     * @param mixed $id
+     *
      * @return bool|null
      */
     public function lookupId($id)
@@ -78,8 +79,9 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     }
 
     /**
-     * @param  mixed                                         $id
-     * @param  PHPUnit_Framework_MockObject_Builder_Match    $builder
+     * @param mixed                                      $id
+     * @param PHPUnit_Framework_MockObject_Builder_Match $builder
+     *
      * @throws PHPUnit_Framework_MockObject_RuntimeException
      */
     public function registerId($id, PHPUnit_Framework_MockObject_Builder_Match $builder)
@@ -94,7 +96,8 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     }
 
     /**
-     * @param  PHPUnit_Framework_MockObject_Matcher_Invocation       $matcher
+     * @param PHPUnit_Framework_MockObject_Matcher_Invocation $matcher
+     *
      * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
      */
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
@@ -107,7 +110,8 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     }
 
     /**
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     *
      * @return mixed
      */
     public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
@@ -145,7 +149,8 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
     }
 
     /**
-     * @param  PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     *
      * @return bool
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
