@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.2 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2094](https://github.com/sebastianbergmann/phpunit/issues/2094): Missing argument for `PHPUnit_TextUI_TestRunner::run()`
+* Fixed [#2109](https://github.com/sebastianbergmann/phpunit/issues/2109): Process isolation leaks global variable
 
 ## [5.2.10] - 2016-03-03
 
