@@ -76,6 +76,7 @@ $configurationFilePath = '{configurationFilePath}';
 if ('' !== $configurationFilePath) {
     $configuration = PHPUnit_Util_Configuration::getInstance($configurationFilePath);
     $configuration->handlePHPConfiguration();
+    unset($configuration);
 }
 
 {constants}
