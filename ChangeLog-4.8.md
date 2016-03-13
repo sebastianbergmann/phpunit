@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#1959](https://github.com/sebastianbergmann/phpunit/issues/1959): Prophecy errors are not handled correctly
 * Fixed [#2039](https://github.com/sebastianbergmann/phpunit/issues/2039): TestDox does not handle snake_case test methods properly
 * Fixed [#2109](https://github.com/sebastianbergmann/phpunit/issues/2109): Process isolation leaks global variable
 
