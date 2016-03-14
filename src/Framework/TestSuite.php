@@ -356,8 +356,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         foreach ($this->foundClasses as $i => $className) {
             if (preg_match($shortnameRegEx, $className)) {
                 $class = new ReflectionClass($className);
+                $classFile = $class->getFileName();
 
-                if ($class->getFileName() == $filename) {
+                if ($restoreCallback = PHPUnit_Util_Fileloader::getFilenameRestoreCallback()) {
+                    $classFile = $restoreCallback($classFile);
+                }
+
+                if ($classFile == $filename) {
                     $newClasses = [$className];
                     unset($this->foundClasses[$i]);
                     break;

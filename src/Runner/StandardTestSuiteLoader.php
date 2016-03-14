@@ -63,6 +63,10 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
                 $class     = new ReflectionClass($loadedClass);
                 $classFile = $class->getFileName();
 
+                if ($restoreCallback = PHPUnit_Util_Fileloader::getFilenameRestoreCallback()) {
+                    $classFile = $restoreCallback($classFile);
+                }
+
                 if ($class->isSubclassOf($testCaseClass) &&
                     !$class->isAbstract()) {
                     $suiteClassName = $loadedClass;
@@ -91,8 +95,13 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
 
         if (class_exists($suiteClassName, false)) {
             $class = new ReflectionClass($suiteClassName);
+            $classFile = $class->getFileName();
 
-            if ($class->getFileName() == realpath($suiteClassFile)) {
+            if ($restoreCallback = PHPUnit_Util_Fileloader::getFilenameRestoreCallback()) {
+                $classFile = $restoreCallback($classFile);
+            }
+
+            if ($classFile == realpath($suiteClassFile)) {
                 return $class;
             }
         }

@@ -15,6 +15,35 @@
  */
 class PHPUnit_Util_Fileloader
 {
+    /** @var Callable */
+    private static $filename_rewrite_callback;
+
+    /** @var Callable */
+    private static $filename_restore_callback;
+
+    /**
+     * Provide callback for rewriting test file names that is called when loading suite files
+     * @param callable $callback (source_filename => rewritten_filename)
+     */
+    public static function setFilenameRewriteCallback(Callable $callback)
+    {
+        self::$filename_rewrite_callback = $callback;
+    }
+
+    /**
+     * Provide callback for restoring rewritten test file names
+     * @param callable $callback (rewritten_filename => source_filename)
+     */
+    public static function setFilenameRestoreCallback(Callable $callback)
+    {
+        self::$filename_restore_callback = $callback;
+    }
+
+    public static function getFilenameRestoreCallback()
+    {
+        return self::$filename_restore_callback;
+    }
+
     /**
      * Checks if a PHP sourcefile is readable.
      * The sourcefile is loaded through the load() method.
@@ -53,7 +82,12 @@ class PHPUnit_Util_Fileloader
     {
         $oldVariableNames = array_keys(get_defined_vars());
 
-        include_once $filename;
+        if ($cb = self::$filename_rewrite_callback) {
+            $new_filename = $cb($filename);
+            include_once $new_filename;
+        } else {
+            include_once $filename;
+        }
 
         $newVariables     = get_defined_vars();
         $newVariableNames = array_diff(
