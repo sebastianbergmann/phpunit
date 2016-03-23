@@ -703,14 +703,11 @@ class PHPUnit_Framework_MockObject_Generator
 
         if (class_exists($mockClassName['fullClassName'], $callAutoload)) {
             $isClass = true;
-        } else {
-            if (interface_exists($mockClassName['fullClassName'], $callAutoload)) {
-                $isInterface = true;
-            }
+        } elseif (interface_exists($mockClassName['fullClassName'], $callAutoload)) {
+            $isInterface = true;
         }
 
-        if (!class_exists($mockClassName['fullClassName'], $callAutoload) &&
-            !interface_exists($mockClassName['fullClassName'], $callAutoload)) {
+        if (!$isClass && !$isInterface) {
             $prologue = 'class ' . $mockClassName['originalClassName'] . "\n{\n}\n\n";
 
             if (!empty($mockClassName['namespaceName'])) {
