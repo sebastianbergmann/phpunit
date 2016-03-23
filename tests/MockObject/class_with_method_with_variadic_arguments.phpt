@@ -28,7 +28,7 @@ class MockFoo extends ClassWithMethodWithVariadicArguments implements PHPUnit_Fr
 {
     private $__phpunit_invocationMocker;
     private $__phpunit_originalObject;
-    private $__phpunit_configurable = ['methodWithVariadicArguments'];
+    private $__phpunit_configurable = ['methodwithvariadicarguments'];
 
     public function __clone()
     {
