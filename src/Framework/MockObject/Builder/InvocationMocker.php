@@ -268,7 +268,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
             );
         }
 
-        if (is_string($constraint) && !in_array($constraint, $this->configurableMethods)) {
+        if (is_string($constraint) && !in_array(strtolower($constraint), $this->configurableMethods)) {
             throw new PHPUnit_Framework_MockObject_RuntimeException(
                 sprintf(
                     'Trying to configure method "%s" which cannot be configured',

@@ -772,7 +772,7 @@ class PHPUnit_Framework_MockObject_Generator
 
         foreach ($methods as $methodName) {
             if ($methodName != '__construct' && $methodName != '__clone') {
-                $configurable[] = $methodName;
+                $configurable[] = strtolower($methodName);
             }
         }
 
