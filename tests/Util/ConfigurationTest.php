@@ -86,43 +86,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             [
-            'blacklist' =>
-            [
-              'include' =>
-              [
-                'directory' =>
-                [
-                  0 =>
-                  [
-                    'path'   => '/path/to/files',
-                    'prefix' => '',
-                    'suffix' => '.php',
-                    'group'  => 'DEFAULT'
-                  ],
-                ],
-                'file' =>
-                [
-                  0 => '/path/to/file',
-                ],
-              ],
-              'exclude' =>
-              [
-                'directory' =>
-                [
-                  0 =>
-                  [
-                    'path'   => '/path/to/files',
-                    'prefix' => '',
-                    'suffix' => '.php',
-                    'group'  => 'DEFAULT'
-                  ],
-                ],
-                'file' =>
-                [
-                  0 => '/path/to/file',
-                ],
-              ],
-            ],
             'whitelist' =>
             [
               'addUncoveredFilesFromWhitelist'     => true,
@@ -142,6 +105,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                 'file' =>
                 [
                   0 => '/path/to/file',
+                  1 => '/path/to/file',
                 ],
               ],
               'exclude' =>
@@ -313,6 +277,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @backupGlobals enabled
+     *
      * @see https://github.com/sebastianbergmann/phpunit/issues/1181
      */
     public function testHandlePHPConfigurationDoesNotOverwrittenExistingEnvArrayVariables()
@@ -326,6 +291,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @backupGlobals enabled
+     *
      * @see https://github.com/sebastianbergmann/phpunit/issues/1181
      */
     public function testHandlePHPConfigurationDoesNotOverriteVariablesFromPutEnv()
@@ -356,7 +322,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'convertNoticesToExceptions'                 => true,
             'convertWarningsToExceptions'                => true,
             'forceCoversAnnotation'                      => false,
-            'mapTestClassNameToCoveredClassName'         => false,
             'printerClass'                               => 'PHPUnit_TextUI_ResultPrinter',
             'stopOnFailure'                              => false,
             'stopOnWarning'                              => false,
@@ -370,7 +335,9 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'timeoutForMediumTests'                      => 10,
             'timeoutForLargeTests'                       => 60,
             'beStrictAboutResourceUsageDuringSmallTests' => false,
-            'disallowTodoAnnotatedTests'                 => false
+            'disallowTodoAnnotatedTests'                 => false,
+            'failOnWarning'                              => false,
+            'failOnRisky'                                => false
             ],
             $this->configuration->getPHPUnitConfiguration()
         );
@@ -398,6 +365,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Util_Configuration::getPHPUnitConfiguration
      * @covers PHPUnit_Util_Configuration::getTestSuiteConfiguration
      * @covers PHPUnit_Util_Configuration::getFilterConfiguration
+     *
      * @uses   PHPUnit_Util_Configuration::getInstance
      */
     public function testWithEmptyConfigurations()
@@ -421,10 +389,6 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($suite->getGroups());
 
         $filter = $emptyConfiguration->getFilterConfiguration();
-        $this->assertEmpty($filter['blacklist']['include']['directory']);
-        $this->assertEmpty($filter['blacklist']['include']['file']);
-        $this->assertEmpty($filter['blacklist']['exclude']['directory']);
-        $this->assertEmpty($filter['blacklist']['exclude']['file']);
         $this->assertEmpty($filter['whitelist']['include']['directory']);
         $this->assertEmpty($filter['whitelist']['include']['file']);
         $this->assertEmpty($filter['whitelist']['exclude']['directory']);
