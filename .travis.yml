@@ -16,26 +16,9 @@ matrix:
 
 sudo: false
 
-before_install:
-  - composer self-update
-
-install:
-  - travis_retry composer install --no-interaction --prefer-source
-
 script:
-  - ./phpunit
-  - ./phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
-  - xmllint --noout --schema phpunit.xsd phpunit.xml
-  - xmllint --noout --schema phpunit.xsd tests/_files/configuration.xml
-  - xmllint --noout --schema phpunit.xsd tests/_files/configuration_empty.xml
-  - xmllint --noout --schema phpunit.xsd tests/_files/configuration_xinclude.xml -xinclude
+  - ant clean test
 
 notifications:
   email: false
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/6668f52f3dd4e3f81960
-    on_success: always
-    on_failure: always
-    on_start: false
 
