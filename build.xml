@@ -1,90 +1,131 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="phpunit" default="setup">
-    <target name="setup" depends="clean,composer"/>
+    <target name="setup" depends="clean,install-dependencies"/>
+    <target name="validate" depends="php-syntax-check,validate-composer-json,validate-phpunit-xsd"/>
 
-    <target name="clean" description="Cleanup build artifacts">
+    <target name="clean" unless="clean.done" description="Cleanup build artifacts">
         <delete dir="${basedir}/bin"/>
         <delete dir="${basedir}/vendor"/>
         <delete file="${basedir}/composer.lock"/>
         <delete dir="${basedir}/build/phar"/>
         <delete>
             <fileset dir="${basedir}/build">
-                <include name="**/*.phar" />
-                <include name="**/*.phar.asc" />
+                <include name="**/*.phar"/>
+                <include name="**/*.phar.asc"/>
             </fileset>
         </delete>
+
+        <property name="clean.done" value="true"/>
     </target>
 
-    <target name="composer" description="Install dependencies with Composer">
+    <target name="download-composer-phar" unless="download-composer-phar.done" description="Download composer.phar (if it does not exist or is outdated)">
         <tstamp>
             <format property="thirty.days.ago" pattern="MM/dd/yyyy hh:mm aa" offset="-30" unit="day"/>
         </tstamp>
+
         <delete>
             <fileset dir="${basedir}">
-                <include name="composer.phar" />
+                <include name="composer.phar"/>
                 <date datetime="${thirty.days.ago}" when="before"/>
             </fileset>
         </delete>
 
         <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
 
+        <property name="download-composer-phar.done" value="true"/>
+    </target>
+
+    <target name="validate-composer-json" unless="validate-composer-json.done" depends="download-composer-phar" description="Validate composer.json">
+        <exec executable="php" failonerror="true" taskname="composer">
+            <arg value="${basedir}/composer.phar"/>
+            <arg value="validate"/>
+            <arg value="--no-check-lock"/>
+            <arg value="--strict"/>
+            <arg value="${basedir}/composer.json"/>
+        </exec>
+
+        <property name="validate-composer-json.done" value="true"/>
+    </target>
+
+    <target name="-dependencies-installed">
+        <available file="${basedir}/composer.lock" property="dependencies-installed"/>
+    </target>
+
+    <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,download-composer-phar,validate-composer-json" description="Install dependencies with Composer">
         <exec executable="php">
-            <arg value="composer.phar"/>
+            <arg value="${basedir}/composer.phar"/>
             <arg value="install"/>
         </exec>
     </target>
 
-    <target name="signed-phar"
-            description="Create signed PHAR archive of PHPUnit and all its dependencies (release)"
-            depends="phar">
+    <target name="php-syntax-check" unless="php-syntax-check.done" description="Perform syntax check on PHP files">
+        <apply executable="php" failonerror="true" taskname="lint">
+            <arg value="-l"/>
+
+            <fileset dir="${basedir}/src">
+                <include name="**/*.php"/>
+                <modified/>
+            </fileset>
+
+            <fileset dir="${basedir}/tests">
+                <include name="**/*.php"/>
+                <modified/>
+            </fileset>
+        </apply>
+
+        <property name="php-syntax-check.done" value="true"/>
+    </target>
+
+    <target name="validate-phpunit-xsd" unless="validate-phpunit-xsd.done" description="Validate phpunit.xsd">
+        <exec executable="xmllint" failonerror="true" taskname="xmllint">
+            <arg value="--noout"/>
+            <arg path="${basedir}/phpunit.xsd"/>
+        </exec>
+
+        <property name="validate-phpunit-xsd.done" value="true"/>
+    </target>
+
+    <target name="test" depends="validate,install-dependencies" description="Run tests">
+        <exec executable="${basedir}/phpunit" taskname="phpunit"/>
+    </target>
+
+    <target name="signed-phar" depends="phar" description="Create signed PHAR archive of PHPUnit and all its dependencies (release)">
         <exec executable="bash" outputproperty="version">
-            <arg value="-c" />
-            <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+            <arg value="-c"/>
+            <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'"/>
         </exec>
 
         <exec executable="gpg" failonerror="true">
-            <arg value="--armor" />
-            <arg value="--detach-sign" />
-            <arg path="${basedir}/build/phpunit-library-${version}.phar" />
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/phpunit-library-${version}.phar"/>
         </exec>
 
         <exec executable="gpg" failonerror="true">
-            <arg value="--armor" />
-            <arg value="--detach-sign" />
-            <arg path="${basedir}/build/phpunit-${version}.phar" />
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/phpunit-${version}.phar"/>
         </exec>
     </target>
 
-    <target name="phar"
-            description="Create PHAR archive of PHPUnit and all its dependencies (release)"
-            depends="phar-prepare">
+    <target name="phar" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (release)">
         <exec executable="bash" outputproperty="version">
-            <arg value="-c" />
-            <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'" />
+            <arg value="-c"/>
+            <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'"/>
         </exec>
 
-        <antcall target="phar-build">
+        <antcall target="-phar-build">
             <param name="version" value="${version}"/>
         </antcall>
     </target>
 
-    <target name="phar-alpha"
-            description="Create PHAR archive of PHPUnit and all its dependencies (alpha)"
-            depends="phar-prepare">
-        <antcall target="phar-build">
-            <param name="version" value="alpha"/>
-        </antcall>
-    </target>
-
-    <target name="phar-beta"
-            description="Create PHAR archive of PHPUnit and all its dependencies (beta)"
-            depends="phar-prepare">
-        <antcall target="phar-build">
+    <target name="phar-beta" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (beta)">
+        <antcall target="-phar-build">
             <param name="version" value="beta"/>
         </antcall>
     </target>
 
-    <target name="phar-prepare" depends="clean,composer">
+    <target name="-phar-prepare" depends="clean,install-dependencies">
         <mkdir dir="${basedir}/build/phar"/>
         <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
 
@@ -247,16 +288,16 @@
         </copy>
     </target>
 
-    <target name="phar-build">
+    <target name="-phar-build">
         <copy todir="${basedir}/build/phar/phpunit">
             <fileset dir="${basedir}/src">
-                <include name="**/*.php" />
-                <include name="**/*.tpl*" />
+                <include name="**/*.php"/>
+                <include name="**/*.tpl*"/>
             </fileset>
         </copy>
 
         <exec executable="${basedir}/build/phar-version.php" outputproperty="_version">
-            <arg value="${version}" />
+            <arg value="${version}"/>
         </exec>
 
         <exec executable="${basedir}/build/bin/phpab">
