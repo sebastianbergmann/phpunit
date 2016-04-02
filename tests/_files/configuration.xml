@@ -11,17 +11,18 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          forceCoversAnnotation="false"
-         mapTestClassNameToCoveredClassName="false"
          printerClass="PHPUnit_TextUI_ResultPrinter"
          stopOnFailure="false"
          stopOnWarning="false"
+         failOnWarning="false"
+         failOnRisky="false"
          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
          beStrictAboutChangesToGlobalState="false"
          beStrictAboutOutputDuringTests="false"
          beStrictAboutResourceUsageDuringSmallTests="false"
          beStrictAboutTestsThatDoNotTestAnything="false"
          beStrictAboutTodoAnnotatedTests="false"
-         checkForUnintentionallyCoveredCode="false"
+         beStrictAboutCoversAnnotation="false"
          enforceTimeLimit="false"
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
@@ -44,18 +45,13 @@
   </groups>
 
   <filter>
-    <blacklist>
-      <directory suffix=".php">/path/to/files</directory>
-      <file>/path/to/file</file>
-      <exclude>
-        <directory suffix=".php">/path/to/files</directory>
-        <file>/path/to/file</file>
-      </exclude>
-    </blacklist>
     <whitelist addUncoveredFilesFromWhitelist="true"
                processUncoveredFilesFromWhitelist="false">
       <directory suffix=".php">/path/to/files</directory>
       <file>/path/to/file</file>
+      <file>
+        /path/to/file
+      </file>
       <exclude>
         <directory suffix=".php">/path/to/files</directory>
         <file>/path/to/file</file>

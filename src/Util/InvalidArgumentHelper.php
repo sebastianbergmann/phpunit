@@ -17,9 +17,10 @@
 class PHPUnit_Util_InvalidArgumentHelper
 {
     /**
-     * @param  int                         $argument
-     * @param  string                      $type
-     * @param  mixed                       $value
+     * @param int    $argument
+     * @param string $type
+     * @param mixed  $value
+     *
      * @return PHPUnit_Framework_Exception
      */
     public static function factory($argument, $type, $value = null)

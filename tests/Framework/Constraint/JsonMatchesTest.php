@@ -39,10 +39,10 @@ class Framework_Constraint_JsonMatchesTest extends PHPUnit_Framework_TestCase
     public static function evaluateDataprovider()
     {
         return [
-            'valid JSON'                          => [true, json_encode(['Mascott' => 'Tux']), json_encode(['Mascott' => 'Tux'])],
-            'error syntax'                        => [false, '{"Mascott"::}', json_encode(['Mascott' => 'Tux'])],
+            'valid JSON'                          => [true, json_encode(['Mascott'                           => 'Tux']), json_encode(['Mascott'                           => 'Tux'])],
+            'error syntax'                        => [false, '{"Mascott"::}', json_encode(['Mascott'         => 'Tux'])],
             'error UTF-8'                         => [false, json_encode('\xB1\x31'), json_encode(['Mascott' => 'Tux'])],
-            'invalid JSON in class instantiation' => [false, json_encode(['Mascott' => 'Tux']), '{"Mascott"::}'],
+            'invalid JSON in class instantiation' => [false, json_encode(['Mascott'                          => 'Tux']), '{"Mascott"::}'],
         ];
     }
 }

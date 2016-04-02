@@ -18,9 +18,11 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
     /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
-     * @param  string                      $job
-     * @param  array                       $settings
+     * @param string $job
+     * @param array  $settings
+     *
      * @return array
+     *
      * @throws PHPUnit_Framework_Exception
      */
     public function runJob($job, array $settings = [])
@@ -57,9 +59,11 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
     }
 
     /**
-     * @param  resource                    $pipe
-     * @param  string                      $job
+     * @param resource $pipe
+     * @param string   $job
+     *
      * @throws PHPUnit_Framework_Exception
+     *
      * @since Method available since Release 3.5.12
      */
     protected function process($pipe, $job)

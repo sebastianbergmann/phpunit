@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <xs:annotation>
-    <xs:documentation source="https://phpunit.de/manual/5.1/en/appendixes.configuration.html">
-      This Schema file defines the rules by which the XML configuration file of PHPUnit 5.1 may be structured.
+    <xs:documentation source="https://phpunit.de/manual/5.4/en/appendixes.configuration.html">
+      This Schema file defines the rules by which the XML configuration file of PHPUnit 5.4 may be structured.
     </xs:documentation>
     <xs:appinfo source="http://www.phpunit.de/manual/current/en/appendixes.configuration.html"/>
   </xs:annotation>
@@ -14,7 +14,6 @@
   <xs:complexType name="filtersType">
     <xs:choice>
       <xs:sequence>
-        <xs:element name="blacklist" type="filterType"/>
         <xs:element name="whitelist" type="whiteListType" minOccurs="0"/>
       </xs:sequence>
       <xs:sequence>
@@ -118,9 +117,11 @@
           <xs:enumeration value="coverage-text"/>
           <xs:enumeration value="coverage-clover"/>
           <xs:enumeration value="coverage-crap4j"/>
+          <xs:enumeration value="coverage-xml"/>
           <xs:enumeration value="json"/>
           <xs:enumeration value="plain"/>
           <xs:enumeration value="tap"/>
+          <xs:enumeration value="teamcity"/>
           <xs:enumeration value="junit"/>
           <xs:enumeration value="testdox-html"/>
           <xs:enumeration value="testdox-text"/>
@@ -196,7 +197,6 @@
     <xs:attribute name="convertNoticesToExceptions" type="xs:boolean" default="true"/>
     <xs:attribute name="convertWarningsToExceptions" type="xs:boolean" default="true"/>
     <xs:attribute name="forceCoversAnnotation" type="xs:boolean" default="false"/>
-    <xs:attribute name="mapTestClassNameToCoveredClassName" type="xs:boolean" default="false"/>
     <xs:attribute name="printerClass" type="xs:string" default="PHPUnit_TextUI_ResultPrinter"/>
     <xs:attribute name="printerFile" type="xs:anyURI"/>
     <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
@@ -206,17 +206,19 @@
     <xs:attribute name="stopOnIncomplete" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnRisky" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
+    <xs:attribute name="failOnRisky" type="xs:boolean" default="false"/>
+    <xs:attribute name="failOnWarning" type="xs:boolean" default="false"/>
     <xs:attribute name="beStrictAboutChangesToGlobalState" type="xs:boolean" default="false"/>
     <xs:attribute name="beStrictAboutOutputDuringTests" type="xs:boolean" default="false"/>
     <xs:attribute name="beStrictAboutResourceUsageDuringSmallTests" type="xs:boolean" default="false"/>
     <xs:attribute name="beStrictAboutTestsThatDoNotTestAnything" type="xs:boolean" default="false"/>
     <xs:attribute name="beStrictAboutTodoAnnotatedTests" type="xs:boolean" default="false"/>
+    <xs:attribute name="beStrictAboutCoversAnnotation" type="xs:boolean" default="false"/>
     <xs:attribute name="checkForUnintentionallyCoveredCode" type="xs:boolean" default="false"/>
     <xs:attribute name="enforceTimeLimit" type="xs:boolean" default="false"/>
     <xs:attribute name="timeoutForSmallTests" type="xs:integer" default="1"/>
     <xs:attribute name="timeoutForMediumTests" type="xs:integer" default="10"/>
     <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>
-    <xs:attribute name="strict" type="xs:boolean" default="false"/>
     <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit_Runner_StandardTestSuiteLoader"/>
     <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>
     <xs:attribute name="verbose" type="xs:boolean" default="false"/>

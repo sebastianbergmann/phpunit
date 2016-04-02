@@ -18,8 +18,9 @@ class PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider
     /**
      * Translates JSON error to a human readable string.
      *
-     * @param  string $error
-     * @param  string $prefix
+     * @param string $error
+     * @param string $prefix
+     *
      * @return string
      */
     public static function determineJsonError($error, $prefix = '')
@@ -45,7 +46,8 @@ class PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider
     /**
      * Translates a given type to a human readable message prefix.
      *
-     * @param  string $type
+     * @param string $type
+     *
      * @return string
      */
     public static function translateTypeToPrefix($type)

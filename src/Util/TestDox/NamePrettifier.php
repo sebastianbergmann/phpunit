@@ -33,7 +33,8 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Prettifies the name of a test class.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return string
      */
     public function prettifyTestClass($name)
@@ -60,7 +61,8 @@ class PHPUnit_Util_TestDox_NamePrettifier
     /**
      * Prettifies the name of a test method.
      *
-     * @param  string $name
+     * @param string $name
+     *
      * @return string
      */
     public function prettifyTestMethod($name)
@@ -79,23 +81,21 @@ class PHPUnit_Util_TestDox_NamePrettifier
             $this->strings[] = $string;
         }
 
-        if (strpos($name, '_') !== false) {
-            return str_replace('_', ' ', $name);
-        }
-
-        $max = strlen($name);
-
         if (substr($name, 0, 4) == 'test') {
-            $offset = 4;
-        } else {
-            $offset  = 0;
-            $name[0] = strtoupper($name[0]);
+            $name = substr($name, 4);
         }
 
+        $name[0] = strtoupper($name[0]);
+
+        if (strpos($name, '_') !== false) {
+            return trim(str_replace('_', ' ', $name));
+        }
+
+        $max        = strlen($name);
         $wasNumeric = false;
 
-        for ($i = $offset; $i < $max; $i++) {
-            if ($i > $offset &&
+        for ($i = 0; $i < $max; $i++) {
+            if ($i > 0 &&
                 ord($name[$i]) >= 65 &&
                 ord($name[$i]) <= 90) {
                 $buffer .= ' ' . strtolower($name[$i]);

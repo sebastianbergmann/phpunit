@@ -40,7 +40,8 @@ class PHPUnit_Util_Printer
     /**
      * Constructor.
      *
-     * @param  mixed                       $out
+     * @param mixed $out
+     *
      * @throws PHPUnit_Framework_Exception
      */
     public function __construct($out = null)
@@ -126,7 +127,7 @@ class PHPUnit_Util_Printer
                 $this->incrementalFlush();
             }
         } else {
-            if (PHP_SAPI != 'cli') {
+            if (PHP_SAPI != 'cli' && PHP_SAPI != 'phpdbg') {
                 $buffer = htmlspecialchars($buffer);
             }
 
@@ -142,6 +143,7 @@ class PHPUnit_Util_Printer
      * Check auto-flush mode.
      *
      * @return bool
+     *
      * @since  Method available since Release 3.3.0
      */
     public function getAutoFlush()
@@ -156,6 +158,7 @@ class PHPUnit_Util_Printer
      * not be confused with the different effects of this class' flush() method.
      *
      * @param bool $autoFlush
+     *
      * @since  Method available since Release 3.3.0
      */
     public function setAutoFlush($autoFlush)
