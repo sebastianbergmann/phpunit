@@ -73,7 +73,7 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
             foreach ($other as $element) {
                 if ($this->checkForObjectIdentity && $element === $this->value) {
                     return true;
-                } else if (!$this->checkForObjectIdentity && $element == $this->value) {
+                } elseif (!$this->checkForObjectIdentity && $element == $this->value) {
                     return true;
                 }
             }
@@ -81,7 +81,7 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
             foreach ($other as $element) {
                 if ($this->checkForNonObjectIdentity && $element === $this->value) {
                     return true;
-                } else if (!$this->checkForNonObjectIdentity && $element == $this->value) {
+                } elseif (!$this->checkForNonObjectIdentity && $element == $this->value) {
                     return true;
                 }
             }
