@@ -68,12 +68,8 @@ class PHPUnit_Runner_Version
      */
     public static function getReleaseChannel()
     {
-        if (strpos(self::$pharVersion, 'alpha') !== false) {
-            return '-alpha';
-        }
-
-        if (strpos(self::$pharVersion, 'beta') !== false) {
-            return '-beta';
+        if (strpos(self::$pharVersion, '-') !== false) {
+            return '-nightly';
         }
 
         return '';

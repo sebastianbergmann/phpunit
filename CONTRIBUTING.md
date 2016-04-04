@@ -13,7 +13,7 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 Please make sure that you have [set up your user name and email address](http://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) for use with Git. Strings such as `silly nick name <root@localhost>` look really stupid in the commit history of a project.
 
-Pull requests for bug fixes must be based on the current stable branch whereas pull requests for new features must be based on the current alpha branch (when `5.0` is the current stable branch, then `5.1` is the current beta branch and `5.2` is the current alpha branch).
+Pull requests for bug fixes must be based on the current stable branch whereas pull requests for new features must be based on the `master` branch.
 
 We are trying to keep backwards compatibility breaks in PHPUnit to an absolute minimum. Please take this into account when proposing changes.
 
