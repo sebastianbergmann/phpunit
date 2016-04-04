@@ -41,10 +41,11 @@ class ConfigurationGenerator
 EOT;
 
     /**
-     * @param  string $phpunitVersion
-     * @param  string $bootstrapScript
-     * @param  string $testsDirectory
-     * @param  string $srcDirectory
+     * @param string $phpunitVersion
+     * @param string $bootstrapScript
+     * @param string $testsDirectory
+     * @param string $srcDirectory
+     *
      * @return string
      */
     public function generateDefaultConfiguration($phpunitVersion, $bootstrapScript, $testsDirectory, $srcDirectory)
