@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
 
 /**
