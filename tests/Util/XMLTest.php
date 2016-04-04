@@ -62,7 +62,7 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
      */
     public function testLoadArray()
     {
-        PHPUnit_Util_XML::load(array(1, 2, 3));
+        PHPUnit_Util_XML::load([1, 2, 3]);
     }
 
     /**
