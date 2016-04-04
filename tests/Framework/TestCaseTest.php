@@ -209,7 +209,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithNullMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException', NULL);
+        $test->setExpectedException('RuntimeException', null);
 
         $result = $test->run();
 
