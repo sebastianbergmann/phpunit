@@ -10,5 +10,4 @@
 /tests/TextUI/*.php
 /cache.properties
 /composer.lock
-/composer.phar
 /vendor
