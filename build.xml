@@ -102,8 +102,7 @@
         <mkdir dir="${basedir}/build/phar"/>
         <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
 
-        <exec executable="php">
-            <arg value="composer.phar"/>
+        <exec executable="${basedir}/build/tools/composer">
             <arg value="require"/>
             <arg value="phpunit/dbunit:~1.4"/>
             <arg value="phpunit/phpunit-selenium:~1.4"/>
