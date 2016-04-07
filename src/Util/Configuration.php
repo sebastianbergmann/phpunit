@@ -49,7 +49,8 @@
  *          timeoutForMediumTests="10"
  *          timeoutForLargeTests="60"
  *          verbose="false"
- *          reverseDefectList="false">
+ *          reverseDefectList="false"
+ *          registerMockObjectsFromTestArgumentsRecursively="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
  *       <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
@@ -793,6 +794,13 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('verbose')) {
             $result['verbose'] = $this->getBoolean(
                 (string) $root->getAttribute('verbose'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('registerMockObjectsFromTestArgumentsRecursively')) {
+            $result['registerMockObjectsFromTestArgumentsRecursively'] = $this->getBoolean(
+                (string) $root->getAttribute('registerMockObjectsFromTestArgumentsRecursively'),
                 false
             );
         }

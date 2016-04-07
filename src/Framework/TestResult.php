@@ -165,6 +165,11 @@ class PHPUnit_Framework_TestResult implements Countable
     protected $lastTestFailed = false;
 
     /**
+     * @var bool
+     */
+    private $registerMockObjectsFromTestArgumentsRecursively = false;
+
+    /**
      * Registers a TestListener.
      *
      * @param  PHPUnit_Framework_TestListener
@@ -617,6 +622,12 @@ class PHPUnit_Framework_TestResult implements Countable
     public function run(PHPUnit_Framework_Test $test)
     {
         PHPUnit_Framework_Assert::resetCount();
+
+        if ($test instanceof PHPUnit_Framework_TestCase) {
+            $test->setRegisterMockObjectsFromTestArgumentsRecursively(
+                $this->registerMockObjectsFromTestArgumentsRecursively
+            );
+        }
 
         $error      = false;
         $failure    = false;
@@ -1250,6 +1261,20 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $this->timeoutForLargeTests = $timeout;
+    }
+
+    /**
+     * @param bool $flag
+     *
+     * @since Method available since Release 5.4.0
+     */
+    public function setRegisterMockObjectsFromTestArgumentsRecursively($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
 
     /**

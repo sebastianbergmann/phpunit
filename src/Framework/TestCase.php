@@ -267,6 +267,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $beStrictAboutChangesToGlobalState = false;
 
     /**
+     * @var bool
+     */
+    private $registerMockObjectsFromTestArgumentsRecursively = false;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param string $name
@@ -556,6 +561,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->expectedExceptionMessageRegExp = $messageRegExp;
+    }
+
+    /**
+     * @param bool $flag
+     *
+     * @since Method available since Release 5.4.0
+     */
+    public function setRegisterMockObjectsFromTestArgumentsRecursively($flag)
+    {
+        if (!is_bool($flag)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+        }
+
+        $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
 
     /**
@@ -2362,11 +2381,21 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     private function registerMockObjectsFromTestArguments(array $testArguments)
     {
-        foreach ($testArguments as $testArgument) {
-            if ($testArgument instanceof PHPUnit_Framework_MockObject_MockObject) {
-                $this->mockObjects[] = $testArgument;
-            } elseif (is_array($testArgument)) {
-                $this->registerMockObjectsFromTestArguments($testArgument);
+        if ($this->registerMockObjectsFromTestArgumentsRecursively) {
+            $enumerator = new Enumerator;
+
+            foreach ($enumerator->enumerate($testArguments) as $object) {
+                if ($object instanceof PHPUnit_Framework_MockObject_MockObject) {
+                    $this->mockObjects[] = $object;
+                }
+            }
+        } else {
+            foreach ($testArguments as $testArgument) {
+                if ($testArgument instanceof PHPUnit_Framework_MockObject_MockObject) {
+                    $this->mockObjects[] = $testArgument;
+                } elseif (is_array($testArgument)) {
+                    $this->registerMockObjectsFromTestArguments($testArgument);
+                }
             }
         }
     }
