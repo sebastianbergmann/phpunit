@@ -102,8 +102,7 @@
         <mkdir dir="${basedir}/build/phar"/>
         <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
 
-        <exec executable="php">
-            <arg value="composer.phar"/>
+        <exec executable="${basedir}/build/tools/composer">
             <arg value="require"/>
             <arg value="phpunit/dbunit:~2.0"/>
             <arg value="phpunit/php-invoker:~1.1"/>
