@@ -17,7 +17,6 @@ use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReport;
 use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
 use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
-
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -64,7 +63,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param PHPUnit_Runner_TestSuiteLoader $loader
-     * @param CodeCoverageFilter        $filter
+     * @param CodeCoverageFilter             $filter
      *
      * @since Method available since Release 3.4.0
      */
