@@ -2244,7 +2244,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (!defined('PHPUNIT_TESTSUITE')) {
             $blacklist->addClassNamePrefix('PHPUnit');
             $blacklist->addClassNamePrefix('File_Iterator');
-            $blacklist->addClassNamePrefix('PHP_CodeCoverage');
+            $blacklist->addClassNamePrefix('SebastianBergmann\CodeCoverage');
             $blacklist->addClassNamePrefix('PHP_Invoker');
             $blacklist->addClassNamePrefix('PHP_Timer');
             $blacklist->addClassNamePrefix('PHP_Token');

@@ -1,4 +1,6 @@
 <?php
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+
 if (!defined('STDOUT')) {
     // php://stdout does not obey output buffering. Any output would break
     // unserialization of child process results in the parent process.
@@ -32,7 +34,7 @@ function __phpunit_run_isolated_test()
 
     if ({collectCodeCoverageInformation}) {
         $result->setCodeCoverage(
-            new PHP_CodeCoverage(
+            new CodeCoverage(
                 null,
                 unserialize('{codeCoverageFilter}')
             )

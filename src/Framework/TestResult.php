@@ -8,6 +8,11 @@
  * file that was distributed with this source code.
  */
 
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
+use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException;
+use SebastianBergmann\CodeCoverage\MissingCoversAnnotationException;
+use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
 
 /**
@@ -75,7 +80,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Code Coverage information.
      *
-     * @var PHP_CodeCoverage
+     * @var CodeCoverage
      */
     protected $codeCoverage;
 
@@ -787,7 +792,7 @@ class PHPUnit_Framework_TestResult implements Countable
                     $linesToBeCovered,
                     $linesToBeUsed
                 );
-            } catch (PHP_CodeCoverage_UnintentionallyCoveredCodeException $cce) {
+            } catch (UnintentionallyCoveredCodeException $cce) {
                 $this->addFailure(
                     $test,
                     new PHPUnit_Framework_UnintentionallyCoveredCodeError(
@@ -796,7 +801,7 @@ class PHPUnit_Framework_TestResult implements Countable
                     ),
                     $time
                 );
-            } catch (PHP_CodeCoverage_CoveredCodeNotExecutedException $cce) {
+            } catch (CoveredCodeNotExecutedException $cce) {
                 $this->addFailure(
                     $test,
                     new PHPUnit_Framework_CoveredCodeNotExecutedException(
@@ -805,7 +810,7 @@ class PHPUnit_Framework_TestResult implements Countable
                     ),
                     $time
                 );
-            } catch (PHP_CodeCoverage_MissingCoversAnnotationException $cce) {
+            } catch (MissingCoversAnnotationException $cce) {
                 $this->addFailure(
                     $test,
                     new PHPUnit_Framework_MissingCoversAnnotationException(
@@ -813,7 +818,7 @@ class PHPUnit_Framework_TestResult implements Countable
                     ),
                     $time
                 );
-            } catch (PHP_CodeCoverage_Exception $cce) {
+            } catch (CodeCoverageException $cce) {
                 $error = true;
 
                 if (!isset($e)) {
@@ -898,9 +903,9 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Returns the PHP_CodeCoverage object.
+     * Returns the code coverage object.
      *
-     * @return PHP_CodeCoverage
+     * @return CodeCoverage
      *
      * @since  Method available since Release 3.5.0
      */
@@ -910,13 +915,13 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
-     * Sets the PHP_CodeCoverage object.
+     * Sets the code coverage object.
      *
-     * @param PHP_CodeCoverage $codeCoverage
+     * @param CodeCoverage $codeCoverage
      *
      * @since Method available since Release 3.6.0
      */
-    public function setCodeCoverage(PHP_CodeCoverage $codeCoverage)
+    public function setCodeCoverage(CodeCoverage $codeCoverage)
     {
         $this->codeCoverage = $codeCoverage;
     }
