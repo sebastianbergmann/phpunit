@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 5.4 release series are documented in this fil
 
 ## [5.4.0] - 2016-06-03
 
+### Added
+
+* Implemented [#2037](https://github.com/sebastianbergmann/phpunit/issues/2037): Log more information about failures in JSON output
+
 ### Changed
 
 * The usage of test doubles created via data providers has been improved
