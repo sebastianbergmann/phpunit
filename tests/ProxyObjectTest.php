@@ -8,14 +8,11 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @since      Class available since Release 2.0.0
- */
 class Framework_ProxyObjectTest extends PHPUnit_Framework_TestCase
 {
     public function testMockedMethodIsProxiedToOriginalMethod()
     {
-        $proxy = $this->getMockBuilder('Bar')
+        $proxy = $this->getMockBuilder(Bar::class)
                       ->enableProxyingToOriginalMethods()
                       ->getMock();
 
@@ -23,14 +20,16 @@ class Framework_ProxyObjectTest extends PHPUnit_Framework_TestCase
               ->method('doSomethingElse');
 
         $foo = new Foo;
+
         $this->assertEquals('result', $foo->doSomething($proxy));
     }
 
     public function testMockedMethodWithReferenceIsProxiedToOriginalMethod()
     {
-        $proxy = $this->getMockBuilder('MethodCallbackByReference')
+        $proxy = $this->getMockBuilder(MethodCallbackByReference::class)
                       ->enableProxyingToOriginalMethods()
                       ->getMock();
+
         $a = $b = $c = 0;
 
         $proxy->callback($a, $b, $c);
