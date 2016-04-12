@@ -272,6 +272,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $registerMockObjectsFromTestArgumentsRecursively = false;
 
     /**
+     * @var string[]
+     */
+    private $warnings = [];
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param string $name
@@ -865,6 +870,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->verifyMockObjects();
             $this->assertPostConditions();
 
+            if (!empty($this->warnings)) {
+                throw new PHPUnit_Framework_Warning(join("\n", $this->warnings));
+            }
+
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
         } catch (PHPUnit_Framework_IncompleteTest $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
@@ -1430,11 +1439,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @since  Method available since Release 3.0.0
      *
      * @deprecated Method deprecated since Release 5.4.0
-     *
-     * @todo Display warning that deprecated method is used
      */
     public function getMock($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
     {
+        $this->warnings[] = 'PHPUnit_Framework_TestCase::getMock() is deprecated, use PHPUnit_Framework_TestCase::getMockBuilder() instead';
+
         $mockObject = $this->getMockObjectGenerator()->getMock(
             $originalClassName,
             $methods,
