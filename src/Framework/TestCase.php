@@ -871,7 +871,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->assertPostConditions();
 
             if (!empty($this->warnings)) {
-                throw new PHPUnit_Framework_Warning(implode("\n", $this->warnings));
+                throw new PHPUnit_Framework_Warning(
+                    implode(
+                        "\n",
+                        array_unique($this->warnings)
+                    )
+                );
             }
 
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
