@@ -871,7 +871,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->assertPostConditions();
 
             if (!empty($this->warnings)) {
-                throw new PHPUnit_Framework_Warning(join("\n", $this->warnings));
+                throw new PHPUnit_Framework_Warning(implode("\n", $this->warnings));
             }
 
             $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
@@ -1437,7 +1437,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws PHPUnit_Framework_Exception
      *
      * @since  Method available since Release 3.0.0
-     *
      * @deprecated Method deprecated since Release 5.4.0
      */
     public function getMock($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
