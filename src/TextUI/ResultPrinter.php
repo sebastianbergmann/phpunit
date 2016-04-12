@@ -111,6 +111,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     private $reverse = false;
 
     /**
+     * @var bool
+     */
+    private $defectListPrinted = false;
+
+    /**
      * Constructor.
      *
      * @param mixed      $out
@@ -178,46 +183,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     public function printResult(PHPUnit_Framework_TestResult $result)
     {
         $this->printHeader();
-
         $this->printErrors($result);
-        $printSeparator = $result->errorCount() > 0;
-        $hasFailures    = $result->failureCount() > 0;
-        $hasWarnings    = $result->warningCount() > 0;
-
-        if ($printSeparator && ($hasFailures || $hasWarnings)) {
-            $this->write("\n--\n\n");
-        }
-
-        $printSeparator = $printSeparator || $hasFailures || $hasWarnings;
-        if ($hasWarnings) {
-            $this->printWarnings($result);
-        } else {
-            $this->printFailures($result);
-        }
+        $this->printWarnings($result);
+        $this->printFailures($result);
 
         if ($this->verbose) {
-            if ($printSeparator && $result->riskyCount() > 0) {
-                $this->write("\n--\n\n");
-            }
-
-            $printSeparator = $printSeparator ||
-                              $result->riskyCount() > 0;
-
             $this->printRisky($result);
-
-            if ($printSeparator && $result->notImplementedCount() > 0) {
-                $this->write("\n--\n\n");
-            }
-
-            $printSeparator = $printSeparator ||
-                              $result->notImplementedCount() > 0;
-
             $this->printIncompletes($result);
-
-            if ($printSeparator && $result->skippedCount() > 0) {
-                $this->write("\n--\n\n");
-            }
-
             $this->printSkipped($result);
         }
 
@@ -234,6 +206,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         if ($count == 0) {
             return;
+        }
+
+        if ($this->defectListPrinted) {
+            $this->write("\n--\n\n");
         }
 
         $this->write(
@@ -255,6 +231,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         foreach ($defects as $defect) {
             $this->printDefect($defect, $i++);
         }
+
+        $this->defectListPrinted = true;
     }
 
     /**
