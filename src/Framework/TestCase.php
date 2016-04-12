@@ -1428,6 +1428,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws PHPUnit_Framework_Exception
      *
      * @since  Method available since Release 3.0.0
+     *
+     * @deprecated Method deprecated since Release 5.4.0
      */
     public function getMock($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
     {
@@ -1444,9 +1446,19 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $proxyTarget
         );
 
-        $this->mockObjects[] = $mockObject;
+        $this->registerMockObject($mockObject);
 
         return $mockObject;
+    }
+
+    /**
+     * @param PHPUnit_Framework_MockObject_MockObject $mockObject
+     *
+     * @since Method available since Release 5.4.0
+     */
+    public function registerMockObject(PHPUnit_Framework_MockObject_MockObject $mockObject)
+    {
+        $this->mockObjects[] = $mockObject;
     }
 
     /**
@@ -1548,7 +1560,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $cloneArguments
         );
 
-        $this->mockObjects[] = $mockObject;
+        $this->registerMockObject($mockObject);
 
         return $mockObject;
     }
@@ -1628,7 +1640,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $cloneArguments
         );
 
-        $this->mockObjects[] = $mockObject;
+        $this->registerMockObject($mockObject);
 
         return $mockObject;
     }
@@ -2388,13 +2400,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
             foreach ($enumerator->enumerate($testArguments) as $object) {
                 if ($object instanceof PHPUnit_Framework_MockObject_MockObject) {
-                    $this->mockObjects[] = $object;
+                    $this->registerMockObject($object);
                 }
             }
         } else {
             foreach ($testArguments as $testArgument) {
                 if ($testArgument instanceof PHPUnit_Framework_MockObject_MockObject) {
-                    $this->mockObjects[] = $testArgument;
+                    $this->registerMockObject($testArgument);
                 } elseif (is_array($testArgument)) {
                     $this->registerMockObjectsFromTestArguments($testArgument);
                 }
