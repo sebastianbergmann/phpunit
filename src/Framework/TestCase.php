@@ -1595,8 +1595,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @since  Method available since Release 3.4.0
-     *
-     * @todo Refactor to not use getMock()
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = [])
     {
@@ -1606,16 +1604,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         if (!class_exists($originalClassName)) {
             eval(
-            $this->getMockObjectGenerator()->generateClassFromWsdl(
-                $wsdlFile,
-                $originalClassName,
-                $methods,
-                $options
-            )
+                $this->getMockObjectGenerator()->generateClassFromWsdl(
+                    $wsdlFile,
+                    $originalClassName,
+                    $methods,
+                    $options
+                )
             );
         }
 
-        return $this->getMock(
+        $mockObject = $this->getMockObjectGenerator()->getMock(
             $originalClassName,
             $methods,
             ['', $options],
@@ -1624,6 +1622,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             false,
             false
         );
+
+        $this->registerMockObject($mockObject);
+
+        return $mockObject;
     }
 
     /**
