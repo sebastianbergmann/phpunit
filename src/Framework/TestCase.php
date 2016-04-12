@@ -1430,6 +1430,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @since  Method available since Release 3.0.0
      *
      * @deprecated Method deprecated since Release 5.4.0
+     *
+     * @todo Display warning that deprecated method is used
      */
     public function getMock($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
     {
@@ -1510,6 +1512,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws PHPUnit_Framework_Exception
      *
      * @since  Method available since Release 3.5.0
+     *
+     * @todo Refactor to not use getMock()
      */
     protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false)
     {
@@ -1578,6 +1582,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @since  Method available since Release 3.4.0
+     *
+     * @todo Refactor to not use getMock()
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = [])
     {
