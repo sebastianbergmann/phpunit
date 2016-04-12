@@ -181,8 +181,8 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         BeforeClassWithOnlyDataProviderTest::resetProperties();
         $suite->run($this->result);
 
-        $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$setUpBeforeClassWasCalled, "setUpBeforeClass method was not run.");
-        $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$beforeClassWasCalled, "@beforeClass method was not run.");
+        $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$setUpBeforeClassWasCalled, 'setUpBeforeClass method was not run.');
+        $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$beforeClassWasCalled, '@beforeClass method was not run.');
     }
 
     public function testBeforeAnnotation()

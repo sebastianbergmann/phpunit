@@ -7,7 +7,7 @@ class BeforeClassWithOnlyDataProviderTest extends \PHPUnit_Framework_TestCase
     public static function resetProperties()
     {
         self::$setUpBeforeClassWasCalled = false;
-        self::$beforeClassWasCalled = false;
+        self::$beforeClassWasCalled      = false;
     }
 
     public static function setUpBeforeClass()
@@ -25,7 +25,7 @@ class BeforeClassWithOnlyDataProviderTest extends \PHPUnit_Framework_TestCase
 
     public function dummyProvider()
     {
-        return array(array(1));
+        return [[1]];
     }
 
     /**
