@@ -419,7 +419,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function count($preferCache = false)
     {
-        if ($preferCache && $this->cachedNumTests != null) {
+        if ($preferCache && $this->cachedNumTests !== null) {
             $numTests = $this->cachedNumTests;
         } else {
             $numTests = 0;
