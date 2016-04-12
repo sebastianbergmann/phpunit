@@ -1421,6 +1421,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param bool       $callAutoload            Can be used to disable __autoload() during the generation of the test double class.
      * @param bool       $cloneArguments
      * @param bool       $callOriginalMethods
+     * @param object     $proxyTarget
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
@@ -1428,7 +1429,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @since  Method available since Release 3.0.0
      */
-    public function getMock($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false)
+    public function getMock($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
     {
         $mockObject = $this->getMockObjectGenerator()->getMock(
             $originalClassName,
@@ -1439,7 +1440,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $callOriginalClone,
             $callAutoload,
             $cloneArguments,
-            $callOriginalMethods
+            $callOriginalMethods,
+            $proxyTarget
         );
 
         $this->mockObjects[] = $mockObject;
