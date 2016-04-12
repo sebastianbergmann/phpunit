@@ -135,7 +135,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param bool         $callOriginalMethods
      * @param object       $proxyTarget
      *
-     * @return object
+     * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @throws InvalidArgumentException
      * @throws PHPUnit_Framework_Exception
@@ -324,7 +324,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
      *
-     * @return object
+     * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @since  Method available since Release 1.0.0
      *
@@ -387,7 +387,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
      *
-     * @return object
+     * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @since  Method available since Release 1.2.3
      *

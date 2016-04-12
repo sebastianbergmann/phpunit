@@ -87,7 +87,9 @@ class PHPUnit_Framework_MockObject_MockBuilder
      */
     public function getMock()
     {
-        return $this->testCase->getMock(
+        $generator = new PHPUnit_Framework_MockObject_Generator;
+
+        $object = $generator->getMock(
             $this->type,
             $this->methods,
             $this->constructorArgs,
@@ -99,6 +101,10 @@ class PHPUnit_Framework_MockObject_MockBuilder
             $this->callOriginalMethods,
             $this->proxyTarget
         );
+
+        $this->testCase->registerMockObject($object);
+
+        return $object;
     }
 
     /**
@@ -108,7 +114,9 @@ class PHPUnit_Framework_MockObject_MockBuilder
      */
     public function getMockForAbstractClass()
     {
-        return $this->testCase->getMockForAbstractClass(
+        $generator = new PHPUnit_Framework_MockObject_Generator;
+
+        $object = $generator->getMockForAbstractClass(
             $this->type,
             $this->constructorArgs,
             $this->mockClassName,
@@ -118,6 +126,10 @@ class PHPUnit_Framework_MockObject_MockBuilder
             $this->methods,
             $this->cloneArguments
         );
+
+        $this->testCase->registerMockObject($object);
+
+        return $object;
     }
 
     /**
@@ -127,7 +139,9 @@ class PHPUnit_Framework_MockObject_MockBuilder
      */
     public function getMockForTrait()
     {
-        return $this->testCase->getMockForTrait(
+        $generator = new PHPUnit_Framework_MockObject_Generator;
+
+        $object = $generator->getMockForTrait(
             $this->type,
             $this->constructorArgs,
             $this->mockClassName,
@@ -137,6 +151,10 @@ class PHPUnit_Framework_MockObject_MockBuilder
             $this->methods,
             $this->cloneArguments
         );
+
+        $this->testCase->registerMockObject($object);
+
+        return $object;
     }
 
     /**
