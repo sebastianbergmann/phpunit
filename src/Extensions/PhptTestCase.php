@@ -102,6 +102,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         ];
 
         $actual = preg_replace('/\r\n/', "\n", trim($output));
+
         foreach ($assertions as $sectionName => $sectionAssertion) {
             if (isset($sections[$sectionName])) {
                 $sectionContent = preg_replace('/\r\n/', "\n", trim($sections[$sectionName]));
