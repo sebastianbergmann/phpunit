@@ -1525,12 +1525,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws PHPUnit_Framework_Exception
      *
      * @since  Method available since Release 3.5.0
-     *
-     * @todo Refactor to not use getMock()
      */
     protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false)
     {
-        $mock = $this->getMock(
+        $mock = $this->getMockObjectGenerator()->getMock(
             $originalClassName,
             $methods,
             $arguments,
