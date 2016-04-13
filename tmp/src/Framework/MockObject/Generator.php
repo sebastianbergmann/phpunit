@@ -427,9 +427,9 @@ class PHPUnit_Framework_MockObject_Generator
 
         $classTemplate->setVar(
             [
-            'prologue'   => 'abstract ',
-            'class_name' => $className['className'],
-            'trait_name' => $traitName
+                'prologue'   => 'abstract ',
+                'class_name' => $className['className'],
+                'trait_name' => $traitName
             ]
         );
 
@@ -491,9 +491,9 @@ class PHPUnit_Framework_MockObject_Generator
 
         $classTemplate->setVar(
             [
-            'prologue'   => '',
-            'class_name' => $className['className'],
-            'trait_name' => $traitName
+                'prologue'   => '',
+                'class_name' => $className['className'],
+                'trait_name' => $traitName
             ]
         );
 
@@ -1022,16 +1022,16 @@ class PHPUnit_Framework_MockObject_Generator
 
         $template->setVar(
             [
-            'arguments_decl'  => $arguments_decl,
-            'arguments_call'  => $arguments_call,
-            'return_delim'    => $return_type ? ': ' : '',
-            'return_type'     => $return_type,
-            'arguments_count' => !empty($arguments_call) ? count(explode(',', $arguments_call)) : 0,
-            'class_name'      => $className,
-            'method_name'     => $methodName,
-            'modifier'        => $modifier,
-            'reference'       => $reference,
-            'clone_arguments' => $cloneArguments ? 'true' : 'false'
+                'arguments_decl'  => $arguments_decl,
+                'arguments_call'  => $arguments_call,
+                'return_delim'    => $return_type ? ': ' : '',
+                'return_type'     => $return_type,
+                'arguments_count' => !empty($arguments_call) ? count(explode(',', $arguments_call)) : 0,
+                'class_name'      => $className,
+                'method_name'     => $methodName,
+                'modifier'        => $modifier,
+                'reference'       => $reference,
+                'clone_arguments' => $cloneArguments ? 'true' : 'false'
             ]
         );
 
