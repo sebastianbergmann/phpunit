@@ -696,11 +696,6 @@ class PHPUnit_Util_Test
                     $groups[] = $size;
                     break 2;
                 }
-
-                if (isset($annotations[$element][$size])) {
-                    $groups[] = $size;
-                    break 2;
-                }
             }
         }
 
