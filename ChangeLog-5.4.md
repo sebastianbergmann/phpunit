@@ -10,7 +10,8 @@ All notable changes of the PHPUnit 5.4 release series are documented in this fil
 
 ### Changed
 
-* The `PHPUnit_Framework_TestCase::getMock()` method has been deprecated. Please use `PHPUnit_Framework_TestCase::getMockBuilder()` instead.
+* The `PHPUnit_Framework_TestCase::getMock()` method has been deprecated. Please use `PHPUnit_Framework_TestCase::createTestDouble()` or `PHPUnit_Framework_TestCase::getMockBuilder()` instead.
+* The `PHPUnit_Framework_TestCase::getMockWithoutInvokingTheOriginalConstructor()` method has been deprecated. Please use `PHPUnit_Framework_TestCase::createTestDouble()` instead.
 * The usage of test doubles created via data providers has been improved
 
 [5.4.0]: https://github.com/sebastianbergmann/phpunit/compare/5.3...5.4.0
