@@ -70,7 +70,7 @@ class PHPUnit_Framework_TestFailure
      *
      * @return string
      *
-     * @since  Method available since Release 3.4.0
+     * @since Method available since Release 3.4.0
      */
     public function getExceptionAsString()
     {
@@ -84,7 +84,7 @@ class PHPUnit_Framework_TestFailure
      *
      * @return string
      *
-     * @since  Method available since Release 3.2.0
+     * @since Method available since Release 3.2.0
      */
     public static function exceptionToString(Exception $e)
     {
@@ -114,7 +114,7 @@ class PHPUnit_Framework_TestFailure
      *
      * @return string
      *
-     * @since  Method available since Release 4.3.0
+     * @since Method available since Release 4.3.0
      */
     public function getTestName()
     {

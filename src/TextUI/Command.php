@@ -177,7 +177,7 @@ class PHPUnit_TextUI_Command
      *
      * @return PHPUnit_TextUI_TestRunner
      *
-     * @since  Method available since Release 3.6.0
+     * @since Method available since Release 3.6.0
      */
     protected function createRunner()
     {

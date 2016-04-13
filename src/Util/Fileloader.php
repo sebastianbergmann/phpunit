@@ -47,7 +47,7 @@ class PHPUnit_Util_Fileloader
      *
      * @return mixed
      *
-     * @since  Method available since Release 3.0.0
+     * @since Method available since Release 3.0.0
      */
     public static function load($filename)
     {

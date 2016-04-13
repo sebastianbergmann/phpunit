@@ -176,7 +176,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param Exception              $e
      * @param float                  $time
      *
-     * @since  Method available since Release 4.0.0
+     * @since Method available since Release 4.0.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -195,7 +195,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param Exception              $e
      * @param float                  $time
      *
-     * @since  Method available since Release 3.0.0
+     * @since Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -212,7 +212,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      *
      * @param PHPUnit_Framework_TestSuite $suite
      *
-     * @since  Method available since Release 2.2.0
+     * @since Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -223,7 +223,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      *
      * @param PHPUnit_Framework_TestSuite $suite
      *
-     * @since  Method available since Release 2.2.0
+     * @since Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -303,7 +303,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     }
 
     /**
-     * @since  Method available since Release 2.3.0
+     * @since Method available since Release 2.3.0
      */
     protected function doEndClass()
     {

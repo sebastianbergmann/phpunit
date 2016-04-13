@@ -628,7 +628,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     /**
      * @param string $buffer
      *
-     * @since  Method available since Release 3.1.0
+     * @since Method available since Release 3.1.0
      */
     protected function write($buffer)
     {
@@ -648,7 +648,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      *
      * @return PHPUnit_Runner_TestSuiteLoader
      *
-     * @since  Method available since Release 2.2.0
+     * @since Method available since Release 2.2.0
      */
     public function getLoader()
     {
@@ -662,7 +662,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     /**
      * @param array $arguments
      *
-     * @since  Method available since Release 3.2.1
+     * @since Method available since Release 3.2.1
      */
     protected function handleConfiguration(array &$arguments)
     {

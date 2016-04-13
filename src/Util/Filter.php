@@ -91,7 +91,7 @@ class PHPUnit_Util_Filter
      *
      * @return bool
      *
-     * @since  Method available since Release 3.3.2
+     * @since Method available since Release 3.3.2
      */
     private static function frameExists(array $trace, $file, $line)
     {

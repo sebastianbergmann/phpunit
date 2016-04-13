@@ -66,7 +66,7 @@ abstract class PHPUnit_Util_PHP
     /**
      * @return PHPUnit_Util_PHP
      *
-     * @since  Method available since Release 3.5.12
+     * @since Method available since Release 3.5.12
      */
     public static function factory()
     {
@@ -265,7 +265,7 @@ abstract class PHPUnit_Util_PHP
      *
      * @return Exception
      *
-     * @since  Method available since Release 3.6.0
+     * @since Method available since Release 3.6.0
      * @see    https://github.com/sebastianbergmann/phpunit/issues/74
      */
     private function getException(PHPUnit_Framework_TestFailure $error)

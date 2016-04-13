@@ -51,7 +51,7 @@ class PHPUnit_Util_Blacklist
     /**
      * @return array
      *
-     * @since  Method available since Release 4.1.0
+     * @since Method available since Release 4.1.0
      */
     public function getBlacklistedDirectories()
     {

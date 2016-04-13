@@ -151,7 +151,7 @@ class PHPUnit_Util_Configuration
     }
 
     /**
-     * @since  Method available since Release 3.4.0
+     * @since Method available since Release 3.4.0
      */
     final private function __clone()
     {
@@ -164,7 +164,7 @@ class PHPUnit_Util_Configuration
      *
      * @return PHPUnit_Util_Configuration
      *
-     * @since  Method available since Release 3.4.0
+     * @since Method available since Release 3.4.0
      */
     public static function getInstance($filename)
     {
@@ -191,7 +191,7 @@ class PHPUnit_Util_Configuration
      *
      * @return string
      *
-     * @since  Method available since Release 3.6.0
+     * @since Method available since Release 3.6.0
      */
     public function getFilename()
     {
@@ -203,7 +203,7 @@ class PHPUnit_Util_Configuration
      *
      * @return array
      *
-     * @since  Method available since Release 3.2.1
+     * @since Method available since Release 3.2.1
      */
     public function getFilterConfiguration()
     {
@@ -261,7 +261,7 @@ class PHPUnit_Util_Configuration
      *
      * @return array
      *
-     * @since  Method available since Release 3.2.1
+     * @since Method available since Release 3.2.1
      */
     public function getGroupConfiguration()
     {
@@ -286,7 +286,7 @@ class PHPUnit_Util_Configuration
      *
      * @return array
      *
-     * @since  Method available since Release 3.4.0
+     * @since Method available since Release 3.4.0
      */
     public function getListenerConfiguration()
     {
@@ -402,7 +402,7 @@ class PHPUnit_Util_Configuration
      *
      * @return array
      *
-     * @since  Method available since Release 3.2.1
+     * @since Method available since Release 3.2.1
      */
     public function getPHPConfiguration()
     {
@@ -456,7 +456,7 @@ class PHPUnit_Util_Configuration
     /**
      * Handles the PHP configuration.
      *
-     * @since  Method available since Release 3.2.20
+     * @since Method available since Release 3.2.20
      */
     public function handlePHPConfiguration()
     {
@@ -521,7 +521,7 @@ class PHPUnit_Util_Configuration
      *
      * @return array
      *
-     * @since  Method available since Release 3.2.14
+     * @since Method available since Release 3.2.14
      */
     public function getPHPUnitConfiguration()
     {
@@ -813,7 +813,7 @@ class PHPUnit_Util_Configuration
      *
      * @return PHPUnit_Framework_TestSuite
      *
-     * @since  Method available since Release 3.2.1
+     * @since Method available since Release 3.2.1
      */
     public function getTestSuiteConfiguration($testSuiteFilter = null)
     {
@@ -845,7 +845,7 @@ class PHPUnit_Util_Configuration
      *
      * @return PHPUnit_Framework_TestSuite
      *
-     * @since  Method available since Release 3.4.0
+     * @since Method available since Release 3.4.0
      */
     protected function getTestSuite(DOMElement $testSuiteNode, $testSuiteFilter = null)
     {
@@ -966,7 +966,7 @@ class PHPUnit_Util_Configuration
      *
      * @return bool
      *
-     * @since  Method available since Release 3.2.3
+     * @since Method available since Release 3.2.3
      */
     protected function getBoolean($value, $default)
     {
@@ -985,7 +985,7 @@ class PHPUnit_Util_Configuration
      *
      * @return bool
      *
-     * @since  Method available since Release 3.6.0
+     * @since Method available since Release 3.6.0
      */
     protected function getInteger($value, $default)
     {
@@ -1001,7 +1001,7 @@ class PHPUnit_Util_Configuration
      *
      * @return array
      *
-     * @since  Method available since Release 3.2.3
+     * @since Method available since Release 3.2.3
      */
     protected function readFilterDirectories($query)
     {
@@ -1048,7 +1048,7 @@ class PHPUnit_Util_Configuration
      *
      * @return array
      *
-     * @since  Method available since Release 3.2.3
+     * @since Method available since Release 3.2.3
      */
     protected function readFilterFiles($query)
     {
@@ -1071,7 +1071,7 @@ class PHPUnit_Util_Configuration
      *
      * @return string
      *
-     * @since  Method available since Release 3.5.0
+     * @since Method available since Release 3.5.0
      */
     protected function toAbsolutePath($path, $useIncludePath = false)
     {

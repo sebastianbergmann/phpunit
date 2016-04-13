@@ -75,7 +75,7 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
      *
      * @throws PHPUnit_Framework_Exception
      *
-     * @since  Method available since Release 3.5.12
+     * @since Method available since Release 3.5.12
      */
     protected function process($pipe, $job)
     {
