@@ -162,18 +162,20 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if (is_array($type)) {
-            $type = array_unique(array_map(
-                function ($type) {
-                    if ($type === 'Traversable' ||
-                      $type === '\\Traversable' ||
-                      $type === '\\Iterator') {
-                        return 'Iterator';
-                    }
+            $type = array_unique(
+                array_map(
+                    function ($type) {
+                        if ($type === 'Traversable' ||
+                            $type === '\\Traversable' ||
+                            $type === '\\Iterator') {
+                            return 'Iterator';
+                        }
 
-                    return $type;
-                },
-                $type
-            ));
+                        return $type;
+                    },
+                    $type
+                )
+            );
         }
 
         if (null !== $methods) {
