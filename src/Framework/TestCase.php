@@ -1455,7 +1455,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @since Method available since Release 5.4.0
      */
-    protected function createTestDouble($originalClassName)
+    protected function createMock($originalClassName)
     {
         return $this->getMockBuilder($originalClassName)
             ->disableOriginalConstructor()
@@ -1490,7 +1490,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function getMock($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
     {
-        $this->warnings[] = 'PHPUnit_Framework_TestCase::getMock() is deprecated, use PHPUnit_Framework_TestCase::createTestDouble() or PHPUnit_Framework_TestCase::getMockBuilder() instead';
+        $this->warnings[] = 'PHPUnit_Framework_TestCase::getMock() is deprecated, use PHPUnit_Framework_TestCase::createMock() or PHPUnit_Framework_TestCase::getMockBuilder() instead';
 
         $mockObject = $this->getMockObjectGenerator()->getMock(
             $originalClassName,
@@ -1524,7 +1524,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function getMockWithoutInvokingTheOriginalConstructor($originalClassName)
     {
-        $this->warnings[] = 'PHPUnit_Framework_TestCase::getMockWithoutInvokingTheOriginalConstructor() is deprecated, use PHPUnit_Framework_TestCase::createTestDouble() instead';
+        $this->warnings[] = 'PHPUnit_Framework_TestCase::getMockWithoutInvokingTheOriginalConstructor() is deprecated, use PHPUnit_Framework_TestCase::createMock() instead';
 
         return $this->getMockBuilder($originalClassName)
                     ->disableOriginalConstructor()
