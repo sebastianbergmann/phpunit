@@ -134,6 +134,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param bool         $cloneArguments
      * @param bool         $callOriginalMethods
      * @param object       $proxyTarget
+     * @param bool         $allowMockingUnknownTypes
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
@@ -143,7 +144,7 @@ class PHPUnit_Framework_MockObject_Generator
      *
      * @since  Method available since Release 1.0.0
      */
-    public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null)
+    public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true)
     {
         if (!is_array($type) && !is_string($type)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'array or string');
@@ -176,6 +177,33 @@ class PHPUnit_Framework_MockObject_Generator
                     $type
                 )
             );
+        }
+
+        if (!$allowMockingUnknownTypes) {
+            if (is_array($type)) {
+                foreach ($type as $_type) {
+                    if (!class_exists($_type, $callAutoload) &&
+                        !interface_exists($_type, $callAutoload)) {
+                        throw new PHPUnit_Framework_MockObject_RuntimeException(
+                            sprintf(
+                                'Cannot stub or mock class or interface "%s" which does not exist',
+                                $_type
+                            )
+                        );
+                    }
+                }
+            } else {
+                if (!class_exists($type, $callAutoload) &&
+                    !interface_exists($type, $callAutoload)
+                ) {
+                    throw new PHPUnit_Framework_MockObject_RuntimeException(
+                        sprintf(
+                            'Cannot stub or mock class or interface "%s" which does not exist',
+                            $type
+                        )
+                    );
+                }
+            }
         }
 
         if (null !== $methods) {
