@@ -71,6 +71,11 @@ class PHPUnit_Framework_MockObject_MockBuilder
     private $proxyTarget = null;
 
     /**
+     * @var bool
+     */
+    private $allowMockingUnknownTypes = true;
+
+    /**
      * @param PHPUnit_Framework_TestCase $testCase
      * @param array|string               $type
      */
@@ -99,7 +104,8 @@ class PHPUnit_Framework_MockObject_MockBuilder
             $this->autoload,
             $this->cloneArguments,
             $this->callOriginalMethods,
-            $this->proxyTarget
+            $this->proxyTarget,
+            $this->allowMockingUnknownTypes
         );
 
         $this->testCase->registerMockObject($object);
@@ -346,6 +352,30 @@ class PHPUnit_Framework_MockObject_MockBuilder
     public function setProxyTarget($object)
     {
         $this->proxyTarget = $object;
+
+        return $this;
+    }
+
+    /**
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     *
+     * @since  Method available since Release 3.2.0
+     */
+    public function allowMockingUnknownTypes()
+    {
+        $this->allowMockingUnknownTypes = true;
+
+        return $this;
+    }
+
+    /**
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     *
+     * @since  Method available since Release 3.2.0
+     */
+    public function disallowMockingUnknownTypes()
+    {
+        $this->allowMockingUnknownTypes = false;
 
         return $this;
     }
