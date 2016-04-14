@@ -1461,6 +1461,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             ->disableOriginalConstructor()
             ->disableOriginalClone()
             ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
             ->getMock();
     }
 
