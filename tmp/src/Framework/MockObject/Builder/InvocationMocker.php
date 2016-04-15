@@ -199,7 +199,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
         if ($this->matcher->methodNameMatcher === null) {
             throw new PHPUnit_Framework_MockObject_RuntimeException(
                 'Method name matcher is not defined, cannot define parameter ' .
-                ' matcher without one'
+                'matcher without one'
             );
         }
 
