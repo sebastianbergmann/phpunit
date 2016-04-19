@@ -11,3 +11,4 @@
 /cache.properties
 /composer.lock
 /vendor
+/phpunit.xml
