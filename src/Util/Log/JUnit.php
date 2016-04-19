@@ -30,7 +30,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * @var bool
      */
-    protected $logIncompleteSkipped = false;
+    protected $reportUselessTests = false;
 
     /**
      * @var bool
@@ -83,17 +83,12 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     protected $currentTestCase = null;
 
     /**
-     * @var bool
-     */
-    protected $attachCurrentTestCase = true;
-
-    /**
      * Constructor.
      *
      * @param mixed $out
-     * @param bool  $logIncompleteSkipped
+     * @param bool  $reportUselessTests
      */
-    public function __construct($out = null, $logIncompleteSkipped = false)
+    public function __construct($out = null, $reportUselessTests = false)
     {
         $this->document               = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
@@ -103,7 +98,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
 
         parent::__construct($out);
 
-        $this->logIncompleteSkipped = $logIncompleteSkipped;
+        $this->reportUselessTests = $reportUselessTests;
     }
 
     /**
@@ -168,14 +163,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($this->currentTestCase !== null) {
-            $skipped = $this->document->createElement('skipped');
-            $this->currentTestCase->appendChild($skipped);
-
-            $this->testSuiteSkipped[$this->testSuiteLevel]++;
-        } else {
-            $this->attachCurrentTestCase = false;
-        }
+        $this->doAddSkipped($test);
     }
 
     /**
@@ -189,23 +177,23 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($this->logIncompleteSkipped && $this->currentTestCase !== null) {
-            $error = $this->document->createElement(
-                'error',
-                PHPUnit_Util_XML::prepareString(
-                    "Risky Test\n" .
-                    PHPUnit_Util_Filter::getFilteredStacktrace($e)
-                )
-            );
-
-            $error->setAttribute('type', get_class($e));
-
-            $this->currentTestCase->appendChild($error);
-
-            $this->testSuiteErrors[$this->testSuiteLevel]++;
-        } else {
-            $this->attachCurrentTestCase = false;
+        if (!$this->reportUselessTests || $this->currentTestCase === null) {
+            return;
         }
+
+        $error = $this->document->createElement(
+            'error',
+            PHPUnit_Util_XML::prepareString(
+                "Risky Test\n" .
+                PHPUnit_Util_Filter::getFilteredStacktrace($e)
+            )
+        );
+
+        $error->setAttribute('type', get_class($e));
+
+        $this->currentTestCase->appendChild($error);
+
+        $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
 
     /**
@@ -219,14 +207,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
-        if ($this->currentTestCase !== null) {
-            $skipped = $this->document->createElement('skipped');
-            $this->currentTestCase->appendChild($skipped);
-
-            $this->testSuiteSkipped[$this->testSuiteLevel]++;
-        } else {
-            $this->attachCurrentTestCase = false;
-        }
+        $this->doAddSkipped($test);
     }
 
     /**
@@ -351,40 +332,37 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
-        if ($this->attachCurrentTestCase) {
-            if ($test instanceof PHPUnit_Framework_TestCase) {
-                $numAssertions = $test->getNumAssertions();
-                $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
-
-                $this->currentTestCase->setAttribute(
-                    'assertions',
-                    $numAssertions
-                );
-            }
+        if ($test instanceof PHPUnit_Framework_TestCase) {
+            $numAssertions = $test->getNumAssertions();
+            $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
 
             $this->currentTestCase->setAttribute(
-                'time',
-                sprintf('%F', $time)
+                'assertions',
+                $numAssertions
             );
-
-            $this->testSuites[$this->testSuiteLevel]->appendChild(
-                $this->currentTestCase
-            );
-
-            $this->testSuiteTests[$this->testSuiteLevel]++;
-            $this->testSuiteTimes[$this->testSuiteLevel] += $time;
-
-            if (method_exists($test, 'hasOutput') && $test->hasOutput()) {
-                $systemOut = $this->document->createElement('system-out');
-                $systemOut->appendChild(
-                    $this->document->createTextNode($test->getActualOutput())
-                );
-                $this->currentTestCase->appendChild($systemOut);
-            }
         }
 
-        $this->attachCurrentTestCase = true;
-        $this->currentTestCase       = null;
+        $this->currentTestCase->setAttribute(
+            'time',
+            sprintf('%F', $time)
+        );
+
+        $this->testSuites[$this->testSuiteLevel]->appendChild(
+            $this->currentTestCase
+        );
+
+        $this->testSuiteTests[$this->testSuiteLevel]++;
+        $this->testSuiteTimes[$this->testSuiteLevel] += $time;
+
+        if (method_exists($test, 'hasOutput') && $test->hasOutput()) {
+            $systemOut = $this->document->createElement('system-out');
+            $systemOut->appendChild(
+                $this->document->createTextNode($test->getActualOutput())
+            );
+            $this->currentTestCase->appendChild($systemOut);
+        }
+
+        $this->currentTestCase = null;
     }
 
     /**
@@ -448,5 +426,17 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
 
         $fault->setAttribute('type', get_class($e));
         $this->currentTestCase->appendChild($fault);
+    }
+
+    private function doAddSkipped(PHPUnit_Framework_Test $test)
+    {
+        if ($this->currentTestCase === null) {
+            return;
+        }
+
+        $skipped = $this->document->createElement('skipped');
+        $this->currentTestCase->appendChild($skipped);
+
+        $this->testSuiteSkipped[$this->testSuiteLevel]++;
     }
 }
