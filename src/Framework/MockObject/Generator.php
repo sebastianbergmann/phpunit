@@ -819,7 +819,7 @@ class PHPUnit_Framework_MockObject_Generator
 
         $method = '';
 
-        if (!in_array('method', $methods)) {
+        if (!in_array('method', $methods) && (!isset($class) || !$class->hasMethod('method'))) {
             $methodTemplate = new Text_Template(
                 $templateDir . 'mocked_class_method.tpl'
             );
