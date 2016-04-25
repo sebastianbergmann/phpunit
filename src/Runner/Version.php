@@ -45,12 +45,13 @@ class PHPUnit_Runner_Version
     public static function series()
     {
         if (strpos(self::id(), '-')) {
-            $tmp = explode('-', self::id());
-
-            return $tmp[0];
+            $tmp     = explode('-', self::id());
+            $version = $tmp[0];
+        } else {
+            $version = self::id();
         }
 
-        return implode('.', array_slice(explode('.', self::id()), 0, 2));
+        return implode('.', array_slice(explode('.', $version), 0, 2));
     }
 
     /**
