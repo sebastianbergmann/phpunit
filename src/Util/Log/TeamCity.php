@@ -121,6 +121,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
                 }
 
                 if (!is_null($actualString) && !is_null($expectedString)) {
+                    $parameters['type']     = 'comparisonFailure';
                     $parameters['actual']   = $actualString;
                     $parameters['expected'] = $expectedString;
                 }
