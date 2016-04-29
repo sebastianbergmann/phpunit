@@ -1,5 +1,5 @@
 --TEST--
-GH-1337: Data Provider with \ at the end of the name breaks with process isolation
+https://github.com/sebastianbergmann/phpunit/issues/1337
 --FILE--
 <?php
 

@@ -1,5 +1,5 @@
 --TEST--
-GH-1471: Output made while test is running is printed although expectOutputString() is used when an assertion fails
+https://github.com/sebastianbergmann/phpunit/issues/1471
 --FILE--
 <?php
 

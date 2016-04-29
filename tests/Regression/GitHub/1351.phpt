@@ -1,5 +1,5 @@
 --TEST--
-GH-1351: Test result does not serialize test class in process isolation
+https://github.com/sebastianbergmann/phpunit/issues/1351
 --SKIPIF--
 <?php
 if (!extension_loaded('pdo') || !in_array('sqlite', PDO::getAvailableDrivers())) {

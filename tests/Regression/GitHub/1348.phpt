@@ -1,5 +1,5 @@
 --TEST--
-GH-1348: STDOUT/STDERR IO streams should exist in process isolation
+https://github.com/sebastianbergmann/phpunit/issues/1348
 --SKIPIF--
 <?php
 if (defined('HHVM_VERSION')) {

@@ -1,5 +1,5 @@
 --TEST--
-GH-1335: exportVariable multiple backslash problem
+https://github.com/sebastianbergmann/phpunit/issues/1335
 --FILE--
 <?php
 

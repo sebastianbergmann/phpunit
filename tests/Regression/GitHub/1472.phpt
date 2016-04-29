@@ -1,5 +1,5 @@
 --TEST--
-GH-1472: assertEqualXMLStructure modifies the tested elements
+https://github.com/sebastianbergmann/phpunit/issues/1472
 --SKIPIF--
 <?php
 // See: https://github.com/facebook/hhvm/issues/4669

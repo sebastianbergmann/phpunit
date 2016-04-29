@@ -1,5 +1,5 @@
 --TEST--
-GH-1570: Test that prints output is marked as failure and not as risky when --disallow-test-output is used
+https://github.com/sebastianbergmann/phpunit/issues/1570
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';

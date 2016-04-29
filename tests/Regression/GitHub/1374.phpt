@@ -1,5 +1,5 @@
 --TEST--
-GH-1374: tearDown() is called despite unmet requirements
+https://github.com/sebastianbergmann/phpunit/issues/1374
 --FILE--
 <?php
 

@@ -1,5 +1,5 @@
 --TEST--
-GH-1437: Risky test messages mask failures
+https://github.com/sebastianbergmann/phpunit/issues/1437
 --FILE--
 <?php
 

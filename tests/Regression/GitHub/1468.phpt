@@ -1,5 +1,5 @@
 --TEST--
-GH-1468: Incomplete and @todo annotated tests are counted twice
+https://github.com/sebastianbergmann/phpunit/issues/1468
 --FILE--
 <?php
 
