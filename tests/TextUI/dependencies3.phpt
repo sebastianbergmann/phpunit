@@ -4,7 +4,7 @@ phpunit MultiDependencyTest ../_files/MultiDependencyTest.php
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'MultiDependencyTest';
-$_SERVER['argv'][3] = dirname(dirname(__FILE__)) . '/_files/MultiDependencyTest.php';
+$_SERVER['argv'][3] = __DIR__ . '/../_files/MultiDependencyTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
