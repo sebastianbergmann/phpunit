@@ -6,11 +6,10 @@ $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = '--verbose';
 $_SERVER['argv'][4] = 'DependencyTestSuite';
-$_SERVER['argv'][5] = dirname(dirname(__FILE__)) . '/_files/DependencyTestSuite.php';
+$_SERVER['argv'][5] = __DIR__ . '/../_files/DependencyTestSuite.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
-?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
