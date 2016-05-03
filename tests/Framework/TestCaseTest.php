@@ -451,6 +451,42 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result->wasSuccessful());
     }
 
+    public function testSetOutputCallbackAssertSameFooActualFoo()
+    {
+        $test   = new OutputTestCase('testSetOutputCallbackAssertSameFooActualFoo');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testSetOutputCallbackAssertSameFooActualBar()
+    {
+        $test   = new OutputTestCase('testSetOutputCallbackAssertSameFooActualBar');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testMultipleExpectOutputFooActualFoo()
+    {
+        $test   = new OutputTestCase('testMultipleExpectOutputFooActualFoo');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testSetOutputCallbackAssertSetUp()
+    {
+        $test   = new OutputTestCase('testSetOutputCallbackAssertSetUp');
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
     public function testSkipsIfRequiresHigherVersionOfPHPUnit()
     {
         $test   = new RequirementsTest('testAlwaysSkip');
