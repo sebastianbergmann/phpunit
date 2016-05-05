@@ -78,6 +78,8 @@ Test Execution Options:
   --tap                     Report test execution progress in TAP format.
   --teamcity                Report test execution progress in TeamCity format.
   --testdox                 Report test execution progress in TestDox format.
+  --testdox-group           Only include tests from the specified group(s).
+  --testdox-exclude-group   Exclude tests from the specified group(s).
   --printer <printer>       TestListener implementation to use.
 
 Configuration Options:

@@ -76,13 +76,26 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     protected $currentTestMethodPrettified;
 
     /**
-     * Constructor.
-     *
-     * @param resource $out
+     * @var array
      */
-    public function __construct($out = null)
+    private $groups;
+
+    /**
+     * @var array
+     */
+    private $excludeGroups;
+
+    /**
+     * @param resource $out
+     * @param array    $groups
+     * @param array    $excludeGroups
+     */
+    public function __construct($out = null, array $groups = [], array $excludeGroups = [])
     {
         parent::__construct($out);
+
+        $this->groups        = $groups;
+        $this->excludeGroups = $excludeGroups;
 
         $this->prettifier = new PHPUnit_Util_TestDox_NamePrettifier;
         $this->startRun();
@@ -356,8 +369,41 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
     {
     }
 
+    /**
+     * @param PHPUnit_Framework_Test $test
+     *
+     * @return bool
+     */
     private function isOfInterest(PHPUnit_Framework_Test $test)
     {
-        return $test instanceof PHPUnit_Framework_TestCase && get_class($test) != 'PHPUnit_Framework_WarningTestCase';
+        if (!$test instanceof PHPUnit_Framework_TestCase) {
+            return false;
+        }
+
+        if ($test instanceof PHPUnit_Framework_WarningTestCase) {
+            return false;
+        }
+
+        if (!empty($this->groups)) {
+            foreach ($test->getGroups() as $group) {
+                if (in_array($group, $this->groups)) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        if (!empty($this->excludeGroups)) {
+            foreach ($test->getGroups() as $group) {
+                if (in_array($group, $this->excludeGroups)) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        return true;
     }
 }

@@ -86,6 +86,8 @@ class PHPUnit_TextUI_Command
         'tap'                     => null,
         'teamcity'                => null,
         'testdox'                 => null,
+        'testdox-group='          => null,
+        'testdox-exclude-group='  => null,
         'testdox-html='           => null,
         'testdox-text='           => null,
         'test-suffix='            => null,
@@ -485,6 +487,20 @@ class PHPUnit_TextUI_Command
 
                 case '--testdox':
                     $this->arguments['printer'] = 'PHPUnit_Util_TestDox_ResultPrinter_Text';
+                    break;
+
+                case '--testdox-group':
+                    $this->arguments['testdoxGroups'] = explode(
+                        ',',
+                        $option[1]
+                    );
+                    break;
+
+                case '--testdox-exclude-group':
+                    $this->arguments['testdoxExcludeGroups'] = explode(
+                        ',',
+                        $option[1]
+                    );
                     break;
 
                 case '--testdox-html':
@@ -1039,6 +1055,8 @@ Test Execution Options:
   --tap                     Report test execution progress in TAP format.
   --teamcity                Report test execution progress in TeamCity format.
   --testdox                 Report test execution progress in TestDox format.
+  --testdox-group           Only include tests from the specified group(s).
+  --testdox-exclude-group   Exclude tests from the specified group(s).
   --printer <printer>       TestListener implementation to use.
 
 Configuration Options:

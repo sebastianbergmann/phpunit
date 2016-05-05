@@ -277,6 +277,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $warnings = [];
 
     /**
+     * @var array
+     */
+    private $groups = [];
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param string $name
@@ -289,8 +294,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->setName($name);
         }
 
-        $this->data                = $data;
-        $this->dataName            = $dataName;
+        $this->data     = $data;
+        $this->dataName = $dataName;
     }
 
     /**
@@ -319,6 +324,24 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     public function count()
     {
         return 1;
+    }
+
+    /**
+     * @since Method available since Release 5.4.0
+     */
+    public function getGroups()
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @param array $groups
+     *
+     * @since Method available since Release 5.4.0
+     */
+    public function setGroups(array $groups)
+    {
+        $this->groups = $groups;
     }
 
     /**

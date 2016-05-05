@@ -44,6 +44,15 @@
     </exclude>
   </groups>
 
+  <testdoxGroups>
+    <include>
+      <group>name</group>
+    </include>
+    <exclude>
+      <group>name</group>
+    </exclude>
+  </testdoxGroups>
+
   <filter>
     <whitelist addUncoveredFilesFromWhitelist="true"
                processUncoveredFilesFromWhitelist="false">

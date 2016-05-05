@@ -68,6 +68,15 @@
  *     </exclude>
  *   </groups>
  *
+ *   <testdoxGroups>
+ *     <include>
+ *       <group>name</group>
+ *     </include>
+ *     <exclude>
+ *       <group>name</group>
+ *     </exclude>
+ *   </testdoxGroups>
+ *
  *   <filter>
  *     <whitelist addUncoveredFilesFromWhitelist="true"
  *                processUncoveredFilesFromWhitelist="false">
@@ -265,16 +274,38 @@ class PHPUnit_Util_Configuration
      */
     public function getGroupConfiguration()
     {
+        return $this->parseGroupConfiguration('groups');
+    }
+
+    /**
+     * Returns the configuration for testdox groups.
+     *
+     * @return array
+     *
+     * @since Method available since Release 5.4.0
+     */
+    public function getTestdoxGroupConfiguration()
+    {
+        return $this->parseGroupConfiguration('testdoxGroups');
+    }
+
+    /**
+     * @param string $root
+     *
+     * @return array
+     */
+    private function parseGroupConfiguration($root)
+    {
         $groups = [
-          'include' => [],
-          'exclude' => []
+            'include' => [],
+            'exclude' => []
         ];
 
-        foreach ($this->xpath->query('groups/include/group') as $group) {
+        foreach ($this->xpath->query($root . '/include/group') as $group) {
             $groups['include'][] = (string) $group->textContent;
         }
 
-        foreach ($this->xpath->query('groups/exclude/group') as $group) {
+        foreach ($this->xpath->query($root . '/exclude/group') as $group) {
             $groups['exclude'][] = (string) $group->textContent;
         }
 

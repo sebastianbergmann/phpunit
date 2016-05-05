@@ -302,7 +302,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['testdoxHTMLFile'])) {
             $result->addListener(
                 new PHPUnit_Util_TestDox_ResultPrinter_HTML(
-                    $arguments['testdoxHTMLFile']
+                    $arguments['testdoxHTMLFile'],
+                    $arguments['testdoxGroups'],
+                    $arguments['testdoxExcludeGroups']
                 )
             );
         }
@@ -310,7 +312,9 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['testdoxTextFile'])) {
             $result->addListener(
                 new PHPUnit_Util_TestDox_ResultPrinter_Text(
-                    $arguments['testdoxTextFile']
+                    $arguments['testdoxTextFile'],
+                    $arguments['testdoxGroups'],
+                    $arguments['testdoxExcludeGroups']
                 )
             );
         }
@@ -1057,6 +1061,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['reverseList']                                     = isset($arguments['reverseList'])                                     ? $arguments['reverseList']                                     : false;
         $arguments['registerMockObjectsFromTestArgumentsRecursively'] = isset($arguments['registerMockObjectsFromTestArgumentsRecursively']) ? $arguments['registerMockObjectsFromTestArgumentsRecursively'] : false;
         $arguments['verbose']                                         = isset($arguments['verbose'])                                         ? $arguments['verbose']                                         : false;
+        $arguments['testdoxExcludeGroups']                            = isset($arguments['testdoxExcludeGroups'])                            ? $arguments['testdoxExcludeGroups']                            : [];
+        $arguments['testdoxGroups']                                   = isset($arguments['testdoxGroups'])                                   ? $arguments['testdoxGroups']                                   : [];
     }
 
     /**

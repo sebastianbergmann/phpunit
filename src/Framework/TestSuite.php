@@ -249,6 +249,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                     $this->groups[$group][] = $test;
                 }
             }
+
+            if ($test instanceof PHPUnit_Framework_TestCase) {
+                $test->setGroups($groups);
+            }
         }
     }
 

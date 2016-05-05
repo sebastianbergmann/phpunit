@@ -231,6 +231,7 @@
     <xs:all>
       <xs:element ref="testSuiteFacet" minOccurs="0"/>
       <xs:element name="groups" type="groupsType" minOccurs="0"/>
+      <xs:element name="testdoxGroups" type="groupsType" minOccurs="0"/>
       <xs:element name="filter" type="filtersType" minOccurs="0"/>
       <xs:element name="logging" type="loggersType" minOccurs="0"/>
       <xs:element name="listeners" type="listenersType" minOccurs="0"/>

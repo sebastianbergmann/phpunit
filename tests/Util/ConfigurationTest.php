@@ -8,11 +8,11 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @since      Class available since Release 3.3.0
- */
 class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var PHPUnit_Util_Configuration
+     */
     protected $configuration;
 
     protected function setUp()
@@ -133,6 +133,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Util_Configuration::getGroupConfiguration
+     * @covers PHPUnit_Util_Configuration::parseGroupConfiguration
      */
     public function testGroupConfigurationIsReadCorrectly()
     {
@@ -148,6 +149,27 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             ],
             ],
             $this->configuration->getGroupConfiguration()
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Util_Configuration::getTestdoxGroupConfiguration
+     * @covers PHPUnit_Util_Configuration::parseGroupConfiguration
+     */
+    public function testTestdoxGroupConfigurationIsReadCorrectly()
+    {
+        $this->assertEquals(
+            [
+                'include' =>
+                    [
+                        0 => 'name',
+                    ],
+                'exclude' =>
+                    [
+                        0 => 'name',
+                    ],
+            ],
+            $this->configuration->getTestdoxGroupConfiguration()
         );
     }
 

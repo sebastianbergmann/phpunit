@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.4 release series are documented in this fil
 ### Added
 
 * Implemented [#2037](https://github.com/sebastianbergmann/phpunit/issues/2037): Log more information about failures in JSON output
+* Implemented [#2152](https://github.com/sebastianbergmann/phpunit/issues/2152): Filter for which tests TestDox output is generated
 
 ### Changed
 
