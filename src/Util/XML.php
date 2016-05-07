@@ -37,12 +37,20 @@ class PHPUnit_Util_XML
      *
      * @return DOMDocument
      *
-     * @since  Method available since Release 3.3.0
+     * @since Method available since Release 3.3.0
      */
     public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false)
     {
         if ($actual instanceof DOMDocument) {
             return $actual;
+        }
+
+        if (!is_string($actual)) {
+            throw new PHPUnit_Framework_Exception('Could not load XML from ' . gettype($actual));
+        }
+
+        if ($actual === '') {
+            throw new PHPUnit_Framework_Exception('Could not load XML from empty string');
         }
 
         // Required for XInclude on Windows.
@@ -94,6 +102,9 @@ class PHPUnit_Util_XML
                     )
                 );
             } else {
+                if ($message === '') {
+                    $message = 'Could not load XML for unknown reason';
+                }
                 throw new PHPUnit_Framework_Exception($message);
             }
         }
@@ -111,7 +122,7 @@ class PHPUnit_Util_XML
      *
      * @return DOMDocument
      *
-     * @since  Method available since Release 3.3.0
+     * @since Method available since Release 3.3.0
      */
     public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
     {
@@ -134,7 +145,7 @@ class PHPUnit_Util_XML
     /**
      * @param DOMNode $node
      *
-     * @since  Method available since Release 3.3.0
+     * @since Method available since Release 3.3.0
      */
     public static function removeCharacterDataNodes(DOMNode $node)
     {
@@ -157,7 +168,7 @@ class PHPUnit_Util_XML
      *
      * @return string
      *
-     * @since  Method available since Release 3.4.6
+     * @since Method available since Release 3.4.6
      */
     public static function prepareString($string)
     {
@@ -179,7 +190,7 @@ class PHPUnit_Util_XML
      *
      * @return mixed
      *
-     * @since  Method available since Release 3.4.0
+     * @since Method available since Release 3.4.0
      */
     public static function xmlToVariable(DOMElement $element)
     {

@@ -43,7 +43,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             'error',
             $time,
             PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-            $e->getMessage(),
+            PHPUnit_Framework_TestFailure::exceptionToString($e),
             $test
         );
 
@@ -65,7 +65,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             'warning',
             $time,
             PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-            $e->getMessage(),
+            PHPUnit_Framework_TestFailure::exceptionToString($e),
             $test
         );
 
@@ -85,7 +85,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             'fail',
             $time,
             PHPUnit_Util_Filter::getFilteredStacktrace($e, false),
-            $e->getMessage(),
+            PHPUnit_Framework_TestFailure::exceptionToString($e),
             $test
         );
 
@@ -119,7 +119,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
      * @param Exception              $e
      * @param float                  $time
      *
-     * @since  Method available since Release 4.0.0
+     * @since Method available since Release 4.0.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {

@@ -150,7 +150,7 @@ abstract class PHPUnit_Util_PHP
      */
     public function setTimeout($timeout)
     {
-        $this->env = (int) $timeout;
+        $this->timeout = (int) $timeout;
     }
 
     /**
@@ -166,7 +166,7 @@ abstract class PHPUnit_Util_PHP
     /**
      * @return PHPUnit_Util_PHP
      *
-     * @since  Method available since Release 3.5.12
+     * @since Method available since Release 3.5.12
      */
     public static function factory()
     {
@@ -213,7 +213,15 @@ abstract class PHPUnit_Util_PHP
         $command = $this->runtime->getBinary();
         $command .= $this->settingsToParameters($settings);
 
-        if ($file) {
+        if ('phpdbg' === PHP_SAPI) {
+            $command .= ' -qrr ';
+
+            if ($file) {
+                $command .= '-e ' . escapeshellarg($file);
+            } else {
+                $command .= escapeshellarg(__DIR__ . '/PHP/eval-stdin.php');
+            }
+        } elseif ($file) {
             $command .= ' -f ' . escapeshellarg($file);
         }
 
@@ -371,7 +379,7 @@ abstract class PHPUnit_Util_PHP
      *
      * @return Exception
      *
-     * @since  Method available since Release 3.6.0
+     * @since Method available since Release 3.6.0
      * @see    https://github.com/sebastianbergmann/phpunit/issues/74
      */
     private function getException(PHPUnit_Framework_TestFailure $error)

@@ -2,7 +2,43 @@
 
 All notable changes of the PHPUnit 5.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.0.6] - 2015-10-DD
+## [5.0.10] - 2015-11-30
+
+### Fixed
+
+* Fixed [#1953](https://github.com/sebastianbergmann/phpunit/issues/1953): `Error`s raised outside the scope of a test method are not handled properly
+* Fixed [#1955](https://github.com/sebastianbergmann/phpunit/issues/1955): Process isolation fails when running tests with `phpdbg -qrr`
+
+## [5.0.9] - 2015-11-10
+
+### Added
+
+* Merged [#1909](https://github.com/sebastianbergmann/phpunit/issues/1909): Added `flowId` parameter to each TeamCity message (for parallel tests)
+
+### Fixed
+
+* Fixed [#1935](https://github.com/sebastianbergmann/phpunit/issues/1935): `PHP_CodeCoverage_Exception` not handled properly
+* Fixed [#1944](https://github.com/sebastianbergmann/phpunit/issues/1944): Exceptions are not handled correctly on PHP 7 when an exception is expected
+* Fixed [#1948](https://github.com/sebastianbergmann/phpunit/issues/1948): Unable to use PHAR due to unsupported signature error
+
+### Removed
+
+* Removed leftover references to PHPUnit_Selenium
+
+## [5.0.8] - 2015-10-23
+
+### Added
+
+* Implemented [#1925](https://github.com/sebastianbergmann/phpunit/issues/1925): Provide a library-only PHAR
+
+## [5.0.7] - 2015-10-22
+
+### Fixed
+
+* The backup of global state is now properly restored when changes to global state are disallowed
+* The `__PHPUNIT_PHAR__` constant is now properly set when the PHPUnit PHAR is used as a library
+
+## [5.0.6] - 2015-10-14
 
 ### Added
 
@@ -78,6 +114,10 @@ All notable changes of the PHPUnit 5.0 release series are documented in this fil
 * The PHPUnit_Selenium component can no longer be configured using the `<selenium/browser>` element of PHPUnit's configuration file
 * PHPUnit is no longer supported on PHP 5.3, PHP 5.4, and PHP 5.5
 
+[5.0.10]: https://github.com/sebastianbergmann/phpunit/compare/5.0.9...5.0.10
+[5.0.9]: https://github.com/sebastianbergmann/phpunit/compare/5.0.8...5.0.9
+[5.0.8]: https://github.com/sebastianbergmann/phpunit/compare/5.0.7...5.0.8
+[5.0.7]: https://github.com/sebastianbergmann/phpunit/compare/5.0.6...5.0.7
 [5.0.6]: https://github.com/sebastianbergmann/phpunit/compare/5.0.5...5.0.6
 [5.0.5]: https://github.com/sebastianbergmann/phpunit/compare/5.0.4...5.0.5
 [5.0.4]: https://github.com/sebastianbergmann/phpunit/compare/5.0.3...5.0.4

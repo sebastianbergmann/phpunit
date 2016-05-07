@@ -44,7 +44,7 @@ class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends PHPUnit_Frame
      *
      * @return string
      *
-     * @since  Method available since Release 3.3.0
+     * @since Method available since Release 3.3.0
      */
     public function toString()
     {

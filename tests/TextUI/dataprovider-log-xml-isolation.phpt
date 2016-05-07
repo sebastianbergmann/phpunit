@@ -7,18 +7,17 @@ $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = '--log-junit';
 $_SERVER['argv'][4] = 'php://stdout';
 $_SERVER['argv'][5] = 'DataProviderTest';
-$_SERVER['argv'][6] = dirname(dirname(__FILE__)) . '/_files/DataProviderTest.php';
+$_SERVER['argv'][6] = __DIR__ . '/../_files/DataProviderTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
-?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 ..F.                                                                4 / 4 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" failures="1" errors="0" time="%f">
-    <testsuite name="DataProviderTest::testAdd" tests="4" assertions="4" failures="1" errors="0" time="%f">
+  <testsuite name="DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%f">
+    <testsuite name="DataProviderTest::testAdd" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%f">
       <testcase name="testAdd with data set #0" assertions="1" time="%f"/>
       <testcase name="testAdd with data set #1" assertions="1" time="%f"/>
       <testcase name="testAdd with data set #2" assertions="1" time="%f">

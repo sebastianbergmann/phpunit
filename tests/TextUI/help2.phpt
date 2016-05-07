@@ -7,7 +7,6 @@ $_SERVER['argv'][2] = '--help';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
-?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
@@ -24,6 +23,7 @@ Code Coverage Options:
                             Default: Standard output.
   --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
   --whitelist <dir>         Whitelist <dir> for code coverage analysis.
+  --disable-coverage-ignore Disable annotations for ignoring code coverage.
 
 Logging Options:
 
@@ -48,7 +48,7 @@ Test Selection Options:
 Test Execution Options:
 
   --report-useless-tests    Be strict about tests that do not test anything.
-  --strict-coverage         Be strict about unintentionally covered code.
+  --strict-coverage         Be strict about @covers annotation usage.
   --strict-global-state     Be strict about changes to global state
   --disallow-test-output    Be strict about output during tests.
   --disallow-resource-usage Be strict about resource usage during small tests.
@@ -79,6 +79,8 @@ Test Execution Options:
   --tap                     Report test execution progress in TAP format.
   --teamcity                Report test execution progress in TeamCity format.
   --testdox                 Report test execution progress in TestDox format.
+  --testdox-group           Only include tests from the specified group(s).
+  --testdox-exclude-group   Exclude tests from the specified group(s).
   --printer <printer>       TestListener implementation to use.
 
 Configuration Options:
@@ -89,6 +91,7 @@ Configuration Options:
   --no-coverage             Ignore code coverage configuration.
   --include-path <path(s)>  Prepend PHP's include_path with given path(s).
   -d key[=value]            Sets a php.ini value.
+  --generate-configuration  Generate configuration file with suggested settings.
 
 Miscellaneous Options:
 

@@ -29,7 +29,7 @@ class PHPUnit_Util_Filesystem
      *
      * @return string
      *
-     * @since  Method available since Release 3.4.0
+     * @since Method available since Release 3.4.0
      */
     public static function classNameToFilename($className)
     {
