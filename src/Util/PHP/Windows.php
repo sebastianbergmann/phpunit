@@ -16,7 +16,7 @@
  *
  * @since Class available since Release 3.5.12
  * @see https://bugs.php.net/bug.php?id=51800
-*/
+ */
 class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
 {
     protected $useTempFile = true;

@@ -64,9 +64,11 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
     /**
      * Handles creating the child process and returning the STDOUT and STDERR
      *
-     * @param  string $job
-     * @param  array $settings
+     * @param string $job
+     * @param array  $settings
+     *
      * @return array
+     *
      * @throws PHPUnit_Framework_Exception
      */
     protected function runProcess($job, $settings)
@@ -123,10 +125,10 @@ class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
 
                 if ($n === false) {
                     break;
-                } else if ($n === 0) {
+                } elseif ($n === 0) {
                     proc_terminate($process, 9);
                     throw new PHPUnit_Framework_Exception(sprintf('Job execution aborted after %d seconds', $this->timeout));
-                } else if ($n > 0) {
+                } elseif ($n > 0) {
                     foreach ($r as $pipe) {
                         $pipeOffset = 0;
                         foreach ($pipes as $i => $origPipe) {

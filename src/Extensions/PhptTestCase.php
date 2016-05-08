@@ -261,8 +261,8 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      */
     private function parse()
     {
-        $sections = [];
-        $section  = '';
+        $sections              = [];
+        $section               = '';
         $allowExternalSections = [
             'FILE',
             'EXPECT',
@@ -471,7 +471,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     {
         $env = [];
 
-        foreach(explode("\n", trim($content)) as $e) {
+        foreach (explode("\n", trim($content)) as $e) {
             $e = explode('=', trim($e), 2);
             if (!empty($e[0]) && isset($e[1])) {
                 $env[$e[0]] = $e[1];

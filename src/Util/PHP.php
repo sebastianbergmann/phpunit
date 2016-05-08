@@ -203,7 +203,7 @@ abstract class PHPUnit_Util_PHP
     /**
      * Returns the command based into the configurations.
      *
-     * @param array $settings
+     * @param array       $settings
      * @param string|null $file
      *
      * @return string
