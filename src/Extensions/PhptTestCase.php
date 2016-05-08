@@ -194,10 +194,10 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $time      = PHP_Timer::stop();
 
             if ($result->getCollectCodeCoverageInformation()) {
-                $rawResult = @unserialize($jobResult['stdout']);
-                if ($rawResult !== false) {
-                    $jobResult['stdout'] = $rawResult['output'];
-                    $result->getCodeCoverage()->append($rawResult['coverage'], $this);
+                $coverage = $this->cleanupForCoverage();
+
+                if ($coverage !== false) {
+                    $result->getCodeCoverage()->append($coverage, $this);
                 }
             }
 
@@ -390,9 +390,26 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         );
     }
 
+    private function getCoverageFiles()
+    {
+        $baseDir          = dirname($this->filename) . DIRECTORY_SEPARATOR;
+        $basename         = basename($this->filename, 'phpt');
+        $coverageFilename = $baseDir . $basename . 'coverage';
+
+        return [
+            'coverage' => $coverageFilename,
+        ];
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
     private function renderForCoverage($code)
     {
-        $hasClosingPhpTag = preg_match('/\?>\s*$/m', $code) == 1;
+        $files = $this->getCoverageFiles();
+
         $template = new Text_Template(
             __DIR__ . '/../Util/PHP/Template/PhptTestCase.tpl'
         );
@@ -409,14 +426,33 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $phar = '\'\'';
         }
 
+        if (!defined('PHPUNIT_COMPOSER_INSTALL') && !defined('__PHPUNIT_PHAR__')) {
+            $composerAutoload = var_export(__DIR__ . '/../../vendor/autoload.php', true);
+        }
+
         $template->setVar([
             'composerAutoload' => $composerAutoload,
-            'phar' => $phar,
-            'job' => $code,
-            'optionalPhpTag' => $hasClosingPhpTag ? '' : '?>'
+            'phar'             => $phar,
+            'job'              => $code,
+            'coverageFile'     => $files['coverage'],
         ]);
 
         return $template->render();
+    }
+
+    /**
+     * @return array
+     */
+    private function cleanupForCoverage()
+    {
+        $files    = $this->getCoverageFiles();
+        $coverage = @unserialize(file_get_contents($files['coverage']));
+
+        foreach ($files as $file) {
+            @unlink($file);
+        }
+
+        return $coverage;
     }
 
     /**

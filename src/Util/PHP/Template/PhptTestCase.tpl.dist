@@ -1,4 +1,6 @@
 <?php
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+
 $composerAutoload = {composerAutoload};
 $phar             = {phar};
 
@@ -11,15 +13,13 @@ if ($composerAutoload) {
     require $phar;
 }
 
-$coverage =	new PHP_CodeCoverage();
+$coverage =	new CodeCoverage();
+
+register_shutdown_function(function() use ($coverage) {
+	file_put_contents('{coverageFile}', serialize($coverage->stop()));
+});
+
 $coverage->start(__FILE__);
 
 ob_end_clean();
-ob_start()
-?>
-{job}
-{optionalPhpTag}<?php
-echo serialize(array(
-	'coverage' => $coverage->stop(),
-	'output' => ob_get_clean(),
-));
+?>{job}
