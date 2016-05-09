@@ -33,5 +33,5 @@ Exception: Double printed exception
 
 %sIssue578Test.php:%i
 
-FAILURES!
+ERRORS!
 Tests: 3, Assertions: 0, Errors: 3.

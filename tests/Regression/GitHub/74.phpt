@@ -24,5 +24,5 @@ NewException: Testing GH-74
 
 %sIssue74Test.php:7
 
-FAILURES!
+ERRORS!
 Tests: 1, Assertions: 0, Errors: 1.

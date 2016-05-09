@@ -371,25 +371,30 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                     'OK, but incomplete, skipped, or risky tests!'
                 );
             } else {
-                $showFailures = (
-                    $result->errors() ||
-                    $result->failures() ||
-                    $result->skipped() ||
-                    $result->notImplemented() ||
-                    $result->risky()) &&
-                    !$result->warnings()
-                ;
-
-                if ($showFailures) {
-                    $color = 'fg-white, bg-red';
-                    $text  = 'FAILURES!';
-                } else {
-                    $color = 'fg-black, bg-yellow';
-                    $text  = 'WARNINGS!';
-                }
-
                 $this->write("\n");
-                $this->writeWithColor($color, $text);
+
+                if ($result->errorCount()) {
+                    $color = 'fg-white, bg-red';
+
+                    $this->writeWithColor(
+                        $color,
+                        'ERRORS!'
+                    );
+                } elseif ($result->failureCount()) {
+                    $color = 'fg-white, bg-red';
+
+                    $this->writeWithColor(
+                        $color,
+                        'FAILURES!'
+                    );
+                } elseif ($result->warningCount()) {
+                    $color = 'fg-black, bg-yellow';
+
+                    $this->writeWithColor(
+                        $color,
+                        'WARNINGS!'
+                    );
+                }
             }
 
             $this->writeCountString(count($result), 'Tests', $color, true);

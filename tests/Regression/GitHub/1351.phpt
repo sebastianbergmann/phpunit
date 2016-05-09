@@ -42,5 +42,5 @@ There was 1 failure:
 1) Issue1351Test::testFailurePre
 Expected failure.
 %A
-FAILURES!
+ERRORS!
 Tests: 5, Assertions: 5, Errors: 2, Failures: 1.

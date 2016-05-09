@@ -60,5 +60,5 @@ Exception: Three
 
 %s:%i
 
-FAILURES!
+ERRORS!
 Tests: 2, Assertions: 1, Errors: 2.
