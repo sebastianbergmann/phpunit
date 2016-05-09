@@ -340,10 +340,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
                 'fg-black, bg-yellow',
                 'No tests executed!'
             );
-        } elseif ($result->wasSuccessful() &&
-                 $result->allHarmless() &&
-                 $result->allCompletelyImplemented() &&
-                 $result->noneSkipped()) {
+
+            return;
+        }
+
+        if ($result->wasSuccessful() &&
+            $result->allHarmless() &&
+            $result->allCompletelyImplemented() &&
+            $result->noneSkipped()) {
             $this->writeWithColor(
                 'fg-black, bg-green',
                 sprintf(
