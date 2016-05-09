@@ -205,7 +205,15 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
                 $this->assertPhptExpectation($sections, $jobResult['stdout']);
             } catch (PHPUnit_Framework_AssertionFailedError $e) {
                 if ($xfail !== false) {
-                    $result->addFailure($this, new PHPUnit_Framework_IncompleteTestError($xfail, 0, $e), $time);
+                    $result->addFailure(
+                        $this,
+                        new PHPUnit_Framework_IncompleteTestError(
+                            $xfail,
+                            0,
+                            $e
+                        ),
+                        $time
+                    );
                 } else {
                     $result->addFailure($this, $e, $time);
                 }
@@ -216,7 +224,13 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             }
 
             if ($result->allCompletelyImplemented() && $xfail !== false) {
-                $result->addFailure($this, new PHPUnit_Framework_IncompleteTestError('XFAIL section but test passes'), $time);
+                $result->addFailure(
+                    $this,
+                    new PHPUnit_Framework_IncompleteTestError(
+                        'XFAIL section but test passes'
+                    ),
+                    $time
+                );
             }
 
             $this->phpUtil->setStdin('');
@@ -261,22 +275,25 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
      */
     private function parse()
     {
-        $sections              = [];
-        $section               = '';
+        $sections = [];
+        $section  = '';
+
         $allowExternalSections = [
             'FILE',
             'EXPECT',
             'EXPECTF',
-            'EXPECTREGEX',
+            'EXPECTREGEX'
         ];
+
         $requiredSections = [
             'FILE',
             [
                 'EXPECT',
                 'EXPECTF',
-                'EXPECTREGEX',
-            ],
+                'EXPECTREGEX'
+            ]
         ];
+
         $unsupportedSections = [
             'REDIRECTTEST',
             'REQUEST',
@@ -291,7 +308,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             'CGI',
             'EXPECTHEADERS',
             'EXTENSIONS',
-            'PHPDBG',
+            'PHPDBG'
         ];
 
         foreach (file($this->filename) as $line) {
@@ -321,19 +338,23 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
                 // only allow files from the test directory
                 if (!is_file($testDirectory . $externalFilename) || !is_readable($testDirectory . $externalFilename)) {
-                    throw new PHPUnit_Framework_Exception(sprintf(
-                        'Could not load --%s-- %s for PHPT file',
-                        $section . '_EXTERNAL',
-                        $testDirectory . $externalFilename
-                    ));
+                    throw new PHPUnit_Framework_Exception(
+                        sprintf(
+                            'Could not load --%s-- %s for PHPT file',
+                            $section . '_EXTERNAL',
+                            $testDirectory . $externalFilename
+                        )
+                    );
                 }
 
                 $sections[$section] = file_get_contents($testDirectory . $externalFilename);
+
                 unset($sections[$section . '_EXTERNAL']);
             }
         }
 
         $isValid = true;
+
         foreach ($requiredSections as $section) {
             if (is_array($section)) {
                 $foundSection = false;
@@ -341,17 +362,20 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
                 foreach ($section as $anySection) {
                     if (isset($sections[$anySection])) {
                         $foundSection = true;
+
                         break;
                     }
                 }
 
                 if (!$foundSection) {
                     $isValid = false;
+
                     break;
                 }
             } else {
                 if (!isset($sections[$section])) {
                     $isValid = false;
+
                     break;
                 }
             }
@@ -363,7 +387,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         foreach ($unsupportedSections as $section) {
             if (isset($sections[$section])) {
-                throw new PHPUnit_Framework_Exception('PHPUnit does not support this PHPT file');
+                throw new PHPUnit_Framework_Exception(
+                    'PHPUnit does not support this PHPT file'
+                );
             }
         }
 
@@ -430,12 +456,14 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $composerAutoload = var_export(__DIR__ . '/../../vendor/autoload.php', true);
         }
 
-        $template->setVar([
-            'composerAutoload' => $composerAutoload,
-            'phar'             => $phar,
-            'job'              => $code,
-            'coverageFile'     => $files['coverage'],
-        ]);
+        $template->setVar(
+            [
+                'composerAutoload' => $composerAutoload,
+                'phar'             => $phar,
+                'job'              => $code,
+                'coverageFile'     => $files['coverage']
+            ]
+        );
 
         return $template->render();
     }
@@ -473,6 +501,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
 
         foreach (explode("\n", trim($content)) as $e) {
             $e = explode('=', trim($e), 2);
+
             if (!empty($e[0]) && isset($e[1])) {
                 $env[$e[0]] = $e[1];
             }
