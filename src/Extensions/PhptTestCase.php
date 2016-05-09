@@ -133,6 +133,7 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         }
 
         $skip     = false;
+        $xfail    = false;
         $time     = 0;
         $settings = $this->settings;
 
@@ -142,8 +143,17 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $settings = array_merge($settings, $this->parseIniSection($sections['INI']));
         }
 
+        if (isset($sections['ENV'])) {
+            $env = $this->parseEnvSection($sections['ENV']);
+            $this->phpUtil->setEnv($env);
+        }
+
         // Redirects STDERR to STDOUT
         $this->phpUtil->setUseStderrRedirection(true);
+
+        if ($result->enforcesTimeLimit()) {
+            $this->phpUtil->setTimeout($result->getTimeoutForLargeTests());
+        }
 
         if (isset($sections['SKIPIF'])) {
             $jobResult = $this->phpUtil->runJob($sections['SKIPIF'], $settings);
@@ -161,21 +171,70 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             }
         }
 
+        if (isset($sections['XFAIL'])) {
+            $xfail = trim($sections['XFAIL']);
+        }
+
         if (!$skip) {
+            if (isset($sections['STDIN'])) {
+                $this->phpUtil->setStdin($sections['STDIN']);
+            }
+
+            if (isset($sections['ARGS'])) {
+                $this->phpUtil->setArgs($sections['ARGS']);
+            }
+
+            if ($result->getCollectCodeCoverageInformation()) {
+                $code = $this->renderForCoverage($code);
+            }
+
             PHP_Timer::start();
 
             $jobResult = $this->phpUtil->runJob($code, $settings);
             $time      = PHP_Timer::stop();
 
+            if ($result->getCollectCodeCoverageInformation()) {
+                $coverage = $this->cleanupForCoverage();
+
+                if ($coverage !== false) {
+                    $result->getCodeCoverage()->append($coverage, $this);
+                }
+            }
+
             try {
                 $this->assertPhptExpectation($sections, $jobResult['stdout']);
             } catch (PHPUnit_Framework_AssertionFailedError $e) {
-                $result->addFailure($this, $e, $time);
+                if ($xfail !== false) {
+                    $result->addFailure(
+                        $this,
+                        new PHPUnit_Framework_IncompleteTestError(
+                            $xfail,
+                            0,
+                            $e
+                        ),
+                        $time
+                    );
+                } else {
+                    $result->addFailure($this, $e, $time);
+                }
             } catch (Throwable $t) {
                 $result->addError($this, $t, $time);
             } catch (Exception $e) {
                 $result->addError($this, $e, $time);
             }
+
+            if ($result->allCompletelyImplemented() && $xfail !== false) {
+                $result->addFailure(
+                    $this,
+                    new PHPUnit_Framework_IncompleteTestError(
+                        'XFAIL section but test passes'
+                    ),
+                    $time
+                );
+            }
+
+            $this->phpUtil->setStdin('');
+            $this->phpUtil->setArgs('');
 
             if (isset($sections['CLEAN'])) {
                 $cleanCode = $this->render($sections['CLEAN']);
@@ -219,6 +278,39 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         $sections = [];
         $section  = '';
 
+        $allowExternalSections = [
+            'FILE',
+            'EXPECT',
+            'EXPECTF',
+            'EXPECTREGEX'
+        ];
+
+        $requiredSections = [
+            'FILE',
+            [
+                'EXPECT',
+                'EXPECTF',
+                'EXPECTREGEX'
+            ]
+        ];
+
+        $unsupportedSections = [
+            'REDIRECTTEST',
+            'REQUEST',
+            'POST',
+            'PUT',
+            'POST_RAW',
+            'GZIP_POST',
+            'DEFLATE_POST',
+            'GET',
+            'COOKIE',
+            'HEADERS',
+            'CGI',
+            'EXPECTHEADERS',
+            'EXTENSIONS',
+            'PHPDBG'
+        ];
+
         foreach (file($this->filename) as $line) {
             if (preg_match('/^--([_A-Z]+)--/', $line, $result)) {
                 $section            = $result[1];
@@ -232,9 +324,73 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
             $sections[$section] .= $line;
         }
 
-        if (!isset($sections['FILE']) ||
-            (!isset($sections['EXPECT']) && !isset($sections['EXPECTF']) && !isset($sections['EXPECTREGEX']))) {
+        if (isset($sections['FILEEOF'])) {
+            $sections['FILE'] = rtrim($sections['FILEEOF'], "\r\n");
+            unset($sections['FILEEOF']);
+        }
+
+        $testDirectory = dirname($this->filename) . DIRECTORY_SEPARATOR;
+
+        foreach ($allowExternalSections as $section) {
+            if (isset($sections[$section . '_EXTERNAL'])) {
+                // do not allow directory traversal
+                $externalFilename = str_replace('..', '', trim($sections[$section . '_EXTERNAL']));
+
+                // only allow files from the test directory
+                if (!is_file($testDirectory . $externalFilename) || !is_readable($testDirectory . $externalFilename)) {
+                    throw new PHPUnit_Framework_Exception(
+                        sprintf(
+                            'Could not load --%s-- %s for PHPT file',
+                            $section . '_EXTERNAL',
+                            $testDirectory . $externalFilename
+                        )
+                    );
+                }
+
+                $sections[$section] = file_get_contents($testDirectory . $externalFilename);
+
+                unset($sections[$section . '_EXTERNAL']);
+            }
+        }
+
+        $isValid = true;
+
+        foreach ($requiredSections as $section) {
+            if (is_array($section)) {
+                $foundSection = false;
+
+                foreach ($section as $anySection) {
+                    if (isset($sections[$anySection])) {
+                        $foundSection = true;
+
+                        break;
+                    }
+                }
+
+                if (!$foundSection) {
+                    $isValid = false;
+
+                    break;
+                }
+            } else {
+                if (!isset($sections[$section])) {
+                    $isValid = false;
+
+                    break;
+                }
+            }
+        }
+
+        if (!$isValid) {
             throw new PHPUnit_Framework_Exception('Invalid PHPT file');
+        }
+
+        foreach ($unsupportedSections as $section) {
+            if (isset($sections[$section])) {
+                throw new PHPUnit_Framework_Exception(
+                    'PHPUnit does not support this PHPT file'
+                );
+            }
         }
 
         return $sections;
@@ -260,6 +416,73 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         );
     }
 
+    private function getCoverageFiles()
+    {
+        $baseDir          = dirname($this->filename) . DIRECTORY_SEPARATOR;
+        $basename         = basename($this->filename, 'phpt');
+        $coverageFilename = $baseDir . $basename . 'coverage';
+
+        return [
+            'coverage' => $coverageFilename,
+        ];
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    private function renderForCoverage($code)
+    {
+        $files = $this->getCoverageFiles();
+
+        $template = new Text_Template(
+            __DIR__ . '/../Util/PHP/Template/PhptTestCase.tpl'
+        );
+
+        if (defined('PHPUNIT_COMPOSER_INSTALL')) {
+            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
+        } else {
+            $composerAutoload = '\'\'';
+        }
+
+        if (defined('__PHPUNIT_PHAR__')) {
+            $phar = var_export(__PHPUNIT_PHAR__, true);
+        } else {
+            $phar = '\'\'';
+        }
+
+        if (!defined('PHPUNIT_COMPOSER_INSTALL') && !defined('__PHPUNIT_PHAR__')) {
+            $composerAutoload = var_export(__DIR__ . '/../../vendor/autoload.php', true);
+        }
+
+        $template->setVar(
+            [
+                'composerAutoload' => $composerAutoload,
+                'phar'             => $phar,
+                'job'              => $code,
+                'coverageFile'     => $files['coverage']
+            ]
+        );
+
+        return $template->render();
+    }
+
+    /**
+     * @return array
+     */
+    private function cleanupForCoverage()
+    {
+        $files    = $this->getCoverageFiles();
+        $coverage = @unserialize(file_get_contents($files['coverage']));
+
+        foreach ($files as $file) {
+            @unlink($file);
+        }
+
+        return $coverage;
+    }
+
     /**
      * Parse --INI-- section key value pairs and return as array.
      *
@@ -270,5 +493,20 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     protected function parseIniSection($content)
     {
         return preg_split('/\n|\r/', $content, -1, PREG_SPLIT_NO_EMPTY);
+    }
+
+    protected function parseEnvSection($content)
+    {
+        $env = [];
+
+        foreach (explode("\n", trim($content)) as $e) {
+            $e = explode('=', trim($e), 2);
+
+            if (!empty($e[0]) && isset($e[1])) {
+                $env[$e[0]] = $e[1];
+            }
+        }
+
+        return $env;
     }
 }

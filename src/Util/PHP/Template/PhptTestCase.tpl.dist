@@ -1,0 +1,25 @@
+<?php
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+
+$composerAutoload = {composerAutoload};
+$phar             = {phar};
+
+ob_start();
+
+if ($composerAutoload) {
+    require_once $composerAutoload;
+    define('PHPUNIT_COMPOSER_INSTALL', $composerAutoload);
+} else if ($phar) {
+    require $phar;
+}
+
+$coverage =	new CodeCoverage();
+
+register_shutdown_function(function() use ($coverage) {
+	file_put_contents('{coverageFile}', serialize($coverage->stop()));
+});
+
+$coverage->start(__FILE__);
+
+ob_end_clean();
+?>{job}

@@ -77,4 +77,57 @@ class PHPUnit_Util_PHPTest extends PHPUnit_Framework_TestCase
 
         $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
     }
+
+    public function testShouldUseArgsToCreateCommand()
+    {
+        $phpMock = $this->getMockForAbstractClass('PHPUnit_Util_PHP');
+        $phpMock->setArgs('foo=bar');
+
+        $expectedCommandFormat  = '%s -- foo=bar';
+        $actualCommand          = $phpMock->getCommand([]);
+
+        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
+    }
+
+    public function testShouldHaveFileToCreateCommand()
+    {
+        $phpMock = $this->getMockForAbstractClass('PHPUnit_Util_PHP');
+
+        $expectedCommandFormat  = '%s -%c \'file.php\'';
+        $actualCommand          = $phpMock->getCommand([], 'file.php');
+
+        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
+    }
+
+    public function testStdinGetterAndSetter()
+    {
+        $phpMock = $this->getMockForAbstractClass('PHPUnit_Util_PHP');
+        $phpMock->setStdin('foo');
+
+        $this->assertEquals('foo', $phpMock->getStdin());
+    }
+
+    public function testArgsGetterAndSetter()
+    {
+        $phpMock = $this->getMockForAbstractClass('PHPUnit_Util_PHP');
+        $phpMock->setArgs('foo=bar');
+
+        $this->assertEquals('foo=bar', $phpMock->getArgs());
+    }
+
+    public function testEnvGetterAndSetter()
+    {
+        $phpMock = $this->getMockForAbstractClass('PHPUnit_Util_PHP');
+        $phpMock->setEnv(['foo' => 'bar']);
+
+        $this->assertEquals(['foo' => 'bar'], $phpMock->getEnv());
+    }
+
+    public function testTimeoutGetterAndSetter()
+    {
+        $phpMock = $this->getMockForAbstractClass('PHPUnit_Util_PHP');
+        $phpMock->setTimeout(30);
+
+        $this->assertEquals(30, $phpMock->getTimeout());
+    }
 }
