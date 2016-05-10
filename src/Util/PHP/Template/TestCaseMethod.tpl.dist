@@ -1,4 +1,6 @@
 <?php
+use SebastianBergmann\CodeCoverage\CodeCoverage;
+
 if (!defined('STDOUT')) {
     // php://stdout does not obey output buffering. Any output would break
     // unserialization of child process results in the parent process.
@@ -32,7 +34,7 @@ function __phpunit_run_isolated_test()
 
     if ({collectCodeCoverageInformation}) {
         $result->setCodeCoverage(
-            new PHP_CodeCoverage(
+            new CodeCoverage(
                 null,
                 unserialize('{codeCoverageFilter}')
             )
@@ -79,9 +81,18 @@ if ('' !== $configurationFilePath) {
     unset($configuration);
 }
 
+function __phpunit_error_handler($errno, $errstr, $errfile, $errline, $errcontext)
+{
+   return true;
+}
+
+set_error_handler("__phpunit_error_handler");
+
 {constants}
 {included_files}
 {globals}
+
+restore_error_handler();
 
 if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
     require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
