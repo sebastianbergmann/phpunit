@@ -22,23 +22,17 @@ PHPUnit %s by Sebastian Bergmann and contributors.
                 text-rendering: optimizeLegibility;
                 font-variant-ligatures: common-ligatures;
                 font-kerning: normal;
-                margin-left: 1vw;
-            }
-
-            body > ul {
-                max-width: 60vw;
+                margin-left: 2em;
             }
 
             body > ul > li {
                 font-family: Source Serif Pro, PT Sans, Trebuchet MS, Helvetica, Arial;
-                font-weight: 400;
-                font-size: 1vw;
-                line-height: 1.5vw;
+                font-size: 2em;
             }
 
             h2 {
                 font-family: Tahoma, Helvetica, Arial;
-                font-size: 1.5vw;
+                font-size: 3em;
             }
 
             ul {
