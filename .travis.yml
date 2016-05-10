@@ -7,11 +7,13 @@ php:
   - 5.5
   - 5.6
   - 7.0
+  - nightly
   - hhvm
 
 matrix:
   allow_failures:
     - php: 7.0
+    - php: nightly
     - php: hhvm
 
 sudo: false
