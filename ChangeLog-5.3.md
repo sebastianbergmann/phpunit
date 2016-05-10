@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 5.3 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.3.3] - 2016-MM-DD
+
+* Fixed [#2158](https://github.com/sebastianbergmann/phpunit/issues/2158): Failure to run tests in separate processes if a file included into main process contains constant definition
+
 ## [5.3.2] - 2016-04-12
 
 ### Fixed
