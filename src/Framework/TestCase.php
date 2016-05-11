@@ -2025,6 +2025,26 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @return bool
+     *
+     * @since Method available since Release 5.4.0
+     */
+    public function usesDataProvider()
+    {
+        return !empty($this->data);
+    }
+
+    /**
+     * @return string
+     *
+     * @since Method available since Release 5.4.0
+     */
+    public function dataDescription()
+    {
+        return is_string($this->dataName) ? $this->dataName : '';
+    }
+
+    /**
      * Gets the data set description of a TestCase.
      *
      * @param bool $includeData
