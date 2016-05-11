@@ -358,6 +358,46 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @return bool
+     *
+     * @since Method available since Release 5.3.4
+     */
+    public function hasSize()
+    {
+        return $this->getSize() !== PHPUnit_Util_Test::UNKNOWN;
+    }
+
+    /**
+     * @return bool
+     *
+     * @since Method available since Release 5.3.4
+     */
+    public function isSmall()
+    {
+        return $this->getSize() === PHPUnit_Util_Test::SMALL;
+    }
+
+    /**
+     * @return bool
+     *
+     * @since Method available since Release 5.3.4
+     */
+    public function isMedium()
+    {
+        return $this->getSize() === PHPUnit_Util_Test::MEDIUM;
+    }
+
+    /**
+     * @return bool
+     *
+     * @since Method available since Release 5.3.4
+     */
+    public function isLarge()
+    {
+        return $this->getSize() === PHPUnit_Util_Test::LARGE;
+    }
+
+    /**
      * @return string
      *
      * @since  Method available since Release 3.6.0
