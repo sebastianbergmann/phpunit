@@ -486,7 +486,9 @@ class PHPUnit_TextUI_Command
                     break;
 
                 case '--testdox':
-                    $this->arguments['printer'] = new PHPUnit_Util_TestDox_ResultPrinter_Text(NULL, isset($this->arguments['verbose']) ? $this->arguments['verbose'] : false);
+                    //$this->arguments['printer'] = new PHPUnit_Util_TestDox_ResultPrinter_Text(NULL, isset($this->arguments['verbose']) ? $this->arguments['verbose'] : false);
+                    // @todo need to figure out how to inject VERBOSE here
+                    $this->arguments['printer'] = 'PHPUnit_Util_TestDox_ResultPrinter_Text';
                     break;
 
                 case '--testdox-group':
