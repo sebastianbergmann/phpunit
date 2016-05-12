@@ -302,8 +302,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
 
         $annotations = $test->getAnnotations();
 
-        if (isset($annotations['method']['testdox'][0])) {
-            // MASTER: $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
+        if (isset($annotations['method']['dataProviderTestdox'][0])) {
+            // MASTER  $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
             $tdArgumentSpec = $annotations['method']['dataProviderTestdox'][0];
 
             // generate sprintf format string
@@ -366,8 +366,6 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
         {
             $this->tests[$this->currentTestMethodPrettified]['errors'][] = $this->testError;
         }
-
-        $this->onTest($this->currentTestMethodPrettified, $this->tests[$this->currentTestMethodPrettified]['failure'] == 0);
 
         $this->currentTestClassPrettified  = null;
         $this->currentTestMethodPrettified = null;
