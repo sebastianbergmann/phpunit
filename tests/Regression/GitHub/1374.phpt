@@ -13,7 +13,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 S                                                                   1 / 1 (100%)
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Skipped: 1.

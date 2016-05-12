@@ -28,6 +28,6 @@ Starting test 'DataProviderDebugTest::testProvider with data set #5 (Binary Stri
 Starting test 'DataProviderDebugTest::testProvider with data set #6 (Binary String: 0x0009)'.
 .                                                             7 / 7 (100%)
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 OK (7 tests, 7 assertions)

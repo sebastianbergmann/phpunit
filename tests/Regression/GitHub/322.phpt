@@ -21,6 +21,6 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Starting test 'Issue322Test::testOne'.
 .                                                                   1 / 1 (100%)
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 OK (1 test, 0 assertions)
