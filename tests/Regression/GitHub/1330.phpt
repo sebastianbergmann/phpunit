@@ -19,6 +19,6 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Starting test 'Issue1330Test::testTrue'.
 .
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 OK (1 test, 1 assertion)

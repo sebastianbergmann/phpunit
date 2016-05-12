@@ -15,7 +15,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 R*
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Risky: 1.
