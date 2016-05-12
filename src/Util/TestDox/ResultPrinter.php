@@ -302,8 +302,15 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
 
         $annotations = $test->getAnnotations();
 
+        // "base" name for test
+        if (isset($annotations['method']['testdox'][0])) {
+            $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
+        } else {
+            $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(false));
+        }
+
+        $testSubtitle = NULL;
         if (isset($annotations['method']['dataProviderTestdox'][0])) {
-            // MASTER  $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
             $tdArgumentSpec = $annotations['method']['dataProviderTestdox'][0];
 
             // generate sprintf format string
@@ -319,24 +326,28 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
 
             // generate pretty test name
             $iterationArgs = $test->getData();
-            $iterationTestName = trim(vsprintf($formatStr, $iterationArgs));
-            $this->currentTestMethodPrettified .= ": {$iterationTestName}";
+            $iterationArgs = array_map(function($arg) {
+                if (is_bool($arg))
+                {
+                    return $arg ? 'true' : 'false';
+                }
+                else if (is_string($arg))
+                {
+                    $arg = trim($arg);
+                }
+                return $arg;
+            }, $iterationArgs);
+            $testSubtitle = vsprintf($formatStr, $iterationArgs);
         } else {
-            $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(false));
+            $testSubtitle = $test->getDataSetName();
         }
-
-        if ($test instanceof PHPUnit_Framework_TestCase && $test->usesDataProvider()) {
-            $this->currentTestMethodPrettified .= ' ' . $test->dataDescription();
+        if ($testSubtitle) {
+            $this->currentTestMethodPrettified .= ": {$testSubtitle}";
         }
 
         $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
 
         // ensure name uniqueness
-        if (isset($this->tests[$this->currentTestMethodPrettified]))
-        {
-            // try to append data set info
-            $this->currentTestMethodPrettified .= $test->getDataSetAsString(FALSE);
-        }
         if (isset($this->tests[$this->currentTestMethodPrettified])) throw new Exception("Test name already exists: {$this->currentTestMethodPrettified}");
 
         // initialize data set for this test+iteration
@@ -367,6 +378,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             $this->tests[$this->currentTestMethodPrettified]['errors'][] = $this->testError;
         }
 
+        $this->onTest($this->currentTestMethodPrettified, $this->tests[$this->currentTestMethodPrettified]['failure'] == 0);
+
         $this->currentTestClassPrettified  = null;
         $this->currentTestMethodPrettified = null;
     }
@@ -376,10 +389,6 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      */
     protected function doEndClass()
     {
-        foreach ($this->tests as $name => $data) {
-            $this->onTest($name, $data['failure'] == 0);
-        }
-
         $this->endClass($this->testClass);
     }
 
