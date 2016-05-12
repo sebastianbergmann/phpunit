@@ -22,7 +22,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 F.E.E                                                               5 / 5 (100%)
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 There were 2 errors:
 
