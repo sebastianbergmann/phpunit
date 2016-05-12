@@ -33,7 +33,7 @@ Failed asserting that 2 matches expected 3.
 </testsuites>
 
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 There was 1 failure:
 

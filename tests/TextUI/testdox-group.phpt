@@ -20,6 +20,6 @@ DoxGroup
 
 
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 OK (2 tests, 0 assertions)

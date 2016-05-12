@@ -13,7 +13,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 W                                                                   1 / 1 (100%)
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 There was 1 warning:
 

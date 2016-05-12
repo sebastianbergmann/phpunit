@@ -13,6 +13,6 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ...                                                                 3 / 3 (100%)
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 %s[30;42mOK (3 tests, 3 assertions)%s[0m
