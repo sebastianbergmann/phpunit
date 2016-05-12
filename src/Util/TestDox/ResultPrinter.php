@@ -30,6 +30,11 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      */
     protected $testStatus = false;
 
+     /**
+     * @var string
+     */
+    protected $testError;
+
     /**
      * @var array
      */
@@ -75,6 +80,23 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      */
     protected $currentTestMethodPrettified;
 
+     /**
+     * @var boolean Verbose
+     */
+    protected $verbose;
+
+    /**
+     * @var array A lookup map to convert test status into a single character.
+     */
+    protected $testStatusIndicatorCharMap = [
+            PHPUnit_Runner_BaseTestRunner::STATUS_PASSED     => 'X',
+            PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED    => 'S',
+            PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE => 'I',
+            PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE    => 'F',
+            PHPUnit_Runner_BaseTestRunner::STATUS_ERROR      => 'E',
+            PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME  => '-'
+        ];
+
     /**
      * @var array
      */
@@ -90,12 +112,13 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      * @param array    $groups
      * @param array    $excludeGroups
      */
-    public function __construct($out = null, array $groups = [], array $excludeGroups = [])
+    public function __construct($out = null, array $groups = [], array $excludeGroups = [], $verbose = false)
     {
         parent::__construct($out);
 
         $this->groups        = $groups;
         $this->excludeGroups = $excludeGroups;
+        $this->verbose       = $verbose;
 
         $this->prettifier = new PHPUnit_Util_TestDox_NamePrettifier;
         $this->startRun();
@@ -125,6 +148,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return;
         }
 
+        $this->testError = $e;
         $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
         $this->failed++;
     }
@@ -161,6 +185,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return;
         }
 
+        $this->testError = $e;
         $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
         $this->failed++;
     }
@@ -253,6 +278,8 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return;
         }
 
+        $this->testError = NULL;
+
         $class = get_class($test);
 
         if ($this->testClass != $class) {
@@ -276,7 +303,24 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
         $annotations = $test->getAnnotations();
 
         if (isset($annotations['method']['testdox'][0])) {
-            $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
+            // MASTER: $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
+            $tdArgumentSpec = $annotations['method']['dataProviderTestdox'][0];
+
+            // generate sprintf format string
+            $formatStr = NULL;
+            if (is_numeric($tdArgumentSpec))
+            {
+                $formatStr = "%{$tdArgumentSpec}\$s";
+            }
+            else
+            {
+                $formatStr = $tdArgumentSpec;
+            }
+
+            // generate pretty test name
+            $iterationArgs = $test->getData();
+            $iterationTestName = trim(vsprintf($formatStr, $iterationArgs));
+            $this->currentTestMethodPrettified .= ": {$iterationTestName}";
         } else {
             $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(false));
         }
@@ -286,6 +330,17 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
         }
 
         $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
+
+        // ensure name uniqueness
+        if (isset($this->tests[$this->currentTestMethodPrettified]))
+        {
+            // try to append data set info
+            $this->currentTestMethodPrettified .= $test->getDataSetAsString(FALSE);
+        }
+        if (isset($this->tests[$this->currentTestMethodPrettified])) throw new Exception("Test name already exists: {$this->currentTestMethodPrettified}");
+
+        // initialize data set for this test+iteration
+        $this->tests[$this->currentTestMethodPrettified] = array('success' => 0, 'failure' => 0, 'errors' => array());
     }
 
     /**
@@ -300,21 +355,19 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return;
         }
 
-        if (!isset($this->tests[$this->currentTestMethodPrettified])) {
-            if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                $this->tests[$this->currentTestMethodPrettified]['success'] = 1;
-                $this->tests[$this->currentTestMethodPrettified]['failure'] = 0;
-            } else {
-                $this->tests[$this->currentTestMethodPrettified]['success'] = 0;
-                $this->tests[$this->currentTestMethodPrettified]['failure'] = 1;
-            }
+        $this->tests[$this->currentTestMethodPrettified]['status'] = $this->testStatusIndicatorCharMap[$this->testStatus];
+        if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
+            $this->tests[$this->currentTestMethodPrettified]['success']++;
         } else {
-            if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
-                $this->tests[$this->currentTestMethodPrettified]['success']++;
-            } else {
-                $this->tests[$this->currentTestMethodPrettified]['failure']++;
-            }
+            $this->tests[$this->currentTestMethodPrettified]['failure']++;
         }
+
+        if ($this->testError)
+        {
+            $this->tests[$this->currentTestMethodPrettified]['errors'][] = $this->testError;
+        }
+
+        $this->onTest($this->currentTestMethodPrettified, $this->tests[$this->currentTestMethodPrettified]['failure'] == 0);
 
         $this->currentTestClassPrettified  = null;
         $this->currentTestMethodPrettified = null;

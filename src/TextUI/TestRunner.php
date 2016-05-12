@@ -314,7 +314,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 new PHPUnit_Util_TestDox_ResultPrinter_Text(
                     $arguments['testdoxTextFile'],
                     $arguments['testdoxGroups'],
-                    $arguments['testdoxExcludeGroups']
+                    $arguments['testdoxExcludeGroups'],
+                    $arguments['verbose']
                 )
             );
         }

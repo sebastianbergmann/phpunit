@@ -114,14 +114,21 @@ EOT;
      */
     protected function onTest($name, $success = true)
     {
-        $this->write(
-            sprintf(
-                "            <li style=\"color: %s;\">%s %s</li>\n",
-                $success ? '#555753' : '#ef2929',
-                $success ? '✓' : '❌',
-                $name
-            )
-        );
+// MASTER        $this->write(
+//            sprintf(
+//                "            <li style=\"color: %s;\">%s %s</li>\n",
+//                $success ? '#555753' : '#ef2929',
+//                $success ? '✓' : '❌',
+//                $name
+//            )
+//        );
+        //        @todo get unicode X/check working -- add SUCCESS/FAIL?
+        $errors = NULL;
+        foreach ($this->tests[$name]['errors'] as $error) {
+            $errors .= "<blockquote>{$error->getMessage()}</blockquote>";
+        }
+
+        $this->write('<li>' . $strikeOpen . $name . $strikeClose . $errors . '</li>');
     }
 
     /**
