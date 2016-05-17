@@ -15,9 +15,9 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ...                                                                 3 / 3 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <tests>
-  <test class="BankAccountTest" prettifiedClass="BankAccount" method="testBalanceIsInitiallyZero" prettifiedMethod="Balance is initially zero" status="0" size="-1" groups="balanceIsInitiallyZero,specification"/>
-  <test class="BankAccountTest" prettifiedClass="BankAccount" method="testBalanceCannotBecomeNegative" prettifiedMethod="Balance cannot become negative" status="0" size="-1" groups="balanceCannotBecomeNegative,specification"/>
-  <test class="BankAccountTest" prettifiedClass="BankAccount" method="testBalanceCannotBecomeNegative2" prettifiedMethod="Balance cannot become negative" status="0" size="-1" groups="balanceCannotBecomeNegative,specification"/>
+  <test className="BankAccountTest" prettifiedClassName="BankAccount" methodName="testBalanceIsInitiallyZero" prettifiedMethodName="Balance is initially zero" status="0" size="-1" groups="balanceIsInitiallyZero,specification"/>
+  <test className="BankAccountTest" prettifiedClassName="BankAccount" methodName="testBalanceCannotBecomeNegative" prettifiedMethodName="Balance cannot become negative" status="0" size="-1" groups="balanceCannotBecomeNegative,specification"/>
+  <test className="BankAccountTest" prettifiedClassName="BankAccount" methodName="testBalanceCannotBecomeNegative2" prettifiedMethodName="Balance cannot become negative" status="0" size="-1" groups="balanceCannotBecomeNegative,specification"/>
 </tests>
 
 
