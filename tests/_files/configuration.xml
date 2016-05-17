@@ -98,6 +98,7 @@
     <log type="junit" target="/tmp/logfile.xml"/>
     <log type="testdox-html" target="/tmp/testdox.html"/>
     <log type="testdox-text" target="/tmp/testdox.txt"/>
+    <log type="testdox-xml" target="/tmp/testdox.xml"/>
   </logging>
 
   <php>

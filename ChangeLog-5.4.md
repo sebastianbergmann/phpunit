@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 5.4 release series are documented in this fil
 * Implemented [#2152](https://github.com/sebastianbergmann/phpunit/issues/2152): Filter for which tests TestDox output is generated
 * Added support for the `ENV`, `STDIN`, `ARGS`, `FILEEOF`, `FILE_EXTERNAL`, `EXPECT_EXTERNAL`, `EXPECTF_EXTERNAL`, `EXPECTREGEX_EXTERNAL`, and `XFAIL` sections to PHPT test runner
 * Added support for code coverage to PHPT test runner
+* Added TestDox XML logger
 
 ### Changed
 

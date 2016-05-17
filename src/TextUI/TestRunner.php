@@ -319,6 +319,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             );
         }
 
+        if (isset($arguments['testdoxXMLFile'])) {
+            $result->addListener(
+                new PHPUnit_Util_TestDox_ResultPrinter_XML(
+                    $arguments['testdoxXMLFile']
+                )
+            );
+        }
+
         $codeCoverageReports = 0;
 
         if (isset($arguments['coverageClover'])) {
@@ -984,6 +992,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['testdox-text']) &&
                 !isset($arguments['testdoxTextFile'])) {
                 $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
+            }
+
+            if (isset($loggingConfiguration['testdox-xml']) &&
+                !isset($arguments['testdoxXMLFile'])) {
+                $arguments['testdoxXMLFile'] = $loggingConfiguration['testdox-xml'];
             }
 
             if ((isset($arguments['coverageClover']) ||
