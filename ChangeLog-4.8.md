@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.26] - 2016-MM-DD
+
+### Fixed
+
+* Fixed [phpunit-mock-objects/#301](https://github.com/sebastianbergmann/phpunit-mock-objects/issues/301): `PHPUnit_Framework_MockObject_MockBuilder::getMock()` calls `PHPUnit_Framework_TestCase::getMock()` with more arguments than accepted
+
 ## [4.8.25] - 2016-05-10
 
 ### Fixed
