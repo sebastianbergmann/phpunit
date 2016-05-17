@@ -19,6 +19,7 @@ All notable changes of the PHPUnit 5.3 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2134](https://github.com/sebastianbergmann/phpunit/issues/2134): Failures are not shown when there are warnings
+* Fixed [phpunit-mock-objects/#301](https://github.com/sebastianbergmann/phpunit-mock-objects/issues/301): `PHPUnit_Framework_MockObject_MockBuilder::getMock()` calls `PHPUnit_Framework_TestCase::getMock()` with more arguments than accepted
 
 ## [5.3.1] - 2016-04-07
 
