@@ -234,6 +234,13 @@ class PHPUnit_Framework_MockObject_Generator
             }
         }
 
+        if (null !== $methods && null !== $notMethods)
+        {
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
+                'Cannot build mockobject that sets stub methods (setMethods) and exempts stub methods (setNotMethods) at the same time.'
+            );
+        }
+
         if ($mockClassName != '' && class_exists($mockClassName, false)) {
             $reflect = new ReflectionClass($mockClassName);
 
