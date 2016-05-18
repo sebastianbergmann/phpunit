@@ -161,6 +161,17 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
 
         /** @var PHPUnit_Framework_TestCase $test */
 
+        $groups = array_filter(
+            $test->getGroups(),
+            function ($group) {
+                if ($group == 'small' || $group == 'medium' || $group == 'large') {
+                    return false;
+                }
+
+                return true;
+            }
+        );
+
         $node = $this->document->createElement('test');
 
         $node->setAttribute('className', get_class($test));
@@ -169,7 +180,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
         $node->setAttribute('prettifiedMethodName', $this->prettifier->prettifyTestMethod($test->getName()));
         $node->setAttribute('status', $test->getStatus());
         $node->setAttribute('size', $test->getSize());
-        $node->setAttribute('groups', join(',', $test->getGroups()));
+        $node->setAttribute('groups', join(',', $groups));
 
         $this->root->appendChild($node);
     }
