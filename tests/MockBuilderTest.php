@@ -35,6 +35,16 @@ class Framework_MockBuilderTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($mock->anotherMockableMethod());
     }
 
+    public function testNotMethodsToMockCanBeSpecified()
+    {
+        $mock = $this->getMockBuilder(Mockable::class)
+            ->setNotMethods(['mockableMethod'])
+            ->getMock();
+
+        $this->assertTrue($mock->mockableMethod());
+        $this->assertNull($mock->anotherMockableMethod());
+    }
+
     public function testByDefaultDoesNotPassArgumentsToTheConstructor()
     {
         $mock = $this->getMockBuilder(Mockable::class)->getMock();
