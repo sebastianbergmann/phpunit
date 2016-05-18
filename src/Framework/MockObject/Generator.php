@@ -234,7 +234,7 @@ class PHPUnit_Framework_MockObject_Generator
             }
         }
 
-        if (null !== $methods && null !== $notMethods)
+        if (!empty($methods) && !empty($notMethods))
         {
             throw new PHPUnit_Framework_MockObject_RuntimeException(
                 'Cannot build mockobject that sets stub methods (setMethods) and exempts stub methods (setNotMethods) at the same time.'
