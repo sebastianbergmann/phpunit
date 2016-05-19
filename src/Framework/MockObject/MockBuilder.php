@@ -31,6 +31,11 @@ class PHPUnit_Framework_MockObject_MockBuilder
     private $methods = [];
 
     /**
+     * @var array
+     */
+    private $methodsExcept = [];
+
+    /**
      * @var string
      */
     private $mockClassName = '';
@@ -76,13 +81,19 @@ class PHPUnit_Framework_MockObject_MockBuilder
     private $allowMockingUnknownTypes = true;
 
     /**
+     * @var PHPUnit_Framework_MockObject_Generator
+     */
+    private $generator;
+
+    /**
      * @param PHPUnit_Framework_TestCase $testCase
      * @param array|string               $type
      */
     public function __construct(PHPUnit_Framework_TestCase $testCase, $type)
     {
-        $this->testCase = $testCase;
-        $this->type     = $type;
+        $this->testCase  = $testCase;
+        $this->type      = $type;
+        $this->generator = new PHPUnit_Framework_MockObject_Generator;
     }
 
     /**
@@ -92,9 +103,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      */
     public function getMock()
     {
-        $generator = new PHPUnit_Framework_MockObject_Generator;
-
-        $object = $generator->getMock(
+        $object = $this->generator->getMock(
             $this->type,
             $this->methods,
             $this->constructorArgs,
@@ -120,9 +129,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      */
     public function getMockForAbstractClass()
     {
-        $generator = new PHPUnit_Framework_MockObject_Generator;
-
-        $object = $generator->getMockForAbstractClass(
+        $object = $this->generator->getMockForAbstractClass(
             $this->type,
             $this->constructorArgs,
             $this->mockClassName,
@@ -145,9 +152,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      */
     public function getMockForTrait()
     {
-        $generator = new PHPUnit_Framework_MockObject_Generator;
-
-        $object = $generator->getMockForTrait(
+        $object = $this->generator->getMockForTrait(
             $this->type,
             $this->constructorArgs,
             $this->mockClassName,
@@ -173,6 +178,22 @@ class PHPUnit_Framework_MockObject_MockBuilder
     public function setMethods($methods)
     {
         $this->methods = $methods;
+
+        return $this;
+    }
+
+    /**
+     * Specifies the subset of methods to not mock. Default is to mock all of them.
+     *
+     * @param array $methods
+     *
+     * @return PHPUnit_Framework_MockObject_MockBuilder
+     */
+    public function setMethodsExcept(Array $methods = [])
+    {
+        $this->methodsExcept = $methods;
+
+        $this->setMethods(array_diff($this->generator->getClassMethods($this->type), $this->methodsExcept));
 
         return $this;
     }
