@@ -1235,7 +1235,7 @@ class PHPUnit_Framework_MockObject_Generator
      *
      * @since  Method available since Release 2.3.2
      */
-    private function getClassMethods($className)
+    public function getClassMethods($className)
     {
         $class   = new ReflectionClass($className);
         $methods = [];
