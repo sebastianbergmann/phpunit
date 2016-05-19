@@ -55,6 +55,36 @@ class Framework_MockBuilderTest extends PHPUnit_Framework_TestCase
         $this->assertNull($mock->anotherMockableMethod());
     }
 
+    /**
+     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
+     * @expectedExceptionMessage Cannot call method "setMethodsExcept" after methods have already been set. Methods are: ["mockableMethod"]
+     */
+    public function testMethodsExceptAfterMethods()
+    {
+        $mock = $this->getMockBuilder(Mockable::class)
+            ->setMethods(['mockableMethod'])
+            ->setMethodsExcept(['anotherMockableMethod'])
+            ->getMock();
+
+        $this->assertNull($mock->mockableMethod());
+        $this->assertNull($mock->anotherMockableMethod());
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
+     * @expectedExceptionMessage Cannot call method "setMethods" after methods have already been set. Methods are: {"0":"__construct","1":"mockableMethod","3":"__clone"}
+     */
+    public function testMethodsAfterMethodsExcept()
+    {
+        $mock = $this->getMockBuilder(Mockable::class)
+            ->setMethodsExcept(['anotherMockableMethod'])
+            ->setMethods(['mockableMethod'])
+            ->getMock();
+
+        $this->assertNull($mock->mockableMethod());
+        $this->assertNull($mock->anotherMockableMethod());
+    }
+
     public function testByDefaultDoesNotPassArgumentsToTheConstructor()
     {
         $mock = $this->getMockBuilder(Mockable::class)->getMock();
