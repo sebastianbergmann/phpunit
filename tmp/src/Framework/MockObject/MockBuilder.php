@@ -31,11 +31,6 @@ class PHPUnit_Framework_MockObject_MockBuilder
     private $methods = [];
 
     /**
-     * @var array
-     */
-    private $notMethods = [];
-
-    /**
      * @var string
      */
     private $mockClassName = '';
@@ -110,8 +105,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
             $this->cloneArguments,
             $this->callOriginalMethods,
             $this->proxyTarget,
-            $this->allowMockingUnknownTypes,
-            $this->notMethods
+            $this->allowMockingUnknownTypes
         );
 
         $this->testCase->registerMockObject($object);
@@ -136,8 +130,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
             $this->originalClone,
             $this->autoload,
             $this->methods,
-            $this->cloneArguments,
-            $this->notMethods
+            $this->cloneArguments
         );
 
         $this->testCase->registerMockObject($object);
@@ -162,8 +155,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
             $this->originalClone,
             $this->autoload,
             $this->methods,
-            $this->cloneArguments,
-            $this->notMethods
+            $this->cloneArguments
         );
 
         $this->testCase->registerMockObject($object);
@@ -181,20 +173,6 @@ class PHPUnit_Framework_MockObject_MockBuilder
     public function setMethods($methods)
     {
         $this->methods = $methods;
-
-        return $this;
-    }
-
-    /**
-     * Specifies methods to not mock. Default is to mock everything.
-     *
-     * @param array|null $methods
-     *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
-     */
-    public function setNotMethods($methods)
-    {
-        $this->notMethods = $methods;
 
         return $this;
     }
