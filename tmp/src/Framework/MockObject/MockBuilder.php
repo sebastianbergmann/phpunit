@@ -177,16 +177,6 @@ class PHPUnit_Framework_MockObject_MockBuilder
      */
     public function setMethods($methods)
     {
-        if ($this->methods !== []) {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
-                sprintf(
-                    'Cannot call method "%s" after methods have already been set. Methods are: %s',
-                    __FUNCTION__,
-                    json_encode($this->methods)
-                )
-            );
-        }
-
         $this->methods = $methods;
 
         return $this;
@@ -201,16 +191,6 @@ class PHPUnit_Framework_MockObject_MockBuilder
      */
     public function setMethodsExcept(Array $methods = [])
     {
-        if ($this->methods !== []) {
-           throw new PHPUnit_Framework_MockObject_RuntimeException(
-               sprintf(
-                   'Cannot call method "%s" after methods have already been set. Methods are: %s',
-                   __FUNCTION__,
-                   json_encode($this->methods)
-               )
-           );
-        }
-
         $this->methodsExcept = $methods;
 
         $this->setMethods(array_diff($this->generator->getClassMethods($this->type), $this->methodsExcept));
