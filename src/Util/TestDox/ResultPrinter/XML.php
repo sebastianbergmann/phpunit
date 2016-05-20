@@ -175,12 +175,17 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
         $node = $this->document->createElement('test');
 
         $node->setAttribute('className', get_class($test));
-        $node->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(get_class($test)));
         $node->setAttribute('methodName', $test->getName());
+        $node->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(get_class($test)));
         $node->setAttribute('prettifiedMethodName', $this->prettifier->prettifyTestMethod($test->getName()));
         $node->setAttribute('status', $test->getStatus());
+        $node->setAttribute('time', $time);
         $node->setAttribute('size', $test->getSize());
         $node->setAttribute('groups', join(',', $groups));
+
+        if ($test->hasFailed()) {
+            $node->setAttribute('message', $test->getStatusMessage());
+        }
 
         $this->root->appendChild($node);
     }
