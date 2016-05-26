@@ -436,9 +436,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMockWithFixedClassNameCanProduceTheSameMockTwice()
     {
-        $mock = $this->getMockBuilder('StdClass')->setMockClassName('FixedName')->getMock();
-        $mock = $this->getMockBuilder('StdClass')->setMockClassName('FixedName')->getMock();
-        $this->assertInstanceOf('StdClass', $mock);
+        $mock = $this->getMockBuilder(stdClass::class)->setMockClassName('FixedName')->getMock();
+        $mock = $this->getMockBuilder(stdClass::class)->setMockClassName('FixedName')->getMock();
+        $this->assertInstanceOf(stdClass::class, $mock);
     }
 
     public function testOriginalConstructorSettingConsidered()
@@ -869,7 +869,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
                     ->disableArgumentCloning()
                     ->getMock();
 
-        $a = new stdClass();
+        $a = new stdClass;
         $b = $c = 0;
 
         $foo->expects($this->any())
@@ -891,12 +891,12 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
                     ->disableArgumentCloning()
                     ->getMock();
 
-        $a = new stdClass();
+        $a = new stdClass;
         $b = $c = 0;
 
         $foo->expects($this->any())
             ->method('bar')
-            ->with($this->isInstanceOf('stdClass'), $b, $c)
+            ->with($this->isInstanceOf(stdClass::class), $b, $c)
             ->will($this->returnCallback([$foo, 'callback']));
 
         $foo->bar($a, $b, $c);

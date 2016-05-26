@@ -102,7 +102,8 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
-     * @param  mixed                                                 $reference
+     * @param mixed $reference
+     *
      * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
      */
     public function willReturnReference(&$reference)

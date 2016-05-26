@@ -3,7 +3,7 @@ class Framework_MockObject_Builder_InvocationMockerTest extends PHPUnit_Framewor
 {
     public function testWillReturnWithOneValue()
     {
-        $mock = $this->getMockBuilder(StdClass::class)
+        $mock = $this->getMockBuilder(stdClass::class)
                      ->setMethods(['foo'])
                      ->getMock();
 
@@ -16,7 +16,7 @@ class Framework_MockObject_Builder_InvocationMockerTest extends PHPUnit_Framewor
 
     public function testWillReturnWithMultipleValues()
     {
-        $mock = $this->getMockBuilder(StdClass::class)
+        $mock = $this->getMockBuilder(stdClass::class)
                      ->setMethods(['foo'])
                      ->getMock();
 
@@ -31,7 +31,7 @@ class Framework_MockObject_Builder_InvocationMockerTest extends PHPUnit_Framewor
 
     public function testWillReturnOnConsecutiveCalls()
     {
-        $mock = $this->getMockBuilder(StdClass::class)
+        $mock = $this->getMockBuilder(stdClass::class)
                      ->setMethods(['foo'])
                      ->getMock();
 
@@ -46,11 +46,13 @@ class Framework_MockObject_Builder_InvocationMockerTest extends PHPUnit_Framewor
 
     public function testWillReturnByReference()
     {
-        $mock = $this->getMock('stdClass', ['foo']);
-        $mock
-            ->expects($this->any())
-            ->method('foo')
-            ->willReturnReference($value);
+        $mock = $this->getMockBuilder(stdClass::class)
+                     ->setMethods(['foo'])
+                     ->getMock();
+
+        $mock->expects($this->any())
+             ->method('foo')
+             ->willReturnReference($value);
 
         $this->assertSame(null, $mock->foo());
         $value = 'foo';
