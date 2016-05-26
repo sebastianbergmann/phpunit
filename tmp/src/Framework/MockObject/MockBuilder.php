@@ -189,7 +189,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
-    public function setMethodsExcept(Array $methods = [])
+    public function setMethodsExcept(array $methods = [])
     {
         $this->methodsExcept = $methods;
 
