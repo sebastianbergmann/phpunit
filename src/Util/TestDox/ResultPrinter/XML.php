@@ -183,6 +183,17 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
         $node->setAttribute('size', $test->getSize());
         $node->setAttribute('groups', join(',', $groups));
 
+        $inlineAnnotations = PHPUnit_Util_Test::getInlineAnnotations(get_class($test), $test->getName());
+
+        if (isset($inlineAnnotations['given']) && isset($inlineAnnotations['when']) && isset($inlineAnnotations['then'])) {
+            $node->setAttribute('given', $inlineAnnotations['given']['value']);
+            $node->setAttribute('givenStartLine', $inlineAnnotations['given']['line']);
+            $node->setAttribute('when', $inlineAnnotations['when']['value']);
+            $node->setAttribute('whenStartLine', $inlineAnnotations['when']['line']);
+            $node->setAttribute('then', $inlineAnnotations['then']['value']);
+            $node->setAttribute('thenStartLine', $inlineAnnotations['then']['line']);
+        }
+
         if ($test->hasFailed()) {
             $node->setAttribute('message', $test->getStatusMessage());
         }
