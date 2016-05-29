@@ -29,6 +29,11 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
     private $prettifier;
 
     /**
+     * @var Exception
+     */
+    private $exception;
+
+    /**
      * @param string|resource $out
      */
     public function __construct($out = null)
@@ -63,6 +68,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      */
     public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
+        $this->exception = $e;
     }
 
     /**
@@ -85,6 +91,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      */
     public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
     {
+        $this->exception = $e;
     }
 
     /**
@@ -145,6 +152,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      */
     public function startTest(PHPUnit_Framework_Test $test)
     {
+        $this->exception = null;
     }
 
     /**
@@ -194,8 +202,25 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
             $node->setAttribute('thenStartLine', $inlineAnnotations['then']['line']);
         }
 
-        if ($test->hasFailed()) {
-            $node->setAttribute('message', $test->getStatusMessage());
+        if ($this->exception !== null) {
+            if ($this->exception instanceof PHPUnit_Framework_Exception) {
+                $steps = $this->exception->getSerializableTrace();
+            } else {
+                $steps = $this->exception->getTrace();
+            }
+
+            $class = new ReflectionClass($test);
+            $file  = $class->getFileName();
+
+            foreach ($steps as $step) {
+                if (isset($step['file']) && $step['file'] == $file) {
+                    $node->setAttribute('exceptionLine', $step['line']);
+
+                    break;
+                }
+            }
+
+            $node->setAttribute('exceptionMessage', $this->exception->getMessage());
         }
 
         $this->root->appendChild($node);
