@@ -11,7 +11,7 @@
 /**
  * @since Class available since Release 5.3.0
  */
-class ConfigurationGenerator
+class PHPUnit_Util_ConfigurationGenerator
 {
     /**
      * @var string
