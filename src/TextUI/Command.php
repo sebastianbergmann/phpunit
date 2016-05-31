@@ -364,7 +364,7 @@ class PHPUnit_TextUI_Command
                         $src = 'src';
                     }
 
-                    $generator = new ConfigurationGenerator;
+                    $generator = new PHPUnit_Util_ConfigurationGenerator;
 
                     file_put_contents(
                         'phpunit.xml',
