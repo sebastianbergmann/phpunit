@@ -1502,7 +1502,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @since Method available since Release 3.5.0
      */
-    protected function getMockBuilder($className)
+    public function getMockBuilder($className)
     {
         return new PHPUnit_Framework_MockObject_MockBuilder($this, $className);
     }
