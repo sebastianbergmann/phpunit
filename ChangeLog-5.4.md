@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.4.1] - 2016-MM-DD
+
+### Fixed
+
+* Fixed [#2186](https://github.com/sebastianbergmann/phpunit/issues/2186): `PHPUnit_Framework_TestCase::getMockBuilder()` should be `public`, not `protected` 
+
 ## [5.4.0] - 2016-06-03
 
 ### Added
