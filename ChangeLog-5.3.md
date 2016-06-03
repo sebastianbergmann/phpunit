@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.3 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.3.5] - 2016-06-03
+
+### Fixed
+
+* Fixed [phpunit-mock-objects/#308](https://github.com/sebastianbergmann/phpunit-mock-objects/issues/308): Make sure that PHPUnit 5.3 does not pull in PHPUnit 5.4 dependencies
+
 ## [5.3.4] - 2016-05-11
 
 ### Changed
@@ -40,6 +46,7 @@ All notable changes of the PHPUnit 5.3 release series are documented in this fil
 * The passing of test doubles from one test to another has been improved
 * Implemented [phpunit-mock-objects/#296](https://github.com/sebastianbergmann/phpunit-mock-objects/issues/296): Trigger an error when final or private method is configured on a test double
 
+[5.3.5]: https://github.com/sebastianbergmann/phpunit/compare/5.3.4...5.3.5
 [5.3.4]: https://github.com/sebastianbergmann/phpunit/compare/5.3.3...5.3.4
 [5.3.3]: https://github.com/sebastianbergmann/phpunit/compare/5.3.2...5.3.3
 [5.3.2]: https://github.com/sebastianbergmann/phpunit/compare/5.3.1...5.3.2
