@@ -615,4 +615,39 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $cloned = clone $mock;
         $this->assertFalse($cloned->cloned);
     }
+
+    public function testCreateMockWithMockedMethods()
+    {
+        /** @var Mockable $mock */
+        $mock = $this->createMock(Mockable::class, [
+            'foo' => 'bar',
+        ]);
+
+        $this->assertEquals('bar', $mock->foo());
+    }
+
+    public function testCreateMockWithMockedMethodsUsingClosure()
+    {
+        /** @var Mockable $mock */
+        $mock = $this->createMock(Mockable::class, [
+            'foo' => function () {
+                return 1 + 2;
+            },
+        ]);
+
+        $this->assertEquals(3, $mock->foo());
+    }
+
+    public function testCreateMockWithMockedMethodsUsingException()
+    {
+        /** @var Mockable $mock */
+        $mock = $this->createMock(Mockable::class, [
+            'foo' => new Exception('There was an error'),
+        ]);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('There was an error');
+        $mock->foo();
+    }
+
 }

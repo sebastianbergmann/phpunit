@@ -1510,7 +1510,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Returns a test double for the specified class.
      *
+     * You can optionally provide a list of methods to mock as a second argument:
+     *
+     *     $mock = $this->createMock(MyClass::class, [
+     *         'sayHello' => 'Hello world!',
+     *     ]);
+     *     echo $mock->sayHello(); // Hello world!
+     *
      * @param string $originalClassName
+     * @param array $methods            Methods to mock. Array of values to return, indexed by the method name.
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
@@ -1518,14 +1526,29 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @since Method available since Release 5.4.0
      */
-    protected function createMock($originalClassName)
+    protected function createMock($originalClassName, array $methods = [])
     {
-        return $this->getMockBuilder($originalClassName)
+        $mock = $this->getMockBuilder($originalClassName)
             ->disableOriginalConstructor()
             ->disableOriginalClone()
             ->disableArgumentCloning()
             ->disallowMockingUnknownTypes()
             ->getMock();
+
+        foreach ($methods as $method => $return) {
+            $methodAssertion = $mock->expects($this->any())
+                ->method($method);
+
+            if (is_callable($return)) {
+                $methodAssertion->willReturnCallback($return);
+            } elseif ($return instanceof \Exception) {
+                $methodAssertion->willThrowException($return);
+            } else {
+                $methodAssertion->willReturn($return);
+            }
+        }
+
+        return $mock;
     }
 
     /**
