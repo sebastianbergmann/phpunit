@@ -167,7 +167,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
             return;
         }
 
-        /** @var PHPUnit_Framework_TestCase $test */
+        /* @var PHPUnit_Framework_TestCase $test */
 
         $groups = array_filter(
             $test->getGroups(),
@@ -189,7 +189,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
         $node->setAttribute('status', $test->getStatus());
         $node->setAttribute('time', $time);
         $node->setAttribute('size', $test->getSize());
-        $node->setAttribute('groups', join(',', $groups));
+        $node->setAttribute('groups', implode(',', $groups));
 
         $inlineAnnotations = PHPUnit_Util_Test::getInlineAnnotations(get_class($test), $test->getName());
 

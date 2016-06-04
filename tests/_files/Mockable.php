@@ -2,7 +2,7 @@
 class Mockable
 {
     public $constructorCalled = false;
-    public $cloned = false;
+    public $cloned            = false;
 
     public function __construct()
     {
