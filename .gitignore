@@ -1,6 +1,9 @@
 /.ant_targets
 /.idea
+/build/documentation
+/build/logfiles
 /build/phar
+/build/phpdox
 /build/*.phar
 /build/*.phar.asc
 /tests/TextUI/*.diff

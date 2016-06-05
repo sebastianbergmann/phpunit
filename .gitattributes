@@ -1,3 +1,4 @@
+/build export-ignore
 *.php diff=php
 composer.json merge=ours
 src/Runner/Version.php merge=ours
