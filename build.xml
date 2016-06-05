@@ -7,15 +7,23 @@
         <delete dir="${basedir}/bin"/>
         <delete dir="${basedir}/vendor"/>
         <delete file="${basedir}/composer.lock"/>
+        <delete dir="${basedir}/build/documentation"/>
+        <delete dir="${basedir}/build/logfiles"/>
         <delete dir="${basedir}/build/phar"/>
         <delete>
             <fileset dir="${basedir}/build">
-                <include name="**/*.phar"/>
-                <include name="**/*.phar.asc"/>
+                <include name="**/phpunit*.phar"/>
+                <include name="**/phpunit*.phar.asc"/>
             </fileset>
         </delete>
 
         <property name="clean.done" value="true"/>
+    </target>
+
+    <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
+        <mkdir dir="${basedir}/build/documentation"/>
+        <mkdir dir="${basedir}/build/logfiles"/>
+        <property name="prepare.done" value="true"/>
     </target>
 
     <target name="validate-composer-json" unless="validate-composer-json.done" description="Validate composer.json">
@@ -317,6 +325,47 @@
         <exec executable="bash" outputproperty="version">
             <arg value="-c"/>
             <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'"/>
+        </exec>
+    </target>
+
+    <target name="generate-project-documentation" depends="-phploc,-phpcs,-phpmd,-phpunit">
+        <exec executable="${basedir}/build/tools/phpdox" dir="${basedir}/build" taskname="phpdox"/>
+    </target>
+
+    <target name="-phploc" depends="prepare">
+        <exec executable="${basedir}/build/tools/phploc" output="/dev/null" taskname="phploc">
+            <arg value="--count-tests"/>
+            <arg value="--log-xml"/>
+            <arg path="${basedir}/build/logfiles/phploc.xml"/>
+            <arg path="${basedir}/src"/>
+            <arg path="${basedir}/tests"/>
+        </exec>
+    </target>
+
+    <target name="-phpcs" depends="prepare">
+        <exec executable="${basedir}/build/tools/phpcs" output="/dev/null" taskname="phpcs">
+            <arg value="--report=checkstyle"/>
+            <arg value="--report-file=${basedir}/build/logfiles/checkstyle.xml"/>
+            <arg value="--standard=PSR2"/>
+            <arg value="--extensions=php"/>
+            <arg path="${basedir}/src"/>
+        </exec>
+    </target>
+
+    <target name="-phpmd" depends="prepare">
+        <exec executable="${basedir}/build/tools/phpmd" taskname="phpmd">
+            <arg path="${basedir}/src"/>
+            <arg value="xml"/>
+            <arg path="${basedir}/build/phpmd.xml"/>
+            <arg value="--reportfile"/>
+            <arg path="${basedir}/build/logfiles/pmd.xml"/>
+        </exec>
+    </target>
+
+    <target name="-phpunit" depends="setup">
+        <exec executable="${basedir}/phpunit" taskname="phpunit">
+            <arg value="--configuration"/>
+            <arg path="${basedir}/build/phpunit.xml"/>
         </exec>
     </target>
 </project>
