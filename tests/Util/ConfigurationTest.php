@@ -460,4 +460,18 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             $actualConfiguration->getTestSuiteConfiguration()
         );
     }
+
+    /**
+     * @covers PHPUnit_Util_Configuration::getTestSuiteNames
+     */
+    public function testGetTestSuiteNamesReturnsTheNamesIfDefined()
+    {
+        $configuration = PHPUnit_Util_Configuration::getInstance(
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.suites.xml'
+        );
+
+        $names = $configuration->getTestSuiteNames();
+
+        $this->assertEquals(['Suite One', 'Suite Two'], $names);
+    }
 }
