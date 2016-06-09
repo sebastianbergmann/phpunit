@@ -21,6 +21,7 @@ class PHPUnit_TextUI_Command
      */
     protected $arguments = [
         'listGroups'              => false,
+        'listSuites'              => false,
         'loader'                  => null,
         'useDefaultConfiguration' => true
     ];
@@ -57,6 +58,7 @@ class PHPUnit_TextUI_Command
         'help'                    => null,
         'include-path='           => null,
         'list-groups'             => null,
+        'list-suites'             => null,
         'loader='                 => null,
         'log-json='               => null,
         'log-junit='              => null,
@@ -146,6 +148,27 @@ class PHPUnit_TextUI_Command
 
             foreach ($groups as $group) {
                 print " - $group\n";
+            }
+
+            if ($exit) {
+                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+            } else {
+                return PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
+            }
+        }
+
+        if ($this->arguments['listSuites']) {
+            $this->printVersionString();
+
+            print "Available test suite(s):\n";
+
+            $configuration = PHPUnit_Util_Configuration::getInstance(
+                $this->arguments['configuration']
+            );
+
+            $suiteNames = $configuration->getTestSuiteNames();
+            foreach ($suiteNames as $suiteName) {
+                print " - $suiteName\n";
             }
 
             if ($exit) {
@@ -408,6 +431,10 @@ class PHPUnit_TextUI_Command
 
                 case '--list-groups':
                     $this->arguments['listGroups'] = true;
+                    break;
+
+                case '--list-suites':
+                    $this->arguments['listSuites'] = true;
                     break;
 
                 case '--printer':
@@ -1024,6 +1051,7 @@ Test Selection Options:
   --group ...               Only runs tests from the specified group(s).
   --exclude-group ...       Exclude tests from the specified group(s).
   --list-groups             List available test groups.
+  --list-suites             List available test suites.
   --test-suffix ...         Only search for test in files with specified
                             suffix(es). Default: Test.php,.phpt
 
