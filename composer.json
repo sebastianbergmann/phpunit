@@ -43,6 +43,9 @@
         "ext-reflection": "*",
         "ext-spl": "*"
     },
+    "conflict": {
+        "phpdocumentor/reflection-docblock": "3.0.2"
+    },
     "config": {
         "platform": {
             "php": "5.6.0"
