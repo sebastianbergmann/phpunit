@@ -877,6 +877,7 @@ class PHPUnit_Util_Configuration
         foreach ($nodes as $node) {
             $names[] = $node->getAttribute('name');
         }
+
         return $names;
     }
 
