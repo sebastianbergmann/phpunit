@@ -18,7 +18,7 @@
  */
 class PHPUnit_Util_PHP_WindowsTest extends PHPUnit_Framework_TestCase
 {
-    public function testGetCommandShouldReturnCommandCompletelySurroundedByQuotes()
+    public function testGetCommandShouldReturnCommandCompletelySurroundedByQuotesWhenSpacesExistInBinary()
     {
         /**
          * On windows, if the command is: "C:\Program Files (x86)\PHP\php.exe"
@@ -30,11 +30,26 @@ class PHPUnit_Util_PHP_WindowsTest extends PHPUnit_Framework_TestCase
          * Using an extra set of double quotes around the entire command fixes this.
          * Source: https://bugs.php.net/bug.php?id=49139
          **/
-        $windows = new PHPUnit_Util_PHP_Windows();
 
-        $expectedCommandFormat = '""%s""';
-        $actualCommand = $windows->getCommand([]);
+        $binary = '"C:\Program Files (x86)\PHP\php.exe"';
+        $runtime = $this->createMock('SebastianBergmann\Environment\Runtime');
+        $runtime->method('getBinary')
+            ->willReturn($binary);
 
-        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
+        $windows = new PHPUnit_Util_PHP_Windows_Stub($runtime);
+
+        $file = 'foo.php';
+
+        $actualCommand = $windows->getCommand([], $file);
+        $expectedCommand = '""C:\Program Files (x86)\PHP\php.exe" -f "foo.php""';
+        $this->assertEquals($expectedCommand, $actualCommand);
+    }
+}
+
+Class PHPUnit_Util_PHP_Windows_Stub extends PHPUnit_Util_PHP_Windows
+{
+    public function __construct($runtime)
+    {
+        $this->runtime = $runtime;
     }
 }
