@@ -38,10 +38,8 @@ class PHPUnit_Util_PHP_WindowsTest extends PHPUnit_Framework_TestCase
 
         $windows = new PHPUnit_Util_PHP_Windows_Stub($runtime);
 
-        $file = 'foo.php';
-
-        $actualCommand = $windows->getCommand([], $file);
-        $expectedCommand = '""C:\Program Files (x86)\PHP\php.exe" -f "foo.php""';
+        $actualCommand = $windows->getCommand([]);
+        $expectedCommand = '""C:\Program Files (x86)\PHP\php.exe""';
         $this->assertEquals($expectedCommand, $actualCommand);
     }
 }
