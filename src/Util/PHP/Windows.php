@@ -33,4 +33,9 @@ class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
             1 => $stdout_handle
         ];
     }
+
+    public function getCommand(array $settings, $file = null)
+    {
+        return '"' . parent::getCommand($settings, $file) . '"';
+    }
 }
