@@ -1480,7 +1480,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             throw new PHPUnit_Framework_Exception;
         }
 
-        $this->locale[$category] = setlocale($category, null);
+        $this->locale[$category] = setlocale($category, 0);
 
         $result = call_user_func_array('setlocale', $args);
 
