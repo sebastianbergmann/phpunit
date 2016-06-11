@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.4 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2181](https://github.com/sebastianbergmann/phpunit/issues/2181): Use `setlocale()` with `0` as second argument to not affect current setting
+* Fixed [#2211](https://github.com/sebastianbergmann/phpunit/issues/2211): Correctly handle paths to PHP binary that contain spaces (`C:\Program Files`) on Microsoft Windows
 
 ## [5.4.4] - 2016-06-09
 
