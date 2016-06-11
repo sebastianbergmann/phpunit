@@ -30,6 +30,11 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     protected $invocation;
 
     /**
+     * @var PHPUnit_Framework_ExpectationFailedException
+     */
+    private $parameterVerificationResult;
+    
+    /**
      * @param array $parameters
      */
     public function __construct(array $parameters)
@@ -71,8 +76,11 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $this->invocation = $invocation;
-
-        return $this->verify();
+        try {
+            return $this->parameterVerificationResult = $this->verify();
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            throw $this->parameterVerificationResult = $e;
+        }
     }
 
     /**
@@ -90,6 +98,10 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
      */
     public function verify()
     {
+        if (isset($this->parameterVerificationResult)) {
+            return $this->guardAgainstDuplicateEvaluationOfParameterConstraints();
+        }
+        
         if ($this->invocation === null) {
             throw new PHPUnit_Framework_ExpectationFailedException(
                 'Mocked method does not exist.'
@@ -126,5 +138,17 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     * @throws PHPUnit_Framework_ExpectationFailedException
+     */
+    private function guardAgainstDuplicateEvaluationOfParameterConstraints()
+    {
+        if ($this->parameterVerificationResult instanceof Exception) {
+            throw $this->parameterVerificationResult;
+        }
+        return (bool) $this->parameterVerificationResult;
     }
 }
