@@ -11,7 +11,7 @@
 /**
  * Implementation of the Builder pattern for Mock objects.
  *
- * @since      File available since Release 1.0.0
+ * @since File available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_MockBuilder
 {
@@ -193,7 +193,12 @@ class PHPUnit_Framework_MockObject_MockBuilder
     {
         $this->methodsExcept = $methods;
 
-        $this->setMethods(array_diff($this->generator->getClassMethods($this->type), $this->methodsExcept));
+        $this->setMethods(
+            array_diff(
+                $this->generator->getClassMethods($this->type),
+                $this->methodsExcept
+            )
+        );
 
         return $this;
     }

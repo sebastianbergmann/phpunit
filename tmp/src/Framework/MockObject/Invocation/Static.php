@@ -21,25 +21,25 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      * @var array
      */
     protected static $uncloneableExtensions = [
-      'mysqli'    => true,
-      'SQLite'    => true,
-      'sqlite3'   => true,
-      'tidy'      => true,
-      'xmlwriter' => true,
-      'xsl'       => true
+        'mysqli'    => true,
+        'SQLite'    => true,
+        'sqlite3'   => true,
+        'tidy'      => true,
+        'xmlwriter' => true,
+        'xsl'       => true
     ];
 
     /**
      * @var array
      */
     protected static $uncloneableClasses = [
-      'Closure',
-      'COMPersistHelper',
-      'IteratorIterator',
-      'RecursiveIteratorIterator',
-      'SplFileObject',
-      'PDORow',
-      'ZipArchive'
+        'Closure',
+        'COMPersistHelper',
+        'IteratorIterator',
+        'RecursiveIteratorIterator',
+        'SplFileObject',
+        'PDORow',
+        'ZipArchive'
     ];
 
     /**
@@ -64,7 +64,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
 
     /**
      * @param string $className
-     * @param string $methodname
+     * @param string $methodName
      * @param array  $parameters
      * @param string $returnType
      * @param bool   $cloneObjects

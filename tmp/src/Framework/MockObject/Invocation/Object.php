@@ -22,15 +22,16 @@ class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_M
 
     /**
      * @param string $className
-     * @param string $methodname
+     * @param string $methodName
      * @param array  $parameters
      * @param string $returnType
      * @param object $object
-     * @param object $cloneObjects
+     * @param bool   $cloneObjects
      */
     public function __construct($className, $methodName, array $parameters, $returnType, $object, $cloneObjects = false)
     {
         parent::__construct($className, $methodName, $parameters, $returnType, $cloneObjects);
+
         $this->object = $object;
     }
 }

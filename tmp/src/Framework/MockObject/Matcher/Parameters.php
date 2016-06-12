@@ -33,7 +33,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
      * @var PHPUnit_Framework_ExpectationFailedException
      */
     private $parameterVerificationResult;
-    
+
     /**
      * @param array $parameters
      */
@@ -75,12 +75,17 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
      */
     public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
-        $this->invocation = $invocation;
+        $this->invocation                  = $invocation;
         $this->parameterVerificationResult = null;
+
         try {
-            return $this->parameterVerificationResult = $this->verify();
+            $this->parameterVerificationResult = $this->verify();
+
+            return $this->parameterVerificationResult;
         } catch (PHPUnit_Framework_ExpectationFailedException $e) {
-            throw $this->parameterVerificationResult = $e;
+            $this->parameterVerificationResult = $e;
+
+            throw $this->parameterVerificationResult;
         }
     }
 
@@ -98,7 +103,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         if (isset($this->parameterVerificationResult)) {
             return $this->guardAgainstDuplicateEvaluationOfParameterConstraints();
         }
-        
+
         if ($this->invocation === null) {
             throw new PHPUnit_Framework_ExpectationFailedException(
                 'Mocked method does not exist.'
@@ -139,6 +144,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
 
     /**
      * @return bool
+     *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
     private function guardAgainstDuplicateEvaluationOfParameterConstraints()
@@ -146,6 +152,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
         if ($this->parameterVerificationResult instanceof Exception) {
             throw $this->parameterVerificationResult;
         }
+
         return (bool) $this->parameterVerificationResult;
     }
 }

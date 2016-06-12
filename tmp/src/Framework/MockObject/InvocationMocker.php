@@ -113,6 +113,8 @@ class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework
      * @param PHPUnit_Framework_MockObject_Invocation $invocation
      *
      * @return mixed
+     *
+     * @throws Exception
      */
     public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
