@@ -12,7 +12,7 @@
  * Records invocations and provides convenience methods for checking them later
  * on.
  * This abstract class can be implemented by matchers which needs to check the
- * number of times an invocation has occured.
+ * number of times an invocation has occurred.
  *
  * @since Class available since Release 1.0.0
  * @abstract

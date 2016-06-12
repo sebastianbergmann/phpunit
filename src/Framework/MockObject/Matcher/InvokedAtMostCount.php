@@ -50,7 +50,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount extends PHPUnit_Fr
         if ($count > $this->allowedInvocations) {
             throw new PHPUnit_Framework_ExpectationFailedException(
                 'Expected invocation at most ' . $this->allowedInvocations .
-                ' times but it occured ' . $count . ' time(s).'
+                ' times but it occurred ' . $count . ' time(s).'
             );
         }
     }

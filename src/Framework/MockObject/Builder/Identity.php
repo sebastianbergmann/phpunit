@@ -25,7 +25,7 @@ interface PHPUnit_Framework_MockObject_Builder_Identity
      *
      * @note The identifier is unique per mock object.
      *
-     * @param string $id Unique identifiation of expectation.
+     * @param string $id Unique identification of expectation.
      */
     public function id($id);
 }
