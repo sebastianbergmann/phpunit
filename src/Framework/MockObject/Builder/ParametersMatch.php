@@ -32,7 +32,7 @@ interface PHPUnit_Framework_MockObject_Builder_ParametersMatch extends PHPUnit_F
      *
      * @return PHPUnit_Framework_MockObject_Builder_ParametersMatch
      */
-    public function with();
+    public function with(...$arguments);
 
     /**
      * Sets a matcher which allows any kind of parameters.

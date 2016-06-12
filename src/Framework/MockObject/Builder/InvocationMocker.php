@@ -223,33 +223,29 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
-     * @param mixed $argument, ...
+     * @param  array ...$arguments
      *
      * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
      */
-    public function with()
+    public function with(...$arguments)
     {
-        $args = func_get_args();
-
         $this->canDefineParameters();
 
-        $this->matcher->parametersMatcher = new PHPUnit_Framework_MockObject_Matcher_Parameters($args);
+        $this->matcher->parametersMatcher = new PHPUnit_Framework_MockObject_Matcher_Parameters($arguments);
 
         return $this;
     }
 
     /**
-     * @param  mixed ...$argument
+     * @param  array ...$arguments
      *
      * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
      */
-    public function withConsecutive()
+    public function withConsecutive(...$arguments)
     {
-        $args = func_get_args();
-
         $this->canDefineParameters();
 
-        $this->matcher->parametersMatcher = new PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters($args);
+        $this->matcher->parametersMatcher = new PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters($arguments);
 
         return $this;
     }
