@@ -39,6 +39,7 @@ All notable changes of the PHPUnit 5.4 release series are documented in this fil
 
 * Implemented [#2037](https://github.com/sebastianbergmann/phpunit/issues/2037): Log more information about failures in JSON output
 * Implemented [#2152](https://github.com/sebastianbergmann/phpunit/issues/2152): Filter for which tests TestDox output is generated
+* Added the `PHPUnit\Framework\TestCase::createMock()` method for creating test doubles using best practice defaults
 * Added support for the `ENV`, `STDIN`, `ARGS`, `FILEEOF`, `FILE_EXTERNAL`, `EXPECT_EXTERNAL`, `EXPECTF_EXTERNAL`, `EXPECTREGEX_EXTERNAL`, and `XFAIL` sections to PHPT test runner
 * Added TestDox XML logger
 * Added `phpunit\framework\TestCase` as an alias for `PHPUnit_Framework_TestCase` for forward compatibility
