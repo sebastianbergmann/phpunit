@@ -1020,9 +1020,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
 
     public function testParameterCallbackConstraintOnlyEvaluatedOnce()
     {
-        $mock = $this->getMockBuilder(Foo::class)->setMethods(['bar'])->getMock();
+        $mock                  = $this->getMockBuilder(Foo::class)->setMethods(['bar'])->getMock();
         $expectedNumberOfCalls = 1;
-        $callCount = 0;
+        $callCount             = 0;
 
         $mock->expects($this->exactly($expectedNumberOfCalls))->method('bar')
             ->with($this->callback(function ($argument) use (&$callCount) {

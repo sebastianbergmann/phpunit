@@ -249,8 +249,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
 
         $this->canDefineParameters();
 
-        $this->matcher->parametersMatcher =
-          new PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters($args);
+        $this->matcher->parametersMatcher = new PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters($args);
 
         return $this;
     }
