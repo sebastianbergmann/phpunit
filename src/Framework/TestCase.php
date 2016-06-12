@@ -1529,6 +1529,29 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns a test double for the specified class.
+     *
+     * @param string $originalClassName
+     * @param array  $methods
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     *
+     * @throws PHPUnit_Framework_Exception
+     *
+     * @since Method available since Release 5.5.0
+     */
+    protected function createPartialMock($originalClassName, array $methods)
+    {
+        return $this->getMockBuilder($originalClassName)
+                    ->disableOriginalConstructor()
+                    ->disableOriginalClone()
+                    ->disableArgumentCloning()
+                    ->disallowMockingUnknownTypes()
+                    ->setMethods($methods)
+                    ->getMock();
+    }
+
+    /**
      * Returns a mock object for the specified class.
      *
      * @param string     $originalClassName       Name of the class to mock.

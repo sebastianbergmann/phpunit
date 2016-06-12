@@ -14,6 +14,11 @@ class Mockable
         return true;
     }
 
+    public function bar()
+    {
+        return true;
+    }
+
     public function __clone()
     {
         $this->cloned = true;
