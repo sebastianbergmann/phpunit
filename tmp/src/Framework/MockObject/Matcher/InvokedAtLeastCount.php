@@ -50,7 +50,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount extends PHPUnit_F
         if ($count < $this->requiredInvocations) {
             throw new PHPUnit_Framework_ExpectationFailedException(
                 'Expected invocation at least ' . $this->requiredInvocations .
-                ' times but it occured ' . $count . ' time(s).'
+                ' times but it occurred ' . $count . ' time(s).'
             );
         }
     }
