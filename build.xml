@@ -260,9 +260,23 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/phpdocumentor/reflection-common/LICENSE" tofile="${basedir}/build/phar/phpdocumentor-reflection-common/LICENSE"/>
+        <copy todir="${basedir}/build/phar/phpdocumentor-reflection-common">
+            <fileset dir="${basedir}/vendor/phpdocumentor/reflection-common/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/phpdocumentor/reflection-docblock/LICENSE" tofile="${basedir}/build/phar/phpdocumentor-reflection-docblock/LICENSE"/>
         <copy todir="${basedir}/build/phar/phpdocumentor-reflection-docblock">
             <fileset dir="${basedir}/vendor/phpdocumentor/reflection-docblock/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/phpdocumentor/type-resolver/LICENSE" tofile="${basedir}/build/phar/phpdocumentor-type-resolver/LICENSE"/>
+        <copy todir="${basedir}/build/phar/phpdocumentor-type-resolver">
+            <fileset dir="${basedir}/vendor/phpdocumentor/type-resolver/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
@@ -277,6 +291,13 @@
         <copy file="${basedir}/vendor/myclabs/deep-copy/LICENSE" tofile="${basedir}/build/phar/myclabs-deep-copy/LICENSE"/>
         <copy todir="${basedir}/build/phar/myclabs-deep-copy">
             <fileset dir="${basedir}/vendor/myclabs/deep-copy/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/webmozart/assert/LICENSE" tofile="${basedir}/build/phar/webmozart-assert/LICENSE"/>
+        <copy todir="${basedir}/build/phar/webmozart-assert">
+            <fileset dir="${basedir}/vendor/webmozart/assert/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
