@@ -475,7 +475,7 @@ class PHPUnit_Util_Test
                     break;
                 }
 
-                $dataSet      = json_decode($candidateRow, true);
+                $dataSet = json_decode($candidateRow, true);
 
                 if (json_last_error() != JSON_ERROR_NONE) {
                     $error = function_exists('json_last_error_msg') ? json_last_error_msg() : json_last_error();
