@@ -467,18 +467,24 @@ class PHPUnit_Util_Test
             $offset            = strlen($matches[0][0]) + $matches[0][1];
             $annotationContent = substr($docComment, $offset);
             $data              = array();
+
             foreach (explode("\n", $annotationContent) as $candidateRow) {
                 $candidateRow = trim($candidateRow);
+
                 if ($candidateRow[0] !== '[') {
                     break;
                 }
+
                 $dataSet      = json_decode($candidateRow, true);
+
                 if (json_last_error() != JSON_ERROR_NONE) {
                     $error = function_exists('json_last_error_msg') ? json_last_error_msg() : json_last_error();
+
                     throw new PHPUnit_Framework_Exception(
-                        'The dataset for the @testWith annotation cannot be parsed: '.$error
+                        'The dataset for the @testWith annotation cannot be parsed: ' . $error
                     );
                 }
+
                 $data[] = $dataSet;
             }
 
