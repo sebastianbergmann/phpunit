@@ -21,6 +21,7 @@ $_SERVER['f']  = 'f';
 $_FILES['g']   = 'g';
 $_REQUEST['h'] = 'h';
 $GLOBALS['i']  = 'i';
+$GLOBALS['yu'] = 'yu';
 
 /**
  * @since      Class available since Release 2.0.0
@@ -29,7 +30,6 @@ $GLOBALS['i']  = 'i';
 class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 {
     protected $backupGlobalsBlacklist = ['i', 'singleton'];
-
     /**
      * Used be testStaticAttributesBackupPre
      */
@@ -310,6 +310,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
     /**
      * @backupGlobals enabled
+     * @backupGlobalsBlacklist yu
      */
     public function testGlobalsBackupPre()
     {
@@ -327,6 +328,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('h', $_REQUEST['h']);
         $this->assertEquals('i', $i);
         $this->assertEquals('i', $GLOBALS['i']);
+        $this->assertEquals('yu', $GLOBALS['yu']);
 
         $GLOBALS['a']   = 'aa';
         $GLOBALS['foo'] = 'bar';
@@ -338,6 +340,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $_FILES['g']    = 'gg';
         $_REQUEST['h']  = 'hh';
         $GLOBALS['i']   = 'ii';
+        $GLOBALS['yu']  = 'yun';
 
         $this->assertEquals('aa', $a);
         $this->assertEquals('aa', $GLOBALS['a']);
@@ -351,6 +354,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('hh', $_REQUEST['h']);
         $this->assertEquals('ii', $i);
         $this->assertEquals('ii', $GLOBALS['i']);
+        $this->assertEquals('yun', $GLOBALS['yu']);
     }
 
     public function testGlobalsBackupPost()
@@ -369,6 +373,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('h', $_REQUEST['h']);
         $this->assertEquals('ii', $i);
         $this->assertEquals('ii', $GLOBALS['i']);
+        $this->assertEquals('yun', $GLOBALS['yu']);
 
         $this->assertArrayNotHasKey('foo', $GLOBALS);
     }

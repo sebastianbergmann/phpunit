@@ -58,6 +58,10 @@
  *       <exclude>/path/to/files/exclude</exclude>
  *     </testsuite>
  *   </testsuites>
+ *   
+ *   <backupglobalsblacklist>
+ *     <name>server_config</name>
+ *   </backupglobalsblacklist>
  *
  *   <groups>
  *     <include>
@@ -276,6 +280,22 @@ class PHPUnit_Util_Configuration
     public function getGroupConfiguration()
     {
         return $this->parseGroupConfiguration('groups');
+    }
+
+    /**
+     * Returns the configuration for backup globals blacklist
+     *
+     * @return array
+     */
+    public function getBackupGlobalsBlacklistConfiguration()
+    {
+        $backupGlobalsBlacklist = [];
+
+        foreach ($this->xpath->query('backupglobalsblacklist/name') as $name) {
+            $backupGlobalsBlacklist[] = $name->textContent;
+        }
+
+        return $backupGlobalsBlacklist;
     }
 
     /**

@@ -172,6 +172,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite->setBackupGlobals(false);
         }
 
+        if (is_array($arguments['backupGlobalsBlacklist']) &&
+                $arguments['backupGlobalsBlacklist'] !== []) {
+            $suite->setBackupGlobalsBlacklist($arguments['backupGlobalsBlacklist']);
+        }
+
         if ($arguments['backupStaticAttributes'] === true) {
             $suite->setBackupStaticAttributes(true);
         }
@@ -460,6 +465,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         if ($suite instanceof PHPUnit_Framework_TestSuite) {
             $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
+            $suite->setBackupGlobalsBlacklist($arguments['backupGlobalsBlacklist']);
         }
 
         $suite->run($result);
@@ -876,6 +882,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['excludeGroups'] = array_diff($groupConfiguration['exclude'], $groupCliArgs);
             }
 
+            $backupGlobalsBlacklist = $arguments['configuration']->getBackupGlobalsBlacklistConfiguration();
+            if ($backupGlobalsBlacklist !== [] &&
+                !isset($arguments['backupGlobalsBlacklist'])) {
+                $arguments['backupGlobalsBlacklist'] = $backupGlobalsBlacklist;
+            }
+
             foreach ($arguments['configuration']->getListenerConfiguration() as $listener) {
                 if (!class_exists($listener['class'], false) &&
                     $listener['file'] !== '') {
@@ -1039,6 +1051,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['addUncoveredFilesFromWhitelist']                  = isset($arguments['addUncoveredFilesFromWhitelist'])                  ? $arguments['addUncoveredFilesFromWhitelist']                  : true;
         $arguments['processUncoveredFilesFromWhitelist']              = isset($arguments['processUncoveredFilesFromWhitelist'])              ? $arguments['processUncoveredFilesFromWhitelist']              : false;
         $arguments['backupGlobals']                                   = isset($arguments['backupGlobals'])                                   ? $arguments['backupGlobals']                                   : null;
+        $arguments['backupGlobalsBlacklist']                          = isset($arguments['backupGlobalsBlacklist'])                          ? $arguments['backupGlobalsBlacklist']                          : [];
         $arguments['backupStaticAttributes']                          = isset($arguments['backupStaticAttributes'])                          ? $arguments['backupStaticAttributes']                          : null;
         $arguments['beStrictAboutChangesToGlobalState']               = isset($arguments['beStrictAboutChangesToGlobalState'])               ? $arguments['beStrictAboutChangesToGlobalState']               : null;
         $arguments['cacheTokens']                                     = isset($arguments['cacheTokens'])                                     ? $arguments['cacheTokens']                                     : false;
