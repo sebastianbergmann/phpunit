@@ -76,6 +76,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $backupGlobals = null;
 
     /**
+     * List of globals that should not be backed up when backupGlobals is enabled.
+     * 
      * @var array
      */
     protected $backupGlobalsBlacklist = [];

@@ -55,6 +55,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $backupGlobals = null;
 
     /**
+     * List of globals that should not be backed up when backupGlobals is enabled.
+     * 
      * @var array
      */
     protected $backupGlobalsBlacklist = [];
