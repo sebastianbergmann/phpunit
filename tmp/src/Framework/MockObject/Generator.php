@@ -450,7 +450,7 @@ class PHPUnit_Framework_MockObject_Generator
             'Trait_'
         );
 
-        $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' .
+        $templateDir   = __DIR__ . DIRECTORY_SEPARATOR . 'Generator' .
                          DIRECTORY_SEPARATOR;
         $classTemplate = new Text_Template(
             $templateDir . 'trait_class.tpl'
@@ -514,7 +514,7 @@ class PHPUnit_Framework_MockObject_Generator
             'Trait_'
         );
 
-        $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
+        $templateDir   = __DIR__ . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
         $classTemplate = new Text_Template($templateDir . 'trait_class.tpl');
 
         $classTemplate->setVar(
@@ -604,7 +604,7 @@ class PHPUnit_Framework_MockObject_Generator
 
         sort($_methods);
 
-        $templateDir    = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
+        $templateDir    = __DIR__ . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
         $methodTemplate = new Text_Template($templateDir . 'wsdl_method.tpl');
         $methodsBuffer  = '';
 
@@ -684,7 +684,7 @@ class PHPUnit_Framework_MockObject_Generator
      */
     private function generateMock($type, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
     {
-        $templateDir   = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Generator' .
+        $templateDir   = __DIR__ . DIRECTORY_SEPARATOR . 'Generator' .
                          DIRECTORY_SEPARATOR;
         $classTemplate = new Text_Template(
             $templateDir . 'mocked_class.tpl'
