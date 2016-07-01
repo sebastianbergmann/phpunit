@@ -684,11 +684,16 @@ class PHPUnit_Framework_MockObject_Generator
      */
     private function generateMock($type, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
     {
+        static $classTemplate;
+
         $templateDir   = __DIR__ . DIRECTORY_SEPARATOR . 'Generator' .
                          DIRECTORY_SEPARATOR;
-        $classTemplate = new Text_Template(
-            $templateDir . 'mocked_class.tpl'
-        );
+
+        if (NULL === $classTemplate) {
+            $classTemplate = new Text_Template(
+                $templateDir . 'mocked_class.tpl'
+            );
+        }
 
         $additionalInterfaces = [];
         $cloneTemplate        = '';
@@ -1040,11 +1045,19 @@ class PHPUnit_Framework_MockObject_Generator
     {
         if ($static) {
             $templateFile = 'mocked_static_method.tpl';
-        } else {
-            $templateFile = sprintf(
-                '%s_method.tpl',
-                $callOriginalMethods ? 'proxied' : 'mocked'
-            );
+        }
+        elseif ($callOriginalMethods) {
+            $templateFile = 'proxied_method.tpl';
+        }
+        else {
+            $templateFile = 'mocked_method.tpl';
+        }
+
+        /** @var Text_Template[] $textTemplates */
+        static $textTemplates = [];
+
+        if (!isset($textTemplates[$templateFile])) {
+            $textTemplates[$templateFile] = new Text_Template($templateDir . $templateFile);
         }
 
         // Mocked interfaces returning 'self' must explicitly declare the
@@ -1067,9 +1080,7 @@ class PHPUnit_Framework_MockObject_Generator
             $deprecation = $deprecationTemplate->render();
         }
 
-        $template = new Text_Template($templateDir . $templateFile);
-
-        $template->setVar(
+        $textTemplates[$templateFile]->setVar(
             [
                 'arguments_decl'  => $arguments_decl,
                 'arguments_call'  => $arguments_call,
@@ -1085,7 +1096,7 @@ class PHPUnit_Framework_MockObject_Generator
             ]
         );
 
-        return $template->render();
+        return $textTemplates[$templateFile]->render();
     }
 
     /**
