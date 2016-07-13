@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.4 release series are documented in this fil
 ### Fixed
 
 * Fixed [#1968](https://github.com/sebastianbergmann/phpunit/issues/1968): Invalid data sets are not handled correctly for `@testWith` annotation
+* Fixed [#2200](https://github.com/sebastianbergmann/phpunit/issues/2200): No warnings when test runs in separate process
 * Fixed [#2221](https://github.com/sebastianbergmann/phpunit/issues/2221): `expectException()` accepts non-string argument
 
 ## [5.4.6] - 2016-06-16
