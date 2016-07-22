@@ -535,7 +535,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws PHPUnit_Framework_Exception
      *
      * @since      Method available since Release 3.2.0
-     * @deprecated Method deprecated since Release 5.2.0
+     * @deprecated Method deprecated since Release 5.2.0, use expectExceptionMessage()
      */
     public function setExpectedException($exception, $message = '', $code = null)
     {
