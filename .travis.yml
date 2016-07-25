@@ -13,11 +13,15 @@ matrix:
 
 sudo: false
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
 before_install:
   - composer self-update
 
 install:
-  - travis_retry composer install --no-interaction --prefer-source
+  - travis_retry composer install --no-interaction --prefer-dist
 
 script:
   - ./phpunit
