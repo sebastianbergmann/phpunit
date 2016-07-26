@@ -43,8 +43,6 @@
  * @since      File available since Release 2.0.0
  */
 
-require_once 'PHP/Timer.php';
-
 /**
  * Prints the result of a TextUI TestRunner run.
  *
@@ -59,11 +57,6 @@ require_once 'PHP/Timer.php';
  */
 class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
 {
-    const EVENT_TEST_START      = 0;
-    const EVENT_TEST_END        = 1;
-    const EVENT_TESTSUITE_START = 2;
-    const EVENT_TESTSUITE_END   = 3;
-
     /**
      * @var integer
      */
@@ -78,11 +71,6 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
      * @var boolean
      */
     protected $lastTestFailed = FALSE;
-
-    /**
-     * @var integer
-     */
-    protected $numAssertions = 0;
 
     /**
      * @var integer
@@ -102,17 +90,12 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * @var boolean
      */
-    protected $colors = FALSE;
-
-    /**
-     * @var boolean
-     */
     protected $debug = FALSE;
-
+    
     /**
-     * @var boolean
+     * @var PHPUnit_TextUI_SummaryPrinter
      */
-    protected $verbose = FALSE;
+    protected $summaryPrinter;
 
     /**
      * Constructor.
@@ -128,337 +111,23 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     {
         parent::__construct($out);
 
-        if (is_bool($verbose)) {
-            $this->verbose = $verbose;
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
-        }
-
-        if (is_bool($colors)) {
-            $this->colors = $colors;
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
-        }
-
         if (is_bool($debug)) {
             $this->debug = $debug;
         } else {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
         }
+        
+        $this->summaryPrinter = new PHPUnit_TextUI_SummaryPrinter($this, $verbose, $colors);
     }
-
+    
     /**
      * @param  PHPUnit_Framework_TestResult $result
      */
     public function printResult(PHPUnit_Framework_TestResult $result)
     {
-        $this->printHeader();
-
-        if ($result->errorCount() > 0) {
-            $this->printErrors($result);
-        }
-
-        if ($result->failureCount() > 0) {
-            if ($result->errorCount() > 0) {
-                print "\n--\n\n";
-            }
-
-            $this->printFailures($result);
-        }
-
-        if ($this->verbose) {
-            if ($result->deprecatedFeaturesCount() > 0) {
-                if ($result->failureCount() > 0) {
-                    print "\n--\n\nDeprecated PHPUnit features are being used";
-                }
-
-                foreach ($result->deprecatedFeatures() as $deprecatedFeature) {
-                    $this->write($deprecatedFeature . "\n\n");
-                }
-            }
-
-            if ($result->notImplementedCount() > 0) {
-                if ($result->failureCount() > 0) {
-                    print "\n--\n\n";
-                }
-
-                $this->printIncompletes($result);
-            }
-
-            if ($result->skippedCount() > 0) {
-                if ($result->notImplementedCount() > 0) {
-                    print "\n--\n\n";
-                }
-
-                $this->printSkipped($result);
-            }
-        }
-
-        $this->printFooter($result);
+    	 $this->summaryPrinter->printResult($result);
     }
-
-    /**
-     * @param  array   $defects
-     * @param  integer $count
-     * @param  string  $type
-     */
-    protected function printDefects(array $defects, $count, $type)
-    {
-        static $called = FALSE;
-
-        if ($count == 0) {
-            return;
-        }
-
-        $this->write(
-          sprintf(
-            "%sThere %s %d %s%s:\n",
-
-            $called ? "\n" : '',
-            ($count == 1) ? 'was' : 'were',
-            $count,
-            $type,
-            ($count == 1) ? '' : 's'
-          )
-        );
-
-        $i = 1;
-
-        foreach ($defects as $defect) {
-            $this->printDefect($defect, $i++);
-        }
-
-        $called = TRUE;
-    }
-
-    /**
-     * @param  PHPUnit_Framework_TestFailure $defect
-     * @param  integer                       $count
-     */
-    protected function printDefect(PHPUnit_Framework_TestFailure $defect, $count)
-    {
-        $this->printDefectHeader($defect, $count);
-        $this->printDefectTrace($defect);
-    }
-
-    /**
-     * @param  PHPUnit_Framework_TestFailure $defect
-     * @param  integer                       $count
-     */
-    protected function printDefectHeader(PHPUnit_Framework_TestFailure $defect, $count)
-    {
-        $failedTest = $defect->failedTest();
-
-        if ($failedTest instanceof PHPUnit_Framework_SelfDescribing) {
-            $testName = $failedTest->toString();
-        } else {
-            $testName = get_class($failedTest);
-        }
-
-        $this->write(
-          sprintf(
-            "\n%d) %s\n",
-
-            $count,
-            $testName
-          )
-        );
-    }
-
-    /**
-     * @param  PHPUnit_Framework_TestFailure $defect
-     */
-    protected function printDefectTrace(PHPUnit_Framework_TestFailure $defect)
-    {
-        $this->write(
-          $defect->getExceptionAsString() . "\n" .
-          PHPUnit_Util_Filter::getFilteredStacktrace(
-            $defect->thrownException(),
-            FALSE
-          )
-        );
-    }
-
-    /**
-     * @param  PHPUnit_Framework_TestResult  $result
-     */
-    protected function printErrors(PHPUnit_Framework_TestResult $result)
-    {
-        $this->printDefects($result->errors(), $result->errorCount(), 'error');
-    }
-
-    /**
-     * @param  PHPUnit_Framework_TestResult  $result
-     */
-    protected function printFailures(PHPUnit_Framework_TestResult $result)
-    {
-        $this->printDefects(
-          $result->failures(),
-          $result->failureCount(),
-          'failure'
-        );
-    }
-
-    /**
-     * @param  PHPUnit_Framework_TestResult  $result
-     */
-    protected function printIncompletes(PHPUnit_Framework_TestResult $result)
-    {
-        $this->printDefects(
-          $result->notImplemented(),
-          $result->notImplementedCount(),
-          'incomplete test'
-        );
-    }
-
-    /**
-     * @param  PHPUnit_Framework_TestResult  $result
-     * @since  Method available since Release 3.0.0
-     */
-    protected function printSkipped(PHPUnit_Framework_TestResult $result)
-    {
-        $this->printDefects(
-          $result->skipped(),
-          $result->skippedCount(),
-          'skipped test'
-        );
-    }
-
-    protected function printHeader()
-    {
-        $this->write("\n\n" . PHP_Timer::resourceUsage() . "\n\n");
-    }
-
-    /**
-     * @param  PHPUnit_Framework_TestResult  $result
-     */
-    protected function printFooter(PHPUnit_Framework_TestResult $result)
-    {
-        if ($result->wasSuccessful() &&
-            $result->allCompletlyImplemented() &&
-            $result->noneSkipped()) {
-            if ($this->colors) {
-                $this->write("\x1b[30;42m\x1b[2K");
-            }
-
-            $this->write(
-              sprintf(
-                "OK (%d test%s, %d assertion%s)\n",
-
-                count($result),
-                (count($result) == 1) ? '' : 's',
-                $this->numAssertions,
-                ($this->numAssertions == 1) ? '' : 's'
-              )
-            );
-
-            if ($this->colors) {
-                $this->write("\x1b[0m\x1b[2K");
-            }
-        }
-
-        else if ((!$result->allCompletlyImplemented() ||
-                  !$result->noneSkipped()) &&
-                 $result->wasSuccessful()) {
-            if ($this->colors) {
-                $this->write(
-                  "\x1b[30;43m\x1b[2KOK, but incomplete or skipped tests!\n" .
-                  "\x1b[0m\x1b[30;43m\x1b[2K"
-                );
-            } else {
-                $this->write("OK, but incomplete or skipped tests!\n");
-            }
-
-            $this->write(
-              sprintf(
-                "Tests: %d, Assertions: %d%s%s.\n",
-
-                count($result),
-                $this->numAssertions,
-                $this->getCountString(
-                  $result->notImplementedCount(), 'Incomplete'
-                ),
-                $this->getCountString(
-                  $result->skippedCount(), 'Skipped'
-                )
-              )
-            );
-
-            if ($this->colors) {
-                $this->write("\x1b[0m\x1b[2K");
-            }
-        }
-
-        else {
-            $this->write("\n");
-
-            if ($this->colors) {
-                $this->write(
-                  "\x1b[37;41m\x1b[2KFAILURES!\n\x1b[0m\x1b[37;41m\x1b[2K"
-                );
-            } else {
-                $this->write("FAILURES!\n");
-            }
-
-            $this->write(
-              sprintf(
-                "Tests: %d, Assertions: %s%s%s%s%s.\n",
-
-                count($result),
-                $this->numAssertions,
-                $this->getCountString($result->failureCount(), 'Failures'),
-                $this->getCountString($result->errorCount(), 'Errors'),
-                $this->getCountString(
-                  $result->notImplementedCount(), 'Incomplete'
-                ),
-                $this->getCountString($result->skippedCount(), 'Skipped')
-              )
-            );
-
-            if ($this->colors) {
-                $this->write("\x1b[0m\x1b[2K");
-            }
-        }
-
-        if (!$this->verbose &&
-            $result->deprecatedFeaturesCount() > 0) {
-            $message = sprintf(
-              "Warning: Deprecated PHPUnit features are being used %s times!\n".
-              "Use --verbose for more information.\n",
-              $result->deprecatedFeaturesCount()
-            );
-
-            if ($this->colors) {
-                $message = "\x1b[37;41m\x1b[2K" . $message .
-                           "\x1b[0m";
-            }
-
-            $this->write("\n" . $message);
-        }
-    }
-
-    /**
-     * @param  integer $count
-     * @param  string  $name
-     * @return string
-     * @since  Method available since Release 3.0.0
-     */
-    protected function getCountString($count, $name)
-    {
-        $string = '';
-
-        if ($count > 0) {
-            $string = sprintf(
-              ', %s: %d',
-
-              $name,
-              $count
-            );
-        }
-
-        return $string;
-    }
-
+    
     /**
      */
     public function printWaitPrompt()
@@ -573,7 +242,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         if ($test instanceof PHPUnit_Framework_TestCase) {
-            $this->numAssertions += $test->getNumAssertions();
+            $this->summaryPrinter->addAssertions($test->getNumAssertions());
         }
 
         $this->lastTestFailed = FALSE;

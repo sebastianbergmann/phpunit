@@ -117,7 +117,8 @@ class PHPUnit_TextUI_Command
       'static-backup' => NULL,
       'verbose' => NULL,
       'version' => NULL,
-      'wait' => NULL
+      'wait' => NULL,
+      'detailed-progress' => NULL
     );
 
     /**
@@ -524,6 +525,11 @@ class PHPUnit_TextUI_Command
                 }
                 break;
 
+                case '--detailed-progress': {
+                    $this->arguments['detailed-progress'] = TRUE;
+                }
+                break;
+                
                 default: {
                     $optionName = str_replace('--', '', $option[0]);
 
@@ -853,6 +859,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --stop-on-incomplete      Stop execution upon first incomplete test.
   --strict                  Mark a test as incomplete if no assertions are made.
   --verbose                 Output more verbose information.
+  --detailed-progress       Output more detailed progress information.
   --wait                    Waits for a keystroke after each test.
 
   --skeleton-class          Generate Unit class for UnitTest in UnitTest.php.
