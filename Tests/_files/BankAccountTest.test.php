@@ -35,110 +35,100 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @package    PHPUnit
- * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @link       http://www.phpunit.de/
- * @since      File available since Release 2.1.0
+ * @since      File available since Release 2.3.0
  */
 
-require_once 'File/Iterator/Factory.php';
+require_once 'PHPUnit/Framework/TestCase.php';
+require_once 'BankAccount.php';
 
 /**
- * A test collector that collects tests from one or more directories
- * recursively. If no directories are specified, the include_path is searched.
- *
- * <code>
- * $testCollector = new PHPUnit_Runner_IncludePathTestCollector(
- *   array('/path/to/*Test.php files')
- * );
- *
- * $suite = new PHPUnit_Framework_TestSuite('My Test Suite');
- * $suite->addTestFiles($testCollector->collectTests());
- * </code>
+ * Tests for the BankAccount class.
  *
  * @package    PHPUnit
- * @subpackage Runner
  * @author     Sebastian Bergmann <sebastian@phpunit.de>
  * @copyright  2002-2011 Sebastian Bergmann <sebastian@phpunit.de>
  * @license    http://www.opensource.org/licenses/bsd-license.php  BSD License
  * @version    Release: @package_version@
  * @link       http://www.phpunit.de/
- * @since      Class available since Release 2.1.0
+ * @since      Class available since Release 2.3.0
  */
-class PHPUnit_Runner_IncludePathTestCollector implements PHPUnit_Runner_TestCollector
+class BankAccountWithCustomExtensionTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @var string
-     */
-    protected $filterIterator;
+    protected $ba;
 
-    /**
-     * @var array
-     */
-    protected $paths;
-
-    /**
-     * @var mixed
-     */
-    protected $suffixes;
-
-    /**
-     * @var mixed
-     */
-    protected $prefixes;
-
-    /**
-     * @param array $paths
-     * @param mixed $suffixes
-     * @param mixed $prefixes
-     */
-    public function __construct(array $paths = array(), $suffixes = '', $prefixes = array())
+    protected function setUp()
     {
-        if (!empty($paths)) {
-            $this->paths = $paths;
-        } else {
-            $this->paths = explode(PATH_SEPARATOR, get_include_path());
-        }
-
-        $this->suffixes = $suffixes;
-        $this->prefixes = $prefixes;
+        $this->ba = new BankAccount;
     }
 
     /**
-     * @return File_Iterator
+     * @covers BankAccount::getBalance
+     * @group balanceIsInitiallyZero
+     * @group specification
      */
-    public function collectTests()
+    public function testBalanceIsInitiallyZero()
     {
-        $iterator = File_Iterator_Factory::getFileIterator(
-          $this->paths, $this->suffixes, $this->prefixes
-        );
-
-        if ($this->filterIterator !== NULL) {
-            $class    = new ReflectionClass($this->filterIterator);
-            $iterator = $class->newInstance($iterator);
-        }
-
-        return $iterator;
+        $this->assertEquals(0, $this->ba->getBalance());
     }
 
     /**
-     * Adds a FilterIterator to filter the source files to be collected.
-     *
-     * @param  string $filterIterator
-     * @throws InvalidArgumentException
+     * @covers BankAccount::withdrawMoney
+     * @group balanceCannotBecomeNegative
+     * @group specification
      */
-    public function setFilterIterator($filterIterator)
+    public function testBalanceCannotBecomeNegative()
     {
-        if (is_string($filterIterator) && class_exists($filterIterator)) {
-            $class = new ReflectionClass($filterIterator);
-
-            if ($class->isSubclassOf('FilterIterator')) {
-                $this->filterIterator = $filterIterator;
-            }
-        } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class name');
+        try {
+            $this->ba->withdrawMoney(1);
         }
+
+        catch (BankAccountException $e) {
+            $this->assertEquals(0, $this->ba->getBalance());
+
+            return;
+        }
+
+        $this->fail();
     }
+
+    /**
+     * @covers BankAccount::depositMoney
+     * @group balanceCannotBecomeNegative
+     * @group specification
+     */
+    public function testBalanceCannotBecomeNegative2()
+    {
+        try {
+            $this->ba->depositMoney(-1);
+        }
+
+        catch (BankAccountException $e) {
+            $this->assertEquals(0, $this->ba->getBalance());
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers BankAccount::getBalance
+     * @covers BankAccount::depositMoney
+     * @covers BankAccount::withdrawMoney
+     * @group balanceCannotBecomeNegative
+     */
+/*
+    public function testDepositingAndWithdrawingMoneyWorks()
+    {
+        $this->assertEquals(0, $this->ba->getBalance());
+        $this->ba->depositMoney(1);
+        $this->assertEquals(1, $this->ba->getBalance());
+        $this->ba->withdrawMoney(1);
+        $this->assertEquals(0, $this->ba->getBalance());
+    }
+*/
 }
