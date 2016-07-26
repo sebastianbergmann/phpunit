@@ -1,5 +1,9 @@
 language: php
 
+cache:
+  directories:
+    - $HOME/.composer/cache
+
 php:
   - 5.6
   - 7.0
@@ -13,11 +17,8 @@ matrix:
 
 sudo: false
 
-before_install:
-  - composer self-update
-
 install:
-  - travis_retry composer install --no-interaction --prefer-source
+  - travis_retry composer install --no-interaction
 
 script:
   - ./phpunit
