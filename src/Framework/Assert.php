@@ -940,6 +940,90 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a directory exists.
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryExists($directory, $message = '')
+    {
+        if (!is_string($directory)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_DirectoryExists;
+
+        self::assertThat($directory, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a directory does not exist.
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryNotExists($directory, $message = '')
+    {
+        if (!is_string($directory)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+            new PHPUnit_Framework_Constraint_DirectoryExists
+        );
+
+        self::assertThat($directory, $constraint, $message);
+    }
+
+    /**
+     * Asserts the number of items in a directory, minus "." and "..".
+     *
+     * @param int $expectedCount
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryCount($expectedCount, $directory, $message = '')
+    {
+        self::assertDirectoryExists($directory, $message);
+        self::assertEquals(
+            $expectedCount,
+            iterator_count(
+                new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS)
+            ),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that a directory is empty, other than "." and "..".
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryEmpty($directory, $message = '')
+    {
+        self::assertDirectoryCount(0, $directory, $message);
+    }
+
+    /**
+     * Asserts that a directory is not empty, other than "." and "..".
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryNotEmpty($directory, $message = '')
+    {
+        self::assertDirectoryExists($directory, $message);
+        self::assertNotEquals(
+            0,
+            iterator_count(
+                new \RecursiveDirectoryIterator($directory, \RecursiveDirectoryIterator::SKIP_DOTS)
+            ),
+            $message
+        );
+    }
+
+    /**
      * Asserts that a condition is true.
      *
      * @param bool   $condition
@@ -2463,6 +2547,16 @@ abstract class PHPUnit_Framework_Assert
     public static function fileExists()
     {
         return new PHPUnit_Framework_Constraint_FileExists;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_DirectoryExists matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_DirectoryExists
+     */
+    public static function directoryExists()
+    {
+        return new PHPUnit_Framework_Constraint_DirectoryExists;
     }
 
     /**
