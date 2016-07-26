@@ -320,4 +320,28 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
         $this->assertNotSame($GLOBALS['singleton'], Singleton::getInstance());
     }
+
+    /**
+     * @backupGlobals disabled
+     */
+    public function testCleanupCallbacksPre()
+    {
+        $GLOBALS['testNumber'] = 10;
+
+        $GLOBALS['testNumber'] *= 2;
+        $this->addCleanupCallback(create_function('', '$GLOBALS["testNumber"] /= 2;'));
+        $GLOBALS['testNumber'] += 2;
+        $this->addCleanupCallback(create_function('$n', '$GLOBALS["testNumber"] -= $n;'), 2);
+
+        $this->assertEquals(2, count($this->cleanupCallbacks), 'Wrong count of callbacks');
+    }
+
+    /**
+     * @backupGlobals disabled
+     */
+    public function testCleanupCallbacksPost()
+    {
+        $this->assertEquals(0, count($this->cleanupCallbacks), 'Callbacks array should be empty');
+        $this->assertEquals(10, $GLOBALS['testNumber'], 'Global var should be restored');
+    }
 }
