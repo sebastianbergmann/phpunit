@@ -148,122 +148,122 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @var    boolean
      */
-    private $inIsolation = FALSE;
+    protected $inIsolation = FALSE;
 
     /**
      * @var    array
      */
-    private $data = array();
+    protected $data = array();
 
     /**
      * @var    string
      */
-    private $dataName = '';
+    protected $dataName = '';
 
     /**
      * @var    boolean
      */
-    private $useErrorHandler = NULL;
+    protected $useErrorHandler = NULL;
 
     /**
      * @var    boolean
      */
-    private $useOutputBuffering = NULL;
+    protected $useOutputBuffering = NULL;
 
     /**
      * The name of the expected Exception.
      *
      * @var    mixed
      */
-    private $expectedException = NULL;
+    protected $expectedException = NULL;
 
     /**
      * The message of the expected Exception.
      *
      * @var    string
      */
-    private $expectedExceptionMessage = '';
+    protected $expectedExceptionMessage = '';
 
     /**
      * The code of the expected Exception.
      *
      * @var    integer
      */
-    private $expectedExceptionCode;
+    protected $expectedExceptionCode;
 
     /**
      * The stack trace to where the expected exception was set.
      *
      * @var    array
      */
-    private $expectedExceptionTrace = array();
+    protected $expectedExceptionTrace = array();
 
     /**
      * The name of the test case.
      *
      * @var    string
      */
-    private $name = NULL;
+    protected $name = NULL;
 
     /**
      * @var    array
      */
-    private $dependencies = array();
+    protected $dependencies = array();
 
     /**
      * @var    array
      */
-    private $dependencyInput = array();
+    protected $dependencyInput = array();
 
     /**
      * @var    string
      */
-    private $exceptionMessage = NULL;
+    protected $exceptionMessage = NULL;
 
     /**
      * @var    integer
      */
-    private $exceptionCode = 0;
+    protected $exceptionCode = 0;
 
     /**
      * @var    Array
      */
-    private $iniSettings = array();
+    protected $iniSettings = array();
 
     /**
      * @var    Array
      */
-    private $locale = array();
+    protected $locale = array();
 
     /**
      * @var    Array
      */
-    private $mockObjects = array();
+    protected $mockObjects = array();
 
     /**
      * @var    integer
      */
-    private $status;
+    protected $status;
 
     /**
      * @var    string
      */
-    private $statusMessage = '';
+    protected $statusMessage = '';
 
     /**
      * @var    integer
      */
-    private $numAssertions = 0;
+    protected $numAssertions = 0;
 
     /**
      * @var PHPUnit_Framework_TestResult
      */
-    private $result;
+    protected $result;
 
     /**
      * @var mixed
      */
-    private $testResult;
+    protected $testResult;
 
     /**
      * Constructs a test case with the given name.
