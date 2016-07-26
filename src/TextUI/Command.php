@@ -40,7 +40,7 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $longOptions = array(
-      'colors' => null,
+      'colors==' => null,
       'bootstrap=' => null,
       'columns=' => null,
       'configuration=' => null,
@@ -245,8 +245,18 @@ class PHPUnit_TextUI_Command
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
                 case '--colors': {
-                    $this->arguments['colors'] = true;
+                    if (is_null($option[1]) || in_array($option[1], array('always', 'force', 'yes'))) {
+                        $this->arguments['colors'] = true;
+                    } elseif (in_array($option[1], array('auto', 'tty', 'if-tty'))) {
+                        if (function_exists('posix_isatty') && !posix_isatty(STDOUT)) {
+                            $this->arguments['colors'] = false;
+                        } else {
+                            $this->arguments['colors'] = true;
+                        }
+                    } else {
+                        $this->arguments['colors'] = false;
                     }
+                }
                 break;
 
                 case '--bootstrap': {
