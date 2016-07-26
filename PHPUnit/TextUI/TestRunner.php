@@ -269,6 +269,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['coverageText'])) {
                 $codeCoverageReports++;
             }
+
+            if (isset($arguments['coverageCSV'])) {
+                $codeCoverageReports++;
+            }
         }
 
         if ($codeCoverageReports > 0) {
@@ -420,6 +424,18 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 );
 
                 $writer->process($codeCoverage, $colors);
+            }
+
+            if (isset($arguments['coverageCSV'])) {
+                $this->printer->write(
+                    "\nGenerating code coverage report in CSV format ..."
+                );
+
+                $writer = new PHP_CodeCoverage_Report_CSV();
+                $writer->process($codeCoverage, $arguments['coverageCSV']);
+
+                $this->printer->write(" done\n");
+                unset($writer);
             }
         }
 
@@ -675,6 +691,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['coverageClover'] = $loggingConfiguration['coverage-clover'];
             }
 
+            if (isset($loggingConfiguration['coverage-csv']) &&
+                !isset($arguments['coverageCSV'])) {
+                $arguments['coverageCSV'] = $loggingConfiguration['coverage-csv'];
+            }
+
             if (isset($loggingConfiguration['coverage-php']) &&
                 !isset($arguments['coveragePHP'])) {
                 $arguments['coveragePHP'] = $loggingConfiguration['coverage-php'];
@@ -727,6 +748,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             if ((isset($arguments['coverageClover']) ||
+                isset($arguments['coverageCSV']) ||
                 isset($arguments['reportDirectory']) ||
                 isset($arguments['coveragePHP']) ||
                 isset($arguments['coverageText'])) &&
