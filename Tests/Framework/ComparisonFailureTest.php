@@ -161,4 +161,17 @@ class Framework_ComparisonFailureTest extends PHPUnit_Framework_TestCase
           $failure->toString()
         );
     }
+
+    /**
+     * @covers PHPUnit_Framework_ComparisonFailure::diffEqual
+     */
+    public function testComparisonErrorArrayTypeDifference()
+    {
+        $failure = PHPUnit_Framework_ComparisonFailure::diffEqual(array('a'=>true), array('a'=>1));
+
+        $this->assertEquals(
+          "--- Expected\n+++ Actual\n@@ @@\n array(1) {\n   [\"a\"]=>\n-  bool(true)\n+  int(1)\n }",
+          $failure->toString()
+        );
+    }
 }
