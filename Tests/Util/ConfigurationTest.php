@@ -73,7 +73,10 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testFilterConfigurationIsReadCorrectly()
     {
+
+        $filterConfiguration = $this->configuration->getFilterConfiguration();
         $this->assertEquals(
+            array(
           array(
             'blacklist' =>
             array(
@@ -151,8 +154,10 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
                 ),
               ),
             ),
+            'team' => 'default0',
+            'email' => 'default0@example.com',
           ),
-          $this->configuration->getFilterConfiguration()
+            ), $filterConfiguration
         );
     }
 

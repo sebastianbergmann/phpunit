@@ -225,8 +225,9 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
         if ($coverage && file_exists($coverageFile)) {
             eval('$coverageData = ' . file_get_contents($coverageFile) . ';');
             unset($coverageData[$phpFile]);
-
-            $result->getCodeCoverage()->append($coverageData, $this);
+            foreach ( $result->getCodeCoverage() as $codeCoverage) {
+                $codeCoverage->append($coverageData, $this);
+            }
             unlink($coverageFile);
         }
 
