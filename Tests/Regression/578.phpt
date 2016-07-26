@@ -19,12 +19,12 @@ Time: %i %s, Memory: %sMb
 There were 3 errors:
 
 1) Issue578Test::testNoticesDoublePrintStackTrace
-Invalid error type specified
+Warning: Invalid error type specified
 %s/Issue578Test.php:%i
 %s/578.php:%i
 
 2) Issue578Test::testWarningsDoublePrintStackTrace
-Invalid error type specified
+Warning: Invalid error type specified
 %s/Issue578Test.php:%i
 %s/578.php:%i
 
