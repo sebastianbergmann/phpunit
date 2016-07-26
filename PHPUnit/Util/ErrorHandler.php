@@ -94,12 +94,6 @@ class PHPUnit_Util_ErrorHandler
         $trace = debug_backtrace(FALSE);
         array_shift($trace);
 
-        foreach ($trace as $frame) {
-            if ($frame['function'] == '__toString') {
-                return FALSE;
-            }
-        }
-
         if ($errno == E_NOTICE || $errno == E_USER_NOTICE || $errno == E_STRICT) {
             if (PHPUnit_Framework_Error_Notice::$enabled !== TRUE) {
                 return FALSE;
