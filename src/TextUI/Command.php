@@ -1027,7 +1027,7 @@ Code Coverage Options:
   --coverage-crap4j <file>  Generate code coverage report in Crap4J XML format.
   --coverage-html <dir>     Generate code coverage report in HTML format.
   --coverage-php <file>     Export PHP_CodeCoverage object to file.
-  --coverage-text=<file>    Generate code coverage report in text format.
+  --coverage-text <file>    Generate code coverage report in text format.
                             Default: Standard output.
   --coverage-xml <dir>      Generate code coverage report in PHPUnit XML format.
   --whitelist <dir>         Whitelist <dir> for code coverage analysis.
@@ -1069,7 +1069,7 @@ Test Execution Options:
   --no-globals-backup       Do not backup and restore \$GLOBALS for each test.
   --static-backup           Backup and restore static attributes for each test.
 
-  --colors=<flag>           Use colors in output ("never", "auto" or "always").
+  --colors <flag>           Use colors in output ("never", "auto" or "always").
   --columns <n>             Number of columns to use for progress output.
   --columns max             Use maximum number of columns for progress output.
   --stderr                  Write to STDERR instead of STDOUT.
