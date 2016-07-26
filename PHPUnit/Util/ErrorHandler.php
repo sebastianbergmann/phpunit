@@ -128,6 +128,6 @@ class PHPUnit_Util_ErrorHandler
             $exception = 'PHPUnit_Framework_Error';
         }
 
-        throw new $exception($errstr, $errno, $errfile, $errline, $trace);
+        throw new $exception($errstr, $errno, $errfile, $errline);
     }
 }
