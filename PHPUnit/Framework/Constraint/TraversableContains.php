@@ -92,7 +92,7 @@ class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework
             }
         } else {
             foreach ($other as $element) {
-                if ($element == $this->value) {
+                if ($element === $this->value) {
                     return TRUE;
                 }
             }
