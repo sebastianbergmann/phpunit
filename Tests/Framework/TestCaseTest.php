@@ -56,6 +56,7 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIREC
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Success.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowExceptionTestCase.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ThrowNoExceptionTestCase.php';
+require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TriggerWarningTestCase.php';
 require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'WasRun.php';
 
 $GLOBALS['a']  = 'a';
@@ -155,6 +156,20 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($test->testSomething);
         $this->assertFalse($test->assertPostConditions);
         $this->assertTrue($test->tearDown);
+    }
+
+    public function testRealExceptionIsCaughtByExpectedException()
+    {
+        $test   = new TriggerWarningTestCase('testRealExceptionIsCaught');
+        $result = $test->run();
+        $this->assertTrue($result->wasSuccessful(), 'Normal Exceptions should be caught by the setExpectedException method');
+    }
+
+    public function testExceptionFromWarningNotCaughtByExpectedException()
+    {
+        $test   = new TriggerWarningTestCase('testWarningAsExceptionIsNotCaught');
+        $result = $test->run();
+        $this->assertFalse($result->wasSuccessful(), 'A warning as an exception shouldn\'t be caught by the setExpectedException method');
     }
 
     public function testExceptionInAssertPostConditions()
