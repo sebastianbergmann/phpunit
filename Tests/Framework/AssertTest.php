@@ -636,6 +636,27 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $storage2 = new SplObjectStorage;
         $storage2->attach($object3); // same content, different object
 
+        $dll1 = new SplDoublyLinkedList();
+        $dll1->push($object1);
+        $dll1->push($object2);
+
+        $dll2 = new SplDoublyLinkedList();
+        $dll2->push($object1); // shorter than first
+
+        $dll3 = new SplDoublyLinkedList();
+        $dll3->push($object2); // different content than first
+        $dll3->push($object3);
+
+        $dll4 = new SplDoublyLinkedList();
+        $dll4->push($object3); // same content, different object than first TODO this breaks now
+        $dll4->push($object2);
+
+        $dll5 = clone($dll1);
+        $dll5->push('foo'); // longer than first
+
+        $stack = new SplStack(); // dlls have diff iter mode from stacks by default
+        $queue = new SplQueue();
+
         // cannot use $filesDirectory, because neither setUp() nor
         // setUpBeforeClass() are executed before the data providers
         $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml';
@@ -671,6 +692,13 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array(fopen($file, 'r'), fopen($file, 'r')),
             // SplObjectStorage
             array($storage1, $storage2),
+            // SplDoublyLinkedList, SplStack, SplQueue
+            array($dll1, $dll2),
+            array($dll1, $dll3),
+            array($dll1, $dll4),
+            array($dll1, $dll5),
+            array($dll1, $stack),
+            array($stack, $queue),
             // DOMDocument
             array(
                 $this->createDOMDocument('<root></root>'),
@@ -727,6 +755,30 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
         $storage2 = new SplObjectStorage;
         $storage2->attach($object1);
 
+        $dll1 = new SplDoublyLinkedList();
+        $dll1->push('foo');
+        $dll1->push('bar');
+
+        $dll2 = new SplDoublyLinkedList();
+        $dll2->push('foo');
+        $dll2->push('bar');
+
+        $stack1 = new SplStack();
+        $stack1->push('foo');
+        $stack1->push('bar');
+
+        $stack2 = new SplStack();
+        $stack2->push('foo');
+        $stack2->push('bar');
+
+        $queue1 = new SplQueue();
+        $queue1->push('foo');
+        $queue1->push('bar');
+
+        $queue2 = new SplQueue();
+        $queue2->push('foo');
+        $queue2->push('bar');
+
         return array(
             // strings
             array('a', 'A', 0, FALSE, TRUE), // ignore case
@@ -747,6 +799,12 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             array($book1, $book2),
             // SplObjectStorage
             array($storage1, $storage2),
+            // SplDoublyLinkedList, SplStack, SplQueue
+            array($dll1, $dll2),
+            array($stack1, $stack2),
+            array($queue1, $queue2),
+            array($dll1, $queue1), // dll and queue are same by default
+            array(new SplDoublyLinkedList(), new SplQueue()), // ensure empties work
             // DOMDocument
             array(
                 $this->createDOMDocument('<root></root>'),
