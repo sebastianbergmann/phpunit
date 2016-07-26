@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.4.8] - 2016-07-26
+
+### Changed
+
+* Bumped required version of `phpunit/php-code-coverage` to `4.0.1`
+
 ## [5.4.7] - 2016-07-21
 
 ### Fixed
