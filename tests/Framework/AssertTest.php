@@ -110,6 +110,32 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertArrayValuesMatch
+     */
+    public function testAssertArrayValuesMatchIsCalled()
+    {
+        $this->assertArrayValuesMatch(array(5, 7), array(7, 5));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayValuesMatch
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertArrayValuesMatchOnlyAcceptsArrayOnFirstArgument()
+    {
+        $this->assertArrayValuesMatch(null, array(7, 5));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArrayValuesMatch
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertArrayValuesMatchOnlyAcceptsArrayOnSecondArgument()
+    {
+        $this->assertArrayValuesMatch(array(), null);
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertContainsOnlyInstancesOf
      */
     public function testAssertContainsOnlyInstancesOf()
