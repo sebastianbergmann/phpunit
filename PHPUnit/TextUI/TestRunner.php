@@ -512,6 +512,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['filter']    = isset($arguments['filter'])    ? $arguments['filter']    : FALSE;
         $arguments['listeners'] = isset($arguments['listeners']) ? $arguments['listeners'] : array();
 
+        // For PHPUnit 4.x compatibility
+        if (isset($arguments['coverageHtml']) && !isset($arguments['reportDirectory'])) {
+            $arguments['reportDirectory'] = $arguments['coverageHtml'];
+            unset($arguments['coverageHtml']);
+        }
+
         if (isset($arguments['configuration'])) {
             $arguments['configuration']->handlePHPConfiguration();
 
