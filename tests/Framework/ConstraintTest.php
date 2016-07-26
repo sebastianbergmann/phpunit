@@ -1819,11 +1819,11 @@ EOF
      */
     public function testConstraintCallback()
     {
-        $closureReflect = function($parameter) {
+        $closureReflect = function ($parameter) {
             return $parameter;
         };
 
-        $closureWithoutParameter = function() {
+        $closureWithoutParameter = function () {
             return true;
         };
 
@@ -1852,7 +1852,7 @@ EOF
      */
     public function testConstraintCallbackFailure()
     {
-        $constraint = PHPUnit_Framework_Assert::callback(function() {
+        $constraint = PHPUnit_Framework_Assert::callback(function () {
             return false;
         });
         $constraint->evaluate('This fails');

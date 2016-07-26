@@ -361,4 +361,3 @@
   <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
  </target>
 </project>
-

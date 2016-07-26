@@ -13,7 +13,6 @@ class Issue498Test extends PHPUnit_Framework_TestCase
         $this->assertTrue(true);
     }
 
-
     /**
      * @test
      * @dataProvider shouldBeFalseDataProvider
