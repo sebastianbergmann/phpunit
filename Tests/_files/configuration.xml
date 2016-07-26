@@ -85,6 +85,7 @@
 
   <php>
     <includePath>.</includePath>
+    <includePath>/path/to/lib</includePath>
     <ini name="foo" value="bar"/>
     <const name="foo" value="false"/>
     <const name="bar" value="true"/>

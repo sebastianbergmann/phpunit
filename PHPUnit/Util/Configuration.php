@@ -420,7 +420,7 @@ class PHPUnit_Util_Configuration
     public function getPHPConfiguration()
     {
         $result = array(
-          'include_path' => '',
+          'include_path' => array(),
           'ini'          => array(),
           'const'        => array(),
           'var'          => array(),
@@ -433,10 +433,9 @@ class PHPUnit_Util_Configuration
           'request'      => array()
         );
 
-        $nl = $this->xpath->query('php/includePath');
-
-        if ($nl->length == 1) {
-            $result['include_path'] = $this->toAbsolutePath((string)$nl->item(0)->nodeValue);
+        foreach($this->xpath->query('php/includePath') as $includePath) {
+            $value = (string)$includePath->nodeValue;
+            $result['include_path'][] = $this->toAbsolutePath($value);
         }
 
         foreach ($this->xpath->query('php/ini') as $ini) {
@@ -474,10 +473,11 @@ class PHPUnit_Util_Configuration
     {
         $configuration = $this->getPHPConfiguration();
 
-        if ($configuration['include_path'] != '') {
+        if (! empty($configuration['include_path'])) {
             ini_set(
               'include_path',
-              $configuration['include_path'] . PATH_SEPARATOR .
+              implode(PATH_SEPARATOR, $configuration['include_path']) .
+              PATH_SEPARATOR .
               ini_get('include_path')
             );
         }
