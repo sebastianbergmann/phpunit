@@ -402,8 +402,14 @@ class PHPUnit_Util_XML
                         }
 
                         // exact match
-                        else {
+                        else if (strstr($attribute, '=')) {
                             list($key, $value) = explode('=', $attribute);
+                        }
+
+                        // existence
+                        else {
+                            $key               = $attribute;
+                            $value             = "regexp:/.+/";
                         }
 
                         $attrs[$key] = $value;
