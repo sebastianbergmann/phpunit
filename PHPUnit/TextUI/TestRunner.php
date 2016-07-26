@@ -312,6 +312,20 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (extension_loaded('tokenizer') && extension_loaded('xdebug')) {
+            if ( $arguments['aggregate'] ) {
+                $aggregate = $arguments['aggregate'];
+                $codeCoverage = &$result->getCodeCoverage();
+                if ( is_file($aggregate) ){
+                    $data = file_get_contents($aggregate);
+                    $agCoverage = unserialize($data);
+                    if ( $agCoverage) {
+                        $codeCoverage->merge($agCoverage);
+                    }
+                }
+                $data = serialize($codeCoverage);
+                file_put_contents($aggregate,$data);
+            }
+
             if (isset($arguments['coverageClover'])) {
                 $this->printer->write(
                   "\nWriting code coverage data to XML file, this may take " .

@@ -77,6 +77,7 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $longOptions = array(
+      'aggregate=' => NULL,
       'colors' => NULL,
       'bootstrap=' => NULL,
       'configuration=' => NULL,
@@ -264,6 +265,11 @@ class PHPUnit_TextUI_Command
                 case 'c':
                 case '--configuration': {
                     $this->arguments['configuration'] = $option[1];
+                }
+                break;
+
+                case '--aggregate': {
+                    $this->arguments['aggregate'] = $option[1];
                 }
                 break;
 
@@ -828,6 +834,7 @@ Usage: phpunit [switches] UnitTest [UnitTest.php]
   --log-dbus                Log test execution to DBUS.
   --log-json <file>         Log test execution in JSON format.
 
+  --aggregate <file>        Aggregate data from previous runs. And overwrites file with the merged data.
   --coverage-html <dir>     Generate code coverage report in HTML format.
   --coverage-clover <file>  Write code coverage data in Clover XML format.
 
