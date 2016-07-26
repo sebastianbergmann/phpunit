@@ -1,0 +1,13 @@
+From: Gunnar Wrobel <p@rdus.de>
+Subject: [PATCH] t/PHPUnit/GW/Fix_test_suite_class_name_detection
+
+Fixing a class name detection problem similar to
+https://github.com/sebastianbergmann/phpunit/issues/71
+
+When running "phpunit AllTests.php" on a Horde test suite file PHPUnit
+identifies the class we extend from as our test suite class.
+
+The patch uses reflection to ensure the detected class is actually
+defined in the file that has been loaded.
+
+Signed-off-by: Gunnar Wrobel <p@rdus.de>
