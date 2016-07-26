@@ -1154,6 +1154,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @return boolean
+     * @since  Method available since Release 4.1.5
+     */
+    public function isInIsolation()
+    {
+        return $this->inIsolation;
+    }
+
+    /**
      * @return mixed
      * @since  Method available since Release 3.4.0
      */
