@@ -12,5 +12,6 @@ All notable changes of the PHPUnit 5.5 release series are documented in this fil
 ### Changed
 
 * An `AssertionError` raised by an `assert()` in the tested code now causes the test to be interpreted as a failure instead of an error
+
 [5.5.0]: https://github.com/sebastianbergmann/phpunit/compare/5.4...5.5.0
 
