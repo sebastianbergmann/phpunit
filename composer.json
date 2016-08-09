@@ -47,6 +47,7 @@
         "phpdocumentor/reflection-docblock": "3.0.2"
     },
     "config": {
+        "prepend-autoloader": false,
         "platform": {
             "php": "5.6.0"
         }
