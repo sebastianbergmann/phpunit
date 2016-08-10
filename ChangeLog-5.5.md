@@ -13,7 +13,7 @@ All notable changes of the PHPUnit 5.5 release series are documented in this fil
 ### Added
 
 * Added the `PHPUnit\Framework\TestCase::createPartialMock()` method for creating partial test doubles using best practice defaults
-* Merged [#2203](https://github.com/sebastianbergmann/phpunit/pull/2203):  Ability to `--list-suites` for a given configuration
+* Merged [#2203](https://github.com/sebastianbergmann/phpunit/pull/2203): Ability to `--list-suites` for a given configuration
 
 ### Changed
 
