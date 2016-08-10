@@ -12,14 +12,9 @@
     </xs:annotation>
   </xs:element>
   <xs:complexType name="filtersType">
-    <xs:choice>
-      <xs:sequence>
-        <xs:element name="whitelist" type="whiteListType" minOccurs="0"/>
-      </xs:sequence>
-      <xs:sequence>
-        <xs:element name="whitelist" type="whiteListType"/>
-      </xs:sequence>
-    </xs:choice>
+    <xs:sequence>
+      <xs:element name="whitelist" type="whiteListType" minOccurs="0"/>
+    </xs:sequence>
   </xs:complexType>
   <xs:complexType name="filterType">
     <xs:sequence>
