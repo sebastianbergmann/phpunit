@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.5.1] - 2016-MM-DD
+
+### Fixed
+
+* Fixed [#1961](https://github.com/sebastianbergmann/phpunit/issues/1961): XSD schema in 5.x does not validate
+
 ## [5.5.0] - 2016-08-05
 
 ### Added
@@ -13,5 +19,6 @@ All notable changes of the PHPUnit 5.5 release series are documented in this fil
 
 * An `AssertionError` raised by an `assert()` in the tested code now causes the test to be interpreted as a failure instead of an error
 
+[5.5.1]: https://github.com/sebastianbergmann/phpunit/compare/5.5.0...5.5.1
 [5.5.0]: https://github.com/sebastianbergmann/phpunit/compare/5.4...5.5.0
 
