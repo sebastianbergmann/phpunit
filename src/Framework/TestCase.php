@@ -1533,6 +1533,29 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns a configured test double for the specified class.
+     *
+     * @param string $originalClassName
+     * @param array  $configuration
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     *
+     * @throws PHPUnit_Framework_Exception
+     *
+     * @since Method available since Release 5.6.0
+     */
+    protected function createConfiguredMock($originalClassName, array $configuration)
+    {
+        $o = $this->createMock($originalClassName);
+
+        foreach ($configuration as $method => $return) {
+            $o->method($method)->willReturn($return);
+        }
+
+        return $o;
+    }
+
+    /**
      * Returns a partial test double for the specified class.
      *
      * @param string $originalClassName
