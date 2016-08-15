@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.5 release series are documented in this fil
 ### Fixed
 
 * Fixed [#1961](https://github.com/sebastianbergmann/phpunit/issues/1961): XSD schema in 5.x does not validate
+* Incorrect warning about missing `@covers` annotation is no longer shown when `@coversNothing` is used together with `forceCoversAnnotation=true`
 
 ## [5.5.0] - 2016-08-05
 
