@@ -609,6 +609,15 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($mock->bar());
     }
 
+    public function testCreatePartialMockCanMockNoMethods()
+    {
+        /** @var Mockable $mock */
+        $mock = $this->createPartialMock(Mockable::class, []);
+
+        $this->assertTrue($mock->foo());
+        $this->assertTrue($mock->bar());
+    }
+
     public function testCreateMockSkipsConstructor()
     {
         /** @var Mockable $mock */
