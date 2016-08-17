@@ -724,7 +724,7 @@ class PHPUnit_Framework_MockObject_Generator
                         );
                     }
 
-                    $methodReflections[$method] = $typeClass->getMethod($method);                           
+                    $methodReflections[$method] = $typeClass->getMethod($method);
                     $methods[]                  = $method;
                 }
             }
