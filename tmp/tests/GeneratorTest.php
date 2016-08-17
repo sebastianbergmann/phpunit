@@ -180,4 +180,12 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
     {
         $this->generator->getMock(stdClass::class, [], [], '', false, true, true, true, true);
     }
+
+    /**
+    * @covers PHPUnit_Framework_MockObject_Generator::getMock
+    */
+    public function testCanImplementInterfacesThatHaveMethodsWithReturnTypes()
+    {
+        $this->generator->getMock([AnInterfaceWithReturnType::class, AnInterface::class]);
+    }
 }
