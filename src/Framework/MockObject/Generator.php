@@ -686,19 +686,14 @@ class PHPUnit_Framework_MockObject_Generator
      */
     private function generateMock($type, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
     {
-        $templateDir   = __DIR__ . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
-        $classTemplate = $this->getTemplate($templateDir . 'mocked_class.tpl');
+        $methodReflections   = [];
+        $templateDir         = __DIR__ . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR;
+        $classTemplate       = $this->getTemplate($templateDir . 'mocked_class.tpl');
 
         $additionalInterfaces = [];
         $cloneTemplate        = '';
         $isClass              = false;
         $isInterface          = false;
-
-        $mockClassName = $this->generateClassName(
-            $type,
-            $mockClassName,
-            'Mock_'
-        );
 
         if (is_array($type)) {
             foreach ($type as $_type) {
@@ -713,6 +708,13 @@ class PHPUnit_Framework_MockObject_Generator
 
                 $additionalInterfaces[] = $_type;
 
+                $typeClass = new ReflectionClass($this->generateClassName(
+                    $_type,
+                    $mockClassName,
+                    'Mock_'
+                    )['fullClassName']
+                );
+
                 foreach ($this->getClassMethods($_type) as $method) {
                     if (in_array($method, $methods)) {
                         throw new PHPUnit_Framework_MockObject_RuntimeException(
@@ -723,10 +725,17 @@ class PHPUnit_Framework_MockObject_Generator
                         );
                     }
 
+                    $methodReflections[$method] = $typeClass->getMethod($method);                           
                     $methods[] = $method;
                 }
             }
         }
+
+        $mockClassName = $this->generateClassName(
+            $type,
+            $mockClassName,
+            'Mock_'
+        );
 
         if (class_exists($mockClassName['fullClassName'], $callAutoload)) {
             $isClass = true;
@@ -827,12 +836,14 @@ class PHPUnit_Framework_MockObject_Generator
             }
         } else {
             foreach ($methods as $methodName) {
-                $mockedMethods .= $this->generateMockedMethodDefinition(
-                    $templateDir,
-                    $mockClassName['fullClassName'],
-                    $methodName,
-                    $cloneArguments
-                );
+                if ($this->canMockMethod($methodReflections[$methodName])) {
+                    $mockedMethods .= $this->generateMockedMethodDefinitionFromExisting(
+                        $templateDir,
+                        $methodReflections[$methodName],
+                        $cloneArguments,
+                        $callOriginalMethods
+                    );
+                }
             }
         }
 
