@@ -76,6 +76,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     protected $backupGlobals = null;
 
     /**
+     * List of globals that should not be backed up when backupGlobals is enabled.
+     * 
      * @var array
      */
     protected $backupGlobalsBlacklist = [];
@@ -1259,8 +1261,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * Calling this method in setUp() has no effect!
-     *
      * @param bool $backupGlobals
      *
      * @since Method available since Release 3.3.0
@@ -1272,6 +1272,20 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
     }
 
+    /**
+     * Calling this method in setUp() has no effect!
+     *
+     * @param array $backupGlobalsBlacklist
+     */
+    public function setBackupGlobalsBlacklist(array $backupGlobalsBlacklist = [])
+    {
+        $this->backupGlobalsBlacklist = array_unique(
+                                            array_merge(
+                                                $this->backupGlobalsBlacklist,
+                                                $backupGlobalsBlacklist
+                                                )
+                                        );
+    }
     /**
      * Calling this method in setUp() has no effect!
      *

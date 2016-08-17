@@ -498,7 +498,6 @@ class PHPUnit_Util_Test
                 $dataSet = json_decode($candidateRow, true);
 
                 if (json_last_error() != JSON_ERROR_NONE) {
-
                     throw new PHPUnit_Framework_Exception(
                         'The dataset for the @testWith annotation cannot be parsed: ' . json_last_error_msg()
                     );
@@ -632,6 +631,10 @@ class PHPUnit_Util_Test
               $methodName,
               'backupGlobals'
           ),
+          'backupGlobalsBlacklist' => self::getBackupGlobalsBlacklist(
+              $className,
+              $methodName
+          ),
           'backupStaticAttributes' => self::getBooleanAnnotationSetting(
               $className,
               $methodName,
@@ -671,6 +674,37 @@ class PHPUnit_Util_Test
         }
 
         return array_unique($dependencies);
+    }
+
+    /**
+     * Returns the backup globals blacklist for a test class or method.
+     *
+     * @param string $className
+     * @param string $methodName
+     *
+     * @return array
+     */
+    public static function getBackupGlobalsBlacklist($className, $methodName)
+    {
+        $annotations = self::parseTestMethodAnnotations(
+            $className,
+            $methodName
+        );
+
+        $backupGlobalsBlacklist = [];
+
+        if (isset($annotations['class']['backupGlobalsBlacklist'])) {
+            $backupGlobalsBlacklist = $annotations['class']['backupGlobalsBlacklist'];
+        }
+
+        if (isset($annotations['method']['backupGlobalsBlacklist'])) {
+            $backupGlobalsBlacklist = array_merge(
+                $backupGlobalsBlacklist,
+                $annotations['method']['backupGlobalsBlacklist']
+            );
+        }
+
+        return array_unique($backupGlobalsBlacklist);
     }
 
     /**

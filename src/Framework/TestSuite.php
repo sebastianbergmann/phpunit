@@ -55,6 +55,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     protected $backupGlobals = null;
 
     /**
+     * List of globals that should not be backed up when backupGlobals is enabled.
+     * 
+     * @var array
+     */
+    protected $backupGlobalsBlacklist = [];
+
+    /**
      * Enable or disable the backup and restoration of static attributes.
      *
      * @var bool
@@ -575,6 +582,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                                 );
                             }
 
+                            if ($backupSettings['backupGlobalsBlacklist'] !== []) {
+                                $_test->setBackupGlobalsBlacklist(
+                                    $backupSettings['backupGlobalsBlacklist']
+                                );
+                            }
+
                             if ($backupSettings['backupStaticAttributes'] !== null) {
                                 $_test->setBackupStaticAttributes(
                                     $backupSettings['backupStaticAttributes']
@@ -607,6 +620,12 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             if ($backupSettings['backupGlobals'] !== null) {
                 $test->setBackupGlobals($backupSettings['backupGlobals']);
+            }
+
+            if ($backupSettings['backupGlobalsBlacklist'] !== []) {
+                $test->setBackupGlobalsBlacklist(
+                    $backupSettings['backupGlobalsBlacklist']
+                );
             }
 
             if ($backupSettings['backupStaticAttributes'] !== null) {
@@ -746,6 +765,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $test instanceof self) {
                 $test->setbeStrictAboutChangesToGlobalState($this->beStrictAboutChangesToGlobalState);
                 $test->setBackupGlobals($this->backupGlobals);
+                $test->setBackupGlobalsBlacklist($this->backupGlobalsBlacklist);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
@@ -977,6 +997,14 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         if (is_null($this->backupGlobals) && is_bool($backupGlobals)) {
             $this->backupGlobals = $backupGlobals;
         }
+    }
+
+    /**
+     * @param array $backupGlobalsBlacklist
+     */
+    public function setBackupGlobalsBlacklist(array $backupGlobalsBlacklist = [])
+    {
+        $this->backupGlobalsBlacklist = $backupGlobalsBlacklist;
     }
 
     /**
