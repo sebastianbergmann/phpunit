@@ -707,8 +707,7 @@ class PHPUnit_Framework_MockObject_Generator
                 }
 
                 $additionalInterfaces[] = $_type;
-
-                $typeClass = new ReflectionClass($this->generateClassName(
+                $typeClass              = new ReflectionClass($this->generateClassName(
                     $_type,
                     $mockClassName,
                     'Mock_'
@@ -726,7 +725,7 @@ class PHPUnit_Framework_MockObject_Generator
                     }
 
                     $methodReflections[$method] = $typeClass->getMethod($method);                           
-                    $methods[] = $method;
+                    $methods[]                  = $method;
                 }
             }
         }
