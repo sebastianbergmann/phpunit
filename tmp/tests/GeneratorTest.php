@@ -183,13 +183,11 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Framework_MockObject_Generator::getMock
+     *
+     * @requires PHP 7
      */
     public function testCanImplementInterfacesThatHaveMethodsWithReturnTypes()
     {
-        if (PHP_MAJOR_VERSION < 7) {
-            $this->markTestSkipped('Code fails in PHP < 7.0');
-        }
-
         $this->generator->getMock([AnInterfaceWithReturnType::class, AnInterface::class]);
     }
 }
