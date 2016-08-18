@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 5.5 release series are documented in this fil
 
 ## [5.5.2] - 2016-MM-DD
 
+### Changed
+
+* The JUnit logger no longer uses `<warning>` elements when the `logIncompleteSkipped` configuration option is set to `false` (default)
+
 ### Fixed
 
 * Restored the `logIncompleteSkipped` configuration option for the JUnit logger that got lost in PHPUnit 5.4.2

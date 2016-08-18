@@ -137,6 +137,10 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
      */
     public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
     {
+        if (!$this->logIncompleteSkipped) {
+            return;
+        }
+
         $this->doAddFault($test, $e, $time, 'warning');
         $this->testSuiteFailures[$this->testSuiteLevel]++;
     }
