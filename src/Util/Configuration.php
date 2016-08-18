@@ -116,7 +116,7 @@
  *     <log type="plain" target="/tmp/logfile.txt"/>
  *     <log type="tap" target="/tmp/logfile.tap"/>
  *     <log type="teamcity" target="/tmp/logfile.txt"/>
- *     <log type="junit" target="/tmp/logfile.xml"/>
+ *     <log type="junit" target="/tmp/logfile.xml" logIncompleteSkipped="false"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>
  *     <log type="testdox-text" target="/tmp/testdox.txt"/>
  *     <log type="testdox-xml" target="/tmp/testdox.xml"/>
@@ -399,6 +399,13 @@ class PHPUnit_Util_Configuration
                     $result['crap4jThreshold'] = $this->getInteger(
                         (string) $log->getAttribute('threshold'),
                         30
+                    );
+                }
+            } elseif ($type == 'junit') {
+                if ($log->hasAttribute('logIncompleteSkipped')) {
+                    $result['logIncompleteSkipped'] = $this->getBoolean(
+                        (string) $log->getAttribute('logIncompleteSkipped'),
+                        false
                     );
                 }
             } elseif ($type == 'coverage-text') {
