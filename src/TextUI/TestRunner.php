@@ -287,10 +287,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     );
                 }
             }
-
-            if (isset($arguments['deprecatedCheckForUnintentionallyCoveredCodeSettingUsed'])) {
-                print "Warning:       Deprecated configuration setting \"checkForUnintentionallyCoveredCode\" used\n";
-            }
         }
 
         foreach ($arguments['listeners'] as $listener) {
@@ -693,10 +689,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $arguments['configuration']->handlePHPConfiguration();
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
-
-            if (isset($phpunitConfiguration['deprecatedCheckForUnintentionallyCoveredCodeSettingUsed'])) {
-                $arguments['deprecatedCheckForUnintentionallyCoveredCodeSettingUsed'] = true;
-            }
 
             if (isset($phpunitConfiguration['backupGlobals']) &&
                 !isset($arguments['backupGlobals'])) {

@@ -43,7 +43,6 @@
  *          beStrictAboutResourceUsageDuringSmallTests="false"
  *          beStrictAboutTestsThatDoNotTestAnything="false"
  *          beStrictAboutTodoAnnotatedTests="false"
- *          checkForUnintentionallyCoveredCode="false"
  *          enforceTimeLimit="false"
  *          timeoutForSmallTests="1"
  *          timeoutForMediumTests="10"
@@ -779,13 +778,6 @@ class PHPUnit_Util_Configuration
                 (string) $root->getAttribute('beStrictAboutCoversAnnotation'),
                 false
             );
-        } elseif ($root->hasAttribute('checkForUnintentionallyCoveredCode')) {
-            $result['strictCoverage'] = $this->getBoolean(
-                (string) $root->getAttribute('checkForUnintentionallyCoveredCode'),
-                false
-            );
-
-            $result['deprecatedCheckForUnintentionallyCoveredCodeSettingUsed'] = true;
         }
 
         if ($root->hasAttribute('enforceTimeLimit')) {
