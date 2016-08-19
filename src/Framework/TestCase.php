@@ -517,31 +517,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param mixed  $exception
-     * @param string $messageRegExp
-     * @param int    $code
-     *
-     * @throws PHPUnit_Framework_Exception
-     *
-     * @since Method available since Release 4.3.0
-     *
-     * @deprecated Method deprecated since Release 5.6.0
-     */
-    public function setExpectedExceptionRegExp($exception, $messageRegExp = '', $code = null)
-    {
-        if (!is_string($messageRegExp)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
-        }
-
-        $this->expectedException              = $exception;
-        $this->expectedExceptionMessageRegExp = $messageRegExp;
-
-        if ($code !== null) {
-            $this->expectExceptionCode($code);
-        }
-    }
-
-    /**
      * @param string $exception
      *
      * @since Method available since Release 5.2.0
