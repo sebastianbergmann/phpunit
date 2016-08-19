@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * `setUpBeforeClass()` is now invoked after all methods annotated with `@beforeClass`
 * `setUp()` is now invoked after all methods annotated with `@before`
 * Added `addWarning()` method to `PHPUnit\Framework\TestListener` interface
+* The binary PHAR is now binary-only and cannot be used as a library anymore
 
 ### Removed
 
