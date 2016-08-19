@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ## [6.0.0] - 2017-02-03
 
+### Added
+
+* Added `addWarning()` method to `PHPUnit\Framework\TestListener` interface
+
 ### Removed
 
 * Removed `PHPUnit\Framework\TestCase::getMock()` (deprecated in PHPUnit 5.4)

@@ -283,11 +283,7 @@ class PHPUnit_Framework_TestResult implements Countable
         $this->warnings[] = new PHPUnit_Framework_TestFailure($test, $e);
 
         foreach ($this->listeners as $listener) {
-            // @todo Remove check for PHPUnit 6.0.0
-            // @see  https://github.com/sebastianbergmann/phpunit/pull/1840#issuecomment-162535997
-            if (method_exists($listener, 'addWarning')) {
-                $listener->addWarning($test, $e, $time);
-            }
+            $listener->addWarning($test, $e, $time);
         }
 
         $this->time += $time;
