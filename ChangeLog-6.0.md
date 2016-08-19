@@ -20,6 +20,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * Removed `PHPUnit\Framework\TestCase::setExpectedExceptionRegExp()` (deprecated in PHPUnit 5.6)
 * Removed `PHPUnit\Framework\TestCase::hasPerformedExpectationsOnOutput()` (deprecated in PHPUnit 4.3)
 * Removed the `checkForUnintentionallyCoveredCode` configuration setting (deprecated in PHPUnit 5.2)
+* Removed the `--self-update` and `--self-upgrade` commandline options
 * PHPUnit is no longer supported on PHP 5.6
 
 [6.0.0]: https://github.com/sebastianbergmann/phpunit/compare/5.7...6.0.0

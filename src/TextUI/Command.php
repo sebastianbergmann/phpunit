@@ -259,10 +259,6 @@ class PHPUnit_TextUI_Command
     {
         if (defined('__PHPUNIT_PHAR__')) {
             $this->longOptions['check-version'] = null;
-            $this->longOptions['selfupdate']    = null;
-            $this->longOptions['self-update']   = null;
-            $this->longOptions['selfupgrade']   = null;
-            $this->longOptions['self-upgrade']  = null;
         }
 
         try {
@@ -616,16 +612,6 @@ class PHPUnit_TextUI_Command
                     $this->handleVersionCheck();
                     break;
 
-                case '--selfupdate':
-                case '--self-update':
-                    $this->handleSelfUpdate();
-                    break;
-
-                case '--selfupgrade':
-                case '--self-upgrade':
-                    $this->handleSelfUpdate(true);
-                    break;
-
                 case '--whitelist':
                     $this->arguments['whitelist'] = $option[1];
                     break;
@@ -906,91 +892,6 @@ class PHPUnit_TextUI_Command
     }
 
     /**
-     * @since Method available since Release 4.0.0
-     */
-    protected function handleSelfUpdate($upgrade = false)
-    {
-        $this->printVersionString();
-
-        $localFilename = realpath($_SERVER['argv'][0]);
-
-        if (!is_writable($localFilename)) {
-            print 'No write permission to update ' . $localFilename . "\n";
-            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-        }
-
-        if (!extension_loaded('openssl')) {
-            print "The OpenSSL extension is not loaded.\n";
-            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
-        }
-
-        if (!$upgrade) {
-            $remoteFilename = sprintf(
-                'https://phar.phpunit.de/phpunit-%s.phar',
-                file_get_contents(
-                    sprintf(
-                        'https://phar.phpunit.de/latest-version-of/phpunit-%s',
-                        PHPUnit_Runner_Version::series()
-                    )
-                )
-            );
-        } else {
-            $remoteFilename = sprintf(
-                'https://phar.phpunit.de/phpunit%s.phar',
-                PHPUnit_Runner_Version::getReleaseChannel()
-            );
-        }
-
-        $tempFilename = tempnam(sys_get_temp_dir(), 'phpunit') . '.phar';
-
-        // Workaround for https://bugs.php.net/bug.php?id=65538
-        $caFile = dirname($tempFilename) . '/ca.pem';
-        copy(__PHPUNIT_PHAR_ROOT__ . '/ca.pem', $caFile);
-
-        print 'Updating the PHPUnit PHAR ... ';
-
-        $options = [
-            'ssl' => [
-                'allow_self_signed' => false,
-                'cafile'            => $caFile,
-                'verify_peer'       => true
-            ]
-        ];
-
-        file_put_contents(
-            $tempFilename,
-            file_get_contents(
-                $remoteFilename,
-                false,
-                stream_context_create($options)
-            )
-        );
-
-        chmod($tempFilename, 0777 & ~umask());
-
-        try {
-            $phar = new Phar($tempFilename);
-            unset($phar);
-            rename($tempFilename, $localFilename);
-            unlink($caFile);
-        } catch (Throwable $_e) {
-            $e = $_e;
-        } catch (Exception $_e) {
-            $e = $_e;
-        }
-
-        if (isset($e)) {
-            unlink($caFile);
-            unlink($tempFilename);
-            print " done\n\n" . $e->getMessage() . "\n";
-            exit(2);
-        }
-
-        print " done\n";
-        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
-    }
-
-    /**
      * @since Method available since Release 4.8.0
      */
     protected function handleVersionCheck()
@@ -1113,8 +1014,6 @@ EOT;
 
         if (defined('__PHPUNIT_PHAR__')) {
             print "\n  --check-version           Check whether PHPUnit is the latest version.";
-            print "\n  --self-update             Update PHPUnit to the latest version within the same\n                            release series.\n";
-            print "\n  --self-upgrade            Upgrade PHPUnit to the latest version.\n";
         }
     }
 
