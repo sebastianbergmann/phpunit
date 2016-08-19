@@ -20,7 +20,7 @@
         "issues": "https://github.com/sebastianbergmann/phpunit/issues"
     },
     "require": {
-        "php": "^5.6 || ^7.0",
+        "php": "^7.0",
         "phpunit/php-file-iterator": "~1.4",
         "phpunit/php-text-template": "~1.2",
         "phpunit/php-code-coverage": "^4.0.1",
@@ -48,7 +48,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.6.0"
+            "php": "7.0.0"
         }
     },
     "suggest": {
