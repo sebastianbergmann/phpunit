@@ -1579,27 +1579,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * Returns a mock with disabled constructor object for the specified class.
-     *
-     * @param string $originalClassName
-     *
-     * @return PHPUnit_Framework_MockObject_MockObject
-     *
-     * @throws PHPUnit_Framework_Exception
-     *
-     * @since Method available since Release 5.0.0
-     * @deprecated Method deprecated since Release 5.4.0
-     */
-    protected function getMockWithoutInvokingTheOriginalConstructor($originalClassName)
-    {
-        $this->warnings[] = 'PHPUnit_Framework_TestCase::getMockWithoutInvokingTheOriginalConstructor() is deprecated, use PHPUnit_Framework_TestCase::createMock() instead';
-
-        return $this->getMockBuilder($originalClassName)
-                    ->disableOriginalConstructor()
-                    ->getMock();
-    }
-
-    /**
      * Mocks the specified class and returns the name of the mocked class.
      *
      * @param string $originalClassName
