@@ -3,12 +3,11 @@ language: php
 php:
   - 5.6
   - 7.0
-  - nightly
+  - 7.1
   - hhvm
 
 matrix:
   allow_failures:
-    - php: nightly
     - php: hhvm
 
 sudo: false
