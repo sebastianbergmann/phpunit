@@ -440,7 +440,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $result->addListener(
                 new PHPUnit_Util_Log_JUnit(
                     $arguments['junitLogfile'],
-                    $arguments['logIncompleteSkipped']
+                    $arguments['reportUselessTests']
                 )
             );
         }
@@ -974,11 +974,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['junit']) &&
                 !isset($arguments['junitLogfile'])) {
                 $arguments['junitLogfile'] = $loggingConfiguration['junit'];
-
-                if (isset($loggingConfiguration['logIncompleteSkipped']) &&
-                    !isset($arguments['logIncompleteSkipped'])) {
-                    $arguments['logIncompleteSkipped'] = $loggingConfiguration['logIncompleteSkipped'];
-                }
             }
 
             if (isset($loggingConfiguration['testdox-html']) &&
@@ -1046,7 +1041,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $arguments['convertWarningsToExceptions']                     = isset($arguments['convertWarningsToExceptions'])                     ? $arguments['convertWarningsToExceptions']                     : true;
         $arguments['excludeGroups']                                   = isset($arguments['excludeGroups'])                                   ? $arguments['excludeGroups']                                   : [];
         $arguments['groups']                                          = isset($arguments['groups'])                                          ? $arguments['groups']                                          : [];
-        $arguments['logIncompleteSkipped']                            = isset($arguments['logIncompleteSkipped'])                            ? $arguments['logIncompleteSkipped']                            : false;
         $arguments['processIsolation']                                = isset($arguments['processIsolation'])                                ? $arguments['processIsolation']                                : false;
         $arguments['repeat']                                          = isset($arguments['repeat'])                                          ? $arguments['repeat']                                          : false;
         $arguments['reportHighLowerBound']                            = isset($arguments['reportHighLowerBound'])                            ? $arguments['reportHighLowerBound']                            : 90;
