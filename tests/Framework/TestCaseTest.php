@@ -188,7 +188,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testException()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException');
+        $test->expectException(RuntimeException::class);
 
         $result = $test->run();
 
@@ -199,7 +199,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithEmptyMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException', '');
+        $test->expectException(RuntimeException::class, '');
 
         $result = $test->run();
 
@@ -210,7 +210,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithNullMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException', null);
+        $test->expectException(RuntimeException::class, null);
 
         $result = $test->run();
 
@@ -221,7 +221,8 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException', 'A runtime error occurred');
+        $test->expectException(RuntimeException::class);
+        $test->expectExceptionMessage('A runtime error occurred');
 
         $result = $test->run();
 
@@ -232,7 +233,8 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithWrongMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException', 'A logic error occurred');
+        $test->expectException(RuntimeException::class);
+        $test->expectExceptionMessage('A logic error occurred');
 
         $result = $test->run();
 
@@ -247,7 +249,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedExceptionRegExp('RuntimeException', '/runtime .*? occurred/');
+        $test->setExpectedExceptionRegExp(RuntimeException::class, '/runtime .*? occurred/');
 
         $result = $test->run();
 
@@ -258,7 +260,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithWrongRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedExceptionRegExp('RuntimeException', '/logic .*? occurred/');
+        $test->setExpectedExceptionRegExp(RuntimeException::class, '/logic .*? occurred/');
 
         $result = $test->run();
 
@@ -276,7 +278,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testExceptionWithInvalidRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedExceptionRegExp('RuntimeException', '#runtime .*? occurred/'); // wrong delimiter
+        $test->setExpectedExceptionRegExp(RuntimeException::class, '#runtime .*? occurred/'); // wrong delimiter
 
         $result = $test->run();
 
@@ -289,7 +291,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testNoException()
     {
         $test = new ThrowNoExceptionTestCase('test');
-        $test->setExpectedException('RuntimeException');
+        $test->expectException(RuntimeException::class);
 
         $result = $test->run();
 
@@ -300,7 +302,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testWrongException()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->setExpectedException('InvalidArgumentException');
+        $test->expectException(InvalidArgumentException::class);
 
         $result = $test->run();
 
@@ -606,6 +608,15 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $mock = $this->createPartialMock(Mockable::class, ['foo']);
 
         $this->assertNull($mock->foo());
+        $this->assertTrue($mock->bar());
+    }
+
+    public function testCreatePartialMockCanMockNoMethods()
+    {
+        /** @var Mockable $mock */
+        $mock = $this->createPartialMock(Mockable::class, []);
+
+        $this->assertTrue($mock->foo());
         $this->assertTrue($mock->bar());
     }
 
