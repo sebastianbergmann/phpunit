@@ -517,10 +517,9 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      */
     public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed()
     {
-        $this->setExpectedExceptionRegExp(
-            PHPUnit_Framework_Exception::class,
-            '/^The dataset for the @testWith annotation cannot be parsed:/'
-        );
+        $this->expectException(PHPUnit_Framework_Exception::class);
+        $this->expectExceptionMessageRegExp('/^The dataset for the @testWith annotation cannot be parsed:/');
+
         PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
                                                            * @testWith [s]
                                                            */');
@@ -528,10 +527,9 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     public function testTestWithThrowsProperExceptionIfMultiLineDatasetCannotBeParsed()
     {
-        $this->setExpectedExceptionRegExp(
-            PHPUnit_Framework_Exception::class,
-            '/^The dataset for the @testWith annotation cannot be parsed:/'
-        );
+        $this->expectException(PHPUnit_Framework_Exception::class);
+        $this->expectExceptionMessageRegExp('/^The dataset for the @testWith annotation cannot be parsed:/');
+
         PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
                                                            * @testWith ["valid"]
                                                            *           [invalid]
