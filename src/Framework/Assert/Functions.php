@@ -1507,7 +1507,7 @@ function assertStringStartsWith($prefix, $string, $message = '')
 /**
  * Evaluates a PHPUnit_Framework_Constraint matcher object.
  *
- * @param  mixed $value
+ * @param mixed                        $value
  * @param PHPUnit_Framework_Constraint $constraint
  * @param string                       $message
  *
