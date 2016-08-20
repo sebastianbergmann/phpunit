@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.6 release series are documented in this fil
 ### Added
 
 * Added `PHPUnit\Framework\TestCase::createConfiguredMock()` based on [idea](https://twitter.com/kriswallsmith/status/763550169090625536) by Kris Wallsmith
+* Added the `@doesNotPerformAssertions` annotation for excluding a test from the "useless test" risky test check
 
 ### Changed
 
