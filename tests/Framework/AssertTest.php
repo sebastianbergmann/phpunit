@@ -2893,6 +2893,8 @@ XML;
     /**
      * @covers PHPUnit_Framework_Assert::assertThat
      * @covers PHPUnit_Framework_Assert::anything
+     *
+     * @doesNotPerformAssertions
      */
     public function testAssertThatAnything()
     {
@@ -2930,6 +2932,8 @@ XML;
      * @covers PHPUnit_Framework_Assert::assertThat
      * @covers PHPUnit_Framework_Assert::anything
      * @covers PHPUnit_Framework_Assert::logicalAnd
+     *
+     * @doesNotPerformAssertions
      */
     public function testAssertThatAnythingAndAnything()
     {
@@ -2945,6 +2949,8 @@ XML;
      * @covers PHPUnit_Framework_Assert::assertThat
      * @covers PHPUnit_Framework_Assert::anything
      * @covers PHPUnit_Framework_Assert::logicalOr
+     *
+     * @doesNotPerformAssertions
      */
     public function testAssertThatAnythingOrAnything()
     {
@@ -2961,6 +2967,8 @@ XML;
      * @covers PHPUnit_Framework_Assert::anything
      * @covers PHPUnit_Framework_Assert::logicalNot
      * @covers PHPUnit_Framework_Assert::logicalXor
+     *
+     * @doesNotPerformAssertions
      */
     public function testAssertThatAnythingXorNotAnything()
     {

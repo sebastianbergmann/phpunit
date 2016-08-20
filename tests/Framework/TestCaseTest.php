@@ -378,6 +378,8 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     /**
      * @backupGlobals enabled
      * @backupStaticAttributes enabled
+     *
+     * @doesNotPerformAssertions
      */
     public function testStaticAttributesBackupPre()
     {
