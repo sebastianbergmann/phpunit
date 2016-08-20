@@ -282,6 +282,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $groups = [];
 
     /**
+     * @var bool
+     */
+    private $doesNotPerformAssertions = false;
+
+    /**
      * Constructs a test case with the given name.
      *
      * @param string $name
@@ -460,6 +465,16 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     *
+     * @since Method available since Release 5.6.0
+     */
+    public function doesNotPerformAssertions()
+    {
+        return $this->doesNotPerformAssertions;
     }
 
     /**
@@ -870,6 +885,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
 
             $this->setExpectedExceptionFromAnnotation();
+            $this->setDoesNotPerformAssertionsFromAnnotation();
 
             foreach ($hookMethods['before'] as $method) {
                 $this->$method();
@@ -2461,6 +2477,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     $this->registerMockObjectsFromTestArguments($testArgument);
                 }
             }
+        }
+    }
+
+    /**
+     * @since Method available since Release 5.6.0
+     */
+    private function setDoesNotPerformAssertionsFromAnnotation()
+    {
+        $annotations = $this->getAnnotations();
+
+        if (isset($annotations['method']['doesNotPerformAssertions'])) {
+            $this->doesNotPerformAssertions = true;
         }
     }
 }
