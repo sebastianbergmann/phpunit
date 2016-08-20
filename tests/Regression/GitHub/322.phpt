@@ -23,4 +23,4 @@ Starting test 'Issue322Test::testOne'.
 
 Time: %s, Memory: %s
 
-OK (1 test, 0 assertions)
+OK (1 test, 1 assertion)

@@ -22,4 +22,4 @@ DoxGroup
 
 Time: %s, Memory: %s
 
-OK (2 tests, 0 assertions)
+OK (2 tests, 2 assertions)

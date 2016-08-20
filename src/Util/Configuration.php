@@ -755,7 +755,7 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('beStrictAboutTestsThatDoNotTestAnything')) {
             $result['reportUselessTests'] = $this->getBoolean(
                 (string) $root->getAttribute('beStrictAboutTestsThatDoNotTestAnything'),
-                false
+                true
             );
         }
 

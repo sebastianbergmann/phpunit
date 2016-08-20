@@ -14,6 +14,7 @@ class Issue1021Test extends PHPUnit_Framework_TestCase
      */
     public function testSomethingElse()
     {
+        $this->assertTrue(true);
     }
 
     public function provider()

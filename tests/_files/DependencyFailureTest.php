@@ -11,6 +11,7 @@ class DependencyFailureTest extends PHPUnit_Framework_TestCase
      */
     public function testTwo()
     {
+        $this->assertTrue(true);
     }
 
     /**
@@ -18,6 +19,7 @@ class DependencyFailureTest extends PHPUnit_Framework_TestCase
      */
     public function testThree()
     {
+        $this->assertTrue(true);
     }
 
     /**
@@ -25,5 +27,6 @@ class DependencyFailureTest extends PHPUnit_Framework_TestCase
      */
     public function testFour()
     {
+        $this->assertTrue(true);
     }
 }

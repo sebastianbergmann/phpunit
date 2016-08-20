@@ -4,8 +4,13 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ## [6.0.0] - 2017-02-03
 
+### Added
+
+* Added the `--dont-report-useless-tests` commandline option
+
 ### Changed
 
+* PHPUnit is now strict about useless tests by default
 * `PHPUnit\Framework\Assert::fail()` now increments the assertion counter
 * `setUpBeforeClass()` is now invoked after all methods annotated with `@beforeClass`
 * `setUp()` is now invoked after all methods annotated with `@before`
@@ -22,6 +27,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * Removed `PHPUnit\Framework\TestCase::hasPerformedExpectationsOnOutput()` (deprecated in PHPUnit 4.3)
 * Removed the `checkForUnintentionallyCoveredCode` configuration setting (deprecated in PHPUnit 5.2)
 * Removed the `--self-update` and `--self-upgrade` commandline options
+* Removed the `--report-useless-tests` commandline option
 * PHPUnit is no longer supported on PHP 5.6
 
 [6.0.0]: https://github.com/sebastianbergmann/phpunit/compare/5.7...6.0.0

@@ -1,11 +1,10 @@
 --TEST--
-phpunit --report-useless-tests NothingTest ../_files/NothingTest.php
+phpunit NothingTest ../_files/NothingTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--report-useless-tests';
-$_SERVER['argv'][3] = 'NothingTest';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/NothingTest.php';
+$_SERVER['argv'][2] = 'NothingTest';
+$_SERVER['argv'][3] = __DIR__ . '/../_files/NothingTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();

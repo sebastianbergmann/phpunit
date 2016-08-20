@@ -112,7 +112,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @var bool
      */
-    protected $beStrictAboutTestsThatDoNotTestAnything = false;
+    protected $beStrictAboutTestsThatDoNotTestAnything = true;
 
     /**
      * @var bool
