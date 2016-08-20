@@ -2713,6 +2713,8 @@ abstract class PHPUnit_Framework_Assert
      */
     public static function fail($message = '')
     {
+        self::$count++;
+
         throw new PHPUnit_Framework_AssertionFailedError($message);
     }
 

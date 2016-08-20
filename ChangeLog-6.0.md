@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ### Changed
 
+* `PHPUnit\Framework\Assert::fail()` now increments the assertion counter
 * `setUpBeforeClass()` is now invoked after all methods annotated with `@beforeClass`
 * `setUp()` is now invoked after all methods annotated with `@before`
 * Added `addWarning()` method to `PHPUnit\Framework\TestListener` interface
