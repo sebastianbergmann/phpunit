@@ -36,6 +36,7 @@ class PHPUnit_TextUI_Command
      */
     protected $longOptions = [
         'atleast-version='           => null,
+        'backup-globals'             => null,
         'bootstrap='                 => null,
         'colors=='                   => null,
         'columns='                   => null,
@@ -66,7 +67,6 @@ class PHPUnit_TextUI_Command
         'log-teamcity='              => null,
         'no-configuration'           => null,
         'no-coverage'                => null,
-        'no-globals-backup'          => null,
         'printer='                   => null,
         'process-isolation'          => null,
         'repeat='                    => null,
@@ -547,8 +547,8 @@ class PHPUnit_TextUI_Command
                     $this->arguments['noCoverage'] = true;
                     break;
 
-                case '--no-globals-backup':
-                    $this->arguments['backupGlobals'] = false;
+                case '--globals-backup':
+                    $this->arguments['backupGlobals'] = true;
                     break;
 
                 case '--static-backup':
@@ -967,7 +967,7 @@ Test Execution Options:
   --disallow-todo-tests       Disallow @todo-annotated tests.
 
   --process-isolation         Run each test in a separate PHP process.
-  --no-globals-backup         Do not backup and restore \$GLOBALS for each test.
+  --globals-backup            Backup and restore \$GLOBALS for each test.
   --static-backup             Backup and restore static attributes for each test.
 
   --colors=<flag>             Use colors in output ("never", "auto" or "always").

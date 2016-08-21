@@ -168,8 +168,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
         }
 
-        if ($arguments['backupGlobals'] === false) {
-            $suite->setBackupGlobals(false);
+        if ($arguments['backupGlobals'] === true) {
+            $suite->setBackupGlobals(true);
         }
 
         if ($arguments['backupStaticAttributes'] === true) {

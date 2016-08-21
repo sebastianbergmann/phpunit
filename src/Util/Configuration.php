@@ -15,7 +15,7 @@
  * <code>
  * <?xml version="1.0" encoding="utf-8" ?>
  *
- * <phpunit backupGlobals="true"
+ * <phpunit backupGlobals="false"
  *          backupStaticAttributes="false"
  *          bootstrap="/path/to/bootstrap.php"
  *          cacheTokens="false"
@@ -592,7 +592,7 @@ class PHPUnit_Util_Configuration
         if ($root->hasAttribute('backupGlobals')) {
             $result['backupGlobals'] = $this->getBoolean(
                 (string) $root->getAttribute('backupGlobals'),
-                true
+                false
             );
         }
 
