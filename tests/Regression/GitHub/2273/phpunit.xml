@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../phpunit.xsd"
+         backupGlobals="true"
+         verbose="true">
+    <testsuites>
+        <testsuite name="default">
+            <file>Issue2273ParamsTest.php</file>
+            <file>Issue2273MultiTestSuiteTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
