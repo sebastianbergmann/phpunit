@@ -198,7 +198,7 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testCanConfigureMethodsForDoubleOfNonExistantClass()
     {
-        $className = md5(microtime());
+        $className = 'X' . md5(microtime());
 
         $mock = $this->generator->getMock($className, ['someMethod']);
 
