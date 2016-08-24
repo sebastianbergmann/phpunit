@@ -694,6 +694,7 @@ class PHPUnit_Framework_MockObject_Generator
         $cloneTemplate        = '';
         $isClass              = false;
         $isInterface          = false;
+        $isMultipleInterfaces = false;
 
         if (is_array($type)) {
             foreach ($type as $_type) {
@@ -705,6 +706,8 @@ class PHPUnit_Framework_MockObject_Generator
                         )
                     );
                 }
+
+                $isMultipleInterfaces = true;
 
                 $additionalInterfaces[] = $_type;
                 $typeClass              = new ReflectionClass($this->generateClassName(
@@ -833,7 +836,7 @@ class PHPUnit_Framework_MockObject_Generator
                     );
                 }
             }
-        } else {
+        } elseif ($isMultipleInterfaces) {
             foreach ($methods as $methodName) {
                 if ($this->canMockMethod($methodReflections[$methodName])) {
                     $mockedMethods .= $this->generateMockedMethodDefinitionFromExisting(
