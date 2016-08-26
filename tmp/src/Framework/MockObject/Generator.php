@@ -847,6 +847,15 @@ class PHPUnit_Framework_MockObject_Generator
                     );
                 }
             }
+        } else {
+            foreach ($methods as $methodName) {
+                $mockedMethods .= $this->generateMockedMethodDefinition(
+                    $templateDir,
+                    $mockClassName['fullClassName'],
+                    $methodName,
+                    $cloneArguments
+                );
+            }
         }
 
         $method = '';
