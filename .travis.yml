@@ -9,11 +9,8 @@ php:
 
 sudo: false
 
-before_install:
-  - composer self-update
-
 install:
-  - travis_retry composer install --no-interaction --prefer-source
+  - travis_retry ./build/tools/composer install --no-interaction --prefer-source
 
 script:
   - ./phpunit
