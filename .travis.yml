@@ -1,22 +1,46 @@
+# Use new Travis-CI container Infrastructure for faster builds
+sudo: false
+
 language: php
 
-php:
-  - 5.6
-  - 7.0
-  - 7.1
-  - hhvm
-
 matrix:
+  fast_finish: true
+  include:
+    - php: 5.6
+    - php: 7.0
+    - php: 7.1
+    - php: hhvm-3.12 # Current LTS version of HHVM
+        sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
+        dist: trusty
+        group: edge # Until the next update
+         env: HHVMPHP7="no"
+      - php: hhvm-3.12 # Current LTS version of HHVM with PHP7 mode
+        sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
+        dist: trusty
+        group: edge # until the next update
+        env: HHVMPHP7="yes"
+    - php: hhvm # Current version of HHVM (could be LTS or STS)
+      sudo: true
+      dist: trusty
+      group: edge # until the next update
+      env: HHVMPHP7="no"
+    - php: hhvm # Current version of HHVM with PHP7 mode (could be LTS or STS)
+      sudo: true
+      dist: trusty
+      group: edge # until the next update
+      env: HHVMPHP7="yes"
   allow_failures:
+    - php: hhvm-3.12
     - php: hhvm
-
-sudo: false
 
 before_install:
   - composer self-update
 
 install:
   - travis_retry composer install --no-interaction --prefer-source
+
+before_script:
+  - if [[ $HHVMPHP7 == "yes" ]]; then echo hhvm.php7.all=1 >> /etc/hhvm/php.ini; fi
 
 script:
   - ./phpunit
