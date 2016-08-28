@@ -10,15 +10,15 @@ matrix:
     - php: 7.0
     - php: 7.1
     - php: hhvm-3.12 # Current LTS version of HHVM
-        sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
-        dist: trusty
-        group: edge # Until the next update
-         env: HHVMPHP7="no"
-      - php: hhvm-3.12 # Current LTS version of HHVM with PHP7 mode
-        sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
-        dist: trusty
-        group: edge # until the next update
-        env: HHVMPHP7="yes"
+      sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
+      dist: trusty
+      group: edge # Until the next update
+      env: HHVMPHP7="no"
+    - php: hhvm-3.12 # Current LTS version of HHVM with PHP7 mode
+      sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
+      dist: trusty
+      group: edge # until the next update
+      env: HHVMPHP7="yes"
     - php: hhvm # Current version of HHVM (could be LTS or STS)
       sudo: true
       dist: trusty
@@ -58,4 +58,4 @@ notifications:
     on_success: always
     on_failure: always
     on_start: false
-
+    
