@@ -4,11 +4,6 @@ php:
   - 5.6
   - 7.0
   - 7.1
-  - hhvm
-
-matrix:
-  allow_failures:
-    - php: hhvm
 
 sudo: false
 
@@ -28,10 +23,4 @@ script:
 
 notifications:
   email: false
-  webhooks:
-    urls:
-      - https://webhooks.gitter.im/e/6668f52f3dd4e3f81960
-    on_success: always
-    on_failure: always
-    on_start: false
 
