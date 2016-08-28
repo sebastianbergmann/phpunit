@@ -13,6 +13,10 @@ matrix:
       sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
       dist: trusty
       group: edge # Until the next update
+      addons:
+        apt:
+          packages:
+            - libxml2-utils
       env: HHVMPHP7="no"
     - php: hhvm-3.12 # Current LTS version of HHVM with PHP7 mode
       sudo: true # Travis-CI container Infrastructure doesn't support all available HHVM versions, so use Trusty
@@ -27,6 +31,10 @@ matrix:
       sudo: true
       dist: trusty
       group: edge # until the next update
+      addons:
+        apt:
+          packages:
+            - libxml2-utils
       env: HHVMPHP7="no"
     - php: hhvm # Current version of HHVM with PHP7 mode (could be LTS or STS)
       sudo: true
@@ -49,6 +57,7 @@ install:
 
 before_script:
   - if [[ $HHVMPHP7 == "yes" ]]; then echo hhvm.php7.all=1 >> /etc/hhvm/php.ini; fi
+  - if [[ $TRAVIS_PHP_VERSION = hhv* ]]; then echo 'xdebug.enable = 1' >> /etc/hhvm/php.ini; fi # Extension xdebug is required
 
 script:
   - ./phpunit
