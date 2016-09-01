@@ -134,6 +134,26 @@
  *     <files name="foo" value="bar"/>
  *     <request name="foo" value="bar"/>
  *   </php>
+ *
+ *   <commandOptions>
+ *      <commandOption class="MyCommandOption" file="/optional/path/to/MyCommandOption.php">
+ *          <arguments>
+ *              <array>
+ *                  <element key="0">
+ *                      <string>Sebastian</string>
+ *                  </element>
+ *              </array>
+ *              <integer>22</integer>
+ *              <string>April</string>
+ *              <double>19.78</double>
+ *              <null/>
+ *              <object class="stdClass"/>
+ *              <file>MyRelativeFile.php</file>
+ *              <directory>MyRelativeDir</directory>
+ *          </arguments>
+ *      </commandOption>
+ *   </commandOptions>
+ *
  * </phpunit>
  * </code>
  *
@@ -313,6 +333,18 @@ class PHPUnit_Util_Configuration
     }
 
     /**
+     * Returns the configuration for custom command CLI options.
+     *
+     * @return array
+     *
+     * @since Method available since Release X.X.X
+     */
+    public function getCustomCommandOptionsConfiguration()
+    {
+        return $this->getClassConfiguration('commandOptions/commandOption');
+    }
+
+    /**
      * Returns the configuration for listeners.
      *
      * @return array
@@ -321,9 +353,20 @@ class PHPUnit_Util_Configuration
      */
     public function getListenerConfiguration()
     {
+        return $this->getClassConfiguration('listeners/listener');
+    }
+
+    /**
+     * Returns the class configuration.
+     * i.e. Used by listeners and commandOptions
+     *
+     * @return array
+     */
+    public function getClassConfiguration($pathQuery)
+    {
         $result = [];
 
-        foreach ($this->xpath->query('listeners/listener') as $listener) {
+        foreach ($this->xpath->query($pathQuery) as $listener) {
             $class     = (string) $listener->getAttribute('class');
             $file      = '';
             $arguments = [];

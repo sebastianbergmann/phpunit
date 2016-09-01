@@ -134,6 +134,11 @@
         <directory>MyRelativeDir</directory>
       </arguments>
     </commandOption>
+    <commandOption class="MyCommandOption2">
+      <arguments>
+        <integer>42</integer>
+      </arguments>
+    </commandOption>
   </commandOptions>
 
 </phpunit>
