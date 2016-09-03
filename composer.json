@@ -43,6 +43,9 @@
         "ext-reflection": "*",
         "ext-spl": "*"
     },
+    "require-dev": {
+        "logics/extcheck": "^0.1"
+    },
     "conflict": {
         "phpdocumentor/reflection-docblock": "3.0.2"
     },
