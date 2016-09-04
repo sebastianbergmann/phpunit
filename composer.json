@@ -49,8 +49,7 @@
     },
     "require-dev": {
         "logics/extcheck": "^0.1",
-        "ext-PDO": "*",
-        "ext-xdebug": "*"
+        "ext-PDO": "*"
     },
     "conflict": {
         "phpdocumentor/reflection-docblock": "3.0.2"
@@ -62,7 +61,8 @@
     },
     "suggest": {
         "phpunit/php-invoker": "~1.1",
-        "ext-tidy": "*"
+        "ext-tidy": "*",
+        "ext-xdebug": "*"
     },
     "bin": [
         "phpunit"
