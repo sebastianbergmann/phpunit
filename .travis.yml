@@ -14,7 +14,7 @@ install:
   - travis_retry composer install --no-interaction --prefer-source
 
 before_script:
-  - ./vendor/bin/extcheck -v
+  - php vendor/bin/extcheck -v
 
 script:
   - ./phpunit
