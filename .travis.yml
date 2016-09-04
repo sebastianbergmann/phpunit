@@ -14,7 +14,7 @@ install:
   - travis_retry composer install --no-interaction --prefer-source
 
 before_script:
-  - php vendor/bin/extcheck -v --ignore xdebug
+  - php vendor/bin/extcheck -v --ignore xdebug --ignore Phar
 
 script:
   - ./phpunit
