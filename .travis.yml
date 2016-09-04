@@ -13,7 +13,7 @@ install:
   - travis_retry composer install --no-interaction --prefer-source
 
 before_script:
-  - php vendor/bin/extcheck -v
+  - php vendor/bin/extcheck -v --ignore xdebug
 
 script:
   - ./phpunit
