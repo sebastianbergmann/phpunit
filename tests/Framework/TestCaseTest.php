@@ -195,10 +195,33 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($result->wasSuccessful());
     }
 
+    public function testExceptionBackport()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->expectException('RuntimeException');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
     public function testExceptionWithMessage()
     {
         $test = new ThrowExceptionTestCase('test');
         $test->setExpectedException('RuntimeException', 'A runtime error occurred');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, count($result));
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExceptionWithMessageBackport()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->expectException('RuntimeException');
+        $test->expectExceptionMessage('A runtime error occurred');
 
         $result = $test->run();
 
@@ -221,6 +244,21 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
+    public function testExceptionWithWrongMessageBackport()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->expectException('RuntimeException');
+        $test->expectExceptionMessage('A logic error occurred');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->failureCount());
+        $this->assertEquals(1, count($result));
+        $this->assertEquals(
+            "Failed asserting that exception message 'A runtime error occurred' contains 'A logic error occurred'.",
+            $test->getStatusMessage()
+        );
+    }
     public function testExceptionWithRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');
@@ -256,6 +294,39 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test->setExpectedExceptionRegExp('RuntimeException', '#runtime .*? occurred/'); // wrong delimiter
 
         $result = $test->run();
+
+        $this->assertEquals(
+            "Invalid expected exception message regex given: '#runtime .*? occurred/'",
+            $test->getStatusMessage()
+        );
+    }
+
+    public function testExceptionWithWrongRegexpMessageBackport()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->expectException('RuntimeException');
+        $test->expectExceptionMessageRegExp('/logic .*? occurred/');
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->failureCount());
+        $this->assertEquals(1, count($result));
+        $this->assertEquals(
+            "Failed asserting that exception message 'A runtime error occurred' matches '/logic .*? occurred/'.",
+            $test->getStatusMessage()
+        );
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_ExceptionMessageRegExp
+     */
+    public function testExceptionWithInvalidRegexpMessageBackport()
+    {
+        $test = new ThrowExceptionTestCase('test');
+        $test->expectException('RuntimeException');
+        $test->expectExceptionMessageRegExp('#runtime .*? occurred/');
+
+        $test->run();
 
         $this->assertEquals(
             "Invalid expected exception message regex given: '#runtime .*? occurred/'",
