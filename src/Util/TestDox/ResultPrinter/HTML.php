@@ -16,11 +16,6 @@
 class PHPUnit_Util_TestDox_ResultPrinter_HTML extends PHPUnit_Util_TestDox_ResultPrinter
 {
     /**
-     * @var bool
-     */
-    protected $printsHTML = true;
-
-    /**
      * @var string
      */
     private $pageHeader = <<<EOT

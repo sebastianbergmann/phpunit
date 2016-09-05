@@ -33,11 +33,6 @@ class PHPUnit_Util_Printer
     protected $outTarget;
 
     /**
-     * @var bool
-     */
-    protected $printsHTML = false;
-
-    /**
      * Constructor.
      *
      * @param mixed $out
@@ -73,27 +68,12 @@ class PHPUnit_Util_Printer
     }
 
     /**
-     * Flush buffer, optionally tidy up HTML, and close output if it's not to a php stream
+     * Flush buffer and close output if it's not to a PHP stream
      */
     public function flush()
     {
         if ($this->out && strncmp($this->outTarget, 'php://', 6) !== 0) {
             fclose($this->out);
-        }
-
-        if ($this->printsHTML === true &&
-            $this->outTarget !== null &&
-            strpos($this->outTarget, 'php://') !== 0 &&
-            strpos($this->outTarget, 'socket://') !== 0 &&
-            extension_loaded('tidy')) {
-            file_put_contents(
-                $this->outTarget,
-                tidy_repair_file(
-                    $this->outTarget,
-                    ['indent' => true, 'wrap' => 0],
-                    'utf8'
-                )
-            );
         }
     }
 
