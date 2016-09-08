@@ -44,7 +44,6 @@
         "ext-libxml": "*"
     },
     "require-dev": {
-        "logics/extcheck": "^0.1",
         "ext-PDO": "*"
     },
     "conflict": {
