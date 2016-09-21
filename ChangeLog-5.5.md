@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.5.5] - 2016-MM-DD
+
+### Fixed
+
+* Fixed [#2101](https://github.com/sebastianbergmann/phpunit/issues/2101): Output Buffer Level consumption prevents custom output buffers from working
+
 ## [5.5.4] - 2016-08-26
 
 New release of PHPUnit as PHAR with updated dependencies
@@ -40,6 +46,7 @@ New release of PHPUnit as PHAR with updated dependencies
 
 * An `AssertionError` raised by an `assert()` in the tested code now causes the test to be interpreted as a failure instead of an error
 
+[5.5.5]: https://github.com/sebastianbergmann/phpunit/compare/5.5.4...5.5.5
 [5.5.4]: https://github.com/sebastianbergmann/phpunit/compare/5.5.3...5.5.4
 [5.5.3]: https://github.com/sebastianbergmann/phpunit/compare/5.5.2...5.5.3
 [5.5.2]: https://github.com/sebastianbergmann/phpunit/compare/5.5.1...5.5.2
