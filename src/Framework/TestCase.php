@@ -2346,10 +2346,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     private function startOutputBuffering()
     {
-        while (!defined('PHPUNIT_TESTSUITE') && ob_get_level() > 0) {
-            ob_end_clean();
-        }
-
         ob_start();
 
         $this->outputBufferingActive = true;
@@ -2362,7 +2358,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private function stopOutputBuffering()
     {
         if (ob_get_level() != $this->outputBufferingLevel) {
-            while (ob_get_level() > 0) {
+            while (ob_get_level() >= $this->outputBufferingLevel) {
                 ob_end_clean();
             }
 
