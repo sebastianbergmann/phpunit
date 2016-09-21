@@ -1341,6 +1341,220 @@ XML;
     }
 
     /**
+     * @covers            PHPUnit_Framework_Assert::assertIsReadable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertIsReadableThrowsException()
+    {
+        $this->assertIsReadable(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertIsReadable
+     */
+    public function testAssertIsReadable()
+    {
+        $this->assertIsReadable(__FILE__);
+
+        try {
+            $this->assertIsReadable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertNotIsReadable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertNotIsReadableThrowsException()
+    {
+        $this->assertNotIsReadable(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotIsReadable
+     */
+    public function testAssertNotIsReadable()
+    {
+        try {
+            $this->assertNotIsReadable(__FILE__);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertIsWritable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertIsWritableThrowsException()
+    {
+        $this->assertIsWritable(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertIsWritable
+     */
+    public function testAssertIsWritable()
+    {
+        $this->assertIsWritable(__FILE__);
+
+        try {
+            $this->assertIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertNotIsWritable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertNotIsWritableThrowsException()
+    {
+        $this->assertNotIsWritable(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertNotIsWritable
+     */
+    public function testAssertNotIsWritable()
+    {
+        try {
+            $this->assertNotIsWritable(__FILE__);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertDirectoryExists
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertDirectoryExistsThrowsException()
+    {
+        $this->assertDirectoryExists(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertDirectoryExists
+     */
+    public function testAssertDirectoryExists()
+    {
+        $this->assertDirectoryExists(__DIR__);
+
+        try {
+            $this->assertDirectoryExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertDirectoryNotExists
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertDirectoryNotExistsThrowsException()
+    {
+        $this->assertDirectoryNotExists(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertDirectoryNotExists
+     */
+    public function testAssertDirectoryNotExists()
+    {
+        $this->assertDirectoryNotExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+
+        try {
+            $this->assertDirectoryNotExists(__DIR__);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertDirectoryIsReadable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertDirectoryIsReadableThrowsException()
+    {
+        $this->assertDirectoryIsReadable(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertDirectoryIsReadable
+     */
+    public function testAssertDirectoryIsReadable()
+    {
+        $this->assertDirectoryIsReadable(__DIR__);
+
+        try {
+            $this->assertDirectoryIsReadable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertDirectoryNotIsReadable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertDirectoryNotIsReadableThrowsException()
+    {
+        $this->assertDirectoryNotIsReadable(null);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertDirectoryIsWritable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertDirectoryIsWritableThrowsException()
+    {
+        $this->assertDirectoryIsWritable(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertDirectoryIsWritable
+     */
+    public function testAssertDirectoryIsWritable()
+    {
+        $this->assertDirectoryIsWritable(__DIR__);
+
+        try {
+            $this->assertDirectoryIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertDirectoryNotIsWritable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertDirectoryNotIsWritableThrowsException()
+    {
+        $this->assertDirectoryNotIsWritable(null);
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertFileExists
      * @expectedException PHPUnit_Framework_Exception
      */
@@ -1388,6 +1602,74 @@ XML;
         }
 
         $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertFileIsReadable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertFileIsReadableThrowsException()
+    {
+        $this->assertFileIsReadable(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertFileIsReadable
+     */
+    public function testAssertFileIsReadable()
+    {
+        $this->assertFileIsReadable(__FILE__);
+
+        try {
+            $this->assertFileIsReadable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertFileNotIsReadable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertFileNotIsReadableThrowsException()
+    {
+        $this->assertFileNotIsReadable(null);
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertFileIsWritable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertFileIsWritableThrowsException()
+    {
+        $this->assertFileIsWritable(null);
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertFileIsWritable
+     */
+    public function testAssertFileIsWritable()
+    {
+        $this->assertFileIsWritable(__FILE__);
+
+        try {
+            $this->assertFileIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers            PHPUnit_Framework_Assert::assertFileNotIsWritable
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testAssertFileNotIsWritableThrowsException()
+    {
+        $this->assertFileNotIsWritable(null);
     }
 
     /**

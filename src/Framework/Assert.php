@@ -900,6 +900,162 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a file/dir is readable.
+     *
+     * @param string $filename
+     * @param string $message
+     */
+    public static function assertIsReadable($filename, $message = '')
+    {
+        if (!is_string($filename)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_IsReadable;
+
+        static::assertThat($filename, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a file/dir exists and is not readable.
+     *
+     * @param string $filename
+     * @param string $message
+     */
+    public static function assertNotIsReadable($filename, $message = '')
+    {
+        if (!is_string($filename)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+            new PHPUnit_Framework_Constraint_IsReadable
+        );
+
+        static::assertThat($filename, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a file/dir exists and is writable.
+     *
+     * @param string $filename
+     * @param string $message
+     */
+    public static function assertIsWritable($filename, $message = '')
+    {
+        if (!is_string($filename)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_IsWritable;
+
+        static::assertThat($filename, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a file/dir exists and is not writable.
+     *
+     * @param string $filename
+     * @param string $message
+     */
+    public static function assertNotIsWritable($filename, $message = '')
+    {
+        if (!is_string($filename)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+            new PHPUnit_Framework_Constraint_IsWritable
+        );
+
+        static::assertThat($filename, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a directory exists.
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryExists($directory, $message = '')
+    {
+        if (!is_string($directory)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_DirectoryExists;
+
+        static::assertThat($directory, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a directory does not exist.
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryNotExists($directory, $message = '')
+    {
+        if (!is_string($directory)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $constraint = new PHPUnit_Framework_Constraint_Not(
+            new PHPUnit_Framework_Constraint_DirectoryExists
+        );
+
+        static::assertThat($directory, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a directory exists and is readable.
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryIsReadable($directory, $message = '')
+    {
+        self::assertDirectoryExists($directory, $message);
+        self::assertIsReadable($directory, $message);
+    }
+
+    /**
+     * Asserts that a directory exists and is not readable.
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryNotIsReadable($directory, $message = '')
+    {
+        self::assertDirectoryExists($directory, $message);
+        self::assertNotIsReadable($directory, $message);
+    }
+
+    /**
+     * Asserts that a directory exists and is writable.
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryIsWritable($directory, $message = '')
+    {
+        self::assertDirectoryExists($directory, $message);
+        self::assertIsWritable($directory, $message);
+    }
+
+    /**
+     * Asserts that a directory exists and is not writable.
+     *
+     * @param string $directory
+     * @param string $message
+     */
+    public static function assertDirectoryNotIsWritable($directory, $message = '')
+    {
+        self::assertDirectoryExists($directory, $message);
+        self::assertDirectoryNotIsWritable($directory, $message);
+    }
+
+    /**
      * Asserts that a file exists.
      *
      * @param string $filename
@@ -937,6 +1093,54 @@ abstract class PHPUnit_Framework_Assert
         );
 
         static::assertThat($filename, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a file exists and is readable.
+     *
+     * @param string $file
+     * @param string $message
+     */
+    public static function assertFileIsReadable($file, $message = '')
+    {
+        self::assertFileExists($file, $message);
+        self::assertIsReadable($file, $message);
+    }
+
+    /**
+     * Asserts that a file exists and is not readable.
+     *
+     * @param string $file
+     * @param string $message
+     */
+    public static function assertFileNotIsReadable($file, $message = '')
+    {
+        self::assertFileExists($file, $message);
+        self::assertNotIsReadable($file, $message);
+    }
+
+    /**
+     * Asserts that a file exists and is writable.
+     *
+     * @param string $file
+     * @param string $message
+     */
+    public static function assertFileIsWritable($file, $message = '')
+    {
+        self::assertFileExists($file, $message);
+        self::assertIsWritable($file, $message);
+    }
+
+    /**
+     * Asserts that a file exists and is not writable.
+     *
+     * @param string $file
+     * @param string $message
+     */
+    public static function assertFileNotIsWritable($file, $message = '')
+    {
+        self::assertFileExists($file, $message);
+        self::assertNotIsWritable($file, $message);
     }
 
     /**
@@ -2451,6 +2655,36 @@ abstract class PHPUnit_Framework_Assert
     public static function isEmpty()
     {
         return new PHPUnit_Framework_Constraint_IsEmpty;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_IsWritable matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_IsWritable
+     */
+    public static function isWritable()
+    {
+        return new PHPUnit_Framework_Constraint_IsWritable;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_IsReadable matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_IsReadable
+     */
+    public static function isReadable()
+    {
+        return new PHPUnit_Framework_Constraint_IsReadable;
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_DirectoryExists matcher object.
+     *
+     * @return PHPUnit_Framework_Constraint_DirectoryExists
+     */
+    public static function directoryExists()
+    {
+        return new PHPUnit_Framework_Constraint_DirectoryExists;
     }
 
     /**
