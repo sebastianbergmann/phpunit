@@ -2148,7 +2148,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @return array
      */
-    protected function getCurrentProviderDataSet()
+    protected function getDataSet()
     {
         return $this->data;
     }
