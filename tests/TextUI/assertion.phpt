@@ -3,15 +3,15 @@ phpunit AssertionExampleTest ../_files/AssertionExampleTest.php
 --SKIPIF--
 <?php
 if (PHP_MAJOR_VERSION < 7) {
-    print 'skip: PHP 7 is required';
+    print 'skip: PHP 7 is required' . PHP_EOL;
 }
 
 if (ini_get('zend.assertions') != 1) {
-    print 'skip: zend.assertions=1 is required';
+    print 'skip: zend.assertions=1 is required' . PHP_EOL;
 }
 
 if (ini_get('assert.exception') != 1) {
-    print 'skip: assert.exception=1 is required';
+    print 'skip: assert.exception=1 is required' . PHP_EOL;
 }
 --FILE--
 <?php
