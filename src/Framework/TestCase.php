@@ -944,10 +944,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (!isset($e) || $e instanceof PHPUnit_Framework_RiskyTestError) {
             try {
                 if ($this->outputCallback !== false) {
-                    $this->output = call_user_func_array(
-                        $this->outputCallback,
-                        [$this->output]
-                    );
+                    $this->output = ($this->outputCallback)($this->output);
                 }
 
                 $this->outputCallback = false;
