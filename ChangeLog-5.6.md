@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 5.6 release series are documented in this fil
 
 ### Added
 
+* Merged [#2240](https://github.com/sebastianbergmann/phpunit/pull/2240): Provide access to a test case's data set (for use in `setUp()`, for instance)
 * Merged [#2262](https://github.com/sebastianbergmann/phpunit/pull/2262): Add the `PHPUnit_Framework_Constraint_DirectoryExists`, `PHPUnit_Framework_Constraint_IsReadable`, and `PHPUnit_Framework_Constraint_IsWritable` constraints as well as the `assertIsReadable`, `assertNotIsReadable`, `assertIsWritable`, `assertNotIsWritable`, `assertDirectoryExists`, `assertDirectoryNotExists`, `assertDirectoryIsReadable`, `assertDirectoryNotIsReadable`, `assertDirectoryIsWritable`, `assertDirectoryNotIsWritable`, `assertFileIsReadable`, `assertFileNotIsReadable`, `assertFileIsWritable`, and `assertFileNotIsWritable` assertions
 * Added `PHPUnit\Framework\TestCase::createConfiguredMock()` based on [idea](https://twitter.com/kriswallsmith/status/763550169090625536) by Kris Wallsmith
 * Added the `@doesNotPerformAssertions` annotation for excluding a test from the "useless test" risky test check
