@@ -753,7 +753,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         if ($this->runTestInSeparateProcess === true &&
             $this->inIsolation !== true &&
-            !$this instanceof PHPUnit_Extensions_PhptTestCase) {
+            !$this instanceof PHPUnit_Runner_PhptTestCase) {
             $class = new ReflectionClass($this);
 
             $template = new Text_Template(

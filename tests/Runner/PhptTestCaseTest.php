@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-class Extensions_PhptTestCaseTest extends \PHPUnit_Framework_TestCase
+class Runner_PhptTestCaseTest extends PHPUnit_Framework_TestCase
 {
     const EXPECT_CONTENT = <<<EOF
 --TEST--
@@ -53,7 +53,7 @@ EOF;
 
         $this->phpUtil = $this->getMockForAbstractClass('PHPUnit_Util_PHP', [], '', false);
 
-        $this->testCase = new PHPUnit_Extensions_PhptTestCase($this->filename, $this->phpUtil);
+        $this->testCase = new PHPUnit_Runner_PhptTestCase($this->filename, $this->phpUtil);
     }
 
     protected function tearDown()
@@ -254,7 +254,7 @@ EOF
     }
 }
 
-class PhpTestCaseProxy extends PHPUnit_Extensions_PhptTestCase
+class PhpTestCaseProxy extends PHPUnit_Runner_PhptTestCase
 {
     public function parseIniSection($content)
     {

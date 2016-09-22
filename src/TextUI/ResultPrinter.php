@@ -558,7 +558,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         if ($test instanceof PHPUnit_Framework_TestCase) {
             $this->numAssertions += $test->getNumAssertions();
-        } elseif ($test instanceof PHPUnit_Extensions_PhptTestCase) {
+        } elseif ($test instanceof PHPUnit_Runner_PhptTestCase) {
             $this->numAssertions++;
         }
 

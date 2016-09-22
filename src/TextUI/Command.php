@@ -771,7 +771,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (isset($this->arguments['test']) && is_string($this->arguments['test']) && substr($this->arguments['test'], -5, 5) == '.phpt') {
-            $test = new PHPUnit_Extensions_PhptTestCase($this->arguments['test']);
+            $test = new PHPUnit_Runner_PhptTestCase($this->arguments['test']);
 
             $this->arguments['test'] = new PHPUnit_Framework_TestSuite;
             $this->arguments['test']->addTest($test);

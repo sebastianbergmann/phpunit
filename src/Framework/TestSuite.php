@@ -327,7 +327,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
         if (file_exists($filename) && substr($filename, -5) == '.phpt') {
             $this->addTest(
-                new PHPUnit_Extensions_PhptTestCase($filename)
+                new PHPUnit_Runner_PhptTestCase($filename)
             );
 
             return;
