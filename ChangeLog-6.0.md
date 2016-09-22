@@ -27,9 +27,10 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * Removed `PHPUnit\Framework\TestCase::setExpectedException()` (deprecated in PHPUnit 5.2)
 * Removed `PHPUnit\Framework\TestCase::setExpectedExceptionRegExp()` (deprecated in PHPUnit 5.6)
 * Removed `PHPUnit\Framework\TestCase::hasPerformedExpectationsOnOutput()` (deprecated in PHPUnit 4.3)
+* Removed the `PHPUnit_Extensions_GroupTestSuite` class
+* Removed the `PHPUnit_Extensions_RepeatedTest` class
 * Removed the `PHPUnit_Extensions_TestDecorator` class
 * Removed the `PHPUnit_Extensions_TicketListener` class
-* Removed the `PHPUnit_Extensions_RepeatedTest` class
 * Removed the `PHPUnit_Util_Test::getTickets()` method
 * Removed the `checkForUnintentionallyCoveredCode` configuration setting (deprecated in PHPUnit 5.2)
 * Removed the `--self-update` and `--self-upgrade` commandline options
