@@ -180,15 +180,15 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite->setbeStrictAboutChangesToGlobalState(true);
         }
 
-        if (is_integer($arguments['repeat'])) {
-            $test = new PHPUnit_Extensions_RepeatedTest(
-                $suite,
-                $arguments['repeat'],
-                $arguments['processIsolation']
-            );
+        if (is_integer($arguments['repeat']) && $arguments['repeat'] > 0) {
+            $_suite = new PHPUnit_Framework_TestSuite;
 
-            $suite = new PHPUnit_Framework_TestSuite();
-            $suite->addTest($test);
+            foreach (range(1, $arguments['repeat']) as $step) {
+                $_suite->addTest($suite);
+            }
+
+            $suite = $_suite;
+            unset($_suite);
         }
 
         $result = $this->createTestResult();
