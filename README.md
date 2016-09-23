@@ -12,11 +12,10 @@
 
 ## Installation
 
-To add PHPUnit_MockObject as a local, per-project dependency to your project, simply add a dependency on `phpunit/phpunit-mock-objects` to your project's `composer.json` file. Here is a minimal example of a `composer.json` file that just defines a dependency on PHPUnit_MockObject 3.1:
+To add PHPUnit_MockObject as a local, per-project dependency to your project, simply add a dependency on `phpunit/phpunit-mock-objects` to your project's `composer.json`. Here is a minimal example how to add a dependency on PHPUnit_MockObject to your project using composer:
 
-    {
-        "require": {
-            "phpunit/phpunit-mock-objects": "~3.1"
-        }
-    }
+    composer require phpunit/phpunit-mock-objects
 
+If you need to add PHPUnit_MockObject as a developer dependency, you need to add `--dev` to your composer command:
+
+    composer require --dev phpunit/phpunit-mock-objects
