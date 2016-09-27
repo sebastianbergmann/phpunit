@@ -1052,10 +1052,17 @@ class PHPUnit_Framework_MockObject_Generator
         if ($static) {
             $templateFile = 'mocked_static_method.tpl';
         } else {
-            $templateFile = sprintf(
-                '%s_method.tpl',
-                $callOriginalMethods ? 'proxied' : 'mocked'
-            );
+            if ($return_type === 'void') {
+                $templateFile = sprintf(
+                    '%s_method_void.tpl',
+                    $callOriginalMethods ? 'proxied' : 'mocked'
+                );
+            } else {
+                $templateFile = sprintf(
+                    '%s_method.tpl',
+                    $callOriginalMethods ? 'proxied' : 'mocked'
+                );
+            }
         }
 
         // Mocked interfaces returning 'self' must explicitly declare the
