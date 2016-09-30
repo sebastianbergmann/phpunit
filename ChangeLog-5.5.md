@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.5 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2261](https://github.com/sebastianbergmann/phpunit/issues/2261): Invalid test listener configuration leads to confusing behavior
+* Fixed [#2309](https://github.com/sebastianbergmann/phpunit/pull/2309): `PHPUnit\Framework\TestCase` is not declared `abstract`
 
 ## [5.5.5] - 2016-09-21
 
