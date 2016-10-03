@@ -12,7 +12,11 @@
 
 ## Installation
 
-To add this library as a local, per-project, development-time dependency to your project using [Composer](https://getcomposer.org/), simply add a dependency on `phpunit/phpunit-mock-objects` to your project's `composer.json`:
+To add this library as a local, per-project dependency to your project using [Composer](https://getcomposer.org/), simply add a dependency on `phpunit/phpunit-mock-objects` to your project's `composer.json`:
+
+    composer require phpunit/phpunit-mock-objects
+
+If you only need this library during development, for instance to run your project's test suite, then you should add it as a development-time dependency:
 
     composer require --dev phpunit/phpunit-mock-objects
 
