@@ -265,7 +265,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage array or ArrayAccess
+     * @expectedExceptionMessage array
      * @dataProvider assertArraySubsetInvalidArgumentProvider
      */
     public function testAssertArraySubsetRaisesExceptionForInvalidArguments($partial, $subject)

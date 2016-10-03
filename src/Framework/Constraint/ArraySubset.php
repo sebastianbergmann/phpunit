@@ -19,7 +19,7 @@
 class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constraint
 {
     /**
-     * @var array|ArrayAccess
+     * @var array
      */
     protected $subset;
 
@@ -29,8 +29,8 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
     protected $strict;
 
     /**
-     * @param array|ArrayAccess $subset
-     * @param bool              $strict Check for object identity
+     * @param array $subset
+     * @param bool  $strict Check for object identity
      */
     public function __construct($subset, $strict = false)
     {
@@ -43,7 +43,7 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param array|ArrayAccess $other Array or ArrayAccess object to evaluate.
+     * @param array $other Array to evaluate.
      *
      * @return bool
      */
