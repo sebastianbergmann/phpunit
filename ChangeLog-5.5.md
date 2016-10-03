@@ -2,7 +2,17 @@
 
 All notable changes of the PHPUnit 5.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.5.7] - 2016-10-03
+
+### Changed
+
+* Reverted [#2300](https://github.com/sebastianbergmann/phpunit/issues/2300): Exclude tests from package distribution
+
 ## [5.5.6] - 2016-10-03
+
+### Changed
+
+* Implemented [#2300](https://github.com/sebastianbergmann/phpunit/issues/2300): Exclude tests from package distribution
 
 ### Fixed
 
@@ -53,6 +63,7 @@ New release of PHPUnit as PHAR with updated dependencies
 
 * An `AssertionError` raised by an `assert()` in the tested code now causes the test to be interpreted as a failure instead of an error
 
+[5.5.7]: https://github.com/sebastianbergmann/phpunit/compare/5.5.6...5.5.7
 [5.5.6]: https://github.com/sebastianbergmann/phpunit/compare/5.5.5...5.5.6
 [5.5.5]: https://github.com/sebastianbergmann/phpunit/compare/5.5.4...5.5.5
 [5.5.4]: https://github.com/sebastianbergmann/phpunit/compare/5.5.3...5.5.4
