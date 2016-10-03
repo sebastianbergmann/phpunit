@@ -12,7 +12,7 @@
 
 ## Installation
 
-To add this library as a local, per-project dependency to your project using [Composer](https://getcomposer.org/), simply add a dependency on `phpunit/phpunit-mock-objects` to your project's `composer.json`:
+You can add this library as a local, per-project dependency to your project using [Composer](https://getcomposer.org/):
 
     composer require phpunit/phpunit-mock-objects
 
