@@ -121,6 +121,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
             case 'int':    return 0;
             case 'bool':   return false;
             case 'array':  return [];
+            case 'void':   return;
 
             case 'callable':
             case 'Closure':
