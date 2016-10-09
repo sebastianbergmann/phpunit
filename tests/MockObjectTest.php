@@ -163,13 +163,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->method('doSomething')
              ->will($this->throwException(new Exception));
 
-        try {
-            $mock->doSomething();
-        } catch (Exception $e) {
-            return;
-        }
+        $this->expectException(Exception::class);
 
-        $this->fail();
+        $mock->doSomething();
     }
 
     public function testStubbedWillThrowException()
@@ -181,13 +177,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->method('doSomething')
              ->willThrowException(new Exception);
 
-        try {
-            $mock->doSomething();
-        } catch (Exception $e) {
-            return;
-        }
+        $this->expectException(Exception::class);
 
-        $this->fail();
+        $mock->doSomething();
     }
 
     public function testStubbedReturnValue()
@@ -877,7 +869,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
             ->with($a, $b, $c)
             ->will($this->returnCallback([$foo, 'callback']));
 
-        $foo->bar($a, $b, $c);
+        $this->assertNull($foo->bar($a, $b, $c));
     }
 
     /**
@@ -899,7 +891,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
             ->with($this->isInstanceOf(stdClass::class), $b, $c)
             ->will($this->returnCallback([$foo, 'callback']));
 
-        $foo->bar($a, $b, $c);
+        $this->assertNull($foo->bar($a, $b, $c));
     }
 
     /**
@@ -933,8 +925,11 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
      */
     public function testCreateTwoMocksOfOneWsdlFile()
     {
-        $mock = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl');
-        $mock = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl');
+        $a = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl');
+        $b = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl');
+
+        $this->assertStringStartsWith('Mock_GoogleSearch_', get_class($a));
+        $this->assertEquals(get_class($a), get_class($b));
     }
 
     /**

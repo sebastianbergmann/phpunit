@@ -14,8 +14,8 @@ class Framework_MockObject_Matcher_ConsecutiveParametersTest extends PHPUnit_Fra
                  [21, 42]
              );
 
-        $mock->foo('bar');
-        $mock->foo(21, 42);
+        $this->assertNull($mock->foo('bar'));
+        $this->assertNull($mock->foo(21, 42));
     }
 
     public function testIntegrationWithLessAssertionsThanMethodCalls()
@@ -30,8 +30,8 @@ class Framework_MockObject_Matcher_ConsecutiveParametersTest extends PHPUnit_Fra
                  ['bar']
              );
 
-        $mock->foo('bar');
-        $mock->foo(21, 42);
+        $this->assertNull($mock->foo('bar'));
+        $this->assertNull($mock->foo(21, 42));
     }
 
     public function testIntegrationExpectingException()
