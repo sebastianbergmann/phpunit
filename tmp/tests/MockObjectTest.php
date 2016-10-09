@@ -29,6 +29,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->with('someArg');
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testMockedMethodIsNotCalledWhenExpectsAnyWithParameter()
     {
         $mock = $this->getMockBuilder(SomeClass::class)
@@ -39,6 +42,9 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
              ->with('someArg');
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testMockedMethodIsNotCalledWhenMethodSpecifiedDirectlyWithParameter()
     {
         $mock = $this->getMockBuilder(SomeClass::class)
