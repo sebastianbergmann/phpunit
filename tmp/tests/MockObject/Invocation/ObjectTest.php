@@ -3,12 +3,15 @@ class Framework_MockObject_Invocation_ObjectTest extends PHPUnit_Framework_TestC
 {
     public function testConstructorRequiresClassAndMethodAndParametersAndObject()
     {
-        new PHPUnit_Framework_MockObject_Invocation_Object(
-            'FooClass',
-            'FooMethod',
-            ['an_argument'],
-            'ReturnType',
-            new stdClass
+        $this->assertInstanceOf(
+            PHPUnit_Framework_MockObject_Invocation_Object::class,
+            new PHPUnit_Framework_MockObject_Invocation_Object(
+                'FooClass',
+                'FooMethod',
+                ['an_argument'],
+                'ReturnType',
+                new stdClass
+            )
         );
     }
 

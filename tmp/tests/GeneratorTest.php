@@ -188,7 +188,11 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
      */
     public function testCanImplementInterfacesThatHaveMethodsWithReturnTypes()
     {
-        $this->generator->getMock([AnInterfaceWithReturnType::class, AnInterface::class]);
+        $stub = $this->generator->getMock([AnInterfaceWithReturnType::class, AnInterface::class]);
+
+        $this->assertInstanceOf(AnInterfaceWithReturnType::class, $stub);
+        $this->assertInstanceOf(AnInterface::class, $stub);
+        $this->assertInstanceOf(PHPUnit_Framework_MockObject_MockObject::class, $stub);
     }
 
     /**
@@ -216,6 +220,6 @@ class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
 
         $mock->expects($this->once())->method('someMethod');
 
-        $mock->someMethod();
+        $this->assertNull($mock->someMethod());
     }
 }
