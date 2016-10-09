@@ -10,6 +10,7 @@
          verbose="true">
     <testsuite>
         <directory suffix="Test.php">tests</directory>
+        <directory suffix=".phpt">tests</directory>
     </testsuite>
 
     <filter>
