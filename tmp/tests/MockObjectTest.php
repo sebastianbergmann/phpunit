@@ -857,7 +857,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * https://github.com/sebastianbergmann/phpunit-mock-objects/issues/116
+     * @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/116
      */
     public function testMockArgumentsPassedByReference3()
     {
@@ -879,7 +879,7 @@ class Framework_MockObjectTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * https://github.com/sebastianbergmann/phpunit/issues/796
+     * @see https://github.com/sebastianbergmann/phpunit/issues/796
      */
     public function testMockArgumentsPassedByReference4()
     {
