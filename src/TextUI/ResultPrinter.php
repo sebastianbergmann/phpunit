@@ -563,12 +563,14 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         }
 
         $this->lastTestFailed = false;
-
+        
         if ($test instanceof PHPUnit_Framework_TestCase) {
             if (!$test->hasExpectationOnOutput()) {
                 $this->write($test->getActualOutput());
             }
         }
+        
+        $this->writeProgressSummary();
     }
 
     /**
@@ -579,7 +581,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
         $this->write($progress);
         $this->column++;
         $this->numTestsRun++;
-
+    }
+    
+    protected function writeProgressSummary() {
         if ($this->column == $this->maxColumn
             || $this->numTestsRun == $this->numTests
         ) {
