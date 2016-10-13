@@ -39,7 +39,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     protected function writeProgress($progress)
     {
     }
-    
+
     protected function writeProgressSummary()
     {
     }

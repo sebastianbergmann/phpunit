@@ -5,7 +5,7 @@ class ResultPrinterDebugOutputTestCase extends PHPUnit_Framework_TestCase
     {
         print 'foo';
     }
-    
+
     public function testEchoStringBar()
     {
         echo 'bar';
