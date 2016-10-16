@@ -96,12 +96,17 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
             return true;
         }
 
-        $tmp = PHPUnit_Util_Test::describe($test, false);
+        if ($test instanceof PHPUnit_Framework_WarningTestCase) {
+            $name = $test->getMessage();
+        }
+        else {
+            $tmp = PHPUnit_Util_Test::describe($test, false);
 
-        if ($tmp[0] != '') {
-            $name = implode('::', $tmp);
-        } else {
-            $name = $tmp[1];
+            if ($tmp[0] != '') {
+                $name = implode('::', $tmp);
+            } else {
+                $name = $tmp[1];
+            }
         }
 
         $accepted = @preg_match($this->filter, $name, $matches);
