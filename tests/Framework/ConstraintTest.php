@@ -2740,6 +2740,74 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringContains
      * @covers PHPUnit_Framework_Assert::stringContains
+     * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintStringContainsWhenIgnoreCase()
+    {
+        $constraint = PHPUnit_Framework_Assert::stringContains('oryginał', true);
+
+        $this->assertFalse($constraint->evaluate('oryginal', '', true));
+        $this->assertTrue($constraint->evaluate('ORYGINAŁ', '', true));
+        $this->assertTrue($constraint->evaluate('oryginał', '', true));
+        $this->assertEquals('contains "oryginał"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate('oryginal');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that 'oryginal' contains "oryginał".
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringContains
+     * @covers PHPUnit_Framework_Assert::stringContains
+     * @covers PHPUnit_Framework_Constraint::count
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintStringContainsForUtf8StringWhenNotIgnoreCase()
+    {
+        $constraint = PHPUnit_Framework_Assert::stringContains('oryginał', false);
+
+        $this->assertFalse($constraint->evaluate('oryginal', '', true));
+        $this->assertFalse($constraint->evaluate('ORYGINAŁ', '', true));
+        $this->assertTrue($constraint->evaluate('oryginał', '', true));
+        $this->assertEquals('contains "oryginał"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate('oryginal');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that 'oryginal' contains "oryginał".
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringContains
+     * @covers PHPUnit_Framework_Assert::stringContains
      * @covers PHPUnit_Framework_TestFailure::exceptionToString
      */
     public function testConstraintStringContains2()
@@ -2793,6 +2861,80 @@ Failed asserting that 'barfoobar' does not contain "foo".
 EOF
               ,
               PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringContains
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::stringContains
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintStringNotContainsWhenIgnoreCase()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+            PHPUnit_Framework_Assert::stringContains('oryginał')
+        );
+
+        $this->assertTrue($constraint->evaluate('original', '', true));
+        $this->assertFalse($constraint->evaluate('ORYGINAŁ', '', true));
+        $this->assertFalse($constraint->evaluate('oryginał', '', true));
+        $this->assertEquals('does not contain "oryginał"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate('ORYGINAŁ');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that 'ORYGINAŁ' does not contain "oryginał".
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Constraint_StringContains
+     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers PHPUnit_Framework_Assert::stringContains
+     * @covers PHPUnit_Framework_Assert::logicalNot
+     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     */
+    public function testConstraintStringNotContainsForUtf8StringWhenNotIgnoreCase()
+    {
+        $constraint = PHPUnit_Framework_Assert::logicalNot(
+            PHPUnit_Framework_Assert::stringContains('oryginał', false)
+        );
+
+        $this->assertTrue($constraint->evaluate('original', '', true));
+        $this->assertTrue($constraint->evaluate('ORYGINAŁ', '', true));
+        $this->assertFalse($constraint->evaluate('oryginał', '', true));
+        $this->assertEquals('does not contain "oryginał"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        try {
+            $constraint->evaluate('oryginał');
+        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that 'oryginał' does not contain "oryginał".
+
+EOF
+                ,
+                PHPUnit_Framework_TestFailure::exceptionToString($e)
             );
 
             return;
