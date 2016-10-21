@@ -15,6 +15,10 @@
  */
 class PHPUnit_Util_Type
 {
+    /**
+     * @param string $type
+     * @return bool
+     */
     public static function isType($type)
     {
         return in_array(
