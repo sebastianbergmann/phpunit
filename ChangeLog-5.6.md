@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 5.6 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.6.2] - 2016-10-25
+
+New PHAR release due to updated dependencies
+
 ## [5.6.1] - 2016-10-07
 
 ### Fixed
@@ -22,6 +26,7 @@ All notable changes of the PHPUnit 5.6 release series are documented in this fil
 * Deprecated `PHPUnit\Framework\TestCase::setExpectedExceptionRegExp()`
 * `PHPUnit_Util_Printer` no longer optionally cleans up HTML output using `ext/tidy`
 
+[5.6.2]: https://github.com/sebastianbergmann/phpunit/compare/5.6.1...5.6.2
 [5.6.1]: https://github.com/sebastianbergmann/phpunit/compare/5.6.0...5.6.1
 [5.6.0]: https://github.com/sebastianbergmann/phpunit/compare/5.5...5.6.0
 
