@@ -613,6 +613,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function expectExceptionCode($code)
     {
+        if (!$this->expectedException) {
+            $this->expectedException = \Exception::class;
+        }
+
         if (!is_int($code) && !is_string($code)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer or string');
         }
@@ -629,6 +633,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function expectExceptionMessage($message)
     {
+        if (!$this->expectedException) {
+            $this->expectedException = \Exception::class;
+        }
+
         if (!is_string($message)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
