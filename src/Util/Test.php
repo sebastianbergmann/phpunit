@@ -379,8 +379,8 @@ class PHPUnit_Util_Test
      * @param string $className
      * @param string $methodName
      *
-     * @return array|Iterator when a data provider is specified and exists
-     *                        null           when no data provider is specified
+     * @return array When a data provider is specified and exists
+     *         null  When no data provider is specified
      *
      * @throws PHPUnit_Framework_Exception
      *
@@ -401,10 +401,6 @@ class PHPUnit_Util_Test
         }
 
         if ($data !== null) {
-            if (is_object($data)) {
-                $data = iterator_to_array($data);
-            }
-
             foreach ($data as $key => $value) {
                 if (!is_array($value)) {
                     throw new PHPUnit_Framework_Exception(
@@ -476,6 +472,9 @@ class PHPUnit_Util_Test
                 }
 
                 if (is_array($data)) {
+                    $result = array_merge($result, $data);
+                } elseif ($data instanceof \Iterator) {
+                    $data = iterator_to_array($data);
                     $result = array_merge($result, $data);
                 }
             }
