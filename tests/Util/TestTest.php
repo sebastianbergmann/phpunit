@@ -877,4 +877,29 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
           ]
         ];
     }
+
+    public function testParseTestMethodAnnotationsIncorporatesTraits()
+    {
+        $result = PHPUnit_Util_Test::parseTestMethodAnnotations(ParseTestMethodAnnotationsMock::class);
+
+        $this->assertArrayHasKey('class', $result);
+        $this->assertArrayHasKey('method', $result);
+        $this->assertArrayHasKey('theClassAnnotation', $result['class']);
+        $this->assertArrayHasKey('theTraitAnnotation', $result['class']);
+    }
+}
+
+/**
+ * @theClassAnnotation
+ */
+class ParseTestMethodAnnotationsMock {
+    use ParseTestMethodAnnotationsTrait;
+}
+
+/**
+ * @theTraitAnnotation
+ */
+trait ParseTestMethodAnnotationsTrait
+{
+
 }
