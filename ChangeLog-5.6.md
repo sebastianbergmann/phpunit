@@ -32,6 +32,7 @@ New PHAR release due to updated dependencies
 * Deprecated `PHPUnit\Framework\TestCase::setExpectedExceptionRegExp()`
 * `PHPUnit_Util_Printer` no longer optionally cleans up HTML output using `ext/tidy`
 
+[5.6.3]: https://github.com/sebastianbergmann/phpunit/compare/5.6.2...5.6.3
 [5.6.2]: https://github.com/sebastianbergmann/phpunit/compare/5.6.1...5.6.2
 [5.6.1]: https://github.com/sebastianbergmann/phpunit/compare/5.6.0...5.6.1
 [5.6.0]: https://github.com/sebastianbergmann/phpunit/compare/5.5...5.6.0
