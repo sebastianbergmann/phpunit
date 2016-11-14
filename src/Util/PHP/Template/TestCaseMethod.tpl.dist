@@ -58,7 +58,7 @@ function __phpunit_run_isolated_test()
         $output = $test->getActualOutput();
     }
 
-    rewind(STDOUT);
+    @rewind(STDOUT); /* @ as not every STDOUT target stream is rewindable */
     if ($stdout = stream_get_contents(STDOUT)) {
         $output = $stdout . $output;
     }
