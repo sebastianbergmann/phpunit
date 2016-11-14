@@ -1,3 +1,3 @@
 <?php
 
-eval('?>' . file_get_contents('php://input'));
+eval('?>' . file_get_contents('php://stdin'));
