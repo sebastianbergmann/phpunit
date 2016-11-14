@@ -202,6 +202,7 @@ New PHAR release due to updated dependencies
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.28]: https://github.com/sebastianbergmann/phpunit/compare/4.8.27...4.8.28
 [4.8.27]: https://github.com/sebastianbergmann/phpunit/compare/4.8.26...4.8.27
 [4.8.26]: https://github.com/sebastianbergmann/phpunit/compare/4.8.25...4.8.26
 [4.8.25]: https://github.com/sebastianbergmann/phpunit/compare/4.8.24...4.8.25
