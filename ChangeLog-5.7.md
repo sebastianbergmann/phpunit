@@ -8,5 +8,9 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 
 * Merged [#2223](https://github.com/sebastianbergmann/phpunit/pull/2223): Add support for multiple data providers
 
+### Changed
+
+* The `--self-update` and `--self-upgrade` command-line options have been deprecated (PHAR binary only)
+
 [5.7.0]: https://github.com/sebastianbergmann/phpunit/compare/5.6...5.7.0
 

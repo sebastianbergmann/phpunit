@@ -912,6 +912,12 @@ class PHPUnit_TextUI_Command
     {
         $this->printVersionString();
 
+        if ($upgrade) {
+            print "Warning: Deprecated --self-upgrade used\n\n";
+        } else {
+            print "Warning: Deprecated --self-update used\n\n";
+        }
+
         $localFilename = realpath($_SERVER['argv'][0]);
 
         if (!is_writable($localFilename)) {
@@ -1113,8 +1119,6 @@ EOT;
 
         if (defined('__PHPUNIT_PHAR__')) {
             print "\n  --check-version           Check whether PHPUnit is the latest version.";
-            print "\n  --self-update             Update PHPUnit to the latest version within the same\n                            release series.\n";
-            print "\n  --self-upgrade            Upgrade PHPUnit to the latest version.\n";
         }
     }
 
