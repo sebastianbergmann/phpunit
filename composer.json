@@ -47,7 +47,9 @@
         "ext-PDO": "*"
     },
     "conflict": {
-        "phpdocumentor/reflection-docblock": "3.0.2"
+        "phpdocumentor/reflection-docblock": "3.0.2",
+        "sebastian/object-enumerator": "1.0.1",
+        "sebastian/recursion-context": "1.0.3 || 1.0.4"
     },
     "config": {
         "platform": {
