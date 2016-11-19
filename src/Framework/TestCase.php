@@ -2215,7 +2215,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @return PHPUnit_Framework_MockObject_Generator
      */
-    protected function getMockObjectGenerator()
+    private function getMockObjectGenerator()
     {
         if (null === $this->mockObjectGenerator) {
             $this->mockObjectGenerator = new PHPUnit_Framework_MockObject_Generator;
