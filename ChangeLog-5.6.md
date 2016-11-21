@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 5.6 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.6.5] - 2016-MM-DD
+## [5.6.5] - 2016-11-21
 
 ### Fixed
 
