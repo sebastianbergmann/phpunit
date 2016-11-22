@@ -45,7 +45,13 @@
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
         <exec executable="${basedir}/build/tools/composer" taskname="composer">
             <env key="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
-            <arg value="install"/>
+            <arg value="update"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+            <arg value="--no-suggest"/>
+            <arg value="--optimize-autoloader"/>
+            <arg value="--prefer-stable"/>
         </exec>
     </target>
 
