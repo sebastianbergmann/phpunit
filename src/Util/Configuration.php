@@ -113,7 +113,6 @@
  *     <log type="coverage-crap4j" target="/tmp/crap.xml" threshold="30"/>
  *     <log type="json" target="/tmp/logfile.json"/>
  *     <log type="plain" target="/tmp/logfile.txt"/>
- *     <log type="tap" target="/tmp/logfile.tap"/>
  *     <log type="teamcity" target="/tmp/logfile.txt"/>
  *     <log type="junit" target="/tmp/logfile.xml"/>
  *     <log type="testdox-html" target="/tmp/testdox.html"/>

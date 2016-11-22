@@ -261,31 +261,29 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
-            $this->printer->write(
-                PHPUnit_Runner_Version::getVersionString() . "\n"
-            );
+        $this->printer->write(
+            PHPUnit_Runner_Version::getVersionString() . "\n"
+        );
 
-            self::$versionStringPrinted = true;
+        self::$versionStringPrinted = true;
 
-            if ($arguments['verbose']) {
-                $runtime = $this->runtime->getNameWithVersion();
+        if ($arguments['verbose']) {
+            $runtime = $this->runtime->getNameWithVersion();
 
-                if ($this->runtime->hasXdebug()) {
-                    $runtime .= sprintf(
-                        ' with Xdebug %s',
-                        phpversion('xdebug')
-                    );
-                }
+            if ($this->runtime->hasXdebug()) {
+                $runtime .= sprintf(
+                    ' with Xdebug %s',
+                    phpversion('xdebug')
+                );
+            }
 
-                $this->writeMessage('Runtime', $runtime);
+            $this->writeMessage('Runtime', $runtime);
 
-                if (isset($arguments['configuration'])) {
-                    $this->writeMessage(
-                        'Configuration',
-                        $arguments['configuration']->getFilename()
-                    );
-                }
+            if (isset($arguments['configuration'])) {
+                $this->writeMessage(
+                    'Configuration',
+                    $arguments['configuration']->getFilename()
+                );
             }
         }
 
@@ -365,9 +363,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
         }
 
-        if (!$this->printer instanceof PHPUnit_Util_Log_TAP) {
-            $this->printer->write("\n");
-        }
+        $this->printer->write("\n");
 
         if ($codeCoverageReports > 0) {
             $codeCoverage = new CodeCoverage(
@@ -421,12 +417,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         if (isset($arguments['jsonLogfile'])) {
             $result->addListener(
                 new PHPUnit_Util_Log_JSON($arguments['jsonLogfile'])
-            );
-        }
-
-        if (isset($arguments['tapLogfile'])) {
-            $result->addListener(
-                new PHPUnit_Util_Log_TAP($arguments['tapLogfile'])
             );
         }
 
@@ -972,11 +962,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $loggingConfiguration['plain'],
                     true
                 );
-            }
-
-            if (isset($loggingConfiguration['tap']) &&
-                !isset($arguments['tapLogfile'])) {
-                $arguments['tapLogfile'] = $loggingConfiguration['tap'];
             }
 
             if (isset($loggingConfiguration['teamcity']) &&

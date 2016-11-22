@@ -63,7 +63,6 @@ class PHPUnit_TextUI_Command
         'loader='                    => null,
         'log-json='                  => null,
         'log-junit='                 => null,
-        'log-tap='                   => null,
         'log-teamcity='              => null,
         'no-configuration'           => null,
         'no-coverage'                => null,
@@ -85,7 +84,6 @@ class PHPUnit_TextUI_Command
         'strict-coverage'            => null,
         'disable-coverage-ignore'    => null,
         'strict-global-state'        => null,
-        'tap'                        => null,
         'teamcity'                   => null,
         'testdox'                    => null,
         'testdox-group='             => null,
@@ -449,10 +447,6 @@ class PHPUnit_TextUI_Command
                     $this->arguments['junitLogfile'] = $option[1];
                     break;
 
-                case '--log-tap':
-                    $this->arguments['tapLogfile'] = $option[1];
-                    break;
-
                 case '--log-teamcity':
                     $this->arguments['teamcityLogfile'] = $option[1];
                     break;
@@ -499,10 +493,6 @@ class PHPUnit_TextUI_Command
 
                 case '--fail-on-risky':
                     $this->arguments['failOnRisky'] = true;
-                    break;
-
-                case '--tap':
-                    $this->arguments['printer'] = 'PHPUnit_Util_Log_TAP';
                     break;
 
                 case '--teamcity':
@@ -937,7 +927,6 @@ Code Coverage Options:
 Logging Options:
 
   --log-junit <file>          Log test execution in JUnit XML format to file.
-  --log-tap <file>            Log test execution in TAP format to file.
   --log-teamcity <file>       Log test execution in TeamCity format to file.
   --log-json <file>           Log test execution in JSON format.
   --testdox-html <file>       Write agile documentation in HTML format to file.
@@ -987,7 +976,6 @@ Test Execution Options:
 
   --loader <loader>           TestSuiteLoader implementation to use.
   --repeat <times>            Runs the test(s) repeatedly.
-  --tap                       Report test execution progress in TAP format.
   --teamcity                  Report test execution progress in TeamCity format.
   --testdox                   Report test execution progress in TestDox format.
   --testdox-group             Only include tests from the specified group(s).

@@ -240,14 +240,6 @@
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/symfony/yaml/LICENSE" tofile="${basedir}/build/phar/symfony/LICENSE"/>
-        <copy todir="${basedir}/build/phar/symfony">
-            <fileset dir="${basedir}/vendor/symfony">
-                <include name="**/*.php" />
-                <exclude name="**/Tests/**" />
-            </fileset>
-        </copy>
-
         <copy todir="${basedir}/build/phar/dbunit">
             <fileset dir="${basedir}/vendor/phpunit/dbunit/src">
                 <include name="**/*.php" />
