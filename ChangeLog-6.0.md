@@ -38,11 +38,11 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * Removed the `PHPUnit_Util_Log_TAP` class
 * Removed the `PHPUnit_Util_Test::getTickets()` method
 * Removed the `checkForUnintentionallyCoveredCode` configuration setting (deprecated in PHPUnit 5.2)
-* Removed the `--log-json` commandline option
-* Removed the `--log-tap` and `--tap` commandline options
+* Removed the `--log-json` commandline option (deprecated in PHPUnit 5.7)
+* Removed the `--log-tap` and `--tap` commandline options (deprecated in PHPUnit 5.7)
 * Removed the `--no-globals-backup` commandline option
 * Removed the `--report-useless-tests` commandline option
-* Removed the `--self-update` and `--self-upgrade` commandline options
+* Removed the `--self-update` and `--self-upgrade` commandline options (deprecated in PHPUnit 5.7)
 * PHPUnit is no longer supported on PHP 5.6
 
 [6.0.0]: https://github.com/sebastianbergmann/phpunit/compare/5.7...6.0.0
