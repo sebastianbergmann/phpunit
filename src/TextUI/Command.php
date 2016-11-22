@@ -61,7 +61,6 @@ class PHPUnit_TextUI_Command
         'list-groups'                => null,
         'list-suites'                => null,
         'loader='                    => null,
-        'log-json='                  => null,
         'log-junit='                 => null,
         'log-teamcity='              => null,
         'no-configuration'           => null,
@@ -437,10 +436,6 @@ class PHPUnit_TextUI_Command
 
                 case '--loader':
                     $this->arguments['loader'] = $option[1];
-                    break;
-
-                case '--log-json':
-                    $this->arguments['jsonLogfile'] = $option[1];
                     break;
 
                 case '--log-junit':
@@ -928,7 +923,6 @@ Logging Options:
 
   --log-junit <file>          Log test execution in JUnit XML format to file.
   --log-teamcity <file>       Log test execution in TeamCity format to file.
-  --log-json <file>           Log test execution in JSON format.
   --testdox-html <file>       Write agile documentation in HTML format to file.
   --testdox-text <file>       Write agile documentation in Text format to file.
   --testdox-xml <file>        Write agile documentation in XML format to file.

@@ -285,10 +285,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['configuration']->getFilename()
                 );
             }
-
-            if (isset($arguments['jsonLogfile'])) {
-                $this->writeMessage('Warning', 'Deprecated JSON test listener used');
-            }
         }
 
         foreach ($arguments['listeners'] as $listener) {
@@ -416,12 +412,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['cacheTokens'])) {
                 $codeCoverage->setCacheTokens($arguments['cacheTokens']);
             }
-        }
-
-        if (isset($arguments['jsonLogfile'])) {
-            $result->addListener(
-                new PHPUnit_Util_Log_JSON($arguments['jsonLogfile'])
-            );
         }
 
         if (isset($arguments['teamcityLogfile'])) {
@@ -954,11 +944,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($loggingConfiguration['coverage-xml']) &&
                 !isset($arguments['coverageXml'])) {
                 $arguments['coverageXml'] = $loggingConfiguration['coverage-xml'];
-            }
-
-            if (isset($loggingConfiguration['json']) &&
-                !isset($arguments['jsonLogfile'])) {
-                $arguments['jsonLogfile'] = $loggingConfiguration['json'];
             }
 
             if (isset($loggingConfiguration['plain'])) {
