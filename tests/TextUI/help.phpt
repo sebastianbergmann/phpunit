@@ -28,7 +28,6 @@ Logging Options:
 
   --log-junit <file>        Log test execution in JUnit XML format to file.
   --log-teamcity <file>     Log test execution in TeamCity format to file.
-  --log-json <file>         Log test execution in JSON format.
   --testdox-html <file>     Write agile documentation in HTML format to file.
   --testdox-text <file>     Write agile documentation in Text format to file.
   --testdox-xml <file>      Write agile documentation in XML format to file.
