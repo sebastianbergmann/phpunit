@@ -289,7 +289,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             if (isset($arguments['deprecatedCheckForUnintentionallyCoveredCodeSettingUsed'])) {
-                print "Warning:       Deprecated configuration setting \"checkForUnintentionallyCoveredCode\" used\n";
+                $this->writeMessage('Warning', 'Deprecated configuration setting "checkForUnintentionallyCoveredCode" used');
+            }
+
+            if (isset($arguments['tapLogfile'])) {
+                $this->writeMessage('Warning', 'Deprecated TAP test listener used');
             }
         }
 
