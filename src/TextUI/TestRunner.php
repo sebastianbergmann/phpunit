@@ -285,6 +285,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['configuration']->getFilename()
                 );
             }
+
+            if (isset($arguments['jsonLogfile'])) {
+                $this->writeMessage('Warning', 'Deprecated JSON test listener used');
+            }
         }
 
         foreach ($arguments['listeners'] as $listener) {
