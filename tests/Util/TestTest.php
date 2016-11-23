@@ -72,7 +72,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertArraySubset(
-          array(['class' => 'Class', 'code' => 'ExceptionTest::ERROR_CODE', 'message' => 'ExceptionTest::ERROR_MESSAGE'),
+          array('class' => 'Class', 'code' => 'ExceptionTest::ERROR_CODE', 'message' => 'ExceptionTest::ERROR_MESSAGE'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testNine')
         );
 
