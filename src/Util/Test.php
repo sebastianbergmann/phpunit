@@ -318,29 +318,17 @@ class PHPUnit_Util_Test
             if (isset($matches[2])) {
                 $message = trim($matches[2]);
             } elseif (isset($annotations['method']['expectedExceptionMessage'])) {
-                $message = self::parseAnnotationContent(
-                    $annotations['method']['expectedExceptionMessage'][0]
-                );
+                $message = $annotations['method']['expectedExceptionMessage'][0];
             }
 
             if (isset($annotations['method']['expectedExceptionMessageRegExp'])) {
-                $messageRegExp = self::parseAnnotationContent(
-                    $annotations['method']['expectedExceptionMessageRegExp'][0]
-                );
+                $messageRegExp = $annotations['method']['expectedExceptionMessageRegExp'][0];
             }
 
             if (isset($matches[3])) {
                 $code = $matches[3];
             } elseif (isset($annotations['method']['expectedExceptionCode'])) {
-                $code = self::parseAnnotationContent(
-                    $annotations['method']['expectedExceptionCode'][0]
-                );
-            }
-
-            if (is_numeric($code)) {
-                $code = (int) $code;
-            } elseif (is_string($code) && defined($code)) {
-                $code = (int) constant($code);
+                $code = $annotations['method']['expectedExceptionCode'][0];
             }
 
             return [
@@ -349,28 +337,6 @@ class PHPUnit_Util_Test
         }
 
         return false;
-    }
-
-    /**
-     * Parse annotation content to use constant/class constant values
-     *
-     * Constants are specified using a starting '@'. For example: @ClassName::CONST_NAME
-     *
-     * If the constant is not found the string is used as is to ensure maximum BC.
-     *
-     * @param string $message
-     *
-     * @return string
-     */
-    private static function parseAnnotationContent($message)
-    {
-        if (strpos($message, '::') !== false && count(explode('::', $message)) == 2) {
-            if (defined($message)) {
-                $message = constant($message);
-            }
-        }
-
-        return $message;
     }
 
     /**
