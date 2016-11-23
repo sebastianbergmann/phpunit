@@ -969,9 +969,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
                     $this->assertThat(
                         $e,
-                        new PHPUnit_Framework_Constraint_ExceptionCode(
-                            new PHPUnit_Framework_Constraint_ExceptionCode($code)
-                        )
+                        new PHPUnit_Framework_Constraint_ExceptionCode($code)
                     );
                 }
 
