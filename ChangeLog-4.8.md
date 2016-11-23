@@ -2,11 +2,42 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [4.8.25] - 2016-MM-DD
+## [4.8.30] - 2016-MM-DD
+
+### Fixed
+
+* Fixed [#2367](https://github.com/sebastianbergmann/phpunit/pull/2367): Bug in `PHPUnit_Util_Test::parseAnnotationContent()`
+
+## [4.8.29] - 2016-11-20
+
+### Changed
+
+* Bumped the required version of `sebastian/comparator`
+
+## [4.8.28] - 2016-11-14
+
+### Fixed
+
+* Improved the fix for [#1955](https://github.com/sebastianbergmann/phpunit/issues/1955): Process isolation fails when running tests with `phpdbg -qrr`
+
+## [4.8.27] - 2016-07-21
+
+### Fixed
+
+* Fixed [#1968](https://github.com/sebastianbergmann/phpunit/issues/1968): Invalid data sets are not handled correctly for `@testWith` annotation
+
+## [4.8.26] - 2016-05-17
+
+### Fixed
+
+* Fixed [phpunit-mock-objects/#301](https://github.com/sebastianbergmann/phpunit-mock-objects/issues/301): `PHPUnit_Framework_MockObject_MockBuilder::getMock()` calls `PHPUnit_Framework_TestCase::getMock()` with more arguments than accepted
+
+## [4.8.25] - 2016-05-10
 
 ### Fixed
 
 * Fixed [#2112](https://github.com/sebastianbergmann/phpunit/issues/2112): Output is html entity encoded when ran through `phpdbg`
+* Fixed [#2158](https://github.com/sebastianbergmann/phpunit/issues/2158): Failure to run tests in separate processes if a file included into main process contains constant definition
 
 ## [4.8.24] - 2016-03-14
 
@@ -183,6 +214,11 @@ New PHAR release due to updated dependencies
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.30]: https://github.com/sebastianbergmann/phpunit/compare/4.8.29...4.8.30
+[4.8.29]: https://github.com/sebastianbergmann/phpunit/compare/4.8.28...4.8.29
+[4.8.28]: https://github.com/sebastianbergmann/phpunit/compare/4.8.27...4.8.28
+[4.8.27]: https://github.com/sebastianbergmann/phpunit/compare/4.8.26...4.8.27
+[4.8.26]: https://github.com/sebastianbergmann/phpunit/compare/4.8.25...4.8.26
 [4.8.25]: https://github.com/sebastianbergmann/phpunit/compare/4.8.24...4.8.25
 [4.8.24]: https://github.com/sebastianbergmann/phpunit/compare/4.8.23...4.8.24
 [4.8.23]: https://github.com/sebastianbergmann/phpunit/compare/4.8.22...4.8.23

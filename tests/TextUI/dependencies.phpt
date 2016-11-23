@@ -17,7 +17,7 @@ Runtime:	%s
 
 ...FSS
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 There was 1 failure:
 

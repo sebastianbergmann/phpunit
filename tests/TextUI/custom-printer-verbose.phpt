@@ -19,7 +19,7 @@ Configuration:	%sconfiguration.custom-printer.xml
 
 I
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 There was 1 incomplete test:
 

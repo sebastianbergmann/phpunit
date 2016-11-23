@@ -14,6 +14,6 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ..
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 OK (2 tests, 0 assertions)

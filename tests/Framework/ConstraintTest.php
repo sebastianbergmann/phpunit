@@ -817,8 +817,8 @@ Failed asserting that two DateTime objects are equal.
 --- Expected
 +++ Actual
 @@ @@
--2013-03-29T04:13:35-0400
-+2013-03-29T04:13:35-0500
+-2013-03-29T04:13:35.000000-0400
++2013-03-29T04:13:35.000000-0500
 
 EOF
             ),

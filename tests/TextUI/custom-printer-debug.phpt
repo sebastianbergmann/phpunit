@@ -22,6 +22,6 @@ Starting test 'BankAccountTest::testBalanceCannotBecomeNegative'.
 Starting test 'BankAccountTest::testBalanceCannotBecomeNegative2'.
 .
 
-Time: %s, Memory: %sMb
+Time: %s, Memory: %s
 
 OK (3 tests, 3 assertions)
