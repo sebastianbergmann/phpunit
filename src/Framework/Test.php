@@ -11,7 +11,7 @@
 /**
  * A Test can be run and collect its results.
  *
- * @since      Interface available since Release 2.0.0
+ * @since Interface available since Release 2.0.0
  */
 interface PHPUnit_Framework_Test extends Countable
 {
