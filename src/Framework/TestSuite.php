@@ -11,31 +11,6 @@
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
  *
- * Here is an example using the dynamic test definition.
- *
- * <code>
- * <?php
- * $suite = new PHPUnit_Framework_TestSuite;
- * $suite->addTest(new MathTest('testPass'));
- * ?>
- * </code>
- *
- * Alternatively, a TestSuite can extract the tests to be run automatically.
- * To do so you pass a ReflectionClass instance for your
- * PHPUnit_Framework_TestCase class to the PHPUnit_Framework_TestSuite
- * constructor.
- *
- * <code>
- * <?php
- * $suite = new PHPUnit_Framework_TestSuite(
- *   new ReflectionClass('MathTest')
- * );
- * ?>
- * </code>
- *
- * This constructor creates a suite with all the methods starting with
- * "test" that take no arguments.
- *
  * @since Class available since Release 2.0.0
  */
 class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing, IteratorAggregate
