@@ -88,12 +88,16 @@
 
     <target name="signed-phar" depends="phar" description="Create signed PHAR archive of PHPUnit and all its dependencies">
         <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
             <arg path="${basedir}/build/phpunit-library-${version}.phar"/>
         </exec>
 
         <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
             <arg path="${basedir}/build/phpunit-${version}.phar"/>
