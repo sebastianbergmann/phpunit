@@ -7,6 +7,8 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 ### Added
 
 * Merged [#2223](https://github.com/sebastianbergmann/phpunit/pull/2223): Add support for multiple data providers
+* Added `extensionsDirectory` configuration directive to configure a directory from which all `.phar` files are loaded as PHPUnit extensions)
+* Added `--no-extensions` commandline option to suppress loading of extensions (from configured extension directory)
 * Added `PHPUnit\Framework\Assert` as an alias for `PHPUnit_Framework_Assert` for forward compatibility
 * Added `PHPUnit\Framework\BaseTestListener` as an alias for `PHPUnit_Framework_BaseTestListener` for forward compatibility
 * Added `PHPUnit\Framework\TestListener` as an alias for `PHPUnit_Framework_TestListener` for forward compatibility

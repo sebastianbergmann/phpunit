@@ -88,12 +88,16 @@
 
     <target name="signed-phar" depends="phar" description="Create signed PHAR archive of PHPUnit and all its dependencies">
         <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
             <arg path="${basedir}/build/phpunit-library-${version}.phar"/>
         </exec>
 
         <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
             <arg path="${basedir}/build/phpunit-${version}.phar"/>
@@ -297,6 +301,13 @@
         <copy file="${basedir}/vendor/webmozart/assert/LICENSE" tofile="${basedir}/build/phar/webmozart-assert/LICENSE"/>
         <copy todir="${basedir}/build/phar/webmozart-assert">
             <fileset dir="${basedir}/vendor/webmozart/assert/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/phar-io/manifest/LICENSE" tofile="${basedir}/build/phar/phar-io-manifest/LICENSE"/>
+        <copy todir="${basedir}/build/phar/phar-io-manifest">
+            <fileset dir="${basedir}/vendor/phar-io/manifest/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>

@@ -36,6 +36,7 @@
         "sebastian/resource-operations": "~1.0",
         "sebastian/version": "~1.0|~2.0",
         "myclabs/deep-copy": "~1.3",
+        "phar-io/manifest": "^1.0@dev",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-mbstring": "*",

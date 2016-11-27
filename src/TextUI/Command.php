@@ -8,6 +8,9 @@
  * file that was distributed with this source code.
  */
 
+use PharIo\Manifest\ManifestLoader;
+use PharIo\Manifest\Exception as ManifestException;
+
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
@@ -23,7 +26,9 @@ class PHPUnit_TextUI_Command
         'listGroups'              => false,
         'listSuites'              => false,
         'loader'                  => null,
-        'useDefaultConfiguration' => true
+        'useDefaultConfiguration' => true,
+        'loadedExtensions'        => [],
+        'notLoadedExtensions'     => []
     ];
 
     /**
@@ -65,10 +70,11 @@ class PHPUnit_TextUI_Command
         'log-teamcity='              => null,
         'no-configuration'           => null,
         'no-coverage'                => null,
+        'no-extensions'              => null,
         'printer='                   => null,
         'process-isolation'          => null,
         'repeat='                    => null,
-        'dont-report-useless-tests' => null,
+        'dont-report-useless-tests'  => null,
         'reverse-list'               => null,
         'static-backup'              => null,
         'stderr'                     => null,
@@ -92,7 +98,7 @@ class PHPUnit_TextUI_Command
         'testdox-xml='               => null,
         'test-suffix='               => null,
         'testsuite='                 => null,
-        'verbose'                    =>    null,
+        'verbose'                    => null,
         'version'                    => null,
         'whitelist='                 => null
     ];
@@ -528,6 +534,10 @@ class PHPUnit_TextUI_Command
                     $this->arguments['useDefaultConfiguration'] = false;
                     break;
 
+                case '--no-extensions':
+                    $this->arguments['noExtensions'] = true;
+                    break;
+
                 case '--no-coverage':
                     $this->arguments['noCoverage'] = true;
                     break;
@@ -707,6 +717,10 @@ class PHPUnit_TextUI_Command
              */
             if (isset($phpunitConfiguration['stderr']) && ! isset($this->arguments['stderr'])) {
                 $this->arguments['stderr'] = $phpunitConfiguration['stderr'];
+            }
+
+            if (isset($phpunitConfiguration['extensionsDirectory']) && !isset($this->arguments['noExtensions']) && extension_loaded('phar')) {
+                $this->handleExtensions($phpunitConfiguration['extensionsDirectory']);
             }
 
             if (isset($phpunitConfiguration['columns']) && ! isset($this->arguments['columns'])) {
@@ -982,6 +996,7 @@ Configuration Options:
   -c|--configuration <file>   Read configuration from XML file.
   --no-configuration          Ignore default configuration file (phpunit.xml).
   --no-coverage               Ignore code coverage configuration.
+  --no-extensions             Do not load PHPUnit extensions.
   --include-path <path(s)>    Prepend PHP's include_path with given path(s).
   -d key[=value]              Sets a php.ini value.
   --generate-configuration    Generate configuration file with suggested settings.
@@ -1026,5 +1041,37 @@ EOT;
         print $message . "\n";
 
         exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+    }
+
+    /**
+     * @param string $directory
+     */
+    private function handleExtensions($directory)
+    {
+        $facade = new File_Iterator_Facade;
+
+        foreach ($facade->getFilesAsArray($directory, '.phar') as $file) {
+            if (!file_exists('phar://' . $file . '/manifest.xml')) {
+                continue;
+            }
+
+            try {
+                $manifest = ManifestLoader::fromFile('phar://' . $file . '/manifest.xml');
+
+                if (!$manifest->isExtensionFor('phpunit/phpunit')) {
+                    $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
+
+                    continue;
+                }
+            } catch (ManifestException $e) {
+                $this->arguments['notLoadedExtensions'][] = $file . ': ' . $e->getMessage();
+
+                continue;
+            }
+
+            require $file;
+
+            $this->arguments['loadedExtensions'][] = $manifest->getName() . ' ' . $manifest->getVersion();
+        }
     }
 }

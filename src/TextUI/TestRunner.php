@@ -285,6 +285,20 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $arguments['configuration']->getFilename()
                 );
             }
+
+            foreach ($arguments['loadedExtensions'] as $extension) {
+                $this->writeMessage(
+                    'Extension',
+                    $extension
+                );
+            }
+
+            foreach ($arguments['notLoadedExtensions'] as $extension) {
+                $this->writeMessage(
+                    'Extension',
+                    $extension
+                );
+            }
         }
 
         foreach ($arguments['listeners'] as $listener) {
