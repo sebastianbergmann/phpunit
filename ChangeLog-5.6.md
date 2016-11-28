@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.6 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.6.7] - 2016-11-28
+
+### Changed
+
+* The logic for not performing the check for unintentionally covered code on `@medium` and `@large` tests has been moved to `php-code-coverage`
+
 ## [5.6.6] - 2016-11-28
 
 ### Fixed
@@ -55,6 +61,7 @@ New PHAR release due to updated dependencies
 * Deprecated `PHPUnit\Framework\TestCase::setExpectedExceptionRegExp()`
 * `PHPUnit_Util_Printer` no longer optionally cleans up HTML output using `ext/tidy`
 
+[5.6.7]: https://github.com/sebastianbergmann/phpunit/compare/5.6.6...5.6.7
 [5.6.6]: https://github.com/sebastianbergmann/phpunit/compare/5.6.5...5.6.6
 [5.6.5]: https://github.com/sebastianbergmann/phpunit/compare/5.6.4...5.6.5
 [5.6.4]: https://github.com/sebastianbergmann/phpunit/compare/5.6.3...5.6.4
