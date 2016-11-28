@@ -104,7 +104,7 @@ class PHPUnit_Runner_Filter_Test extends RecursiveFilterIterator
             $name = $tmp[1];
         }
 
-        $accepted = preg_match($this->filter, $name, $matches);
+        $accepted = @preg_match($this->filter, $name, $matches);
 
         if ($accepted && isset($this->filterMax)) {
             $set      = end($matches);
