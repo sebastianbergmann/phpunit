@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2367](https://github.com/sebastianbergmann/phpunit/pull/2367): Bug in `PHPUnit_Util_Test::parseAnnotationContent()`
+* Fixed [#2375](https://github.com/sebastianbergmann/phpunit/issues/2375): Invalid regular expression for `--filter` causes PHP warning
 
 ## [4.8.29] - 2016-11-20
 
