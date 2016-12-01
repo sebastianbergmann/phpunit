@@ -8,6 +8,9 @@
  * file that was distributed with this source code.
  */
 
+use PharIo\Manifest\ManifestLoader;
+use PharIo\Manifest\Exception as ManifestException;
+
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
@@ -1048,9 +1051,29 @@ EOT;
         $facade = new File_Iterator_Facade;
 
         foreach ($facade->getFilesAsArray($directory, '.phar') as $file) {
+            if (!file_exists('phar://' . $file . '/manifest.xml')) {
+                $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
+
+                continue;
+            }
+
+            try {
+                $manifest = ManifestLoader::fromFile('phar://' . $file . '/manifest.xml');
+
+                if (!$manifest->isExtensionFor('phpunit/phpunit')) {
+                    $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
+
+                    continue;
+                }
+            } catch (ManifestException $e) {
+                $this->arguments['notLoadedExtensions'][] = $file . ': ' . $e->getMessage();
+
+                continue;
+            }
+
             require $file;
 
-            $this->arguments['loadedExtensions'][] = $file;
+            $this->arguments['loadedExtensions'][] = $manifest->getName() . ' ' . $manifest->getVersion();
         }
     }
 }

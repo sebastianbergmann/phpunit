@@ -12,7 +12,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 Configuration: %s/phpunit-example-extension/phpunit.xml
-Extension:     %s/phpunit-example-extension/tools/phpunit.d/phpunit-example-extension-1.0.0.phar
+Extension:     phpunit/phpunit-example-extension 1.0.0
 
 .                                                                   1 / 1 (100%)
 
