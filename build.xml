@@ -255,6 +255,7 @@
         <copy todir="${basedir}/build/phar/symfony">
             <fileset dir="${basedir}/vendor/symfony">
                 <include name="**/*.php" />
+                <exclude name="**/Command/*.php" />
                 <exclude name="**/Tests/**" />
             </fileset>
         </copy>
