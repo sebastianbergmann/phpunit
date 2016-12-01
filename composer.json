@@ -19,6 +19,7 @@
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit/issues"
     },
+    "minimum-stability": "dev",
     "require": {
         "php": "^7.0",
         "phpunit/php-file-iterator": "~1.4",
@@ -36,7 +37,7 @@
         "sebastian/resource-operations": "~1.0",
         "sebastian/version": "~1.0|~2.0",
         "myclabs/deep-copy": "~1.3",
-        "phar-io/manifest": "^1.0@dev",
+        "phar-io/manifest": "^1.0",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
