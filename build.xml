@@ -311,6 +311,13 @@
                 <include name="**/*.php" />
             </fileset>
         </copy>
+
+        <copy file="${basedir}/vendor/phar-io/version/LICENSE" tofile="${basedir}/build/phar/phar-io-version/LICENSE"/>
+        <copy todir="${basedir}/build/phar/phar-io-version">
+            <fileset dir="${basedir}/vendor/phar-io/version/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
     </target>
 
     <target name="-phar-build" depends="-phar-determine-version">
