@@ -9,10 +9,15 @@
  * file that was distributed with this source code.
  */
 
-if (PHP_MAJOR_VERSION < 7) {
+if (version_compare('7.0.0', PHP_VERSION, '>')) {
     fwrite(
         STDERR,
-        'This version of PHPUnit requires PHP 7; using the latest version of PHP is highly recommended.' . PHP_EOL
+        sprintf(
+            'This version of PHPUnit is supported on PHP 7.0 and PHP 7.1.' . PHP_EOL .
+            'You are using PHP %s (%s).' . PHP_EOL,
+            PHP_VERSION,
+            PHP_BINARY
+        )
     );
 
     die(1);
