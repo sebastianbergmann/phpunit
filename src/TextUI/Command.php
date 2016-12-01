@@ -1172,6 +1172,8 @@ EOT;
 
         foreach ($facade->getFilesAsArray($directory, '.phar') as $file) {
             if (!file_exists('phar://' . $file . '/manifest.xml')) {
+                $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
+
                 continue;
             }
 
