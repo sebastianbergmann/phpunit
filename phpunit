@@ -12,7 +12,12 @@
 if (version_compare('5.3.3', PHP_VERSION, '>')) {
     fwrite(
         STDERR,
-        'This version of PHPUnit requires PHP 5.3.3; using the latest version of PHP is highly recommended.' . PHP_EOL
+        sprintf(
+            'This version of PHPUnit is supported on PHP 5.3, PHP 5.4, PHP 5.5, and PHP 5.6.' . PHP_EOL .
+            'You are using PHP %s%s.' . PHP_EOL,
+            PHP_VERSION,
+            defined('PHP_BINARY') ? ' (' . PHP_BINARY . ')' : ''
+        )
     );
 
     die(1);
