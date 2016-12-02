@@ -2014,7 +2014,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         return $buffer;
     }
 
-
     /**
      * Gets the data set of a TestCase.
      *

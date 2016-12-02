@@ -10,4 +10,3 @@ class OneTest extends PHPUnit\Framework\TestCase
         $this->assertExampleExtensionInitialized();
     }
 }
-
