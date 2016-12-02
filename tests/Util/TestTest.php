@@ -130,7 +130,6 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             PHPUnit_Util_Test::getRequirements('RequirementsTest', $test)
         );
     }
-
     public function requirementsProvider()
     {
         return [
@@ -224,6 +223,11 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             ['testPHPVersionOperatorNoSpace',
                 [
                     'PHP' => ['version' => '99', 'operator' => '>=']
+                ]
+            ],
+            ['testPHPRequired',
+                [
+                    'PHP' => ['version' => '', 'operator' => '']
                 ]
             ],
             ['testPHPUnitVersionOperatorLessThan',
@@ -321,6 +325,76 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             ],
         ];
     }
+    /**
+     * @covers       PHPUnit_Util_Test::getRequirements
+     * @dataProvider requirementsHHVMProvider
+     * @group HHVM
+     */
+    public function testGetRequirementsHHVM($test, $result)
+    {
+        $this->assertEquals(
+            $result,
+            PHPUnit_Util_Test::getRequirements('RequirementsTest', $test)
+        );
+    }
+
+    public function requirementsHHVMProvider()
+    {
+        $this->skipUnlessHHVM();
+
+        return [
+            ['testHHVMVersionOperatorLessThan',
+                [
+                    'HHVM' => ['version' => '3.0', 'operator' => '<']
+                ]
+            ],
+            ['testHHVMVersionOperatorLessThanEquals',
+                [
+                    'HHVM' => ['version' => '3.0', 'operator' => '<=']
+                ]
+            ],
+            ['testHHVMVersionOperatorGreaterThan',
+                [
+                    'HHVM' => ['version' => '99', 'operator' => '>']
+                ]
+            ],
+            ['testHHVMVersionOperatorGreaterThanEquals',
+                [
+                    'HHVM' => ['version' => '99', 'operator' => '>=']
+                ]
+            ],
+            ['testHHVMVersionOperatorEquals',
+                [
+                    'HHVM' => ['version' => '3.0', 'operator' => '=']
+                ]
+            ],
+            ['testHHVMVersionOperatorDoubleEquals',
+                [
+                    'HHVM' => ['version' => '3.0', 'operator' => '==']
+                ]
+            ],
+            ['testHHVMVersionOperatorBangEquals',
+                [
+                    'HHVM' => ['version' => '99', 'operator' => '!=']
+                ]
+            ],
+            ['testHHVMVersionOperatorNotEquals',
+                [
+                    'HHVM' => ['version' => '99', 'operator' => '<>']
+                ]
+            ],
+            ['testHHVMVersionOperatorNoSpace',
+                [
+                    'HHVM' => ['version' => '99', 'operator' => '>=']
+                ]
+            ],
+            ['testHHVMRequired',
+                [
+                    'HHVM' => ['version' => '', 'operator' => '']
+                ]
+            ],
+        ];
+    }
 
     /**
      * @covers PHPUnit_Util_Test::getRequirements
@@ -353,6 +427,34 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      */
     public function testGetMissingRequirements($test, $result)
     {
+        $this->assertEquals(
+            $result,
+            PHPUnit_Util_Test::getMissingRequirements('RequirementsTest', $test)
+        );
+    }
+
+    /**
+     * @covers       PHPUnit_Util_Test::getMissingRequirements
+     * @dataProvider missingRequiresmentsProviderPHP
+     * @group PHP
+     */
+    public function testGetMissingRequirementsPHP($test, $result)
+    {
+        $this->assertEquals(
+            $result,
+            PHPUnit_Util_Test::getMissingRequirements('RequirementsTest', $test)
+        );
+    }
+
+    /**
+     * @covers       PHPUnit_Util_Test::getMissingRequirements
+     * @dataProvider missingRequirementsHHVMProvider
+     * @group HHVM
+     */
+    public function testGetMissingRequirementsHHVM($test, $result)
+    {
+        $this->skipUnlessHHVM();
+
         $this->assertEquals(
             $result,
             PHPUnit_Util_Test::getMissingRequirements('RequirementsTest', $test)
@@ -399,6 +501,31 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             ['testExtensionVersionOperatorEquals', ['Extension testExtOne = 1.0 is required.']],
             ['testExtensionVersionOperatorDoubleEquals', ['Extension testExtOne == 1.0 is required.']],
             ['testExtensionVersionOperatorNoSpace', ['Extension testExtOne >= 99 is required.']],
+        ];
+    }
+
+    public function missingRequiresmentsProviderPHP()
+    {
+        $this->skipUnlessPHP();
+
+        return [
+            ['testHHVMRequired', ['HHVM is required.']]
+        ];
+    }
+
+    public function missingRequirementsHHVMProvider()
+    {
+        $this->skipUnlessHHVM();
+
+        return [
+            ['testHHVMVersionOperatorLessThan', ['HHVM < 3.0 is required.']],
+            ['testHHVMVersionOperatorLessThanEquals', ['HHVM <= 3.0 is required.']],
+            ['testHHVMVersionOperatorGreaterThan', ['HHVM > 99 is required.']],
+            ['testHHVMVersionOperatorGreaterThanEquals', ['HHVM >= 99 is required.']],
+            ['testHHVMVersionOperatorNoSpace', ['HHVM >= 99 is required.']],
+            ['testHHVMVersionOperatorEquals', ['HHVM = 3.0 is required.']],
+            ['testHHVMVersionOperatorDoubleEquals', ['HHVM == 3.0 is required.']],
+            ['testPHPRequired', ['PHP is required (detected: HHVM).']],
         ];
     }
 
@@ -876,5 +1003,19 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
             false
           ]
         ];
+    }
+
+    protected function skipUnlessPHP()
+    {
+        if (defined('HHVM_VERSION')) {
+            $this->markTestSkipped("Test requires PHP");
+        }
+    }
+
+    protected function skipUnlessHHVM($condition = true)
+    {
+        if (!defined('HHVM_VERSION') && $condition) {
+            $this->markTestSkipped("Test requires HHVM");
+        }
     }
 }
