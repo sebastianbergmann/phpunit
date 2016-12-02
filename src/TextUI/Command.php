@@ -1073,7 +1073,7 @@ EOT;
 
             require $file;
 
-            $this->arguments['loadedExtensions'][] = $manifest->getName() . ' ' . $manifest->getVersion();
+            $this->arguments['loadedExtensions'][] = $manifest->getName() . ' ' . $manifest->getVersion()->getVersionString();
         }
     }
 }
