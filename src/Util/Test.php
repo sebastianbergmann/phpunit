@@ -470,6 +470,12 @@ class PHPUnit_Util_Test
                     $data = $dataProviderMethod->invoke($object, $methodName);
                 }
 
+                if ($data instanceof Generator) {
+                    foreach ($data as $test) {
+                        $result[] = $test;
+                    }
+                }
+
                 if (is_array($data)) {
                     $result = array_merge($result, $data);
                 }
