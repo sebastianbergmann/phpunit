@@ -2606,7 +2606,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         } else {
             foreach ($testArguments as $testArgument) {
                 if ($testArgument instanceof PHPUnit_Framework_MockObject_MockObject) {
-                    $this->registerMockObject(clone $testArgument);
+                    $original = $testArgument;
+
+                    if ($this->isSaveCloneForMockObjectsFromTestArguments(new ReflectionObject($original))) {
+                        $original = clone $original;
+                    }
+
+                    $this->registerMockObject($original);
                 } elseif (is_array($testArgument)) {
                     $this->registerMockObjectsFromTestArguments($testArgument);
                 }
@@ -2624,5 +2630,25 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         if (isset($annotations['method']['doesNotPerformAssertions'])) {
             $this->doesNotPerformAssertions = true;
         }
+    }
+
+    /**
+     * @param ReflectionObject $reflection
+     * @return bool
+     */
+    private function isSaveCloneForMockObjectsFromTestArguments(ReflectionObject $reflection)
+    {
+        if (method_exists($reflection, 'isCloneable') && !$reflection->isCloneable()) {
+            return false;
+        }
+
+        if ($reflection->hasMethod('__clone')) {
+            $method = $reflection->getMethod('__clone');
+            if ($method->isPublic()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
