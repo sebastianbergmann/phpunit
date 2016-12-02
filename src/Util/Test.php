@@ -435,7 +435,8 @@ class PHPUnit_Util_Test
     private static function getDataFromDataProviderAnnotation($docComment, $className, $methodName)
     {
         if (preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
-            $result = array();
+            $result = [];
+
             foreach ($matches[1] as $match) {
                 $dataProviderMethodNameNamespace = explode('\\', $match);
                 $leaf                            = explode('::', array_pop($dataProviderMethodNameNamespace));
