@@ -138,9 +138,9 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             throw new PHPUnit_Framework_Exception;
         }
 
-        if (!$theClass->isSubclassOf('PHPUnit_Framework_TestCase')) {
+        if (!$theClass->isSubclassOf('PHPUnit_Framework_Test')) {
             throw new PHPUnit_Framework_Exception(
-                'Class "' . $theClass->name . '" does not extend PHPUnit_Framework_TestCase.'
+                'Class "' . $theClass->name . '" does not implement the  PHPUnit_Framework_Test interface.'
             );
         }
 
