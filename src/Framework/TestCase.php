@@ -925,7 +925,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
                 $reflector = new ReflectionClass($this->expectedException);
 
-                if ($this->expectedException == 'PHPUnit_Framework_Exception' ||
+                if ($this->expectedException === 'PHPUnit_Framework_Exception' ||
+                    $this->expectedException === '\PHPUnit_Framework_Exception' ||
                     $reflector->isSubclassOf('PHPUnit_Framework_Exception')) {
                     $checkException = true;
                 }
