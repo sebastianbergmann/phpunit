@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.31] - 2016-MM-DD
+
+### Fixed
+
+* Fixed [#2384](https://github.com/sebastianbergmann/phpunit/pull/2384): Handle `PHPUnit_Framework_Exception` correctly in `expectedException()`
+
 ## [4.8.30] - 2016-12-02
 
 ### Fixed
