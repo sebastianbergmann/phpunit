@@ -471,10 +471,8 @@ class PHPUnit_Util_Test
                     $data = $dataProviderMethod->invoke($object, $methodName);
                 }
 
-                if ($data instanceof Generator) {
-                    foreach ($data as $test) {
-                        $result[] = $test;
-                    }
+                if ($data instanceof Iterator) {
+                    $data = iterator_to_array($data);
                 }
 
                 if (is_array($data)) {
