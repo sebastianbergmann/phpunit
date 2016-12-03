@@ -3,7 +3,6 @@ use PHPUnit\Framework\TestCase;
 
 class Issue2382Test extends TestCase
 {
-
     /**
      * @dataProvider dataProvider
      */

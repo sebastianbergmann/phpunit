@@ -2606,13 +2606,11 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         } else {
             foreach ($testArguments as $testArgument) {
                 if ($testArgument instanceof PHPUnit_Framework_MockObject_MockObject) {
-                    $original = $testArgument;
-
-                    if ($this->isSaveCloneForMockObjectsFromTestArguments(new ReflectionObject($original))) {
-                        $original = clone $original;
+                    if ($this->isCloneable($testArgument)) {
+                        $testArgument = clone $testArgument;
                     }
 
-                    $this->registerMockObject($original);
+                    $this->registerMockObject($testArgument);
                 } elseif (is_array($testArgument)) {
                     $this->registerMockObjectsFromTestArguments($testArgument);
                 }
@@ -2633,20 +2631,21 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param ReflectionObject $reflection
+     * @param PHPUnit_Framework_MockObject_MockObject $testArgument
+     *
      * @return bool
      */
-    private function isSaveCloneForMockObjectsFromTestArguments(ReflectionObject $reflection)
+    private function isCloneable(PHPUnit_Framework_MockObject_MockObject $testArgument)
     {
-        if (method_exists($reflection, 'isCloneable') && !$reflection->isCloneable()) {
+        $reflector = new ReflectionObject($testArgument);
+
+        if (!$reflector->isCloneable()) {
             return false;
         }
 
-        if ($reflection->hasMethod('__clone')) {
-            $method = $reflection->getMethod('__clone');
-            if ($method->isPublic()) {
-                return true;
-            }
+        if ($reflector->hasMethod('__clone') &&
+            $reflector->getMethod('__clone')->isPublic()) {
+            return true;
         }
 
         return false;
