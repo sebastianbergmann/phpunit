@@ -692,14 +692,18 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $expected
      * @param mixed  $actual
      * @param string $message
+     * @param float  $delta
+     * @param int    $maxDepth
+     * @param bool   $canonicalize
+     * @param bool   $ignoreCase
      *
      * @since Method available since Release 3.1.0
      */
-    public static function assertGreaterThanOrEqual($expected, $actual, $message = '')
+    public static function assertGreaterThanOrEqual($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         static::assertThat(
             $actual,
-            static::greaterThanOrEqual($expected),
+            static::greaterThanOrEqual($expected, $delta, $maxDepth, $canonicalize, $ignoreCase),
             $message
         );
     }
@@ -762,12 +766,20 @@ abstract class PHPUnit_Framework_Assert
      * @param mixed  $expected
      * @param mixed  $actual
      * @param string $message
+     * @param float  $delta
+     * @param int    $maxDepth
+     * @param bool   $canonicalize
+     * @param bool   $ignoreCase
      *
      * @since Method available since Release 3.1.0
      */
-    public static function assertLessThanOrEqual($expected, $actual, $message = '')
+    public static function assertLessThanOrEqual($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
-        static::assertThat($actual, static::lessThanOrEqual($expected), $message);
+        static::assertThat(
+            $actual,
+            static::lessThanOrEqual($expected, $delta, $maxDepth, $canonicalize, $ignoreCase),
+            $message
+        );
     }
 
     /**
@@ -2719,15 +2731,19 @@ abstract class PHPUnit_Framework_Assert
      * PHPUnit_Framework_Constraint_GreaterThan matcher object.
      *
      * @param mixed $value
+     * @param float $delta
+     * @param int   $maxDepth
+     * @param bool  $canonicalize
+     * @param bool  $ignoreCase
      *
      * @return PHPUnit_Framework_Constraint_Or
      *
      * @since Method available since Release 3.1.0
      */
-    public static function greaterThanOrEqual($value)
+    public static function greaterThanOrEqual($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         return static::logicalOr(
-            new PHPUnit_Framework_Constraint_IsEqual($value),
+            new PHPUnit_Framework_Constraint_IsEqual($value, $delta, $maxDepth, $canonicalize, $ignoreCase),
             new PHPUnit_Framework_Constraint_GreaterThan($value)
         );
     }
@@ -2843,15 +2859,19 @@ abstract class PHPUnit_Framework_Assert
      * PHPUnit_Framework_Constraint_LessThan matcher object.
      *
      * @param mixed $value
+     * @param float $delta
+     * @param int   $maxDepth
+     * @param bool  $canonicalize
+     * @param bool  $ignoreCase
      *
      * @return PHPUnit_Framework_Constraint_Or
      *
      * @since Method available since Release 3.1.0
      */
-    public static function lessThanOrEqual($value)
+    public static function lessThanOrEqual($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         return static::logicalOr(
-            new PHPUnit_Framework_Constraint_IsEqual($value),
+            new PHPUnit_Framework_Constraint_IsEqual($value, $delta, $maxDepth, $canonicalize, $ignoreCase),
             new PHPUnit_Framework_Constraint_LessThan($value)
         );
     }
