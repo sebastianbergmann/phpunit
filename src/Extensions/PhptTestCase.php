@@ -405,21 +405,6 @@ class PHPUnit_Extensions_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit
     }
 
     /**
-     * @return array
-     */
-    private function cleanupForCoverage()
-    {
-        $files    = $this->getCoverageFiles();
-        $coverage = @unserialize(file_get_contents($files['coverage']));
-
-        foreach ($files as $file) {
-            @unlink($file);
-        }
-
-        return $coverage;
-    }
-
-    /**
      * Parse --INI-- section key value pairs and return as array.
      *
      * @param string
