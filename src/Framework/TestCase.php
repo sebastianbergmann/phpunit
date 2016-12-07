@@ -932,6 +932,37 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->statusMessage = $_e->getMessage();
         }
 
+        try {
+            $this->stopOutputBuffering();
+        } catch (PHPUnit_Framework_RiskyTestError $_e) {
+            if (!isset($e)) {
+                $e = $_e;
+            }
+        }
+
+        // Perform assertion on output.
+        if (!isset($e) || $e instanceof PHPUnit_Framework_RiskyTestError) {
+            try {
+                if ($this->outputCallback !== false) {
+                    $this->output = ($this->outputCallback)($this->output);
+                }
+
+                $this->outputCallback = false;
+
+                if ($this->outputExpectedRegex !== null) {
+                    $this->assertRegExp($this->outputExpectedRegex, $this->output);
+                }
+
+                if ($this->outputExpectedString !== null) {
+                    $this->assertEquals($this->outputExpectedString, $this->output);
+                }
+            } catch (Throwable $_e) {
+                $e = $_e;
+            } catch (Exception $_e) {
+                $e = $_e;
+            }
+        }
+
         // Clean up the mock objects.
         $this->mockObjects = [];
         $this->prophet     = null;
@@ -960,14 +991,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             }
         }
 
-        try {
-            $this->stopOutputBuffering();
-        } catch (PHPUnit_Framework_RiskyTestError $_e) {
-            if (!isset($e)) {
-                $e = $_e;
-            }
-        }
-
         clearstatcache();
 
         if ($currentWorkingDirectory != getcwd()) {
@@ -986,21 +1009,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         // Clean up locale settings.
         foreach ($this->locale as $category => $locale) {
             setlocale($category, $locale);
-        }
-
-        // Perform assertion on output.
-        if (!isset($e)) {
-            try {
-                if ($this->outputExpectedRegex !== null) {
-                    $this->assertRegExp($this->outputExpectedRegex, $this->output);
-                } elseif ($this->outputExpectedString !== null) {
-                    $this->assertEquals($this->outputExpectedString, $this->output);
-                }
-            } catch (Throwable $_e) {
-                $e = $_e;
-            } catch (Exception $_e) {
-                $e = $_e;
-            }
         }
 
         // Workaround for missing "finally".
@@ -2250,17 +2258,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             );
         }
 
-        $output = ob_get_contents();
-
-        if ($this->outputCallback === false) {
-            $this->output = $output;
-        } else {
-            $this->output = call_user_func_array(
-                $this->outputCallback,
-                [$output]
-            );
-        }
-
+        $this->output = ob_get_contents();
         ob_end_clean();
 
         $this->outputBufferingActive = false;
