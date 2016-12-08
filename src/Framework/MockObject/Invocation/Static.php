@@ -63,6 +63,11 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
     public $returnType;
 
     /**
+     * @var bool
+     */
+    public $returnTypeNullable = false;
+
+    /**
      * @param string $className
      * @param string $methodName
      * @param array  $parameters
@@ -74,6 +79,12 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
         $this->className  = $className;
         $this->methodName = $methodName;
         $this->parameters = $parameters;
+
+        if (strpos($returnType, '?') === 0) {
+            $returnType               = substr($returnType, 1);
+            $this->returnTypeNullable = true;
+        }
+
         $this->returnType = $returnType;
 
         if (!$cloneObjects) {
@@ -116,11 +127,11 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
     {
         switch ($this->returnType) {
             case '':       return;
-            case 'string': return '';
-            case 'float':  return 0.0;
-            case 'int':    return 0;
-            case 'bool':   return false;
-            case 'array':  return [];
+            case 'string': return $this->returnTypeNullable ? null : '';
+            case 'float':  return $this->returnTypeNullable ? null : 0.0;
+            case 'int':    return $this->returnTypeNullable ? null : 0;
+            case 'bool':   return $this->returnTypeNullable ? null : false;
+            case 'array':  return $this->returnTypeNullable ? null : [];
             case 'void':   return;
 
             case 'callable':
@@ -134,6 +145,10 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
                 return $generator();
 
             default:
+                if ($this->returnTypeNullable) {
+                    return null;
+                }
+
                 $generator = new PHPUnit_Framework_MockObject_Generator;
 
                 return $generator->getMock($this->returnType, [], [], '', false);
