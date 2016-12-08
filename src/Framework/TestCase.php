@@ -2187,9 +2187,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     protected function onNotSuccessfulTest($e)
     {
-        $expected = PHP_MAJOR_VERSION >= 7 ? 'Throwable' : 'Exception';
-
-        if ($e instanceof $expected) {
+        if ($e instanceof Throwable || $e instanceof Exception) {
             throw $e;
         }
 
