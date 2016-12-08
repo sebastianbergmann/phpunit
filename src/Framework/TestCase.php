@@ -923,8 +923,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $this->statusMessage = $e->getMessage();
         } catch (Throwable $_e) {
             $e = $_e;
-        } catch (Exception $_e) {
-            $e = $_e;
         }
 
         if (isset($_e)) {
@@ -951,10 +949,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 }
             }
         } catch (Throwable $_e) {
-            if (!isset($e)) {
-                $e = $_e;
-            }
-        } catch (Exception $_e) {
             if (!isset($e)) {
                 $e = $_e;
             }
@@ -997,8 +991,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     $this->assertEquals($this->outputExpectedString, $this->output);
                 }
             } catch (Throwable $_e) {
-                $e = $_e;
-            } catch (Exception $_e) {
                 $e = $_e;
             }
         }
@@ -1043,8 +1035,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         try {
             $testResult = $method->invokeArgs($this, $testArguments);
         } catch (Throwable $_e) {
-            $e = $_e;
-        } catch (Exception $_e) {
             $e = $_e;
         }
 
@@ -1143,8 +1133,6 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             try {
                 $this->prophet->checkPredictions();
             } catch (Throwable $t) {
-                /* Intentionally left empty */
-            } catch (Exception $t) {
                 /* Intentionally left empty */
             }
 
@@ -2179,24 +2167,15 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * This method is called when a test method did not execute successfully.
      *
-     * @param Exception|Throwable $e
+     * @param Throwable $t
      *
      * @since Method available since Release 3.4.0
      *
-     * @throws Exception|Throwable
+     * @throws Throwable
      */
-    protected function onNotSuccessfulTest($e)
+    protected function onNotSuccessfulTest(Throwable $t)
     {
-        $expected = PHP_MAJOR_VERSION >= 7 ? 'Throwable' : 'Exception';
-
-        if ($e instanceof $expected) {
-            throw $e;
-        }
-
-        throw PHPUnit_Util_InvalidArgumentHelper::factory(
-            1,
-            'Throwable or Exception'
-        );
+        throw $t;
     }
 
     /**

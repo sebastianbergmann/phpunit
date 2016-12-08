@@ -219,7 +219,7 @@ class PHPUnit_Framework_TestResult implements Countable
      * @param Throwable              $t
      * @param float                  $time
      */
-    public function addError(PHPUnit_Framework_Test $test, $t, $time)
+    public function addError(PHPUnit_Framework_Test $test, Throwable $t, $time)
     {
         if ($t instanceof PHPUnit_Framework_RiskyTest) {
             $this->risky[] = new PHPUnit_Framework_TestFailure($test, $t);
@@ -731,9 +731,6 @@ class PHPUnit_Framework_TestResult implements Countable
         } catch (PHPUnit_Framework_Exception $e) {
             $error = true;
         } catch (Throwable $e) {
-            $e     = new PHPUnit_Framework_ExceptionWrapper($e);
-            $error = true;
-        } catch (Exception $e) {
             $e     = new PHPUnit_Framework_ExceptionWrapper($e);
             $error = true;
         }

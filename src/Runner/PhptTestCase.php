@@ -207,8 +207,6 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
                 }
             } catch (Throwable $t) {
                 $result->addError($this, $t, $time);
-            } catch (Exception $e) {
-                $result->addError($this, $e, $time);
             }
 
             if ($result->allCompletelyImplemented() && $xfail !== false) {

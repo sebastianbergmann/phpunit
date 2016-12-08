@@ -270,8 +270,8 @@ class PHPUnit_TextUI_Command
                 'd:c:hv',
                 array_keys($this->longOptions)
             );
-        } catch (PHPUnit_Framework_Exception $e) {
-            $this->showError($e->getMessage());
+        } catch (PHPUnit_Framework_Exception $t) {
+            $this->showError($t->getMessage());
         }
 
         foreach ($this->options[0] as $option) {
@@ -691,11 +691,8 @@ class PHPUnit_TextUI_Command
                 $configuration = PHPUnit_Util_Configuration::getInstance(
                     $this->arguments['configuration']
                 );
-            } catch (Throwable $e) {
-                print $e->getMessage() . "\n";
-                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
-            } catch (Exception $e) {
-                print $e->getMessage() . "\n";
+            } catch (Throwable $t) {
+                print $t->getMessage() . "\n";
                 exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
             }
 
