@@ -2477,7 +2477,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         return new Snapshot(
             $blacklist,
             $backupGlobals,
-            $this->backupStaticAttributes,
+            (bool) $this->backupStaticAttributes,
             false,
             false,
             false,
