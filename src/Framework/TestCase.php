@@ -1527,6 +1527,26 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Returns a test proxy for the specified class.
+     *
+     * @param string $originalClassName
+     * @param array  $constructorArguments
+     *
+     * @return PHPUnit_Framework_MockObject_MockObject
+     *
+     * @throws PHPUnit_Framework_Exception
+     *
+     * @since Method available since Release 6.0.0
+     */
+    protected function createTestProxy($originalClassName, array $constructorArguments = [])
+    {
+        return $this->getMockBuilder($originalClassName)
+                    ->setConstructorArgs($constructorArguments)
+                    ->enableProxyingToOriginalMethods()
+                    ->getMock();
+    }
+
+    /**
      * Mocks the specified class and returns the name of the mocked class.
      *
      * @param string $originalClassName

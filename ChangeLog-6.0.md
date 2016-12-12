@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ### Added
 
+* Added the `PHPUnit\Framework\TestCase::createTestProxy()` method for creating test proxies
 * Added the `--dont-report-useless-tests` commandline option
 * Added the `--globals-backup` commandline option
 
