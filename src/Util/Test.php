@@ -550,7 +550,12 @@ class PHPUnit_Util_Test
     {
         if (!isset(self::$annotationCache[$className])) {
             $class                             = new ReflectionClass($className);
-            self::$annotationCache[$className] = self::parseAnnotations($class->getDocComment());
+            $traits                            = $class->getTraits();
+            $annotations                       = [];
+            foreach($traits as $trait) {
+                 $annotations = array_merge($annotations, self::parseAnnotations($trait->getDocComment()));
+            }
+            self::$annotationCache[$className] = array_merge($annotations, self::parseAnnotations($class->getDocComment()));
         }
 
         if (!empty($methodName) && !isset(self::$annotationCache[$className . '::' . $methodName])) {
