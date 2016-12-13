@@ -552,10 +552,18 @@ class PHPUnit_Util_Test
             $class                             = new ReflectionClass($className);
             $traits                            = $class->getTraits();
             $annotations                       = [];
+
             foreach($traits as $trait) {
-                 $annotations = array_merge($annotations, self::parseAnnotations($trait->getDocComment()));
+                 $annotations = array_merge(
+                     $annotations,
+                     self::parseAnnotations($trait->getDocComment())
+                 );
             }
-            self::$annotationCache[$className] = array_merge($annotations, self::parseAnnotations($class->getDocComment()));
+
+            self::$annotationCache[$className] = array_merge(
+                $annotations,
+                self::parseAnnotations($class->getDocComment())
+            );
         }
 
         if (!empty($methodName) && !isset(self::$annotationCache[$className . '::' . $methodName])) {
@@ -565,12 +573,13 @@ class PHPUnit_Util_Test
             } catch (ReflectionException $e) {
                 $annotations = [];
             }
+
             self::$annotationCache[$className . '::' . $methodName] = $annotations;
         }
 
         return [
-          'class'  => self::$annotationCache[$className],
-          'method' => !empty($methodName) ? self::$annotationCache[$className . '::' . $methodName] : []
+            'class'  => self::$annotationCache[$className],
+            'method' => !empty($methodName) ? self::$annotationCache[$className . '::' . $methodName] : []
         ];
     }
 
