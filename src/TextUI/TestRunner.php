@@ -30,6 +30,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     const SUCCESS_EXIT   = 0;
     const FAILURE_EXIT   = 1;
     const EXCEPTION_EXIT = 2;
+    const INTERRUPT_EXIT = 3;
 
     /**
      * @var CodeCoverageFilter
@@ -365,6 +366,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $codeCoverageReports = 0;
         }
 
+        $codeCoverage = null;
         if ($codeCoverageReports > 0) {
             if (!$this->runtime->canCollectCodeCoverage()) {
                 $this->writeMessage('Error', 'No code coverage driver is available');
@@ -456,11 +458,51 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
         }
 
+        $this->setInterruptSignalHandler($result, $arguments, $codeCoverage);
+
         $suite->run($result);
 
         unset($suite);
         $result->flushListeners();
 
+        $this->doReports($result, $arguments, $codeCoverage);
+
+        return $result;
+    }
+
+    /**
+     * @param  PHPUnit_Framework_TestResult $result
+     * @param  array                        $arguments
+     * @param  PHP_CodeCoverage             $codeCoverage
+     *
+     * @return boolean
+     */
+    protected function setInterruptSignalHandler($result, array $arguments, PHP_CodeCoverage $codeCoverage = null)
+    {
+        if (!function_exists('pcntl_signal')) {
+            return false;
+        }
+
+        declare (ticks = 1);
+
+        $runner = $this;
+        $handler = function () use ($runner, $result, $arguments, $codeCoverage) {
+            $runner->doReports($result, $arguments, $codeCoverage);
+            exit(PHPUnit_TextUI_TestRunner::INTERRUPT_EXIT);
+        };
+
+        return pcntl_signal(SIGINT, $handler);
+    }
+
+    /**
+     * @param  PHPUnit_Framework_TestResult $result
+     * @param  array                        $arguments
+     * @param  PHP_CodeCoverage             $codeCoverage
+     *
+     * @return null
+     */
+    public function doReports($result, array $arguments, PHP_CodeCoverage $codeCoverage = null)
+    {
         if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
             $this->printer->printResult($result);
         }
@@ -607,8 +649,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 exit(self::FAILURE_EXIT);
             }
         }
-
-        return $result;
     }
 
     /**
