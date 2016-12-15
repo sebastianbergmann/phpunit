@@ -133,6 +133,57 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertContainsMatching
+     * @covers PHPUnit_Framework_Assert::assertNotContainsMatching
+     * @covers PHPUnit_Framework_Assert::assertContainsOnlyMatching
+     * @covers PHPUnit_Framework_Assert::assertNotContainsOnlyMatching
+     * @dataProvider assertContainsMatchingProvider
+     */
+    public function testAssertContainsMatching($assertionMethod, $partialResult1, $partialResult2, $expectedException = null)
+    {
+        $book1 = new Book();
+        $book2 = new Book();
+
+        $bookConstraint = $this->getMock('PHPUnit_Framework_Constraint');
+        $bookConstraint
+            ->expects($this->atLeastOnce())
+            ->method('evaluate')
+            ->withConsecutive(
+                array($this->identicalTo($book1)),
+                array($this->identicalTo($book2))
+            )
+            ->will($this->onConsecutiveCalls((bool)$partialResult1, (bool)$partialResult2))
+        ;
+
+        $this->setExpectedException($expectedException);
+
+        $this->$assertionMethod($bookConstraint, array($book1, $book2));
+    }
+
+    public function assertContainsMatchingProvider()
+    {
+        $failure = 'PHPUnit_Framework_AssertionFailedError';
+        return array(
+            'containsMatching: 0 | 0 = 0'         => array('assertContainsMatching',        0, 0, $failure),
+            'containsMatching: 0 | 1 = 1'         => array('assertContainsMatching',        0, 1),
+            'containsMatching: 1 | 0 = 1'         => array('assertContainsMatching',        1, 0),
+            'containsMatching: 1 | 1 = 1'         => array('assertContainsMatching',        1, 1),
+            '!containsMatching: !(0 | 0) = 1'     => array('assertNotContainsMatching',     0, 0),
+            '!containsMatching: !(0 | 1) = 0'     => array('assertNotContainsMatching',     0, 1, $failure),
+            '!containsMatching: !(1 | 0) = 0'     => array('assertNotContainsMatching',     1, 0, $failure),
+            '!containsMatching: !(1 | 1) = 0'     => array('assertNotContainsMatching',     1, 1, $failure),
+            'containsOnlyMatching: 0 & 0 = 0'     => array('assertContainsOnlyMatching',    0, 0, $failure),
+            'containsOnlyMatching: 0 & 1 = 0'     => array('assertContainsOnlyMatching',    0, 1, $failure),
+            'containsOnlyMatching: 1 & 0 = 0'     => array('assertContainsOnlyMatching',    1, 0, $failure),
+            'containsOnlyMatching: 1 & 1 = 1'     => array('assertContainsOnlyMatching',    1, 1),
+            '!containsOnlyMatching: !(0 & 0) = 1' => array('assertNotContainsOnlyMatching', 0, 0),
+            '!containsOnlyMatching: !(0 & 1) = 1' => array('assertNotContainsOnlyMatching', 0, 1),
+            '!containsOnlyMatching: !(1 & 0) = 1' => array('assertNotContainsOnlyMatching', 1, 0),
+            '!containsOnlyMatching: !(1 & 1) = 0' => array('assertNotContainsOnlyMatching', 1, 1, $failure),
+        );
+    }
+
+    /**
      * @covers            PHPUnit_Framework_Assert::assertArrayHasKey
      * @expectedException PHPUnit_Framework_Exception
      */
@@ -3296,6 +3347,27 @@ XML;
     public function testAssertThatContainsOnlyInstancesOf()
     {
         $this->assertThat([new Book], $this->containsOnlyInstancesOf('Book'));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::containsMatching
+     */
+    public function testAssertThatContainsMatching()
+    {
+        $book1 = new Book();
+        $book2 = new Book();
+        $this->assertThat(array($book1, $book2), $this->containsMatching($this->identicalTo($book2)));
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertThat
+     * @covers PHPUnit_Framework_Assert::containsOnlyMatching
+     */
+    public function testAssertThatContainsOnlyMatching()
+    {
+        $book = new Book();
+        $this->assertThat(array($book, $book), $this->containsOnlyMatching($this->identicalTo($book)));
     }
 
     /**

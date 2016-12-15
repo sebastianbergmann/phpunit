@@ -398,6 +398,82 @@ abstract class PHPUnit_Framework_Assert
     }
 
     /**
+     * Asserts that a haystack contains a needle matching a constraint.
+     *
+     * @param PHPUnit_Framework_Constraint $needleConstraint
+     * @param string                       $haystack
+     * @param string                       $message
+     */
+    public static function assertContainsMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+    {
+        if (!(is_array($haystack) || is_object($haystack) && $haystack instanceof Traversable)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                2,
+                'array or traversable'
+            );
+        }
+
+        self::assertThat($haystack, self::containsMatching($needleConstraint), $message);
+    }
+
+    /**
+     * Asserts that a haystack does not contain a needle matching a constraint.
+     *
+     * @param PHPUnit_Framework_Constraint $needleConstraint
+     * @param string                       $haystack
+     * @param string                       $message
+     */
+    public static function assertNotContainsMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+    {
+        if (!(is_array($haystack) || is_object($haystack) && $haystack instanceof Traversable)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                2,
+                'array or traversable'
+            );
+        }
+
+        self::assertThat($haystack, self::logicalNot(self::containsMatching($needleConstraint)), $message);
+    }
+
+    /**
+     * Asserts that a haystack contains only needles matching a constraint.
+     *
+     * @param PHPUnit_Framework_Constraint $needleConstraint
+     * @param string                       $haystack
+     * @param string                       $message
+     */
+    public static function assertContainsOnlyMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+    {
+        if (!(is_array($haystack) || is_object($haystack) && $haystack instanceof Traversable)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                2,
+                'array or traversable'
+            );
+        }
+
+        self::assertThat($haystack, self::containsOnlyMatching($needleConstraint), $message);
+    }
+
+    /**
+     * Asserts that a haystack does not contain only needles matching a constraint.
+     *
+     * @param PHPUnit_Framework_Constraint $needleConstraint
+     * @param string                       $haystack
+     * @param string                       $message
+     */
+    public static function assertNotContainsOnlyMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+    {
+        if (!(is_array($haystack) || is_object($haystack) && $haystack instanceof Traversable)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+                2,
+                'array or traversable'
+            );
+        }
+
+        self::assertThat($haystack, self::logicalNot(self::containsOnlyMatching($needleConstraint)), $message);
+    }
+
+    /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
      * @param int    $expectedCount
@@ -2575,6 +2651,32 @@ abstract class PHPUnit_Framework_Assert
     public static function containsOnlyInstancesOf($classname)
     {
         return new PHPUnit_Framework_Constraint_TraversableContainsOnly($classname, false);
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_TraversableContainsMatching
+     * matcher object.
+     *
+     * @param  PHPUnit_Framework_Constraint                             $itemConstraint
+     * @param  PHPUnit_Framework_Constraint|null                        $keyConstraint
+     * @return PHPUnit_Framework_Constraint_TraversableContainsMatching
+     */
+    public static function containsMatching(PHPUnit_Framework_Constraint $itemConstraint, PHPUnit_Framework_Constraint $keyConstraint = null)
+    {
+        return new PHPUnit_Framework_Constraint_TraversableContainsMatching($itemConstraint, $keyConstraint);
+    }
+
+    /**
+     * Returns a PHPUnit_Framework_Constraint_TraversableContainsMatchingOnly
+     * matcher object.
+     *
+     * @param  PHPUnit_Framework_Constraint                                 $itemConstraint
+     * @param  PHPUnit_Framework_Constraint|null                            $keyConstraint
+     * @return PHPUnit_Framework_Constraint_TraversableContainsMatchingOnly
+     */
+    public static function containsOnlyMatching(PHPUnit_Framework_Constraint $itemConstraint, PHPUnit_Framework_Constraint $keyConstraint = null)
+    {
+        return new PHPUnit_Framework_Constraint_TraversableContainsMatchingOnly($itemConstraint, $keyConstraint);
     }
 
     /**

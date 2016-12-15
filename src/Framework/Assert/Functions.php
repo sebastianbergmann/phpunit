@@ -607,6 +607,66 @@ function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
 }
 
 /**
+ * Asserts that a haystack contains a needle matching a constraint.
+ *
+ * @param PHPUnit_Framework_Constraint $needleConstraint
+ * @param string                       $haystack
+ * @param string                       $message
+ */
+function assertContainsMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::assertContainsMatching',
+        func_get_args()
+    );
+}
+
+/**
+ * Asserts that a haystack does not contain a needle matching a constraint.
+ *
+ * @param PHPUnit_Framework_Constraint $needleConstraint
+ * @param string                       $haystack
+ * @param string                       $message
+ */
+function assertNotContainsMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::assertNotContainsMatching',
+        func_get_args()
+    );
+}
+
+/**
+ * Asserts that a haystack contains only needles matching a constraint.
+ *
+ * @param PHPUnit_Framework_Constraint $needleConstraint
+ * @param string                       $haystack
+ * @param string                       $message
+ */
+function assertContainsOnlyMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::assertContainsOnlyMatching',
+        func_get_args()
+    );
+}
+
+/**
+ * Asserts that a haystack does not contain only needles matching a constraint.
+ *
+ * @param PHPUnit_Framework_Constraint $needleConstraint
+ * @param string                       $haystack
+ * @param string                       $message
+ */
+function assertNotContainsOnlyMatching(PHPUnit_Framework_Constraint $needleConstraint, $haystack, $message = '')
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::assertNotContainsOnlyMatching',
+        func_get_args()
+    );
+}
+
+/**
  * Asserts the number of elements of an array, Countable or Traversable.
  *
  * @param int    $expectedCount
@@ -1814,6 +1874,38 @@ function containsOnlyInstancesOf($classname)
 {
     return call_user_func_array(
         'PHPUnit_Framework_Assert::containsOnlyInstancesOf',
+        func_get_args()
+    );
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_TraversableContainsMatching
+ * matcher object.
+ *
+ * @param  PHPUnit_Framework_Constraint                             $itemConstraint
+ * @param  PHPUnit_Framework_Constraint|null                        $keyConstraint
+ * @return PHPUnit_Framework_Constraint_TraversableContainsMatching
+ */
+function containsMatching(PHPUnit_Framework_Constraint $itemConstraint, PHPUnit_Framework_Constraint $keyConstraint = null)
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::containsMatching',
+        func_get_args()
+    );
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_TraversableContainsMatchingOnly
+ * matcher object.
+ *
+ * @param  PHPUnit_Framework_Constraint                                 $itemConstraint
+ * @param  PHPUnit_Framework_Constraint|null                            $keyConstraint
+ * @return PHPUnit_Framework_Constraint_TraversableContainsMatchingOnly
+ */
+function containsOnlyMatching(PHPUnit_Framework_Constraint $itemConstraint, PHPUnit_Framework_Constraint $keyConstraint = null)
+{
+    return call_user_func_array(
+        'PHPUnit_Framework_Assert::containsOnlyMatching',
         func_get_args()
     );
 }
