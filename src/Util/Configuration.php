@@ -470,7 +470,13 @@ class PHPUnit_Util_Configuration
                 $name  = (string) $var->getAttribute('name');
                 $value = (string) $var->getAttribute('value');
 
-                $result[$array][$name] = $this->getBoolean($value, $value);
+                if ('env' == $name) {
+                    $force = (string) $var->getAttribute('force');
+                    $result[$array][$name]['value'] = $this->getBoolean($value, $value);
+                    $result[$array][$name]['force'] = $this->getBoolean($force, false);
+                } else {
+                    $result[$array][$name] = $this->getBoolean($value, $value);
+                }
             }
         }
 
@@ -530,12 +536,12 @@ class PHPUnit_Util_Configuration
             }
         }
 
-        foreach ($configuration['env'] as $name => $value) {
-            if (false === getenv($name)) {
-                putenv("{$name}={$value}");
+        foreach ($configuration['env'] as $name => $content) {
+            if (false === getenv($name) || true === $content['force']) {
+                putenv("{$name}={$content['value']}");
             }
             if (!isset($_ENV[$name])) {
-                $_ENV[$name] = $value;
+                $_ENV[$name] = $content['value'];
             }
         }
     }

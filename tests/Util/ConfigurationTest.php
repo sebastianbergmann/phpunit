@@ -288,6 +288,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, BAR);
         $this->assertEquals(false, $GLOBALS['foo']);
         $this->assertEquals(true, $_ENV['foo']);
+        $this->assertEquals(true, $_ENV['bar']);
         $this->assertEquals(true, getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
@@ -311,6 +312,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(true, getenv('foo'));
     }
 
+
     /**
      * @backupGlobals enabled
      *
@@ -323,6 +325,21 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(true, $_ENV['foo']);
         $this->assertEquals('putenv', getenv('foo'));
+    }
+
+    /**
+     * @backupGlobals enabled
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/2353
+     */
+    public function testHandlePHPConfigurationForceToOverwrittenExistingEnvArrayVariables()
+    {
+        $_ENV['bar'] = false;
+        putenv('bar=false');
+        $this->configuration->handlePHPConfiguration();
+
+        $this->assertEquals(false, $_ENV['bar']);
+        $this->assertEquals(true, getenv('bar'));
     }
 
     /**
