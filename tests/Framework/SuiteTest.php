@@ -43,6 +43,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         $suite->addTest(new self('testInheritedTests'));
         $suite->addTest(new self('testNoTestCases'));
         $suite->addTest(new self('testNoTestCaseClass'));
+        $suite->addTest(new self('testPhpInternalClassNameSuit'));
         $suite->addTest(new self('testNotExistingTestCase'));
         $suite->addTest(new self('testNotPublicTestCase'));
         $suite->addTest(new self('testNotVoidTestCase'));
@@ -102,7 +103,15 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
      */
     public function testNoTestCaseClass()
     {
-        $suite = new PHPUnit_Framework_TestSuite('NoTestCaseClass');
+        new PHPUnit_Framework_TestSuite('NoTestCaseClass');
+    }
+
+    /**
+     * @expectedException PHPUnit_Framework_Exception
+     */
+    public function testPhpInternalClassNameSuit()
+    {
+        new PHPUnit_Framework_TestSuite('Directory');
     }
 
     public function testNotExistingTestCase()
