@@ -1,9 +1,0 @@
-version: "2"
-services:
-    frontend:
-        image: trivago/php-image-worker:7.0-apache
-        volumes:
-            - .:/var/www/html
-            - ./.docker/frontend/config:/etc/apache2/sites-enabled
-        environment:
-            TRV_ENV_VAGRANT: 1
