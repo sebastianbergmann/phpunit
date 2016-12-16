@@ -465,7 +465,7 @@ class PHPUnit_Util_Configuration
             $result['const'][$name] = $this->getBoolean($value, $value);
         }
 
-        $result = $this->getPHPConfigurationGlobalVariables($result);
+        $result = $this->getPHPConfigurationWithGlobalVariables($result);
 
 
         return $result;
@@ -478,7 +478,7 @@ class PHPUnit_Util_Configuration
      *
      * @return array
      */
-    private function getPHPConfigurationGlobalVariables(array $result)
+    private function getPHPConfigurationWithGlobalVariables(array $result)
     {
         foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($this->xpath->query('php/' . $array) as $var) {
