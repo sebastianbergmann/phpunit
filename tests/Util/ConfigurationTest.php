@@ -262,13 +262,17 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'ini'    => ['foo' => 'bar'],
             'const'  => ['FOO' => false, 'BAR' => true],
             'var'    => ['foo' => false],
-            'env'    => ['foo' => true],
             'post'   => ['foo' => 'bar'],
             'get'    => ['foo' => 'bar'],
             'cookie' => ['foo' => 'bar'],
             'server' => ['foo' => 'bar'],
             'files'  => ['foo' => 'bar'],
             'request'=> ['foo' => 'bar'],
+            'env'    =>
+                [
+                'foo' => ['value' => true, 'force' => false],
+                'bar' => ['value' => true, 'force' => true]
+                ],
             ],
             $this->configuration->getPHPConfiguration()
         );

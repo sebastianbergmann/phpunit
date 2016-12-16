@@ -470,7 +470,7 @@ class PHPUnit_Util_Configuration
                 $name  = (string) $var->getAttribute('name');
                 $value = (string) $var->getAttribute('value');
 
-                if ('env' == $name) {
+                if ('env' == $array) {
                     $force = (string) $var->getAttribute('force');
                     $result[$array][$name]['value'] = $this->getBoolean($value, $value);
                     $result[$array][$name]['force'] = $this->getBoolean($force, false);
