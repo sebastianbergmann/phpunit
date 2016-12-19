@@ -342,7 +342,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         putenv('bar=false');
         $this->configuration->handlePHPConfiguration();
 
-        $this->assertEquals(false, $_ENV['bar']);
+        $this->assertEquals(true, $_ENV['bar']);
         $this->assertEquals(true, getenv('bar'));
     }
 

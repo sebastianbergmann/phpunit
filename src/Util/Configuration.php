@@ -555,7 +555,7 @@ class PHPUnit_Util_Configuration
             if (false === getenv($name) || true === $content['force']) {
                 putenv("{$name}={$content['value']}");
             }
-            if (!isset($_ENV[$name])) {
+            if (!isset($_ENV[$name])|| true === $content['force']) {
                 $_ENV[$name] = $content['value'];
             }
         }
