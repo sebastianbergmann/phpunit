@@ -458,40 +458,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $suite->run($result);
 
-        if (isset($arguments['failUnder']) && $result->getCollectCodeCoverageInformation()) {
-            $lineCoverage = (int) $result->getCodeCoverage()->getReport()->getLineExecutedPercent(false);
-            $classCoverage = (int) $result->getCodeCoverage()->getReport()->getTestedClassesPercent(false);
-            $methodCoverage = (int) $result->getCodeCoverage()->getReport()->getTestedMethodsPercent(false);
-
-            if ($arguments['failUnder'] > $lineCoverage) {
-                $result->addFailure(
-                    $suite,
-                    $this->getExpectedCodeCoverageFailure($arguments['failUnder'], $lineCoverage, 'Line'),
-                    0
-                );
-            }
-
-            if ($arguments['failUnder'] > $classCoverage) {
-                $result->addFailure(
-                    $suite,
-                    $this->getExpectedCodeCoverageFailure($arguments['failUnder'], $classCoverage, 'Class'),
-                    0
-                );
-            }
-
-            if ($arguments['failUnder'] > $methodCoverage) {
-                $result->addFailure(
-                    $suite,
-                    $this->getExpectedCodeCoverageFailure($arguments['failUnder'], $methodCoverage, 'Method'),
-                    0
-                );
-            }
+        if (isset($arguments['failUnder'])) {
+            $result->checkFailUnderLimitCodeCoverage($suite, $arguments['failUnder']);
         }
 
         unset($suite);
         $result->flushListeners();
-
-
 
         if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
             $this->printer->printResult($result);
@@ -640,11 +612,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         return $result;
-    }
-
-    private function getExpectedCodeCoverageFailure($codeCoverageLimit, $coverage, $metric)
-    {
-        return new PHPUnit_Framework_ExpectationFailedException("$metric coverage under limit. Expected: $codeCoverageLimit Current: $coverage");
     }
 
     /**

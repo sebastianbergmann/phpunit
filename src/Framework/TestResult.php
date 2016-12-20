@@ -1303,6 +1303,56 @@ class PHPUnit_Framework_TestResult implements Countable
     }
 
     /**
+     * Add failures for each type of code coverage is under the expected limit.
+     *
+     * @param PHPUnit_Framework_Test $suite
+     *
+     * @param integer $limit
+     */
+    public function checkFailUnderLimitCodeCoverage(PHPUnit_Framework_Test $suite, $codeCoverageLimit)
+    {
+        if ($this->getCollectCodeCoverageInformation()) {
+            $this->addCodeCoverageLimitFailure(
+                $suite,
+                $codeCoverageLimit,
+                (int)$this->getCodeCoverage()->getReport()->getLineExecutedPercent(false),
+                'Line'
+            );
+            $this->addCodeCoverageLimitFailure(
+                $suite,
+                $codeCoverageLimit,
+                (int)$this->getCodeCoverage()->getReport()->getTestedClassesPercent(false),
+                'Class'
+            );
+            $this->addCodeCoverageLimitFailure(
+                $suite,
+                $codeCoverageLimit,
+                (int)$this->getCodeCoverage()->getReport()->getTestedMethodsPercent(false),
+                'Method'
+            );
+        }
+    }
+
+    /**
+     * Add failure if the $codeCoverage is under $codeCoverageLimit.
+     *
+     * @param PHPUnit_Framework_Test $suite
+     * @param integer $codeCoverageLimit
+     * @param integer $codeCoverage
+     * @param string $metric
+     */
+    private function addCodeCoverageLimitFailure(PHPUnit_Framework_Test $suite, $codeCoverageLimit, $codeCoverage, $metric)
+    {
+        if ($codeCoverageLimit > $codeCoverage) {
+            $this->addFailure(
+                $suite,
+                new PHPUnit_Framework_ExpectationFailedException("$metric coverage under limit. Expected: $codeCoverageLimit Current: $codeCoverage"),
+                $this->time()
+            );
+        }
+    }
+
+    /**
      * Returns the class hierarchy for a given class.
      *
      * @param string $className
