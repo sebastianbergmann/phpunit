@@ -18,14 +18,13 @@
   </testsuites>
 
   <filter>
-    <whitelist processUncoveredFilesFromWhitelist="true">
+    <whitelist processUncoveredFilesFromWhitelist="false">
       <directory suffix=".php">src</directory>
       <exclude>
        <file>src/Framework/Assert/Functions.php</file>
       </exclude>
     </whitelist>
   </filter>
-
   <php>
     <const name="PHPUNIT_TESTSUITE" value="true"/>
   </php>

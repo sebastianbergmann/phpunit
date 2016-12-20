@@ -216,6 +216,20 @@ class PHPUnit_Util_Configuration
      */
     public function getFilterConfiguration()
     {
+        $filterConfiguration = $this->getWhiteListFilterConfiguration(array());
+
+        return $this->getFailUnderCoverageFilterConfiguration($filterConfiguration);
+    }
+
+    /**
+     * Returns the whitelist configuration for SUT filtering
+     *
+     * @param array $filterConfiguration
+     *
+     * @return array
+     */
+    private function getWhiteListFilterConfiguration(array $filterConfiguration)
+    {
         $addUncoveredFilesFromWhitelist     = true;
         $processUncoveredFilesFromWhitelist = false;
 
@@ -241,28 +255,54 @@ class PHPUnit_Util_Configuration
             }
         }
 
-        return [
-          'whitelist' => [
+        $filterConfiguration['whitelist'] = [
             'addUncoveredFilesFromWhitelist'     => $addUncoveredFilesFromWhitelist,
             'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
             'include'                            => [
-              'directory' => $this->readFilterDirectories(
-                  'filter/whitelist/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                  'filter/whitelist/file'
-              )
+                'directory' => $this->readFilterDirectories(
+                    'filter/whitelist/directory'
+                ),
+                'file' => $this->readFilterFiles(
+                    'filter/whitelist/file'
+                )
             ],
             'exclude' => [
-              'directory' => $this->readFilterDirectories(
-                  'filter/whitelist/exclude/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                  'filter/whitelist/exclude/file'
-              )
+                'directory' => $this->readFilterDirectories(
+                    'filter/whitelist/exclude/directory'
+                ),
+                'file' => $this->readFilterFiles(
+                    'filter/whitelist/exclude/file'
+                )
             ]
-          ]
         ];
+
+        return $filterConfiguration;
+    }
+
+    /**
+     * Returns the fail under coverage value configuration if have been setted for SUT filtering
+     *
+     * @param array $filterConfiguration
+     *
+     * @return array
+     */
+    private function getFailUnderCoverageFilterConfiguration(array $filterConfiguration)
+    {
+        $failUnderCoverage = null;
+        $tmp = $this->xpath->query('filter/failUnder');
+
+        if ($tmp->length == 1) {
+            if ($tmp->item(0)->hasAttribute('coverage')) {
+                $filterConfiguration['failUnder'] = $this->getInteger(
+                    (int) $tmp->item(0)->getAttribute(
+                        'coverage'
+                    ),
+                    0
+                );
+            }
+        }
+
+        return $filterConfiguration;
     }
 
     /**

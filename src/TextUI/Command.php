@@ -100,7 +100,8 @@ class PHPUnit_TextUI_Command
         'testsuite='                 => null,
         'verbose'                    => null,
         'version'                    => null,
-        'whitelist='                 => null
+        'whitelist='                 => null,
+        'fail-under='                 => null,
     ];
 
     /**
@@ -611,6 +612,11 @@ class PHPUnit_TextUI_Command
                     $this->arguments['whitelist'] = $option[1];
                     break;
 
+                case '--fail-under':
+                    $this->arguments['failUnder'] = $option[1];
+                    break;
+
+
                 default:
                     $optionName = str_replace('--', '', $option[0]);
 
@@ -929,6 +935,8 @@ Code Coverage Options:
   --coverage-xml <dir>        Generate code coverage report in PHPUnit XML format.
   --whitelist <dir>           Whitelist <dir> for code coverage analysis.
   --disable-coverage-ignore   Disable annotations for ignoring code coverage.
+
+  --fail-under <min>          Minim code coverage acceptable to pass the test.
 
 Logging Options:
 

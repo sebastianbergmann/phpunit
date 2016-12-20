@@ -24,6 +24,8 @@ Code Coverage Options:
   --whitelist <dir>           Whitelist <dir> for code coverage analysis.
   --disable-coverage-ignore   Disable annotations for ignoring code coverage.
 
+  --fail-under <min>          Minim code coverage acceptable to pass the test.
+
 Logging Options:
 
   --log-junit <file>          Log test execution in JUnit XML format to file.
