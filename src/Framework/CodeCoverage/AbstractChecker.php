@@ -42,22 +42,22 @@ abstract class PHPUnit_Framework_CodeCoverage_AbstractChecker implements PHPUnit
      * Check the code coverage is not under the expected limit.
      *
      * @param integer $codeCoverageLimit
-     *
-     * @return PHPUnit_Framework_TestResult
      */
     public function isUnderLimit($codeCoverageLimit)
     {
-        $codeCoverage = $this->getCodeCoverage();
-        if ($codeCoverageLimit > $codeCoverage) {
-            $this->result->addFailure(
-                $this->suite,
-                new PHPUnit_Framework_CodeCoverage_UnderLimitExpectationFailedException(
-                    $this->getName(),
-                    $codeCoverageLimit,
-                    $codeCoverage
-                ),
-                $this->result->time()
-            );
+        if ($this->result->getCollectCodeCoverageInformation()) {
+            $codeCoverage = $this->getCodeCoverage();
+            if ($codeCoverageLimit > $codeCoverage) {
+                $this->result->addFailure(
+                    $this->suite,
+                    new PHPUnit_Framework_CodeCoverage_UnderLimitExpectationFailedException(
+                        $this->getName(),
+                        $codeCoverageLimit,
+                        $codeCoverage
+                    ),
+                    $this->result->time()
+                );
+            }
         }
     }
 }
