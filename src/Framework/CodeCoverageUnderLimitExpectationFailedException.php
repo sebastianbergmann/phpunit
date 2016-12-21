@@ -9,13 +9,11 @@
  */
 
 /**
- * Exception for expectations which failed their check.
+ * Exception for code coverage under limit expectations which failed their check.
  *
- * The exception contains the error message and optionally a
+ * The exception contains the error message and the
  * SebastianBergmann\Comparator\ComparisonFailure which is used to
  * generate diff output of the failed expectations.
- *
- * @since Class available since Release 3.0.0
  */
 class PHPUnit_Framework_CodeCoverageUnderLimitExpectationFailedException extends PHPUnit_Framework_ExpectationFailedException
 {
@@ -26,6 +24,13 @@ class PHPUnit_Framework_CodeCoverageUnderLimitExpectationFailedException extends
      */
     public function __construct($metric, $codeCoverageLimit, $codeCoverage)
     {
-        parent::__construct("$metric coverage under limit. Expected: $codeCoverageLimit Current: $codeCoverage");
+        $comparison = new \SebastianBergmann\Comparator\ComparisonFailure(
+            $codeCoverageLimit,
+            $codeCoverage,
+            $codeCoverageLimit,
+            $codeCoverage
+        );
+
+        parent::__construct("The $metric code coverage is under limit.", $comparison);
     }
 }

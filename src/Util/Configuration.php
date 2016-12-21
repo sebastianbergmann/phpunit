@@ -288,7 +288,6 @@ class PHPUnit_Util_Configuration
      */
     private function getFailUnderCoverageFilterConfiguration(array $filterConfiguration)
     {
-        $failUnderCoverage = null;
         $tmp = $this->xpath->query('filter/failUnder');
 
         if ($tmp->length == 1) {

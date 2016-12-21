@@ -459,7 +459,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $suite->run($result);
 
         if (isset($arguments['failUnder'])) {
-            $result->checkFailUnderLimitCodeCoverage($suite, $arguments['failUnder']);
+            $codeCoverageChecker = new PHPUnit_Framework_CodeCoverageChecker($suite, $result);
+            $codeCoverageChecker->isCodeCoverageUnderLimit($arguments['failUnder']);
         }
 
         unset($suite);
