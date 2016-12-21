@@ -11,11 +11,7 @@
 use SebastianBergmann\CodeCoverage\Node\Directory;
 
 /**
- * Checks the code coverage for a given TestResult.
- *
- * The exception contains the error message and optionally a
- * SebastianBergmann\Comparator\ComparisonFailure which is used to
- * generate diff output of the failed expectations.
+ * Defines the contract of an implementation of the code coverage checkers
  */
 interface PHPUnit_Framework_CodeCoverage_Type
 {

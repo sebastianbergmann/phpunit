@@ -8,14 +8,8 @@
  * file that was distributed with this source code.
  */
 
-use SebastianBergmann\CodeCoverage\Node\Directory;
-
 /**
- * Checks the code coverage for a given TestResult.
- *
- * The exception contains the error message and optionally a
- * SebastianBergmann\Comparator\ComparisonFailure which is used to
- * generate diff output of the failed expectations.
+ * Checks the code coverage for a given TestResult and Test.
  */
 abstract class PHPUnit_Framework_CodeCoverage_AbstractChecker implements PHPUnit_Framework_CodeCoverage_Type
 {
@@ -29,6 +23,12 @@ abstract class PHPUnit_Framework_CodeCoverage_AbstractChecker implements PHPUnit
      */
     protected $result;
 
+    /**
+     * PHPUnit_Framework_CodeCoverage_AbstractChecker constructor.
+     *
+     * @param PHPUnit_Framework_Test $suite
+     * @param PHPUnit_Framework_TestResult $result
+     */
     public function __construct(
         PHPUnit_Framework_Test $suite,
         PHPUnit_Framework_TestResult $result
@@ -39,9 +39,7 @@ abstract class PHPUnit_Framework_CodeCoverage_AbstractChecker implements PHPUnit
     }
 
     /**
-     * Check the code coverage is not under the expected limit.
-     *
-     * @param integer $codeCoverageLimit
+     * {@inheritdoc}
      */
     public function isUnderLimit($codeCoverageLimit)
     {

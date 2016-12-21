@@ -7,10 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 /**
- * Helper to abstract the management of the environment variables.
+ * Factory to build code coverage checkers.
  */
-class PHPUnit_Framework_CodeCoverage_Factory
+class PHPUnit_Framework_CodeCoverage_FactoryChecker
 {
     /**
      * @var PHPUnit_Framework_Test

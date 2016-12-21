@@ -11,11 +11,7 @@
 use SebastianBergmann\CodeCoverage\Node\Directory;
 
 /**
- * Checks the code coverage for a given TestResult.
- *
- * The exception contains the error message and optionally a
- * SebastianBergmann\Comparator\ComparisonFailure which is used to
- * generate diff output of the failed expectations.
+ * Checks the code coverage of the number of methods.
  */
 class PHPUnit_Framework_CodeCoverage_MethodType extends PHPUnit_Framework_CodeCoverage_AbstractChecker
 {
@@ -24,11 +20,17 @@ class PHPUnit_Framework_CodeCoverage_MethodType extends PHPUnit_Framework_CodeCo
      */
     private $typeName = 'method';
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return $this->typeName;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getCodeCoverage()
     {
         if ( $this->result->getCollectCodeCoverageInformation()) {
