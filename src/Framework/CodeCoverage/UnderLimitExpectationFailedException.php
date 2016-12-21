@@ -15,7 +15,7 @@
  * SebastianBergmann\Comparator\ComparisonFailure which is used to
  * generate diff output of the failed expectations.
  */
-class PHPUnit_Framework_CodeCoverageUnderLimitExpectationFailedException extends PHPUnit_Framework_ExpectationFailedException
+class PHPUnit_Framework_CodeCoverage_UnderLimitExpectationFailedException extends PHPUnit_Framework_ExpectationFailedException
 {
     /**
      * @param string $metric
