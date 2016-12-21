@@ -27,7 +27,7 @@
   </filter>
 
   <php>
-    <const name="PHPUNIT_TESTSUITE" value="false"/>
+    <const name="PHPUNIT_TESTSUITE" value="true"/>
   </php>
 </phpunit>
 
