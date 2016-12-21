@@ -1346,7 +1346,7 @@ class PHPUnit_Framework_TestResult implements Countable
         if ($codeCoverageLimit > $codeCoverage) {
             $this->addFailure(
                 $suite,
-                new PHPUnit_Framework_ExpectationFailedException("$metric coverage under limit. Expected: $codeCoverageLimit Current: $codeCoverage"),
+                new PHPUnit_Framework_CodeCoverageUnderLimitExpectationFailedException($metric, $codeCoverageLimit, $codeCoverage),
                 $this->time()
             );
         }
