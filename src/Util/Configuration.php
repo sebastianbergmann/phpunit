@@ -550,14 +550,24 @@ class PHPUnit_Util_Configuration
                 $target[$name] = $value;
             }
         }
+        $this->setEnvironmentVarsFromConfiguration($configuration);
+    }
+
+    /**
+     * Sets the predefined environment vars from the configuration values.
+     *
+     * @param array $configuration
+     */
+    private function setEnvironmentVarsFromConfiguration(array $configuration)
+    {
+        try {
+            $envVarHandler = PHPUnit_Util_GlobalVar_Factory::getGlobalVarHandler('Environment');
+        } catch (\InvalidArgumentException $e) {
+            return;
+        }
 
         foreach ($configuration['env'] as $name => $content) {
-            if (false === getenv($name) || true === $content['force']) {
-                putenv("{$name}={$content['value']}");
-            }
-            if (!isset($_ENV[$name])|| true === $content['force']) {
-                $_ENV[$name] = $content['value'];
-            }
+            $envVarHandler->setValue($name, $content['value'], $content['force']);
         }
     }
 
