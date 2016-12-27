@@ -1052,7 +1052,7 @@ abstract class PHPUnit_Framework_Assert
     public static function assertDirectoryNotIsWritable($directory, $message = '')
     {
         self::assertDirectoryExists($directory, $message);
-        self::assertDirectoryNotIsWritable($directory, $message);
+        self::assertNotIsWritable($directory, $message);
     }
 
     /**
