@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-if (version_compare('5.6.0', PHP_VERSION, '>') && $argv[1] !== '--version') {
+if (version_compare('5.6.0', PHP_VERSION, '>')) {
     fwrite(
         STDERR,
         sprintf(
