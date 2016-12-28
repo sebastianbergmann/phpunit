@@ -458,6 +458,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
         $suite->run($result);
 
+        if (isset($arguments['failUnder'])) {
+            $codeCoverageCheckerFactory = new PHPUnit_Framework_CodeCoverage_FactoryChecker($suite, $result);
+            $codeCoverageCheckerFactory->getCodeCoverageCheckerFor('Class')->isUnderLimit($arguments['failUnder']);
+            $codeCoverageCheckerFactory->getCodeCoverageCheckerFor('Method')->isUnderLimit($arguments['failUnder']);
+            $codeCoverageCheckerFactory->getCodeCoverageCheckerFor('Line')->isUnderLimit($arguments['failUnder']);
+        }
+
         unset($suite);
         $result->flushListeners();
 
@@ -585,7 +592,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
             }
         }
-
         if ($exit) {
             if ($result->wasSuccessful()) {
                 if ($arguments['failOnRisky'] && !$result->allHarmless()) {
@@ -1003,6 +1009,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['addUncoveredFilesFromWhitelist']     = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
                 $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
 
+                if (isset($filterConfiguration['failUnder'])) {
+                    $arguments['failUnder'] = $filterConfiguration['failUnder'];
+
+                }
+
                 foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
                     $this->codeCoverageFilter->addDirectoryToWhitelist(
                         $dir['path'],
@@ -1027,6 +1038,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     $this->codeCoverageFilter->removeFileFromWhitelist($file);
                 }
             }
+
         }
 
         $arguments['addUncoveredFilesFromWhitelist']                  = isset($arguments['addUncoveredFilesFromWhitelist'])                  ? $arguments['addUncoveredFilesFromWhitelist']                  : true;

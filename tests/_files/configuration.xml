@@ -67,6 +67,7 @@
         <file>/path/to/file</file>
       </exclude>
     </whitelist>
+    <failUnder coverage="35" />
   </filter>
 
   <listeners>

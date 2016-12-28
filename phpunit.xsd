@@ -14,6 +14,7 @@
   <xs:complexType name="filtersType">
     <xs:sequence>
       <xs:element name="whitelist" type="whiteListType" minOccurs="0"/>
+      <xs:element name="failUnder" type="failUnderType" minOccurs="0" maxOccurs="1"/>
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="filterType">
@@ -31,6 +32,13 @@
       <xs:extension base="filterType">
         <xs:attribute name="addUncoveredFilesFromWhitelist" default="false" type="xs:boolean"/>
         <xs:attribute name="processUncoveredFilesFromWhitelist" default="true" type="xs:boolean"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="failUnderType">
+    <xs:complexContent>
+      <xs:extension base="filterType">
+          <xs:attribute name="coverage" default="0" type="xs:integer"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
