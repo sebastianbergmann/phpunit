@@ -23,7 +23,7 @@
         "php": "^5.6 || ^7.0",
         "phpunit/php-file-iterator": "~1.4",
         "phpunit/php-text-template": "~1.2",
-        "phpunit/php-code-coverage": "^4.0.3",
+        "phpunit/php-code-coverage": "^4.0.4",
         "phpunit/php-timer": "^1.0.6",
         "phpunit/phpunit-mock-objects": "^3.2",
         "phpspec/prophecy": "^1.6.2",
