@@ -232,6 +232,7 @@
       <xs:element name="logging" type="loggersType" minOccurs="0"/>
       <xs:element name="listeners" type="listenersType" minOccurs="0"/>
       <xs:element name="php" type="phpType" minOccurs="0"/>
+      <xs:element name="commandOptions" type="commandOptionsType" minOccurs="0" maxOccurs="1" />
     </xs:all>
   </xs:group>
   <xs:element name="testSuiteFacet" abstract="true"/>
@@ -248,5 +249,10 @@
       <xs:element name="exclude" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="name" type="xs:string" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="commandOptionsType">
+    <xs:sequence>
+      <xs:element name="commandOption" type="objectType" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
   </xs:complexType>
 </xs:schema>

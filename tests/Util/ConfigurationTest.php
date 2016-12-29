@@ -174,6 +174,47 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers PHPUnit_Util_Configuration::getCustomCommandOptionsConfiguration
+     */
+    public function testCustomCommandOptionsConfigurationIsReadCorrectly()
+    {
+        $dir         = __DIR__;
+        $includePath = ini_get('include_path');
+
+        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
+
+        $this->assertEquals([
+            0 => [
+                'class'     => 'MyCommandOption',
+                'file'      => '/optional/path/to/MyCommandOption.php',
+                'arguments' => [
+                    0 => [
+                        0 => 'Sebastian',
+                    ],
+                    1 => 22,
+                    2 => 'April',
+                    3 => 19.78,
+                    4 => null,
+                    5 => new stdClass,
+                    6 => dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativeFile.php',
+                    7 => dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativeDir',
+                ],
+            ],
+            [
+                'class'     => 'MyCommandOption2',
+                'file' => '',
+                'arguments' => [
+                    0 => 42
+                ],
+            ],
+        ],
+            $this->configuration->getCustomCommandOptionsConfiguration()
+        );
+
+        ini_set('include_path', $includePath);
+    }
+
+    /**
      * @covers PHPUnit_Util_Configuration::getListenerConfiguration
      */
     public function testListenerConfigurationIsReadCorrectly()

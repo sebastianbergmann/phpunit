@@ -117,5 +117,30 @@
     <files name="foo" value="bar"/>
     <request name="foo" value="bar"/>
   </php>
+
+  <commandOptions>
+    <commandOption class="MyCommandOption" file="/optional/path/to/MyCommandOption.php">
+      <arguments>
+        <array>
+          <element key="0">
+            <string>Sebastian</string>
+          </element>
+        </array>
+        <integer>22</integer>
+        <string>April</string>
+        <double>19.78</double>
+        <null/>
+        <object class="stdClass"/>
+        <file>MyRelativeFile.php</file>
+        <directory>MyRelativeDir</directory>
+      </arguments>
+    </commandOption>
+    <commandOption class="MyCommandOption2">
+      <arguments>
+        <integer>42</integer>
+      </arguments>
+    </commandOption>
+  </commandOptions>
+
 </phpunit>
 
