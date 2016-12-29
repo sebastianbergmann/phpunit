@@ -28,7 +28,6 @@
 
     <target name="validate-composer-json" unless="validate-composer-json.done" description="Validate composer.json">
         <exec executable="${basedir}/build/tools/composer" failonerror="true" taskname="composer">
-            <env key="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
             <arg value="validate"/>
             <arg value="--no-check-lock"/>
             <arg value="--strict"/>
@@ -44,7 +43,6 @@
 
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
         <exec executable="${basedir}/build/tools/composer" taskname="composer">
-            <env key="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
             <arg value="update"/>
             <arg value="--no-interaction"/>
             <arg value="--no-progress"/>
@@ -121,7 +119,6 @@
         <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
 
         <exec executable="${basedir}/build/tools/composer">
-            <env key="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
             <arg value="require"/>
             <arg value="phpunit/dbunit:~2.0"/>
             <arg value="phpunit/php-invoker:~1.1"/>
