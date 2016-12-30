@@ -1,7 +1,7 @@
 <?php
 use PHPUnit\ExampleExtension\TestCaseTrait;
 
-class OneTest extends PHPUnit\Framework\TestCase
+class OneTest extends PHPUnit_Framework_TestCase
 {
     use TestCaseTrait;
 

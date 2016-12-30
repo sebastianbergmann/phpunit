@@ -6,7 +6,7 @@ class Issue2366
     }
 }
 
-class Issue2366Test extends PHPUnit\Framework\TestCase
+class Issue2366Test extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider provider
