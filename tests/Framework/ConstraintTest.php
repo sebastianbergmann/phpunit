@@ -19,6 +19,7 @@ use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
+use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -3326,13 +3327,13 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEmpty
+     * @covers IsEmpty
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsEmpty()
     {
-        $constraint = new PHPUnit_Framework_Constraint_IsEmpty;
+        $constraint = new IsEmpty;
 
         $this->assertFalse($constraint->evaluate(['foo'], '', true));
         $this->assertTrue($constraint->evaluate([], '', true));
@@ -3360,12 +3361,12 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEmpty
+     * @covers IsEmpty
      * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsEmpty2()
     {
-        $constraint = new PHPUnit_Framework_Constraint_IsEmpty;
+        $constraint = new IsEmpty;
 
         try {
             $constraint->evaluate(['foo'], 'custom message');

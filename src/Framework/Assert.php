@@ -27,7 +27,7 @@ use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
-use PHPUnit_Framework_Constraint_IsEmpty;
+use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit_Framework_Constraint_IsEqual;
 use PHPUnit_Framework_Constraint_IsFalse;
 use PHPUnit_Framework_Constraint_IsFinite;
@@ -2704,13 +2704,13 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_IsEmpty matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_IsEmpty
+     * @return IsEmpty
      *
      * @since Method available since Release 3.5.0
      */
     public static function isEmpty()
     {
-        return new PHPUnit_Framework_Constraint_IsEmpty;
+        return new IsEmpty;
     }
 
     /**

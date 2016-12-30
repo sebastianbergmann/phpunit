@@ -18,6 +18,7 @@ use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
+use PHPUnit\Framework\Constraint\IsEmpty;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1939,7 +1940,7 @@ function identicalTo($value)
 /**
  * Returns a PHPUnit_Framework_Constraint_IsEmpty matcher object.
  *
- * @return PHPUnit_Framework_Constraint_IsEmpty
+ * @return IsEmpty
  *
  * @since Method available since Release 3.5.0
  */
