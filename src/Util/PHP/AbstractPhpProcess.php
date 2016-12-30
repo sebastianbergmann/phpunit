@@ -182,7 +182,7 @@ abstract class AbstractPhpProcess
     public static function factory()
     {
         if (DIRECTORY_SEPARATOR == '\\') {
-            return new PHPUnit_Util_PHP_Windows;
+            return new WindowsPhpProcess;
         }
 
         return new DefaultPhpProcess;
