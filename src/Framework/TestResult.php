@@ -14,6 +14,7 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\IncompleteTest;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\InvalidCoversTargetException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException;
@@ -788,7 +789,7 @@ class PHPUnit_Framework_TestResult implements Countable
                         get_class($test),
                         $test->getName(false)
                     );
-                } catch (PHPUnit_Framework_InvalidCoversTargetException $cce) {
+                } catch (InvalidCoversTargetException $cce) {
                     $this->addWarning(
                         $test,
                         new PHPUnit_Framework_Warning(

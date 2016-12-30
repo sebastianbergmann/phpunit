@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\InvalidCoversTargetException;
 
 /**
  * Test helpers.
@@ -951,7 +952,7 @@ class PHPUnit_Util_Test
      *
      * @return array
      *
-     * @throws PHPUnit_Framework_InvalidCoversTargetException
+     * @throws InvalidCoversTargetException
      *
      * @since Method available since Release 4.0.0
      */
@@ -971,7 +972,7 @@ class PHPUnit_Util_Test
                     if (!class_exists($className) &&
                         !interface_exists($className) &&
                         !trait_exists($className)) {
-                        throw new PHPUnit_Framework_InvalidCoversTargetException(
+                        throw new InvalidCoversTargetException(
                             sprintf(
                                 'Trying to @cover or @use not existing class or ' .
                                 'interface "%s".',
@@ -1013,7 +1014,7 @@ class PHPUnit_Util_Test
                                interface_exists($className) ||
                                trait_exists($className)) &&
                               method_exists($className, $methodName))) {
-                            throw new PHPUnit_Framework_InvalidCoversTargetException(
+                            throw new InvalidCoversTargetException(
                                 sprintf(
                                     'Trying to @cover or @use not existing method "%s::%s".',
                                     $className,
@@ -1051,7 +1052,7 @@ class PHPUnit_Util_Test
                 if (!class_exists($className) &&
                     !interface_exists($className) &&
                     !trait_exists($className)) {
-                    throw new PHPUnit_Framework_InvalidCoversTargetException(
+                    throw new InvalidCoversTargetException(
                         sprintf(
                             'Trying to @cover or @use not existing class or ' .
                             'interface "%s".',
