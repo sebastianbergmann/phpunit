@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\RiskyTestError;
 
 /**
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
@@ -14,6 +15,6 @@
  *
  * @since Class available since Release 4.0.0
  */
-class PHPUnit_Framework_UnintentionallyCoveredCodeError extends PHPUnit_Framework_RiskyTestError
+class PHPUnit_Framework_UnintentionallyCoveredCodeError extends RiskyTestError
 {
 }

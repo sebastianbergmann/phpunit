@@ -12,6 +12,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTest;
+use PHPUnit\Framework\RiskyTestError;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
@@ -960,7 +961,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
 
         try {
             $this->stopOutputBuffering();
-        } catch (PHPUnit_Framework_RiskyTestError $_e) {
+        } catch (RiskyTestError $_e) {
             if (!isset($e)) {
                 $e = $_e;
             }
@@ -2248,7 +2249,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
                 ob_end_clean();
             }
 
-            throw new PHPUnit_Framework_RiskyTestError(
+            throw new RiskyTestError(
                 'Test code or tested code did not (only) close its own output buffers'
             );
         }
@@ -2296,7 +2297,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
                     $this->snapshot,
                     $this->createGlobalStateSnapshot($backupGlobals)
                 );
-            } catch (PHPUnit_Framework_RiskyTestError $rte) {
+            } catch (RiskyTestError $rte) {
                 // Intentionally left empty
             }
         }
@@ -2367,7 +2368,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      * @param Snapshot $before
      * @param Snapshot $after
      *
-     * @throws PHPUnit_Framework_RiskyTestError
+     * @throws RiskyTestError
      */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after)
     {
@@ -2401,7 +2402,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      * @param array  $after
      * @param string $header
      *
-     * @throws PHPUnit_Framework_RiskyTestError
+     * @throws RiskyTestError
      */
     private function compareGlobalStateSnapshotPart(array $before, array $after, $header)
     {
@@ -2414,7 +2415,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
                 $exporter->export($after)
             );
 
-            throw new PHPUnit_Framework_RiskyTestError(
+            throw new RiskyTestError(
                 $diff
             );
         }

@@ -18,6 +18,7 @@ use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\OutputError;
 use PHPUnit\Framework\CoveredCodeNotExecutedException;
 use PHPUnit\Framework\MissingCoversAnnotationException;
+use PHPUnit\Framework\RiskyTestError;
 use PHPUnit\Framework\RiskyTest;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -716,7 +717,7 @@ class PHPUnit_Framework_TestResult implements Countable
         } catch (AssertionFailedError $e) {
             $failure = true;
 
-            if ($e instanceof PHPUnit_Framework_RiskyTestError) {
+            if ($e instanceof RiskyTestError) {
                 $risky = true;
             } elseif ($e instanceof IncompleteTestError) {
                 $incomplete = true;
@@ -758,7 +759,7 @@ class PHPUnit_Framework_TestResult implements Countable
                 if (!$blacklist->isBlacklisted($function['filename'])) {
                     $this->addFailure(
                         $test,
-                        new PHPUnit_Framework_RiskyTestError(
+                        new RiskyTestError(
                             sprintf(
                                 '%s() used in %s:%s',
                                 $function['function'],
@@ -862,7 +863,7 @@ class PHPUnit_Framework_TestResult implements Countable
                   $test->getNumAssertions() == 0) {
             $this->addFailure(
                 $test,
-                new PHPUnit_Framework_RiskyTestError(
+                new RiskyTestError(
                     'This test did not perform any assertions'
                 ),
                 $time
@@ -884,7 +885,7 @@ class PHPUnit_Framework_TestResult implements Countable
             if (isset($annotations['method']['todo'])) {
                 $this->addFailure(
                     $test,
-                    new PHPUnit_Framework_RiskyTestError(
+                    new RiskyTestError(
                         'Test method is annotated with @todo'
                     ),
                     $time
