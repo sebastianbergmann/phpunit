@@ -34,7 +34,7 @@ use PHPUnit\Framework\Constraint\IsFinite;
 use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInfinite;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
-use PHPUnit_Framework_Constraint_IsJson;
+use PHPUnit\Framework\Constraint\IsJson;
 use PHPUnit_Framework_Constraint_IsNan;
 use PHPUnit_Framework_Constraint_IsNull;
 use PHPUnit_Framework_Constraint_IsReadable;
@@ -2513,13 +2513,13 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_IsJson matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_IsJson
+     * @return IsJson
      *
      * @since Method available since Release 3.7.20
      */
     public static function isJson()
     {
-        return new PHPUnit_Framework_Constraint_IsJson;
+        return new IsJson;
     }
 
     /**

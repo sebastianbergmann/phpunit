@@ -23,6 +23,7 @@ use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
+use PHPUnit\Framework\Constraint\IsJson;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1991,7 +1992,7 @@ function isInstanceOf($className)
 /**
  * Returns a PHPUnit_Framework_Constraint_IsJson matcher object.
  *
- * @return PHPUnit_Framework_Constraint_IsJson
+ * @return IsJson
  *
  * @since Method available since Release 3.7.20
  */
