@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringContains;
@@ -2373,7 +2374,7 @@ function stringEndsWith($suffix)
  *
  * @param mixed $prefix
  *
- * @return PHPUnit_Framework_Constraint_StringStartsWith
+ * @return StringStartsWith
  *
  * @since Method available since Release 3.4.0
  */

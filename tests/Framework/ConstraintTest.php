@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringContains;
@@ -2617,7 +2618,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringStartsWith
+     * @covers StringStartsWith
      * @covers PHPUnit\Framework\Assert::stringStartsWith
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -2650,7 +2651,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringStartsWith
+     * @covers StringStartsWith
      * @covers PHPUnit\Framework\Assert::stringStartsWith
      * @covers TestFailure::exceptionToString
      */
@@ -2677,7 +2678,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringStartsWith
+     * @covers StringStartsWith
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::stringStartsWith
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -2713,7 +2714,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringStartsWith
+     * @covers StringStartsWith
      * @covers PHPUnit\Framework\Assert::stringStartsWith
      * @covers TestFailure::exceptionToString
      */

@@ -51,7 +51,7 @@ use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
-use PHPUnit_Framework_Constraint_StringStartsWith;
+use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit_Framework_Constraint_TraversableContains;
 use PHPUnit_Framework_Constraint_TraversableContainsOnly;
 use PHPUnit_Framework_Constraint_Xor;
@@ -1957,7 +1957,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_StringStartsWith(
+        $constraint = new StringStartsWith(
             $prefix
         );
 
@@ -1984,7 +1984,7 @@ abstract class Assert
         }
 
         $constraint = new LogicalNot(
-            new PHPUnit_Framework_Constraint_StringStartsWith($prefix)
+            new StringStartsWith($prefix)
         );
 
         static::assertThat($string, $constraint, $message);
@@ -2945,13 +2945,13 @@ abstract class Assert
      *
      * @param mixed $prefix
      *
-     * @return PHPUnit_Framework_Constraint_StringStartsWith
+     * @return StringStartsWith
      *
      * @since Method available since Release 3.4.0
      */
     public static function stringStartsWith($prefix)
     {
-        return new PHPUnit_Framework_Constraint_StringStartsWith($prefix);
+        return new StringStartsWith($prefix);
     }
 
     /**
