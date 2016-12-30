@@ -18,7 +18,6 @@ use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SyntheticError;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit_Util_PHP_Default;
 use PHPUnit_Util_PHP_Windows;
 use SebastianBergmann\Environment\Runtime;
 
@@ -186,7 +185,7 @@ abstract class AbstractPhpProcess
             return new PHPUnit_Util_PHP_Windows;
         }
 
-        return new PHPUnit_Util_PHP_Default;
+        return new DefaultPhpProcess;
     }
 
     /**

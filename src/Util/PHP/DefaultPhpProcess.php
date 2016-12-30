@@ -7,15 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Util\PHP;
+
 use PHPUnit\Framework\Exception;
-use PHPUnit\Util\PHP\AbstractPhpProcess;
 
 /**
  * Default utility for PHP sub-processes.
  *
  * @since Class available since Release 3.5.12
  */
-class PHPUnit_Util_PHP_Default extends AbstractPhpProcess
+class DefaultPhpProcess extends AbstractPhpProcess
 {
     /**
      * @var string
@@ -41,7 +42,8 @@ class PHPUnit_Util_PHP_Default extends AbstractPhpProcess
     {
         if ($this->useTempFile || $this->stdin) {
             if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
-                file_put_contents($this->tempFile, $job) === false) {
+                file_put_contents($this->tempFile, $job) === false
+            ) {
                 throw new Exception(
                     'Unable to write temporary file'
                 );
