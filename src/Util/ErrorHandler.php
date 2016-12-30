@@ -11,6 +11,9 @@
 // Workaround for http://bugs.php.net/bug.php?id=47987,
 // see https://github.com/sebastianbergmann/phpunit/issues#issue/125 for details
 // Use dirname(__DIR__) instead of using /../ because of https://github.com/facebook/hhvm/issues/5215
+namespace PHPUnit\Util;
+
+use Exception;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Notice;
@@ -26,7 +29,7 @@ require_once dirname(__DIR__) . '/Framework/Error/Deprecated.php';
  *
  * @since Class available since Release 3.3.0
  */
-class PHPUnit_Util_ErrorHandler
+class ErrorHandler
 {
     protected static $errorStack = [];
 
