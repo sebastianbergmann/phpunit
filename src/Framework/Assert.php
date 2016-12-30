@@ -32,7 +32,7 @@ use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsFinite;
 use PHPUnit\Framework\Constraint\IsIdentical;
-use PHPUnit_Framework_Constraint_IsInfinite;
+use PHPUnit\Framework\Constraint\IsInfinite;
 use PHPUnit_Framework_Constraint_IsInstanceOf;
 use PHPUnit_Framework_Constraint_IsJson;
 use PHPUnit_Framework_Constraint_IsNan;
@@ -2549,13 +2549,13 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_IsInfinite matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_IsInfinite
+     * @return IsInfinite
      *
      * @since Method available since Release 5.0.0
      */
     public static function isInfinite()
     {
-        return new PHPUnit_Framework_Constraint_IsInfinite;
+        return new IsInfinite;
     }
 
     /**
