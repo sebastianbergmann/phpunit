@@ -53,7 +53,7 @@ use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContains;
-use PHPUnit_Framework_Constraint_TraversableContainsOnly;
+use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit_Framework_Constraint_Xor;
 use PHPUnit_Util_InvalidArgumentHelper;
 use PHPUnit_Util_Type;
@@ -337,7 +337,7 @@ abstract class Assert
 
         static::assertThat(
             $haystack,
-            new PHPUnit_Framework_Constraint_TraversableContainsOnly(
+            new TraversableContainsOnly(
                 $type,
                 $isNativeType
             ),
@@ -364,7 +364,7 @@ abstract class Assert
 
         static::assertThat(
             $haystack,
-            new PHPUnit_Framework_Constraint_TraversableContainsOnly(
+            new TraversableContainsOnly(
                 $classname,
                 false
             ),
@@ -421,7 +421,7 @@ abstract class Assert
         static::assertThat(
             $haystack,
             new LogicalNot(
-                new PHPUnit_Framework_Constraint_TraversableContainsOnly(
+                new TraversableContainsOnly(
                     $type,
                     $isNativeType
                 )
@@ -2611,13 +2611,13 @@ abstract class Assert
      *
      * @param string $type
      *
-     * @return PHPUnit_Framework_Constraint_TraversableContainsOnly
+     * @return TraversableContainsOnly
      *
      * @since Method available since Release 3.1.4
      */
     public static function containsOnly($type)
     {
-        return new PHPUnit_Framework_Constraint_TraversableContainsOnly($type);
+        return new TraversableContainsOnly($type);
     }
 
     /**
@@ -2626,11 +2626,11 @@ abstract class Assert
      *
      * @param string $classname
      *
-     * @return PHPUnit_Framework_Constraint_TraversableContainsOnly
+     * @return TraversableContainsOnly
      */
     public static function containsOnlyInstancesOf($classname)
     {
-        return new PHPUnit_Framework_Constraint_TraversableContainsOnly($classname, false);
+        return new TraversableContainsOnly($classname, false);
     }
 
     /**

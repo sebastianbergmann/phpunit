@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
@@ -1820,7 +1821,7 @@ function contains($value, $checkForObjectIdentity = true, $checkForNonObjectIden
  *
  * @param string $type
  *
- * @return PHPUnit_Framework_Constraint_TraversableContainsOnly
+ * @return TraversableContainsOnly
  *
  * @since Method available since Release 3.1.4
  */
@@ -1838,7 +1839,7 @@ function containsOnly($type)
  *
  * @param string $classname
  *
- * @return PHPUnit_Framework_Constraint_TraversableContainsOnly
+ * @return TraversableContainsOnly
  */
 function containsOnlyInstancesOf($classname)
 {

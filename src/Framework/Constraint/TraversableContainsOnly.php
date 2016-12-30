@@ -7,9 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsInstanceOf;
-use PHPUnit\Framework\Constraint\IsType;
+namespace PHPUnit\Framework\Constraint;
+
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -18,7 +17,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  *
  * @since Class available since Release 3.1.4
  */
-class PHPUnit_Framework_Constraint_TraversableContainsOnly extends Constraint
+class TraversableContainsOnly extends Constraint
 {
     /**
      * @var Constraint
