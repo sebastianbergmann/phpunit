@@ -41,7 +41,7 @@ use PHPUnit\Framework\Constraint\IsReadable;
 use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\IsWritable;
-use PHPUnit_Framework_Constraint_JsonMatches;
+use PHPUnit\Framework\Constraint\JsonMatches;
 use PHPUnit_Framework_Constraint_LessThan;
 use PHPUnit_Framework_Constraint_Not;
 use PHPUnit_Framework_Constraint_ObjectHasAttribute;
@@ -2309,7 +2309,7 @@ abstract class Assert
         static::assertJson($actualJson, $message);
 
         // call constraint
-        $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
+        $constraint = new JsonMatches(
             $expectedJson
         );
 
@@ -2332,7 +2332,7 @@ abstract class Assert
         static::assertJson($actualJson, $message);
 
         // call constraint
-        $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
+        $constraint = new JsonMatches(
             $expectedJson
         );
 
@@ -2358,11 +2358,11 @@ abstract class Assert
         static::assertJson($actualJson, $message);
 
         // call constraint
-        $constraintExpected = new PHPUnit_Framework_Constraint_JsonMatches(
+        $constraintExpected = new JsonMatches(
             $expectedJson
         );
 
-        $constraintActual = new PHPUnit_Framework_Constraint_JsonMatches($actualJson);
+        $constraintActual = new JsonMatches($actualJson);
 
         static::assertThat($expectedJson, $constraintActual, $message);
         static::assertThat($actualJson, $constraintExpected, $message);
@@ -2387,11 +2387,11 @@ abstract class Assert
         static::assertJson($actualJson, $message);
 
         // call constraint
-        $constraintExpected = new PHPUnit_Framework_Constraint_JsonMatches(
+        $constraintExpected = new JsonMatches(
             $expectedJson
         );
 
-        $constraintActual = new PHPUnit_Framework_Constraint_JsonMatches($actualJson);
+        $constraintActual = new JsonMatches($actualJson);
 
         static::assertThat($expectedJson, new PHPUnit_Framework_Constraint_Not($constraintActual), $message);
         static::assertThat($actualJson, new PHPUnit_Framework_Constraint_Not($constraintExpected), $message);
