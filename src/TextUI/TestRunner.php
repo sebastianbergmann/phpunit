@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\Test;
@@ -93,7 +94,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     public static function run($test, array $arguments = [])
     {
         if ($test instanceof ReflectionClass) {
-            $test = new PHPUnit_Framework_TestSuite($test);
+            $test = new TestSuite($test);
         }
 
         if ($test instanceof Test) {
@@ -118,7 +119,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         return new TestResult;
     }
 
-    private function processSuiteFilters(PHPUnit_Framework_TestSuite $suite, array $arguments)
+    private function processSuiteFilters(TestSuite $suite, array $arguments)
     {
         if (!$arguments['filter'] &&
             empty($arguments['groups']) &&
@@ -185,7 +186,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (is_integer($arguments['repeat']) && $arguments['repeat'] > 0) {
-            $_suite = new PHPUnit_Framework_TestSuite;
+            $_suite = new TestSuite;
 
             foreach (range(1, $arguments['repeat']) as $step) {
                 $_suite->addTest($suite);
@@ -456,7 +457,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         $result->setTimeoutForMediumTests($arguments['timeoutForMediumTests']);
         $result->setTimeoutForLargeTests($arguments['timeoutForLargeTests']);
 
-        if ($suite instanceof PHPUnit_Framework_TestSuite) {
+        if ($suite instanceof TestSuite) {
             $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
         }
 

@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 
 /**
@@ -57,7 +58,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
                 $suffixes
             );
 
-            $suite = new PHPUnit_Framework_TestSuite($suiteClassName);
+            $suite = new TestSuite($suiteClassName);
             $suite->addTestFiles($files);
 
             return $suite;
@@ -99,9 +100,9 @@ abstract class PHPUnit_Runner_BaseTestRunner
             }
         } catch (ReflectionException $e) {
             try {
-                $test = new PHPUnit_Framework_TestSuite($testClass);
+                $test = new TestSuite($testClass);
             } catch (Exception $e) {
-                $test = new PHPUnit_Framework_TestSuite;
+                $test = new TestSuite;
                 $test->setName($suiteClassName);
             }
         }

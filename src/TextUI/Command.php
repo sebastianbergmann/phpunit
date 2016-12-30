@@ -11,6 +11,7 @@
 use PharIo\Manifest\ManifestLoader;
 use PharIo\Manifest\Exception as ManifestException;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 
@@ -772,7 +773,7 @@ class PHPUnit_TextUI_Command
         if (isset($this->arguments['test']) && is_string($this->arguments['test']) && substr($this->arguments['test'], -5, 5) == '.phpt') {
             $test = new PHPUnit_Runner_PhptTestCase($this->arguments['test']);
 
-            $this->arguments['test'] = new PHPUnit_Framework_TestSuite;
+            $this->arguments['test'] = new TestSuite;
             $this->arguments['test']->addTest($test);
         }
 

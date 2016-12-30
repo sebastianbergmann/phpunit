@@ -16,7 +16,6 @@ use Error;
 use PHP_Invoker;
 use PHP_Timer;
 use PHPUnit_Framework_MockObject_Exception;
-use PHPUnit_Framework_TestSuite;
 use PHPUnit_Framework_UnintentionallyCoveredCodeError;
 use PHPUnit_Framework_Warning;
 use PHPUnit_Framework_WarningTestCase;
@@ -91,7 +90,7 @@ class TestResult implements Countable
     protected $time = 0;
 
     /**
-     * @var PHPUnit_Framework_TestSuite
+     * @var TestSuite
      */
     protected $topTestSuite = null;
 
@@ -360,11 +359,11 @@ class TestResult implements Countable
     /**
      * Informs the result that a testsuite will be started.
      *
-     * @param PHPUnit_Framework_TestSuite $suite
+     * @param TestSuite $suite
      *
      * @since Method available since Release 2.2.0
      */
-    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
+    public function startTestSuite(TestSuite $suite)
     {
         if ($this->topTestSuite === null) {
             $this->topTestSuite = $suite;
@@ -378,11 +377,11 @@ class TestResult implements Countable
     /**
      * Informs the result that a testsuite was completed.
      *
-     * @param PHPUnit_Framework_TestSuite $suite
+     * @param TestSuite $suite
      *
      * @since Method available since Release 2.2.0
      */
-    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
+    public function endTestSuite(TestSuite $suite)
     {
         foreach ($this->listeners as $listener) {
             $listener->endTestSuite($suite);
@@ -613,7 +612,7 @@ class TestResult implements Countable
     /**
      * Returns the (top) test suite.
      *
-     * @return PHPUnit_Framework_TestSuite
+     * @return TestSuite
      *
      * @since Method available since Release 3.0.0
      */

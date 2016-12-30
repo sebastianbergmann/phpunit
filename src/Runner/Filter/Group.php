@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\TestSuite;
 
 /**
  * @since Class available since Release 4.0.0
@@ -19,11 +20,11 @@ abstract class PHPUnit_Runner_Filter_GroupFilterIterator extends RecursiveFilter
     protected $groupTests = [];
 
     /**
-     * @param RecursiveIterator           $iterator
-     * @param array                       $groups
-     * @param PHPUnit_Framework_TestSuite $suite
+     * @param RecursiveIterator $iterator
+     * @param array             $groups
+     * @param TestSuite         $suite
      */
-    public function __construct(RecursiveIterator $iterator, array $groups, PHPUnit_Framework_TestSuite $suite)
+    public function __construct(RecursiveIterator $iterator, array $groups, TestSuite $suite)
     {
         parent::__construct($iterator);
 
@@ -48,7 +49,7 @@ abstract class PHPUnit_Runner_Filter_GroupFilterIterator extends RecursiveFilter
     {
         $test = $this->getInnerIterator()->current();
 
-        if ($test instanceof PHPUnit_Framework_TestSuite) {
+        if ($test instanceof TestSuite) {
             return true;
         }
 

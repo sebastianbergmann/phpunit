@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 
 /**
@@ -27,9 +28,9 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
     protected $tests;
 
     /**
-     * @param PHPUnit_Framework_TestSuite $testSuite
+     * @param TestSuite $testSuite
      */
-    public function __construct(PHPUnit_Framework_TestSuite $testSuite)
+    public function __construct(TestSuite $testSuite)
     {
         $this->tests = $testSuite->tests();
     }
@@ -99,6 +100,6 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
      */
     public function hasChildren()
     {
-        return $this->tests[$this->position] instanceof PHPUnit_Framework_TestSuite;
+        return $this->tests[$this->position] instanceof TestSuite;
     }
 }

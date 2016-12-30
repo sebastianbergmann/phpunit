@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use Exception;
-use PHPUnit_Framework_TestSuite;
 use PHPUnit_Framework_Warning;
 
 /**
@@ -46,11 +45,11 @@ abstract class BaseTestListener implements TestListener
     {
     }
 
-    public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
+    public function startTestSuite(TestSuite $suite)
     {
     }
 
-    public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
+    public function endTestSuite(TestSuite $suite)
     {
     }
 
