@@ -37,7 +37,7 @@ use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
 use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit\Framework\Constraint\IsNull;
-use PHPUnit_Framework_Constraint_IsReadable;
+use PHPUnit\Framework\Constraint\IsReadable;
 use PHPUnit_Framework_Constraint_IsTrue;
 use PHPUnit_Framework_Constraint_IsType;
 use PHPUnit_Framework_Constraint_IsWritable;
@@ -967,7 +967,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_IsReadable;
+        $constraint = new IsReadable;
 
         static::assertThat($filename, $constraint, $message);
     }
@@ -985,7 +985,7 @@ abstract class Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_IsReadable
+            new IsReadable
         );
 
         static::assertThat($filename, $constraint, $message);
@@ -2726,11 +2726,11 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_IsReadable matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_IsReadable
+     * @return IsReadable
      */
     public static function isReadable()
     {
-        return new PHPUnit_Framework_Constraint_IsReadable;
+        return new IsReadable;
     }
 
     /**

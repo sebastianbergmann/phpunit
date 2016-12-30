@@ -24,6 +24,7 @@ use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsNull;
+use PHPUnit\Framework\Constraint\IsReadable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -159,7 +160,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsReadable
+     * @covers IsReadable
      * @covers PHPUnit\Framework\Assert::isReadable
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
