@@ -17,6 +17,7 @@ use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
+use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -377,7 +378,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     * @covers GreaterThan
      * @covers PHPUnit\Framework\Assert::greaterThan
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -410,7 +411,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     * @covers GreaterThan
      * @covers PHPUnit\Framework\Assert::greaterThan
      * @covers TestFailure::exceptionToString
      */
@@ -438,7 +439,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::greaterThan
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -473,7 +474,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::greaterThan
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -506,7 +507,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_IsEqual
-     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      * @covers TestFailure::exceptionToString
@@ -540,7 +541,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_IsEqual
-     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      * @covers TestFailure::exceptionToString
@@ -570,7 +571,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_IsEqual
-     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
@@ -607,7 +608,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_IsEqual
-     * @covers PHPUnit_Framework_Constraint_GreaterThan
+     * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual

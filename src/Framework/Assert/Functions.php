@@ -16,6 +16,7 @@ use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\FileExists;
+use PHPUnit\Framework\Constraint\GreaterThan;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1886,7 +1887,7 @@ function fileExists()
  *
  * @param mixed $value
  *
- * @return PHPUnit_Framework_Constraint_GreaterThan
+ * @return GreaterThan
  *
  * @since Method available since Release 3.0.0
  */

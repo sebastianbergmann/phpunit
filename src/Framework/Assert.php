@@ -25,7 +25,7 @@ use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
-use PHPUnit_Framework_Constraint_GreaterThan;
+use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit_Framework_Constraint_IsAnything;
 use PHPUnit_Framework_Constraint_IsEmpty;
 use PHPUnit_Framework_Constraint_IsEqual;
@@ -2760,13 +2760,13 @@ abstract class Assert
      *
      * @param mixed $value
      *
-     * @return PHPUnit_Framework_Constraint_GreaterThan
+     * @return GreaterThan
      *
      * @since Method available since Release 3.0.0
      */
     public static function greaterThan($value)
     {
-        return new PHPUnit_Framework_Constraint_GreaterThan($value);
+        return new GreaterThan($value);
     }
 
     /**
@@ -2784,7 +2784,7 @@ abstract class Assert
     {
         return static::logicalOr(
             new PHPUnit_Framework_Constraint_IsEqual($value),
-            new PHPUnit_Framework_Constraint_GreaterThan($value)
+            new GreaterThan($value)
         );
     }
 
