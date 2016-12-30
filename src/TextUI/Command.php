@@ -20,7 +20,6 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
-use PHPUnit_TextUI_TestRunner;
 use PHPUnit_Util_Configuration;
 use PHPUnit_Util_ConfigurationGenerator;
 use PHPUnit_Util_Fileloader;
@@ -174,9 +173,9 @@ class Command
             }
 
             if ($exit) {
-                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+                exit(TestRunner::SUCCESS_EXIT);
             } else {
-                return PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
+                return TestRunner::SUCCESS_EXIT;
             }
         }
 
@@ -195,9 +194,9 @@ class Command
             }
 
             if ($exit) {
-                exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+                exit(TestRunner::SUCCESS_EXIT);
             } else {
-                return PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
+                return TestRunner::SUCCESS_EXIT;
             }
         }
 
@@ -210,12 +209,12 @@ class Command
             print $e->getMessage() . "\n";
         }
 
-        $return = PHPUnit_TextUI_TestRunner::FAILURE_EXIT;
+        $return = TestRunner::FAILURE_EXIT;
 
         if (isset($result) && $result->wasSuccessful()) {
-            $return = PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
+            $return = TestRunner::SUCCESS_EXIT;
         } elseif (!isset($result) || $result->errorCount() > 0) {
-            $return = PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT;
+            $return = TestRunner::EXCEPTION_EXIT;
         }
 
         return $return;
@@ -224,13 +223,13 @@ class Command
     /**
      * Create a TestRunner, override in subclasses.
      *
-     * @return PHPUnit_TextUI_TestRunner
+     * @return TestRunner
      *
      * @since Method available since Release 3.6.0
      */
     protected function createRunner()
     {
-        return new PHPUnit_TextUI_TestRunner($this->arguments['loader']);
+        return new TestRunner($this->arguments['loader']);
     }
 
     /**
@@ -366,7 +365,7 @@ class Command
                 case 'h':
                 case '--help':
                     $this->showHelp();
-                    exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+                    exit(TestRunner::SUCCESS_EXIT);
                     break;
 
                 case '--filter':
@@ -423,7 +422,7 @@ class Command
                         getcwd()
                     );
 
-                    exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+                    exit(TestRunner::SUCCESS_EXIT);
                     break;
 
                 case '--group':
@@ -577,14 +576,14 @@ class Command
 
                 case '--atleast-version':
                     exit(version_compare(Version::id(), $option[1], '>=')
-                        ? PHPUnit_TextUI_TestRunner::SUCCESS_EXIT
-                        : PHPUnit_TextUI_TestRunner::FAILURE_EXIT
+                        ? TestRunner::SUCCESS_EXIT
+                        : TestRunner::FAILURE_EXIT
                     );
                     break;
 
                 case '--version':
                     $this->printVersionString();
-                    exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+                    exit(TestRunner::SUCCESS_EXIT);
                     break;
 
                 case '--dont-report-useless-tests':
@@ -716,7 +715,7 @@ class Command
                 );
             } catch (Throwable $t) {
                 print $t->getMessage() . "\n";
-                exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+                exit(TestRunner::FAILURE_EXIT);
             }
 
             $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
@@ -801,7 +800,7 @@ class Command
             (isset($this->arguments['testDatabaseLogRevision']) && !isset($this->arguments['testDatabaseDSN']))
         ) {
             $this->showHelp();
-            exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
+            exit(TestRunner::EXCEPTION_EXIT);
         }
     }
 
@@ -931,7 +930,7 @@ class Command
             print "You are using the latest version of PHPUnit.\n";
         }
 
-        exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
+        exit(TestRunner::SUCCESS_EXIT);
     }
 
     /**
@@ -1064,7 +1063,7 @@ EOT;
 
         print $message . "\n";
 
-        exit(PHPUnit_TextUI_TestRunner::FAILURE_EXIT);
+        exit(TestRunner::FAILURE_EXIT);
     }
 
     /**
