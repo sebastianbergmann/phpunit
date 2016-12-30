@@ -30,6 +30,7 @@ use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
 use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\Environment\Runtime;
+use PHPUnit\Runner\Filter\NameFilterIterator;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -152,7 +153,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
 
         if ($arguments['filter']) {
             $filterFactory->addFilter(
-                new ReflectionClass('PHPUnit_Runner_Filter_Test'),
+                new ReflectionClass(NameFilterIterator::class),
                 $arguments['filter']
             );
         }
