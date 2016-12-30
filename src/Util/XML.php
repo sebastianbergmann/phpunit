@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Exception;
+use PHPUnit\Util\Utf8;
 
 /**
  * XML helpers.
@@ -177,7 +178,7 @@ class PHPUnit_Util_XML
             '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
             '',
             htmlspecialchars(
-                PHPUnit_Util_String::convertToUtf8($string),
+                Utf8::convertToUtf8($string),
                 ENT_QUOTES,
                 'UTF-8'
             )

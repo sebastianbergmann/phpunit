@@ -8,12 +8,14 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Util;
+
 /**
  * String helpers.
  *
  * @since Class available since Release 3.6.0
  */
-class PHPUnit_Util_String
+class Utf8
 {
     /**
      * Converts a string to UTF-8 encoding.
@@ -42,7 +44,7 @@ class PHPUnit_Util_String
      *
      * @return bool
      */
-    protected static function isUtf8($string)
+    private static function isUtf8($string)
     {
         $length = strlen($string);
 
