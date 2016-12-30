@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Util\PHP;
+
 use PHPUnit\Framework\Exception;
 
 /**
@@ -18,7 +20,7 @@ use PHPUnit\Framework\Exception;
  * @since Class available since Release 3.5.12
  * @see https://bugs.php.net/bug.php?id=51800
  */
-class PHPUnit_Util_PHP_Windows extends PHPUnit_Util_PHP_Default
+class WindowsPhpProcess extends DefaultPhpProcess
 {
     protected $useTempFile = true;
 
