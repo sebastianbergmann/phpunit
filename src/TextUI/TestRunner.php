@@ -27,7 +27,7 @@ use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
 use PHPUnit\Util\Configuration;
 use PHPUnit\Util\Log\JUnit;
-use PHPUnit_Util_Log_TeamCity;
+use PHPUnit\Util\Log\TeamCity;
 use PHPUnit_Util_Printer;
 use PHPUnit_Util_TestDox_ResultPrinter_HTML;
 use PHPUnit_Util_TestDox_ResultPrinter_Text;
@@ -455,7 +455,7 @@ class TestRunner extends BaseTestRunner
 
         if (isset($arguments['teamcityLogfile'])) {
             $result->addListener(
-                new PHPUnit_Util_Log_TeamCity($arguments['teamcityLogfile'])
+                new TeamCity($arguments['teamcityLogfile'])
             );
         }
 

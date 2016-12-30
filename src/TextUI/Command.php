@@ -25,6 +25,7 @@ use PHPUnit\Util\ConfigurationGenerator;
 use PHPUnit\Util\Fileloader;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Getopt;
+use PHPUnit\Util\Log\TeamCity;
 use PHPUnit_Util_Printer;
 use ReflectionClass;
 use Throwable;
@@ -516,7 +517,7 @@ class Command
                     break;
 
                 case '--teamcity':
-                    $this->arguments['printer'] = 'PHPUnit_Util_Log_TeamCity';
+                    $this->arguments['printer'] = TeamCity::class;
                     break;
 
                 case '--testdox':

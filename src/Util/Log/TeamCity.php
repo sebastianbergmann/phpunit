@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Util\Log;
+
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -19,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\TextUI\ResultPrinter;
 use PHPUnit\Util\Filter;
+use ReflectionClass;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -27,7 +30,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  *
  * @since Class available since Release 5.0.0
  */
-class PHPUnit_Util_Log_TeamCity extends ResultPrinter
+class TeamCity extends ResultPrinter
 {
     /**
      * @var bool
