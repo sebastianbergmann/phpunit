@@ -10,7 +10,7 @@
 
 namespace PHPUnit\Framework;
 
-use PHPUnit_Framework_Constraint_Exception;
+use PHPUnit\Framework\Constraint\Exception;
 use PHPUnit_Framework_Constraint_ExceptionCode;
 use PHPUnit_Framework_Constraint_ExceptionMessage;
 use PHPUnit_Framework_Constraint_ExceptionMessageRegExp;
@@ -1097,7 +1097,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             if ($checkException) {
                 $this->assertThat(
                     $e,
-                    new PHPUnit_Framework_Constraint_Exception(
+                    new Exception(
                         $this->expectedException
                     )
                 );
@@ -1142,7 +1142,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if ($this->expectedException !== null) {
             $this->assertThat(
                 null,
-                new PHPUnit_Framework_Constraint_Exception(
+                new Exception(
                     $this->expectedException
                 )
             );

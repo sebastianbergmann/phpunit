@@ -1285,7 +1285,7 @@ EOF
         $constraint = Assert::isInstanceOf('Exception');
 
         $this->assertFalse($constraint->evaluate(new stdClass, '', true));
-        $this->assertTrue($constraint->evaluate(new Exception, '', true));
+        $this->assertTrue($constraint->evaluate(new \Exception, '', true));
         $this->assertEquals('is instance of class "Exception"', $constraint->toString());
         $this->assertEquals(1, count($constraint));
 
@@ -3561,12 +3561,12 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_Exception
+     * @covers Exception
      * @covers TestFailure::exceptionToString
      */
     public function testConstraintException()
     {
-        $constraint = new PHPUnit_Framework_Constraint_Exception('FoobarException');
+        $constraint = new PHPUnit\Framework\Constraint\Exception('FoobarException');
         $exception  = new DummyException('Test');
         $stackTrace = PHPUnit_Util_Filter::getFilteredStacktrace($exception);
 
