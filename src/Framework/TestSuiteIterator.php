@@ -7,15 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\Test;
+namespace PHPUnit\Framework;
+
+use RecursiveIterator;
 
 /**
  * Iterator for test suites.
  *
  * @since Class available since Release 3.1.0
  */
-class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
+class TestSuiteIterator implements RecursiveIterator
 {
     /**
      * @var int
@@ -84,7 +85,7 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
     /**
      * Returns the sub iterator for the current element.
      *
-     * @return PHPUnit_Util_TestSuiteIterator
+     * @return TestSuiteIterator
      */
     public function getChildren()
     {

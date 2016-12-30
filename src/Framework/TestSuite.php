@@ -17,7 +17,6 @@ use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Fileloader;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit_Util_Test;
-use PHPUnit_Util_TestSuiteIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
 use ReflectionMethod;
@@ -1001,7 +1000,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      */
     public function getIterator()
     {
-        $iterator = new PHPUnit_Util_TestSuiteIterator($this);
+        $iterator = new TestSuiteIterator($this);
 
         if ($this->iteratorFilter !== null) {
             $iterator = $this->iteratorFilter->factory($iterator, $this);
