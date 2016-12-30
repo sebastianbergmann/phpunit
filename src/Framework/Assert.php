@@ -22,7 +22,7 @@ use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\Count;
-use PHPUnit_Framework_Constraint_DirectoryExists;
+use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit_Framework_Constraint_FileExists;
 use PHPUnit_Framework_Constraint_GreaterThan;
 use PHPUnit_Framework_Constraint_IsAnything;
@@ -1038,7 +1038,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_DirectoryExists;
+        $constraint = new DirectoryExists;
 
         static::assertThat($directory, $constraint, $message);
     }
@@ -1056,7 +1056,7 @@ abstract class Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_DirectoryExists
+            new DirectoryExists
         );
 
         static::assertThat($directory, $constraint, $message);
@@ -2735,11 +2735,11 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_DirectoryExists matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_DirectoryExists
+     * @return DirectoryExists
      */
     public static function directoryExists()
     {
-        return new PHPUnit_Framework_Constraint_DirectoryExists;
+        return new DirectoryExists;
     }
 
     /**
