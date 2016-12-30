@@ -25,7 +25,7 @@ use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\Filter\NameFilterIterator;
 use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
-use PHPUnit_Util_Configuration;
+use PHPUnit\Util\Configuration;
 use PHPUnit_Util_Log_JUnit;
 use PHPUnit_Util_Log_TeamCity;
 use PHPUnit_Util_Printer;
@@ -698,9 +698,9 @@ class TestRunner extends BaseTestRunner
     protected function handleConfiguration(array &$arguments)
     {
         if (isset($arguments['configuration']) &&
-            !$arguments['configuration'] instanceof PHPUnit_Util_Configuration
+            !$arguments['configuration'] instanceof Configuration
         ) {
-            $arguments['configuration'] = PHPUnit_Util_Configuration::getInstance(
+            $arguments['configuration'] = Configuration::getInstance(
                 $arguments['configuration']
             );
         }

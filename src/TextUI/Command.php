@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
-use PHPUnit_Util_Configuration;
+use PHPUnit\Util\Configuration;
 use PHPUnit_Util_ConfigurationGenerator;
 use PHPUnit_Util_Fileloader;
 use PHPUnit_Util_Filesystem;
@@ -184,7 +184,7 @@ class Command
 
             print "Available test suite(s):\n";
 
-            $configuration = PHPUnit_Util_Configuration::getInstance(
+            $configuration = Configuration::getInstance(
                 $this->arguments['configuration']
             );
 
@@ -710,7 +710,7 @@ class Command
 
         if (isset($this->arguments['configuration'])) {
             try {
-                $configuration = PHPUnit_Util_Configuration::getInstance(
+                $configuration = Configuration::getInstance(
                     $this->arguments['configuration']
                 );
             } catch (Throwable $t) {

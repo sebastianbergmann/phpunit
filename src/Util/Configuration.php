@@ -7,9 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Util;
+
+use DOMElement;
+use DOMXPath;
+use File_Iterator_Facade;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TextUI\ResultPrinter;
+use PHPUnit_Util_XML;
 
 /**
  * Wrapper for the PHPUnit XML configuration file.
@@ -142,7 +148,7 @@ use PHPUnit\TextUI\ResultPrinter;
  *
  * @since Class available since Release 3.2.0
  */
-class PHPUnit_Util_Configuration
+class Configuration
 {
     private static $instances = [];
 
@@ -174,7 +180,7 @@ class PHPUnit_Util_Configuration
      *
      * @param string $filename
      *
-     * @return PHPUnit_Util_Configuration
+     * @return Configuration
      *
      * @since Method available since Release 3.4.0
      */
@@ -245,26 +251,26 @@ class PHPUnit_Util_Configuration
         }
 
         return [
-          'whitelist' => [
-            'addUncoveredFilesFromWhitelist'     => $addUncoveredFilesFromWhitelist,
-            'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
-            'include'                            => [
-              'directory' => $this->readFilterDirectories(
-                  'filter/whitelist/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                  'filter/whitelist/file'
-              )
-            ],
-            'exclude' => [
-              'directory' => $this->readFilterDirectories(
-                  'filter/whitelist/exclude/directory'
-              ),
-              'file' => $this->readFilterFiles(
-                  'filter/whitelist/exclude/file'
-              )
+            'whitelist' => [
+                'addUncoveredFilesFromWhitelist'     => $addUncoveredFilesFromWhitelist,
+                'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
+                'include'                            => [
+                    'directory' => $this->readFilterDirectories(
+                        'filter/whitelist/directory'
+                    ),
+                    'file' => $this->readFilterFiles(
+                        'filter/whitelist/file'
+                    )
+                ],
+                'exclude' => [
+                    'directory' => $this->readFilterDirectories(
+                        'filter/whitelist/exclude/directory'
+                    ),
+                    'file' => $this->readFilterFiles(
+                        'filter/whitelist/exclude/file'
+                    )
+                ]
             ]
-          ]
         ];
     }
 
@@ -343,7 +349,8 @@ class PHPUnit_Util_Configuration
                     foreach ($node->childNodes as $argument) {
                         if ($argument instanceof DOMElement) {
                             if ($argument->tagName == 'file' ||
-                            $argument->tagName == 'directory') {
+                                $argument->tagName == 'directory'
+                            ) {
                                 $arguments[] = $this->toAbsolutePath((string) $argument->textContent);
                             } else {
                                 $arguments[] = PHPUnit_Util_XML::xmlToVariable($argument);
@@ -354,9 +361,9 @@ class PHPUnit_Util_Configuration
             }
 
             $result[] = [
-              'class'     => $class,
-              'file'      => $file,
-              'arguments' => $arguments
+                'class'     => $class,
+                'file'      => $file,
+                'arguments' => $arguments
             ];
         }
 
@@ -434,17 +441,17 @@ class PHPUnit_Util_Configuration
     public function getPHPConfiguration()
     {
         $result = [
-          'include_path' => [],
-          'ini'          => [],
-          'const'        => [],
-          'var'          => [],
-          'env'          => [],
-          'post'         => [],
-          'get'          => [],
-          'cookie'       => [],
-          'server'       => [],
-          'files'        => [],
-          'request'      => []
+            'include_path' => [],
+            'ini'          => [],
+            'const'        => [],
+            'var'          => [],
+            'env'          => [],
+            'post'         => [],
+            'get'          => [],
+            'cookie'       => [],
+            'server'       => [],
+            'files'        => [],
+            'request'      => []
         ];
 
         foreach ($this->xpath->query('php/includePath') as $includePath) {
@@ -489,7 +496,7 @@ class PHPUnit_Util_Configuration
     {
         $configuration = $this->getPHPConfiguration();
 
-        if (! empty($configuration['include_path'])) {
+        if (!empty($configuration['include_path'])) {
             ini_set(
                 'include_path',
                 implode(PATH_SEPARATOR, $configuration['include_path']) .
@@ -827,9 +834,9 @@ class PHPUnit_Util_Configuration
 
         if ($root->hasAttribute('extensionsDirectory')) {
             $result['extensionsDirectory'] = $this->toAbsolutePath(
-                    (string) $root->getAttribute(
-                        'extensionsDirectory'
-                    )
+                (string) $root->getAttribute(
+                    'extensionsDirectory'
+                )
             );
         }
 
@@ -1077,10 +1084,10 @@ class PHPUnit_Util_Configuration
             }
 
             $directories[] = [
-              'path'   => $this->toAbsolutePath($directoryPath),
-              'prefix' => $prefix,
-              'suffix' => $suffix,
-              'group'  => $group
+                'path'   => $this->toAbsolutePath($directoryPath),
+                'prefix' => $prefix,
+                'suffix' => $suffix,
+                'group'  => $group
             ];
         }
 
@@ -1135,7 +1142,8 @@ class PHPUnit_Util_Configuration
         //  - c:/windows
         if (defined('PHP_WINDOWS_VERSION_BUILD') &&
             ($path[0] === '\\' ||
-            (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))) {
+                (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))
+        ) {
             return $path;
         }
 
