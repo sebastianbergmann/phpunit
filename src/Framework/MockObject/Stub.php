@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\SelfDescribing;
+
 /**
  * An object that stubs the process of a normal method for a mock object.
  *
@@ -16,7 +18,7 @@
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Stub extends PHPUnit_Framework_SelfDescribing
+interface PHPUnit_Framework_MockObject_Stub extends SelfDescribing
 {
     /**
      * Fakes the processing of the invocation $invocation by returning a
