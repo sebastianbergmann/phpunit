@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Util\TestDox;
+
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Framework\Warning;
@@ -15,14 +17,15 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\BaseTestRunner;
-use PHPUnit\Util\TestDox\NamePrettifier;
+use PHPUnit_Util_Printer;
+use PHPUnit_Util_Test;
 
 /**
  * Base class for printers of TestDox documentation.
  *
  * @since Class available since Release 2.1.0
  */
-abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer implements TestListener
+abstract class ResultPrinter extends PHPUnit_Util_Printer implements TestListener
 {
     /**
      * @var NamePrettifier

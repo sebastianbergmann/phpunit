@@ -7,13 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Util\TestDox\ResultPrinter;
 
 /**
  * Prints TestDox documentation in text format.
  *
  * @since Class available since Release 2.1.0
  */
-class PHPUnit_Util_TestDox_ResultPrinter_Text extends PHPUnit_Util_TestDox_ResultPrinter
+class PHPUnit_Util_TestDox_ResultPrinter_Text extends ResultPrinter
 {
     /**
      * Handler for 'start class' event.
