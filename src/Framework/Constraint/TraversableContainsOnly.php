@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Constraint that asserts that the Traversable it is applied to contains
@@ -62,7 +63,7 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends Constraint
      *
      * @return mixed
      *
-     * @throws PHPUnit_Framework_ExpectationFailedException
+     * @throws ExpectationFailedException
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {

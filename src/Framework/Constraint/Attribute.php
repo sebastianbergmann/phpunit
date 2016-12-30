@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * @since Class available since Release 3.1.0
@@ -47,7 +48,7 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      *
      * @return mixed
      *
-     * @throws PHPUnit_Framework_ExpectationFailedException
+     * @throws ExpectationFailedException
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {

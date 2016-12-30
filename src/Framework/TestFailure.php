@@ -11,6 +11,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Error;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExceptionWrapper;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * A TestFailure collects a failed test together with the caught exception.
@@ -95,7 +96,7 @@ class PHPUnit_Framework_TestFailure
         if ($e instanceof PHPUnit_Framework_SelfDescribing) {
             $buffer = $e->toString();
 
-            if ($e instanceof PHPUnit_Framework_ExpectationFailedException && $e->getComparisonFailure()) {
+            if ($e instanceof ExpectationFailedException && $e->getComparisonFailure()) {
                 $buffer = $buffer . $e->getComparisonFailure()->getDiff();
             }
 

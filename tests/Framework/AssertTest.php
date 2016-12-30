@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * @since      Class available since Release 2.0.0
@@ -1122,8 +1123,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit\Framework\Assert::assertEqualXMLStructure
-     * @expectedException PHPUnit_Framework_ExpectationFailedException
+     * @covers PHPUnit\Framework\Assert::assertEqualXMLStructure
      */
     public function testXMLStructureWrongNumberOfAttributes()
     {
@@ -1133,14 +1133,15 @@ XML;
         $actual = new DOMDocument;
         $actual->load($this->filesDirectory . 'structureWrongNumberOfAttributes.xml');
 
+        $this->expectException(ExpectationFailedException::class);
+
         $this->assertEqualXMLStructure(
             $expected->firstChild, $actual->firstChild, true
         );
     }
 
     /**
-     * @covers            PHPUnit\Framework\Assert::assertEqualXMLStructure
-     * @expectedException PHPUnit_Framework_ExpectationFailedException
+     * @covers PHPUnit\Framework\Assert::assertEqualXMLStructure
      */
     public function testXMLStructureWrongNumberOfNodes()
     {
@@ -1149,6 +1150,8 @@ XML;
 
         $actual = new DOMDocument;
         $actual->load($this->filesDirectory . 'structureWrongNumberOfNodes.xml');
+
+        $this->expectException(ExpectationFailedException::class);
 
         $this->assertEqualXMLStructure(
             $expected->firstChild, $actual->firstChild, true
@@ -3741,7 +3744,7 @@ XML;
 
         try {
             $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
-        } catch (PHPUnit_Framework_ExpectationFailedException $e) {
+        } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 'Failed asserting that \'{"Mascott":"Beastie"}\' matches JSON string "{"Mascott":"Tux"}".',
                 $e->getMessage()

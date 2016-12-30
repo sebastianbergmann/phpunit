@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -106,7 +107,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
             'details' => self::getDetails($e),
         ];
 
-        if ($e instanceof PHPUnit_Framework_ExpectationFailedException) {
+        if ($e instanceof ExpectationFailedException) {
             $comparisonFailure = $e->getComparisonFailure();
 
             if ($comparisonFailure instanceof ComparisonFailure) {

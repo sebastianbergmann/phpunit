@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Constraint that accepts any input value.
@@ -32,7 +33,7 @@ class PHPUnit_Framework_Constraint_IsAnything extends Constraint
      *
      * @return mixed
      *
-     * @throws PHPUnit_Framework_ExpectationFailedException
+     * @throws ExpectationFailedException
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
