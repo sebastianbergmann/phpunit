@@ -8,13 +8,14 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Exception;
+use PHPUnit\Util\PHP\AbstractPhpProcess;
 
 /**
  * Default utility for PHP sub-processes.
  *
  * @since Class available since Release 3.5.12
  */
-class PHPUnit_Util_PHP_Default extends PHPUnit_Util_PHP
+class PHPUnit_Util_PHP_Default extends AbstractPhpProcess
 {
     /**
      * @var string

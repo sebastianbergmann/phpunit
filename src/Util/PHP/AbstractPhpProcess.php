@@ -8,12 +8,18 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Util\PHP;
+
+use __PHP_Incomplete_Class;
+use ErrorException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SyntheticError;
 use PHPUnit\Util\InvalidArgumentHelper;
+use PHPUnit_Util_PHP_Default;
+use PHPUnit_Util_PHP_Windows;
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -21,7 +27,7 @@ use SebastianBergmann\Environment\Runtime;
  *
  * @since Class available since Release 3.4.0
  */
-abstract class PHPUnit_Util_PHP
+abstract class AbstractPhpProcess
 {
     /**
      * @var Runtime
@@ -170,7 +176,7 @@ abstract class PHPUnit_Util_PHP
     }
 
     /**
-     * @return PHPUnit_Util_PHP
+     * @return AbstractPhpProcess
      *
      * @since Method available since Release 3.5.12
      */

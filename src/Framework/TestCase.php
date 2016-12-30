@@ -34,7 +34,7 @@ use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit_Util_PHP;
+use PHPUnit\Util\PHP\AbstractPhpProcess;
 use PHPUnit_Util_Test;
 use Prophecy;
 use ReflectionClass;
@@ -880,7 +880,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
             $this->prepareTemplate($template);
 
-            $php = PHPUnit_Util_PHP::factory();
+            $php = AbstractPhpProcess::factory();
             $php->runTestJob($template->render(), $this, $result);
         } else {
             $result->run($this);
