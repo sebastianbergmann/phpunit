@@ -26,6 +26,7 @@ use PHPUnit\Util\Fileloader;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Getopt;
 use PHPUnit\Util\Log\TeamCity;
+use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit_Util_Printer;
 use ReflectionClass;
 use Throwable;
@@ -521,7 +522,7 @@ class Command
                     break;
 
                 case '--testdox':
-                    $this->arguments['printer'] = 'PHPUnit_Util_TestDox_ResultPrinter_Text';
+                    $this->arguments['printer'] = TextResultPrinter::class;
                     break;
 
                 case '--testdox-group':
