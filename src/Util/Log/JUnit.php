@@ -7,6 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Util\Log;
+
+use DOMDocument;
+use DOMElement;
+use Exception;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
@@ -16,6 +21,10 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Filter;
+use PHPUnit_Util_Printer;
+use PHPUnit_Util_XML;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * A TestListener that generates a logfile of the test execution in XML markup.
@@ -24,7 +33,7 @@ use PHPUnit\Util\Filter;
  *
  * @since Class available since Release 2.1.0
  */
-class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements TestListener
+class JUnit extends PHPUnit_Util_Printer implements TestListener
 {
     /**
      * @var DOMDocument
@@ -146,10 +155,6 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements TestListene
      */
     public function addWarning(Test $test, Warning $e, $time)
     {
-        if (!$this->logIncompleteSkipped) {
-            return;
-        }
-
         $this->doAddFault($test, $e, $time, 'warning');
         $this->testSuiteFailures[$this->testSuiteLevel]++;
     }
@@ -369,9 +374,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements TestListene
 
         if (method_exists($test, 'hasOutput') && $test->hasOutput()) {
             $systemOut = $this->document->createElement('system-out');
+
             $systemOut->appendChild(
                 $this->document->createTextNode($test->getActualOutput())
             );
+
             $this->currentTestCase->appendChild($systemOut);
         }
 
@@ -429,8 +436,8 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements TestListene
         }
 
         $buffer .= TestFailure::exceptionToString($e) .
-                   "\n" .
-                   Filter::getFilteredStacktrace($e);
+            "\n" .
+            Filter::getFilteredStacktrace($e);
 
         $fault = $this->document->createElement(
             $type,

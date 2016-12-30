@@ -26,7 +26,7 @@ use PHPUnit\Runner\Filter\NameFilterIterator;
 use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
 use PHPUnit\Util\Configuration;
-use PHPUnit_Util_Log_JUnit;
+use PHPUnit\Util\Log\JUnit;
 use PHPUnit_Util_Log_TeamCity;
 use PHPUnit_Util_Printer;
 use PHPUnit_Util_TestDox_ResultPrinter_HTML;
@@ -461,7 +461,7 @@ class TestRunner extends BaseTestRunner
 
         if (isset($arguments['junitLogfile'])) {
             $result->addListener(
-                new PHPUnit_Util_Log_JUnit(
+                new JUnit(
                     $arguments['junitLogfile'],
                     $arguments['reportUselessTests']
                 )
