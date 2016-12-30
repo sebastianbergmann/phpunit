@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider;
-
 /**
  * Constraint that asserts that a string is valid JSON.
  *
@@ -57,7 +55,7 @@ class IsJson extends Constraint
         }
 
         json_decode($other);
-        $error = PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError(
+        $error = JsonMatchesErrorMessageProvider::determineJsonError(
             json_last_error()
         );
 

@@ -8,12 +8,14 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Framework\Constraint;
+
 /**
  * Provides human readable messages for each JSON error.
  *
  * @since Class available since Release 3.7.0
  */
-class PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider
+class JsonMatchesErrorMessageProvider
 {
     /**
      * Translates JSON error to a human readable string.
