@@ -28,7 +28,7 @@ use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
-use PHPUnit_Framework_Constraint_IsEqual;
+use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit_Framework_Constraint_IsFalse;
 use PHPUnit_Framework_Constraint_IsFinite;
 use PHPUnit_Framework_Constraint_IsIdentical;
@@ -558,7 +558,7 @@ abstract class Assert
      */
     public static function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
-        $constraint = new PHPUnit_Framework_Constraint_IsEqual(
+        $constraint = new IsEqual(
             $expected,
             $delta,
             $maxDepth,
@@ -610,7 +610,7 @@ abstract class Assert
     public static function assertNotEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
         $constraint = new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_IsEqual(
+            new IsEqual(
                 $expected,
                 $delta,
                 $maxDepth,
@@ -2656,13 +2656,13 @@ abstract class Assert
      * @param bool  $canonicalize
      * @param bool  $ignoreCase
      *
-     * @return PHPUnit_Framework_Constraint_IsEqual
+     * @return IsEqual
      *
      * @since Method available since Release 3.0.0
      */
     public static function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
-        return new PHPUnit_Framework_Constraint_IsEqual(
+        return new IsEqual(
             $value,
             $delta,
             $maxDepth,
@@ -2783,7 +2783,7 @@ abstract class Assert
     public static function greaterThanOrEqual($value)
     {
         return static::logicalOr(
-            new PHPUnit_Framework_Constraint_IsEqual($value),
+            new IsEqual($value),
             new GreaterThan($value)
         );
     }
@@ -2907,7 +2907,7 @@ abstract class Assert
     public static function lessThanOrEqual($value)
     {
         return static::logicalOr(
-            new PHPUnit_Framework_Constraint_IsEqual($value),
+            new IsEqual($value),
             new PHPUnit_Framework_Constraint_LessThan($value)
         );
     }

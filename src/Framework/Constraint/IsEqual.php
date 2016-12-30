@@ -7,9 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Constraint\Constraint;
+namespace PHPUnit\Framework\Constraint;
+
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit_Util_InvalidArgumentHelper;
+use SebastianBergmann;
 
 /**
  * Constraint that checks if one value is equal to another.
@@ -22,7 +25,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_IsEqual extends Constraint
+class IsEqual extends Constraint
 {
     /**
      * @var mixed

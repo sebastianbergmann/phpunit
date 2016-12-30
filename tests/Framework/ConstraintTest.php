@@ -20,6 +20,7 @@ use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
+use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -508,7 +509,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
@@ -542,7 +543,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
@@ -572,7 +573,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Constraint_Not
@@ -609,7 +610,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Constraint_Not
@@ -694,7 +695,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers PHPUnit\Framework\Assert::equalTo
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -989,7 +990,7 @@ EOF
 
     /**
      * @dataProvider isEqualProvider
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers       IsEqual
      * @covers PHPUnit\Framework\Assert::equalTo
      * @covers TestFailure::exceptionToString
      */
@@ -1012,7 +1013,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::equalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -1048,7 +1049,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::equalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -1817,7 +1818,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
@@ -1907,7 +1908,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
@@ -1937,7 +1938,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Constraint_Not
@@ -1975,7 +1976,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsEqual
+     * @covers IsEqual
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Constraint_Not

@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -30,7 +31,7 @@ class PHPUnit_Framework_Constraint_Not extends Constraint
         parent::__construct();
 
         if (!($constraint instanceof Constraint)) {
-            $constraint = new PHPUnit_Framework_Constraint_IsEqual($constraint);
+            $constraint = new IsEqual($constraint);
         }
 
         $this->constraint = $constraint;

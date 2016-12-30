@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -31,7 +32,7 @@ class PHPUnit_Framework_Constraint_Or extends Constraint
 
         foreach ($constraints as $constraint) {
             if (!($constraint instanceof Constraint)) {
-                $constraint = new PHPUnit_Framework_Constraint_IsEqual(
+                $constraint = new IsEqual(
                     $constraint
                 );
             }

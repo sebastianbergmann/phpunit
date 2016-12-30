@@ -19,6 +19,7 @@ use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
+use PHPUnit\Framework\Constraint\IsEqual;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1839,7 +1840,7 @@ function containsOnlyInstancesOf($classname)
  * @param bool  $canonicalize
  * @param bool  $ignoreCase
  *
- * @return PHPUnit_Framework_Constraint_IsEqual
+ * @return IsEqual
  *
  * @since Method available since Release 3.0.0
  */
