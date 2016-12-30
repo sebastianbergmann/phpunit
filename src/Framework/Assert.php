@@ -49,7 +49,7 @@ use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\StringContains;
-use PHPUnit_Framework_Constraint_StringEndsWith;
+use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit_Framework_Constraint_StringMatches;
 use PHPUnit_Framework_Constraint_StringStartsWith;
 use PHPUnit_Framework_Constraint_TraversableContains;
@@ -2009,7 +2009,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_StringEndsWith($suffix);
+        $constraint = new StringEndsWith($suffix);
 
         static::assertThat($string, $constraint, $message);
     }
@@ -2034,7 +2034,7 @@ abstract class Assert
         }
 
         $constraint = new LogicalNot(
-            new PHPUnit_Framework_Constraint_StringEndsWith($suffix)
+            new StringEndsWith($suffix)
         );
 
         static::assertThat($string, $constraint, $message);
@@ -2974,13 +2974,13 @@ abstract class Assert
      *
      * @param mixed $suffix
      *
-     * @return PHPUnit_Framework_Constraint_StringEndsWith
+     * @return StringEndsWith
      *
      * @since Method available since Release 3.4.0
      */
     public static function stringEndsWith($suffix)
     {
-        return new PHPUnit_Framework_Constraint_StringEndsWith($suffix);
+        return new StringEndsWith($suffix);
     }
 
     /**

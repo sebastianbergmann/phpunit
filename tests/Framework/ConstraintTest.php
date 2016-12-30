@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\RegularExpression;
@@ -2870,7 +2871,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringEndsWith
+     * @covers StringEndsWith
      * @covers PHPUnit\Framework\Assert::stringEndsWith
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -2903,7 +2904,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringEndsWith
+     * @covers StringEndsWith
      * @covers PHPUnit\Framework\Assert::stringEndsWith
      * @covers TestFailure::exceptionToString
      */
@@ -2931,7 +2932,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringEndsWith
+     * @covers StringEndsWith
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::stringEndsWith
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -2967,7 +2968,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringEndsWith
+     * @covers StringEndsWith
      * @covers PHPUnit\Framework\Assert::stringEndsWith
      * @covers TestFailure::exceptionToString
      */

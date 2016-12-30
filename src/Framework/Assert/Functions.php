@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\RegularExpression;
 
@@ -2354,7 +2355,7 @@ function stringContains($string, $case = true)
  *
  * @param mixed $suffix
  *
- * @return PHPUnit_Framework_Constraint_StringEndsWith
+ * @return StringEndsWith
  *
  * @since Method available since Release 3.4.0
  */
