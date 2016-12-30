@@ -23,7 +23,7 @@ use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Util\Configuration;
 use PHPUnit\Util\ConfigurationGenerator;
 use PHPUnit\Util\Fileloader;
-use PHPUnit_Util_Filesystem;
+use PHPUnit\Util\Filesystem;
 use PHPUnit_Util_Getopt;
 use PHPUnit_Util_Printer;
 use ReflectionClass;
@@ -816,7 +816,7 @@ class Command
     {
         if (!class_exists($loaderClass, false)) {
             if ($loaderFile == '') {
-                $loaderFile = PHPUnit_Util_Filesystem::classNameToFilename(
+                $loaderFile = Filesystem::classNameToFilename(
                     $loaderClass
                 );
             }
@@ -862,7 +862,7 @@ class Command
     {
         if (!class_exists($printerClass, false)) {
             if ($printerFile == '') {
-                $printerFile = PHPUnit_Util_Filesystem::classNameToFilename(
+                $printerFile = Filesystem::classNameToFilename(
                     $printerClass
                 );
             }

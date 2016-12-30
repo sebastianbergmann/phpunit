@@ -12,7 +12,7 @@ namespace PHPUnit\Runner;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Fileloader;
-use PHPUnit_Util_Filesystem;
+use PHPUnit\Util\Filesystem;
 use ReflectionClass;
 
 /**
@@ -35,7 +35,7 @@ class StandardTestSuiteLoader implements TestSuiteLoader
         $suiteClassName = str_replace('.php', '', $suiteClassName);
 
         if (empty($suiteClassFile)) {
-            $suiteClassFile = PHPUnit_Util_Filesystem::classNameToFilename(
+            $suiteClassFile = Filesystem::classNameToFilename(
                 $suiteClassName
             );
         }
