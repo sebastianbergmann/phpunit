@@ -26,7 +26,7 @@ use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
-use PHPUnit_Framework_Constraint_IsAnything;
+use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit_Framework_Constraint_IsEmpty;
 use PHPUnit_Framework_Constraint_IsEqual;
 use PHPUnit_Framework_Constraint_IsFalse;
@@ -2465,13 +2465,13 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_IsAnything matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_IsAnything
+     * @return IsAnything
      *
      * @since Method available since Release 3.0.0
      */
     public static function anything()
     {
-        return new PHPUnit_Framework_Constraint_IsAnything;
+        return new IsAnything;
     }
 
     /**

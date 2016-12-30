@@ -7,7 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Constraint\Constraint;
+namespace PHPUnit\Framework\Constraint;
+
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -15,7 +16,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_IsAnything extends Constraint
+class IsAnything extends Constraint
 {
     /**
      * Evaluates the constraint for parameter $other

@@ -17,6 +17,7 @@ use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
+use PHPUnit\Framework\Constraint\IsAnything;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -37,7 +38,7 @@ function any()
 /**
  * Returns a PHPUnit_Framework_Constraint_IsAnything matcher object.
  *
- * @return PHPUnit_Framework_Constraint_IsAnything
+ * @return IsAnything
  *
  * @since Method available since Release 3.0.0
  */
