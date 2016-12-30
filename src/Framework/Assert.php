@@ -54,7 +54,6 @@ use PHPUnit_Framework_Constraint_StringStartsWith;
 use PHPUnit_Framework_Constraint_TraversableContains;
 use PHPUnit_Framework_Constraint_TraversableContainsOnly;
 use PHPUnit_Framework_Constraint_Xor;
-use PHPUnit_Framework_SkippedTestError;
 use PHPUnit_Util_InvalidArgumentHelper;
 use PHPUnit_Util_Type;
 use PHPUnit_Util_XML;
@@ -3186,13 +3185,13 @@ abstract class Assert
      *
      * @param string $message
      *
-     * @throws PHPUnit_Framework_SkippedTestError
+     * @throws SkippedTestError
      *
      * @since Method available since Release 3.0.0
      */
     public static function markTestSkipped($message = '')
     {
-        throw new PHPUnit_Framework_SkippedTestError($message);
+        throw new SkippedTestError($message);
     }
 
     /**

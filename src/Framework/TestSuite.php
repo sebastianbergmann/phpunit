@@ -10,6 +10,7 @@
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SkippedTestCase;
 use PHPUnit\Framework\SelfDescribing;
 
@@ -480,7 +481,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescrib
                     }
 
                     $data = self::incompleteTest($className, $name, $message);
-                } catch (PHPUnit_Framework_SkippedTestError $e) {
+                } catch (SkippedTestError $e) {
                     $message = sprintf(
                         'Test for %s::%s skipped by data provider',
                         $className,

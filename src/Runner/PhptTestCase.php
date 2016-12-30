@@ -11,6 +11,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
@@ -170,7 +171,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, SelfDescrib
                     $message = '';
                 }
 
-                $result->addFailure($this, new PHPUnit_Framework_SkippedTestError($message), 0);
+                $result->addFailure($this, new SkippedTestError($message), 0);
 
                 $skip = true;
             }

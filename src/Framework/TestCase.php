@@ -12,6 +12,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTest;
+use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SkippedTest;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\RiskyTestError;
@@ -2089,7 +2090,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
                 if (!isset($passedKeys[$dependency])) {
                     $this->result->addError(
                         $this,
-                        new PHPUnit_Framework_SkippedTestError(
+                        new SkippedTestError(
                             sprintf(
                                 'This test depends on "%s" to pass.',
                                 $dependency
@@ -2107,7 +2108,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
                         $passed[$dependency]['size'] > $this->getSize()) {
                         $this->result->addError(
                             $this,
-                            new PHPUnit_Framework_SkippedTestError(
+                            new SkippedTestError(
                                 'This test depends on a test that is larger than itself.'
                             ),
                             0
