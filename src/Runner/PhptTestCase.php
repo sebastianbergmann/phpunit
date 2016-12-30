@@ -10,6 +10,7 @@
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\IncompleteTestError;
 
 /**
  * Runner for PHPT test cases.
@@ -198,7 +199,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
                 if ($xfail !== false) {
                     $result->addFailure(
                         $this,
-                        new PHPUnit_Framework_IncompleteTestError(
+                        new IncompleteTestError(
                             $xfail,
                             0,
                             $e
@@ -215,7 +216,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
             if ($result->allCompletelyImplemented() && $xfail !== false) {
                 $result->addFailure(
                     $this,
-                    new PHPUnit_Framework_IncompleteTestError(
+                    new IncompleteTestError(
                         'XFAIL section but test passes'
                     ),
                     $time

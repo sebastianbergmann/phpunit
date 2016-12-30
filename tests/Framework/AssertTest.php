@@ -10,6 +10,7 @@
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\IncompleteTestError;
 
 /**
  * @since      Class available since Release 2.0.0
@@ -3446,7 +3447,7 @@ XML;
     {
         try {
             $this->markTestIncomplete('incomplete');
-        } catch (PHPUnit_Framework_IncompleteTestError $e) {
+        } catch (IncompleteTestError $e) {
             $this->assertEquals('incomplete', $e->getMessage());
 
             return;

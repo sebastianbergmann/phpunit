@@ -13,6 +13,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\IncompleteTest;
+use PHPUnit\Framework\IncompleteTestError;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException;
@@ -712,7 +713,7 @@ class PHPUnit_Framework_TestResult implements Countable
 
             if ($e instanceof PHPUnit_Framework_RiskyTestError) {
                 $risky = true;
-            } elseif ($e instanceof PHPUnit_Framework_IncompleteTestError) {
+            } elseif ($e instanceof IncompleteTestError) {
                 $incomplete = true;
             } elseif ($e instanceof PHPUnit_Framework_SkippedTestError) {
                 $skipped = true;

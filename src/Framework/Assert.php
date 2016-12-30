@@ -54,7 +54,6 @@ use PHPUnit_Framework_Constraint_StringStartsWith;
 use PHPUnit_Framework_Constraint_TraversableContains;
 use PHPUnit_Framework_Constraint_TraversableContainsOnly;
 use PHPUnit_Framework_Constraint_Xor;
-use PHPUnit_Framework_IncompleteTestError;
 use PHPUnit_Framework_SkippedTestError;
 use PHPUnit_Util_InvalidArgumentHelper;
 use PHPUnit_Util_Type;
@@ -3173,13 +3172,13 @@ abstract class Assert
      *
      * @param string $message
      *
-     * @throws PHPUnit_Framework_IncompleteTestError
+     * @throws IncompleteTestError
      *
      * @since Method available since Release 3.0.0
      */
     public static function markTestIncomplete($message = '')
     {
-        throw new PHPUnit_Framework_IncompleteTestError($message);
+        throw new IncompleteTestError($message);
     }
 
     /**

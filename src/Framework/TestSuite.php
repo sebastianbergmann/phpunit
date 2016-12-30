@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestCase;
+use PHPUnit\Framework\IncompleteTestError;
 
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
@@ -463,7 +464,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                         $className,
                         $name
                     );
-                } catch (PHPUnit_Framework_IncompleteTestError $e) {
+                } catch (IncompleteTestError $e) {
                     $message = sprintf(
                         'Test for %s::%s marked incomplete by data provider',
                         $className,
