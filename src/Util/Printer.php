@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Exception;
+use PHPUnit\Util\InvalidArgumentHelper;
 
 /**
  * Utility class that can print to STDOUT or write to a file.
@@ -147,7 +148,7 @@ class PHPUnit_Util_Printer
         if (is_bool($autoFlush)) {
             $this->autoFlush = $autoFlush;
         } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 }

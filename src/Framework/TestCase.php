@@ -33,7 +33,7 @@ use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\GlobalState;
-use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit_Util_PHP;
 use PHPUnit_Util_Test;
 use Prophecy;
@@ -574,7 +574,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function expectException($exception)
     {
         if (!is_string($exception)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $this->expectedException = $exception;
@@ -590,7 +590,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function expectExceptionCode($code)
     {
         if (!is_int($code) && !is_string($code)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer or string');
+            throw InvalidArgumentHelper::factory(1, 'integer or string');
         }
 
         $this->expectedExceptionCode = $code;
@@ -606,7 +606,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function expectExceptionMessage($message)
     {
         if (!is_string($message)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $this->expectedExceptionMessage = $message;
@@ -622,7 +622,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function expectExceptionMessageRegExp($messageRegExp)
     {
         if (!is_string($messageRegExp)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $this->expectedExceptionMessageRegExp = $messageRegExp;
@@ -636,7 +636,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function setRegisterMockObjectsFromTestArgumentsRecursively($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
@@ -1289,7 +1289,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 $this->runTestInSeparateProcess = $runTestInSeparateProcess;
             }
         } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 
@@ -1305,7 +1305,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if (is_bool($preserveGlobalState)) {
             $this->preserveGlobalState = $preserveGlobalState;
         } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 
@@ -1321,7 +1321,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if (is_bool($inIsolation)) {
             $this->inIsolation = $inIsolation;
         } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 
@@ -1365,7 +1365,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function setOutputCallback($callback)
     {
         if (!is_callable($callback)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'callback');
+            throw InvalidArgumentHelper::factory(1, 'callback');
         }
 
         $this->outputCallback = $callback;
@@ -1416,7 +1416,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function iniSet($varName, $newValue)
     {
         if (!is_string($varName)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $currentValue = ini_set($varName, $newValue);

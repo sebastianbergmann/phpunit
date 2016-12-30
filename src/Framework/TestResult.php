@@ -17,7 +17,7 @@ use PHP_Invoker;
 use PHP_Timer;
 use PHPUnit_Framework_MockObject_Exception;
 use PHPUnit\Util\Blacklist;
-use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit_Util_Printer;
 use PHPUnit_Util_Test;
 use ReflectionClass;
@@ -966,7 +966,7 @@ class TestResult implements Countable
     public function convertErrorsToExceptions($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->convertErrorsToExceptions = $flag;
@@ -996,7 +996,7 @@ class TestResult implements Countable
     public function stopOnError($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->stopOnError = $flag;
@@ -1014,7 +1014,7 @@ class TestResult implements Countable
     public function stopOnFailure($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->stopOnFailure = $flag;
@@ -1032,7 +1032,7 @@ class TestResult implements Countable
     public function stopOnWarning($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->stopOnWarning = $flag;
@@ -1048,7 +1048,7 @@ class TestResult implements Countable
     public function beStrictAboutTestsThatDoNotTestAnything($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
@@ -1074,7 +1074,7 @@ class TestResult implements Countable
     public function beStrictAboutOutputDuringTests($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->beStrictAboutOutputDuringTests = $flag;
@@ -1100,7 +1100,7 @@ class TestResult implements Countable
     public function beStrictAboutResourceUsageDuringSmallTests($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->beStrictAboutResourceUsageDuringSmallTests = $flag;
@@ -1126,7 +1126,7 @@ class TestResult implements Countable
     public function enforceTimeLimit($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->enforceTimeLimit = $flag;
@@ -1152,7 +1152,7 @@ class TestResult implements Countable
     public function beStrictAboutTodoAnnotatedTests($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->beStrictAboutTodoAnnotatedTests = $flag;
@@ -1180,7 +1180,7 @@ class TestResult implements Countable
     public function stopOnRisky($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->stopOnRisky = $flag;
@@ -1198,7 +1198,7 @@ class TestResult implements Countable
     public function stopOnIncomplete($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->stopOnIncomplete = $flag;
@@ -1216,7 +1216,7 @@ class TestResult implements Countable
     public function stopOnSkipped($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->stopOnSkipped = $flag;
@@ -1254,7 +1254,7 @@ class TestResult implements Countable
     public function setTimeoutForSmallTests($timeout)
     {
         if (!is_integer($timeout)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
+            throw InvalidArgumentHelper::factory(1, 'integer');
         }
 
         $this->timeoutForSmallTests = $timeout;
@@ -1272,7 +1272,7 @@ class TestResult implements Countable
     public function setTimeoutForMediumTests($timeout)
     {
         if (!is_integer($timeout)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
+            throw InvalidArgumentHelper::factory(1, 'integer');
         }
 
         $this->timeoutForMediumTests = $timeout;
@@ -1290,7 +1290,7 @@ class TestResult implements Countable
     public function setTimeoutForLargeTests($timeout)
     {
         if (!is_integer($timeout)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer');
+            throw InvalidArgumentHelper::factory(1, 'integer');
         }
 
         $this->timeoutForLargeTests = $timeout;
@@ -1314,7 +1314,7 @@ class TestResult implements Countable
     public function setRegisterMockObjectsFromTestArgumentsRecursively($flag)
     {
         if (!is_bool($flag)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;

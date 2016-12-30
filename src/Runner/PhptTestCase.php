@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SelfDescribing;
-use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit_Util_PHP;
 use Throwable;
 
@@ -77,7 +77,7 @@ class PhptTestCase implements Test, SelfDescribing
     public function __construct($filename, $phpUtil = null)
     {
         if (!is_string($filename)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!is_file($filename)) {

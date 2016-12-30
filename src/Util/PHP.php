@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SyntheticError;
+use PHPUnit\Util\InvalidArgumentHelper;
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -72,7 +73,7 @@ abstract class PHPUnit_Util_PHP
     public function setUseStderrRedirection($stderrRedirection)
     {
         if (!is_bool($stderrRedirection)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
         $this->stderrRedirection = $stderrRedirection;

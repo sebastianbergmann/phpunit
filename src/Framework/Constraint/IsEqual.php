@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit\Util\InvalidArgumentHelper;
 use SebastianBergmann;
 
 /**
@@ -71,19 +71,19 @@ class IsEqual extends Constraint
         parent::__construct();
 
         if (!is_numeric($delta)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'numeric');
+            throw InvalidArgumentHelper::factory(2, 'numeric');
         }
 
         if (!is_int($maxDepth)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'integer');
+            throw InvalidArgumentHelper::factory(3, 'integer');
         }
 
         if (!is_bool($canonicalize)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
+            throw InvalidArgumentHelper::factory(4, 'boolean');
         }
 
         if (!is_bool($ignoreCase)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'boolean');
+            throw InvalidArgumentHelper::factory(5, 'boolean');
         }
 
         $this->value        = $value;

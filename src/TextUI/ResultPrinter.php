@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit_Util_Printer;
 use PHPUnit_Util_Test;
 use SebastianBergmann\Environment\Console;
@@ -150,28 +150,28 @@ class ResultPrinter extends PHPUnit_Util_Printer implements TestListener
         parent::__construct($out);
 
         if (!is_bool($verbose)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
+            throw InvalidArgumentHelper::factory(2, 'boolean');
         }
 
         $availableColors = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
 
         if (!in_array($colors, $availableColors)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+            throw InvalidArgumentHelper::factory(
                 3,
                 vsprintf('value from "%s", "%s" or "%s"', $availableColors)
             );
         }
 
         if (!is_bool($debug)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(4, 'boolean');
+            throw InvalidArgumentHelper::factory(4, 'boolean');
         }
 
         if (!is_int($numberOfColumns) && $numberOfColumns != 'max') {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(5, 'integer or "max"');
+            throw InvalidArgumentHelper::factory(5, 'integer or "max"');
         }
 
         if (!is_bool($reverse)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(6, 'boolean');
+            throw InvalidArgumentHelper::factory(6, 'boolean');
         }
 
         $console            = new Console;

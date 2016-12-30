@@ -15,7 +15,7 @@ use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Fileloader;
-use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit_Util_Test;
 use PHPUnit_Util_TestSuiteIterator;
 use RecursiveIteratorIterator;
@@ -264,7 +264,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
 
         if (!is_object($testClass)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+            throw InvalidArgumentHelper::factory(
                 1,
                 'class name or object'
             );
@@ -316,7 +316,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     public function addTestFile($filename)
     {
         if (!is_string($filename)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (file_exists($filename) && substr($filename, -5) == '.phpt') {
@@ -398,7 +398,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         if (!(is_array($filenames) ||
             (is_object($filenames) && $filenames instanceof Iterator))
         ) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(
+            throw InvalidArgumentHelper::factory(
                 1,
                 'array or iterator'
             );
@@ -776,7 +776,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         if (is_bool($runTestInSeparateProcess)) {
             $this->runTestInSeparateProcess = $runTestInSeparateProcess;
         } else {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'boolean');
+            throw InvalidArgumentHelper::factory(1, 'boolean');
         }
     }
 

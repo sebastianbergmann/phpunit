@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\Exception;
-use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit\Util\InvalidArgumentHelper;
 use SplObjectStorage;
 
 /**
@@ -48,11 +48,11 @@ class TraversableContains extends Constraint
         parent::__construct();
 
         if (!is_bool($checkForObjectIdentity)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'boolean');
+            throw InvalidArgumentHelper::factory(2, 'boolean');
         }
 
         if (!is_bool($checkForNonObjectIdentity)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(3, 'boolean');
+            throw InvalidArgumentHelper::factory(3, 'boolean');
         }
 
         $this->checkForObjectIdentity    = $checkForObjectIdentity;
