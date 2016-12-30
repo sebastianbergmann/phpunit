@@ -16,7 +16,6 @@ use Error;
 use PHP_Invoker;
 use PHP_Timer;
 use PHPUnit_Framework_MockObject_Exception;
-use PHPUnit_Framework_UnintentionallyCoveredCodeError;
 use PHPUnit_Framework_Warning;
 use PHPUnit_Framework_WarningTestCase;
 use PHPUnit_Util_Blacklist;
@@ -822,7 +821,7 @@ class TestResult implements Countable
             } catch (UnintentionallyCoveredCodeException $cce) {
                 $this->addFailure(
                     $test,
-                    new PHPUnit_Framework_UnintentionallyCoveredCodeError(
+                    new UnintentionallyCoveredCodeError(
                         'This test executed code that is not listed as code to be covered or used:' .
                         PHP_EOL . $cce->getMessage()
                     ),
