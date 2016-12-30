@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
+use PHPUnit\Util\TestDox\NamePrettifier;
 
 /**
  * @since Class available since Release 5.4.0
@@ -31,7 +32,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
     private $root;
 
     /**
-     * @var PHPUnit_Util_TestDox_NamePrettifier
+     * @var NamePrettifier
      */
     private $prettifier;
 
@@ -51,7 +52,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
         $this->root = $this->document->createElement('tests');
         $this->document->appendChild($this->root);
 
-        $this->prettifier = new PHPUnit_Util_TestDox_NamePrettifier;
+        $this->prettifier = new NamePrettifier;
 
         parent::__construct($out);
     }

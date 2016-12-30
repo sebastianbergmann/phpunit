@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\BaseTestRunner;
+use PHPUnit\Util\TestDox\NamePrettifier;
 
 /**
  * Base class for printers of TestDox documentation.
@@ -24,7 +25,7 @@ use PHPUnit\Runner\BaseTestRunner;
 abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer implements TestListener
 {
     /**
-     * @var PHPUnit_Util_TestDox_NamePrettifier
+     * @var NamePrettifier
      */
     protected $prettifier;
 
@@ -105,7 +106,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
         $this->groups        = $groups;
         $this->excludeGroups = $excludeGroups;
 
-        $this->prettifier = new PHPUnit_Util_TestDox_NamePrettifier;
+        $this->prettifier = new NamePrettifier;
         $this->startRun();
     }
 
