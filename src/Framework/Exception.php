@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Exception;
 
 /**
  * Base class for all PHPUnit Framework exceptions.
@@ -29,7 +30,7 @@
  * @see http://fabien.potencier.org/article/9/php-serialization-stack-traces-and-exceptions
  * @since Class available since Release 3.4.0
  */
-class PHPUnit_Framework_Exception extends RuntimeException implements PHPUnit_Exception
+class PHPUnit_Framework_Exception extends RuntimeException implements Exception
 {
     /**
      * @var array
