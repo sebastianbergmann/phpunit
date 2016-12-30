@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SyntheticError;
 use SebastianBergmann\Environment\Runtime;
@@ -386,14 +387,14 @@ abstract class PHPUnit_Util_PHP
     /**
      * Gets the thrown exception from a PHPUnit_Framework_TestFailure.
      *
-     * @param PHPUnit_Framework_TestFailure $error
+     * @param TestFailure $error
      *
      * @return Exception
      *
      * @since Method available since Release 3.6.0
      * @see    https://github.com/sebastianbergmann/phpunit/issues/74
      */
-    private function getException(PHPUnit_Framework_TestFailure $error)
+    private function getException(TestFailure $error)
     {
         $exception = $error->thrownException();
 

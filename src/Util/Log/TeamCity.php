@@ -11,6 +11,7 @@
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use SebastianBergmann\Comparator\ComparisonFailure;
@@ -356,7 +357,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
 
         while ($previous) {
             $stackTrace .= "\nCaused by\n" .
-                PHPUnit_Framework_TestFailure::exceptionToString($previous) . "\n" .
+                TestFailure::exceptionToString($previous) . "\n" .
                 PHPUnit_Util_Filter::getFilteredStacktrace($previous);
 
             $previous = $previous->getPrevious();

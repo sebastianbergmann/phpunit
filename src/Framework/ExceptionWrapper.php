@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit_Framework_TestFailure;
 use PHPUnit_Util_Filter;
 use Throwable;
 
@@ -81,7 +80,7 @@ class ExceptionWrapper extends Exception
      */
     public function __toString()
     {
-        $string = PHPUnit_Framework_TestFailure::exceptionToString($this);
+        $string = TestFailure::exceptionToString($this);
 
         if ($trace = PHPUnit_Util_Filter::getFilteredStacktrace($this)) {
             $string .= "\n" . $trace;

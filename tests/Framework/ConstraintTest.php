@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,7 +22,7 @@ class Framework_ConstraintTest extends TestCase
      * @covers PHPUnit_Framework_Constraint_ArrayHasKey
      * @covers PHPUnit\Framework\Assert::arrayHasKey
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintArrayHasKey()
     {
@@ -39,7 +40,7 @@ Failed asserting that an array has the key 0.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -51,7 +52,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_ArrayHasKey
      * @covers PHPUnit\Framework\Assert::arrayHasKey
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintArrayHasKey2()
     {
@@ -66,7 +67,7 @@ custom message\nFailed asserting that an array has the key 0.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -80,7 +81,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::arrayHasKey
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintArrayNotHasKey()
     {
@@ -101,7 +102,7 @@ Failed asserting that an array does not have the key 0.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -115,7 +116,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::arrayHasKey
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintArrayNotHasKey2()
     {
@@ -133,7 +134,7 @@ Failed asserting that an array does not have the key 0.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -146,7 +147,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsReadable
      * @covers PHPUnit\Framework\Assert::isReadable
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsReadable()
     {
@@ -165,7 +166,7 @@ Failed asserting that "foo" is readable.
 
 EOF
                 ,
-                PHPUnit_Framework_TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e)
             );
 
             return;
@@ -178,7 +179,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsWritable
      * @covers PHPUnit\Framework\Assert::isWritable
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsWritable()
     {
@@ -197,7 +198,7 @@ Failed asserting that "foo" is writable.
 
 EOF
                 ,
-                PHPUnit_Framework_TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e)
             );
 
             return;
@@ -210,7 +211,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_DirectoryExists
      * @covers PHPUnit\Framework\Assert::directoryExists
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintDirectoryExists()
     {
@@ -229,7 +230,7 @@ Failed asserting that directory "foo" exists.
 
 EOF
                 ,
-                PHPUnit_Framework_TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e)
             );
 
             return;
@@ -242,7 +243,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_FileExists
      * @covers PHPUnit\Framework\Assert::fileExists
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintFileExists()
     {
@@ -261,7 +262,7 @@ Failed asserting that file "foo" exists.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -273,7 +274,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_FileExists
      * @covers PHPUnit\Framework\Assert::fileExists
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintFileExists2()
     {
@@ -288,7 +289,7 @@ Failed asserting that file "foo" exists.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -302,7 +303,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers PHPUnit\Framework\Assert::fileExists
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintFileNotExists()
     {
@@ -325,7 +326,7 @@ Failed asserting that file "$file" does not exist.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -339,7 +340,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers PHPUnit\Framework\Assert::fileExists
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintFileNotExists2()
     {
@@ -358,7 +359,7 @@ Failed asserting that file "$file" does not exist.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -371,7 +372,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_GreaterThan
      * @covers PHPUnit\Framework\Assert::greaterThan
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintGreaterThan()
     {
@@ -391,7 +392,7 @@ Failed asserting that 0 is greater than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -403,7 +404,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_GreaterThan
      * @covers PHPUnit\Framework\Assert::greaterThan
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintGreaterThan2()
     {
@@ -419,7 +420,7 @@ Failed asserting that 0 is greater than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -433,7 +434,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::greaterThan
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotGreaterThan()
     {
@@ -454,7 +455,7 @@ Failed asserting that 2 is not greater than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -468,7 +469,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::greaterThan
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotGreaterThan2()
     {
@@ -486,7 +487,7 @@ Failed asserting that 2 is not greater than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -500,7 +501,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintGreaterThanOrEqual()
     {
@@ -520,7 +521,7 @@ Failed asserting that 0 is equal to 1 or is greater than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -534,7 +535,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintGreaterThanOrEqual2()
     {
@@ -550,7 +551,7 @@ Failed asserting that 0 is equal to 1 or is greater than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -566,7 +567,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotGreaterThanOrEqual()
     {
@@ -587,7 +588,7 @@ Failed asserting that not( 1 is equal to 1 or is greater than 1 ).
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -603,7 +604,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotGreaterThanOrEqual2()
     {
@@ -621,7 +622,7 @@ Failed asserting that not( 1 is equal to 1 or is greater than 1 ).
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -634,7 +635,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsAnything
      * @covers PHPUnit\Framework\Assert::anything
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsAnything()
     {
@@ -651,7 +652,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::anything
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotIsAnything()
     {
@@ -672,7 +673,7 @@ Failed asserting that null is not anything.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -685,7 +686,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsEqual
      * @covers PHPUnit\Framework\Assert::equalTo
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsEqual()
     {
@@ -705,7 +706,7 @@ Failed asserting that 0 matches expected 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -979,7 +980,7 @@ EOF
      * @dataProvider isEqualProvider
      * @covers PHPUnit_Framework_Constraint_IsEqual
      * @covers PHPUnit\Framework\Assert::equalTo
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsEqual2($expected, $actual, $message)
     {
@@ -990,7 +991,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
               "custom message\n$message",
-              $this->trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
+              $this->trimnl(TestFailure::exceptionToString($e))
             );
 
             return;
@@ -1004,7 +1005,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::equalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotEqual()
     {
@@ -1026,7 +1027,7 @@ Failed asserting that 1 is not equal to 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1040,7 +1041,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::equalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotEqual2()
     {
@@ -1058,7 +1059,7 @@ Failed asserting that 1 is not equal to 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1071,7 +1072,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsIdentical
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsIdentical()
     {
@@ -1093,7 +1094,7 @@ Failed asserting that two variables reference the same object.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1105,7 +1106,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_IsIdentical
      * @covers PHPUnit\Framework\Assert::identicalTo
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsIdentical2()
     {
@@ -1123,7 +1124,7 @@ Failed asserting that two variables reference the same object.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1135,7 +1136,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_IsIdentical
      * @covers PHPUnit\Framework\Assert::identicalTo
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsIdentical3()
     {
@@ -1155,7 +1156,7 @@ Failed asserting that two strings are identical.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1169,7 +1170,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotIdentical()
     {
@@ -1193,7 +1194,7 @@ Failed asserting that two variables don't reference the same object.
 
 EOF
               ,
-              $this->trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
+              $this->trimnl(TestFailure::exceptionToString($e))
             );
 
             return;
@@ -1207,7 +1208,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotIdentical2()
     {
@@ -1226,7 +1227,7 @@ Failed asserting that two variables don't reference the same object.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1240,7 +1241,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotIdentical3()
     {
@@ -1257,7 +1258,7 @@ Failed asserting that two strings are not identical.
 
 EOF
               ,
-              $this->trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
+              $this->trimnl(TestFailure::exceptionToString($e))
             );
 
             return;
@@ -1270,7 +1271,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsInstanceOf
      * @covers PHPUnit\Framework\Assert::isInstanceOf
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsInstanceOf()
     {
@@ -1295,7 +1296,7 @@ Failed asserting that stdClass Object () is an instance of class "Exception".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1307,7 +1308,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_IsInstanceOf
      * @covers PHPUnit\Framework\Assert::isInstanceOf
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsInstanceOf2()
     {
@@ -1322,7 +1323,7 @@ Failed asserting that stdClass Object () is an instance of class "Exception".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1336,7 +1337,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::isInstanceOf
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotInstanceOf()
     {
@@ -1358,7 +1359,7 @@ Failed asserting that stdClass Object () is not an instance of class "stdClass".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1372,7 +1373,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::isInstanceOf
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotInstanceOf2()
     {
@@ -1389,7 +1390,7 @@ Failed asserting that stdClass Object () is not an instance of class "stdClass".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1402,7 +1403,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsType
      * @covers PHPUnit\Framework\Assert::isType
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsType()
     {
@@ -1421,7 +1422,7 @@ Failed asserting that stdClass Object &%x () is of type "string".
 
 EOF
               ,
-              $this->trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
+              $this->trimnl(TestFailure::exceptionToString($e))
             );
 
             return;
@@ -1433,7 +1434,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_IsType
      * @covers PHPUnit\Framework\Assert::isType
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsType2()
     {
@@ -1448,7 +1449,7 @@ Failed asserting that stdClass Object &%x () is of type "string".
 
 EOF
               ,
-              $this->trimnl(PHPUnit_Framework_TestFailure::exceptionToString($e))
+              $this->trimnl(TestFailure::exceptionToString($e))
             );
 
             return;
@@ -1487,7 +1488,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::isType
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotType()
     {
@@ -1509,7 +1510,7 @@ Failed asserting that '' is not of type "string".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1523,7 +1524,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::isType
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotType2()
     {
@@ -1540,7 +1541,7 @@ Failed asserting that '' is not of type "string".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1553,7 +1554,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_IsNull
      * @covers PHPUnit\Framework\Assert::isNull
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNull()
     {
@@ -1572,7 +1573,7 @@ Failed asserting that 0 is null.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1584,7 +1585,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_IsNull
      * @covers PHPUnit\Framework\Assert::isNull
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNull2()
     {
@@ -1599,7 +1600,7 @@ Failed asserting that 0 is null.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1614,7 +1615,7 @@ EOF
      * @covers PHPUnit\Framework\Assert::isNull
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotNull()
     {
@@ -1635,7 +1636,7 @@ Failed asserting that null is not null.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1649,7 +1650,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::isNull
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsNotNull2()
     {
@@ -1666,7 +1667,7 @@ Failed asserting that null is not null.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1679,7 +1680,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit\Framework\Assert::lessThan
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintLessThan()
     {
@@ -1699,7 +1700,7 @@ Failed asserting that 1 is less than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1711,7 +1712,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit\Framework\Assert::lessThan
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintLessThan2()
     {
@@ -1727,7 +1728,7 @@ Failed asserting that 1 is less than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1741,7 +1742,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::lessThan
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotLessThan()
     {
@@ -1763,7 +1764,7 @@ Failed asserting that 0 is not less than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1777,7 +1778,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::lessThan
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotLessThan2()
     {
@@ -1795,7 +1796,7 @@ Failed asserting that 0 is not less than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1809,7 +1810,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintLessThanOrEqual()
     {
@@ -1829,7 +1830,7 @@ Failed asserting that 2 is equal to 1 or is less than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1899,7 +1900,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintLessThanOrEqual2()
     {
@@ -1915,7 +1916,7 @@ Failed asserting that 2 is equal to 1 or is less than 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1931,7 +1932,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotLessThanOrEqual()
     {
@@ -1953,7 +1954,7 @@ Failed asserting that not( 1 is equal to 1 or is less than 1 ).
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -1969,7 +1970,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotLessThanOrEqual2()
     {
@@ -1987,7 +1988,7 @@ Failed asserting that not( 1 is equal to 1 or is less than 1 ).
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2000,7 +2001,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_ClassHasAttribute
      * @covers PHPUnit\Framework\Assert::classHasAttribute
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintClassHasAttribute()
     {
@@ -2020,7 +2021,7 @@ Failed asserting that class "stdClass" has attribute "privateAttribute".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2032,7 +2033,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_ClassHasAttribute
      * @covers PHPUnit\Framework\Assert::classHasAttribute
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintClassHasAttribute2()
     {
@@ -2047,7 +2048,7 @@ Failed asserting that class "stdClass" has attribute "privateAttribute".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2061,7 +2062,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::classHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintClassNotHasAttribute()
     {
@@ -2083,7 +2084,7 @@ Failed asserting that class "ClassWithNonPublicAttributes" does not have attribu
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2097,7 +2098,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::classHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintClassNotHasAttribute2()
     {
@@ -2114,7 +2115,7 @@ Failed asserting that class "ClassWithNonPublicAttributes" does not have attribu
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2127,7 +2128,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_ClassHasStaticAttribute
      * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintClassHasStaticAttribute()
     {
@@ -2147,7 +2148,7 @@ Failed asserting that class "stdClass" has static attribute "privateStaticAttrib
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2159,7 +2160,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_ClassHasStaticAttribute
      * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintClassHasStaticAttribute2()
     {
@@ -2174,7 +2175,7 @@ Failed asserting that class "stdClass" has static attribute "foo".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2188,7 +2189,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintClassNotHasStaticAttribute()
     {
@@ -2210,7 +2211,7 @@ Failed asserting that class "ClassWithNonPublicAttributes" does not have static 
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2224,7 +2225,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintClassNotHasStaticAttribute2()
     {
@@ -2241,7 +2242,7 @@ Failed asserting that class "ClassWithNonPublicAttributes" does not have static 
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2254,7 +2255,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
      * @covers PHPUnit\Framework\Assert::objectHasAttribute
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintObjectHasAttribute()
     {
@@ -2274,7 +2275,7 @@ Failed asserting that object of class "stdClass" has attribute "privateAttribute
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2286,7 +2287,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
      * @covers PHPUnit\Framework\Assert::objectHasAttribute
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintObjectHasAttribute2()
     {
@@ -2301,7 +2302,7 @@ Failed asserting that object of class "stdClass" has attribute "privateAttribute
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2315,7 +2316,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::objectHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintObjectNotHasAttribute()
     {
@@ -2337,7 +2338,7 @@ Failed asserting that object of class "ClassWithNonPublicAttributes" does not ha
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2351,7 +2352,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::objectHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintObjectNotHasAttribute2()
     {
@@ -2368,7 +2369,7 @@ Failed asserting that object of class "ClassWithNonPublicAttributes" does not ha
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2381,7 +2382,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_PCREMatch
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintPCREMatch()
     {
@@ -2401,7 +2402,7 @@ Failed asserting that 'barbazbar' matches PCRE pattern "/foo/".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2413,7 +2414,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_PCREMatch
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintPCREMatch2()
     {
@@ -2428,7 +2429,7 @@ Failed asserting that 'barbazbar' matches PCRE pattern "/foo/".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2442,7 +2443,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintPCRENotMatch()
     {
@@ -2464,7 +2465,7 @@ Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2478,7 +2479,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintPCRENotMatch2()
     {
@@ -2495,7 +2496,7 @@ Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2592,7 +2593,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_StringStartsWith
      * @covers PHPUnit\Framework\Assert::stringStartsWith
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringStartsWith()
     {
@@ -2612,7 +2613,7 @@ Failed asserting that 'foo' starts with "prefix".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2624,7 +2625,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringStartsWith
      * @covers PHPUnit\Framework\Assert::stringStartsWith
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringStartsWith2()
     {
@@ -2639,7 +2640,7 @@ custom message\nFailed asserting that 'foo' starts with "prefix".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2653,7 +2654,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::stringStartsWith
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringStartsNotWith()
     {
@@ -2675,7 +2676,7 @@ Failed asserting that 'prefixfoo' starts not with "prefix".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2687,7 +2688,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringStartsWith
      * @covers PHPUnit\Framework\Assert::stringStartsWith
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringStartsNotWith2()
     {
@@ -2705,7 +2706,7 @@ Failed asserting that 'prefixfoo' starts not with "prefix".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2718,7 +2719,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_StringContains
      * @covers PHPUnit\Framework\Assert::stringContains
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringContains()
     {
@@ -2738,7 +2739,7 @@ Failed asserting that 'barbazbar' contains "foo".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2750,7 +2751,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringContains
      * @covers PHPUnit\Framework\Assert::stringContains
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringContains2()
     {
@@ -2766,7 +2767,7 @@ Failed asserting that 'barbazbar' contains "foo".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2780,7 +2781,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::stringContains
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringNotContains()
     {
@@ -2802,7 +2803,7 @@ Failed asserting that 'barfoobar' does not contain "foo".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2816,7 +2817,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::stringContains
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringNotContains2()
     {
@@ -2834,7 +2835,7 @@ Failed asserting that 'barfoobar' does not contain "foo".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2847,7 +2848,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_StringEndsWith
      * @covers PHPUnit\Framework\Assert::stringEndsWith
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringEndsWith()
     {
@@ -2867,7 +2868,7 @@ Failed asserting that 'foo' ends with "suffix".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2879,7 +2880,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringEndsWith
      * @covers PHPUnit\Framework\Assert::stringEndsWith
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringEndsWith2()
     {
@@ -2895,7 +2896,7 @@ Failed asserting that 'foo' ends with "suffix".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2909,7 +2910,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::stringEndsWith
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringEndsNotWith()
     {
@@ -2931,7 +2932,7 @@ Failed asserting that 'foosuffix' ends not with "suffix".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2943,7 +2944,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_StringEndsWith
      * @covers PHPUnit\Framework\Assert::stringEndsWith
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintStringEndsNotWith2()
     {
@@ -2961,7 +2962,7 @@ Failed asserting that 'foosuffix' ends not with "suffix".
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -2991,7 +2992,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintArrayContains()
     {
@@ -3011,7 +3012,7 @@ Failed asserting that an array contains 'foo'.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3022,7 +3023,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintArrayContains2()
     {
@@ -3038,7 +3039,7 @@ Failed asserting that an array contains 'foo'.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3051,7 +3052,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_TraversableContains
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintArrayNotContains()
     {
@@ -3073,7 +3074,7 @@ Failed asserting that an array does not contain 'foo'.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3086,7 +3087,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_TraversableContains
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintArrayNotContains2()
     {
@@ -3104,7 +3105,7 @@ Failed asserting that an array does not contain 'foo'.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3116,7 +3117,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintSplObjectStorageContains()
     {
@@ -3139,7 +3140,7 @@ Failed asserting that a traversable contains stdClass Object &%x ().
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3150,7 +3151,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintSplObjectStorageContains2()
     {
@@ -3167,7 +3168,7 @@ Failed asserting that a traversable contains stdClass Object &%x ().
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3179,7 +3180,7 @@ EOF
     /**
      * @covers PHPUnit\Framework\Assert::attributeEqualTo
      * @covers PHPUnit_Framework_Constraint_Attribute
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testAttributeEqualTo()
     {
@@ -3203,7 +3204,7 @@ Failed asserting that attribute "foo" is equal to 2.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3215,7 +3216,7 @@ EOF
     /**
      * @covers PHPUnit\Framework\Assert::attributeEqualTo
      * @covers PHPUnit_Framework_Constraint_Attribute
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testAttributeEqualTo2()
     {
@@ -3231,7 +3232,7 @@ custom message\nFailed asserting that attribute "foo" is equal to 2.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3245,7 +3246,7 @@ EOF
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers PHPUnit_Framework_Constraint_Attribute
      * @covers PHPUnit_Framework_Constraint_Not
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testAttributeNotEqualTo()
     {
@@ -3273,7 +3274,7 @@ Failed asserting that attribute "foo" is not equal to 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3287,7 +3288,7 @@ EOF
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers PHPUnit_Framework_Constraint_Attribute
      * @covers PHPUnit_Framework_Constraint_Not
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testAttributeNotEqualTo2()
     {
@@ -3305,7 +3306,7 @@ custom message\nFailed asserting that attribute "foo" is not equal to 1.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3317,7 +3318,7 @@ EOF
     /**
      * @covers PHPUnit_Framework_Constraint_IsEmpty
      * @covers PHPUnit\Framework\Constraint::count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsEmpty()
     {
@@ -3339,7 +3340,7 @@ Failed asserting that an array is empty.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3350,7 +3351,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_IsEmpty
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsEmpty2()
     {
@@ -3365,7 +3366,7 @@ custom message\nFailed asserting that an array is empty.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3409,7 +3410,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_Count
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintCountFailing()
     {
@@ -3424,7 +3425,7 @@ Failed asserting that actual size 2 matches expected size 5.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3437,7 +3438,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_Count
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotCountFailing()
     {
@@ -3454,7 +3455,7 @@ Failed asserting that actual size 2 does not match expected size 2.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3498,7 +3499,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_SameSize
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintSameSizeFailing()
     {
@@ -3513,7 +3514,7 @@ Failed asserting that actual size 2 matches expected size 5.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3526,7 +3527,7 @@ EOF
      * @covers PHPUnit_Framework_Constraint_SameSize
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintNotSameSizeFailing()
     {
@@ -3543,7 +3544,7 @@ Failed asserting that actual size 2 does not match expected size 2.
 
 EOF
               ,
-              PHPUnit_Framework_TestFailure::exceptionToString($e)
+              TestFailure::exceptionToString($e)
             );
 
             return;
@@ -3554,7 +3555,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_Exception
-     * @covers PHPUnit_Framework_TestFailure::exceptionToString
+     * @covers TestFailure::exceptionToString
      */
     public function testConstraintException()
     {
@@ -3572,7 +3573,7 @@ $stackTrace.
 
 EOF
                 ,
-                PHPUnit_Framework_TestFailure::exceptionToString($e)
+                TestFailure::exceptionToString($e)
             );
 
             return;

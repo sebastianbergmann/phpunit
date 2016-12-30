@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,13 +17,13 @@ use PHPUnit\Framework\TestCase;
 class Framework_TestFailureTest extends TestCase
 {
     /**
-     * @covers PHPUnit_Framework_TestFailure::toString
+     * @covers TestFailure::toString
      */
     public function testToString()
     {
         $test      = new self(__FUNCTION__);
         $exception = new Exception('message');
-        $failure   = new PHPUnit_Framework_TestFailure($test, $exception);
+        $failure   = new TestFailure($test, $exception);
 
         $this->assertEquals(__METHOD__ . ': message', $failure->toString());
     }

@@ -812,14 +812,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     $globals = '';
                 }
                 $includedFiles = '';
-                $iniSettings = '';
+                $iniSettings   = '';
             }
 
-            $coverage = $result->getCollectCodeCoverageInformation() ? 'true' : 'false';
-            $isStrictAboutTestsThatDoNotTestAnything = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
-            $isStrictAboutOutputDuringTests = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
-            $enforcesTimeLimit = $result->enforcesTimeLimit() ? 'true' : 'false';
-            $isStrictAboutTodoAnnotatedTests = $result->isStrictAboutTodoAnnotatedTests() ? 'true' : 'false';
+            $coverage                                   = $result->getCollectCodeCoverageInformation() ? 'true' : 'false';
+            $isStrictAboutTestsThatDoNotTestAnything    = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
+            $isStrictAboutOutputDuringTests             = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
+            $enforcesTimeLimit                          = $result->enforcesTimeLimit() ? 'true' : 'false';
+            $isStrictAboutTodoAnnotatedTests            = $result->isStrictAboutTodoAnnotatedTests() ? 'true' : 'false';
             $isStrictAboutResourceUsageDuringSmallTests = $result->isStrictAboutResourceUsageDuringSmallTests() ? 'true' : 'false';
 
             if (defined('PHPUNIT_COMPOSER_INSTALL')) {
@@ -840,44 +840,44 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 $codeCoverageFilter = null;
             }
 
-            $data = var_export(serialize($this->data), true);
-            $dataName = var_export($this->dataName, true);
-            $dependencyInput = var_export(serialize($this->dependencyInput), true);
-            $includePath = var_export(get_include_path(), true);
+            $data               = var_export(serialize($this->data), true);
+            $dataName           = var_export($this->dataName, true);
+            $dependencyInput    = var_export(serialize($this->dependencyInput), true);
+            $includePath        = var_export(get_include_path(), true);
             $codeCoverageFilter = var_export(serialize($codeCoverageFilter), true);
             // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
             // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
-            $data = "'." . $data . ".'";
-            $dataName = "'.(" . $dataName . ").'";
-            $dependencyInput = "'." . $dependencyInput . ".'";
-            $includePath = "'." . $includePath . ".'";
+            $data               = "'." . $data . ".'";
+            $dataName           = "'.(" . $dataName . ").'";
+            $dependencyInput    = "'." . $dependencyInput . ".'";
+            $includePath        = "'." . $includePath . ".'";
             $codeCoverageFilter = "'." . $codeCoverageFilter . ".'";
 
             $configurationFilePath = (isset($GLOBALS['__PHPUNIT_CONFIGURATION_FILE']) ? $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] : '');
 
             $template->setVar(
                 [
-                    'composerAutoload' => $composerAutoload,
-                    'phar' => $phar,
-                    'filename' => $class->getFileName(),
-                    'className' => $class->getName(),
-                    'methodName' => $this->name,
-                    'collectCodeCoverageInformation' => $coverage,
-                    'data' => $data,
-                    'dataName' => $dataName,
-                    'dependencyInput' => $dependencyInput,
-                    'constants' => $constants,
-                    'globals' => $globals,
-                    'include_path' => $includePath,
-                    'included_files' => $includedFiles,
-                    'iniSettings' => $iniSettings,
-                    'isStrictAboutTestsThatDoNotTestAnything' => $isStrictAboutTestsThatDoNotTestAnything,
-                    'isStrictAboutOutputDuringTests' => $isStrictAboutOutputDuringTests,
-                    'enforcesTimeLimit' => $enforcesTimeLimit,
-                    'isStrictAboutTodoAnnotatedTests' => $isStrictAboutTodoAnnotatedTests,
+                    'composerAutoload'                           => $composerAutoload,
+                    'phar'                                       => $phar,
+                    'filename'                                   => $class->getFileName(),
+                    'className'                                  => $class->getName(),
+                    'methodName'                                 => $this->name,
+                    'collectCodeCoverageInformation'             => $coverage,
+                    'data'                                       => $data,
+                    'dataName'                                   => $dataName,
+                    'dependencyInput'                            => $dependencyInput,
+                    'constants'                                  => $constants,
+                    'globals'                                    => $globals,
+                    'include_path'                               => $includePath,
+                    'included_files'                             => $includedFiles,
+                    'iniSettings'                                => $iniSettings,
+                    'isStrictAboutTestsThatDoNotTestAnything'    => $isStrictAboutTestsThatDoNotTestAnything,
+                    'isStrictAboutOutputDuringTests'             => $isStrictAboutOutputDuringTests,
+                    'enforcesTimeLimit'                          => $enforcesTimeLimit,
+                    'isStrictAboutTodoAnnotatedTests'            => $isStrictAboutTodoAnnotatedTests,
                     'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
-                    'codeCoverageFilter' => $codeCoverageFilter,
-                    'configurationFilePath' => $configurationFilePath
+                    'codeCoverageFilter'                         => $codeCoverageFilter,
+                    'configurationFilePath'                      => $configurationFilePath
                 ]
             );
 

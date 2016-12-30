@@ -7,21 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Error;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\ExceptionWrapper;
-use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Test;
-use PHPUnit\Framework\SelfDescribing;
+namespace PHPUnit\Framework;
+
+use Throwable;
 
 /**
  * A TestFailure collects a failed test together with the caught exception.
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_Framework_TestFailure
+class TestFailure
 {
     /**
      * @var string

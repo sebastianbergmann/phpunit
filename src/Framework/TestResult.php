@@ -18,6 +18,7 @@ use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\OutputError;
 use PHPUnit\Framework\CoveredCodeNotExecutedException;
 use PHPUnit\Framework\MissingCoversAnnotationException;
+use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SkippedTestError;
@@ -238,28 +239,28 @@ class PHPUnit_Framework_TestResult implements Countable
     public function addError(Test $test, Throwable $t, $time)
     {
         if ($t instanceof RiskyTest) {
-            $this->risky[] = new PHPUnit_Framework_TestFailure($test, $t);
+            $this->risky[] = new TestFailure($test, $t);
             $notifyMethod  = 'addRiskyTest';
 
             if ($this->stopOnRisky) {
                 $this->stop();
             }
         } elseif ($t instanceof IncompleteTest) {
-            $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $t);
+            $this->notImplemented[] = new TestFailure($test, $t);
             $notifyMethod           = 'addIncompleteTest';
 
             if ($this->stopOnIncomplete) {
                 $this->stop();
             }
         } elseif ($t instanceof SkippedTest) {
-            $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $t);
+            $this->skipped[] = new TestFailure($test, $t);
             $notifyMethod    = 'addSkippedTest';
 
             if ($this->stopOnSkipped) {
                 $this->stop();
             }
         } else {
-            $this->errors[] = new PHPUnit_Framework_TestFailure($test, $t);
+            $this->errors[] = new TestFailure($test, $t);
             $notifyMethod   = 'addError';
 
             if ($this->stopOnError || $this->stopOnFailure) {
@@ -296,7 +297,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->stop();
         }
 
-        $this->warnings[] = new PHPUnit_Framework_TestFailure($test, $e);
+        $this->warnings[] = new TestFailure($test, $e);
 
         foreach ($this->listeners as $listener) {
             $listener->addWarning($test, $e, $time);
@@ -317,28 +318,28 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         if ($e instanceof RiskyTest ||
             $e instanceof OutputError) {
-            $this->risky[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $this->risky[] = new TestFailure($test, $e);
             $notifyMethod  = 'addRiskyTest';
 
             if ($this->stopOnRisky) {
                 $this->stop();
             }
         } elseif ($e instanceof IncompleteTest) {
-            $this->notImplemented[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $this->notImplemented[] = new TestFailure($test, $e);
             $notifyMethod           = 'addIncompleteTest';
 
             if ($this->stopOnIncomplete) {
                 $this->stop();
             }
         } elseif ($e instanceof SkippedTest) {
-            $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $this->skipped[] = new TestFailure($test, $e);
             $notifyMethod    = 'addSkippedTest';
 
             if ($this->stopOnSkipped) {
                 $this->stop();
             }
         } else {
-            $this->failures[] = new PHPUnit_Framework_TestFailure($test, $e);
+            $this->failures[] = new TestFailure($test, $e);
             $notifyMethod     = 'addFailure';
 
             if ($this->stopOnFailure) {
