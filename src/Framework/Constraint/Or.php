@@ -7,28 +7,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Constraint;
 
 /**
  * Logical OR.
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_Or extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_Or extends Constraint
 {
     /**
-     * @var PHPUnit_Framework_Constraint[]
+     * @var Constraint[]
      */
     protected $constraints = [];
 
     /**
-     * @param PHPUnit_Framework_Constraint[] $constraints
+     * @param Constraint[] $constraints
      */
     public function setConstraints(array $constraints)
     {
         $this->constraints = [];
 
         foreach ($constraints as $constraint) {
-            if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
+            if (!($constraint instanceof Constraint)) {
                 $constraint = new PHPUnit_Framework_Constraint_IsEqual(
                     $constraint
                 );

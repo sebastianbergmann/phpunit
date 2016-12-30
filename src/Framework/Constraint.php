@@ -8,6 +8,12 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Framework;
+
+use Countable;
+use PHPUnit_Framework_ExpectationFailedException;
+use PHPUnit_Framework_SelfDescribing;
+use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
@@ -15,7 +21,7 @@ use SebastianBergmann\Exporter\Exporter;
  *
  * @since Interface available since Release 3.0.0
  */
-abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framework_SelfDescribing
+abstract class Constraint implements Countable, PHPUnit_Framework_SelfDescribing
 {
     protected $exporter;
 
@@ -95,7 +101,7 @@ abstract class PHPUnit_Framework_Constraint implements Countable, PHPUnit_Framew
      *
      * @throws PHPUnit_Framework_ExpectationFailedException
      */
-    protected function fail($other, $description, SebastianBergmann\Comparator\ComparisonFailure $comparisonFailure = null)
+    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null)
     {
         $failureDescription = sprintf(
             'Failed asserting that %s.',

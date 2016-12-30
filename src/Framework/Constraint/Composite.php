@@ -7,21 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Constraint;
 
 /**
  * @since Class available since Release 3.1.0
  */
-abstract class PHPUnit_Framework_Constraint_Composite extends PHPUnit_Framework_Constraint
+abstract class PHPUnit_Framework_Constraint_Composite extends Constraint
 {
     /**
-     * @var PHPUnit_Framework_Constraint
+     * @var Constraint
      */
     protected $innerConstraint;
 
     /**
-     * @param PHPUnit_Framework_Constraint $innerConstraint
+     * @param Constraint $innerConstraint
      */
-    public function __construct(PHPUnit_Framework_Constraint $innerConstraint)
+    public function __construct(Constraint $innerConstraint)
     {
         parent::__construct();
         $this->innerConstraint = $innerConstraint;

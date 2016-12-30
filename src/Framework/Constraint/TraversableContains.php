@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that asserts that the Traversable it is applied to contains
@@ -14,7 +15,7 @@
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_TraversableContains extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_TraversableContains extends Constraint
 {
     /**
      * @var bool

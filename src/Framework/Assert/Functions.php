@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Constraint;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1508,13 +1509,13 @@ function assertStringStartsWith($prefix, $string, $message = '')
 /**
  * Evaluates a PHPUnit_Framework_Constraint matcher object.
  *
- * @param mixed                        $value
- * @param PHPUnit_Framework_Constraint $constraint
- * @param string                       $message
+ * @param mixed      $value
+ * @param Constraint $constraint
+ * @param string     $message
  *
  * @since Method available since Release 3.0.0
  */
-function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
+function assertThat($value, Constraint $constraint, $message = '')
 {
     return call_user_func_array(
         'PHPUnit_Framework_Assert::assertThat',
@@ -1676,14 +1677,14 @@ function atLeastOnce()
 /**
  * Returns a PHPUnit_Framework_Constraint_Attribute matcher object.
  *
- * @param PHPUnit_Framework_Constraint $constraint
- * @param string                       $attributeName
+ * @param Constraint $constraint
+ * @param string     $attributeName
  *
  * @return PHPUnit_Framework_Constraint_Attribute
  *
  * @since Method available since Release 3.1.0
  */
-function attribute(PHPUnit_Framework_Constraint $constraint, $attributeName)
+function attribute(Constraint $constraint, $attributeName)
 {
     return call_user_func_array(
         'PHPUnit_Framework_Assert::attribute',
@@ -2089,13 +2090,13 @@ function logicalAnd()
 /**
  * Returns a PHPUnit_Framework_Constraint_Not matcher object.
  *
- * @param PHPUnit_Framework_Constraint $constraint
+ * @param Constraint $constraint
  *
  * @return PHPUnit_Framework_Constraint_Not
  *
  * @since Method available since Release 3.0.0
  */
-function logicalNot(PHPUnit_Framework_Constraint $constraint)
+function logicalNot(Constraint $constraint)
 {
     return call_user_func_array(
         'PHPUnit_Framework_Assert::logicalNot',

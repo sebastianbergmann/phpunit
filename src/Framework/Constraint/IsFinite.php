@@ -7,13 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that accepts finite.
  *
  * @since      Class available since Release 5.0.0
  */
-class PHPUnit_Framework_Constraint_IsFinite extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_IsFinite extends Constraint
 {
     /**
      * Evaluates the constraint for parameter $other. Returns true if the

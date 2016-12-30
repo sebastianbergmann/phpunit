@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that checks if one value is equal to another.
@@ -19,7 +20,7 @@
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_IsEqual extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_IsEqual extends Constraint
 {
     /**
      * @var mixed

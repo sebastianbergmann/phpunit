@@ -14,7 +14,6 @@ use ArrayAccess;
 use Countable;
 use DOMDocument;
 use DOMElement;
-use PHPUnit_Framework_Constraint;
 use PHPUnit_Framework_Constraint_And;
 use PHPUnit_Framework_Constraint_ArrayHasKey;
 use PHPUnit_Framework_Constraint_ArraySubset;
@@ -2230,13 +2229,13 @@ abstract class Assert
     /**
      * Evaluates a PHPUnit_Framework_Constraint matcher object.
      *
-     * @param mixed                        $value
-     * @param PHPUnit_Framework_Constraint $constraint
-     * @param string                       $message
+     * @param mixed      $value
+     * @param Constraint $constraint
+     * @param string     $message
      *
      * @since Method available since Release 3.0.0
      */
-    public static function assertThat($value, PHPUnit_Framework_Constraint $constraint, $message = '')
+    public static function assertThat($value, Constraint $constraint, $message = '')
     {
         self::$count += count($constraint);
 
@@ -2437,13 +2436,13 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_Not matcher object.
      *
-     * @param PHPUnit_Framework_Constraint $constraint
+     * @param Constraint $constraint
      *
      * @return PHPUnit_Framework_Constraint_Not
      *
      * @since Method available since Release 3.0.0
      */
-    public static function logicalNot(PHPUnit_Framework_Constraint $constraint)
+    public static function logicalNot(Constraint $constraint)
     {
         return new PHPUnit_Framework_Constraint_Not($constraint);
     }
@@ -2576,14 +2575,14 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_Attribute matcher object.
      *
-     * @param PHPUnit_Framework_Constraint $constraint
-     * @param string                       $attributeName
+     * @param Constraint $constraint
+     * @param string     $attributeName
      *
      * @return PHPUnit_Framework_Constraint_Attribute
      *
      * @since Method available since Release 3.1.0
      */
-    public static function attribute(PHPUnit_Framework_Constraint $constraint, $attributeName)
+    public static function attribute(Constraint $constraint, $attributeName)
     {
         return new PHPUnit_Framework_Constraint_Attribute(
             $constraint,

@@ -7,26 +7,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Constraint;
 
 /**
  * Logical AND.
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_And extends Constraint
 {
     /**
-     * @var PHPUnit_Framework_Constraint[]
+     * @var Constraint[]
      */
     protected $constraints = [];
 
     /**
-     * @var PHPUnit_Framework_Constraint
+     * @var Constraint
      */
     protected $lastConstraint = null;
 
     /**
-     * @param PHPUnit_Framework_Constraint[] $constraints
+     * @param Constraint[] $constraints
      *
      * @throws PHPUnit_Framework_Exception
      */
@@ -35,7 +36,7 @@ class PHPUnit_Framework_Constraint_And extends PHPUnit_Framework_Constraint
         $this->constraints = [];
 
         foreach ($constraints as $constraint) {
-            if (!($constraint instanceof PHPUnit_Framework_Constraint)) {
+            if (!($constraint instanceof Constraint)) {
                 throw new PHPUnit_Framework_Exception(
                     'All parameters to ' . __CLASS__ .
                     ' must be a constraint object.'

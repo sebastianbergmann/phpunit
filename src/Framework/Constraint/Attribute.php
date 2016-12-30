@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Constraint;
 
 /**
  * @since Class available since Release 3.1.0
@@ -20,10 +21,10 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
     protected $attributeName;
 
     /**
-     * @param PHPUnit_Framework_Constraint $constraint
-     * @param string                       $attributeName
+     * @param Constraint $constraint
+     * @param string     $attributeName
      */
-    public function __construct(PHPUnit_Framework_Constraint $constraint, $attributeName)
+    public function __construct(Constraint $constraint, $attributeName)
     {
         parent::__construct($constraint);
 

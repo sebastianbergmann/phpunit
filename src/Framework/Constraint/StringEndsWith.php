@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that asserts that the string it is evaluated for ends with a given
@@ -14,7 +15,7 @@
  *
  * @since Class available since Release 3.4.0
  */
-class PHPUnit_Framework_Constraint_StringEndsWith extends PHPUnit_Framework_Constraint
+class PHPUnit_Framework_Constraint_StringEndsWith extends Constraint
 {
     /**
      * @var string
