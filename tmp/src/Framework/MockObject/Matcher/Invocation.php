@@ -8,13 +8,15 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\SelfDescribing;
+
 /**
  * Interface for classes which matches an invocation based on its
  * method name, argument, order or call count.
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Matcher_Invocation extends PHPUnit_Framework_SelfDescribing, PHPUnit_Framework_MockObject_Verifiable
+interface PHPUnit_Framework_MockObject_Matcher_Invocation extends SelfDescribing, PHPUnit_Framework_MockObject_Verifiable
 {
     /**
      * Registers the invocation $invocation in the object as being invoked.

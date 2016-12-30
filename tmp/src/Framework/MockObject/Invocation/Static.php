@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\SelfDescribing;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
@@ -15,7 +16,7 @@ use SebastianBergmann\Exporter\Exporter;
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framework_MockObject_Invocation, PHPUnit_Framework_SelfDescribing
+class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framework_MockObject_Invocation, SelfDescribing
 {
     /**
      * @var array

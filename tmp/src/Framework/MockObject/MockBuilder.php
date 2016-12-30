@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Implementation of the Builder pattern for Mock objects.
  *
@@ -16,7 +18,7 @@
 class PHPUnit_Framework_MockObject_MockBuilder
 {
     /**
-     * @var PHPUnit_Framework_TestCase
+     * @var TestCase
      */
     private $testCase;
 
@@ -86,10 +88,10 @@ class PHPUnit_Framework_MockObject_MockBuilder
     private $generator;
 
     /**
-     * @param PHPUnit_Framework_TestCase $testCase
+     * @param TestCase $testCase
      * @param array|string               $type
      */
-    public function __construct(PHPUnit_Framework_TestCase $testCase, $type)
+    public function __construct(TestCase $testCase, $type)
     {
         $this->testCase  = $testCase;
         $this->type      = $type;
