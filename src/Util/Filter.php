@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\SyntheticError;
 
 /**
  * Utility class for code filtering.
@@ -39,7 +40,7 @@ class PHPUnit_Util_Filter
             $filteredStacktrace = [];
         }
 
-        if ($e instanceof PHPUnit_Framework_SyntheticError) {
+        if ($e instanceof SyntheticError) {
             $eTrace = $e->getSyntheticTrace();
             $eFile  = $e->getSyntheticFile();
             $eLine  = $e->getSyntheticLine();

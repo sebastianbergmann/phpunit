@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\SyntheticError;
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -402,7 +403,7 @@ abstract class PHPUnit_Util_PHP
                 $exceptionArray[$key] = $value;
             }
 
-            $exception = new PHPUnit_Framework_SyntheticError(
+            $exception = new SyntheticError(
                 sprintf(
                     '%s: %s',
                     $exceptionArray['_PHP_Incomplete_Class_Name'],
