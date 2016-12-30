@@ -26,6 +26,7 @@ use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
 use PHPUnit\Framework\Constraint\IsType;
+use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -193,7 +194,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsWritable
+     * @covers IsWritable
      * @covers PHPUnit\Framework\Assert::isWritable
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString

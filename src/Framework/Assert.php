@@ -40,7 +40,7 @@ use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
 use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Constraint\IsType;
-use PHPUnit_Framework_Constraint_IsWritable;
+use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit_Framework_Constraint_JsonMatches;
 use PHPUnit_Framework_Constraint_LessThan;
 use PHPUnit_Framework_Constraint_Not;
@@ -1003,7 +1003,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_IsWritable;
+        $constraint = new IsWritable;
 
         static::assertThat($filename, $constraint, $message);
     }
@@ -1021,7 +1021,7 @@ abstract class Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_IsWritable
+            new IsWritable
         );
 
         static::assertThat($filename, $constraint, $message);
@@ -2716,11 +2716,11 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_IsWritable matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_IsWritable
+     * @return IsWritable
      */
     public static function isWritable()
     {
-        return new PHPUnit_Framework_Constraint_IsWritable;
+        return new IsWritable;
     }
 
     /**
