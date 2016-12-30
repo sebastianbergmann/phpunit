@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringEndsWith;
@@ -3000,31 +3001,31 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers TraversableContains
      */
     public function testConstraintArrayContainsCheckForObjectIdentity()
     {
         // Check for primitive type.
-        $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo', true, true);
+        $constraint = new TraversableContains('foo', true, true);
 
         $this->assertFalse($constraint->evaluate([0], '', true));
         $this->assertFalse($constraint->evaluate([true], '', true));
 
         // Default case.
-        $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo');
+        $constraint = new TraversableContains('foo');
 
         $this->assertTrue($constraint->evaluate([0], '', true));
         $this->assertTrue($constraint->evaluate([true], '', true));
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers TraversableContains
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
      */
     public function testConstraintArrayContains()
     {
-        $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo');
+        $constraint = new TraversableContains('foo');
 
         $this->assertFalse($constraint->evaluate(['bar'], '', true));
         $this->assertTrue($constraint->evaluate(['foo'], '', true));
@@ -3050,12 +3051,12 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers TraversableContains
      * @covers TestFailure::exceptionToString
      */
     public function testConstraintArrayContains2()
     {
-        $constraint = new PHPUnit_Framework_Constraint_TraversableContains('foo');
+        $constraint = new TraversableContains('foo');
 
         try {
             $constraint->evaluate(['bar'], 'custom message');
@@ -3077,7 +3078,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers TraversableContains
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -3085,7 +3086,7 @@ EOF
     public function testConstraintArrayNotContains()
     {
         $constraint = Assert::logicalNot(
-          new PHPUnit_Framework_Constraint_TraversableContains('foo')
+          new TraversableContains('foo')
         );
 
         $this->assertTrue($constraint->evaluate(['bar'], '', true));
@@ -3112,7 +3113,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers TraversableContains
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -3120,7 +3121,7 @@ EOF
     public function testConstraintArrayNotContains2()
     {
         $constraint = Assert::logicalNot(
-          new PHPUnit_Framework_Constraint_TraversableContains('foo')
+          new TraversableContains('foo')
         );
 
         try {
@@ -3143,14 +3144,14 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers TraversableContains
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
      */
     public function testConstraintSplObjectStorageContains()
     {
         $object     = new StdClass;
-        $constraint = new PHPUnit_Framework_Constraint_TraversableContains($object);
+        $constraint = new TraversableContains($object);
         $this->assertStringMatchesFormat('contains stdClass Object &%s ()', $constraint->toString());
 
         $storage = new SplObjectStorage;
@@ -3178,13 +3179,13 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_TraversableContains
+     * @covers TraversableContains
      * @covers TestFailure::exceptionToString
      */
     public function testConstraintSplObjectStorageContains2()
     {
         $object     = new StdClass;
-        $constraint = new PHPUnit_Framework_Constraint_TraversableContains($object);
+        $constraint = new TraversableContains($object);
 
         try {
             $constraint->evaluate(new SplObjectStorage, 'custom message');

@@ -52,7 +52,7 @@ use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
-use PHPUnit_Framework_Constraint_TraversableContains;
+use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit_Framework_Constraint_TraversableContainsOnly;
 use PHPUnit_Framework_Constraint_Xor;
 use PHPUnit_Util_InvalidArgumentHelper;
@@ -185,7 +185,7 @@ abstract class Assert
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable) {
-            $constraint = new PHPUnit_Framework_Constraint_TraversableContains(
+            $constraint = new TraversableContains(
                 $needle,
                 $checkForObjectIdentity,
                 $checkForNonObjectIdentity
@@ -255,7 +255,7 @@ abstract class Assert
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable) {
             $constraint = new LogicalNot(
-                new PHPUnit_Framework_Constraint_TraversableContains(
+                new TraversableContains(
                     $needle,
                     $checkForObjectIdentity,
                     $checkForNonObjectIdentity
@@ -2596,13 +2596,13 @@ abstract class Assert
      * @param bool  $checkForObjectIdentity
      * @param bool  $checkForNonObjectIdentity
      *
-     * @return PHPUnit_Framework_Constraint_TraversableContains
+     * @return TraversableContains
      *
      * @since Method available since Release 3.0.0
      */
     public static function contains($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
     {
-        return new PHPUnit_Framework_Constraint_TraversableContains($value, $checkForObjectIdentity, $checkForNonObjectIdentity);
+        return new TraversableContains($value, $checkForObjectIdentity, $checkForNonObjectIdentity);
     }
 
     /**

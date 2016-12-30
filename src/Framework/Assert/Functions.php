@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringEndsWith;
@@ -1801,7 +1802,7 @@ function classHasStaticAttribute($attributeName)
  * @param bool  $checkForObjectIdentity
  * @param bool  $checkForNonObjectIdentity
  *
- * @return PHPUnit_Framework_Constraint_TraversableContains
+ * @return TraversableContains
  *
  * @since Method available since Release 3.0.0
  */
