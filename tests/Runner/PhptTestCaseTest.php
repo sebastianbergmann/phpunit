@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\PhptTestCase;
 
 class Runner_PhptTestCaseTest extends TestCase
 {
@@ -55,7 +56,7 @@ EOF;
 
         $this->phpUtil = $this->getMockForAbstractClass('PHPUnit_Util_PHP', [], '', false);
 
-        $this->testCase = new PHPUnit_Runner_PhptTestCase($this->filename, $this->phpUtil);
+        $this->testCase = new PhptTestCase($this->filename, $this->phpUtil);
     }
 
     protected function tearDown()
@@ -255,7 +256,7 @@ EOF
     }
 }
 
-class PhpTestCaseProxy extends PHPUnit_Runner_PhptTestCase
+class PhpTestCaseProxy extends PhptTestCase
 {
     public function parseIniSection($content)
     {

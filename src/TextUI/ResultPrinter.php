@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
+use PHPUnit\Runner\PhptTestCase;
 use SebastianBergmann\Environment\Console;
 
 /**
@@ -567,7 +568,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements TestL
 
         if ($test instanceof TestCase) {
             $this->numAssertions += $test->getNumAssertions();
-        } elseif ($test instanceof PHPUnit_Runner_PhptTestCase) {
+        } elseif ($test instanceof PhptTestCase) {
             $this->numAssertions++;
         }
 

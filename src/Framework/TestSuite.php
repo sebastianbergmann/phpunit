@@ -13,7 +13,7 @@ use Iterator;
 use IteratorAggregate;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit_Runner_Filter_Factory;
-use PHPUnit_Runner_PhptTestCase;
+use PHPUnit\Runner\PhptTestCase;
 use PHPUnit_Util_Fileloader;
 use PHPUnit_Util_InvalidArgumentHelper;
 use PHPUnit_Util_Test;
@@ -321,7 +321,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
         if (file_exists($filename) && substr($filename, -5) == '.phpt') {
             $this->addTest(
-                new PHPUnit_Runner_PhptTestCase($filename)
+                new PhptTestCase($filename)
             );
 
             return;

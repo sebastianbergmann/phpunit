@@ -31,7 +31,7 @@ use PHPUnit_Framework_MockObject_Stub_ReturnCallback;
 use PHPUnit_Framework_MockObject_Stub_ReturnSelf;
 use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
 use PHPUnit\Runner\BaseTestRunner;
-use PHPUnit_Runner_PhptTestCase;
+use PHPUnit\Runner\PhptTestCase;
 use PHPUnit_Util_GlobalState;
 use PHPUnit_Util_InvalidArgumentHelper;
 use PHPUnit_Util_PHP;
@@ -788,7 +788,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         if ($this->runTestInSeparateProcess === true &&
             $this->inIsolation !== true &&
-            !$this instanceof PHPUnit_Runner_PhptTestCase
+            !$this instanceof PhptTestCase
         ) {
             $class = new ReflectionClass($this);
 

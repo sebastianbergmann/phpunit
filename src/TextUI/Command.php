@@ -14,6 +14,7 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
+use PHPUnit\Runner\PhptTestCase;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -771,7 +772,7 @@ class PHPUnit_TextUI_Command
         }
 
         if (isset($this->arguments['test']) && is_string($this->arguments['test']) && substr($this->arguments['test'], -5, 5) == '.phpt') {
-            $test = new PHPUnit_Runner_PhptTestCase($this->arguments['test']);
+            $test = new PhptTestCase($this->arguments['test']);
 
             $this->arguments['test'] = new TestSuite;
             $this->arguments['test']->addTest($test);

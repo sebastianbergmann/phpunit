@@ -7,6 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Runner;
+
+use PHP_Timer;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
@@ -15,13 +18,16 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SelfDescribing;
+use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit_Util_PHP;
+use Throwable;
 
 /**
  * Runner for PHPT test cases.
  *
  * @since Class available since Release 3.1.4
  */
-class PHPUnit_Runner_PhptTestCase implements Test, SelfDescribing
+class PhptTestCase implements Test, SelfDescribing
 {
     /**
      * @var string
