@@ -24,7 +24,7 @@ use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
-use PHPUnit_Framework_Constraint_FileExists;
+use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit_Framework_Constraint_GreaterThan;
 use PHPUnit_Framework_Constraint_IsAnything;
 use PHPUnit_Framework_Constraint_IsEmpty;
@@ -1125,7 +1125,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_FileExists;
+        $constraint = new FileExists;
 
         static::assertThat($filename, $constraint, $message);
     }
@@ -1145,7 +1145,7 @@ abstract class Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_FileExists
+            new FileExists
         );
 
         static::assertThat($filename, $constraint, $message);
@@ -2746,13 +2746,13 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_FileExists
+     * @return FileExists
      *
      * @since Method available since Release 3.0.0
      */
     public static function fileExists()
     {
-        return new PHPUnit_Framework_Constraint_FileExists;
+        return new FileExists;
     }
 
     /**

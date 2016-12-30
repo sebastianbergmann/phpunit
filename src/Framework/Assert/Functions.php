@@ -15,6 +15,7 @@ use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
+use PHPUnit\Framework\Constraint\FileExists;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1868,7 +1869,7 @@ function exactly($count)
 /**
  * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
  *
- * @return PHPUnit_Framework_Constraint_FileExists
+ * @return FileExists
  *
  * @since Method available since Release 3.0.0
  */

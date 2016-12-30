@@ -16,6 +16,7 @@ use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
+use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -247,7 +248,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_FileExists
+     * @covers FileExists
      * @covers PHPUnit\Framework\Assert::fileExists
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -279,7 +280,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_FileExists
+     * @covers FileExists
      * @covers PHPUnit\Framework\Assert::fileExists
      * @covers TestFailure::exceptionToString
      */
@@ -306,7 +307,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_FileExists
+     * @covers FileExists
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers PHPUnit\Framework\Assert::fileExists
@@ -343,7 +344,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_FileExists
+     * @covers FileExists
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers PHPUnit\Framework\Assert::fileExists
