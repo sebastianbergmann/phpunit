@@ -33,7 +33,7 @@ use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsFinite;
 use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInfinite;
-use PHPUnit_Framework_Constraint_IsInstanceOf;
+use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit_Framework_Constraint_IsJson;
 use PHPUnit_Framework_Constraint_IsNan;
 use PHPUnit_Framework_Constraint_IsNull;
@@ -1583,7 +1583,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class or interface name');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
+        $constraint = new IsInstanceOf(
             $expected
         );
 
@@ -1625,7 +1625,7 @@ abstract class Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_IsInstanceOf($expected)
+            new IsInstanceOf($expected)
         );
 
         static::assertThat($actual, $constraint, $message);
@@ -2856,13 +2856,13 @@ abstract class Assert
      *
      * @param string $className
      *
-     * @return PHPUnit_Framework_Constraint_IsInstanceOf
+     * @return IsInstanceOf
      *
      * @since Method available since Release 3.0.0
      */
     public static function isInstanceOf($className)
     {
-        return new PHPUnit_Framework_Constraint_IsInstanceOf($className);
+        return new IsInstanceOf($className);
     }
 
     /**

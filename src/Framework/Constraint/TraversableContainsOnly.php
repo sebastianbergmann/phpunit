@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -39,7 +40,7 @@ class PHPUnit_Framework_Constraint_TraversableContainsOnly extends Constraint
         if ($isNativeType) {
             $this->constraint = new PHPUnit_Framework_Constraint_IsType($type);
         } else {
-            $this->constraint = new PHPUnit_Framework_Constraint_IsInstanceOf(
+            $this->constraint = new IsInstanceOf(
                 $type
             );
         }

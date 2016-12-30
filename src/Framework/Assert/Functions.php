@@ -22,6 +22,7 @@ use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsIdentical;
+use PHPUnit\Framework\Constraint\IsInstanceOf;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1975,7 +1976,7 @@ function isFalse()
  *
  * @param string $className
  *
- * @return PHPUnit_Framework_Constraint_IsInstanceOf
+ * @return IsInstanceOf
  *
  * @since Method available since Release 3.0.0
  */
