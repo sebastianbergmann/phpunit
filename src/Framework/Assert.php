@@ -16,7 +16,7 @@ use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
-use PHPUnit_Framework_Constraint_ArraySubset;
+use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit_Framework_Constraint_Attribute;
 use PHPUnit_Framework_Constraint_Callback;
 use PHPUnit_Framework_Constraint_ClassHasAttribute;
@@ -131,7 +131,7 @@ abstract class Assert
             );
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_ArraySubset($subset, $strict);
+        $constraint = new ArraySubset($subset, $strict);
 
         static::assertThat($array, $constraint, $message);
     }

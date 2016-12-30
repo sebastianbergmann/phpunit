@@ -7,6 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\Constraint;
+
+use ArrayAccess;
 use PHPUnit\Framework\Constraint;
 
 /**
@@ -17,7 +20,7 @@ use PHPUnit\Framework\Constraint;
  *
  * @since Class available since Release 4.4.0
  */
-class PHPUnit_Framework_Constraint_ArraySubset extends Constraint
+class ArraySubset extends Constraint
 {
     /**
      * @var array|ArrayAccess

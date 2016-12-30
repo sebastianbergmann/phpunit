@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
@@ -150,7 +151,7 @@ class Framework_AssertTest extends TestCase
 
     /**
      * @covers PHPUnit\Framework\Assert::assertArraySubset
-     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     * @covers ArraySubset
      */
     public function testAssertArraySubset()
     {
@@ -180,7 +181,7 @@ class Framework_AssertTest extends TestCase
 
     /**
      * @covers PHPUnit\Framework\Assert::assertArraySubset
-     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     * @covers ArraySubset
      */
     public function testAssertArraySubsetWithDeepNestedArrays()
     {
@@ -206,7 +207,7 @@ class Framework_AssertTest extends TestCase
 
     /**
      * @covers PHPUnit\Framework\Assert::assertArraySubset
-     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     * @covers ArraySubset
      */
     public function testAssertArraySubsetWithNoStrictCheckAndObjects()
     {
@@ -220,7 +221,7 @@ class Framework_AssertTest extends TestCase
 
     /**
      * @covers PHPUnit\Framework\Assert::assertArraySubset
-     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     * @covers ArraySubset
      */
     public function testAssertArraySubsetWithStrictCheckAndObjects()
     {
@@ -237,7 +238,7 @@ class Framework_AssertTest extends TestCase
 
     /**
      * @covers PHPUnit\Framework\Assert::assertArraySubset
-     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     * @covers ArraySubset
      * @dataProvider assertArraySubsetInvalidArgumentProvider
      */
     public function testAssertArraySubsetRaisesExceptionForInvalidArguments($partial, $subject)
