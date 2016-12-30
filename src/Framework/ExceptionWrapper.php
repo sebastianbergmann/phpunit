@@ -7,7 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Exception;
+namespace PHPUnit\Framework;
+
+use PHPUnit_Framework_TestFailure;
+use PHPUnit_Util_Filter;
+use Throwable;
 
 /**
  * Wraps Exceptions thrown by code under test.
@@ -20,7 +24,7 @@ use PHPUnit\Framework\Exception;
  *
  * @since Class available since Release 4.3.0
  */
-class PHPUnit_Framework_ExceptionWrapper extends Exception
+class ExceptionWrapper extends Exception
 {
     /**
      * @var string
@@ -28,7 +32,7 @@ class PHPUnit_Framework_ExceptionWrapper extends Exception
     protected $classname;
 
     /**
-     * @var PHPUnit_Framework_ExceptionWrapper|null
+     * @var ExceptionWrapper|null
      */
     protected $previous;
 
@@ -65,7 +69,7 @@ class PHPUnit_Framework_ExceptionWrapper extends Exception
     }
 
     /**
-     * @return PHPUnit_Framework_ExceptionWrapper
+     * @return ExceptionWrapper
      */
     public function getPreviousWrapped()
     {

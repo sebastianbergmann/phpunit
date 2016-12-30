@@ -11,6 +11,7 @@
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExceptionWrapper;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException;
@@ -256,7 +257,7 @@ class PHPUnit_Framework_TestResult implements Countable
 
         // @see https://github.com/sebastianbergmann/phpunit/issues/1953
         if ($t instanceof Error) {
-            $t = new PHPUnit_Framework_ExceptionWrapper($t);
+            $t = new ExceptionWrapper($t);
         }
 
         foreach ($this->listeners as $listener) {
@@ -734,7 +735,7 @@ class PHPUnit_Framework_TestResult implements Countable
         } catch (Exception $e) {
             $error = true;
         } catch (Throwable $e) {
-            $e     = new PHPUnit_Framework_ExceptionWrapper($e);
+            $e     = new ExceptionWrapper($e);
             $error = true;
         }
 

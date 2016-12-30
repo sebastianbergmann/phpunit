@@ -10,6 +10,7 @@
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Error;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExceptionWrapper;
 
 /**
  * A TestFailure collects a failed test together with the caught exception.
@@ -103,7 +104,7 @@ class PHPUnit_Framework_TestFailure
             }
         } elseif ($e instanceof Error) {
             $buffer = $e->getMessage() . "\n";
-        } elseif ($e instanceof PHPUnit_Framework_ExceptionWrapper) {
+        } elseif ($e instanceof ExceptionWrapper) {
             $buffer = $e->getClassname() . ': ' . $e->getMessage() . "\n";
         } else {
             $buffer = get_class($e) . ': ' . $e->getMessage() . "\n";
