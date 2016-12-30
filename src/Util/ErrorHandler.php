@@ -14,6 +14,7 @@
 use PHPUnit\Framework\Error;
 use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Notice;
+use PHPUnit\Framework\Error\Warning;
 
 require_once dirname(__DIR__) . '/Framework/Error.php';
 require_once dirname(__DIR__) . '/Framework/Error/Notice.php';
@@ -69,21 +70,21 @@ class PHPUnit_Util_ErrorHandler
                 return false;
             }
 
-            $exception = 'PHPUnit_Framework_Error_Notice';
+            $exception = Notice::class;
         } elseif ($errno == E_WARNING || $errno == E_USER_WARNING) {
-            if (PHPUnit_Framework_Error_Warning::$enabled !== true) {
+            if (Warning::$enabled !== true) {
                 return false;
             }
 
-            $exception = 'PHPUnit_Framework_Error_Warning';
+            $exception = Warning::class;
         } elseif ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
             if (Deprecated::$enabled !== true) {
                 return false;
             }
 
-            $exception = 'PHPUnit_Framework_Error_Deprecated';
+            $exception = Deprecated::class;
         } else {
-            $exception = 'PHPUnit_Framework_Error';
+            $exception = Error::class;
         }
 
         throw new $exception($errstr, $errno, $errfile, $errline);
