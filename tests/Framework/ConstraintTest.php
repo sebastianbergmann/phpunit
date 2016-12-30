@@ -13,6 +13,7 @@ use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
+use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -2129,7 +2130,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ClassHasStaticAttribute
+     * @covers ClassHasStaticAttribute
      * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -2162,7 +2163,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ClassHasStaticAttribute
+     * @covers ClassHasStaticAttribute
      * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
      * @covers TestFailure::exceptionToString
      */
@@ -2189,7 +2190,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ClassHasStaticAttribute
+     * @covers ClassHasStaticAttribute
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -2225,7 +2226,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ClassHasStaticAttribute
+     * @covers ClassHasStaticAttribute
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot

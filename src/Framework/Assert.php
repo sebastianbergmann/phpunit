@@ -20,7 +20,7 @@ use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
-use PHPUnit_Framework_Constraint_ClassHasStaticAttribute;
+use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit_Framework_Constraint_Count;
 use PHPUnit_Framework_Constraint_DirectoryExists;
 use PHPUnit_Framework_Constraint_FileExists;
@@ -1388,7 +1388,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_ClassHasStaticAttribute(
+        $constraint = new ClassHasStaticAttribute(
             $attributeName
         );
 
@@ -1419,7 +1419,7 @@ abstract class Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_ClassHasStaticAttribute(
+            new ClassHasStaticAttribute(
                 $attributeName
             )
         );
@@ -2809,13 +2809,13 @@ abstract class Assert
      *
      * @param string $attributeName
      *
-     * @return PHPUnit_Framework_Constraint_ClassHasStaticAttribute
+     * @return ClassHasStaticAttribute
      *
      * @since Method available since Release 3.1.0
      */
     public static function classHasStaticAttribute($attributeName)
     {
-        return new PHPUnit_Framework_Constraint_ClassHasStaticAttribute(
+        return new ClassHasStaticAttribute(
             $attributeName
         );
     }

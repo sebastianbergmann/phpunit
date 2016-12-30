@@ -7,7 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Constraint\ClassHasAttribute;
+namespace PHPUnit\Framework\Constraint;
+
+use ReflectionClass;
 
 /**
  * Constraint that asserts that the class it is evaluated for has a given
@@ -17,7 +19,7 @@ use PHPUnit\Framework\Constraint\ClassHasAttribute;
  *
  * @since Class available since Release 3.1.0
  */
-class PHPUnit_Framework_Constraint_ClassHasStaticAttribute extends ClassHasAttribute
+class ClassHasStaticAttribute extends ClassHasAttribute
 {
     /**
      * Evaluates the constraint for parameter $other. Returns true if the

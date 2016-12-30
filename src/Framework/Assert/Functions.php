@@ -14,6 +14,7 @@ use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
+use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1759,7 +1760,7 @@ function classHasAttribute($attributeName)
  *
  * @param string $attributeName
  *
- * @return PHPUnit_Framework_Constraint_ClassHasStaticAttribute
+ * @return ClassHasStaticAttribute
  *
  * @since Method available since Release 3.1.0
  */
