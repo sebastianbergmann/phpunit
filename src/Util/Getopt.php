@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Util;
+
 use PHPUnit\Framework\Exception;
 
 /**
@@ -14,7 +16,7 @@ use PHPUnit\Framework\Exception;
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Util_Getopt
+class Getopt
 {
     public static function getopt(array $args, $short_options, $long_options = null)
     {
@@ -47,7 +49,8 @@ class PHPUnit_Util_Getopt
             }
 
             if ($arg[0] != '-' ||
-                (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
+                (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)
+            ) {
                 $non_opts[] = $args[$i];
                 continue;
             } elseif (strlen($arg) > 1 && $arg[1] == '-') {
@@ -79,7 +82,8 @@ class PHPUnit_Util_Getopt
             $opt_arg = null;
 
             if (($spec = strstr($short_options, $opt)) === false ||
-                $arg[$i] == ':') {
+                $arg[$i] == ':'
+            ) {
                 throw new Exception(
                     "unrecognized option -- $opt"
                 );
@@ -132,7 +136,8 @@ class PHPUnit_Util_Getopt
             $opt_rest = substr($long_opt, $opt_len);
 
             if ($opt_rest != '' && $opt[0] != '=' && $i + 1 < $count &&
-                $opt == substr($long_options[$i+1], 0, $opt_len)) {
+                $opt == substr($long_options[$i + 1], 0, $opt_len)
+            ) {
                 throw new Exception(
                     "option --$opt is ambiguous"
                 );
@@ -141,7 +146,8 @@ class PHPUnit_Util_Getopt
             if (substr($long_opt, -1) == '=') {
                 if (substr($long_opt, -2) != '==') {
                     if (!strlen($opt_arg) &&
-                        !(list(, $opt_arg) = each($args))) {
+                        !(list(, $opt_arg) = each($args))
+                    ) {
                         throw new Exception(
                             "option --$opt requires an argument"
                         );

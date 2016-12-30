@@ -24,7 +24,7 @@ use PHPUnit\Util\Configuration;
 use PHPUnit\Util\ConfigurationGenerator;
 use PHPUnit\Util\Fileloader;
 use PHPUnit\Util\Filesystem;
-use PHPUnit_Util_Getopt;
+use PHPUnit\Util\Getopt;
 use PHPUnit_Util_Printer;
 use ReflectionClass;
 use Throwable;
@@ -284,7 +284,7 @@ class Command
         }
 
         try {
-            $this->options = PHPUnit_Util_Getopt::getopt(
+            $this->options = Getopt::getopt(
                 $argv,
                 'd:c:hv',
                 array_keys($this->longOptions)
