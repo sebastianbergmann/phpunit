@@ -8,37 +8,37 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\ExceptionWrapper;
-use PHPUnit\Framework\IncompleteTest;
-use PHPUnit\Framework\IncompleteTestError;
-use PHPUnit\Framework\InvalidCoversTargetException;
-use PHPUnit\Framework\OutputError;
-use PHPUnit\Framework\CoveredCodeNotExecutedException;
-use PHPUnit\Framework\MissingCoversAnnotationException;
-use PHPUnit\Framework\TestListener;
-use PHPUnit\Framework\TestFailure;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Test;
-use PHPUnit\Framework\SkippedTestError;
-use PHPUnit\Framework\SkippedTest;
-use PHPUnit\Framework\RiskyTestError;
-use PHPUnit\Framework\RiskyTest;
+namespace PHPUnit\Framework;
+
+use AssertionError;
+use Countable;
+use Error;
+use PHP_Invoker;
+use PHP_Timer;
+use PHPUnit_Framework_MockObject_Exception;
+use PHPUnit_Framework_TestSuite;
+use PHPUnit_Framework_UnintentionallyCoveredCodeError;
+use PHPUnit_Framework_Warning;
+use PHPUnit_Framework_WarningTestCase;
+use PHPUnit_Util_Blacklist;
+use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit_Util_Printer;
+use PHPUnit_Util_Test;
+use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCoveredCodeNotExecutedException;
 use SebastianBergmann\CodeCoverage\MissingCoversAnnotationException as OriginalMissingCoversAnnotationException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
+use Throwable;
 
 /**
  * A TestResult collects the results of executing a test case.
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_Framework_TestResult implements Countable
+class TestResult implements Countable
 {
     /**
      * @var array
@@ -279,7 +279,7 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $this->lastTestFailed = true;
-        $this->time          += $time;
+        $this->time += $time;
     }
 
     /**
@@ -318,7 +318,8 @@ class PHPUnit_Framework_TestResult implements Countable
     public function addFailure(Test $test, AssertionFailedError $e, $time)
     {
         if ($e instanceof RiskyTest ||
-            $e instanceof OutputError) {
+            $e instanceof OutputError
+        ) {
             $this->risky[] = new TestFailure($test, $e);
             $notifyMethod  = 'addRiskyTest';
 
@@ -353,7 +354,7 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $this->lastTestFailed = true;
-        $this->time          += $time;
+        $this->time += $time;
     }
 
     /**
@@ -396,7 +397,7 @@ class PHPUnit_Framework_TestResult implements Countable
     public function startTest(Test $test)
     {
         $this->lastTestFailed = false;
-        $this->runTests      += count($test);
+        $this->runTests += count($test);
 
         foreach ($this->listeners as $listener) {
             $listener->startTest($test);
@@ -416,8 +417,8 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if (!$this->lastTestFailed && $test instanceof TestCase) {
-            $class  = get_class($test);
-            $key    = $class . '::' . $test->getName();
+            $class = get_class($test);
+            $key   = $class . '::' . $test->getName();
 
             $this->passed[$key] = [
                 'result' => $test->getResult(),
@@ -673,16 +674,16 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $collectCodeCoverage = $this->codeCoverage !== null &&
-                               !$test instanceof PHPUnit_Framework_WarningTestCase;
+            !$test instanceof PHPUnit_Framework_WarningTestCase;
 
         if ($collectCodeCoverage) {
             $this->codeCoverage->start($test);
         }
 
         $monitorFunctions = $this->beStrictAboutResourceUsageDuringSmallTests &&
-                            !$test instanceof PHPUnit_Framework_WarningTestCase &&
-                            $test->getSize() == PHPUnit_Util_Test::SMALL &&
-                            function_exists('xdebug_start_function_monitor');
+            !$test instanceof PHPUnit_Framework_WarningTestCase &&
+            $test->getSize() == PHPUnit_Util_Test::SMALL &&
+            function_exists('xdebug_start_function_monitor');
 
         if ($monitorFunctions) {
             xdebug_start_function_monitor(ResourceOperations::getFunctions());
@@ -694,7 +695,8 @@ class PHPUnit_Framework_TestResult implements Countable
             if (!$test instanceof PHPUnit_Framework_WarningTestCase &&
                 $test->getSize() != PHPUnit_Util_Test::UNKNOWN &&
                 $this->enforceTimeLimit &&
-                extension_loaded('pcntl') && class_exists('PHP_Invoker')) {
+                extension_loaded('pcntl') && class_exists('PHP_Invoker')
+            ) {
                 switch ($test->getSize()) {
                     case PHPUnit_Util_Test::SMALL:
                         $_timeout = $this->timeoutForSmallTests;
@@ -780,7 +782,8 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         if ($this->beStrictAboutTestsThatDoNotTestAnything &&
-            $test->getNumAssertions() == 0) {
+            $test->getNumAssertions() == 0
+        ) {
             $risky = true;
         }
 
@@ -865,8 +868,9 @@ class PHPUnit_Framework_TestResult implements Countable
         } elseif ($warning === true) {
             $this->addWarning($test, $e, $time);
         } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
-                  !$test->doesNotPerformAssertions() &&
-                  $test->getNumAssertions() == 0) {
+            !$test->doesNotPerformAssertions() &&
+            $test->getNumAssertions() == 0
+        ) {
             $this->addFailure(
                 $test,
                 new RiskyTestError(

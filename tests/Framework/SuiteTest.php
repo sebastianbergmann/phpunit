@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestCase;
 
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'BeforeAndAfterTest.php';
@@ -34,7 +35,7 @@ class Framework_SuiteTest extends TestCase
 
     protected function setUp()
     {
-        $this->result = new PHPUnit_Framework_TestResult;
+        $this->result = new TestResult;
     }
 
     public static function suite()

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,7 +20,7 @@ class Framework_TestImplementorTest extends TestCase
      */
     public function testSuccessfulRun()
     {
-        $result = new PHPUnit_Framework_TestResult;
+        $result = new TestResult;
 
         $test = new DoubleTestCase(new Success);
         $test->run($result);

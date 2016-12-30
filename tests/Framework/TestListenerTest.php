@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
@@ -78,7 +79,7 @@ class Framework_TestListenerTest extends TestCase implements TestListener
 
     protected function setUp()
     {
-        $this->result = new PHPUnit_Framework_TestResult;
+        $this->result = new TestResult;
         $this->result->addListener($this);
 
         $this->endCount            = 0;

@@ -11,6 +11,7 @@
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
@@ -47,9 +48,9 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      */
-    public function printResult(PHPUnit_Framework_TestResult $result)
+    public function printResult(TestResult $result)
     {
         $this->printHeader();
         $this->printFooter($result);

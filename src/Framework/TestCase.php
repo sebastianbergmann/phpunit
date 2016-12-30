@@ -30,7 +30,6 @@ use PHPUnit_Framework_MockObject_Stub_ReturnArgument;
 use PHPUnit_Framework_MockObject_Stub_ReturnCallback;
 use PHPUnit_Framework_MockObject_Stub_ReturnSelf;
 use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
-use PHPUnit_Framework_TestResult;
 use PHPUnit_Framework_Warning;
 use PHPUnit_Framework_WarningTestCase;
 use PHPUnit_Runner_BaseTestRunner;
@@ -250,7 +249,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $numAssertions = 0;
 
     /**
-     * @var PHPUnit_Framework_TestResult
+     * @var TestResult
      */
     private $result;
 
@@ -763,13 +762,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Runs the test case and collects the results in a TestResult object.
      * If no TestResult object is passed a new one will be created.
      *
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      *
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      *
      * @throws Exception
      */
-    public function run(PHPUnit_Framework_TestResult $result = null)
+    public function run(TestResult $result = null)
     {
         if ($result === null) {
             $result = $this->createResult();
@@ -1375,7 +1374,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      *
      * @since Method available since Release 3.5.7
      */
@@ -1385,11 +1384,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      *
      * @since Method available since Release 3.6.0
      */
-    public function setTestResultObject(PHPUnit_Framework_TestResult $result)
+    public function setTestResultObject(TestResult $result)
     {
         $this->result = $result;
     }
@@ -2079,11 +2078,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Creates a default TestResult object.
      *
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      */
     protected function createResult()
     {
-        return new PHPUnit_Framework_TestResult;
+        return new TestResult;
     }
 
     /**

@@ -10,6 +10,7 @@
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SkippedTestSuiteError;
@@ -606,11 +607,11 @@ class PHPUnit_Framework_TestSuite implements Test, SelfDescribing, IteratorAggre
     /**
      * Creates a default TestResult object.
      *
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      */
     protected function createResult()
     {
-        return new PHPUnit_Framework_TestResult;
+        return new TestResult;
     }
 
     /**
@@ -655,11 +656,11 @@ class PHPUnit_Framework_TestSuite implements Test, SelfDescribing, IteratorAggre
     /**
      * Runs the tests and collects their result in a TestResult.
      *
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      *
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      */
-    public function run(PHPUnit_Framework_TestResult $result = null)
+    public function run(TestResult $result = null)
     {
         if ($result === null) {
             $result = $this->createResult();
@@ -771,10 +772,10 @@ class PHPUnit_Framework_TestSuite implements Test, SelfDescribing, IteratorAggre
      *
      * @deprecated
      *
-     * @param Test                         $test
-     * @param PHPUnit_Framework_TestResult $result
+     * @param Test       $test
+     * @param TestResult $result
      */
-    public function runTest(Test $test, PHPUnit_Framework_TestResult $result)
+    public function runTest(Test $test, TestResult $result)
     {
         $test->run($result);
     }

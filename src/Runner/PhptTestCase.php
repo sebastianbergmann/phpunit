@@ -11,6 +11,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SelfDescribing;
@@ -126,17 +127,17 @@ class PHPUnit_Runner_PhptTestCase implements Test, SelfDescribing
     /**
      * Runs a test and collects its result in a TestResult instance.
      *
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      *
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      */
-    public function run(PHPUnit_Framework_TestResult $result = null)
+    public function run(TestResult $result = null)
     {
         $sections = $this->parse();
         $code     = $this->render($sections['FILE']);
 
         if ($result === null) {
-            $result = new PHPUnit_Framework_TestResult;
+            $result = new TestResult;
         }
 
         $skip     = false;

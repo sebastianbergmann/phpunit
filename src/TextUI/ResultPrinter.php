@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -184,9 +185,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements TestL
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      */
-    public function printResult(PHPUnit_Framework_TestResult $result)
+    public function printResult(TestResult $result)
     {
         $this->printHeader();
         $this->printErrors($result);
@@ -280,53 +281,53 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements TestL
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      */
-    protected function printErrors(PHPUnit_Framework_TestResult $result)
+    protected function printErrors(TestResult $result)
     {
         $this->printDefects($result->errors(), 'error');
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      */
-    protected function printFailures(PHPUnit_Framework_TestResult $result)
+    protected function printFailures(TestResult $result)
     {
         $this->printDefects($result->failures(), 'failure');
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      */
-    protected function printWarnings(PHPUnit_Framework_TestResult $result)
+    protected function printWarnings(TestResult $result)
     {
         $this->printDefects($result->warnings(), 'warning');
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      */
-    protected function printIncompletes(PHPUnit_Framework_TestResult $result)
+    protected function printIncompletes(TestResult $result)
     {
         $this->printDefects($result->notImplemented(), 'incomplete test');
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      *
      * @since Method available since Release 4.0.0
      */
-    protected function printRisky(PHPUnit_Framework_TestResult $result)
+    protected function printRisky(TestResult $result)
     {
         $this->printDefects($result->risky(), 'risky test');
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      *
      * @since Method available since Release 3.0.0
      */
-    protected function printSkipped(PHPUnit_Framework_TestResult $result)
+    protected function printSkipped(TestResult $result)
     {
         $this->printDefects($result->skipped(), 'skipped test');
     }
@@ -337,9 +338,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements TestL
     }
 
     /**
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      */
-    protected function printFooter(PHPUnit_Framework_TestResult $result)
+    protected function printFooter(TestResult $result)
     {
         if (count($result) === 0) {
             $this->writeWithColor(

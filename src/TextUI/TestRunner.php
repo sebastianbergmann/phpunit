@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\Test;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -85,7 +86,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @param Test|ReflectionClass $test
      * @param array                $arguments
      *
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      *
      * @throws Exception
      */
@@ -110,11 +111,11 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      */
     protected function createTestResult()
     {
-        return new PHPUnit_Framework_TestResult;
+        return new TestResult;
     }
 
     private function processSuiteFilters(PHPUnit_Framework_TestSuite $suite, array $arguments)
@@ -155,7 +156,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      * @param array $arguments
      * @param bool  $exit
      *
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      */
     public function doRun(Test $suite, array $arguments = [], $exit = true)
     {

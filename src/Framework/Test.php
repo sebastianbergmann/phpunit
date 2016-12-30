@@ -11,7 +11,6 @@
 namespace PHPUnit\Framework;
 
 use Countable;
-use PHPUnit_Framework_TestResult;
 
 /**
  * A Test can be run and collect its results.
@@ -23,9 +22,9 @@ interface Test extends Countable
     /**
      * Runs a test and collects its result in a TestResult instance.
      *
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      *
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      */
-    public function run(PHPUnit_Framework_TestResult $result = null);
+    public function run(TestResult $result = null);
 }

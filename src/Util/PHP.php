@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SyntheticError;
@@ -184,13 +185,13 @@ abstract class PHPUnit_Util_PHP
     /**
      * Runs a single test in a separate PHP process.
      *
-     * @param string                       $job
-     * @param Test                         $test
-     * @param PHPUnit_Framework_TestResult $result
+     * @param string     $job
+     * @param Test       $test
+     * @param TestResult $result
      *
      * @throws Exception
      */
-    public function runTestJob($job, Test $test, PHPUnit_Framework_TestResult $result)
+    public function runTestJob($job, Test $test, TestResult $result)
     {
         $result->startTest($test);
 
@@ -273,14 +274,14 @@ abstract class PHPUnit_Util_PHP
     /**
      * Processes the TestResult object from an isolated process.
      *
-     * @param Test                         $test
-     * @param PHPUnit_Framework_TestResult $result
-     * @param string                       $stdout
-     * @param string                       $stderr
+     * @param Test       $test
+     * @param TestResult $result
+     * @param string     $stdout
+     * @param string     $stderr
      *
      * @since Method available since Release 3.5.0
      */
-    private function processChildResult(Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
+    private function processChildResult(Test $test, TestResult $result, $stdout, $stderr)
     {
         $time = 0;
 
@@ -321,7 +322,7 @@ abstract class PHPUnit_Util_PHP
                 $test->addToAssertionCount($childResult['numAssertions']);
 
                 $childResult = $childResult['result'];
-                /* @var $childResult PHPUnit_Framework_TestResult */
+                /* @var $childResult TestResult */
 
                 if ($result->getCollectCodeCoverageInformation()) {
                     $result->getCodeCoverage()->merge(
