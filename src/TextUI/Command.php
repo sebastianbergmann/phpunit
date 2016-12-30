@@ -10,6 +10,7 @@
 
 use PharIo\Manifest\ManifestLoader;
 use PharIo\Manifest\Exception as ManifestException;
+use PHPUnit\Framework\Exception;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -186,7 +187,7 @@ class PHPUnit_TextUI_Command
 
         try {
             $result = $runner->doRun($suite, $this->arguments, $exit);
-        } catch (PHPUnit_Framework_Exception $e) {
+        } catch (Exception $e) {
             print $e->getMessage() . "\n";
         }
 
@@ -270,7 +271,7 @@ class PHPUnit_TextUI_Command
                 'd:c:hv',
                 array_keys($this->longOptions)
             );
-        } catch (PHPUnit_Framework_Exception $t) {
+        } catch (Exception $t) {
             $this->showError($t->getMessage());
         }
 
@@ -882,7 +883,7 @@ class PHPUnit_TextUI_Command
     {
         try {
             PHPUnit_Util_Fileloader::checkAndLoad($filename);
-        } catch (PHPUnit_Framework_Exception $e) {
+        } catch (Exception $e) {
             $this->showError($e->getMessage());
         }
     }

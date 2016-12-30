@@ -54,7 +54,6 @@ use PHPUnit_Framework_Constraint_StringStartsWith;
 use PHPUnit_Framework_Constraint_TraversableContains;
 use PHPUnit_Framework_Constraint_TraversableContainsOnly;
 use PHPUnit_Framework_Constraint_Xor;
-use PHPUnit_Framework_Exception;
 use PHPUnit_Framework_IncompleteTestError;
 use PHPUnit_Framework_SkippedTestError;
 use PHPUnit_Util_InvalidArgumentHelper;
@@ -3020,7 +3019,7 @@ abstract class Assert
      *
      * @return mixed
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public static function readAttribute($classOrObject, $attributeName)
     {
@@ -3066,7 +3065,7 @@ abstract class Assert
      *
      * @return mixed
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 4.0.0
      */
@@ -3100,7 +3099,7 @@ abstract class Assert
             $class = $class->getParentClass();
         }
 
-        throw new PHPUnit_Framework_Exception(
+        throw new Exception(
             sprintf(
                 'Attribute "%s" not found in class.',
                 $attributeName
@@ -3117,7 +3116,7 @@ abstract class Assert
      *
      * @return mixed
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 4.0.0
      */
@@ -3161,7 +3160,7 @@ abstract class Assert
             return $value;
         }
 
-        throw new PHPUnit_Framework_Exception(
+        throw new Exception(
             sprintf(
                 'Attribute "%s" not found in object.',
                 $attributeName

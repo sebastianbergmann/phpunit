@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Exception;
 
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
@@ -109,7 +110,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param mixed  $theClass
      * @param string $name
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public function __construct($theClass = '', $name = '')
     {
@@ -135,11 +136,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         if (!$argumentsValid) {
-            throw new PHPUnit_Framework_Exception;
+            throw new Exception;
         }
 
         if (!$theClass->isSubclassOf('PHPUnit_Framework_TestCase')) {
-            throw new PHPUnit_Framework_Exception(
+            throw new Exception(
                 'Class "' . $theClass->name . '" does not extend PHPUnit_Framework_TestCase.'
             );
         }
@@ -236,7 +237,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param mixed $testClass
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public function addTestSuite($testClass)
     {
@@ -276,7 +277,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 $this->addTest(new self($testClass));
             }
         } else {
-            throw new PHPUnit_Framework_Exception;
+            throw new Exception;
         }
     }
 
@@ -290,7 +291,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param string $filename
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 2.3.0
      */
@@ -370,7 +371,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @param array|Iterator $filenames
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 2.3.0
      */
@@ -419,7 +420,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      *
      * @return PHPUnit_Framework_Test
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public static function createTest(ReflectionClass $theClass, $name)
     {
@@ -566,7 +567,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         if (!isset($test)) {
-            throw new PHPUnit_Framework_Exception('No valid test provided.');
+            throw new Exception('No valid test provided.');
         }
 
         if ($test instanceof PHPUnit_Framework_TestCase) {
@@ -744,7 +745,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @param bool $runTestInSeparateProcess
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.7.0
      */

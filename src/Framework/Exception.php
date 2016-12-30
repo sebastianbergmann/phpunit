@@ -7,7 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Exception;
+namespace PHPUnit\Framework;
+
+use PHPUnit_Framework_TestFailure;
+use PHPUnit_Util_Filter;
 
 /**
  * Base class for all PHPUnit Framework exceptions.
@@ -30,18 +33,19 @@ use PHPUnit\Exception;
  * @see http://fabien.potencier.org/article/9/php-serialization-stack-traces-and-exceptions
  * @since Class available since Release 3.4.0
  */
-class PHPUnit_Framework_Exception extends RuntimeException implements Exception
+class Exception extends \RuntimeException implements \PHPUnit\Exception
 {
     /**
      * @var array
      */
     protected $serializableTrace;
 
-    public function __construct($message = '', $code = 0, Exception $previous = null)
+    public function __construct($message = '', $code = 0, \Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
 
         $this->serializableTrace = $this->getTrace();
+
         foreach ($this->serializableTrace as $i => $call) {
             unset($this->serializableTrace[$i]['args']);
         }

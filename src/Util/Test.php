@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\CodeCoverageException;
+use PHPUnit\Framework\Exception;
 
 /**
  * Test helpers.
@@ -383,7 +384,7 @@ class PHPUnit_Util_Test
      * @return array|Iterator when a data provider is specified and exists
      *                        null           when no data provider is specified
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.2.0
      */
@@ -408,7 +409,7 @@ class PHPUnit_Util_Test
 
             foreach ($data as $key => $value) {
                 if (!is_array($value)) {
-                    throw new PHPUnit_Framework_Exception(
+                    throw new Exception(
                         sprintf(
                             'Data set %s is invalid.',
                             is_int($key) ? '#' . $key : '"' . $key . '"'
@@ -431,7 +432,7 @@ class PHPUnit_Util_Test
      * @return array|Iterator when a data provider is specified and exists
      *                        null           when no data provider is specified
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     private static function getDataFromDataProviderAnnotation($docComment, $className, $methodName)
     {
@@ -491,7 +492,7 @@ class PHPUnit_Util_Test
      * @return array when @testWith annotation is defined
      *               null  when @testWith annotation is omitted
      *
-     * @throws PHPUnit_Framework_Exception when @testWith annotation is defined but cannot be parsed
+     * @throws Exception when @testWith annotation is defined but cannot be parsed
      */
     public static function getDataFromTestWithAnnotation($docComment)
     {
@@ -511,7 +512,7 @@ class PHPUnit_Util_Test
                 $dataSet = json_decode($candidateRow, true);
 
                 if (json_last_error() != JSON_ERROR_NONE) {
-                    throw new PHPUnit_Framework_Exception(
+                    throw new Exception(
                         'The dataset for the @testWith annotation cannot be parsed: ' . json_last_error_msg()
                     );
                 }
@@ -520,7 +521,7 @@ class PHPUnit_Util_Test
             }
 
             if (!$data) {
-                throw new PHPUnit_Framework_Exception('The dataset for the @testWith annotation cannot be parsed.');
+                throw new Exception('The dataset for the @testWith annotation cannot be parsed.');
             }
 
             return $data;

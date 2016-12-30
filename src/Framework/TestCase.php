@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Exception;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
@@ -484,12 +485,12 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @since Method available since Release 3.6.0
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public function expectOutputRegex($expectedRegex)
     {
         if ($this->outputExpectedString !== null) {
-            throw new PHPUnit_Framework_Exception;
+            throw new Exception;
         }
 
         if (is_string($expectedRegex) || is_null($expectedRegex)) {
@@ -505,7 +506,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
     public function expectOutputString($expectedString)
     {
         if ($this->outputExpectedRegex !== null) {
-            throw new PHPUnit_Framework_Exception;
+            throw new Exception;
         }
 
         if (is_string($expectedString) || is_null($expectedString)) {
@@ -550,7 +551,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
     /**
      * @param int|string $code
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 5.2.0
      */
@@ -566,7 +567,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
     /**
      * @param string $message
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 5.2.0
      */
@@ -582,7 +583,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
     /**
      * @param string $messageRegExp
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 5.2.0
      */
@@ -731,7 +732,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @return PHPUnit_Framework_TestResult
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public function run(PHPUnit_Framework_TestResult $result = null)
     {
@@ -1012,13 +1013,13 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @return mixed
      *
-     * @throws Exception|PHPUnit_Framework_Exception
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception|Exception
+     * @throws Exception
      */
     protected function runTest()
     {
         if ($this->name === null) {
-            throw new PHPUnit_Framework_Exception(
+            throw new Exception(
                 'PHPUnit_Framework_TestCase::$name must not be null.'
             );
         }
@@ -1046,15 +1047,15 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
             if (is_string($this->expectedException)) {
                 $checkException = true;
 
-                if ($e instanceof PHPUnit_Framework_Exception) {
+                if ($e instanceof Exception) {
                     $checkException = false;
                 }
 
                 $reflector = new ReflectionClass($this->expectedException);
 
-                if ($this->expectedException === 'PHPUnit_Framework_Exception' ||
-                    $this->expectedException === '\PHPUnit_Framework_Exception' ||
-                    $reflector->isSubclassOf('PHPUnit_Framework_Exception')) {
+                if ($this->expectedException === 'PHPUnit\Framework\Exception' ||
+                    $this->expectedException === '\PHPUnit\Framework\Exception' ||
+                    $reflector->isSubclassOf('PHPUnit\Framework\Exception')) {
                     $checkException = true;
                 }
             }
@@ -1240,7 +1241,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
     /**
      * @param bool $runTestInSeparateProcess
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.4.0
      */
@@ -1258,7 +1259,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
     /**
      * @param bool $preserveGlobalState
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.4.0
      */
@@ -1274,7 +1275,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
     /**
      * @param bool $inIsolation
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.4.0
      */
@@ -1320,7 +1321,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
     /**
      * @param callable $callback
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.6.0
      */
@@ -1371,7 +1372,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      * @param string $varName
      * @param string $newValue
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.0.0
      */
@@ -1386,7 +1387,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
         if ($currentValue !== false) {
             $this->iniSettings[$varName] = $currentValue;
         } else {
-            throw new PHPUnit_Framework_Exception(
+            throw new Exception(
                 sprintf(
                     'INI setting "%s" could not be set to "%s".',
                     $varName,
@@ -1403,7 +1404,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      * @param int    $category
      * @param string $locale
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.1.0
      */
@@ -1412,7 +1413,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
         $args = func_get_args();
 
         if (count($args) < 2) {
-            throw new PHPUnit_Framework_Exception;
+            throw new Exception;
         }
 
         $category = $args[0];
@@ -1427,11 +1428,11 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
         }
 
         if (!in_array($category, $categories)) {
-            throw new PHPUnit_Framework_Exception;
+            throw new Exception;
         }
 
         if (!is_array($locale) && !is_string($locale)) {
-            throw new PHPUnit_Framework_Exception;
+            throw new Exception;
         }
 
         $this->locale[$category] = setlocale($category, 0);
@@ -1439,7 +1440,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
         $result = call_user_func_array('setlocale', $args);
 
         if ($result === false) {
-            throw new PHPUnit_Framework_Exception(
+            throw new Exception(
                 'The locale functionality is not implemented on your platform, ' .
                 'the specified locale does not exist or the category name is ' .
                 'invalid.'
@@ -1468,7 +1469,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 5.4.0
      */
@@ -1490,7 +1491,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 5.6.0
      */
@@ -1513,7 +1514,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 5.5.0
      */
@@ -1536,7 +1537,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 6.0.0
      */
@@ -1562,7 +1563,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @return string
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.5.0
      */
@@ -1600,7 +1601,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @since Method available since Release 3.4.0
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false)
     {
@@ -1684,7 +1685,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @since Method available since Release 4.0.0
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false)
     {
@@ -1719,7 +1720,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
      *
      * @since Method available since Release 3.6.0
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false)
     {

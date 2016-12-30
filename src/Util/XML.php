@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Exception;
 
 /**
  * XML helpers.
@@ -46,11 +47,11 @@ class PHPUnit_Util_XML
         }
 
         if (!is_string($actual)) {
-            throw new PHPUnit_Framework_Exception('Could not load XML from ' . gettype($actual));
+            throw new Exception('Could not load XML from ' . gettype($actual));
         }
 
         if ($actual === '') {
-            throw new PHPUnit_Framework_Exception('Could not load XML from empty string');
+            throw new Exception('Could not load XML from empty string');
         }
 
         // Required for XInclude on Windows.
@@ -94,7 +95,7 @@ class PHPUnit_Util_XML
 
         if ($loaded === false || ($strict && $message !== '')) {
             if ($filename !== '') {
-                throw new PHPUnit_Framework_Exception(
+                throw new Exception(
                     sprintf(
                         'Could not load "%s".%s',
                         $filename,
@@ -105,7 +106,7 @@ class PHPUnit_Util_XML
                 if ($message === '') {
                     $message = 'Could not load XML for unknown reason';
                 }
-                throw new PHPUnit_Framework_Exception($message);
+                throw new Exception($message);
             }
         }
 
@@ -131,7 +132,7 @@ class PHPUnit_Util_XML
         error_reporting($reporting);
 
         if ($contents === false) {
-            throw new PHPUnit_Framework_Exception(
+            throw new Exception(
                 sprintf(
                     'Could not read "%s".',
                     $filename

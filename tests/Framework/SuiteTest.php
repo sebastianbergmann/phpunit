@@ -97,12 +97,11 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(1, count($this->result));
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     */
     public function testNoTestCaseClass()
     {
-        $suite = new PHPUnit_Framework_TestSuite('NoTestCaseClass');
+        $this->expectException(PHPUnit\Framework\Exception::class);
+
+        new PHPUnit_Framework_TestSuite('NoTestCaseClass');
     }
 
     public function testNotExistingTestCase()

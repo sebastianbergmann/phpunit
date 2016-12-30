@@ -145,21 +145,16 @@ EOF;
         $this->testCase->run();
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage Invalid PHPT file
-     */
     public function testShouldThrowsAnExceptionWhenPhptFileIsEmpty()
     {
         $this->setPhpContent('');
 
+        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectExceptionMessage('Invalid PHPT file');
+
         $this->testCase->run();
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage Invalid PHPT file
-     */
     public function testShouldThrowsAnExceptionWhenFileSectionIsMissing()
     {
         $this->setPhpContent(
@@ -170,13 +165,13 @@ Something to decribe it
 Something
 EOF
         );
+
+        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectExceptionMessage('Invalid PHPT file');
+
         $this->testCase->run();
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage Invalid PHPT file
-     */
     public function testShouldThrowsAnExceptionWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile()
     {
         $this->setPhpContent(
@@ -189,6 +184,10 @@ echo "Hello world!\n";
 ?>
 EOF
         );
+
+        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectExceptionMessage('Invalid PHPT file');
+
         $this->testCase->run();
     }
 

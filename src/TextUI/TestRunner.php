@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\Exception;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
@@ -84,7 +85,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
      *
      * @return PHPUnit_Framework_TestResult
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public static function run($test, array $arguments = [])
     {
@@ -100,7 +101,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments
             );
         } else {
-            throw new PHPUnit_Framework_Exception(
+            throw new Exception(
                 'No test case or test suite found.'
             );
         }
@@ -873,7 +874,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 }
 
                 if (!class_exists($listener['class'])) {
-                    throw new PHPUnit_Framework_Exception(
+                    throw new Exception(
                         sprintf(
                             'Class "%s" does not exist',
                             $listener['class']
@@ -884,7 +885,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $listenerClass = new ReflectionClass($listener['class']);
 
                 if (!$listenerClass->implementsInterface(PHPUnit_Framework_TestListener::class)) {
-                    throw new PHPUnit_Framework_Exception(
+                    throw new Exception(
                         sprintf(
                             'Class "%s" does not implement the PHPUnit_Framework_TestListener interface',
                             $listener['class']

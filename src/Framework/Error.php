@@ -10,26 +10,23 @@
 
 namespace PHPUnit\Framework;
 
-use Exception;
-use PHPUnit_Framework_Exception;
-
 /**
  * Wrapper for PHP errors.
  *
  * @since Class available since Release 2.2.0
  */
-class Error extends PHPUnit_Framework_Exception
+class Error extends Exception
 {
     /**
      * Constructor.
      *
-     * @param string $message
-     * @param int $code
-     * @param string $file
-     * @param int $line
-     * @param Exception $previous
+     * @param string     $message
+     * @param int        $code
+     * @param string     $file
+     * @param int        $line
+     * @param \Exception $previous
      */
-    public function __construct($message, $code, $file, $line, Exception $previous = null)
+    public function __construct($message, $code, $file, $line, \Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
 

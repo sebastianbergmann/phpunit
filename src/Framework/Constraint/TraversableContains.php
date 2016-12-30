@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\Exception;
 
 /**
  * Constraint that asserts that the Traversable it is applied to contains
@@ -37,7 +38,7 @@ class PHPUnit_Framework_Constraint_TraversableContains extends Constraint
      * @param bool  $checkForObjectIdentity
      * @param bool  $checkForNonObjectIdentity
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public function __construct($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
     {

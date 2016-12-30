@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\CodeCoverageException;
+use PHPUnit\Framework\Exception;
 
 if (!defined('TEST_FILES_PATH')) {
     define(
@@ -543,7 +544,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
      */
     public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed()
     {
-        $this->expectException(PHPUnit_Framework_Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The dataset for the @testWith annotation cannot be parsed:/');
 
         PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**
@@ -553,7 +554,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 
     public function testTestWithThrowsProperExceptionIfMultiLineDatasetCannotBeParsed()
     {
-        $this->expectException(PHPUnit_Framework_Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The dataset for the @testWith annotation cannot be parsed:/');
 
         PHPUnit_Util_Test::getDataFromTestWithAnnotation('/**

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Exception;
 
 /**
  * Wrapper for the PHPUnit XML configuration file.
@@ -180,7 +181,7 @@ class PHPUnit_Util_Configuration
         $realpath = realpath($filename);
 
         if ($realpath === false) {
-            throw new PHPUnit_Framework_Exception(
+            throw new Exception(
                 sprintf(
                     'Could not read "%s".',
                     $filename

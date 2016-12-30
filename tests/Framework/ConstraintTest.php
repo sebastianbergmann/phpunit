@@ -9,7 +9,6 @@
  */
 
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\Constraint;
 
 /**
  * @since      Class available since Release 3.0.0

@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Exception;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException;
@@ -730,7 +731,7 @@ class PHPUnit_Framework_TestResult implements Countable
             );
         } catch (PHPUnit_Framework_Warning $e) {
             $warning = true;
-        } catch (PHPUnit_Framework_Exception $e) {
+        } catch (Exception $e) {
             $error = true;
         } catch (Throwable $e) {
             $e     = new PHPUnit_Framework_ExceptionWrapper($e);
@@ -943,7 +944,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.2.14
      */
@@ -973,7 +974,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.5.0
      */
@@ -991,7 +992,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.1.0
      */
@@ -1009,7 +1010,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 5.1.0
      */
@@ -1025,7 +1026,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 4.0.0
      */
@@ -1051,7 +1052,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 4.0.0
      */
@@ -1077,7 +1078,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 5.0.0
      */
@@ -1103,7 +1104,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 5.0.0
      */
@@ -1129,7 +1130,7 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 4.2.0
      */
@@ -1157,7 +1158,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 4.0.0
      */
@@ -1175,7 +1176,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.5.0
      */
@@ -1193,7 +1194,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param bool $flag
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.1.0
      */
@@ -1231,7 +1232,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param int $timeout
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.6.0
      */
@@ -1249,7 +1250,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param int $timeout
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.6.0
      */
@@ -1267,7 +1268,7 @@ class PHPUnit_Framework_TestResult implements Countable
      *
      * @param int $timeout
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @since Method available since Release 3.6.0
      */

@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Error;
+use PHPUnit\Framework\Exception;
 
 /**
  * A TestFailure collects a failed test together with the caught exception.
@@ -129,7 +130,7 @@ class PHPUnit_Framework_TestFailure
      * Note: The test object is not set when the test is executed in process
      * isolation.
      *
-     * @see PHPUnit_Framework_Exception
+     * @see Exception
      *
      * @return PHPUnit_Framework_Test|null
      */

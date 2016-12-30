@@ -18,7 +18,7 @@ Time: %s, Memory: %s
 There were 2 errors:
 
 1) ExceptionStackTest::testPrintingChildException
-PHPUnit_Framework_Exception: Child exception
+PHPUnit\Framework\Exception: Child exception
 message
 Failed asserting that two arrays are equal.
 --- Expected

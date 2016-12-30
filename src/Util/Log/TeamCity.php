@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Exception;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -54,10 +55,10 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      * An error occurred.
      *
      * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
+     * @param \Exception             $e
      * @param float                  $time
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addError(PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
         $this->printEvent(
             'testFailed',
@@ -136,10 +137,10 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      * Incomplete test.
      *
      * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
+     * @param \Exception             $e
      * @param float                  $time
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
         $this->printIgnoredTest($test->getName(), $e);
     }
@@ -148,10 +149,10 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      * Risky test.
      *
      * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
+     * @param \Exception             $e
      * @param float                  $time
      */
-    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addRiskyTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
         $this->addError($test, $e, $time);
     }
@@ -160,10 +161,10 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
      * Skipped test.
      *
      * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
+     * @param \Exception             $e
      * @param float                  $time
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
         $testName = $test->getName();
         if ($this->startedTestName != $testName) {
@@ -327,7 +328,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     {
         $message = '';
 
-        if (!$e instanceof PHPUnit_Framework_Exception) {
+        if (!$e instanceof Exception) {
             if (strlen(get_class($e)) != 0) {
                 $message = $message . get_class($e);
             }

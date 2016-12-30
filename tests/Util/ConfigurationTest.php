@@ -24,10 +24,11 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers PHPUnit_Util_Configuration::getInstance
-     * @expectedException PHPUnit_Framework_Exception
      */
     public function testExceptionIsThrownForNotExistingConfigurationFile()
     {
+        $this->expectException(PHPUnit\Framework\Exception::class);
+
         PHPUnit_Util_Configuration::getInstance('not_existing_file.xml');
     }
 

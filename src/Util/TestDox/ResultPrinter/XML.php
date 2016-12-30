@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Exception;
 
 /**
  * @since Class available since Release 5.4.0
@@ -64,10 +65,10 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * An error occurred.
      *
      * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
+     * @param \Exception             $e
      * @param float                  $time
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addError(PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
         $this->exception = $e;
     }
@@ -99,10 +100,10 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * Incomplete test.
      *
      * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
+     * @param \Exception             $e
      * @param float                  $time
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addIncompleteTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
     }
 
@@ -110,10 +111,10 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * Risky test.
      *
      * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
+     * @param \Exception             $e
      * @param float                  $time
      */
-    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addRiskyTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
     }
 
@@ -121,10 +122,10 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      * Skipped test.
      *
      * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
+     * @param \Exception             $e
      * @param float                  $time
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addSkippedTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
     {
     }
 
@@ -204,7 +205,7 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
         }
 
         if ($this->exception !== null) {
-            if ($this->exception instanceof PHPUnit_Framework_Exception) {
+            if ($this->exception instanceof Exception) {
                 $steps = $this->exception->getSerializableTrace();
             } else {
                 $steps = $this->exception->getTrace();

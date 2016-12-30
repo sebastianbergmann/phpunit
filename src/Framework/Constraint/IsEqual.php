@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\Exception;
 
 /**
  * Constraint that checks if one value is equal to another.
@@ -59,7 +60,7 @@ class PHPUnit_Framework_Constraint_IsEqual extends Constraint
      * @param bool  $canonicalize
      * @param bool  $ignoreCase
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public function __construct($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Exception;
 
 /**
  * @since      Class available since Release 3.3.0
@@ -47,30 +48,27 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         return $data;
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage Could not load XML from empty string
-     */
     public function testLoadEmptyString()
     {
+        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectExceptionMessage('Could not load XML from empty string');
+
         PHPUnit_Util_XML::load('');
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage Could not load XML from array
-     */
     public function testLoadArray()
     {
+        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectExceptionMessage('Could not load XML from array');
+
         PHPUnit_Util_XML::load([1, 2, 3]);
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage Could not load XML from boolean
-     */
     public function testLoadBoolean()
     {
+        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectExceptionMessage('Could not load XML from boolean');
+
         PHPUnit_Util_XML::load(false);
     }
 }

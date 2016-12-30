@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\Exception;
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -60,7 +61,7 @@ abstract class PHPUnit_Util_PHP
      *
      * Then $stderrRedirection is TRUE, STDERR is redirected to STDOUT.
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      *
      * @param bool $stderrRedirection
      */
@@ -184,7 +185,7 @@ abstract class PHPUnit_Util_PHP
      * @param PHPUnit_Framework_Test       $test
      * @param PHPUnit_Framework_TestResult $result
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public function runTestJob($job, PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
     {
@@ -244,7 +245,7 @@ abstract class PHPUnit_Util_PHP
      *
      * @return array
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     abstract public function runJob($job, array $settings = []);
 
@@ -283,7 +284,7 @@ abstract class PHPUnit_Util_PHP
         if (!empty($stderr)) {
             $result->addError(
                 $test,
-                new PHPUnit_Framework_Exception(trim($stderr)),
+                new Exception(trim($stderr)),
                 $time
             );
         } else {
@@ -303,7 +304,7 @@ abstract class PHPUnit_Util_PHP
 
                 $result->addError(
                     $test,
-                    new PHPUnit_Framework_Exception(trim($stdout), 0, $e),
+                    new Exception(trim($stdout), 0, $e),
                     $time
                 );
             }
