@@ -10,6 +10,7 @@
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\SkippedTestCase;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
@@ -533,7 +534,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescrib
                     $groups = PHPUnit_Util_Test::getGroups($className, $name);
 
                     if ($data instanceof PHPUnit_Framework_WarningTestCase ||
-                        $data instanceof PHPUnit_Framework_SkippedTestCase ||
+                        $data instanceof SkippedTestCase ||
                         $data instanceof IncompleteTestCase) {
                         $test->addTest($data, $groups);
                     } else {
@@ -911,13 +912,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescrib
      * @param string $methodName
      * @param string $message
      *
-     * @return PHPUnit_Framework_SkippedTestCase
+     * @return SkippedTestCase
      *
      * @since Method available since Release 4.3.0
      */
     protected static function skipTest($class, $methodName, $message)
     {
-        return new PHPUnit_Framework_SkippedTestCase($class, $methodName, $message);
+        return new SkippedTestCase($class, $methodName, $message);
     }
 
     /**
