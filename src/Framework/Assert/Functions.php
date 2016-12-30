@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\Constraint\LogicalAnd;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -2075,7 +2076,7 @@ function lessThanOrEqual($value)
 /**
  * Returns a PHPUnit_Framework_Constraint_And matcher object.
  *
- * @return PHPUnit_Framework_Constraint_And
+ * @return LogicalAnd
  *
  * @since Method available since Release 3.0.0
  */

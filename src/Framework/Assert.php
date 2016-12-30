@@ -14,7 +14,7 @@ use ArrayAccess;
 use Countable;
 use DOMDocument;
 use DOMElement;
-use PHPUnit_Framework_Constraint_And;
+use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit_Framework_Constraint_ArrayHasKey;
 use PHPUnit_Framework_Constraint_ArraySubset;
 use PHPUnit_Framework_Constraint_Attribute;
@@ -2399,7 +2399,7 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_And matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_And
+     * @return LogicalAnd
      *
      * @since Method available since Release 3.0.0
      */
@@ -2407,7 +2407,7 @@ abstract class Assert
     {
         $constraints = func_get_args();
 
-        $constraint = new PHPUnit_Framework_Constraint_And;
+        $constraint = new LogicalAnd;
         $constraint->setConstraints($constraints);
 
         return $constraint;

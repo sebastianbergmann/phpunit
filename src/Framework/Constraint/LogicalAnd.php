@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\Constraint;
+
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -16,7 +18,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_And extends Constraint
+class LogicalAnd extends Constraint
 {
     /**
      * @var Constraint[]
