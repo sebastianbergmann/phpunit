@@ -21,7 +21,7 @@ use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
-use PHPUnit_Framework_Constraint_Count;
+use PHPUnit\Framework\Constraint\Count;
 use PHPUnit_Framework_Constraint_DirectoryExists;
 use PHPUnit_Framework_Constraint_FileExists;
 use PHPUnit_Framework_Constraint_GreaterThan;
@@ -473,7 +473,7 @@ abstract class Assert
 
         static::assertThat(
             $haystack,
-            new PHPUnit_Framework_Constraint_Count($expectedCount),
+            new Count($expectedCount),
             $message
         );
     }
@@ -518,7 +518,7 @@ abstract class Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_Count($expectedCount)
+            new Count($expectedCount)
         );
 
         static::assertThat($haystack, $constraint, $message);
@@ -2987,11 +2987,11 @@ abstract class Assert
      *
      * @param int $count
      *
-     * @return PHPUnit_Framework_Constraint_Count
+     * @return Count
      */
     public static function countOf($count)
     {
-        return new PHPUnit_Framework_Constraint_Count($count);
+        return new Count($count);
     }
 
     /**
