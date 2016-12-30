@@ -47,7 +47,7 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\RegularExpression;
-use PHPUnit_Framework_Constraint_SameSize;
+use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit_Framework_Constraint_StringContains;
 use PHPUnit_Framework_Constraint_StringEndsWith;
 use PHPUnit_Framework_Constraint_StringMatches;
@@ -1804,7 +1804,7 @@ abstract class Assert
 
         static::assertThat(
             $actual,
-            new PHPUnit_Framework_Constraint_SameSize($expected),
+            new SameSize($expected),
             $message
         );
     }
@@ -1832,7 +1832,7 @@ abstract class Assert
         }
 
         $constraint = new LogicalNot(
-            new PHPUnit_Framework_Constraint_SameSize($expected)
+            new SameSize($expected)
         );
 
         static::assertThat($actual, $constraint, $message);
