@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\BaseTestRunner;
-use PHPUnit_Util_Printer;
+use PHPUnit\Util\Printer;
 use PHPUnit_Util_Test;
 
 /**
@@ -25,7 +25,7 @@ use PHPUnit_Util_Test;
  *
  * @since Class available since Release 2.1.0
  */
-abstract class ResultPrinter extends PHPUnit_Util_Printer implements TestListener
+abstract class ResultPrinter extends Printer implements TestListener
 {
     /**
      * @var NamePrettifier

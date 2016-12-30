@@ -7,15 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Util;
+
 use PHPUnit\Framework\Exception;
-use PHPUnit\Util\InvalidArgumentHelper;
 
 /**
  * Utility class that can print to STDOUT or write to a file.
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_Util_Printer
+class Printer
 {
     /**
      * If true, flush output after every write.
@@ -55,7 +56,8 @@ class PHPUnit_Util_Printer
                     $this->out = fsockopen($out[0], $out[1]);
                 } else {
                     if (strpos($out, 'php://') === false &&
-                        !is_dir(dirname($out))) {
+                        !is_dir(dirname($out))
+                    ) {
                         mkdir(dirname($out), 0777, true);
                     }
 

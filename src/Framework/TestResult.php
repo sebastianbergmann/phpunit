@@ -18,7 +18,7 @@ use PHP_Timer;
 use PHPUnit_Framework_MockObject_Exception;
 use PHPUnit\Util\Blacklist;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit_Util_Printer;
+use PHPUnit\Util\Printer;
 use PHPUnit_Util_Test;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -220,7 +220,7 @@ class TestResult implements Countable
     public function flushListeners()
     {
         foreach ($this->listeners as $listener) {
-            if ($listener instanceof PHPUnit_Util_Printer) {
+            if ($listener instanceof Printer) {
                 $listener->flush();
             }
         }

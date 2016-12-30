@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit_Util_Printer;
+use PHPUnit\Util\Printer;
 use PHPUnit_Util_Test;
 use SebastianBergmann\Environment\Console;
 
@@ -31,7 +31,7 @@ use SebastianBergmann\Environment\Console;
  *
  * @since Class available since Release 2.0.0
  */
-class ResultPrinter extends PHPUnit_Util_Printer implements TestListener
+class ResultPrinter extends Printer implements TestListener
 {
     const EVENT_TEST_START      = 0;
     const EVENT_TEST_END        = 1;

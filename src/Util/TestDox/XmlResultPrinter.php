@@ -18,14 +18,14 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
-use PHPUnit_Util_Printer;
+use PHPUnit\Util\Printer;
 use PHPUnit_Util_Test;
 use ReflectionClass;
 
 /**
  * @since Class available since Release 5.4.0
  */
-class XmlResultPrinter extends PHPUnit_Util_Printer implements TestListener
+class XmlResultPrinter extends Printer implements TestListener
 {
     /**
      * @var DOMDocument

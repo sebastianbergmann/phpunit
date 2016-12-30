@@ -28,7 +28,7 @@ use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
 use PHPUnit\Util\Configuration;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
-use PHPUnit_Util_Printer;
+use PHPUnit\Util\Printer;
 use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
@@ -262,7 +262,7 @@ class TestRunner extends BaseTestRunner
 
         if ($this->printer === null) {
             if (isset($arguments['printer']) &&
-                $arguments['printer'] instanceof PHPUnit_Util_Printer) {
+                $arguments['printer'] instanceof Printer) {
                 $this->printer = $arguments['printer'];
             } else {
                 $printerClass = ResultPrinter::class;
@@ -576,7 +576,7 @@ class TestRunner extends BaseTestRunner
                     $outputStream = $this->printer;
                     $colors       = $arguments['colors'] && $arguments['colors'] != ResultPrinter::COLOR_NEVER;
                 } else {
-                    $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
+                    $outputStream = new Printer($arguments['coverageText']);
                     $colors       = false;
                 }
 

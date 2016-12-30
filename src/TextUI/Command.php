@@ -27,7 +27,7 @@ use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Getopt;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\TestDox\TextResultPrinter;
-use PHPUnit_Util_Printer;
+use PHPUnit\Util\Printer;
 use ReflectionClass;
 use Throwable;
 
@@ -858,7 +858,7 @@ class Command
      * @param string $printerClass
      * @param string $printerFile
      *
-     * @return PHPUnit_Util_Printer
+     * @return Printer
      */
     protected function handlePrinter($printerClass, $printerFile = '')
     {
@@ -880,7 +880,7 @@ class Command
             $class = new ReflectionClass($printerClass);
 
             if ($class->implementsInterface(TestListener::class) &&
-                $class->isSubclassOf('PHPUnit_Util_Printer') &&
+                $class->isSubclassOf(Printer::class) &&
                 $class->isInstantiable()
             ) {
                 if ($class->isSubclassOf(ResultPrinter::class)) {

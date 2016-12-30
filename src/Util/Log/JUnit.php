@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Filter;
-use PHPUnit_Util_Printer;
+use PHPUnit\Util\Printer;
 use PHPUnit_Util_XML;
 use ReflectionClass;
 use ReflectionException;
@@ -33,7 +33,7 @@ use ReflectionException;
  *
  * @since Class available since Release 2.1.0
  */
-class JUnit extends PHPUnit_Util_Printer implements TestListener
+class JUnit extends Printer implements TestListener
 {
     /**
      * @var DOMDocument
