@@ -398,8 +398,10 @@
 
     <target name="-phpunit" depends="setup">
         <exec executable="${basedir}/phpunit" taskname="phpunit">
-            <arg value="--configuration"/>
-            <arg path="${basedir}/build/phpunit.xml"/>
+            <arg value="--coverage-xml"/>
+            <arg path="${basedir}/build/logfiles/coverage"/>
+            <arg value="--log-junit"/>
+            <arg path="${basedir}/build/logfiles/junit.xml"/>
         </exec>
     </target>
 </project>
