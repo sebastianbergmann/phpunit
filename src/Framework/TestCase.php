@@ -11,7 +11,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Constraint\Exception;
-use PHPUnit_Framework_Constraint_ExceptionCode;
+use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit_Framework_Constraint_ExceptionMessage;
 use PHPUnit_Framework_Constraint_ExceptionMessageRegExp;
 use PHPUnit_Framework_MockObject_Generator;
@@ -1127,7 +1127,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 if ($this->expectedExceptionCode !== null) {
                     $this->assertThat(
                         $e,
-                        new PHPUnit_Framework_Constraint_ExceptionCode(
+                        new ExceptionCode(
                             $this->expectedExceptionCode
                         )
                     );
