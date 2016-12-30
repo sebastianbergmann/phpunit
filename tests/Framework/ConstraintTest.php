@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\SameSize;
@@ -2410,7 +2411,7 @@ EOF
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
      */
-    public function testConstraintPCREMatch()
+    public function testConstraintRegularExpression()
     {
         $constraint = Assert::matchesRegularExpression('/foo/');
 
@@ -2442,7 +2443,7 @@ EOF
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      * @covers TestFailure::exceptionToString
      */
-    public function testConstraintPCREMatch2()
+    public function testConstraintRegularExpression2()
     {
         $constraint = Assert::matchesRegularExpression('/foo/');
 
@@ -2532,7 +2533,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers StringMatchesFormatDescription
      * @covers PHPUnit\Framework\Assert::matches
      * @covers PHPUnit\Framework\Constraint::count
      */
@@ -2546,7 +2547,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers StringMatchesFormatDescription
      * @covers PHPUnit\Framework\Assert::matches
      * @covers PHPUnit\Framework\Constraint::count
      */
@@ -2560,7 +2561,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers StringMatchesFormatDescription
      * @covers PHPUnit\Framework\Assert::matches
      * @covers PHPUnit\Framework\Constraint::count
      */
@@ -2574,7 +2575,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers StringMatchesFormatDescription
      * @covers PHPUnit\Framework\Assert::matches
      * @covers PHPUnit\Framework\Constraint::count
      */
@@ -2588,7 +2589,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers StringMatchesFormatDescription
      * @covers PHPUnit\Framework\Assert::matches
      * @covers PHPUnit\Framework\Constraint::count
      */
@@ -2602,7 +2603,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringMatches
+     * @covers StringMatchesFormatDescription
      * @covers PHPUnit\Framework\Assert::matches
      * @covers PHPUnit\Framework\Constraint::count
      */

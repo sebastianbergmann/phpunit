@@ -8,7 +8,8 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\Constraint\RegularExpression;
+namespace PHPUnit\Framework\Constraint;
+
 use SebastianBergmann\Diff\Differ;
 
 /**
@@ -16,7 +17,7 @@ use SebastianBergmann\Diff\Differ;
  *
  * @since Class available since Release 3.5.0
  */
-class PHPUnit_Framework_Constraint_StringMatches extends RegularExpression
+class StringMatchesFormatDescription extends RegularExpression
 {
     /**
      * @var string
@@ -39,7 +40,7 @@ class PHPUnit_Framework_Constraint_StringMatches extends RegularExpression
 
     protected function failureDescription($other)
     {
-        return 'format description matches text';
+        return 'string matches format description';
     }
 
     protected function additionalFailureDescription($other)
@@ -69,30 +70,30 @@ class PHPUnit_Framework_Constraint_StringMatches extends RegularExpression
     {
         $string = str_replace(
             [
-            '%e',
-            '%s',
-            '%S',
-            '%a',
-            '%A',
-            '%w',
-            '%i',
-            '%d',
-            '%x',
-            '%f',
-            '%c'
+                '%e',
+                '%s',
+                '%S',
+                '%a',
+                '%A',
+                '%w',
+                '%i',
+                '%d',
+                '%x',
+                '%f',
+                '%c'
             ],
             [
-            '\\' . DIRECTORY_SEPARATOR,
-            '[^\r\n]+',
-            '[^\r\n]*',
-            '.+',
-            '.*',
-            '\s*',
-            '[+-]?\d+',
-            '\d+',
-            '[0-9a-fA-F]+',
-            '[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?',
-            '.'
+                '\\' . DIRECTORY_SEPARATOR,
+                '[^\r\n]+',
+                '[^\r\n]*',
+                '.+',
+                '.*',
+                '\s*',
+                '[+-]?\d+',
+                '\d+',
+                '[0-9a-fA-F]+',
+                '[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?',
+                '.'
             ],
             preg_quote($string, '/')
         );

@@ -19,7 +19,7 @@ Time: %s, Memory: %s
 There were 13 failures:
 
 1) FailureTest::testAssertStringMatchesFormatFile
-Failed asserting that format description matches text.
+Failed asserting that string matches format description.
 --- Expected
 +++ Actual
 @@ @@
@@ -66,7 +66,7 @@ Failed asserting that 2 matches expected 1.
 
 7) FailureTest::testAssertStringMatchesFormat
 message
-Failed asserting that format description matches text.
+Failed asserting that string matches format description.
 --- Expected
 +++ Actual
 @@ @@

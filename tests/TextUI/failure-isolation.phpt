@@ -82,7 +82,7 @@ Failed asserting that two strings are equal.
 
 7) FailureTest::testAssertStringMatchesFormat
 message
-Failed asserting that format description matches text.
+Failed asserting that string matches format description.
 --- Expected
 +++ Actual
 @@ @@
@@ -127,7 +127,7 @@ Failed asserting that 1.5 is identical to 1.0.
 %s:%i
 
 13) FailureTest::testAssertStringMatchesFormatFile
-Failed asserting that format description matches text.
+Failed asserting that string matches format description.
 --- Expected
 +++ Actual
 @@ @@

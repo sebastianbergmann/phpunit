@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\RegularExpression;
@@ -2164,7 +2165,7 @@ function logicalXor()
  *
  * @param string $string
  *
- * @return PHPUnit_Framework_Constraint_StringMatches
+ * @return StringMatchesFormatDescription
  *
  * @since Method available since Release 3.5.0
  */
