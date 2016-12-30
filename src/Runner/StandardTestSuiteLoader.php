@@ -11,7 +11,6 @@ namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Runner_TestSuiteLoader;
 use PHPUnit_Util_Fileloader;
 use PHPUnit_Util_Filesystem;
 use ReflectionClass;
@@ -21,7 +20,7 @@ use ReflectionClass;
  *
  * @since Class available since Release 2.0.0
  */
-class StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader
+class StandardTestSuiteLoader implements TestSuiteLoader
 {
     /**
      * @param string $suiteClassName

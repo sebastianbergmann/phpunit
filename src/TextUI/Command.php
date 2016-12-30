@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\TestSuiteLoader;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -791,7 +792,7 @@ class PHPUnit_TextUI_Command
      * @param string $loaderClass
      * @param string $loaderFile
      *
-     * @return PHPUnit_Runner_TestSuiteLoader
+     * @return TestSuiteLoader
      */
     protected function handleLoader($loaderClass, $loaderFile = '')
     {

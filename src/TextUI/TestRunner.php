@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\BaseTestRunner;
+use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -46,7 +47,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
     protected $codeCoverageFilter;
 
     /**
-     * @var PHPUnit_Runner_TestSuiteLoader
+     * @var TestSuiteLoader
      */
     protected $loader = null;
 
@@ -71,12 +72,12 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
     private $messagePrinted = false;
 
     /**
-     * @param PHPUnit_Runner_TestSuiteLoader $loader
-     * @param CodeCoverageFilter             $filter
+     * @param TestSuiteLoader    $loader
+     * @param CodeCoverageFilter $filter
      *
      * @since Method available since Release 3.4.0
      */
-    public function __construct(PHPUnit_Runner_TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
+    public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
     {
         if ($filter === null) {
             $filter = new CodeCoverageFilter;
@@ -661,7 +662,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
     /**
      * Returns the loader to be used.
      *
-     * @return PHPUnit_Runner_TestSuiteLoader
+     * @return TestSuiteLoader
      *
      * @since Method available since Release 2.2.0
      */
