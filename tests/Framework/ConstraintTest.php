@@ -29,6 +29,7 @@ use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
+use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -2272,7 +2273,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
+     * @covers ObjectHasAttribute
      * @covers PHPUnit\Framework\Assert::objectHasAttribute
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -2305,7 +2306,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
+     * @covers ObjectHasAttribute
      * @covers PHPUnit\Framework\Assert::objectHasAttribute
      * @covers TestFailure::exceptionToString
      */
@@ -2332,7 +2333,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
+     * @covers ObjectHasAttribute
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::objectHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -2368,7 +2369,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
+     * @covers ObjectHasAttribute
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::objectHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot

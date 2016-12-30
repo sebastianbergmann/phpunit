@@ -44,7 +44,7 @@ use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\JsonMatches;
 use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
-use PHPUnit_Framework_Constraint_ObjectHasAttribute;
+use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit_Framework_Constraint_Or;
 use PHPUnit_Framework_Constraint_PCREMatch;
 use PHPUnit_Framework_Constraint_SameSize;
@@ -1451,7 +1451,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'object');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_ObjectHasAttribute(
+        $constraint = new ObjectHasAttribute(
             $attributeName
         );
 
@@ -1482,7 +1482,7 @@ abstract class Assert
         }
 
         $constraint = new LogicalNot(
-            new PHPUnit_Framework_Constraint_ObjectHasAttribute($attributeName)
+            new ObjectHasAttribute($attributeName)
         );
 
         static::assertThat($object, $constraint, $message);
@@ -2826,13 +2826,13 @@ abstract class Assert
      *
      * @param string $attributeName
      *
-     * @return PHPUnit_Framework_Constraint_ObjectHasAttribute
+     * @return ObjectHasAttribute
      *
      * @since Method available since Release 3.0.0
      */
     public static function objectHasAttribute($attributeName)
     {
-        return new PHPUnit_Framework_Constraint_ObjectHasAttribute(
+        return new ObjectHasAttribute(
             $attributeName
         );
     }

@@ -29,6 +29,7 @@ use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
+use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -2208,7 +2209,7 @@ function never()
  *
  * @param string $attributeName
  *
- * @return PHPUnit_Framework_Constraint_ObjectHasAttribute
+ * @return ObjectHasAttribute
  *
  * @since Method available since Release 3.0.0
  */
