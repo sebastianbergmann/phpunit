@@ -16,9 +16,10 @@ use PHPUnit\Framework\IncompleteTest;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\OutputError;
+use PHPUnit\Framework\CoveredCodeNotExecutedException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
-use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException;
+use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCoveredCodeNotExecutedException;
 use SebastianBergmann\CodeCoverage\MissingCoversAnnotationException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
@@ -816,10 +817,10 @@ class PHPUnit_Framework_TestResult implements Countable
                     ),
                     $time
                 );
-            } catch (CoveredCodeNotExecutedException $cce) {
+            } catch (OriginalCoveredCodeNotExecutedException $cce) {
                 $this->addFailure(
                     $test,
-                    new PHPUnit_Framework_CoveredCodeNotExecutedException(
+                    new CoveredCodeNotExecutedException(
                         'This test did not execute all the code that is listed as code to be covered:' .
                         PHP_EOL . $cce->getMessage()
                     ),
