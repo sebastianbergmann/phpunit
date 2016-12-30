@@ -20,6 +20,7 @@ use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\Constraint\IsFalse;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1956,7 +1957,7 @@ function isEmpty()
 /**
  * Returns a PHPUnit_Framework_Constraint_IsFalse matcher object.
  *
- * @return PHPUnit_Framework_Constraint_IsFalse
+ * @return IsFalse
  *
  * @since Method available since Release 3.3.0
  */

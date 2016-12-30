@@ -29,7 +29,7 @@ use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
-use PHPUnit_Framework_Constraint_IsFalse;
+use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit_Framework_Constraint_IsFinite;
 use PHPUnit_Framework_Constraint_IsIdentical;
 use PHPUnit_Framework_Constraint_IsInfinite;
@@ -2501,13 +2501,13 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_IsFalse matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_IsFalse
+     * @return IsFalse
      *
      * @since Method available since Release 3.3.0
      */
     public static function isFalse()
     {
-        return new PHPUnit_Framework_Constraint_IsFalse;
+        return new IsFalse;
     }
 
     /**
