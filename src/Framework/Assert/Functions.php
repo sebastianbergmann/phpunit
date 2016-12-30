@@ -12,6 +12,7 @@ use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Attribute;
+use PHPUnit\Framework\Constraint\Callback;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1724,7 +1725,7 @@ function attributeEqualTo($attributeName, $value, $delta = 0.0, $maxDepth = 10, 
  *
  * @param callable $callback
  *
- * @return PHPUnit_Framework_Constraint_Callback
+ * @return Callback
  */
 function callback($callback)
 {

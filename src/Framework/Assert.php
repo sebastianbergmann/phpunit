@@ -18,7 +18,7 @@ use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\Constraint\Attribute;
-use PHPUnit_Framework_Constraint_Callback;
+use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit_Framework_Constraint_ClassHasAttribute;
 use PHPUnit_Framework_Constraint_ClassHasStaticAttribute;
 use PHPUnit_Framework_Constraint_Count;
@@ -2490,11 +2490,11 @@ abstract class Assert
      *
      * @param callable $callback
      *
-     * @return PHPUnit_Framework_Constraint_Callback
+     * @return Callback
      */
     public static function callback($callback)
     {
-        return new PHPUnit_Framework_Constraint_Callback($callback);
+        return new Callback($callback);
     }
 
     /**

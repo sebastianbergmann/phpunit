@@ -11,6 +11,7 @@
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Attribute;
+use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -1842,7 +1843,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_Callback
+     * @covers Callback
      */
     public function testConstraintCallback()
     {
@@ -1873,7 +1874,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_Callback
+     * @covers Callback
      */
     public function testConstraintCallbackFailure()
     {
