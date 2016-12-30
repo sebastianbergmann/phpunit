@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -2401,7 +2402,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_PCREMatch
+     * @covers RegularExpression
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -2434,7 +2435,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_PCREMatch
+     * @covers RegularExpression
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      * @covers TestFailure::exceptionToString
      */
@@ -2461,7 +2462,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_PCREMatch
+     * @covers RegularExpression
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -2497,7 +2498,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_PCREMatch
+     * @covers RegularExpression
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      * @covers PHPUnit\Framework\Assert::logicalNot

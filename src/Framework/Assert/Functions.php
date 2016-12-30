@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\RegularExpression;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -2178,7 +2179,7 @@ function matches($string)
  *
  * @param string $pattern
  *
- * @return PHPUnit_Framework_Constraint_PCREMatch
+ * @return RegularExpression
  *
  * @since Method available since Release 3.0.0
  */

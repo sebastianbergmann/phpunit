@@ -46,7 +46,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
-use PHPUnit_Framework_Constraint_PCREMatch;
+use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit_Framework_Constraint_SameSize;
 use PHPUnit_Framework_Constraint_StringContains;
 use PHPUnit_Framework_Constraint_StringEndsWith;
@@ -1749,7 +1749,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_PCREMatch($pattern);
+        $constraint = new RegularExpression($pattern);
 
         static::assertThat($string, $constraint, $message);
     }
@@ -1774,7 +1774,7 @@ abstract class Assert
         }
 
         $constraint = new LogicalNot(
-            new PHPUnit_Framework_Constraint_PCREMatch($pattern)
+            new RegularExpression($pattern)
         );
 
         static::assertThat($string, $constraint, $message);
@@ -2917,13 +2917,13 @@ abstract class Assert
      *
      * @param string $pattern
      *
-     * @return PHPUnit_Framework_Constraint_PCREMatch
+     * @return RegularExpression
      *
      * @since Method available since Release 3.0.0
      */
     public static function matchesRegularExpression($pattern)
     {
-        return new PHPUnit_Framework_Constraint_PCREMatch($pattern);
+        return new RegularExpression($pattern);
     }
 
     /**

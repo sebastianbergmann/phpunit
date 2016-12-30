@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Constraint\Constraint;
+namespace PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that asserts that the string it is evaluated for matches
@@ -20,7 +20,7 @@ use PHPUnit\Framework\Constraint\Constraint;
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_PCREMatch extends Constraint
+class RegularExpression extends Constraint
 {
     /**
      * @var string
