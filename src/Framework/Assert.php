@@ -38,7 +38,7 @@ use PHPUnit\Framework\Constraint\IsJson;
 use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
-use PHPUnit_Framework_Constraint_IsTrue;
+use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit_Framework_Constraint_IsType;
 use PHPUnit_Framework_Constraint_IsWritable;
 use PHPUnit_Framework_Constraint_JsonMatches;
@@ -2477,13 +2477,13 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_IsTrue matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_IsTrue
+     * @return IsTrue
      *
      * @since Method available since Release 3.3.0
      */
     public static function isTrue()
     {
-        return new PHPUnit_Framework_Constraint_IsTrue;
+        return new IsTrue;
     }
 
     /**

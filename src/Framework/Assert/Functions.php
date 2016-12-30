@@ -25,6 +25,7 @@ use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
 use PHPUnit\Framework\Constraint\IsNull;
+use PHPUnit\Framework\Constraint\IsTrue;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -2023,7 +2024,7 @@ function isNull()
 /**
  * Returns a PHPUnit_Framework_Constraint_IsTrue matcher object.
  *
- * @return PHPUnit_Framework_Constraint_IsTrue
+ * @return IsTrue
  *
  * @since Method available since Release 3.3.0
  */
