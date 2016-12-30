@@ -7,20 +7,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Util;
+
+use Iterator;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Runner\Version;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionFunction;
+use ReflectionMethod;
 
 /**
  * Test helpers.
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Util_Test
+class Test
 {
     const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
     const REGEX_TEST_WITH          = '/@testWith\s+/';
@@ -39,12 +45,12 @@ class PHPUnit_Util_Test
     private static $hookMethods = [];
 
     /**
-     * @param Test $test
-     * @param bool $asString
+     * @param \PHPUnit\Framework\Test $test
+     * @param bool                    $asString
      *
      * @return mixed
      */
-    public static function describe(Test $test, $asString = true)
+    public static function describe(\PHPUnit\Framework\Test $test, $asString = true)
     {
         if ($asString) {
             if ($test instanceof SelfDescribing) {
@@ -55,7 +61,7 @@ class PHPUnit_Util_Test
         } else {
             if ($test instanceof TestCase) {
                 return [
-                  get_class($test), $test->getName()
+                    get_class($test), $test->getName()
                 ];
             } elseif ($test instanceof SelfDescribing) {
                 return ['', $test->toString()];
@@ -184,7 +190,7 @@ class PHPUnit_Util_Test
         $docComment = $reflector->getDocComment();
         $reflector  = new ReflectionMethod($className, $methodName);
         $docComment .= "\n" . $reflector->getDocComment();
-        $requires   = [];
+        $requires = [];
 
         if ($count = preg_match_all(self::REGEX_REQUIRES_OS, $docComment, $matches)) {
             $requires['OS'] = sprintf(
@@ -351,7 +357,7 @@ class PHPUnit_Util_Test
             }
 
             return [
-              'class' => $class, 'code' => $code, 'message' => $message, 'message_regex' => $messageRegExp
+                'class' => $class, 'code' => $code, 'message' => $message, 'message_regex' => $messageRegExp
             ];
         }
 
@@ -556,15 +562,15 @@ class PHPUnit_Util_Test
     public static function parseTestMethodAnnotations($className, $methodName = '')
     {
         if (!isset(self::$annotationCache[$className])) {
-            $class                             = new ReflectionClass($className);
-            $traits                            = $class->getTraits();
-            $annotations                       = [];
+            $class       = new ReflectionClass($className);
+            $traits      = $class->getTraits();
+            $annotations = [];
 
             foreach ($traits as $trait) {
                 $annotations = array_merge(
-                     $annotations,
-                     self::parseAnnotations($trait->getDocComment())
-                 );
+                    $annotations,
+                    self::parseAnnotations($trait->getDocComment())
+                );
             }
 
             self::$annotationCache[$className] = array_merge(
@@ -659,16 +665,16 @@ class PHPUnit_Util_Test
     public static function getBackupSettings($className, $methodName)
     {
         return [
-          'backupGlobals' => self::getBooleanAnnotationSetting(
-              $className,
-              $methodName,
-              'backupGlobals'
-          ),
-          'backupStaticAttributes' => self::getBooleanAnnotationSetting(
-              $className,
-              $methodName,
-              'backupStaticAttributes'
-          )
+            'backupGlobals' => self::getBooleanAnnotationSetting(
+                $className,
+                $methodName,
+                'backupGlobals'
+            ),
+            'backupStaticAttributes' => self::getBooleanAnnotationSetting(
+                $className,
+                $methodName,
+                'backupStaticAttributes'
+            )
         ];
     }
 
@@ -795,7 +801,8 @@ class PHPUnit_Util_Test
 
         if (isset($groups['large']) ||
             (class_exists('PHPUnit_Extensions_Database_TestCase', false) &&
-             $class->isSubclassOf('PHPUnit_Extensions_Database_TestCase'))) {
+                $class->isSubclassOf('PHPUnit_Extensions_Database_TestCase'))
+        ) {
             $size = self::LARGE;
         } elseif (isset($groups['medium'])) {
             $size = self::MEDIUM;
@@ -824,7 +831,8 @@ class PHPUnit_Util_Test
         );
 
         if (isset($annotations['class']['runTestsInSeparateProcesses']) ||
-            isset($annotations['method']['runInSeparateProcess'])) {
+            isset($annotations['method']['runInSeparateProcess'])
+        ) {
             return true;
         } else {
             return false;
@@ -975,7 +983,8 @@ class PHPUnit_Util_Test
                 foreach ($classes as $className) {
                     if (!class_exists($className) &&
                         !interface_exists($className) &&
-                        !trait_exists($className)) {
+                        !trait_exists($className)
+                    ) {
                         throw new InvalidCoversTargetException(
                             sprintf(
                                 'Trying to @cover or @use not existing class or ' .
@@ -1015,9 +1024,10 @@ class PHPUnit_Util_Test
                         );
                     } else {
                         if (!((class_exists($className) ||
-                               interface_exists($className) ||
-                               trait_exists($className)) &&
-                              method_exists($className, $methodName))) {
+                                interface_exists($className) ||
+                                trait_exists($className)) &&
+                            method_exists($className, $methodName))
+                        ) {
                             throw new InvalidCoversTargetException(
                                 sprintf(
                                     'Trying to @cover or @use not existing method "%s::%s".',
@@ -1055,7 +1065,8 @@ class PHPUnit_Util_Test
             foreach ($classes as $className) {
                 if (!class_exists($className) &&
                     !interface_exists($className) &&
-                    !trait_exists($className)) {
+                    !trait_exists($className)
+                ) {
                     throw new InvalidCoversTargetException(
                         sprintf(
                             'Trying to @cover or @use not existing class or ' .

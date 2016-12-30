@@ -11,7 +11,6 @@ namespace PHPUnit\Runner\Filter;
 
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Util\RegularExpression;
-use PHPUnit_Util_Test;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
@@ -103,7 +102,7 @@ class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        $tmp = PHPUnit_Util_Test::describe($test, false);
+        $tmp = \PHPUnit\Util\Test::describe($test, false);
 
         if ($tmp[0] != '') {
             $name = implode('::', $tmp);

@@ -35,7 +35,6 @@ use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
-use PHPUnit_Util_Test;
 use Prophecy;
 use ReflectionClass;
 use ReflectionException;
@@ -393,7 +392,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function getAnnotations()
     {
-        return PHPUnit_Util_Test::parseTestMethodAnnotations(
+        return \PHPUnit\Util\Test::parseTestMethodAnnotations(
             get_class($this),
             $this->name
         );
@@ -424,7 +423,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function getSize()
     {
-        return PHPUnit_Util_Test::getSize(
+        return \PHPUnit\Util\Test::getSize(
             get_class($this),
             $this->getName(false)
         );
@@ -437,7 +436,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function hasSize()
     {
-        return $this->getSize() !== PHPUnit_Util_Test::UNKNOWN;
+        return $this->getSize() !== \PHPUnit\Util\Test::UNKNOWN;
     }
 
     /**
@@ -447,7 +446,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function isSmall()
     {
-        return $this->getSize() === PHPUnit_Util_Test::SMALL;
+        return $this->getSize() === \PHPUnit\Util\Test::SMALL;
     }
 
     /**
@@ -457,7 +456,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function isMedium()
     {
-        return $this->getSize() === PHPUnit_Util_Test::MEDIUM;
+        return $this->getSize() === \PHPUnit\Util\Test::MEDIUM;
     }
 
     /**
@@ -467,7 +466,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function isLarge()
     {
-        return $this->getSize() === PHPUnit_Util_Test::LARGE;
+        return $this->getSize() === \PHPUnit\Util\Test::LARGE;
     }
 
     /**
@@ -648,7 +647,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function setExpectedExceptionFromAnnotation()
     {
         try {
-            $expectedException = PHPUnit_Util_Test::getExpectedException(
+            $expectedException = \PHPUnit\Util\Test::getExpectedException(
                 get_class($this),
                 $this->name
             );
@@ -686,7 +685,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function setUseErrorHandlerFromAnnotation()
     {
         try {
-            $useErrorHandler = PHPUnit_Util_Test::getErrorHandlerSettings(
+            $useErrorHandler = \PHPUnit\Util\Test::getErrorHandlerSettings(
                 get_class($this),
                 $this->name
             );
@@ -707,7 +706,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             return;
         }
 
-        $missingRequirements = PHPUnit_Util_Test::getMissingRequirements(
+        $missingRequirements = \PHPUnit\Util\Test::getMissingRequirements(
             get_class($this),
             $this->name
         );
@@ -907,7 +906,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         clearstatcache();
         $currentWorkingDirectory = getcwd();
 
-        $hookMethods = PHPUnit_Util_Test::getHookMethods(get_class($this));
+        $hookMethods = \PHPUnit\Util\Test::getHookMethods(get_class($this));
 
         try {
             $hasMetRequirements = false;
@@ -2135,8 +2134,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (isset($passed[$dependency])) {
-                    if ($passed[$dependency]['size'] != PHPUnit_Util_Test::UNKNOWN &&
-                        $this->getSize() != PHPUnit_Util_Test::UNKNOWN &&
+                    if ($passed[$dependency]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
+                        $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
                         $passed[$dependency]['size'] > $this->getSize()
                     ) {
                         $this->result->addError(

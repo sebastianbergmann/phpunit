@@ -18,7 +18,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Util\Printer;
-use PHPUnit_Util_Test;
 
 /**
  * Base class for printers of TestDox documentation.
@@ -272,7 +271,7 @@ abstract class ResultPrinter extends Printer implements TestListener
                 $this->doEndClass();
             }
 
-            $classAnnotations = PHPUnit_Util_Test::parseTestMethodAnnotations($class);
+            $classAnnotations = \PHPUnit\Util\Test::parseTestMethodAnnotations($class);
             if (isset($classAnnotations['class']['testdox'][0])) {
                 $this->currentTestClassPrettified = $classAnnotations['class']['testdox'][0];
             } else {

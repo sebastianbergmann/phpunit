@@ -19,7 +19,6 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Util\Printer;
-use PHPUnit_Util_Test;
 use ReflectionClass;
 
 /**
@@ -205,7 +204,7 @@ class XmlResultPrinter extends Printer implements TestListener
         $node->setAttribute('size', $test->getSize());
         $node->setAttribute('groups', implode(',', $groups));
 
-        $inlineAnnotations = PHPUnit_Util_Test::getInlineAnnotations(get_class($test), $test->getName());
+        $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(get_class($test), $test->getName());
 
         if (isset($inlineAnnotations['given']) && isset($inlineAnnotations['when']) && isset($inlineAnnotations['then'])) {
             $node->setAttribute('given', $inlineAnnotations['given']['value']);

@@ -19,7 +19,6 @@ use PHPUnit_Framework_MockObject_Exception;
 use PHPUnit\Util\Blacklist;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
-use PHPUnit_Util_Test;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -418,7 +417,7 @@ class TestResult implements Countable
 
             $this->passed[$key] = [
                 'result' => $test->getResult(),
-                'size'   => PHPUnit_Util_Test::getSize(
+                'size'   => \PHPUnit\Util\Test::getSize(
                     $class,
                     $test->getName(false)
                 )
@@ -678,7 +677,7 @@ class TestResult implements Countable
 
         $monitorFunctions = $this->beStrictAboutResourceUsageDuringSmallTests &&
             !$test instanceof WarningTestCase &&
-            $test->getSize() == PHPUnit_Util_Test::SMALL &&
+            $test->getSize() == \PHPUnit\Util\Test::SMALL &&
             function_exists('xdebug_start_function_monitor');
 
         if ($monitorFunctions) {
@@ -689,20 +688,20 @@ class TestResult implements Countable
 
         try {
             if (!$test instanceof WarningTestCase &&
-                $test->getSize() != PHPUnit_Util_Test::UNKNOWN &&
+                $test->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
                 $this->enforceTimeLimit &&
                 extension_loaded('pcntl') && class_exists('PHP_Invoker')
             ) {
                 switch ($test->getSize()) {
-                    case PHPUnit_Util_Test::SMALL:
+                    case \PHPUnit\Util\Test::SMALL:
                         $_timeout = $this->timeoutForSmallTests;
                         break;
 
-                    case PHPUnit_Util_Test::MEDIUM:
+                    case \PHPUnit\Util\Test::MEDIUM:
                         $_timeout = $this->timeoutForMediumTests;
                         break;
 
-                    case PHPUnit_Util_Test::LARGE:
+                    case \PHPUnit\Util\Test::LARGE:
                         $_timeout = $this->timeoutForLargeTests;
                         break;
                 }
@@ -790,12 +789,12 @@ class TestResult implements Countable
 
             if ($append && $test instanceof TestCase) {
                 try {
-                    $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
+                    $linesToBeCovered = \PHPUnit\Util\Test::getLinesToBeCovered(
                         get_class($test),
                         $test->getName(false)
                     );
 
-                    $linesToBeUsed = PHPUnit_Util_Test::getLinesToBeUsed(
+                    $linesToBeUsed = \PHPUnit\Util\Test::getLinesToBeUsed(
                         get_class($test),
                         $test->getName(false)
                     );

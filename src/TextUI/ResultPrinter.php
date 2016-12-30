@@ -23,7 +23,6 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
-use PHPUnit_Util_Test;
 use SebastianBergmann\Environment\Console;
 
 /**
@@ -555,7 +554,7 @@ class ResultPrinter extends Printer implements TestListener
             $this->write(
                 sprintf(
                     "\nStarting test '%s'.\n",
-                    PHPUnit_Util_Test::describe($test)
+                    \PHPUnit\Util\Test::describe($test)
                 )
             );
         }
