@@ -21,6 +21,7 @@ use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -1081,7 +1082,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers IsIdentical
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -1116,7 +1117,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers IsIdentical
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers TestFailure::exceptionToString
      */
@@ -1146,7 +1147,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers IsIdentical
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers TestFailure::exceptionToString
      */
@@ -1178,7 +1179,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers IsIdentical
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -1216,7 +1217,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers IsIdentical
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -1249,7 +1250,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsIdentical
+     * @covers IsIdentical
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Assert::logicalNot

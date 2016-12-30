@@ -21,6 +21,7 @@ use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsFalse;
+use PHPUnit\Framework\Constraint\IsIdentical;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1927,7 +1928,7 @@ function greaterThanOrEqual($value)
  *
  * @param mixed $value
  *
- * @return PHPUnit_Framework_Constraint_IsIdentical
+ * @return IsIdentical
  *
  * @since Method available since Release 3.0.0
  */
