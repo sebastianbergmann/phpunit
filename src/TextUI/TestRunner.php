@@ -31,7 +31,7 @@ use PHPUnit\Util\Log\TeamCity;
 use PHPUnit_Util_Printer;
 use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
-use PHPUnit_Util_TestDox_ResultPrinter_XML;
+use PHPUnit\Util\TestDox\XmlResultPrinter;
 use ReflectionClass;
 use SebastianBergmann;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -354,7 +354,7 @@ class TestRunner extends BaseTestRunner
 
         if (isset($arguments['testdoxXMLFile'])) {
             $result->addListener(
-                new PHPUnit_Util_TestDox_ResultPrinter_XML(
+                new XmlResultPrinter(
                     $arguments['testdoxXMLFile']
                 )
             );
