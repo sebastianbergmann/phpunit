@@ -16,7 +16,7 @@ use Error;
 use PHP_Invoker;
 use PHP_Timer;
 use PHPUnit_Framework_MockObject_Exception;
-use PHPUnit_Util_Blacklist;
+use PHPUnit\Util\Blacklist;
 use PHPUnit_Util_InvalidArgumentHelper;
 use PHPUnit_Util_Printer;
 use PHPUnit_Util_Test;
@@ -755,7 +755,7 @@ class TestResult implements Countable
         $test->addToAssertionCount(Assert::getCount());
 
         if ($monitorFunctions) {
-            $blacklist = new PHPUnit_Util_Blacklist;
+            $blacklist = new Blacklist;
             $functions = xdebug_get_monitored_functions();
             xdebug_stop_function_monitor();
 

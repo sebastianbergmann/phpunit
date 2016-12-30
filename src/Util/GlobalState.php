@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Util\Blacklist;
 
 /**
  * @since Class available since Release 3.4.0
@@ -45,7 +46,7 @@ class PHPUnit_Util_GlobalState
 
     public static function processIncludedFilesAsString(array $files)
     {
-        $blacklist = new PHPUnit_Util_Blacklist;
+        $blacklist = new Blacklist;
         $prefix    = false;
         $result    = '';
 

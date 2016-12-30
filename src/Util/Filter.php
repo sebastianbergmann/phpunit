@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
+use PHPUnit\Util\Blacklist;
 
 /**
  * Utility class for code filtering.
@@ -64,7 +65,7 @@ class PHPUnit_Util_Filter
             );
         }
 
-        $blacklist = new PHPUnit_Util_Blacklist;
+        $blacklist = new Blacklist;
 
         foreach ($eTrace as $frame) {
             if (isset($frame['file']) && is_file($frame['file']) &&
