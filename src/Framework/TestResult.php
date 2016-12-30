@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\Assert;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException;
@@ -622,7 +623,7 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function run(PHPUnit_Framework_Test $test)
     {
-        PHPUnit_Framework_Assert::resetCount();
+        Assert::resetCount();
 
         if ($test instanceof PHPUnit_Framework_TestCase) {
             $test->setRegisterMockObjectsFromTestArgumentsRecursively(
@@ -736,7 +737,7 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $time = PHP_Timer::stop();
-        $test->addToAssertionCount(PHPUnit_Framework_Assert::getCount());
+        $test->addToAssertionCount(Assert::getCount());
 
         if ($monitorFunctions) {
             $blacklist = new PHPUnit_Util_Blacklist;

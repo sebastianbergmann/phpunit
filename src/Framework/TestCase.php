@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\Assert;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
@@ -64,7 +65,7 @@ use DeepCopy\DeepCopy;
  *
  * @since Class available since Release 2.0.0
  */
-abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
+abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.

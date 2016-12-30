@@ -24,7 +24,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::fail
+     * @covers PHPUnit\Framework\Assert::fail
      */
     public function testFail()
     {
@@ -38,7 +38,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertContains
+     * @covers PHPUnit\Framework\Assert::assertContains
      */
     public function testAssertSplObjectStorageContainsObject()
     {
@@ -59,7 +59,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertContains
+     * @covers PHPUnit\Framework\Assert::assertContains
      */
     public function testAssertArrayContainsObject()
     {
@@ -78,7 +78,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertContains
+     * @covers PHPUnit\Framework\Assert::assertContains
      */
     public function testAssertArrayContainsString()
     {
@@ -94,7 +94,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertContains
+     * @covers PHPUnit\Framework\Assert::assertContains
      */
     public function testAssertArrayContainsNonObject()
     {
@@ -110,7 +110,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertContainsOnlyInstancesOf
+     * @covers PHPUnit\Framework\Assert::assertContainsOnlyInstancesOf
      */
     public function testAssertContainsOnlyInstancesOf()
     {
@@ -133,7 +133,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertArrayHasKey
+     * @covers            PHPUnit\Framework\Assert::assertArrayHasKey
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument()
@@ -142,7 +142,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertArrayHasKey
+     * @covers            PHPUnit\Framework\Assert::assertArrayHasKey
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertArrayHasKeyThrowsExceptionForInvalidSecondArgument()
@@ -151,7 +151,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     * @covers PHPUnit\Framework\Assert::assertArrayHasKey
      */
     public function testAssertArrayHasIntegerKey()
     {
@@ -167,7 +167,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit\Framework\Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
     public function testAssertArraySubset()
@@ -197,7 +197,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit\Framework\Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
     public function testAssertArraySubsetWithDeepNestedArrays()
@@ -227,7 +227,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit\Framework\Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
     public function testAssertArraySubsetWithNoStrictCheckAndObjects()
@@ -241,7 +241,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit\Framework\Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
     public function testAssertArraySubsetWithStrictCheckAndObjects()
@@ -262,7 +262,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit\Framework\Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      * @expectedException PHPUnit_Framework_Exception
      * @expectedExceptionMessage array or ArrayAccess
@@ -285,7 +285,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertArrayNotHasKey
+     * @covers            PHPUnit\Framework\Assert::assertArrayNotHasKey
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertArrayNotHasKeyThrowsExceptionForInvalidFirstArgument()
@@ -294,7 +294,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertArrayNotHasKey
+     * @covers            PHPUnit\Framework\Assert::assertArrayNotHasKey
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertArrayNotHasKeyThrowsExceptionForInvalidSecondArgument()
@@ -303,7 +303,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
+     * @covers PHPUnit\Framework\Assert::assertArrayNotHasKey
      */
     public function testAssertArrayNotHasIntegerKey()
     {
@@ -319,7 +319,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     * @covers PHPUnit\Framework\Assert::assertArrayHasKey
      */
     public function testAssertArrayHasStringKey()
     {
@@ -335,7 +335,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
+     * @covers PHPUnit\Framework\Assert::assertArrayNotHasKey
      */
     public function testAssertArrayNotHasStringKey()
     {
@@ -351,7 +351,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     * @covers PHPUnit\Framework\Assert::assertArrayHasKey
      */
     public function testAssertArrayHasKeyAcceptsArrayObjectValue()
     {
@@ -361,7 +361,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     * @covers PHPUnit\Framework\Assert::assertArrayHasKey
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
     public function testAssertArrayHasKeyProperlyFailsWithArrayObjectValue()
@@ -372,7 +372,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     * @covers PHPUnit\Framework\Assert::assertArrayHasKey
      */
     public function testAssertArrayHasKeyAcceptsArrayAccessValue()
     {
@@ -382,7 +382,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayHasKey
+     * @covers PHPUnit\Framework\Assert::assertArrayHasKey
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
     public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue()
@@ -393,7 +393,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
+     * @covers PHPUnit\Framework\Assert::assertArrayNotHasKey
      */
     public function testAssertArrayNotHasKeyAcceptsArrayAccessValue()
     {
@@ -403,7 +403,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertArrayNotHasKey
+     * @covers PHPUnit\Framework\Assert::assertArrayNotHasKey
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
     public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue()
@@ -414,7 +414,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertContains
+     * @covers            PHPUnit\Framework\Assert::assertContains
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertContainsThrowsException()
@@ -423,7 +423,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertContains
+     * @covers PHPUnit\Framework\Assert::assertContains
      */
     public function testAssertIteratorContainsObject()
     {
@@ -441,7 +441,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertContains
+     * @covers PHPUnit\Framework\Assert::assertContains
      */
     public function testAssertIteratorContainsString()
     {
@@ -457,7 +457,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertContains
+     * @covers PHPUnit\Framework\Assert::assertContains
      */
     public function testAssertStringContainsString()
     {
@@ -473,7 +473,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertNotContains
+     * @covers            PHPUnit\Framework\Assert::assertNotContains
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotContainsThrowsException()
@@ -482,7 +482,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotContains
+     * @covers PHPUnit\Framework\Assert::assertNotContains
      */
     public function testAssertSplObjectStorageNotContainsObject()
     {
@@ -503,7 +503,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotContains
+     * @covers PHPUnit\Framework\Assert::assertNotContains
      */
     public function testAssertArrayNotContainsObject()
     {
@@ -522,7 +522,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotContains
+     * @covers PHPUnit\Framework\Assert::assertNotContains
      */
     public function testAssertArrayNotContainsString()
     {
@@ -538,7 +538,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotContains
+     * @covers PHPUnit\Framework\Assert::assertNotContains
      */
     public function testAssertArrayNotContainsNonObject()
     {
@@ -554,7 +554,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotContains
+     * @covers PHPUnit\Framework\Assert::assertNotContains
      */
     public function testAssertStringNotContainsString()
     {
@@ -570,7 +570,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertContainsOnly
+     * @covers            PHPUnit\Framework\Assert::assertContainsOnly
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertContainsOnlyThrowsException()
@@ -579,7 +579,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertNotContainsOnly
+     * @covers            PHPUnit\Framework\Assert::assertNotContainsOnly
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotContainsOnlyThrowsException()
@@ -588,7 +588,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertContainsOnlyInstancesOf
+     * @covers            PHPUnit\Framework\Assert::assertContainsOnlyInstancesOf
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertContainsOnlyInstancesOfThrowsException()
@@ -597,7 +597,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertContainsOnly
+     * @covers PHPUnit\Framework\Assert::assertContainsOnly
      */
     public function testAssertArrayContainsOnlyIntegers()
     {
@@ -613,7 +613,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotContainsOnly
+     * @covers PHPUnit\Framework\Assert::assertNotContainsOnly
      */
     public function testAssertArrayNotContainsOnlyIntegers()
     {
@@ -629,7 +629,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertContainsOnly
+     * @covers PHPUnit\Framework\Assert::assertContainsOnly
      */
     public function testAssertArrayContainsOnlyStdClass()
     {
@@ -645,7 +645,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotContainsOnly
+     * @covers PHPUnit\Framework\Assert::assertNotContainsOnly
      */
     public function testAssertArrayNotContainsOnlyStdClass()
     {
@@ -970,7 +970,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertEquals
+     * @covers PHPUnit\Framework\Assert::assertEquals
      * @dataProvider equalProvider
      */
     public function testAssertEqualsSucceeds($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
@@ -979,7 +979,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertEquals
+     * @covers PHPUnit\Framework\Assert::assertEquals
      * @dataProvider notEqualProvider
      */
     public function testAssertEqualsFails($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
@@ -994,7 +994,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotEquals
+     * @covers PHPUnit\Framework\Assert::assertNotEquals
      * @dataProvider notEqualProvider
      */
     public function testAssertNotEqualsSucceeds($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
@@ -1003,7 +1003,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotEquals
+     * @covers PHPUnit\Framework\Assert::assertNotEquals
      * @dataProvider equalProvider
      */
     public function testAssertNotEqualsFails($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
@@ -1018,7 +1018,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertSame
+     * @covers PHPUnit\Framework\Assert::assertSame
      * @dataProvider sameProvider
      */
     public function testAssertSameSucceeds($a, $b)
@@ -1027,7 +1027,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertSame
+     * @covers PHPUnit\Framework\Assert::assertSame
      * @dataProvider notSameProvider
      */
     public function testAssertSameFails($a, $b)
@@ -1042,7 +1042,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotSame
+     * @covers PHPUnit\Framework\Assert::assertNotSame
      * @dataProvider notSameProvider
      */
     public function testAssertNotSameSucceeds($a, $b)
@@ -1051,7 +1051,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotSame
+     * @covers PHPUnit\Framework\Assert::assertNotSame
      * @dataProvider sameProvider
      */
     public function testAssertNotSameFails($a, $b)
@@ -1066,7 +1066,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertXmlFileEqualsXmlFile
+     * @covers PHPUnit\Framework\Assert::assertXmlFileEqualsXmlFile
      */
     public function testAssertXmlFileEqualsXmlFile()
     {
@@ -1088,7 +1088,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertXmlFileNotEqualsXmlFile
+     * @covers PHPUnit\Framework\Assert::assertXmlFileNotEqualsXmlFile
      */
     public function testAssertXmlFileNotEqualsXmlFile()
     {
@@ -1110,7 +1110,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertXmlStringEqualsXmlFile
+     * @covers PHPUnit\Framework\Assert::assertXmlStringEqualsXmlFile
      */
     public function testAssertXmlStringEqualsXmlFile()
     {
@@ -1132,7 +1132,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertXmlStringNotEqualsXmlFile
+     * @covers PHPUnit\Framework\Assert::assertXmlStringNotEqualsXmlFile
      */
     public function testXmlStringNotEqualsXmlFile()
     {
@@ -1154,7 +1154,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertXmlStringEqualsXmlString
+     * @covers PHPUnit\Framework\Assert::assertXmlStringEqualsXmlString
      */
     public function testAssertXmlStringEqualsXmlString()
     {
@@ -1171,7 +1171,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
 
     /**
      * @expectedException PHPUnit_Framework_Exception
-     * @covers            PHPUnit_Framework_Assert::assertXmlStringEqualsXmlString
+     * @covers            PHPUnit\Framework\Assert::assertXmlStringEqualsXmlString
      * @ticket            1860
      */
     public function testAssertXmlStringEqualsXmlString2()
@@ -1180,7 +1180,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertXmlStringEqualsXmlString
+     * @covers PHPUnit\Framework\Assert::assertXmlStringEqualsXmlString
      * @ticket 1860
      */
     public function testAssertXmlStringEqualsXmlString3()
@@ -1203,7 +1203,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertXmlStringNotEqualsXmlString
+     * @covers PHPUnit\Framework\Assert::assertXmlStringNotEqualsXmlString
      */
     public function testAssertXmlStringNotEqualsXmlString()
     {
@@ -1219,7 +1219,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertEqualXMLStructure
+     * @covers PHPUnit\Framework\Assert::assertEqualXMLStructure
      */
     public function testXMLStructureIsSame()
     {
@@ -1235,7 +1235,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertEqualXMLStructure
+     * @covers            PHPUnit\Framework\Assert::assertEqualXMLStructure
      * @expectedException PHPUnit_Framework_ExpectationFailedException
      */
     public function testXMLStructureWrongNumberOfAttributes()
@@ -1252,7 +1252,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertEqualXMLStructure
+     * @covers            PHPUnit\Framework\Assert::assertEqualXMLStructure
      * @expectedException PHPUnit_Framework_ExpectationFailedException
      */
     public function testXMLStructureWrongNumberOfNodes()
@@ -1269,7 +1269,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertEqualXMLStructure
+     * @covers PHPUnit\Framework\Assert::assertEqualXMLStructure
      */
     public function testXMLStructureIsSameButDataIsNot()
     {
@@ -1285,7 +1285,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertEqualXMLStructure
+     * @covers PHPUnit\Framework\Assert::assertEqualXMLStructure
      */
     public function testXMLStructureAttributesAreSameButValuesAreNot()
     {
@@ -1301,7 +1301,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertEqualXMLStructure
+     * @covers PHPUnit\Framework\Assert::assertEqualXMLStructure
      */
     public function testXMLStructureIgnoreTextNodes()
     {
@@ -1317,7 +1317,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertEquals
+     * @covers PHPUnit\Framework\Assert::assertEquals
      */
     public function testAssertStringEqualsNumeric()
     {
@@ -1333,7 +1333,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotEquals
+     * @covers PHPUnit\Framework\Assert::assertNotEquals
      */
     public function testAssertStringEqualsNumeric2()
     {
@@ -1341,7 +1341,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertIsReadable
+     * @covers            PHPUnit\Framework\Assert::assertIsReadable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertIsReadableThrowsException()
@@ -1350,7 +1350,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertIsReadable
+     * @covers PHPUnit\Framework\Assert::assertIsReadable
      */
     public function testAssertIsReadable()
     {
@@ -1366,7 +1366,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertNotIsReadable
+     * @covers            PHPUnit\Framework\Assert::assertNotIsReadable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotIsReadableThrowsException()
@@ -1375,7 +1375,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotIsReadable
+     * @covers PHPUnit\Framework\Assert::assertNotIsReadable
      */
     public function testAssertNotIsReadable()
     {
@@ -1389,7 +1389,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertIsWritable
+     * @covers            PHPUnit\Framework\Assert::assertIsWritable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertIsWritableThrowsException()
@@ -1398,7 +1398,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertIsWritable
+     * @covers PHPUnit\Framework\Assert::assertIsWritable
      */
     public function testAssertIsWritable()
     {
@@ -1414,7 +1414,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertNotIsWritable
+     * @covers            PHPUnit\Framework\Assert::assertNotIsWritable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotIsWritableThrowsException()
@@ -1423,7 +1423,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotIsWritable
+     * @covers PHPUnit\Framework\Assert::assertNotIsWritable
      */
     public function testAssertNotIsWritable()
     {
@@ -1437,7 +1437,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertDirectoryExists
+     * @covers            PHPUnit\Framework\Assert::assertDirectoryExists
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertDirectoryExistsThrowsException()
@@ -1446,7 +1446,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertDirectoryExists
+     * @covers PHPUnit\Framework\Assert::assertDirectoryExists
      */
     public function testAssertDirectoryExists()
     {
@@ -1462,7 +1462,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertDirectoryNotExists
+     * @covers            PHPUnit\Framework\Assert::assertDirectoryNotExists
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertDirectoryNotExistsThrowsException()
@@ -1471,7 +1471,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertDirectoryNotExists
+     * @covers PHPUnit\Framework\Assert::assertDirectoryNotExists
      */
     public function testAssertDirectoryNotExists()
     {
@@ -1487,7 +1487,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertDirectoryIsReadable
+     * @covers            PHPUnit\Framework\Assert::assertDirectoryIsReadable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertDirectoryIsReadableThrowsException()
@@ -1496,7 +1496,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertDirectoryIsReadable
+     * @covers PHPUnit\Framework\Assert::assertDirectoryIsReadable
      */
     public function testAssertDirectoryIsReadable()
     {
@@ -1512,7 +1512,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertDirectoryNotIsReadable
+     * @covers            PHPUnit\Framework\Assert::assertDirectoryNotIsReadable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertDirectoryNotIsReadableThrowsException()
@@ -1521,7 +1521,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertDirectoryIsWritable
+     * @covers            PHPUnit\Framework\Assert::assertDirectoryIsWritable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertDirectoryIsWritableThrowsException()
@@ -1530,7 +1530,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertDirectoryIsWritable
+     * @covers PHPUnit\Framework\Assert::assertDirectoryIsWritable
      */
     public function testAssertDirectoryIsWritable()
     {
@@ -1546,7 +1546,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertDirectoryNotIsWritable
+     * @covers            PHPUnit\Framework\Assert::assertDirectoryNotIsWritable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertDirectoryNotIsWritableThrowsException()
@@ -1555,7 +1555,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertFileExists
+     * @covers            PHPUnit\Framework\Assert::assertFileExists
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertFileExistsThrowsException()
@@ -1564,7 +1564,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertFileExists
+     * @covers PHPUnit\Framework\Assert::assertFileExists
      */
     public function testAssertFileExists()
     {
@@ -1580,7 +1580,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertFileNotExists
+     * @covers            PHPUnit\Framework\Assert::assertFileNotExists
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertFileNotExistsThrowsException()
@@ -1589,7 +1589,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertFileNotExists
+     * @covers PHPUnit\Framework\Assert::assertFileNotExists
      */
     public function testAssertFileNotExists()
     {
@@ -1605,7 +1605,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertFileIsReadable
+     * @covers            PHPUnit\Framework\Assert::assertFileIsReadable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertFileIsReadableThrowsException()
@@ -1614,7 +1614,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertFileIsReadable
+     * @covers PHPUnit\Framework\Assert::assertFileIsReadable
      */
     public function testAssertFileIsReadable()
     {
@@ -1630,7 +1630,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertFileNotIsReadable
+     * @covers            PHPUnit\Framework\Assert::assertFileNotIsReadable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertFileNotIsReadableThrowsException()
@@ -1639,7 +1639,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertFileIsWritable
+     * @covers            PHPUnit\Framework\Assert::assertFileIsWritable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertFileIsWritableThrowsException()
@@ -1648,7 +1648,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertFileIsWritable
+     * @covers PHPUnit\Framework\Assert::assertFileIsWritable
      */
     public function testAssertFileIsWritable()
     {
@@ -1664,7 +1664,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertFileNotIsWritable
+     * @covers            PHPUnit\Framework\Assert::assertFileNotIsWritable
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertFileNotIsWritableThrowsException()
@@ -1673,7 +1673,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertObjectHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertObjectHasAttribute
      */
     public function testAssertObjectHasAttribute()
     {
@@ -1691,7 +1691,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertObjectNotHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertObjectNotHasAttribute
      */
     public function testAssertObjectNotHasAttribute()
     {
@@ -1709,7 +1709,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertFinite
+     * @covers PHPUnit\Framework\Assert::assertFinite
      */
     public function testAssertFinite()
     {
@@ -1725,7 +1725,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertInfinite
+     * @covers PHPUnit\Framework\Assert::assertInfinite
      */
     public function testAssertInfinite()
     {
@@ -1741,7 +1741,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNan
+     * @covers PHPUnit\Framework\Assert::assertNan
      */
     public function testAssertNan()
     {
@@ -1757,7 +1757,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNull
+     * @covers PHPUnit\Framework\Assert::assertNull
      */
     public function testAssertNull()
     {
@@ -1773,7 +1773,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotNull
+     * @covers PHPUnit\Framework\Assert::assertNotNull
      */
     public function testAssertNotNull()
     {
@@ -1789,7 +1789,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertTrue
+     * @covers PHPUnit\Framework\Assert::assertTrue
      */
     public function testAssertTrue()
     {
@@ -1805,7 +1805,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotTrue
+     * @covers PHPUnit\Framework\Assert::assertNotTrue
      */
     public function testAssertNotTrue()
     {
@@ -1823,7 +1823,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertFalse
+     * @covers PHPUnit\Framework\Assert::assertFalse
      */
     public function testAssertFalse()
     {
@@ -1839,7 +1839,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotFalse
+     * @covers PHPUnit\Framework\Assert::assertNotFalse
      */
     public function testAssertNotFalse()
     {
@@ -1857,7 +1857,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertRegExp
+     * @covers            PHPUnit\Framework\Assert::assertRegExp
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertRegExpThrowsException()
@@ -1866,7 +1866,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertRegExp
+     * @covers            PHPUnit\Framework\Assert::assertRegExp
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertRegExpThrowsException2()
@@ -1875,7 +1875,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertNotRegExp
+     * @covers            PHPUnit\Framework\Assert::assertNotRegExp
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotRegExpThrowsException()
@@ -1884,7 +1884,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertNotRegExp
+     * @covers            PHPUnit\Framework\Assert::assertNotRegExp
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotRegExpThrowsException2()
@@ -1893,7 +1893,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertRegExp
+     * @covers PHPUnit\Framework\Assert::assertRegExp
      */
     public function testAssertRegExp()
     {
@@ -1909,7 +1909,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotRegExp
+     * @covers PHPUnit\Framework\Assert::assertNotRegExp
      */
     public function testAssertNotRegExp()
     {
@@ -1925,7 +1925,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertSame
+     * @covers PHPUnit\Framework\Assert::assertSame
      */
     public function testAssertSame()
     {
@@ -1946,7 +1946,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertSame
+     * @covers PHPUnit\Framework\Assert::assertSame
      */
     public function testAssertSame2()
     {
@@ -1963,7 +1963,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotSame
+     * @covers PHPUnit\Framework\Assert::assertNotSame
      */
     public function testAssertNotSame()
     {
@@ -1994,7 +1994,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotSame
+     * @covers PHPUnit\Framework\Assert::assertNotSame
      */
     public function testAssertNotSame2()
     {
@@ -2011,7 +2011,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotSame
+     * @covers PHPUnit\Framework\Assert::assertNotSame
      */
     public function testAssertNotSameFailsNull()
     {
@@ -2025,7 +2025,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertGreaterThan
+     * @covers PHPUnit\Framework\Assert::assertGreaterThan
      */
     public function testGreaterThan()
     {
@@ -2041,7 +2041,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeGreaterThan
+     * @covers PHPUnit\Framework\Assert::assertAttributeGreaterThan
      */
     public function testAttributeGreaterThan()
     {
@@ -2061,7 +2061,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertGreaterThanOrEqual
+     * @covers PHPUnit\Framework\Assert::assertGreaterThanOrEqual
      */
     public function testGreaterThanOrEqual()
     {
@@ -2077,7 +2077,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeGreaterThanOrEqual
+     * @covers PHPUnit\Framework\Assert::assertAttributeGreaterThanOrEqual
      */
     public function testAttributeGreaterThanOrEqual()
     {
@@ -2097,7 +2097,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertLessThan
+     * @covers PHPUnit\Framework\Assert::assertLessThan
      */
     public function testLessThan()
     {
@@ -2113,7 +2113,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeLessThan
+     * @covers PHPUnit\Framework\Assert::assertAttributeLessThan
      */
     public function testAttributeLessThan()
     {
@@ -2133,7 +2133,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertLessThanOrEqual
+     * @covers PHPUnit\Framework\Assert::assertLessThanOrEqual
      */
     public function testLessThanOrEqual()
     {
@@ -2149,7 +2149,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeLessThanOrEqual
+     * @covers PHPUnit\Framework\Assert::assertAttributeLessThanOrEqual
      */
     public function testAttributeLessThanOrEqual()
     {
@@ -2169,9 +2169,9 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::readAttribute
-     * @covers PHPUnit_Framework_Assert::getStaticAttribute
-     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers PHPUnit\Framework\Assert::readAttribute
+     * @covers PHPUnit\Framework\Assert::getStaticAttribute
+     * @covers PHPUnit\Framework\Assert::getObjectAttribute
      */
     public function testReadAttribute()
     {
@@ -2185,9 +2185,9 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::readAttribute
-     * @covers PHPUnit_Framework_Assert::getStaticAttribute
-     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers PHPUnit\Framework\Assert::readAttribute
+     * @covers PHPUnit\Framework\Assert::getStaticAttribute
+     * @covers PHPUnit\Framework\Assert::getObjectAttribute
      */
     public function testReadAttribute2()
     {
@@ -2199,9 +2199,9 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::readAttribute
-     * @covers            PHPUnit_Framework_Assert::getStaticAttribute
-     * @covers            PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers            PHPUnit\Framework\Assert::readAttribute
+     * @covers            PHPUnit\Framework\Assert::getStaticAttribute
+     * @covers            PHPUnit\Framework\Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testReadAttribute3()
@@ -2210,9 +2210,9 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::readAttribute
-     * @covers            PHPUnit_Framework_Assert::getStaticAttribute
-     * @covers            PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers            PHPUnit\Framework\Assert::readAttribute
+     * @covers            PHPUnit\Framework\Assert::getStaticAttribute
+     * @covers            PHPUnit\Framework\Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testReadAttribute4()
@@ -2221,9 +2221,9 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::readAttribute
-     * @covers            PHPUnit_Framework_Assert::getStaticAttribute
-     * @covers            PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers            PHPUnit\Framework\Assert::readAttribute
+     * @covers            PHPUnit\Framework\Assert::getStaticAttribute
+     * @covers            PHPUnit\Framework\Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testReadAttribute5()
@@ -2232,9 +2232,9 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::readAttribute
-     * @covers            PHPUnit_Framework_Assert::getStaticAttribute
-     * @covers            PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers            PHPUnit\Framework\Assert::readAttribute
+     * @covers            PHPUnit\Framework\Assert::getStaticAttribute
+     * @covers            PHPUnit\Framework\Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testReadAttributeIfAttributeNameIsNotValid()
@@ -2243,7 +2243,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers PHPUnit\Framework\Assert::getStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument()
@@ -2252,7 +2252,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers PHPUnit\Framework\Assert::getStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument2()
@@ -2261,7 +2261,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers PHPUnit\Framework\Assert::getStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument()
@@ -2270,7 +2270,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers PHPUnit\Framework\Assert::getStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument2()
@@ -2279,7 +2279,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::getStaticAttribute
+     * @covers PHPUnit\Framework\Assert::getStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument3()
@@ -2288,7 +2288,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers PHPUnit\Framework\Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetObjectAttributeRaisesExceptionForInvalidFirstArgument()
@@ -2297,7 +2297,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers PHPUnit\Framework\Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument()
@@ -2306,7 +2306,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers PHPUnit\Framework\Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument2()
@@ -2315,7 +2315,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers PHPUnit\Framework\Assert::getObjectAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument3()
@@ -2324,7 +2324,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::getObjectAttribute
+     * @covers PHPUnit\Framework\Assert::getObjectAttribute
      */
     public function testGetObjectAttributeWorksForInheritedAttributes()
     {
@@ -2335,7 +2335,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeContains
+     * @covers PHPUnit\Framework\Assert::assertAttributeContains
      */
     public function testAssertPublicAttributeContains()
     {
@@ -2353,7 +2353,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeContainsOnly
+     * @covers PHPUnit\Framework\Assert::assertAttributeContainsOnly
      */
     public function testAssertPublicAttributeContainsOnly()
     {
@@ -2371,7 +2371,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotContains
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotContains
      */
     public function testAssertPublicAttributeNotContains()
     {
@@ -2389,7 +2389,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotContainsOnly
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotContainsOnly
      */
     public function testAssertPublicAttributeNotContainsOnly()
     {
@@ -2407,7 +2407,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeContains
+     * @covers PHPUnit\Framework\Assert::assertAttributeContains
      */
     public function testAssertProtectedAttributeContains()
     {
@@ -2425,7 +2425,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotContains
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotContains
      */
     public function testAssertProtectedAttributeNotContains()
     {
@@ -2443,7 +2443,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeContains
+     * @covers PHPUnit\Framework\Assert::assertAttributeContains
      */
     public function testAssertPrivateAttributeContains()
     {
@@ -2461,7 +2461,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotContains
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotContains
      */
     public function testAssertPrivateAttributeNotContains()
     {
@@ -2479,7 +2479,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeContains
+     * @covers PHPUnit\Framework\Assert::assertAttributeContains
      */
     public function testAssertAttributeContainsNonObject()
     {
@@ -2497,7 +2497,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotContains
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotContains
      */
     public function testAssertAttributeNotContainsNonObject()
     {
@@ -2515,7 +2515,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeEquals
      */
     public function testAssertPublicAttributeEquals()
     {
@@ -2533,7 +2533,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotEquals
      */
     public function testAssertPublicAttributeNotEquals()
     {
@@ -2551,7 +2551,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeSame
+     * @covers PHPUnit\Framework\Assert::assertAttributeSame
      */
     public function testAssertPublicAttributeSame()
     {
@@ -2569,7 +2569,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotSame
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotSame
      */
     public function testAssertPublicAttributeNotSame()
     {
@@ -2587,7 +2587,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeEquals
      */
     public function testAssertProtectedAttributeEquals()
     {
@@ -2605,7 +2605,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotEquals
      */
     public function testAssertProtectedAttributeNotEquals()
     {
@@ -2623,7 +2623,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeEquals
      */
     public function testAssertPrivateAttributeEquals()
     {
@@ -2641,7 +2641,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotEquals
      */
     public function testAssertPrivateAttributeNotEquals()
     {
@@ -2659,7 +2659,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeEquals
      */
     public function testAssertPublicStaticAttributeEquals()
     {
@@ -2675,7 +2675,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotEquals
      */
     public function testAssertPublicStaticAttributeNotEquals()
     {
@@ -2691,7 +2691,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeEquals
      */
     public function testAssertProtectedStaticAttributeEquals()
     {
@@ -2707,7 +2707,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotEquals
      */
     public function testAssertProtectedStaticAttributeNotEquals()
     {
@@ -2723,7 +2723,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeEquals
      */
     public function testAssertPrivateStaticAttributeEquals()
     {
@@ -2739,7 +2739,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotEquals
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotEquals
      */
     public function testAssertPrivateStaticAttributeNotEquals()
     {
@@ -2755,7 +2755,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassHasAttributeThrowsException()
@@ -2764,7 +2764,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassHasAttributeThrowsException2()
@@ -2773,7 +2773,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
@@ -2782,7 +2782,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassNotHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassNotHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassNotHasAttributeThrowsException()
@@ -2791,7 +2791,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassNotHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassNotHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassNotHasAttributeThrowsException2()
@@ -2800,7 +2800,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassNotHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassNotHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
@@ -2809,7 +2809,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassHasStaticAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassHasStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassHasStaticAttributeThrowsException()
@@ -2818,7 +2818,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassHasStaticAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassHasStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassHasStaticAttributeThrowsException2()
@@ -2827,7 +2827,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassHasStaticAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassHasStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid()
@@ -2836,7 +2836,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassNotHasStaticAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassNotHasStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassNotHasStaticAttributeThrowsException()
@@ -2845,7 +2845,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassNotHasStaticAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassNotHasStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassNotHasStaticAttributeThrowsException2()
@@ -2854,7 +2854,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertClassNotHasStaticAttribute
+     * @covers            PHPUnit\Framework\Assert::assertClassNotHasStaticAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertClassNotHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid()
@@ -2863,7 +2863,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertObjectHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertObjectHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertObjectHasAttributeThrowsException()
@@ -2872,7 +2872,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertObjectHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertObjectHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertObjectHasAttributeThrowsException2()
@@ -2881,7 +2881,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertObjectHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertObjectHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertObjectHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
@@ -2890,7 +2890,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertObjectNotHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertObjectNotHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertObjectNotHasAttributeThrowsException()
@@ -2899,7 +2899,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertObjectNotHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertObjectNotHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertObjectNotHasAttributeThrowsException2()
@@ -2908,7 +2908,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertObjectNotHasAttribute
+     * @covers            PHPUnit\Framework\Assert::assertObjectNotHasAttribute
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertObjectNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
@@ -2917,7 +2917,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertClassHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertClassHasAttribute
      */
     public function testClassHasPublicAttribute()
     {
@@ -2933,7 +2933,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertClassNotHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertClassNotHasAttribute
      */
     public function testClassNotHasPublicAttribute()
     {
@@ -2949,7 +2949,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertClassHasStaticAttribute
+     * @covers PHPUnit\Framework\Assert::assertClassHasStaticAttribute
      */
     public function testClassHasPublicStaticAttribute()
     {
@@ -2965,7 +2965,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertClassNotHasStaticAttribute
+     * @covers PHPUnit\Framework\Assert::assertClassNotHasStaticAttribute
      */
     public function testClassNotHasPublicStaticAttribute()
     {
@@ -2981,7 +2981,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertObjectHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertObjectHasAttribute
      */
     public function testObjectHasPublicAttribute()
     {
@@ -2999,7 +2999,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertObjectNotHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertObjectNotHasAttribute
      */
     public function testObjectNotHasPublicAttribute()
     {
@@ -3017,7 +3017,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertObjectHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertObjectHasAttribute
      */
     public function testObjectHasOnTheFlyAttribute()
     {
@@ -3036,7 +3036,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertObjectNotHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertObjectNotHasAttribute
      */
     public function testObjectNotHasOnTheFlyAttribute()
     {
@@ -3055,7 +3055,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertObjectHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertObjectHasAttribute
      */
     public function testObjectHasProtectedAttribute()
     {
@@ -3073,7 +3073,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertObjectNotHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertObjectNotHasAttribute
      */
     public function testObjectNotHasProtectedAttribute()
     {
@@ -3091,7 +3091,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertObjectHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertObjectHasAttribute
      */
     public function testObjectHasPrivateAttribute()
     {
@@ -3109,7 +3109,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertObjectNotHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertObjectNotHasAttribute
      */
     public function testObjectNotHasPrivateAttribute()
     {
@@ -3127,9 +3127,9 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::attribute
-     * @covers PHPUnit_Framework_Assert::equalTo
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::attribute
+     * @covers PHPUnit\Framework\Assert::equalTo
      */
     public function testAssertThatAttributeEquals()
     {
@@ -3143,9 +3143,9 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertThat
-     * @covers            PHPUnit_Framework_Assert::attribute
-     * @covers            PHPUnit_Framework_Assert::equalTo
+     * @covers            PHPUnit\Framework\Assert::assertThat
+     * @covers            PHPUnit\Framework\Assert::attribute
+     * @covers            PHPUnit\Framework\Assert::equalTo
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
     public function testAssertThatAttributeEquals2()
@@ -3160,9 +3160,9 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::attribute
-     * @covers PHPUnit_Framework_Assert::equalTo
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::attribute
+     * @covers PHPUnit\Framework\Assert::equalTo
      */
     public function testAssertThatAttributeEqualTo()
     {
@@ -3173,8 +3173,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::anything
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::anything
      *
      * @doesNotPerformAssertions
      */
@@ -3184,8 +3184,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::isTrue
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::isTrue
      */
     public function testAssertThatIsTrue()
     {
@@ -3193,8 +3193,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::isFalse
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::isFalse
      */
     public function testAssertThatIsFalse()
     {
@@ -3202,8 +3202,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::isJson
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::isJson
      */
     public function testAssertThatIsJson()
     {
@@ -3211,9 +3211,9 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::anything
-     * @covers PHPUnit_Framework_Assert::logicalAnd
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::anything
+     * @covers PHPUnit\Framework\Assert::logicalAnd
      *
      * @doesNotPerformAssertions
      */
@@ -3228,9 +3228,9 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::anything
-     * @covers PHPUnit_Framework_Assert::logicalOr
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::anything
+     * @covers PHPUnit\Framework\Assert::logicalOr
      *
      * @doesNotPerformAssertions
      */
@@ -3245,10 +3245,10 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::anything
-     * @covers PHPUnit_Framework_Assert::logicalNot
-     * @covers PHPUnit_Framework_Assert::logicalXor
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::anything
+     * @covers PHPUnit\Framework\Assert::logicalNot
+     * @covers PHPUnit\Framework\Assert::logicalXor
      *
      * @doesNotPerformAssertions
      */
@@ -3264,8 +3264,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::contains
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::contains
      */
     public function testAssertThatContains()
     {
@@ -3273,8 +3273,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::stringContains
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::stringContains
      */
     public function testAssertThatStringContains()
     {
@@ -3282,16 +3282,16 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::containsOnly
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::containsOnly
      */
     public function testAssertThatContainsOnly()
     {
         $this->assertThat(['foo'], $this->containsOnly('string'));
     }
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::containsOnlyInstancesOf
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::containsOnlyInstancesOf
      */
     public function testAssertThatContainsOnlyInstancesOf()
     {
@@ -3299,8 +3299,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::arrayHasKey
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::arrayHasKey
      */
     public function testAssertThatArrayHasKey()
     {
@@ -3308,8 +3308,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::classHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::classHasAttribute
      */
     public function testAssertThatClassHasAttribute()
     {
@@ -3320,8 +3320,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::classHasStaticAttribute
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
      */
     public function testAssertThatClassHasStaticAttribute()
     {
@@ -3332,8 +3332,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::objectHasAttribute
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::objectHasAttribute
      */
     public function testAssertThatObjectHasAttribute()
     {
@@ -3344,8 +3344,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::equalTo
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::equalTo
      */
     public function testAssertThatEqualTo()
     {
@@ -3353,8 +3353,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::identicalTo
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::identicalTo
      */
     public function testAssertThatIdenticalTo()
     {
@@ -3365,8 +3365,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::isInstanceOf
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::isInstanceOf
      */
     public function testAssertThatIsInstanceOf()
     {
@@ -3374,8 +3374,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::isType
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::isType
      */
     public function testAssertThatIsType()
     {
@@ -3383,8 +3383,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::isEmpty
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::isEmpty
      */
     public function testAssertThatIsEmpty()
     {
@@ -3392,8 +3392,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::fileExists
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::fileExists
      */
     public function testAssertThatFileExists()
     {
@@ -3401,8 +3401,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::greaterThan
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::greaterThan
      */
     public function testAssertThatGreaterThan()
     {
@@ -3410,8 +3410,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::greaterThanOrEqual
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      */
     public function testAssertThatGreaterThanOrEqual()
     {
@@ -3419,8 +3419,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::lessThan
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::lessThan
      */
     public function testAssertThatLessThan()
     {
@@ -3428,8 +3428,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::lessThanOrEqual
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      */
     public function testAssertThatLessThanOrEqual()
     {
@@ -3437,8 +3437,8 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::matchesRegularExpression
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      */
     public function testAssertThatMatchesRegularExpression()
     {
@@ -3446,20 +3446,22 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::callback
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::callback
      */
     public function testAssertThatCallback()
     {
         $this->assertThat(
             null,
-            $this->callback(function ($other) { return true; })
+            $this->callback(function ($other) {
+                return true;
+            })
         );
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertThat
-     * @covers PHPUnit_Framework_Assert::countOf
+     * @covers PHPUnit\Framework\Assert::assertThat
+     * @covers PHPUnit\Framework\Assert::countOf
      */
     public function testAssertThatCountOf()
     {
@@ -3467,7 +3469,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertFileEquals
+     * @covers PHPUnit\Framework\Assert::assertFileEquals
      */
     public function testAssertFileEquals()
     {
@@ -3489,7 +3491,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertFileNotEquals
+     * @covers PHPUnit\Framework\Assert::assertFileNotEquals
      */
     public function testAssertFileNotEquals()
     {
@@ -3511,7 +3513,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringEqualsFile
+     * @covers PHPUnit\Framework\Assert::assertStringEqualsFile
      */
     public function testAssertStringEqualsFile()
     {
@@ -3533,7 +3535,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringNotEqualsFile
+     * @covers PHPUnit\Framework\Assert::assertStringNotEqualsFile
      */
     public function testAssertStringNotEqualsFile()
     {
@@ -3555,7 +3557,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertStringStartsWith
+     * @covers            PHPUnit\Framework\Assert::assertStringStartsWith
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringStartsWithThrowsException()
@@ -3564,7 +3566,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertStringStartsWith
+     * @covers            PHPUnit\Framework\Assert::assertStringStartsWith
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringStartsWithThrowsException2()
@@ -3573,7 +3575,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertStringStartsNotWith
+     * @covers            PHPUnit\Framework\Assert::assertStringStartsNotWith
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringStartsNotWithThrowsException()
@@ -3582,7 +3584,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertStringStartsNotWith
+     * @covers            PHPUnit\Framework\Assert::assertStringStartsNotWith
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringStartsNotWithThrowsException2()
@@ -3591,7 +3593,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertStringEndsWith
+     * @covers            PHPUnit\Framework\Assert::assertStringEndsWith
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringEndsWithThrowsException()
@@ -3600,7 +3602,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertStringEndsWith
+     * @covers            PHPUnit\Framework\Assert::assertStringEndsWith
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringEndsWithThrowsException2()
@@ -3609,7 +3611,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertStringEndsNotWith
+     * @covers            PHPUnit\Framework\Assert::assertStringEndsNotWith
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringEndsNotWithThrowsException()
@@ -3618,7 +3620,7 @@ XML;
     }
 
     /**
-     * @covers            PHPUnit_Framework_Assert::assertStringEndsNotWith
+     * @covers            PHPUnit\Framework\Assert::assertStringEndsNotWith
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringEndsNotWithThrowsException2()
@@ -3627,7 +3629,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringStartsWith
+     * @covers PHPUnit\Framework\Assert::assertStringStartsWith
      */
     public function testAssertStringStartsWith()
     {
@@ -3643,7 +3645,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringStartsNotWith
+     * @covers PHPUnit\Framework\Assert::assertStringStartsNotWith
      */
     public function testAssertStringStartsNotWith()
     {
@@ -3659,7 +3661,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringEndsWith
+     * @covers PHPUnit\Framework\Assert::assertStringEndsWith
      */
     public function testAssertStringEndsWith()
     {
@@ -3675,7 +3677,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringEndsNotWith
+     * @covers PHPUnit\Framework\Assert::assertStringEndsNotWith
      */
     public function testAssertStringEndsNotWith()
     {
@@ -3691,7 +3693,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
+     * @covers PHPUnit\Framework\Assert::assertStringMatchesFormat
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringMatchesFormatRaisesExceptionForInvalidFirstArgument()
@@ -3700,7 +3702,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
+     * @covers PHPUnit\Framework\Assert::assertStringMatchesFormat
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringMatchesFormatRaisesExceptionForInvalidSecondArgument()
@@ -3709,7 +3711,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
+     * @covers PHPUnit\Framework\Assert::assertStringMatchesFormat
      */
     public function testAssertStringMatchesFormat()
     {
@@ -3717,7 +3719,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormat
+     * @covers PHPUnit\Framework\Assert::assertStringMatchesFormat
      * @expectedException PHPUnit_Framework_AssertionFailedError
      */
     public function testAssertStringMatchesFormatFailure()
@@ -3726,7 +3728,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormat
+     * @covers PHPUnit\Framework\Assert::assertStringNotMatchesFormat
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidFirstArgument()
@@ -3735,7 +3737,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormat
+     * @covers PHPUnit\Framework\Assert::assertStringNotMatchesFormat
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidSecondArgument()
@@ -3744,7 +3746,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormat
+     * @covers PHPUnit\Framework\Assert::assertStringNotMatchesFormat
      */
     public function testAssertStringNotMatchesFormat()
     {
@@ -3760,7 +3762,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertEmpty
+     * @covers PHPUnit\Framework\Assert::assertEmpty
      */
     public function testAssertEmpty()
     {
@@ -3776,7 +3778,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotEmpty
+     * @covers PHPUnit\Framework\Assert::assertNotEmpty
      */
     public function testAssertNotEmpty()
     {
@@ -3792,7 +3794,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeEmpty
+     * @covers PHPUnit\Framework\Assert::assertAttributeEmpty
      */
     public function testAssertAttributeEmpty()
     {
@@ -3812,7 +3814,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotEmpty
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotEmpty
      */
     public function testAssertAttributeNotEmpty()
     {
@@ -3832,7 +3834,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::markTestIncomplete
+     * @covers PHPUnit\Framework\Assert::markTestIncomplete
      */
     public function testMarkTestIncomplete()
     {
@@ -3848,7 +3850,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::markTestSkipped
+     * @covers PHPUnit\Framework\Assert::markTestSkipped
      */
     public function testMarkTestSkipped()
     {
@@ -3864,7 +3866,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertCount
+     * @covers PHPUnit\Framework\Assert::assertCount
      */
     public function testAssertCount()
     {
@@ -3880,7 +3882,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertCount
+     * @covers PHPUnit\Framework\Assert::assertCount
      */
     public function testAssertCountTraversable()
     {
@@ -3896,14 +3898,14 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertCount
+     * @covers PHPUnit\Framework\Assert::assertCount
      */
     public function testAssertCountThrowsExceptionIfExpectedCountIsNoInteger()
     {
         try {
             $this->assertCount('a', []);
         } catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #1 (No Value) of PHPUnit_Framework_Assert::assertCount() must be a integer', $e->getMessage());
+            $this->assertEquals('Argument #1 (No Value) of PHPUnit\Framework\Assert::assertCount() must be a integer', $e->getMessage());
 
             return;
         }
@@ -3912,14 +3914,14 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertCount
+     * @covers PHPUnit\Framework\Assert::assertCount
      */
     public function testAssertCountThrowsExceptionIfElementIsNotCountable()
     {
         try {
             $this->assertCount(2, '');
         } catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #2 (No Value) of PHPUnit_Framework_Assert::assertCount() must be a countable or traversable', $e->getMessage());
+            $this->assertEquals('Argument #2 (No Value) of PHPUnit\Framework\Assert::assertCount() must be a countable or traversable', $e->getMessage());
 
             return;
         }
@@ -3928,7 +3930,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeCount
+     * @covers PHPUnit\Framework\Assert::assertAttributeCount
      */
     public function testAssertAttributeCount()
     {
@@ -3939,7 +3941,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotCount
+     * @covers PHPUnit\Framework\Assert::assertNotCount
      */
     public function testAssertNotCount()
     {
@@ -3955,7 +3957,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotCount
+     * @covers PHPUnit\Framework\Assert::assertNotCount
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotCountThrowsExceptionIfExpectedCountIsNoInteger()
@@ -3964,7 +3966,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotCount
+     * @covers PHPUnit\Framework\Assert::assertNotCount
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotCountThrowsExceptionIfElementIsNotCountable()
@@ -3973,7 +3975,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotCount
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotCount
      */
     public function testAssertAttributeNotCount()
     {
@@ -3984,7 +3986,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertSameSize
+     * @covers PHPUnit\Framework\Assert::assertSameSize
      */
     public function testAssertSameSize()
     {
@@ -4000,14 +4002,14 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertSameSize
+     * @covers PHPUnit\Framework\Assert::assertSameSize
      */
     public function testAssertSameSizeThrowsExceptionIfExpectedIsNotCountable()
     {
         try {
             $this->assertSameSize('a', []);
         } catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #1 (No Value) of PHPUnit_Framework_Assert::assertSameSize() must be a countable or traversable', $e->getMessage());
+            $this->assertEquals('Argument #1 (No Value) of PHPUnit\Framework\Assert::assertSameSize() must be a countable or traversable', $e->getMessage());
 
             return;
         }
@@ -4016,14 +4018,14 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertSameSize
+     * @covers PHPUnit\Framework\Assert::assertSameSize
      */
     public function testAssertSameSizeThrowsExceptionIfActualIsNotCountable()
     {
         try {
             $this->assertSameSize([], '');
         } catch (PHPUnit_Framework_Exception $e) {
-            $this->assertEquals('Argument #2 (No Value) of PHPUnit_Framework_Assert::assertSameSize() must be a countable or traversable', $e->getMessage());
+            $this->assertEquals('Argument #2 (No Value) of PHPUnit\Framework\Assert::assertSameSize() must be a countable or traversable', $e->getMessage());
 
             return;
         }
@@ -4032,7 +4034,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotSameSize
+     * @covers PHPUnit\Framework\Assert::assertNotSameSize
      */
     public function testAssertNotSameSize()
     {
@@ -4048,7 +4050,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotSameSize
+     * @covers PHPUnit\Framework\Assert::assertNotSameSize
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotSameSizeThrowsExceptionIfExpectedIsNotCountable()
@@ -4057,7 +4059,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotSameSize
+     * @covers PHPUnit\Framework\Assert::assertNotSameSize
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotSameSizeThrowsExceptionIfActualIsNotCountable()
@@ -4066,7 +4068,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJson
+     * @covers PHPUnit\Framework\Assert::assertJson
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertJsonRaisesExceptionForInvalidArgument()
@@ -4075,7 +4077,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJson
+     * @covers PHPUnit\Framework\Assert::assertJson
      */
     public function testAssertJson()
     {
@@ -4083,7 +4085,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString
+     * @covers PHPUnit\Framework\Assert::assertJsonStringEqualsJsonString
      */
     public function testAssertJsonStringEqualsJsonString()
     {
@@ -4096,7 +4098,7 @@ XML;
 
     /**
      * @dataProvider validInvalidJsonDataprovider
-     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonString
+     * @covers PHPUnit\Framework\Assert::assertJsonStringEqualsJsonString
      */
     public function testAssertJsonStringEqualsJsonStringErrorRaised($expected, $actual)
     {
@@ -4109,7 +4111,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonString
+     * @covers PHPUnit\Framework\Assert::assertJsonStringNotEqualsJsonString
      */
     public function testAssertJsonStringNotEqualsJsonString()
     {
@@ -4122,7 +4124,7 @@ XML;
 
     /**
      * @dataProvider validInvalidJsonDataprovider
-     * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonString
+     * @covers PHPUnit\Framework\Assert::assertJsonStringNotEqualsJsonString
      */
     public function testAssertJsonStringNotEqualsJsonStringErrorRaised($expected, $actual)
     {
@@ -4135,7 +4137,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile
+     * @covers PHPUnit\Framework\Assert::assertJsonStringEqualsJsonFile
      */
     public function testAssertJsonStringEqualsJsonFile()
     {
@@ -4146,7 +4148,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile
+     * @covers PHPUnit\Framework\Assert::assertJsonStringEqualsJsonFile
      */
     public function testAssertJsonStringEqualsJsonFileExpectingExpectationFailedException()
     {
@@ -4168,7 +4170,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJsonStringEqualsJsonFile
+     * @covers PHPUnit\Framework\Assert::assertJsonStringEqualsJsonFile
      */
     public function testAssertJsonStringEqualsJsonFileExpectingException()
     {
@@ -4182,7 +4184,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonFile
+     * @covers PHPUnit\Framework\Assert::assertJsonStringNotEqualsJsonFile
      */
     public function testAssertJsonStringNotEqualsJsonFile()
     {
@@ -4193,7 +4195,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJsonStringNotEqualsJsonFile
+     * @covers PHPUnit\Framework\Assert::assertJsonStringNotEqualsJsonFile
      */
     public function testAssertJsonStringNotEqualsJsonFileExpectingException()
     {
@@ -4207,7 +4209,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJsonFileNotEqualsJsonFile
+     * @covers PHPUnit\Framework\Assert::assertJsonFileNotEqualsJsonFile
      */
     public function testAssertJsonFileNotEqualsJsonFile()
     {
@@ -4218,7 +4220,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertJsonFileEqualsJsonFile
+     * @covers PHPUnit\Framework\Assert::assertJsonFileEqualsJsonFile
      */
     public function testAssertJsonFileEqualsJsonFile()
     {
@@ -4228,7 +4230,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertInstanceOf
+     * @covers PHPUnit\Framework\Assert::assertInstanceOf
      */
     public function testAssertInstanceOf()
     {
@@ -4244,7 +4246,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertInstanceOf
+     * @covers PHPUnit\Framework\Assert::assertInstanceOf
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertInstanceOfThrowsExceptionForInvalidArgument()
@@ -4253,7 +4255,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeInstanceOf
+     * @covers PHPUnit\Framework\Assert::assertAttributeInstanceOf
      */
     public function testAssertAttributeInstanceOf()
     {
@@ -4264,7 +4266,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotInstanceOf
+     * @covers PHPUnit\Framework\Assert::assertNotInstanceOf
      */
     public function testAssertNotInstanceOf()
     {
@@ -4280,7 +4282,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotInstanceOf
+     * @covers PHPUnit\Framework\Assert::assertNotInstanceOf
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotInstanceOfThrowsExceptionForInvalidArgument()
@@ -4289,7 +4291,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotInstanceOf
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotInstanceOf
      */
     public function testAssertAttributeNotInstanceOf()
     {
@@ -4300,7 +4302,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertInternalType
+     * @covers PHPUnit\Framework\Assert::assertInternalType
      */
     public function testAssertInternalType()
     {
@@ -4316,7 +4318,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertInternalType
+     * @covers PHPUnit\Framework\Assert::assertInternalType
      */
     public function testAssertInternalTypeDouble()
     {
@@ -4332,7 +4334,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertInternalType
+     * @covers PHPUnit\Framework\Assert::assertInternalType
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertInternalTypeThrowsExceptionForInvalidArgument()
@@ -4341,7 +4343,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeInternalType
+     * @covers PHPUnit\Framework\Assert::assertAttributeInternalType
      */
     public function testAssertAttributeInternalType()
     {
@@ -4352,7 +4354,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotInternalType
+     * @covers PHPUnit\Framework\Assert::assertNotInternalType
      */
     public function testAssertNotInternalType()
     {
@@ -4368,7 +4370,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertNotInternalType
+     * @covers PHPUnit\Framework\Assert::assertNotInternalType
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertNotInternalTypeThrowsExceptionForInvalidArgument()
@@ -4377,7 +4379,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertAttributeNotInternalType
+     * @covers PHPUnit\Framework\Assert::assertAttributeNotInternalType
      */
     public function testAssertAttributeNotInternalType()
     {
@@ -4388,7 +4390,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormatFile
+     * @covers PHPUnit\Framework\Assert::assertStringMatchesFormatFile
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument()
@@ -4397,7 +4399,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormatFile
+     * @covers PHPUnit\Framework\Assert::assertStringMatchesFormatFile
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument2()
@@ -4406,7 +4408,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringMatchesFormatFile
+     * @covers PHPUnit\Framework\Assert::assertStringMatchesFormatFile
      */
     public function testAssertStringMatchesFormatFile()
     {
@@ -4422,7 +4424,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormatFile
+     * @covers PHPUnit\Framework\Assert::assertStringNotMatchesFormatFile
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument()
@@ -4431,7 +4433,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormatFile
+     * @covers PHPUnit\Framework\Assert::assertStringNotMatchesFormatFile
      * @expectedException PHPUnit_Framework_Exception
      */
     public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument2()
@@ -4440,7 +4442,7 @@ XML;
     }
 
     /**
-     * @covers PHPUnit_Framework_Assert::assertStringNotMatchesFormatFile
+     * @covers PHPUnit\Framework\Assert::assertStringNotMatchesFormatFile
      */
     public function testAssertStringNotMatchesFormatFile()
     {

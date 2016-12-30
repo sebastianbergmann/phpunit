@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Assert;
 
 /**
  * Runner for PHPT test cases.
@@ -113,7 +114,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
 
-        PHPUnit_Framework_Assert::$assertion($expected, $actual);
+        Assert::$assertion($expected, $actual);
     }
 
     /**

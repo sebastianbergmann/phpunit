@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Assert;
 
 /**
  * @since Class available since Release 3.1.0
@@ -50,7 +51,7 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
     public function evaluate($other, $description = '', $returnResult = false)
     {
         return parent::evaluate(
-            PHPUnit_Framework_Assert::readAttribute(
+            Assert::readAttribute(
                 $other,
                 $this->attributeName
             ),
