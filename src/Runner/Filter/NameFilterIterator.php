@@ -10,7 +10,7 @@
 namespace PHPUnit\Runner\Filter;
 
 use PHPUnit\Framework\TestSuite;
-use PHPUnit_Util_Regex;
+use PHPUnit\Util\RegularExpression;
 use PHPUnit_Util_Test;
 use RecursiveFilterIterator;
 use RecursiveIterator;
@@ -49,7 +49,7 @@ class NameFilterIterator extends RecursiveFilterIterator
      */
     protected function setFilter($filter)
     {
-        if (PHPUnit_Util_Regex::pregMatchSafe($filter, '') === false) {
+        if (RegularExpression::safeMatch($filter, '') === false) {
             // Handles:
             //  * testAssertEqualsSucceeds#4
             //  * testAssertEqualsSucceeds#4-8

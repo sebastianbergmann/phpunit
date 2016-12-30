@@ -7,16 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Util\ErrorHandler;
+namespace PHPUnit\Util;
 
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
  *
  * @since Class available since Release 4.2.0
  */
-class PHPUnit_Util_Regex
+class RegularExpression
 {
-    public static function pregMatchSafe($pattern, $subject, $matches = null, $flags = 0, $offset = 0)
+    public static function safeMatch($pattern, $subject, $matches = null, $flags = 0, $offset = 0)
     {
         $handler_terminator = ErrorHandler::handleErrorOnce(E_WARNING);
         $match              = preg_match($pattern, $subject, $matches, $flags, $offset);
