@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use ArrayAccess;
-use PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that asserts that the array it is evaluated for has a specified subset.

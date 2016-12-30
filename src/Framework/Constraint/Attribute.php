@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**

@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\Constraint;
-
 /**
  * Constraint that checks if the directory(name) that it is evaluated for exists.
  *

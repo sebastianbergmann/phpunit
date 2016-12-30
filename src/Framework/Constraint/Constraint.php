@@ -8,9 +8,12 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework;
+namespace PHPUnit\Framework\Constraint;
 
 use Countable;
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\SebastianBergmann;
+use PHPUnit\Framework\SelfDescribing;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter;
 

@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\Constraint;
 
 use Countable;
 use IteratorAggregate;
-use PHPUnit\Framework\Constraint;
 use Traversable;
 
 /**
