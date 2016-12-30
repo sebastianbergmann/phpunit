@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\TestSuite;
+namespace PHPUnit\Framework;
 
 /**
  * @since Class available since Release 3.4.0
  */
-class PHPUnit_Framework_TestSuite_DataProvider extends TestSuite
+class DataProviderTestSuite extends TestSuite
 {
     /**
      * Sets the dependencies of a TestCase.

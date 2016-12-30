@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use Iterator;
 use IteratorAggregate;
-use PHPUnit_Framework_TestSuite_DataProvider;
 use PHPUnit_Runner_BaseTestRunner;
 use PHPUnit_Runner_Filter_Factory;
 use PHPUnit_Runner_PhptTestCase;
@@ -534,7 +533,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
                 // Test method with @dataProvider.
                 if (isset($data)) {
-                    $test = new PHPUnit_Framework_TestSuite_DataProvider(
+                    $test = new DataProviderTestSuite(
                         $className . '::' . $name
                     );
 
@@ -885,7 +884,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         $test = self::createTest($class, $name);
 
         if ($test instanceof TestCase ||
-            $test instanceof PHPUnit_Framework_TestSuite_DataProvider
+            $test instanceof DataProviderTestSuite
         ) {
             $test->setDependencies(
                 PHPUnit_Util_Test::getDependencies($class->getName(), $name)
