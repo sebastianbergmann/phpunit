@@ -18,6 +18,7 @@ use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\OutputError;
 use PHPUnit\Framework\CoveredCodeNotExecutedException;
 use PHPUnit\Framework\MissingCoversAnnotationException;
+use PHPUnit\Framework\SkippedTest;
 use PHPUnit\Framework\RiskyTestError;
 use PHPUnit\Framework\RiskyTest;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -247,7 +248,7 @@ class PHPUnit_Framework_TestResult implements Countable
             if ($this->stopOnIncomplete) {
                 $this->stop();
             }
-        } elseif ($t instanceof PHPUnit_Framework_SkippedTest) {
+        } elseif ($t instanceof SkippedTest) {
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $t);
             $notifyMethod    = 'addSkippedTest';
 
@@ -326,7 +327,7 @@ class PHPUnit_Framework_TestResult implements Countable
             if ($this->stopOnIncomplete) {
                 $this->stop();
             }
-        } elseif ($e instanceof PHPUnit_Framework_SkippedTest) {
+        } elseif ($e instanceof SkippedTest) {
             $this->skipped[] = new PHPUnit_Framework_TestFailure($test, $e);
             $notifyMethod    = 'addSkippedTest';
 
