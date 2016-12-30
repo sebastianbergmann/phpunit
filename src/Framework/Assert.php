@@ -17,7 +17,7 @@ use DOMElement;
 use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\ArraySubset;
-use PHPUnit_Framework_Constraint_Attribute;
+use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit_Framework_Constraint_Callback;
 use PHPUnit_Framework_Constraint_ClassHasAttribute;
 use PHPUnit_Framework_Constraint_ClassHasStaticAttribute;
@@ -2575,13 +2575,13 @@ abstract class Assert
      * @param Constraint $constraint
      * @param string     $attributeName
      *
-     * @return PHPUnit_Framework_Constraint_Attribute
+     * @return Attribute
      *
      * @since Method available since Release 3.1.0
      */
     public static function attribute(Constraint $constraint, $attributeName)
     {
-        return new PHPUnit_Framework_Constraint_Attribute(
+        return new Attribute(
             $constraint,
             $attributeName
         );
@@ -2682,7 +2682,7 @@ abstract class Assert
      * @param bool   $canonicalize
      * @param bool   $ignoreCase
      *
-     * @return PHPUnit_Framework_Constraint_Attribute
+     * @return Attribute
      *
      * @since Method available since Release 3.1.0
      */

@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -3180,7 +3181,7 @@ EOF
 
     /**
      * @covers PHPUnit\Framework\Assert::attributeEqualTo
-     * @covers PHPUnit_Framework_Constraint_Attribute
+     * @covers Attribute
      * @covers TestFailure::exceptionToString
      */
     public function testAttributeEqualTo()
@@ -3216,7 +3217,7 @@ EOF
 
     /**
      * @covers PHPUnit\Framework\Assert::attributeEqualTo
-     * @covers PHPUnit_Framework_Constraint_Attribute
+     * @covers Attribute
      * @covers TestFailure::exceptionToString
      */
     public function testAttributeEqualTo2()
@@ -3245,7 +3246,7 @@ EOF
     /**
      * @covers PHPUnit\Framework\Assert::attributeEqualTo
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_Constraint_Attribute
+     * @covers Attribute
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers TestFailure::exceptionToString
      */
@@ -3287,7 +3288,7 @@ EOF
     /**
      * @covers PHPUnit\Framework\Assert::attributeEqualTo
      * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit_Framework_Constraint_Attribute
+     * @covers Attribute
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers TestFailure::exceptionToString
      */

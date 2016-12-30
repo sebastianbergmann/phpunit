@@ -11,6 +11,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\Attribute;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1682,7 +1683,7 @@ function atLeastOnce()
  * @param Constraint $constraint
  * @param string     $attributeName
  *
- * @return PHPUnit_Framework_Constraint_Attribute
+ * @return Attribute
  *
  * @since Method available since Release 3.1.0
  */
@@ -1706,7 +1707,7 @@ function attribute(Constraint $constraint, $attributeName)
  * @param bool   $canonicalize
  * @param bool   $ignoreCase
  *
- * @return PHPUnit_Framework_Constraint_Attribute
+ * @return Attribute
  *
  * @since Method available since Release 3.1.0
  */
