@@ -17,10 +17,11 @@ use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\OutputError;
 use PHPUnit\Framework\CoveredCodeNotExecutedException;
+use PHPUnit\Framework\MissingCoversAnnotationException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCoveredCodeNotExecutedException;
-use SebastianBergmann\CodeCoverage\MissingCoversAnnotationException;
+use SebastianBergmann\CodeCoverage\MissingCoversAnnotationException as OriginalMissingCoversAnnotationException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
 
@@ -826,11 +827,11 @@ class PHPUnit_Framework_TestResult implements Countable
                     ),
                     $time
                 );
-            } catch (MissingCoversAnnotationException $cce) {
+            } catch (OriginalMissingCoversAnnotationException $cce) {
                 if ($linesToBeCovered !== false) {
                     $this->addFailure(
                         $test,
-                        new PHPUnit_Framework_MissingCoversAnnotationException(
+                        new MissingCoversAnnotationException(
                             'This test does not have a @covers annotation but is expected to have one'
                         ),
                         $time
