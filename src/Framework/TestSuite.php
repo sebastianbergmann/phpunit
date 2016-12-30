@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Runner\BaseTestRunner;
-use PHPUnit_Runner_Filter_Factory;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit_Util_Fileloader;
 use PHPUnit_Util_InvalidArgumentHelper;
@@ -100,7 +100,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     protected $foundClasses = [];
 
     /**
-     * @var PHPUnit_Runner_Filter_Factory
+     * @var Factory
      */
     private $iteratorFilter = null;
 
@@ -1010,7 +1010,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         return $iterator;
     }
 
-    public function injectFilter(PHPUnit_Runner_Filter_Factory $filter)
+    public function injectFilter(Factory $filter)
     {
         $this->iteratorFilter = $filter;
         foreach ($this as $test) {

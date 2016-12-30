@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\BaseTestRunner;
+use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\StandardTestSuiteLoader;
@@ -133,7 +134,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
             return;
         }
 
-        $filterFactory = new PHPUnit_Runner_Filter_Factory();
+        $filterFactory = new Factory();
 
         if (!empty($arguments['excludeGroups'])) {
             $filterFactory->addFilter(
