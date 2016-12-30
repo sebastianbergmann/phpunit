@@ -18,6 +18,7 @@ use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\OutputError;
 use PHPUnit\Framework\CoveredCodeNotExecutedException;
 use PHPUnit\Framework\MissingCoversAnnotationException;
+use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SkippedTest;
 use PHPUnit\Framework\RiskyTestError;
@@ -229,11 +230,11 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Adds an error to the list of errors.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Throwable              $t
-     * @param float                  $time
+     * @param Test      $test
+     * @param Throwable $t
+     * @param float     $time
      */
-    public function addError(PHPUnit_Framework_Test $test, Throwable $t, $time)
+    public function addError(Test $test, Throwable $t, $time)
     {
         if ($t instanceof RiskyTest) {
             $this->risky[] = new PHPUnit_Framework_TestFailure($test, $t);
@@ -282,13 +283,13 @@ class PHPUnit_Framework_TestResult implements Countable
      * Adds a warning to the list of warnings.
      * The passed in exception caused the warning.
      *
-     * @param PHPUnit_Framework_Test    $test
+     * @param Test                      $test
      * @param PHPUnit_Framework_Warning $e
      * @param float                     $time
      *
      * @since Method available since Release 5.1.0
      */
-    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    public function addWarning(Test $test, PHPUnit_Framework_Warning $e, $time)
     {
         if ($this->stopOnWarning) {
             $this->stop();
@@ -307,11 +308,11 @@ class PHPUnit_Framework_TestResult implements Countable
      * Adds a failure to the list of failures.
      * The passed in exception caused the failure.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param AssertionFailedError   $e
-     * @param float                  $time
+     * @param Test                 $test
+     * @param AssertionFailedError $e
+     * @param float                $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time)
     {
         if ($e instanceof RiskyTest ||
             $e instanceof OutputError) {
@@ -387,9 +388,9 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Informs the result that a test will be started.
      *
-     * @param PHPUnit_Framework_Test $test
+     * @param Test $test
      */
-    public function startTest(PHPUnit_Framework_Test $test)
+    public function startTest(Test $test)
     {
         $this->lastTestFailed = false;
         $this->runTests      += count($test);
@@ -402,10 +403,10 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Informs the result that a test was completed.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param float                  $time
+     * @param Test  $test
+     * @param float $time
      */
-    public function endTest(PHPUnit_Framework_Test $test, $time)
+    public function endTest(Test $test, $time)
     {
         foreach ($this->listeners as $listener) {
             $listener->endTest($test, $time);
@@ -632,9 +633,9 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Runs a TestCase.
      *
-     * @param PHPUnit_Framework_Test $test
+     * @param Test $test
      */
-    public function run(PHPUnit_Framework_Test $test)
+    public function run(Test $test)
     {
         Assert::resetCount();
 

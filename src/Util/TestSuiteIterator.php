@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Test;
 
 /**
  * Iterator for test suites.
@@ -21,7 +22,7 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
     protected $position;
 
     /**
-     * @var PHPUnit_Framework_Test[]
+     * @var Test[]
      */
     protected $tests;
 
@@ -64,7 +65,7 @@ class PHPUnit_Util_TestSuiteIterator implements RecursiveIterator
     /**
      * Returns the current element.
      *
-     * @return PHPUnit_Framework_Test
+     * @return Test
      */
     public function current()
     {

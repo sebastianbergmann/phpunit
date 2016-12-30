@@ -10,6 +10,7 @@
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SkippedTestSuiteError;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SkippedTestCase;
@@ -20,7 +21,7 @@ use PHPUnit\Framework\SelfDescribing;
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescribing, IteratorAggregate
+class PHPUnit_Framework_TestSuite implements Test, SelfDescribing, IteratorAggregate
 {
     /**
      * Last count of tests in this suite.
@@ -204,10 +205,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescrib
     /**
      * Adds a test to the suite.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param array                  $groups
+     * @param Test  $test
+     * @param array $groups
      */
-    public function addTest(PHPUnit_Framework_Test $test, $groups = [])
+    public function addTest(Test $test, $groups = [])
     {
         $class = new ReflectionClass($test);
 
@@ -363,7 +364,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescrib
                     if ($method->isStatic()) {
                         $this->addTest($method->invoke(null, $className));
                     }
-                } elseif ($class->implementsInterface('PHPUnit_Framework_Test')) {
+                } elseif ($class->implementsInterface(Test::class)) {
                     $this->addTestSuite($class);
                 }
             }
@@ -424,7 +425,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescrib
      * @param ReflectionClass $theClass
      * @param string          $name
      *
-     * @return PHPUnit_Framework_Test
+     * @return Test
      *
      * @throws Exception
      */
@@ -769,10 +770,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescrib
      *
      * @deprecated
      *
-     * @param PHPUnit_Framework_Test       $test
+     * @param Test                         $test
      * @param PHPUnit_Framework_TestResult $result
      */
-    public function runTest(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
+    public function runTest(Test $test, PHPUnit_Framework_TestResult $result)
     {
         $test->run($result);
     }
@@ -792,7 +793,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescrib
      *
      * @param  int|false
      *
-     * @return PHPUnit_Framework_Test
+     * @return Test
      */
     public function testAt($index)
     {

@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Test;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
@@ -80,8 +81,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @param PHPUnit_Framework_Test|ReflectionClass $test
-     * @param array                                  $arguments
+     * @param Test|ReflectionClass $test
+     * @param array                $arguments
      *
      * @return PHPUnit_Framework_TestResult
      *
@@ -93,7 +94,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $test = new PHPUnit_Framework_TestSuite($test);
         }
 
-        if ($test instanceof PHPUnit_Framework_Test) {
+        if ($test instanceof Test) {
             $aTestRunner = new self;
 
             return $aTestRunner->doRun(
@@ -149,13 +150,13 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
     }
 
     /**
-     * @param PHPUnit_Framework_Test $suite
-     * @param array                  $arguments
-     * @param bool                   $exit
+     * @param Test  $suite
+     * @param array $arguments
+     * @param bool  $exit
      *
      * @return PHPUnit_Framework_TestResult
      */
-    public function doRun(PHPUnit_Framework_Test $suite, array $arguments = [], $exit = true)
+    public function doRun(Test $suite, array $arguments = [], $exit = true)
     {
         if (isset($arguments['configuration'])) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];

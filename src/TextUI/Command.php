@@ -11,6 +11,7 @@
 use PharIo\Manifest\ManifestLoader;
 use PharIo\Manifest\Exception as ManifestException;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Test;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -132,7 +133,7 @@ class PHPUnit_TextUI_Command
         $runner = $this->createRunner();
 
         if (is_object($this->arguments['test']) &&
-            $this->arguments['test'] instanceof PHPUnit_Framework_Test) {
+            $this->arguments['test'] instanceof Test) {
             $suite = $this->arguments['test'];
         } else {
             $suite = $runner->getTest(

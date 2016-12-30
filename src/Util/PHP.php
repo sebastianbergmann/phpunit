@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SyntheticError;
 use SebastianBergmann\Environment\Runtime;
 
@@ -183,12 +184,12 @@ abstract class PHPUnit_Util_PHP
      * Runs a single test in a separate PHP process.
      *
      * @param string                       $job
-     * @param PHPUnit_Framework_Test       $test
+     * @param Test                         $test
      * @param PHPUnit_Framework_TestResult $result
      *
      * @throws Exception
      */
-    public function runTestJob($job, PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result)
+    public function runTestJob($job, Test $test, PHPUnit_Framework_TestResult $result)
     {
         $result->startTest($test);
 
@@ -271,14 +272,14 @@ abstract class PHPUnit_Util_PHP
     /**
      * Processes the TestResult object from an isolated process.
      *
-     * @param PHPUnit_Framework_Test       $test
+     * @param Test                         $test
      * @param PHPUnit_Framework_TestResult $result
      * @param string                       $stdout
      * @param string                       $stderr
      *
      * @since Method available since Release 3.5.0
      */
-    private function processChildResult(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
+    private function processChildResult(Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
     {
         $time = 0;
 

@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Test;
 
 /**
  * @since      Class available since Release 2.0.0
@@ -25,32 +26,32 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
     protected $result;
     protected $startCount;
 
-    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addError(Test $test, Exception $e, $time)
     {
         $this->errorCount++;
     }
 
-    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    public function addWarning(Test $test, PHPUnit_Framework_Warning $e, $time)
     {
         $this->warningCount++;
     }
 
-    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time)
     {
         $this->failureCount++;
     }
 
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addIncompleteTest(Test $test, Exception $e, $time)
     {
         $this->notImplementedCount++;
     }
 
-    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addRiskyTest(Test $test, Exception $e, $time)
     {
         $this->riskyCount++;
     }
 
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addSkippedTest(Test $test, Exception $e, $time)
     {
         $this->skippedCount++;
     }
@@ -63,12 +64,12 @@ class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements P
     {
     }
 
-    public function startTest(PHPUnit_Framework_Test $test)
+    public function startTest(Test $test)
     {
         $this->startCount++;
     }
 
-    public function endTest(PHPUnit_Framework_Test $test, $time)
+    public function endTest(Test $test, $time)
     {
         $this->endCount++;
     }

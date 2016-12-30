@@ -12,6 +12,7 @@ use PHPUnit\Framework\Error;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
@@ -27,7 +28,7 @@ class PHPUnit_Framework_TestFailure
     private $testName;
 
     /**
-     * @var PHPUnit_Framework_Test|null
+     * @var Test|null
      */
     protected $failedTest;
 
@@ -39,10 +40,10 @@ class PHPUnit_Framework_TestFailure
     /**
      * Constructs a TestFailure with the given test and exception.
      *
-     * @param PHPUnit_Framework_Test $failedTest
-     * @param Throwable              $t
+     * @param Test      $failedTest
+     * @param Throwable $t
      */
-    public function __construct(PHPUnit_Framework_Test $failedTest, $t)
+    public function __construct(Test $failedTest, $t)
     {
         if ($failedTest instanceof SelfDescribing) {
             $this->testName = $failedTest->toString();
@@ -135,7 +136,7 @@ class PHPUnit_Framework_TestFailure
      *
      * @see Exception
      *
-     * @return PHPUnit_Framework_Test|null
+     * @return Test|null
      */
     public function failedTest()
     {

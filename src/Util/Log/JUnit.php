@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
@@ -118,11 +119,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * An error occurred.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param Test      $test
+     * @param Exception $e
+     * @param float     $time
      */
-    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addError(Test $test, Exception $e, $time)
     {
         $this->doAddFault($test, $e, $time, 'error');
         $this->testSuiteErrors[$this->testSuiteLevel]++;
@@ -131,13 +132,13 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * A warning occurred.
      *
-     * @param PHPUnit_Framework_Test    $test
+     * @param Test                      $test
      * @param PHPUnit_Framework_Warning $e
      * @param float                     $time
      *
      * @since Method available since Release 5.1.0
      */
-    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    public function addWarning(Test $test, PHPUnit_Framework_Warning $e, $time)
     {
         if (!$this->logIncompleteSkipped) {
             return;
@@ -150,11 +151,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * A failure occurred.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param AssertionFailedError   $e
-     * @param float                  $time
+     * @param Test                 $test
+     * @param AssertionFailedError $e
+     * @param float                $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time)
     {
         $this->doAddFault($test, $e, $time, 'failure');
         $this->testSuiteFailures[$this->testSuiteLevel]++;
@@ -163,11 +164,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * Incomplete test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param Test      $test
+     * @param Exception $e
+     * @param float     $time
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addIncompleteTest(Test $test, Exception $e, $time)
     {
         $this->doAddSkipped($test);
     }
@@ -175,13 +176,13 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * Risky test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param Test      $test
+     * @param Exception $e
+     * @param float     $time
      *
      * @since Method available since Release 4.0.0
      */
-    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addRiskyTest(Test $test, Exception $e, $time)
     {
         if (!$this->reportUselessTests || $this->currentTestCase === null) {
             return;
@@ -205,13 +206,13 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * Skipped test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
+     * @param Test      $test
+     * @param Exception $e
+     * @param float     $time
      *
      * @since Method available since Release 3.0.0
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addSkippedTest(Test $test, Exception $e, $time)
     {
         $this->doAddSkipped($test);
     }
@@ -307,9 +308,9 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * A test started.
      *
-     * @param PHPUnit_Framework_Test $test
+     * @param Test $test
      */
-    public function startTest(PHPUnit_Framework_Test $test)
+    public function startTest(Test $test)
     {
         $testCase = $this->document->createElement('testcase');
         $testCase->setAttribute('name', $test->getName());
@@ -333,10 +334,10 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * A test ended.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param float                  $time
+     * @param Test  $test
+     * @param float $time
      */
-    public function endTest(PHPUnit_Framework_Test $test, $time)
+    public function endTest(Test $test, $time)
     {
         if ($test instanceof PHPUnit_Framework_TestCase) {
             $numAssertions = $test->getNumAssertions();
@@ -404,12 +405,12 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * Method which generalizes addError() and addFailure()
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param Exception              $e
-     * @param float                  $time
-     * @param string                 $type
+     * @param Test      $test
+     * @param Exception $e
+     * @param float     $time
+     * @param string    $type
      */
-    private function doAddFault(PHPUnit_Framework_Test $test, Exception $e, $time, $type)
+    private function doAddFault(Test $test, Exception $e, $time, $type)
     {
         if ($this->currentTestCase === null) {
             return;
@@ -434,7 +435,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
         $this->currentTestCase->appendChild($fault);
     }
 
-    private function doAddSkipped(PHPUnit_Framework_Test $test)
+    private function doAddSkipped(Test $test)
     {
         if ($this->currentTestCase === null) {
             return;

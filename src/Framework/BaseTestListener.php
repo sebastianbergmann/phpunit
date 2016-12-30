@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use Exception;
-use PHPUnit_Framework_Test;
 use PHPUnit_Framework_TestListener;
 use PHPUnit_Framework_TestSuite;
 use PHPUnit_Framework_Warning;
@@ -24,27 +23,27 @@ use PHPUnit_Framework_Warning;
  */
 abstract class BaseTestListener implements PHPUnit_Framework_TestListener
 {
-    public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addError(Test $test, Exception $e, $time)
     {
     }
 
-    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    public function addWarning(Test $test, PHPUnit_Framework_Warning $e, $time)
     {
     }
 
-    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time)
     {
     }
 
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addIncompleteTest(Test $test, Exception $e, $time)
     {
     }
 
-    public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addRiskyTest(Test $test, Exception $e, $time)
     {
     }
 
-    public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+    public function addSkippedTest(Test $test, Exception $e, $time)
     {
     }
 
@@ -56,11 +55,11 @@ abstract class BaseTestListener implements PHPUnit_Framework_TestListener
     {
     }
 
-    public function startTest(PHPUnit_Framework_Test $test)
+    public function startTest(Test $test)
     {
     }
 
-    public function endTest(PHPUnit_Framework_Test $test, $time)
+    public function endTest(Test $test, $time)
     {
     }
 }

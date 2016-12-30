@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Test;
 
 /**
  * Base class for all test runners.
@@ -44,7 +45,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
      * @param string $suiteClassFile
      * @param mixed  $suffixes
      *
-     * @return PHPUnit_Framework_Test
+     * @return Test
      */
     public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = '')
     {

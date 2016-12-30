@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Test;
 use SebastianBergmann\Environment\Console;
 
 /**
@@ -421,11 +422,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * An error occurred.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param \Exception             $e
-     * @param float                  $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addError(PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time)
     {
         $this->writeProgressWithColor('fg-red, bold', 'E');
         $this->lastTestFailed = true;
@@ -434,11 +435,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * A failure occurred.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param AssertionFailedError   $e
-     * @param float                  $time
+     * @param Test                 $test
+     * @param AssertionFailedError $e
+     * @param float                $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time)
     {
         $this->writeProgressWithColor('bg-red, fg-white', 'F');
         $this->lastTestFailed = true;
@@ -447,13 +448,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * A warning occurred.
      *
-     * @param PHPUnit_Framework_Test    $test
+     * @param Test                      $test
      * @param PHPUnit_Framework_Warning $e
      * @param float                     $time
      *
      * @since Method available since Release 5.1.0
      */
-    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    public function addWarning(Test $test, PHPUnit_Framework_Warning $e, $time)
     {
         $this->writeProgressWithColor('fg-yellow, bold', 'W');
         $this->lastTestFailed = true;
@@ -462,11 +463,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * Incomplete test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param \Exception             $e
-     * @param float                  $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time)
     {
         $this->writeProgressWithColor('fg-yellow, bold', 'I');
         $this->lastTestFailed = true;
@@ -475,13 +476,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * Risky test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param \Exception             $e
-     * @param float                  $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      *
      * @since Method available since Release 4.0.0
      */
-    public function addRiskyTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time)
     {
         $this->writeProgressWithColor('fg-yellow, bold', 'R');
         $this->lastTestFailed = true;
@@ -490,13 +491,13 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * Skipped test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param \Exception             $e
-     * @param float                  $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      *
      * @since Method available since Release 3.0.0
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time)
     {
         $this->writeProgressWithColor('fg-cyan, bold', 'S');
         $this->lastTestFailed = true;
@@ -532,9 +533,9 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * A test started.
      *
-     * @param PHPUnit_Framework_Test $test
+     * @param Test $test
      */
-    public function startTest(PHPUnit_Framework_Test $test)
+    public function startTest(Test $test)
     {
         if ($this->debug) {
             $this->write(
@@ -549,10 +550,10 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * A test ended.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param float                  $time
+     * @param Test  $test
+     * @param float $time
      */
-    public function endTest(PHPUnit_Framework_Test $test, $time)
+    public function endTest(Test $test, $time)
     {
         if (!$this->lastTestFailed) {
             $this->writeProgress('.');

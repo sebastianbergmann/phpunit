@@ -11,6 +11,7 @@
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\Test;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -55,11 +56,11 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     /**
      * An error occurred.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param \Exception             $e
-     * @param float                  $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addError(PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time)
     {
         $this->printEvent(
             'testFailed',
@@ -74,13 +75,13 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     /**
      * A warning occurred.
      *
-     * @param PHPUnit_Framework_Test    $test
+     * @param Test                      $test
      * @param PHPUnit_Framework_Warning $e
      * @param float                     $time
      *
      * @since Method available since Release 5.1.0
      */
-    public function addWarning(PHPUnit_Framework_Test $test, PHPUnit_Framework_Warning $e, $time)
+    public function addWarning(Test $test, PHPUnit_Framework_Warning $e, $time)
     {
         $this->printEvent(
             'testFailed',
@@ -95,11 +96,11 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     /**
      * A failure occurred.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param AssertionFailedError   $e
-     * @param float                  $time
+     * @param Test                 $test
+     * @param AssertionFailedError $e
+     * @param float                $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time)
     {
         $parameters = [
             'name'    => $test->getName(),
@@ -137,11 +138,11 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     /**
      * Incomplete test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param \Exception             $e
-     * @param float                  $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addIncompleteTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time)
     {
         $this->printIgnoredTest($test->getName(), $e);
     }
@@ -149,11 +150,11 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     /**
      * Risky test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param \Exception             $e
-     * @param float                  $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addRiskyTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time)
     {
         $this->addError($test, $e, $time);
     }
@@ -161,11 +162,11 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     /**
      * Skipped test.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param \Exception             $e
-     * @param float                  $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addSkippedTest(PHPUnit_Framework_Test $test, \Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time)
     {
         $testName = $test->getName();
         if ($this->startedTestName != $testName) {
@@ -264,9 +265,9 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     /**
      * A test started.
      *
-     * @param PHPUnit_Framework_Test $test
+     * @param Test $test
      */
-    public function startTest(PHPUnit_Framework_Test $test)
+    public function startTest(Test $test)
     {
         $testName              = $test->getName();
         $this->startedTestName = $testName;
@@ -284,10 +285,10 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     /**
      * A test ended.
      *
-     * @param PHPUnit_Framework_Test $test
-     * @param float                  $time
+     * @param Test  $test
+     * @param float $time
      */
-    public function endTest(PHPUnit_Framework_Test $test, $time)
+    public function endTest(Test $test, $time)
     {
         parent::endTest($test, $time);
 

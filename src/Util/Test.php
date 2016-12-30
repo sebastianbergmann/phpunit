@@ -10,6 +10,7 @@
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidCoversTargetException;
+use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
@@ -36,12 +37,12 @@ class PHPUnit_Util_Test
     private static $hookMethods = [];
 
     /**
-     * @param PHPUnit_Framework_Test $test
-     * @param bool                   $asString
+     * @param Test $test
+     * @param bool $asString
      *
      * @return mixed
      */
-    public static function describe(PHPUnit_Framework_Test $test, $asString = true)
+    public static function describe(Test $test, $asString = true)
     {
         if ($asString) {
             if ($test instanceof SelfDescribing) {

@@ -1,5 +1,7 @@
 <?php
-class DoubleTestCase implements PHPUnit_Framework_Test
+use PHPUnit\Framework\Test;
+
+class DoubleTestCase implements Test
 {
     protected $testCase;
 
