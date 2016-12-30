@@ -16,7 +16,6 @@ use Error;
 use PHP_Invoker;
 use PHP_Timer;
 use PHPUnit_Framework_MockObject_Exception;
-use PHPUnit_Framework_Warning;
 use PHPUnit_Framework_WarningTestCase;
 use PHPUnit_Util_Blacklist;
 use PHPUnit_Util_InvalidArgumentHelper;
@@ -284,13 +283,13 @@ class TestResult implements Countable
      * Adds a warning to the list of warnings.
      * The passed in exception caused the warning.
      *
-     * @param Test                      $test
-     * @param PHPUnit_Framework_Warning $e
-     * @param float                     $time
+     * @param Test    $test
+     * @param Warning $e
+     * @param float   $time
      *
      * @since Method available since Release 5.1.0
      */
-    public function addWarning(Test $test, PHPUnit_Framework_Warning $e, $time)
+    public function addWarning(Test $test, Warning $e, $time)
     {
         if ($this->stopOnWarning) {
             $this->stop();
@@ -715,7 +714,7 @@ class TestResult implements Countable
                 $test->runBare();
             }
         } catch (PHPUnit_Framework_MockObject_Exception $e) {
-            $e = new PHPUnit_Framework_Warning(
+            $e = new Warning(
                 $e->getMessage()
             );
 
@@ -744,7 +743,7 @@ class TestResult implements Countable
                     $frame['line']
                 )
             );
-        } catch (PHPUnit_Framework_Warning $e) {
+        } catch (Warning $e) {
             $warning = true;
         } catch (Exception $e) {
             $error = true;
@@ -804,7 +803,7 @@ class TestResult implements Countable
                 } catch (InvalidCoversTargetException $cce) {
                     $this->addWarning(
                         $test,
-                        new PHPUnit_Framework_Warning(
+                        new Warning(
                             $cce->getMessage()
                         ),
                         $time

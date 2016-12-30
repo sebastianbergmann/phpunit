@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
@@ -35,7 +36,7 @@ class Framework_TestListenerTest extends TestCase implements TestListener
         $this->errorCount++;
     }
 
-    public function addWarning(Test $test, PHPUnit_Framework_Warning $e, $time)
+    public function addWarning(Test $test, Warning $e, $time)
     {
         $this->warningCount++;
     }

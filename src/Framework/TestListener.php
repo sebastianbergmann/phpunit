@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use Exception;
-use PHPUnit_Framework_Warning;
 
 /**
  * A Listener for test progress.
@@ -31,13 +30,13 @@ interface TestListener
     /**
      * A warning occurred.
      *
-     * @param Test                      $test
-     * @param PHPUnit_Framework_Warning $e
-     * @param float                     $time
+     * @param Test    $test
+     * @param Warning $e
+     * @param float   $time
      *
      * @since Method available since Release 6.0.0
      */
-    public function addWarning(Test $test, PHPUnit_Framework_Warning $e, $time);
+    public function addWarning(Test $test, Warning $e, $time);
 
     /**
      * A failure occurred.

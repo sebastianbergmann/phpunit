@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use Exception;
-use PHPUnit_Framework_Warning;
 
 /**
  * An empty Listener that can be extended to implement TestListener
@@ -25,7 +24,7 @@ abstract class BaseTestListener implements TestListener
     {
     }
 
-    public function addWarning(Test $test, PHPUnit_Framework_Warning $e, $time)
+    public function addWarning(Test $test, Warning $e, $time)
     {
     }
 

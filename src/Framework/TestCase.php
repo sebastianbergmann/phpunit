@@ -30,7 +30,6 @@ use PHPUnit_Framework_MockObject_Stub_ReturnArgument;
 use PHPUnit_Framework_MockObject_Stub_ReturnCallback;
 use PHPUnit_Framework_MockObject_Stub_ReturnSelf;
 use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
-use PHPUnit_Framework_Warning;
 use PHPUnit_Framework_WarningTestCase;
 use PHPUnit_Runner_BaseTestRunner;
 use PHPUnit_Runner_PhptTestCase;
@@ -935,7 +934,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $this->assertPostConditions();
 
             if (!empty($this->warnings)) {
-                throw new PHPUnit_Framework_Warning(
+                throw new Warning(
                     implode(
                         "\n",
                         array_unique($this->warnings)
@@ -950,7 +949,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         } catch (SkippedTest $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
             $this->statusMessage = $e->getMessage();
-        } catch (PHPUnit_Framework_Warning $e) {
+        } catch (Warning $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_WARNING;
             $this->statusMessage = $e->getMessage();
         } catch (AssertionFailedError $e) {

@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -56,7 +57,7 @@ class PHPUnit_Framework_WarningTestCase extends TestCase
      */
     protected function runTest()
     {
-        throw new PHPUnit_Framework_Warning($this->message);
+        throw new Warning($this->message);
     }
 
     /**
