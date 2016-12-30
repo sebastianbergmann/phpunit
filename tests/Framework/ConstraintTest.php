@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -19,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 class Framework_ConstraintTest extends TestCase
 {
     /**
-     * @covers PHPUnit_Framework_Constraint_ArrayHasKey
+     * @covers ArrayHasKey
      * @covers PHPUnit\Framework\Assert::arrayHasKey
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -50,7 +51,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ArrayHasKey
+     * @covers ArrayHasKey
      * @covers PHPUnit\Framework\Assert::arrayHasKey
      * @covers TestFailure::exceptionToString
      */
@@ -77,7 +78,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ArrayHasKey
+     * @covers ArrayHasKey
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::arrayHasKey
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -112,7 +113,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ArrayHasKey
+     * @covers ArrayHasKey
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::arrayHasKey
      * @covers PHPUnit\Framework\Assert::logicalNot

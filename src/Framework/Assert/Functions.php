@@ -10,6 +10,7 @@
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Constraint\LogicalAnd;
+use PHPUnit\Framework\Constraint\ArrayHasKey;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -47,7 +48,7 @@ function anything()
  *
  * @param mixed $key
  *
- * @return PHPUnit_Framework_Constraint_ArrayHasKey
+ * @return ArrayHasKey
  *
  * @since Method available since Release 3.0.0
  */

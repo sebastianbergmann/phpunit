@@ -15,7 +15,7 @@ use Countable;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\Constraint\LogicalAnd;
-use PHPUnit_Framework_Constraint_ArrayHasKey;
+use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit_Framework_Constraint_ArraySubset;
 use PHPUnit_Framework_Constraint_Attribute;
 use PHPUnit_Framework_Constraint_Callback;
@@ -100,7 +100,7 @@ abstract class Assert
             );
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_ArrayHasKey($key);
+        $constraint = new ArrayHasKey($key);
 
         static::assertThat($array, $constraint, $message);
     }
@@ -162,7 +162,7 @@ abstract class Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_ArrayHasKey($key)
+            new ArrayHasKey($key)
         );
 
         static::assertThat($array, $constraint, $message);
@@ -2637,13 +2637,13 @@ abstract class Assert
      *
      * @param mixed $key
      *
-     * @return PHPUnit_Framework_Constraint_ArrayHasKey
+     * @return ArrayHasKey
      *
      * @since Method available since Release 3.0.0
      */
     public static function arrayHasKey($key)
     {
-        return new PHPUnit_Framework_Constraint_ArrayHasKey($key);
+        return new ArrayHasKey($key);
     }
 
     /**
