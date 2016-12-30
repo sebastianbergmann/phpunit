@@ -43,7 +43,7 @@ use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\JsonMatches;
 use PHPUnit\Framework\Constraint\LessThan;
-use PHPUnit_Framework_Constraint_Not;
+use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit_Framework_Constraint_ObjectHasAttribute;
 use PHPUnit_Framework_Constraint_Or;
 use PHPUnit_Framework_Constraint_PCREMatch;
@@ -162,7 +162,7 @@ abstract class Assert
             );
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new ArrayHasKey($key)
         );
 
@@ -254,7 +254,7 @@ abstract class Assert
     {
         if (is_array($haystack) ||
             is_object($haystack) && $haystack instanceof Traversable) {
-            $constraint = new PHPUnit_Framework_Constraint_Not(
+            $constraint = new LogicalNot(
                 new PHPUnit_Framework_Constraint_TraversableContains(
                     $needle,
                     $checkForObjectIdentity,
@@ -269,7 +269,7 @@ abstract class Assert
                 );
             }
 
-            $constraint = new PHPUnit_Framework_Constraint_Not(
+            $constraint = new LogicalNot(
                 new PHPUnit_Framework_Constraint_StringContains(
                     $needle,
                     $ignoreCase
@@ -420,7 +420,7 @@ abstract class Assert
 
         static::assertThat(
             $haystack,
-            new PHPUnit_Framework_Constraint_Not(
+            new LogicalNot(
                 new PHPUnit_Framework_Constraint_TraversableContainsOnly(
                     $type,
                     $isNativeType
@@ -518,7 +518,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new Count($expectedCount)
         );
 
@@ -609,7 +609,7 @@ abstract class Assert
      */
     public static function assertNotEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new IsEqual(
                 $expected,
                 $delta,
@@ -984,7 +984,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new IsReadable
         );
 
@@ -1020,7 +1020,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new IsWritable
         );
 
@@ -1056,7 +1056,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new DirectoryExists
         );
 
@@ -1144,7 +1144,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new FileExists
         );
 
@@ -1359,7 +1359,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new ClassHasAttribute($attributeName)
         );
 
@@ -1419,7 +1419,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new ClassHasStaticAttribute(
                 $attributeName
             )
@@ -1481,7 +1481,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'object');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new PHPUnit_Framework_Constraint_ObjectHasAttribute($attributeName)
         );
 
@@ -1542,7 +1542,7 @@ abstract class Assert
         if (is_bool($expected) && is_bool($actual)) {
             static::assertNotEquals($expected, $actual, $message);
         } else {
-            $constraint = new PHPUnit_Framework_Constraint_Not(
+            $constraint = new LogicalNot(
                 new IsIdentical($expected)
             );
 
@@ -1624,7 +1624,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'class or interface name');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new IsInstanceOf($expected)
         );
 
@@ -1706,7 +1706,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new IsType($expected)
         );
 
@@ -1773,7 +1773,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new PHPUnit_Framework_Constraint_PCREMatch($pattern)
         );
 
@@ -1831,7 +1831,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new PHPUnit_Framework_Constraint_SameSize($expected)
         );
 
@@ -1881,7 +1881,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new PHPUnit_Framework_Constraint_StringMatches($format)
         );
 
@@ -1929,7 +1929,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new PHPUnit_Framework_Constraint_StringMatches(
                 file_get_contents($formatFile)
             )
@@ -1983,7 +1983,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new PHPUnit_Framework_Constraint_StringStartsWith($prefix)
         );
 
@@ -2033,7 +2033,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_Not(
+        $constraint = new LogicalNot(
             new PHPUnit_Framework_Constraint_StringEndsWith($suffix)
         );
 
@@ -2336,7 +2336,7 @@ abstract class Assert
             $expectedJson
         );
 
-        static::assertThat($actualJson, new PHPUnit_Framework_Constraint_Not($constraint), $message);
+        static::assertThat($actualJson, new LogicalNot($constraint), $message);
     }
 
     /**
@@ -2393,8 +2393,8 @@ abstract class Assert
 
         $constraintActual = new JsonMatches($actualJson);
 
-        static::assertThat($expectedJson, new PHPUnit_Framework_Constraint_Not($constraintActual), $message);
-        static::assertThat($actualJson, new PHPUnit_Framework_Constraint_Not($constraintExpected), $message);
+        static::assertThat($expectedJson, new LogicalNot($constraintActual), $message);
+        static::assertThat($actualJson, new LogicalNot($constraintExpected), $message);
     }
 
     /**
@@ -2436,13 +2436,13 @@ abstract class Assert
      *
      * @param Constraint $constraint
      *
-     * @return PHPUnit_Framework_Constraint_Not
+     * @return LogicalNot
      *
      * @since Method available since Release 3.0.0
      */
     public static function logicalNot(Constraint $constraint)
     {
-        return new PHPUnit_Framework_Constraint_Not($constraint);
+        return new LogicalNot($constraint);
     }
 
     /**

@@ -28,6 +28,7 @@ use PHPUnit\Framework\Constraint\IsReadable;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\LessThan;
+use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -97,7 +98,7 @@ EOF
 
     /**
      * @covers ArrayHasKey
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::arrayHasKey
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -132,7 +133,7 @@ EOF
 
     /**
      * @covers ArrayHasKey
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::arrayHasKey
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -319,7 +320,7 @@ EOF
 
     /**
      * @covers FileExists
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers PHPUnit\Framework\Assert::fileExists
      * @covers TestFailure::exceptionToString
@@ -356,7 +357,7 @@ EOF
 
     /**
      * @covers FileExists
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers PHPUnit\Framework\Assert::fileExists
      * @covers TestFailure::exceptionToString
@@ -450,7 +451,7 @@ EOF
 
     /**
      * @covers GreaterThan
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::greaterThan
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -485,7 +486,7 @@ EOF
 
     /**
      * @covers GreaterThan
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::greaterThan
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -583,7 +584,7 @@ EOF
      * @covers IsEqual
      * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -620,7 +621,7 @@ EOF
      * @covers IsEqual
      * @covers GreaterThan
      * @covers PHPUnit_Framework_Constraint_Or
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -668,7 +669,7 @@ EOF
 
     /**
      * @covers IsAnything
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::anything
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1021,7 +1022,7 @@ EOF
 
     /**
      * @covers IsEqual
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::equalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1057,7 +1058,7 @@ EOF
 
     /**
      * @covers IsEqual
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::equalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1186,7 +1187,7 @@ EOF
 
     /**
      * @covers IsIdentical
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1224,7 +1225,7 @@ EOF
 
     /**
      * @covers IsIdentical
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1257,7 +1258,7 @@ EOF
 
     /**
      * @covers IsIdentical
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::identicalTo
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1353,7 +1354,7 @@ EOF
 
     /**
      * @covers IsInstanceOf
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::isInstanceOf
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1389,7 +1390,7 @@ EOF
 
     /**
      * @covers IsInstanceOf
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::isInstanceOf
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1504,7 +1505,7 @@ EOF
 
     /**
      * @covers IsType
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::isType
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1540,7 +1541,7 @@ EOF
 
     /**
      * @covers IsType
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::isType
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1630,7 +1631,7 @@ EOF
 
     /**
      * @covers IsNull
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::isNull
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers PHPUnit\Framework\Constraint::count
@@ -1666,7 +1667,7 @@ EOF
 
     /**
      * @covers IsNull
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::isNull
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1758,7 +1759,7 @@ EOF
 
     /**
      * @covers LessThan
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::lessThan
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1794,7 +1795,7 @@ EOF
 
     /**
      * @covers LessThan
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::lessThan
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1948,7 +1949,7 @@ EOF
      * @covers IsEqual
      * @covers LessThan
      * @covers PHPUnit_Framework_Constraint_Or
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -1986,7 +1987,7 @@ EOF
      * @covers IsEqual
      * @covers LessThan
      * @covers PHPUnit_Framework_Constraint_Or
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2078,7 +2079,7 @@ EOF
 
     /**
      * @covers ClassHasAttribute
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::classHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2114,7 +2115,7 @@ EOF
 
     /**
      * @covers ClassHasAttribute
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::classHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2205,7 +2206,7 @@ EOF
 
     /**
      * @covers ClassHasStaticAttribute
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2241,7 +2242,7 @@ EOF
 
     /**
      * @covers ClassHasStaticAttribute
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2332,7 +2333,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::objectHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2368,7 +2369,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_ObjectHasAttribute
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::objectHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2459,7 +2460,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_PCREMatch
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2495,7 +2496,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_PCREMatch
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::matchesRegularExpression
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2670,7 +2671,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_StringStartsWith
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::stringStartsWith
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2797,7 +2798,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_StringContains
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::stringContains
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2833,7 +2834,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_StringContains
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::stringContains
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -2926,7 +2927,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_StringEndsWith
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::stringEndsWith
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
@@ -3069,7 +3070,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
      */
@@ -3104,7 +3105,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_TraversableContains
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
      */
@@ -3264,7 +3265,7 @@ EOF
      * @covers PHPUnit\Framework\Assert::attributeEqualTo
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers Attribute
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers TestFailure::exceptionToString
      */
     public function testAttributeNotEqualTo()
@@ -3306,7 +3307,7 @@ EOF
      * @covers PHPUnit\Framework\Assert::attributeEqualTo
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers Attribute
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers TestFailure::exceptionToString
      */
     public function testAttributeNotEqualTo2()
@@ -3455,7 +3456,7 @@ EOF
 
     /**
      * @covers Count
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
      */
@@ -3544,7 +3545,7 @@ EOF
 
     /**
      * @covers PHPUnit_Framework_Constraint_SameSize
-     * @covers PHPUnit_Framework_Constraint_Not
+     * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::logicalNot
      * @covers TestFailure::exceptionToString
      */
