@@ -10,6 +10,7 @@
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\SkippedTestSuiteError;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SkippedTestCase;
 use PHPUnit\Framework\SelfDescribing;
@@ -684,7 +685,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescrib
                     call_user_func([$this->name, $beforeClassMethod]);
                 }
             }
-        } catch (PHPUnit_Framework_SkippedTestSuiteError $e) {
+        } catch (SkippedTestSuiteError $e) {
             $numTests = count($this);
 
             for ($i = 0; $i < $numTests; $i++) {
@@ -829,13 +830,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescrib
      *
      * @param string $message
      *
-     * @throws PHPUnit_Framework_SkippedTestSuiteError
+     * @throws SkippedTestSuiteError
      *
      * @since Method available since Release 3.0.0
      */
     public function markTestSuiteSkipped($message = '')
     {
-        throw new PHPUnit_Framework_SkippedTestSuiteError($message);
+        throw new SkippedTestSuiteError($message);
     }
 
     /**
