@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
 
 /**
@@ -397,7 +398,7 @@ class PHPUnit_TextUI_Command
                     file_put_contents(
                         'phpunit.xml',
                         $generator->generateDefaultConfiguration(
-                            PHPUnit_Runner_Version::series(),
+                            Version::series(),
                             $bootstrapScript,
                             $testsDirectory,
                             $src
@@ -562,7 +563,7 @@ class PHPUnit_TextUI_Command
                     break;
 
                 case '--atleast-version':
-                    exit(version_compare(PHPUnit_Runner_Version::id(), $option[1], '>=')
+                    exit(version_compare(Version::id(), $option[1], '>=')
                         ? PHPUnit_TextUI_TestRunner::SUCCESS_EXIT
                         : PHPUnit_TextUI_TestRunner::FAILURE_EXIT
                     );
@@ -901,7 +902,7 @@ class PHPUnit_TextUI_Command
         $this->printVersionString();
 
         $latestVersion = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit');
-        $isOutdated    = version_compare($latestVersion, PHPUnit_Runner_Version::id(), '>');
+        $isOutdated    = version_compare($latestVersion, Version::id(), '>');
 
         if ($isOutdated) {
             print "You are not using the latest version of PHPUnit.\n";
@@ -1030,7 +1031,7 @@ EOT;
             return;
         }
 
-        print PHPUnit_Runner_Version::getVersionString() . "\n\n";
+        print Version::getVersionString() . "\n\n";
 
         $this->versionStringPrinted = true;
     }

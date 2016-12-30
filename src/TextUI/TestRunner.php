@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\BaseTestRunner;
+use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -272,7 +273,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
         }
 
         $this->printer->write(
-            PHPUnit_Runner_Version::getVersionString() . "\n"
+            Version::getVersionString() . "\n"
         );
 
         self::$versionStringPrinted = true;
@@ -523,7 +524,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
                         $arguments['reportHighLowerBound'],
                         sprintf(
                             ' and <a href="https://phpunit.de/">PHPUnit %s</a>',
-                            PHPUnit_Runner_Version::id()
+                            Version::id()
                         )
                     );
 

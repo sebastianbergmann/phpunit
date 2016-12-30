@@ -13,6 +13,7 @@ use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Runner\Version;
 
 /**
  * Test helpers.
@@ -244,7 +245,7 @@ class PHPUnit_Util_Test
         }
 
         if (!empty($required['PHPUnit'])) {
-            $phpunitVersion = PHPUnit_Runner_Version::id();
+            $phpunitVersion = Version::id();
 
             $operator = empty($required['PHPUnit']['operator']) ? '>=' : $required['PHPUnit']['operator'];
             if (!version_compare($phpunitVersion, $required['PHPUnit']['version'], $operator)) {

@@ -8,12 +8,16 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Runner;
+
+use SebastianBergmann;
+
 /**
  * This class defines the current version of PHPUnit.
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_Runner_Version
+class Version
 {
     private static $pharVersion;
     private static $version;
