@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ### Added
 
+* Added backward compatibility layer (aliasing from `PHPUnit\Framework\TestCase` to `PHPUnit_Framework_TestCase` etc.)
 * Merged [#2344](https://github.com/sebastianbergmann/phpunit/pull/2344): Add support for annotations on traits
 * Added the `PHPUnit\Framework\TestCase::createTestProxy()` method for creating test proxies
 * Added the `--dont-report-useless-tests` commandline option
@@ -13,6 +14,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ### Changed
 
+* PHPUnit's units of code are now namespaced
 * PHPUnit is now strict about useless tests by default
 * Global and super-global variables are no longer backed up before and restored after each test by default
 * `PHPUnit\Framework\Assert::fail()` now increments the assertion counter
@@ -27,6 +29,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ### Removed
 
+* Remove forward compatibility layer (aliasing from `PHPUnit_Framework_TestCase` to `PHPUnit\Framework\TestCase` etc.)
 * Removed `PHPUnit\Framework\TestCase::getMock()` (deprecated in PHPUnit 5.4)
 * Removed `PHPUnit\Framework\TestCase::getMockWithoutInvokingTheOriginalConstructor()` (deprecated in PHPUnit 5.4)
 * Removed `PHPUnit\Framework\TestCase::setExpectedException()` (deprecated in PHPUnit 5.2)
