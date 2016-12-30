@@ -32,7 +32,7 @@ use PHPUnit_Framework_MockObject_Stub_ReturnSelf;
 use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit_Util_GlobalState;
+use PHPUnit\Util\GlobalState;
 use PHPUnit_Util_InvalidArgumentHelper;
 use PHPUnit_Util_PHP;
 use PHPUnit_Util_Test;
@@ -797,10 +797,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             );
 
             if ($this->preserveGlobalState) {
-                $constants     = PHPUnit_Util_GlobalState::getConstantsAsString();
-                $globals       = PHPUnit_Util_GlobalState::getGlobalsAsString();
-                $includedFiles = PHPUnit_Util_GlobalState::getIncludedFilesAsString();
-                $iniSettings   = PHPUnit_Util_GlobalState::getIniSettingsAsString();
+                $constants     = GlobalState::getConstantsAsString();
+                $globals       = GlobalState::getGlobalsAsString();
+                $includedFiles = GlobalState::getIncludedFilesAsString();
+                $iniSettings   = GlobalState::getIniSettingsAsString();
             } else {
                 $constants = '';
                 if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
