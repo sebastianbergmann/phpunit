@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\TextUI\ResultPrinter;
 
 /**
  * Wrapper for the PHPUnit XML configuration file.
@@ -38,7 +39,7 @@ use PHPUnit\Framework\TestSuite;
  *          failOnWarning="false"
  *          failOnRisky="false"
  *          extensionsDirectory="tools/phpunit.d"
- *          printerClass="PHPUnit_TextUI_ResultPrinter"
+ *          printerClass="PHPUnit\TextUI\ResultPrinter"
  *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
  *          beStrictAboutChangesToGlobalState="false"
  *          beStrictAboutCoversAnnotation="false"
@@ -575,9 +576,9 @@ class PHPUnit_Util_Configuration
             /* only allow boolean for compatibility with previous versions
               'always' only allowed from command line */
             if ($this->getBoolean($root->getAttribute('colors'), false)) {
-                $result['colors'] = PHPUnit_TextUI_ResultPrinter::COLOR_AUTO;
+                $result['colors'] = ResultPrinter::COLOR_AUTO;
             } else {
-                $result['colors'] = PHPUnit_TextUI_ResultPrinter::COLOR_NEVER;
+                $result['colors'] = ResultPrinter::COLOR_NEVER;
             }
         }
 

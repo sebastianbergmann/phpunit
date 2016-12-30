@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
+use PHPUnit\TextUI\ResultPrinter;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -25,7 +26,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  *
  * @since Class available since Release 5.0.0
  */
-class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
+class PHPUnit_Util_Log_TeamCity extends ResultPrinter
 {
     /**
      * @var bool

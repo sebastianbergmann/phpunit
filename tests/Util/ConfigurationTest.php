@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TextUI\ResultPrinter;
 
 class Util_ConfigurationTest extends TestCase
 {
@@ -43,7 +44,7 @@ class Util_ConfigurationTest extends TestCase
         $configurationInstance = PHPUnit_Util_Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(PHPUnit_TextUI_ResultPrinter::COLOR_AUTO, $configurationValues['colors']);
+        $this->assertEquals(ResultPrinter::COLOR_AUTO, $configurationValues['colors']);
     }
 
     /**
@@ -55,7 +56,7 @@ class Util_ConfigurationTest extends TestCase
         $configurationInstance = PHPUnit_Util_Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(PHPUnit_TextUI_ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+        $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
     /**
@@ -67,7 +68,7 @@ class Util_ConfigurationTest extends TestCase
         $configurationInstance = PHPUnit_Util_Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(PHPUnit_TextUI_ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+        $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
     /**
@@ -79,7 +80,7 @@ class Util_ConfigurationTest extends TestCase
         $configurationInstance = PHPUnit_Util_Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(PHPUnit_TextUI_ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+        $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
     /**

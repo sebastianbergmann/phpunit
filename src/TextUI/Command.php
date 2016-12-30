@@ -20,7 +20,6 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
-use PHPUnit_TextUI_ResultPrinter;
 use PHPUnit_TextUI_TestRunner;
 use PHPUnit_Util_Configuration;
 use PHPUnit_Util_ConfigurationGenerator;
@@ -298,7 +297,7 @@ class Command
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
                 case '--colors':
-                    $this->arguments['colors'] = $option[1] ?: PHPUnit_TextUI_ResultPrinter::COLOR_AUTO;
+                    $this->arguments['colors'] = $option[1] ?: ResultPrinter::COLOR_AUTO;
                     break;
 
                 case '--bootstrap':
@@ -883,7 +882,7 @@ class Command
                 $class->isSubclassOf('PHPUnit_Util_Printer') &&
                 $class->isInstantiable()
             ) {
-                if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
+                if ($class->isSubclassOf(ResultPrinter::class)) {
                     return $printerClass;
                 }
 

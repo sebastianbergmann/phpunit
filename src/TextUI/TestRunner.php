@@ -23,6 +23,7 @@ use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\Filter\NameFilterIterator;
 use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
+use PHPUnit\TextUI\ResultPrinter;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
@@ -57,7 +58,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
     protected $loader = null;
 
     /**
-     * @var PHPUnit_TextUI_ResultPrinter
+     * @var ResultPrinter
      */
     protected $printer = null;
 
@@ -253,14 +254,14 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
                 $arguments['printer'] instanceof PHPUnit_Util_Printer) {
                 $this->printer = $arguments['printer'];
             } else {
-                $printerClass = 'PHPUnit_TextUI_ResultPrinter';
+                $printerClass = ResultPrinter::class;
 
                 if (isset($arguments['printer']) &&
                     is_string($arguments['printer']) &&
                     class_exists($arguments['printer'], false)) {
                     $class = new ReflectionClass($arguments['printer']);
 
-                    if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
+                    if ($class->isSubclassOf(ResultPrinter::class)) {
                         $printerClass = $arguments['printer'];
                     }
                 }
@@ -476,7 +477,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
         unset($suite);
         $result->flushListeners();
 
-        if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter) {
+        if ($this->printer instanceof ResultPrinter) {
             $this->printer->printResult($result);
         }
 
@@ -564,7 +565,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
             if (isset($arguments['coverageText'])) {
                 if ($arguments['coverageText'] == 'php://stdout') {
                     $outputStream = $this->printer;
-                    $colors       = $arguments['colors'] && $arguments['colors'] != PHPUnit_TextUI_ResultPrinter::COLOR_NEVER;
+                    $colors       = $arguments['colors'] && $arguments['colors'] != ResultPrinter::COLOR_NEVER;
                 } else {
                     $outputStream = new PHPUnit_Util_Printer($arguments['coverageText']);
                     $colors       = false;
@@ -627,9 +628,9 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
     }
 
     /**
-     * @param PHPUnit_TextUI_ResultPrinter $resultPrinter
+     * @param ResultPrinter $resultPrinter
      */
-    public function setPrinter(PHPUnit_TextUI_ResultPrinter $resultPrinter)
+    public function setPrinter(ResultPrinter $resultPrinter)
     {
         $this->printer = $resultPrinter;
     }
@@ -976,7 +977,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
             }
 
             if (isset($loggingConfiguration['plain'])) {
-                $arguments['listeners'][] = new PHPUnit_TextUI_ResultPrinter(
+                $arguments['listeners'][] = new ResultPrinter(
                     $loggingConfiguration['plain'],
                     true
                 );
@@ -1051,7 +1052,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
         $arguments['beStrictAboutChangesToGlobalState']               = isset($arguments['beStrictAboutChangesToGlobalState'])               ? $arguments['beStrictAboutChangesToGlobalState']               : null;
         $arguments['cacheTokens']                                     = isset($arguments['cacheTokens'])                                     ? $arguments['cacheTokens']                                     : false;
         $arguments['columns']                                         = isset($arguments['columns'])                                         ? $arguments['columns']                                         : 80;
-        $arguments['colors']                                          = isset($arguments['colors'])                                          ? $arguments['colors']                                          : PHPUnit_TextUI_ResultPrinter::COLOR_DEFAULT;
+        $arguments['colors']                                          = isset($arguments['colors'])                                          ? $arguments['colors']                                          : ResultPrinter::COLOR_DEFAULT;
         $arguments['convertErrorsToExceptions']                       = isset($arguments['convertErrorsToExceptions'])                       ? $arguments['convertErrorsToExceptions']                       : true;
         $arguments['convertNoticesToExceptions']                      = isset($arguments['convertNoticesToExceptions'])                      ? $arguments['convertNoticesToExceptions']                      : true;
         $arguments['convertWarningsToExceptions']                     = isset($arguments['convertWarningsToExceptions'])                     ? $arguments['convertWarningsToExceptions']                     : true;

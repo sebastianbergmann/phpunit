@@ -8,6 +8,9 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\TextUI;
+
+use PHP_Timer;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Warning;
@@ -18,6 +21,9 @@ use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit_Util_Printer;
+use PHPUnit_Util_Test;
 use SebastianBergmann\Environment\Console;
 
 /**
@@ -25,7 +31,7 @@ use SebastianBergmann\Environment\Console;
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements TestListener
+class ResultPrinter extends PHPUnit_Util_Printer implements TestListener
 {
     const EVENT_TEST_START      = 0;
     const EVENT_TEST_END        = 1;
@@ -41,23 +47,23 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements TestL
      * @var array
      */
     private static $ansiCodes = [
-      'bold'       => 1,
-      'fg-black'   => 30,
-      'fg-red'     => 31,
-      'fg-green'   => 32,
-      'fg-yellow'  => 33,
-      'fg-blue'    => 34,
-      'fg-magenta' => 35,
-      'fg-cyan'    => 36,
-      'fg-white'   => 37,
-      'bg-black'   => 40,
-      'bg-red'     => 41,
-      'bg-green'   => 42,
-      'bg-yellow'  => 43,
-      'bg-blue'    => 44,
-      'bg-magenta' => 45,
-      'bg-cyan'    => 46,
-      'bg-white'   => 47
+        'bold'       => 1,
+        'fg-black'   => 30,
+        'fg-red'     => 31,
+        'fg-green'   => 32,
+        'fg-yellow'  => 33,
+        'fg-blue'    => 34,
+        'fg-magenta' => 35,
+        'fg-cyan'    => 36,
+        'fg-white'   => 37,
+        'bg-black'   => 40,
+        'bg-red'     => 41,
+        'bg-green'   => 42,
+        'bg-yellow'  => 43,
+        'bg-blue'    => 44,
+        'bg-magenta' => 45,
+        'bg-cyan'    => 46,
+        'bg-white'   => 47
     ];
 
     /**
@@ -357,7 +363,8 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements TestL
         if ($result->wasSuccessful() &&
             $result->allHarmless() &&
             $result->allCompletelyImplemented() &&
-            $result->noneSkipped()) {
+            $result->noneSkipped()
+        ) {
             $this->writeWithColor(
                 'fg-black, bg-green',
                 sprintf(
