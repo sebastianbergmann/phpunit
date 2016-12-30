@@ -56,7 +56,7 @@ use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit_Util_Type;
+use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
@@ -332,7 +332,7 @@ abstract class Assert
         }
 
         if ($isNativeType == null) {
-            $isNativeType = PHPUnit_Util_Type::isType($type);
+            $isNativeType = Type::isType($type);
         }
 
         static::assertThat(
@@ -415,7 +415,7 @@ abstract class Assert
         }
 
         if ($isNativeType == null) {
-            $isNativeType = PHPUnit_Util_Type::isType($type);
+            $isNativeType = Type::isType($type);
         }
 
         static::assertThat(
