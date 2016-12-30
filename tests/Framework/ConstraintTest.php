@@ -12,6 +12,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
+use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -2001,7 +2002,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ClassHasAttribute
+     * @covers ClassHasAttribute
      * @covers PHPUnit\Framework\Assert::classHasAttribute
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -2034,7 +2035,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ClassHasAttribute
+     * @covers ClassHasAttribute
      * @covers PHPUnit\Framework\Assert::classHasAttribute
      * @covers TestFailure::exceptionToString
      */
@@ -2061,7 +2062,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ClassHasAttribute
+     * @covers ClassHasAttribute
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::classHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -2097,7 +2098,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ClassHasAttribute
+     * @covers ClassHasAttribute
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::classHasAttribute
      * @covers PHPUnit\Framework\Assert::logicalNot

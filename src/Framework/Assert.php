@@ -19,7 +19,7 @@ use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
-use PHPUnit_Framework_Constraint_ClassHasAttribute;
+use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit_Framework_Constraint_ClassHasStaticAttribute;
 use PHPUnit_Framework_Constraint_Count;
 use PHPUnit_Framework_Constraint_DirectoryExists;
@@ -1328,7 +1328,7 @@ abstract class Assert
             throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
-        $constraint = new PHPUnit_Framework_Constraint_ClassHasAttribute(
+        $constraint = new ClassHasAttribute(
             $attributeName
         );
 
@@ -1359,7 +1359,7 @@ abstract class Assert
         }
 
         $constraint = new PHPUnit_Framework_Constraint_Not(
-            new PHPUnit_Framework_Constraint_ClassHasAttribute($attributeName)
+            new ClassHasAttribute($attributeName)
         );
 
         static::assertThat($className, $constraint, $message);
@@ -2792,13 +2792,13 @@ abstract class Assert
      *
      * @param string $attributeName
      *
-     * @return PHPUnit_Framework_Constraint_ClassHasAttribute
+     * @return ClassHasAttribute
      *
      * @since Method available since Release 3.1.0
      */
     public static function classHasAttribute($attributeName)
     {
-        return new PHPUnit_Framework_Constraint_ClassHasAttribute(
+        return new ClassHasAttribute(
             $attributeName
         );
     }

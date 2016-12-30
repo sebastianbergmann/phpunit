@@ -13,6 +13,7 @@ use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
+use PHPUnit\Framework\Constraint\ClassHasAttribute;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1740,7 +1741,7 @@ function callback($callback)
  *
  * @param string $attributeName
  *
- * @return PHPUnit_Framework_Constraint_ClassHasAttribute
+ * @return ClassHasAttribute
  *
  * @since Method available since Release 3.1.0
  */
