@@ -13,6 +13,7 @@
 // Use dirname(__DIR__) instead of using /../ because of https://github.com/facebook/hhvm/issues/5215
 use PHPUnit\Framework\Error;
 use PHPUnit\Framework\Error\Deprecated;
+use PHPUnit\Framework\Error\Notice;
 
 require_once dirname(__DIR__) . '/Framework/Error.php';
 require_once dirname(__DIR__) . '/Framework/Error/Notice.php';
@@ -64,7 +65,7 @@ class PHPUnit_Util_ErrorHandler
         }
 
         if ($errno == E_NOTICE || $errno == E_USER_NOTICE || $errno == E_STRICT) {
-            if (PHPUnit_Framework_Error_Notice::$enabled !== true) {
+            if (Notice::$enabled !== true) {
                 return false;
             }
 

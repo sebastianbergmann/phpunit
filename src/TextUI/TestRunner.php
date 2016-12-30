@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
@@ -203,7 +204,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if (!$arguments['convertNoticesToExceptions']) {
-            PHPUnit_Framework_Error_Notice::$enabled = false;
+            Notice::$enabled = false;
         }
 
         if (!$arguments['convertWarningsToExceptions']) {
