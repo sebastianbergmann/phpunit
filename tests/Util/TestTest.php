@@ -892,7 +892,8 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
 /**
  * @theClassAnnotation
  */
-class ParseTestMethodAnnotationsMock {
+class ParseTestMethodAnnotationsMock
+{
     use ParseTestMethodAnnotationsTrait;
 }
 
@@ -901,5 +902,4 @@ class ParseTestMethodAnnotationsMock {
  */
 trait ParseTestMethodAnnotationsTrait
 {
-
 }

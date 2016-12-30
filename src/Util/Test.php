@@ -553,8 +553,8 @@ class PHPUnit_Util_Test
             $traits                            = $class->getTraits();
             $annotations                       = [];
 
-            foreach($traits as $trait) {
-                 $annotations = array_merge(
+            foreach ($traits as $trait) {
+                $annotations = array_merge(
                      $annotations,
                      self::parseAnnotations($trait->getDocComment())
                  );
