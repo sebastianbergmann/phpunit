@@ -22,7 +22,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\Printer;
-use PHPUnit_Util_XML;
+use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
 
@@ -201,7 +201,7 @@ class JUnit extends Printer implements TestListener
 
         $error = $this->document->createElement(
             'error',
-            PHPUnit_Util_XML::prepareString(
+            Xml::prepareString(
                 "Risky Test\n" .
                 Filter::getFilteredStacktrace($e)
             )
@@ -441,7 +441,7 @@ class JUnit extends Printer implements TestListener
 
         $fault = $this->document->createElement(
             $type,
-            PHPUnit_Util_XML::prepareString($buffer)
+            Xml::prepareString($buffer)
         );
 
         $fault->setAttribute('type', get_class($e));

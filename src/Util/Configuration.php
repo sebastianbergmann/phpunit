@@ -15,7 +15,6 @@ use File_Iterator_Facade;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TextUI\ResultPrinter;
-use PHPUnit_Util_XML;
 
 /**
  * Wrapper for the PHPUnit XML configuration file.
@@ -164,7 +163,7 @@ class Configuration
     protected function __construct($filename)
     {
         $this->filename = $filename;
-        $this->document = PHPUnit_Util_XML::loadFile($filename, false, true, true);
+        $this->document = Xml::loadFile($filename, false, true, true);
         $this->xpath    = new DOMXPath($this->document);
     }
 
@@ -353,7 +352,7 @@ class Configuration
                             ) {
                                 $arguments[] = $this->toAbsolutePath((string) $argument->textContent);
                             } else {
-                                $arguments[] = PHPUnit_Util_XML::xmlToVariable($argument);
+                                $arguments[] = Xml::xmlToVariable($argument);
                             }
                         }
                     }

@@ -57,7 +57,7 @@ use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit_Util_Type;
-use PHPUnit_Util_XML;
+use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionObject;
@@ -2051,8 +2051,8 @@ abstract class Assert
      */
     public static function assertXmlFileEqualsXmlFile($expectedFile, $actualFile, $message = '')
     {
-        $expected = PHPUnit_Util_XML::loadFile($expectedFile);
-        $actual   = PHPUnit_Util_XML::loadFile($actualFile);
+        $expected = Xml::loadFile($expectedFile);
+        $actual   = Xml::loadFile($actualFile);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2068,8 +2068,8 @@ abstract class Assert
      */
     public static function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = '')
     {
-        $expected = PHPUnit_Util_XML::loadFile($expectedFile);
-        $actual   = PHPUnit_Util_XML::loadFile($actualFile);
+        $expected = Xml::loadFile($expectedFile);
+        $actual   = Xml::loadFile($actualFile);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2085,8 +2085,8 @@ abstract class Assert
      */
     public static function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
     {
-        $expected = PHPUnit_Util_XML::loadFile($expectedFile);
-        $actual   = PHPUnit_Util_XML::load($actualXml);
+        $expected = Xml::loadFile($expectedFile);
+        $actual   = Xml::load($actualXml);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2102,8 +2102,8 @@ abstract class Assert
      */
     public static function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '')
     {
-        $expected = PHPUnit_Util_XML::loadFile($expectedFile);
-        $actual   = PHPUnit_Util_XML::load($actualXml);
+        $expected = Xml::loadFile($expectedFile);
+        $actual   = Xml::load($actualXml);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2119,8 +2119,8 @@ abstract class Assert
      */
     public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
     {
-        $expected = PHPUnit_Util_XML::load($expectedXml);
-        $actual   = PHPUnit_Util_XML::load($actualXml);
+        $expected = Xml::load($expectedXml);
+        $actual   = Xml::load($actualXml);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2136,8 +2136,8 @@ abstract class Assert
      */
     public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
     {
-        $expected = PHPUnit_Util_XML::load($expectedXml);
-        $actual   = PHPUnit_Util_XML::load($actualXml);
+        $expected = Xml::load($expectedXml);
+        $actual   = Xml::load($actualXml);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2200,8 +2200,8 @@ abstract class Assert
             }
         }
 
-        PHPUnit_Util_XML::removeCharacterDataNodes($expectedElement);
-        PHPUnit_Util_XML::removeCharacterDataNodes($actualElement);
+        Xml::removeCharacterDataNodes($expectedElement);
+        Xml::removeCharacterDataNodes($actualElement);
 
         static::assertEquals(
             $expectedElement->childNodes->length,

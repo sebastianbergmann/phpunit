@@ -9,10 +9,11 @@
  */
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Xml;
 
 /**
  * @since      Class available since Release 3.3.0
- * @covers     PHPUnit_Util_XML
+ * @covers     Xml
  */
 class Util_XMLTest extends TestCase
 {
@@ -23,7 +24,7 @@ class Util_XMLTest extends TestCase
     {
         $e = null;
 
-        $escapedString = PHPUnit_Util_XML::prepareString($char);
+        $escapedString = Xml::prepareString($char);
         $xml           = "<?xml version='1.0' encoding='UTF-8' ?><tag>$escapedString</tag>";
         $dom           = new DomDocument('1.0', 'UTF-8');
 
@@ -54,7 +55,7 @@ class Util_XMLTest extends TestCase
         $this->expectException(PHPUnit\Framework\Exception::class);
         $this->expectExceptionMessage('Could not load XML from empty string');
 
-        PHPUnit_Util_XML::load('');
+        Xml::load('');
     }
 
     public function testLoadArray()
@@ -62,7 +63,7 @@ class Util_XMLTest extends TestCase
         $this->expectException(PHPUnit\Framework\Exception::class);
         $this->expectExceptionMessage('Could not load XML from array');
 
-        PHPUnit_Util_XML::load([1, 2, 3]);
+        Xml::load([1, 2, 3]);
     }
 
     public function testLoadBoolean()
@@ -70,6 +71,6 @@ class Util_XMLTest extends TestCase
         $this->expectException(PHPUnit\Framework\Exception::class);
         $this->expectExceptionMessage('Could not load XML from boolean');
 
-        PHPUnit_Util_XML::load(false);
+        Xml::load(false);
     }
 }

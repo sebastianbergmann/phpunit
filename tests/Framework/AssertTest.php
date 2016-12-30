@@ -14,6 +14,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Util\Xml;
 
 /**
  * @since      Class available since Release 2.0.0
@@ -684,24 +685,24 @@ class Framework_AssertTest extends TestCase
             [$storage1, $storage2],
             // DOMDocument
             [
-                PHPUnit_Util_XML::load('<root></root>'),
-                PHPUnit_Util_XML::load('<bar/>'),
+                Xml::load('<root></root>'),
+                Xml::load('<bar/>'),
             ],
             [
-                PHPUnit_Util_XML::load('<foo attr1="bar"/>'),
-                PHPUnit_Util_XML::load('<foo attr1="foobar"/>'),
+                Xml::load('<foo attr1="bar"/>'),
+                Xml::load('<foo attr1="foobar"/>'),
             ],
             [
-                PHPUnit_Util_XML::load('<foo> bar </foo>'),
-                PHPUnit_Util_XML::load('<foo />'),
+                Xml::load('<foo> bar </foo>'),
+                Xml::load('<foo />'),
             ],
             [
-                PHPUnit_Util_XML::load('<foo xmlns="urn:myns:bar"/>'),
-                PHPUnit_Util_XML::load('<foo xmlns="urn:notmyns:bar"/>'),
+                Xml::load('<foo xmlns="urn:myns:bar"/>'),
+                Xml::load('<foo xmlns="urn:notmyns:bar"/>'),
             ],
             [
-                PHPUnit_Util_XML::load('<foo> bar </foo>'),
-                PHPUnit_Util_XML::load('<foo> bir </foo>'),
+                Xml::load('<foo> bar </foo>'),
+                Xml::load('<foo> bir </foo>'),
             ],
             [
                 new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
@@ -804,20 +805,20 @@ class Framework_AssertTest extends TestCase
             [$storage1, $storage2],
             // DOMDocument
             [
-                PHPUnit_Util_XML::load('<root></root>'),
-                PHPUnit_Util_XML::load('<root/>'),
+                Xml::load('<root></root>'),
+                Xml::load('<root/>'),
             ],
             [
-                PHPUnit_Util_XML::load('<root attr="bar"></root>'),
-                PHPUnit_Util_XML::load('<root attr="bar"/>'),
+                Xml::load('<root attr="bar"></root>'),
+                Xml::load('<root attr="bar"/>'),
             ],
             [
-                PHPUnit_Util_XML::load('<root><foo attr="bar"></foo></root>'),
-                PHPUnit_Util_XML::load('<root><foo attr="bar"/></root>'),
+                Xml::load('<root><foo attr="bar"></foo></root>'),
+                Xml::load('<root><foo attr="bar"/></root>'),
             ],
             [
-                PHPUnit_Util_XML::load("<root>\n  <child/>\n</root>"),
-                PHPUnit_Util_XML::load('<root><child/></root>'),
+                Xml::load("<root>\n  <child/>\n</root>"),
+                Xml::load('<root><child/></root>'),
             ],
             [
                 new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
