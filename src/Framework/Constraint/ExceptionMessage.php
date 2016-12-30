@@ -7,12 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Constraint\Constraint;
+namespace PHPUnit\Framework\Constraint;
+
+use Exception;
 
 /**
  * @since Class available since Release 3.6.6
  */
-class PHPUnit_Framework_Constraint_ExceptionMessage extends Constraint
+class ExceptionMessage extends Constraint
 {
     /**
      * @var int
