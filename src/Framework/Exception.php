@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit_Util_Filter;
+use PHPUnit\Util\Filter;
 
 /**
  * Base class for all PHPUnit Framework exceptions.
@@ -67,7 +67,7 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
     {
         $string = TestFailure::exceptionToString($this);
 
-        if ($trace = PHPUnit_Util_Filter::getFilteredStacktrace($this)) {
+        if ($trace = Filter::getFilteredStacktrace($this)) {
             $string .= "\n" . $trace;
         }
 

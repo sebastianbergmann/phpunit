@@ -41,6 +41,7 @@ use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Filter;
 
 /**
  * @since      Class available since Release 3.0.0
@@ -3590,7 +3591,7 @@ EOF
     {
         $constraint = new PHPUnit\Framework\Constraint\Exception('FoobarException');
         $exception  = new DummyException('Test');
-        $stackTrace = PHPUnit_Util_Filter::getFilteredStacktrace($exception);
+        $stackTrace = Filter::getFilteredStacktrace($exception);
 
         try {
             $constraint->evaluate($exception);

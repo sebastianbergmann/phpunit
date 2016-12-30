@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\TextUI\ResultPrinter;
+use PHPUnit\Util\Filter;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -356,13 +357,13 @@ class PHPUnit_Util_Log_TeamCity extends ResultPrinter
      */
     private static function getDetails(Exception $e)
     {
-        $stackTrace = PHPUnit_Util_Filter::getFilteredStacktrace($e);
+        $stackTrace = Filter::getFilteredStacktrace($e);
         $previous   = $e->getPrevious();
 
         while ($previous) {
             $stackTrace .= "\nCaused by\n" .
                 TestFailure::exceptionToString($previous) . "\n" .
-                PHPUnit_Util_Filter::getFilteredStacktrace($previous);
+                Filter::getFilteredStacktrace($previous);
 
             $previous = $previous->getPrevious();
         }
