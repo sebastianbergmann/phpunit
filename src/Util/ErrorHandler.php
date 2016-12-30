@@ -12,6 +12,7 @@
 // see https://github.com/sebastianbergmann/phpunit/issues#issue/125 for details
 // Use dirname(__DIR__) instead of using /../ because of https://github.com/facebook/hhvm/issues/5215
 use PHPUnit\Framework\Error;
+use PHPUnit\Framework\Error\Deprecated;
 
 require_once dirname(__DIR__) . '/Framework/Error.php';
 require_once dirname(__DIR__) . '/Framework/Error/Notice.php';
@@ -75,7 +76,7 @@ class PHPUnit_Util_ErrorHandler
 
             $exception = 'PHPUnit_Framework_Error_Warning';
         } elseif ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
-            if (PHPUnit_Framework_Error_Deprecated::$enabled !== true) {
+            if (Deprecated::$enabled !== true) {
                 return false;
             }
 
