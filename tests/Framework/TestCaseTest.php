@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestCase;
@@ -276,7 +277,7 @@ class Framework_TestCaseTest extends TestCase
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_ExceptionMessageRegExp
+     * @covers ExceptionMessageRegularExpression
      */
     public function testExceptionWithInvalidRegexpMessage()
     {

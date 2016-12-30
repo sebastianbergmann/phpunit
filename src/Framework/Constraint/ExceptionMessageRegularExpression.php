@@ -7,13 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Constraint\Constraint;
+namespace PHPUnit\Framework\Constraint;
+
 use PHPUnit\Framework\Exception;
+use PHPUnit_Util_Regex;
 
 /**
  * @since Class available since Release 4.3.0
  */
-class PHPUnit_Framework_Constraint_ExceptionMessageRegExp extends Constraint
+class ExceptionMessageRegularExpression extends Constraint
 {
     /**
      * @var int

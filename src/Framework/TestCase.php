@@ -13,7 +13,7 @@ namespace PHPUnit\Framework;
 use PHPUnit\Framework\Constraint\Exception;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
-use PHPUnit_Framework_Constraint_ExceptionMessageRegExp;
+use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
 use PHPUnit_Framework_MockObject_Generator;
 use PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
 use PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex;
@@ -1118,7 +1118,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 ) {
                     $this->assertThat(
                         $e,
-                        new PHPUnit_Framework_Constraint_ExceptionMessageRegExp(
+                        new ExceptionMessageRegularExpression(
                             $this->expectedExceptionMessageRegExp
                         )
                     );
