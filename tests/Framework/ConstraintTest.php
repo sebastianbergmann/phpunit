@@ -10,11 +10,12 @@
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @since      Class available since Release 3.0.0
  */
-class Framework_ConstraintTest extends PHPUnit_Framework_TestCase
+class Framework_ConstraintTest extends TestCase
 {
     /**
      * @covers PHPUnit_Framework_Constraint_ArrayHasKey

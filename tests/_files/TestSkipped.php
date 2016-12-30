@@ -1,5 +1,7 @@
 <?php
-class TestSkipped extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class TestSkipped extends TestCase
 {
     protected function runTest()
     {

@@ -1,5 +1,7 @@
 <?php
-class Failure extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Failure extends TestCase
 {
     protected function runTest()
     {

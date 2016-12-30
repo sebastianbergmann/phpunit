@@ -1,5 +1,7 @@
 <?php
-class RequirementsTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class RequirementsTest extends TestCase
 {
     public function testOne()
     {

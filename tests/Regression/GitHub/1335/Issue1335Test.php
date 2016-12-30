@@ -1,9 +1,11 @@
 <?php
+use PHPUnit\Framework\TestCase;
+
 /**
  * @runTestsInSeparateProcesses
  * @preserveGlobalState enabled
  */
-class Issue1335Test extends PHPUnit_Framework_TestCase
+class Issue1335Test extends TestCase
 {
     public function testGlobalString()
     {

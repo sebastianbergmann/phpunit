@@ -1,5 +1,7 @@
 <?php
-class Issue2158Test extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Issue2158Test extends TestCase
 {
     /**
      * Set constant in main process

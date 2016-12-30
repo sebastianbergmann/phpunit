@@ -1,5 +1,7 @@
 <?php
-class Issue578Test extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Issue578Test extends TestCase
 {
     public function testNoticesDoublePrintStackTrace()
     {

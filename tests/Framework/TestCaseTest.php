@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\TestCase;
+
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NoArgTestCaseTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Singleton.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Mockable.php';
@@ -24,9 +26,9 @@ $GLOBALS['i']  = 'i';
 
 /**
  * @since      Class available since Release 2.0.0
- * @covers     PHPUnit_Framework_TestCase
+ * @covers     TestCase
  */
-class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
+class Framework_TestCaseTest extends TestCase
 {
     protected $backupGlobalsBlacklist = ['i', 'singleton'];
 

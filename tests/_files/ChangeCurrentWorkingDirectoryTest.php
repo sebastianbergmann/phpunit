@@ -1,5 +1,7 @@
 <?php
-class ChangeCurrentWorkingDirectoryTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ChangeCurrentWorkingDirectoryTest extends TestCase
 {
     public function testSomethingThatChangesTheCwd()
     {

@@ -23,7 +23,7 @@ class PHPUnit_Util_Blacklist
         'PHP_Invoker'                                 => 1,
         'PHP_Timer'                                   => 1,
         'PHP_Token'                                   => 1,
-        'PHPUnit_Framework_TestCase'                  => 2,
+        'PHPUnit\Framework\TestCase'                  => 2,
         'PHPUnit_Extensions_Database_TestCase'        => 2,
         'PHPUnit_Framework_MockObject_Generator'      => 2,
         'Text_Template'                               => 1,

@@ -18,6 +18,7 @@ use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\OutputError;
 use PHPUnit\Framework\CoveredCodeNotExecutedException;
 use PHPUnit\Framework\MissingCoversAnnotationException;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SkippedTest;
@@ -412,7 +413,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $listener->endTest($test, $time);
         }
 
-        if (!$this->lastTestFailed && $test instanceof PHPUnit_Framework_TestCase) {
+        if (!$this->lastTestFailed && $test instanceof TestCase) {
             $class  = get_class($test);
             $key    = $class . '::' . $test->getName();
 
@@ -639,7 +640,7 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         Assert::resetCount();
 
-        if ($test instanceof PHPUnit_Framework_TestCase) {
+        if ($test instanceof TestCase) {
             $test->setRegisterMockObjectsFromTestArgumentsRecursively(
                 $this->registerMockObjectsFromTestArgumentsRecursively
             );
@@ -786,7 +787,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $linesToBeCovered = [];
             $linesToBeUsed    = [];
 
-            if ($append && $test instanceof PHPUnit_Framework_TestCase) {
+            if ($append && $test instanceof TestCase) {
                 try {
                     $linesToBeCovered = PHPUnit_Util_Test::getLinesToBeCovered(
                         get_class($test),
@@ -882,7 +883,7 @@ class PHPUnit_Framework_TestResult implements Countable
                 ),
                 $time
             );
-        } elseif ($this->beStrictAboutTodoAnnotatedTests && $test instanceof PHPUnit_Framework_TestCase) {
+        } elseif ($this->beStrictAboutTodoAnnotatedTests && $test instanceof TestCase) {
             $annotations = $test->getAnnotations();
 
             if (isset($annotations['method']['todo'])) {

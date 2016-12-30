@@ -11,6 +11,7 @@
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
@@ -273,7 +274,7 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
         $this->startedTestName = $testName;
         $params                = ['name' => $testName];
 
-        if ($test instanceof PHPUnit_Framework_TestCase) {
+        if ($test instanceof TestCase) {
             $className              = get_class($test);
             $fileName               = self::getFileName($className);
             $params['locationHint'] = "php_qn://$fileName::\\$className::$testName";

@@ -11,12 +11,13 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\SkippedTestError;
 
 /**
  * @since      Class available since Release 2.0.0
  */
-class Framework_AssertTest extends PHPUnit_Framework_TestCase
+class Framework_AssertTest extends TestCase
 {
     /**
      * @var string

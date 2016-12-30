@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestCase;
 
 if (!defined('TEST_FILES_PATH')) {
     define(
@@ -25,7 +26,7 @@ require TEST_FILES_PATH . 'NamespaceCoveredFunction.php';
 /**
  * @since      Class available since Release 3.3.6
  */
-class Util_TestTest extends PHPUnit_Framework_TestCase
+class Util_TestTest extends TestCase
 {
     /**
      * @covers PHPUnit_Util_Test::getExpectedException

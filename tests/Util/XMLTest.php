@@ -8,12 +8,13 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @since      Class available since Release 3.3.0
  * @covers     PHPUnit_Util_XML
  */
-class Util_XMLTest extends PHPUnit_Framework_TestCase
+class Util_XMLTest extends TestCase
 {
     /**
      * @dataProvider charProvider

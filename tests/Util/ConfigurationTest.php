@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Util_ConfigurationTest extends TestCase
 {
     /**
      * @var PHPUnit_Util_Configuration

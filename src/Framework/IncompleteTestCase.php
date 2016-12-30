@@ -9,14 +9,12 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit_Framework_TestCase;
-
 /**
  * An incomplete test case
  *
  * @since Class available since Release 4.3.0
  */
-class IncompleteTestCase extends PHPUnit_Framework_TestCase
+class IncompleteTestCase extends TestCase
 {
     /**
      * @var string

@@ -12,6 +12,7 @@ use PHPUnit\Framework\Error;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SelfDescribing;
 
@@ -51,7 +52,7 @@ class PHPUnit_Framework_TestFailure
             $this->testName = get_class($failedTest);
         }
 
-        if (!$failedTest instanceof PHPUnit_Framework_TestCase || !$failedTest->isInIsolation()) {
+        if (!$failedTest instanceof TestCase || !$failedTest->isInIsolation()) {
             $this->failedTest = $failedTest;
         }
 

@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-class Framework_Constraint_IsJsonTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Framework_Constraint_IsJsonTest extends TestCase
 {
     /**
      * @dataProvider evaluateDataprovider

@@ -1,5 +1,7 @@
 <?php
-class Issue322Test extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Issue322Test extends TestCase
 {
     /**
      * @group one

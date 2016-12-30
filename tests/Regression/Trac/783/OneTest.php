@@ -1,8 +1,10 @@
 <?php
+use PHPUnit\Framework\TestCase;
+
 /**
  * @group foo
  */
-class OneTest extends PHPUnit_Framework_TestCase
+class OneTest extends TestCase
 {
     public function testSomething()
     {

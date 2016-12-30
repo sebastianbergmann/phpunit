@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use SebastianBergmann\Environment\Console;
 
@@ -559,7 +560,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
             $this->writeProgress('.');
         }
 
-        if ($test instanceof PHPUnit_Framework_TestCase) {
+        if ($test instanceof TestCase) {
             $this->numAssertions += $test->getNumAssertions();
         } elseif ($test instanceof PHPUnit_Runner_PhptTestCase) {
             $this->numAssertions++;
@@ -567,7 +568,7 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
 
         $this->lastTestFailed = false;
 
-        if ($test instanceof PHPUnit_Framework_TestCase) {
+        if ($test instanceof TestCase) {
             if (!$test->hasExpectationOnOutput()) {
                 $this->write($test->getActualOutput());
             }

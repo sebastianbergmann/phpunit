@@ -1,5 +1,7 @@
 <?php
-class DataProviderSkippedTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DataProviderSkippedTest extends TestCase
 {
     /**
      * @dataProvider skippedTestProviderMethod

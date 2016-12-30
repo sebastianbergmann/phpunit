@@ -1,8 +1,10 @@
 <?php
+use PHPUnit\Framework\TestCase;
+
 /**
  * @requires extension I_DO_NOT_EXIST
  */
-class Issue1374Test extends PHPUnit_Framework_TestCase
+class Issue1374Test extends TestCase
 {
     protected function setUp()
     {

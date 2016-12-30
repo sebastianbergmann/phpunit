@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 
 /**
@@ -166,11 +167,11 @@ class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implem
      */
     public function endTest(Test $test, $time)
     {
-        if (!$test instanceof PHPUnit_Framework_TestCase) {
+        if (!$test instanceof TestCase) {
             return;
         }
 
-        /* @var PHPUnit_Framework_TestCase $test */
+        /* @var TestCase $test */
 
         $groups = array_filter(
             $test->getGroups(),

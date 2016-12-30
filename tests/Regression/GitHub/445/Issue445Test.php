@@ -1,5 +1,7 @@
 <?php
-class Issue445Test extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Issue445Test extends TestCase
 {
     public function testOutputWithExpectationBefore()
     {

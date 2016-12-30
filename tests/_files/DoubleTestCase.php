@@ -1,11 +1,12 @@
 <?php
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 
 class DoubleTestCase implements Test
 {
     protected $testCase;
 
-    public function __construct(PHPUnit_Framework_TestCase $testCase)
+    public function __construct(TestCase $testCase)
     {
         $this->testCase = $testCase;
     }

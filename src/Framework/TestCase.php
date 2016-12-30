@@ -8,15 +8,42 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\IncompleteTest;
-use PHPUnit\Framework\Test;
-use PHPUnit\Framework\SkippedTestError;
-use PHPUnit\Framework\SkippedTest;
-use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Framework\RiskyTestError;
+namespace PHPUnit\Framework;
+
+use PHPUnit_Framework_Constraint_Exception;
+use PHPUnit_Framework_Constraint_ExceptionCode;
+use PHPUnit_Framework_Constraint_ExceptionMessage;
+use PHPUnit_Framework_Constraint_ExceptionMessageRegExp;
+use PHPUnit_Framework_MockObject_Generator;
+use PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
+use PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex;
+use PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount;
+use PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce;
+use PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount;
+use PHPUnit_Framework_MockObject_Matcher_InvokedCount;
+use PHPUnit_Framework_MockObject_MockBuilder;
+use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls;
+use PHPUnit_Framework_MockObject_Stub_Exception;
+use PHPUnit_Framework_MockObject_Stub_Return;
+use PHPUnit_Framework_MockObject_Stub_ReturnArgument;
+use PHPUnit_Framework_MockObject_Stub_ReturnCallback;
+use PHPUnit_Framework_MockObject_Stub_ReturnSelf;
+use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
+use PHPUnit_Framework_TestResult;
+use PHPUnit_Framework_Warning;
+use PHPUnit_Framework_WarningTestCase;
+use PHPUnit_Runner_BaseTestRunner;
+use PHPUnit_Runner_PhptTestCase;
+use PHPUnit_Util_GlobalState;
+use PHPUnit_Util_InvalidArgumentHelper;
+use PHPUnit_Util_PHP;
+use PHPUnit_Util_Test;
+use Prophecy;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionObject;
+use SebastianBergmann;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
@@ -26,6 +53,8 @@ use SebastianBergmann\ObjectEnumerator\Enumerator;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophet;
 use DeepCopy\DeepCopy;
+use Text_Template;
+use Throwable;
 
 /**
  * A TestCase defines the fixture to run multiple tests.
@@ -73,7 +102,7 @@ use DeepCopy\DeepCopy;
  *
  * @since Class available since Release 2.0.0
  */
-abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDescribing
+abstract class TestCase extends Assert implements Test, SelfDescribing
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
@@ -727,7 +756,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
         $status = $this->getStatus();
 
         return $status == PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE ||
-               $status == PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+            $status == PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
     }
 
     /**
@@ -762,7 +791,8 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
 
         if ($this->runTestInSeparateProcess === true &&
             $this->inIsolation !== true &&
-            !$this instanceof PHPUnit_Runner_PhptTestCase) {
+            !$this instanceof PHPUnit_Runner_PhptTestCase
+        ) {
             $class = new ReflectionClass($this);
 
             $template = new Text_Template(
@@ -775,21 +805,21 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
                 $includedFiles = PHPUnit_Util_GlobalState::getIncludedFilesAsString();
                 $iniSettings   = PHPUnit_Util_GlobalState::getIniSettingsAsString();
             } else {
-                $constants     = '';
+                $constants = '';
                 if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
-                    $globals     = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
+                    $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
                 } else {
-                    $globals     = '';
+                    $globals = '';
                 }
                 $includedFiles = '';
-                $iniSettings   = '';
+                $iniSettings = '';
             }
 
-            $coverage                                   = $result->getCollectCodeCoverageInformation()          ? 'true' : 'false';
-            $isStrictAboutTestsThatDoNotTestAnything    = $result->isStrictAboutTestsThatDoNotTestAnything()    ? 'true' : 'false';
-            $isStrictAboutOutputDuringTests             = $result->isStrictAboutOutputDuringTests()             ? 'true' : 'false';
-            $enforcesTimeLimit                          = $result->enforcesTimeLimit()                          ? 'true' : 'false';
-            $isStrictAboutTodoAnnotatedTests            = $result->isStrictAboutTodoAnnotatedTests()            ? 'true' : 'false';
+            $coverage = $result->getCollectCodeCoverageInformation() ? 'true' : 'false';
+            $isStrictAboutTestsThatDoNotTestAnything = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
+            $isStrictAboutOutputDuringTests = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
+            $enforcesTimeLimit = $result->enforcesTimeLimit() ? 'true' : 'false';
+            $isStrictAboutTodoAnnotatedTests = $result->isStrictAboutTodoAnnotatedTests() ? 'true' : 'false';
             $isStrictAboutResourceUsageDuringSmallTests = $result->isStrictAboutResourceUsageDuringSmallTests() ? 'true' : 'false';
 
             if (defined('PHPUNIT_COMPOSER_INSTALL')) {
@@ -810,44 +840,44 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
                 $codeCoverageFilter = null;
             }
 
-            $data               = var_export(serialize($this->data), true);
-            $dataName           = var_export($this->dataName, true);
-            $dependencyInput    = var_export(serialize($this->dependencyInput), true);
-            $includePath        = var_export(get_include_path(), true);
+            $data = var_export(serialize($this->data), true);
+            $dataName = var_export($this->dataName, true);
+            $dependencyInput = var_export(serialize($this->dependencyInput), true);
+            $includePath = var_export(get_include_path(), true);
             $codeCoverageFilter = var_export(serialize($codeCoverageFilter), true);
             // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
             // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
-            $data               = "'." . $data . ".'";
-            $dataName           = "'.(" . $dataName . ").'";
-            $dependencyInput    = "'." . $dependencyInput . ".'";
-            $includePath        = "'." . $includePath . ".'";
+            $data = "'." . $data . ".'";
+            $dataName = "'.(" . $dataName . ").'";
+            $dependencyInput = "'." . $dependencyInput . ".'";
+            $includePath = "'." . $includePath . ".'";
             $codeCoverageFilter = "'." . $codeCoverageFilter . ".'";
 
             $configurationFilePath = (isset($GLOBALS['__PHPUNIT_CONFIGURATION_FILE']) ? $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] : '');
 
             $template->setVar(
                 [
-                    'composerAutoload'                           => $composerAutoload,
-                    'phar'                                       => $phar,
-                    'filename'                                   => $class->getFileName(),
-                    'className'                                  => $class->getName(),
-                    'methodName'                                 => $this->name,
-                    'collectCodeCoverageInformation'             => $coverage,
-                    'data'                                       => $data,
-                    'dataName'                                   => $dataName,
-                    'dependencyInput'                            => $dependencyInput,
-                    'constants'                                  => $constants,
-                    'globals'                                    => $globals,
-                    'include_path'                               => $includePath,
-                    'included_files'                             => $includedFiles,
-                    'iniSettings'                                => $iniSettings,
-                    'isStrictAboutTestsThatDoNotTestAnything'    => $isStrictAboutTestsThatDoNotTestAnything,
-                    'isStrictAboutOutputDuringTests'             => $isStrictAboutOutputDuringTests,
-                    'enforcesTimeLimit'                          => $enforcesTimeLimit,
-                    'isStrictAboutTodoAnnotatedTests'            => $isStrictAboutTodoAnnotatedTests,
+                    'composerAutoload' => $composerAutoload,
+                    'phar' => $phar,
+                    'filename' => $class->getFileName(),
+                    'className' => $class->getName(),
+                    'methodName' => $this->name,
+                    'collectCodeCoverageInformation' => $coverage,
+                    'data' => $data,
+                    'dataName' => $dataName,
+                    'dependencyInput' => $dependencyInput,
+                    'constants' => $constants,
+                    'globals' => $globals,
+                    'include_path' => $includePath,
+                    'included_files' => $includedFiles,
+                    'iniSettings' => $iniSettings,
+                    'isStrictAboutTestsThatDoNotTestAnything' => $isStrictAboutTestsThatDoNotTestAnything,
+                    'isStrictAboutOutputDuringTests' => $isStrictAboutOutputDuringTests,
+                    'enforcesTimeLimit' => $enforcesTimeLimit,
+                    'isStrictAboutTodoAnnotatedTests' => $isStrictAboutTodoAnnotatedTests,
                     'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
-                    'codeCoverageFilter'                         => $codeCoverageFilter,
-                    'configurationFilePath'                      => $configurationFilePath
+                    'codeCoverageFilter' => $codeCoverageFilter,
+                    'configurationFilePath' => $configurationFilePath
                 ]
             );
 
@@ -1061,7 +1091,8 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
 
                 if ($this->expectedException === 'PHPUnit\Framework\Exception' ||
                     $this->expectedException === '\PHPUnit\Framework\Exception' ||
-                    $reflector->isSubclassOf('PHPUnit\Framework\Exception')) {
+                    $reflector->isSubclassOf('PHPUnit\Framework\Exception')
+                ) {
                     $checkException = true;
                 }
             }
@@ -1075,7 +1106,8 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
                 );
 
                 if (is_string($this->expectedExceptionMessage) &&
-                    !empty($this->expectedExceptionMessage)) {
+                    !empty($this->expectedExceptionMessage)
+                ) {
                     $this->assertThat(
                         $e,
                         new PHPUnit_Framework_Constraint_ExceptionMessage(
@@ -1085,7 +1117,8 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
                 }
 
                 if (is_string($this->expectedExceptionMessageRegExp) &&
-                    !empty($this->expectedExceptionMessageRegExp)) {
+                    !empty($this->expectedExceptionMessageRegExp)
+                ) {
                     $this->assertThat(
                         $e,
                         new PHPUnit_Framework_Constraint_ExceptionMessageRegExp(
@@ -1239,7 +1272,8 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
     public function setBackupStaticAttributes($backupStaticAttributes)
     {
         if (is_null($this->backupStaticAttributes) &&
-            is_bool($backupStaticAttributes)) {
+            is_bool($backupStaticAttributes)
+        ) {
             $this->backupStaticAttributes = $backupStaticAttributes;
         }
     }
@@ -1482,11 +1516,11 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
     protected function createMock($originalClassName)
     {
         return $this->getMockBuilder($originalClassName)
-                    ->disableOriginalConstructor()
-                    ->disableOriginalClone()
-                    ->disableArgumentCloning()
-                    ->disallowMockingUnknownTypes()
-                    ->getMock();
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->getMock();
     }
 
     /**
@@ -1527,12 +1561,12 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
     protected function createPartialMock($originalClassName, array $methods)
     {
         return $this->getMockBuilder($originalClassName)
-                    ->disableOriginalConstructor()
-                    ->disableOriginalClone()
-                    ->disableArgumentCloning()
-                    ->disallowMockingUnknownTypes()
-                    ->setMethods(empty($methods) ? null : $methods)
-                    ->getMock();
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->setMethods(empty($methods) ? null : $methods)
+            ->getMock();
     }
 
     /**
@@ -1550,9 +1584,9 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
     protected function createTestProxy($originalClassName, array $constructorArguments = [])
     {
         return $this->getMockBuilder($originalClassName)
-                    ->setConstructorArgs($constructorArguments)
-                    ->enableProxyingToOriginalMethods()
-                    ->getMock();
+            ->setConstructorArgs($constructorArguments)
+            ->enableProxyingToOriginalMethods()
+            ->getMock();
     }
 
     /**
@@ -1649,12 +1683,12 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
 
         if (!class_exists($originalClassName)) {
             eval(
-                $this->getMockObjectGenerator()->generateClassFromWsdl(
-                    $wsdlFile,
-                    $originalClassName,
-                    $methods,
-                    $options
-                )
+            $this->getMockObjectGenerator()->generateClassFromWsdl(
+                $wsdlFile,
+                $originalClassName,
+                $methods,
+                $options
+            )
             );
         }
 
@@ -1969,7 +2003,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
     }
 
     /**
-     * @param mixed $value, ...
+     * @param mixed $value , ...
      *
      * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
      *
@@ -2106,7 +2140,8 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
                 if (isset($passed[$dependency])) {
                     if ($passed[$dependency]['size'] != PHPUnit_Util_Test::UNKNOWN &&
                         $this->getSize() != PHPUnit_Util_Test::UNKNOWN &&
-                        $passed[$dependency]['size'] > $this->getSize()) {
+                        $passed[$dependency]['size'] > $this->getSize()
+                    ) {
                         $this->result->addError(
                             $this,
                             new SkippedTestError(
@@ -2119,7 +2154,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
                     }
 
                     if ($clone) {
-                        $deepCopy   = new DeepCopy;
+                        $deepCopy = new DeepCopy;
                         $deepCopy->skipUncloneable(false);
 
                         $this->dependencyInput[$dependency] = $deepCopy->copy($passed[$dependency]['result']);
@@ -2280,7 +2315,8 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
         $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
 
         if ($this->runTestInSeparateProcess || $this->inIsolation ||
-            (!$backupGlobals && !$this->backupStaticAttributes)) {
+            (!$backupGlobals && !$this->backupStaticAttributes)
+        ) {
             return;
         }
 
@@ -2525,7 +2561,8 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements Test, SelfDe
         }
 
         if ($reflector->hasMethod('__clone') &&
-            $reflector->getMethod('__clone')->isPublic()) {
+            $reflector->getMethod('__clone')->isPublic()
+        ) {
             return true;
         }
 

@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 
 /**
@@ -283,7 +284,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(false));
         }
 
-        if ($test instanceof PHPUnit_Framework_TestCase && $test->usesDataProvider()) {
+        if ($test instanceof TestCase && $test->usesDataProvider()) {
             $this->currentTestMethodPrettified .= ' ' . $test->dataDescription();
         }
 
@@ -383,7 +384,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
      */
     private function isOfInterest(Test $test)
     {
-        if (!$test instanceof PHPUnit_Framework_TestCase) {
+        if (!$test instanceof TestCase) {
             return false;
         }
 

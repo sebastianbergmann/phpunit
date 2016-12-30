@@ -10,6 +10,7 @@
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidCoversTargetException;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SelfDescribing;
 
@@ -51,7 +52,7 @@ class PHPUnit_Util_Test
                 return get_class($test);
             }
         } else {
-            if ($test instanceof PHPUnit_Framework_TestCase) {
+            if ($test instanceof TestCase) {
                 return [
                   get_class($test), $test->getName()
                 ];

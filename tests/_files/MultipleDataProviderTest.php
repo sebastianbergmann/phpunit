@@ -1,5 +1,7 @@
 <?php
-class MultipleDataProviderTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class MultipleDataProviderTest extends TestCase
 {
     /**
      * @dataProvider providerA

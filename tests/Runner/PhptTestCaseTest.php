@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-class Runner_PhptTestCaseTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Runner_PhptTestCaseTest extends TestCase
 {
     const EXPECT_CONTENT = <<<EOF
 --TEST--

@@ -10,6 +10,7 @@
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SkippedTestSuiteError;
 use PHPUnit\Framework\SkippedTestError;
@@ -146,9 +147,9 @@ class PHPUnit_Framework_TestSuite implements Test, SelfDescribing, IteratorAggre
             throw new Exception;
         }
 
-        if (!$theClass->isSubclassOf('PHPUnit_Framework_TestCase')) {
+        if (!$theClass->isSubclassOf(TestCase::class)) {
             throw new Exception(
-                'Class "' . $theClass->name . '" does not extend PHPUnit_Framework_TestCase.'
+                'Class "' . $theClass->name . '" does not extend PHPUnit\Framework\TestCase.'
             );
         }
 
@@ -233,7 +234,7 @@ class PHPUnit_Framework_TestSuite implements Test, SelfDescribing, IteratorAggre
                 }
             }
 
-            if ($test instanceof PHPUnit_Framework_TestCase) {
+            if ($test instanceof TestCase) {
                 $test->setGroups($groups);
             }
         }
@@ -577,7 +578,7 @@ class PHPUnit_Framework_TestSuite implements Test, SelfDescribing, IteratorAggre
             throw new Exception('No valid test provided.');
         }
 
-        if ($test instanceof PHPUnit_Framework_TestCase) {
+        if ($test instanceof TestCase) {
             $test->setName($name);
 
             if ($runTestInSeparateProcess) {
@@ -725,7 +726,7 @@ class PHPUnit_Framework_TestSuite implements Test, SelfDescribing, IteratorAggre
                 break;
             }
 
-            if ($test instanceof PHPUnit_Framework_TestCase ||
+            if ($test instanceof TestCase ||
                 $test instanceof self) {
                 $test->setbeStrictAboutChangesToGlobalState($this->beStrictAboutChangesToGlobalState);
                 $test->setBackupGlobals($this->backupGlobals);
@@ -868,7 +869,7 @@ class PHPUnit_Framework_TestSuite implements Test, SelfDescribing, IteratorAggre
 
         $test = self::createTest($class, $name);
 
-        if ($test instanceof PHPUnit_Framework_TestCase ||
+        if ($test instanceof TestCase ||
             $test instanceof PHPUnit_Framework_TestSuite_DataProvider) {
             $test->setDependencies(
                 PHPUnit_Util_Test::getDependencies($class->getName(), $name)

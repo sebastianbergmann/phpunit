@@ -1,5 +1,7 @@
 <?php
-class NamespaceCoverageClassExtendedTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class NamespaceCoverageClassExtendedTest extends TestCase
 {
     /**
      * @covers Foo\CoveredClass<extended>
