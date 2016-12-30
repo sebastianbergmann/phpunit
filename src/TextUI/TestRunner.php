@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\Test;
 use PHPUnit\Runner\BaseTestRunner;
+use PHPUnit\Runner\StandardTestSuiteLoader;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
@@ -667,7 +668,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
     public function getLoader()
     {
         if ($this->loader === null) {
-            $this->loader = new PHPUnit_Runner_StandardTestSuiteLoader;
+            $this->loader = new StandardTestSuiteLoader;
         }
 
         return $this->loader;

@@ -7,15 +7,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Runner;
+
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Runner_TestSuiteLoader;
+use PHPUnit_Util_Fileloader;
+use PHPUnit_Util_Filesystem;
+use ReflectionClass;
 
 /**
  * The standard test suite loader.
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader
+class StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader
 {
     /**
      * @param string $suiteClassName
@@ -51,7 +57,8 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
             foreach ($loadedClasses as $loadedClass) {
                 $class = new ReflectionClass($loadedClass);
                 if (substr($loadedClass, $offset) === $suiteClassName &&
-                    $class->getFileName() == $filename) {
+                    $class->getFileName() == $filename
+                ) {
                     $suiteClassName = $loadedClass;
                     break;
                 }
@@ -66,7 +73,8 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
                 $classFile = $class->getFileName();
 
                 if ($class->isSubclassOf($testCaseClass) &&
-                    !$class->isAbstract()) {
+                    !$class->isAbstract()
+                ) {
                     $suiteClassName = $loadedClass;
                     $testCaseClass  = $loadedClass;
 
@@ -80,7 +88,8 @@ class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuite
 
                     if (!$method->isAbstract() &&
                         $method->isPublic() &&
-                        $method->isStatic()) {
+                        $method->isStatic()
+                    ) {
                         $suiteClassName = $loadedClass;
 
                         if ($classFile == realpath($suiteClassFile)) {

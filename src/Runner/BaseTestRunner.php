@@ -13,7 +13,6 @@ use File_Iterator_Facade;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
-use PHPUnit_Runner_StandardTestSuiteLoader;
 use PHPUnit_Runner_TestSuiteLoader;
 use ReflectionClass;
 use ReflectionException;
@@ -41,7 +40,7 @@ abstract class BaseTestRunner
      */
     public function getLoader()
     {
-        return new PHPUnit_Runner_StandardTestSuiteLoader;
+        return new StandardTestSuiteLoader;
     }
 
     /**
