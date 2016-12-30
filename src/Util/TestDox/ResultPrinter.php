@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
+use PHPUnit\Runner\BaseTestRunner;
 
 /**
  * Base class for printers of TestDox documentation.
@@ -132,7 +133,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return;
         }
 
-        $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+        $this->testStatus = BaseTestRunner::STATUS_ERROR;
         $this->failed++;
     }
 
@@ -151,7 +152,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return;
         }
 
-        $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_WARNING;
+        $this->testStatus = BaseTestRunner::STATUS_WARNING;
         $this->warned++;
     }
 
@@ -168,7 +169,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return;
         }
 
-        $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+        $this->testStatus = BaseTestRunner::STATUS_FAILURE;
         $this->failed++;
     }
 
@@ -185,7 +186,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return;
         }
 
-        $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
+        $this->testStatus = BaseTestRunner::STATUS_INCOMPLETE;
         $this->incomplete++;
     }
 
@@ -204,7 +205,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return;
         }
 
-        $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_RISKY;
+        $this->testStatus = BaseTestRunner::STATUS_RISKY;
         $this->risky++;
     }
 
@@ -223,7 +224,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return;
         }
 
-        $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
+        $this->testStatus = BaseTestRunner::STATUS_SKIPPED;
         $this->skipped++;
     }
 
@@ -292,7 +293,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             $this->currentTestMethodPrettified .= ' ' . $test->dataDescription();
         }
 
-        $this->testStatus = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
+        $this->testStatus = BaseTestRunner::STATUS_PASSED;
     }
 
     /**
@@ -308,7 +309,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
         }
 
         if (!isset($this->tests[$this->currentTestMethodPrettified])) {
-            if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
+            if ($this->testStatus == BaseTestRunner::STATUS_PASSED) {
                 $this->tests[$this->currentTestMethodPrettified]['success'] = 1;
                 $this->tests[$this->currentTestMethodPrettified]['failure'] = 0;
             } else {
@@ -316,7 +317,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
                 $this->tests[$this->currentTestMethodPrettified]['failure'] = 1;
             }
         } else {
-            if ($this->testStatus == PHPUnit_Runner_BaseTestRunner::STATUS_PASSED) {
+            if ($this->testStatus == BaseTestRunner::STATUS_PASSED) {
                 $this->tests[$this->currentTestMethodPrettified]['success']++;
             } else {
                 $this->tests[$this->currentTestMethodPrettified]['failure']++;

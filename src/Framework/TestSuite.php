@@ -11,7 +11,7 @@ namespace PHPUnit\Framework;
 
 use Iterator;
 use IteratorAggregate;
-use PHPUnit_Runner_BaseTestRunner;
+use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit_Runner_Filter_Factory;
 use PHPUnit_Runner_PhptTestCase;
 use PHPUnit_Util_Fileloader;
@@ -276,9 +276,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $suiteMethod = false;
 
             if (!$testClass->isAbstract()) {
-                if ($testClass->hasMethod(PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME)) {
+                if ($testClass->hasMethod(BaseTestRunner::SUITE_METHODNAME)) {
                     $method = $testClass->getMethod(
-                        PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME
+                        BaseTestRunner::SUITE_METHODNAME
                     );
 
                     if ($method->isStatic()) {
@@ -367,9 +367,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $class = new ReflectionClass($className);
 
             if (!$class->isAbstract()) {
-                if ($class->hasMethod(PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME)) {
+                if ($class->hasMethod(BaseTestRunner::SUITE_METHODNAME)) {
                     $method = $class->getMethod(
-                        PHPUnit_Runner_BaseTestRunner::SUITE_METHODNAME
+                        BaseTestRunner::SUITE_METHODNAME
                     );
 
                     if ($method->isStatic()) {

@@ -7,16 +7,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Runner;
+
+use File_Iterator_Facade;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
+use PHPUnit_Runner_StandardTestSuiteLoader;
+use PHPUnit_Runner_TestSuiteLoader;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * Base class for all test runners.
  *
  * @since Class available since Release 2.0.0
  */
-abstract class PHPUnit_Runner_BaseTestRunner
+abstract class BaseTestRunner
 {
     const STATUS_PASSED     = 0;
     const STATUS_SKIPPED    = 1;

@@ -10,7 +10,7 @@
 
 namespace PHPUnit\Framework;
 
-use PHPUnit\Framework\Constraint\Exception;
+use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
 use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
@@ -30,7 +30,7 @@ use PHPUnit_Framework_MockObject_Stub_ReturnArgument;
 use PHPUnit_Framework_MockObject_Stub_ReturnCallback;
 use PHPUnit_Framework_MockObject_Stub_ReturnSelf;
 use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
-use PHPUnit_Runner_BaseTestRunner;
+use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit_Runner_PhptTestCase;
 use PHPUnit_Util_GlobalState;
 use PHPUnit_Util_InvalidArgumentHelper;
@@ -752,8 +752,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     {
         $status = $this->getStatus();
 
-        return $status == PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE ||
-            $status == PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+        return $status == BaseTestRunner::STATUS_FAILURE ||
+            $status == BaseTestRunner::STATUS_ERROR;
     }
 
     /**
@@ -941,28 +941,28 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 );
             }
 
-            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_PASSED;
+            $this->status = BaseTestRunner::STATUS_PASSED;
         } catch (IncompleteTest $e) {
-            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE;
+            $this->status        = BaseTestRunner::STATUS_INCOMPLETE;
             $this->statusMessage = $e->getMessage();
         } catch (SkippedTest $e) {
-            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED;
+            $this->status        = BaseTestRunner::STATUS_SKIPPED;
             $this->statusMessage = $e->getMessage();
         } catch (Warning $e) {
-            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_WARNING;
+            $this->status        = BaseTestRunner::STATUS_WARNING;
             $this->statusMessage = $e->getMessage();
         } catch (AssertionFailedError $e) {
-            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+            $this->status        = BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
         } catch (PredictionException $e) {
-            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
+            $this->status        = BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
         } catch (Throwable $_e) {
             $e = $_e;
         }
 
         if (isset($_e)) {
-            $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_ERROR;
+            $this->status        = BaseTestRunner::STATUS_ERROR;
             $this->statusMessage = $_e->getMessage();
         }
 
@@ -1097,7 +1097,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             if ($checkException) {
                 $this->assertThat(
                     $e,
-                    new Exception(
+                    new ExceptionConstraint(
                         $this->expectedException
                     )
                 );
@@ -1142,7 +1142,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if ($this->expectedException !== null) {
             $this->assertThat(
                 null,
-                new Exception(
+                new ExceptionConstraint(
                     $this->expectedException
                 )
             );

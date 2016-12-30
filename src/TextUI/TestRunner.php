@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\Test;
+use PHPUnit\Runner\BaseTestRunner;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
@@ -32,7 +33,7 @@ use SebastianBergmann\Environment\Runtime;
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
+class PHPUnit_TextUI_TestRunner extends BaseTestRunner
 {
     const SUCCESS_EXIT   = 0;
     const FAILURE_EXIT   = 1;
