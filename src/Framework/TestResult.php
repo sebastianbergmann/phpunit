@@ -18,6 +18,7 @@ use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\OutputError;
 use PHPUnit\Framework\CoveredCodeNotExecutedException;
 use PHPUnit\Framework\MissingCoversAnnotationException;
+use PHPUnit\Framework\RiskyTest;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCoveredCodeNotExecutedException;
@@ -231,7 +232,7 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function addError(PHPUnit_Framework_Test $test, Throwable $t, $time)
     {
-        if ($t instanceof PHPUnit_Framework_RiskyTest) {
+        if ($t instanceof RiskyTest) {
             $this->risky[] = new PHPUnit_Framework_TestFailure($test, $t);
             $notifyMethod  = 'addRiskyTest';
 
@@ -309,7 +310,7 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
     {
-        if ($e instanceof PHPUnit_Framework_RiskyTest ||
+        if ($e instanceof RiskyTest ||
             $e instanceof OutputError) {
             $this->risky[] = new PHPUnit_Framework_TestFailure($test, $e);
             $notifyMethod  = 'addRiskyTest';
