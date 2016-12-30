@@ -30,7 +30,7 @@ use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsFalse;
-use PHPUnit_Framework_Constraint_IsFinite;
+use PHPUnit\Framework\Constraint\IsFinite;
 use PHPUnit_Framework_Constraint_IsIdentical;
 use PHPUnit_Framework_Constraint_IsInfinite;
 use PHPUnit_Framework_Constraint_IsInstanceOf;
@@ -2537,13 +2537,13 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_IsFinite matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_IsFinite
+     * @return IsFinite
      *
      * @since Method available since Release 5.0.0
      */
     public static function isFinite()
     {
-        return new PHPUnit_Framework_Constraint_IsFinite;
+        return new IsFinite;
     }
 
     /**
