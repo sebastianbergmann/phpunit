@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\IncompleteTestCase;
 
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
@@ -531,7 +532,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                     if ($data instanceof PHPUnit_Framework_WarningTestCase ||
                         $data instanceof PHPUnit_Framework_SkippedTestCase ||
-                        $data instanceof PHPUnit_Framework_IncompleteTestCase) {
+                        $data instanceof IncompleteTestCase) {
                         $test->addTest($data, $groups);
                     } else {
                         foreach ($data as $_dataName => $_data) {
@@ -922,13 +923,13 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      * @param string $methodName
      * @param string $message
      *
-     * @return PHPUnit_Framework_IncompleteTestCase
+     * @return IncompleteTestCase
      *
      * @since Method available since Release 4.3.0
      */
     protected static function incompleteTest($class, $methodName, $message)
     {
-        return new PHPUnit_Framework_IncompleteTestCase($class, $methodName, $message);
+        return new IncompleteTestCase($class, $methodName, $message);
     }
 
     /**

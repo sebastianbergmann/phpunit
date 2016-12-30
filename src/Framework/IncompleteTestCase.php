@@ -7,14 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Exception;
+namespace PHPUnit\Framework;
+
+use PHPUnit_Framework_TestCase;
 
 /**
  * An incomplete test case
  *
  * @since Class available since Release 4.3.0
  */
-class PHPUnit_Framework_IncompleteTestCase extends PHPUnit_Framework_TestCase
+class IncompleteTestCase extends PHPUnit_Framework_TestCase
 {
     /**
      * @var string
