@@ -35,7 +35,7 @@ use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInfinite;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
-use PHPUnit_Framework_Constraint_IsNan;
+use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit_Framework_Constraint_IsNull;
 use PHPUnit_Framework_Constraint_IsReadable;
 use PHPUnit_Framework_Constraint_IsTrue;
@@ -2561,13 +2561,13 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_IsNan matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_IsNan
+     * @return IsNan
      *
      * @since Method available since Release 5.0.0
      */
     public static function isNan()
     {
-        return new PHPUnit_Framework_Constraint_IsNan;
+        return new IsNan;
     }
 
     /**
