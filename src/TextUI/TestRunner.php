@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\Test;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -885,10 +886,10 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
                 $listenerClass = new ReflectionClass($listener['class']);
 
-                if (!$listenerClass->implementsInterface(PHPUnit_Framework_TestListener::class)) {
+                if (!$listenerClass->implementsInterface(TestListener::class)) {
                     throw new Exception(
                         sprintf(
-                            'Class "%s" does not implement the PHPUnit_Framework_TestListener interface',
+                            'Class "%s" does not implement the PHPUnit\Framework\TestListener interface',
                             $listener['class']
                         )
                     );

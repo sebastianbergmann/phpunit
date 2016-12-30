@@ -18,6 +18,7 @@ use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\OutputError;
 use PHPUnit\Framework\CoveredCodeNotExecutedException;
 use PHPUnit\Framework\MissingCoversAnnotationException;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
@@ -194,9 +195,9 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Registers a TestListener.
      *
-     * @param  PHPUnit_Framework_TestListener
+     * @param TestListener $listener
      */
-    public function addListener(PHPUnit_Framework_TestListener $listener)
+    public function addListener(TestListener $listener)
     {
         $this->listeners[] = $listener;
     }
@@ -204,9 +205,9 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Unregisters a TestListener.
      *
-     * @param PHPUnit_Framework_TestListener $listener
+     * @param TestListener $listener
      */
-    public function removeListener(PHPUnit_Framework_TestListener $listener)
+    public function removeListener(TestListener $listener)
     {
         foreach ($this->listeners as $key => $_listener) {
             if ($listener === $_listener) {

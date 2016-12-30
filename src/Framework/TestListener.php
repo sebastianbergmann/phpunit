@@ -7,15 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Test;
+namespace PHPUnit\Framework;
+
+use Exception;
+use PHPUnit_Framework_TestSuite;
+use PHPUnit_Framework_Warning;
 
 /**
  * A Listener for test progress.
  *
  * @since Interface available since Release 2.0.0
  */
-interface PHPUnit_Framework_TestListener
+interface TestListener
 {
     /**
      * An error occurred.

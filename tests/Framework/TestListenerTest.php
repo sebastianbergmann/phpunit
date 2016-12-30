@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 
@@ -15,7 +16,7 @@ use PHPUnit\Framework\Test;
  * @since      Class available since Release 2.0.0
  * @covers     TestCase
  */
-class Framework_TestListenerTest extends TestCase implements PHPUnit_Framework_TestListener
+class Framework_TestListenerTest extends TestCase implements TestListener
 {
     protected $endCount;
     protected $errorCount;

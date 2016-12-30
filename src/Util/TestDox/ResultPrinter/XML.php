@@ -9,13 +9,14 @@
  */
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 
 /**
  * @since Class available since Release 5.4.0
  */
-class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
+class PHPUnit_Util_TestDox_ResultPrinter_XML extends PHPUnit_Util_Printer implements TestListener
 {
     /**
      * @var DOMDocument

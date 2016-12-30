@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
@@ -20,7 +21,7 @@ use SebastianBergmann\Environment\Console;
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
+class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements TestListener
 {
     const EVENT_TEST_START      = 0;
     const EVENT_TEST_END        = 1;

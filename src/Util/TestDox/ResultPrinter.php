@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 
@@ -16,7 +17,7 @@ use PHPUnit\Framework\Test;
  *
  * @since Class available since Release 2.1.0
  */
-abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer implements PHPUnit_Framework_TestListener
+abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer implements TestListener
 {
     /**
      * @var PHPUnit_Util_TestDox_NamePrettifier

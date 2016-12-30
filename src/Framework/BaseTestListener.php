@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use Exception;
-use PHPUnit_Framework_TestListener;
 use PHPUnit_Framework_TestSuite;
 use PHPUnit_Framework_Warning;
 
@@ -18,10 +17,10 @@ use PHPUnit_Framework_Warning;
  * An empty Listener that can be extended to implement TestListener
  * with just a few lines of code.
  *
- * @see PHPUnit_Framework_TestListener for documentation on the API methods.
+ * @see TestListener for documentation on the API methods.
  * @since Class available since Release 4.0.0
  */
-abstract class BaseTestListener implements PHPUnit_Framework_TestListener
+abstract class BaseTestListener implements TestListener
 {
     public function addError(Test $test, Exception $e, $time)
     {
