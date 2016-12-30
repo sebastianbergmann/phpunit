@@ -54,7 +54,7 @@ use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
-use PHPUnit_Framework_Constraint_Xor;
+use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit_Util_InvalidArgumentHelper;
 use PHPUnit_Util_Type;
 use PHPUnit_Util_XML;
@@ -2448,7 +2448,7 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_Xor matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_Xor
+     * @return LogicalXor
      *
      * @since Method available since Release 3.0.0
      */
@@ -2456,7 +2456,7 @@ abstract class Assert
     {
         $constraints = func_get_args();
 
-        $constraint = new PHPUnit_Framework_Constraint_Xor;
+        $constraint = new LogicalXor;
         $constraint->setConstraints($constraints);
 
         return $constraint;

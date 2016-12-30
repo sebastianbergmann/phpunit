@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\StringStartsWith;
@@ -2151,7 +2152,7 @@ function logicalOr()
 /**
  * Returns a PHPUnit_Framework_Constraint_Xor matcher object.
  *
- * @return PHPUnit_Framework_Constraint_Xor
+ * @return LogicalXor
  *
  * @since Method available since Release 3.0.0
  */
