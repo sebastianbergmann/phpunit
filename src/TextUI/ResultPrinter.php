@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\AssertionFailedError;
 use SebastianBergmann\Environment\Console;
 
 /**
@@ -432,11 +433,11 @@ class PHPUnit_TextUI_ResultPrinter extends PHPUnit_Util_Printer implements PHPUn
     /**
      * A failure occurred.
      *
-     * @param PHPUnit_Framework_Test                 $test
-     * @param PHPUnit_Framework_AssertionFailedError $e
-     * @param float                                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param AssertionFailedError   $e
+     * @param float                  $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
+    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
     {
         $this->writeProgressWithColor('bg-red, fg-white', 'F');
         $this->lastTestFailed = true;

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\AssertionFailedError;
 
 /**
  * An empty Listener that can be extended to implement TestListener
@@ -25,7 +26,7 @@ abstract class PHPUnit_Framework_BaseTestListener implements PHPUnit_Framework_T
     {
     }
 
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
+    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
     {
     }
 

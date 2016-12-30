@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\AssertionFailedError;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -92,11 +93,11 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     /**
      * A failure occurred.
      *
-     * @param PHPUnit_Framework_Test                 $test
-     * @param PHPUnit_Framework_AssertionFailedError $e
-     * @param float                                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param AssertionFailedError   $e
+     * @param float                  $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
+    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
     {
         $parameters = [
             'name'    => $test->getName(),

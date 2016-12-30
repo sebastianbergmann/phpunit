@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\AssertionFailedError;
 
 /**
  * A TestListener that generates a logfile of the test execution in XML markup.
@@ -148,11 +149,11 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
     /**
      * A failure occurred.
      *
-     * @param PHPUnit_Framework_Test                 $test
-     * @param PHPUnit_Framework_AssertionFailedError $e
-     * @param float                                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param AssertionFailedError   $e
+     * @param float                  $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
+    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
     {
         $this->doAddFault($test, $e, $time, 'failure');
         $this->testSuiteFailures[$this->testSuiteLevel]++;

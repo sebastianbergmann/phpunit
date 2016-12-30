@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\AssertionFailedError;
 
 /**
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
@@ -14,6 +15,6 @@
  *
  * @since Class available since Release 3.1.0
  */
-class PHPUnit_Framework_SkippedTestSuiteError extends PHPUnit_Framework_AssertionFailedError implements PHPUnit_Framework_SkippedTest
+class PHPUnit_Framework_SkippedTestSuiteError extends AssertionFailedError implements PHPUnit_Framework_SkippedTest
 {
 }

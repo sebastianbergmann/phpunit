@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\AssertionFailedError;
 
 /**
  * A TestFailure collects a failed test together with the caught exception.
@@ -164,6 +165,6 @@ class PHPUnit_Framework_TestFailure
      */
     public function isFailure()
     {
-        return ($this->thrownException() instanceof PHPUnit_Framework_AssertionFailedError);
+        return ($this->thrownException() instanceof AssertionFailedError);
     }
 }

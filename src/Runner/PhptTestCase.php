@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\AssertionFailedError;
 
 /**
  * Runner for PHPT test cases.
@@ -192,7 +193,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             try {
                 $this->assertPhptExpectation($sections, $jobResult['stdout']);
-            } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            } catch (AssertionFailedError $e) {
                 if ($xfail !== false) {
                     $result->addFailure(
                         $this,

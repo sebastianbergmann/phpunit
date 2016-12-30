@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\AssertionFailedError;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException;
@@ -294,11 +295,11 @@ class PHPUnit_Framework_TestResult implements Countable
      * Adds a failure to the list of failures.
      * The passed in exception caused the failure.
      *
-     * @param PHPUnit_Framework_Test                 $test
-     * @param PHPUnit_Framework_AssertionFailedError $e
-     * @param float                                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param AssertionFailedError   $e
+     * @param float                  $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
+    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time)
     {
         if ($e instanceof PHPUnit_Framework_RiskyTest ||
             $e instanceof PHPUnit_Framework_OutputError) {
@@ -703,7 +704,7 @@ class PHPUnit_Framework_TestResult implements Countable
             );
 
             $warning = true;
-        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+        } catch (AssertionFailedError $e) {
             $failure = true;
 
             if ($e instanceof PHPUnit_Framework_RiskyTestError) {
@@ -719,7 +720,7 @@ class PHPUnit_Framework_TestResult implements Countable
             $failure = true;
             $frame   = $e->getTrace()[0];
 
-            $e = new PHPUnit_Framework_AssertionFailedError(
+            $e = new AssertionFailedError(
                 sprintf(
                     '%s in %s:%s',
                     $e->getMessage(),

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\AssertionFailedError;
 
 /**
  * A Listener for test progress.
@@ -38,11 +39,11 @@ interface PHPUnit_Framework_TestListener
     /**
      * A failure occurred.
      *
-     * @param PHPUnit_Framework_Test                 $test
-     * @param PHPUnit_Framework_AssertionFailedError $e
-     * @param float                                  $time
+     * @param PHPUnit_Framework_Test $test
+     * @param AssertionFailedError   $e
+     * @param float                  $time
      */
-    public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time);
+    public function addFailure(PHPUnit_Framework_Test $test, AssertionFailedError $e, $time);
 
     /**
      * Incomplete test.

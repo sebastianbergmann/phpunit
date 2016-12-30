@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\AssertionFailedError;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
@@ -916,7 +917,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
         } catch (PHPUnit_Framework_Warning $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_WARNING;
             $this->statusMessage = $e->getMessage();
-        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+        } catch (AssertionFailedError $e) {
             $this->status        = PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
         } catch (PredictionException $e) {
@@ -999,7 +1000,7 @@ abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Fram
         // Workaround for missing "finally".
         if (isset($e)) {
             if ($e instanceof PredictionException) {
-                $e = new PHPUnit_Framework_AssertionFailedError($e->getMessage());
+                $e = new AssertionFailedError($e->getMessage());
             }
 
             $this->onNotSuccessfulTest($e);
