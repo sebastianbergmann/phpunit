@@ -12,12 +12,11 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit_Framework_Constraint_Composite;
 
 /**
  * @since Class available since Release 3.1.0
  */
-class Attribute extends PHPUnit_Framework_Constraint_Composite
+class Attribute extends Composite
 {
     /**
      * @var string
