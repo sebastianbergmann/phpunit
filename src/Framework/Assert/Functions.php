@@ -27,6 +27,7 @@ use PHPUnit\Framework\Constraint\IsJson;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Constraint\IsType;
+use PHPUnit\Framework\Constraint\LessThan;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -2059,7 +2060,7 @@ function isType($type)
  *
  * @param mixed $value
  *
- * @return PHPUnit_Framework_Constraint_LessThan
+ * @return LessThan
  *
  * @since Method available since Release 3.0.0
  */

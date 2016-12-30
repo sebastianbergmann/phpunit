@@ -42,7 +42,7 @@ use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\JsonMatches;
-use PHPUnit_Framework_Constraint_LessThan;
+use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit_Framework_Constraint_Not;
 use PHPUnit_Framework_Constraint_ObjectHasAttribute;
 use PHPUnit_Framework_Constraint_Or;
@@ -2884,13 +2884,13 @@ abstract class Assert
      *
      * @param mixed $value
      *
-     * @return PHPUnit_Framework_Constraint_LessThan
+     * @return LessThan
      *
      * @since Method available since Release 3.0.0
      */
     public static function lessThan($value)
     {
-        return new PHPUnit_Framework_Constraint_LessThan($value);
+        return new LessThan($value);
     }
 
     /**
@@ -2908,7 +2908,7 @@ abstract class Assert
     {
         return static::logicalOr(
             new IsEqual($value),
-            new PHPUnit_Framework_Constraint_LessThan($value)
+            new LessThan($value)
         );
     }
 

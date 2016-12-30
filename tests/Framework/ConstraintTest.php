@@ -27,6 +27,7 @@ use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\IsWritable;
+use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -1695,7 +1696,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers LessThan
      * @covers PHPUnit\Framework\Assert::lessThan
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -1728,7 +1729,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers LessThan
      * @covers PHPUnit\Framework\Assert::lessThan
      * @covers TestFailure::exceptionToString
      */
@@ -1756,7 +1757,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers LessThan
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::lessThan
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -1792,7 +1793,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers LessThan
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::lessThan
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -1825,7 +1826,7 @@ EOF
 
     /**
      * @covers IsEqual
-     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      * @covers TestFailure::exceptionToString
@@ -1915,7 +1916,7 @@ EOF
 
     /**
      * @covers IsEqual
-     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      * @covers TestFailure::exceptionToString
@@ -1945,7 +1946,7 @@ EOF
 
     /**
      * @covers IsEqual
-     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
@@ -1983,7 +1984,7 @@ EOF
 
     /**
      * @covers IsEqual
-     * @covers PHPUnit_Framework_Constraint_LessThan
+     * @covers LessThan
      * @covers PHPUnit_Framework_Constraint_Or
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
