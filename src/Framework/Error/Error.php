@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework;
+namespace PHPUnit\Framework\Error;
+
+use PHPUnit\Framework\Exception;
 
 /**
  * Wrapper for PHP errors.

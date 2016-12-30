@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Error;
 
-use PHPUnit\Framework\Error;
-
 /**
  * Wrapper for PHP deprecated errors.
  * You can disable deprecated-to-exception conversion by setting

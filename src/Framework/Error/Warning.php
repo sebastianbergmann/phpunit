@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Error;
 
-use PHPUnit\Framework\Error;
-
 /**
  * Wrapper for PHP warnings.
  * You can disable notice-to-exception conversion by setting

@@ -11,12 +11,12 @@
 // Workaround for http://bugs.php.net/bug.php?id=47987,
 // see https://github.com/sebastianbergmann/phpunit/issues#issue/125 for details
 // Use dirname(__DIR__) instead of using /../ because of https://github.com/facebook/hhvm/issues/5215
-use PHPUnit\Framework\Error;
+use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning;
 
-require_once dirname(__DIR__) . '/Framework/Error.php';
+require_once dirname(__DIR__) . '/Framework/Error/Error.php';
 require_once dirname(__DIR__) . '/Framework/Error/Notice.php';
 require_once dirname(__DIR__) . '/Framework/Error/Warning.php';
 require_once dirname(__DIR__) . '/Framework/Error/Deprecated.php';
