@@ -30,6 +30,7 @@ use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
+use PHPUnit\Framework\Constraint\LogicalOr;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -1919,7 +1920,7 @@ function greaterThan($value)
  *
  * @param mixed $value
  *
- * @return PHPUnit_Framework_Constraint_Or
+ * @return LogicalOr
  *
  * @since Method available since Release 3.1.0
  */
@@ -2081,7 +2082,7 @@ function lessThan($value)
  *
  * @param mixed $value
  *
- * @return PHPUnit_Framework_Constraint_Or
+ * @return LogicalOr
  *
  * @since Method available since Release 3.1.0
  */
@@ -2128,7 +2129,7 @@ function logicalNot(Constraint $constraint)
 /**
  * Returns a PHPUnit_Framework_Constraint_Or matcher object.
  *
- * @return PHPUnit_Framework_Constraint_Or
+ * @return LogicalOr
  *
  * @since Method available since Release 3.0.0
  */

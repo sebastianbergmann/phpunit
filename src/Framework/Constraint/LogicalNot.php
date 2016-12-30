@@ -117,9 +117,9 @@ class LogicalNot extends Constraint
     protected function failureDescription($other)
     {
         switch (get_class($this->constraint)) {
-            case 'PHPUnit_Framework_Constraint_And':
-            case 'PHPUnit_Framework_Constraint_Not':
-            case 'PHPUnit_Framework_Constraint_Or':
+            case LogicalAnd::class:
+            case self::class:
+            case LogicalOr::class:
                 return 'not( ' . $this->constraint->failureDescription($other) . ' )';
 
             default:
@@ -137,9 +137,9 @@ class LogicalNot extends Constraint
     public function toString()
     {
         switch (get_class($this->constraint)) {
-            case 'PHPUnit_Framework_Constraint_And':
-            case 'PHPUnit_Framework_Constraint_Not':
-            case 'PHPUnit_Framework_Constraint_Or':
+            case LogicalAnd::class:
+            case self::class:
+            case LogicalOr::class:
                 return 'not( ' . $this->constraint->toString() . ' )';
 
             default:

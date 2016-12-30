@@ -45,7 +45,7 @@ use PHPUnit\Framework\Constraint\JsonMatches;
 use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
-use PHPUnit_Framework_Constraint_Or;
+use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit_Framework_Constraint_PCREMatch;
 use PHPUnit_Framework_Constraint_SameSize;
 use PHPUnit_Framework_Constraint_StringContains;
@@ -2417,7 +2417,7 @@ abstract class Assert
     /**
      * Returns a PHPUnit_Framework_Constraint_Or matcher object.
      *
-     * @return PHPUnit_Framework_Constraint_Or
+     * @return LogicalOr
      *
      * @since Method available since Release 3.0.0
      */
@@ -2425,7 +2425,7 @@ abstract class Assert
     {
         $constraints = func_get_args();
 
-        $constraint = new PHPUnit_Framework_Constraint_Or;
+        $constraint = new LogicalOr;
         $constraint->setConstraints($constraints);
 
         return $constraint;
@@ -2776,7 +2776,7 @@ abstract class Assert
      *
      * @param mixed $value
      *
-     * @return PHPUnit_Framework_Constraint_Or
+     * @return LogicalOr
      *
      * @since Method available since Release 3.1.0
      */
@@ -2900,7 +2900,7 @@ abstract class Assert
      *
      * @param mixed $value
      *
-     * @return PHPUnit_Framework_Constraint_Or
+     * @return LogicalOr
      *
      * @since Method available since Release 3.1.0
      */

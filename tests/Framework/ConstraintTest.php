@@ -30,6 +30,7 @@ use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
+use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -520,7 +521,7 @@ EOF
     /**
      * @covers IsEqual
      * @covers GreaterThan
-     * @covers PHPUnit_Framework_Constraint_Or
+     * @covers LogicalOr
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      * @covers TestFailure::exceptionToString
      */
@@ -554,7 +555,7 @@ EOF
     /**
      * @covers IsEqual
      * @covers GreaterThan
-     * @covers PHPUnit_Framework_Constraint_Or
+     * @covers LogicalOr
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      * @covers TestFailure::exceptionToString
      */
@@ -584,7 +585,7 @@ EOF
     /**
      * @covers IsEqual
      * @covers GreaterThan
-     * @covers PHPUnit_Framework_Constraint_Or
+     * @covers LogicalOr
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -621,7 +622,7 @@ EOF
     /**
      * @covers IsEqual
      * @covers GreaterThan
-     * @covers PHPUnit_Framework_Constraint_Or
+     * @covers LogicalOr
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -1829,7 +1830,7 @@ EOF
     /**
      * @covers IsEqual
      * @covers LessThan
-     * @covers PHPUnit_Framework_Constraint_Or
+     * @covers LogicalOr
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      * @covers TestFailure::exceptionToString
      */
@@ -1919,7 +1920,7 @@ EOF
     /**
      * @covers IsEqual
      * @covers LessThan
-     * @covers PHPUnit_Framework_Constraint_Or
+     * @covers LogicalOr
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      * @covers TestFailure::exceptionToString
      */
@@ -1949,7 +1950,7 @@ EOF
     /**
      * @covers IsEqual
      * @covers LessThan
-     * @covers PHPUnit_Framework_Constraint_Or
+     * @covers LogicalOr
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -1987,7 +1988,7 @@ EOF
     /**
      * @covers IsEqual
      * @covers LessThan
-     * @covers PHPUnit_Framework_Constraint_Or
+     * @covers LogicalOr
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::lessThanOrEqual
      * @covers PHPUnit\Framework\Assert::logicalNot
