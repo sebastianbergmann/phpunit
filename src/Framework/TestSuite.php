@@ -12,7 +12,6 @@ namespace PHPUnit\Framework;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit_Framework_TestSuite_DataProvider;
-use PHPUnit_Framework_WarningTestCase;
 use PHPUnit_Runner_BaseTestRunner;
 use PHPUnit_Runner_Filter_Factory;
 use PHPUnit_Runner_PhptTestCase;
@@ -550,7 +549,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
                     $groups = PHPUnit_Util_Test::getGroups($className, $name);
 
-                    if ($data instanceof PHPUnit_Framework_WarningTestCase ||
+                    if ($data instanceof WarningTestCase ||
                         $data instanceof SkippedTestCase ||
                         $data instanceof IncompleteTestCase
                     ) {
@@ -921,11 +920,11 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * @param string $message
      *
-     * @return PHPUnit_Framework_WarningTestCase
+     * @return WarningTestCase
      */
     protected static function warning($message)
     {
-        return new PHPUnit_Framework_WarningTestCase($message);
+        return new WarningTestCase($message);
     }
 
     /**

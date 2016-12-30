@@ -7,16 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\Warning;
-use PHPUnit\Framework\TestCase;
+namespace PHPUnit\Framework;
 
 /**
  * A warning.
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_Framework_WarningTestCase extends TestCase
+class WarningTestCase extends TestCase
 {
     /**
      * @var string

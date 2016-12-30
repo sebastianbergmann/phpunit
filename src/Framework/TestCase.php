@@ -30,7 +30,6 @@ use PHPUnit_Framework_MockObject_Stub_ReturnArgument;
 use PHPUnit_Framework_MockObject_Stub_ReturnCallback;
 use PHPUnit_Framework_MockObject_Stub_ReturnSelf;
 use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
-use PHPUnit_Framework_WarningTestCase;
 use PHPUnit_Runner_BaseTestRunner;
 use PHPUnit_Runner_PhptTestCase;
 use PHPUnit_Util_GlobalState;
@@ -773,7 +772,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $result = $this->createResult();
         }
 
-        if (!$this instanceof PHPUnit_Framework_WarningTestCase) {
+        if (!$this instanceof WarningTestCase) {
             $this->setTestResultObject($result);
             $this->setUseErrorHandlerFromAnnotation();
         }
@@ -783,7 +782,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $result->convertErrorsToExceptions($this->useErrorHandler);
         }
 
-        if (!$this instanceof PHPUnit_Framework_WarningTestCase && !$this->handleDependencies()) {
+        if (!$this instanceof WarningTestCase && !$this->handleDependencies()) {
             return;
         }
 

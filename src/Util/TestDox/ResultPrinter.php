@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestListener;
@@ -391,7 +392,7 @@ abstract class PHPUnit_Util_TestDox_ResultPrinter extends PHPUnit_Util_Printer i
             return false;
         }
 
-        if ($test instanceof PHPUnit_Framework_WarningTestCase) {
+        if ($test instanceof WarningTestCase) {
             return false;
         }
 

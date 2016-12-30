@@ -16,7 +16,6 @@ use Error;
 use PHP_Invoker;
 use PHP_Timer;
 use PHPUnit_Framework_MockObject_Exception;
-use PHPUnit_Framework_WarningTestCase;
 use PHPUnit_Util_Blacklist;
 use PHPUnit_Util_InvalidArgumentHelper;
 use PHPUnit_Util_Printer;
@@ -671,14 +670,14 @@ class TestResult implements Countable
         }
 
         $collectCodeCoverage = $this->codeCoverage !== null &&
-            !$test instanceof PHPUnit_Framework_WarningTestCase;
+            !$test instanceof WarningTestCase;
 
         if ($collectCodeCoverage) {
             $this->codeCoverage->start($test);
         }
 
         $monitorFunctions = $this->beStrictAboutResourceUsageDuringSmallTests &&
-            !$test instanceof PHPUnit_Framework_WarningTestCase &&
+            !$test instanceof WarningTestCase &&
             $test->getSize() == PHPUnit_Util_Test::SMALL &&
             function_exists('xdebug_start_function_monitor');
 
@@ -689,7 +688,7 @@ class TestResult implements Countable
         PHP_Timer::start();
 
         try {
-            if (!$test instanceof PHPUnit_Framework_WarningTestCase &&
+            if (!$test instanceof WarningTestCase &&
                 $test->getSize() != PHPUnit_Util_Test::UNKNOWN &&
                 $this->enforceTimeLimit &&
                 extension_loaded('pcntl') && class_exists('PHP_Invoker')
