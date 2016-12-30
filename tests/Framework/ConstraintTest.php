@@ -23,6 +23,7 @@ use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
+use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -1565,7 +1566,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsNull
+     * @covers IsNull
      * @covers PHPUnit\Framework\Assert::isNull
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -1597,7 +1598,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsNull
+     * @covers IsNull
      * @covers PHPUnit\Framework\Assert::isNull
      * @covers TestFailure::exceptionToString
      */
@@ -1624,7 +1625,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsNull
+     * @covers IsNull
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::isNull
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -1660,7 +1661,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsNull
+     * @covers IsNull
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::isNull
      * @covers PHPUnit\Framework\Assert::logicalNot
