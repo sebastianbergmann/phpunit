@@ -48,7 +48,7 @@ use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\SameSize;
-use PHPUnit_Framework_Constraint_StringContains;
+use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit_Framework_Constraint_StringEndsWith;
 use PHPUnit_Framework_Constraint_StringMatches;
 use PHPUnit_Framework_Constraint_StringStartsWith;
@@ -198,7 +198,7 @@ abstract class Assert
                 );
             }
 
-            $constraint = new PHPUnit_Framework_Constraint_StringContains(
+            $constraint = new StringContains(
                 $needle,
                 $ignoreCase
             );
@@ -270,7 +270,7 @@ abstract class Assert
             }
 
             $constraint = new LogicalNot(
-                new PHPUnit_Framework_Constraint_StringContains(
+                new StringContains(
                     $needle,
                     $ignoreCase
                 )
@@ -2960,13 +2960,13 @@ abstract class Assert
      * @param string $string
      * @param bool   $case
      *
-     * @return PHPUnit_Framework_Constraint_StringContains
+     * @return StringContains
      *
      * @since Method available since Release 3.0.0
      */
     public static function stringContains($string, $case = true)
     {
-        return new PHPUnit_Framework_Constraint_StringContains($string, $case);
+        return new StringContains($string, $case);
     }
 
     /**

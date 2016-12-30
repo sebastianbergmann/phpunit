@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\RegularExpression;
 
 /**
@@ -2336,7 +2337,7 @@ function returnValueMap(array $valueMap)
  * @param string $string
  * @param bool   $case
  *
- * @return PHPUnit_Framework_Constraint_StringContains
+ * @return StringContains
  *
  * @since Method available since Release 3.0.0
  */

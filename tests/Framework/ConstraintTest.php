@@ -31,6 +31,7 @@ use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -2740,7 +2741,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringContains
+     * @covers StringContains
      * @covers PHPUnit\Framework\Assert::stringContains
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -2773,7 +2774,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringContains
+     * @covers StringContains
      * @covers PHPUnit\Framework\Assert::stringContains
      * @covers TestFailure::exceptionToString
      */
@@ -2801,7 +2802,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringContains
+     * @covers StringContains
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::stringContains
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -2837,7 +2838,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_StringContains
+     * @covers StringContains
      * @covers LogicalNot
      * @covers PHPUnit\Framework\Assert::stringContains
      * @covers PHPUnit\Framework\Assert::logicalNot
