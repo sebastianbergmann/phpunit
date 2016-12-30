@@ -11,6 +11,8 @@
 // Workaround for http://bugs.php.net/bug.php?id=47987,
 // see https://github.com/sebastianbergmann/phpunit/issues#issue/125 for details
 // Use dirname(__DIR__) instead of using /../ because of https://github.com/facebook/hhvm/issues/5215
+use PHPUnit\Framework\Error;
+
 require_once dirname(__DIR__) . '/Framework/Error.php';
 require_once dirname(__DIR__) . '/Framework/Error/Notice.php';
 require_once dirname(__DIR__) . '/Framework/Error/Warning.php';
@@ -41,7 +43,7 @@ class PHPUnit_Util_ErrorHandler
      * @param string $errfile
      * @param int    $errline
      *
-     * @throws PHPUnit_Framework_Error
+     * @throws Error
      */
     public static function handleError($errno, $errstr, $errfile, $errline)
     {

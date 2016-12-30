@@ -8,27 +8,32 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Framework;
+
+use Exception;
+use PHPUnit_Framework_Exception;
+
 /**
  * Wrapper for PHP errors.
  *
  * @since Class available since Release 2.2.0
  */
-class PHPUnit_Framework_Error extends PHPUnit_Framework_Exception
+class Error extends PHPUnit_Framework_Exception
 {
     /**
      * Constructor.
      *
-     * @param string    $message
-     * @param int       $code
-     * @param string    $file
-     * @param int       $line
+     * @param string $message
+     * @param int $code
+     * @param string $file
+     * @param int $line
      * @param Exception $previous
      */
     public function __construct($message, $code, $file, $line, Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
 
-        $this->file  = $file;
-        $this->line  = $line;
+        $this->file = $file;
+        $this->line = $line;
     }
 }

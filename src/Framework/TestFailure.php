@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Error;
 
 /**
  * A TestFailure collects a failed test together with the caught exception.
@@ -99,7 +100,7 @@ class PHPUnit_Framework_TestFailure
             if (!empty($buffer)) {
                 $buffer = trim($buffer) . "\n";
             }
-        } elseif ($e instanceof PHPUnit_Framework_Error) {
+        } elseif ($e instanceof Error) {
             $buffer = $e->getMessage() . "\n";
         } elseif ($e instanceof PHPUnit_Framework_ExceptionWrapper) {
             $buffer = $e->getClassname() . ': ' . $e->getMessage() . "\n";
