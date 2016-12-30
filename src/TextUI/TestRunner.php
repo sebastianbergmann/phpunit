@@ -29,7 +29,7 @@ use PHPUnit\Util\Configuration;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit_Util_Printer;
-use PHPUnit_Util_TestDox_ResultPrinter_HTML;
+use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit_Util_TestDox_ResultPrinter_Text;
 use PHPUnit_Util_TestDox_ResultPrinter_XML;
 use ReflectionClass;
@@ -334,7 +334,7 @@ class TestRunner extends BaseTestRunner
 
         if (isset($arguments['testdoxHTMLFile'])) {
             $result->addListener(
-                new PHPUnit_Util_TestDox_ResultPrinter_HTML(
+                new HtmlResultPrinter(
                     $arguments['testdoxHTMLFile'],
                     $arguments['testdoxGroups'],
                     $arguments['testdoxExcludeGroups']
