@@ -14,7 +14,7 @@ $_SERVER['argv'][]  = 'Issue1348Test';
 $_SERVER['argv'][]  = __DIR__ . '/1348/Issue1348Test.php';
 
 require __DIR__ . '/../../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

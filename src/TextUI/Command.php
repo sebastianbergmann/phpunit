@@ -8,6 +8,9 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\TextUI;
+
+use File_Iterator_Facade;
 use PharIo\Manifest\ManifestLoader;
 use PharIo\Manifest\Exception as ManifestException;
 use PHPUnit\Framework\Exception;
@@ -17,6 +20,16 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
+use PHPUnit_TextUI_ResultPrinter;
+use PHPUnit_TextUI_TestRunner;
+use PHPUnit_Util_Configuration;
+use PHPUnit_Util_ConfigurationGenerator;
+use PHPUnit_Util_Fileloader;
+use PHPUnit_Util_Filesystem;
+use PHPUnit_Util_Getopt;
+use PHPUnit_Util_Printer;
+use ReflectionClass;
+use Throwable;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -24,7 +37,7 @@ use PHPUnit\Runner\TestSuiteLoader;
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_TextUI_Command
+class Command
 {
     /**
      * @var array
@@ -47,67 +60,67 @@ class PHPUnit_TextUI_Command
      * @var array
      */
     protected $longOptions = [
-        'atleast-version='           => null,
-        'backup-globals'             => null,
-        'bootstrap='                 => null,
-        'colors=='                   => null,
-        'columns='                   => null,
-        'configuration='             => null,
-        'coverage-clover='           => null,
-        'coverage-crap4j='           => null,
-        'coverage-html='             => null,
-        'coverage-php='              => null,
-        'coverage-text=='            => null,
-        'coverage-xml='              => null,
-        'debug'                      => null,
-        'disallow-test-output'       => null,
-        'disallow-resource-usage'    => null,
-        'disallow-todo-tests'        => null,
-        'enforce-time-limit'         => null,
-        'exclude-group='             => null,
-        'filter='                    => null,
-        'generate-configuration'     => null,
-        'group='                     => null,
-        'help'                       => null,
-        'include-path='              => null,
-        'list-groups'                => null,
-        'list-suites'                => null,
-        'loader='                    => null,
-        'log-junit='                 => null,
-        'log-teamcity='              => null,
-        'no-configuration'           => null,
-        'no-coverage'                => null,
-        'no-extensions'              => null,
-        'printer='                   => null,
-        'process-isolation'          => null,
-        'repeat='                    => null,
-        'dont-report-useless-tests'  => null,
-        'reverse-list'               => null,
-        'static-backup'              => null,
-        'stderr'                     => null,
-        'stop-on-error'              => null,
-        'stop-on-failure'            => null,
-        'stop-on-warning'            => null,
-        'stop-on-incomplete'         => null,
-        'stop-on-risky'              => null,
-        'stop-on-skipped'            => null,
-        'fail-on-warning'            => null,
-        'fail-on-risky'              => null,
-        'strict-coverage'            => null,
-        'disable-coverage-ignore'    => null,
-        'strict-global-state'        => null,
-        'teamcity'                   => null,
-        'testdox'                    => null,
-        'testdox-group='             => null,
-        'testdox-exclude-group='     => null,
-        'testdox-html='              => null,
-        'testdox-text='              => null,
-        'testdox-xml='               => null,
-        'test-suffix='               => null,
-        'testsuite='                 => null,
-        'verbose'                    => null,
-        'version'                    => null,
-        'whitelist='                 => null
+        'atleast-version='          => null,
+        'backup-globals'            => null,
+        'bootstrap='                => null,
+        'colors=='                  => null,
+        'columns='                  => null,
+        'configuration='            => null,
+        'coverage-clover='          => null,
+        'coverage-crap4j='          => null,
+        'coverage-html='            => null,
+        'coverage-php='             => null,
+        'coverage-text=='           => null,
+        'coverage-xml='             => null,
+        'debug'                     => null,
+        'disallow-test-output'      => null,
+        'disallow-resource-usage'   => null,
+        'disallow-todo-tests'       => null,
+        'enforce-time-limit'        => null,
+        'exclude-group='            => null,
+        'filter='                   => null,
+        'generate-configuration'    => null,
+        'group='                    => null,
+        'help'                      => null,
+        'include-path='             => null,
+        'list-groups'               => null,
+        'list-suites'               => null,
+        'loader='                   => null,
+        'log-junit='                => null,
+        'log-teamcity='             => null,
+        'no-configuration'          => null,
+        'no-coverage'               => null,
+        'no-extensions'             => null,
+        'printer='                  => null,
+        'process-isolation'         => null,
+        'repeat='                   => null,
+        'dont-report-useless-tests' => null,
+        'reverse-list'              => null,
+        'static-backup'             => null,
+        'stderr'                    => null,
+        'stop-on-error'             => null,
+        'stop-on-failure'           => null,
+        'stop-on-warning'           => null,
+        'stop-on-incomplete'        => null,
+        'stop-on-risky'             => null,
+        'stop-on-skipped'           => null,
+        'fail-on-warning'           => null,
+        'fail-on-risky'             => null,
+        'strict-coverage'           => null,
+        'disable-coverage-ignore'   => null,
+        'strict-global-state'       => null,
+        'teamcity'                  => null,
+        'testdox'                   => null,
+        'testdox-group='            => null,
+        'testdox-exclude-group='    => null,
+        'testdox-html='             => null,
+        'testdox-text='             => null,
+        'testdox-xml='              => null,
+        'test-suffix='              => null,
+        'testsuite='                => null,
+        'verbose'                   => null,
+        'version'                   => null,
+        'whitelist='                => null
     ];
 
     /**
@@ -138,7 +151,8 @@ class PHPUnit_TextUI_Command
         $runner = $this->createRunner();
 
         if (is_object($this->arguments['test']) &&
-            $this->arguments['test'] instanceof Test) {
+            $this->arguments['test'] instanceof Test
+        ) {
             $suite = $this->arguments['test'];
         } else {
             $suite = $runner->getTest(
@@ -648,7 +662,8 @@ class PHPUnit_TextUI_Command
 
             if (isset($this->arguments['test']) &&
                 is_file($this->arguments['test']) &&
-                substr($this->arguments['test'], -5, 5) != '.phpt') {
+                substr($this->arguments['test'], -5, 5) != '.phpt'
+            ) {
                 $this->arguments['testFile'] = realpath($this->arguments['test']);
                 $this->arguments['test']     = substr($this->arguments['test'], 0, strrpos($this->arguments['test'], '.'));
             }
@@ -670,7 +685,8 @@ class PHPUnit_TextUI_Command
         }
 
         if (isset($this->arguments['configuration']) &&
-            is_dir($this->arguments['configuration'])) {
+            is_dir($this->arguments['configuration'])
+        ) {
             $configurationFile = $this->arguments['configuration'] . '/phpunit.xml';
 
             if (file_exists($configurationFile)) {
@@ -683,7 +699,8 @@ class PHPUnit_TextUI_Command
                 );
             }
         } elseif (!isset($this->arguments['configuration']) &&
-                  $this->arguments['useDefaultConfiguration']) {
+            $this->arguments['useDefaultConfiguration']
+        ) {
             if (file_exists('phpunit.xml')) {
                 $this->arguments['configuration'] = realpath('phpunit.xml');
             } elseif (file_exists('phpunit.xml.dist')) {
@@ -719,7 +736,7 @@ class PHPUnit_TextUI_Command
             /*
              * Issue #657
              */
-            if (isset($phpunitConfiguration['stderr']) && ! isset($this->arguments['stderr'])) {
+            if (isset($phpunitConfiguration['stderr']) && !isset($this->arguments['stderr'])) {
                 $this->arguments['stderr'] = $phpunitConfiguration['stderr'];
             }
 
@@ -727,7 +744,7 @@ class PHPUnit_TextUI_Command
                 $this->handleExtensions($phpunitConfiguration['extensionsDirectory']);
             }
 
-            if (isset($phpunitConfiguration['columns']) && ! isset($this->arguments['columns'])) {
+            if (isset($phpunitConfiguration['columns']) && !isset($this->arguments['columns'])) {
                 $this->arguments['columns'] = $phpunitConfiguration['columns'];
             }
 
@@ -769,7 +786,8 @@ class PHPUnit_TextUI_Command
         }
 
         if (isset($this->arguments['printer']) &&
-            is_string($this->arguments['printer'])) {
+            is_string($this->arguments['printer'])
+        ) {
             $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
         }
 
@@ -781,7 +799,8 @@ class PHPUnit_TextUI_Command
         }
 
         if (!isset($this->arguments['test']) ||
-            (isset($this->arguments['testDatabaseLogRevision']) && !isset($this->arguments['testDatabaseDSN']))) {
+            (isset($this->arguments['testDatabaseLogRevision']) && !isset($this->arguments['testDatabaseDSN']))
+        ) {
             $this->showHelp();
             exit(PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT);
         }
@@ -815,7 +834,8 @@ class PHPUnit_TextUI_Command
             $class = new ReflectionClass($loaderClass);
 
             if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
-                $class->isInstantiable()) {
+                $class->isInstantiable()
+            ) {
                 return $class->newInstance();
             }
         }
@@ -861,7 +881,8 @@ class PHPUnit_TextUI_Command
 
             if ($class->implementsInterface(TestListener::class) &&
                 $class->isSubclassOf('PHPUnit_Util_Printer') &&
-                $class->isInstantiable()) {
+                $class->isInstantiable()
+            ) {
                 if ($class->isSubclassOf('PHPUnit_TextUI_ResultPrinter')) {
                     return $printerClass;
                 }

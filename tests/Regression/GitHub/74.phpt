@@ -8,7 +8,7 @@ $_SERVER['argv'][3] = 'Issue74Test';
 $_SERVER['argv'][4] = __DIR__ . '/74/Issue74Test.php';
 
 require __DIR__ . '/../../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 ?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

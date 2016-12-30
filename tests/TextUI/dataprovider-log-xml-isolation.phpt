@@ -10,7 +10,7 @@ $_SERVER['argv'][5] = 'DataProviderTest';
 $_SERVER['argv'][6] = __DIR__ . '/../_files/DataProviderTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
