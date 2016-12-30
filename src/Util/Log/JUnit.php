@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\SelfDescribing;
 
 /**
  * A TestListener that generates a logfile of the test execution in XML markup.
@@ -414,7 +415,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
             return;
         }
 
-        if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+        if ($test instanceof SelfDescribing) {
             $buffer = $test->toString() . "\n";
         } else {
             $buffer = '';

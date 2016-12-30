@@ -10,13 +10,14 @@
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\SelfDescribing;
 
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
  *
  * @since Class available since Release 2.0.0
  */
-class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing, IteratorAggregate
+class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, SelfDescribing, IteratorAggregate
 {
     /**
      * Last count of tests in this suite.

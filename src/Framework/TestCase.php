@@ -12,6 +12,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTest;
+use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\RiskyTestError;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
@@ -69,7 +70,7 @@ use DeepCopy\DeepCopy;
  *
  * @since Class available since Release 2.0.0
  */
-abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
+abstract class PHPUnit_Framework_TestCase extends Assert implements PHPUnit_Framework_Test, SelfDescribing
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.

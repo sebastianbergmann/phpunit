@@ -12,6 +12,7 @@ use PHPUnit\Framework\Error;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\SelfDescribing;
 
 /**
  * A TestFailure collects a failed test together with the caught exception.
@@ -43,7 +44,7 @@ class PHPUnit_Framework_TestFailure
      */
     public function __construct(PHPUnit_Framework_Test $failedTest, $t)
     {
-        if ($failedTest instanceof PHPUnit_Framework_SelfDescribing) {
+        if ($failedTest instanceof SelfDescribing) {
             $this->testName = $failedTest->toString();
         } else {
             $this->testName = get_class($failedTest);
@@ -93,7 +94,7 @@ class PHPUnit_Framework_TestFailure
      */
     public static function exceptionToString(Exception $e)
     {
-        if ($e instanceof PHPUnit_Framework_SelfDescribing) {
+        if ($e instanceof SelfDescribing) {
             $buffer = $e->toString();
 
             if ($e instanceof ExpectationFailedException && $e->getComparisonFailure()) {

@@ -11,13 +11,14 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\SelfDescribing;
 
 /**
  * Runner for PHPT test cases.
  *
  * @since Class available since Release 3.1.4
  */
-class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
+class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, SelfDescribing
 {
     /**
      * @var string

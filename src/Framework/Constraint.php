@@ -11,7 +11,6 @@
 namespace PHPUnit\Framework;
 
 use Countable;
-use PHPUnit_Framework_SelfDescribing;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter;
 
@@ -20,7 +19,7 @@ use SebastianBergmann\Exporter\Exporter;
  *
  * @since Interface available since Release 3.0.0
  */
-abstract class Constraint implements Countable, PHPUnit_Framework_SelfDescribing
+abstract class Constraint implements Countable, SelfDescribing
 {
     protected $exporter;
 

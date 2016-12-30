@@ -10,6 +10,7 @@
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidCoversTargetException;
+use PHPUnit\Framework\SelfDescribing;
 
 /**
  * Test helpers.
@@ -43,7 +44,7 @@ class PHPUnit_Util_Test
     public static function describe(PHPUnit_Framework_Test $test, $asString = true)
     {
         if ($asString) {
-            if ($test instanceof PHPUnit_Framework_SelfDescribing) {
+            if ($test instanceof SelfDescribing) {
                 return $test->toString();
             } else {
                 return get_class($test);
@@ -53,7 +54,7 @@ class PHPUnit_Util_Test
                 return [
                   get_class($test), $test->getName()
                 ];
-            } elseif ($test instanceof PHPUnit_Framework_SelfDescribing) {
+            } elseif ($test instanceof SelfDescribing) {
                 return ['', $test->toString()];
             } else {
                 return ['', get_class($test)];
