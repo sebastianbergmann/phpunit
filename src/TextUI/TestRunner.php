@@ -20,6 +20,8 @@ use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\StandardTestSuiteLoader;
+use PHPUnit\Runner\Filter\NameFilterIterator;
+use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
@@ -30,7 +32,6 @@ use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
 use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\Environment\Runtime;
-use PHPUnit\Runner\Filter\NameFilterIterator;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -139,7 +140,7 @@ class PHPUnit_TextUI_TestRunner extends BaseTestRunner
 
         if (!empty($arguments['excludeGroups'])) {
             $filterFactory->addFilter(
-                new ReflectionClass('PHPUnit_Runner_Filter_Group_Exclude'),
+                new ReflectionClass(ExcludeGroupFilterIterator::class),
                 $arguments['excludeGroups']
             );
         }
