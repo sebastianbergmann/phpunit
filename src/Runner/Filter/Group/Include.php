@@ -7,11 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Runner\Filter\GroupFilterIterator;
 
 /**
  * @since Class available since Release 4.0.0
  */
-class PHPUnit_Runner_Filter_Group_Include extends PHPUnit_Runner_Filter_GroupFilterIterator
+class PHPUnit_Runner_Filter_Group_Include extends GroupFilterIterator
 {
     protected function doAccept($hash)
     {

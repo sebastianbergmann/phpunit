@@ -7,12 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Runner\Filter;
+
 use PHPUnit\Framework\TestSuite;
+use RecursiveFilterIterator;
+use RecursiveIterator;
 
 /**
  * @since Class available since Release 4.0.0
  */
-abstract class PHPUnit_Runner_Filter_GroupFilterIterator extends RecursiveFilterIterator
+abstract class GroupFilterIterator extends RecursiveFilterIterator
 {
     /**
      * @var array
