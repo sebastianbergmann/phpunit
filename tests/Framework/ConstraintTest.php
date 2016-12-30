@@ -25,6 +25,7 @@ use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
+use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
@@ -1416,7 +1417,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsType
+     * @covers IsType
      * @covers PHPUnit\Framework\Assert::isType
      * @covers PHPUnit\Framework\Constraint::count
      * @covers TestFailure::exceptionToString
@@ -1448,7 +1449,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsType
+     * @covers IsType
      * @covers PHPUnit\Framework\Assert::isType
      * @covers TestFailure::exceptionToString
      */
@@ -1487,7 +1488,7 @@ EOF
 
     /**
      * @dataProvider resources
-     * @covers PHPUnit_Framework_Constraint_IsType
+     * @covers       IsType
      * @covers PHPUnit\Framework\Assert::isType
      */
     public function testConstraintIsResourceTypeEvaluatesCorrectlyWithResources($resource)
@@ -1500,7 +1501,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsType
+     * @covers IsType
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::isType
      * @covers PHPUnit\Framework\Assert::logicalNot
@@ -1536,7 +1537,7 @@ EOF
     }
 
     /**
-     * @covers PHPUnit_Framework_Constraint_IsType
+     * @covers IsType
      * @covers PHPUnit_Framework_Constraint_Not
      * @covers PHPUnit\Framework\Assert::isType
      * @covers PHPUnit\Framework\Assert::logicalNot

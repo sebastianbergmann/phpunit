@@ -26,6 +26,7 @@ use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsTrue;
+use PHPUnit\Framework\Constraint\IsType;
 
 /**
  * Returns a matcher that matches when the method is executed
@@ -2041,7 +2042,7 @@ function isTrue()
  *
  * @param string $type
  *
- * @return PHPUnit_Framework_Constraint_IsType
+ * @return IsType
  *
  * @since Method available since Release 3.0.0
  */

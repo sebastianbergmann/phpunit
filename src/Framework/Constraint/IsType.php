@@ -7,7 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Constraint\Constraint;
+namespace PHPUnit\Framework\Constraint;
+
 use PHPUnit\Framework\Exception;
 
 /**
@@ -18,7 +19,7 @@ use PHPUnit\Framework\Exception;
  *
  * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_IsType extends Constraint
+class IsType extends Constraint
 {
     const TYPE_ARRAY    = 'array';
     const TYPE_BOOL     = 'bool';
