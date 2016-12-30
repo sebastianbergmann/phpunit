@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Util;
+
 use PHPUnit\Framework\Exception;
 
 /**
@@ -14,7 +16,7 @@ use PHPUnit\Framework\Exception;
  *
  * @since Class available since Release 2.3.0
  */
-class PHPUnit_Util_Fileloader
+class Fileloader
 {
     /**
      * Checks if a PHP sourcefile is readable.

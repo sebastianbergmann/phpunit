@@ -22,7 +22,7 @@ use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Util\Configuration;
 use PHPUnit\Util\ConfigurationGenerator;
-use PHPUnit_Util_Fileloader;
+use PHPUnit\Util\Fileloader;
 use PHPUnit_Util_Filesystem;
 use PHPUnit_Util_Getopt;
 use PHPUnit_Util_Printer;
@@ -907,7 +907,7 @@ class Command
     protected function handleBootstrap($filename)
     {
         try {
-            PHPUnit_Util_Fileloader::checkAndLoad($filename);
+            Fileloader::checkAndLoad($filename);
         } catch (Exception $e) {
             $this->showError($e->getMessage());
         }
