@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Invocation matcher which checks if a method has been invoked at least
@@ -41,14 +42,14 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount extends PHPUnit_Fr
      * Verifies that the current expectation is valid. If everything is OK the
      * code should just return, if not it must throw an exception.
      *
-     * @throws PHPUnit_Framework_ExpectationFailedException
+     * @throws ExpectationFailedException
      */
     public function verify()
     {
         $count = $this->getInvocationCount();
 
         if ($count > $this->allowedInvocations) {
-            throw new PHPUnit_Framework_ExpectationFailedException(
+            throw new ExpectationFailedException(
                 'Expected invocation at most ' . $this->allowedInvocations .
                 ' times but it occurred ' . $count . ' time(s).'
             );

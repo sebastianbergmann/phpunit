@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Util\InvalidArgumentHelper;
 
 /**
  * Invocation matcher which looks for a specific method name in the invocations.
@@ -36,7 +37,7 @@ class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_
     {
         if (!$constraint instanceof Constraint) {
             if (!is_string($constraint)) {
-                throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+                throw InvalidArgumentHelper::factory(1, 'string');
             }
 
             $constraint = new IsEqual(

@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Invocation matcher which checks if a method has been invoked a certain amount
@@ -52,7 +53,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
     /**
      * @param PHPUnit_Framework_MockObject_Invocation $invocation
      *
-     * @throws PHPUnit_Framework_ExpectationFailedException
+     * @throws ExpectationFailedException
      */
     public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
@@ -82,7 +83,7 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
                     }
             }
 
-            throw new PHPUnit_Framework_ExpectationFailedException($message);
+            throw new ExpectationFailedException($message);
         }
     }
 
@@ -90,14 +91,14 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
      * Verifies that the current expectation is valid. If everything is OK the
      * code should just return, if not it must throw an exception.
      *
-     * @throws PHPUnit_Framework_ExpectationFailedException
+     * @throws ExpectationFailedException
      */
     public function verify()
     {
         $count = $this->getInvocationCount();
 
         if ($count !== $this->expectedCount) {
-            throw new PHPUnit_Framework_ExpectationFailedException(
+            throw new ExpectationFailedException(
                 sprintf(
                     'Method was expected to be called %d times, ' .
                     'actually called %d times.',
