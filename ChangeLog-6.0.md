@@ -49,6 +49,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * Removed the `--no-globals-backup` commandline option
 * Removed the `--report-useless-tests` commandline option
 * Removed the `--self-update` and `--self-upgrade` commandline options (deprecated in PHPUnit 5.7)
+* DbUnit is no longer bundled in the PHAR distribution of PHPUnit
 * PHPUnit is no longer supported on PHP 5.6
 
 [6.0.0]: https://github.com/sebastianbergmann/phpunit/compare/5.7...6.0.0

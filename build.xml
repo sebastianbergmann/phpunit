@@ -120,7 +120,6 @@
 
         <exec executable="${basedir}/build/tools/composer">
             <arg value="require"/>
-            <arg value="phpunit/dbunit:~2.0"/>
             <arg value="phpunit/php-invoker:~1.1"/>
         </exec>
 
@@ -244,12 +243,6 @@
         <copy file="${basedir}/vendor/doctrine/instantiator/LICENSE" tofile="${basedir}/build/phar/doctrine-instantiator/LICENSE"/>
         <copy todir="${basedir}/build/phar/doctrine-instantiator">
             <fileset dir="${basedir}/vendor/doctrine/instantiator/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
-        <copy todir="${basedir}/build/phar/dbunit">
-            <fileset dir="${basedir}/vendor/phpunit/dbunit/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
