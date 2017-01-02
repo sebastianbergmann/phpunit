@@ -29,7 +29,6 @@ $_REQUEST['h'] = 'h';
 $GLOBALS['i']  = 'i';
 
 /**
- * @covers     TestCase
  */
 class Framework_TestCaseTest extends TestCase
 {
@@ -276,9 +275,6 @@ class Framework_TestCaseTest extends TestCase
         );
     }
 
-    /**
-     * @covers ExceptionMessageRegularExpression
-     */
     public function testExceptionWithInvalidRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');

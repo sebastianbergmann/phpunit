@@ -10,8 +10,6 @@
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Getopt;
 
-/**
- */
 class Util_GetoptTest extends TestCase
 {
     public function testItIncludeTheLongOptionsAfterTheArgument()

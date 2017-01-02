@@ -10,13 +10,10 @@
 use PHPUnit\Framework\Constraint\JsonMatchesErrorMessageProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- */
 class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends TestCase
 {
     /**
      * @dataProvider translateTypeToPrefixDataprovider
-     * @covers JsonMatchesErrorMessageProvider::translateTypeToPrefix
      */
     public function testTranslateTypeToPrefix($expected, $type)
     {
@@ -28,7 +25,6 @@ class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends TestCase
 
     /**
      * @dataProvider determineJsonErrorDataprovider
-     * @covers JsonMatchesErrorMessageProvider::determineJsonError
      */
     public function testDetermineJsonError($expected, $error, $prefix)
     {

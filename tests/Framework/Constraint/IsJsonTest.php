@@ -15,9 +15,6 @@ class Framework_Constraint_IsJsonTest extends TestCase
 {
     /**
      * @dataProvider evaluateDataprovider
-     * @covers IsJson::evaluate
-     * @covers IsJson::matches
-     * @covers IsJson::__construct
      */
     public function testEvaluate($expected, $jsonOther)
     {

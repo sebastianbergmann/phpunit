@@ -10,8 +10,6 @@
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\RegularExpression;
 
-/**
- */
 class Util_RegexTest extends TestCase
 {
     public function validRegexpProvider()
@@ -35,7 +33,6 @@ class Util_RegexTest extends TestCase
 
     /**
      * @dataProvider validRegexpProvider
-     * @covers       RegularExpression::safeMatch
      */
     public function testValidRegex($pattern, $subject, $return)
     {
@@ -44,7 +41,6 @@ class Util_RegexTest extends TestCase
 
     /**
      * @dataProvider invalidRegexpProvider
-     * @covers       RegularExpression::safeMatch
      */
     public function testInvalidRegex($pattern, $subject)
     {

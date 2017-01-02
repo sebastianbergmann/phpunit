@@ -10,9 +10,6 @@
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers     Count
- */
 class CountTest extends TestCase
 {
     public function testCount()

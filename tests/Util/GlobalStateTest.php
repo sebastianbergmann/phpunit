@@ -10,13 +10,8 @@
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\GlobalState;
 
-/**
- */
 class Util_GlobalStateTest extends TestCase
 {
-    /**
-     * @covers GlobalState::processIncludedFilesAsString
-     */
     public function testIncludedFilesAsStringSkipsVfsProtocols()
     {
         $dir   = __DIR__;

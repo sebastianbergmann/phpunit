@@ -16,7 +16,6 @@ use PHPUnit\Util\PHP\AbstractPhpProcess;
  * @license    http://www.opensource.org/licenses/BSD-3-Clause  The BSD 3-Clause License
  *
  * @link       http://www.phpunit.de/
- * @covers     AbstractPhpProcess
  */
 class PHPUnit_Util_PHPTest extends TestCase
 {

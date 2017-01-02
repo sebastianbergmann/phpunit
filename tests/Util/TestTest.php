@@ -23,13 +23,9 @@ if (!defined('TEST_FILES_PATH')) {
 require TEST_FILES_PATH . 'CoverageNamespacedFunctionTest.php';
 require TEST_FILES_PATH . 'NamespaceCoveredFunction.php';
 
-/**
- */
 class Util_TestTest extends TestCase
 {
     /**
-     * @covers \PHPUnit\Util\Test::getExpectedException
-     *
      * @todo   Split up in separate tests
      */
     public function testGetExpectedException()
@@ -101,9 +97,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getExpectedException
-     */
     public function testGetExpectedRegExp()
     {
         $this->assertArraySubset(
@@ -123,7 +116,6 @@ class Util_TestTest extends TestCase
     }
 
     /**
-     * @covers       \PHPUnit\Util\Test::getRequirements
      * @dataProvider requirementsProvider
      */
     public function testGetRequirements($test, $result)
@@ -325,9 +317,6 @@ class Util_TestTest extends TestCase
         ];
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getRequirements
-     */
     public function testGetRequirementsMergesClassAndMethodDocBlocks()
     {
         $expectedAnnotations = [
@@ -351,7 +340,6 @@ class Util_TestTest extends TestCase
     }
 
     /**
-     * @covers       \PHPUnit\Util\Test::getMissingRequirements
      * @dataProvider missingRequirementsProvider
      */
     public function testGetMissingRequirements($test, $result)
@@ -406,8 +394,6 @@ class Util_TestTest extends TestCase
     }
 
     /**
-     * @coversNothing
-     *
      * @todo   This test does not really test functionality of \PHPUnit\Util\Test
      */
     public function testGetProvidedDataRegEx()
@@ -457,18 +443,12 @@ class Util_TestTest extends TestCase
         $this->assertEquals(3, $cCount);
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getDataFromTestWithAnnotation
-     */
     public function testTestWithEmptyAnnotation()
     {
         $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation("/**\n * @anotherAnnotation\n */");
         $this->assertNull($result);
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getDataFromTestWithAnnotation
-     */
     public function testTestWithSimpleCase()
     {
         $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
@@ -477,9 +457,6 @@ class Util_TestTest extends TestCase
         $this->assertEquals([[1]], $result);
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getDataFromTestWithAnnotation
-     */
     public function testTestWithMultiLineMultiParameterCase()
     {
         $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
@@ -489,9 +466,6 @@ class Util_TestTest extends TestCase
         $this->assertEquals([[1, 2], [3, 4]], $result);
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getDataFromTestWithAnnotation
-     */
     public function testTestWithVariousTypes()
     {
         $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
@@ -502,9 +476,6 @@ class Util_TestTest extends TestCase
         $this->assertEquals([['ab'], [true], [null]], $result);
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getDataFromTestWithAnnotation
-     */
     public function testTestWithAnnotationAfter()
     {
         $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
@@ -515,9 +486,6 @@ class Util_TestTest extends TestCase
         $this->assertEquals([[1], [2]], $result);
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getDataFromTestWithAnnotation
-     */
     public function testTestWithSimpleTextAfter()
     {
         $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
@@ -528,9 +496,6 @@ class Util_TestTest extends TestCase
         $this->assertEquals([[1], [2]], $result);
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getDataFromTestWithAnnotation
-     */
     public function testTestWithCharacterEscape()
     {
         $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
@@ -539,9 +504,6 @@ class Util_TestTest extends TestCase
         $this->assertEquals([['"', '"']], $result);
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getDataFromTestWithAnnotation
-     */
     public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed()
     {
         $this->expectException(Exception::class);
@@ -564,8 +526,6 @@ class Util_TestTest extends TestCase
     }
 
     /**
-     * @covers \PHPUnit\Util\Test::getDependencies
-     *
      * @todo   Not sure what this test tests (name is misleading at least)
      */
     public function testParseAnnotation()
@@ -586,9 +546,6 @@ class Util_TestTest extends TestCase
     {
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getDependencies
-     */
     public function testParseAnnotationThatIsOnlyOneLine()
     {
         $this->assertEquals(
@@ -604,9 +561,6 @@ class Util_TestTest extends TestCase
     }
 
     /**
-     * @covers       \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers       \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     * @covers       \PHPUnit\Util\Test::resolveElementToReflectionObjects
      * @dataProvider getLinesToBeCoveredProvider
      */
     public function testGetLinesToBeCovered($test, $lines)
@@ -635,11 +589,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     * @covers \PHPUnit\Util\Test::resolveElementToReflectionObjects
-     */
     public function testGetLinesToBeCovered2()
     {
         $this->expectException(CodeCoverageException::class);
@@ -649,11 +598,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     * @covers \PHPUnit\Util\Test::resolveElementToReflectionObjects
-     */
     public function testGetLinesToBeCovered3()
     {
         $this->expectException(CodeCoverageException::class);
@@ -663,11 +607,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     * @covers \PHPUnit\Util\Test::resolveElementToReflectionObjects
-     */
     public function testGetLinesToBeCovered4()
     {
         $this->expectException(CodeCoverageException::class);
@@ -677,10 +616,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     */
     public function testGetLinesToBeCoveredSkipsNonExistentMethods()
     {
         $this->assertSame(
@@ -692,10 +627,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     */
     public function testTwoCoversDefaultClassAnnoationsAreNotAllowed()
     {
         $this->expectException(CodeCoverageException::class);
@@ -706,10 +637,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     */
     public function testFunctionParenthesesAreAllowed()
     {
         $this->assertSame(
@@ -721,10 +648,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     */
     public function testFunctionParenthesesAreAllowedWithWhitespace()
     {
         $this->assertSame(
@@ -736,10 +659,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     */
     public function testMethodParenthesesAreAllowed()
     {
         $this->assertSame(
@@ -751,10 +670,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     */
     public function testMethodParenthesesAreAllowedWithWhitespace()
     {
         $this->assertSame(
@@ -766,10 +681,6 @@ class Util_TestTest extends TestCase
         );
     }
 
-    /**
-     * @covers \PHPUnit\Util\Test::getLinesToBeCovered
-     * @covers \PHPUnit\Util\Test::getLinesToBeCoveredOrUsed
-     */
     public function testNamespacedFunctionCanBeCoveredOrUsed()
     {
         $this->assertEquals(

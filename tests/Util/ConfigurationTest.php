@@ -26,9 +26,6 @@ class Util_ConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * @covers Configuration::getInstance
-     */
     public function testExceptionIsThrownForNotExistingConfigurationFile()
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
@@ -36,9 +33,6 @@ class Util_ConfigurationTest extends TestCase
         Configuration::getInstance('not_existing_file.xml');
     }
 
-    /**
-     * @covers Configuration::getPHPUnitConfiguration
-     */
     public function testShouldReadColorsWhenTrueInConfigurationfile()
     {
         $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.true.xml';
@@ -48,9 +42,6 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals(ResultPrinter::COLOR_AUTO, $configurationValues['colors']);
     }
 
-    /**
-     * @covers Configuration::getPHPUnitConfiguration
-     */
     public function testShouldReadColorsWhenFalseInConfigurationfile()
     {
         $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.false.xml';
@@ -60,9 +51,6 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
-    /**
-     * @covers Configuration::getPHPUnitConfiguration
-     */
     public function testShouldReadColorsWhenEmptyInConfigurationfile()
     {
         $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.empty.xml';
@@ -72,9 +60,6 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
-    /**
-     * @covers Configuration::getPHPUnitConfiguration
-     */
     public function testShouldReadColorsWhenInvalidInConfigurationfile()
     {
         $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.invalid.xml';
@@ -84,9 +69,6 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
-    /**
-     * @covers Configuration::getFilterConfiguration
-     */
     public function testFilterConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -136,10 +118,6 @@ class Util_ConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * @covers Configuration::getGroupConfiguration
-     * @covers Configuration::parseGroupConfiguration
-     */
     public function testGroupConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -157,10 +135,6 @@ class Util_ConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * @covers Configuration::getTestdoxGroupConfiguration
-     * @covers Configuration::parseGroupConfiguration
-     */
     public function testTestdoxGroupConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -178,9 +152,6 @@ class Util_ConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * @covers Configuration::getListenerConfiguration
-     */
     public function testListenerConfigurationIsReadCorrectly()
     {
         $dir         = __DIR__;
@@ -229,9 +200,6 @@ class Util_ConfigurationTest extends TestCase
         ini_set('include_path', $includePath);
     }
 
-    /**
-     * @covers Configuration::getLoggingConfiguration
-     */
     public function testLoggingConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -252,9 +220,6 @@ class Util_ConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * @covers Configuration::getPHPConfiguration
-     */
     public function testPHPConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -281,7 +246,6 @@ class Util_ConfigurationTest extends TestCase
 
     /**
      * @backupGlobals enabled
-     * @covers Configuration::handlePHPConfiguration
      */
     public function testPHPConfigurationIsHandledCorrectly()
     {
@@ -330,9 +294,6 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals('putenv', getenv('foo'));
     }
 
-    /**
-     * @covers Configuration::getPHPUnitConfiguration
-     */
     public function testPHPUnitConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
@@ -371,9 +332,6 @@ class Util_ConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * @covers Configuration::getInstance
-     */
     public function testXincludeInConfiguration()
     {
         $configurationWithXinclude = Configuration::getInstance(
@@ -388,13 +346,6 @@ class Util_ConfigurationTest extends TestCase
 
     /**
      * @ticket 1311
-     * @covers Configuration::getLoggingConfiguration
-     * @covers Configuration::getPHPConfiguration
-     * @covers Configuration::getPHPUnitConfiguration
-     * @covers Configuration::getTestSuiteConfiguration
-     * @covers Configuration::getFilterConfiguration
-     *
-     * @uses   Configuration::getInstance
      */
     public function testWithEmptyConfigurations()
     {
@@ -467,9 +418,6 @@ class Util_ConfigurationTest extends TestCase
         );
     }
 
-    /**
-     * @covers Configuration::getTestSuiteNames
-     */
     public function testGetTestSuiteNamesReturnsTheNamesIfDefined()
     {
         $configuration = Configuration::getInstance(

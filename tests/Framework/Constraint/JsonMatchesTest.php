@@ -10,15 +10,10 @@
 use PHPUnit\Framework\Constraint\JsonMatches;
 use PHPUnit\Framework\TestCase;
 
-/**
- */
 class Framework_Constraint_JsonMatchesTest extends TestCase
 {
     /**
      * @dataProvider evaluateDataprovider
-     * @covers JsonMatches::evaluate
-     * @covers JsonMatches::matches
-     * @covers JsonMatches::__construct
      */
     public function testEvaluate($expected, $jsonOther, $jsonValue)
     {
@@ -26,9 +21,6 @@ class Framework_Constraint_JsonMatchesTest extends TestCase
         $this->assertEquals($expected, $constraint->evaluate($jsonOther, '', true));
     }
 
-    /**
-     * @covers JsonMatches::toString
-     */
     public function testToString()
     {
         $jsonValue  = json_encode(['Mascott' => 'Tux']);

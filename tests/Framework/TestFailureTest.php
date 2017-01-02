@@ -11,13 +11,8 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 
-/**
- */
 class Framework_TestFailureTest extends TestCase
 {
-    /**
-     * @covers TestFailure::toString
-     */
     public function testToString()
     {
         $test      = new self(__FUNCTION__);

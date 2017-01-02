@@ -11,9 +11,6 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Xml;
 
-/**
- * @covers     Xml
- */
 class Util_XMLTest extends TestCase
 {
     /**

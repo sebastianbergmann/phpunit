@@ -15,9 +15,6 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 
-/**
- * @covers     TestCase
- */
 class Framework_TestListenerTest extends TestCase implements TestListener
 {
     protected $endCount;

@@ -10,13 +10,8 @@
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestCase;
 
-/**
- */
 class Framework_TestImplementorTest extends TestCase
 {
-    /**
-     * @covers TestCase
-     */
     public function testSuccessfulRun()
     {
         $result = new TestResult;

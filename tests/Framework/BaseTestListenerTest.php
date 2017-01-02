@@ -10,8 +10,6 @@
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestCase;
 
-/**
- */
 class Framework_BaseTestListenerTest extends TestCase
 {
     /**
@@ -19,9 +17,6 @@ class Framework_BaseTestListenerTest extends TestCase
      */
     private $result;
 
-    /**
-     * @covers TestResult
-     */
     public function testEndEventsAreCounted()
     {
         $this->result = new TestResult;

@@ -18,10 +18,7 @@ use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
-use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
-use PHPUnit\Framework\Constraint\IsEqual;
-use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
@@ -30,29 +27,18 @@ use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
-use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\StringStartsWith;
-use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\SameSize;
-use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Filter;
 
-/**
- */
 class Framework_ConstraintTest extends TestCase
 {
-    /**
-     * @covers ArrayHasKey
-     * @covers PHPUnit\Framework\Assert::arrayHasKey
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintArrayHasKey()
     {
         $constraint = Assert::arrayHasKey(0);
@@ -78,11 +64,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ArrayHasKey
-     * @covers PHPUnit\Framework\Assert::arrayHasKey
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintArrayHasKey2()
     {
         $constraint = Assert::arrayHasKey(0);
@@ -105,13 +86,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ArrayHasKey
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::arrayHasKey
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintArrayNotHasKey()
     {
         $constraint = Assert::logicalNot(
@@ -140,13 +114,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ArrayHasKey
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::arrayHasKey
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintArrayNotHasKey2()
     {
         $constraint = Assert::logicalNot(
@@ -172,12 +139,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsReadable
-     * @covers PHPUnit\Framework\Assert::isReadable
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsReadable()
     {
         $constraint = Assert::isReadable();
@@ -204,12 +165,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsWritable
-     * @covers PHPUnit\Framework\Assert::isWritable
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsWritable()
     {
         $constraint = Assert::isWritable();
@@ -236,12 +191,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers DirectoryExists
-     * @covers PHPUnit\Framework\Assert::directoryExists
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintDirectoryExists()
     {
         $constraint = Assert::directoryExists();
@@ -268,12 +217,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers FileExists
-     * @covers PHPUnit\Framework\Assert::fileExists
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintFileExists()
     {
         $constraint = Assert::fileExists();
@@ -300,11 +243,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers FileExists
-     * @covers PHPUnit\Framework\Assert::fileExists
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintFileExists2()
     {
         $constraint = Assert::fileExists();
@@ -327,13 +265,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers FileExists
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit\Framework\Assert::fileExists
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintFileNotExists()
     {
         $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
@@ -364,13 +295,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers FileExists
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit\Framework\Assert::fileExists
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintFileNotExists2()
     {
         $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
@@ -397,12 +321,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers GreaterThan
-     * @covers PHPUnit\Framework\Assert::greaterThan
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintGreaterThan()
     {
         $constraint = Assert::greaterThan(1);
@@ -430,11 +348,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers GreaterThan
-     * @covers PHPUnit\Framework\Assert::greaterThan
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintGreaterThan2()
     {
         $constraint = Assert::greaterThan(1);
@@ -458,13 +371,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers GreaterThan
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::greaterThan
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotGreaterThan()
     {
         $constraint = Assert::logicalNot(
@@ -493,13 +399,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers GreaterThan
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::greaterThan
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotGreaterThan2()
     {
         $constraint = Assert::logicalNot(
@@ -525,13 +424,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEqual
-     * @covers GreaterThan
-     * @covers LogicalOr
-     * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintGreaterThanOrEqual()
     {
         $constraint = Assert::greaterThanOrEqual(1);
@@ -559,13 +451,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEqual
-     * @covers GreaterThan
-     * @covers LogicalOr
-     * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintGreaterThanOrEqual2()
     {
         $constraint = Assert::greaterThanOrEqual(1);
@@ -589,15 +474,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEqual
-     * @covers GreaterThan
-     * @covers LogicalOr
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotGreaterThanOrEqual()
     {
         $constraint = Assert::logicalNot(
@@ -626,15 +502,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEqual
-     * @covers GreaterThan
-     * @covers LogicalOr
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::greaterThanOrEqual
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotGreaterThanOrEqual2()
     {
         $constraint = Assert::logicalNot(
@@ -660,12 +527,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsAnything
-     * @covers PHPUnit\Framework\Assert::anything
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsAnything()
     {
         $constraint = Assert::anything();
@@ -676,13 +537,6 @@ EOF
         $this->assertEquals(0, count($constraint));
     }
 
-    /**
-     * @covers IsAnything
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::anything
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotIsAnything()
     {
         $constraint = Assert::logicalNot(
@@ -711,12 +565,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEqual
-     * @covers PHPUnit\Framework\Assert::equalTo
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsEqual()
     {
         $constraint = Assert::equalTo(1);
@@ -1007,9 +855,6 @@ EOF
 
     /**
      * @dataProvider isEqualProvider
-     * @covers       IsEqual
-     * @covers PHPUnit\Framework\Assert::equalTo
-     * @covers TestFailure::exceptionToString
      */
     public function testConstraintIsEqual2($expected, $actual, $message)
     {
@@ -1029,13 +874,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEqual
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::equalTo
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotEqual()
     {
         $constraint = Assert::logicalNot(
@@ -1065,13 +903,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEqual
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::equalTo
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotEqual2()
     {
         $constraint = Assert::logicalNot(
@@ -1097,12 +928,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsIdentical
-     * @covers PHPUnit\Framework\Assert::identicalTo
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsIdentical()
     {
         $a = new stdClass;
@@ -1132,11 +957,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsIdentical
-     * @covers PHPUnit\Framework\Assert::identicalTo
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsIdentical2()
     {
         $a = new stdClass;
@@ -1162,11 +982,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsIdentical
-     * @covers PHPUnit\Framework\Assert::identicalTo
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsIdentical3()
     {
         $constraint = Assert::identicalTo('a');
@@ -1194,13 +1009,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsIdentical
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::identicalTo
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotIdentical()
     {
         $a = new stdClass;
@@ -1232,13 +1040,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsIdentical
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::identicalTo
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotIdentical2()
     {
         $a = new stdClass;
@@ -1265,13 +1066,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsIdentical
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::identicalTo
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotIdentical3()
     {
         $constraint = Assert::logicalNot(
@@ -1296,12 +1090,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsInstanceOf
-     * @covers PHPUnit\Framework\Assert::isInstanceOf
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsInstanceOf()
     {
         $constraint = Assert::isInstanceOf('Exception');
@@ -1334,11 +1122,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsInstanceOf
-     * @covers PHPUnit\Framework\Assert::isInstanceOf
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsInstanceOf2()
     {
         $constraint = Assert::isInstanceOf('Exception');
@@ -1361,13 +1144,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsInstanceOf
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::isInstanceOf
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotInstanceOf()
     {
         $constraint = Assert::logicalNot(
@@ -1397,13 +1173,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsInstanceOf
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::isInstanceOf
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotInstanceOf2()
     {
         $constraint = Assert::logicalNot(
@@ -1428,12 +1197,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsType
-     * @covers PHPUnit\Framework\Assert::isType
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsType()
     {
         $constraint = Assert::isType('string');
@@ -1460,11 +1223,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsType
-     * @covers PHPUnit\Framework\Assert::isType
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsType2()
     {
         $constraint = Assert::isType('string');
@@ -1500,8 +1258,6 @@ EOF
 
     /**
      * @dataProvider resources
-     * @covers       IsType
-     * @covers PHPUnit\Framework\Assert::isType
      */
     public function testConstraintIsResourceTypeEvaluatesCorrectlyWithResources($resource)
     {
@@ -1512,13 +1268,6 @@ EOF
         @fclose($resource);
     }
 
-    /**
-     * @covers IsType
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::isType
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotType()
     {
         $constraint = Assert::logicalNot(
@@ -1548,13 +1297,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsType
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::isType
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotType2()
     {
         $constraint = Assert::logicalNot(
@@ -1579,12 +1321,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsNull
-     * @covers PHPUnit\Framework\Assert::isNull
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNull()
     {
         $constraint = Assert::isNull();
@@ -1611,11 +1347,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsNull
-     * @covers PHPUnit\Framework\Assert::isNull
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNull2()
     {
         $constraint = Assert::isNull();
@@ -1638,14 +1369,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsNull
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::isNull
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotNull()
     {
         $constraint = Assert::logicalNot(
@@ -1674,13 +1397,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsNull
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::isNull
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsNotNull2()
     {
         $constraint = Assert::logicalNot(
@@ -1705,12 +1421,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers LessThan
-     * @covers PHPUnit\Framework\Assert::lessThan
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintLessThan()
     {
         $constraint = Assert::lessThan(1);
@@ -1738,11 +1448,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers LessThan
-     * @covers PHPUnit\Framework\Assert::lessThan
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintLessThan2()
     {
         $constraint = Assert::lessThan(1);
@@ -1766,13 +1471,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers LessThan
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::lessThan
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotLessThan()
     {
         $constraint = Assert::logicalNot(
@@ -1802,13 +1500,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers LessThan
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::lessThan
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotLessThan2()
     {
         $constraint = Assert::logicalNot(
@@ -1834,13 +1525,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEqual
-     * @covers LessThan
-     * @covers LogicalOr
-     * @covers PHPUnit\Framework\Assert::lessThanOrEqual
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintLessThanOrEqual()
     {
         $constraint = Assert::lessThanOrEqual(1);
@@ -1868,9 +1552,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers Callback
-     */
     public function testConstraintCallback()
     {
         $closureReflect = function ($parameter) {
@@ -1899,9 +1580,6 @@ EOF
         $this->assertEquals('is accepted by specified callback', $constraint->toString());
     }
 
-    /**
-     * @covers Callback
-     */
     public function testConstraintCallbackFailure()
     {
         $constraint = Assert::callback(function () {
@@ -1924,13 +1602,6 @@ EOF
         return true;
     }
 
-    /**
-     * @covers IsEqual
-     * @covers LessThan
-     * @covers LogicalOr
-     * @covers PHPUnit\Framework\Assert::lessThanOrEqual
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintLessThanOrEqual2()
     {
         $constraint = Assert::lessThanOrEqual(1);
@@ -1954,15 +1625,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEqual
-     * @covers LessThan
-     * @covers LogicalOr
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::lessThanOrEqual
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotLessThanOrEqual()
     {
         $constraint = Assert::logicalNot(
@@ -1992,15 +1654,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEqual
-     * @covers LessThan
-     * @covers LogicalOr
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::lessThanOrEqual
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotLessThanOrEqual2()
     {
         $constraint = Assert::logicalNot(
@@ -2026,12 +1679,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ClassHasAttribute
-     * @covers PHPUnit\Framework\Assert::classHasAttribute
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintClassHasAttribute()
     {
         $constraint = Assert::classHasAttribute('privateAttribute');
@@ -2059,11 +1706,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ClassHasAttribute
-     * @covers PHPUnit\Framework\Assert::classHasAttribute
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintClassHasAttribute2()
     {
         $constraint = Assert::classHasAttribute('privateAttribute');
@@ -2086,13 +1728,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ClassHasAttribute
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::classHasAttribute
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintClassNotHasAttribute()
     {
         $constraint = Assert::logicalNot(
@@ -2122,13 +1757,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ClassHasAttribute
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::classHasAttribute
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintClassNotHasAttribute2()
     {
         $constraint = Assert::logicalNot(
@@ -2153,12 +1781,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ClassHasStaticAttribute
-     * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintClassHasStaticAttribute()
     {
         $constraint = Assert::classHasStaticAttribute('privateStaticAttribute');
@@ -2186,11 +1808,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ClassHasStaticAttribute
-     * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintClassHasStaticAttribute2()
     {
         $constraint = Assert::classHasStaticAttribute('foo');
@@ -2213,13 +1830,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ClassHasStaticAttribute
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintClassNotHasStaticAttribute()
     {
         $constraint = Assert::logicalNot(
@@ -2249,13 +1859,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ClassHasStaticAttribute
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::classHasStaticAttribute
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintClassNotHasStaticAttribute2()
     {
         $constraint = Assert::logicalNot(
@@ -2280,12 +1883,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ObjectHasAttribute
-     * @covers PHPUnit\Framework\Assert::objectHasAttribute
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintObjectHasAttribute()
     {
         $constraint = Assert::objectHasAttribute('privateAttribute');
@@ -2313,11 +1910,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ObjectHasAttribute
-     * @covers PHPUnit\Framework\Assert::objectHasAttribute
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintObjectHasAttribute2()
     {
         $constraint = Assert::objectHasAttribute('privateAttribute');
@@ -2340,13 +1932,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ObjectHasAttribute
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::objectHasAttribute
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintObjectNotHasAttribute()
     {
         $constraint = Assert::logicalNot(
@@ -2376,13 +1961,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers ObjectHasAttribute
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::objectHasAttribute
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintObjectNotHasAttribute2()
     {
         $constraint = Assert::logicalNot(
@@ -2407,12 +1985,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers RegularExpression
-     * @covers PHPUnit\Framework\Assert::matchesRegularExpression
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintRegularExpression()
     {
         $constraint = Assert::matchesRegularExpression('/foo/');
@@ -2440,11 +2012,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers RegularExpression
-     * @covers PHPUnit\Framework\Assert::matchesRegularExpression
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintRegularExpression2()
     {
         $constraint = Assert::matchesRegularExpression('/foo/');
@@ -2467,13 +2034,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers RegularExpression
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::matchesRegularExpression
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintPCRENotMatch()
     {
         $constraint = Assert::logicalNot(
@@ -2503,13 +2063,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers RegularExpression
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::matchesRegularExpression
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintPCRENotMatch2()
     {
         $constraint = Assert::logicalNot(
@@ -2534,11 +2087,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringMatchesFormatDescription
-     * @covers PHPUnit\Framework\Assert::matches
-     * @covers PHPUnit\Framework\Constraint::count
-     */
     public function testConstraintStringMatches()
     {
         $constraint = Assert::matches('*%c*');
@@ -2548,11 +2096,6 @@ EOF
         $this->assertEquals(1, count($constraint));
     }
 
-    /**
-     * @covers StringMatchesFormatDescription
-     * @covers PHPUnit\Framework\Assert::matches
-     * @covers PHPUnit\Framework\Constraint::count
-     */
     public function testConstraintStringMatches2()
     {
         $constraint = Assert::matches('*%s*');
@@ -2562,11 +2105,6 @@ EOF
         $this->assertEquals(1, count($constraint));
     }
 
-    /**
-     * @covers StringMatchesFormatDescription
-     * @covers PHPUnit\Framework\Assert::matches
-     * @covers PHPUnit\Framework\Constraint::count
-     */
     public function testConstraintStringMatches3()
     {
         $constraint = Assert::matches('*%i*');
@@ -2576,11 +2114,6 @@ EOF
         $this->assertEquals(1, count($constraint));
     }
 
-    /**
-     * @covers StringMatchesFormatDescription
-     * @covers PHPUnit\Framework\Assert::matches
-     * @covers PHPUnit\Framework\Constraint::count
-     */
     public function testConstraintStringMatches4()
     {
         $constraint = Assert::matches('*%d*');
@@ -2590,11 +2123,6 @@ EOF
         $this->assertEquals(1, count($constraint));
     }
 
-    /**
-     * @covers StringMatchesFormatDescription
-     * @covers PHPUnit\Framework\Assert::matches
-     * @covers PHPUnit\Framework\Constraint::count
-     */
     public function testConstraintStringMatches5()
     {
         $constraint = Assert::matches('*%x*');
@@ -2604,11 +2132,6 @@ EOF
         $this->assertEquals(1, count($constraint));
     }
 
-    /**
-     * @covers StringMatchesFormatDescription
-     * @covers PHPUnit\Framework\Assert::matches
-     * @covers PHPUnit\Framework\Constraint::count
-     */
     public function testConstraintStringMatches6()
     {
         $constraint = Assert::matches('*%f*');
@@ -2618,12 +2141,6 @@ EOF
         $this->assertEquals(1, count($constraint));
     }
 
-    /**
-     * @covers StringStartsWith
-     * @covers PHPUnit\Framework\Assert::stringStartsWith
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringStartsWith()
     {
         $constraint = Assert::stringStartsWith('prefix');
@@ -2651,11 +2168,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringStartsWith
-     * @covers PHPUnit\Framework\Assert::stringStartsWith
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringStartsWith2()
     {
         $constraint = Assert::stringStartsWith('prefix');
@@ -2678,13 +2190,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringStartsWith
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::stringStartsWith
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringStartsNotWith()
     {
         $constraint = Assert::logicalNot(
@@ -2714,11 +2219,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringStartsWith
-     * @covers PHPUnit\Framework\Assert::stringStartsWith
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringStartsNotWith2()
     {
         $constraint = Assert::logicalNot(
@@ -2744,12 +2244,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringContains
-     * @covers PHPUnit\Framework\Assert::stringContains
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringContains()
     {
         $constraint = Assert::stringContains('foo');
@@ -2777,11 +2271,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringContains
-     * @covers PHPUnit\Framework\Assert::stringContains
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringContains2()
     {
         $constraint = Assert::stringContains('foo');
@@ -2805,13 +2294,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringContains
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::stringContains
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringNotContains()
     {
         $constraint = Assert::logicalNot(
@@ -2841,13 +2323,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringContains
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::stringContains
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringNotContains2()
     {
         $constraint = Assert::logicalNot(
@@ -2873,12 +2348,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringEndsWith
-     * @covers PHPUnit\Framework\Assert::stringEndsWith
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringEndsWith()
     {
         $constraint = Assert::stringEndsWith('suffix');
@@ -2906,11 +2375,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringEndsWith
-     * @covers PHPUnit\Framework\Assert::stringEndsWith
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringEndsWith2()
     {
         $constraint = Assert::stringEndsWith('suffix');
@@ -2934,13 +2398,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringEndsWith
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::stringEndsWith
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringEndsNotWith()
     {
         $constraint = Assert::logicalNot(
@@ -2970,11 +2427,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers StringEndsWith
-     * @covers PHPUnit\Framework\Assert::stringEndsWith
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintStringEndsNotWith2()
     {
         $constraint = Assert::logicalNot(
@@ -3000,9 +2452,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers TraversableContains
-     */
     public function testConstraintArrayContainsCheckForObjectIdentity()
     {
         // Check for primitive type.
@@ -3018,11 +2467,6 @@ EOF
         $this->assertTrue($constraint->evaluate([true], '', true));
     }
 
-    /**
-     * @covers TraversableContains
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintArrayContains()
     {
         $constraint = new TraversableContains('foo');
@@ -3050,10 +2494,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers TraversableContains
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintArrayContains2()
     {
         $constraint = new TraversableContains('foo');
@@ -3077,12 +2517,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers TraversableContains
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintArrayNotContains()
     {
         $constraint = Assert::logicalNot(
@@ -3112,12 +2546,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers TraversableContains
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintArrayNotContains2()
     {
         $constraint = Assert::logicalNot(
@@ -3143,11 +2571,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers TraversableContains
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintSplObjectStorageContains()
     {
         $object     = new StdClass;
@@ -3178,10 +2601,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers TraversableContains
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintSplObjectStorageContains2()
     {
         $object     = new StdClass;
@@ -3206,11 +2625,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers PHPUnit\Framework\Assert::attributeEqualTo
-     * @covers Attribute
-     * @covers TestFailure::exceptionToString
-     */
     public function testAttributeEqualTo()
     {
         $object     = new ClassWithNonPublicAttributes;
@@ -3242,11 +2656,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers PHPUnit\Framework\Assert::attributeEqualTo
-     * @covers Attribute
-     * @covers TestFailure::exceptionToString
-     */
     public function testAttributeEqualTo2()
     {
         $object     = new ClassWithNonPublicAttributes;
@@ -3270,13 +2679,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers PHPUnit\Framework\Assert::attributeEqualTo
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers Attribute
-     * @covers LogicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testAttributeNotEqualTo()
     {
         $object     = new ClassWithNonPublicAttributes;
@@ -3312,13 +2714,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers PHPUnit\Framework\Assert::attributeEqualTo
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers Attribute
-     * @covers LogicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testAttributeNotEqualTo2()
     {
         $object     = new ClassWithNonPublicAttributes;
@@ -3344,11 +2739,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEmpty
-     * @covers PHPUnit\Framework\Constraint::count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsEmpty()
     {
         $constraint = new IsEmpty;
@@ -3378,10 +2768,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers IsEmpty
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintIsEmpty2()
     {
         $constraint = new IsEmpty;
@@ -3404,9 +2790,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers Count
-     */
     public function testConstraintCountWithAnArray()
     {
         $constraint = new Count(5);
@@ -3415,9 +2798,6 @@ EOF
         $this->assertFalse($constraint->evaluate([1, 2, 3, 4], '', true));
     }
 
-    /**
-     * @covers Count
-     */
     public function testConstraintCountWithAnIteratorWhichDoesNotImplementCountable()
     {
         $constraint = new Count(5);
@@ -3426,9 +2806,6 @@ EOF
         $this->assertFalse($constraint->evaluate(new TestIterator([1, 2, 3, 4]), '', true));
     }
 
-    /**
-     * @covers Count
-     */
     public function testConstraintCountWithAnObjectImplementingCountable()
     {
         $constraint = new Count(5);
@@ -3437,10 +2814,6 @@ EOF
         $this->assertFalse($constraint->evaluate(new ArrayObject([1, 2, 3, 4]), '', true));
     }
 
-    /**
-     * @covers Count
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintCountFailing()
     {
         $constraint = new Count(5);
@@ -3463,12 +2836,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers Count
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotCountFailing()
     {
         $constraint = Assert::logicalNot(
@@ -3493,9 +2860,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers SameSize
-     */
     public function testConstraintSameSizeWithAnArray()
     {
         $constraint = new SameSize([1, 2, 3, 4, 5]);
@@ -3504,9 +2868,6 @@ EOF
         $this->assertFalse($constraint->evaluate([1, 2, 3, 4], '', true));
     }
 
-    /**
-     * @covers SameSize
-     */
     public function testConstraintSameSizeWithAnIteratorWhichDoesNotImplementCountable()
     {
         $constraint = new SameSize(new TestIterator([1, 2, 3, 4, 5]));
@@ -3515,9 +2876,6 @@ EOF
         $this->assertFalse($constraint->evaluate(new TestIterator([1, 2, 3, 4]), '', true));
     }
 
-    /**
-     * @covers SameSize
-     */
     public function testConstraintSameSizeWithAnObjectImplementingCountable()
     {
         $constraint = new SameSize(new ArrayObject([1, 2, 3, 4, 5]));
@@ -3526,10 +2884,6 @@ EOF
         $this->assertFalse($constraint->evaluate(new ArrayObject([1, 2, 3, 4]), '', true));
     }
 
-    /**
-     * @covers SameSize
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintSameSizeFailing()
     {
         $constraint = new SameSize([1, 2, 3, 4, 5]);
@@ -3552,12 +2906,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers SameSize
-     * @covers LogicalNot
-     * @covers PHPUnit\Framework\Assert::logicalNot
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintNotSameSizeFailing()
     {
         $constraint = Assert::logicalNot(
@@ -3582,10 +2930,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @covers Exception
-     * @covers TestFailure::exceptionToString
-     */
     public function testConstraintException()
     {
         $constraint = new PHPUnit\Framework\Constraint\Exception('FoobarException');
