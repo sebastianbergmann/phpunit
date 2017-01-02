@@ -21,6 +21,7 @@
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
             <exclude>
+                <directory>src/BackwardCompatibility</directory>
                 <file>src/Framework/Assert/Functions.php</file>
                 <file>src/Util/PHP/eval-stdin.php</file>
             </exclude>
