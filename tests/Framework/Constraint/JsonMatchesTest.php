@@ -11,7 +11,6 @@ use PHPUnit\Framework\Constraint\JsonMatches;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @since      File available since Release 3.7.0
  */
 class Framework_Constraint_JsonMatchesTest extends TestCase
 {

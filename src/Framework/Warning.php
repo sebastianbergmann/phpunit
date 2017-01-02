@@ -11,8 +11,6 @@ namespace PHPUnit\Framework;
 
 /**
  * Thrown when an there is a warning.
- *
- * @since Class available since Release 5.0.0
  */
 class Warning extends Exception implements SelfDescribing
 {

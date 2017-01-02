@@ -11,7 +11,6 @@ use PHPUnit\Framework\Constraint\ExceptionMessage;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @since      Class available since Release 4.0.20
  * @covers     ExceptionMessage
  */
 class ExceptionMessageTest extends TestCase

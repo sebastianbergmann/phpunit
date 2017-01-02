@@ -12,7 +12,6 @@ namespace PHPUnit\Util;
 use Closure;
 
 /**
- * @since Class available since Release 3.4.0
  */
 class GlobalState
 {

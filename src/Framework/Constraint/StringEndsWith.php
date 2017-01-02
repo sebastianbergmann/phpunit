@@ -12,8 +12,6 @@ namespace PHPUnit\Framework\Constraint;
 /**
  * Constraint that asserts that the string it is evaluated for ends with a given
  * suffix.
- *
- * @since Class available since Release 3.4.0
  */
 class StringEndsWith extends Constraint
 {

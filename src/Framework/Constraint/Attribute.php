@@ -13,7 +13,6 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
- * @since Class available since Release 3.1.0
  */
 class Attribute extends Composite
 {

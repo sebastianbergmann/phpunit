@@ -11,7 +11,6 @@ use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @since      Class available since Release 3.7.30
  * @covers     Count
  */
 class CountTest extends TestCase

@@ -13,7 +13,6 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Util\RegularExpression;
 
 /**
- * @since Class available since Release 4.3.0
  */
 class ExceptionMessageRegularExpression extends Constraint
 {

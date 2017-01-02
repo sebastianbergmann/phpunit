@@ -29,7 +29,6 @@ $_REQUEST['h'] = 'h';
 $GLOBALS['i']  = 'i';
 
 /**
- * @since      Class available since Release 2.0.0
  * @covers     TestCase
  */
 class Framework_TestCaseTest extends TestCase

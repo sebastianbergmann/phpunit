@@ -16,8 +16,6 @@ use ReflectionObject;
  * attribute.
  *
  * The attribute name is passed in the constructor.
- *
- * @since Class available since Release 3.0.0
  */
 class ObjectHasAttribute extends ClassHasAttribute
 {

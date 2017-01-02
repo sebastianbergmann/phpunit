@@ -16,7 +16,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 
 /**
- * @since      Class available since Release 2.0.0
  * @covers     TestCase
  */
 class Framework_TestListenerTest extends TestCase implements TestListener

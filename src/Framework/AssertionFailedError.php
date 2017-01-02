@@ -12,8 +12,6 @@ namespace PHPUnit\Framework;
 
 /**
  * Thrown when an assertion failed.
- *
- * @since Class available since Release 2.0.0
  */
 class AssertionFailedError extends Exception implements SelfDescribing
 {

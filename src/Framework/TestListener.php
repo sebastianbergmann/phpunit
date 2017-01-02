@@ -13,8 +13,6 @@ use Exception;
 
 /**
  * A Listener for test progress.
- *
- * @since Interface available since Release 2.0.0
  */
 interface TestListener
 {
@@ -33,8 +31,6 @@ interface TestListener
      * @param Test    $test
      * @param Warning $e
      * @param float   $time
-     *
-     * @since Method available since Release 6.0.0
      */
     public function addWarning(Test $test, Warning $e, $time);
 
@@ -62,8 +58,6 @@ interface TestListener
      * @param Test      $test
      * @param Exception $e
      * @param float     $time
-     *
-     * @since Method available since Release 4.0.0
      */
     public function addRiskyTest(Test $test, Exception $e, $time);
 
@@ -73,8 +67,6 @@ interface TestListener
      * @param Test      $test
      * @param Exception $e
      * @param float     $time
-     *
-     * @since Method available since Release 3.0.0
      */
     public function addSkippedTest(Test $test, Exception $e, $time);
 
@@ -82,8 +74,6 @@ interface TestListener
      * A test suite started.
      *
      * @param TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function startTestSuite(TestSuite $suite);
 
@@ -91,8 +81,6 @@ interface TestListener
      * A test suite ended.
      *
      * @param TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function endTestSuite(TestSuite $suite);
 

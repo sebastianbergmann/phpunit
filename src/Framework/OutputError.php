@@ -12,8 +12,6 @@ namespace PHPUnit\Framework;
 /**
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
  * case of a test that printed output.
- *
- * @since Class available since Release 3.6.0
  */
 class OutputError extends AssertionFailedError
 {

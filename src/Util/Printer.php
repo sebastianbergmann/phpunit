@@ -13,8 +13,6 @@ use PHPUnit\Framework\Exception;
 
 /**
  * Utility class that can print to STDOUT or write to a file.
- *
- * @since Class available since Release 2.0.0
  */
 class Printer
 {
@@ -87,8 +85,6 @@ class Printer
      * Do not confuse this function with the flush() function of this class,
      * since the flush() function may close the file being written to, rendering
      * the current object no longer usable.
-     *
-     * @since Method available since Release 3.3.0
      */
     public function incrementalFlush()
     {
@@ -127,8 +123,6 @@ class Printer
      * Check auto-flush mode.
      *
      * @return bool
-     *
-     * @since Method available since Release 3.3.0
      */
     public function getAutoFlush()
     {
@@ -142,8 +136,6 @@ class Printer
      * not be confused with the different effects of this class' flush() method.
      *
      * @param bool $autoFlush
-     *
-     * @since Method available since Release 3.3.0
      */
     public function setAutoFlush($autoFlush)
     {

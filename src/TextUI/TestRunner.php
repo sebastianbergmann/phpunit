@@ -48,8 +48,6 @@ use SebastianBergmann\Environment\Runtime;
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
- *
- * @since Class available since Release 2.0.0
  */
 class TestRunner extends BaseTestRunner
 {
@@ -90,8 +88,6 @@ class TestRunner extends BaseTestRunner
     /**
      * @param TestSuiteLoader    $loader
      * @param CodeCoverageFilter $filter
-     *
-     * @since Method available since Release 3.4.0
      */
     public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
     {
@@ -658,8 +654,6 @@ class TestRunner extends BaseTestRunner
 
     /**
      * @param string $buffer
-     *
-     * @since Method available since Release 3.1.0
      */
     protected function write($buffer)
     {
@@ -678,8 +672,6 @@ class TestRunner extends BaseTestRunner
      * Returns the loader to be used.
      *
      * @return TestSuiteLoader
-     *
-     * @since Method available since Release 2.2.0
      */
     public function getLoader()
     {
@@ -692,8 +684,6 @@ class TestRunner extends BaseTestRunner
 
     /**
      * @param array $arguments
-     *
-     * @since Method available since Release 3.2.1
      */
     protected function handleConfiguration(array &$arguments)
     {
@@ -1054,8 +1044,6 @@ class TestRunner extends BaseTestRunner
     /**
      * @param string $type
      * @param string $message
-     *
-     * @since Method available since Release 5.0.0
      */
     private function writeMessage($type, $message)
     {

@@ -14,8 +14,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Logical AND.
- *
- * @since Class available since Release 3.0.0
  */
 class LogicalAnd extends Constraint
 {
@@ -113,8 +111,6 @@ class LogicalAnd extends Constraint
      * Counts the number of constraint elements.
      *
      * @return int
-     *
-     * @since Method available since Release 3.4.0
      */
     public function count()
     {

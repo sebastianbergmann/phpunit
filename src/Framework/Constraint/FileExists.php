@@ -13,8 +13,6 @@ namespace PHPUnit\Framework\Constraint;
  * Constraint that checks if the file(name) that it is evaluated for exists.
  *
  * The file path to check is passed as $other in evaluate().
- *
- * @since Class available since Release 3.0.0
  */
 class FileExists extends Constraint
 {

@@ -17,7 +17,6 @@ use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Util\Xml;
 
 /**
- * @since      Class available since Release 2.0.0
  */
 class Framework_AssertTest extends TestCase
 {

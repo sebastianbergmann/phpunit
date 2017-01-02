@@ -22,7 +22,6 @@ use PHPUnit\Util\Printer;
 use ReflectionClass;
 
 /**
- * @since Class available since Release 5.4.0
  */
 class XmlResultPrinter extends Printer implements TestListener
 {

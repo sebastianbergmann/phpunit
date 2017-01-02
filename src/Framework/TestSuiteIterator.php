@@ -13,8 +13,6 @@ use RecursiveIterator;
 
 /**
  * Iterator for test suites.
- *
- * @since Class available since Release 3.1.0
  */
 class TestSuiteIterator implements RecursiveIterator
 {

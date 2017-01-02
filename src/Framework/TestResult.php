@@ -30,8 +30,6 @@ use Throwable;
 
 /**
  * A TestResult collects the results of executing a test case.
- *
- * @since Class available since Release 2.0.0
  */
 class TestResult implements Countable
 {
@@ -213,8 +211,6 @@ class TestResult implements Countable
 
     /**
      * Flushes all flushable TestListeners.
-     *
-     * @since Method available since Release 3.0.0
      */
     public function flushListeners()
     {
@@ -284,8 +280,6 @@ class TestResult implements Countable
      * @param Test    $test
      * @param Warning $e
      * @param float   $time
-     *
-     * @since Method available since Release 5.1.0
      */
     public function addWarning(Test $test, Warning $e, $time)
     {
@@ -356,8 +350,6 @@ class TestResult implements Countable
      * Informs the result that a testsuite will be started.
      *
      * @param TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function startTestSuite(TestSuite $suite)
     {
@@ -374,8 +366,6 @@ class TestResult implements Countable
      * Informs the result that a testsuite was completed.
      *
      * @param TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function endTestSuite(TestSuite $suite)
     {
@@ -431,8 +421,6 @@ class TestResult implements Countable
      * Returns true if no risky test occurred.
      *
      * @return bool
-     *
-     * @since Method available since Release 4.0.0
      */
     public function allHarmless()
     {
@@ -443,8 +431,6 @@ class TestResult implements Countable
      * Gets the number of risky tests.
      *
      * @return int
-     *
-     * @since Method available since Release 4.0.0
      */
     public function riskyCount()
     {
@@ -475,8 +461,6 @@ class TestResult implements Countable
      * Returns an Enumeration for the risky tests.
      *
      * @return array
-     *
-     * @since Method available since Release 4.0.0
      */
     public function risky()
     {
@@ -497,8 +481,6 @@ class TestResult implements Countable
      * Returns true if no test has been skipped.
      *
      * @return bool
-     *
-     * @since Method available since Release 3.0.0
      */
     public function noneSkipped()
     {
@@ -509,8 +491,6 @@ class TestResult implements Countable
      * Gets the number of skipped tests.
      *
      * @return int
-     *
-     * @since Method available since Release 3.0.0
      */
     public function skippedCount()
     {
@@ -521,8 +501,6 @@ class TestResult implements Countable
      * Returns an Enumeration for the skipped tests.
      *
      * @return array
-     *
-     * @since Method available since Release 3.0.0
      */
     public function skipped()
     {
@@ -573,8 +551,6 @@ class TestResult implements Countable
      * Gets the number of detected warnings.
      *
      * @return int
-     *
-     * @since Method available since Release 5.1.0
      */
     public function warningCount()
     {
@@ -585,8 +561,6 @@ class TestResult implements Countable
      * Returns an Enumeration for the warnings.
      *
      * @return array
-     *
-     * @since Method available since Release 5.1.0
      */
     public function warnings()
     {
@@ -597,8 +571,6 @@ class TestResult implements Countable
      * Returns the names of the tests that have passed.
      *
      * @return array
-     *
-     * @since Method available since Release 3.4.0
      */
     public function passed()
     {
@@ -609,8 +581,6 @@ class TestResult implements Countable
      * Returns the (top) test suite.
      *
      * @return TestSuite
-     *
-     * @since Method available since Release 3.0.0
      */
     public function topTestSuite()
     {
@@ -621,8 +591,6 @@ class TestResult implements Countable
      * Returns whether code coverage information should be collected.
      *
      * @return bool If code coverage should be collected
-     *
-     * @since Method available since Release 3.2.0
      */
     public function getCollectCodeCoverageInformation()
     {
@@ -933,8 +901,6 @@ class TestResult implements Countable
      * Returns the code coverage object.
      *
      * @return CodeCoverage
-     *
-     * @since Method available since Release 3.5.0
      */
     public function getCodeCoverage()
     {
@@ -945,8 +911,6 @@ class TestResult implements Countable
      * Sets the code coverage object.
      *
      * @param CodeCoverage $codeCoverage
-     *
-     * @since Method available since Release 3.6.0
      */
     public function setCodeCoverage(CodeCoverage $codeCoverage)
     {
@@ -959,8 +923,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.2.14
      */
     public function convertErrorsToExceptions($flag)
     {
@@ -975,8 +937,6 @@ class TestResult implements Countable
      * Returns the error-to-exception conversion setting.
      *
      * @return bool
-     *
-     * @since Method available since Release 3.4.0
      */
     public function getConvertErrorsToExceptions()
     {
@@ -989,8 +949,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.5.0
      */
     public function stopOnError($flag)
     {
@@ -1007,8 +965,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.1.0
      */
     public function stopOnFailure($flag)
     {
@@ -1025,8 +981,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 5.1.0
      */
     public function stopOnWarning($flag)
     {
@@ -1041,8 +995,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 4.0.0
      */
     public function beStrictAboutTestsThatDoNotTestAnything($flag)
     {
@@ -1055,8 +1007,6 @@ class TestResult implements Countable
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 4.0.0
      */
     public function isStrictAboutTestsThatDoNotTestAnything()
     {
@@ -1067,8 +1017,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 4.0.0
      */
     public function beStrictAboutOutputDuringTests($flag)
     {
@@ -1081,8 +1029,6 @@ class TestResult implements Countable
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 4.0.0
      */
     public function isStrictAboutOutputDuringTests()
     {
@@ -1093,8 +1039,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 5.0.0
      */
     public function beStrictAboutResourceUsageDuringSmallTests($flag)
     {
@@ -1107,8 +1051,6 @@ class TestResult implements Countable
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 5.0.0
      */
     public function isStrictAboutResourceUsageDuringSmallTests()
     {
@@ -1119,8 +1061,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 5.0.0
      */
     public function enforceTimeLimit($flag)
     {
@@ -1133,8 +1073,6 @@ class TestResult implements Countable
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 5.0.0
      */
     public function enforcesTimeLimit()
     {
@@ -1145,8 +1083,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 4.2.0
      */
     public function beStrictAboutTodoAnnotatedTests($flag)
     {
@@ -1159,8 +1095,6 @@ class TestResult implements Countable
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 4.2.0
      */
     public function isStrictAboutTodoAnnotatedTests()
     {
@@ -1173,8 +1107,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 4.0.0
      */
     public function stopOnRisky($flag)
     {
@@ -1191,8 +1123,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.5.0
      */
     public function stopOnIncomplete($flag)
     {
@@ -1209,8 +1139,6 @@ class TestResult implements Countable
      * @param bool $flag
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.1.0
      */
     public function stopOnSkipped($flag)
     {
@@ -1247,8 +1175,6 @@ class TestResult implements Countable
      * @param int $timeout
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.6.0
      */
     public function setTimeoutForSmallTests($timeout)
     {
@@ -1265,8 +1191,6 @@ class TestResult implements Countable
      * @param int $timeout
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.6.0
      */
     public function setTimeoutForMediumTests($timeout)
     {
@@ -1283,8 +1207,6 @@ class TestResult implements Countable
      * @param int $timeout
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.6.0
      */
     public function setTimeoutForLargeTests($timeout)
     {
@@ -1307,8 +1229,6 @@ class TestResult implements Countable
 
     /**
      * @param bool $flag
-     *
-     * @since Method available since Release 5.4.0
      */
     public function setRegisterMockObjectsFromTestArgumentsRecursively($flag)
     {

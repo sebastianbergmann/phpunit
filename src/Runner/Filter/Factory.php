@@ -16,7 +16,6 @@ use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
 
 /**
- * @since Class available since Release 4.0.0
  */
 class Factory
 {

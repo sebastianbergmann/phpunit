@@ -27,8 +27,6 @@ use SebastianBergmann\Environment\Console;
 
 /**
  * Prints the result of a TextUI TestRunner run.
- *
- * @since Class available since Release 2.0.0
  */
 class ResultPrinter extends Printer implements TestListener
 {
@@ -141,8 +139,6 @@ class ResultPrinter extends Printer implements TestListener
      * @param bool       $reverse
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.0.0
      */
     public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80, $reverse = false)
     {
@@ -322,8 +318,6 @@ class ResultPrinter extends Printer implements TestListener
 
     /**
      * @param TestResult $result
-     *
-     * @since Method available since Release 4.0.0
      */
     protected function printRisky(TestResult $result)
     {
@@ -332,8 +326,6 @@ class ResultPrinter extends Printer implements TestListener
 
     /**
      * @param TestResult $result
-     *
-     * @since Method available since Release 3.0.0
      */
     protected function printSkipped(TestResult $result)
     {
@@ -464,8 +456,6 @@ class ResultPrinter extends Printer implements TestListener
      * @param Test    $test
      * @param Warning $e
      * @param float   $time
-     *
-     * @since Method available since Release 5.1.0
      */
     public function addWarning(Test $test, Warning $e, $time)
     {
@@ -492,8 +482,6 @@ class ResultPrinter extends Printer implements TestListener
      * @param Test       $test
      * @param \Exception $e
      * @param float      $time
-     *
-     * @since Method available since Release 4.0.0
      */
     public function addRiskyTest(Test $test, \Exception $e, $time)
     {
@@ -507,8 +495,6 @@ class ResultPrinter extends Printer implements TestListener
      * @param Test       $test
      * @param \Exception $e
      * @param float      $time
-     *
-     * @since Method available since Release 3.0.0
      */
     public function addSkippedTest(Test $test, \Exception $e, $time)
     {
@@ -520,8 +506,6 @@ class ResultPrinter extends Printer implements TestListener
      * A testsuite started.
      *
      * @param TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function startTestSuite(TestSuite $suite)
     {
@@ -536,8 +520,6 @@ class ResultPrinter extends Printer implements TestListener
      * A testsuite ended.
      *
      * @param TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function endTestSuite(TestSuite $suite)
     {
@@ -633,8 +615,6 @@ class ResultPrinter extends Printer implements TestListener
      * @param string $buffer
      *
      * @return string
-     *
-     * @since Method available since Release 4.0.0
      */
     protected function formatWithColor($color, $buffer)
     {
@@ -668,8 +648,6 @@ class ResultPrinter extends Printer implements TestListener
      * @param string $color
      * @param string $buffer
      * @param bool   $lf
-     *
-     * @since Method available since Release 4.0.0
      */
     protected function writeWithColor($color, $buffer, $lf = true)
     {
@@ -685,8 +663,6 @@ class ResultPrinter extends Printer implements TestListener
      *
      * @param string $color
      * @param string $buffer
-     *
-     * @since Method available since Release 4.0.0
      */
     protected function writeProgressWithColor($color, $buffer)
     {
@@ -699,8 +675,6 @@ class ResultPrinter extends Printer implements TestListener
      * @param string $name
      * @param string $color
      * @param bool   $always
-     *
-     * @since Method available since Release 4.6.5
      */
     private function writeCountString($count, $name, $color, $always = false)
     {

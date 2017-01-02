@@ -12,8 +12,6 @@ namespace PHPUnit\Framework;
 
 /**
  * Creates a synthetic failed assertion.
- *
- * @since Class available since Release 3.5.0
  */
 class SyntheticError extends AssertionFailedError
 {

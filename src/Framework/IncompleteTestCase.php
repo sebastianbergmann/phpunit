@@ -11,8 +11,6 @@ namespace PHPUnit\Framework;
 
 /**
  * An incomplete test case
- *
- * @since Class available since Release 4.3.0
  */
 class IncompleteTestCase extends TestCase
 {

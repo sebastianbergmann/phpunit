@@ -16,8 +16,6 @@ use ReflectionClass;
  * static attribute.
  *
  * The attribute name is passed in the constructor.
- *
- * @since Class available since Release 3.1.0
  */
 class ClassHasStaticAttribute extends ClassHasAttribute
 {
@@ -46,8 +44,6 @@ class ClassHasStaticAttribute extends ClassHasAttribute
      * Returns a string representation of the constraint.
      *
      * @return string
-     *
-     * @since Method available since Release 3.3.0
      */
     public function toString()
     {

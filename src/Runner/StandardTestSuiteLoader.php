@@ -17,8 +17,6 @@ use ReflectionClass;
 
 /**
  * The standard test suite loader.
- *
- * @since Class available since Release 2.0.0
  */
 class StandardTestSuiteLoader implements TestSuiteLoader
 {

@@ -16,8 +16,6 @@ namespace PHPUnit\Framework\Error;
  * <code>
  * PHPUnit_Framework_Error_Deprecated::$enabled = false;
  * </code>
- *
- * @since Class available since Release 3.3.0
  */
 class Deprecated extends Error
 {

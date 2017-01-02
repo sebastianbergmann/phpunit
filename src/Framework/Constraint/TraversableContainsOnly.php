@@ -14,8 +14,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * Constraint that asserts that the Traversable it is applied to contains
  * only values of a given type.
- *
- * @since Class available since Release 3.1.4
  */
 class TraversableContainsOnly extends Constraint
 {

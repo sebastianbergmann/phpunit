@@ -11,8 +11,6 @@ namespace PHPUnit\Framework;
 
 /**
  * A warning.
- *
- * @since Class available since Release 2.0.0
  */
 class WarningTestCase extends TestCase
 {
@@ -60,8 +58,6 @@ class WarningTestCase extends TestCase
 
     /**
      * @return string
-     *
-     * @since Method available since Release 3.0.0
      */
     public function getMessage()
     {
@@ -72,8 +68,6 @@ class WarningTestCase extends TestCase
      * Returns a string representation of the test case.
      *
      * @return string
-     *
-     * @since Method available since Release 3.4.0
      */
     public function toString()
     {

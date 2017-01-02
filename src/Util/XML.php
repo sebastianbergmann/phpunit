@@ -19,8 +19,6 @@ use ReflectionClass;
 
 /**
  * XML helpers.
- *
- * @since Class available since Release 3.2.0
  */
 class Xml
 {
@@ -45,8 +43,6 @@ class Xml
      * @param bool               $strict
      *
      * @return DOMDocument
-     *
-     * @since Method available since Release 3.3.0
      */
     public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false)
     {
@@ -130,8 +126,6 @@ class Xml
      * @param bool   $strict
      *
      * @return DOMDocument
-     *
-     * @since Method available since Release 3.3.0
      */
     public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
     {
@@ -153,8 +147,6 @@ class Xml
 
     /**
      * @param DOMNode $node
-     *
-     * @since Method available since Release 3.3.0
      */
     public static function removeCharacterDataNodes(DOMNode $node)
     {
@@ -176,8 +168,6 @@ class Xml
      * @param string $string
      *
      * @return string
-     *
-     * @since Method available since Release 3.4.6
      */
     public static function prepareString($string)
     {
@@ -198,8 +188,6 @@ class Xml
      * @param DOMElement $element
      *
      * @return mixed
-     *
-     * @since Method available since Release 3.4.0
      */
     public static function xmlToVariable(DOMElement $element)
     {

@@ -18,8 +18,6 @@ use ReflectionException;
 
 /**
  * Base class for all test runners.
- *
- * @since Class available since Release 2.0.0
  */
 abstract class BaseTestRunner
 {

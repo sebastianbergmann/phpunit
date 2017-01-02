@@ -13,8 +13,6 @@ use PHPUnit\Framework\Exception;
 
 /**
  * Default utility for PHP sub-processes.
- *
- * @since Class available since Release 3.5.12
  */
 class DefaultPhpProcess extends AbstractPhpProcess
 {
@@ -199,8 +197,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
      * @param string   $job
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.5.12
      */
     protected function process($pipe, $job)
     {
@@ -208,7 +204,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
     }
 
     /**
-     * @since Method available since Release 3.5.12
      */
     protected function cleanup()
     {

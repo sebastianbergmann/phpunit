@@ -17,8 +17,6 @@ use ReflectionException;
  * of a given class.
  *
  * The expected class name is passed in the constructor.
- *
- * @since Class available since Release 3.0.0
  */
 class IsInstanceOf extends Constraint
 {

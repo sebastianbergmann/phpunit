@@ -17,8 +17,6 @@ namespace PHPUnit\Framework\Constraint;
  * in PHP. The pattern is matched by executing preg_match().
  *
  * The pattern string passed in the constructor.
- *
- * @since Class available since Release 3.0.0
  */
 class RegularExpression extends Constraint
 {

@@ -95,8 +95,6 @@ use Throwable;
  * }
  * ?>
  * </code>
- *
- * @since Class available since Release 2.0.0
  */
 abstract class TestCase extends Assert implements Test, SelfDescribing
 {
@@ -366,7 +364,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @since Method available since Release 5.4.0
      */
     public function getGroups()
     {
@@ -375,8 +372,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param array $groups
-     *
-     * @since Method available since Release 5.4.0
      */
     public function setGroups(array $groups)
     {
@@ -387,8 +382,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns the annotations for this test.
      *
      * @return array
-     *
-     * @since Method available since Release 3.4.0
      */
     public function getAnnotations()
     {
@@ -418,8 +411,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns the size of the test.
      *
      * @return int
-     *
-     * @since Method available since Release 3.6.0
      */
     public function getSize()
     {
@@ -431,8 +422,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 5.3.4
      */
     public function hasSize()
     {
@@ -441,8 +430,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 5.3.4
      */
     public function isSmall()
     {
@@ -451,8 +438,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 5.3.4
      */
     public function isMedium()
     {
@@ -461,8 +446,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 5.3.4
      */
     public function isLarge()
     {
@@ -471,8 +454,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return string
-     *
-     * @since Method available since Release 3.6.0
      */
     public function getActualOutput()
     {
@@ -485,8 +466,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 3.6.0
      */
     public function hasOutput()
     {
@@ -503,8 +482,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 5.6.0
      */
     public function doesNotPerformAssertions()
     {
@@ -513,8 +490,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param string $expectedRegex
-     *
-     * @since Method available since Release 3.6.0
      *
      * @throws Exception
      */
@@ -531,8 +506,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param string $expectedString
-     *
-     * @since Method available since Release 3.6.0
      */
     public function expectOutputString($expectedString)
     {
@@ -547,8 +520,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 4.3.3
      */
     public function hasExpectationOnOutput()
     {
@@ -557,8 +528,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return string
-     *
-     * @since Method available since Release 3.2.0
      */
     public function getExpectedException()
     {
@@ -567,8 +536,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param string $exception
-     *
-     * @since Method available since Release 5.2.0
      */
     public function expectException($exception)
     {
@@ -583,8 +550,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param int|string $code
      *
      * @throws Exception
-     *
-     * @since Method available since Release 5.2.0
      */
     public function expectExceptionCode($code)
     {
@@ -599,8 +564,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string $message
      *
      * @throws Exception
-     *
-     * @since Method available since Release 5.2.0
      */
     public function expectExceptionMessage($message)
     {
@@ -615,8 +578,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string $messageRegExp
      *
      * @throws Exception
-     *
-     * @since Method available since Release 5.2.0
      */
     public function expectExceptionMessageRegExp($messageRegExp)
     {
@@ -629,8 +590,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param bool $flag
-     *
-     * @since Method available since Release 5.4.0
      */
     public function setRegisterMockObjectsFromTestArgumentsRecursively($flag)
     {
@@ -642,7 +601,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @since Method available since Release 3.4.0
      */
     protected function setExpectedExceptionFromAnnotation()
     {
@@ -671,8 +629,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param bool $useErrorHandler
-     *
-     * @since Method available since Release 3.4.0
      */
     public function setUseErrorHandler($useErrorHandler)
     {
@@ -680,7 +636,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @since Method available since Release 3.4.0
      */
     protected function setUseErrorHandlerFromAnnotation()
     {
@@ -698,7 +653,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @since Method available since Release 3.6.0
      */
     protected function checkRequirements()
     {
@@ -720,8 +674,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns the status of this test.
      *
      * @return int
-     *
-     * @since Method available since Release 3.1.0
      */
     public function getStatus()
     {
@@ -732,8 +684,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns the status message of this test.
      *
      * @return string
-     *
-     * @since Method available since Release 3.3.0
      */
     public function getStatusMessage()
     {
@@ -744,8 +694,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns whether or not this test has failed.
      *
      * @return bool
-     *
-     * @since Method available since Release 3.0.0
      */
     public function hasFailed()
     {
@@ -1152,8 +1100,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * Verifies the mock object expectations.
-     *
-     * @since Method available since Release 3.5.0
      */
     protected function verifyMockObjects()
     {
@@ -1202,8 +1148,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Sets the dependencies of a TestCase.
      *
      * @param array $dependencies
-     *
-     * @since Method available since Release 3.4.0
      */
     public function setDependencies(array $dependencies)
     {
@@ -1214,8 +1158,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns true if the tests has dependencies
      *
      * @return bool
-     *
-     * @since Method available since Release 4.0.0
      */
     public function hasDependencies()
     {
@@ -1226,8 +1168,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Sets
      *
      * @param array $dependencyInput
-     *
-     * @since Method available since Release 3.4.0
      */
     public function setDependencyInput(array $dependencyInput)
     {
@@ -1236,8 +1176,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param bool $beStrictAboutChangesToGlobalState
-     *
-     * @since Method available since Release 4.6.0
      */
     public function setBeStrictAboutChangesToGlobalState($beStrictAboutChangesToGlobalState)
     {
@@ -1248,8 +1186,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Calling this method in setUp() has no effect!
      *
      * @param bool $backupGlobals
-     *
-     * @since Method available since Release 3.3.0
      */
     public function setBackupGlobals($backupGlobals)
     {
@@ -1262,8 +1198,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Calling this method in setUp() has no effect!
      *
      * @param bool $backupStaticAttributes
-     *
-     * @since Method available since Release 3.4.0
      */
     public function setBackupStaticAttributes($backupStaticAttributes)
     {
@@ -1278,8 +1212,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param bool $runTestInSeparateProcess
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.4.0
      */
     public function setRunTestInSeparateProcess($runTestInSeparateProcess)
     {
@@ -1296,8 +1228,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param bool $preserveGlobalState
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.4.0
      */
     public function setPreserveGlobalState($preserveGlobalState)
     {
@@ -1312,8 +1242,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param bool $inIsolation
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.4.0
      */
     public function setInIsolation($inIsolation)
     {
@@ -1326,8 +1254,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 4.3.0
      */
     public function isInIsolation()
     {
@@ -1336,8 +1262,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return mixed
-     *
-     * @since Method available since Release 3.4.0
      */
     public function getResult()
     {
@@ -1346,8 +1270,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param mixed $result
-     *
-     * @since Method available since Release 3.4.0
      */
     public function setResult($result)
     {
@@ -1358,8 +1280,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param callable $callback
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.6.0
      */
     public function setOutputCallback($callback)
     {
@@ -1372,8 +1292,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return TestResult
-     *
-     * @since Method available since Release 3.5.7
      */
     public function getTestResultObject()
     {
@@ -1382,8 +1300,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param TestResult $result
-     *
-     * @since Method available since Release 3.6.0
      */
     public function setTestResultObject(TestResult $result)
     {
@@ -1392,8 +1308,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param PHPUnit_Framework_MockObject_MockObject $mockObject
-     *
-     * @since Method available since Release 5.4.0
      */
     public function registerMockObject(PHPUnit_Framework_MockObject_MockObject $mockObject)
     {
@@ -1409,8 +1323,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string $newValue
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.0.0
      */
     protected function iniSet($varName, $newValue)
     {
@@ -1441,8 +1353,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string $locale
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.1.0
      */
     protected function setLocale()
     {
@@ -1490,8 +1400,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string $className
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
-     *
-     * @since Method available since Release 3.5.0
      */
     public function getMockBuilder($className)
     {
@@ -1506,8 +1414,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @throws Exception
-     *
-     * @since Method available since Release 5.4.0
      */
     protected function createMock($originalClassName)
     {
@@ -1528,8 +1434,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @throws Exception
-     *
-     * @since Method available since Release 5.6.0
      */
     protected function createConfiguredMock($originalClassName, array $configuration)
     {
@@ -1551,8 +1455,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @throws Exception
-     *
-     * @since Method available since Release 5.5.0
      */
     protected function createPartialMock($originalClassName, array $methods)
     {
@@ -1574,8 +1476,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @throws Exception
-     *
-     * @since Method available since Release 6.0.0
      */
     protected function createTestProxy($originalClassName, array $constructorArguments = [])
     {
@@ -1600,8 +1500,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @return string
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.5.0
      */
     protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false)
     {
@@ -1635,8 +1533,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
-     * @since Method available since Release 3.4.0
-     *
      * @throws Exception
      */
     protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false)
@@ -1668,8 +1564,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param array  $options                 An array of options passed to SOAPClient::_construct
      *
      * @return PHPUnit_Framework_MockObject_MockObject
-     *
-     * @since Method available since Release 3.4.0
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = [])
     {
@@ -1719,8 +1613,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
-     * @since Method available since Release 4.0.0
-     *
      * @throws Exception
      */
     protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false)
@@ -1754,8 +1646,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return object
      *
-     * @since Method available since Release 3.6.0
-     *
      * @throws Exception
      */
     protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false)
@@ -1777,8 +1667,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @return \Prophecy\Prophecy\ObjectProphecy
      *
      * @throws \LogicException
-     *
-     * @since Method available since Release 4.5.0
      */
     protected function prophesize($classOrInterface = null)
     {
@@ -1789,8 +1677,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Adds a value to the assertion counter.
      *
      * @param int $count
-     *
-     * @since Method available since Release 3.3.3
      */
     public function addToAssertionCount($count)
     {
@@ -1801,8 +1687,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns the number of assertions performed by this test.
      *
      * @return int
-     *
-     * @since Method available since Release 3.3.0
      */
     public function getNumAssertions()
     {
@@ -1814,8 +1698,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * zero or more times.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
-     *
-     * @since Method available since Release 3.0.0
      */
     public static function any()
     {
@@ -1826,8 +1708,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns a matcher that matches when the method is never executed.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
-     *
-     * @since Method available since Release 3.0.0
      */
     public static function never()
     {
@@ -1841,8 +1721,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param int $requiredInvocations
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount
-     *
-     * @since Method available since Release 4.2.0
      */
     public static function atLeast($requiredInvocations)
     {
@@ -1855,8 +1733,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns a matcher that matches when the method is executed at least once.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
-     *
-     * @since Method available since Release 3.0.0
      */
     public static function atLeastOnce()
     {
@@ -1867,8 +1743,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns a matcher that matches when the method is executed exactly once.
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
-     *
-     * @since Method available since Release 3.0.0
      */
     public static function once()
     {
@@ -1882,8 +1756,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param int $count
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
-     *
-     * @since Method available since Release 3.0.0
      */
     public static function exactly($count)
     {
@@ -1897,8 +1769,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param int $allowedInvocations
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount
-     *
-     * @since Method available since Release 4.2.0
      */
     public static function atMost($allowedInvocations)
     {
@@ -1914,8 +1784,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param int $index
      *
      * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
-     *
-     * @since Method available since Release 3.0.0
      */
     public static function at($index)
     {
@@ -1926,8 +1794,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param mixed $value
      *
      * @return PHPUnit_Framework_MockObject_Stub_Return
-     *
-     * @since Method available since Release 3.0.0
      */
     public static function returnValue($value)
     {
@@ -1938,8 +1804,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param array $valueMap
      *
      * @return PHPUnit_Framework_MockObject_Stub_ReturnValueMap
-     *
-     * @since Method available since Release 3.6.0
      */
     public static function returnValueMap(array $valueMap)
     {
@@ -1950,8 +1814,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param int $argumentIndex
      *
      * @return PHPUnit_Framework_MockObject_Stub_ReturnArgument
-     *
-     * @since Method available since Release 3.3.0
      */
     public static function returnArgument($argumentIndex)
     {
@@ -1964,8 +1826,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param mixed $callback
      *
      * @return PHPUnit_Framework_MockObject_Stub_ReturnCallback
-     *
-     * @since Method available since Release 3.3.0
      */
     public static function returnCallback($callback)
     {
@@ -1978,8 +1838,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * This method is useful when mocking a fluent interface.
      *
      * @return PHPUnit_Framework_MockObject_Stub_ReturnSelf
-     *
-     * @since Method available since Release 3.6.0
      */
     public static function returnSelf()
     {
@@ -1990,8 +1848,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param Throwable $exception
      *
      * @return PHPUnit_Framework_MockObject_Stub_Exception
-     *
-     * @since Method available since Release 3.1.0
      */
     public static function throwException(Throwable $exception)
     {
@@ -2002,8 +1858,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param mixed $value , ...
      *
      * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
-     *
-     * @since Method available since Release 3.0.0
      */
     public static function onConsecutiveCalls()
     {
@@ -2014,8 +1868,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return bool
-     *
-     * @since Method available since Release 5.4.0
      */
     public function usesDataProvider()
     {
@@ -2024,8 +1876,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return string
-     *
-     * @since Method available since Release 5.4.0
      */
     public function dataDescription()
     {
@@ -2038,8 +1888,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param bool $includeData
      *
      * @return string
-     *
-     * @since Method available since Release 3.3.0
      */
     protected function getDataSetAsString($includeData = true)
     {
@@ -2083,7 +1931,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @since Method available since Release 3.5.4
      */
     protected function handleDependencies()
     {
@@ -2168,8 +2015,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * This method is called before the first test of this test class is run.
-     *
-     * @since Method available since Release 3.4.0
      */
     public static function setUpBeforeClass()
     {
@@ -2188,8 +2033,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * This method is called before the execution of a test starts
      * and after setUp() is called.
-     *
-     * @since Method available since Release 3.2.8
      */
     protected function assertPreConditions()
     {
@@ -2200,8 +2043,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * This method is called before the execution of a test ends
      * and before tearDown() is called.
-     *
-     * @since Method available since Release 3.2.8
      */
     protected function assertPostConditions()
     {
@@ -2217,8 +2058,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * This method is called after the last test of this test class is run.
-     *
-     * @since Method available since Release 3.4.0
      */
     public static function tearDownAfterClass()
     {
@@ -2228,8 +2067,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * This method is called when a test method did not execute successfully.
      *
      * @param Throwable $t
-     *
-     * @since Method available since Release 3.4.0
      *
      * @throws Throwable
      */
@@ -2242,8 +2079,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Performs custom preparations on the process isolation template.
      *
      * @param Text_Template $template
-     *
-     * @since Method available since Release 3.4.0
      */
     protected function prepareTemplate(Text_Template $template)
     {
@@ -2264,7 +2099,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @since Method available since Release 4.2.0
      */
     private function startOutputBuffering()
     {
@@ -2275,7 +2109,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @since Method available since Release 4.2.0
      */
     private function stopOutputBuffering()
     {
@@ -2459,8 +2292,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return Prophecy\Prophet
-     *
-     * @since Method available since Release 4.5.0
      */
     private function getProphet()
     {
@@ -2475,8 +2306,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param PHPUnit_Framework_MockObject_MockObject $mock
      *
      * @return bool
-     *
-     * @since Method available since Release 5.0.0
      */
     private function shouldInvocationMockerBeReset(PHPUnit_Framework_MockObject_MockObject $mock)
     {
@@ -2503,8 +2332,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param array $testArguments
-     *
-     * @since Method available since Release 5.0.0
      */
     private function registerMockObjectsFromTestArguments(array $testArguments)
     {
@@ -2532,7 +2359,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @since Method available since Release 5.6.0
      */
     private function setDoesNotPerformAssertionsFromAnnotation()
     {

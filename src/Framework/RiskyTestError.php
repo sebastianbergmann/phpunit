@@ -12,8 +12,6 @@ namespace PHPUnit\Framework;
 /**
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
  * case of a risky test.
- *
- * @since Class available since Release 4.0.0
  */
 class RiskyTestError extends AssertionFailedError implements RiskyTest
 {

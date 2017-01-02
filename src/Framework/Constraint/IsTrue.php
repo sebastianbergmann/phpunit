@@ -11,8 +11,6 @@ namespace PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that accepts true.
- *
- * @since Class available since Release 3.3.0
  */
 class IsTrue extends Constraint
 {

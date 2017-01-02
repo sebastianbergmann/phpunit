@@ -11,8 +11,6 @@ namespace PHPUnit\Framework;
 
 /**
  * A skipped test case
- *
- * @since Class available since Release 4.3.0
  */
 class SkippedTestCase extends TestCase
 {

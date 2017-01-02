@@ -12,8 +12,6 @@ namespace PHPUnit\Framework\Constraint;
 
 /**
  * Provides human readable messages for each JSON error.
- *
- * @since Class available since Release 3.7.0
  */
 class JsonMatchesErrorMessageProvider
 {

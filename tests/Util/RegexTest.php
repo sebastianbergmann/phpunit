@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\RegularExpression;
 
 /**
- * @since      Class available since Release 4.2.0
  */
 class Util_RegexTest extends TestCase
 {

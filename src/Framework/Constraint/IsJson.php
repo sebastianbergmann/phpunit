@@ -11,8 +11,6 @@ namespace PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that asserts that a string is valid JSON.
- *
- * @since Class available since Release 3.7.20
  */
 class IsJson extends Constraint
 {

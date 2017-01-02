@@ -12,7 +12,6 @@ namespace PHPUnit\Framework\Constraint;
 use Exception;
 
 /**
- * @since Class available since Release 3.6.6
  */
 class ExceptionCode extends Constraint
 {

@@ -14,8 +14,6 @@ use SebastianBergmann\Diff\Differ;
 
 /**
  * ...
- *
- * @since Class available since Release 3.5.0
  */
 class StringMatchesFormatDescription extends RegularExpression
 {

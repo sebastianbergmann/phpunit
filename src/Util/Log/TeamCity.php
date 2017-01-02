@@ -27,8 +27,6 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 /**
  * A TestListener that generates a logfile of the test execution using the
  * TeamCity format (for use with PhpStorm, for instance).
- *
- * @since Class available since Release 5.0.0
  */
 class TeamCity extends ResultPrinter
 {
@@ -88,8 +86,6 @@ class TeamCity extends ResultPrinter
      * @param Test    $test
      * @param Warning $e
      * @param float   $time
-     *
-     * @since Method available since Release 5.1.0
      */
     public function addWarning(Test $test, Warning $e, $time)
     {

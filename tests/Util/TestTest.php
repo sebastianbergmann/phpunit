@@ -24,7 +24,6 @@ require TEST_FILES_PATH . 'CoverageNamespacedFunctionTest.php';
 require TEST_FILES_PATH . 'NamespaceCoveredFunction.php';
 
 /**
- * @since      Class available since Release 3.3.6
  */
 class Util_TestTest extends TestCase
 {

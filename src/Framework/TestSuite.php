@@ -23,8 +23,6 @@ use Throwable;
 
 /**
  * A TestSuite is a composite of Tests. It runs a collection of test cases.
- *
- * @since Class available since Release 2.0.0
  */
 class TestSuite implements Test, SelfDescribing, IteratorAggregate
 {
@@ -308,8 +306,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param string $filename
      *
      * @throws Exception
-     *
-     * @since Method available since Release 2.3.0
      */
     public function addTestFile($filename)
     {
@@ -388,8 +384,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param array|Iterator $filenames
      *
      * @throws Exception
-     *
-     * @since Method available since Release 2.3.0
      */
     public function addTestFiles($filenames)
     {
@@ -637,8 +631,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * Returns the test groups of the suite.
      *
      * @return array
-     *
-     * @since Method available since Release 3.2.0
      */
     public function getGroups()
     {
@@ -654,8 +646,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * Set tests groups of the test case
      *
      * @param array $groups
-     *
-     * @since Method available since Release 4.0.0
      */
     public function setGroupDetails(array $groups)
     {
@@ -766,8 +756,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param bool $runTestInSeparateProcess
      *
      * @throws Exception
-     *
-     * @since Method available since Release 3.7.0
      */
     public function setRunTestInSeparateProcess($runTestInSeparateProcess)
     {
@@ -831,8 +819,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * Set tests of the test suite
      *
      * @param array $tests
-     *
-     * @since Method available since Release 4.0.0
      */
     public function setTests(array $tests)
     {
@@ -845,8 +831,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param string $message
      *
      * @throws SkippedTestSuiteError
-     *
-     * @since Method available since Release 3.0.0
      */
     public function markTestSuiteSkipped($message = '')
     {
@@ -930,8 +914,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param string $message
      *
      * @return SkippedTestCase
-     *
-     * @since Method available since Release 4.3.0
      */
     protected static function skipTest($class, $methodName, $message)
     {
@@ -944,8 +926,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param string $message
      *
      * @return IncompleteTestCase
-     *
-     * @since Method available since Release 4.3.0
      */
     protected static function incompleteTest($class, $methodName, $message)
     {
@@ -954,8 +934,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * @param bool $beStrictAboutChangesToGlobalState
-     *
-     * @since Method available since Release 4.6.0
      */
     public function setbeStrictAboutChangesToGlobalState($beStrictAboutChangesToGlobalState)
     {
@@ -966,8 +944,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * @param bool $backupGlobals
-     *
-     * @since Method available since Release 3.3.0
      */
     public function setBackupGlobals($backupGlobals)
     {
@@ -978,8 +954,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * @param bool $backupStaticAttributes
-     *
-     * @since Method available since Release 3.4.0
      */
     public function setBackupStaticAttributes($backupStaticAttributes)
     {
@@ -994,8 +968,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * Returns an iterator for this test suite.
      *
      * @return RecursiveIteratorIterator
-     *
-     * @since Method available since Release 3.1.0
      */
     public function getIterator()
     {
@@ -1021,8 +993,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * Template Method that is called before the tests
      * of this test suite are run.
-     *
-     * @since Method available since Release 3.1.0
      */
     protected function setUp()
     {
@@ -1031,8 +1001,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * Template Method that is called after the tests
      * of this test suite have finished running.
-     *
-     * @since Method available since Release 3.1.0
      */
     protected function tearDown()
     {

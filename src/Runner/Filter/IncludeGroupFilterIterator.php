@@ -10,7 +10,6 @@
 namespace PHPUnit\Runner\Filter;
 
 /**
- * @since Class available since Release 4.0.0
  */
 class IncludeGroupFilterIterator extends GroupFilterIterator
 {

@@ -11,8 +11,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Tests for the BankAccount class.
- *
- * @since      Class available since Release 2.3.0
  */
 class BankAccountWithCustomExtensionTest extends TestCase
 {

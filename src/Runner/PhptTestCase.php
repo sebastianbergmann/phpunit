@@ -24,8 +24,6 @@ use Throwable;
 
 /**
  * Runner for PHPT test cases.
- *
- * @since Class available since Release 3.1.4
  */
 class PhptTestCase implements Test, SelfDescribing
 {

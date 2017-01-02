@@ -17,8 +17,6 @@ namespace PHPUnit\Framework\Constraint;
  * the evaluation fails.
  *
  * The sub-string is passed in the constructor.
- *
- * @since Class available since Release 3.0.0
  */
 class StringContains extends Constraint
 {

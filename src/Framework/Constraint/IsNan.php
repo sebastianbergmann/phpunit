@@ -11,8 +11,6 @@ namespace PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that accepts nan.
- *
- * @since      Class available since Release 5.0.0
  */
 class IsNan extends Constraint
 {

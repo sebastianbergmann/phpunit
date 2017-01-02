@@ -44,7 +44,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Filter;
 
 /**
- * @since      Class available since Release 3.0.0
  */
 class Framework_ConstraintTest extends TestCase
 {

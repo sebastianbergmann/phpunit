@@ -14,8 +14,6 @@ use numeric;
 /**
  * Constraint that asserts that the value it is evaluated for is less than
  * a given value.
- *
- * @since Class available since Release 3.0.0
  */
 class LessThan extends Constraint
 {

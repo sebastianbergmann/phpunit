@@ -11,7 +11,6 @@
 namespace PHPUnit\Util;
 
 /**
- * @since Class available since Release 5.3.0
  */
 class ConfigurationGenerator
 {

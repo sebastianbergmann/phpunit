@@ -18,13 +18,10 @@ use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SyntheticError;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit_Util_PHP_Windows;
 use SebastianBergmann\Environment\Runtime;
 
 /**
  * Utility methods for PHP sub-processes.
- *
- * @since Class available since Release 3.4.0
  */
 abstract class AbstractPhpProcess
 {
@@ -176,8 +173,6 @@ abstract class AbstractPhpProcess
 
     /**
      * @return AbstractPhpProcess
-     *
-     * @since Method available since Release 3.5.12
      */
     public static function factory()
     {
@@ -263,8 +258,6 @@ abstract class AbstractPhpProcess
      * @param array $settings
      *
      * @return string
-     *
-     * @since Method available since Release 4.0.0
      */
     protected function settingsToParameters(array $settings)
     {
@@ -284,8 +277,6 @@ abstract class AbstractPhpProcess
      * @param TestResult $result
      * @param string     $stdout
      * @param string     $stderr
-     *
-     * @since Method available since Release 3.5.0
      */
     private function processChildResult(Test $test, TestResult $result, $stdout, $stderr)
     {
@@ -398,7 +389,6 @@ abstract class AbstractPhpProcess
      *
      * @return Exception
      *
-     * @since Method available since Release 3.6.0
      * @see    https://github.com/sebastianbergmann/phpunit/issues/74
      */
     private function getException(TestFailure $error)

@@ -12,7 +12,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Xml;
 
 /**
- * @since      Class available since Release 3.3.0
  * @covers     Xml
  */
 class Util_XMLTest extends TestCase

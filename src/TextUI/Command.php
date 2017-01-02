@@ -34,8 +34,6 @@ use Throwable;
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
- *
- * @since Class available since Release 3.0.0
  */
 class Command
 {
@@ -226,8 +224,6 @@ class Command
      * Create a TestRunner, override in subclasses.
      *
      * @return TestRunner
-     *
-     * @since Method available since Release 3.6.0
      */
     protected function createRunner()
     {
@@ -916,7 +912,6 @@ class Command
     }
 
     /**
-     * @since Method available since Release 4.8.0
      */
     protected function handleVersionCheck()
     {

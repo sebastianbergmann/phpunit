@@ -12,7 +12,6 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
- * @since Class available since Release 3.1.0
  */
 abstract class Composite extends Constraint
 {

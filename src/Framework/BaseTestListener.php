@@ -16,7 +16,6 @@ use Exception;
  * with just a few lines of code.
  *
  * @see TestListener for documentation on the API methods.
- * @since Class available since Release 4.0.0
  */
 abstract class BaseTestListener implements TestListener
 {

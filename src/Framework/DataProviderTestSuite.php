@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 /**
- * @since Class available since Release 3.4.0
  */
 class DataProviderTestSuite extends TestSuite
 {

@@ -30,7 +30,6 @@ use PHPUnit\Util\Filter;
  * the parent would break the intended encapsulation of process isolation.
  *
  * @see http://fabien.potencier.org/article/9/php-serialization-stack-traces-and-exceptions
- * @since Class available since Release 3.4.0
  */
 class Exception extends \RuntimeException implements \PHPUnit\Exception
 {

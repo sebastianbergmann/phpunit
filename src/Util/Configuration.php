@@ -144,8 +144,6 @@ use PHPUnit\TextUI\ResultPrinter;
  *   </php>
  * </phpunit>
  * </code>
- *
- * @since Class available since Release 3.2.0
  */
 class Configuration
 {
@@ -168,7 +166,6 @@ class Configuration
     }
 
     /**
-     * @since Method available since Release 3.4.0
      */
     final private function __clone()
     {
@@ -180,8 +177,6 @@ class Configuration
      * @param string $filename
      *
      * @return Configuration
-     *
-     * @since Method available since Release 3.4.0
      */
     public static function getInstance($filename)
     {
@@ -207,8 +202,6 @@ class Configuration
      * Returns the realpath to the configuration file.
      *
      * @return string
-     *
-     * @since Method available since Release 3.6.0
      */
     public function getFilename()
     {
@@ -219,8 +212,6 @@ class Configuration
      * Returns the configuration for SUT filtering.
      *
      * @return array
-     *
-     * @since Method available since Release 3.2.1
      */
     public function getFilterConfiguration()
     {
@@ -277,8 +268,6 @@ class Configuration
      * Returns the configuration for groups.
      *
      * @return array
-     *
-     * @since Method available since Release 3.2.1
      */
     public function getGroupConfiguration()
     {
@@ -289,8 +278,6 @@ class Configuration
      * Returns the configuration for testdox groups.
      *
      * @return array
-     *
-     * @since Method available since Release 5.4.0
      */
     public function getTestdoxGroupConfiguration()
     {
@@ -324,8 +311,6 @@ class Configuration
      * Returns the configuration for listeners.
      *
      * @return array
-     *
-     * @since Method available since Release 3.4.0
      */
     public function getListenerConfiguration()
     {
@@ -434,8 +419,6 @@ class Configuration
      * Returns the PHP configuration.
      *
      * @return array
-     *
-     * @since Method available since Release 3.2.1
      */
     public function getPHPConfiguration()
     {
@@ -488,8 +471,6 @@ class Configuration
 
     /**
      * Handles the PHP configuration.
-     *
-     * @since Method available since Release 3.2.20
      */
     public function handlePHPConfiguration()
     {
@@ -553,8 +534,6 @@ class Configuration
      * Returns the PHPUnit configuration.
      *
      * @return array
-     *
-     * @since Method available since Release 3.2.14
      */
     public function getPHPUnitConfiguration()
     {
@@ -846,8 +825,6 @@ class Configuration
      * Returns the test suite configuration.
      *
      * @return TestSuite
-     *
-     * @since Method available since Release 3.2.1
      */
     public function getTestSuiteConfiguration($testSuiteFilter = null)
     {
@@ -894,8 +871,6 @@ class Configuration
      * @param DOMElement $testSuiteNode
      *
      * @return TestSuite
-     *
-     * @since Method available since Release 3.4.0
      */
     protected function getTestSuite(DOMElement $testSuiteNode, $testSuiteFilter = null)
     {
@@ -1015,8 +990,6 @@ class Configuration
      * @param bool   $default
      *
      * @return bool
-     *
-     * @since Method available since Release 3.2.3
      */
     protected function getBoolean($value, $default)
     {
@@ -1034,8 +1007,6 @@ class Configuration
      * @param bool   $default
      *
      * @return bool
-     *
-     * @since Method available since Release 3.6.0
      */
     protected function getInteger($value, $default)
     {
@@ -1050,8 +1021,6 @@ class Configuration
      * @param string $query
      *
      * @return array
-     *
-     * @since Method available since Release 3.2.3
      */
     protected function readFilterDirectories($query)
     {
@@ -1097,8 +1066,6 @@ class Configuration
      * @param string $query
      *
      * @return array
-     *
-     * @since Method available since Release 3.2.3
      */
     protected function readFilterFiles($query)
     {
@@ -1120,8 +1087,6 @@ class Configuration
      * @param bool   $useIncludePath
      *
      * @return string
-     *
-     * @since Method available since Release 3.5.0
      */
     protected function toAbsolutePath($path, $useIncludePath = false)
     {

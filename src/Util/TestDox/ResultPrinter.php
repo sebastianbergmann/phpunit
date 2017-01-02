@@ -21,8 +21,6 @@ use PHPUnit\Util\Printer;
 
 /**
  * Base class for printers of TestDox documentation.
- *
- * @since Class available since Release 2.1.0
  */
 abstract class ResultPrinter extends Printer implements TestListener
 {
@@ -146,8 +144,6 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param Test    $test
      * @param Warning $e
      * @param float   $time
-     *
-     * @since Method available since Release 5.1.0
      */
     public function addWarning(Test $test, Warning $e, $time)
     {
@@ -199,8 +195,6 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param Test       $test
      * @param \Exception $e
      * @param float      $time
-     *
-     * @since Method available since Release 4.0.0
      */
     public function addRiskyTest(Test $test, \Exception $e, $time)
     {
@@ -218,8 +212,6 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param Test       $test
      * @param \Exception $e
      * @param float      $time
-     *
-     * @since Method available since Release 3.0.0
      */
     public function addSkippedTest(Test $test, \Exception $e, $time)
     {
@@ -235,8 +227,6 @@ abstract class ResultPrinter extends Printer implements TestListener
      * A testsuite started.
      *
      * @param TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function startTestSuite(TestSuite $suite)
     {
@@ -246,8 +236,6 @@ abstract class ResultPrinter extends Printer implements TestListener
      * A testsuite ended.
      *
      * @param TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function endTestSuite(TestSuite $suite)
     {
@@ -332,7 +320,6 @@ abstract class ResultPrinter extends Printer implements TestListener
     }
 
     /**
-     * @since Method available since Release 2.3.0
      */
     protected function doEndClass()
     {

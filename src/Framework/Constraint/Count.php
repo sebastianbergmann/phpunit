@@ -14,7 +14,6 @@ use IteratorAggregate;
 use Traversable;
 
 /**
- * @since Class available since Release 3.6.0
  */
 class Count extends Constraint
 {

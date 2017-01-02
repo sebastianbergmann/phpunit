@@ -14,8 +14,6 @@ use PHPUnit\Framework\Exception;
 
 /**
  * Wrapper for PHP errors.
- *
- * @since Class available since Release 2.2.0
  */
 class Error extends Exception
 {

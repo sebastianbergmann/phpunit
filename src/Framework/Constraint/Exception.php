@@ -13,7 +13,6 @@ use PHPUnit\Util\Filter;
 use Throwable;
 
 /**
- * @since Class available since Release 3.6.6
  */
 class Exception extends Constraint
 {

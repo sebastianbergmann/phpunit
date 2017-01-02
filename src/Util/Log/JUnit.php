@@ -30,8 +30,6 @@ use ReflectionException;
  * A TestListener that generates a logfile of the test execution in XML markup.
  *
  * The XML markup used is the same as the one that is used by the JUnit Ant task.
- *
- * @since Class available since Release 2.1.0
  */
 class JUnit extends Printer implements TestListener
 {
@@ -150,8 +148,6 @@ class JUnit extends Printer implements TestListener
      * @param Test    $test
      * @param Warning $e
      * @param float   $time
-     *
-     * @since Method available since Release 5.1.0
      */
     public function addWarning(Test $test, Warning $e, $time)
     {
@@ -190,8 +186,6 @@ class JUnit extends Printer implements TestListener
      * @param Test      $test
      * @param Exception $e
      * @param float     $time
-     *
-     * @since Method available since Release 4.0.0
      */
     public function addRiskyTest(Test $test, Exception $e, $time)
     {
@@ -220,8 +214,6 @@ class JUnit extends Printer implements TestListener
      * @param Test      $test
      * @param Exception $e
      * @param float     $time
-     *
-     * @since Method available since Release 3.0.0
      */
     public function addSkippedTest(Test $test, Exception $e, $time)
     {
@@ -232,8 +224,6 @@ class JUnit extends Printer implements TestListener
      * A testsuite started.
      *
      * @param TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function startTestSuite(TestSuite $suite)
     {
@@ -269,8 +259,6 @@ class JUnit extends Printer implements TestListener
      * A testsuite ended.
      *
      * @param TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function endTestSuite(TestSuite $suite)
     {
@@ -389,8 +377,6 @@ class JUnit extends Printer implements TestListener
      * Returns the XML as a string.
      *
      * @return string
-     *
-     * @since Method available since Release 2.2.0
      */
     public function getXML()
     {
@@ -405,8 +391,6 @@ class JUnit extends Printer implements TestListener
      * PHPUnit with Phing.
      *
      * @return string
-     *
-     * @since Method available since Release 2.2.0
      */
     public function setWriteDocument($flag)
     {

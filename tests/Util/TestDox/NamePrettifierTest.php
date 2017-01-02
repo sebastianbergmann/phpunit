@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\TestDox\NamePrettifier;
 
 /**
- * @since      Class available since Release 2.1.0
  */
 class Util_TestDox_NamePrettifierTest extends TestCase
 {

@@ -13,8 +13,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Logical NOT.
- *
- * @since Class available since Release 3.0.0
  */
 class LogicalNot extends Constraint
 {
@@ -153,8 +151,6 @@ class LogicalNot extends Constraint
      * Counts the number of constraint elements.
      *
      * @return int
-     *
-     * @since Method available since Release 3.4.0
      */
     public function count()
     {

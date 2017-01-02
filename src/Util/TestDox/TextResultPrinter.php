@@ -11,8 +11,6 @@ namespace PHPUnit\Util\TestDox;
 
 /**
  * Prints TestDox documentation in text format.
- *
- * @since Class available since Release 2.1.0
  */
 class TextResultPrinter extends ResultPrinter
 {

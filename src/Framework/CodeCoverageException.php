@@ -11,7 +11,6 @@
 namespace PHPUnit\Framework;
 
 /**
- * @since Class available since Release 4.0.0
  */
 class CodeCoverageException extends Exception
 {

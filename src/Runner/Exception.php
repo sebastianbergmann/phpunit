@@ -10,7 +10,6 @@
 namespace PHPUnit\Runner;
 
 /**
- * @since Class available since Release 4.0.0
  */
 class Exception extends \RuntimeException implements \PHPUnit\Exception
 {

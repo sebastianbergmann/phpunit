@@ -13,8 +13,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Constraint that accepts any input value.
- *
- * @since Class available since Release 3.0.0
  */
 class IsAnything extends Constraint
 {
@@ -55,8 +53,6 @@ class IsAnything extends Constraint
      * Counts the number of constraint elements.
      *
      * @return int
-     *
-     * @since Method available since Release 3.5.0
      */
     public function count()
     {

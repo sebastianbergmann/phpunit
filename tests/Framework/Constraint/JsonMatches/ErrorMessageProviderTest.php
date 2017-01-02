@@ -11,7 +11,6 @@ use PHPUnit\Framework\Constraint\JsonMatchesErrorMessageProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @since      File available since Release 3.7.0
  */
 class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends TestCase
 {

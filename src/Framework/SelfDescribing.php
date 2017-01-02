@@ -12,8 +12,6 @@ namespace PHPUnit\Framework;
 
 /**
  * Interface for classes that can return a description of itself.
- *
- * @since Interface available since Release 3.0.0
  */
 interface SelfDescribing
 {

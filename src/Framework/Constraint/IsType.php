@@ -16,8 +16,6 @@ use PHPUnit\Framework\Exception;
  * specified type.
  *
  * The expected value is passed in the constructor.
- *
- * @since Class available since Release 3.0.0
  */
 class IsType extends Constraint
 {

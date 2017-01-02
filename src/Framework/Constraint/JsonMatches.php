@@ -11,8 +11,6 @@ namespace PHPUnit\Framework\Constraint;
 
 /**
  * Asserts whether or not two JSON objects are equal.
- *
- * @since Class available since Release 3.7.0
  */
 class JsonMatches extends Constraint
 {

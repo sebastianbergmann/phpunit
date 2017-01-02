@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @since      Class available since Release 2.0.0
  */
 class Framework_TestImplementorTest extends TestCase
 {

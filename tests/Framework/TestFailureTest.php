@@ -12,7 +12,6 @@ use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @since      File available since Release 3.7.20
  */
 class Framework_TestFailureTest extends TestCase
 {

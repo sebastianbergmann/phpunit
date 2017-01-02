@@ -12,8 +12,6 @@ namespace PHPUnit\Framework;
 /**
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
  * case of an incomplete test.
- *
- * @since Class available since Release 2.0.0
  */
 class IncompleteTestError extends AssertionFailedError implements IncompleteTest
 {
