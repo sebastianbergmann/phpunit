@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use Exception;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -26,9 +25,9 @@ class ExpectationFailedException extends AssertionFailedError
     /**
      * @param string                 $message
      * @param ComparisonFailure|null $comparisonFailure
-     * @param Exception|null         $previous
+     * @param \Exception|null        $previous
      */
-    public function __construct($message, ComparisonFailure $comparisonFailure = null, Exception $previous = null)
+    public function __construct($message, ComparisonFailure $comparisonFailure = null, \Exception $previous = null)
     {
         $this->comparisonFailure = $comparisonFailure;
 

@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use Exception;
-
 /**
  * An empty Listener that can be extended to implement TestListener
  * with just a few lines of code.
@@ -19,7 +17,7 @@ use Exception;
  */
 abstract class BaseTestListener implements TestListener
 {
-    public function addError(Test $test, Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time)
     {
     }
 
@@ -31,15 +29,15 @@ abstract class BaseTestListener implements TestListener
     {
     }
 
-    public function addIncompleteTest(Test $test, Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time)
     {
     }
 
-    public function addRiskyTest(Test $test, Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time)
     {
     }
 
-    public function addSkippedTest(Test $test, Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time)
     {
     }
 

@@ -11,7 +11,6 @@ namespace PHPUnit\Util\Log;
 
 use DOMDocument;
 use DOMElement;
-use Exception;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
@@ -132,11 +131,11 @@ class JUnit extends Printer implements TestListener
     /**
      * An error occurred.
      *
-     * @param Test      $test
-     * @param Exception $e
-     * @param float     $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addError(Test $test, Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time)
     {
         $this->doAddFault($test, $e, $time, 'error');
         $this->testSuiteErrors[$this->testSuiteLevel]++;
@@ -171,11 +170,11 @@ class JUnit extends Printer implements TestListener
     /**
      * Incomplete test.
      *
-     * @param Test      $test
-     * @param Exception $e
-     * @param float     $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addIncompleteTest(Test $test, Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time)
     {
         $this->doAddSkipped($test);
     }
@@ -183,11 +182,11 @@ class JUnit extends Printer implements TestListener
     /**
      * Risky test.
      *
-     * @param Test      $test
-     * @param Exception $e
-     * @param float     $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addRiskyTest(Test $test, Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time)
     {
         if (!$this->reportUselessTests || $this->currentTestCase === null) {
             return;
@@ -211,11 +210,11 @@ class JUnit extends Printer implements TestListener
     /**
      * Skipped test.
      *
-     * @param Test      $test
-     * @param Exception $e
-     * @param float     $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addSkippedTest(Test $test, Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time)
     {
         $this->doAddSkipped($test);
     }
@@ -402,12 +401,12 @@ class JUnit extends Printer implements TestListener
     /**
      * Method which generalizes addError() and addFailure()
      *
-     * @param Test      $test
-     * @param Exception $e
-     * @param float     $time
-     * @param string    $type
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
+     * @param string     $type
      */
-    private function doAddFault(Test $test, Exception $e, $time, $type)
+    private function doAddFault(Test $test, \Exception $e, $time, $type)
     {
         if ($this->currentTestCase === null) {
             return;

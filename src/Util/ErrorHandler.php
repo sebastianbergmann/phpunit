@@ -13,7 +13,6 @@
 // Use dirname(__DIR__) instead of using /../ because of https://github.com/facebook/hhvm/issues/5215
 namespace PHPUnit\Util;
 
-use Exception;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Notice;

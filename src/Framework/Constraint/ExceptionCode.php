@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use Exception;
-
-/**
- */
 class ExceptionCode extends Constraint
 {
     /**
@@ -26,6 +22,7 @@ class ExceptionCode extends Constraint
     public function __construct($expected)
     {
         parent::__construct();
+
         $this->expectedCode = $expected;
     }
 
@@ -33,7 +30,7 @@ class ExceptionCode extends Constraint
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param Exception $other
+     * @param \Throwable $other
      *
      * @return bool
      */

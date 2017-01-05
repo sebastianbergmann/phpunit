@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use Exception;
-
 /**
  * A Listener for test progress.
  */
@@ -19,11 +17,11 @@ interface TestListener
     /**
      * An error occurred.
      *
-     * @param Test      $test
-     * @param Exception $e
-     * @param float     $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addError(Test $test, Exception $e, $time);
+    public function addError(Test $test, \Exception $e, $time);
 
     /**
      * A warning occurred.
@@ -46,29 +44,29 @@ interface TestListener
     /**
      * Incomplete test.
      *
-     * @param Test      $test
-     * @param Exception $e
-     * @param float     $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addIncompleteTest(Test $test, Exception $e, $time);
+    public function addIncompleteTest(Test $test, \Exception $e, $time);
 
     /**
      * Risky test.
      *
-     * @param Test      $test
-     * @param Exception $e
-     * @param float     $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addRiskyTest(Test $test, Exception $e, $time);
+    public function addRiskyTest(Test $test, \Exception $e, $time);
 
     /**
      * Skipped test.
      *
-     * @param Test      $test
-     * @param Exception $e
-     * @param float     $time
+     * @param Test       $test
+     * @param \Exception $e
+     * @param float      $time
      */
-    public function addSkippedTest(Test $test, Exception $e, $time);
+    public function addSkippedTest(Test $test, \Exception $e, $time);
 
     /**
      * A test suite started.
