@@ -48,6 +48,7 @@
         "ext-PDO": "*"
     },
     "conflict": {
+        "phpunit/dbunit": "<3.0",
         "phpdocumentor/reflection-docblock": "3.0.2"
     },
     "config": {

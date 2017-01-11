@@ -768,8 +768,8 @@ class Test
         $class  = new ReflectionClass($className);
 
         if (isset($groups['large']) ||
-            (class_exists('PHPUnit_Extensions_Database_TestCase', false) &&
-                $class->isSubclassOf('PHPUnit_Extensions_Database_TestCase'))
+            (class_exists('PHPUnit\DbUnit\TestCase', false) &&
+                $class->isSubclassOf('PHPUnit\DbUnit\TestCase'))
         ) {
             $size = self::LARGE;
         } elseif (isset($groups['medium'])) {
