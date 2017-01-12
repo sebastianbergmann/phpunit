@@ -285,11 +285,11 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
         $path = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.' . PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, ini_get('include_path'));
-        $this->assertEquals(false, FOO);
-        $this->assertEquals(true, BAR);
-        $this->assertEquals(false, $GLOBALS['foo']);
-        $this->assertEquals(true, $_ENV['foo']);
-        $this->assertEquals(true, getenv('foo'));
+        $this->assertFalse(FOO);
+        $this->assertTrue(BAR);
+        $this->assertFalse($GLOBALS['foo']);
+        $this->assertTrue($_ENV['foo']);
+        $this->assertTrue(getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
         $this->assertEquals('bar', $_COOKIE['foo']);
@@ -308,8 +308,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         $_ENV['foo'] = false;
         $this->configuration->handlePHPConfiguration();
 
-        $this->assertEquals(false, $_ENV['foo']);
-        $this->assertEquals(true, getenv('foo'));
+        $this->assertFalse($_ENV['foo']);
+        $this->assertTrue(getenv('foo'));
     }
 
     /**
@@ -322,7 +322,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         putenv('foo=putenv');
         $this->configuration->handlePHPConfiguration();
 
-        $this->assertEquals(true, $_ENV['foo']);
+        $this->assertTrue($_ENV['foo']);
         $this->assertEquals('putenv', getenv('foo'));
     }
 
