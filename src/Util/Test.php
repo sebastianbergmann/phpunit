@@ -188,6 +188,7 @@ class Test
                 addcslashes($matches['value'][$count - 1], '/')
             );
         }
+
         if ($count = preg_match_all(self::REGEX_REQUIRES_VERSION, $docComment, $matches)) {
             for ($i = 0; $i < $count; $i++) {
                 $requires[$matches['name'][$i]] = [
@@ -200,13 +201,17 @@ class Test
         if ($count = preg_match_all(self::REGEX_REQUIRES, $docComment, $matches)) {
             for ($i = 0; $i < $count; $i++) {
                 $name = $matches['name'][$i] . 's';
+
                 if (!isset($requires[$name])) {
                     $requires[$name] = [];
                 }
+
                 $requires[$name][] = $matches['value'][$i];
+
                 if (empty($matches['version'][$i]) || $name != 'extensions') {
                     continue;
                 }
+
                 $requires['extension_versions'][$matches['value'][$i]] = [
                     'version'  => $matches['version'][$i],
                     'operator' => $matches['operator'][$i]
@@ -231,6 +236,7 @@ class Test
         $missing  = [];
 
         $operator = empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator'];
+
         if (!empty($required['PHP']) && !version_compare(PHP_VERSION, $required['PHP']['version'], $operator)) {
             $missing[] = sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
         }
@@ -239,6 +245,7 @@ class Test
             $phpunitVersion = Version::id();
 
             $operator = empty($required['PHPUnit']['operator']) ? '>=' : $required['PHPUnit']['operator'];
+
             if (!version_compare($phpunitVersion, $required['PHPUnit']['version'], $operator)) {
                 $missing[] = sprintf('PHPUnit %s %s is required.', $operator, $required['PHPUnit']['version']);
             }
@@ -251,12 +258,15 @@ class Test
         if (!empty($required['functions'])) {
             foreach ($required['functions'] as $function) {
                 $pieces = explode('::', $function);
+
                 if (2 === count($pieces) && method_exists($pieces[0], $pieces[1])) {
                     continue;
                 }
+
                 if (function_exists($function)) {
                     continue;
                 }
+
                 $missing[] = sprintf('Function %s is required.', $function);
             }
         }
@@ -266,6 +276,7 @@ class Test
                 if (isset($required['extension_versions'][$extension])) {
                     continue;
                 }
+
                 if (!extension_loaded($extension)) {
                     $missing[] = sprintf('Extension %s is required.', $extension);
                 }
@@ -277,6 +288,7 @@ class Test
                 $actualVersion = phpversion($extension);
 
                 $operator = empty($required['operator']) ? '>=' : $required['operator'];
+
                 if (false === $actualVersion || !version_compare($actualVersion, $required['version'], $operator)) {
                     $missing[] = sprintf('Extension %s %s %s is required.', $extension, $operator, $required['version']);
                 }
