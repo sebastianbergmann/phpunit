@@ -754,6 +754,18 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Sets the status of this test.
+     *
+     * @param int $status
+     *
+     * @since Method available since Release 5.7.6
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
      * Returns the status message of this test.
      *
      * @return string
@@ -1024,6 +1036,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         } catch (PHPUnit_Framework_RiskyTestError $_e) {
             if (!isset($e)) {
                 $e = $_e;
+
+                $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_RISKY;
             }
         }
 
@@ -2373,6 +2387,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                 ob_end_clean();
             }
 
+            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_RISKY;
+
             throw new PHPUnit_Framework_RiskyTestError(
                 'Test code or tested code did not (only) close its own output buffers'
             );
@@ -2439,6 +2455,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         $this->snapshot = null;
 
         if (isset($rte)) {
+            $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_RISKY;
+
             throw $rte;
         }
     }

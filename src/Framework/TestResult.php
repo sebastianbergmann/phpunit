@@ -767,6 +767,10 @@ class PHPUnit_Framework_TestResult implements Countable
                         ),
                         $time
                     );
+
+                    $risky = true;
+
+                    $test->setStatus(PHPUnit_Runner_BaseTestRunner::STATUS_RISKY);
                 }
             }
         }
@@ -866,6 +870,8 @@ class PHPUnit_Framework_TestResult implements Countable
                 ),
                 $time
             );
+
+            $test->setStatus(PHPUnit_Runner_BaseTestRunner::STATUS_RISKY);
         } elseif ($this->beStrictAboutOutputDuringTests && $test->hasOutput()) {
             $this->addFailure(
                 $test,
@@ -877,6 +883,8 @@ class PHPUnit_Framework_TestResult implements Countable
                 ),
                 $time
             );
+
+            $test->setStatus(PHPUnit_Runner_BaseTestRunner::STATUS_RISKY);
         } elseif ($this->beStrictAboutTodoAnnotatedTests && $test instanceof PHPUnit_Framework_TestCase) {
             $annotations = $test->getAnnotations();
 
@@ -889,6 +897,8 @@ class PHPUnit_Framework_TestResult implements Countable
                     $time
                 );
             }
+
+            $test->setStatus(PHPUnit_Runner_BaseTestRunner::STATUS_RISKY);
         }
 
         $this->endTest($test, $time);

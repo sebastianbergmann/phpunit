@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.7 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.7.6] - 2017-MM-DD
+
+### Fixed
+
+* Fixed [#2424](https://github.com/sebastianbergmann/phpunit/issues/2424): `TestCase::getStatus()` returns `STATUS_PASSED` instead of `STATUS_RISKY` for risky test
+
 ## [5.7.5] - 2016-12-28
 
 ### Fixed
