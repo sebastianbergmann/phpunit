@@ -754,6 +754,14 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @since Method available since Release 5.7.6
+     */
+    public function markAsRisky()
+    {
+        $this->status = PHPUnit_Runner_BaseTestRunner::STATUS_RISKY;
+    }
+
+    /**
      * Returns the status message of this test.
      *
      * @return string
