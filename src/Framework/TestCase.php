@@ -681,6 +681,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * @since Method available since Release 5.7.6
+     */
+    public function markAsRisky()
+    {
+        $this->status = BaseTestRunner::STATUS_RISKY;
+    }
+
+    /**
      * Returns the status message of this test.
      *
      * @return string

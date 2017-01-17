@@ -234,6 +234,10 @@ class TestResult implements Countable
             $this->risky[] = new TestFailure($test, $t);
             $notifyMethod  = 'addRiskyTest';
 
+            if ($test instanceof TestCase) {
+                $test->markAsRisky();
+            }
+
             if ($this->stopOnRisky) {
                 $this->stop();
             }
@@ -311,6 +315,10 @@ class TestResult implements Countable
         ) {
             $this->risky[] = new TestFailure($test, $e);
             $notifyMethod  = 'addRiskyTest';
+
+            if ($test instanceof TestCase) {
+                $test->markAsRisky();
+            }
 
             if ($this->stopOnRisky) {
                 $this->stop();
