@@ -41,7 +41,7 @@ There was 1 failure:
 1) StatusTest::testFailure
 Failed asserting that false is true.
 
-/usr/local/src/phpunit/tests/_files/StatusTest.php:11
+%s/StatusTest.php:%d
 
 ERRORS!
 Tests: 6, Assertions: 2, Errors: 1, Failures: 1, Skipped: 1, Incomplete: 1, Risky: 1.
