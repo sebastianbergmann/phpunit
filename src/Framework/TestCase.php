@@ -681,18 +681,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * Sets the status of this test.
-     *
-     * @param int $status
-     *
-     * @since Method available since Release 5.7.6
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-    }
-
-    /**
      * Returns the status message of this test.
      *
      * @return string
@@ -954,8 +942,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         } catch (RiskyTestError $_e) {
             if (!isset($e)) {
                 $e = $_e;
-
-                $this->status = BaseTestRunner::STATUS_RISKY;
             }
         }
 
@@ -2131,8 +2117,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 ob_end_clean();
             }
 
-            $this->status = BaseTestRunner::STATUS_RISKY;
-
             throw new RiskyTestError(
                 'Test code or tested code did not (only) close its own output buffers'
             );
@@ -2200,8 +2184,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->snapshot = null;
 
         if (isset($rte)) {
-            $this->status = BaseTestRunner::STATUS_RISKY;
-
             throw $rte;
         }
     }

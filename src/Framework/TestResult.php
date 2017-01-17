@@ -15,7 +15,6 @@ use Countable;
 use Error;
 use PHP_Invoker;
 use PHP_Timer;
-use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit_Framework_MockObject_Exception;
 use PHPUnit\Util\Blacklist;
 use PHPUnit\Util\InvalidArgumentHelper;
@@ -741,10 +740,6 @@ class TestResult implements Countable
                         ),
                         $time
                     );
-
-                    $risky = true;
-
-                    $test->setStatus(PHPUnit_Runner_BaseTestRunner::STATUS_RISKY);
                 }
             }
         }
@@ -846,8 +841,6 @@ class TestResult implements Countable
                 ),
                 $time
             );
-
-            $test->setStatus(BaseTestRunner::STATUS_RISKY);
         } elseif ($this->beStrictAboutOutputDuringTests && $test->hasOutput()) {
             $this->addFailure(
                 $test,
@@ -859,8 +852,6 @@ class TestResult implements Countable
                 ),
                 $time
             );
-
-            $test->setStatus(BaseTestRunner::STATUS_RISKY);
         } elseif ($this->beStrictAboutTodoAnnotatedTests && $test instanceof TestCase) {
             $annotations = $test->getAnnotations();
 
@@ -873,8 +864,6 @@ class TestResult implements Countable
                     $time
                 );
             }
-
-            $test->setStatus(BaseTestRunner::STATUS_RISKY);
         }
 
         $this->endTest($test, $time);
