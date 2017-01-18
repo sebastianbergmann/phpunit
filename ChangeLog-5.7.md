@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2424](https://github.com/sebastianbergmann/phpunit/issues/2424): `TestCase::getStatus()` returns `STATUS_PASSED` instead of `STATUS_RISKY` for risky test
+* Fixed [#2427](https://github.com/sebastianbergmann/phpunit/issues/2427): TestDox group configuration is not handled
 
 ## [5.7.5] - 2016-12-28
 
