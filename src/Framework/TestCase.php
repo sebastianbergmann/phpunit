@@ -515,7 +515,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @return bool
      *
      * @since Method available since Release 3.6.5
-     * @deprecated
+     * @deprecated Use hasExpectationOnOutput() instead
      */
     public function hasPerformedExpectationsOnOutput()
     {
@@ -550,7 +550,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws PHPUnit_Framework_Exception
      *
      * @since      Method available since Release 3.2.0
-     * @deprecated Method deprecated since Release 5.2.0
+     * @deprecated Method deprecated since Release 5.2.0; use expectException() instead
      */
     public function setExpectedException($exception, $message = '', $code = null)
     {
@@ -574,7 +574,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @since Method available since Release 4.3.0
      *
-     * @deprecated Method deprecated since Release 5.6.0
+     * @deprecated Method deprecated since Release 5.6.0; use expectExceptionMessageRegExp() instead
      */
     public function setExpectedExceptionRegExp($exception, $messageRegExp = '', $code = null)
     {
@@ -1627,7 +1627,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws PHPUnit_Framework_Exception
      *
      * @since Method available since Release 3.0.0
-     * @deprecated Method deprecated since Release 5.4.0
+     * @deprecated Method deprecated since Release 5.4.0; use createMock() or getMockBuilder() instead
      */
     protected function getMock($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false, $callOriginalMethods = false, $proxyTarget = null)
     {
@@ -1661,7 +1661,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @throws PHPUnit_Framework_Exception
      *
      * @since Method available since Release 5.0.0
-     * @deprecated Method deprecated since Release 5.4.0
+     * @deprecated Method deprecated since Release 5.4.0; use createMock() instead
      */
     protected function getMockWithoutInvokingTheOriginalConstructor($originalClassName)
     {
