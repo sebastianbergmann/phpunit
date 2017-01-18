@@ -1039,6 +1039,18 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $arguments['testdoxXMLFile'] = $loggingConfiguration['testdox-xml'];
             }
 
+            $testdoxGroupConfiguration = $arguments['configuration']->getTestdoxGroupConfiguration();
+
+            if (isset($testdoxGroupConfiguration['include']) &&
+                !isset($arguments['testdoxGroups'])) {
+                $arguments['testdoxGroups'] = $testdoxGroupConfiguration['include'];
+            }
+
+            if (isset($testdoxGroupConfiguration['exclude']) &&
+                !isset($arguments['testdoxExcludeGroups'])) {
+                $arguments['testdoxExcludeGroups'] = $testdoxGroupConfiguration['exclude'];
+            }
+
             if ((isset($arguments['coverageClover']) ||
                 isset($arguments['coverageCrap4J']) ||
                 isset($arguments['coverageHtml']) ||
