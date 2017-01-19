@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 
 * Fixed [#2424](https://github.com/sebastianbergmann/phpunit/issues/2424): `TestCase::getStatus()` returns `STATUS_PASSED` instead of `STATUS_RISKY` for risky test
 * Fixed [#2427](https://github.com/sebastianbergmann/phpunit/issues/2427): TestDox group configuration is not handled
+* Fixed [#2428](https://github.com/sebastianbergmann/phpunit/pull/2428): Nested arrays specificied in XML configuration file are not handled correctly
 
 ## [5.7.5] - 2016-12-28
 
@@ -56,6 +57,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 * The `--tap` and `--log-tap` commandline options have been deprecated
 * The `--self-update` and `--self-upgrade` commandline options have been deprecated (PHAR binary only)
 
+[5.7.6]: https://github.com/sebastianbergmann/phpunit/compare/5.7.5...5.7.6
 [5.7.5]: https://github.com/sebastianbergmann/phpunit/compare/5.7.4...5.7.5
 [5.7.4]: https://github.com/sebastianbergmann/phpunit/compare/5.7.3...5.7.4
 [5.7.3]: https://github.com/sebastianbergmann/phpunit/compare/5.7.2...5.7.3
