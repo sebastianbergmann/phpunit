@@ -73,4 +73,22 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
     {
         PHPUnit_Util_XML::load(false);
     }
+
+    public function testNestedXmlToVariable()
+    {
+        $xml = '<array><element key="a"><array><element key="b"><string>foo</string></element></array></element><element key="c"><string>bar</string></element></array>';
+        $dom = new DOMDocument();
+        $dom->loadXML($xml);
+
+        $expected = [
+            'a' => [
+                'b' => 'foo',
+            ],
+            'c' => 'bar',
+        ];
+
+        $actual = PHPUnit_Util_XML::xmlToVariable($dom->documentElement);
+
+        $this->assertSame($expected, $actual);
+    }
 }
