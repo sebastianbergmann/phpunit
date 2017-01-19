@@ -222,17 +222,20 @@ class PHPUnit_Util_XML
             case 'array':
                 $variable = array();
 
-                foreach ($element->getElementsByTagName('element') as $element) {
-                    $item = $element->childNodes->item(0);
+                foreach ($element->childNodes as $entry) {
+                    if (!$entry instanceof DOMElement || $entry->tagName !== 'element') {
+                        continue;
+                    }
+                    $item = $entry->childNodes->item(0);
 
                     if ($item instanceof DOMText) {
-                        $item = $element->childNodes->item(1);
+                        $item = $entry->childNodes->item(1);
                     }
 
                     $value = self::xmlToVariable($item);
 
-                    if ($element->hasAttribute('key')) {
-                        $variable[(string) $element->getAttribute('key')] = $value;
+                    if ($entry->hasAttribute('key')) {
+                        $variable[(string) $entry->getAttribute('key')] = $value;
                     } else {
                         $variable[] = $value;
                     }
