@@ -15,6 +15,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 * PHPUnit's units of code are now namespaced
 * PHPUnit is now strict about useless tests by default
+* The configuration generated using `--generate-configuration` now includes `forceCoversAnnotation="true"`
 * Global and super-global variables are no longer backed up before and restored after each test by default
 * `PHPUnit\Framework\Assert::fail()` now increments the assertion counter
 * `setUpBeforeClass()` is now invoked after all methods annotated with `@beforeClass`
