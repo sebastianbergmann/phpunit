@@ -83,7 +83,7 @@ class Util_XMLTest extends TestCase
             'c' => 'bar',
         ];
 
-        $actual = PHPUnit_Util_XML::xmlToVariable($dom->documentElement);
+        $actual = XML::xmlToVariable($dom->documentElement);
 
         $this->assertSame($expected, $actual);
     }
