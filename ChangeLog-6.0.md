@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 ### Added
 
 * Merged [#2344](https://github.com/sebastianbergmann/phpunit/pull/2344): Add support for annotations on traits
+* Merged [#2351](https://github.com/sebastianbergmann/phpunit/pull/2351): Allow to filter for multiple test suites
 * Added the `PHPUnit\Framework\TestCase::createTestProxy()` method for creating test proxies
 * Added the `--dont-report-useless-tests` commandline option
 * Added the `--globals-backup` commandline option
