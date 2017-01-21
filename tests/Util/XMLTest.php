@@ -80,12 +80,12 @@ class Util_XMLTest extends PHPUnit_Framework_TestCase
         $dom = new DOMDocument();
         $dom->loadXML($xml);
 
-        $expected = array(
-            'a' => array(
+        $expected = [
+            'a' => [
                 'b' => 'foo',
-            ),
+            ],
             'c' => 'bar',
-        );
+        ];
 
         $actual = PHPUnit_Util_XML::xmlToVariable($dom->documentElement);
 
