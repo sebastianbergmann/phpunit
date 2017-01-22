@@ -456,7 +456,7 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
         );
 
         if ($e instanceof PHPUnit_Framework_ExceptionWrapper) {
-            $fault->setAttribute('type', $e->getClassname());
+            $fault->setAttribute('type', $e->getClassName());
         } else {
             $fault->setAttribute('type', get_class($e));
         }

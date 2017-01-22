@@ -101,7 +101,7 @@ class PHPUnit_Framework_TestFailure
         } elseif ($e instanceof PHPUnit_Framework_Error) {
             $buffer = $e->getMessage() . "\n";
         } elseif ($e instanceof PHPUnit_Framework_ExceptionWrapper) {
-            $buffer = $e->getClassname() . ': ' . $e->getMessage() . "\n";
+            $buffer = $e->getClassName() . ': ' . $e->getMessage() . "\n";
         } else {
             $buffer = get_class($e) . ': ' . $e->getMessage() . "\n";
         }

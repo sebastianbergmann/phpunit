@@ -58,7 +58,7 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
     /**
      * @return string
      */
-    public function getClassname()
+    public function getClassName()
     {
         return $this->classname;
     }
