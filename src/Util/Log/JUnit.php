@@ -423,13 +423,12 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
         }
 
         if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-            $buffer = $test->toString() . "\n";
+            $buffer = $test->toString() . PHP_EOL;
         } else {
             $buffer = '';
         }
 
-        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
-                   "\n" .
+        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . PHP_EOL .
                    PHPUnit_Util_Filter::getFilteredStacktrace($e);
 
         $fault = $this->document->createElement(
@@ -437,7 +436,12 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
             PHPUnit_Util_XML::prepareString($buffer)
         );
 
-        $fault->setAttribute('type', get_class($e));
+        if ($e instanceof PHPUnit_Framework_ExceptionWrapper) {
+            $fault->setAttribute('type', $e->getClassname());
+        } else {
+            $fault->setAttribute('type', get_class($e));
+        }
+
         $this->currentTestCase->appendChild($fault);
     }
 }
