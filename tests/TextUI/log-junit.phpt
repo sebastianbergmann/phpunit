@@ -55,5 +55,5 @@ Failed asserting that false is true.
 
 %s/StatusTest.php:%d
 
-FAILURES!
+ERRORS!
 Tests: 6, Assertions: 2, Errors: 1, Failures: 1, Skipped: 1, Incomplete: 1.
