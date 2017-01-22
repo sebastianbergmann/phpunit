@@ -29,4 +29,9 @@ class StatusTest extends \PHPUnit\Framework\TestCase
     public function testRisky()
     {
     }
+
+    public function testWarning()
+    {
+        throw new PHPUnit_Framework_Warning;
+    }
 }

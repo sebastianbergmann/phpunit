@@ -15,9 +15,9 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-.FEISR                                                              6 / 6 (100%)<?xml version="1.0" encoding="UTF-8"?>
+.FEISRW                                                             7 / 7 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="StatusTest" file="%s/StatusTest.php" tests="3" assertions="2" failures="1" errors="1" time="%s">
+  <testsuite name="StatusTest" file="%s/StatusTest.php" tests="4" assertions="2" failures="1" errors="1" time="%s">
     <testcase name="testSuccess" class="StatusTest" file="%s/StatusTest.php" line="%d" assertions="1" time="%s"/>
     <testcase name="testFailure" class="StatusTest" file="%s/StatusTest.php" line="%d" assertions="1" time="%s">
       <failure type="PHPUnit_Framework_ExpectationFailedException">StatusTest::testFailure
@@ -33,6 +33,7 @@ Exception:%w
 %s/StatusTest.php:%d
 </error>
     </testcase>
+    <testcase name="testWarning" class="StatusTest" file="%s/StatusTest.php" line="%d" assertions="0" time="%s"/>
   </testsuite>
 </testsuites>
 
@@ -48,6 +49,14 @@ Exception:%w
 
 --
 
+There was 1 warning:
+
+1) StatusTest::testWarning
+
+%s/StatusTest.php:%d
+
+--
+
 There was 1 failure:
 
 1) StatusTest::testFailure
@@ -56,4 +65,4 @@ Failed asserting that false is true.
 %s/StatusTest.php:%d
 
 ERRORS!
-Tests: 6, Assertions: 2, Errors: 1, Failures: 1, Skipped: 1, Incomplete: 1, Risky: 1.
+Tests: 7, Assertions: 2, Errors: 1, Failures: 1, Warnings: 1, Skipped: 1, Incomplete: 1, Risky: 1.
