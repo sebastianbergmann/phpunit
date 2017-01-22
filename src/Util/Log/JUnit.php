@@ -12,6 +12,7 @@ namespace PHPUnit\Util\Log;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestListener;
@@ -418,16 +419,20 @@ class JUnit extends Printer implements TestListener
             $buffer = '';
         }
 
-        $buffer .= TestFailure::exceptionToString($e) .
-            "\n" .
-            Filter::getFilteredStacktrace($e);
+        $buffer .= TestFailure::exceptionToString($e) . PHP_EOL .
+                   Filter::getFilteredStacktrace($e);
 
         $fault = $this->document->createElement(
             $type,
             Xml::prepareString($buffer)
         );
 
-        $fault->setAttribute('type', get_class($e));
+        if ($e instanceof ExceptionWrapper) {
+            $fault->setAttribute('type', $e->getClassName());
+        } else {
+            $fault->setAttribute('type', get_class($e));
+        }
+
         $this->currentTestCase->appendChild($fault);
     }
 

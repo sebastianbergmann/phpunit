@@ -99,7 +99,7 @@ class TestFailure
         } elseif ($e instanceof Error) {
             $buffer = $e->getMessage() . "\n";
         } elseif ($e instanceof ExceptionWrapper) {
-            $buffer = $e->getClassname() . ': ' . $e->getMessage() . "\n";
+            $buffer = $e->getClassName() . ': ' . $e->getMessage() . "\n";
         } else {
             $buffer = get_class($e) . ': ' . $e->getMessage() . "\n";
         }

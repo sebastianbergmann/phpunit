@@ -26,7 +26,7 @@ class ExceptionWrapper extends Exception
     /**
      * @var string
      */
-    protected $classname;
+    protected $className;
 
     /**
      * @var ExceptionWrapper|null
@@ -42,7 +42,7 @@ class ExceptionWrapper extends Exception
         // @see http://php.net/manual/en/class.pdoexception.php#95812
         parent::__construct($t->getMessage(), (int) $t->getCode());
 
-        $this->classname = get_class($t);
+        $this->className = get_class($t);
         $this->file      = $t->getFile();
         $this->line      = $t->getLine();
 
@@ -60,9 +60,9 @@ class ExceptionWrapper extends Exception
     /**
      * @return string
      */
-    public function getClassname()
+    public function getClassName()
     {
-        return $this->classname;
+        return $this->className;
     }
 
     /**
