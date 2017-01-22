@@ -1,12 +1,13 @@
 --TEST--
-phpunit --log-junit php://stdout StatusTest ../_files/StatusTest.php
+phpunit --log-junit php://stdout --report-useless-tests StatusTest ../_files/StatusTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--log-junit';
 $_SERVER['argv'][3] = 'php://stdout';
-$_SERVER['argv'][4] = 'StatusTest';
-$_SERVER['argv'][5] = __DIR__ . '/../_files/StatusTest.php';
+$_SERVER['argv'][4] = '--report-useless-tests';
+$_SERVER['argv'][5] = 'StatusTest';
+$_SERVER['argv'][6] = __DIR__ . '/../_files/StatusTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
@@ -14,9 +15,9 @@ PHPUnit_TextUI_Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-.FEIS.                                                              6 / 6 (100%)<?xml version="1.0" encoding="UTF-8"?>
+.FEISR                                                              6 / 6 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="StatusTest" file="%s/StatusTest.php" tests="4" assertions="2" failures="1" errors="1" time="%s">
+  <testsuite name="StatusTest" file="%s/StatusTest.php" tests="3" assertions="2" failures="1" errors="1" time="%s">
     <testcase name="testSuccess" class="StatusTest" file="%s/StatusTest.php" line="%d" assertions="1" time="%s"/>
     <testcase name="testFailure" class="StatusTest" file="%s/StatusTest.php" line="%d" assertions="1" time="%s">
       <failure type="PHPUnit_Framework_ExpectationFailedException">StatusTest::testFailure
@@ -32,7 +33,6 @@ Exception:%w
 %s/StatusTest.php:%d
 </error>
     </testcase>
-    <testcase name="testRisky" class="StatusTest" file="%s/StatusTest.php" line="%d" assertions="0" time="%s"/>
   </testsuite>
 </testsuites>
 
@@ -56,4 +56,4 @@ Failed asserting that false is true.
 %s/StatusTest.php:%d
 
 ERRORS!
-Tests: 6, Assertions: 2, Errors: 1, Failures: 1, Skipped: 1, Incomplete: 1.
+Tests: 6, Assertions: 2, Errors: 1, Failures: 1, Skipped: 1, Incomplete: 1, Risky: 1.
