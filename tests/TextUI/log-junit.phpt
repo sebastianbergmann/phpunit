@@ -26,7 +26,7 @@ Failed asserting that false is true.
 </failure>
     </testcase>
     <testcase name="testError" class="StatusTest" file="%s/StatusTest.php" line="%d" assertions="0" time="%s">
-      <error type="PHPUnit_Framework_ExceptionWrapper">StatusTest::testError
+      <error type="Exception">StatusTest::testError
 Exception: 
 
 %s/StatusTest.php:%d

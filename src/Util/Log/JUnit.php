@@ -127,21 +127,26 @@ class PHPUnit_Util_Log_JUnit extends PHPUnit_Util_Printer implements PHPUnit_Fra
         }
 
         if ($test instanceof PHPUnit_Framework_SelfDescribing) {
-            $buffer = $test->toString() . "\n";
+            $buffer = $test->toString() . PHP_EOL;
         } else {
             $buffer = '';
         }
 
-        $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) .
-                   "\n" .
-                   PHPUnit_Util_Filter::getFilteredStacktrace($e);
+        if ($e instanceof PHPUnit_Framework_ExceptionWrapper) {
+            $type    = $e->getClassname();
+            $buffer .= (string) $e;
+        } else {
+            $type    = get_class($e);
+            $buffer .= PHPUnit_Framework_TestFailure::exceptionToString($e) . PHP_EOL .
+                       PHPUnit_Util_Filter::getFilteredStacktrace($e);
+        }
 
         $error = $this->document->createElement(
             'error',
             PHPUnit_Util_XML::prepareString($buffer)
         );
 
-        $error->setAttribute('type', get_class($e));
+        $error->setAttribute('type', $type);
 
         $this->currentTestCase->appendChild($error);
 
