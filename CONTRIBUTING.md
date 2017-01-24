@@ -58,7 +58,6 @@ Please use the most specific issue tracker to search for existing tickets and to
 * [General problems](https://github.com/sebastianbergmann/phpunit/issues)
 * [Code Coverage](https://github.com/sebastianbergmann/php-code-coverage/issues)
 * [Stub and Mock Objects](https://github.com/sebastianbergmann/phpunit-mock-objects/issues)
-* [DbUnit](https://github.com/sebastianbergmann/dbunit/issues)
 * [Documentation](https://github.com/sebastianbergmann/phpunit-documentation/issues)
 * [Website](https://github.com/sebastianbergmann/phpunit-website/issues)
 

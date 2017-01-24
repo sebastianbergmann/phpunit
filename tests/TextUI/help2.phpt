@@ -6,7 +6,7 @@ $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--help';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
@@ -37,7 +37,7 @@ Logging Options:
 Test Selection Options:
 
   --filter <pattern>          Filter which tests to run.
-  --testsuite <pattern>       Filter which testsuite to run.
+  --testsuite <name,...>      Filter which testsuite to run.
   --group ...                 Only runs tests from the specified group(s).
   --exclude-group ...         Exclude tests from the specified group(s).
   --list-groups               List available test groups.

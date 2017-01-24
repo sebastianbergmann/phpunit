@@ -1,5 +1,7 @@
 <?php
-class DataProviderIncompleteTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DataProviderIncompleteTest extends TestCase
 {
     /**
      * @dataProvider incompleteTestProviderMethod

@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Util;
+
 /**
  * Utility class for textual type (and value) representation.
- *
- * @since Class available since Release 3.0.0
  */
-class PHPUnit_Util_Type
+class Type
 {
     public static function isType($type)
     {

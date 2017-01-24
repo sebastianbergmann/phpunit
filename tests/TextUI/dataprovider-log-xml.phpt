@@ -9,7 +9,7 @@ $_SERVER['argv'][4] = 'DataProviderTest';
 $_SERVER['argv'][5] = __DIR__ . '/../_files/DataProviderTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
@@ -20,7 +20,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
       <testcase name="testAdd with data set #0" assertions="1" time="%f"/>
       <testcase name="testAdd with data set #1" assertions="1" time="%f"/>
       <testcase name="testAdd with data set #2" assertions="1" time="%f">
-        <failure type="PHPUnit_Framework_ExpectationFailedException">DataProviderTest::testAdd with data set #2 (1, 1, 3)
+        <failure type="PHPUnit\Framework\ExpectationFailedException">DataProviderTest::testAdd with data set #2 (1, 1, 3)
 Failed asserting that 2 matches expected 3.
 
 %s:%i

@@ -1,5 +1,7 @@
 <?php
-class ClonedDependencyTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class ClonedDependencyTest extends TestCase
 {
     private static $dependency;
 

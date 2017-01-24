@@ -7,13 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that checks if the directory(name) that it is evaluated for exists.
  *
  * The file path to check is passed as $other in evaluate().
  */
-class PHPUnit_Framework_Constraint_DirectoryExists extends PHPUnit_Framework_Constraint
+class DirectoryExists extends Constraint
 {
     /**
      * Evaluates the constraint for parameter $other. Returns true if the

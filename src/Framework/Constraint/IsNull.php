@@ -7,13 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that accepts null.
- *
- * @since Class available since Release 3.3.0
  */
-class PHPUnit_Framework_Constraint_IsNull extends PHPUnit_Framework_Constraint
+class IsNull extends Constraint
 {
     /**
      * Evaluates the constraint for parameter $other. Returns true if the

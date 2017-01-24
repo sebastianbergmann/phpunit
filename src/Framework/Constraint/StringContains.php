@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\Constraint;
 
 /**
  * Constraint that asserts that the string it is evaluated for contains
@@ -16,10 +17,8 @@
  * the evaluation fails.
  *
  * The sub-string is passed in the constructor.
- *
- * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_StringContains extends PHPUnit_Framework_Constraint
+class StringContains extends Constraint
 {
     /**
      * @var string

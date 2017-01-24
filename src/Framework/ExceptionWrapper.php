@@ -7,6 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework;
+
+use PHPUnit\Util\Filter;
+use Throwable;
 
 /**
  * Wraps Exceptions thrown by code under test.
@@ -16,18 +20,16 @@
  *
  * Unlike PHPUnit_Framework_Exception, the complete stack of previous Exceptions
  * is processed.
- *
- * @since Class available since Release 4.3.0
  */
-class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
+class ExceptionWrapper extends Exception
 {
     /**
      * @var string
      */
-    protected $classname;
+    protected $className;
 
     /**
-     * @var PHPUnit_Framework_ExceptionWrapper|null
+     * @var ExceptionWrapper|null
      */
     protected $previous;
 
@@ -40,7 +42,7 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
         // @see http://php.net/manual/en/class.pdoexception.php#95812
         parent::__construct($t->getMessage(), (int) $t->getCode());
 
-        $this->classname = get_class($t);
+        $this->className = get_class($t);
         $this->file      = $t->getFile();
         $this->line      = $t->getLine();
 
@@ -58,13 +60,13 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
     /**
      * @return string
      */
-    public function getClassname()
+    public function getClassName()
     {
-        return $this->classname;
+        return $this->className;
     }
 
     /**
-     * @return PHPUnit_Framework_ExceptionWrapper
+     * @return ExceptionWrapper
      */
     public function getPreviousWrapped()
     {
@@ -76,9 +78,9 @@ class PHPUnit_Framework_ExceptionWrapper extends PHPUnit_Framework_Exception
      */
     public function __toString()
     {
-        $string = PHPUnit_Framework_TestFailure::exceptionToString($this);
+        $string = TestFailure::exceptionToString($this);
 
-        if ($trace = PHPUnit_Util_Filter::getFilteredStacktrace($this)) {
+        if ($trace = Filter::getFilteredStacktrace($this)) {
             $string .= "\n" . $trace;
         }
 

@@ -8,7 +8,11 @@
  * file that was distributed with this source code.
  */
 
-class Runner_PhptTestCaseTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Util\PHP\AbstractPhpProcess;
+
+class Runner_PhptTestCaseTest extends TestCase
 {
     const EXPECT_CONTENT = <<<EOF
 --TEST--
@@ -51,9 +55,9 @@ EOF;
         $this->filename = sys_get_temp_dir() . '/phpunit.phpt';
         touch($this->filename);
 
-        $this->phpUtil = $this->getMockForAbstractClass('PHPUnit_Util_PHP', [], '', false);
+        $this->phpUtil = $this->getMockForAbstractClass(AbstractPhpProcess::class, [], '', false);
 
-        $this->testCase = new PHPUnit_Runner_PhptTestCase($this->filename, $this->phpUtil);
+        $this->testCase = new PhptTestCase($this->filename, $this->phpUtil);
     }
 
     protected function tearDown()
@@ -145,21 +149,16 @@ EOF;
         $this->testCase->run();
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage Invalid PHPT file
-     */
     public function testShouldThrowsAnExceptionWhenPhptFileIsEmpty()
     {
         $this->setPhpContent('');
 
+        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectExceptionMessage('Invalid PHPT file');
+
         $this->testCase->run();
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage Invalid PHPT file
-     */
     public function testShouldThrowsAnExceptionWhenFileSectionIsMissing()
     {
         $this->setPhpContent(
@@ -170,13 +169,13 @@ Something to decribe it
 Something
 EOF
         );
+
+        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectExceptionMessage('Invalid PHPT file');
+
         $this->testCase->run();
     }
 
-    /**
-     * @expectedException PHPUnit_Framework_Exception
-     * @expectedExceptionMessage Invalid PHPT file
-     */
     public function testShouldThrowsAnExceptionWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile()
     {
         $this->setPhpContent(
@@ -189,6 +188,10 @@ echo "Hello world!\n";
 ?>
 EOF
         );
+
+        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectExceptionMessage('Invalid PHPT file');
+
         $this->testCase->run();
     }
 
@@ -254,7 +257,7 @@ EOF
     }
 }
 
-class PhpTestCaseProxy extends PHPUnit_Runner_PhptTestCase
+class PhpTestCaseProxy extends PhptTestCase
 {
     public function parseIniSection($content)
     {

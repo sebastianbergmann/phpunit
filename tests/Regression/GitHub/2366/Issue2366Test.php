@@ -1,4 +1,6 @@
 <?php
+use PHPUnit\Framework\TestCase;
+
 class Issue2366
 {
     public function foo()
@@ -6,7 +8,7 @@ class Issue2366
     }
 }
 
-class Issue2366Test extends PHPUnit\Framework\TestCase
+class Issue2366Test extends TestCase
 {
     /**
      * @dataProvider provider

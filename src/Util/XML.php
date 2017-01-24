@@ -7,13 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Util;
+
+use DOMCharacterData;
+use DOMDocument;
+use DOMElement;
+use DOMNode;
+use DOMText;
+use PHPUnit\Framework\Exception;
+use ReflectionClass;
 
 /**
  * XML helpers.
- *
- * @since Class available since Release 3.2.0
  */
-class PHPUnit_Util_XML
+class Xml
 {
     /**
      * Load an $actual document into a DOMDocument.  This is called
@@ -36,8 +43,6 @@ class PHPUnit_Util_XML
      * @param bool               $strict
      *
      * @return DOMDocument
-     *
-     * @since Method available since Release 3.3.0
      */
     public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false)
     {
@@ -46,11 +51,11 @@ class PHPUnit_Util_XML
         }
 
         if (!is_string($actual)) {
-            throw new PHPUnit_Framework_Exception('Could not load XML from ' . gettype($actual));
+            throw new Exception('Could not load XML from ' . gettype($actual));
         }
 
         if ($actual === '') {
-            throw new PHPUnit_Framework_Exception('Could not load XML from empty string');
+            throw new Exception('Could not load XML from empty string');
         }
 
         // Required for XInclude on Windows.
@@ -94,7 +99,7 @@ class PHPUnit_Util_XML
 
         if ($loaded === false || ($strict && $message !== '')) {
             if ($filename !== '') {
-                throw new PHPUnit_Framework_Exception(
+                throw new Exception(
                     sprintf(
                         'Could not load "%s".%s',
                         $filename,
@@ -105,7 +110,7 @@ class PHPUnit_Util_XML
                 if ($message === '') {
                     $message = 'Could not load XML for unknown reason';
                 }
-                throw new PHPUnit_Framework_Exception($message);
+                throw new Exception($message);
             }
         }
 
@@ -121,8 +126,6 @@ class PHPUnit_Util_XML
      * @param bool   $strict
      *
      * @return DOMDocument
-     *
-     * @since Method available since Release 3.3.0
      */
     public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
     {
@@ -131,7 +134,7 @@ class PHPUnit_Util_XML
         error_reporting($reporting);
 
         if ($contents === false) {
-            throw new PHPUnit_Framework_Exception(
+            throw new Exception(
                 sprintf(
                     'Could not read "%s".',
                     $filename
@@ -144,8 +147,6 @@ class PHPUnit_Util_XML
 
     /**
      * @param DOMNode $node
-     *
-     * @since Method available since Release 3.3.0
      */
     public static function removeCharacterDataNodes(DOMNode $node)
     {
@@ -167,8 +168,6 @@ class PHPUnit_Util_XML
      * @param string $string
      *
      * @return string
-     *
-     * @since Method available since Release 3.4.6
      */
     public static function prepareString($string)
     {
@@ -176,7 +175,7 @@ class PHPUnit_Util_XML
             '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
             '',
             htmlspecialchars(
-                PHPUnit_Util_String::convertToUtf8($string),
+                self::convertToUtf8($string),
                 ENT_QUOTES,
                 'UTF-8'
             )
@@ -189,8 +188,6 @@ class PHPUnit_Util_XML
      * @param DOMElement $element
      *
      * @return mixed
-     *
-     * @since Method available since Release 3.4.0
      */
     public static function xmlToVariable(DOMElement $element)
     {
@@ -200,17 +197,20 @@ class PHPUnit_Util_XML
             case 'array':
                 $variable = [];
 
-                foreach ($element->getElementsByTagName('element') as $element) {
-                    $item = $element->childNodes->item(0);
+                foreach ($element->childNodes as $entry) {
+                    if (!$entry instanceof DOMElement || $entry->tagName !== 'element') {
+                        continue;
+                    }
+                    $item = $entry->childNodes->item(0);
 
                     if ($item instanceof DOMText) {
-                        $item = $element->childNodes->item(1);
+                        $item = $entry->childNodes->item(1);
                     }
 
                     $value = self::xmlToVariable($item);
 
-                    if ($element->hasAttribute('key')) {
-                        $variable[(string) $element->getAttribute('key')] = $value;
+                    if ($entry->hasAttribute('key')) {
+                        $variable[(string) $entry->getAttribute('key')] = $value;
                     } else {
                         $variable[] = $value;
                     }
@@ -251,5 +251,59 @@ class PHPUnit_Util_XML
         }
 
         return $variable;
+    }
+
+    /**
+     * Converts a string to UTF-8 encoding.
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    private static function convertToUtf8($string)
+    {
+        if (!self::isUtf8($string)) {
+            if (function_exists('mb_convert_encoding')) {
+                $string = mb_convert_encoding($string, 'UTF-8');
+            } else {
+                $string = utf8_encode($string);
+            }
+        }
+
+        return $string;
+    }
+
+    /**
+     * Checks a string for UTF-8 encoding.
+     *
+     * @param string $string
+     *
+     * @return bool
+     */
+    private static function isUtf8($string)
+    {
+        $length = strlen($string);
+
+        for ($i = 0; $i < $length; $i++) {
+            if (ord($string[$i]) < 0x80) {
+                $n = 0;
+            } elseif ((ord($string[$i]) & 0xE0) == 0xC0) {
+                $n = 1;
+            } elseif ((ord($string[$i]) & 0xF0) == 0xE0) {
+                $n = 2;
+            } elseif ((ord($string[$i]) & 0xF0) == 0xF0) {
+                $n = 3;
+            } else {
+                return false;
+            }
+
+            for ($j = 0; $j < $n; $j++) {
+                if ((++$i == $length) || ((ord($string[$i]) & 0xC0) != 0x80)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

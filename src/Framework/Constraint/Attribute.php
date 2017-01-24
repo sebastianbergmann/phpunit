@@ -7,11 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\Constraint;
+
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
- * @since Class available since Release 3.1.0
  */
-class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constraint_Composite
+class Attribute extends Composite
 {
     /**
      * @var string
@@ -19,10 +22,10 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
     protected $attributeName;
 
     /**
-     * @param PHPUnit_Framework_Constraint $constraint
-     * @param string                       $attributeName
+     * @param Constraint $constraint
+     * @param string     $attributeName
      */
-    public function __construct(PHPUnit_Framework_Constraint $constraint, $attributeName)
+    public function __construct(Constraint $constraint, $attributeName)
     {
         parent::__construct($constraint);
 
@@ -45,12 +48,12 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
      *
      * @return mixed
      *
-     * @throws PHPUnit_Framework_ExpectationFailedException
+     * @throws ExpectationFailedException
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
         return parent::evaluate(
-            PHPUnit_Framework_Assert::readAttribute(
+            Assert::readAttribute(
                 $other,
                 $this->attributeName
             ),
@@ -67,7 +70,7 @@ class PHPUnit_Framework_Constraint_Attribute extends PHPUnit_Framework_Constrain
     public function toString()
     {
         return 'attribute "' . $this->attributeName . '" ' .
-               $this->innerConstraint->toString();
+            $this->innerConstraint->toString();
     }
 
     /**

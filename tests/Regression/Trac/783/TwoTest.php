@@ -1,8 +1,10 @@
 <?php
+use PHPUnit\Framework\TestCase;
+
 /**
  * @group bar
  */
-class TwoTest extends PHPUnit_Framework_TestCase
+class TwoTest extends TestCase
 {
     public function testSomething()
     {

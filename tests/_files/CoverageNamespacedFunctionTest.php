@@ -1,5 +1,7 @@
 <?php
-class CoverageNamespacedFunctionTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class CoverageNamespacedFunctionTest extends TestCase
 {
     /**
      * @covers foo\func()

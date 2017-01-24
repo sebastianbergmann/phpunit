@@ -8,12 +8,14 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Util;
+
+use ReflectionClass;
+
 /**
  * Utility class for blacklisting PHPUnit's own source code files.
- *
- * @since Class available since Release 4.0.0
  */
-class PHPUnit_Util_Blacklist
+class Blacklist
 {
     /**
      * @var array
@@ -23,8 +25,8 @@ class PHPUnit_Util_Blacklist
         'PHP_Invoker'                                 => 1,
         'PHP_Timer'                                   => 1,
         'PHP_Token'                                   => 1,
-        'PHPUnit_Framework_TestCase'                  => 2,
-        'PHPUnit_Extensions_Database_TestCase'        => 2,
+        'PHPUnit\Framework\TestCase'                  => 2,
+        'PHPUnit\DbUnit\TestCase'                     => 2,
         'PHPUnit_Framework_MockObject_Generator'      => 2,
         'Text_Template'                               => 1,
         'Symfony\Component\Yaml\Yaml'                 => 1,
@@ -50,8 +52,6 @@ class PHPUnit_Util_Blacklist
 
     /**
      * @return array
-     *
-     * @since Method available since Release 4.1.0
      */
     public function getBlacklistedDirectories()
     {

@@ -11,17 +11,22 @@
 // Workaround for http://bugs.php.net/bug.php?id=47987,
 // see https://github.com/sebastianbergmann/phpunit/issues#issue/125 for details
 // Use dirname(__DIR__) instead of using /../ because of https://github.com/facebook/hhvm/issues/5215
-require_once dirname(__DIR__) . '/Framework/Error.php';
+namespace PHPUnit\Util;
+
+use PHPUnit\Framework\Error\Error;
+use PHPUnit\Framework\Error\Deprecated;
+use PHPUnit\Framework\Error\Notice;
+use PHPUnit\Framework\Error\Warning;
+
+require_once dirname(__DIR__) . '/Framework/Error/Error.php';
 require_once dirname(__DIR__) . '/Framework/Error/Notice.php';
 require_once dirname(__DIR__) . '/Framework/Error/Warning.php';
 require_once dirname(__DIR__) . '/Framework/Error/Deprecated.php';
 
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
- *
- * @since Class available since Release 3.3.0
  */
-class PHPUnit_Util_ErrorHandler
+class ErrorHandler
 {
     protected static $errorStack = [];
 
@@ -41,7 +46,7 @@ class PHPUnit_Util_ErrorHandler
      * @param string $errfile
      * @param int    $errline
      *
-     * @throws PHPUnit_Framework_Error
+     * @throws Error
      */
     public static function handleError($errno, $errstr, $errfile, $errline)
     {
@@ -61,25 +66,25 @@ class PHPUnit_Util_ErrorHandler
         }
 
         if ($errno == E_NOTICE || $errno == E_USER_NOTICE || $errno == E_STRICT) {
-            if (PHPUnit_Framework_Error_Notice::$enabled !== true) {
+            if (Notice::$enabled !== true) {
                 return false;
             }
 
-            $exception = 'PHPUnit_Framework_Error_Notice';
+            $exception = Notice::class;
         } elseif ($errno == E_WARNING || $errno == E_USER_WARNING) {
-            if (PHPUnit_Framework_Error_Warning::$enabled !== true) {
+            if (Warning::$enabled !== true) {
                 return false;
             }
 
-            $exception = 'PHPUnit_Framework_Error_Warning';
+            $exception = Warning::class;
         } elseif ($errno == E_DEPRECATED || $errno == E_USER_DEPRECATED) {
-            if (PHPUnit_Framework_Error_Deprecated::$enabled !== true) {
+            if (Deprecated::$enabled !== true) {
                 return false;
             }
 
-            $exception = 'PHPUnit_Framework_Error_Deprecated';
+            $exception = Deprecated::class;
         } else {
-            $exception = 'PHPUnit_Framework_Error';
+            $exception = Error::class;
         }
 
         throw new $exception($errstr, $errno, $errfile, $errline);

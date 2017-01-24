@@ -7,13 +7,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Runner;
+
+use PHP_Timer;
+use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Util\InvalidArgumentHelper;
+use PHPUnit\Util\PHP\AbstractPhpProcess;
+use Throwable;
 
 /**
  * Runner for PHPT test cases.
- *
- * @since Class available since Release 3.1.4
  */
-class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Framework_SelfDescribing
+class PhptTestCase implements Test, SelfDescribing
 {
     /**
      * @var string
@@ -21,7 +33,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
     private $filename;
 
     /**
-     * @var PHPUnit_Util_PHP
+     * @var AbstractPhpProcess
      */
     private $phpUtil;
 
@@ -55,19 +67,19 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * Constructs a test case with the given filename.
      *
-     * @param string           $filename
-     * @param PHPUnit_Util_PHP $phpUtil
+     * @param string             $filename
+     * @param AbstractPhpProcess $phpUtil
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     public function __construct($filename, $phpUtil = null)
     {
         if (!is_string($filename)) {
-            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!is_file($filename)) {
-            throw new PHPUnit_Framework_Exception(
+            throw new Exception(
                 sprintf(
                     'File "%s" does not exist.',
                     $filename
@@ -76,7 +88,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         $this->filename = $filename;
-        $this->phpUtil  = $phpUtil ?: PHPUnit_Util_PHP::factory();
+        $this->phpUtil  = $phpUtil ?: AbstractPhpProcess::factory();
     }
 
     /**
@@ -113,23 +125,23 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
             }
         }
 
-        PHPUnit_Framework_Assert::$assertion($expected, $actual);
+        Assert::$assertion($expected, $actual);
     }
 
     /**
      * Runs a test and collects its result in a TestResult instance.
      *
-     * @param PHPUnit_Framework_TestResult $result
+     * @param TestResult $result
      *
-     * @return PHPUnit_Framework_TestResult
+     * @return TestResult
      */
-    public function run(PHPUnit_Framework_TestResult $result = null)
+    public function run(TestResult $result = null)
     {
         $sections = $this->parse();
         $code     = $this->render($sections['FILE']);
 
         if ($result === null) {
-            $result = new PHPUnit_Framework_TestResult;
+            $result = new TestResult;
         }
 
         $skip     = false;
@@ -165,7 +177,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
                     $message = '';
                 }
 
-                $result->addFailure($this, new PHPUnit_Framework_SkippedTestError($message), 0);
+                $result->addFailure($this, new SkippedTestError($message), 0);
 
                 $skip = true;
             }
@@ -191,11 +203,11 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
 
             try {
                 $this->assertPhptExpectation($sections, $jobResult['stdout']);
-            } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            } catch (AssertionFailedError $e) {
                 if ($xfail !== false) {
                     $result->addFailure(
                         $this,
-                        new PHPUnit_Framework_IncompleteTestError(
+                        new IncompleteTestError(
                             $xfail,
                             0,
                             $e
@@ -212,7 +224,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
             if ($result->allCompletelyImplemented() && $xfail !== false) {
                 $result->addFailure(
                     $this,
-                    new PHPUnit_Framework_IncompleteTestError(
+                    new IncompleteTestError(
                         'XFAIL section but test passes'
                     ),
                     $time
@@ -257,7 +269,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
     /**
      * @return array
      *
-     * @throws PHPUnit_Framework_Exception
+     * @throws Exception
      */
     private function parse()
     {
@@ -304,7 +316,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                 continue;
             } elseif (empty($section)) {
-                throw new PHPUnit_Framework_Exception('Invalid PHPT file');
+                throw new Exception('Invalid PHPT file');
             }
 
             $sections[$section] .= $line;
@@ -324,7 +336,7 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
 
                 // only allow files from the test directory
                 if (!is_file($testDirectory . $externalFilename) || !is_readable($testDirectory . $externalFilename)) {
-                    throw new PHPUnit_Framework_Exception(
+                    throw new Exception(
                         sprintf(
                             'Could not load --%s-- %s for PHPT file',
                             $section . '_EXTERNAL',
@@ -368,12 +380,12 @@ class PHPUnit_Runner_PhptTestCase implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         if (!$isValid) {
-            throw new PHPUnit_Framework_Exception('Invalid PHPT file');
+            throw new Exception('Invalid PHPT file');
         }
 
         foreach ($unsupportedSections as $section) {
             if (isset($sections[$section])) {
-                throw new PHPUnit_Framework_Exception(
+                throw new Exception(
                     'PHPUnit does not support this PHPT file'
                 );
             }

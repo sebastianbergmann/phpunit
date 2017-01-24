@@ -7,6 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\Constraint;
+
+use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann;
 
 /**
  * Constraint that asserts that one value is identical to another.
@@ -18,10 +22,8 @@
  * type.
  *
  * The expected value is passed in the constructor.
- *
- * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constraint
+class IsIdentical extends Constraint
 {
     /**
      * @var float
@@ -58,13 +60,14 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
      *
      * @return mixed
      *
-     * @throws PHPUnit_Framework_ExpectationFailedException
+     * @throws ExpectationFailedException
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
         if (is_double($this->value) && is_double($other) &&
             !is_infinite($this->value) && !is_infinite($other) &&
-            !is_nan($this->value) && !is_nan($other)) {
+            !is_nan($this->value) && !is_nan($other)
+        ) {
             $success = abs($this->value - $other) < self::EPSILON;
         } else {
             $success = $this->value === $other;
@@ -123,10 +126,10 @@ class PHPUnit_Framework_Constraint_IsIdentical extends PHPUnit_Framework_Constra
     {
         if (is_object($this->value)) {
             return 'is identical to an object of class "' .
-                   get_class($this->value) . '"';
+                get_class($this->value) . '"';
         } else {
             return 'is identical to ' .
-                   $this->exporter->export($this->value);
+                $this->exporter->export($this->value);
         }
     }
 }

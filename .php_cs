@@ -1,70 +1,75 @@
 <?php
-$finder = Symfony\CS\Finder\DefaultFinder::create()
-    ->files()
-    ->in('build')
-    ->in('src')
-    ->in('tests')
-    ->name('*.php')
-    ->name('*.phpt');
+$header = <<<'EOF'
+This file is part of PHPUnit.
 
-return Symfony\CS\Config\Config::create()
-    ->setUsingCache(true)
-    ->level(\Symfony\CS\FixerInterface::NONE_LEVEL)
-    ->fixers(
-        array(
-            'align_double_arrow',
-            'align_equals',
-            'braces',
-            'concat_with_spaces',
-            'duplicate_semicolon',
-            'elseif',
-            'empty_return',
-            'encoding',
-            'eof_ending',
-            'extra_empty_lines',
-            'function_call_space',
-            'function_declaration',
-            'indentation',
-            'join_function',
-            'line_after_namespace',
-            'linefeed',
-            'list_commas',
-            'lowercase_constants',
-            'lowercase_keywords',
-            'method_argument_space',
-            'multiple_use',
-            'namespace_no_leading_whitespace',
-            'no_blank_lines_after_class_opening',
-            'no_empty_lines_after_phpdocs',
-            'parenthesis',
-            'php_closing_tag',
-            'phpdoc_indent',
-            'phpdoc_no_access',
-            'phpdoc_no_empty_return',
-            'phpdoc_no_package',
-            'phpdoc_params',
-            'phpdoc_scalar',
-            'phpdoc_separation',
-            'phpdoc_to_comment',
-            'phpdoc_trim',
-            'phpdoc_types',
-            'phpdoc_var_without_name',
-            'remove_lines_between_uses',
-            'return',
-            'self_accessor',
-            'short_array_syntax',
-            'short_tag',
-            'single_line_after_imports',
-            'single_quote',
-            'spaces_before_semicolon',
-            'spaces_cast',
-            'ternary_spaces',
-            'trailing_spaces',
-            'trim_array_spaces',
-            'unused_use',
-            'visibility',
-            'whitespacy_lines'
-        )
+(c) Sebastian Bergmann <sebastian@phpunit.de>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+EOF;
+
+return PhpCsFixer\Config::create()
+    ->setRiskyAllowed(true)
+    ->setRules(
+        [
+            'header_comment' => ['header' => $header, 'separate' => 'none'],
+            'binary_operator_spaces' => true,
+            'braces' => true,
+            'concat_space' => ['spacing' => 'one'],
+            'no_empty_statement' => true,
+            'elseif' => true,
+            'simplified_null_return' => true,
+            'encoding' => true,
+            'single_blank_line_at_eof' => true,
+            'no_extra_consecutive_blank_lines' => true,
+            'no_spaces_after_function_name' => true,
+            'function_declaration' => true,
+            'indentation_type' => true,
+            'no_alias_functions' => true,
+            'blank_line_after_namespace' => true,
+            'line_ending' => true,
+            'no_trailing_comma_in_list_call' => true,
+            'lowercase_constants' => true,
+            'lowercase_keywords' => true,
+            'method_argument_space' => true,
+            'single_import_per_statement' => true,
+            'no_leading_namespace_whitespace' => true,
+            'no_blank_lines_after_class_opening' => true,
+            'no_blank_lines_after_phpdoc' => true,
+            'no_spaces_inside_parenthesis' => true,
+            'no_closing_tag' => true,
+            'phpdoc_indent' => true,
+            'phpdoc_no_access' => true,
+            'phpdoc_no_empty_return' => true,
+            'phpdoc_no_package' => true,
+            'phpdoc_align' => true,
+            'phpdoc_scalar' => true,
+            'phpdoc_separation' => true,
+            'phpdoc_to_comment' => true,
+            'phpdoc_trim' => true,
+            'phpdoc_types' => true,
+            'phpdoc_var_without_name' => true,
+            'no_extra_consecutive_blank_lines' => ['use'],
+            'blank_line_before_return' => true,
+            'self_accessor' => true,
+            'array_syntax' => ['syntax' => 'short'],
+            'full_opening_tag' => true,
+            'single_line_after_imports' => true,
+            'single_quote' => true,
+            'no_singleline_whitespace_before_semicolons' => true,
+            'cast_spaces' => true,
+            'ternary_operator_spaces' => true,
+            'no_trailing_whitespace' => true,
+            'trim_array_spaces' => true,
+            'no_unused_imports' => true,
+            'visibility_required' => true,
+            'no_whitespace_in_blank_line' => true
+        ]
     )
-    ->finder($finder);
-
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+        ->files()
+        ->in(__DIR__ . '/build')
+        ->in(__DIR__ . '/src')
+        ->name('*.php')
+    );

@@ -7,13 +7,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Runner;
+
+use File_Iterator_Facade;
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\Test;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * Base class for all test runners.
- *
- * @since Class available since Release 2.0.0
  */
-abstract class PHPUnit_Runner_BaseTestRunner
+abstract class BaseTestRunner
 {
     const STATUS_PASSED     = 0;
     const STATUS_SKIPPED    = 1;
@@ -27,11 +33,11 @@ abstract class PHPUnit_Runner_BaseTestRunner
     /**
      * Returns the loader to be used.
      *
-     * @return PHPUnit_Runner_TestSuiteLoader
+     * @return TestSuiteLoader
      */
     public function getLoader()
     {
-        return new PHPUnit_Runner_StandardTestSuiteLoader;
+        return new StandardTestSuiteLoader;
     }
 
     /**
@@ -43,7 +49,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
      * @param string $suiteClassFile
      * @param mixed  $suffixes
      *
-     * @return PHPUnit_Framework_Test
+     * @return Test
      */
     public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = '')
     {
@@ -55,7 +61,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
                 $suffixes
             );
 
-            $suite = new PHPUnit_Framework_TestSuite($suiteClassName);
+            $suite = new TestSuite($suiteClassName);
             $suite->addTestFiles($files);
 
             return $suite;
@@ -66,7 +72,7 @@ abstract class PHPUnit_Runner_BaseTestRunner
                 $suiteClassName,
                 $suiteClassFile
             );
-        } catch (PHPUnit_Framework_Exception $e) {
+        } catch (Exception $e) {
             $this->runFailed($e->getMessage());
 
             return;
@@ -97,9 +103,9 @@ abstract class PHPUnit_Runner_BaseTestRunner
             }
         } catch (ReflectionException $e) {
             try {
-                $test = new PHPUnit_Framework_TestSuite($testClass);
-            } catch (PHPUnit_Framework_Exception $e) {
-                $test = new PHPUnit_Framework_TestSuite;
+                $test = new TestSuite($testClass);
+            } catch (Exception $e) {
+                $test = new TestSuite;
                 $test->setName($suiteClassName);
             }
         }

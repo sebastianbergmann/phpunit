@@ -7,13 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\Constraint;
 
 /**
  * Asserts whether or not two JSON objects are equal.
- *
- * @since Class available since Release 3.7.0
  */
-class PHPUnit_Framework_Constraint_JsonMatches extends PHPUnit_Framework_Constraint
+class JsonMatches extends Constraint
 {
     /**
      * @var string

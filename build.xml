@@ -28,7 +28,6 @@
 
     <target name="validate-composer-json" unless="validate-composer-json.done" description="Validate composer.json">
         <exec executable="${basedir}/build/tools/composer" failonerror="true" taskname="composer">
-            <env key="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
             <arg value="validate"/>
             <arg value="--no-check-lock"/>
             <arg value="--strict"/>
@@ -44,7 +43,6 @@
 
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
         <exec executable="${basedir}/build/tools/composer" taskname="composer">
-            <env key="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
             <arg value="update"/>
             <arg value="--no-interaction"/>
             <arg value="--no-progress"/>
@@ -121,9 +119,7 @@
         <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
 
         <exec executable="${basedir}/build/tools/composer">
-            <env key="COMPOSER_DISABLE_XDEBUG_WARN" value="1"/>
             <arg value="require"/>
-            <arg value="phpunit/dbunit:~2.0"/>
             <arg value="phpunit/php-invoker:~1.1"/>
         </exec>
 
@@ -251,12 +247,6 @@
             </fileset>
         </copy>
 
-        <copy todir="${basedir}/build/phar/dbunit">
-            <fileset dir="${basedir}/vendor/phpunit/dbunit/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
         <copy todir="${basedir}/build/phar/php-invoker">
             <fileset dir="${basedir}/vendor/phpunit/php-invoker/src">
                 <include name="**/*.php" />
@@ -365,10 +355,7 @@
     </target>
 
     <target name="-phar-determine-version">
-        <exec executable="bash" outputproperty="version">
-            <arg value="-c"/>
-            <arg value="${basedir}/phpunit --version | awk 'BEGIN { ORS = &quot;&quot;; } {print $2}'"/>
-        </exec>
+        <exec executable="${basedir}/build/version.php" outputproperty="version" />
     </target>
 
     <target name="generate-project-documentation" depends="-phploc,-phpcs,-phpmd,-phpunit">
@@ -407,8 +394,10 @@
 
     <target name="-phpunit" depends="setup">
         <exec executable="${basedir}/phpunit" taskname="phpunit">
-            <arg value="--configuration"/>
-            <arg path="${basedir}/build/phpunit.xml"/>
+            <arg value="--coverage-xml"/>
+            <arg path="${basedir}/build/logfiles/coverage"/>
+            <arg value="--log-junit"/>
+            <arg path="${basedir}/build/logfiles/junit.xml"/>
         </exec>
     </target>
 </project>

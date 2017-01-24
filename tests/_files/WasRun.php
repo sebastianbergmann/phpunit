@@ -1,5 +1,7 @@
 <?php
-class WasRun extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class WasRun extends TestCase
 {
     public $wasRun = false;
 

@@ -7,11 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\RegularExpression;
 
-/**
- * @since      Class available since Release 4.2.0
- */
-class Util_RegexTest extends PHPUnit_Framework_TestCase
+class Util_RegexTest extends TestCase
 {
     public function validRegexpProvider()
     {
@@ -34,19 +33,17 @@ class Util_RegexTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validRegexpProvider
-     * @covers       PHPUnit_Util_Regex::pregMatchSafe
      */
     public function testValidRegex($pattern, $subject, $return)
     {
-        $this->assertEquals($return, PHPUnit_Util_Regex::pregMatchSafe($pattern, $subject));
+        $this->assertEquals($return, RegularExpression::safeMatch($pattern, $subject));
     }
 
     /**
      * @dataProvider invalidRegexpProvider
-     * @covers       PHPUnit_Util_Regex::pregMatchSafe
      */
     public function testInvalidRegex($pattern, $subject)
     {
-        $this->assertFalse(PHPUnit_Util_Regex::pregMatchSafe($pattern, $subject));
+        $this->assertFalse(RegularExpression::safeMatch($pattern, $subject));
     }
 }

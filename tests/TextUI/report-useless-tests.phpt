@@ -7,7 +7,7 @@ $_SERVER['argv'][2] = 'NothingTest';
 $_SERVER['argv'][3] = __DIR__ . '/../_files/NothingTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

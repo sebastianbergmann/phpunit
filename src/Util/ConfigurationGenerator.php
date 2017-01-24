@@ -8,10 +8,11 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Util;
+
 /**
- * @since Class available since Release 5.3.0
  */
-class PHPUnit_Util_ConfigurationGenerator
+class ConfigurationGenerator
 {
     /**
      * @var string
@@ -21,6 +22,7 @@ class PHPUnit_Util_ConfigurationGenerator
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/{phpunit_version}/phpunit.xsd"
          bootstrap="{bootstrap_script}"
+         forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"

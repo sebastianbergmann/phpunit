@@ -1,10 +1,13 @@
 <?php
 
-class BaseTestListenerSample extends PHPUnit_Framework_BaseTestListener
+use PHPUnit\Framework\BaseTestListener;
+use PHPUnit\Framework\Test;
+
+class BaseTestListenerSample extends BaseTestListener
 {
     public $endCount = 0;
 
-    public function endTest(PHPUnit_Framework_Test $test, $time)
+    public function endTest(Test $test, $time)
     {
         $this->endCount++;
     }

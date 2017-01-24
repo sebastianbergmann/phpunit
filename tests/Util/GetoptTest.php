@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Getopt;
 
-/**
- */
-class Util_GetoptTest extends PHPUnit_Framework_TestCase
+class Util_GetoptTest extends TestCase
 {
     public function testItIncludeTheLongOptionsAfterTheArgument()
     {
@@ -19,7 +19,7 @@ class Util_GetoptTest extends PHPUnit_Framework_TestCase
             'myArgument',
             '--colors',
         ];
-        $actual = PHPUnit_Util_Getopt::getopt($args, '', ['colors==']);
+        $actual = Getopt::getopt($args, '', ['colors==']);
 
         $expected = [
             [
@@ -43,7 +43,7 @@ class Util_GetoptTest extends PHPUnit_Framework_TestCase
             'myArgument',
             '-v',
         ];
-        $actual = PHPUnit_Util_Getopt::getopt($args, 'v');
+        $actual = Getopt::getopt($args, 'v');
 
         $expected = [
             [

@@ -7,13 +7,16 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 ### Added
 
 * Merged [#2344](https://github.com/sebastianbergmann/phpunit/pull/2344): Add support for annotations on traits
+* Merged [#2351](https://github.com/sebastianbergmann/phpunit/pull/2351): Allow to filter for multiple test suites
 * Added the `PHPUnit\Framework\TestCase::createTestProxy()` method for creating test proxies
 * Added the `--dont-report-useless-tests` commandline option
 * Added the `--globals-backup` commandline option
 
 ### Changed
 
+* PHPUnit's units of code are now namespaced
 * PHPUnit is now strict about useless tests by default
+* The configuration generated using `--generate-configuration` now includes `forceCoversAnnotation="true"`
 * Global and super-global variables are no longer backed up before and restored after each test by default
 * `PHPUnit\Framework\Assert::fail()` now increments the assertion counter
 * `setUpBeforeClass()` is now invoked after all methods annotated with `@beforeClass`
@@ -46,6 +49,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * Removed the `--no-globals-backup` commandline option
 * Removed the `--report-useless-tests` commandline option
 * Removed the `--self-update` and `--self-upgrade` commandline options (deprecated in PHPUnit 5.7)
+* DbUnit is no longer bundled in the PHAR distribution of PHPUnit
 * PHPUnit is no longer supported on PHP 5.6
 
 [6.0.0]: https://github.com/sebastianbergmann/phpunit/compare/5.7...6.0.0

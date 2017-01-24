@@ -1,5 +1,7 @@
 <?php
-class TemplateMethodsTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class TemplateMethodsTest extends TestCase
 {
     public static function setUpBeforeClass()
     {

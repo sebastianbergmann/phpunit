@@ -14,7 +14,7 @@ $_SERVER['argv'][]  = 'Issue1348Test';
 $_SERVER['argv'][]  = __DIR__ . '/1348/Issue1348Test.php';
 
 require __DIR__ . '/../../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
@@ -27,7 +27,7 @@ Time: %s, Memory: %s
 There was 1 error:
 
 1) Issue1348Test::testSTDERR
-PHPUnit_Framework_Exception: STDERR works as usual.
+PHPUnit\Framework\Exception: STDERR works as usual.
 
 ERRORS!
 Tests: 2, Assertions: 1, Errors: 1.

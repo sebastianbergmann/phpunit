@@ -7,23 +7,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @since      Class available since Release 4.0.0
- */
-class Framework_BaseTestListenerTest extends PHPUnit_Framework_TestCase
+class Framework_BaseTestListenerTest extends TestCase
 {
     /**
-     * @var PHPUnit_Framework_TestResult
+     * @var TestResult
      */
     private $result;
 
-    /**
-     * @covers PHPUnit_Framework_TestResult
-     */
     public function testEndEventsAreCounted()
     {
-        $this->result = new PHPUnit_Framework_TestResult;
+        $this->result = new TestResult;
         $listener     = new BaseTestListenerSample();
         $this->result->addListener($listener);
         $test = new Success;

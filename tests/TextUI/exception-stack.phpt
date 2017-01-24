@@ -7,7 +7,7 @@ $_SERVER['argv'][2] = 'ExceptionStackTest';
 $_SERVER['argv'][3] = __DIR__ . '/../_files/ExceptionStackTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
@@ -18,7 +18,7 @@ Time: %s, Memory: %s
 There were 2 errors:
 
 1) ExceptionStackTest::testPrintingChildException
-PHPUnit_Framework_Exception: Child exception
+PHPUnit\Framework\Exception: Child exception
 message
 Failed asserting that two arrays are equal.
 --- Expected

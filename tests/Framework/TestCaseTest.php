@@ -8,6 +8,12 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\BaseTestRunner;
+
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NoArgTestCaseTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Singleton.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Mockable.php';
@@ -23,10 +29,8 @@ $_REQUEST['h'] = 'h';
 $GLOBALS['i']  = 'i';
 
 /**
- * @since      Class available since Release 2.0.0
- * @covers     PHPUnit_Framework_TestCase
  */
-class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
+class Framework_TestCaseTest extends TestCase
 {
     protected $backupGlobalsBlacklist = ['i', 'singleton'];
 
@@ -45,7 +49,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test   = new Success;
         $result = $test->run();
 
-        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_PASSED, $test->getStatus());
+        $this->assertEquals(BaseTestRunner::STATUS_PASSED, $test->getStatus());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
         $this->assertEquals(0, $result->skippedCount());
@@ -57,7 +61,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test   = new Failure;
         $result = $test->run();
 
-        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_FAILURE, $test->getStatus());
+        $this->assertEquals(BaseTestRunner::STATUS_FAILURE, $test->getStatus());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(1, $result->failureCount());
         $this->assertEquals(0, $result->skippedCount());
@@ -69,7 +73,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test   = new TestError;
         $result = $test->run();
 
-        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_ERROR, $test->getStatus());
+        $this->assertEquals(BaseTestRunner::STATUS_ERROR, $test->getStatus());
         $this->assertEquals(1, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
         $this->assertEquals(0, $result->skippedCount());
@@ -81,7 +85,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test   = new TestSkipped();
         $result = $test->run();
 
-        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_SKIPPED, $test->getStatus());
+        $this->assertEquals(BaseTestRunner::STATUS_SKIPPED, $test->getStatus());
         $this->assertEquals('Skipped test', $test->getStatusMessage());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
@@ -94,7 +98,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $test   = new TestIncomplete();
         $result = $test->run();
 
-        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_INCOMPLETE, $test->getStatus());
+        $this->assertEquals(BaseTestRunner::STATUS_INCOMPLETE, $test->getStatus());
         $this->assertEquals('Incomplete test', $test->getStatusMessage());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
@@ -164,8 +168,8 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 
     public function testNoArgTestCasePasses()
     {
-        $result = new PHPUnit_Framework_TestResult;
-        $t      = new PHPUnit_Framework_TestSuite('NoArgTestCaseTest');
+        $result = new TestResult;
+        $t      = new TestSuite('NoArgTestCaseTest');
 
         $t->run($result);
 
@@ -271,9 +275,6 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers PHPUnit_Framework_Constraint_ExceptionMessageRegExp
-     */
     public function testExceptionWithInvalidRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');

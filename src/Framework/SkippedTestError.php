@@ -8,12 +8,12 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Framework;
+
 /**
  * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
  * case of a skipped test.
- *
- * @since Class available since Release 3.0.0
  */
-class PHPUnit_Framework_SkippedTestError extends PHPUnit_Framework_AssertionFailedError implements PHPUnit_Framework_SkippedTest
+class SkippedTestError extends AssertionFailedError implements SkippedTest
 {
 }

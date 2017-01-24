@@ -30,7 +30,7 @@ function __phpunit_run_isolated_test()
         require_once '{filename}';
     }
 
-    $result = new PHPUnit_Framework_TestResult;
+    $result = new PHPUnit\Framework\TestResult;
 
     if ({collectCodeCoverageInformation}) {
         $result->setCodeCoverage(
@@ -76,7 +76,7 @@ function __phpunit_run_isolated_test()
 $configurationFilePath = '{configurationFilePath}';
 
 if ('' !== $configurationFilePath) {
-    $configuration = PHPUnit_Util_Configuration::getInstance($configurationFilePath);
+    $configuration = PHPUnit\Util\Configuration::getInstance($configurationFilePath);
     $configuration->handlePHPConfiguration();
     unset($configuration);
 }

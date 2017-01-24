@@ -11,7 +11,7 @@ $_SERVER['argv'][6] = 'TestDoxGroupTest';
 $_SERVER['argv'][7] = __DIR__ . '/../_files/TestDoxGroupTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
