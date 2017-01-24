@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.7 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.7.7] - 2017-MM-DD
+
+### Fixed
+
+* Fixed [#2435](https://github.com/sebastianbergmann/phpunit/issues/2435): Empty `@group` annotation causes error on PHP 7.2+
+
 ## [5.7.6] - 2017-01-22
 
 ### Fixed
@@ -57,6 +63,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 * The `--tap` and `--log-tap` commandline options have been deprecated
 * The `--self-update` and `--self-upgrade` commandline options have been deprecated (PHAR binary only)
 
+[5.7.7]: https://github.com/sebastianbergmann/phpunit/compare/5.7.6...5.7.7
 [5.7.6]: https://github.com/sebastianbergmann/phpunit/compare/5.7.5...5.7.6
 [5.7.5]: https://github.com/sebastianbergmann/phpunit/compare/5.7.4...5.7.5
 [5.7.4]: https://github.com/sebastianbergmann/phpunit/compare/5.7.3...5.7.4
