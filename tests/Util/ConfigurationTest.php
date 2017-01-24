@@ -277,7 +277,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
             'ini'    => array('foo' => 'bar'),
             'const'  => array('FOO' => false, 'BAR' => true),
             'var'    => array('foo' => false),
-            'env'    => array('foo' => true),
+            'env'    => array('foo' => 'true'),
             'post'   => array('foo' => 'bar'),
             'get'    => array('foo' => 'bar'),
             'cookie' => array('foo' => 'bar'),
@@ -302,8 +302,8 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(false, FOO);
         $this->assertEquals(true, BAR);
         $this->assertEquals(false, $GLOBALS['foo']);
-        $this->assertEquals(true, $_ENV['foo']);
-        $this->assertEquals(true, getenv('foo'));
+        $this->assertEquals('true', $_ENV['foo']);
+        $this->assertEquals('true', getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
         $this->assertEquals('bar', $_COOKIE['foo']);
@@ -319,11 +319,11 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
      */
     public function testHandlePHPConfigurationDoesNotOverwrittenExistingEnvArrayVariables()
     {
-        $_ENV['foo'] = false;
+        $_ENV['foo'] = 'false';
         $this->configuration->handlePHPConfiguration();
 
-        $this->assertEquals(false, $_ENV['foo']);
-        $this->assertEquals(true, getenv('foo'));
+        $this->assertEquals('false', $_ENV['foo']);
+        $this->assertEquals('true', getenv('foo'));
     }
 
     /**
@@ -336,7 +336,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
         putenv('foo=putenv');
         $this->configuration->handlePHPConfiguration();
 
-        $this->assertEquals(true, $_ENV['foo']);
+        $this->assertEquals('true', $_ENV['foo']);
         $this->assertEquals('putenv', getenv('foo'));
     }
 
