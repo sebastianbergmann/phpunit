@@ -459,12 +459,33 @@ class Configuration
             $result['const'][$name] = $this->getBoolean($value, $value);
         }
 
+        $result = $this->getPHPConfigurationWithGlobalVariables($result);
+
+
+        return $result;
+    }
+
+    /**
+     * Returns the PHP configuration with the defined global vars.
+     *
+     * @param array $result
+     *
+     * @return array
+     */
+    private function getPHPConfigurationWithGlobalVariables(array $result)
+    {
         foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($this->xpath->query('php/' . $array) as $var) {
                 $name  = (string) $var->getAttribute('name');
                 $value = (string) $var->getAttribute('value');
 
-                $result[$array][$name] = $this->getBoolean($value, $value);
+                if ('env' == $array) {
+                    $force = (string) $var->getAttribute('force');
+                    $result[$array][$name]['value'] = $this->getBoolean($value, $value);
+                    $result[$array][$name]['force'] = $this->getBoolean($force, false);
+                } else {
+                    $result[$array][$name] = $this->getBoolean($value, $value);
+                }
             }
         }
 
@@ -521,14 +542,24 @@ class Configuration
                 $target[$name] = $value;
             }
         }
+        $this->setEnvironmentVarsFromConfiguration($configuration);
+    }
 
-        foreach ($configuration['env'] as $name => $value) {
-            if (false === getenv($name)) {
-                putenv("{$name}={$value}");
-            }
-            if (!isset($_ENV[$name])) {
-                $_ENV[$name] = $value;
-            }
+    /**
+     * Sets the predefined environment vars from the configuration values.
+     *
+     * @param array $configuration
+     */
+    private function setEnvironmentVarsFromConfiguration(array $configuration)
+    {
+        try {
+            $envVarHandler = PHPUnit_Util_GlobalVar_Factory::getGlobalVarHandler('Environment');
+        } catch (\InvalidArgumentException $e) {
+            return;
+        }
+
+        foreach ($configuration['env'] as $name => $content) {
+            $envVarHandler->setValue($name, $content['value'], $content['force']);
         }
     }
 

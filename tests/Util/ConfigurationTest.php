@@ -232,13 +232,17 @@ class Util_ConfigurationTest extends TestCase
             'ini'    => ['foo' => 'bar'],
             'const'  => ['FOO' => false, 'BAR' => true],
             'var'    => ['foo' => false],
-            'env'    => ['foo' => true],
             'post'   => ['foo' => 'bar'],
             'get'    => ['foo' => 'bar'],
             'cookie' => ['foo' => 'bar'],
             'server' => ['foo' => 'bar'],
             'files'  => ['foo' => 'bar'],
             'request'=> ['foo' => 'bar'],
+            'env'    =>
+                [
+                'foo' => ['value' => true, 'force' => false],
+                'bar' => ['value' => true, 'force' => true]
+                ],
             ],
             $this->configuration->getPHPConfiguration()
         );
@@ -257,6 +261,7 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals(true, BAR);
         $this->assertEquals(false, $GLOBALS['foo']);
         $this->assertEquals(true, $_ENV['foo']);
+        $this->assertEquals(true, $_ENV['bar']);
         $this->assertEquals(true, getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
@@ -280,6 +285,7 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals(true, getenv('foo'));
     }
 
+
     /**
      * @backupGlobals enabled
      *
@@ -294,6 +300,24 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals('putenv', getenv('foo'));
     }
 
+    /**
+     * @backupGlobals enabled
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/2353
+     */
+    public function testHandlePHPConfigurationForceToOverwrittenExistingEnvArrayVariables()
+    {
+        $_ENV['bar'] = false;
+        putenv('bar=false');
+        $this->configuration->handlePHPConfiguration();
+
+        $this->assertEquals(true, $_ENV['bar']);
+        $this->assertEquals(true, getenv('bar'));
+    }
+
+    /**
+     * @covers PHPUnit_Util_Configuration::getPHPUnitConfiguration
+     */
     public function testPHPUnitConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
