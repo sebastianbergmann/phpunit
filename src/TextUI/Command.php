@@ -217,6 +217,10 @@ class Command
             $return = TestRunner::EXCEPTION_EXIT;
         }
 
+        if ($exit) {
+            exit($return);
+        }
+
         return $return;
     }
 
