@@ -1032,7 +1032,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if (isset($e)) {
             $checkException = false;
 
-            if (is_string($this->expectedException)) {
+            if (!($e instanceof PHPUnit_Framework_SkippedTestError) && is_string($this->expectedException)) {
                 $checkException = true;
 
                 if ($e instanceof Exception) {
