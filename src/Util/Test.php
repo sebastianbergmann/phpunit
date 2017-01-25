@@ -370,14 +370,15 @@ class PHPUnit_Util_Test
     {
         $reflector  = new ReflectionMethod($className, $methodName);
         $docComment = $reflector->getDocComment();
-        $data       = null;
 
-        if ($dataProviderData = self::getDataFromDataProviderAnnotation($docComment, $className, $methodName)) {
-            $data = $dataProviderData;
+        $data = self::getDataFromDataProviderAnnotation($docComment, $className, $methodName);
+
+        if ($data === null) {
+            $data = self::getDataFromTestWithAnnotation($docComment);
         }
 
-        if ($testWithData = self::getDataFromTestWithAnnotation($docComment)) {
-            $data = $testWithData;
+        if (is_array($data) && empty($data)) {
+            throw new PHPUnit_Framework_SkippedTestError;
         }
 
         if ($data !== null) {
@@ -463,6 +464,7 @@ class PHPUnit_Util_Test
     public static function getDataFromTestWithAnnotation($docComment)
     {
         $docComment = self::cleanUpMultiLineAnnotation($docComment);
+
         if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
             $offset            = strlen($matches[0][0]) + $matches[0][1];
             $annotationContent = substr($docComment, $offset);
