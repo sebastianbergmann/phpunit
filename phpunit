@@ -27,14 +27,10 @@ if (!ini_get('date.timezone')) {
     ini_set('date.timezone', 'UTC');
 }
 
-if (file_exists($path = './vendor/phpunit/phpunit/phpunit') && file_exists($auto = './vendor/autoload.php')) {
+if (file_exists($path='./vendor/phpunit/phpunit/phpunit') && file_exists($auto='./vendor/autoload.php')) {
     if (__FILE__ != realpath($path)) {
-        fwrite(
-            STDERR,
-            "\n==== Redirecting to Composer-installed version in vendor/phpunit ====\n"
-        );
+        echo "\n==== Redirecting to composer installed version in vendor/phpunit ====\n\n";
     }
-
     define ('PHPUNIT_COMPOSER_INSTALL', realpath($auto));
 } else {
     foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
@@ -48,8 +44,7 @@ if (file_exists($path = './vendor/phpunit/phpunit/phpunit') && file_exists($auto
 unset($file, $path, $auto);
 
 if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
-    fwrite(
-        STDERR,
+    fwrite(STDERR,
         'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
         '    composer install' . PHP_EOL . PHP_EOL .
         'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
