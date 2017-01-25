@@ -22,6 +22,7 @@ if (!defined('TEST_FILES_PATH')) {
 
 require TEST_FILES_PATH . 'CoverageNamespacedFunctionTest.php';
 require TEST_FILES_PATH . 'NamespaceCoveredFunction.php';
+require TEST_FILES_PATH . 'MultipleDataProviderTest.php';
 
 class Util_TestTest extends TestCase
 {

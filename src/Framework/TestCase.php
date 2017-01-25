@@ -570,6 +570,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function expectExceptionCode($code)
     {
+        if (!$this->expectedException) {
+            $this->expectedException = \Exception::class;
+        }
+
         if (!is_int($code) && !is_string($code)) {
             throw InvalidArgumentHelper::factory(1, 'integer or string');
         }
@@ -584,6 +588,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function expectExceptionMessage($message)
     {
+        if (!$this->expectedException) {
+            $this->expectedException = \Exception::class;
+        }
+
         if (!is_string($message)) {
             throw InvalidArgumentHelper::factory(1, 'string');
         }
