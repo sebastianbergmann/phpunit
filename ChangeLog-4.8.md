@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2331](https://github.com/sebastianbergmann/phpunit/issues/2331): Boolean environment variable values specified in XML get mangled
+* Fixed [#2431](https://github.com/sebastianbergmann/phpunit/issues/2431): `assertArraySubset()` does not support `ArrayAccess`
 
 ## [4.8.32] - 2017-01-22
 
