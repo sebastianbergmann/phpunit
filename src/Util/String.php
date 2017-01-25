@@ -24,15 +24,7 @@ class PHPUnit_Util_String
      */
     public static function convertToUtf8($string)
     {
-        if (!self::isUtf8($string)) {
-            if (function_exists('mb_convert_encoding')) {
-                $string = mb_convert_encoding($string, 'UTF-8');
-            } else {
-                $string = utf8_encode($string);
-            }
-        }
-
-        return $string;
+        return mb_convert_encoding($string, 'UTF-8');
     }
 
     /**
