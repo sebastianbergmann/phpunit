@@ -754,7 +754,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $result->convertErrorsToExceptions($this->useErrorHandler);
         }
 
-        if (!$this instanceof WarningTestCase && !$this->handleDependencies()) {
+        if (!$this instanceof WarningTestCase &&
+            !$this instanceof SkippedTestCase &&
+            !$this->handleDependencies()) {
             return;
         }
 

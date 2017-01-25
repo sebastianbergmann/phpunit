@@ -17,6 +17,7 @@ require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPAR
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'TestWithTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'BeforeClassWithOnlyDataProviderTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DataProviderSkippedTest.php';
+require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DataProviderDependencyTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'DataProviderIncompleteTest.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'InheritedTestCase.php';
 require_once dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'NoTestCaseClass.php';
@@ -53,6 +54,7 @@ class Framework_SuiteTest extends TestCase
         $suite->addTest(new self('testBeforeAnnotation'));
         $suite->addTest(new self('testTestWithAnnotation'));
         $suite->addTest(new self('testSkippedTestDataProvider'));
+        $suite->addTest(new self('testTestDataProviderDependency'));
         $suite->addTest(new self('testIncompleteTestDataProvider'));
         $suite->addTest(new self('testRequirementsBeforeClassHook'));
         $suite->addTest(new self('testDontSkipInheritedClass'));
@@ -217,6 +219,19 @@ class Framework_SuiteTest extends TestCase
 
         $this->assertEquals(3, $this->result->count());
         $this->assertEquals(1, $this->result->skippedCount());
+    }
+
+    public function testTestDataProviderDependency()
+    {
+        $suite = new PHPUnit\Framework\TestSuite(DataProviderDependencyTest::class);
+
+        $suite->run($this->result);
+
+        $skipped           = $this->result->skipped();
+        $lastSkippedResult = array_pop($skipped);
+        $message           = $lastSkippedResult->thrownException()->getMessage();
+
+        $this->assertContains('Test for DataProviderDependencyTest::testDependency skipped by data provider', $message);
     }
 
     public function testIncompleteTestDataProvider()
