@@ -136,6 +136,10 @@ class TestRunner extends BaseTestRunner
         return new TestResult;
     }
 
+    /**
+     * @param PHPUnit_Framework_TestSuite $suite
+     * @param array                       $arguments
+     */
     private function processSuiteFilters(TestSuite $suite, array $arguments)
     {
         if (!$arguments['filter'] &&

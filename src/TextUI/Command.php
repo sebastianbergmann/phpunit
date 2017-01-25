@@ -1057,6 +1057,7 @@ EOT;
     }
 
     /**
+     * @param string $message
      */
     private function showError($message)
     {

@@ -15,6 +15,11 @@ namespace PHPUnit\Util;
  */
 class Type
 {
+    /**
+     * @param string $type
+     *
+     * @return bool
+     */
     public static function isType($type)
     {
         return in_array(

@@ -14,6 +14,15 @@ namespace PHPUnit\Util;
  */
 class RegularExpression
 {
+    /**
+     * @param string $pattern
+     * @param string $subject
+     * @param null   $matches
+     * @param int    $flags
+     * @param int    $offset
+     *
+     * @return int
+     */
     public static function safeMatch($pattern, $subject, $matches = null, $flags = 0, $offset = 0)
     {
         $handler_terminator = ErrorHandler::handleErrorOnce(E_WARNING);
