@@ -28,6 +28,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * `.phar` files that are to be loaded as a PHPUnit extension must now have a valid `manifest.xml` file
 * Renamed the `PHPUnit_Extensions_PhptTestCase` class to `PHPUnit_Runner_PhptTestCase`
 * The `PHPUnit\Framework\TestCase::getMockObjectGenerator()` method is now private
+* Merged [#2241](https://github.com/sebastianbergmann/phpunit/pull/2241): Make JSON assertions stricter
 
 ### Removed
 
