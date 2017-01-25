@@ -2143,7 +2143,7 @@ abstract class Assert
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
-        $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
+        $constraint = new JsonMatches(
             $expectedJson
         );
 
@@ -2162,11 +2162,11 @@ abstract class Assert
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
 
-        $constraint = new PHPUnit_Framework_Constraint_JsonMatches(
+        $constraint = new JsonMatches(
             $expectedJson
         );
 
-        static::assertThat($actualJson, new PHPUnit_Framework_Constraint_Not($constraint), $message);
+        static::assertThat($actualJson, new LogicalNot($constraint), $message);
     }
 
     /**
