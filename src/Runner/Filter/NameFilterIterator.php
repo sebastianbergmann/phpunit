@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Filter;
 
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Util\RegularExpression;
 use RecursiveFilterIterator;
 use RecursiveIterator;
@@ -103,10 +104,15 @@ class NameFilterIterator extends RecursiveFilterIterator
 
         $tmp = \PHPUnit\Util\Test::describe($test, false);
 
-        if ($tmp[0] != '') {
-            $name = implode('::', $tmp);
-        } else {
-            $name = $tmp[1];
+        if ($test instanceof WarningTestCase) {
+            $name = $test->getMessage();
+        }
+        else {
+            if ($tmp[0] != '') {
+                $name = implode('::', $tmp);
+            } else {
+                $name = $tmp[1];
+            }
         }
 
         $accepted = @preg_match($this->filter, $name, $matches);
