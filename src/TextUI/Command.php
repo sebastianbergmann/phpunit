@@ -198,7 +198,6 @@ class PHPUnit_TextUI_Command
             $return = PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT;
         }
 
-        // Respect the $exit parameter, and exit instead of returning.
         if ($exit) {
             exit($return);
         }
