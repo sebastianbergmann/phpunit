@@ -18,9 +18,10 @@ class PHPUnit_Util_Regex
     /**
      * @param string $pattern
      * @param string $subject
-     * @param null $matches
-     * @param int $flags
-     * @param int $offset
+     * @param null   $matches
+     * @param int    $flags
+     * @param int    $offset
+     *
      * @return int
      */
     public static function pregMatchSafe($pattern, $subject, $matches = null, $flags = 0, $offset = 0)

@@ -116,7 +116,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
     /**
      * @param PHPUnit_Framework_TestSuite $suite
-     * @param array $arguments
+     * @param array                       $arguments
      */
     private function processSuiteFilters(PHPUnit_Framework_TestSuite $suite, array $arguments)
     {

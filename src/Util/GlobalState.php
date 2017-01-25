@@ -48,6 +48,7 @@ class PHPUnit_Util_GlobalState
 
     /**
      * @param array $files
+     *
      * @return string
      */
     public static function processIncludedFilesAsString(array $files)
@@ -192,6 +193,7 @@ class PHPUnit_Util_GlobalState
 
     /**
      * @param array $array
+     *
      * @return bool
      */
     protected static function arrayOnlyContainsScalars(array $array)

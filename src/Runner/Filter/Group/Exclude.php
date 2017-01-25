@@ -14,7 +14,8 @@
 class PHPUnit_Runner_Filter_Group_Exclude extends PHPUnit_Runner_Filter_GroupFilterIterator
 {
     /**
-     * @param $hash
+     * @param string $hash
+     *
      * @return bool
      */
     protected function doAccept($hash)
