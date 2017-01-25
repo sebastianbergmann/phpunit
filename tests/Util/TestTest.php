@@ -443,6 +443,27 @@ class Util_TestTest extends TestCase
         $this->assertEquals(3, $cCount);
     }
 
+    public function testMultipleYieldIteratorDataProviders()
+    {
+        $dataSets = \PHPUnit\Util\Test::getProvidedData('MultipleDataProviderTest', 'testTwo');
+
+        $this->assertEquals(9, count($dataSets));
+
+        $aCount = 0;
+        $bCount = 0;
+        $cCount = 0;
+
+        for ($i = 0; $i < 9; $i++) {
+            $aCount += $dataSets[$i][0] != null ? 1 : 0;
+            $bCount += $dataSets[$i][1] != null ? 1 : 0;
+            $cCount += $dataSets[$i][2] != null ? 1 : 0;
+        }
+
+        $this->assertEquals(3, $aCount);
+        $this->assertEquals(3, $bCount);
+        $this->assertEquals(3, $cCount);
+    }
+
     public function testTestWithEmptyAnnotation()
     {
         $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation("/**\n * @anotherAnnotation\n */");
