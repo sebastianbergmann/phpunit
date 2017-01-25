@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 * Fixed [#2328](https://github.com/sebastianbergmann/phpunit/issues/2328): `TestListener` callbacks `startTest()` and `endTest()` are not called when test is skipped due to `@depends`
 * Fixed [#2331](https://github.com/sebastianbergmann/phpunit/issues/2331): Boolean environment variable values specified in XML get mangled
 * Fixed [#2333](https://github.com/sebastianbergmann/phpunit/issues/2333): `assertContains()` and `assertNotContains()` do not handle UTF-8 strings correctly
+* Fixed [#2340](https://github.com/sebastianbergmann/phpunit/pull/2340): Data providers that use `yield` or implement `Iterator` cannot be combined 
 * Fixed [#2349](https://github.com/sebastianbergmann/phpunit/pull/2349): `PHPUnit_TextUI_Command` does not `exit()` when it should
 * Fixed [#2431](https://github.com/sebastianbergmann/phpunit/issues/2431): `assertArraySubset()` does not support `ArrayAccess`
 * Fixed [#2435](https://github.com/sebastianbergmann/phpunit/issues/2435): Empty `@group` annotation causes error on PHP 7.2+
