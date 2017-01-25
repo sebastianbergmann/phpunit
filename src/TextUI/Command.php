@@ -858,7 +858,7 @@ class Command
      * @param string $printerClass
      * @param string $printerFile
      *
-     * @return Printer
+     * @return Printer|string
      */
     protected function handlePrinter($printerClass, $printerFile = '')
     {
