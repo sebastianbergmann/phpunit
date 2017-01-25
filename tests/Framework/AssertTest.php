@@ -347,6 +347,25 @@ class Framework_AssertTest extends TestCase
         $this->assertContains('foo', 'bar');
     }
 
+    public function testAssertStringContainsStringForUtf8()
+    {
+        $this->assertContains('oryginał', 'oryginał');
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertContains('ORYGINAŁ', 'oryginał');
+    }
+
+    public function testAssertStringContainsStringForUtf8WhenIgnoreCase()
+    {
+        $this->assertContains('oryginał', 'oryginał', '', true);
+        $this->assertContains('ORYGINAŁ', 'oryginał', '', true);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertContains('foo', 'oryginał', '', true);
+    }
+
     public function testAssertNotContainsThrowsException()
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
@@ -405,6 +424,22 @@ class Framework_AssertTest extends TestCase
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotContains('foo', 'foo');
+    }
+
+    public function testAssertStringNotContainsStringForUtf8()
+    {
+        $this->assertNotContains('ORYGINAŁ', 'oryginał');
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertNotContains('oryginał', 'oryginał');
+    }
+
+    public function testAssertStringNotContainsStringForUtf8WhenIgnoreCase()
+    {
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertNotContains('ORYGINAŁ', 'oryginał', '', true);
     }
 
     public function testAssertContainsOnlyThrowsException()

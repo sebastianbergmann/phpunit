@@ -2271,6 +2271,36 @@ EOF
         $this->fail();
     }
 
+    public function testConstraintStringContainsWhenIgnoreCase()
+    {
+        $constraint = Assert::stringContains('oryginał', true);
+
+        $this->assertFalse($constraint->evaluate('oryginal', '', true));
+        $this->assertTrue($constraint->evaluate('ORYGINAŁ', '', true));
+        $this->assertTrue($constraint->evaluate('oryginał', '', true));
+        $this->assertEquals('contains "oryginał"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        $this->expectException(ExpectationFailedException::class);
+
+        $constraint->evaluate('oryginal');
+    }
+
+    public function testConstraintStringContainsForUtf8StringWhenNotIgnoreCase()
+    {
+        $constraint = Assert::stringContains('oryginał', false);
+
+        $this->assertFalse($constraint->evaluate('oryginal', '', true));
+        $this->assertFalse($constraint->evaluate('ORYGINAŁ', '', true));
+        $this->assertTrue($constraint->evaluate('oryginał', '', true));
+        $this->assertEquals('contains "oryginał"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        $this->expectException(ExpectationFailedException::class);
+
+        $constraint->evaluate('oryginal');
+    }
+
     public function testConstraintStringContains2()
     {
         $constraint = Assert::stringContains('foo');
@@ -2321,6 +2351,40 @@ EOF
         }
 
         $this->fail();
+    }
+
+    public function testConstraintStringNotContainsWhenIgnoreCase()
+    {
+        $constraint = Assert::logicalNot(
+            Assert::stringContains('oryginał')
+        );
+
+        $this->assertTrue($constraint->evaluate('original', '', true));
+        $this->assertFalse($constraint->evaluate('ORYGINAŁ', '', true));
+        $this->assertFalse($constraint->evaluate('oryginał', '', true));
+        $this->assertEquals('does not contain "oryginał"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        $this->expectException(ExpectationFailedException::class);
+
+        $constraint->evaluate('ORYGINAŁ');
+    }
+
+    public function testConstraintStringNotContainsForUtf8StringWhenNotIgnoreCase()
+    {
+        $constraint = Assert::logicalNot(
+            Assert::stringContains('oryginał', false)
+        );
+
+        $this->assertTrue($constraint->evaluate('original', '', true));
+        $this->assertTrue($constraint->evaluate('ORYGINAŁ', '', true));
+        $this->assertFalse($constraint->evaluate('oryginał', '', true));
+        $this->assertEquals('does not contain "oryginał"', $constraint->toString());
+        $this->assertEquals(1, count($constraint));
+
+        $this->expectException(ExpectationFailedException::class);
+
+        $constraint->evaluate('oryginał');
     }
 
     public function testConstraintStringNotContains2()

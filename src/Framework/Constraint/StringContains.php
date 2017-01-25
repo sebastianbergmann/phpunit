@@ -13,8 +13,8 @@ namespace PHPUnit\Framework\Constraint;
  * Constraint that asserts that the string it is evaluated for contains
  * a given string.
  *
- * Uses strpos() to find the position of the string in the input, if not found
- * the evaluation fails.
+ * Uses mb_strpos() to find the position of the string in the input, if not
+ * found the evaluation fails.
  *
  * The sub-string is passed in the constructor.
  */
@@ -53,9 +53,9 @@ class StringContains extends Constraint
     protected function matches($other)
     {
         if ($this->ignoreCase) {
-            return stripos($other, $this->string) !== false;
+            return mb_stripos($other, $this->string) !== false;
         } else {
-            return strpos($other, $this->string) !== false;
+            return mb_strpos($other, $this->string) !== false;
         }
     }
 
@@ -67,7 +67,7 @@ class StringContains extends Constraint
     public function toString()
     {
         if ($this->ignoreCase) {
-            $string = strtolower($this->string);
+            $string = mb_strtolower($this->string);
         } else {
             $string = $this->string;
         }
