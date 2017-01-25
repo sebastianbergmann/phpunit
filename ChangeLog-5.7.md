@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#1983](https://github.com/sebastianbergmann/phpunit/pull/1983): Tests with `@expectedException` annotation cannot be skipped
 * Fixed [#2137](https://github.com/sebastianbergmann/phpunit/issues/2137): Warnings for invalid data providers are suppressed when test execution is filtered
 * Fixed [#2328](https://github.com/sebastianbergmann/phpunit/issues/2328): `TestListener` callbacks `startTest()` and `endTest()` are not called when test is skipped due to `@depends`
 * Fixed [#2331](https://github.com/sebastianbergmann/phpunit/issues/2331): Boolean environment variable values specified in XML get mangled
