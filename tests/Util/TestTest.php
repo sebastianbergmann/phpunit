@@ -437,7 +437,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     {
         $dataSets = PHPUnit_Util_Test::getProvidedData('MultipleDataProviderTest', 'testOne');
 
-        $this->assertEquals(9, count($dataSets));
+        $this->assertCount(9, $dataSets);
 
         $aCount = 0;
         $bCount = 0;

@@ -27,12 +27,12 @@ class Issue1335Test extends PHPUnit_Framework_TestCase
 
     public function testGlobalBoolTrue()
     {
-        $this->assertEquals(true, $GLOBALS['globalBoolTrue']);
+        $this->assertTrue($GLOBALS['globalBoolTrue']);
     }
 
     public function testGlobalBoolFalse()
     {
-        $this->assertEquals(false, $GLOBALS['globalBoolFalse']);
+        $this->assertFalse($GLOBALS['globalBoolFalse']);
     }
 
     public function testGlobalNull()

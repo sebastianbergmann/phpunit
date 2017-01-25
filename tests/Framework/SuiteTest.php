@@ -68,7 +68,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
 
         $suite->run($this->result);
 
-        $this->assertEquals(1, count($this->result));
+        $this->assertCount(1, $this->result);
     }
 
     public function testInheritedTests()
@@ -80,7 +80,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         $suite->run($this->result);
 
         $this->assertTrue($this->result->wasSuccessful());
-        $this->assertEquals(2, count($this->result));
+        $this->assertCount(2, $this->result);
     }
 
     public function testNoTestCases()
@@ -94,7 +94,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(!$this->result->wasSuccessful());
         $this->assertEquals(0, $this->result->failureCount());
         $this->assertEquals(1, $this->result->warningCount());
-        $this->assertEquals(1, count($this->result));
+        $this->assertCount(1, $this->result);
     }
 
     /**
@@ -113,7 +113,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(0, $this->result->errorCount());
         $this->assertEquals(1, $this->result->failureCount());
-        $this->assertEquals(1, count($this->result));
+        $this->assertCount(1, $this->result);
     }
 
     public function testNotPublicTestCase()
@@ -122,7 +122,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
             'NotPublicTestCase'
         );
 
-        $this->assertEquals(2, count($suite));
+        $this->assertCount(2, $suite);
     }
 
     public function testNotVoidTestCase()
@@ -131,7 +131,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
             'NotVoidTestCase'
         );
 
-        $this->assertEquals(1, count($suite));
+        $this->assertCount(1, $suite);
     }
 
     public function testOneTestCase()
@@ -144,7 +144,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals(0, $this->result->errorCount());
         $this->assertEquals(0, $this->result->failureCount());
-        $this->assertEquals(1, count($this->result));
+        $this->assertCount(1, $this->result);
         $this->assertTrue($this->result->wasSuccessful());
     }
 
@@ -156,7 +156,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
 
         $suite->run($this->result);
 
-        $this->assertEquals(1, count($this->result));
+        $this->assertCount(1, $this->result);
     }
 
     public function testBeforeClassAndAfterClassAnnotations()
@@ -207,7 +207,7 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         BeforeAndAfterTest::resetProperties();
         $result = $test->run();
 
-        $this->assertEquals(4, count($result->passed()));
+        $this->assertCount(4, $result->passed());
     }
 
     public function testSkippedTestDataProvider()
@@ -253,6 +253,6 @@ class Framework_SuiteTest extends PHPUnit_Framework_TestCase
         $suite->addTestFile($dir . 'InheritanceA.php');
         $suite->addTestFile($dir . 'InheritanceB.php');
         $result = $suite->run();
-        $this->assertEquals(2, count($result));
+        $this->assertCount(2, $result);
     }
 }
