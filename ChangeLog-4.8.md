@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 4.8 release series are documented in this fil
 * Fixed [#1983](https://github.com/sebastianbergmann/phpunit/pull/1983): Tests with `@expectedException` annotation cannot be skipped
 * Fixed [#2275](https://github.com/sebastianbergmann/phpunit/pull/2275): Invalid UTF-8 characters can lead to missing output
 * Fixed [#2331](https://github.com/sebastianbergmann/phpunit/issues/2331): Boolean environment variable values specified in XML get mangled
+* Fixed [#2392](https://github.com/sebastianbergmann/phpunit/issues/2392): Empty (but valid) data provider should skip the test
 * Fixed [#2431](https://github.com/sebastianbergmann/phpunit/issues/2431): `assertArraySubset()` does not support `ArrayAccess`
 
 ## [4.8.32] - 2017-01-22
