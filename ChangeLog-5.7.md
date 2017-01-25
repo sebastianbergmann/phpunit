@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#1896](https://github.com/sebastianbergmann/phpunit/issues/1896): Wrong test location when `@depends` and `@dataProvider` are combined
 * Fixed [#1983](https://github.com/sebastianbergmann/phpunit/pull/1983): Tests with `@expectedException` annotation cannot be skipped
 * Fixed [#2137](https://github.com/sebastianbergmann/phpunit/issues/2137): Warnings for invalid data providers are suppressed when test execution is filtered
 * Fixed [#2275](https://github.com/sebastianbergmann/phpunit/pull/2275): Invalid UTF-8 characters can lead to missing output
