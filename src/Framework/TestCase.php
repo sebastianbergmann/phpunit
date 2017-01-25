@@ -814,7 +814,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result->convertErrorsToExceptions($this->useErrorHandler);
         }
 
-        if (!$this instanceof PHPUnit_Framework_WarningTestCase && !$this->handleDependencies()) {
+        if (!$this instanceof PHPUnit_Framework_WarningTestCase &&
+            !$this instanceof PHPUnit_Framework_SkippedTestCase &&
+            !$this->handleDependencies()) {
             return;
         }
 
