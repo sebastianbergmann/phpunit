@@ -1174,7 +1174,7 @@ class TestResult implements Countable
      */
     public function wasSuccessful()
     {
-        return empty($this->errors) && empty($this->failures) && empty($this->warnings);
+        return empty($this->errors) && empty($this->failures);
     }
 
     /**
