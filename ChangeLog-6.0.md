@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ### Added
 
-* Merged [#2230](https://github.com/sebastianbergmann/phpunit/pull/2230): Add `expectedExceptionCode()` and `expectedExceptionMessage()`
+* Merged [#2230](https://github.com/sebastianbergmann/phpunit/pull/2230): Add `getExpectedExceptionCode()` and `getExpectedExceptionMessage()`
 * Merged [#2344](https://github.com/sebastianbergmann/phpunit/pull/2344): Add support for annotations on traits
 * Merged [#2351](https://github.com/sebastianbergmann/phpunit/pull/2351): Allow to filter for multiple test suites
 * Added the `PHPUnit\Framework\TestCase::createTestProxy()` method for creating test proxies
