@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [4.8.34] - 2017-MM-DD
+## [4.8.34] - 2017-01-26
 
 * Fixed [#2447](https://github.com/sebastianbergmann/phpunit/issues/2447): Reverted backwards incompatible change to handling of boolean environment variable values specified in XML
 
