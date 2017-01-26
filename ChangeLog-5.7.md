@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 5.7 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.7.8] - 2017-MM-DD
+## [5.7.8] - 2017-01-26
 
 * Fixed [#2446](https://github.com/sebastianbergmann/phpunit/issues/2446): Reverted backwards incompatible change to exit code in case of warnings
 
