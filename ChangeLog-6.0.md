@@ -29,6 +29,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * Renamed the `PHPUnit_Extensions_PhptTestCase` class to `PHPUnit_Runner_PhptTestCase`
 * The `PHPUnit\Framework\TestCase::getMockObjectGenerator()` method is now private
 * Merged [#2241](https://github.com/sebastianbergmann/phpunit/pull/2241): Make JSON assertions stricter
+* The test runner now exits with `1` (instead of `0`) when all tests pass but there are warnings
 
 ### Removed
 
