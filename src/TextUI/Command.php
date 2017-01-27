@@ -192,7 +192,7 @@ class PHPUnit_TextUI_Command
 
         $return = PHPUnit_TextUI_TestRunner::FAILURE_EXIT;
 
-        if (isset($result) && $result->wasSuccessful()) {
+        if (isset($result) && $result->wasSuccessful(false)) {
             $return = PHPUnit_TextUI_TestRunner::SUCCESS_EXIT;
         } elseif (!isset($result) || $result->errorCount() > 0) {
             $return = PHPUnit_TextUI_TestRunner::EXCEPTION_EXIT;

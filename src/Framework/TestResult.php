@@ -1235,11 +1235,17 @@ class PHPUnit_Framework_TestResult implements Countable
     /**
      * Returns whether the entire test was successful or not.
      *
+     * @param bool $includeWarnings
+     *
      * @return bool
      */
-    public function wasSuccessful()
+    public function wasSuccessful($includeWarnings = true)
     {
-        return empty($this->errors) && empty($this->failures);
+        if ($includeWarnings) {
+            return empty($this->errors) && empty($this->failures) && empty($this->warnings);
+        } else {
+            return empty($this->errors) && empty($this->failures);
+        }
     }
 
     /**
