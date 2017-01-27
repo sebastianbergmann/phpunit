@@ -440,6 +440,7 @@ class Configuration
 
         foreach ($this->xpath->query('php/includePath') as $includePath) {
             $path = (string) $includePath->textContent;
+
             if ($path) {
                 $result['include_path'][] = $this->toAbsolutePath($path);
             }
