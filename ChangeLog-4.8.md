@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.34] - 2017-01-26
+
+* Fixed [#2447](https://github.com/sebastianbergmann/phpunit/issues/2447): Reverted backwards incompatible change to handling of boolean environment variable values specified in XML
+
 ## [4.8.33] - 2017-01-25
 
 ### Fixed
@@ -237,6 +241,7 @@ New PHAR release due to updated dependencies
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.34]: https://github.com/sebastianbergmann/phpunit/compare/4.8.33...4.8.34
 [4.8.33]: https://github.com/sebastianbergmann/phpunit/compare/4.8.32...4.8.33
 [4.8.32]: https://github.com/sebastianbergmann/phpunit/compare/4.8.31...4.8.32
 [4.8.31]: https://github.com/sebastianbergmann/phpunit/compare/4.8.30...4.8.31
