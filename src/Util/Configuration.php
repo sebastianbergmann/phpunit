@@ -479,11 +479,7 @@ class PHPUnit_Util_Configuration
                 $name  = (string) $var->getAttribute('name');
                 $value = (string) $var->getAttribute('value');
 
-                if ($array !== 'env') {
-                    $result[$array][$name] = $this->getBoolean($value, $value);
-                } else {
-                    $result[$array][$name] = $value;
-                }
+                $result[$array][$name] = $this->getBoolean($value, $value);
             }
         }
 
