@@ -462,9 +462,14 @@ class Configuration
         foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($this->xpath->query('php/' . $array) as $var) {
                 $name  = (string) $var->getAttribute('name');
-                $value = (string) $var->getAttribute('value');
 
-                $result[$array][$name] = $this->getBoolean($value, $value);
+                if ($var->hasAttribute('verbatimValue')) {
+                    $result[$array][$name]= (string) $var->getAttribute('verbatimValue');
+                } else {
+                    $value = (string) $var->getAttribute('value');
+
+                    $result[$array][$name] = $this->getBoolean($value, $value);
+                }
             }
         }
 

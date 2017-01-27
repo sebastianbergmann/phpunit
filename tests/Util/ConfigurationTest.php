@@ -232,7 +232,7 @@ class Util_ConfigurationTest extends TestCase
             'ini'    => ['foo' => 'bar'],
             'const'  => ['FOO' => false, 'BAR' => true],
             'var'    => ['foo' => false],
-            'env'    => ['foo' => true],
+            'env'    => ['foo' => true, 'bar' => 'true'],
             'post'   => ['foo' => 'bar'],
             'get'    => ['foo' => 'bar'],
             'cookie' => ['foo' => 'bar'],
