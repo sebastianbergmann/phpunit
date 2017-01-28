@@ -63,7 +63,7 @@
     <const name="BAR" value="true"/>
     <var name="foo" value="false"/>
     <env name="foo" value="true"/>
-    <env name="bar" verbatimValue="true"/>
+    <env name="bar" value="true" verbatim="true"/>
     <post name="foo" value="bar"/>
     <get name="foo" value="bar"/>
     <cookie name="foo" value="bar"/>

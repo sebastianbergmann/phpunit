@@ -12,7 +12,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * Added the `PHPUnit\Framework\TestCase::createTestProxy()` method for creating test proxies
 * Added the `--dont-report-useless-tests` commandline option
 * Added the `--globals-backup` commandline option
-* Added `verbatimValue` attribute to prevent `"true"` and `"false"` from being converted to `true` and `false`, respectively
+* Added `verbatim` attribute to prevent `"true"` and `"false"` from being converted to `true` and `false`, respectively
 
 ### Changed
 
