@@ -619,7 +619,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if ($exit) {
-            if ($result->wasSuccessful()) {
+            if ($result->wasSuccessful(false)) {
                 if ($arguments['failOnRisky'] && !$result->allHarmless()) {
                     exit(self::FAILURE_EXIT);
                 }
