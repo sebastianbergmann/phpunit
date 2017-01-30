@@ -1,42 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="PHPUnit_MockObjects">
- <target name="clean" description="Cleanup build artifacts">
-  <delete dir="${basedir}/vendor"/>
-  <delete file="${basedir}/composer.lock"/>
+<project name="phpunit-mock-objects" default="setup">
+    <target name="setup" depends="clean,composer"/>
 
-  <delete>
-   <fileset dir="${basedir}/build">
-    <include name="**/*.phar" />
-   </fileset>
-  </delete>
- </target>
+    <target name="clean" description="Cleanup build artifacts">
+        <delete dir="${basedir}/vendor"/>
+        <delete file="${basedir}/composer.lock"/>
+    </target>
 
- <target name="composer" depends="clean" description="Install dependencies with Composer">
-  <tstamp>
-   <format property="thirty.days.ago" pattern="MM/dd/yyyy hh:mm aa" offset="-30" unit="day"/>
-  </tstamp>
-  <delete>
-   <fileset dir="${basedir}">
-    <include name="composer.phar" />
-    <date datetime="${thirty.days.ago}" when="before"/>
-   </fileset>
-  </delete>
-
-  <get src="https://getcomposer.org/composer.phar" dest="${basedir}/composer.phar" skipexisting="true"/>
-
-  <exec executable="php">
-   <arg value="composer.phar"/>
-   <arg value="install"/>
-  </exec>
- </target>
-
- <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer">
-  <exec executable="phpcs">
-   <arg value="--standard=PSR2" />
-   <arg value="--extensions=php" />
-   <arg path="${basedir}/src" />
-   <arg path="${basedir}/tests" />
-  </exec>
- </target>
+    <target name="composer" depends="clean" description="Install dependencies with Composer">
+        <exec executable="composer" taskname="composer">
+            <arg value="update"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+            <arg value="--no-suggest"/>
+            <arg value="--optimize-autoloader"/>
+            <arg value="--prefer-stable"/>
+        </exec>
+    </target>
 </project>
-
