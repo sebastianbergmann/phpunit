@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-class Framework_MockObject_Builder_InvocationMockerTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Framework_MockObject_Builder_InvocationMockerTest extends TestCase
 {
     public function testWillReturnWithOneValue()
     {

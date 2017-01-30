@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-class Framework_ProxyObjectTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Framework_ProxyObjectTest extends TestCase
 {
     public function testMockedMethodIsProxiedToOriginalMethod()
     {
