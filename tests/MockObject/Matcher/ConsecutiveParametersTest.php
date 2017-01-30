@@ -8,9 +8,10 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
 
-class Framework_MockObject_Matcher_ConsecutiveParametersTest extends PHPUnit_Framework_TestCase
+class Framework_MockObject_Matcher_ConsecutiveParametersTest extends TestCase
 {
     public function testIntegration()
     {

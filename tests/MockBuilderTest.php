@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-class Framework_MockBuilderTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Framework_MockBuilderTest extends TestCase
 {
     public function testMockBuilderRequiresClassName()
     {

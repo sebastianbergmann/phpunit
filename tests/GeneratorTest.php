@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-class Framework_MockObject_GeneratorTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Framework_MockObject_GeneratorTest extends TestCase
 {
     /**
      * @var PHPUnit_Framework_MockObject_Generator

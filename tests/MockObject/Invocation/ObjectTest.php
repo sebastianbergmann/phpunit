@@ -8,7 +8,9 @@
  * file that was distributed with this source code.
  */
 
-class Framework_MockObject_Invocation_ObjectTest extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class Framework_MockObject_Invocation_ObjectTest extends TestCase
 {
     public function testConstructorRequiresClassAndMethodAndParametersAndObject()
     {
