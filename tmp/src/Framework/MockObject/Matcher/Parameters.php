@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -122,7 +123,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
             //
             // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/199
             if (count($this->parameters) === 1 &&
-                get_class($this->parameters[0]) === 'PHPUnit_Framework_Constraint_IsAnything') {
+                get_class($this->parameters[0]) === IsAnything::class) {
                 $message .= "\nTo allow 0 or more parameters with any value, omit ->with() or use ->withAnyParameters() instead.";
             }
 
