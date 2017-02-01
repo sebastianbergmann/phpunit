@@ -15,8 +15,6 @@ use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Represents a static invocation.
- *
- * @since Class available since Release 1.0.0
  */
 class _Invocation_Static implements Invocation, SelfDescribing
 {

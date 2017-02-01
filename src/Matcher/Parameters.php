@@ -20,8 +20,6 @@ use PHPUnit\Framework\MockObject\Invocation;
  * Checks the parameters of all incoming invocations, the parameter list is
  * checked against the defined constraints in $parameters. If the constraint
  * is met it will return true in matches().
- *
- * @since Class available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {

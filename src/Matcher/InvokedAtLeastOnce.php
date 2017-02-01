@@ -15,8 +15,6 @@ use PHPUnit\Framework\ExpectationFailedException;
  * time.
  *
  * If the number of invocations is 0 it will throw an exception in verify.
- *
- * @since Class available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce extends PHPUnit_Framework_MockObject_Matcher_InvokedRecorder
 {

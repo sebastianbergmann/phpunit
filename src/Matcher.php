@@ -27,8 +27,6 @@ use PHPUnit_Framework_MockObject_Matcher_Parameters;
  * where() etc.).
  *
  * All properties are public so that they can easily be accessed by the builder.
- *
- * @since Class available since Release 1.0.0
  */
 class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
@@ -272,7 +270,6 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
     }
 
     /**
-     * @since Method available since Release 1.2.4
      */
     public function hasMatchers()
     {

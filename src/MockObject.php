@@ -19,8 +19,6 @@ use PHPUnit_Framework_MockObject_Matcher_Invocation;
  * PHPUnit_Framework_MockObject_MockBuilder.
  *
  * @method InvocationMocker method($constraint)
- *
- * @since Interface available since Release 1.0.0
  */
 interface MockObject
 {
@@ -36,8 +34,6 @@ interface MockObject
 
     /**
      * @return InvocationMocker
-     *
-     * @since  Method available since Release 2.0.0
      */
     public function __phpunit_setOriginalObject($originalObject);
 

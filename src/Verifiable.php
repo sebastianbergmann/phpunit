@@ -14,8 +14,6 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Interface for classes which must verify a given expectation.
- *
- * @since Interface available since Release 1.0.0
  */
 interface Verifiable
 {

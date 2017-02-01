@@ -10,8 +10,6 @@
 
 /**
  * Stubs a method by returning a user-defined value.
- *
- * @since Interface available since Release 1.0.0
  */
 interface PHPUnit_Framework_MockObject_Stub_MatcherCollection
 {

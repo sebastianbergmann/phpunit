@@ -14,8 +14,6 @@ use PHPUnit_Framework_MockObject_Matcher_AnyParameters;
 
 /**
  * Builder interface for parameter matchers.
- *
- * @since Interface available since Release 1.0.0
  */
 interface ParametersMatch extends Match
 {

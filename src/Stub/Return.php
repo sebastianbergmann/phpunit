@@ -14,8 +14,6 @@ use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Stubs a method by returning a user-defined value.
- *
- * @since Class available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_Stub_Return implements Stub
 {

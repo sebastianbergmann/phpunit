@@ -17,8 +17,6 @@ use PHPUnit\Framework\SelfDescribing;
  *
  * The stub object will replace the code for the stubbed method and return a
  * specific value instead of the original value.
- *
- * @since Interface available since Release 1.0.0
  */
 interface Stub extends SelfDescribing
 {

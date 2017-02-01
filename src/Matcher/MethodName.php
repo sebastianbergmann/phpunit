@@ -19,8 +19,6 @@ use PHPUnit\Util\InvalidArgumentHelper;
  * Checks the method name all incoming invocations, the name is checked against
  * the defined constraint $constraint. If the constraint is met it will return
  * true in matches().
- *
- * @since Class available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {

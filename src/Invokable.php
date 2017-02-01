@@ -15,8 +15,6 @@ namespace PHPUnit\Framework\MockObject;
  *
  * The invocation will be taken from a mock object and passed to an object
  * of this class.
- *
- * @since Interface available since Release 1.0.0
  */
 interface Invokable extends Verifiable
 {

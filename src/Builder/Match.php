@@ -12,8 +12,6 @@ namespace PHPUnit\Framework\MockObject\Builder;
 
 /**
  * Builder interface for invocation order matches.
- *
- * @since Interface available since Release 1.0.0
  */
 interface Match extends Stub
 {

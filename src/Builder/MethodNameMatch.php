@@ -12,8 +12,6 @@ namespace PHPUnit\Framework\MockObject\Builder;
 
 /**
  * Builder interface for matcher of method names.
- *
- * @since Interface available since Release 1.0.0
  */
 interface MethodNameMatch extends ParametersMatch
 {

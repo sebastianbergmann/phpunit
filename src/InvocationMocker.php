@@ -23,8 +23,6 @@ use PHPUnit_Framework_MockObject_Stub_MatcherCollection;
  *
  * Keeps track of all expectations and stubs as well as registering
  * identifications for builders.
- *
- * @since Class available since Release 1.0.0
  */
 class InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherCollection, Invokable, INamespace
 {
@@ -60,7 +58,6 @@ class InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherColle
     }
 
     /**
-     * @since Method available since Release 1.1.0
      */
     public function hasMatchers()
     {

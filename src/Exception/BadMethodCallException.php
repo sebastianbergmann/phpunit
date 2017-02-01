@@ -11,7 +11,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 /**
- * @since Class available since Release 2.0.6
  */
 class BadMethodCallException extends \BadMethodCallException implements Exception
 {
