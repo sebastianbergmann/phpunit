@@ -10,6 +10,7 @@
 
 use PHPUnit\Framework\MockObject\Generator;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit\Framework\TestCase;
 
 class Framework_MockObject_GeneratorTest extends TestCase
@@ -26,7 +27,7 @@ class Framework_MockObject_GeneratorTest extends TestCase
 
     /**
      * @covers Generator::getMock
-     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
+     * @expectedException RuntimeException
      */
     public function testGetMockFailsWhenInvalidFunctionNameIsPassedInAsAFunctionToMock()
     {
@@ -45,7 +46,7 @@ class Framework_MockObject_GeneratorTest extends TestCase
 
     /**
      * @covers Generator::getMock
-     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
+     * @expectedException RuntimeException
      * @expectedExceptionMessage duplicates: "foo, bar, foo" (duplicate: "foo")
      */
     public function testGetMockGeneratorFails()
@@ -132,7 +133,7 @@ class Framework_MockObject_GeneratorTest extends TestCase
 
     /**
      * @covers Generator::getMockForAbstractClass
-     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
+     * @expectedException RuntimeException
      */
     public function testGetMockForAbstractClassAbstractClassDoesNotExist()
     {
@@ -187,7 +188,7 @@ class Framework_MockObject_GeneratorTest extends TestCase
 
     /**
      * @covers Generator::getMock
-     * @expectedException PHPUnit_Framework_MockObject_RuntimeException
+     * @expectedException RuntimeException
      */
     public function testExceptionIsRaisedForMutuallyExclusiveOptions()
     {
