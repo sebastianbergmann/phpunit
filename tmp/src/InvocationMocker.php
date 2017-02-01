@@ -11,7 +11,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
-use PHPUnit_Framework_MockObject_Builder_InvocationMocker;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
 use PHPUnit_Framework_MockObject_Builder_Match;
 use PHPUnit_Framework_MockObject_Builder_Namespace;
 use PHPUnit_Framework_MockObject_Matcher_Invocation;
@@ -108,11 +108,11 @@ class InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherColle
     /**
      * @param PHPUnit_Framework_MockObject_Matcher_Invocation $matcher
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMockerBuilder
      */
     public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
     {
-        return new PHPUnit_Framework_MockObject_Builder_InvocationMocker(
+        return new InvocationMockerBuilder(
             $this,
             $matcher,
             $this->configurableMethods

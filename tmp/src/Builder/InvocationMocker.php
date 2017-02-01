@@ -7,8 +7,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+namespace PHPUnit\Framework\MockObject\Builder;
+
+use Exception;
 use PHPUnit\Framework\MockObject\Matcher;
 use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit_Framework_Constraint;
+use PHPUnit_Framework_MockObject_Builder_MethodNameMatch;
+use PHPUnit_Framework_MockObject_Matcher_AnyParameters;
+use PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters;
+use PHPUnit_Framework_MockObject_Matcher_Invocation;
+use PHPUnit_Framework_MockObject_Matcher_MethodName;
+use PHPUnit_Framework_MockObject_Matcher_Parameters;
+use PHPUnit_Framework_MockObject_RuntimeException;
+use PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls;
+use PHPUnit_Framework_MockObject_Stub_Exception;
+use PHPUnit_Framework_MockObject_Stub_MatcherCollection;
+use PHPUnit_Framework_MockObject_Stub_Return;
+use PHPUnit_Framework_MockObject_Stub_ReturnArgument;
+use PHPUnit_Framework_MockObject_Stub_ReturnCallback;
+use PHPUnit_Framework_MockObject_Stub_ReturnReference;
+use PHPUnit_Framework_MockObject_Stub_ReturnSelf;
+use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
 
 /**
  * Builder for mocked or stubbed invocations.
@@ -20,7 +41,7 @@ use PHPUnit\Framework\MockObject\Stub;
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_Framework_MockObject_Builder_MethodNameMatch
+class InvocationMocker implements PHPUnit_Framework_MockObject_Builder_MethodNameMatch
 {
     /**
      * @var PHPUnit_Framework_MockObject_Stub_MatcherCollection
@@ -65,7 +86,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param mixed $id
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function id($id)
     {
@@ -77,7 +98,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param Stub $stub
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function will(Stub $stub)
     {
@@ -88,16 +109,16 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
 
     /**
      * @param mixed $value
-     * @param mixed $nextValues, ...
+     * @param mixed $nextValues , ...
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function willReturn($value, ...$nextValues)
     {
         $stub = count($nextValues) === 0 ?
             new PHPUnit_Framework_MockObject_Stub_Return($value) :
             new PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls(
-               array_merge([$value], $nextValues)
+                array_merge([$value], $nextValues)
             );
 
         return $this->will($stub);
@@ -106,7 +127,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param mixed $reference
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function willReturnReference(&$reference)
     {
@@ -118,7 +139,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param array $valueMap
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function willReturnMap(array $valueMap)
     {
@@ -132,7 +153,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param mixed $argumentIndex
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function willReturnArgument($argumentIndex)
     {
@@ -146,7 +167,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param callable $callback
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function willReturnCallback($callback)
     {
@@ -158,7 +179,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function willReturnSelf()
     {
@@ -168,9 +189,9 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
-     * @param mixed $values, ...
+     * @param mixed $values , ...
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function willReturnOnConsecutiveCalls(...$values)
     {
@@ -182,7 +203,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param Exception $exception
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function willThrowException(Exception $exception)
     {
@@ -194,7 +215,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param mixed $id
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function after($id)
     {
@@ -227,7 +248,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param  array ...$arguments
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function with(...$arguments)
     {
@@ -241,7 +262,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param  array ...$arguments
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function withConsecutive(...$arguments)
     {
@@ -253,7 +274,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function withAnyParameters()
     {
@@ -267,7 +288,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     /**
      * @param PHPUnit_Framework_Constraint|string $constraint
      *
-     * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
+     * @return InvocationMocker
      */
     public function method($constraint)
     {
