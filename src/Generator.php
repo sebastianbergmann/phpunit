@@ -793,7 +793,9 @@ class PHPUnit_Framework_MockObject_Generator
                 'mock_class_name'   => $mockClassName['className'],
                 'mocked_methods'    => $mockedMethods,
                 'method'            => $method,
-                'configurable'      => '[' . implode(', ', array_map(function ($m) { return '\'' . $m . '\'';}, $configurable)) . ']'
+                'configurable'      => '[' . implode(', ', array_map(function ($m) {
+                    return '\'' . $m . '\'';
+                }, $configurable)) . ']'
             ]
         );
 

@@ -88,8 +88,8 @@ class PHPUnit_Framework_MockObject_MockBuilder
     private $generator;
 
     /**
-     * @param TestCase $testCase
-     * @param array|string               $type
+     * @param TestCase     $testCase
+     * @param array|string $type
      */
     public function __construct(TestCase $testCase, $type)
     {
