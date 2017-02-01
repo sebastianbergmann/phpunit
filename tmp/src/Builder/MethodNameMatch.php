@@ -8,12 +8,17 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Framework\MockObject\Builder;
+
+use PHPUnit_Framework_Constraint;
+use PHPUnit_Framework_MockObject_Builder_ParametersMatch;
+
 /**
  * Builder interface for matcher of method names.
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Builder_MethodNameMatch extends PHPUnit_Framework_MockObject_Builder_ParametersMatch
+interface MethodNameMatch extends PHPUnit_Framework_MockObject_Builder_ParametersMatch
 {
     /**
      * Adds a new method name match and returns the parameter match object for
