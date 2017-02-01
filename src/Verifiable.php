@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Framework\MockObject;
+
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
@@ -15,7 +17,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Verifiable
+interface Verifiable
 {
     /**
      * Verifies that the current expectation is valid. If everything is OK the
