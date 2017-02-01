@@ -14,7 +14,6 @@ use Exception;
 use PHPUnit_Framework_MockObject_Builder_InvocationMocker;
 use PHPUnit_Framework_MockObject_Builder_Match;
 use PHPUnit_Framework_MockObject_Builder_Namespace;
-use PHPUnit_Framework_MockObject_Invokable;
 use PHPUnit_Framework_MockObject_Matcher_Invocation;
 use PHPUnit_Framework_MockObject_RuntimeException;
 use PHPUnit_Framework_MockObject_Stub_MatcherCollection;
@@ -28,7 +27,7 @@ use PHPUnit_Framework_MockObject_Stub_MatcherCollection;
  *
  * @since Class available since Release 1.0.0
  */
-class InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherCollection, PHPUnit_Framework_MockObject_Invokable, PHPUnit_Framework_MockObject_Builder_Namespace
+class InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherCollection, Invokable, PHPUnit_Framework_MockObject_Builder_Namespace
 {
     /**
      * @var PHPUnit_Framework_MockObject_Matcher_Invocation[]
