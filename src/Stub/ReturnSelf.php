@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit\Framework\MockObject\Stub;
 
 /**
@@ -20,7 +21,7 @@ class PHPUnit_Framework_MockObject_Stub_ReturnSelf implements Stub
     public function invoke(Invocation $invocation)
     {
         if (!$invocation instanceof PHPUnit_Framework_MockObject_Invocation_Object) {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
+            throw new RuntimeException(
                 'The current object can only be returned when mocking an ' .
                 'object, not a static class.'
             );

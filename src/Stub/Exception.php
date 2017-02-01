@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit\Framework\MockObject\Stub;
 use SebastianBergmann\Exporter\Exporter;
 
@@ -25,7 +26,7 @@ class PHPUnit_Framework_MockObject_Stub_Exception implements Stub
     {
         // TODO Replace check with type declaration when support for PHP 5 is dropped
         if (!$exception instanceof Throwable && !$exception instanceof Exception) {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
+            throw new RuntimeException(
                 'Exception must be an instance of Throwable (PHP 7) or Exception (PHP 5)'
             );
         }
