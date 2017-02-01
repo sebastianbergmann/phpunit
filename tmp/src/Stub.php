@@ -8,7 +8,8 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\MockObject\Invocation;
+namespace PHPUnit\Framework\MockObject;
+
 use PHPUnit\Framework\SelfDescribing;
 
 /**
@@ -19,7 +20,7 @@ use PHPUnit\Framework\SelfDescribing;
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Stub extends SelfDescribing
+interface Stub extends SelfDescribing
 {
     /**
      * Fakes the processing of the invocation $invocation by returning a

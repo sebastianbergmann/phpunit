@@ -8,13 +8,14 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\MockObject\Stub;
 
 /**
  * Stubs a method by returning the current object.
  *
  * @since Class available since Release 1.1.0
  */
-class PHPUnit_Framework_MockObject_Stub_ReturnSelf implements PHPUnit_Framework_MockObject_Stub
+class PHPUnit_Framework_MockObject_Stub_ReturnSelf implements Stub
 {
     public function invoke(Invocation $invocation)
     {
