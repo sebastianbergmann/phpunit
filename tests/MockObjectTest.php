@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\MockObject\Generator;
+use PHPUnit\Framework\MockObject\BadMethodCallException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -955,7 +956,7 @@ class Framework_MockObjectTest extends TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_MockObject_BadMethodCallException
+     * @expectedException BadMethodCallException
      */
     public function testInvokingStubbedStaticMethodRaisesException()
     {
