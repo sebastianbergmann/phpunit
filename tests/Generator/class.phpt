@@ -28,7 +28,7 @@ $mock = $generator->generate(
 print $mock['code'];
 ?>
 --EXPECTF--
-class MockFoo extends Foo implements PHPUnit_Framework_MockObject_MockObject
+class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     private $__phpunit_invocationMocker;
     private $__phpunit_originalObject;

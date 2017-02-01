@@ -18,7 +18,6 @@ use Iterator;
 use IteratorAggregate;
 use PHPUnit;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit_Framework_MockObject_MockObject;
 use PHPUnit_Framework_MockObject_RuntimeException;
 use ReflectionClass;
 use ReflectionException;
@@ -75,7 +74,7 @@ class Generator
      * @param object       $proxyTarget
      * @param bool         $allowMockingUnknownTypes
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws InvalidArgumentException
      * @throws PHPUnit\Framework\Exception
@@ -173,7 +172,7 @@ class Generator
         if ($mockClassName != '' && class_exists($mockClassName, false)) {
             $reflect = new ReflectionClass($mockClassName);
 
-            if (!$reflect->implementsInterface('PHPUnit_Framework_MockObject_MockObject')) {
+            if (!$reflect->implementsInterface(MockObject::class)) {
                 throw new PHPUnit_Framework_MockObject_RuntimeException(
                     sprintf(
                         'Class "%s" already exists.',
@@ -221,7 +220,7 @@ class Generator
      * @param bool         $callOriginalMethods
      * @param object       $proxyTarget
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws PHPUnit_Framework_MockObject_RuntimeException
      */
@@ -299,7 +298,7 @@ class Generator
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws PHPUnit_Framework_MockObject_RuntimeException
      * @throws PHPUnit\Framework\Exception
@@ -363,7 +362,7 @@ class Generator
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws PHPUnit_Framework_MockObject_RuntimeException
      * @throws PHPUnit\Framework\Exception
@@ -880,7 +879,7 @@ class Generator
     {
         $buffer = 'class ';
 
-        $additionalInterfaces[] = 'PHPUnit_Framework_MockObject_MockObject';
+        $additionalInterfaces[] = MockObject::class;
         $interfaces             = implode(', ', $additionalInterfaces);
 
         if ($isInterface) {
