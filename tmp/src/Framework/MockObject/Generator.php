@@ -33,87 +33,6 @@ class PHPUnit_Framework_MockObject_Generator
     /**
      * @var array
      */
-    private $legacyBlacklistedMethodNames = [
-        '__CLASS__'       => true,
-        '__DIR__'         => true,
-        '__FILE__'        => true,
-        '__FUNCTION__'    => true,
-        '__LINE__'        => true,
-        '__METHOD__'      => true,
-        '__NAMESPACE__'   => true,
-        '__TRAIT__'       => true,
-        '__clone'         => true,
-        '__halt_compiler' => true,
-        'abstract'        => true,
-        'and'             => true,
-        'array'           => true,
-        'as'              => true,
-        'break'           => true,
-        'callable'        => true,
-        'case'            => true,
-        'catch'           => true,
-        'class'           => true,
-        'clone'           => true,
-        'const'           => true,
-        'continue'        => true,
-        'declare'         => true,
-        'default'         => true,
-        'die'             => true,
-        'do'              => true,
-        'echo'            => true,
-        'else'            => true,
-        'elseif'          => true,
-        'empty'           => true,
-        'enddeclare'      => true,
-        'endfor'          => true,
-        'endforeach'      => true,
-        'endif'           => true,
-        'endswitch'       => true,
-        'endwhile'        => true,
-        'eval'            => true,
-        'exit'            => true,
-        'expects'         => true,
-        'extends'         => true,
-        'final'           => true,
-        'for'             => true,
-        'foreach'         => true,
-        'function'        => true,
-        'global'          => true,
-        'goto'            => true,
-        'if'              => true,
-        'implements'      => true,
-        'include'         => true,
-        'include_once'    => true,
-        'instanceof'      => true,
-        'insteadof'       => true,
-        'interface'       => true,
-        'isset'           => true,
-        'list'            => true,
-        'namespace'       => true,
-        'new'             => true,
-        'or'              => true,
-        'print'           => true,
-        'private'         => true,
-        'protected'       => true,
-        'public'          => true,
-        'require'         => true,
-        'require_once'    => true,
-        'return'          => true,
-        'static'          => true,
-        'switch'          => true,
-        'throw'           => true,
-        'trait'           => true,
-        'try'             => true,
-        'unset'           => true,
-        'use'             => true,
-        'var'             => true,
-        'while'           => true,
-        'xor'             => true
-    ];
-
-    /**
-     * @var array
-     */
     private $blacklistedMethodNames = [
         '__CLASS__'       => true,
         '__DIR__'         => true,
@@ -145,7 +64,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @throws InvalidArgumentException
-     * @throws PHPUnit_Framework_Exception
+     * @throws PHPUnit\Framework\Exception
      * @throws PHPUnit_Framework_MockObject_RuntimeException
      *
      * @since  Method available since Release 1.0.0
@@ -286,7 +205,9 @@ class PHPUnit_Framework_MockObject_Generator
      * @param bool         $callOriginalMethods
      * @param object       $proxyTarget
      *
-     * @return object
+     * @return PHPUnit_Framework_MockObject_MockObject
+     *
+     * @throws PHPUnit_Framework_MockObject_RuntimeException
      */
     private function getObject($code, $className, $type = '', $callOriginalConstructor = false, $callAutoload = false, array $arguments = [], $callOriginalMethods = false, $proxyTarget = null)
     {
@@ -364,7 +285,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @throws PHPUnit_Framework_MockObject_RuntimeException
-     * @throws PHPUnit_Framework_Exception
+     * @throws PHPUnit\Framework\Exception
      *
      * @since  Method available since Release 1.0.0
      */
@@ -427,7 +348,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @return PHPUnit_Framework_MockObject_MockObject
      *
      * @throws PHPUnit_Framework_MockObject_RuntimeException
-     * @throws PHPUnit_Framework_Exception
+     * @throws PHPUnit\Framework\Exception
      *
      * @since  Method available since Release 1.2.3
      */
@@ -488,7 +409,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @return object
      *
      * @throws PHPUnit_Framework_MockObject_RuntimeException
-     * @throws PHPUnit_Framework_Exception
+     * @throws PHPUnit\Framework\Exception
      *
      * @since  Method available since Release 1.1.0
      */
@@ -809,11 +730,11 @@ class PHPUnit_Framework_MockObject_Generator
 
         if (isset($class)) {
             // https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
-            if ($isInterface && $class->implementsInterface('Traversable') &&
-                !$class->implementsInterface('Iterator') &&
-                !$class->implementsInterface('IteratorAggregate')) {
-                $additionalInterfaces[] = 'Iterator';
-                $methods                = array_merge($methods, $this->getClassMethods('Iterator'));
+            if ($isInterface && $class->implementsInterface(Traversable::class) &&
+                !$class->implementsInterface(Iterator::class) &&
+                !$class->implementsInterface(IteratorAggregate::class)) {
+                $additionalInterfaces[] = Iterator::class;
+                $methods                = array_merge($methods, $this->getClassMethods(Iterator::class));
             }
 
             foreach ($methods as $methodName) {
@@ -938,7 +859,7 @@ class PHPUnit_Framework_MockObject_Generator
      * @param bool  $isInterface
      * @param array $additionalInterfaces
      *
-     * @return array
+     * @return string
      */
     private function generateMockClassDeclaration(array $mockClassName, $isInterface, array $additionalInterfaces = [])
     {
@@ -1004,7 +925,7 @@ class PHPUnit_Framework_MockObject_Generator
             $reference = '';
         }
 
-        if ($this->hasReturnType($method)) {
+        if ($method->hasReturnType()) {
             $returnType = (string) $method->getReturnType();
         } else {
             $returnType = '';
@@ -1029,33 +950,33 @@ class PHPUnit_Framework_MockObject_Generator
             $callOriginalMethods,
             $method->isStatic(),
             $deprecation,
-            $this->allowsReturnNull($method)
+            $method->hasReturnType() && $method->getReturnType()->allowsNull()
         );
     }
 
     /**
-     * @param string       $templateDir
-     * @param string       $className
-     * @param string       $methodName
-     * @param bool         $cloneArguments
-     * @param string       $modifier
-     * @param string       $arguments_decl
-     * @param string       $arguments_call
-     * @param string       $return_type
-     * @param string       $reference
-     * @param bool         $callOriginalMethods
-     * @param bool         $static
-     * @param string|false $deprecation
-     * @param bool         $allowsReturnNull
+     * @param string      $templateDir
+     * @param string      $className
+     * @param string      $methodName
+     * @param bool        $cloneArguments
+     * @param string      $modifier
+     * @param string      $argumentsForDeclaration
+     * @param string      $argumentsForCall
+     * @param string      $returnType
+     * @param string      $reference
+     * @param bool        $callOriginalMethods
+     * @param bool        $static
+     * @param bool|string $deprecation
+     * @param bool        $allowsReturnNull
      *
      * @return string
      */
-    private function generateMockedMethodDefinition($templateDir, $className, $methodName, $cloneArguments = true, $modifier = 'public', $arguments_decl = '', $arguments_call = '', $return_type = '', $reference = '', $callOriginalMethods = false, $static = false, $deprecation = false, $allowsReturnNull = false)
+    private function generateMockedMethodDefinition($templateDir, $className, $methodName, $cloneArguments = true, $modifier = 'public', $argumentsForDeclaration = '', $argumentsForCall = '', $returnType = '', $reference = '', $callOriginalMethods = false, $static = false, $deprecation = false, $allowsReturnNull = false)
     {
         if ($static) {
             $templateFile = 'mocked_static_method.tpl';
         } else {
-            if ($return_type === 'void') {
+            if ($returnType === 'void') {
                 $templateFile = sprintf(
                     '%s_method_void.tpl',
                     $callOriginalMethods ? 'proxied' : 'mocked'
@@ -1071,8 +992,8 @@ class PHPUnit_Framework_MockObject_Generator
         // Mocked interfaces returning 'self' must explicitly declare the
         // interface name as the return type. See
         // https://bugs.php.net/bug.php?id=70722
-        if ($return_type === 'self') {
-            $return_type = $className;
+        if ($returnType === 'self') {
+            $returnType = $className;
         }
 
         if (false !== $deprecation) {
@@ -1092,11 +1013,11 @@ class PHPUnit_Framework_MockObject_Generator
 
         $template->setVar(
             [
-                'arguments_decl'  => $arguments_decl,
-                'arguments_call'  => $arguments_call,
-                'return_delim'    => $return_type ? ': ' : '',
-                'return_type'     => $allowsReturnNull ? '?' . $return_type : $return_type,
-                'arguments_count' => !empty($arguments_call) ? count(explode(',', $arguments_call)) : 0,
+                'arguments_decl'  => $argumentsForDeclaration,
+                'arguments_call'  => $argumentsForCall,
+                'return_delim'    => $returnType ? ': ' : '',
+                'return_type'     => $allowsReturnNull ? '?' . $returnType : $returnType,
+                'arguments_count' => !empty($argumentsForCall) ? count(explode(',', $argumentsForCall)) : 0,
                 'class_name'      => $className,
                 'method_name'     => $methodName,
                 'modifier'        => $modifier,
@@ -1127,9 +1048,7 @@ class PHPUnit_Framework_MockObject_Generator
     }
 
     /**
-     * Returns whether i method name is blacklisted
-     *
-     * Since PHP 7 the only names that are still reserved for method names are the ones that start with an underscore
+     * Returns whether a method name is blacklisted
      *
      * @param string $name
      *
@@ -1137,15 +1056,7 @@ class PHPUnit_Framework_MockObject_Generator
      */
     private function isMethodNameBlacklisted($name)
     {
-        if (PHP_MAJOR_VERSION < 7 && isset($this->legacyBlacklistedMethodNames[$name])) {
-            return true;
-        }
-
-        if (PHP_MAJOR_VERSION >= 7 && isset($this->blacklistedMethodNames[$name])) {
-            return true;
-        }
-
-        return false;
+        return isset($this->blacklistedMethodNames[$name]);
     }
 
     /**
@@ -1174,7 +1085,7 @@ class PHPUnit_Framework_MockObject_Generator
                 $name = '$arg' . $i;
             }
 
-            if ($this->isVariadic($parameter)) {
+            if ($parameter->isVariadic()) {
                 if ($forCall) {
                     continue;
                 } else {
@@ -1188,7 +1099,7 @@ class PHPUnit_Framework_MockObject_Generator
             $typeDeclaration = '';
 
             if (!$forCall) {
-                if ($this->hasType($parameter) && (string) $parameter->getType() !== 'self') {
+                if ($parameter->hasType() && (string) $parameter->getType() !== 'self') {
                     if (version_compare(PHP_VERSION, '7.1', '>=') && $parameter->allowsNull() && !$parameter->isVariadic()) {
                         $nullable = '?';
                     }
@@ -1219,7 +1130,7 @@ class PHPUnit_Framework_MockObject_Generator
                     }
                 }
 
-                if (!$this->isVariadic($parameter)) {
+                if (!$parameter->isVariadic()) {
                     if ($parameter->isDefaultValueAvailable()) {
                         $value   = $parameter->getDefaultValue();
                         $default = ' = ' . var_export($value, true);
@@ -1237,53 +1148,6 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         return implode(', ', $parameters);
-    }
-
-    /**
-     * @param ReflectionParameter $parameter
-     *
-     * @return bool
-     *
-     * @since  Method available since Release 2.2.1
-     */
-    private function isVariadic(ReflectionParameter $parameter)
-    {
-        return method_exists(ReflectionParameter::class, 'isVariadic') && $parameter->isVariadic();
-    }
-
-    /**
-     * @param ReflectionParameter $parameter
-     *
-     * @return bool
-     *
-     * @since  Method available since Release 2.3.4
-     */
-    private function hasType(ReflectionParameter $parameter)
-    {
-        return method_exists(ReflectionParameter::class, 'hasType') && $parameter->hasType();
-    }
-
-    /**
-     * @param ReflectionMethod $method
-     *
-     * @return bool
-     */
-    private function hasReturnType(ReflectionMethod $method)
-    {
-        return method_exists(ReflectionMethod::class, 'hasReturnType') && $method->hasReturnType();
-    }
-
-    /**
-     * @param ReflectionMethod $method
-     *
-     * @return bool
-     */
-    private function allowsReturnNull(ReflectionMethod $method)
-    {
-        return method_exists(ReflectionMethod::class, 'getReturnType')
-            && method_exists(ReflectionType::class, 'allowsNull')
-            && $method->hasReturnType()
-            && $method->getReturnType()->allowsNull();
     }
 
     /**
