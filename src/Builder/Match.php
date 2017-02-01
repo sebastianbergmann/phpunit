@@ -10,14 +10,12 @@
 
 namespace PHPUnit\Framework\MockObject\Builder;
 
-use PHPUnit_Framework_MockObject_Builder_Stub;
-
 /**
  * Builder interface for invocation order matches.
  *
  * @since Interface available since Release 1.0.0
  */
-interface Match extends PHPUnit_Framework_MockObject_Builder_Stub
+interface Match extends Stub
 {
     /**
      * Defines the expectation which must occur before the current is valid.
@@ -25,7 +23,7 @@ interface Match extends PHPUnit_Framework_MockObject_Builder_Stub
      * @param string $id The identification of the expectation that should
      *                   occur before this one.
      *
-     * @return PHPUnit_Framework_MockObject_Builder_Stub
+     * @return Stub
      */
     public function after($id);
 }
