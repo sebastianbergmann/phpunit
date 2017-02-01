@@ -27,8 +27,6 @@ use Traversable;
 
 /**
  * Mock Object Code Generator
- *
- * @since Class available since Release 1.0.0
  */
 class Generator
 {
@@ -78,8 +76,6 @@ class Generator
      * @throws InvalidArgumentException
      * @throws PHPUnit\Framework\Exception
      * @throws RuntimeException
-     *
-     * @since  Method available since Release 1.0.0
      */
     public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true)
     {
@@ -301,8 +297,6 @@ class Generator
      *
      * @throws RuntimeException
      * @throws PHPUnit\Framework\Exception
-     *
-     * @since  Method available since Release 1.0.0
      */
     public function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true)
     {
@@ -365,8 +359,6 @@ class Generator
      *
      * @throws RuntimeException
      * @throws PHPUnit\Framework\Exception
-     *
-     * @since  Method available since Release 1.2.3
      */
     public function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true)
     {
@@ -426,8 +418,6 @@ class Generator
      *
      * @throws RuntimeException
      * @throws PHPUnit\Framework\Exception
-     *
-     * @since  Method available since Release 1.1.0
      */
     public function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)
     {
@@ -813,8 +803,8 @@ class Generator
                 'mocked_methods'    => $mockedMethods,
                 'method'            => $method,
                 'configurable'      => '[' . implode(', ', array_map(function ($m) {
-                        return '\'' . $m . '\'';
-                    }, $configurable)) . ']'
+                    return '\'' . $m . '\'';
+                }, $configurable)) . ']'
             ]
         );
 
@@ -938,7 +928,7 @@ class Generator
         }
 
         if ($method->hasReturnType()) {
-            $returnType = (string)$method->getReturnType();
+            $returnType = (string) $method->getReturnType();
         } else {
             $returnType = '';
         }
@@ -1080,8 +1070,6 @@ class Generator
      * @return string
      *
      * @throws RuntimeException
-     *
-     * @since  Method available since Release 2.0.0
      */
     private function getMethodParameters(ReflectionMethod $method, $forCall = false)
     {
@@ -1111,14 +1099,14 @@ class Generator
             $typeDeclaration = '';
 
             if (!$forCall) {
-                if ($parameter->hasType() && (string)$parameter->getType() !== 'self') {
+                if ($parameter->hasType() && (string) $parameter->getType() !== 'self') {
                     if (version_compare(PHP_VERSION, '7.1',
                             '>=') && $parameter->allowsNull() && !$parameter->isVariadic()
                     ) {
                         $nullable = '?';
                     }
 
-                    $typeDeclaration = (string)$parameter->getType() . ' ';
+                    $typeDeclaration = (string) $parameter->getType() . ' ';
                 } elseif ($parameter->isArray()) {
                     $typeDeclaration = 'array ';
                 } elseif ($parameter->isCallable()) {
@@ -1168,8 +1156,6 @@ class Generator
      * @param string $className
      *
      * @return array
-     *
-     * @since  Method available since Release 2.3.2
      */
     public function getClassMethods($className)
     {
@@ -1189,8 +1175,6 @@ class Generator
      * @param string $template
      *
      * @return Text_Template
-     *
-     * @since  Method available since Release 3.2.4
      */
     private function getTemplate($template)
     {

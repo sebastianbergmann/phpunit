@@ -11,8 +11,6 @@ use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Stubs a method by returning an argument that was passed to the mocked method.
- *
- * @since Class available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_Stub_ReturnArgument extends PHPUnit_Framework_MockObject_Stub_Return
 {

@@ -14,8 +14,6 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * Implementation of the Builder pattern for Mock objects.
- *
- * @since File available since Release 1.0.0
  */
 class MockBuilder
 {
@@ -251,8 +249,6 @@ class MockBuilder
      * Enables the invocation of the original constructor.
      *
      * @return MockBuilder
-     *
-     * @since  Method available since Release 1.2.0
      */
     public function enableOriginalConstructor()
     {
@@ -277,8 +273,6 @@ class MockBuilder
      * Enables the invocation of the original clone constructor.
      *
      * @return MockBuilder
-     *
-     * @since  Method available since Release 1.2.0
      */
     public function enableOriginalClone()
     {
@@ -303,8 +297,6 @@ class MockBuilder
      * Enables the use of class autoloading while creating the mock object.
      *
      * @return MockBuilder
-     *
-     * @since  Method available since Release 1.2.0
      */
     public function enableAutoload()
     {
@@ -317,8 +309,6 @@ class MockBuilder
      * Disables the cloning of arguments passed to mocked methods.
      *
      * @return MockBuilder
-     *
-     * @since  Method available since Release 1.2.0
      */
     public function disableArgumentCloning()
     {
@@ -331,8 +321,6 @@ class MockBuilder
      * Enables the cloning of arguments passed to mocked methods.
      *
      * @return MockBuilder
-     *
-     * @since  Method available since Release 1.2.0
      */
     public function enableArgumentCloning()
     {
@@ -345,8 +333,6 @@ class MockBuilder
      * Enables the invocation of the original methods.
      *
      * @return MockBuilder
-     *
-     * @since  Method available since Release 2.0.0
      */
     public function enableProxyingToOriginalMethods()
     {
@@ -359,8 +345,6 @@ class MockBuilder
      * Disables the invocation of the original methods.
      *
      * @return MockBuilder
-     *
-     * @since  Method available since Release 2.0.0
      */
     public function disableProxyingToOriginalMethods()
     {
@@ -376,8 +360,6 @@ class MockBuilder
      * @param object $object
      *
      * @return MockBuilder
-     *
-     * @since  Method available since Release 2.0.0
      */
     public function setProxyTarget($object)
     {
@@ -388,8 +370,6 @@ class MockBuilder
 
     /**
      * @return MockBuilder
-     *
-     * @since  Method available since Release 3.2.0
      */
     public function allowMockingUnknownTypes()
     {
@@ -400,8 +380,6 @@ class MockBuilder
 
     /**
      * @return MockBuilder
-     *
-     * @since  Method available since Release 3.2.0
      */
     public function disallowMockingUnknownTypes()
     {

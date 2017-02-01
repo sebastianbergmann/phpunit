@@ -15,8 +15,6 @@ use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Stubs a method by raising a user-defined exception.
- *
- * @since Class available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_Stub_Exception implements Stub
 {

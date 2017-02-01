@@ -13,8 +13,6 @@ use PHPUnit\Framework\MockObject\Stub;
 
 /**
  * Stubs a method by returning the current object.
- *
- * @since Class available since Release 1.1.0
  */
 class PHPUnit_Framework_MockObject_Stub_ReturnSelf implements Stub
 {

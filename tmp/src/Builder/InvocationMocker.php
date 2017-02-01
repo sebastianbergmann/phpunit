@@ -37,8 +37,6 @@ use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
  * instantiating the various matchers manually. These methods also form a
  * more natural way of reading the expectation. This class should be together
  * with the test case PHPUnit_Framework_MockObject_TestCase.
- *
- * @since Class available since Release 1.0.0
  */
 class InvocationMocker implements MethodNameMatch
 {

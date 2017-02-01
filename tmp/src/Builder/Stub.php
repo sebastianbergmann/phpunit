@@ -12,8 +12,6 @@ namespace PHPUnit\Framework\MockObject\Builder;
 
 /**
  * Builder interface for stubs which are actions replacing an invocation.
- *
- * @since Interface available since Release 1.0.0
  */
 interface Stub extends Identity
 {

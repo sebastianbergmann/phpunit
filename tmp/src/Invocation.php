@@ -12,8 +12,6 @@ namespace PHPUnit\Framework\MockObject;
 
 /**
  * Interface for invocations.
- *
- * @since Interface available since Release 1.0.0
  */
 interface Invocation
 {

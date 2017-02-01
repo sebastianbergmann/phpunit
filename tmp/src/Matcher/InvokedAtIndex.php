@@ -20,8 +20,6 @@ use PHPUnit\Framework\MockObject\Invocation;
  * verifying.
  *
  * If the index is never reached it will throw an exception in index.
- *
- * @since Class available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {

@@ -12,8 +12,6 @@ namespace PHPUnit\Framework\MockObject;
 
 /**
  * Interface for exceptions used by PHPUnit_MockObject.
- *
- * @since Interface available since Release 2.0.6
  */
 interface Exception
 {

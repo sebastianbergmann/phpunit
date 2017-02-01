@@ -11,7 +11,6 @@ use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\MockObject\Stub;
 
 /**
- * @since Class available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_Stub_ReturnCallback implements Stub
 {

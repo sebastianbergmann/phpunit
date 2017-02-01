@@ -10,8 +10,6 @@
 
 /**
  * Stubs a method by returning a user-defined reference to a value.
- *
- * @since Class available since Release 3.0.7
  */
 class PHPUnit_Framework_MockObject_Stub_ReturnReference extends PHPUnit_Framework_MockObject_Stub_Return
 {

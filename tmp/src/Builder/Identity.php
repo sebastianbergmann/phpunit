@@ -17,8 +17,6 @@ namespace PHPUnit\Framework\MockObject\Builder;
  * can be used to define the invocation order of expectations. The expectation
  * is recorded using id() and then defined in order using
  * PHPUnit_Framework_MockObject_Builder_Match::after().
- *
- * @since Interface available since Release 1.0.0
  */
 interface Identity
 {

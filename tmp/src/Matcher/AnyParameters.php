@@ -11,8 +11,6 @@ use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Invocation matcher which allows any parameters to a method.
- *
- * @since Class available since Release 1.0.0
  */
 class PHPUnit_Framework_MockObject_Matcher_AnyParameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
 {
