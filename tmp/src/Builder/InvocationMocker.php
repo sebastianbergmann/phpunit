@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\MockObject\Matcher;
 
 /**
  * Builder for mocked or stubbed invocations.
@@ -26,7 +27,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     protected $collection;
 
     /**
-     * @var PHPUnit_Framework_MockObject_Matcher
+     * @var Matcher
      */
     protected $matcher;
 
@@ -43,7 +44,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     public function __construct(PHPUnit_Framework_MockObject_Stub_MatcherCollection $collection, PHPUnit_Framework_MockObject_Matcher_Invocation $invocationMatcher, array $configurableMethods)
     {
         $this->collection = $collection;
-        $this->matcher    = new PHPUnit_Framework_MockObject_Matcher(
+        $this->matcher    = new Matcher(
             $invocationMatcher
         );
 
@@ -53,7 +54,7 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_Matcher
+     * @return Matcher
      */
     public function getMatcher()
     {
