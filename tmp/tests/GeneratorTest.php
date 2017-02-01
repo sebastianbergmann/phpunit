@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\MockObject\Generator;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class Framework_MockObject_GeneratorTest extends TestCase
@@ -204,7 +205,7 @@ class Framework_MockObject_GeneratorTest extends TestCase
 
         $this->assertInstanceOf(AnInterfaceWithReturnType::class, $stub);
         $this->assertInstanceOf(AnInterface::class, $stub);
-        $this->assertInstanceOf(PHPUnit_Framework_MockObject_MockObject::class, $stub);
+        $this->assertInstanceOf(MockObject::class, $stub);
     }
 
     /**

@@ -11,7 +11,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * Implementation of the Builder pattern for Mock objects.
@@ -104,7 +103,7 @@ class MockBuilder
     /**
      * Creates a mock object using a fluent interface.
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     public function getMock()
     {
@@ -130,7 +129,7 @@ class MockBuilder
     /**
      * Creates a mock object for an abstract class using a fluent interface.
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     public function getMockForAbstractClass()
     {
@@ -153,7 +152,7 @@ class MockBuilder
     /**
      * Creates a mock object for a trait using a fluent interface.
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     public function getMockForTrait()
     {
