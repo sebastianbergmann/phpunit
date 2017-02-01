@@ -137,17 +137,20 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
 
             case 'callable':
             case 'Closure':
-                return function () {};
+                return function () {
+                };
 
             case 'Traversable':
             case 'Generator':
-                $generator = function () { yield; };
+                $generator = function () {
+                    yield;
+                };
 
                 return $generator();
 
             default:
                 if ($this->returnTypeNullable) {
-                    return null;
+                    return;
                 }
 
                 $generator = new PHPUnit_Framework_MockObject_Generator;
