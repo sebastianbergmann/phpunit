@@ -7,14 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\MockObject\Builder\Match;
+
+namespace PHPUnit\Framework\MockObject\Builder;
+
+use PHPUnit_Framework_MockObject_Matcher_AnyParameters;
 
 /**
  * Builder interface for parameter matchers.
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Builder_ParametersMatch extends Match
+interface ParametersMatch extends Match
 {
     /**
      * Sets the parameters to match for, each parameter to this funtion will
@@ -31,7 +34,7 @@ interface PHPUnit_Framework_MockObject_Builder_ParametersMatch extends Match
      * $b->with('smock', new PHPUnit_Framework_Constraint_IsEqual(42));
      * </code>
      *
-     * @return PHPUnit_Framework_MockObject_Builder_ParametersMatch
+     * @return ParametersMatch
      */
     public function with(...$arguments);
 
