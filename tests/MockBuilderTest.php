@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 
 class Framework_MockBuilderTest extends TestCase
@@ -123,6 +124,6 @@ class Framework_MockBuilderTest extends TestCase
                      ->disableOriginalClone()
                      ->disableAutoload();
 
-        $this->assertTrue($spec instanceof PHPUnit_Framework_MockObject_MockBuilder);
+        $this->assertTrue($spec instanceof MockBuilder);
     }
 }

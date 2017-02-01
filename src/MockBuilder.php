@@ -8,15 +8,17 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\MockObject\Generator;
+namespace PHPUnit\Framework\MockObject;
+
 use PHPUnit\Framework\TestCase;
+use PHPUnit_Framework_MockObject_MockObject;
 
 /**
  * Implementation of the Builder pattern for Mock objects.
  *
  * @since File available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_MockBuilder
+class MockBuilder
 {
     /**
      * @var TestCase
@@ -176,7 +178,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      *
      * @param array|null $methods
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      */
     public function setMethods(array $methods = null)
     {
@@ -190,7 +192,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      *
      * @param array $methods
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      */
     public function setMethodsExcept(array $methods = [])
     {
@@ -211,7 +213,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      *
      * @param array $args
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      */
     public function setConstructorArgs(array $args)
     {
@@ -225,7 +227,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      *
      * @param string $name
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      */
     public function setMockClassName($name)
     {
@@ -237,7 +239,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Disables the invocation of the original constructor.
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      */
     public function disableOriginalConstructor()
     {
@@ -249,7 +251,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Enables the invocation of the original constructor.
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      *
      * @since  Method available since Release 1.2.0
      */
@@ -263,7 +265,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Disables the invocation of the original clone constructor.
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      */
     public function disableOriginalClone()
     {
@@ -275,7 +277,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Enables the invocation of the original clone constructor.
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      *
      * @since  Method available since Release 1.2.0
      */
@@ -289,7 +291,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Disables the use of class autoloading while creating the mock object.
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      */
     public function disableAutoload()
     {
@@ -301,7 +303,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Enables the use of class autoloading while creating the mock object.
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      *
      * @since  Method available since Release 1.2.0
      */
@@ -315,7 +317,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Disables the cloning of arguments passed to mocked methods.
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      *
      * @since  Method available since Release 1.2.0
      */
@@ -329,7 +331,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Enables the cloning of arguments passed to mocked methods.
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      *
      * @since  Method available since Release 1.2.0
      */
@@ -343,7 +345,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Enables the invocation of the original methods.
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      *
      * @since  Method available since Release 2.0.0
      */
@@ -357,7 +359,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     /**
      * Disables the invocation of the original methods.
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      *
      * @since  Method available since Release 2.0.0
      */
@@ -374,7 +376,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
      *
      * @param object $object
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      *
      * @since  Method available since Release 2.0.0
      */
@@ -386,7 +388,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      *
      * @since  Method available since Release 3.2.0
      */
@@ -398,7 +400,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     }
 
     /**
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      *
      * @since  Method available since Release 3.2.0
      */
