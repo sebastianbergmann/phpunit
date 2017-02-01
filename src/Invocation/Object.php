@@ -13,7 +13,7 @@
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_MockObject_Invocation_Static
+class PHPUnit_Framework_MockObject_Invocation_Object extends _Invocation_Static
 {
     /**
      * @var object

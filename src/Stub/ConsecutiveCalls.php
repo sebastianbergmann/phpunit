@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\MockObject\Invocation;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
@@ -25,7 +26,7 @@ class PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls implements PHPUnit_Fram
         $this->stack = $stack;
     }
 
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function invoke(Invocation $invocation)
     {
         $this->value = array_shift($this->stack);
 

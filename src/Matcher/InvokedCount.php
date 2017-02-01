@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Invocation matcher which checks if a method has been invoked a certain amount
@@ -52,11 +53,11 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedCount extends PHPUnit_Framewor
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param Invocation $invocation
      *
      * @throws ExpectationFailedException
      */
-    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function invoked(Invocation $invocation)
     {
         parent::invoked($invocation);
 

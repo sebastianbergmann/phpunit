@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Stubs a method by returning the current object.
@@ -15,7 +16,7 @@
  */
 class PHPUnit_Framework_MockObject_Stub_ReturnSelf implements PHPUnit_Framework_MockObject_Stub
 {
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function invoke(Invocation $invocation)
     {
         if (!$invocation instanceof PHPUnit_Framework_MockObject_Invocation_Object) {
             throw new PHPUnit_Framework_MockObject_RuntimeException(

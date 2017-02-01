@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
@@ -29,20 +30,20 @@ interface PHPUnit_Framework_MockObject_Matcher_Invocation extends SelfDescribing
      *
      * If the matcher is a stub it will also have a return value.
      *
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation Object containing information on a mocked or stubbed method which was invoked
+     * @param Invocation $invocation Object containing information on a mocked or stubbed method which was invoked
      *
      * @return mixed
      */
-    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation);
+    public function invoked(Invocation $invocation);
 
     /**
      * Checks if the invocation $invocation matches the current rules. If it does
      * the matcher will get the invoked() method called which should check if an
      * expectation is met.
      *
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation Object containing information on a mocked or stubbed method which was invoked
+     * @param Invocation $invocation Object containing information on a mocked or stubbed method which was invoked
      *
      * @return bool
      */
-    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation);
+    public function matches(Invocation $invocation);
 }

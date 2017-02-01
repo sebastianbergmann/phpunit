@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
@@ -24,9 +25,9 @@ interface PHPUnit_Framework_MockObject_Stub extends SelfDescribing
      * Fakes the processing of the invocation $invocation by returning a
      * specific value.
      *
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation The invocation which was mocked and matched by the current method and argument matchers
+     * @param Invocation $invocation The invocation which was mocked and matched by the current method and argument matchers
      *
      * @return mixed
      */
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation);
+    public function invoke(Invocation $invocation);
 }
