@@ -8,6 +8,8 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Framework\MockObject\Builder;
+
 /**
  * Builder interface for unique identifiers.
  *
@@ -18,7 +20,7 @@
  *
  * @since Interface available since Release 1.0.0
  */
-interface PHPUnit_Framework_MockObject_Builder_Identity
+interface Identity
 {
     /**
      * Sets the identification of the expectation to $id.
