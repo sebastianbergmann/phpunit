@@ -95,7 +95,7 @@ class IsType extends Constraint
 
             case 'integer':
             case 'int':
-                return is_integer($other);
+                return is_int($other);
 
             case 'double':
             case 'float':

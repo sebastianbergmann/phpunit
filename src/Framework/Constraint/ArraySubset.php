@@ -50,13 +50,13 @@ class ArraySubset extends Constraint
      */
     protected function matches($other)
     {
-        //type cast $other & $this->subset as an array to allow 
+        //type cast $other & $this->subset as an array to allow
         //support in standard array functions.
-        if($other instanceof ArrayAccess) {
+        if ($other instanceof ArrayAccess) {
             $other = (array) $other;
         }
 
-        if($this->subset instanceof ArrayAccess) {
+        if ($this->subset instanceof ArrayAccess) {
             $this->subset = (array) $this->subset;
         }
 

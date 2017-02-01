@@ -106,8 +106,7 @@ class NameFilterIterator extends RecursiveFilterIterator
 
         if ($test instanceof WarningTestCase) {
             $name = $test->getMessage();
-        }
-        else {
+        } else {
             if ($tmp[0] != '') {
                 $name = implode('::', $tmp);
             } else {

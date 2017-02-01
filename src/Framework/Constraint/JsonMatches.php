@@ -47,7 +47,7 @@ class JsonMatches extends Constraint
             return false;
         }
 
-        list ($error, $recodedValue) = $this->canonicalizeJson($this->value);
+        list($error, $recodedValue) = $this->canonicalizeJson($this->value);
         if ($error) {
             return false;
         }
@@ -66,11 +66,12 @@ class JsonMatches extends Constraint
     {
         $decodedJson = json_decode($json, true);
         if (json_last_error()) {
-            return array(true, null);
+            return [true, null];
         }
         $this->recursiveSort($decodedJson);
         $reencodedJson = json_encode($decodedJson);
-        return array(false, $reencodedJson);
+
+        return [false, $reencodedJson];
     }
 
     /*

@@ -544,7 +544,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @return string
-     *
      */
     public function getExpectedExceptionMessage()
     {

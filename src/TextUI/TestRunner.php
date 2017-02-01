@@ -207,7 +207,7 @@ class TestRunner extends BaseTestRunner
             $suite->setbeStrictAboutChangesToGlobalState(true);
         }
 
-        if (is_integer($arguments['repeat']) && $arguments['repeat'] > 0) {
+        if (is_int($arguments['repeat']) && $arguments['repeat'] > 0) {
             $_suite = new TestSuite;
 
             foreach (range(1, $arguments['repeat']) as $step) {
