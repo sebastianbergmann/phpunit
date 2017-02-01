@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\MockObject\Generator;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -83,7 +84,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     private $allowMockingUnknownTypes = true;
 
     /**
-     * @var PHPUnit_Framework_MockObject_Generator
+     * @var Generator
      */
     private $generator;
 
@@ -95,7 +96,7 @@ class PHPUnit_Framework_MockObject_MockBuilder
     {
         $this->testCase  = $testCase;
         $this->type      = $type;
-        $this->generator = new PHPUnit_Framework_MockObject_Generator;
+        $this->generator = new Generator;
     }
 
     /**

@@ -8,17 +8,31 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Framework\MockObject;
+
 use Doctrine\Instantiator\Instantiator;
 use Doctrine\Instantiator\Exception\InvalidArgumentException as InstantiatorInvalidArgumentException;
 use Doctrine\Instantiator\Exception\UnexpectedValueException as InstantiatorUnexpectedValueException;
+use InvalidArgumentException;
+use Iterator;
+use IteratorAggregate;
+use PHPUnit;
 use PHPUnit\Util\InvalidArgumentHelper;
+use PHPUnit_Framework_MockObject_MockObject;
+use PHPUnit_Framework_MockObject_RuntimeException;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
+use SoapClient;
+use Text_Template;
+use Traversable;
 
 /**
  * Mock Object Code Generator
  *
  * @since Class available since Release 1.0.0
  */
-class PHPUnit_Framework_MockObject_Generator
+class Generator
 {
     /**
      * @var array
@@ -93,7 +107,8 @@ class PHPUnit_Framework_MockObject_Generator
                     function ($type) {
                         if ($type === 'Traversable' ||
                             $type === '\\Traversable' ||
-                            $type === '\\Iterator') {
+                            $type === '\\Iterator'
+                        ) {
                             return 'Iterator';
                         }
 
@@ -108,7 +123,8 @@ class PHPUnit_Framework_MockObject_Generator
             if (is_array($type)) {
                 foreach ($type as $_type) {
                     if (!class_exists($_type, $callAutoload) &&
-                        !interface_exists($_type, $callAutoload)) {
+                        !interface_exists($_type, $callAutoload)
+                    ) {
                         throw new PHPUnit_Framework_MockObject_RuntimeException(
                             sprintf(
                                 'Cannot stub or mock class or interface "%s" which does not exist',
@@ -215,7 +231,8 @@ class PHPUnit_Framework_MockObject_Generator
 
         if ($callOriginalConstructor &&
             is_string($type) &&
-            !interface_exists($type, $callAutoload)) {
+            !interface_exists($type, $callAutoload)
+        ) {
             if (count($arguments) == 0) {
                 $object = new $className;
             } else {
@@ -300,7 +317,8 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if (class_exists($originalClassName, $callAutoload) ||
-            interface_exists($originalClassName, $callAutoload)) {
+            interface_exists($originalClassName, $callAutoload)
+        ) {
             $reflector = new ReflectionClass($originalClassName);
             $methods   = $mockedMethods;
 
@@ -392,7 +410,8 @@ class PHPUnit_Framework_MockObject_Generator
             $className['className']
         );
 
-        return $this->getMockForAbstractClass($className['className'], $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
+        return $this->getMockForAbstractClass($className['className'], $arguments, $mockClassName,
+            $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
     }
 
     /**
@@ -473,10 +492,10 @@ class PHPUnit_Framework_MockObject_Generator
         if ($mockClassName == '') {
             $key = md5(
                 is_array($type) ? implode('_', $type) : $type .
-                serialize($methods) .
-                serialize($callOriginalClone) .
-                serialize($cloneArguments) .
-                serialize($callOriginalMethods)
+                    serialize($methods) .
+                    serialize($callOriginalClone) .
+                    serialize($cloneArguments) .
+                    serialize($callOriginalMethods)
             );
 
             if (isset(self::$cache[$key])) {
@@ -605,8 +624,8 @@ class PHPUnit_Framework_MockObject_Generator
      */
     private function generateMock($type, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
     {
-        $methodReflections   = [];
-        $classTemplate       = $this->getTemplate('mocked_class.tpl');
+        $methodReflections = [];
+        $classTemplate     = $this->getTemplate('mocked_class.tpl');
 
         $additionalInterfaces = [];
         $cloneTemplate        = '';
@@ -632,7 +651,7 @@ class PHPUnit_Framework_MockObject_Generator
                     $_type,
                     $mockClassName,
                     'Mock_'
-                    )['fullClassName']
+                )['fullClassName']
                 );
 
                 foreach ($this->getClassMethods($_type) as $method) {
@@ -668,8 +687,8 @@ class PHPUnit_Framework_MockObject_Generator
 
             if (!empty($mockClassName['namespaceName'])) {
                 $prologue = 'namespace ' . $mockClassName['namespaceName'] .
-                            " {\n\n" . $prologue . "}\n\n" .
-                            "namespace {\n\n";
+                    " {\n\n" . $prologue . "}\n\n" .
+                    "namespace {\n\n";
 
                 $epilogue = "\n\n}";
             }
@@ -707,7 +726,8 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if (is_array($methods) && empty($methods) &&
-            ($isClass || $isInterface)) {
+            ($isClass || $isInterface)
+        ) {
             $methods = $this->getClassMethods($mockClassName['fullClassName']);
         }
 
@@ -728,7 +748,8 @@ class PHPUnit_Framework_MockObject_Generator
             // https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
             if ($isInterface && $class->implementsInterface(Traversable::class) &&
                 !$class->implementsInterface(Iterator::class) &&
-                !$class->implementsInterface(IteratorAggregate::class)) {
+                !$class->implementsInterface(IteratorAggregate::class)
+            ) {
                 $additionalInterfaces[] = Iterator::class;
                 $methods                = array_merge($methods, $this->getClassMethods(Iterator::class));
             }
@@ -794,14 +815,14 @@ class PHPUnit_Framework_MockObject_Generator
                 'mocked_methods'    => $mockedMethods,
                 'method'            => $method,
                 'configurable'      => '[' . implode(', ', array_map(function ($m) {
-                    return '\'' . $m . '\'';
-                }, $configurable)) . ']'
+                        return '\'' . $m . '\'';
+                    }, $configurable)) . ']'
             ]
         );
 
         return [
-          'code'          => $classTemplate->render(),
-          'mockClassName' => $mockClassName['className']
+            'code'          => $classTemplate->render(),
+            'mockClassName' => $mockClassName['className']
         ];
     }
 
@@ -836,15 +857,15 @@ class PHPUnit_Framework_MockObject_Generator
         if ($className == '') {
             do {
                 $className = $prefix . $type . '_' .
-                             substr(md5(microtime()), 0, 8);
+                    substr(md5(microtime()), 0, 8);
             } while (class_exists($className, false));
         }
 
         return [
-          'className'         => $className,
-          'originalClassName' => $type,
-          'fullClassName'     => $fullClassName,
-          'namespaceName'     => $namespaceName
+            'className'         => $className,
+            'originalClassName' => $type,
+            'fullClassName'     => $fullClassName,
+            'namespaceName'     => $namespaceName
         ];
     }
 
@@ -919,12 +940,13 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if ($method->hasReturnType()) {
-            $returnType = (string) $method->getReturnType();
+            $returnType = (string)$method->getReturnType();
         } else {
             $returnType = '';
         }
 
-        if (preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $method->getDocComment(), $deprecation)) {
+        if (preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $method->getDocComment(),
+            $deprecation)) {
             $deprecation = trim(preg_replace('#[ \t]*\r?\n[ \t]*+\*[ \t]*+#', ' ', $deprecation[1]));
         } else {
             $deprecation = false;
@@ -1031,7 +1053,8 @@ class PHPUnit_Framework_MockObject_Generator
         if ($method->isConstructor() ||
             $method->isFinal() ||
             $method->isPrivate() ||
-            $this->isMethodNameBlacklisted($method->getName())) {
+            $this->isMethodNameBlacklisted($method->getName())
+        ) {
             return false;
         }
 
@@ -1090,12 +1113,14 @@ class PHPUnit_Framework_MockObject_Generator
             $typeDeclaration = '';
 
             if (!$forCall) {
-                if ($parameter->hasType() && (string) $parameter->getType() !== 'self') {
-                    if (version_compare(PHP_VERSION, '7.1', '>=') && $parameter->allowsNull() && !$parameter->isVariadic()) {
+                if ($parameter->hasType() && (string)$parameter->getType() !== 'self') {
+                    if (version_compare(PHP_VERSION, '7.1',
+                            '>=') && $parameter->allowsNull() && !$parameter->isVariadic()
+                    ) {
                         $nullable = '?';
                     }
 
-                    $typeDeclaration = (string) $parameter->getType() . ' ';
+                    $typeDeclaration = (string)$parameter->getType() . ' ';
                 } elseif ($parameter->isArray()) {
                     $typeDeclaration = 'array ';
                 } elseif ($parameter->isCallable()) {
