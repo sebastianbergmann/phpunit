@@ -10,8 +10,6 @@
 
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit_Framework_MockObject_Verifiable;
-
 /**
  * Interface for classes which can be invoked.
  *
@@ -20,7 +18,7 @@ use PHPUnit_Framework_MockObject_Verifiable;
  *
  * @since Interface available since Release 1.0.0
  */
-interface Invokable extends PHPUnit_Framework_MockObject_Verifiable
+interface Invokable extends Verifiable
 {
     /**
      * Invokes the invocation object $invocation so that it can be checked for
