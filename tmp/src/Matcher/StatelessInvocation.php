@@ -15,8 +15,6 @@ use PHPUnit\Framework\MockObject\Invocation;
  *
  * This abstract class can be implemented by matchers which does not care about
  * state but only the current run-time value of the invocation itself.
- *
- * @abstract
  */
 abstract class PHPUnit_Framework_MockObject_Matcher_StatelessInvocation implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {

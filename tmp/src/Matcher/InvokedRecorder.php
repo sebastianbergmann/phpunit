@@ -14,8 +14,6 @@ use PHPUnit\Framework\MockObject\Invocation;
  * on.
  * This abstract class can be implemented by matchers which needs to check the
  * number of times an invocation has occurred.
- *
- * @abstract
  */
 abstract class PHPUnit_Framework_MockObject_Matcher_InvokedRecorder implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
