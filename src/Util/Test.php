@@ -475,7 +475,7 @@ class PHPUnit_Util_Test
                 if (is_array($data)) {
                     $result = array_merge($result, $data);
                 } elseif ($data instanceof \Iterator) {
-                    $data = iterator_to_array($data);
+                    $data   = iterator_to_array($data);
                     $result = array_merge($result, $data);
                 }
             }
@@ -619,7 +619,7 @@ class PHPUnit_Util_Test
             $numMatches = count($matches[0]);
 
             for ($i = 0; $i < $numMatches; ++$i) {
-                $annotations[$matches['name'][$i]][] = (string)$matches['value'][$i];
+                $annotations[$matches['name'][$i]][] = (string) $matches['value'][$i];
             }
         }
 

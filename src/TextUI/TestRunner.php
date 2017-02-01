@@ -184,7 +184,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             $suite->setbeStrictAboutChangesToGlobalState(true);
         }
 
-        if (is_integer($arguments['repeat'])) {
+        if (is_int($arguments['repeat'])) {
             $test = new PHPUnit_Extensions_RepeatedTest(
                 $suite,
                 $arguments['repeat'],

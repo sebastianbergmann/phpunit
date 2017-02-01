@@ -888,7 +888,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         // @test     on TestCase::testMethod()
         $docComment = $method->getDocComment();
 
-        return strpos($docComment, '@test')     !== false ||
+        return strpos($docComment, '@test') !== false ||
                strpos($docComment, '@scenario') !== false;
     }
 

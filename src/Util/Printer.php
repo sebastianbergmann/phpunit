@@ -46,7 +46,7 @@ class PHPUnit_Util_Printer
                 if (strpos($out, 'socket://') === 0) {
                     $out = explode(':', str_replace('socket://', '', $out));
 
-                    if (sizeof($out) != 2) {
+                    if (count($out) != 2) {
                         throw new PHPUnit_Framework_Exception;
                     }
 

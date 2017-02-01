@@ -131,7 +131,7 @@ class PHPUnit_Util_Getopt
             $opt_rest = substr($long_opt, $opt_len);
 
             if ($opt_rest != '' && $opt[0] != '=' && $i + 1 < $count &&
-                $opt == substr($long_options[$i+1], 0, $opt_len)) {
+                $opt == substr($long_options[$i + 1], 0, $opt_len)) {
                 throw new PHPUnit_Framework_Exception(
                     "option --$opt is ambiguous"
                 );
