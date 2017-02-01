@@ -9,6 +9,7 @@
  */
 
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\TestFailure;
 
 /**
@@ -93,11 +94,11 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param Invocation $invocation
      *
      * @return mixed
      */
-    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function invoked(Invocation $invocation)
     {
         if ($this->invocationMatcher === null) {
             throw new PHPUnit_Framework_MockObject_RuntimeException(
@@ -157,11 +158,11 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param Invocation $invocation
      *
      * @return bool
      */
-    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function matches(Invocation $invocation)
     {
         if ($this->afterMatchBuilderId !== null) {
             $builder = $invocation->object

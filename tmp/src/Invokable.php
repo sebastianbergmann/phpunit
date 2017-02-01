@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Interface for classes which can be invoked.
@@ -22,18 +23,18 @@ interface PHPUnit_Framework_MockObject_Invokable extends PHPUnit_Framework_MockO
      * Invokes the invocation object $invocation so that it can be checked for
      * expectations or matched against stubs.
      *
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation The invocation object passed from mock object
+     * @param Invocation $invocation The invocation object passed from mock object
      *
      * @return object
      */
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation);
+    public function invoke(Invocation $invocation);
 
     /**
      * Checks if the invocation matches.
      *
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation The invocation object passed from mock object
+     * @param Invocation $invocation The invocation object passed from mock object
      *
      * @return bool
      */
-    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation);
+    public function matches(Invocation $invocation);
 }

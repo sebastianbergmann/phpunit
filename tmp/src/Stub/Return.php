@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\MockObject\Invocation;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
@@ -24,7 +25,7 @@ class PHPUnit_Framework_MockObject_Stub_Return implements PHPUnit_Framework_Mock
         $this->value = $value;
     }
 
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function invoke(Invocation $invocation)
     {
         return $this->value;
     }

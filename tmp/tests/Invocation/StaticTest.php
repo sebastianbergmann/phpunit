@@ -15,8 +15,8 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
     public function testConstructorRequiresClassAndMethodAndParameters()
     {
         $this->assertInstanceOf(
-            PHPUnit_Framework_MockObject_Invocation_Static::class,
-            new PHPUnit_Framework_MockObject_Invocation_Static(
+            _Invocation_Static::class,
+            new _Invocation_Static(
                 'FooClass',
                 'FooMethod',
                 ['an_argument'],
@@ -27,7 +27,7 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
 
     public function testAllowToGetClassNameSetInConstructor()
     {
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(
+        $invocation = new _Invocation_Static(
             'FooClass',
             'FooMethod',
             ['an_argument'],
@@ -39,7 +39,7 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
 
     public function testAllowToGetMethodNameSetInConstructor()
     {
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(
+        $invocation = new _Invocation_Static(
             'FooClass',
             'FooMethod',
             ['an_argument'],
@@ -55,7 +55,7 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
           'foo', 5, ['a', 'b'], new stdClass, null, false
         ];
 
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(
+        $invocation = new _Invocation_Static(
             'FooClass',
             'FooMethod',
             $expectedParameters,
@@ -70,7 +70,7 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
         $parameters   = [new stdClass];
         $cloneObjects = true;
 
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(
+        $invocation = new _Invocation_Static(
             'FooClass',
             'FooMethod',
             $parameters,
@@ -86,7 +86,7 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
     {
         $expectedReturnType = 'string';
 
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Static(
+        $invocation = new _Invocation_Static(
             'FooClass',
             'FooMethod',
             ['an_argument'],
