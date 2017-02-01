@@ -13,7 +13,10 @@ return PhpCsFixer\Config::create()
     ->setRules(
         [
             'header_comment' => ['header' => $header, 'separate' => 'none'],
-            'binary_operator_spaces' => true,
+            'binary_operator_spaces' => [
+                'align_double_arrow' => true,
+                'align_equals' => true
+            ],
             'braces' => true,
             'concat_space' => ['spacing' => 'one'],
             'no_empty_statement' => true,
