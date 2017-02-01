@@ -7,11 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\MockObject\Invocation\StaticMethod;
 
 /**
  * Represents a non-static invocation.
  */
-class PHPUnit_Framework_MockObject_Invocation_Object extends _Invocation_Static
+class PHPUnit_Framework_MockObject_Invocation_Object extends StaticMethod
 {
     /**
      * @var object

@@ -8,15 +8,19 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Framework\MockObject\Invocation;
+
+use Exception;
 use PHPUnit\Framework\MockObject\Generator;
 use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\SelfDescribing;
+use ReflectionObject;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Represents a static invocation.
  */
-class _Invocation_Static implements Invocation, SelfDescribing
+class StaticMethod implements Invocation, SelfDescribing
 {
     /**
      * @var array
@@ -127,13 +131,20 @@ class _Invocation_Static implements Invocation, SelfDescribing
     public function generateReturnValue()
     {
         switch ($this->returnType) {
-            case '':       return;
-            case 'string': return $this->returnTypeNullable ? null : '';
-            case 'float':  return $this->returnTypeNullable ? null : 0.0;
-            case 'int':    return $this->returnTypeNullable ? null : 0;
-            case 'bool':   return $this->returnTypeNullable ? null : false;
-            case 'array':  return $this->returnTypeNullable ? null : [];
-            case 'void':   return;
+            case '':
+                return;
+            case 'string':
+                return $this->returnTypeNullable ? null : '';
+            case 'float':
+                return $this->returnTypeNullable ? null : 0.0;
+            case 'int':
+                return $this->returnTypeNullable ? null : 0;
+            case 'bool':
+                return $this->returnTypeNullable ? null : false;
+            case 'array':
+                return $this->returnTypeNullable ? null : [];
+            case 'void':
+                return;
 
             case 'callable':
             case 'Closure':
@@ -172,7 +183,8 @@ class _Invocation_Static implements Invocation, SelfDescribing
         // Check the blacklist before asking PHP reflection to work around
         // https://bugs.php.net/bug.php?id=53967
         if ($object->isInternal() &&
-            isset(self::$uncloneableExtensions[$object->getExtensionName()])) {
+            isset(self::$uncloneableExtensions[$object->getExtensionName()])
+        ) {
             $cloneable = false;
         }
 
