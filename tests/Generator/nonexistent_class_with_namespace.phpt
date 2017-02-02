@@ -1,10 +1,10 @@
 --TEST--
-PHPUnit\Framework\MockObject\Generator::generate('Foo', array(), 'MockFoo', true, true)
+PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', true, true)
 --FILE--
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
 
-$generator = new PHPUnit\Framework\MockObject\Generator;
+$generator = new PHPUnit_Framework_MockObject_Generator;
 
 $mock = $generator->generate(
     'NS\Foo',

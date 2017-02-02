@@ -1,5 +1,5 @@
 --TEST--
-PHPUnit\Framework\MockObject\Generator::generate('ClassWithDeprecatedMethod', array(), 'MockFoo', TRUE, TRUE)
+PHPUnit_Framework_MockObject_Generator::generate('ClassWithDeprecatedMethod', array(), 'MockFoo', TRUE, TRUE)
 --FILE--
 <?php
 class ClassWithDeprecatedMethod
@@ -15,7 +15,7 @@ class ClassWithDeprecatedMethod
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$generator = new PHPUnit\Framework\MockObject\Generator;
+$generator = new PHPUnit_Framework_MockObject_Generator;
 
 $mock = $generator->generate(
   'ClassWithDeprecatedMethod',

@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\MockObject\Generator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -434,7 +433,7 @@ class Framework_MockObjectTest extends TestCase
     }
 
     /**
-     * @covers Generator::getMock
+     * @covers PHPUnit_Framework_MockObject_Generator::getMock
      */
     public function testGetMockWithFixedClassNameCanProduceTheSameMockTwice()
     {

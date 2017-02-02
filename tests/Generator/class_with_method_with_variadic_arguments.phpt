@@ -1,5 +1,5 @@
 --TEST--
-PHPUnit\Framework\MockObject\Generator::generate('ClassWithMethodWithVariadicArguments', array(), 'MockFoo', true, true)
+PHPUnit_Framework_MockObject_Generator::generate('ClassWithMethodWithVariadicArguments', array(), 'MockFoo', true, true)
 --FILE--
 <?php
 class ClassWithMethodWithVariadicArguments
@@ -11,7 +11,7 @@ class ClassWithMethodWithVariadicArguments
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$generator = new PHPUnit\Framework\MockObject\Generator;
+$generator = new PHPUnit_Framework_MockObject_Generator;
 
 $mock = $generator->generate(
     'ClassWithMethodWithVariadicArguments',
