@@ -8,29 +8,15 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework\MockObject;
-
 use Doctrine\Instantiator\Instantiator;
 use Doctrine\Instantiator\Exception\InvalidArgumentException as InstantiatorInvalidArgumentException;
 use Doctrine\Instantiator\Exception\UnexpectedValueException as InstantiatorUnexpectedValueException;
-use InvalidArgumentException;
-use Iterator;
-use IteratorAggregate;
-use PHPUnit;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit_Framework_MockObject_MockObject;
-use PHPUnit_Framework_MockObject_RuntimeException;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionMethod;
-use SoapClient;
-use Text_Template;
-use Traversable;
 
 /**
  * Mock Object Code Generator
  */
-class Generator
+class PHPUnit_Framework_MockObject_Generator
 {
     /**
      * @var array
@@ -105,8 +91,7 @@ class Generator
                     function ($type) {
                         if ($type === 'Traversable' ||
                             $type === '\\Traversable' ||
-                            $type === '\\Iterator'
-                        ) {
+                            $type === '\\Iterator') {
                             return 'Iterator';
                         }
 
@@ -121,8 +106,7 @@ class Generator
             if (is_array($type)) {
                 foreach ($type as $_type) {
                     if (!class_exists($_type, $callAutoload) &&
-                        !interface_exists($_type, $callAutoload)
-                    ) {
+                        !interface_exists($_type, $callAutoload)) {
                         throw new PHPUnit_Framework_MockObject_RuntimeException(
                             sprintf(
                                 'Cannot stub or mock class or interface "%s" which does not exist',
@@ -229,8 +213,7 @@ class Generator
 
         if ($callOriginalConstructor &&
             is_string($type) &&
-            !interface_exists($type, $callAutoload)
-        ) {
+            !interface_exists($type, $callAutoload)) {
             if (count($arguments) == 0) {
                 $object = new $className;
             } else {
@@ -313,8 +296,7 @@ class Generator
         }
 
         if (class_exists($originalClassName, $callAutoload) ||
-            interface_exists($originalClassName, $callAutoload)
-        ) {
+            interface_exists($originalClassName, $callAutoload)) {
             $reflector = new ReflectionClass($originalClassName);
             $methods   = $mockedMethods;
 
@@ -404,8 +386,7 @@ class Generator
             $className['className']
         );
 
-        return $this->getMockForAbstractClass($className['className'], $arguments, $mockClassName,
-            $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
+        return $this->getMockForAbstractClass($className['className'], $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
     }
 
     /**
@@ -484,10 +465,10 @@ class Generator
         if ($mockClassName == '') {
             $key = md5(
                 is_array($type) ? implode('_', $type) : $type .
-                    serialize($methods) .
-                    serialize($callOriginalClone) .
-                    serialize($cloneArguments) .
-                    serialize($callOriginalMethods)
+                serialize($methods) .
+                serialize($callOriginalClone) .
+                serialize($cloneArguments) .
+                serialize($callOriginalMethods)
             );
 
             if (isset(self::$cache[$key])) {
@@ -616,8 +597,8 @@ class Generator
      */
     private function generateMock($type, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
     {
-        $methodReflections = [];
-        $classTemplate     = $this->getTemplate('mocked_class.tpl');
+        $methodReflections   = [];
+        $classTemplate       = $this->getTemplate('mocked_class.tpl');
 
         $additionalInterfaces = [];
         $cloneTemplate        = '';
@@ -643,7 +624,7 @@ class Generator
                     $_type,
                     $mockClassName,
                     'Mock_'
-                )['fullClassName']
+                    )['fullClassName']
                 );
 
                 foreach ($this->getClassMethods($_type) as $method) {
@@ -679,8 +660,8 @@ class Generator
 
             if (!empty($mockClassName['namespaceName'])) {
                 $prologue = 'namespace ' . $mockClassName['namespaceName'] .
-                    " {\n\n" . $prologue . "}\n\n" .
-                    "namespace {\n\n";
+                            " {\n\n" . $prologue . "}\n\n" .
+                            "namespace {\n\n";
 
                 $epilogue = "\n\n}";
             }
@@ -718,8 +699,7 @@ class Generator
         }
 
         if (is_array($methods) && empty($methods) &&
-            ($isClass || $isInterface)
-        ) {
+            ($isClass || $isInterface)) {
             $methods = $this->getClassMethods($mockClassName['fullClassName']);
         }
 
@@ -740,8 +720,7 @@ class Generator
             // https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
             if ($isInterface && $class->implementsInterface(Traversable::class) &&
                 !$class->implementsInterface(Iterator::class) &&
-                !$class->implementsInterface(IteratorAggregate::class)
-            ) {
+                !$class->implementsInterface(IteratorAggregate::class)) {
                 $additionalInterfaces[] = Iterator::class;
                 $methods                = array_merge($methods, $this->getClassMethods(Iterator::class));
             }
@@ -813,8 +792,8 @@ class Generator
         );
 
         return [
-            'code'          => $classTemplate->render(),
-            'mockClassName' => $mockClassName['className']
+          'code'          => $classTemplate->render(),
+          'mockClassName' => $mockClassName['className']
         ];
     }
 
@@ -849,15 +828,15 @@ class Generator
         if ($className == '') {
             do {
                 $className = $prefix . $type . '_' .
-                    substr(md5(microtime()), 0, 8);
+                             substr(md5(microtime()), 0, 8);
             } while (class_exists($className, false));
         }
 
         return [
-            'className'         => $className,
-            'originalClassName' => $type,
-            'fullClassName'     => $fullClassName,
-            'namespaceName'     => $namespaceName
+          'className'         => $className,
+          'originalClassName' => $type,
+          'fullClassName'     => $fullClassName,
+          'namespaceName'     => $namespaceName
         ];
     }
 
@@ -937,8 +916,7 @@ class Generator
             $returnType = '';
         }
 
-        if (preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $method->getDocComment(),
-            $deprecation)) {
+        if (preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $method->getDocComment(), $deprecation)) {
             $deprecation = trim(preg_replace('#[ \t]*\r?\n[ \t]*+\*[ \t]*+#', ' ', $deprecation[1]));
         } else {
             $deprecation = false;
@@ -1045,8 +1023,7 @@ class Generator
         if ($method->isConstructor() ||
             $method->isFinal() ||
             $method->isPrivate() ||
-            $this->isMethodNameBlacklisted($method->getName())
-        ) {
+            $this->isMethodNameBlacklisted($method->getName())) {
             return false;
         }
 
@@ -1106,9 +1083,7 @@ class Generator
 
             if (!$forCall) {
                 if ($parameter->hasType() && (string) $parameter->getType() !== 'self') {
-                    if (version_compare(PHP_VERSION, '7.1',
-                            '>=') && $parameter->allowsNull() && !$parameter->isVariadic()
-                    ) {
+                    if (version_compare(PHP_VERSION, '7.1', '>=') && $parameter->allowsNull() && !$parameter->isVariadic()) {
                         $nullable = '?';
                     }
 

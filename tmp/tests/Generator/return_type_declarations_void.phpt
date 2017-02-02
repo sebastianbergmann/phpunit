@@ -1,5 +1,5 @@
 --TEST--
-PHPUnit\Framework\MockObject\Generator::generate('Foo', array(), 'MockFoo', true, true)
+PHPUnit_Framework_MockObject_Generator::generate('Foo', array(), 'MockFoo', true, true)
 --SKIPIF--
 <?php
 if (!version_compare(PHP_VERSION, '7.1', '>=')) print 'skip: PHP >= 7.1 required';
@@ -13,7 +13,7 @@ interface Foo
 
 require __DIR__ . '/../../vendor/autoload.php';
 
-$generator = new PHPUnit\Framework\MockObject\Generator;
+$generator = new PHPUnit_Framework_MockObject_Generator;
 
 $mock = $generator->generate(
     'Foo',

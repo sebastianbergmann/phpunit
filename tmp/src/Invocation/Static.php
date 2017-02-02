@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\MockObject\Generator;
 use PHPUnit\Framework\SelfDescribing;
 use SebastianBergmann\Exporter\Exporter;
 
@@ -152,7 +151,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
                     return;
                 }
 
-                $generator = new Generator;
+                $generator = new PHPUnit_Framework_MockObject_Generator;
 
                 return $generator->getMock($this->returnType, [], [], '', false);
         }
