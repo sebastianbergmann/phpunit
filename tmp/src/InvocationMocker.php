@@ -13,7 +13,7 @@ namespace PHPUnit\Framework\MockObject;
 use Exception;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
 use PHPUnit\Framework\MockObject\Builder\Match;
-use PHPUnit\Framework\MockObject\Builder\INamespace;
+use PHPUnit_Framework_MockObject_Builder_Namespace;
 use PHPUnit_Framework_MockObject_Matcher_Invocation;
 use PHPUnit_Framework_MockObject_RuntimeException;
 use PHPUnit_Framework_MockObject_Stub_MatcherCollection;
@@ -25,7 +25,7 @@ use PHPUnit_Framework_MockObject_Stub_MatcherCollection;
  * Keeps track of all expectations and stubs as well as registering
  * identifications for builders.
  */
-class InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherCollection, Invokable, INamespace
+class InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherCollection, Invokable, PHPUnit_Framework_MockObject_Builder_Namespace
 {
     /**
      * @var PHPUnit_Framework_MockObject_Matcher_Invocation[]
