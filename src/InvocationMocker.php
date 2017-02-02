@@ -7,17 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace PHPUnit\Framework\MockObject;
-
-use Exception;
-use PHPUnit_Framework_MockObject_Builder_InvocationMocker;
-use PHPUnit_Framework_MockObject_Builder_Match;
-use PHPUnit_Framework_MockObject_Builder_Namespace;
-use PHPUnit_Framework_MockObject_Invokable;
-use PHPUnit_Framework_MockObject_Matcher_Invocation;
-use PHPUnit_Framework_MockObject_RuntimeException;
-use PHPUnit_Framework_MockObject_Stub_MatcherCollection;
+use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Mocker for invocations which are sent from
@@ -26,7 +16,7 @@ use PHPUnit_Framework_MockObject_Stub_MatcherCollection;
  * Keeps track of all expectations and stubs as well as registering
  * identifications for builders.
  */
-class InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherCollection, PHPUnit_Framework_MockObject_Invokable, PHPUnit_Framework_MockObject_Builder_Namespace
+class PHPUnit_Framework_MockObject_InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherCollection, PHPUnit_Framework_MockObject_Invokable, PHPUnit_Framework_MockObject_Builder_Namespace
 {
     /**
      * @var PHPUnit_Framework_MockObject_Matcher_Invocation[]
