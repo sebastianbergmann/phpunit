@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  */
@@ -20,7 +19,7 @@ class PHPUnit_Framework_MockObject_Stub_ReturnCallback implements PHPUnit_Framew
         $this->callback = $callback;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         return call_user_func_array($this->callback, $invocation->parameters);
     }

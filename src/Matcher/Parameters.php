@@ -12,7 +12,6 @@ use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Invocation matcher which looks for specific parameters in the invocations.
@@ -29,7 +28,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     protected $parameters = [];
 
     /**
-     * @var Invocation
+     * @var PHPUnit_Framework_MockObject_Invocation
      */
     protected $invocation;
 
@@ -73,11 +72,11 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     }
 
     /**
-     * @param Invocation $invocation
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
      *
      * @return bool
      */
-    public function matches(Invocation $invocation)
+    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $this->invocation                  = $invocation;
         $this->parameterVerificationResult = null;

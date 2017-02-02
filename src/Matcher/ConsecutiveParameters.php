@@ -11,7 +11,6 @@
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Invocation matcher which looks for sets of specific parameters in the invocations.
@@ -62,11 +61,11 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
     }
 
     /**
-     * @param Invocation $invocation
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
      *
      * @return bool
      */
-    public function matches(Invocation $invocation)
+    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $this->invocations[] = $invocation;
         $callIndex           = count($this->invocations) - 1;
@@ -86,12 +85,12 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
     /**
      * Verify a single invocation
      *
-     * @param Invocation $invocation
-     * @param int        $callIndex
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param int                                     $callIndex
      *
      * @throws ExpectationFailedException
      */
-    private function verifyInvocation(Invocation $invocation, $callIndex)
+    private function verifyInvocation(PHPUnit_Framework_MockObject_Invocation $invocation, $callIndex)
     {
         if (isset($this->parameterGroups[$callIndex])) {
             $parameters = $this->parameterGroups[$callIndex];

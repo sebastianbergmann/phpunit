@@ -9,14 +9,13 @@
  */
 
 use PHPUnit\Framework\MockObject\Generator;
-use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\SelfDescribing;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Represents a static invocation.
  */
-class _Invocation_Static implements Invocation, SelfDescribing
+class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framework_MockObject_Invocation, SelfDescribing
 {
     /**
      * @var array

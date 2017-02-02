@@ -10,7 +10,6 @@
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
-use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Util\InvalidArgumentHelper;
 
 /**
@@ -60,11 +59,11 @@ class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_
     }
 
     /**
-     * @param Invocation $invocation
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
      *
      * @return bool
      */
-    public function matches(Invocation $invocation)
+    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         return $this->constraint->evaluate($invocation->methodName, '', true);
     }

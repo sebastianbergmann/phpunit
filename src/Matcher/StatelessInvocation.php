@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Invocation matcher which does not care about previous state from earlier
@@ -29,11 +28,11 @@ abstract class PHPUnit_Framework_MockObject_Matcher_StatelessInvocation implemen
      *
      * If the matcher is a stub it will also have a return value.
      *
-     * @param Invocation $invocation Object containing information on a mocked or stubbed method which was invoked
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation Object containing information on a mocked or stubbed method which was invoked
      *
      * @return mixed
      */
-    public function invoked(Invocation $invocation)
+    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
     }
 
@@ -42,7 +41,7 @@ abstract class PHPUnit_Framework_MockObject_Matcher_StatelessInvocation implemen
      * the matcher will get the invoked() method called which should check if an
      * expectation is met.
      *
-     * @param Invocation $invocation Object containing information on a mocked or stubbed method which was invoked
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation Object containing information on a mocked or stubbed method which was invoked
      *
      * @return bool
      */

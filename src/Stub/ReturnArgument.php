@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Stubs a method by returning an argument that was passed to the mocked method.
@@ -21,7 +20,7 @@ class PHPUnit_Framework_MockObject_Stub_ReturnArgument extends PHPUnit_Framework
         $this->argumentIndex = $argumentIndex;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         if (isset($invocation->parameters[$this->argumentIndex])) {
             return $invocation->parameters[$this->argumentIndex];
