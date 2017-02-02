@@ -19,6 +19,7 @@ use PHPUnit_Framework_MockObject_Matcher_InvokedCount;
 use PHPUnit_Framework_MockObject_Matcher_MethodName;
 use PHPUnit_Framework_MockObject_Matcher_Parameters;
 use PHPUnit_Framework_MockObject_RuntimeException;
+use PHPUnit_Framework_MockObject_Stub;
 
 /**
  * Main matcher which defines a full expectation using method, parameter and
@@ -57,7 +58,7 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
     public $parametersMatcher = null;
 
     /**
-     * @var Stub
+     * @var PHPUnit_Framework_MockObject_Stub
      */
     public $stub = null;
 

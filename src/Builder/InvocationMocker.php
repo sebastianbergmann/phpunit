@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\MockObject\Matcher;
-use PHPUnit\Framework\MockObject\Stub;
 
 /**
  * Builder for mocked or stubbed invocations.
@@ -73,11 +72,11 @@ class PHPUnit_Framework_MockObject_Builder_InvocationMocker implements PHPUnit_F
     }
 
     /**
-     * @param Stub $stub
+     * @param PHPUnit_Framework_MockObject_Stub $stub
      *
      * @return PHPUnit_Framework_MockObject_Builder_InvocationMocker
      */
-    public function will(Stub $stub)
+    public function will(PHPUnit_Framework_MockObject_Stub $stub)
     {
         $this->matcher->stub = $stub;
 

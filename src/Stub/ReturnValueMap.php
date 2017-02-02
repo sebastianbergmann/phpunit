@@ -8,12 +8,11 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\MockObject\Invocation;
-use PHPUnit\Framework\MockObject\Stub;
 
 /**
  * Stubs a method by returning a value from a map.
  */
-class PHPUnit_Framework_MockObject_Stub_ReturnValueMap implements Stub
+class PHPUnit_Framework_MockObject_Stub_ReturnValueMap implements PHPUnit_Framework_MockObject_Stub
 {
     protected $valueMap;
 
