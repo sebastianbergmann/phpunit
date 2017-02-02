@@ -7,15 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace PHPUnit\Framework\MockObject\Builder;
+use PHPUnit\Framework\MockObject\Builder\Match;
 
 /**
  * Interface for builders which can register builders with a given identification.
  *
  * This interface relates to PHPUnit_Framework_MockObject_Builder_Identity.
  */
-interface INamespace
+interface PHPUnit_Framework_MockObject_Builder_Namespace
 {
     /**
      * Looks up the match builder with identification $id and returns it.
