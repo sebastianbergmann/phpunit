@@ -7,10 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace PHPUnit\Framework\MockObject;
-
-use PHPUnit_Framework_MockObject_Verifiable;
+use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Interface for classes which can be invoked.
@@ -18,7 +15,7 @@ use PHPUnit_Framework_MockObject_Verifiable;
  * The invocation will be taken from a mock object and passed to an object
  * of this class.
  */
-interface Invokable extends PHPUnit_Framework_MockObject_Verifiable
+interface PHPUnit_Framework_MockObject_Invokable extends PHPUnit_Framework_MockObject_Verifiable
 {
     /**
      * Invokes the invocation object $invocation so that it can be checked for
