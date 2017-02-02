@@ -19,7 +19,7 @@ use PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters;
 use PHPUnit_Framework_MockObject_Matcher_Invocation;
 use PHPUnit_Framework_MockObject_Matcher_MethodName;
 use PHPUnit_Framework_MockObject_Matcher_Parameters;
-use PHPUnit\Framework\MockObject\RuntimeException;
+use PHPUnit_Framework_MockObject_RuntimeException;
 use PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls;
 use PHPUnit_Framework_MockObject_Stub_Exception;
 use PHPUnit_Framework_MockObject_Stub_MatcherCollection;
@@ -224,19 +224,19 @@ class InvocationMocker implements MethodNameMatch
     /**
      * Validate that a parameters matcher can be defined, throw exceptions otherwise.
      *
-     * @throws RuntimeException
+     * @throws PHPUnit_Framework_MockObject_RuntimeException
      */
     private function canDefineParameters()
     {
         if ($this->matcher->methodNameMatcher === null) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
                 'Method name matcher is not defined, cannot define parameter ' .
                 'matcher without one'
             );
         }
 
         if ($this->matcher->parametersMatcher !== null) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
                 'Parameter matcher is already defined, cannot redefine'
             );
         }
@@ -290,13 +290,13 @@ class InvocationMocker implements MethodNameMatch
     public function method($constraint)
     {
         if ($this->matcher->methodNameMatcher !== null) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
                 'Method name matcher is already defined, cannot redefine'
             );
         }
 
         if (is_string($constraint) && !in_array(strtolower($constraint), $this->configurableMethods)) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
                 sprintf(
                     'Trying to configure method "%s" which cannot be configured because it does not exist, has not been specified, is final, or is static',
                     $constraint

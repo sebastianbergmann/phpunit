@@ -18,6 +18,7 @@ use PHPUnit_Framework_MockObject_Matcher_Invocation;
 use PHPUnit_Framework_MockObject_Matcher_InvokedCount;
 use PHPUnit_Framework_MockObject_Matcher_MethodName;
 use PHPUnit_Framework_MockObject_Matcher_Parameters;
+use PHPUnit_Framework_MockObject_RuntimeException;
 
 /**
  * Main matcher which defines a full expectation using method, parameter and
@@ -106,13 +107,13 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
     public function invoked(Invocation $invocation)
     {
         if ($this->invocationMatcher === null) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
                 'No invocation matcher is set'
             );
         }
 
         if ($this->methodNameMatcher === null) {
-            throw new RuntimeException('No method matcher is set');
+            throw new PHPUnit_Framework_MockObject_RuntimeException('No method matcher is set');
         }
 
         if ($this->afterMatchBuilderId !== null) {
@@ -121,7 +122,7 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
                 ->lookupId($this->afterMatchBuilderId);
 
             if (!$builder) {
-                throw new RuntimeException(
+                throw new PHPUnit_Framework_MockObject_RuntimeException(
                     sprintf(
                         'No builder found for match builder identification <%s>',
                         $this->afterMatchBuilderId
@@ -176,7 +177,7 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
                 ->lookupId($this->afterMatchBuilderId);
 
             if (!$builder) {
-                throw new RuntimeException(
+                throw new PHPUnit_Framework_MockObject_RuntimeException(
                     sprintf(
                         'No builder found for match builder identification <%s>',
                         $this->afterMatchBuilderId
@@ -196,13 +197,13 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
         }
 
         if ($this->invocationMatcher === null) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
                 'No invocation matcher is set'
             );
         }
 
         if ($this->methodNameMatcher === null) {
-            throw new RuntimeException('No method matcher is set');
+            throw new PHPUnit_Framework_MockObject_RuntimeException('No method matcher is set');
         }
 
         if (!$this->invocationMatcher->matches($invocation)) {
@@ -229,19 +230,19 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
     }
 
     /**
-     * @throws RuntimeException
+     * @throws PHPUnit_Framework_MockObject_RuntimeException
      * @throws ExpectationFailedException
      */
     public function verify()
     {
         if ($this->invocationMatcher === null) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
                 'No invocation matcher is set'
             );
         }
 
         if ($this->methodNameMatcher === null) {
-            throw new RuntimeException('No method matcher is set');
+            throw new PHPUnit_Framework_MockObject_RuntimeException('No method matcher is set');
         }
 
         try {

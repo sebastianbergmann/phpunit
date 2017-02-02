@@ -15,6 +15,7 @@ use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBui
 use PHPUnit\Framework\MockObject\Builder\Match;
 use PHPUnit\Framework\MockObject\Builder\INamespace;
 use PHPUnit_Framework_MockObject_Matcher_Invocation;
+use PHPUnit_Framework_MockObject_RuntimeException;
 use PHPUnit_Framework_MockObject_Stub_MatcherCollection;
 
 /**
@@ -88,12 +89,12 @@ class InvocationMocker implements PHPUnit_Framework_MockObject_Stub_MatcherColle
      * @param mixed $id
      * @param Match $builder
      *
-     * @throws RuntimeException
+     * @throws PHPUnit_Framework_MockObject_RuntimeException
      */
     public function registerId($id, Match $builder)
     {
         if (isset($this->builderMap[$id])) {
-            throw new RuntimeException(
+            throw new PHPUnit_Framework_MockObject_RuntimeException(
                 'Match builder with id <' . $id . '> is already registered.'
             );
         }
