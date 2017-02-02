@@ -7,13 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\MockObject\Builder\Identity;
 use PHPUnit\Framework\MockObject\Stub;
 
 /**
  * Builder interface for stubs which are actions replacing an invocation.
  */
-interface PHPUnit_Framework_MockObject_Builder_Stub extends Identity
+interface PHPUnit_Framework_MockObject_Builder_Stub extends PHPUnit_Framework_MockObject_Builder_Identity
 {
     /**
      * Stubs the matching method with the stub object $stub. Any invocations of
@@ -21,7 +20,7 @@ interface PHPUnit_Framework_MockObject_Builder_Stub extends Identity
      *
      * @param Stub $stub
      *
-     * @return Identity
+     * @return PHPUnit_Framework_MockObject_Builder_Identity
      */
     public function will(Stub $stub);
 }
