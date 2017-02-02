@@ -64,8 +64,6 @@ class PHPUnit_Framework_MockObject_Generator
      * @throws InvalidArgumentException
      * @throws PHPUnit\Framework\Exception
      * @throws PHPUnit_Framework_MockObject_RuntimeException
-     *
-     * @since  Method available since Release 1.0.0
      */
     public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true)
     {
@@ -1051,8 +1049,6 @@ class PHPUnit_Framework_MockObject_Generator
      * @return string
      *
      * @throws PHPUnit_Framework_MockObject_RuntimeException
-     *
-     * @since  Method available since Release 2.0.0
      */
     private function getMethodParameters(ReflectionMethod $method, $forCall = false)
     {

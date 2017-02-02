@@ -15,8 +15,6 @@ use PHPUnit\Framework\ExpectationFailedException;
  * PHPUnit_Framework_MockObject_MockBuilder.
  *
  * @method PHPUnit_Framework_MockObject_Builder_InvocationMocker method($constraint)
- *
- * @since Interface available since Release 1.0.0
  */
 interface PHPUnit_Framework_MockObject_MockObject /*extends PHPUnit_Framework_MockObject_Verifiable*/
 {
@@ -32,8 +30,6 @@ interface PHPUnit_Framework_MockObject_MockObject /*extends PHPUnit_Framework_Mo
 
     /**
      * @return PHPUnit_Framework_MockObject_InvocationMocker
-     *
-     * @since  Method available since Release 2.0.0
      */
     public function __phpunit_setOriginalObject($originalObject);
 
