@@ -8,18 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework\MockObject;
-
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\TestFailure;
-use PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
-use PHPUnit_Framework_MockObject_Matcher_AnyParameters;
-use PHPUnit_Framework_MockObject_Matcher_Invocation;
-use PHPUnit_Framework_MockObject_Matcher_InvokedCount;
-use PHPUnit_Framework_MockObject_Matcher_MethodName;
-use PHPUnit_Framework_MockObject_Matcher_Parameters;
-use PHPUnit_Framework_MockObject_RuntimeException;
-use PHPUnit_Framework_MockObject_Stub;
 
 /**
  * Main matcher which defines a full expectation using method, parameter and
@@ -30,7 +21,7 @@ use PHPUnit_Framework_MockObject_Stub;
  *
  * All properties are public so that they can easily be accessed by the builder.
  */
-class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
+class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
     /**
      * @var PHPUnit_Framework_MockObject_Matcher_Invocation
@@ -119,8 +110,8 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
 
         if ($this->afterMatchBuilderId !== null) {
             $builder = $invocation->object
-                ->__phpunit_getInvocationMocker()
-                ->lookupId($this->afterMatchBuilderId);
+                                  ->__phpunit_getInvocationMocker()
+                                  ->lookupId($this->afterMatchBuilderId);
 
             if (!$builder) {
                 throw new PHPUnit_Framework_MockObject_RuntimeException(
@@ -142,8 +133,7 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
 
         try {
             if ($this->parametersMatcher !== null &&
-                !$this->parametersMatcher->matches($invocation)
-            ) {
+                !$this->parametersMatcher->matches($invocation)) {
                 $this->parametersMatcher->verify();
             }
         } catch (ExpectationFailedException $e) {
@@ -174,8 +164,8 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
     {
         if ($this->afterMatchBuilderId !== null) {
             $builder = $invocation->object
-                ->__phpunit_getInvocationMocker()
-                ->lookupId($this->afterMatchBuilderId);
+                                  ->__phpunit_getInvocationMocker()
+                                  ->lookupId($this->afterMatchBuilderId);
 
             if (!$builder) {
                 throw new PHPUnit_Framework_MockObject_RuntimeException(
@@ -276,8 +266,7 @@ class Matcher implements PHPUnit_Framework_MockObject_Matcher_Invocation
     public function hasMatchers()
     {
         if ($this->invocationMatcher !== null &&
-            !$this->invocationMatcher instanceof PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
-        ) {
+            !$this->invocationMatcher instanceof PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount) {
             return true;
         }
 
