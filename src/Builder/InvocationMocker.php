@@ -14,6 +14,7 @@ use Exception;
 use PHPUnit\Framework\MockObject\Matcher;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit_Framework_Constraint;
+use PHPUnit_Framework_MockObject_Builder_MethodNameMatch;
 use PHPUnit_Framework_MockObject_Matcher_AnyParameters;
 use PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters;
 use PHPUnit_Framework_MockObject_Matcher_Invocation;
@@ -38,7 +39,7 @@ use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
  * more natural way of reading the expectation. This class should be together
  * with the test case PHPUnit_Framework_MockObject_TestCase.
  */
-class InvocationMocker implements MethodNameMatch
+class InvocationMocker implements PHPUnit_Framework_MockObject_Builder_MethodNameMatch
 {
     /**
      * @var PHPUnit_Framework_MockObject_Stub_MatcherCollection
