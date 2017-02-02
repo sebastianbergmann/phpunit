@@ -8,11 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework\MockObject;
-
 /**
  * Interface for exceptions used by PHPUnit_MockObject.
  */
-interface Exception
+interface PHPUnit_Framework_MockObject_Exception
 {
 }
