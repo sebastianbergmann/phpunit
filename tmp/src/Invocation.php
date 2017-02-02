@@ -8,12 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework\MockObject;
-
 /**
  * Interface for invocations.
  */
-interface Invocation
+interface PHPUnit_Framework_MockObject_Invocation
 {
     /**
      * @return mixed Mocked return value.

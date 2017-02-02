@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Records invocations and provides convenience methods for checking them later
@@ -18,7 +17,7 @@ use PHPUnit\Framework\MockObject\Invocation;
 abstract class PHPUnit_Framework_MockObject_Matcher_InvokedRecorder implements PHPUnit_Framework_MockObject_Matcher_Invocation
 {
     /**
-     * @var Invocation[]
+     * @var PHPUnit_Framework_MockObject_Invocation[]
      */
     protected $invocations = [];
 
@@ -31,7 +30,7 @@ abstract class PHPUnit_Framework_MockObject_Matcher_InvokedRecorder implements P
     }
 
     /**
-     * @return Invocation[]
+     * @return PHPUnit_Framework_MockObject_Invocation[]
      */
     public function getInvocations()
     {
@@ -47,19 +46,19 @@ abstract class PHPUnit_Framework_MockObject_Matcher_InvokedRecorder implements P
     }
 
     /**
-     * @param Invocation $invocation
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
      */
-    public function invoked(Invocation $invocation)
+    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $this->invocations[] = $invocation;
     }
 
     /**
-     * @param Invocation $invocation
+     * @param PHPUnit_Framework_MockObject_Invocation $invocation
      *
      * @return bool
      */
-    public function matches(Invocation $invocation)
+    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         return true;
     }

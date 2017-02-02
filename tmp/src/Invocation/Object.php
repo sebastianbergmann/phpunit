@@ -11,7 +11,7 @@
 /**
  * Represents a non-static invocation.
  */
-class PHPUnit_Framework_MockObject_Invocation_Object extends _Invocation_Static
+class PHPUnit_Framework_MockObject_Invocation_Object extends PHPUnit_Framework_MockObject_Invocation_Static
 {
     /**
      * @var object

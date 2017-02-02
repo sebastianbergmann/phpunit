@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Stubs a method by returning a value from a map.
@@ -21,7 +20,7 @@ class PHPUnit_Framework_MockObject_Stub_ReturnValueMap implements PHPUnit_Framew
         $this->valueMap = $valueMap;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
     {
         $parameterCount = count($invocation->parameters);
 
