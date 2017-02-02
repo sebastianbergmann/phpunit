@@ -9,13 +9,12 @@
  */
 
 use PHPUnit\Framework\MockObject\Invocation;
-use PHPUnit\Framework\MockObject\Stub;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Stubs a method by raising a user-defined exception.
  */
-class PHPUnit_Framework_MockObject_Stub_Exception implements Stub
+class PHPUnit_Framework_MockObject_Stub_Exception implements PHPUnit_Framework_MockObject_Stub
 {
     protected $exception;
 

@@ -9,13 +9,12 @@
  */
 
 use PHPUnit\Framework\MockObject\Invocation;
-use PHPUnit\Framework\MockObject\Stub;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Stubs a method by returning a user-defined value.
  */
-class PHPUnit_Framework_MockObject_Stub_Return implements Stub
+class PHPUnit_Framework_MockObject_Stub_Return implements PHPUnit_Framework_MockObject_Stub
 {
     protected $value;
 

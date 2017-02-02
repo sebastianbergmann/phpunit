@@ -8,8 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework\MockObject;
-
+use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
@@ -18,7 +17,7 @@ use PHPUnit\Framework\SelfDescribing;
  * The stub object will replace the code for the stubbed method and return a
  * specific value instead of the original value.
  */
-interface Stub extends SelfDescribing
+interface PHPUnit_Framework_MockObject_Stub extends SelfDescribing
 {
     /**
      * Fakes the processing of the invocation $invocation by returning a
