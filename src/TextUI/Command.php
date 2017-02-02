@@ -11,8 +11,6 @@
 namespace PHPUnit\TextUI;
 
 use File_Iterator_Facade;
-use PharIo\Manifest\ManifestLoader;
-use PharIo\Manifest\Exception as ManifestException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
@@ -1076,29 +1074,9 @@ EOT;
         $facade = new File_Iterator_Facade;
 
         foreach ($facade->getFilesAsArray($directory, '.phar') as $file) {
-            if (!file_exists('phar://' . $file . '/manifest.xml')) {
-                $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
-
-                continue;
-            }
-
-            try {
-                $manifest = ManifestLoader::fromFile('phar://' . $file . '/manifest.xml');
-
-                if (!$manifest->isExtensionFor('phpunit/phpunit')) {
-                    $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
-
-                    continue;
-                }
-            } catch (ManifestException $e) {
-                $this->arguments['notLoadedExtensions'][] = $file . ': ' . $e->getMessage();
-
-                continue;
-            }
-
             require $file;
 
-            $this->arguments['loadedExtensions'][] = $manifest->getName() . ' ' . $manifest->getVersion()->getVersionString();
+            $this->arguments['loadedExtensions'][] = $file;
         }
     }
 }
