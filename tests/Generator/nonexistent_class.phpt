@@ -21,7 +21,7 @@ class NonExistentClass
 {
 }
 
-class MockFoo extends NonExistentClass implements PHPUnit\Framework\MockObject\MockObject
+class MockFoo extends NonExistentClass implements PHPUnit_Framework_MockObject_MockObject
 {
     private $__phpunit_invocationMocker;
     private $__phpunit_originalObject;
