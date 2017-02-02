@@ -7,12 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\MockObject\Builder\Match;
 
 /**
  * Builder interface for parameter matchers.
  */
-interface PHPUnit_Framework_MockObject_Builder_ParametersMatch extends Match
+interface PHPUnit_Framework_MockObject_Builder_ParametersMatch extends PHPUnit_Framework_MockObject_Builder_Match
 {
     /**
      * Sets the parameters to match for, each parameter to this funtion will

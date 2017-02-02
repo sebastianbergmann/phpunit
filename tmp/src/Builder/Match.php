@@ -8,14 +8,10 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework\MockObject\Builder;
-
-use PHPUnit_Framework_MockObject_Builder_Stub;
-
 /**
  * Builder interface for invocation order matches.
  */
-interface Match extends PHPUnit_Framework_MockObject_Builder_Stub
+interface PHPUnit_Framework_MockObject_Builder_Match extends PHPUnit_Framework_MockObject_Builder_Stub
 {
     /**
      * Defines the expectation which must occur before the current is valid.
