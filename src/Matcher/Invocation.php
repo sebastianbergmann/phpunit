@@ -9,14 +9,13 @@
  */
 
 use PHPUnit\Framework\MockObject\Invocation;
-use PHPUnit\Framework\MockObject\Verifiable;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
  * Interface for classes which matches an invocation based on its
  * method name, argument, order or call count.
  */
-interface PHPUnit_Framework_MockObject_Matcher_Invocation extends SelfDescribing, Verifiable
+interface PHPUnit_Framework_MockObject_Matcher_Invocation extends SelfDescribing, PHPUnit_Framework_MockObject_Verifiable
 {
     /**
      * Registers the invocation $invocation in the object as being invoked.
