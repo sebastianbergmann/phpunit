@@ -27,7 +27,7 @@
         "phpunit/php-timer": "^1.0.6",
         "phpunit/phpunit-mock-objects": "^4.0",
         "phpspec/prophecy": "^1.6.2",
-        "sebastian/comparator": "^1.2.2",
+        "sebastian/comparator": "^1.2.4",
         "sebastian/diff": "^1.2",
         "sebastian/environment": "^2.0",
         "sebastian/exporter": "^2.0",
