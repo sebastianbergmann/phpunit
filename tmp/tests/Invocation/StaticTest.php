@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\MockObject\Invocation\StaticMethod;
 use PHPUnit\Framework\TestCase;
 
 class Framework_MockObject_Invocation_StaticTest extends TestCase
@@ -16,8 +15,8 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
     public function testConstructorRequiresClassAndMethodAndParameters()
     {
         $this->assertInstanceOf(
-            StaticMethod::class,
-            new StaticMethod(
+            _Invocation_Static::class,
+            new _Invocation_Static(
                 'FooClass',
                 'FooMethod',
                 ['an_argument'],
@@ -28,7 +27,7 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
 
     public function testAllowToGetClassNameSetInConstructor()
     {
-        $invocation = new StaticMethod(
+        $invocation = new _Invocation_Static(
             'FooClass',
             'FooMethod',
             ['an_argument'],
@@ -40,7 +39,7 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
 
     public function testAllowToGetMethodNameSetInConstructor()
     {
-        $invocation = new StaticMethod(
+        $invocation = new _Invocation_Static(
             'FooClass',
             'FooMethod',
             ['an_argument'],
@@ -56,7 +55,7 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
           'foo', 5, ['a', 'b'], new stdClass, null, false
         ];
 
-        $invocation = new StaticMethod(
+        $invocation = new _Invocation_Static(
             'FooClass',
             'FooMethod',
             $expectedParameters,
@@ -71,7 +70,7 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
         $parameters   = [new stdClass];
         $cloneObjects = true;
 
-        $invocation = new StaticMethod(
+        $invocation = new _Invocation_Static(
             'FooClass',
             'FooMethod',
             $parameters,
@@ -87,7 +86,7 @@ class Framework_MockObject_Invocation_StaticTest extends TestCase
     {
         $expectedReturnType = 'string';
 
-        $invocation = new StaticMethod(
+        $invocation = new _Invocation_Static(
             'FooClass',
             'FooMethod',
             ['an_argument'],
