@@ -2179,9 +2179,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     {
         $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
 
-        if ($this->runTestInSeparateProcess || $this->inIsolation ||
-            (!$backupGlobals && !$this->backupStaticAttributes)
-        ) {
+        if ($this->runTestInSeparateProcess ||
+            $this->inIsolation ||
+            (!$backupGlobals && !$this->backupStaticAttributes)) {
             return;
         }
 
