@@ -27,7 +27,7 @@ class ExceptionMessageTest extends PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage A partial
      */
-    public function testPatialMessageBegin()
+    public function testPartialMessageBegin()
     {
         throw new Exception('A partial exception message');
     }
@@ -36,7 +36,7 @@ class ExceptionMessageTest extends PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage partial exception
      */
-    public function testPatialMessageMiddle()
+    public function testPartialMessageMiddle()
     {
         throw new Exception('A partial exception message');
     }
@@ -45,7 +45,7 @@ class ExceptionMessageTest extends PHPUnit_Framework_TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage exception message
      */
-    public function testPatialMessageEnd()
+    public function testPartialMessageEnd()
     {
         throw new Exception('A partial exception message');
     }
