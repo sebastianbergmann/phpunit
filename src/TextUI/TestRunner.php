@@ -12,7 +12,7 @@ namespace PHPUnit\TextUI;
 
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning;
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestListener;
@@ -106,7 +106,7 @@ class TestRunner extends BaseTestRunner
      *
      * @return TestResult
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public static function run($test, array $arguments = [])
     {
@@ -122,7 +122,7 @@ class TestRunner extends BaseTestRunner
                 $arguments
             );
         } else {
-            throw new Exception(
+            throw new PHPUnitException(
                 'No test case or test suite found.'
             );
         }
@@ -889,7 +889,7 @@ class TestRunner extends BaseTestRunner
                 }
 
                 if (!class_exists($listener['class'])) {
-                    throw new Exception(
+                    throw new PHPUnitException(
                         sprintf(
                             'Class "%s" does not exist',
                             $listener['class']
@@ -900,7 +900,7 @@ class TestRunner extends BaseTestRunner
                 $listenerClass = new ReflectionClass($listener['class']);
 
                 if (!$listenerClass->implementsInterface(TestListener::class)) {
-                    throw new Exception(
+                    throw new PHPUnitException(
                         sprintf(
                             'Class "%s" does not implement the PHPUnit\Framework\TestListener interface',
                             $listener['class']

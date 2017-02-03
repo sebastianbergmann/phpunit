@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\SyntheticError;
 
 /**
@@ -20,8 +20,8 @@ class Filter
     /**
      * Filters stack frames from PHPUnit classes.
      *
-     * @param Exception $e
-     * @param bool      $asString
+     * @param \Exception $e
+     * @param bool       $asString
      *
      * @return string
      */
@@ -44,7 +44,7 @@ class Filter
             $eTrace = $e->getSyntheticTrace();
             $eFile  = $e->getSyntheticFile();
             $eLine  = $e->getSyntheticLine();
-        } elseif ($e instanceof Exception) {
+        } elseif ($e instanceof PHPUnitException) {
             $eTrace = $e->getSerializableTrace();
             $eFile  = $e->getFile();
             $eLine  = $e->getLine();

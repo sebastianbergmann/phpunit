@@ -10,7 +10,7 @@
 namespace PHPUnit\Runner;
 
 use File_Iterator_Facade;
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 use ReflectionClass;
@@ -72,7 +72,7 @@ abstract class BaseTestRunner
                 $suiteClassName,
                 $suiteClassFile
             );
-        } catch (Exception $e) {
+        } catch (PHPUnitException $e) {
             $this->runFailed($e->getMessage());
 
             return;
@@ -104,7 +104,7 @@ abstract class BaseTestRunner
         } catch (ReflectionException $e) {
             try {
                 $test = new TestSuite($testClass);
-            } catch (Exception $e) {
+            } catch (PHPUnitException $e) {
                 $test = new TestSuite;
                 $test->setName($suiteClassName);
             }

@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Util\InvalidArgumentHelper;
 use SebastianBergmann;
@@ -62,7 +62,7 @@ class IsEqual extends Constraint
      * @param bool  $canonicalize
      * @param bool  $ignoreCase
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public function __construct($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
     {

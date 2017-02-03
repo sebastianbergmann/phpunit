@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 
 /**
  * Factory for PHPUnit_Framework_Exception objects that are used to describe
@@ -22,13 +22,13 @@ class InvalidArgumentHelper
      * @param string $type
      * @param mixed  $value
      *
-     * @return Exception
+     * @return PHPUnitException
      */
     public static function factory($argument, $type, $value = null)
     {
         $stack = debug_backtrace(false);
 
-        return new Exception(
+        return new PHPUnitException(
             sprintf(
                 'Argument #%d%sof %s::%s() must be a %s',
                 $argument,

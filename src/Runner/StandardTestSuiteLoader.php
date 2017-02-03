@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Fileloader;
 use PHPUnit\Util\Filesystem;
@@ -26,7 +26,7 @@ class StandardTestSuiteLoader implements TestSuiteLoader
      *
      * @return ReflectionClass
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public function load($suiteClassName, $suiteClassFile = '')
     {
@@ -105,7 +105,7 @@ class StandardTestSuiteLoader implements TestSuiteLoader
             }
         }
 
-        throw new Exception(
+        throw new PHPUnitException(
             sprintf(
                 "Class '%s' could not be found in '%s'.",
                 $suiteClassName,

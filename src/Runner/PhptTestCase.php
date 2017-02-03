@@ -12,7 +12,7 @@ namespace PHPUnit\Runner;
 use PHP_Timer;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\Test;
@@ -70,7 +70,7 @@ class PhptTestCase implements Test, SelfDescribing
      * @param string             $filename
      * @param AbstractPhpProcess $phpUtil
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public function __construct($filename, $phpUtil = null)
     {
@@ -79,7 +79,7 @@ class PhptTestCase implements Test, SelfDescribing
         }
 
         if (!is_file($filename)) {
-            throw new Exception(
+            throw new PHPUnitException(
                 sprintf(
                     'File "%s" does not exist.',
                     $filename
@@ -269,7 +269,7 @@ class PhptTestCase implements Test, SelfDescribing
     /**
      * @return array
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     private function parse()
     {
@@ -316,7 +316,7 @@ class PhptTestCase implements Test, SelfDescribing
 
                 continue;
             } elseif (empty($section)) {
-                throw new Exception('Invalid PHPT file');
+                throw new PHPUnitException('Invalid PHPT file');
             }
 
             $sections[$section] .= $line;
@@ -336,7 +336,7 @@ class PhptTestCase implements Test, SelfDescribing
 
                 // only allow files from the test directory
                 if (!is_file($testDirectory . $externalFilename) || !is_readable($testDirectory . $externalFilename)) {
-                    throw new Exception(
+                    throw new PHPUnitException(
                         sprintf(
                             'Could not load --%s-- %s for PHPT file',
                             $section . '_EXTERNAL',
@@ -380,12 +380,12 @@ class PhptTestCase implements Test, SelfDescribing
         }
 
         if (!$isValid) {
-            throw new Exception('Invalid PHPT file');
+            throw new PHPUnitException('Invalid PHPT file');
         }
 
         foreach ($unsupportedSections as $section) {
             if (isset($sections[$section])) {
-                throw new Exception(
+                throw new PHPUnitException(
                     'PHPUnit does not support this PHPT file'
                 );
             }

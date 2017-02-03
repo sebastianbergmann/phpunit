@@ -11,7 +11,7 @@
 namespace PHPUnit\TextUI;
 
 use File_Iterator_Facade;
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
@@ -204,7 +204,7 @@ class Command
 
         try {
             $result = $runner->doRun($suite, $this->arguments, $exit);
-        } catch (Exception $e) {
+        } catch (PHPUnitException $e) {
             print $e->getMessage() . "\n";
         }
 
@@ -290,7 +290,7 @@ class Command
                 'd:c:hv',
                 array_keys($this->longOptions)
             );
-        } catch (Exception $t) {
+        } catch (PHPUnitException $t) {
             $this->showError($t->getMessage());
         }
 
@@ -909,7 +909,7 @@ class Command
     {
         try {
             Fileloader::checkAndLoad($filename);
-        } catch (Exception $e) {
+        } catch (PHPUnitException $e) {
             $this->showError($e->getMessage());
         }
     }

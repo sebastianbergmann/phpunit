@@ -12,7 +12,7 @@ namespace PHPUnit\Util\PHP;
 
 use __PHP_Incomplete_Class;
 use ErrorException;
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\Test;
@@ -68,7 +68,7 @@ abstract class AbstractPhpProcess
      *
      * Then $stderrRedirection is TRUE, STDERR is redirected to STDOUT.
      *
-     * @throws Exception
+     * @throws PHPUnitException
      *
      * @param bool $stderrRedirection
      */
@@ -190,7 +190,7 @@ abstract class AbstractPhpProcess
      * @param Test       $test
      * @param TestResult $result
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public function runTestJob($job, Test $test, TestResult $result)
     {
@@ -250,7 +250,7 @@ abstract class AbstractPhpProcess
      *
      * @return array
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     abstract public function runJob($job, array $settings = []);
 
@@ -285,7 +285,7 @@ abstract class AbstractPhpProcess
         if (!empty($stderr)) {
             $result->addError(
                 $test,
-                new Exception(trim($stderr)),
+                new PHPUnitException(trim($stderr)),
                 $time
             );
         } else {
@@ -305,7 +305,7 @@ abstract class AbstractPhpProcess
 
                 $result->addError(
                     $test,
-                    new Exception(trim($stdout), 0, $e),
+                    new PHPUnitException(trim($stdout), 0, $e),
                     $time
                 );
             }
@@ -387,7 +387,7 @@ abstract class AbstractPhpProcess
      *
      * @param TestFailure $error
      *
-     * @return Exception
+     * @return PHPUnitException
      *
      * @see    https://github.com/sebastianbergmann/phpunit/issues/74
      */
