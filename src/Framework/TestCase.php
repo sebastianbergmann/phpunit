@@ -2418,7 +2418,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     {
         $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
 
-        if ($this->runTestInSeparateProcess || $this->inIsolation ||
+        if ($this->runTestInSeparateProcess ||
+            $this->inIsolation ||
             (!$backupGlobals && !$this->backupStaticAttributes)) {
             return;
         }
