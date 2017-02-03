@@ -444,6 +444,34 @@ class TestRunner extends BaseTestRunner
                 $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
             }
 
+            if (isset($arguments['configuration'])) {
+                $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
+
+                foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
+                    $this->codeCoverageFilter->addDirectoryToWhitelist(
+                        $dir['path'],
+                        $dir['suffix'],
+                        $dir['prefix']
+                    );
+                }
+
+                foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
+                    $this->codeCoverageFilter->addFileToWhitelist($file);
+                }
+
+                foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
+                    $this->codeCoverageFilter->removeDirectoryFromWhitelist(
+                        $dir['path'],
+                        $dir['suffix'],
+                        $dir['prefix']
+                    );
+                }
+
+                foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
+                    $this->codeCoverageFilter->removeFileFromWhitelist($file);
+                }
+            }
+
             $result->setCodeCoverage($codeCoverage);
         }
 
@@ -976,42 +1004,6 @@ class TestRunner extends BaseTestRunner
             if (isset($testdoxGroupConfiguration['exclude']) &&
                 !isset($arguments['testdoxExcludeGroups'])) {
                 $arguments['testdoxExcludeGroups'] = $testdoxGroupConfiguration['exclude'];
-            }
-
-            if ((isset($arguments['coverageClover']) ||
-                isset($arguments['coverageCrap4J']) ||
-                isset($arguments['coverageHtml']) ||
-                isset($arguments['coveragePHP']) ||
-                isset($arguments['coverageText']) ||
-                isset($arguments['coverageXml'])) &&
-                $this->runtime->canCollectCodeCoverage()) {
-                $filterConfiguration                             = $arguments['configuration']->getFilterConfiguration();
-                $arguments['addUncoveredFilesFromWhitelist']     = $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist'];
-                $arguments['processUncoveredFilesFromWhitelist'] = $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist'];
-
-                foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                    $this->codeCoverageFilter->addDirectoryToWhitelist(
-                        $dir['path'],
-                        $dir['suffix'],
-                        $dir['prefix']
-                    );
-                }
-
-                foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                    $this->codeCoverageFilter->addFileToWhitelist($file);
-                }
-
-                foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
-                    $this->codeCoverageFilter->removeDirectoryFromWhitelist(
-                        $dir['path'],
-                        $dir['suffix'],
-                        $dir['prefix']
-                    );
-                }
-
-                foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
-                    $this->codeCoverageFilter->removeFileFromWhitelist($file);
-                }
             }
         }
 
