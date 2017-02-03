@@ -390,16 +390,10 @@ class TestRunner extends BaseTestRunner
             $codeCoverageReports = 0;
         }
 
-        if ($codeCoverageReports > 0) {
-            if (!$this->runtime->canCollectCodeCoverage()) {
-                $this->writeMessage('Error', 'No code coverage driver is available');
+        if ($codeCoverageReports > 0 && !$this->runtime->canCollectCodeCoverage()) {
+            $this->writeMessage('Error', 'No code coverage driver is available');
 
-                $codeCoverageReports = 0;
-            } elseif (!isset($arguments['whitelist']) && !$this->codeCoverageFilter->hasWhitelist()) {
-                $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
-
-                $codeCoverageReports = 0;
-            }
+            $codeCoverageReports = 0;
         }
 
         $this->printer->write("\n");
@@ -472,6 +466,14 @@ class TestRunner extends BaseTestRunner
                 }
             }
 
+            if (!$this->codeCoverageFilter->hasWhitelist()) {
+                $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
+
+                $codeCoverageReports = 0;
+            }
+        }
+
+        if ($codeCoverageReports > 0) {
             $result->setCodeCoverage($codeCoverage);
         }
 
