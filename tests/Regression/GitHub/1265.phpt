@@ -1,5 +1,5 @@
 --TEST--
-GH-1265: Could not use "PHPUnit_Runner_StandardTestSuiteLoader" as loader
+GH-1265: Could not use "PHPUnit\Runner\StandardTestSuiteLoader" as loader
 --FILE--
 <?php
 

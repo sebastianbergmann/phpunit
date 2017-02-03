@@ -45,7 +45,7 @@ use PHPUnit\TextUI\ResultPrinter;
  *          failOnRisky="false"
  *          extensionsDirectory="tools/phpunit.d"
  *          printerClass="PHPUnit\TextUI\ResultPrinter"
- *          testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+ *          testSuiteLoaderClass="PHPUnit\Runner\StandardTestSuiteLoader"
  *          beStrictAboutChangesToGlobalState="false"
  *          beStrictAboutCoversAnnotation="false"
  *          beStrictAboutOutputDuringTests="false"

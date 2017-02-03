@@ -69,7 +69,7 @@ class IsType extends Constraint
         if (!isset($this->types[$type])) {
             throw new Exception(
                 sprintf(
-                    'Type specified for PHPUnit_Framework_Constraint_IsType <%s> ' .
+                    'Type specified for PHPUnit\Framework\Constraint\IsType <%s> ' .
                     'is not a valid type.',
                     $type
                 )

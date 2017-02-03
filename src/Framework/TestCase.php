@@ -1034,7 +1034,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     {
         if ($this->name === null) {
             throw new Exception(
-                'PHPUnit_Framework_TestCase::$name must not be null.'
+                'PHPUnit\Framework\TestCase::$name must not be null.'
             );
         }
 

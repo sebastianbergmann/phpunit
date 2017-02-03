@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Util\Configuration;
@@ -831,14 +832,14 @@ class Command
         if (class_exists($loaderClass, false)) {
             $class = new ReflectionClass($loaderClass);
 
-            if ($class->implementsInterface('PHPUnit_Runner_TestSuiteLoader') &&
+            if ($class->implementsInterface(TestSuiteLoader::class) &&
                 $class->isInstantiable()
             ) {
                 return $class->newInstance();
             }
         }
 
-        if ($loaderClass == 'PHPUnit_Runner_StandardTestSuiteLoader') {
+        if ($loaderClass == StandardTestSuiteLoader::class) {
             return;
         }
 

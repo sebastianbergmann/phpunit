@@ -15,6 +15,7 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Runner\Version;
 use ReflectionClass;
 use ReflectionException;
@@ -404,7 +405,7 @@ class Test
         }
 
         if (is_array($data) && empty($data)) {
-            throw new PHPUnit_Framework_SkippedTestError;
+            throw new SkippedTestError;
         }
 
         if ($data !== null) {
