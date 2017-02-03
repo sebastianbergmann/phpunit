@@ -2177,15 +2177,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     private function snapshotGlobalState()
     {
-        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
-
-        if ($this->runTestInSeparateProcess || $this->inIsolation ||
-            (!$backupGlobals && !$this->backupStaticAttributes)
-        ) {
+        if ($this->runTestInSeparateProcess ||
+            $this->inIsolation ||
+            (!$this->backupGlobals === true && !$this->backupStaticAttributes)) {
             return;
         }
 
-        $this->snapshot = $this->createGlobalStateSnapshot($backupGlobals);
+        $this->snapshot = $this->createGlobalStateSnapshot($this->backupGlobals === true);
     }
 
     private function restoreGlobalState()
@@ -2194,13 +2192,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             return;
         }
 
-        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
-
         if ($this->beStrictAboutChangesToGlobalState) {
             try {
                 $this->compareGlobalStateSnapshots(
                     $this->snapshot,
-                    $this->createGlobalStateSnapshot($backupGlobals)
+                    $this->createGlobalStateSnapshot($this->backupGlobals === true)
                 );
             } catch (RiskyTestError $rte) {
                 // Intentionally left empty
@@ -2209,7 +2205,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         $restorer = new Restorer;
 
-        if ($backupGlobals) {
+        if ($this->backupGlobals === true) {
             $restorer->restoreGlobalVariables($this->snapshot);
         }
 
