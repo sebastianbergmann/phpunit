@@ -608,7 +608,7 @@ class PHPUnit_Util_Test
             $numMatches = count($matches[0]);
 
             for ($i = 0; $i < $numMatches; ++$i) {
-                $annotations[$matches['name'][$i]][] = $matches['value'][$i];
+                $annotations[$matches['name'][$i]][] = (string)$matches['value'][$i];
             }
         }
 
