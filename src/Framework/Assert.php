@@ -65,14 +65,14 @@ abstract class PHPUnit_Framework_Assert
         if (!(is_array($subset) || $subset instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
                 1,
-                'array or ArrayAccess'
+                'array'
             );
         }
 
         if (!(is_array($array) || $array instanceof ArrayAccess)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(
                 2,
-                'array or ArrayAccess'
+                'array'
             );
         }
 
