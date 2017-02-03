@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 6.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [6.0.2] - 2017-MM-DD
+## [6.0.2] - 2017-02-03
 
 ### Fixed
 
