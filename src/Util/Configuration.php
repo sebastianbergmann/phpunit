@@ -12,7 +12,7 @@ namespace PHPUnit\Util;
 use DOMElement;
 use DOMXPath;
 use File_Iterator_Facade;
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TextUI\ResultPrinter;
 
@@ -185,7 +185,7 @@ class Configuration
         $realpath = realpath($filename);
 
         if ($realpath === false) {
-            throw new Exception(
+            throw new PHPUnitException(
                 sprintf(
                     'Could not read "%s".',
                     $filename

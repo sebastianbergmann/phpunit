@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util\PHP;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 
 /**
  * Windows utility for PHP sub-processes.
@@ -26,7 +26,7 @@ class WindowsPhpProcess extends DefaultPhpProcess
     protected function getHandles()
     {
         if (false === $stdout_handle = tmpfile()) {
-            throw new Exception(
+            throw new PHPUnitException(
                 'A temporary file could not be created; verify that your TEMP environment variable is writable'
             );
         }

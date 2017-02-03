@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 
 /**
  * Command-line options parsing class.
@@ -82,7 +82,7 @@ class Getopt
             if (($spec = strstr($short_options, $opt)) === false ||
                 $arg[$i] == ':'
             ) {
-                throw new Exception(
+                throw new PHPUnitException(
                     "unrecognized option -- $opt"
                 );
             }
@@ -99,7 +99,7 @@ class Getopt
                         break;
                     } elseif (list(, $opt_arg) = each($args)) {
                     } else {
-                        throw new Exception(
+                        throw new PHPUnitException(
                             "option requires an argument -- $opt"
                         );
                     }
@@ -136,7 +136,7 @@ class Getopt
             if ($opt_rest != '' && $opt[0] != '=' && $i + 1 < $count &&
                 $opt == substr($long_options[$i + 1], 0, $opt_len)
             ) {
-                throw new Exception(
+                throw new PHPUnitException(
                     "option --$opt is ambiguous"
                 );
             }
@@ -146,13 +146,13 @@ class Getopt
                     if (!strlen($opt_arg) &&
                         !(list(, $opt_arg) = each($args))
                     ) {
-                        throw new Exception(
+                        throw new PHPUnitException(
                             "option --$opt requires an argument"
                         );
                     }
                 }
             } elseif ($opt_arg) {
-                throw new Exception(
+                throw new PHPUnitException(
                     "option --$opt doesn't allow an argument"
                 );
             }
@@ -163,6 +163,6 @@ class Getopt
             return;
         }
 
-        throw new Exception("unrecognized option --$opt");
+        throw new PHPUnitException("unrecognized option --$opt");
     }
 }

@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 
 /**
  * Utility class that can print to STDOUT or write to a file.
@@ -38,7 +38,7 @@ class Printer
      *
      * @param mixed $out
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public function __construct($out = null)
     {
@@ -48,7 +48,7 @@ class Printer
                     $out = explode(':', str_replace('socket://', '', $out));
 
                     if (count($out) != 2) {
-                        throw new Exception;
+                        throw new PHPUnitException;
                     }
 
                     $this->out = fsockopen($out[0], $out[1]);

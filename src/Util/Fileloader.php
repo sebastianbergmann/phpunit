@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 
 /**
  * Utility methods to load PHP sourcefiles.
@@ -24,14 +24,14 @@ class Fileloader
      *
      * @return string
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public static function checkAndLoad($filename)
     {
         $includePathFilename = stream_resolve_include_path($filename);
 
         if (!$includePathFilename || !is_readable($includePathFilename)) {
-            throw new Exception(
+            throw new PHPUnitException(
                 sprintf('Cannot open file "%s".' . "\n", $filename)
             );
         }

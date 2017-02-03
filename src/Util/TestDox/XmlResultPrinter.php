@@ -12,7 +12,7 @@ namespace PHPUnit\Util\TestDox;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestListener;
@@ -41,7 +41,7 @@ class XmlResultPrinter extends Printer implements TestListener
     private $prettifier;
 
     /**
-     * @var Exception
+     * @var PHPUnitException
      */
     private $exception;
 
@@ -215,7 +215,7 @@ class XmlResultPrinter extends Printer implements TestListener
         }
 
         if ($this->exception !== null) {
-            if ($this->exception instanceof Exception) {
+            if ($this->exception instanceof PHPUnitException) {
                 $steps = $this->exception->getSerializableTrace();
             } else {
                 $steps = $this->exception->getTrace();

@@ -12,7 +12,7 @@ namespace PHPUnit\TextUI;
 
 use PHP_Timer;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
@@ -138,7 +138,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param int|string $numberOfColumns
      * @param bool       $reverse
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80, $reverse = false)
     {

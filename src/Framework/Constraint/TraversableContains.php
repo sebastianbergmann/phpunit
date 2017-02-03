@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Util\InvalidArgumentHelper;
 use SplObjectStorage;
 
@@ -39,7 +39,7 @@ class TraversableContains extends Constraint
      * @param bool  $checkForObjectIdentity
      * @param bool  $checkForNonObjectIdentity
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public function __construct($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
     {

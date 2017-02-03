@@ -10,12 +10,12 @@
 
 namespace PHPUnit\Framework\Error;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 
 /**
  * Wrapper for PHP errors.
  */
-class Error extends Exception
+class Error extends PHPUnitException
 {
     /**
      * Constructor.

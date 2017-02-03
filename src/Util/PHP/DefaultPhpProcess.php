@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util\PHP;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 
 /**
  * Default utility for PHP sub-processes.
@@ -34,7 +34,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
      *
      * @return array
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public function runJob($job, array $settings = [])
     {
@@ -42,7 +42,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
             if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
                 file_put_contents($this->tempFile, $job) === false
             ) {
-                throw new Exception(
+                throw new PHPUnitException(
                     'Unable to write temporary file'
                 );
             }
@@ -71,7 +71,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
      *
      * @return array
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     protected function runProcess($job, $settings)
     {
@@ -104,7 +104,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
         );
 
         if (!is_resource($process)) {
-            throw new Exception(
+            throw new PHPUnitException(
                 'Unable to spawn worker process'
             );
         }
@@ -129,7 +129,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
                     break;
                 } elseif ($n === 0) {
                     proc_terminate($process, 9);
-                    throw new Exception(sprintf('Job execution aborted after %d seconds', $this->timeout));
+                    throw new PHPUnitException(sprintf('Job execution aborted after %d seconds', $this->timeout));
                 } elseif ($n > 0) {
                     foreach ($r as $pipe) {
                         $pipeOffset = 0;
@@ -196,7 +196,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
      * @param resource $pipe
      * @param string   $job
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     protected function process($pipe, $job)
     {

@@ -14,7 +14,7 @@ use DOMDocument;
 use DOMElement;
 use DOMNode;
 use DOMText;
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use ReflectionClass;
 
 /**
@@ -51,11 +51,11 @@ class Xml
         }
 
         if (!is_string($actual)) {
-            throw new Exception('Could not load XML from ' . gettype($actual));
+            throw new PHPUnitException('Could not load XML from ' . gettype($actual));
         }
 
         if ($actual === '') {
-            throw new Exception('Could not load XML from empty string');
+            throw new PHPUnitException('Could not load XML from empty string');
         }
 
         // Required for XInclude on Windows.
@@ -99,7 +99,7 @@ class Xml
 
         if ($loaded === false || ($strict && $message !== '')) {
             if ($filename !== '') {
-                throw new Exception(
+                throw new PHPUnitException(
                     sprintf(
                         'Could not load "%s".%s',
                         $filename,
@@ -110,7 +110,7 @@ class Xml
                 if ($message === '') {
                     $message = 'Could not load XML for unknown reason';
                 }
-                throw new Exception($message);
+                throw new PHPUnitException($message);
             }
         }
 
@@ -134,7 +134,7 @@ class Xml
         error_reporting($reporting);
 
         if ($contents === false) {
-            throw new Exception(
+            throw new PHPUnitException(
                 sprintf(
                     'Could not read "%s".',
                     $filename

@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Util\InvalidArgumentHelper;
 
 /**
@@ -22,7 +22,7 @@ class Callback extends Constraint
     /**
      * @param callable $callback
      *
-     * @throws Exception
+     * @throws PHPUnitException
      */
     public function __construct($callback)
     {

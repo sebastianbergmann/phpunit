@@ -11,7 +11,7 @@
 namespace PHPUnit\Util\Log;
 
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\Exception as PHPUnitException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
@@ -184,7 +184,7 @@ class TeamCity extends ResultPrinter
         }
     }
 
-    public function printIgnoredTest($testName, Exception $e)
+    public function printIgnoredTest($testName, \Exception $e)
     {
         $this->printEvent(
             'testIgnored',
@@ -328,15 +328,15 @@ class TeamCity extends ResultPrinter
     }
 
     /**
-     * @param Exception $e
+     * @param \Exception $e
      *
      * @return string
      */
-    private static function getMessage(Exception $e)
+    private static function getMessage(\Exception $e)
     {
         $message = '';
 
-        if (!$e instanceof Exception) {
+        if (!$e instanceof PHPUnitException) {
             if (strlen(get_class($e)) != 0) {
                 $message = $message . get_class($e);
             }
@@ -350,11 +350,11 @@ class TeamCity extends ResultPrinter
     }
 
     /**
-     * @param Exception $e
+     * @param \Exception $e
      *
      * @return string
      */
-    private static function getDetails(Exception $e)
+    private static function getDetails(\Exception $e)
     {
         $stackTrace = Filter::getFilteredStacktrace($e);
         $previous   = $e->getPrevious();
