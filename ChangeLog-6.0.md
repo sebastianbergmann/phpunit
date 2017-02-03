@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 6.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.0.1] - 2017-MM-DD
+
+### Fixed
+
+* Fixed [#2462](https://github.com/sebastianbergmann/phpunit/issues/2462): Code Coverage blacklist is filled even if no code coverage data is to be collected
+
 ## [6.0.0] - 2017-02-03
 
 ### Added
@@ -55,5 +61,6 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * DbUnit is no longer bundled in the PHAR distribution of PHPUnit
 * PHPUnit is no longer supported on PHP 5.6
 
+[6.0.1]: https://github.com/sebastianbergmann/phpunit/compare/6.0.0...6.0.1
 [6.0.0]: https://github.com/sebastianbergmann/phpunit/compare/5.7...6.0.0
 
