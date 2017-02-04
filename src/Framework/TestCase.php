@@ -528,6 +528,24 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @return int|string
+     *
+     */
+    public function getExpectedExceptionCode()
+    {
+        return $this->expectedExceptionCode;
+    }
+
+    /**
+     * @return string
+     *
+     */
+    public function getExpectedExceptionMessage()
+    {
+        return $this->expectedExceptionMessage;
+    }
+
+    /**
      * @param mixed      $exception
      * @param string     $message
      * @param int|string $code
