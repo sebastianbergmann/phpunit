@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 6.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.0.4] - 2017-02-04
+
+### Fixed
+
+* Fixed [#2470](https://github.com/sebastianbergmann/phpunit/issues/2470): PHPUnit 6.0 does not work with PHP 7.0.0-7.0.12
+
 ## [6.0.3] - 2017-02-04
 
 ### Fixed
@@ -75,6 +81,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * DbUnit is no longer bundled in the PHAR distribution of PHPUnit
 * PHPUnit is no longer supported on PHP 5.6
 
+[6.0.4]: https://github.com/sebastianbergmann/phpunit/compare/6.0.3...6.0.4
 [6.0.3]: https://github.com/sebastianbergmann/phpunit/compare/6.0.2...6.0.3
 [6.0.2]: https://github.com/sebastianbergmann/phpunit/compare/6.0.1...6.0.2
 [6.0.1]: https://github.com/sebastianbergmann/phpunit/compare/6.0.0...6.0.1
