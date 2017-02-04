@@ -153,7 +153,7 @@ EOF;
     {
         $this->setPhpContent('');
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(PHPUnit\Runner\Exception::class);
         $this->expectExceptionMessage('Invalid PHPT file');
 
         $this->testCase->run();
@@ -170,7 +170,7 @@ Something
 EOF
         );
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(PHPUnit\Runner\Exception::class);
         $this->expectExceptionMessage('Invalid PHPT file');
 
         $this->testCase->run();
@@ -189,7 +189,7 @@ echo "Hello world!\n";
 EOF
         );
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(PHPUnit\Runner\Exception::class);
         $this->expectExceptionMessage('Invalid PHPT file');
 
         $this->testCase->run();
