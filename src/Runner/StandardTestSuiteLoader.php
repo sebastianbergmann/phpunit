@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner;
 
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Fileloader;
 use PHPUnit\Util\Filesystem;

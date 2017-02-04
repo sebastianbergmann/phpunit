@@ -12,7 +12,6 @@ namespace PHPUnit\Runner;
 use PHP_Timer;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\Test;
