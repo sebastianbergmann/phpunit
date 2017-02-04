@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\Exception;
-
 /**
  * Constraint that asserts that the value it is evaluated for is of a
  * specified type.
@@ -60,14 +58,14 @@ class IsType extends Constraint
     /**
      * @param string $type
      *
-     * @throws Exception
+     * @throws \PHPUnit\Framework\Exception
      */
     public function __construct($type)
     {
         parent::__construct();
 
         if (!isset($this->types[$type])) {
-            throw new Exception(
+            throw new \PHPUnit\Framework\Exception(
                 sprintf(
                     'Type specified for PHPUnit\Framework\Constraint\IsType <%s> ' .
                     'is not a valid type.',

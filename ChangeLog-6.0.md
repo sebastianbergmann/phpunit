@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#2460](https://github.com/sebastianbergmann/phpunit/issues/2460): Strange error in tests after update to PHPUnit 6
 * Fixed [#2467](https://github.com/sebastianbergmann/phpunit/issues/2467): Process Isolation does not work when using PHPUnit from PHAR
 
 ## [6.0.2] - 2017-02-03
