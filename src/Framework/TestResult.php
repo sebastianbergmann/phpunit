@@ -21,7 +21,7 @@ use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
+use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCoveredCodeNotExecutedException;
 use SebastianBergmann\CodeCoverage\MissingCoversAnnotationException as OriginalMissingCoversAnnotationException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
@@ -819,7 +819,7 @@ class TestResult implements Countable
                         $time
                     );
                 }
-            } catch (CodeCoverageException $cce) {
+            } catch (OriginalCodeCoverageException $cce) {
                 $error = true;
 
                 if (!isset($e)) {
