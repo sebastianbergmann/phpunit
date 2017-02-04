@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Util\RegularExpression;
+use PHPUnit\Util\RegularExpression as RegularExpressionUtil;
 
 /**
  */
@@ -39,7 +39,7 @@ class ExceptionMessageRegularExpression extends Constraint
      */
     protected function matches($other)
     {
-        $match = RegularExpression::safeMatch($this->expectedMessageRegExp, $other->getMessage());
+        $match = RegularExpressionUtil::safeMatch($this->expectedMessageRegExp, $other->getMessage());
 
         if (false === $match) {
             throw new \PHPUnit\Framework\Exception(
