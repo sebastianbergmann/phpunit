@@ -45,8 +45,7 @@ class PHPUnit_Util_Getopt
                 break;
             }
 
-            if ($arg[0] != '-' ||
-                (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
+            if ($arg[0] != '-' || (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
                 $non_opts[] = $args[$i];
                 continue;
             } elseif (strlen($arg) > 1 && $arg[1] == '-') {
@@ -77,8 +76,7 @@ class PHPUnit_Util_Getopt
             $opt     = $arg[$i];
             $opt_arg = null;
 
-            if (($spec = strstr($short_options, $opt)) === false ||
-                $arg[$i] == ':') {
+            if (($spec = strstr($short_options, $opt)) === false || $arg[$i] == ':') {
                 throw new PHPUnit_Framework_Exception(
                     "unrecognized option -- $opt"
                 );
@@ -139,8 +137,7 @@ class PHPUnit_Util_Getopt
 
             if (substr($long_opt, -1) == '=') {
                 if (substr($long_opt, -2) != '==') {
-                    if (!strlen($opt_arg) &&
-                        !(list(, $opt_arg) = each($args))) {
+                    if (!strlen($opt_arg) && !(list(, $opt_arg) = each($args))) {
                         throw new PHPUnit_Framework_Exception(
                             "option --$opt requires an argument"
                         );
