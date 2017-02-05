@@ -14,7 +14,7 @@
 interface PHPUnit_Framework_MockObject_Builder_ParametersMatch extends PHPUnit_Framework_MockObject_Builder_Match
 {
     /**
-     * Sets the parameters to match for, each parameter to this funtion will
+     * Sets the parameters to match for, each parameter to this function will
      * be part of match. To perform specific matches or constraints create a
      * new PHPUnit_Framework_Constraint and use it for the parameter.
      * If the parameter value is not a constraint it will use the
