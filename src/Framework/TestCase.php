@@ -2087,7 +2087,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
         if (!empty($this->data)) {
             if (is_int($this->dataName)) {
-                $buffer .= sprintf(' with data set #%d', $this->dataName);
+                $buffer .= sprintf(' with data set %d', $this->dataName);
             } else {
                 $buffer .= sprintf(' with data set "%s"', $this->dataName);
             }
