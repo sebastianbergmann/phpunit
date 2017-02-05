@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.7 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.7.11] - 2017-02-05
+
+### Fixed
+
+* Deprecation errors when used with PHP 7.2
+
 ## [5.7.10] - 2017-02-04
 
 ### Fixed
@@ -93,6 +99,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 * The `--tap` and `--log-tap` commandline options have been deprecated
 * The `--self-update` and `--self-upgrade` commandline options have been deprecated (PHAR binary only)
 
+[5.7.11]: https://github.com/sebastianbergmann/phpunit/compare/5.7.10...5.7.11
 [5.7.10]: https://github.com/sebastianbergmann/phpunit/compare/5.7.9...5.7.10
 [5.7.9]: https://github.com/sebastianbergmann/phpunit/compare/5.7.8...5.7.9
 [5.7.8]: https://github.com/sebastianbergmann/phpunit/compare/5.7.7...5.7.8

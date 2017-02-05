@@ -32,7 +32,7 @@ class PHPUnit_Runner_Version
         }
 
         if (self::$version === null) {
-            $version       = new Version('5.7.10', dirname(dirname(__DIR__)));
+            $version       = new Version('5.7.11', dirname(dirname(__DIR__)));
             self::$version = $version->getVersion();
         }
 
