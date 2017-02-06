@@ -479,7 +479,7 @@ class Util_ConfigurationTest extends PHPUnit_Framework_TestCase
 
     public function testTestSuiteConfigurationForASingleFileInASuite()
     {
-        $configuration = Configuration::getInstance(
+        $configuration = PHPUnit_Util_Configuration::getInstance(
             dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.one-file-suite.xml'
         );
 
