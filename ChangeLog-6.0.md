@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 6.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.0.6] - 2017-MM-DD
+
+### Fixed
+
+* Fixed [#2474](https://github.com/sebastianbergmann/phpunit/issues/2474): `--globals-backup` commandline option is not recognized
+
 ## [6.0.5] - 2017-02-05
 
 ### Fixed
@@ -87,6 +93,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * DbUnit is no longer bundled in the PHAR distribution of PHPUnit
 * PHPUnit is no longer supported on PHP 5.6
 
+[6.0.6]: https://github.com/sebastianbergmann/phpunit/compare/6.0.5...6.0.6
 [6.0.5]: https://github.com/sebastianbergmann/phpunit/compare/6.0.4...6.0.5
 [6.0.4]: https://github.com/sebastianbergmann/phpunit/compare/6.0.3...6.0.4
 [6.0.3]: https://github.com/sebastianbergmann/phpunit/compare/6.0.2...6.0.3
