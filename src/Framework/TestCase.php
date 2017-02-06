@@ -57,7 +57,7 @@ use Throwable;
  *
  * To define a TestCase
  *
- *   1) Implement a subclass of PHPUnit_Framework_TestCase.
+ *   1) Implement a subclass of PHPUnit\Framework\TestCase.
  *   2) Define instance variables that store the state of the fixture.
  *   3) Initialize the fixture state by overriding setUp().
  *   4) Clean-up after a test by overriding tearDown().
@@ -69,7 +69,7 @@ use Throwable;
  *
  * <code>
  * <?php
- * class MathTest extends PHPUnit_Framework_TestCase
+ * class MathTest extends PHPUnit\Framework\TestCase
  * {
  *     public $value1;
  *     public $value2;
