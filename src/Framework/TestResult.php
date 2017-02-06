@@ -363,8 +363,17 @@ class PHPUnit_Framework_TestResult implements Countable
             $this->topTestSuite = $suite;
         }
 
+        $exception = null;
         foreach ($this->listeners as $listener) {
-            $listener->startTestSuite($suite);
+            try {
+                $listener->startTestSuite($suite);
+            } catch (\Exception $e) {
+                $exception = $exception ?: $e;
+            }
+        }
+
+        if ($exception) {
+            throw $exception;
         }
     }
 
@@ -377,8 +386,17 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
+        $exception = null;
         foreach ($this->listeners as $listener) {
-            $listener->endTestSuite($suite);
+            try {
+                $listener->endTestSuite($suite);
+            } catch (\Exception $e) {
+                $exception = $exception ?: $e;
+            }
+        }
+
+        if ($exception) {
+            throw $exception;
         }
     }
 
@@ -392,8 +410,17 @@ class PHPUnit_Framework_TestResult implements Countable
         $this->lastTestFailed = false;
         $this->runTests      += count($test);
 
+        $exception = null;
         foreach ($this->listeners as $listener) {
-            $listener->startTest($test);
+            try {
+                $listener->startTest($test);
+            } catch (\Exception $e) {
+                $exception = $exception ?: $e;
+            }
+        }
+
+        if ($exception) {
+            throw $exception;
         }
     }
 
@@ -405,8 +432,17 @@ class PHPUnit_Framework_TestResult implements Countable
      */
     public function endTest(PHPUnit_Framework_Test $test, $time)
     {
+        $exception = null;
         foreach ($this->listeners as $listener) {
-            $listener->endTest($test, $time);
+            try {
+                $listener->endTest($test, $time);
+            } catch (\Exception $e) {
+                $exception = $exception ?: $e;
+            }
+        }
+
+        if ($exception) {
+            throw $exception;
         }
 
         if (!$this->lastTestFailed && $test instanceof PHPUnit_Framework_TestCase) {
