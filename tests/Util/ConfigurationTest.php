@@ -428,4 +428,16 @@ class Util_ConfigurationTest extends TestCase
 
         $this->assertEquals(['Suite One', 'Suite Two'], $names);
     }
+
+    public function testTestSuiteConfigurationForASingleFileInASuite()
+    {
+        $configuration = Configuration::getInstance(
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.one-file-suite.xml'
+        );
+
+        $config = $configuration->getTestSuiteConfiguration();
+        $tests = $config->tests();
+
+        $this->assertEquals(1, count($tests));
+    }
 }
