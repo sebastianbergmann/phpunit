@@ -58,7 +58,6 @@ class Command
      */
     protected $longOptions = [
         'atleast-version='          => null,
-        'backup-globals'            => null,
         'bootstrap='                => null,
         'colors=='                  => null,
         'columns='                  => null,
@@ -77,6 +76,7 @@ class Command
         'exclude-group='            => null,
         'filter='                   => null,
         'generate-configuration'    => null,
+        'globals-backup'            => null,
         'group='                    => null,
         'help'                      => null,
         'include-path='             => null,
