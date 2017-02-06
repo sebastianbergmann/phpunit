@@ -598,10 +598,6 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                     exit(self::FAILURE_EXIT);
                 }
 
-                if ($arguments['failOnWarning'] && $result->warningCount() > 0) {
-                    exit(self::FAILURE_EXIT);
-                }
-
                 exit(self::SUCCESS_EXIT);
             }
 
@@ -612,6 +608,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if ($result->failureCount() > 0) {
                 exit(self::FAILURE_EXIT);
             }
+
+            if ($arguments['failOnWarning'] && $result->warningCount() > 0) {
+                exit(self::FAILURE_EXIT);
+            }
+
+            exit(self::SUCCESS_EXIT);
         }
 
         return $result;
