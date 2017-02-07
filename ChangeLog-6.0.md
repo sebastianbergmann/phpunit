@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 * Fixed [#2474](https://github.com/sebastianbergmann/phpunit/issues/2474): `--globals-backup` commandline option is not recognized
 * Fixed [#2475](https://github.com/sebastianbergmann/phpunit/pull/2475): Defining a test suite with only one file does not work
+* Fixed [#2487](https://github.com/sebastianbergmann/phpunit/pull/2487): Wrong default values for `backupGlobals` and `beStrictAboutTestsThatDoNotTestAnything` in `phpunit.xsd`
 
 ## [6.0.5] - 2017-02-05
 
