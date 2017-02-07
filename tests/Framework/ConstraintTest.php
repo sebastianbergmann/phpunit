@@ -995,8 +995,8 @@ Failed asserting that two strings are identical.
 --- Expected
 +++ Actual
 @@ @@
--a
-+b
+-'a'
++'b'
 
 EOF
               ,

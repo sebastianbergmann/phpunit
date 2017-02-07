@@ -85,9 +85,10 @@ class IsIdentical extends Constraint
                 $f = new SebastianBergmann\Comparator\ComparisonFailure(
                     $this->value,
                     $other,
-                    $this->value,
-                    $other
+                    sprintf("'%s'", $this->value),
+                    sprintf("'%s'", $other)
                 );
+
             }
 
             $this->fail($other, $description, $f);
