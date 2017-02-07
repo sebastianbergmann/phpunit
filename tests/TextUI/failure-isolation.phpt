@@ -103,8 +103,8 @@ Failed asserting that two strings are identical.
 --- Expected
 +++ Actual
 @@ @@
--foo
-+bar
+-'foo'
++'bar'
 
 %s:%i
 
