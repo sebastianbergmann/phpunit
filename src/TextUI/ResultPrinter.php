@@ -197,9 +197,9 @@ class ResultPrinter extends Printer implements TestListener
         $this->printErrors($result);
         $this->printWarnings($result);
         $this->printFailures($result);
+        $this->printRisky($result);
 
         if ($this->verbose) {
-            $this->printRisky($result);
             $this->printIncompletes($result);
             $this->printSkipped($result);
         }
