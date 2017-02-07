@@ -370,7 +370,7 @@ class ResultPrinter extends Printer implements TestListener
             if ($result->wasSuccessful()) {
                 $color = 'fg-black, bg-yellow';
 
-                if ($this->verbose) {
+                if ($this->verbose || !$result->allHarmless()) {
                     $this->write("\n");
                 }
 
