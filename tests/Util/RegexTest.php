@@ -32,6 +32,21 @@ class Util_RegexTest extends PHPUnit_Framework_TestCase
         ];
     }
 
+    public function expressionUnifierChecksDataProvider()
+    {
+        return [
+          ['a', '/a/'],
+          ['/a', '/a/'],
+          ['a/', '/a/'],
+          ['a/a', '/a/a/'],
+          ['a/i', '/a/i'],
+          ['a/g', '/a/g'],
+          ['a/m', '/a/m'],
+          ['a/mig', '/a/mig'],
+          ['(a|b|c)', '/(a|b|c)/'],
+        ];
+    }
+
     /**
      * @dataProvider validRegexpProvider
      * @covers       PHPUnit_Util_Regex::pregMatchSafe
@@ -48,5 +63,17 @@ class Util_RegexTest extends PHPUnit_Framework_TestCase
     public function testInvalidRegex($pattern, $subject)
     {
         $this->assertFalse(PHPUnit_Util_Regex::pregMatchSafe($pattern, $subject));
+    }
+
+    /**
+     * @param string $examinedExpression
+     * @param string $expectedExpression
+     *
+     * @dataProvider expressionUnifierChecksDataProvider
+     * @covers PHPUnit_Util_Regex::unifyExpression
+     */
+    public function testItShouldUnifyProvidedStringToRegexCompatible($examinedExpression, $expectedExpression)
+    {
+        $this->assertSame($expectedExpression, PHPUnit_Util_Regex::unifyExpression($examinedExpression));
     }
 }

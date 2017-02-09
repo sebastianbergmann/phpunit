@@ -917,7 +917,10 @@ class PHPUnit_Util_Configuration
         $fileIteratorFacade = new File_Iterator_Facade;
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
-            if ($testSuiteFilter && $directoryNode->parentNode->getAttribute('name') != $testSuiteFilter) {
+            if ($testSuiteFilter && !PHPUnit_Util_Regex::pregMatchSafe(
+                    PHPUnit_Util_Regex::unifyExpression($testSuiteFilter),
+                    $directoryNode->parentNode->getAttribute('name')
+            )) {
                 continue;
             }
 
@@ -965,7 +968,10 @@ class PHPUnit_Util_Configuration
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
-            if ($testSuiteFilter && $fileNode->parentNode->getAttribute('name') != $testSuiteFilter) {
+            if ($testSuiteFilter && !PHPUnit_Util_Regex::pregMatchSafe(
+                    PHPUnit_Util_Regex::unifyExpression($testSuiteFilter),
+                    $fileNode->parentNode->getAttribute('name')
+                )) {
                 continue;
             }
 
