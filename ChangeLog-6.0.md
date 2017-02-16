@@ -40,7 +40,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2461](https://github.com/sebastianbergmann/phpunit/issues/2461): Performance regression in PHPUnit 6.0
-* Fixed [#2462](https://github.com/sebastianbergmann/phpunit/issues/2462): Code Coverage blacklist is filled even if no code coverage data is to be collected
+* Fixed [#2462](https://github.com/sebastianbergmann/phpunit/issues/2462): Code Coverage whitelist is filled even if no code coverage data is to be collected
 
 ## [6.0.0] - 2017-02-03
 
