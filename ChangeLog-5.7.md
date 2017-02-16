@@ -24,7 +24,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 
 ### Fixed
 
-* Fixed [#2462](https://github.com/sebastianbergmann/phpunit/issues/2462): Code Coverage blacklist is filled even if no code coverage data is to be collected
+* Fixed [#2462](https://github.com/sebastianbergmann/phpunit/issues/2462): Code Coverage whitelist is filled even if no code coverage data is to be collected
 
 ## [5.7.9] - 2017-01-28
 
