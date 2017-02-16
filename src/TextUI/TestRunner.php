@@ -465,15 +465,15 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
 
                 $codeCoverageReports = 0;
+
+                unset($codeCoverage);
             }
         }
 
-        if ($codeCoverageReports > 0) {
+        if (isset($codeCoverage)) {
             $result->setCodeCoverage($codeCoverage);
-        }
 
-        if ($codeCoverageReports > 1) {
-            if (isset($arguments['cacheTokens'])) {
+            if ($codeCoverageReports > 1 && isset($arguments['cacheTokens'])) {
                 $codeCoverage->setCacheTokens($arguments['cacheTokens']);
             }
         }
