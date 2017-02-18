@@ -403,20 +403,12 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 [SebastianBergmann\Comparator\Comparator::class]
             );
 
-            $codeCoverage->setAddUncoveredFilesFromWhitelist(
-                $arguments['addUncoveredFilesFromWhitelist']
-            );
-
             $codeCoverage->setCheckForUnintentionallyCoveredCode(
                 $arguments['strictCoverage']
             );
 
             $codeCoverage->setCheckForMissingCoversAnnotation(
                 $arguments['strictCoverage']
-            );
-
-            $codeCoverage->setProcessUncoveredFilesFromWhitelist(
-                $arguments['processUncoveredFilesFromWhitelist']
             );
 
             if (isset($arguments['forceCoversAnnotation'])) {
@@ -435,6 +427,14 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
 
             if (isset($arguments['configuration'])) {
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
+
+                $codeCoverage->setAddUncoveredFilesFromWhitelist(
+                    $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
+                );
+
+                $codeCoverage->setProcessUncoveredFilesFromWhitelist(
+                    $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist']
+                );
 
                 foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
                     $this->codeCoverageFilter->addDirectoryToWhitelist(
