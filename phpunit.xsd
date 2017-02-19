@@ -29,8 +29,8 @@
   <xs:complexType name="whiteListType">
     <xs:complexContent>
       <xs:extension base="filterType">
-        <xs:attribute name="addUncoveredFilesFromWhitelist" default="false" type="xs:boolean"/>
-        <xs:attribute name="processUncoveredFilesFromWhitelist" default="true" type="xs:boolean"/>
+        <xs:attribute name="addUncoveredFilesFromWhitelist" default="true" type="xs:boolean"/>
+        <xs:attribute name="processUncoveredFilesFromWhitelist" default="false" type="xs:boolean"/>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
