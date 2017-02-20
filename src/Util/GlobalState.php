@@ -172,14 +172,7 @@ class GlobalState
      */
     protected static function getSuperGlobalArrays()
     {
-        if (ini_get('register_long_arrays') == '1') {
-            return array_merge(
-                self::$superGlobalArrays,
-                self::$superGlobalArraysLong
-            );
-        } else {
-            return self::$superGlobalArrays;
-        }
+        return self::$superGlobalArrays;
     }
 
     protected static function exportVariable($variable)
