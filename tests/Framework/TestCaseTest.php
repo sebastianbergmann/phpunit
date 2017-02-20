@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestCase;
