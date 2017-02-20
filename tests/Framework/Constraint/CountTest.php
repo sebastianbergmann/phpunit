@@ -24,6 +24,7 @@ class CountTest extends PHPUnit_Framework_TestCase
 
         $countConstraint = new PHPUnit_Framework_Constraint_Count(2);
         $it              = new TestIterator([1, 2]);
+
         $this->assertTrue($countConstraint->evaluate($it, '', true));
     }
 
@@ -59,5 +60,37 @@ class CountTest extends PHPUnit_Framework_TestCase
         $it->next();
         $countConstraint->evaluate($it, '', true);
         $this->assertFalse($it->valid());
+    }
+
+    public function testCountGeneratorsDoNotRewind()
+    {
+        $generatorMaker = new TestGeneratorMaker();
+
+        $countConstraint = new PHPUnit_Framework_Constraint_Count(3);
+
+        $generator = $generatorMaker->create([1, 2, 3]);
+        $this->assertEquals(1, $generator->current());
+        $countConstraint->evaluate($generator, '', true);
+        $this->assertEquals(null, $generator->current());
+
+        $countConstraint = new PHPUnit_Framework_Constraint_Count(2);
+
+        $generator = $generatorMaker->create([1, 2, 3]);
+        $this->assertEquals(1, $generator->current());
+        $generator->next();
+        $this->assertEquals(2, $generator->current());
+        $countConstraint->evaluate($generator, '', true);
+        $this->assertEquals(null, $generator->current());
+
+        $countConstraint = new PHPUnit_Framework_Constraint_Count(1);
+
+        $generator = $generatorMaker->create([1, 2, 3]);
+        $this->assertEquals(1, $generator->current());
+        $generator->next();
+        $this->assertEquals(2, $generator->current());
+        $generator->next();
+        $this->assertEquals(3, $generator->current());
+        $countConstraint->evaluate($generator, '', true);
+        $this->assertEquals(null, $generator->current());
     }
 }
