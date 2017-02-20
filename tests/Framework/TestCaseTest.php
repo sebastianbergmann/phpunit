@@ -169,7 +169,7 @@ class Framework_TestCaseTest extends TestCase
     public function testNoArgTestCasePasses()
     {
         $result = new TestResult;
-        $t      = new TestSuite('NoArgTestCaseTest');
+        $t      = new TestSuite(NoArgTestCaseTest::class);
 
         $t->run($result);
 

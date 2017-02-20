@@ -633,7 +633,7 @@ class TestResult implements Countable
 
         if ($this->convertErrorsToExceptions) {
             $oldErrorHandler = set_error_handler(
-                ['PHPUnit\Util\ErrorHandler', 'handleError'],
+                [\PHPUnit\Util\ErrorHandler::class, 'handleError'],
                 E_ALL | E_STRICT
             );
 

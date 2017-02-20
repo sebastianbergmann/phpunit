@@ -7,8 +7,8 @@ class DependencyTestSuite
     {
         $suite = new TestSuite('Test Dependencies');
 
-        $suite->addTestSuite('DependencySuccessTest');
-        $suite->addTestSuite('DependencyFailureTest');
+        $suite->addTestSuite(DependencySuccessTest::class);
+        $suite->addTestSuite(DependencyFailureTest::class);
 
         return $suite;
     }
