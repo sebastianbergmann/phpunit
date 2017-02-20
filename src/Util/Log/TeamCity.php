@@ -379,9 +379,13 @@ class TeamCity extends ResultPrinter
     {
         if (is_null($value)) {
             return 'null';
-        } elseif (is_bool($value)) {
+        }
+
+        if (is_bool($value)) {
             return $value == true ? 'true' : 'false';
-        } elseif (is_scalar($value)) {
+        }
+
+        if (is_scalar($value)) {
             return print_r($value, true);
         }
     }

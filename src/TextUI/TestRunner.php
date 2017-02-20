@@ -121,11 +121,9 @@ class TestRunner extends BaseTestRunner
                 $test,
                 $arguments
             );
-        } else {
-            throw new Exception(
-                'No test case or test suite found.'
-            );
         }
+
+        throw new Exception('No test case or test suite found.');
     }
 
     /**

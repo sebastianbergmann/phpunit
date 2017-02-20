@@ -54,20 +54,22 @@ class Test
         if ($asString) {
             if ($test instanceof SelfDescribing) {
                 return $test->toString();
-            } else {
-                return get_class($test);
             }
-        } else {
-            if ($test instanceof TestCase) {
-                return [
-                    get_class($test), $test->getName()
-                ];
-            } elseif ($test instanceof SelfDescribing) {
-                return ['', $test->toString()];
-            } else {
-                return ['', get_class($test)];
-            }
+
+            return get_class($test);
         }
+
+        if ($test instanceof TestCase) {
+            return [
+                get_class($test), $test->getName()
+            ];
+        }
+
+        if ($test instanceof SelfDescribing) {
+            return ['', $test->toString()];
+        }
+
+        return ['', get_class($test)];
     }
 
     /**
@@ -775,21 +777,24 @@ class Test
     public static function getSize($className, $methodName)
     {
         $groups = array_flip(self::getGroups($className, $methodName));
-        $size   = self::UNKNOWN;
         $class  = new ReflectionClass($className);
 
         if (isset($groups['large']) ||
             (class_exists('PHPUnit\DbUnit\TestCase', false) &&
                 $class->isSubclassOf('PHPUnit\DbUnit\TestCase'))
         ) {
-            $size = self::LARGE;
-        } elseif (isset($groups['medium'])) {
-            $size = self::MEDIUM;
-        } elseif (isset($groups['small'])) {
-            $size = self::SMALL;
+            return self::LARGE;
         }
 
-        return $size;
+        if (isset($groups['medium'])) {
+            return self::MEDIUM;
+        }
+
+        if (isset($groups['small'])) {
+            return self::SMALL;
+        }
+
+        return self::UNKNOWN;
     }
 
     /**
@@ -811,9 +816,9 @@ class Test
             isset($annotations['method']['runInSeparateProcess'])
         ) {
             return true;
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**
@@ -907,25 +912,27 @@ class Test
             $methodName
         );
 
-        $result = null;
-
         if (isset($annotations['class'][$settingName])) {
             if ($annotations['class'][$settingName][0] == 'enabled') {
-                $result = true;
-            } elseif ($annotations['class'][$settingName][0] == 'disabled') {
-                $result = false;
+                return true;
+            }
+
+            if ($annotations['class'][$settingName][0] == 'disabled') {
+                return false;
             }
         }
 
         if (isset($annotations['method'][$settingName])) {
             if ($annotations['method'][$settingName][0] == 'enabled') {
-                $result = true;
-            } elseif ($annotations['method'][$settingName][0] == 'disabled') {
-                $result = false;
+                return true;
+            }
+
+            if ($annotations['method'][$settingName][0] == 'disabled') {
+                return false;
             }
         }
 
-        return $result;
+        return null;
     }
 
     /**

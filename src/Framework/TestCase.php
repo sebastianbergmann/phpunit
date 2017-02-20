@@ -402,9 +402,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     {
         if ($withDataSet) {
             return $this->name . $this->getDataSetAsString(false);
-        } else {
-            return $this->name;
         }
+
+        return $this->name;
     }
 
     /**
@@ -459,9 +459,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     {
         if (!$this->outputBufferingActive) {
             return $this->output;
-        } else {
-            return ob_get_contents();
         }
+
+        return ob_get_contents();
     }
 
     /**
@@ -1115,9 +1115,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 return;
-            } else {
-                throw $e;
             }
+
+            throw $e;
         }
 
         if ($this->expectedException !== null) {

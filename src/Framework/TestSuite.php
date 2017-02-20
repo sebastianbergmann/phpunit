@@ -411,16 +411,16 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     public function count($preferCache = false)
     {
         if ($preferCache && $this->cachedNumTests !== null) {
-            $numTests = $this->cachedNumTests;
-        } else {
-            $numTests = 0;
-
-            foreach ($this as $test) {
-                $numTests += count($test);
-            }
-
-            $this->cachedNumTests = $numTests;
+            return $this->cachedNumTests;
         }
+
+        $numTests = 0;
+
+        foreach ($this as $test) {
+            $numTests += count($test);
+        }
+
+        $this->cachedNumTests = $numTests;
 
         return $numTests;
     }
@@ -800,9 +800,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     {
         if (isset($this->tests[$index])) {
             return $this->tests[$index];
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

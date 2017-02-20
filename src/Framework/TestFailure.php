@@ -96,15 +96,20 @@ class TestFailure
             if (!empty($buffer)) {
                 $buffer = trim($buffer) . "\n";
             }
-        } elseif ($e instanceof Error) {
-            $buffer = $e->getMessage() . "\n";
-        } elseif ($e instanceof ExceptionWrapper) {
-            $buffer = $e->getClassName() . ': ' . $e->getMessage() . "\n";
-        } else {
-            $buffer = get_class($e) . ': ' . $e->getMessage() . "\n";
+
+            return $buffer;
+
         }
 
-        return $buffer;
+        if ($e instanceof Error) {
+            return $e->getMessage() . "\n";
+        }
+
+        if ($e instanceof ExceptionWrapper) {
+            return $e->getClassName() . ': ' . $e->getMessage() . "\n";
+        }
+
+        return get_class($e) . ': ' . $e->getMessage() . "\n";
     }
 
     /**

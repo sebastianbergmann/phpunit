@@ -64,9 +64,9 @@ class ArraySubset extends Constraint
 
         if ($this->strict) {
             return $other === $patched;
-        } else {
-            return $other == $patched;
         }
+
+        return $other == $patched;
     }
 
     /**
