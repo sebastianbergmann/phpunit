@@ -200,7 +200,7 @@ class Framework_TestCaseTest extends TestCase
     public function testExceptionWithEmptyMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->expectException(RuntimeException::class, '');
+        $test->expectException(RuntimeException::class);
 
         $result = $test->run();
 
@@ -211,7 +211,7 @@ class Framework_TestCaseTest extends TestCase
     public function testExceptionWithNullMessage()
     {
         $test = new ThrowExceptionTestCase('test');
-        $test->expectException(RuntimeException::class, null);
+        $test->expectException(RuntimeException::class);
 
         $result = $test->run();
 
