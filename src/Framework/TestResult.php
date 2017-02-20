@@ -687,6 +687,16 @@ class TestResult implements Countable
             } else {
                 $test->runBare();
             }
+        } catch (PHP_Invoker_TimeoutException $e) {
+            $this->addFailure(
+                $test,
+                new PHPUnit_Framework_RiskyTestError(
+                    $e->getMessage()
+                ),
+                $_timeout
+            );
+
+            $risky = true;
         } catch (PHPUnit_Framework_MockObject_Exception $e) {
             $e = new Warning(
                 $e->getMessage()
