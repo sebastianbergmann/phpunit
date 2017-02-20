@@ -29,18 +29,6 @@ class GlobalState
     ];
 
     /**
-     * @var array
-     */
-    protected static $superGlobalArraysLong = [
-        'HTTP_ENV_VARS',
-        'HTTP_POST_VARS',
-        'HTTP_GET_VARS',
-        'HTTP_COOKIE_VARS',
-        'HTTP_SERVER_VARS',
-        'HTTP_POST_FILES'
-    ];
-
-    /**
      * @return string
      */
     public static function getIncludedFilesAsString()
