@@ -99,6 +99,18 @@
       <xs:element name="directory" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
     </xs:choice>
   </xs:group>
+  <xs:simpleType name="columnsType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:integer"/>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="max"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
   <xs:complexType name="loggersType">
     <xs:sequence>
       <xs:element name="log" type="loggerType" maxOccurs="unbounded"/>
@@ -190,7 +202,7 @@
     <xs:attribute name="bootstrap" type="xs:anyURI"/>
     <xs:attribute name="cacheTokens" type="xs:boolean"/>
     <xs:attribute name="colors" type="xs:boolean" default="false"/>
-    <xs:attribute name="columns" type="xs:integer" default="80"/>
+    <xs:attribute name="columns" type="columnsType" default="80"/>
     <xs:attribute name="convertErrorsToExceptions" type="xs:boolean" default="true"/>
     <xs:attribute name="convertNoticesToExceptions" type="xs:boolean" default="true"/>
     <xs:attribute name="convertWarningsToExceptions" type="xs:boolean" default="true"/>
