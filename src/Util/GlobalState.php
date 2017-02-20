@@ -29,18 +29,6 @@ class GlobalState
     ];
 
     /**
-     * @var array
-     */
-    protected static $superGlobalArraysLong = [
-        'HTTP_ENV_VARS',
-        'HTTP_POST_VARS',
-        'HTTP_GET_VARS',
-        'HTTP_COOKIE_VARS',
-        'HTTP_SERVER_VARS',
-        'HTTP_POST_FILES'
-    ];
-
-    /**
      * @return string
      */
     public static function getIncludedFilesAsString()
@@ -172,14 +160,7 @@ class GlobalState
      */
     protected static function getSuperGlobalArrays()
     {
-        if (ini_get('register_long_arrays') == '1') {
-            return array_merge(
-                self::$superGlobalArrays,
-                self::$superGlobalArraysLong
-            );
-        } else {
-            return self::$superGlobalArrays;
-        }
+        return self::$superGlobalArrays;
     }
 
     protected static function exportVariable($variable)
