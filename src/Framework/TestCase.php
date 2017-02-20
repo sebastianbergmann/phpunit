@@ -1676,13 +1676,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param bool   $callOriginalConstructor
      * @param bool   $callOriginalClone
      * @param bool   $callAutoload
-     * @param bool   $cloneArguments
      *
      * @return object
      *
      * @throws Exception
      */
-    protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false)
+    protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)
     {
         return $this->getMockObjectGenerator()->getObjectForTrait(
             $traitName,
@@ -1690,8 +1689,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $traitClassName,
             $callOriginalConstructor,
             $callOriginalClone,
-            $callAutoload,
-            $cloneArguments
+            $callAutoload
         );
     }
 
