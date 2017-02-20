@@ -7,8 +7,8 @@ class StopOnWarningTestSuite
     {
         $suite = new TestSuite('Test Warnings');
 
-        $suite->addTestSuite('NoTestCases');
-        $suite->addTestSuite('CoverageClassTest');
+        $suite->addTestSuite(NoTestCases::class);
+        $suite->addTestSuite(CoverageClassTest::class);
 
         return $suite;
     }

@@ -33,68 +33,68 @@ class Util_TestTest extends TestCase
     {
         $this->assertArraySubset(
           ['class' => 'FooBarBaz', 'code' => null, 'message' => ''],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testOne')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testOne')
         );
 
         $this->assertArraySubset(
           ['class' => 'Foo_Bar_Baz', 'code' => null, 'message' => ''],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testTwo')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testTwo')
         );
 
         $this->assertArraySubset(
-          ['class' => 'Foo\Bar\Baz', 'code' => null, 'message' => ''],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testThree')
+          ['class' => \Foo\Bar\Baz::class, 'code' => null, 'message' => ''],
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testThree')
         );
 
         $this->assertArraySubset(
           ['class' => 'ほげ', 'code' => null, 'message' => ''],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testFour')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testFour')
         );
 
         $this->assertArraySubset(
           ['class' => 'Class', 'code' => 1234, 'message' => 'Message'],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testFive')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testFive')
         );
 
         $this->assertArraySubset(
           ['class' => 'Class', 'code' => 1234, 'message' => 'Message'],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testSix')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSix')
         );
 
         $this->assertArraySubset(
           ['class' => 'Class', 'code' => 'ExceptionCode', 'message' => 'Message'],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testSeven')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSeven')
         );
 
         $this->assertArraySubset(
           ['class' => 'Class', 'code' => 0, 'message' => 'Message'],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testEight')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testEight')
         );
 
         $this->assertArraySubset(
           ['class' => 'Class', 'code' => ExceptionTest::ERROR_CODE, 'message' => ExceptionTest::ERROR_MESSAGE],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testNine')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testNine')
         );
 
         $this->assertArraySubset(
           ['class' => 'Class', 'code' => null, 'message' => ''],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testSingleLine')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSingleLine')
         );
 
         $this->assertArraySubset(
           ['class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE],
-          \PHPUnit\Util\Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testConstants')
+          \PHPUnit\Util\Test::getExpectedException(My\Space\ExceptionNamespaceTest::class, 'testConstants')
         );
 
         // Ensure the Class::CONST expression is only evaluated when the constant really exists
         $this->assertArraySubset(
           ['class' => 'Class', 'code' => 'ExceptionTest::UNKNOWN_CODE_CONSTANT', 'message' => 'ExceptionTest::UNKNOWN_MESSAGE_CONSTANT'],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testUnknownConstants')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testUnknownConstants')
         );
 
         $this->assertArraySubset(
           ['class' => 'Class', 'code' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT', 'message' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT'],
-          \PHPUnit\Util\Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testUnknownConstants')
+          \PHPUnit\Util\Test::getExpectedException(My\Space\ExceptionNamespaceTest::class, 'testUnknownConstants')
         );
     }
 
@@ -102,17 +102,17 @@ class Util_TestTest extends TestCase
     {
         $this->assertArraySubset(
           ['message_regex' => '#regex#'],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testWithRegexMessage')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithRegexMessage')
         );
 
         $this->assertArraySubset(
           ['message_regex' => '#regex#'],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testWithRegexMessageFromClassConstant')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithRegexMessageFromClassConstant')
         );
 
         $this->assertArraySubset(
           ['message_regex' => 'ExceptionTest::UNKNOWN_MESSAGE_REGEX_CONSTANT'],
-          \PHPUnit\Util\Test::getExpectedException('ExceptionTest', 'testWithUnknowRegexMessageFromClassConstant')
+          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithUnknowRegexMessageFromClassConstant')
         );
     }
 
@@ -123,7 +123,7 @@ class Util_TestTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            \PHPUnit\Util\Test::getRequirements('RequirementsTest', $test)
+            \PHPUnit\Util\Test::getRequirements(RequirementsTest::class, $test)
         );
     }
 
@@ -336,7 +336,7 @@ class Util_TestTest extends TestCase
 
         $this->assertEquals(
             $expectedAnnotations,
-            \PHPUnit\Util\Test::getRequirements('RequirementsClassDocBlockTest', 'testMethod')
+            \PHPUnit\Util\Test::getRequirements(RequirementsClassDocBlockTest::class, 'testMethod')
         );
     }
 
@@ -347,7 +347,7 @@ class Util_TestTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            \PHPUnit\Util\Test::getMissingRequirements('RequirementsTest', $test)
+            \PHPUnit\Util\Test::getMissingRequirements(RequirementsTest::class, $test)
         );
     }
 
@@ -425,7 +425,7 @@ class Util_TestTest extends TestCase
      */
     public function testMultipleDataProviders()
     {
-        $dataSets = \PHPUnit\Util\Test::getProvidedData('MultipleDataProviderTest', 'testOne');
+        $dataSets = \PHPUnit\Util\Test::getProvidedData(MultipleDataProviderTest::class, 'testOne');
 
         $this->assertCount(9, $dataSets);
 
@@ -446,7 +446,7 @@ class Util_TestTest extends TestCase
 
     public function testMultipleYieldIteratorDataProviders()
     {
-        $dataSets = \PHPUnit\Util\Test::getProvidedData('MultipleDataProviderTest', 'testTwo');
+        $dataSets = \PHPUnit\Util\Test::getProvidedData(MultipleDataProviderTest::class, 'testTwo');
 
         $this->assertEquals(9, count($dataSets));
 
@@ -710,7 +710,7 @@ class Util_TestTest extends TestCase
                 TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(4, 7)
             ],
             \PHPUnit\Util\Test::getLinesToBeCovered(
-                'CoverageNamespacedFunctionTest',
+                CoverageNamespacedFunctionTest::class,
                 'testFunc'
             )
         );
