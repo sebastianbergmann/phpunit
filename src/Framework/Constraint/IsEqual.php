@@ -158,25 +158,25 @@ class IsEqual extends Constraint
         if (is_string($this->value)) {
             if (strpos($this->value, "\n") !== false) {
                 return 'is equal to <text>';
-            } else {
-                return sprintf(
-                    'is equal to <string:%s>',
-                    $this->value
-                );
-            }
-        } else {
-            if ($this->delta != 0) {
-                $delta = sprintf(
-                    ' with delta <%F>',
-                    $this->delta
-                );
             }
 
             return sprintf(
-                'is equal to %s%s',
-                $this->exporter->export($this->value),
-                $delta
+                'is equal to <string:%s>',
+                $this->value
             );
         }
+
+        if ($this->delta != 0) {
+            $delta = sprintf(
+                ' with delta <%F>',
+                $this->delta
+            );
+        }
+
+        return sprintf(
+            'is equal to %s%s',
+            $this->exporter->export($this->value),
+            $delta
+        );
     }
 }

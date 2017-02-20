@@ -106,12 +106,13 @@ class Xml
                         $message != '' ? "\n" . $message : ''
                     )
                 );
-            } else {
-                if ($message === '') {
-                    $message = 'Could not load XML for unknown reason';
-                }
-                throw new Exception($message);
             }
+
+            if ($message === '') {
+                $message = 'Could not load XML for unknown reason';
+            }
+
+            throw new Exception($message);
         }
 
         return $document;
@@ -264,10 +265,10 @@ class Xml
     {
         if (!self::isUtf8($string)) {
             if (function_exists('mb_convert_encoding')) {
-                $string = mb_convert_encoding($string, 'UTF-8');
-            } else {
-                $string = utf8_encode($string);
+                return mb_convert_encoding($string, 'UTF-8');
             }
+
+            return utf8_encode($string);
         }
 
         return $string;

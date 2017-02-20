@@ -128,9 +128,8 @@ class IsIdentical extends Constraint
         if (is_object($this->value)) {
             return 'is identical to an object of class "' .
                 get_class($this->value) . '"';
-        } else {
-            return 'is identical to ' .
-                $this->exporter->export($this->value);
         }
+
+        return 'is identical to ' . $this->exporter->export($this->value);
     }
 }

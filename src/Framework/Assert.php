@@ -2844,17 +2844,19 @@ abstract class Assert
                 $classOrObject,
                 $attributeName
             );
-        } elseif (is_object($classOrObject)) {
+        }
+
+        if (is_object($classOrObject)) {
             return static::getObjectAttribute(
                 $classOrObject,
                 $attributeName
             );
-        } else {
-            throw InvalidArgumentHelper::factory(
-                1,
-                'class name or object'
-            );
         }
+
+        throw InvalidArgumentHelper::factory(
+            1,
+            'class name or object'
+        );
     }
 
     /**

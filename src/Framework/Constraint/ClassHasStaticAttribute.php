@@ -35,9 +35,9 @@ class ClassHasStaticAttribute extends ClassHasAttribute
             $attribute = $class->getProperty($this->attributeName);
 
             return $attribute->isStatic();
-        } else {
-            return false;
         }
+
+        return false;
     }
 
     /**

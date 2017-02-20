@@ -1008,7 +1008,9 @@ class Configuration
     {
         if (strtolower($value) == 'false') {
             return false;
-        } elseif (strtolower($value) == 'true') {
+        }
+
+        if (strtolower($value) == 'true') {
             return true;
         }
 

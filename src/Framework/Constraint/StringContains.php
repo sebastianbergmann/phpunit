@@ -54,9 +54,9 @@ class StringContains extends Constraint
     {
         if ($this->ignoreCase) {
             return mb_stripos($other, $this->string) !== false;
-        } else {
-            return mb_strpos($other, $this->string) !== false;
         }
+
+        return mb_strpos($other, $this->string) !== false;
     }
 
     /**

@@ -173,9 +173,9 @@ class Command
 
             if ($exit) {
                 exit(TestRunner::SUCCESS_EXIT);
-            } else {
-                return TestRunner::SUCCESS_EXIT;
             }
+
+            return TestRunner::SUCCESS_EXIT;
         }
 
         if ($this->arguments['listSuites']) {
@@ -194,9 +194,9 @@ class Command
 
             if ($exit) {
                 exit(TestRunner::SUCCESS_EXIT);
-            } else {
-                return TestRunner::SUCCESS_EXIT;
             }
+
+            return TestRunner::SUCCESS_EXIT;
         }
 
         unset($this->arguments['test']);

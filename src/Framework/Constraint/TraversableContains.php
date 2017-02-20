@@ -75,7 +75,9 @@ class TraversableContains extends Constraint
             foreach ($other as $element) {
                 if ($this->checkForObjectIdentity && $element === $this->value) {
                     return true;
-                } elseif (!$this->checkForObjectIdentity && $element == $this->value) {
+                }
+
+                if (!$this->checkForObjectIdentity && $element == $this->value) {
                     return true;
                 }
             }
@@ -83,7 +85,9 @@ class TraversableContains extends Constraint
             foreach ($other as $element) {
                 if ($this->checkForNonObjectIdentity && $element === $this->value) {
                     return true;
-                } elseif (!$this->checkForNonObjectIdentity && $element == $this->value) {
+                }
+
+                if (!$this->checkForNonObjectIdentity && $element == $this->value) {
                     return true;
                 }
             }
@@ -101,9 +105,9 @@ class TraversableContains extends Constraint
     {
         if (is_string($this->value) && strpos($this->value, "\n") !== false) {
             return 'contains "' . $this->value . '"';
-        } else {
-            return 'contains ' . $this->exporter->export($this->value);
         }
+
+        return 'contains ' . $this->exporter->export($this->value);
     }
 
     /**
