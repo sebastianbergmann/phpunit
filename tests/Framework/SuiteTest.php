@@ -64,9 +64,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testAddTestSuite()
     {
-        $suite = new TestSuite(
-            'OneTestCase'
-        );
+        $suite = new TestSuite(OneTestCase::class);
 
         $suite->run($this->result);
 
@@ -75,9 +73,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testInheritedTests()
     {
-        $suite = new TestSuite(
-            'InheritedTestCase'
-        );
+        $suite = new TestSuite(InheritedTestCase::class);
 
         $suite->run($this->result);
 
@@ -87,9 +83,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testNoTestCases()
     {
-        $suite = new TestSuite(
-            'NoTestCases'
-        );
+        $suite = new TestSuite(NoTestCases::class);
 
         $suite->run($this->result);
 
@@ -103,7 +97,7 @@ class Framework_SuiteTest extends TestCase
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        new TestSuite('NoTestCaseClass');
+        new TestSuite(NoTestCaseClass::class);
     }
 
     public function testNotExistingTestCase()
@@ -119,27 +113,21 @@ class Framework_SuiteTest extends TestCase
 
     public function testNotPublicTestCase()
     {
-        $suite = new TestSuite(
-            'NotPublicTestCase'
-        );
+        $suite = new TestSuite(NotPublicTestCase::class);
 
         $this->assertCount(2, $suite);
     }
 
     public function testNotVoidTestCase()
     {
-        $suite = new TestSuite(
-            'NotVoidTestCase'
-        );
+        $suite = new TestSuite(NotVoidTestCase::class);
 
         $this->assertCount(1, $suite);
     }
 
     public function testOneTestCase()
     {
-        $suite = new TestSuite(
-            'OneTestCase'
-        );
+        $suite = new TestSuite(OneTestCase::class);
 
         $suite->run($this->result);
 
@@ -151,9 +139,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testShadowedTests()
     {
-        $suite = new TestSuite(
-            'OverrideTestCase'
-        );
+        $suite = new TestSuite(OverrideTestCase::class);
 
         $suite->run($this->result);
 
@@ -162,9 +148,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testBeforeClassAndAfterClassAnnotations()
     {
-        $suite = new TestSuite(
-            'BeforeClassAndAfterClassTest'
-        );
+        $suite = new TestSuite(BeforeClassAndAfterClassTest::class);
 
         BeforeClassAndAfterClassTest::resetProperties();
         $suite->run($this->result);
@@ -175,9 +159,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testBeforeClassWithDataProviders()
     {
-        $suite = new TestSuite(
-            'BeforeClassWithOnlyDataProviderTest'
-        );
+        $suite = new TestSuite(BeforeClassWithOnlyDataProviderTest::class);
 
         BeforeClassWithOnlyDataProviderTest::resetProperties();
         $suite->run($this->result);
@@ -188,9 +170,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testBeforeAnnotation()
     {
-        $test = new TestSuite(
-            'BeforeAndAfterTest'
-        );
+        $test = new TestSuite(BeforeAndAfterTest::class);
 
         BeforeAndAfterTest::resetProperties();
         $result = $test->run();
@@ -201,9 +181,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testTestWithAnnotation()
     {
-        $test = new TestSuite(
-            'TestWithTest'
-        );
+        $test = new TestSuite(TestWithTest::class);
 
         BeforeAndAfterTest::resetProperties();
         $result = $test->run();
@@ -213,7 +191,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testSkippedTestDataProvider()
     {
-        $suite = new TestSuite('DataProviderSkippedTest');
+        $suite = new TestSuite(DataProviderSkippedTest::class);
 
         $suite->run($this->result);
 
@@ -236,7 +214,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testIncompleteTestDataProvider()
     {
-        $suite = new TestSuite('DataProviderIncompleteTest');
+        $suite = new TestSuite(DataProviderIncompleteTest::class);
 
         $suite->run($this->result);
 
@@ -246,9 +224,7 @@ class Framework_SuiteTest extends TestCase
 
     public function testRequirementsBeforeClassHook()
     {
-        $suite = new TestSuite(
-            'RequirementsClassBeforeClassHookTest'
-        );
+        $suite = new TestSuite(RequirementsClassBeforeClassHookTest::class);
 
         $suite->run($this->result);
 

@@ -1092,14 +1092,14 @@ EOF
 
     public function testConstraintIsInstanceOf()
     {
-        $constraint = Assert::isInstanceOf('Exception');
+        $constraint = Assert::isInstanceOf(Exception::class);
 
         $this->assertFalse($constraint->evaluate(new stdClass, '', true));
-        $this->assertTrue($constraint->evaluate(new \Exception, '', true));
+        $this->assertTrue($constraint->evaluate(new Exception, '', true));
         $this->assertEquals('is instance of class "Exception"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
-        $interfaceConstraint = Assert::isInstanceOf('Countable');
+        $interfaceConstraint = Assert::isInstanceOf(Countable::class);
         $this->assertFalse($interfaceConstraint->evaluate(new stdClass, '', true));
         $this->assertTrue($interfaceConstraint->evaluate(new ArrayObject, '', true));
         $this->assertEquals('is instance of interface "Countable"', $interfaceConstraint->toString());
@@ -1124,7 +1124,7 @@ EOF
 
     public function testConstraintIsInstanceOf2()
     {
-        $constraint = Assert::isInstanceOf('Exception');
+        $constraint = Assert::isInstanceOf(Exception::class);
 
         try {
             $constraint->evaluate(new stdClass, 'custom message');
@@ -1147,7 +1147,7 @@ EOF
     public function testConstraintIsNotInstanceOf()
     {
         $constraint = Assert::logicalNot(
-          PHPUnit\Framework\Assert::isInstanceOf('stdClass')
+          PHPUnit\Framework\Assert::isInstanceOf(stdClass::class)
         );
 
         $this->assertFalse($constraint->evaluate(new stdClass, '', true));
@@ -1176,7 +1176,7 @@ EOF
     public function testConstraintIsNotInstanceOf2()
     {
         $constraint = Assert::logicalNot(
-          PHPUnit\Framework\Assert::isInstanceOf('stdClass')
+          PHPUnit\Framework\Assert::isInstanceOf(stdClass::class)
         );
 
         try {
@@ -1573,7 +1573,7 @@ EOF
         $constraint = Assert::callback($callback);
         $this->assertTrue($constraint->evaluate(false,  '', true));
 
-        $callback   = ['Framework_ConstraintTest', 'staticCallbackReturningTrue'];
+        $callback   = [Framework_ConstraintTest::class, 'staticCallbackReturningTrue'];
         $constraint = Assert::callback($callback);
         $this->assertTrue($constraint->evaluate(null, '', true));
 
@@ -1683,13 +1683,13 @@ EOF
     {
         $constraint = Assert::classHasAttribute('privateAttribute');
 
-        $this->assertTrue($constraint->evaluate('ClassWithNonPublicAttributes', '', true));
-        $this->assertFalse($constraint->evaluate('stdClass', '', true));
+        $this->assertTrue($constraint->evaluate(ClassWithNonPublicAttributes::class, '', true));
+        $this->assertFalse($constraint->evaluate(stdClass::class, '', true));
         $this->assertEquals('has attribute "privateAttribute"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate('stdClass');
+            $constraint->evaluate(stdClass::class);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
@@ -1711,7 +1711,7 @@ EOF
         $constraint = Assert::classHasAttribute('privateAttribute');
 
         try {
-            $constraint->evaluate('stdClass', 'custom message');
+            $constraint->evaluate(stdClass::class, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
@@ -1734,13 +1734,13 @@ EOF
           PHPUnit\Framework\Assert::classHasAttribute('privateAttribute')
         );
 
-        $this->assertTrue($constraint->evaluate('stdClass', '', true));
-        $this->assertFalse($constraint->evaluate('ClassWithNonPublicAttributes', '', true));
+        $this->assertTrue($constraint->evaluate(stdClass::class, '', true));
+        $this->assertFalse($constraint->evaluate(ClassWithNonPublicAttributes::class, '', true));
         $this->assertEquals('does not have attribute "privateAttribute"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate('ClassWithNonPublicAttributes');
+            $constraint->evaluate(ClassWithNonPublicAttributes::class);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
@@ -1764,7 +1764,7 @@ EOF
         );
 
         try {
-            $constraint->evaluate('ClassWithNonPublicAttributes', 'custom message');
+            $constraint->evaluate(ClassWithNonPublicAttributes::class, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
@@ -1785,13 +1785,13 @@ EOF
     {
         $constraint = Assert::classHasStaticAttribute('privateStaticAttribute');
 
-        $this->assertTrue($constraint->evaluate('ClassWithNonPublicAttributes', '', true));
-        $this->assertFalse($constraint->evaluate('stdClass', '', true));
+        $this->assertTrue($constraint->evaluate(ClassWithNonPublicAttributes::class, '', true));
+        $this->assertFalse($constraint->evaluate(stdClass::class, '', true));
         $this->assertEquals('has static attribute "privateStaticAttribute"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate('stdClass');
+            $constraint->evaluate(stdClass::class);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
@@ -1813,7 +1813,7 @@ EOF
         $constraint = Assert::classHasStaticAttribute('foo');
 
         try {
-            $constraint->evaluate('stdClass', 'custom message');
+            $constraint->evaluate(stdClass::class, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message
@@ -1836,13 +1836,13 @@ EOF
           PHPUnit\Framework\Assert::classHasStaticAttribute('privateStaticAttribute')
         );
 
-        $this->assertTrue($constraint->evaluate('stdClass', '', true));
-        $this->assertFalse($constraint->evaluate('ClassWithNonPublicAttributes', '', true));
+        $this->assertTrue($constraint->evaluate(stdClass::class, '', true));
+        $this->assertFalse($constraint->evaluate(ClassWithNonPublicAttributes::class, '', true));
         $this->assertEquals('does not have static attribute "privateStaticAttribute"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate('ClassWithNonPublicAttributes');
+            $constraint->evaluate(ClassWithNonPublicAttributes::class);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
               <<<EOF
@@ -1866,7 +1866,7 @@ EOF
         );
 
         try {
-            $constraint->evaluate('ClassWithNonPublicAttributes', 'custom message');
+            $constraint->evaluate(ClassWithNonPublicAttributes::class, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(<<<EOF
 custom message

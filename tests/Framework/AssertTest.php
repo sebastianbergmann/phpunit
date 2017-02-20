@@ -86,14 +86,14 @@ class Framework_AssertTest extends TestCase
     {
         $test = [new Book, new Book];
 
-        $this->assertContainsOnlyInstancesOf('Book', $test);
-        $this->assertContainsOnlyInstancesOf('stdClass', [new stdClass()]);
+        $this->assertContainsOnlyInstancesOf(Book::class, $test);
+        $this->assertContainsOnlyInstancesOf(stdClass::class, [new stdClass()]);
 
         $test2 = [new Author('Test')];
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertContainsOnlyInstancesOf('Book', $test2);
+        $this->assertContainsOnlyInstancesOf(Book::class, $test2);
     }
 
     public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument()
@@ -184,7 +184,7 @@ class Framework_AssertTest extends TestCase
 
     public function testAssertArraySubsetWithStrictCheckAndObjects()
     {
-        $obj       = new \stdClass;
+        $obj       = new stdClass;
         $reference = &$obj;
         $array     = ['a' => $obj];
 
@@ -192,7 +192,7 @@ class Framework_AssertTest extends TestCase
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertArraySubset(['a' => new \stdClass], $array, true);
+        $this->assertArraySubset(['a' => new stdClass], $array, true);
     }
 
     /**
@@ -1622,11 +1622,11 @@ XML;
 
     public function testReadAttribute2()
     {
-        $this->assertEquals('foo', $this->readAttribute('ClassWithNonPublicAttributes', 'publicStaticAttribute'));
-        $this->assertEquals('bar', $this->readAttribute('ClassWithNonPublicAttributes', 'protectedStaticAttribute'));
-        $this->assertEquals('baz', $this->readAttribute('ClassWithNonPublicAttributes', 'privateStaticAttribute'));
-        $this->assertEquals('foo', $this->readAttribute('ClassWithNonPublicAttributes', 'protectedStaticParentAttribute'));
-        $this->assertEquals('foo', $this->readAttribute('ClassWithNonPublicAttributes', 'privateStaticParentAttribute'));
+        $this->assertEquals('foo', $this->readAttribute(ClassWithNonPublicAttributes::class, 'publicStaticAttribute'));
+        $this->assertEquals('bar', $this->readAttribute(ClassWithNonPublicAttributes::class, 'protectedStaticAttribute'));
+        $this->assertEquals('baz', $this->readAttribute(ClassWithNonPublicAttributes::class, 'privateStaticAttribute'));
+        $this->assertEquals('foo', $this->readAttribute(ClassWithNonPublicAttributes::class, 'protectedStaticParentAttribute'));
+        $this->assertEquals('foo', $this->readAttribute(ClassWithNonPublicAttributes::class, 'privateStaticParentAttribute'));
     }
 
     public function testReadAttribute3()
@@ -1654,7 +1654,7 @@ XML;
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        $this->readAttribute('stdClass', '2');
+        $this->readAttribute(stdClass::class, '2');
     }
 
     public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument()
@@ -1675,21 +1675,21 @@ XML;
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        $this->getStaticAttribute('stdClass', null);
+        $this->getStaticAttribute(stdClass::class, null);
     }
 
     public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument2()
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        $this->getStaticAttribute('stdClass', '0');
+        $this->getStaticAttribute(stdClass::class, '0');
     }
 
     public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument3()
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        $this->getStaticAttribute('stdClass', 'foo');
+        $this->getStaticAttribute(stdClass::class, 'foo');
     }
 
     public function testGetObjectAttributeRaisesExceptionForInvalidFirstArgument()
@@ -1928,56 +1928,56 @@ XML;
 
     public function testAssertPublicStaticAttributeEquals()
     {
-        $this->assertAttributeEquals('foo', 'publicStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeEquals('foo', 'publicStaticAttribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertAttributeEquals('bar', 'publicStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeEquals('bar', 'publicStaticAttribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertPublicStaticAttributeNotEquals()
     {
-        $this->assertAttributeNotEquals('bar', 'publicStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeNotEquals('bar', 'publicStaticAttribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertAttributeNotEquals('foo', 'publicStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeNotEquals('foo', 'publicStaticAttribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertProtectedStaticAttributeEquals()
     {
-        $this->assertAttributeEquals('bar', 'protectedStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeEquals('bar', 'protectedStaticAttribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertAttributeEquals('foo', 'protectedStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeEquals('foo', 'protectedStaticAttribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertProtectedStaticAttributeNotEquals()
     {
-        $this->assertAttributeNotEquals('foo', 'protectedStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeNotEquals('foo', 'protectedStaticAttribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertAttributeNotEquals('bar', 'protectedStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeNotEquals('bar', 'protectedStaticAttribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertPrivateStaticAttributeEquals()
     {
-        $this->assertAttributeEquals('baz', 'privateStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeEquals('baz', 'privateStaticAttribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertAttributeEquals('foo', 'privateStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeEquals('foo', 'privateStaticAttribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertPrivateStaticAttributeNotEquals()
     {
-        $this->assertAttributeNotEquals('foo', 'privateStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeNotEquals('foo', 'privateStaticAttribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertAttributeNotEquals('baz', 'privateStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertAttributeNotEquals('baz', 'privateStaticAttribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertClassHasAttributeThrowsException()
@@ -1998,7 +1998,7 @@ XML;
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        $this->assertClassHasAttribute('1', 'ClassWithNonPublicAttributes');
+        $this->assertClassHasAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertClassNotHasAttributeThrowsException()
@@ -2019,7 +2019,7 @@ XML;
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        $this->assertClassNotHasAttribute('1', 'ClassWithNonPublicAttributes');
+        $this->assertClassNotHasAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertClassHasStaticAttributeThrowsException()
@@ -2040,7 +2040,7 @@ XML;
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        $this->assertClassHasStaticAttribute('1', 'ClassWithNonPublicAttributes');
+        $this->assertClassHasStaticAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertClassNotHasStaticAttributeThrowsException()
@@ -2061,7 +2061,7 @@ XML;
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        $this->assertClassNotHasStaticAttribute('1', 'ClassWithNonPublicAttributes');
+        $this->assertClassNotHasStaticAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertObjectHasAttributeThrowsException()
@@ -2082,7 +2082,7 @@ XML;
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        $this->assertObjectHasAttribute('1', 'ClassWithNonPublicAttributes');
+        $this->assertObjectHasAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertObjectNotHasAttributeThrowsException()
@@ -2103,43 +2103,43 @@ XML;
     {
         $this->expectException(PHPUnit\Framework\Exception::class);
 
-        $this->assertObjectNotHasAttribute('1', 'ClassWithNonPublicAttributes');
+        $this->assertObjectNotHasAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testClassHasPublicAttribute()
     {
-        $this->assertClassHasAttribute('publicAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertClassHasAttribute('publicAttribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertClassHasAttribute('attribute', 'ClassWithNonPublicAttributes');
+        $this->assertClassHasAttribute('attribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testClassNotHasPublicAttribute()
     {
-        $this->assertClassNotHasAttribute('attribute', 'ClassWithNonPublicAttributes');
+        $this->assertClassNotHasAttribute('attribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertClassNotHasAttribute('publicAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertClassNotHasAttribute('publicAttribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testClassHasPublicStaticAttribute()
     {
-        $this->assertClassHasStaticAttribute('publicStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertClassHasStaticAttribute('publicStaticAttribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertClassHasStaticAttribute('attribute', 'ClassWithNonPublicAttributes');
+        $this->assertClassHasStaticAttribute('attribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testClassNotHasPublicStaticAttribute()
     {
-        $this->assertClassNotHasStaticAttribute('attribute', 'ClassWithNonPublicAttributes');
+        $this->assertClassNotHasStaticAttribute('attribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertClassNotHasStaticAttribute('publicStaticAttribute', 'ClassWithNonPublicAttributes');
+        $this->assertClassNotHasStaticAttribute('publicStaticAttribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testObjectHasPublicAttribute()
@@ -2344,7 +2344,7 @@ XML;
 
     public function testAssertThatContainsOnlyInstancesOf()
     {
-        $this->assertThat([new Book], $this->containsOnlyInstancesOf('Book'));
+        $this->assertThat([new Book], $this->containsOnlyInstancesOf(Book::class));
     }
 
     public function testAssertThatArrayHasKey()
@@ -2996,11 +2996,11 @@ XML;
 
     public function testAssertInstanceOf()
     {
-        $this->assertInstanceOf('stdClass', new stdClass);
+        $this->assertInstanceOf(stdClass::class, new stdClass);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertInstanceOf('Exception', new stdClass);
+        $this->assertInstanceOf(\Exception::class, new stdClass);
     }
 
     public function testAssertInstanceOfThrowsExceptionForInvalidArgument()
@@ -3015,16 +3015,16 @@ XML;
         $o    = new stdClass;
         $o->a = new stdClass;
 
-        $this->assertAttributeInstanceOf('stdClass', 'a', $o);
+        $this->assertAttributeInstanceOf(stdClass::class, 'a', $o);
     }
 
     public function testAssertNotInstanceOf()
     {
-        $this->assertNotInstanceOf('Exception', new stdClass);
+        $this->assertNotInstanceOf(\Exception::class, new stdClass);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNotInstanceOf('stdClass', new stdClass);
+        $this->assertNotInstanceOf(stdClass::class, new stdClass);
     }
 
     public function testAssertNotInstanceOfThrowsExceptionForInvalidArgument()
@@ -3039,7 +3039,7 @@ XML;
         $o    = new stdClass;
         $o->a = new stdClass;
 
-        $this->assertAttributeNotInstanceOf('Exception', 'a', $o);
+        $this->assertAttributeNotInstanceOf(\Exception::class, 'a', $o);
     }
 
     public function testAssertInternalType()
