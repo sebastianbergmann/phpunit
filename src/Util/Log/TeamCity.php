@@ -384,8 +384,6 @@ class TeamCity extends ResultPrinter
         } elseif (is_scalar($value)) {
             return print_r($value, true);
         }
-
-        return;
     }
 
     /**
