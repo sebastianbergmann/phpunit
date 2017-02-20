@@ -108,7 +108,7 @@ class Framework_TestCaseTest extends TestCase
     public function testExceptionInSetUp()
     {
         $test   = new ExceptionInSetUpTest('testSomething');
-        $result = $test->run();
+        $test->run();
 
         $this->assertTrue($test->setUp);
         $this->assertFalse($test->assertPreConditions);
@@ -120,7 +120,7 @@ class Framework_TestCaseTest extends TestCase
     public function testExceptionInAssertPreConditions()
     {
         $test   = new ExceptionInAssertPreConditionsTest('testSomething');
-        $result = $test->run();
+        $test->run();
 
         $this->assertTrue($test->setUp);
         $this->assertTrue($test->assertPreConditions);
@@ -132,7 +132,7 @@ class Framework_TestCaseTest extends TestCase
     public function testExceptionInTest()
     {
         $test   = new ExceptionInTest('testSomething');
-        $result = $test->run();
+        $test->run();
 
         $this->assertTrue($test->setUp);
         $this->assertTrue($test->assertPreConditions);
@@ -144,7 +144,7 @@ class Framework_TestCaseTest extends TestCase
     public function testExceptionInAssertPostConditions()
     {
         $test   = new ExceptionInAssertPostConditionsTest('testSomething');
-        $result = $test->run();
+        $test->run();
 
         $this->assertTrue($test->setUp);
         $this->assertTrue($test->assertPreConditions);
@@ -156,7 +156,7 @@ class Framework_TestCaseTest extends TestCase
     public function testExceptionInTearDown()
     {
         $test   = new ExceptionInTearDownTest('testSomething');
-        $result = $test->run();
+        $test->run();
 
         $this->assertTrue($test->setUp);
         $this->assertTrue($test->assertPreConditions);
@@ -502,7 +502,7 @@ class Framework_TestCaseTest extends TestCase
     public function testSkipsIfRequiresNonExistingExtension()
     {
         $test   = new RequirementsTest('testTen');
-        $result = $test->run();
+        $test->run();
 
         $this->assertEquals(
             'Extension testExt is required.',
@@ -513,7 +513,7 @@ class Framework_TestCaseTest extends TestCase
     public function testSkipsIfRequiresExtensionWithAMinimumVersion()
     {
         $test   = new RequirementsTest('testSpecificExtensionVersion');
-        $result = $test->run();
+        $test->run();
 
         $this->assertEquals(
             'Extension testExt >= 1.8.0 is required.',
@@ -524,7 +524,7 @@ class Framework_TestCaseTest extends TestCase
     public function testSkipsProvidesMessagesForAllSkippingReasons()
     {
         $test   = new RequirementsTest('testAllPossibleRequirements');
-        $result = $test->run();
+        $test->run();
 
         $this->assertEquals(
             'PHP >= 99-dev is required.' . PHP_EOL .
