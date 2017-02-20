@@ -2637,7 +2637,7 @@ EOF
 
     public function testConstraintSplObjectStorageContains()
     {
-        $object     = new StdClass;
+        $object     = new stdClass;
         $constraint = new TraversableContains($object);
         $this->assertStringMatchesFormat('contains stdClass Object &%s ()', $constraint->toString());
 
@@ -2667,7 +2667,7 @@ EOF
 
     public function testConstraintSplObjectStorageContains2()
     {
-        $object     = new StdClass;
+        $object     = new stdClass;
         $constraint = new TraversableContains($object);
 
         try {
