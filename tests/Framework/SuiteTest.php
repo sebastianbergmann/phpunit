@@ -173,7 +173,7 @@ class Framework_SuiteTest extends TestCase
         $test = new TestSuite(BeforeAndAfterTest::class);
 
         BeforeAndAfterTest::resetProperties();
-        $result = $test->run();
+        $test->run();
 
         $this->assertEquals(2, BeforeAndAfterTest::$beforeWasRun);
         $this->assertEquals(2, BeforeAndAfterTest::$afterWasRun);
