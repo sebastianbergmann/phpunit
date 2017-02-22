@@ -59,6 +59,7 @@ class Command
     protected $longOptions = [
         'atleast-version='          => null,
         'bootstrap='                => null,
+        'check-version'             => null,
         'colors=='                  => null,
         'columns='                  => null,
         'configuration='            => null,
@@ -280,10 +281,6 @@ class Command
      */
     protected function handleArguments(array $argv)
     {
-        if (defined('__PHPUNIT_PHAR__')) {
-            $this->longOptions['check-version'] = null;
-        }
-
         try {
             $this->options = Getopt::getopt(
                 $argv,
@@ -1032,12 +1029,9 @@ Miscellaneous Options:
   -h|--help                   Prints this usage information.
   --version                   Prints the version and exits.
   --atleast-version <min>     Checks that version is greater than min and exits.
+  --check-version             Check whether PHPUnit is the latest version.
 
 EOT;
-
-        if (defined('__PHPUNIT_PHAR__')) {
-            print "\n  --check-version             Check whether PHPUnit is the latest version.";
-        }
     }
 
     /**
