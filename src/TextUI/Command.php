@@ -924,8 +924,11 @@ class Command
         $isOutdated    = version_compare($latestVersion, Version::id(), '>');
 
         if ($isOutdated) {
-            print "You are not using the latest version of PHPUnit.\n";
-            print 'Use "phpunit --self-upgrade" to install PHPUnit ' . $latestVersion . "\n";
+            printf(
+                "You are not using the latest version of PHPUnit.\n" .
+                "The latest version is PHPUnit %s.\n",
+                $latestVersion
+            );
         } else {
             print "You are using the latest version of PHPUnit.\n";
         }
