@@ -26,7 +26,7 @@ trait TeamCityUtils
         $params = [
             'name'    => $this->getTestName($test),
             'message' => TestFailure::exceptionToString($e),
-            'details' => ' ' . Filter::getFilteredStacktrace($e),
+            'details' => ' ' . str_replace("\n", "\n ", Filter::getFilteredStacktrace($e)),
             'duration'=> floor($time * 1000)
         ];
 
