@@ -21,7 +21,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ##teamcity[testStdOut name='testSomething' out='|nExceptionInTest::testSomething' flowId='%d']
 
-##teamcity[testFailed name='testSomething' message='Exception: |n' details=' /%s/tests/_files/ExceptionInTest.php:%d|n' duration='%d' flowId='%d']
+##teamcity[testFailed name='testSomething' message='Exception: |n' details=' /%s/tests/_files/ExceptionInTest.php:%d|n ' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testSomething' duration='%s' flowId='%d']
 
