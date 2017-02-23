@@ -990,6 +990,11 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
     }
 
+    public function isTestCase()
+    {
+        return $this->testCase;
+    }
+
     /**
      * Template Method that is called before the tests
      * of this test suite are run.
