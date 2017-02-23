@@ -95,6 +95,10 @@ class TeamCity extends ResultPrinter
             $this->hasPrintedTestCount = true;
         }
 
+        if (empty($suite->getName())) {
+            return;
+        }
+        
         $this->message(
             'testSuiteStarted',
             [
