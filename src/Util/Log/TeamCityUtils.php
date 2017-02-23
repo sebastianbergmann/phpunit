@@ -33,9 +33,9 @@ trait TeamCityUtils
         if ($e instanceof ExpectationFailedException) {
             if ($comparisonFailure = $e->getComparisonFailure()) {
                 $params += [
-                'type'     => 'testFailed',
-                'expected' => $comparisonFailure->getExpectedAsString(),
-                'actual'   => $comparisonFailure->getActualAsString()
+                    'type'     => 'testFailed',
+                    'expected' => $comparisonFailure->getExpectedAsString(),
+                    'actual'   => $comparisonFailure->getActualAsString()
                 ];
             }
         }
