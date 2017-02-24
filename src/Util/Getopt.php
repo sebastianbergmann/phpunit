@@ -90,20 +90,17 @@ class Getopt
             }
 
             if (strlen($spec) > 1 && $spec[1] == ':') {
-                if (strlen($spec) > 2 && $spec[2] == ':') {
-                    if ($i + 1 < $argLen) {
-                        $opts[] = [$opt, substr($arg, $i + 1)];
-                        break;
-                    }
-                } else {
-                    if ($i + 1 < $argLen) {
-                        $opts[] = [$opt, substr($arg, $i + 1)];
-                        break;
-                    } elseif (false === $opt_arg = next($args)) {
+                if ($i + 1 < $argLen) {
+                    $opts[] = [$opt, substr($arg, $i + 1)];
+                    break;
+                }
+                if (!(strlen($spec) > 2 && $spec[2] == ':')) {
+                    if (false === $opt_arg = current($args)) {
                         throw new Exception(
                             "option requires an argument -- $opt"
                         );
                     }
+                    next($args);
                 }
             }
 
@@ -145,11 +142,12 @@ class Getopt
             if (substr($long_opt, -1) == '=') {
                 if (substr($long_opt, -2) != '==') {
                     if (!strlen($opt_arg)) {
-                        if (false === $opt_arg = next($args)) {
+                        if (false === $opt_arg = current($args)) {
                             throw new Exception(
                                 "option --$opt requires an argument"
                             );
                         }
+                        next($args);
                     }
                 }
             } elseif ($opt_arg) {
