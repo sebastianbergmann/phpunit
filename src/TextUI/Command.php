@@ -769,7 +769,7 @@ class Command
                     $file
                 );
             }
-            
+
             if (!isset($this->arguments['testsuite']) && isset($phpunitConfiguration['defaultTestSuite'])) {
                 $this->arguments['testsuite'] = $phpunitConfiguration['defaultTestSuite'];
             }
