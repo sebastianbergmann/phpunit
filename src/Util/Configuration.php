@@ -46,6 +46,7 @@ use PHPUnit\TextUI\ResultPrinter;
  *          extensionsDirectory="tools/phpunit.d"
  *          printerClass="PHPUnit\TextUI\ResultPrinter"
  *          testSuiteLoaderClass="PHPUnit\Runner\StandardTestSuiteLoader"
+ *          defaultTestSuite=""
  *          beStrictAboutChangesToGlobalState="false"
  *          beStrictAboutCoversAnnotation="false"
  *          beStrictAboutOutputDuringTests="false"
@@ -713,6 +714,12 @@ class Configuration
             );
         }
 
+        if ($root->hasAttribute('defaultTestSuite')) {
+            $result['defaultTestSuite'] = (string) $root->getAttribute(
+                'defaultTestSuite'
+            );
+        }
+        
         if ($root->getAttribute('testSuiteLoaderFile')) {
             $result['testSuiteLoaderFile'] = $this->toAbsolutePath(
                 (string) $root->getAttribute('testSuiteLoaderFile')

@@ -18,6 +18,7 @@
          extensionsDirectory="/tmp"
          printerClass="PHPUnit\TextUI\ResultPrinter"
          testSuiteLoaderClass="PHPUnit\Runner\StandardTestSuiteLoader"
+         defaultTestSuite="My Test Suite"
          beStrictAboutChangesToGlobalState="false"
          beStrictAboutOutputDuringTests="false"
          beStrictAboutResourceUsageDuringSmallTests="false"
