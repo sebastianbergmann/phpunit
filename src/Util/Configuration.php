@@ -720,7 +720,7 @@ class Configuration
                 'defaultTestSuite'
             );
         }
-        
+
         if ($root->getAttribute('testSuiteLoaderFile')) {
             $result['testSuiteLoaderFile'] = $this->toAbsolutePath(
                 (string) $root->getAttribute('testSuiteLoaderFile')
