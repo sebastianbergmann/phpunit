@@ -231,6 +231,7 @@
     <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>
     <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit_Runner_StandardTestSuiteLoader"/>
     <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>
+    <xs:attribute name="defaultTestSuite" type="xs:string" default=""/>
     <xs:attribute name="verbose" type="xs:boolean" default="false"/>
     <xs:attribute name="stderr" type="xs:boolean" default="false"/>
     <xs:attribute name="reverseDefectList" type="xs:boolean" default="false"/>
