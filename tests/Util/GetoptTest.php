@@ -163,4 +163,50 @@ class Util_GetoptTest extends PHPUnit_Framework_TestCase
 
         Getopt::getopt($args, '', ['foo']);
     }
+
+    public function testItHandlesLongParametesWithValues()
+    {
+        $command = 'command parameter-0 --exec parameter-1 --conf config.xml --optn parameter-2 --optn=content-of-o parameter-n';
+        $args    = explode(' ', $command);
+        unset($args[0]);
+        $expected = [
+            [
+                ['--exec', null],
+                ['--conf', 'config.xml'],
+                ['--optn', null],
+                ['--optn', 'content-of-o'],
+            ],
+            [
+                'parameter-0',
+                'parameter-1',
+                'parameter-2',
+                'parameter-n',
+            ],
+        ];
+        $actual = Getopt::getopt($args, '', ['exec', 'conf=', 'optn==']);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testItHandlesShortParametesWithValues()
+    {
+        $command = 'command parameter-0 -x parameter-1 -c config.xml -o parameter-2 -ocontent-of-o parameter-n';
+        $args    = explode(' ', $command);
+        unset($args[0]);
+        $expected = [
+            [
+                ['x', null],
+                ['c', 'config.xml'],
+                ['o', null],
+                ['o', 'content-of-o'],
+            ],
+            [
+                'parameter-0',
+                'parameter-1',
+                'parameter-2',
+                'parameter-n',
+            ],
+        ];
+        $actual = Getopt::getopt($args, 'xc:o::');
+        $this->assertEquals($expected, $actual);
+    }
 }
