@@ -319,6 +319,7 @@ class Util_ConfigurationTest extends TestCase
             'extensionsDirectory'                        => '/tmp',
             'printerClass'                               => 'PHPUnit\TextUI\ResultPrinter',
             'testSuiteLoaderClass'                       => 'PHPUnit\Runner\StandardTestSuiteLoader',
+            'defaultTestSuite'                           => 'My Test Suite',
             'verbose'                                    => false,
             'timeoutForSmallTests'                       => 1,
             'timeoutForMediumTests'                      => 10,
