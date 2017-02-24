@@ -1,0 +1,10 @@
+<phpunit defaultTestSuite="Second">
+    <testsuites>
+        <testsuite name="First">
+            <file>../_files/DummyFooTest.php</file>
+        </testsuite>
+        <testsuite name="Second">
+            <file>../_files/DummyBarTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
