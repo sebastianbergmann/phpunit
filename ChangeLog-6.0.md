@@ -4,14 +4,14 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ## [6.0.8] - 2017-MM-DD
 
+### Changed
+
+* The `--check-version` commandline option is now also available when PHPUnit is installed using Composer
+
 ### Fixed
 
 * Fixed [#2478](https://github.com/sebastianbergmann/phpunit/issues/2478): Tests that take too long are not reported as risky test
 * Fixed [#2527](https://github.com/sebastianbergmann/phpunit/issues/2527): Output of `--check-version` suggests removed `--self-upgrade`
-
-### Changed
-
-* The `--check-version` commandline option is now also available when PHPUnit is installed using Composer
 
 ## [6.0.7] - 2017-02-19
 
