@@ -184,11 +184,7 @@ class TeamCity extends ResultPrinter
      */
     public function startTestSuite(TestSuite $suite)
     {
-        if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
-            $this->flowId = getmypid();
-        } else {
-            $this->flowId = false;
-        }
+        $this->getFlowId();
 
         if (!$this->isSummaryTestCountPrinted) {
             $this->isSummaryTestCountPrinted = true;
@@ -287,16 +283,5 @@ class TeamCity extends ResultPrinter
             ]
         );
     }
-
-
-
-
-
-
-
-
-
-
-
 
 }

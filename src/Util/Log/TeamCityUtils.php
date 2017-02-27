@@ -22,6 +22,17 @@ trait TeamCityUtils
      */
     private $flowId;
 
+    protected function getFlowId()
+    {
+        if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
+            $this->flowId = getmypid();
+        } else {
+            $this->flowId = false;
+        }
+
+        return $this->flowId;
+    }
+
     /**
      * @param Exception $e
      *
