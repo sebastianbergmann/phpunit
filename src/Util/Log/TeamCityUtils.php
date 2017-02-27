@@ -72,7 +72,7 @@ trait TeamCityUtils
     protected function getDetails(Exception $e)
     {
         $stackTrace = Filter::getFilteredStacktrace($e);
-        $previous = $e->getPrevious();
+        $previous   = $e->getPrevious();
 
         while ($previous) {
             $stackTrace .= "\nCaused by\n" .
@@ -126,7 +126,7 @@ trait TeamCityUtils
     protected function getFileName($className)
     {
         $reflectionClass = new ReflectionClass($className);
-        $fileName = $reflectionClass->getFileName();
+        $fileName        = $reflectionClass->getFileName();
 
         return $fileName;
     }
@@ -142,7 +142,7 @@ trait TeamCityUtils
         $this->message(
             'testIgnored',
             [
-                'name' => $testName,
+                'name'    => $testName,
                 'message' => self::getMessage($e),
                 'details' => self::getDetails($e),
             ]
@@ -177,13 +177,13 @@ trait TeamCityUtils
     /**
      * Writes a `testFailed` service message to the TeamCity build log.
      *
-     * @param Test                            $test
+     * @param Test       $test
      * @param \Exception $e
      */
     protected function testFailed(Test $test, \Exception $e)
     {
         $parameters = [
-            'name' => $test->getName(),
+            'name'    => $test->getName(),
             'message' => $this->getMessage($e),
             'details' => $this->getDetails($e),
         ];
@@ -205,8 +205,8 @@ trait TeamCityUtils
                 }
 
                 if (!is_null($actualString) && !is_null($expectedString)) {
-                    $parameters['type'] = 'comparisonFailure';
-                    $parameters['actual'] = $actualString;
+                    $parameters['type']     = 'comparisonFailure';
+                    $parameters['actual']   = $actualString;
                     $parameters['expected'] = $expectedString;
                 }
             }
