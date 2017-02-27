@@ -184,8 +184,6 @@ class TeamCity extends ResultPrinter
      */
     public function startTestSuite(TestSuite $suite)
     {
-        $this->getFlowId();
-
         if (!$this->isSummaryTestCountPrinted) {
             $this->isSummaryTestCountPrinted = true;
 
