@@ -97,7 +97,7 @@ class TeamCity extends ResultPrinter
      */
     public function addIncompleteTest(Test $test, \Exception $e, $time)
     {
-        $this->printIgnoredTest($test->getName(), $e);
+        $this->testIgnored($test->getName(), $e);
     }
 
     /**
@@ -124,10 +124,10 @@ class TeamCity extends ResultPrinter
         $testName = $test->getName();
         if ($this->startedTestName != $testName) {
             $this->startTest($test);
-            $this->printIgnoredTest($testName, $e);
+            $this->testIgnored($testName, $e);
             $this->endTest($test, $time);
         } else {
-            $this->printIgnoredTest($testName, $e);
+            $this->testIgnored($testName, $e);
         }
     }
 

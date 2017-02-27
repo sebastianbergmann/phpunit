@@ -117,7 +117,7 @@ trait TeamCityUtils
         return $fileName;
     }
 
-    public function printIgnoredTest($testName, Exception $e)
+    public function testIgnored($testName, Exception $e)
     {
         $this->message(
             'testIgnored',
@@ -134,7 +134,7 @@ trait TeamCityUtils
      * to output.
      *
      * @see https://confluence.jetbrains.com/display/TCD9/Build+Script+Interaction+with+TeamCity
-     * 
+     *
      * @param string $name
      * @param array  $attributes
      */
