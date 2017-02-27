@@ -142,8 +142,8 @@ trait TeamCityUtils
     {
         $this->write("\n##teamcity[$eventName");
 
-        if ($this->flowId) {
-            $params['flowId'] = $this->flowId;
+        if ($flowId = $this->getFlowId()) {
+            $params['flowId'] = $flowId;
         }
 
         foreach ($params as $key => $value) {
