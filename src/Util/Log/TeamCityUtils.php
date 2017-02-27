@@ -17,20 +17,13 @@ use ReflectionClass;
 
 trait TeamCityUtils
 {
-    /**
-     * @var string
-     */
-    private $flowId;
-
     protected function getFlowId()
     {
-        if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
-            $this->flowId = getmypid();
-        } else {
-            $this->flowId = false;
+        if (stripos(ini_get('disable_functions'), 'getmypid') !== false) {
+            return false;
         }
 
-        return $this->flowId;
+        return getmypid();
     }
 
     /**
