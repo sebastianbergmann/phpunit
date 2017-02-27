@@ -19,6 +19,14 @@ use ReflectionClass;
 
 trait TeamCityUtils
 {
+    /**
+     * The flow identifier is a unique identifier of the messages flow in a build used to
+     * distinguish separate processes running in parallel.
+     *
+     * @see https://confluence.jetbrains.com/display/TCD9/Build+Script+Interaction+with+TeamCity#BuildScriptInteractionwithTeamCity-MessageFlowId
+     *
+     * @return bool|int
+     */
     protected function getFlowId()
     {
         if (stripos(ini_get('disable_functions'), 'getmypid') !== false) {
@@ -29,6 +37,9 @@ trait TeamCityUtils
     }
 
     /**
+     * Applies formatting rules to an exception for use in the `message`
+     * attribute of a `testFailed` TeamCity service message.
+     *
      * @param Exception $e
      *
      * @return string
@@ -51,6 +62,9 @@ trait TeamCityUtils
     }
 
     /**
+     * Applies formatting rules to an exception for use in the `details`
+     * attribute of a `testFailed` TeamCity service message.
+     *
      * @param Exception $e
      *
      * @return string
@@ -117,6 +131,12 @@ trait TeamCityUtils
         return $fileName;
     }
 
+    /**
+     * Writes a `testIgnored` service message to the TeamCity build log.
+     *
+     * @param           $testName
+     * @param Exception $e
+     */
     public function testIgnored($testName, Exception $e)
     {
         $this->message(
@@ -155,10 +175,12 @@ trait TeamCityUtils
     }
 
     /**
+     * Writes a `testFailed` service message to the TeamCity build log.
+     *
      * @param Test                            $test
      * @param \Exception $e
      */
-    protected function testFailed(Test $test, \Exception $e): void
+    protected function testFailed(Test $test, \Exception $e)
     {
         $parameters = [
             'name' => $test->getName(),
