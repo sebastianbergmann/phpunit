@@ -11,14 +11,12 @@
 namespace PHPUnit\Util\Log;
 
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\TextUI\ResultPrinter;
-use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * A TestListener that generates a logfile of the test execution using the
@@ -101,37 +99,7 @@ class TeamCity extends ResultPrinter
      */
     public function addFailure(Test $test, AssertionFailedError $e, $time)
     {
-        $parameters = [
-            'name'    => $test->getName(),
-            'message' => self::getMessage($e),
-            'details' => self::getDetails($e),
-        ];
-
-        if ($e instanceof ExpectationFailedException) {
-            $comparisonFailure = $e->getComparisonFailure();
-
-            if ($comparisonFailure instanceof ComparisonFailure) {
-                $expectedString = $comparisonFailure->getExpectedAsString();
-
-                if (is_null($expectedString) || empty($expectedString)) {
-                    $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
-                }
-
-                $actualString = $comparisonFailure->getActualAsString();
-
-                if (is_null($actualString) || empty($actualString)) {
-                    $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
-                }
-
-                if (!is_null($actualString) && !is_null($expectedString)) {
-                    $parameters['type']     = 'comparisonFailure';
-                    $parameters['actual']   = $actualString;
-                    $parameters['expected'] = $expectedString;
-                }
-            }
-        }
-
-        $this->printEvent('testFailed', $parameters);
+        $this->testFailed($test, $e);
     }
 
     /**
@@ -281,5 +249,4 @@ class TeamCity extends ResultPrinter
             ]
         );
     }
-
 }

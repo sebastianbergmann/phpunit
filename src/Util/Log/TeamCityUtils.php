@@ -11,8 +11,10 @@
 namespace PHPUnit\Util\Log;
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Util\Filter;
+use PHPUnit\Framework\Test;
 use ReflectionClass;
 
 trait TeamCityUtils
@@ -145,5 +147,44 @@ trait TeamCityUtils
         }
 
         $this->write("]\n");
+    }
+
+    /**
+     * @param Test                            $test
+     * @param \Exception $e
+     */
+    protected function testFailed(Test $test, \Exception $e): void
+    {
+        $parameters = [
+            'name' => $test->getName(),
+            'message' => $this->getMessage($e),
+            'details' => $this->getDetails($e),
+        ];
+
+        if ($e instanceof ExpectationFailedException) {
+            $comparisonFailure = $e->getComparisonFailure();
+
+            if ($comparisonFailure instanceof ComparisonFailure) {
+                $expectedString = $comparisonFailure->getExpectedAsString();
+
+                if (is_null($expectedString) || empty($expectedString)) {
+                    $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
+                }
+
+                $actualString = $comparisonFailure->getActualAsString();
+
+                if (is_null($actualString) || empty($actualString)) {
+                    $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
+                }
+
+                if (!is_null($actualString) && !is_null($expectedString)) {
+                    $parameters['type'] = 'comparisonFailure';
+                    $parameters['actual'] = $actualString;
+                    $parameters['expected'] = $expectedString;
+                }
+            }
+        }
+
+        $this->printEvent('testFailed', $parameters);
     }
 }
