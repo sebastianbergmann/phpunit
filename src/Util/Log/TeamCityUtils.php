@@ -143,8 +143,8 @@ trait TeamCityUtils
             'testIgnored',
             [
                 'name'    => $testName,
-                'message' => self::getMessage($e),
-                'details' => self::getDetails($e),
+                'message' => $this->getMessage($e),
+                'details' => $this->getDetails($e),
             ]
         );
     }
@@ -167,7 +167,7 @@ trait TeamCityUtils
         }
 
         foreach ($attributes as $key => $value) {
-            $escapedValue = self::escapeValue($value);
+            $escapedValue = $this->escapeValue($value);
             $this->write(" $key='$escapedValue'");
         }
 
@@ -195,13 +195,13 @@ trait TeamCityUtils
                 $expectedString = $comparisonFailure->getExpectedAsString();
 
                 if (is_null($expectedString) || empty($expectedString)) {
-                    $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
+                    $expectedString = $this->getPrimitiveValueAsString($comparisonFailure->getExpected());
                 }
 
                 $actualString = $comparisonFailure->getActualAsString();
 
                 if (is_null($actualString) || empty($actualString)) {
-                    $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
+                    $actualString = $this->getPrimitiveValueAsString($comparisonFailure->getActual());
                 }
 
                 if (!is_null($actualString) && !is_null($expectedString)) {

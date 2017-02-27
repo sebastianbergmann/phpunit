@@ -156,13 +156,13 @@ class TeamCity extends ResultPrinter
         $parameters = ['name' => $suiteName];
 
         if (class_exists($suiteName, false)) {
-            $fileName                   = self::getFileName($suiteName);
+            $fileName                   = $this->getFileName($suiteName);
             $parameters['locationHint'] = "php_qn://$fileName::\\$suiteName";
         } else {
             $split = preg_split('/::/', $suiteName);
 
             if (count($split) == 2 && method_exists($split[0], $split[1])) {
-                $fileName                   = self::getFileName($split[0]);
+                $fileName                   = $this->getFileName($split[0]);
                 $parameters['locationHint'] = "php_qn://$fileName::\\$suiteName";
                 $parameters['name']         = $split[1];
             }
@@ -210,7 +210,7 @@ class TeamCity extends ResultPrinter
 
         if ($test instanceof TestCase) {
             $className              = get_class($test);
-            $fileName               = self::getFileName($className);
+            $fileName               = $this->getFileName($className);
             $params['locationHint'] = "php_qn://$fileName::\\$className::$testName";
         }
 
