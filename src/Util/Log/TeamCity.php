@@ -11,17 +11,13 @@
 namespace PHPUnit\Util\Log;
 
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\TextUI\ResultPrinter;
-use PHPUnit\Util\Filter;
-use ReflectionClass;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -30,6 +26,8 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  */
 class TeamCity extends ResultPrinter
 {
+    use TeamCityUtils;
+
     /**
      * @var bool
      */
@@ -39,11 +37,6 @@ class TeamCity extends ResultPrinter
      * @var string
      */
     private $startedTestName;
-
-    /**
-     * @var string
-     */
-    private $flowId;
 
     /**
      * @param string $progress
@@ -184,18 +177,6 @@ class TeamCity extends ResultPrinter
         }
     }
 
-    public function printIgnoredTest($testName, Exception $e)
-    {
-        $this->printEvent(
-            'testIgnored',
-            [
-                'name'    => $testName,
-                'message' => self::getMessage($e),
-                'details' => self::getDetails($e),
-            ]
-        );
-    }
-
     /**
      * A testsuite started.
      *
@@ -307,112 +288,15 @@ class TeamCity extends ResultPrinter
         );
     }
 
-    /**
-     * @param string $eventName
-     * @param array  $params
-     */
-    private function printEvent($eventName, $params = [])
-    {
-        $this->write("\n##teamcity[$eventName");
 
-        if ($this->flowId) {
-            $params['flowId'] = $this->flowId;
-        }
 
-        foreach ($params as $key => $value) {
-            $escapedValue = self::escapeValue($value);
-            $this->write(" $key='$escapedValue'");
-        }
 
-        $this->write("]\n");
-    }
 
-    /**
-     * @param Exception $e
-     *
-     * @return string
-     */
-    private static function getMessage(Exception $e)
-    {
-        $message = '';
 
-        if (!$e instanceof Exception) {
-            if (strlen(get_class($e)) != 0) {
-                $message = $message . get_class($e);
-            }
 
-            if (strlen($message) != 0 && strlen($e->getMessage()) != 0) {
-                $message = $message . ' : ';
-            }
-        }
 
-        return $message . $e->getMessage();
-    }
 
-    /**
-     * @param Exception $e
-     *
-     * @return string
-     */
-    private static function getDetails(Exception $e)
-    {
-        $stackTrace = Filter::getFilteredStacktrace($e);
-        $previous   = $e->getPrevious();
 
-        while ($previous) {
-            $stackTrace .= "\nCaused by\n" .
-                TestFailure::exceptionToString($previous) . "\n" .
-                Filter::getFilteredStacktrace($previous);
 
-            $previous = $previous->getPrevious();
-        }
 
-        return ' ' . str_replace("\n", "\n ", $stackTrace);
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return string
-     */
-    private static function getPrimitiveValueAsString($value)
-    {
-        if (is_null($value)) {
-            return 'null';
-        } elseif (is_bool($value)) {
-            return $value == true ? 'true' : 'false';
-        } elseif (is_scalar($value)) {
-            return print_r($value, true);
-        }
-    }
-
-    /**
-     * @param  $text
-     *
-     * @return string
-     */
-    private static function escapeValue($text)
-    {
-        $text = str_replace('|', '||', $text);
-        $text = str_replace("'", "|'", $text);
-        $text = str_replace("\n", '|n', $text);
-        $text = str_replace("\r", '|r', $text);
-        $text = str_replace(']', '|]', $text);
-        $text = str_replace('[', '|[', $text);
-
-        return $text;
-    }
-
-    /**
-     * @param string $className
-     *
-     * @return string
-     */
-    private static function getFileName($className)
-    {
-        $reflectionClass = new ReflectionClass($className);
-        $fileName        = $reflectionClass->getFileName();
-
-        return $fileName;
-    }
 }
