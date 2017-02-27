@@ -141,7 +141,7 @@ class TeamCity extends ResultPrinter
         if (!$this->isSummaryTestCountPrinted) {
             $this->isSummaryTestCountPrinted = true;
 
-            $this->printEvent(
+            $this->message(
                 'testCount',
                 ['count' => count($suite)]
             );
@@ -168,7 +168,7 @@ class TeamCity extends ResultPrinter
             }
         }
 
-        $this->printEvent('testSuiteStarted', $parameters);
+        $this->message('testSuiteStarted', $parameters);
     }
 
     /**
@@ -194,7 +194,7 @@ class TeamCity extends ResultPrinter
             }
         }
 
-        $this->printEvent('testSuiteFinished', $parameters);
+        $this->message('testSuiteFinished', $parameters);
     }
 
     /**
@@ -214,7 +214,7 @@ class TeamCity extends ResultPrinter
             $params['locationHint'] = "php_qn://$fileName::\\$className::$testName";
         }
 
-        $this->printEvent('testStarted', $params);
+        $this->message('testStarted', $params);
     }
 
     /**
@@ -227,7 +227,7 @@ class TeamCity extends ResultPrinter
     {
         parent::endTest($test, $time);
 
-        $this->printEvent(
+        $this->message(
             'testFinished',
             [
                 'name'     => $test->getName(),

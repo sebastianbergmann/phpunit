@@ -119,7 +119,7 @@ trait TeamCityUtils
 
     public function printIgnoredTest($testName, Exception $e)
     {
-        $this->printEvent(
+        $this->message(
             'testIgnored',
             [
                 'name' => $testName,
@@ -130,18 +130,23 @@ trait TeamCityUtils
     }
 
     /**
-     * @param string $eventName
-     * @param array  $params
+     * Represents a low-level mechanism for writing TeamCity Service Messages
+     * to output.
+     *
+     * @see https://confluence.jetbrains.com/display/TCD9/Build+Script+Interaction+with+TeamCity
+     * 
+     * @param string $name
+     * @param array  $attributes
      */
-    protected function printEvent($eventName, $params = [])
+    protected function message($name, $attributes = [])
     {
-        $this->write("\n##teamcity[$eventName");
+        $this->write("\n##teamcity[$name");
 
         if ($flowId = $this->getFlowId()) {
-            $params['flowId'] = $flowId;
+            $attributes['flowId'] = $flowId;
         }
 
-        foreach ($params as $key => $value) {
+        foreach ($attributes as $key => $value) {
             $escapedValue = self::escapeValue($value);
             $this->write(" $key='$escapedValue'");
         }
@@ -185,6 +190,6 @@ trait TeamCityUtils
             }
         }
 
-        $this->printEvent('testFailed', $parameters);
+        $this->message('testFailed', $parameters);
     }
 }
