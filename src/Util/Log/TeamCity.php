@@ -61,14 +61,7 @@ class TeamCity extends ResultPrinter
      */
     public function addError(Test $test, \Exception $e, $time)
     {
-        $this->printEvent(
-            'testFailed',
-            [
-                'name'    => $test->getName(),
-                'message' => self::getMessage($e),
-                'details' => self::getDetails($e),
-            ]
-        );
+        $this->testFailed($test, $e);
     }
 
     /**
