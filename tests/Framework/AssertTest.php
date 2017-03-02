@@ -928,6 +928,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             [[3, 2, 1], [2, 3, 1], 0, true], // canonicalized comparison
             // floats
             [2.3, 2.5, 0.5],
+            [2.5, 2.3, 0.5],
             [[2.3], [2.5], 0.5],
             [[[2.3]], [[2.5]], 0.5],
             [new Struct(2.3), new Struct(2.5), 0.5],
@@ -2145,6 +2146,15 @@ XML;
     }
 
     /**
+     * @covers PHPUnit_Framework_Assert::assertGreaterThanOrEqual
+     * @dataProvider equalProvider
+     */
+    public function testGreaterThanOrEqualWithEqualArgs($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
+    {
+        $this->assertGreaterThanOrEqual($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
+    }
+
+    /**
      * @covers PHPUnit_Framework_Assert::assertAttributeGreaterThanOrEqual
      */
     public function testAttributeGreaterThanOrEqual()
@@ -2214,6 +2224,15 @@ XML;
         }
 
         $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertLessThanOrEqual
+     * @dataProvider equalProvider
+     */
+    public function testLessThanOrEqualWithEqualArgs($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false)
+    {
+        $this->assertLessThanOrEqual($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
     }
 
     /**
