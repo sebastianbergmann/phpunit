@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#1999](https://github.com/sebastianbergmann/phpunit/issues/1999): Handler is inherited from previous custom option with handler
 * Fixed [#2478](https://github.com/sebastianbergmann/phpunit/issues/2478): Tests that take too long are not reported as risky test
 
 ## [5.7.14] - 2017-02-19
