@@ -25,6 +25,7 @@
          beStrictAboutTodoAnnotatedTests="false"
          beStrictAboutCoversAnnotation="false"
          enforceTimeLimit="false"
+         ignoreDeprecatedCodeUnitsFromCodeCoverage="false"
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60"

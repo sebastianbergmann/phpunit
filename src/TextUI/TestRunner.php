@@ -422,6 +422,12 @@ class TestRunner extends BaseTestRunner
                 );
             }
 
+            if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
+                $codeCoverage->setIgnoreDeprecatedCode(
+                    $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']
+                );
+            }
+
             if (isset($arguments['disableCodeCoverageIgnore'])) {
                 $codeCoverage->setDisableIgnoredLines(true);
             }
@@ -828,6 +834,10 @@ class TestRunner extends BaseTestRunner
 
             if (isset($phpunitConfiguration['strictCoverage']) && !isset($arguments['strictCoverage'])) {
                 $arguments['strictCoverage'] = $phpunitConfiguration['strictCoverage'];
+            }
+
+            if (isset($phpunitConfiguration['ignoreDeprecatedCodeUnitsFromCodeCoverage']) && !isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
+                $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'] = $phpunitConfiguration['ignoreDeprecatedCodeUnitsFromCodeCoverage'];
             }
 
             if (isset($phpunitConfiguration['disallowTestOutput']) && !isset($arguments['disallowTestOutput'])) {

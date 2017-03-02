@@ -53,6 +53,7 @@ use PHPUnit\TextUI\ResultPrinter;
  *          beStrictAboutTestsThatDoNotTestAnything="false"
  *          beStrictAboutTodoAnnotatedTests="false"
  *          enforceTimeLimit="false"
+ *          ignoreDeprecatedCodeUnitsFromCodeCoverage="false"
  *          timeoutForSmallTests="1"
  *          timeoutForMediumTests="10"
  *          timeoutForLargeTests="60"
@@ -776,6 +777,13 @@ class Configuration
         if ($root->hasAttribute('enforceTimeLimit')) {
             $result['enforceTimeLimit'] = $this->getBoolean(
                 (string) $root->getAttribute('enforceTimeLimit'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('ignoreDeprecatedCodeUnitsFromCodeCoverage')) {
+            $result['ignoreDeprecatedCodeUnitsFromCodeCoverage'] = $this->getBoolean(
+                (string) $root->getAttribute('ignoreDeprecatedCodeUnitsFromCodeCoverage'),
                 false
             );
         }

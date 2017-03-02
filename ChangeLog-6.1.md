@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 6.1 release series are documented in this fil
 
 ## [6.1.0] - 2017-04-07
 
+### Added
+
+* Implemented [#2541](https://github.com/sebastianbergmann/phpunit/issues/2541): Implement configuration option to ignore deprecated code from code coverage
+
 ### Changed
 
 * Details about risky tests are now always displayed

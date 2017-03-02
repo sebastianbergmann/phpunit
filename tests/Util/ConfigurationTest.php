@@ -326,7 +326,8 @@ class Util_ConfigurationTest extends TestCase
             'beStrictAboutResourceUsageDuringSmallTests' => false,
             'disallowTodoAnnotatedTests'                 => false,
             'failOnWarning'                              => false,
-            'failOnRisky'                                => false
+            'failOnRisky'                                => false,
+            'ignoreDeprecatedCodeUnitsFromCodeCoverage'  => false
             ],
             $this->configuration->getPHPUnitConfiguration()
         );
