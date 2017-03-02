@@ -11,18 +11,11 @@
 namespace PHPUnit\Util\Log;
 
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\Warning;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestFailure;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\Warning;
 use PHPUnit\TextUI\ResultPrinter;
-use PHPUnit\Util\Filter;
-use ReflectionClass;
-use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * A TestListener that generates a logfile of the test execution using the
@@ -30,389 +23,122 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  */
 class TeamCity extends ResultPrinter
 {
+    use TeamCityUtils;
+
     /**
      * @var bool
      */
-    private $isSummaryTestCountPrinted = false;
+    private $hasPrintedTestCount = false;
 
-    /**
-     * @var string
-     */
-    private $startedTestName;
+    public function addError(Test $test, \Exception $e, $time)
+    {
+        $this->testFailed($test, $e, $time);
+    }
 
-    /**
-     * @var string
-     */
-    private $flowId;
+    public function addFailure(Test $test, AssertionFailedError $e, $time)
+    {
+        $this->testFailed($test, $e, $time);
+    }
 
-    /**
-     * @param string $progress
-     */
-    protected function writeProgress($progress)
+    public function addWarning(Test $test, Warning $e, $time)
+    {
+        $this->testFailed($test, $e, $time);
+    }
+
+    public function addIncompleteTest(Test $test, \Exception $e, $time)
+    {
+        $this->message('testIgnored', [
+            'name'    => $this->getTestName($test),
+            'message' => sprintf("%s::%s is marked as ignored: %s\n", get_class($test), $this->getTestName($test), $e->getMessage()),
+            'duration'=> floor($time * 1000)
+        ]);
+    }
+
+    public function addRiskyTest(Test $test, \Exception $e, $time)
+    {
+        $this->message('testIgnored', [
+            'name'    => $this->getTestName($test),
+            'message' => sprintf("%s::%s is marked as risky: %s\n", get_class($test), $this->getTestName($test), $e->getMessage()),
+            'duration'=> floor($time * 1000)
+        ]);
+    }
+
+    public function addSkippedTest(Test $test, \Exception $e, $time)
+    {
+        $this->message('testIgnored', [
+            'name'    => $this->getTestName($test),
+            'message' => sprintf("%s::%s is marked as skipped: %s\n", get_class($test), $this->getTestName($test), $e->getMessage()),
+            'duration'=> floor($time * 1000)
+        ]);
+    }
+
+    public function writeProgress($string)
     {
     }
 
-    /**
-     * @param TestResult $result
-     */
     public function printResult(TestResult $result)
     {
         $this->printHeader();
         $this->printFooter($result);
     }
 
-    /**
-     * An error occurred.
-     *
-     * @param Test       $test
-     * @param \Exception $e
-     * @param float      $time
-     */
-    public function addError(Test $test, \Exception $e, $time)
-    {
-        $this->printEvent(
-            'testFailed',
-            [
-                'name'    => $test->getName(),
-                'message' => self::getMessage($e),
-                'details' => self::getDetails($e),
-            ]
-        );
-    }
-
-    /**
-     * A warning occurred.
-     *
-     * @param Test    $test
-     * @param Warning $e
-     * @param float   $time
-     */
-    public function addWarning(Test $test, Warning $e, $time)
-    {
-        $this->printEvent(
-            'testFailed',
-            [
-                'name'    => $test->getName(),
-                'message' => self::getMessage($e),
-                'details' => self::getDetails($e)
-            ]
-        );
-    }
-
-    /**
-     * A failure occurred.
-     *
-     * @param Test                 $test
-     * @param AssertionFailedError $e
-     * @param float                $time
-     */
-    public function addFailure(Test $test, AssertionFailedError $e, $time)
-    {
-        $parameters = [
-            'name'    => $test->getName(),
-            'message' => self::getMessage($e),
-            'details' => self::getDetails($e),
-        ];
-
-        if ($e instanceof ExpectationFailedException) {
-            $comparisonFailure = $e->getComparisonFailure();
-
-            if ($comparisonFailure instanceof ComparisonFailure) {
-                $expectedString = $comparisonFailure->getExpectedAsString();
-
-                if (is_null($expectedString) || empty($expectedString)) {
-                    $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
-                }
-
-                $actualString = $comparisonFailure->getActualAsString();
-
-                if (is_null($actualString) || empty($actualString)) {
-                    $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
-                }
-
-                if (!is_null($actualString) && !is_null($expectedString)) {
-                    $parameters['type']     = 'comparisonFailure';
-                    $parameters['actual']   = $actualString;
-                    $parameters['expected'] = $expectedString;
-                }
-            }
-        }
-
-        $this->printEvent('testFailed', $parameters);
-    }
-
-    /**
-     * Incomplete test.
-     *
-     * @param Test       $test
-     * @param \Exception $e
-     * @param float      $time
-     */
-    public function addIncompleteTest(Test $test, \Exception $e, $time)
-    {
-        $this->printIgnoredTest($test->getName(), $e);
-    }
-
-    /**
-     * Risky test.
-     *
-     * @param Test       $test
-     * @param \Exception $e
-     * @param float      $time
-     */
-    public function addRiskyTest(Test $test, \Exception $e, $time)
-    {
-        $this->addError($test, $e, $time);
-    }
-
-    /**
-     * Skipped test.
-     *
-     * @param Test       $test
-     * @param \Exception $e
-     * @param float      $time
-     */
-    public function addSkippedTest(Test $test, \Exception $e, $time)
-    {
-        $testName = $test->getName();
-        if ($this->startedTestName != $testName) {
-            $this->startTest($test);
-            $this->printIgnoredTest($testName, $e);
-            $this->endTest($test, $time);
-        } else {
-            $this->printIgnoredTest($testName, $e);
-        }
-    }
-
-    public function printIgnoredTest($testName, Exception $e)
-    {
-        $this->printEvent(
-            'testIgnored',
-            [
-                'name'    => $testName,
-                'message' => self::getMessage($e),
-                'details' => self::getDetails($e),
-            ]
-        );
-    }
-
-    /**
-     * A testsuite started.
-     *
-     * @param TestSuite $suite
-     */
     public function startTestSuite(TestSuite $suite)
     {
-        if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
-            $this->flowId = getmypid();
-        } else {
-            $this->flowId = false;
-        }
-
-        if (!$this->isSummaryTestCountPrinted) {
-            $this->isSummaryTestCountPrinted = true;
-
-            $this->printEvent(
+        if (!$this->hasPrintedTestCount) {
+            $this->message(
                 'testCount',
-                ['count' => count($suite)]
+                [
+                    'count' => $suite->count()
+                ]
             );
+
+            $this->hasPrintedTestCount = true;
         }
 
-        $suiteName = $suite->getName();
-
-        if (empty($suiteName)) {
+        if (empty($suite->getName())) {
             return;
         }
-
-        $parameters = ['name' => $suiteName];
-
-        if (class_exists($suiteName, false)) {
-            $fileName                   = self::getFileName($suiteName);
-            $parameters['locationHint'] = "php_qn://$fileName::\\$suiteName";
-        } else {
-            $split = preg_split('/::/', $suiteName);
-
-            if (count($split) == 2 && method_exists($split[0], $split[1])) {
-                $fileName                   = self::getFileName($split[0]);
-                $parameters['locationHint'] = "php_qn://$fileName::\\$suiteName";
-                $parameters['name']         = $split[1];
-            }
-        }
-
-        $this->printEvent('testSuiteStarted', $parameters);
+        
+        $this->message(
+            'testSuiteStarted',
+            [
+                'name'         => $this->getTestName($suite),
+                'locationHint' => $this->getTestClassLocationHint($suite)
+            ]
+        );
     }
 
-    /**
-     * A testsuite ended.
-     *
-     * @param TestSuite $suite
-     */
     public function endTestSuite(TestSuite $suite)
     {
-        $suiteName = $suite->getName();
-
-        if (empty($suiteName)) {
-            return;
-        }
-
-        $parameters = ['name' => $suiteName];
-
-        if (!class_exists($suiteName, false)) {
-            $split = preg_split('/::/', $suiteName);
-
-            if (count($split) == 2 && method_exists($split[0], $split[1])) {
-                $parameters['name'] = $split[1];
-            }
-        }
-
-        $this->printEvent('testSuiteFinished', $parameters);
+        $this->message('testSuiteFinished', [
+            'name' => $this->getTestName($suite),
+        ]);
     }
 
     /**
-     * A test started.
-     *
      * @param Test $test
      */
     public function startTest(Test $test)
     {
-        $testName              = $test->getName();
-        $this->startedTestName = $testName;
-        $params                = ['name' => $testName];
-
-        if ($test instanceof TestCase) {
-            $className              = get_class($test);
-            $fileName               = self::getFileName($className);
-            $params['locationHint'] = "php_qn://$fileName::\\$className::$testName";
-        }
-
-        $this->printEvent('testStarted', $params);
-    }
-
-    /**
-     * A test ended.
-     *
-     * @param Test  $test
-     * @param float $time
-     */
-    public function endTest(Test $test, $time)
-    {
-        parent::endTest($test, $time);
-
-        $this->printEvent(
-            'testFinished',
+        $this->message(
+            'testStarted',
             [
-                'name'     => $test->getName(),
-                'duration' => (int) (round($time, 2) * 1000)
+                'name'                  => $this->getTestName($test),
+                'locationHint'          => $this->getTestMethodLocationHint($test)
             ]
         );
     }
 
-    /**
-     * @param string $eventName
-     * @param array  $params
-     */
-    private function printEvent($eventName, $params = [])
+    public function endTest(Test $test, $time)
     {
-        $this->write("\n##teamcity[$eventName");
+        $this->message(
+            'testFinished',
+            [
+                'name'     => $this->getTestName($test),
+                'duration' => floor($time * 1000)
+            ]
+        );
 
-        if ($this->flowId) {
-            $params['flowId'] = $this->flowId;
-        }
-
-        foreach ($params as $key => $value) {
-            $escapedValue = self::escapeValue($value);
-            $this->write(" $key='$escapedValue'");
-        }
-
-        $this->write("]\n");
-    }
-
-    /**
-     * @param Exception $e
-     *
-     * @return string
-     */
-    private static function getMessage(Exception $e)
-    {
-        $message = '';
-
-        if (!$e instanceof Exception) {
-            if (strlen(get_class($e)) != 0) {
-                $message = $message . get_class($e);
-            }
-
-            if (strlen($message) != 0 && strlen($e->getMessage()) != 0) {
-                $message = $message . ' : ';
-            }
-        }
-
-        return $message . $e->getMessage();
-    }
-
-    /**
-     * @param Exception $e
-     *
-     * @return string
-     */
-    private static function getDetails(Exception $e)
-    {
-        $stackTrace = Filter::getFilteredStacktrace($e);
-        $previous   = $e->getPrevious();
-
-        while ($previous) {
-            $stackTrace .= "\nCaused by\n" .
-                TestFailure::exceptionToString($previous) . "\n" .
-                Filter::getFilteredStacktrace($previous);
-
-            $previous = $previous->getPrevious();
-        }
-
-        return ' ' . str_replace("\n", "\n ", $stackTrace);
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return string
-     */
-    private static function getPrimitiveValueAsString($value)
-    {
-        if (is_null($value)) {
-            return 'null';
-        } elseif (is_bool($value)) {
-            return $value == true ? 'true' : 'false';
-        } elseif (is_scalar($value)) {
-            return print_r($value, true);
-        }
-    }
-
-    /**
-     * @param  $text
-     *
-     * @return string
-     */
-    private static function escapeValue($text)
-    {
-        $text = str_replace('|', '||', $text);
-        $text = str_replace("'", "|'", $text);
-        $text = str_replace("\n", '|n', $text);
-        $text = str_replace("\r", '|r', $text);
-        $text = str_replace(']', '|]', $text);
-        $text = str_replace('[', '|[', $text);
-
-        return $text;
-    }
-
-    /**
-     * @param string $className
-     *
-     * @return string
-     */
-    private static function getFileName($className)
-    {
-        $reflectionClass = new ReflectionClass($className);
-        $fileName        = $reflectionClass->getFileName();
-
-        return $fileName;
+        parent::endTest($test, $time);
     }
 }
