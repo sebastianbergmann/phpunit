@@ -1,9 +1,8 @@
-| Q                        | A
-| ------------------------ | -----
-| PHPUnit version          | x.y.z
-| PHP version              | x.y.z
-| Installed via Composer?  | yes/no
-| Using PHPUnit from PHAR? | yes/no
+| Q                   | A
+| --------------------| ---------------
+| PHPUnit version     | x.y.z
+| PHP version         | x.y.z
+| Installation Method | Composer / PHAR
 
 <!--
 - Please fill in this template according to your issue.
