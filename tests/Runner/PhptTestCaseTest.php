@@ -52,7 +52,8 @@ EOF;
 
     protected function setUp()
     {
-        $this->filename = sys_get_temp_dir() . '/phpunit.phpt';
+        $this->dirname  = sys_get_temp_dir();
+        $this->filename = $this->dirname . '/phpunit.phpt';
         touch($this->filename);
 
         $this->phpUtil = $this->getMockForAbstractClass(AbstractPhpProcess::class, [], '', false);
@@ -88,6 +89,49 @@ EOF;
             ->expects($this->once())
             ->method('runJob')
             ->with($fileSection)
+            ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+
+        $this->testCase->run();
+    }
+
+    public function testRenderFileSection()
+    {
+        $this->setPhpContent(
+<<<EOF
+--TEST--
+Something to decribe it
+--FILE--
+<?php echo __DIR__ . __FILE__; ?>
+--EXPECT--
+Something
+EOF
+        );
+
+        $renderedCode = "<?php echo '" . $this->dirname . "' . '" . $this->filename . "'; ?>" . PHP_EOL;
+
+        $this->phpUtil
+            ->expects($this->once())
+            ->method('runJob')
+            ->with($renderedCode)
+            ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+
+        $this->testCase->run();
+    }
+
+    public function testRenderSkipifSection()
+    {
+        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
+        $phptContent .= '--SKIPIF--' . PHP_EOL;
+        $phptContent .= "<?php echo 'skip: ' . __FILE__; ?>" . PHP_EOL;
+
+        $this->setPhpContent($phptContent);
+
+        $renderedCode = "<?php echo 'skip: ' . '" . $this->filename. "'; ?>" . PHP_EOL;
+
+        $this->phpUtil
+            ->expects($this->at(0))
+            ->method('runJob')
+            ->with($renderedCode)
             ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
 
         $this->testCase->run();

@@ -166,7 +166,8 @@ class PhptTestCase implements Test, SelfDescribing
         }
 
         if (isset($sections['SKIPIF'])) {
-            $jobResult = $this->phpUtil->runJob($sections['SKIPIF'], $settings);
+            $skipif    = $this->render($sections['SKIPIF']);
+            $jobResult = $this->phpUtil->runJob($skipif, $settings);
 
             if (!strncasecmp('skip', ltrim($jobResult['stdout']), 4)) {
                 if (preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $message)) {
