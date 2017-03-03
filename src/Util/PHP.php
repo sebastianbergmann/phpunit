@@ -175,14 +175,6 @@ class PHP
     }
 
     /**
-     * @return \PHPUnit\Util\PHP
-     */
-    public static function factory()
-    {
-        return new static();
-    }
-
-    /**
      * Runs a single test in a separate PHP process.
      *
      * @param string     $job
