@@ -7,24 +7,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\PHP;
+namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Exception;
-use SebastianBergmann\Environment\Runtime;
 use __PHP_Incomplete_Class;
 use ErrorException;
+use SebastianBergmann\Environment\Runtime;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SyntheticError;
-use PHPUnit\Util\InvalidArgumentHelper;
-use SebastianBergmann\Environment\Runtime;
 
 /**
  * Default utility for PHP sub-processes.
  */
-class DefaultPhpProcess extends AbstractPhpProcess
+class PHP
 {
     /**
      * @var string
@@ -178,15 +175,11 @@ class DefaultPhpProcess extends AbstractPhpProcess
     }
 
     /**
-     * @return AbstractPhpProcess
+     * @return \PHPUnit\Util\PHP
      */
     public static function factory()
     {
-        if (DIRECTORY_SEPARATOR == '\\') {
-            return new WindowsPhpProcess;
-        }
-
-        return new DefaultPhpProcess;
+        return new static();
     }
 
     /**
@@ -241,6 +234,11 @@ class DefaultPhpProcess extends AbstractPhpProcess
             $command .= ' 2>&1';
         }
 
+        // Special case windows.
+        if (DIRECTORY_SEPARATOR == '\\') {
+            $command = '"' . $command . '"';
+        }
+      
         return $command;
     }
 

@@ -14,6 +14,7 @@ use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
 use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
+use PHPUnit\Util\PHP;
 use PHPUnit_Framework_MockObject_Generator;
 use PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
 use PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex;
@@ -861,7 +862,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
             $this->prepareTemplate($template);
 
-            $php = AbstractPhpProcess::factory();
+            $php = new PHP();
             $php->runTestJob($template->render(), $this, $result);
         } else {
             $result->run($this);
