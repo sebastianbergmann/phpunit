@@ -35,7 +35,6 @@ use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit\Util\PHP\AbstractPhpProcess;
 use Prophecy;
 use ReflectionClass;
 use ReflectionException;

@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\PHP\AbstractPhpProcess;
+use PHPUnit\Util\PHP;
 
 /**
  * @author     Henrique Moody <henriquemoody@gmail.com>
@@ -21,14 +21,14 @@ class PHPUnit_Util_PHPTest extends TestCase
 {
     public function testShouldNotUseStderrRedirectionByDefault()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
 
         $this->assertFalse($phpMock->useStderrRedirection());
     }
 
     public function testShouldDefinedIfUseStderrRedirection()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
         $phpMock->setUseStderrRedirection(true);
 
         $this->assertTrue($phpMock->useStderrRedirection());
@@ -36,7 +36,7 @@ class PHPUnit_Util_PHPTest extends TestCase
 
     public function testShouldDefinedIfDoNotUseStderrRedirection()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
         $phpMock->setUseStderrRedirection(false);
 
         $this->assertFalse($phpMock->useStderrRedirection());
@@ -44,7 +44,7 @@ class PHPUnit_Util_PHPTest extends TestCase
 
     public function testShouldThrowsExceptionWhenStderrRedirectionVariableIsNotABoolean()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
 
         $this->expectException(PHPUnit\Framework\Exception::class);
 
@@ -53,7 +53,7 @@ class PHPUnit_Util_PHPTest extends TestCase
 
     public function testShouldUseGivenSettingsToCreateCommand()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
 
         $settings = [
             'allow_url_fopen=1',
@@ -61,37 +61,37 @@ class PHPUnit_Util_PHPTest extends TestCase
             'display_errors=1',
         ];
 
-        $expectedCommandFormat  = '%s -d allow_url_fopen=1 -d auto_append_file= -d display_errors=1';
-        $actualCommand          = $phpMock->getCommand($settings);
+        $expectedCommandFormat  = '%s -d allow_url_fopen=1 -d auto_append_file= -d display_errors=1 -f file.php';
+        $actualCommand          = $phpMock->getCommand($settings, 'file.php');
 
         $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
     }
 
     public function testShouldRedirectStderrToStdoutWhenDefined()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
         $phpMock->setUseStderrRedirection(true);
 
         $expectedCommandFormat  = '%s 2>&1';
-        $actualCommand          = $phpMock->getCommand([]);
+        $actualCommand          = $phpMock->getCommand([], 'file.php');
 
         $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
     }
 
     public function testShouldUseArgsToCreateCommand()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
         $phpMock->setArgs('foo=bar');
 
         $expectedCommandFormat  = '%s -- foo=bar';
-        $actualCommand          = $phpMock->getCommand([]);
+        $actualCommand          = $phpMock->getCommand([], 'file.php');
 
         $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
     }
 
     public function testShouldHaveFileToCreateCommand()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
 
         $expectedCommandFormat  = '%s -%c \'file.php\'';
         $actualCommand          = $phpMock->getCommand([], 'file.php');
@@ -101,7 +101,7 @@ class PHPUnit_Util_PHPTest extends TestCase
 
     public function testStdinGetterAndSetter()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
         $phpMock->setStdin('foo');
 
         $this->assertEquals('foo', $phpMock->getStdin());
@@ -109,7 +109,7 @@ class PHPUnit_Util_PHPTest extends TestCase
 
     public function testArgsGetterAndSetter()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
         $phpMock->setArgs('foo=bar');
 
         $this->assertEquals('foo=bar', $phpMock->getArgs());
@@ -117,7 +117,7 @@ class PHPUnit_Util_PHPTest extends TestCase
 
     public function testEnvGetterAndSetter()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
         $phpMock->setEnv(['foo' => 'bar']);
 
         $this->assertEquals(['foo' => 'bar'], $phpMock->getEnv());
@@ -125,7 +125,7 @@ class PHPUnit_Util_PHPTest extends TestCase
 
     public function testTimeoutGetterAndSetter()
     {
-        $phpMock = $this->getMockForAbstractClass(AbstractPhpProcess::class);
+        $phpMock = new PHP();
         $phpMock->setTimeout(30);
 
         $this->assertEquals(30, $phpMock->getTimeout());

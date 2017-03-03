@@ -410,15 +410,15 @@ class PHP
      */
     public function runJob($job, array $settings = [])
     {
-        if ($this->stdin) {
-            if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
-                file_put_contents($this->tempFile, $job) === false
-            ) {
-                throw new Exception(
-                    'Unable to write temporary file'
-                );
-            }
+        if (!($this->tempFile = tempnam(sys_get_temp_dir(), 'PHPUnit')) ||
+            file_put_contents($this->tempFile, $job) === false
+        ) {
+            throw new Exception(
+                'Unable to write temporary file'
+            );
+        }
 
+        if ($this->stdin) {
             $job = $this->stdin;
         }
 
