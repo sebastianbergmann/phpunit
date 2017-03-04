@@ -364,6 +364,7 @@
             <arg value="--report-file=${basedir}/build/logfiles/checkstyle.xml"/>
             <arg value="--standard=PSR2"/>
             <arg value="--extensions=php"/>
+            <arg value="--exclude=Generic.Files.LineLength"/>
             <arg path="${basedir}/src"/>
         </exec>
     </target>
