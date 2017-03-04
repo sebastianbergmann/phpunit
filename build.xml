@@ -382,6 +382,9 @@
             <arg value="--extensions=php"/>
             <arg value="--exclude=Generic.Files.LineLength"/>
             <arg path="${basedir}/src"/>
+            <arg path="${basedir}/tests/Framework"/>
+            <arg path="${basedir}/tests/Runner"/>
+            <arg path="${basedir}/tests/Util"/>
         </exec>
     </target>
 
@@ -393,6 +396,9 @@
             <arg value="--extensions=php"/>
             <arg value="--exclude=Generic.Files.LineLength"/>
             <arg path="${basedir}/src"/>
+            <arg path="${basedir}/tests/Framework"/>
+            <arg path="${basedir}/tests/Runner"/>
+            <arg path="${basedir}/tests/Util"/>
         </exec>
     </target>
 
