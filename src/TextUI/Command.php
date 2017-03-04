@@ -573,10 +573,11 @@ class Command
                     break;
 
                 case '--atleast-version':
-                    exit(version_compare(Version::id(), $option[1], '>=')
-                        ? TestRunner::SUCCESS_EXIT
-                        : TestRunner::FAILURE_EXIT
-                    );
+                    if (version_compare(Version::id(), $option[1], '>=')) {
+                        exit(TestRunner::SUCCESS_EXIT);
+                    }
+
+                    exit(TestRunner::FAILURE_EXIT);
                     break;
 
                 case '--version':

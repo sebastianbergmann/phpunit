@@ -1607,12 +1607,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         if (!class_exists($originalClassName)) {
             eval(
-            $this->getMockObjectGenerator()->generateClassFromWsdl(
-                $wsdlFile,
-                $originalClassName,
-                $methods,
-                $options
-            )
+                $this->getMockObjectGenerator()->generateClassFromWsdl(
+                    $wsdlFile,
+                    $originalClassName,
+                    $methods,
+                    $options
+                )
             );
         }
 
