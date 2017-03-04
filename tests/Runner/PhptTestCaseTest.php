@@ -97,7 +97,7 @@ EOF;
     public function testRenderFileSection()
     {
         $this->setPhpContent(
-<<<EOF
+            <<<EOF
 --TEST--
 Something to decribe it
 --FILE--

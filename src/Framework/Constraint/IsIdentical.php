@@ -88,7 +88,6 @@ class IsIdentical extends Constraint
                     sprintf("'%s'", $this->value),
                     sprintf("'%s'", $other)
                 );
-
             }
 
             $this->fail($other, $description, $f);

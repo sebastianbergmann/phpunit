@@ -98,7 +98,6 @@ class TestFailure
             }
 
             return $buffer;
-
         }
 
         if ($e instanceof Error) {
