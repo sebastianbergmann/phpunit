@@ -206,7 +206,7 @@ EOF
     public function testShouldThrowsAnExceptionWhenFileSectionIsMissing()
     {
         $this->setPhpContent(
-<<<EOF
+            <<<EOF
 --TEST--
 Something to decribe it
 --EXPECT--
@@ -223,7 +223,7 @@ EOF
     public function testShouldThrowsAnExceptionWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile()
     {
         $this->setPhpContent(
-<<<EOF
+            <<<EOF
 --TEST--
 Something to decribe it
 --FILE--

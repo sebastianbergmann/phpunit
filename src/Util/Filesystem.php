@@ -32,9 +32,9 @@ class Filesystem
     public static function classNameToFilename($className)
     {
         return str_replace(
-                ['_', '\\'],
-                DIRECTORY_SEPARATOR,
-                $className
-            ) . '.php';
+            ['_', '\\'],
+            DIRECTORY_SEPARATOR,
+            $className
+        ) . '.php';
     }
 }

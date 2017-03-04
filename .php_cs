@@ -73,5 +73,8 @@ return PhpCsFixer\Config::create()
         ->files()
         ->in(__DIR__ . '/build')
         ->in(__DIR__ . '/src')
+        ->in(__DIR__ . '/tests/Framework')
+        ->in(__DIR__ . '/tests/Runner')
+        ->in(__DIR__ . '/tests/Util')
         ->name('*.php')
     );

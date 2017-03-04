@@ -516,7 +516,7 @@ class Framework_AssertTest extends TestCase
             [0, 0],
             // floats
             [2.3, 2.3],
-            [1/3, 1 - 2/3],
+            [1 / 3, 1 - 2 / 3],
             [log(0), log(0)],
             // arrays
             [[], []],
@@ -778,8 +778,8 @@ class Framework_AssertTest extends TestCase
             ['0', 0],
             [2.3, '2.3'],
             ['2.3', 2.3],
-            [(string) (1/3), 1 - 2/3],
-            [1/3, (string) (1 - 2/3)],
+            [(string) (1 / 3), 1 - 2 / 3],
+            [1 / 3, (string) (1 - 2 / 3)],
             ['string representation', new ClassWithToString],
             [new ClassWithToString, 'string representation'],
         ];
@@ -999,7 +999,9 @@ XML;
         $actual->load($this->filesDirectory . 'structureExpected.xml');
 
         $this->assertEqualXMLStructure(
-            $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild,
+            $actual->firstChild,
+            true
         );
     }
 
@@ -1014,7 +1016,9 @@ XML;
         $this->expectException(ExpectationFailedException::class);
 
         $this->assertEqualXMLStructure(
-            $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild,
+            $actual->firstChild,
+            true
         );
     }
 
@@ -1029,7 +1033,9 @@ XML;
         $this->expectException(ExpectationFailedException::class);
 
         $this->assertEqualXMLStructure(
-            $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild,
+            $actual->firstChild,
+            true
         );
     }
 
@@ -1042,7 +1048,9 @@ XML;
         $actual->load($this->filesDirectory . 'structureIsSameButDataIsNot.xml');
 
         $this->assertEqualXMLStructure(
-            $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild,
+            $actual->firstChild,
+            true
         );
     }
 
@@ -1055,7 +1063,9 @@ XML;
         $actual->load($this->filesDirectory . 'structureAttributesAreSameButValuesAreNot.xml');
 
         $this->assertEqualXMLStructure(
-            $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild,
+            $actual->firstChild,
+            true
         );
     }
 
@@ -1068,7 +1078,9 @@ XML;
         $actual->load($this->filesDirectory . 'structureIgnoreTextNodes.xml');
 
         $this->assertEqualXMLStructure(
-            $expected->firstChild, $actual->firstChild, true
+            $expected->firstChild,
+            $actual->firstChild,
+            true
         );
     }
 
@@ -1529,13 +1541,17 @@ XML;
     public function testAttributeGreaterThan()
     {
         $this->assertAttributeGreaterThan(
-            1, 'bar', new ClassWithNonPublicAttributes
+            1,
+            'bar',
+            new ClassWithNonPublicAttributes
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertAttributeGreaterThan(
-            1, 'foo', new ClassWithNonPublicAttributes
+            1,
+            'foo',
+            new ClassWithNonPublicAttributes
         );
     }
 
@@ -1551,13 +1567,17 @@ XML;
     public function testAttributeGreaterThanOrEqual()
     {
         $this->assertAttributeGreaterThanOrEqual(
-            1, 'bar', new ClassWithNonPublicAttributes
+            1,
+            'bar',
+            new ClassWithNonPublicAttributes
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertAttributeGreaterThanOrEqual(
-            2, 'foo', new ClassWithNonPublicAttributes
+            2,
+            'foo',
+            new ClassWithNonPublicAttributes
         );
     }
 
@@ -1577,13 +1597,17 @@ XML;
     public function testAttributeLessThan()
     {
         $this->assertAttributeLessThan(
-            2, 'foo', new ClassWithNonPublicAttributes
+            2,
+            'foo',
+            new ClassWithNonPublicAttributes
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertAttributeLessThan(
-            1, 'bar', new ClassWithNonPublicAttributes
+            1,
+            'bar',
+            new ClassWithNonPublicAttributes
         );
     }
 
@@ -1599,13 +1623,17 @@ XML;
     public function testAttributeLessThanOrEqual()
     {
         $this->assertAttributeLessThanOrEqual(
-            2, 'foo', new ClassWithNonPublicAttributes
+            2,
+            'foo',
+            new ClassWithNonPublicAttributes
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertAttributeLessThanOrEqual(
-            1, 'bar', new ClassWithNonPublicAttributes
+            1,
+            'bar',
+            new ClassWithNonPublicAttributes
         );
     }
 
@@ -2295,7 +2323,8 @@ XML;
         $this->assertThat(
             'anything',
             $this->logicalAnd(
-                $this->anything(), $this->anything()
+                $this->anything(),
+                $this->anything()
             )
         );
     }
@@ -2308,7 +2337,8 @@ XML;
         $this->assertThat(
             'anything',
             $this->logicalOr(
-                $this->anything(), $this->anything()
+                $this->anything(),
+                $this->anything()
             )
         );
     }
