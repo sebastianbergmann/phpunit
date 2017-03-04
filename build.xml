@@ -376,6 +376,15 @@
         </exec>
     </target>
 
+    <target name="phpcs">
+        <exec executable="${basedir}/build/tools/phpcs" taskname="phpcs">
+            <arg value="--standard=PSR2"/>
+            <arg value="--extensions=php"/>
+            <arg value="--exclude=Generic.Files.LineLength"/>
+            <arg path="${basedir}/src"/>
+        </exec>
+    </target>
+
     <target name="-phpcs" depends="prepare">
         <exec executable="${basedir}/build/tools/phpcs" output="/dev/null" taskname="phpcs">
             <arg value="--report=checkstyle"/>
