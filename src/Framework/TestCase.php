@@ -1067,9 +1067,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
                 $reflector = new ReflectionClass($this->expectedException);
 
-                if ($this->expectedException === 'PHPUnit\Framework\Exception' ||
-                    $this->expectedException === '\PHPUnit\Framework\Exception' ||
-                    $reflector->isSubclassOf('PHPUnit\Framework\Exception')
+                if ($this->expectedException === Exception::class ||
+                    $this->expectedException === Exception::class ||
+                    $reflector->isSubclassOf(Exception::class)
                 ) {
                     $checkException = true;
                 }
