@@ -32,87 +32,87 @@ class Util_TestTest extends TestCase
     public function testGetExpectedException()
     {
         $this->assertArraySubset(
-          ['class' => 'FooBarBaz', 'code' => null, 'message' => ''],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testOne')
+            ['class' => 'FooBarBaz', 'code' => null, 'message' => ''],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testOne')
         );
 
         $this->assertArraySubset(
-          ['class' => 'Foo_Bar_Baz', 'code' => null, 'message' => ''],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testTwo')
+            ['class' => 'Foo_Bar_Baz', 'code' => null, 'message' => ''],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testTwo')
         );
 
         $this->assertArraySubset(
-          ['class' => \Foo\Bar\Baz::class, 'code' => null, 'message' => ''],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testThree')
+            ['class' => \Foo\Bar\Baz::class, 'code' => null, 'message' => ''],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testThree')
         );
 
         $this->assertArraySubset(
-          ['class' => 'ほげ', 'code' => null, 'message' => ''],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testFour')
+            ['class' => 'ほげ', 'code' => null, 'message' => ''],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testFour')
         );
 
         $this->assertArraySubset(
-          ['class' => 'Class', 'code' => 1234, 'message' => 'Message'],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testFive')
+            ['class' => 'Class', 'code' => 1234, 'message' => 'Message'],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testFive')
         );
 
         $this->assertArraySubset(
-          ['class' => 'Class', 'code' => 1234, 'message' => 'Message'],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSix')
+            ['class' => 'Class', 'code' => 1234, 'message' => 'Message'],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSix')
         );
 
         $this->assertArraySubset(
-          ['class' => 'Class', 'code' => 'ExceptionCode', 'message' => 'Message'],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSeven')
+            ['class' => 'Class', 'code' => 'ExceptionCode', 'message' => 'Message'],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSeven')
         );
 
         $this->assertArraySubset(
-          ['class' => 'Class', 'code' => 0, 'message' => 'Message'],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testEight')
+            ['class' => 'Class', 'code' => 0, 'message' => 'Message'],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testEight')
         );
 
         $this->assertArraySubset(
-          ['class' => 'Class', 'code' => ExceptionTest::ERROR_CODE, 'message' => ExceptionTest::ERROR_MESSAGE],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testNine')
+            ['class' => 'Class', 'code' => ExceptionTest::ERROR_CODE, 'message' => ExceptionTest::ERROR_MESSAGE],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testNine')
         );
 
         $this->assertArraySubset(
-          ['class' => 'Class', 'code' => null, 'message' => ''],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSingleLine')
+            ['class' => 'Class', 'code' => null, 'message' => ''],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSingleLine')
         );
 
         $this->assertArraySubset(
-          ['class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE],
-          \PHPUnit\Util\Test::getExpectedException(My\Space\ExceptionNamespaceTest::class, 'testConstants')
+            ['class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE],
+            \PHPUnit\Util\Test::getExpectedException(My\Space\ExceptionNamespaceTest::class, 'testConstants')
         );
 
         // Ensure the Class::CONST expression is only evaluated when the constant really exists
         $this->assertArraySubset(
-          ['class' => 'Class', 'code' => 'ExceptionTest::UNKNOWN_CODE_CONSTANT', 'message' => 'ExceptionTest::UNKNOWN_MESSAGE_CONSTANT'],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testUnknownConstants')
+            ['class' => 'Class', 'code' => 'ExceptionTest::UNKNOWN_CODE_CONSTANT', 'message' => 'ExceptionTest::UNKNOWN_MESSAGE_CONSTANT'],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testUnknownConstants')
         );
 
         $this->assertArraySubset(
-          ['class' => 'Class', 'code' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT', 'message' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT'],
-          \PHPUnit\Util\Test::getExpectedException(My\Space\ExceptionNamespaceTest::class, 'testUnknownConstants')
+            ['class' => 'Class', 'code' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT', 'message' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT'],
+            \PHPUnit\Util\Test::getExpectedException(My\Space\ExceptionNamespaceTest::class, 'testUnknownConstants')
         );
     }
 
     public function testGetExpectedRegExp()
     {
         $this->assertArraySubset(
-          ['message_regex' => '#regex#'],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithRegexMessage')
+            ['message_regex' => '#regex#'],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithRegexMessage')
         );
 
         $this->assertArraySubset(
-          ['message_regex' => '#regex#'],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithRegexMessageFromClassConstant')
+            ['message_regex' => '#regex#'],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithRegexMessageFromClassConstant')
         );
 
         $this->assertArraySubset(
-          ['message_regex' => 'ExceptionTest::UNKNOWN_MESSAGE_REGEX_CONSTANT'],
-          \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithUnknowRegexMessageFromClassConstant')
+            ['message_regex' => 'ExceptionTest::UNKNOWN_MESSAGE_REGEX_CONSTANT'],
+            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithUnknowRegexMessageFromClassConstant')
         );
     }
 
@@ -606,7 +606,8 @@ class Util_TestTest extends TestCase
         $this->assertEquals(
             $expected,
             \PHPUnit\Util\Test::getLinesToBeCovered(
-                $test, 'testSomething'
+                $test,
+                'testSomething'
             )
         );
     }
@@ -616,7 +617,8 @@ class Util_TestTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         \PHPUnit\Util\Test::getLinesToBeCovered(
-            'NotExistingCoveredElementTest', 'testOne'
+            'NotExistingCoveredElementTest',
+            'testOne'
         );
     }
 
@@ -625,7 +627,8 @@ class Util_TestTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         \PHPUnit\Util\Test::getLinesToBeCovered(
-            'NotExistingCoveredElementTest', 'testTwo'
+            'NotExistingCoveredElementTest',
+            'testTwo'
         );
     }
 
@@ -634,7 +637,8 @@ class Util_TestTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         \PHPUnit\Util\Test::getLinesToBeCovered(
-            'NotExistingCoveredElementTest', 'testThree'
+            'NotExistingCoveredElementTest',
+            'testThree'
         );
     }
 

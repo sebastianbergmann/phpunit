@@ -436,7 +436,7 @@ class Util_ConfigurationTest extends TestCase
         );
 
         $config = $configuration->getTestSuiteConfiguration();
-        $tests = $config->tests();
+        $tests  = $config->tests();
 
         $this->assertEquals(1, count($tests));
     }
