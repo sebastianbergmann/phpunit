@@ -330,10 +330,8 @@ class PhptTestCase implements Test, SelfDescribing
 
         foreach ($allowExternalSections as $section) {
             if (isset($sections[$section . '_EXTERNAL'])) {
-                // do not allow directory traversal
-                $externalFilename = str_replace('..', '', trim($sections[$section . '_EXTERNAL']));
+                $externalFilename = trim($sections[$section . '_EXTERNAL']);
 
-                // only allow files from the test directory
                 if (!is_file($testDirectory . $externalFilename) || !is_readable($testDirectory . $externalFilename)) {
                     throw new Exception(
                         sprintf(
