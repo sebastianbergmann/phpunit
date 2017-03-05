@@ -477,6 +477,19 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers            PHPUnit_Util_Test::getLinesToBeCovered
+     * @covers            PHPUnit_Util_Test::getLinesToBeCoveredOrUsed
+     * @covers            PHPUnit_Util_Test::resolveElementToReflectionObjects
+     * @expectedException PHPUnit_Framework_CodeCoverageException
+     */
+    public function testGetLinesToBeCovered5()
+    {
+        PHPUnit_Util_Test::getLinesToBeCovered(
+            'NotExistingCoveredElementTest', 'testFour'
+        );
+    }
+
+    /**
      * @covers PHPUnit_Util_Test::getLinesToBeCovered
      * @covers PHPUnit_Util_Test::getLinesToBeCoveredOrUsed
      */
