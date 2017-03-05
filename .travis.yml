@@ -9,8 +9,8 @@ php:
 
 env:
   matrix:
-    - DEPENDENCIES="high"
-    - DEPENDENCIES="low"
+    -
+    - DEPENDENCIES=low
 
 sudo: false
 
@@ -19,8 +19,8 @@ before_install:
   - composer clear-cache
 
 install:
-  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable; fi
-  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable --prefer-lowest; fi
+  - travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader
+    --prefer-stable ${DEPENDENCIES+--prefer-lowest}
 
 before_script:
   - echo 'zend.assertions=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -28,7 +28,12 @@ before_script:
 
 script:
   - ./phpunit
-  - ./phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
+  - |
+    if ./phpunit --configuration build/travis-ci-fail.xml >/dev/null; then
+      echo 'SHOULD FAIL'
+      false
+    else echo 'fail checked'
+    fi
   - xmllint --noout --schema phpunit.xsd phpunit.xml
   - xmllint --noout --schema phpunit.xsd tests/_files/configuration.xml
   - xmllint --noout --schema phpunit.xsd tests/_files/configuration_empty.xml
@@ -36,4 +41,3 @@ script:
 
 notifications:
   email: false
-
