@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 6.1 release series are documented in this fil
 
 ### Changed
 
+* `.phar` files that are to be loaded as a PHPUnit extension must now have a valid `manifest.xml` file
 * Details about risky tests are now always displayed
 
 ### Fixed
