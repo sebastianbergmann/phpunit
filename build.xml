@@ -354,6 +354,8 @@
         </exec>
 
         <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
+
+        <delete dir="${basedir}/build/phar"/>
     </target>
 
     <target name="-phar-determine-version">
