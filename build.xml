@@ -121,7 +121,7 @@
         <exec executable="${basedir}/build/tools/composer">
             <arg value="require"/>
             <arg value="phpunit/dbunit:~1.4"/>
-            <arg value="phpunit/phpunit-selenium:~1.4"/>
+            <arg value="phpunit/phpunit-selenium:~2"/>
             <arg value="phpunit/php-invoker:~1.1"/>
         </exec>
 
