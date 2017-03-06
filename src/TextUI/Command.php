@@ -13,6 +13,7 @@ namespace PHPUnit\TextUI;
 use File_Iterator_Facade;
 use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\ManifestLoader;
+use PharIo\Version\Version as PharIoVersion;
 use PharIo\Manifest\Exception as ManifestException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
@@ -1088,10 +1089,18 @@ EOT;
             }
 
             try {
-                $manifest = ManifestLoader::fromFile('phar://' . $file . '/manifest.xml');
+                $applicationName = new ApplicationName('phpunit/phpunit');
+                $version         = new PharIoVersion(Version::series());
+                $manifest        = ManifestLoader::fromFile('phar://' . $file . '/manifest.xml');
 
-                if (!$manifest->isExtensionFor(new ApplicationName('phpunit/phpunit'))) {
+                if (!$manifest->isExtensionFor($applicationName)) {
                     $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
+
+                    continue;
+                }
+
+                if (!$manifest->isExtensionFor($applicationName, $version)) {
+                    $this->arguments['notLoadedExtensions'][] = $file . ' is not compatible with this version of PHPUnit';
 
                     continue;
                 }
