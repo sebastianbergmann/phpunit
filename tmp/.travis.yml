@@ -2,8 +2,10 @@ language: php
 
 php:
   - 7.0
+  - 7.0snapshot
   - 7.1
-  - nightly
+  - 7.1snapshot
+  - master
 
 sudo: false
 
@@ -15,7 +17,11 @@ install:
   - travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable
 
 script:
-  - ./vendor/bin/phpunit
+  - ./vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 notifications:
   email: false
+

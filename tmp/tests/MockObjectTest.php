@@ -432,9 +432,6 @@ class Framework_MockObjectTest extends TestCase
         $this->assertNotEquals(get_class($mock4), get_class($mock5));
     }
 
-    /**
-     * @covers PHPUnit_Framework_MockObject_Generator::getMock
-     */
     public function testGetMockWithFixedClassNameCanProduceTheSameMockTwice()
     {
         $mock = $this->getMockBuilder(stdClass::class)->setMockClassName('FixedName')->getMock();
