@@ -66,7 +66,7 @@ class PHP
         $this->runtime = new Runtime();
     }
 
-        /**
+    /**
      * Defines if should use STDERR redirection or not.
      *
      * Then $stderrRedirection is TRUE, STDERR is redirected to STDOUT.
