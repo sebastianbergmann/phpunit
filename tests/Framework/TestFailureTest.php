@@ -21,4 +21,22 @@ class Framework_TestFailureTest extends TestCase
 
         $this->assertEquals(__METHOD__ . ': message', $failure->toString());
     }
+
+    public function testToStringForError()
+    {
+        $test      = new self(__FUNCTION__);
+        $exception = new Error('message');
+        $failure   = new TestFailure($test, $exception);
+
+        $this->assertEquals(__METHOD__ . ': message', $failure->toString());
+    }
+
+    public function testgetExceptionAsString()
+    {
+        $test      = new self(__FUNCTION__);
+        $exception = new Error('message');
+        $failure   = new TestFailure($test, $exception);
+
+        $this->assertEquals("Error: message\n", $failure->getExceptionAsString());
+    }
 }

@@ -28,7 +28,7 @@ class TestFailure
     protected $failedTest;
 
     /**
-     * @var Exception
+     * @var Throwable
      */
     protected $thrownException;
 
@@ -80,11 +80,11 @@ class TestFailure
     /**
      * Returns a description for an exception.
      *
-     * @param Exception $e
+     * @param Throwable $e
      *
      * @return string
      */
-    public static function exceptionToString(Exception $e)
+    public static function exceptionToString(Throwable $e)
     {
         if ($e instanceof SelfDescribing) {
             $buffer = $e->toString();
@@ -139,7 +139,7 @@ class TestFailure
     /**
      * Gets the thrown exception.
      *
-     * @return Exception
+     * @return Throwable
      */
     public function thrownException()
     {
