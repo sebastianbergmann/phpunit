@@ -12,7 +12,6 @@ class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends PHPUnit_
 {
     /**
      * @dataProvider translateTypeToPrefixDataprovider
-     * @covers PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::translateTypeToPrefix
      */
     public function testTranslateTypeToPrefix($expected, $type)
     {
@@ -24,7 +23,6 @@ class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends PHPUnit_
 
     /**
      * @dataProvider determineJsonErrorDataprovider
-     * @covers PHPUnit_Framework_Constraint_JsonMatches_ErrorMessageProvider::determineJsonError
      */
     public function testDetermineJsonError($expected, $error, $prefix)
     {

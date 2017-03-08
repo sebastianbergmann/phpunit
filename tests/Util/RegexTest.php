@@ -31,7 +31,6 @@ class Util_RegexTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider validRegexpProvider
-     * @covers       PHPUnit_Util_Regex::pregMatchSafe
      */
     public function testValidRegex($pattern, $subject, $return)
     {
@@ -40,7 +39,6 @@ class Util_RegexTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider invalidRegexpProvider
-     * @covers       PHPUnit_Util_Regex::pregMatchSafe
      */
     public function testInvalidRegex($pattern, $subject)
     {

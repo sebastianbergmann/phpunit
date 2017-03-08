@@ -10,9 +10,6 @@
 
 class Util_GlobalStateTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers PHPUnit_Util_GlobalState::processIncludedFilesAsString
-     */
     public function testIncludedFilesAsStringSkipsVfsProtocols()
     {
         $dir   = __DIR__;

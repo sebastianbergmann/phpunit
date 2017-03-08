@@ -22,9 +22,6 @@ $_FILES['g']   = 'g';
 $_REQUEST['h'] = 'h';
 $GLOBALS['i']  = 'i';
 
-/**
- * @covers     PHPUnit_Framework_TestCase
- */
 class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
 {
     protected $backupGlobalsBlacklist = ['i', 'singleton'];
@@ -273,9 +270,6 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @covers PHPUnit_Framework_Constraint_ExceptionMessageRegExp
-     */
     public function testExceptionWithInvalidRegexpMessage()
     {
         $test = new ThrowExceptionTestCase('test');

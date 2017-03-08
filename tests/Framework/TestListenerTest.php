@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @covers     PHPUnit_Framework_TestCase
- */
 class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements PHPUnit_Framework_TestListener
 {
     protected $endCount;

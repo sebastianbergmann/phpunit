@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @covers     PHPUnit_Runner_BaseTestRunner
- */
 class Runner_BaseTestRunnerTest extends PHPUnit_Framework_TestCase
 {
     public function testInvokeNonStaticSuite()

@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @covers     PHPUnit_Util_XML
- */
 class Util_XMLTest extends PHPUnit_Framework_TestCase
 {
     /**
