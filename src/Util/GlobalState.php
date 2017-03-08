@@ -11,8 +11,6 @@ namespace PHPUnit\Util;
 
 use Closure;
 
-/**
- */
 class GlobalState
 {
     /**

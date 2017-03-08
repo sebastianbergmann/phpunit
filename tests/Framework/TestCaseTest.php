@@ -27,8 +27,6 @@ $_FILES['g']   = 'g';
 $_REQUEST['h'] = 'h';
 $GLOBALS['i']  = 'i';
 
-/**
- */
 class Framework_TestCaseTest extends TestCase
 {
     protected $backupGlobalsBlacklist = ['i', 'singleton'];

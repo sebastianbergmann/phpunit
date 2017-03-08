@@ -15,8 +15,6 @@ use PHPUnit\Util\RegularExpression;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
-/**
- */
 class NameFilterIterator extends RecursiveFilterIterator
 {
     /**

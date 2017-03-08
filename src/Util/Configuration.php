@@ -169,8 +169,6 @@ class Configuration
         $this->xpath    = new DOMXPath($this->document);
     }
 
-    /**
-     */
     final private function __clone()
     {
     }

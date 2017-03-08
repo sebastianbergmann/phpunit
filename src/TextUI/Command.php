@@ -921,8 +921,6 @@ class Command
         }
     }
 
-    /**
-     */
     protected function handleVersionCheck()
     {
         $this->printVersionString();

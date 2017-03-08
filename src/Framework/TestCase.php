@@ -363,8 +363,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return 1;
     }
 
-    /**
-     */
     public function getGroups()
     {
         return $this->groups;
@@ -624,8 +622,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
 
-    /**
-     */
     protected function setExpectedExceptionFromAnnotation()
     {
         try {
@@ -659,8 +655,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->useErrorHandler = $useErrorHandler;
     }
 
-    /**
-     */
     protected function setUseErrorHandlerFromAnnotation()
     {
         try {
@@ -676,8 +670,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    /**
-     */
     protected function checkRequirements()
     {
         if (!$this->name || !method_exists($this, $this->name)) {
@@ -704,9 +696,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $this->status;
     }
 
-    /**
-     * @since Method available since Release 5.7.6
-     */
     public function markAsRisky()
     {
         $this->status = BaseTestRunner::STATUS_RISKY;
@@ -1962,8 +1951,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return new TestResult;
     }
 
-    /**
-     */
     protected function handleDependencies()
     {
         if (!empty($this->dependencies) && !$this->inIsolation) {
@@ -2132,8 +2119,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $this->mockObjectGenerator;
     }
 
-    /**
-     */
     private function startOutputBuffering()
     {
         ob_start();
@@ -2142,8 +2127,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->outputBufferingLevel  = ob_get_level();
     }
 
-    /**
-     */
     private function stopOutputBuffering()
     {
         if (ob_get_level() != $this->outputBufferingLevel) {
@@ -2388,8 +2371,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    /**
-     */
     private function setDoesNotPerformAssertionsFromAnnotation()
     {
         $annotations = $this->getAnnotations();

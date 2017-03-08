@@ -12,8 +12,6 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Util\Filter;
 use Throwable;
 
-/**
- */
 class Exception extends Constraint
 {
     /**
