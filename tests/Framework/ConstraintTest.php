@@ -1856,7 +1856,7 @@ EOF
 
         $callback   = [$this, 'callbackReturningTrue'];
         $constraint = PHPUnit_Framework_Assert::callback($callback);
-        $this->assertTrue($constraint->evaluate(false,  '', true));
+        $this->assertTrue($constraint->evaluate(false, '', true));
 
         $callback   = ['Framework_ConstraintTest', 'staticCallbackReturningTrue'];
         $constraint = PHPUnit_Framework_Assert::callback($callback);

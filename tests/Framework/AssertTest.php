@@ -745,7 +745,7 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             [0, 0],
             // floats
             [2.3, 2.3],
-            [1/3, 1 - 2/3],
+            [1 / 3, 1 - 2 / 3],
             [log(0), log(0)],
             // arrays
             [[], []],
@@ -1007,8 +1007,8 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
             ['0', 0],
             [2.3, '2.3'],
             ['2.3', 2.3],
-            [(string) (1/3), 1 - 2/3],
-            [1/3, (string) (1 - 2/3)],
+            [(string) (1 / 3), 1 - 2 / 3],
+            [1 / 3, (string) (1 - 2 / 3)],
             ['string representation', new ClassWithToString],
             [new ClassWithToString, 'string representation'],
         ];
