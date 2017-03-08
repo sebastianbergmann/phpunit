@@ -11,8 +11,6 @@
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
- *
- * @since Class available since Release 3.0.0
  */
 class PHPUnit_TextUI_Command
 {
@@ -209,8 +207,6 @@ class PHPUnit_TextUI_Command
      * Create a TestRunner, override in subclasses.
      *
      * @return PHPUnit_TextUI_TestRunner
-     *
-     * @since Method available since Release 3.6.0
      */
     protected function createRunner()
     {
@@ -921,9 +917,6 @@ class PHPUnit_TextUI_Command
         }
     }
 
-    /**
-     * @since Method available since Release 4.0.0
-     */
     protected function handleSelfUpdate($upgrade = false)
     {
         $this->printVersionString();
@@ -1012,9 +1005,6 @@ class PHPUnit_TextUI_Command
         exit(PHPUnit_TextUI_TestRunner::SUCCESS_EXIT);
     }
 
-    /**
-     * @since Method available since Release 4.8.0
-     */
     protected function handleVersionCheck()
     {
         $this->printVersionString();

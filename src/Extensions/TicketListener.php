@@ -10,8 +10,6 @@
 
 /**
  * Base class for test listeners that interact with an issue tracker.
- *
- * @since Class available since Release 3.4.0
  */
 abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_TestListener
 {
@@ -64,8 +62,6 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
-     *
-     * @since Method available since Release 4.0.0
      */
     public function addRiskyTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -77,8 +73,6 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      * @param PHPUnit_Framework_Test $test
      * @param Exception              $e
      * @param float                  $time
-     *
-     * @since Method available since Release 3.0.0
      */
     public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
     {
@@ -88,8 +82,6 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      * A test suite started.
      *
      * @param PHPUnit_Framework_TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
     {
@@ -99,8 +91,6 @@ abstract class PHPUnit_Extensions_TicketListener implements PHPUnit_Framework_Te
      * A test suite ended.
      *
      * @param PHPUnit_Framework_TestSuite $suite
-     *
-     * @since Method available since Release 2.2.0
      */
     public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
     {

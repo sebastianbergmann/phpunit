@@ -10,8 +10,6 @@
 
 /**
  * The standard test suite loader.
- *
- * @since Class available since Release 2.0.0
  */
 class PHPUnit_Runner_StandardTestSuiteLoader implements PHPUnit_Runner_TestSuiteLoader
 {

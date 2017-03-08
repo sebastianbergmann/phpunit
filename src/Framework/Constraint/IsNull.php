@@ -10,8 +10,6 @@
 
 /**
  * Constraint that accepts null.
- *
- * @since Class available since Release 3.3.0
  */
 class PHPUnit_Framework_Constraint_IsNull extends PHPUnit_Framework_Constraint
 {

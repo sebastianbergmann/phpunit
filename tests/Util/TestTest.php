@@ -20,9 +20,6 @@ require TEST_FILES_PATH . 'CoverageNamespacedFunctionTest.php';
 require TEST_FILES_PATH . 'NamespaceCoveredFunction.php';
 require TEST_FILES_PATH . 'MultipleDataProviderTest.php';
 
-/**
- * @since      Class available since Release 3.3.6
- */
 class Util_TestTest extends PHPUnit_Framework_TestCase
 {
     /**

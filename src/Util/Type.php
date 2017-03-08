@@ -10,8 +10,6 @@
 
 /**
  * Utility class for textual type (and value) representation.
- *
- * @since Class available since Release 3.0.0
  */
 class PHPUnit_Util_Type
 {

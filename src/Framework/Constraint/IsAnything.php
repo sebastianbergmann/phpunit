@@ -10,8 +10,6 @@
 
 /**
  * Constraint that accepts any input value.
- *
- * @since Class available since Release 3.0.0
  */
 class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constraint
 {
@@ -52,8 +50,6 @@ class PHPUnit_Framework_Constraint_IsAnything extends PHPUnit_Framework_Constrai
      * Counts the number of constraint elements.
      *
      * @return int
-     *
-     * @since Method available since Release 3.5.0
      */
     public function count()
     {

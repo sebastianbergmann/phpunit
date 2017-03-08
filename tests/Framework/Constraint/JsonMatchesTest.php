@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @since      File available since Release 3.7.0
- */
 class Framework_Constraint_JsonMatchesTest extends PHPUnit_Framework_TestCase
 {
     /**

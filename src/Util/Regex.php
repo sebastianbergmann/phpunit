@@ -10,8 +10,6 @@
 
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
- *
- * @since Class available since Release 4.2.0
  */
 class PHPUnit_Util_Regex
 {

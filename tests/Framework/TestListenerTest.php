@@ -9,7 +9,6 @@
  */
 
 /**
- * @since      Class available since Release 2.0.0
  * @covers     PHPUnit_Framework_TestCase
  */
 class Framework_TestListenerTest extends PHPUnit_Framework_TestCase implements PHPUnit_Framework_TestListener

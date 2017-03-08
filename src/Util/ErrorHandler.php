@@ -18,8 +18,6 @@ require_once dirname(__DIR__) . '/Framework/Error/Deprecated.php';
 
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
- *
- * @since Class available since Release 3.3.0
  */
 class PHPUnit_Util_ErrorHandler
 {

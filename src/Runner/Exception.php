@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @since Class available since Release 4.0.0
- */
 class PHPUnit_Runner_Exception extends RuntimeException implements PHPUnit_Exception
 {
 }

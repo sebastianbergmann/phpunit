@@ -10,8 +10,6 @@
 
 /**
  * Utility class for blacklisting PHPUnit's own source code files.
- *
- * @since Class available since Release 4.0.0
  */
 class PHPUnit_Util_Blacklist
 {
@@ -50,8 +48,6 @@ class PHPUnit_Util_Blacklist
 
     /**
      * @return array
-     *
-     * @since Method available since Release 4.1.0
      */
     public function getBlacklistedDirectories()
     {

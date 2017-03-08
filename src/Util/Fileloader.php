@@ -10,8 +10,6 @@
 
 /**
  * Utility methods to load PHP sourcefiles.
- *
- * @since Class available since Release 2.3.0
  */
 class PHPUnit_Util_Fileloader
 {
@@ -46,8 +44,6 @@ class PHPUnit_Util_Fileloader
      * @param string $filename
      *
      * @return mixed
-     *
-     * @since Method available since Release 3.0.0
      */
     public static function load($filename)
     {

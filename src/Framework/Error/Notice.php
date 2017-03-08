@@ -15,8 +15,6 @@
  * <code>
  * PHPUnit_Framework_Error_Notice::$enabled = false;
  * </code>
- *
- * @since Class available since Release 3.3.0
  */
 class PHPUnit_Framework_Error_Notice extends PHPUnit_Framework_Error
 {

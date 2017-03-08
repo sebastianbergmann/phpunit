@@ -10,8 +10,6 @@
 
 /**
  * Filesystem helpers.
- *
- * @since Class available since Release 3.0.0
  */
 class PHPUnit_Util_Filesystem
 {
@@ -28,8 +26,6 @@ class PHPUnit_Util_Filesystem
      * @param string $className
      *
      * @return string
-     *
-     * @since Method available since Release 3.4.0
      */
     public static function classNameToFilename($className)
     {

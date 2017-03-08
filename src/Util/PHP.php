@@ -12,8 +12,6 @@ use SebastianBergmann\Environment\Runtime;
 
 /**
  * Utility methods for PHP sub-processes.
- *
- * @since Class available since Release 3.4.0
  */
 abstract class PHPUnit_Util_PHP
 {
@@ -165,8 +163,6 @@ abstract class PHPUnit_Util_PHP
 
     /**
      * @return PHPUnit_Util_PHP
-     *
-     * @since Method available since Release 3.5.12
      */
     public static function factory()
     {
@@ -252,8 +248,6 @@ abstract class PHPUnit_Util_PHP
      * @param array $settings
      *
      * @return string
-     *
-     * @since Method available since Release 4.0.0
      */
     protected function settingsToParameters(array $settings)
     {
@@ -273,8 +267,6 @@ abstract class PHPUnit_Util_PHP
      * @param PHPUnit_Framework_TestResult $result
      * @param string                       $stdout
      * @param string                       $stderr
-     *
-     * @since Method available since Release 3.5.0
      */
     private function processChildResult(PHPUnit_Framework_Test $test, PHPUnit_Framework_TestResult $result, $stdout, $stderr)
     {
@@ -387,7 +379,6 @@ abstract class PHPUnit_Util_PHP
      *
      * @return Exception
      *
-     * @since Method available since Release 3.6.0
      * @see    https://github.com/sebastianbergmann/phpunit/issues/74
      */
     private function getException(PHPUnit_Framework_TestFailure $error)

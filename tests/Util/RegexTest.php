@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @since      Class available since Release 4.2.0
- */
 class Util_RegexTest extends PHPUnit_Framework_TestCase
 {
     public function validRegexpProvider()

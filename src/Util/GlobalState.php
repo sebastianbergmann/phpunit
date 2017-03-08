@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @since Class available since Release 3.4.0
- */
 class PHPUnit_Util_GlobalState
 {
     /**

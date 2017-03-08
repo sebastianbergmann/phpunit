@@ -11,8 +11,6 @@
 /**
  * Constraint that asserts that the string it is evaluated for begins with a
  * given prefix.
- *
- * @since Class available since Release 3.4.0
  */
 class PHPUnit_Framework_Constraint_StringStartsWith extends PHPUnit_Framework_Constraint
 {

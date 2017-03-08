@@ -10,8 +10,6 @@
 
 /**
  * A warning.
- *
- * @since Class available since Release 2.0.0
  */
 class PHPUnit_Framework_WarningTestCase extends PHPUnit_Framework_TestCase
 {
@@ -59,8 +57,6 @@ class PHPUnit_Framework_WarningTestCase extends PHPUnit_Framework_TestCase
 
     /**
      * @return string
-     *
-     * @since Method available since Release 3.0.0
      */
     public function getMessage()
     {
@@ -71,8 +67,6 @@ class PHPUnit_Framework_WarningTestCase extends PHPUnit_Framework_TestCase
      * Returns a string representation of the test case.
      *
      * @return string
-     *
-     * @since Method available since Release 3.4.0
      */
     public function toString()
     {

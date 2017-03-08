@@ -10,8 +10,6 @@
 
 /**
  * Wrapper for PHP errors.
- *
- * @since Class available since Release 2.2.0
  */
 class PHPUnit_Framework_Error extends PHPUnit_Framework_Exception
 {

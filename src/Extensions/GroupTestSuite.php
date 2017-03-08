@@ -20,8 +20,6 @@
  * <code>
  * $suite = new PHPUnit_Extensions_GroupTestSuite($A, array('C', 'D'));
  * </code>
- *
- * @since Class available since Release 3.3.0
  */
 class PHPUnit_Extensions_GroupTestSuite extends PHPUnit_Framework_TestSuite
 {

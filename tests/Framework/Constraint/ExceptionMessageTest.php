@@ -9,7 +9,6 @@
  */
 
 /**
- * @since      Class available since Release 4.0.20
  * @covers     PHPUnit_Framework_Constraint_ExceptionMessage
  */
 class ExceptionMessageTest extends PHPUnit_Framework_TestCase

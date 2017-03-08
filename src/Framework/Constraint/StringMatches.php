@@ -12,8 +12,6 @@ use SebastianBergmann\Diff\Differ;
 
 /**
  * ...
- *
- * @since Class available since Release 3.5.0
  */
 class PHPUnit_Framework_Constraint_StringMatches extends PHPUnit_Framework_Constraint_PCREMatch
 {

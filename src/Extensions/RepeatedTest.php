@@ -10,8 +10,6 @@
 
 /**
  * A Decorator that runs a test repeatedly.
- *
- * @since Class available since Release 2.0.0
  */
 class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 {

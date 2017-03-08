@@ -13,8 +13,6 @@
  *
  * Uses array_replace_recursive() to check if a key value subset is part of the
  * subject array.
- *
- * @since Class available since Release 4.4.0
  */
 class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constraint
 {

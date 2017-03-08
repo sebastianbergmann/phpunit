@@ -9,7 +9,6 @@
  */
 
 /**
- * @since      Class available since Release 2.0.0
  * @covers     PHPUnit_Extensions_RepeatedTest
  */
 class Extensions_RepeatedTestTest extends PHPUnit_Framework_TestCase

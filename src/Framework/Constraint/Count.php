@@ -8,9 +8,6 @@
  * file that was distributed with this source code.
  */
 
-/**
- * @since Class available since Release 3.6.0
- */
 class PHPUnit_Framework_Constraint_Count extends PHPUnit_Framework_Constraint
 {
     /**
