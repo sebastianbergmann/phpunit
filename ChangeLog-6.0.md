@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 6.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.0.9] - 2017-MM-DD
+
+### Fixed
+
+* Fixed [#2558](https://github.com/sebastianbergmann/phpunit/issues/2558): `countOf()` function is missing
+
 ## [6.0.8] - 2017-03-02
 
 ### Changed
@@ -115,6 +121,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 * DbUnit is no longer bundled in the PHAR distribution of PHPUnit
 * PHPUnit is no longer supported on PHP 5.6
 
+[6.0.9]: https://github.com/sebastianbergmann/phpunit/compare/6.0.8...6.0.9
 [6.0.8]: https://github.com/sebastianbergmann/phpunit/compare/6.0.7...6.0.8
 [6.0.7]: https://github.com/sebastianbergmann/phpunit/compare/6.0.6...6.0.7
 [6.0.6]: https://github.com/sebastianbergmann/phpunit/compare/6.0.5...6.0.6
