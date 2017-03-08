@@ -18,7 +18,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit\Util\PHP\AbstractPhpProcess;
+use PHPUnit\Util\PHP;
 use Throwable;
 
 /**
@@ -32,7 +32,7 @@ class PhptTestCase implements Test, SelfDescribing
     private $filename;
 
     /**
-     * @var AbstractPhpProcess
+     * @var \PHPUnit\Util\PHP
      */
     private $phpUtil;
 
@@ -66,7 +66,7 @@ class PhptTestCase implements Test, SelfDescribing
      * Constructs a test case with the given filename.
      *
      * @param string             $filename
-     * @param AbstractPhpProcess $phpUtil
+     * @param \PHPUnit\Util\PHP  $phpUtil
      *
      * @throws Exception
      */
@@ -86,7 +86,7 @@ class PhptTestCase implements Test, SelfDescribing
         }
 
         $this->filename = $filename;
-        $this->phpUtil  = $phpUtil ?: AbstractPhpProcess::factory();
+        $this->phpUtil  = $phpUtil ?: new PHP();
     }
 
     /**

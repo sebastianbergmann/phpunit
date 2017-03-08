@@ -10,7 +10,7 @@
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\Util\PHP\AbstractPhpProcess;
+use PHPUnit\Util\PHP;
 
 class Runner_PhptTestCaseTest extends TestCase
 {
@@ -56,7 +56,7 @@ EOF;
         $this->filename = $this->dirname . '/phpunit.phpt';
         touch($this->filename);
 
-        $this->phpUtil = $this->getMockForAbstractClass(AbstractPhpProcess::class, [], '', false);
+        $this->phpUtil = $this->createMock(PHP::class);
 
         $this->testCase = new PhptTestCase($this->filename, $this->phpUtil);
     }
