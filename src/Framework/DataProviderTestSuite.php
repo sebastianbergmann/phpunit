@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-/**
- */
 class DataProviderTestSuite extends TestSuite
 {
     /**

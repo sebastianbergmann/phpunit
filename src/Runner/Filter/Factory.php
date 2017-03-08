@@ -15,8 +15,6 @@ use Iterator;
 use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
 
-/**
- */
 class Factory
 {
     /**
