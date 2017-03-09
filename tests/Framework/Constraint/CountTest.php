@@ -7,7 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Constraint\Count;
+
+namespace PHPUnit\Framework\Constraint;
+
 use PHPUnit\Framework\TestCase;
 
 class CountTest extends TestCase
@@ -21,7 +23,7 @@ class CountTest extends TestCase
         $this->assertTrue($countConstraint->evaluate([], '', true));
 
         $countConstraint = new Count(2);
-        $it              = new TestIterator([1, 2]);
+        $it              = new \TestIterator([1, 2]);
 
         $this->assertTrue($countConstraint->evaluate($it, '', true));
     }
@@ -31,7 +33,7 @@ class CountTest extends TestCase
         $countConstraint = new Count(2);
 
         // test with 1st implementation of Iterator
-        $it = new TestIterator([1, 2]);
+        $it = new \TestIterator([1, 2]);
 
         $countConstraint->evaluate($it, '', true);
         $this->assertEquals(1, $it->current());
@@ -45,7 +47,7 @@ class CountTest extends TestCase
         $this->assertFalse($it->valid());
 
         // test with 2nd implementation of Iterator
-        $it = new TestIterator2([1, 2]);
+        $it = new \TestIterator2([1, 2]);
 
         $countConstraint = new Count(2);
         $countConstraint->evaluate($it, '', true);
@@ -62,7 +64,7 @@ class CountTest extends TestCase
 
     public function testCountGeneratorsDoNotRewind()
     {
-        $generatorMaker = new TestGeneratorMaker();
+        $generatorMaker = new \TestGeneratorMaker;
 
         $countConstraint = new Count(3);
 

@@ -8,11 +8,13 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\TestCase;
-use PHPUnit\TextUI\ResultPrinter;
-use PHPUnit\Util\Configuration;
+namespace PHPUnit\Util;
 
-class Util_ConfigurationTest extends TestCase
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Exception;
+use PHPUnit\TextUI\ResultPrinter;
+
+class ConfigurationTest extends TestCase
 {
     /**
      * @var Configuration
@@ -28,12 +30,12 @@ class Util_ConfigurationTest extends TestCase
 
     public function testExceptionIsThrownForNotExistingConfigurationFile()
     {
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
 
         Configuration::getInstance('not_existing_file.xml');
     }
 
-    public function testShouldReadColorsWhenTrueInConfigurationfile()
+    public function testShouldReadColorsWhenTrueInConfigurationFile()
     {
         $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.true.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
@@ -42,7 +44,7 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals(ResultPrinter::COLOR_AUTO, $configurationValues['colors']);
     }
 
-    public function testShouldReadColorsWhenFalseInConfigurationfile()
+    public function testShouldReadColorsWhenFalseInConfigurationFile()
     {
         $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.false.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
@@ -51,7 +53,7 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
-    public function testShouldReadColorsWhenEmptyInConfigurationfile()
+    public function testShouldReadColorsWhenEmptyInConfigurationFile()
     {
         $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.empty.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
@@ -60,7 +62,7 @@ class Util_ConfigurationTest extends TestCase
         $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
-    public function testShouldReadColorsWhenInvalidInConfigurationfile()
+    public function testShouldReadColorsWhenInvalidInConfigurationFile()
     {
         $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.invalid.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
@@ -175,7 +177,7 @@ class Util_ConfigurationTest extends TestCase
                 2 => 'April',
                 3 => 19.78,
                 4 => null,
-                5 => new stdClass,
+                5 => new \stdClass,
                 6 => dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
                 7 => dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
               ],
@@ -253,8 +255,8 @@ class Util_ConfigurationTest extends TestCase
 
         $path = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.' . PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, ini_get('include_path'));
-        $this->assertEquals(false, FOO);
-        $this->assertEquals(true, BAR);
+        $this->assertEquals(false, \FOO);
+        $this->assertEquals(true, \BAR);
         $this->assertEquals(false, $GLOBALS['foo']);
         $this->assertEquals(true, $_ENV['foo']);
         $this->assertEquals(true, getenv('foo'));

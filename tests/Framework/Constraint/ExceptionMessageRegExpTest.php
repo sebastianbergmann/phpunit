@@ -7,6 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
+namespace PHPUnit\Framework\Constraint;
+
 use PHPUnit\Framework\TestCase;
 
 class ExceptionMessageRegExpTest extends TestCase
@@ -17,7 +20,7 @@ class ExceptionMessageRegExpTest extends TestCase
      */
     public function testRegexMessage()
     {
-        throw new Exception('A polymorphic exception message');
+        throw new \Exception('A polymorphic exception message');
     }
 
     /**
@@ -26,7 +29,7 @@ class ExceptionMessageRegExpTest extends TestCase
      */
     public function testRegexMessageExtreme()
     {
-        throw new Exception('A polymorphic exception message');
+        throw new \Exception('A polymorphic exception message');
     }
 
     /**
@@ -38,7 +41,8 @@ class ExceptionMessageRegExpTest extends TestCase
     public function testMessageXdebugScreamCompatibility()
     {
         ini_set('xdebug.scream', '1');
-        throw new Exception('Screaming preg_match');
+
+        throw new \Exception('Screaming preg_match');
     }
 
     /**
@@ -47,6 +51,6 @@ class ExceptionMessageRegExpTest extends TestCase
      */
     public function testSimultaneousLiteralAndRegExpExceptionMessage()
     {
-        throw new Exception('A variadic exception message');
+        throw new \Exception('A variadic exception message');
     }
 }

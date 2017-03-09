@@ -8,93 +8,83 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Util;
+
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
-if (!defined('TEST_FILES_PATH')) {
-    define(
-        'TEST_FILES_PATH',
-        dirname(__DIR__) . DIRECTORY_SEPARATOR .
-        '_files' . DIRECTORY_SEPARATOR
-    );
-}
-
-require TEST_FILES_PATH . 'CoverageNamespacedFunctionTest.php';
-require TEST_FILES_PATH . 'NamespaceCoveredFunction.php';
-require TEST_FILES_PATH . 'MultipleDataProviderTest.php';
-
 class Util_TestTest extends TestCase
 {
     /**
-     * @todo   Split up in separate tests
+     * @todo Split up in separate tests
      */
     public function testGetExpectedException()
     {
         $this->assertArraySubset(
             ['class' => 'FooBarBaz', 'code' => null, 'message' => ''],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testOne')
+            Test::getExpectedException(\ExceptionTest::class, 'testOne')
         );
 
         $this->assertArraySubset(
             ['class' => 'Foo_Bar_Baz', 'code' => null, 'message' => ''],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testTwo')
+            Test::getExpectedException(\ExceptionTest::class, 'testTwo')
         );
 
         $this->assertArraySubset(
             ['class' => \Foo\Bar\Baz::class, 'code' => null, 'message' => ''],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testThree')
+            Test::getExpectedException(\ExceptionTest::class, 'testThree')
         );
 
         $this->assertArraySubset(
             ['class' => 'ほげ', 'code' => null, 'message' => ''],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testFour')
+            Test::getExpectedException(\ExceptionTest::class, 'testFour')
         );
 
         $this->assertArraySubset(
             ['class' => 'Class', 'code' => 1234, 'message' => 'Message'],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testFive')
+            Test::getExpectedException(\ExceptionTest::class, 'testFive')
         );
 
         $this->assertArraySubset(
             ['class' => 'Class', 'code' => 1234, 'message' => 'Message'],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSix')
+            Test::getExpectedException(\ExceptionTest::class, 'testSix')
         );
 
         $this->assertArraySubset(
             ['class' => 'Class', 'code' => 'ExceptionCode', 'message' => 'Message'],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSeven')
+            Test::getExpectedException(\ExceptionTest::class, 'testSeven')
         );
 
         $this->assertArraySubset(
             ['class' => 'Class', 'code' => 0, 'message' => 'Message'],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testEight')
+            Test::getExpectedException(\ExceptionTest::class, 'testEight')
         );
 
         $this->assertArraySubset(
-            ['class' => 'Class', 'code' => ExceptionTest::ERROR_CODE, 'message' => ExceptionTest::ERROR_MESSAGE],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testNine')
+            ['class' => 'Class', 'code' => \ExceptionTest::ERROR_CODE, 'message' => \ExceptionTest::ERROR_MESSAGE],
+            Test::getExpectedException(\ExceptionTest::class, 'testNine')
         );
 
         $this->assertArraySubset(
             ['class' => 'Class', 'code' => null, 'message' => ''],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testSingleLine')
+            Test::getExpectedException(\ExceptionTest::class, 'testSingleLine')
         );
 
         $this->assertArraySubset(
-            ['class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE],
-            \PHPUnit\Util\Test::getExpectedException(My\Space\ExceptionNamespaceTest::class, 'testConstants')
+            ['class' => 'Class', 'code' => \My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => \My\Space\ExceptionNamespaceTest::ERROR_MESSAGE],
+            Test::getExpectedException(\My\Space\ExceptionNamespaceTest::class, 'testConstants')
         );
 
         // Ensure the Class::CONST expression is only evaluated when the constant really exists
         $this->assertArraySubset(
             ['class' => 'Class', 'code' => 'ExceptionTest::UNKNOWN_CODE_CONSTANT', 'message' => 'ExceptionTest::UNKNOWN_MESSAGE_CONSTANT'],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testUnknownConstants')
+            Test::getExpectedException(\ExceptionTest::class, 'testUnknownConstants')
         );
 
         $this->assertArraySubset(
             ['class' => 'Class', 'code' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT', 'message' => 'My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT'],
-            \PHPUnit\Util\Test::getExpectedException(My\Space\ExceptionNamespaceTest::class, 'testUnknownConstants')
+            Test::getExpectedException(\My\Space\ExceptionNamespaceTest::class, 'testUnknownConstants')
         );
     }
 
@@ -102,17 +92,17 @@ class Util_TestTest extends TestCase
     {
         $this->assertArraySubset(
             ['message_regex' => '#regex#'],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithRegexMessage')
+            Test::getExpectedException(\ExceptionTest::class, 'testWithRegexMessage')
         );
 
         $this->assertArraySubset(
             ['message_regex' => '#regex#'],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithRegexMessageFromClassConstant')
+            Test::getExpectedException(\ExceptionTest::class, 'testWithRegexMessageFromClassConstant')
         );
 
         $this->assertArraySubset(
             ['message_regex' => 'ExceptionTest::UNKNOWN_MESSAGE_REGEX_CONSTANT'],
-            \PHPUnit\Util\Test::getExpectedException(ExceptionTest::class, 'testWithUnknowRegexMessageFromClassConstant')
+            Test::getExpectedException(\ExceptionTest::class, 'testWithUnknowRegexMessageFromClassConstant')
         );
     }
 
@@ -123,7 +113,7 @@ class Util_TestTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            \PHPUnit\Util\Test::getRequirements(RequirementsTest::class, $test)
+            Test::getRequirements(\RequirementsTest::class, $test)
         );
     }
 
@@ -336,7 +326,7 @@ class Util_TestTest extends TestCase
 
         $this->assertEquals(
             $expectedAnnotations,
-            \PHPUnit\Util\Test::getRequirements(RequirementsClassDocBlockTest::class, 'testMethod')
+            Test::getRequirements(\RequirementsClassDocBlockTest::class, 'testMethod')
         );
     }
 
@@ -347,7 +337,7 @@ class Util_TestTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            \PHPUnit\Util\Test::getMissingRequirements(RequirementsTest::class, $test)
+            Test::getMissingRequirements(\RequirementsTest::class, $test)
         );
     }
 
@@ -399,23 +389,23 @@ class Util_TestTest extends TestCase
      */
     public function testGetProvidedDataRegEx()
     {
-        $result = preg_match(\PHPUnit\Util\Test::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
+        $result = preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('method', $matches[1]);
 
-        $result = preg_match(\PHPUnit\Util\Test::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
+        $result = preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('class::method', $matches[1]);
 
-        $result = preg_match(\PHPUnit\Util\Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
+        $result = preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\class::method', $matches[1]);
 
-        $result = preg_match(\PHPUnit\Util\Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
+        $result = preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\namespace\class::method', $matches[1]);
 
-        $result = preg_match(\PHPUnit\Util\Test::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
+        $result = preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('メソッド', $matches[1]);
     }
@@ -425,7 +415,7 @@ class Util_TestTest extends TestCase
      */
     public function testMultipleDataProviders()
     {
-        $dataSets = \PHPUnit\Util\Test::getProvidedData(MultipleDataProviderTest::class, 'testOne');
+        $dataSets = Test::getProvidedData(\MultipleDataProviderTest::class, 'testOne');
 
         $this->assertCount(9, $dataSets);
 
@@ -446,7 +436,7 @@ class Util_TestTest extends TestCase
 
     public function testMultipleYieldIteratorDataProviders()
     {
-        $dataSets = \PHPUnit\Util\Test::getProvidedData(MultipleDataProviderTest::class, 'testTwo');
+        $dataSets = Test::getProvidedData(\MultipleDataProviderTest::class, 'testTwo');
 
         $this->assertEquals(9, count($dataSets));
 
@@ -467,13 +457,13 @@ class Util_TestTest extends TestCase
 
     public function testTestWithEmptyAnnotation()
     {
-        $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation("/**\n * @anotherAnnotation\n */");
+        $result = Test::getDataFromTestWithAnnotation("/**\n * @anotherAnnotation\n */");
         $this->assertNull($result);
     }
 
     public function testTestWithSimpleCase()
     {
-        $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
+        $result = Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1]
                                                                      */');
         $this->assertEquals([[1]], $result);
@@ -481,7 +471,7 @@ class Util_TestTest extends TestCase
 
     public function testTestWithMultiLineMultiParameterCase()
     {
-        $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
+        $result = Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1, 2]
                                                                      * [3, 4]
                                                                      */');
@@ -490,7 +480,7 @@ class Util_TestTest extends TestCase
 
     public function testTestWithVariousTypes()
     {
-        $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
+        $result = Test::getDataFromTestWithAnnotation('/**
             * @testWith ["ab"]
             *           [true]
             *           [null]
@@ -500,7 +490,7 @@ class Util_TestTest extends TestCase
 
     public function testTestWithAnnotationAfter()
     {
-        $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
+        $result = Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1]
                                                                      *           [2]
                                                                      * @annotation
@@ -510,7 +500,7 @@ class Util_TestTest extends TestCase
 
     public function testTestWithSimpleTextAfter()
     {
-        $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
+        $result = Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1]
                                                                      *           [2]
                                                                      * blah blah
@@ -520,7 +510,7 @@ class Util_TestTest extends TestCase
 
     public function testTestWithCharacterEscape()
     {
-        $result = \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
+        $result = Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith ["\"", "\""]
                                                                      */');
         $this->assertEquals([['"', '"']], $result);
@@ -531,7 +521,7 @@ class Util_TestTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The dataset for the @testWith annotation cannot be parsed:/');
 
-        \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
+        Test::getDataFromTestWithAnnotation('/**
                                                            * @testWith [s]
                                                            */');
     }
@@ -541,20 +531,20 @@ class Util_TestTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The dataset for the @testWith annotation cannot be parsed:/');
 
-        \PHPUnit\Util\Test::getDataFromTestWithAnnotation('/**
+        Test::getDataFromTestWithAnnotation('/**
                                                            * @testWith ["valid"]
                                                            *           [invalid]
                                                            */');
     }
 
     /**
-     * @todo   Not sure what this test tests (name is misleading at least)
+     * @todo Not sure what this test tests (name is misleading at least)
      */
     public function testParseAnnotation()
     {
         $this->assertEquals(
             ['Foo', 'ほげ'],
-            \PHPUnit\Util\Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
+            Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
         );
     }
 
@@ -562,7 +552,7 @@ class Util_TestTest extends TestCase
      * @depends Foo
      * @depends ほげ
      *
-     * @todo    Remove fixture from test class
+     * @todo Remove fixture from test class
      */
     public function methodForTestParseAnnotation()
     {
@@ -572,7 +562,7 @@ class Util_TestTest extends TestCase
     {
         $this->assertEquals(
             ['Bar'],
-            \PHPUnit\Util\Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
+            Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
         );
     }
 
@@ -605,7 +595,7 @@ class Util_TestTest extends TestCase
 
         $this->assertEquals(
             $expected,
-            \PHPUnit\Util\Test::getLinesToBeCovered(
+            Test::getLinesToBeCovered(
                 $test,
                 'testSomething'
             )
@@ -616,7 +606,7 @@ class Util_TestTest extends TestCase
     {
         $this->expectException(CodeCoverageException::class);
 
-        \PHPUnit\Util\Test::getLinesToBeCovered(
+        Test::getLinesToBeCovered(
             'NotExistingCoveredElementTest',
             'testOne'
         );
@@ -626,7 +616,7 @@ class Util_TestTest extends TestCase
     {
         $this->expectException(CodeCoverageException::class);
 
-        \PHPUnit\Util\Test::getLinesToBeCovered(
+        Test::getLinesToBeCovered(
             'NotExistingCoveredElementTest',
             'testTwo'
         );
@@ -636,7 +626,7 @@ class Util_TestTest extends TestCase
     {
         $this->expectException(CodeCoverageException::class);
 
-        \PHPUnit\Util\Test::getLinesToBeCovered(
+        Test::getLinesToBeCovered(
             'NotExistingCoveredElementTest',
             'testThree'
         );
@@ -646,7 +636,7 @@ class Util_TestTest extends TestCase
     {
         $this->assertSame(
             [],
-            \PHPUnit\Util\Test::getLinesToBeCovered(
+            Test::getLinesToBeCovered(
                 'NotExistingCoveredElementTest',
                 'methodDoesNotExist'
             )
@@ -657,7 +647,7 @@ class Util_TestTest extends TestCase
     {
         $this->expectException(CodeCoverageException::class);
 
-        \PHPUnit\Util\Test::getLinesToBeCovered(
+        Test::getLinesToBeCovered(
             'CoverageTwoDefaultClassAnnotations',
             'testSomething'
         );
@@ -667,7 +657,7 @@ class Util_TestTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => range(2, 4)],
-            \PHPUnit\Util\Test::getLinesToBeCovered(
+            Test::getLinesToBeCovered(
                 'CoverageFunctionParenthesesTest',
                 'testSomething'
             )
@@ -678,7 +668,7 @@ class Util_TestTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => range(2, 4)],
-            \PHPUnit\Util\Test::getLinesToBeCovered(
+            Test::getLinesToBeCovered(
                 'CoverageFunctionParenthesesWhitespaceTest',
                 'testSomething'
             )
@@ -689,7 +679,7 @@ class Util_TestTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
-            \PHPUnit\Util\Test::getLinesToBeCovered(
+            Test::getLinesToBeCovered(
                 'CoverageMethodParenthesesTest',
                 'testSomething'
             )
@@ -700,7 +690,7 @@ class Util_TestTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
-            \PHPUnit\Util\Test::getLinesToBeCovered(
+            Test::getLinesToBeCovered(
                 'CoverageMethodParenthesesWhitespaceTest',
                 'testSomething'
             )
@@ -713,8 +703,8 @@ class Util_TestTest extends TestCase
             [
                 TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(4, 7)
             ],
-            \PHPUnit\Util\Test::getLinesToBeCovered(
-                CoverageNamespacedFunctionTest::class,
+            Test::getLinesToBeCovered(
+                \CoverageNamespacedFunctionTest::class,
                 'testFunc'
             )
         );
@@ -824,7 +814,7 @@ class Util_TestTest extends TestCase
 
     public function testParseTestMethodAnnotationsIncorporatesTraits()
     {
-        $result = \PHPUnit\Util\Test::parseTestMethodAnnotations(ParseTestMethodAnnotationsMock::class);
+        $result = Test::parseTestMethodAnnotations(ParseTestMethodAnnotationsMock::class);
 
         $this->assertArrayHasKey('class', $result);
         $this->assertArrayHasKey('method', $result);

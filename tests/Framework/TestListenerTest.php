@@ -7,15 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Warning;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestListener;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Test;
 
-class Framework_TestListenerTest extends TestCase implements TestListener
+namespace PHPUnit\Framework;
+
+class TestListenerTest extends TestCase implements TestListener
 {
     protected $endCount;
     protected $errorCount;
@@ -27,7 +22,7 @@ class Framework_TestListenerTest extends TestCase implements TestListener
     protected $result;
     protected $startCount;
 
-    public function addError(Test $test, Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time)
     {
         $this->errorCount++;
     }
@@ -42,17 +37,17 @@ class Framework_TestListenerTest extends TestCase implements TestListener
         $this->failureCount++;
     }
 
-    public function addIncompleteTest(Test $test, Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time)
     {
         $this->notImplementedCount++;
     }
 
-    public function addRiskyTest(Test $test, Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time)
     {
         $this->riskyCount++;
     }
 
-    public function addSkippedTest(Test $test, Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time)
     {
         $this->skippedCount++;
     }
@@ -90,7 +85,7 @@ class Framework_TestListenerTest extends TestCase implements TestListener
 
     public function testError()
     {
-        $test = new TestError;
+        $test = new \TestError;
         $test->run($this->result);
 
         $this->assertEquals(1, $this->errorCount);
@@ -99,7 +94,7 @@ class Framework_TestListenerTest extends TestCase implements TestListener
 
     public function testFailure()
     {
-        $test = new Failure;
+        $test = new \Failure;
         $test->run($this->result);
 
         $this->assertEquals(1, $this->failureCount);
@@ -108,7 +103,7 @@ class Framework_TestListenerTest extends TestCase implements TestListener
 
     public function testStartStop()
     {
-        $test = new Success;
+        $test = new \Success;
         $test->run($this->result);
 
         $this->assertEquals(1, $this->startCount);

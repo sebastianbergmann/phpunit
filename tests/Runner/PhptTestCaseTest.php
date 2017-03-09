@@ -8,11 +8,12 @@
  * file that was distributed with this source code.
  */
 
+namespace PHPUnit\Runner;
+
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 
-class Runner_PhptTestCaseTest extends TestCase
+class PhptTestCaseTest extends TestCase
 {
     const EXPECT_CONTENT = <<<EOF
 --TEST--
@@ -46,9 +47,20 @@ EOF;
 
 EOF;
 
+    /**
+     * @var string
+     */
     protected $filename;
+
+    /**
+     * @var PhptTestCase
+     */
     protected $testCase;
-    protected $phpUtil;
+
+    /**
+     * @var AbstractPhpProcess|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected $phpProcess;
 
     protected function setUp()
     {
@@ -56,9 +68,8 @@ EOF;
         $this->filename = $this->dirname . '/phpunit.phpt';
         touch($this->filename);
 
-        $this->phpUtil = $this->getMockForAbstractClass(AbstractPhpProcess::class, [], '', false);
-
-        $this->testCase = new PhptTestCase($this->filename, $this->phpUtil);
+        $this->phpProcess = $this->getMockForAbstractClass(AbstractPhpProcess::class, [], '', false);
+        $this->testCase   = new PhptTestCase($this->filename, $this->phpProcess);
     }
 
     protected function tearDown()
@@ -85,11 +96,11 @@ EOF;
 
         $fileSection = '<?php echo "Hello PHPUnit!"; ?>' . PHP_EOL;
 
-        $this->phpUtil
-            ->expects($this->once())
-            ->method('runJob')
-            ->with($fileSection)
-            ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+        $this->phpProcess
+             ->expects($this->once())
+             ->method('runJob')
+             ->with($fileSection)
+             ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
 
         $this->testCase->run();
     }
@@ -147,11 +158,11 @@ EOF
 
         $this->setPhpContent($phptContent);
 
-        $this->phpUtil
-            ->expects($this->at(0))
-            ->method('runJob')
-            ->with($skipifSection)
-            ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+        $this->phpProcess
+             ->expects($this->at(0))
+             ->method('runJob')
+             ->with($skipifSection)
+             ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
 
         $this->testCase->run();
     }
@@ -166,11 +177,11 @@ EOF
 
         $this->setPhpContent($phptContent);
 
-        $this->phpUtil
-            ->expects($this->once())
-            ->method('runJob')
-            ->with($skipifSection)
-            ->will($this->returnValue(['stdout' => 'skip: Reason', 'stderr' => '']));
+        $this->phpProcess
+             ->expects($this->once())
+             ->method('runJob')
+             ->with($skipifSection)
+             ->will($this->returnValue(['stdout' => 'skip: Reason', 'stderr' => '']));
 
         $this->testCase->run();
     }
@@ -185,10 +196,10 @@ EOF
 
         $this->setPhpContent($phptContent);
 
-        $this->phpUtil
-            ->expects($this->at(1))
-            ->method('runJob')
-            ->with($cleanSection);
+        $this->phpProcess
+             ->expects($this->at(1))
+             ->method('runJob')
+             ->with($cleanSection);
 
         $this->testCase->run();
     }
@@ -197,7 +208,7 @@ EOF
     {
         $this->setPhpContent('');
 
-        $this->expectException(PHPUnit\Runner\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid PHPT file');
 
         $this->testCase->run();
@@ -214,7 +225,7 @@ Something
 EOF
         );
 
-        $this->expectException(PHPUnit\Runner\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid PHPT file');
 
         $this->testCase->run();
@@ -233,7 +244,7 @@ echo "Hello world!\n";
 EOF
         );
 
-        $this->expectException(PHPUnit\Runner\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Invalid PHPT file');
 
         $this->testCase->run();
@@ -243,11 +254,11 @@ EOF
     {
         $this->setPhpContent(self::EXPECT_CONTENT);
 
-        $this->phpUtil
-            ->expects($this->once())
-            ->method('runJob')
-            ->with(self::FILE_SECTION)
-            ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
+        $this->phpProcess
+             ->expects($this->once())
+             ->method('runJob')
+             ->with(self::FILE_SECTION)
+             ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
 
         $result = $this->testCase->run();
 
@@ -258,11 +269,11 @@ EOF
     {
         $this->setPhpContent(self::EXPECTF_CONTENT);
 
-        $this->phpUtil
-            ->expects($this->once())
-            ->method('runJob')
-            ->with(self::FILE_SECTION)
-            ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
+        $this->phpProcess
+             ->expects($this->once())
+             ->method('runJob')
+             ->with(self::FILE_SECTION)
+             ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
 
         $result = $this->testCase->run();
 
@@ -273,38 +284,14 @@ EOF
     {
         $this->setPhpContent(self::EXPECTREGEX_CONTENT);
 
-        $this->phpUtil
-            ->expects($this->once())
-            ->method('runJob')
-            ->with(self::FILE_SECTION)
-            ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
+        $this->phpProcess
+             ->expects($this->once())
+             ->method('runJob')
+             ->with(self::FILE_SECTION)
+             ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
 
         $result = $this->testCase->run();
 
         $this->assertTrue($result->wasSuccessful());
-    }
-
-    public function testParseIniSection()
-    {
-        $phptTestCase = new PhpTestCaseProxy(__FILE__);
-        $settings     = $phptTestCase->parseIniSection("foo=1\nbar = 2\rbaz = 3\r\nempty=\nignore");
-
-        $expected = [
-            'foo=1',
-            'bar = 2',
-            'baz = 3',
-            'empty=',
-            'ignore',
-        ];
-
-        $this->assertEquals($expected, $settings);
-    }
-}
-
-class PhpTestCaseProxy extends PhptTestCase
-{
-    public function parseIniSection($content)
-    {
-        return parent::parseIniSection($content);
     }
 }
