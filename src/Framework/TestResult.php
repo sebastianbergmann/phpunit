@@ -604,10 +604,18 @@ class PHPUnit_Framework_TestResult implements Countable
     {
         PHPUnit_Framework_Assert::resetCount();
 
+        $coversNothing = false;
+
         if ($test instanceof PHPUnit_Framework_TestCase) {
             $test->setRegisterMockObjectsFromTestArgumentsRecursively(
                 $this->registerMockObjectsFromTestArgumentsRecursively
             );
+
+            $annotations = $test->getAnnotations();
+
+            if (isset($annotations['class']['coversNothing']) || isset($annotations['method']['coversNothing'])) {
+                $coversNothing = true;
+            }
         }
 
         $error      = false;
@@ -635,18 +643,8 @@ class PHPUnit_Framework_TestResult implements Countable
         }
 
         $collectCodeCoverage = $this->codeCoverage !== null &&
-                               !$test instanceof PHPUnit_Framework_WarningTestCase;
-
-        if ($collectCodeCoverage) {
-            $annotations = PHPUnit_Util_Test::parseTestMethodAnnotations(
-                get_class($test),
-                $test->getName(false)
-            );
-
-            if (isset($annotations['class']['coversNothing']) || isset($annotations['method']['coversNothing'])) {
-                $collectCodeCoverage = false;
-            }
-        }
+                               !$test instanceof PHPUnit_Framework_WarningTestCase &&
+                               !$coversNothing;
 
         if ($collectCodeCoverage) {
             $this->codeCoverage->start($test);
