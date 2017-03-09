@@ -120,11 +120,11 @@ EOF
 
         $renderedCode = "<?php echo '" . $this->dirname . "' . '" . $this->filename . "'; ?>" . PHP_EOL;
 
-        $this->phpUtil
-            ->expects($this->once())
-            ->method('runJob')
-            ->with($renderedCode)
-            ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+        $this->phpProcess
+             ->expects($this->once())
+             ->method('runJob')
+             ->with($renderedCode)
+             ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
 
         $this->testCase->run();
     }
@@ -139,11 +139,11 @@ EOF
 
         $renderedCode = "<?php echo 'skip: ' . '" . $this->filename. "'; ?>" . PHP_EOL;
 
-        $this->phpUtil
-            ->expects($this->at(0))
-            ->method('runJob')
-            ->with($renderedCode)
-            ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+        $this->phpProcess
+             ->expects($this->at(0))
+             ->method('runJob')
+             ->with($renderedCode)
+             ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
 
         $this->testCase->run();
     }

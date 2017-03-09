@@ -11,6 +11,7 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Exception;
 
 class GetoptTest extends TestCase
 {
@@ -70,7 +71,7 @@ class GetoptTest extends TestCase
             '-v',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('unrecognized option -- v');
 
         Getopt::getopt($args, '');
@@ -84,7 +85,7 @@ class GetoptTest extends TestCase
             '-f',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('option requires an argument -- f');
 
         Getopt::getopt($args, 'f:');
@@ -119,7 +120,7 @@ class GetoptTest extends TestCase
             '--col',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('option --col is ambiguous');
 
         Getopt::getopt($args, '', ['columns', 'colors']);
@@ -134,7 +135,7 @@ class GetoptTest extends TestCase
             '--foo',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('unrecognized option --foo');
 
         Getopt::getopt($args, '', ['colors']);
@@ -147,7 +148,7 @@ class GetoptTest extends TestCase
             '--foo',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('option --foo requires an argument');
 
         Getopt::getopt($args, '', ['foo=']);
@@ -160,7 +161,7 @@ class GetoptTest extends TestCase
             '--foo=bar',
         ];
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage("option --foo doesn't allow an argument");
 
         Getopt::getopt($args, '', ['foo']);
