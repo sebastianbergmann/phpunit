@@ -50,17 +50,17 @@ EOF;
     /**
      * @var string
      */
-    protected $filename;
+    private $filename;
 
     /**
      * @var PhptTestCase
      */
-    protected $testCase;
+    private $testCase;
 
     /**
      * @var AbstractPhpProcess|\PHPUnit_Framework_MockObject_MockObject
      */
-    protected $phpProcess;
+    private $phpProcess;
 
     protected function setUp()
     {
