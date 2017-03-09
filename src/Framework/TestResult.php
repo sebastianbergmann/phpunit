@@ -614,10 +614,18 @@ class TestResult implements Countable
     {
         Assert::resetCount();
 
+        $coversNothing = false;
+
         if ($test instanceof TestCase) {
             $test->setRegisterMockObjectsFromTestArgumentsRecursively(
                 $this->registerMockObjectsFromTestArgumentsRecursively
             );
+
+            $annotations = $test->getAnnotations();
+
+            if (isset($annotations['class']['coversNothing']) || isset($annotations['method']['coversNothing'])) {
+                $coversNothing = true;
+            }
         }
 
         $error      = false;
@@ -645,7 +653,8 @@ class TestResult implements Countable
         }
 
         $collectCodeCoverage = $this->codeCoverage !== null &&
-            !$test instanceof WarningTestCase;
+                               !$test instanceof WarningTestCase &&
+                               !$coversNothing;
 
         if ($collectCodeCoverage) {
             $this->codeCoverage->start($test);

@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#2547](https://github.com/sebastianbergmann/phpunit/issues/2547): Code Coverage data is collected for test annotated with `@coversNothing`
 * Fixed [#2558](https://github.com/sebastianbergmann/phpunit/issues/2558): `countOf()` function is missing
 
 ## [5.7.15] - 2017-03-02
