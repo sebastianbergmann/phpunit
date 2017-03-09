@@ -50,6 +50,11 @@ EOF;
     /**
      * @var string
      */
+    private $dirname;
+
+    /**
+     * @var string
+     */
     private $filename;
 
     /**
