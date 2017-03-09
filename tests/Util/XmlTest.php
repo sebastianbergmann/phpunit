@@ -7,11 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Xml;
 
-class Util_XMLTest extends TestCase
+namespace PHPUnit\Util;
+
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Exception;
+
+class XmlTest extends TestCase
 {
     /**
      * @dataProvider charProvider
@@ -22,7 +24,7 @@ class Util_XMLTest extends TestCase
 
         $escapedString = Xml::prepareString($char);
         $xml           = "<?xml version='1.0' encoding='UTF-8' ?><tag>$escapedString</tag>";
-        $dom           = new DomDocument('1.0', 'UTF-8');
+        $dom           = new \DOMDocument('1.0', 'UTF-8');
 
         try {
             $dom->loadXML($xml);
@@ -48,7 +50,7 @@ class Util_XMLTest extends TestCase
 
     public function testLoadEmptyString()
     {
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Could not load XML from empty string');
 
         Xml::load('');
@@ -56,7 +58,7 @@ class Util_XMLTest extends TestCase
 
     public function testLoadArray()
     {
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Could not load XML from array');
 
         Xml::load([1, 2, 3]);
@@ -64,7 +66,7 @@ class Util_XMLTest extends TestCase
 
     public function testLoadBoolean()
     {
-        $this->expectException(PHPUnit\Framework\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Could not load XML from boolean');
 
         Xml::load(false);
@@ -73,7 +75,7 @@ class Util_XMLTest extends TestCase
     public function testNestedXmlToVariable()
     {
         $xml = '<array><element key="a"><array><element key="b"><string>foo</string></element></array></element><element key="c"><string>bar</string></element></array>';
-        $dom = new DOMDocument();
+        $dom = new \DOMDocument;
         $dom->loadXML($xml);
 
         $expected = [

@@ -7,10 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\Constraint\JsonMatchesErrorMessageProvider;
+
+namespace PHPUnit\Framework\Constraint;
+
 use PHPUnit\Framework\TestCase;
 
-class Framework_Constraint_JsonMatches_ErrorMessageProviderTest extends TestCase
+class JsonMatchesErrorMessageProviderTest extends TestCase
 {
     /**
      * @dataProvider translateTypeToPrefixDataprovider
