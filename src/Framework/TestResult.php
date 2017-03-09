@@ -638,6 +638,17 @@ class PHPUnit_Framework_TestResult implements Countable
                                !$test instanceof PHPUnit_Framework_WarningTestCase;
 
         if ($collectCodeCoverage) {
+            $annotations = PHPUnit_Util_Test::parseTestMethodAnnotations(
+                get_class($test),
+                $test->getName(false)
+            );
+
+            if (isset($annotations['class']['coversNothing']) || isset($annotations['method']['coversNothing'])) {
+                $collectCodeCoverage = false;
+            }
+        }
+
+        if ($collectCodeCoverage) {
             $this->codeCoverage->start($test);
         }
 
