@@ -89,4 +89,29 @@ class XmlTest extends TestCase
 
         $this->assertSame($expected, $actual);
     }
+
+    public function testXmlToVariableCanHandleMultipleOfTheSameArgumentType()
+    {
+        $xml = '<object class="SampleClass"><arguments><string>a</string><string>b</string><string>c</string></arguments></object>';
+        $dom = new \DOMDocument();
+        $dom->loadXML($xml);
+
+        $expected = ['a' => 'a', 'b' => 'b', 'c' => 'c'];
+
+        $actual = Xml::xmlToVariable($dom->documentElement);
+
+        $this->assertSame($expected, (array) $actual);
+    }
+
+    public function testXmlToVariableCanConstructObjectsWithConstructorArgumentsRecursively()
+    {
+        $xml = '<object class="Exception"><arguments><string>one</string><integer>0</integer><object class="Exception"><arguments><string>two</string></arguments></object></arguments></object>';
+        $dom = new \DOMDocument();
+        $dom->loadXML($xml);
+
+        $actual = Xml::xmlToVariable($dom->documentElement);
+
+        $this->assertEquals('one', $actual->getMessage());
+        $this->assertEquals('two', $actual->getPrevious()->getMessage());
+    }
 }
