@@ -233,6 +233,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/sebastian/object-reflector/LICENSE" tofile="${basedir}/build/phar/object-reflector/LICENSE"/>
+        <copy todir="${basedir}/build/phar/sebastian-object-reflector">
+            <fileset dir="${basedir}/vendor/sebastian/object-reflector/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/sebastian/version/LICENSE" tofile="${basedir}/build/phar/sebastian-version/LICENSE"/>
         <copy todir="${basedir}/build/phar/sebastian-version">
             <fileset dir="${basedir}/vendor/sebastian/version/src">
