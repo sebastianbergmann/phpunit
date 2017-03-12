@@ -39,7 +39,7 @@
         "sebastian/environment": "^2.0",
         "sebastian/exporter": "^3.0",
         "sebastian/global-state": "^1.1 || ^2.0",
-        "sebastian/object-enumerator": "^3.0",
+        "sebastian/object-enumerator": "^3.0.2",
         "sebastian/resource-operations": "^1.0",
         "sebastian/version": "^2.0"
     },
