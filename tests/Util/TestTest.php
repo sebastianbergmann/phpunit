@@ -72,7 +72,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertArraySubset(
-          array('class' => 'Class', 'code' => ExceptionTest::ERROR_CODE, 'message' => ExceptionTest::ERROR_MESSAGE),
+          array('class' => 'Class', 'code' => 'ExceptionTest::ERROR_CODE', 'message' => 'ExceptionTest::ERROR_MESSAGE'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testNine')
         );
 
@@ -82,7 +82,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertArraySubset(
-          array('class' => 'Class', 'code' => My\Space\ExceptionNamespaceTest::ERROR_CODE, 'message' => My\Space\ExceptionNamespaceTest::ERROR_MESSAGE),
+          array('class' => 'Class', 'code' => 'My\Space\ExceptionNamespaceTest::ERROR_CODE', 'message' => 'My\Space\ExceptionNamespaceTest::ERROR_MESSAGE'),
           PHPUnit_Util_Test::getExpectedException('My\Space\ExceptionNamespaceTest', 'testConstants')
         );
 
@@ -109,7 +109,7 @@ class Util_TestTest extends PHPUnit_Framework_TestCase
         );
 
         $this->assertArraySubset(
-          array('message_regex' => '#regex#'),
+          array('message_regex' => 'ExceptionTest::ERROR_MESSAGE_REGEX'),
           PHPUnit_Util_Test::getExpectedException('ExceptionTest', 'testWithRegexMessageFromClassConstant')
         );
 

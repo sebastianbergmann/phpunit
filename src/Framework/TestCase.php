@@ -945,7 +945,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     $this->assertThat(
                         $e,
                         new PHPUnit_Framework_Constraint_ExceptionMessage(
-                            $this->expectedExceptionMessage
+                            defined($this->expectedExceptionMessage) ? constant($this->expectedExceptionMessage) : $this->expectedExceptionMessage
                         )
                     );
                 }
@@ -955,17 +955,22 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     $this->assertThat(
                         $e,
                         new PHPUnit_Framework_Constraint_ExceptionMessageRegExp(
-                            $this->expectedExceptionMessageRegExp
+                            defined($this->expectedExceptionMessageRegExp) ? constant($this->expectedExceptionMessageRegExp) : $this->expectedExceptionMessageRegExp
                         )
                     );
                 }
 
                 if ($this->expectedExceptionCode !== null) {
+                    $code = $this->expectedExceptionCode;
+                    if (is_numeric($code)) {
+                        $code = (int) $code;
+                    } elseif (is_string($code) && defined($code)) {
+                        $code = (int) constant($code);
+                    }
+
                     $this->assertThat(
                         $e,
-                        new PHPUnit_Framework_Constraint_ExceptionCode(
-                            $this->expectedExceptionCode
-                        )
+                        new PHPUnit_Framework_Constraint_ExceptionCode($code)
                     );
                 }
 
