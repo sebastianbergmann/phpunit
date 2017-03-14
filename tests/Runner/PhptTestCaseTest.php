@@ -142,7 +142,7 @@ EOF
 
         $this->setPhpContent($phptContent);
 
-        $renderedCode = "<?php echo 'skip: ' . '" . $this->filename. "'; ?>" . PHP_EOL;
+        $renderedCode = "<?php echo 'skip: ' . '" . $this->filename . "'; ?>" . PHP_EOL;
 
         $this->phpProcess
              ->expects($this->at(0))
