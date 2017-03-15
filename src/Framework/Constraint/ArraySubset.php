@@ -49,7 +49,7 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
     {
         //type cast $other & $this->subset as an array to allow
         //support in standard array functions.
-        $other = $this->toArray($other);
+        $other        = $this->toArray($other);
         $this->subset = $this->toArray($this->subset);
 
         $patched = array_replace_recursive($other, $this->subset);
@@ -88,6 +88,7 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
 
     /**
      * @param array|Traversable $other
+     *
      * @return array
      */
     private function toArray($other)
