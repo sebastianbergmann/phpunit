@@ -11,11 +11,10 @@
 class PHPUnit_Framework_Constraint_ArraySubsetTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @param bool $expected
+     * @param bool              $expected
      * @param array|Traversable $subset
      * @param array|Traversable $other
-     * @param bool $strict
-     * @return void
+     * @param bool              $strict
      * @dataProvider evaluateDataProvider
      */
     public function testEvaluate($expected, $subset, $other, $strict)
