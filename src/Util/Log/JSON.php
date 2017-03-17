@@ -212,7 +212,7 @@ class PHPUnit_Util_Log_JSON extends PHPUnit_Util_Printer implements PHPUnit_Fram
             array(
             'event'   => 'test',
             'suite'   => $this->currentTestSuiteName,
-            'test'    => $this->currentTestName,
+            'test'    => PHPUnit_Util_Test::describe($test),
             'status'  => $status,
             'time'    => $time,
             'trace'   => $trace,
