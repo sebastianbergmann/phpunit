@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2016](https://github.com/sebastianbergmann/phpunit/issues/2016): `prophesize()` does not work when static attributes are backed up
+* Fixed [#2568](https://github.com/sebastianbergmann/phpunit/issues/2568): `ArraySubsetConstraint` uses invalid cast to array
 * `PHPUnit\Util\Test::getDataFromTestWithAnnotation()` raises notice when docblock contains Windows line endings
 
 ## [5.7.16] - 2017-03-15
