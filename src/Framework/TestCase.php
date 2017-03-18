@@ -1591,7 +1591,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = [])
     {
         if ($originalClassName === '') {
-            $originalClassName = str_replace('.wsdl', '', basename($wsdlFile));
+            $originalClassName = pathinfo(basename(parse_url($wsdlFile)['path']), PATHINFO_FILENAME);
         }
 
         if (!class_exists($originalClassName)) {
