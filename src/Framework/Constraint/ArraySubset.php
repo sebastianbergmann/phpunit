@@ -20,7 +20,7 @@ use ArrayAccess;
 class ArraySubset extends Constraint
 {
     /**
-     * @var array|Traversable
+     * @var array|\Traversable
      */
     protected $subset;
 
@@ -30,8 +30,8 @@ class ArraySubset extends Constraint
     protected $strict;
 
     /**
-     * @param array|Traversable $subset
-     * @param bool              $strict Check for object identity
+     * @param array|\Traversable $subset
+     * @param bool               $strict Check for object identity
      */
     public function __construct($subset, $strict = false)
     {
@@ -44,7 +44,7 @@ class ArraySubset extends Constraint
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param array|Traversable $other Array or Traversable object to evaluate.
+     * @param array|\Traversable $other Array or Traversable object to evaluate.
      *
      * @return bool
      */
@@ -90,7 +90,7 @@ class ArraySubset extends Constraint
     }
 
     /**
-     * @param array|Traversable $other
+     * @param array|\Traversable $other
      *
      * @return array
      */
@@ -98,9 +98,9 @@ class ArraySubset extends Constraint
     {
         if (is_array($other)) {
             return $other;
-        } elseif ($other instanceof ArrayObject) {
+        } elseif ($other instanceof \ArrayObject) {
             return $other->getArrayCopy();
-        } elseif ($other instanceof Traversable) {
+        } elseif ($other instanceof \Traversable) {
             return iterator_to_array($other);
         }
 
