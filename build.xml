@@ -371,6 +371,7 @@
         <exec executable="${basedir}/build/tools/phpcs" taskname="phpcs">
             <arg value="--standard=${basedir}/build/phpcs.xml"/>
             <arg value="--extensions=php"/>
+            <arg value="--cache"/>
         </exec>
     </target>
 
@@ -378,6 +379,7 @@
         <exec executable="${basedir}/build/tools/phpcs" output="/dev/null" taskname="phpcs">
             <arg value="--standard=${basedir}/build/phpcs.xml"/>
             <arg value="--extensions=php"/>
+            <arg value="--cache"/>
             <arg value="--report=checkstyle"/>
             <arg value="--report-file=${basedir}/build/logfiles/checkstyle.xml"/>
         </exec>
