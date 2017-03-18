@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 6.0 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#2016](https://github.com/sebastianbergmann/phpunit/issues/2016): `prophesize()` does not work when static attributes are backed up
 * `PHPUnit\Util\Test::getDataFromTestWithAnnotation()` raises notice when docblock contains Windows line endings
 
 ## [6.0.9] - 2017-03-15
