@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 
 * Fixed [#2016](https://github.com/sebastianbergmann/phpunit/issues/2016): `prophesize()` does not work when static attributes are backed up
 * Fixed [#2568](https://github.com/sebastianbergmann/phpunit/issues/2568): `ArraySubsetConstraint` uses invalid cast to array
+* Fixed [#2573](https://github.com/sebastianbergmann/phpunit/issues/2573): `getMockFromWsdl()` does not handle URLs with query parameters
 * `PHPUnit\Util\Test::getDataFromTestWithAnnotation()` raises notice when docblock contains Windows line endings
 
 ## [5.7.16] - 2017-03-15
