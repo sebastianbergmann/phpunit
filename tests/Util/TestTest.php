@@ -14,7 +14,7 @@ use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
-class Util_TestTest extends TestCase
+class TestTest extends TestCase
 {
     /**
      * @todo Split up in separate tests
@@ -814,26 +814,11 @@ class Util_TestTest extends TestCase
 
     public function testParseTestMethodAnnotationsIncorporatesTraits()
     {
-        $result = Test::parseTestMethodAnnotations(ParseTestMethodAnnotationsMock::class);
+        $result = Test::parseTestMethodAnnotations(\ParseTestMethodAnnotationsMock::class);
 
         $this->assertArrayHasKey('class', $result);
         $this->assertArrayHasKey('method', $result);
         $this->assertArrayHasKey('theClassAnnotation', $result['class']);
         $this->assertArrayHasKey('theTraitAnnotation', $result['class']);
     }
-}
-
-/**
- * @theClassAnnotation
- */
-class ParseTestMethodAnnotationsMock
-{
-    use ParseTestMethodAnnotationsTrait;
-}
-
-/**
- * @theTraitAnnotation
- */
-trait ParseTestMethodAnnotationsTrait
-{
 }
