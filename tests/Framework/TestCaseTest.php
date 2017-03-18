@@ -12,21 +12,37 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Runner\BaseTestRunner;
 
-$GLOBALS['a']  = 'a';
-$_ENV['b']     = 'b';
-$_POST['c']    = 'c';
-$_GET['d']     = 'd';
-$_COOKIE['e']  = 'e';
-$_SERVER['f']  = 'f';
-$_FILES['g']   = 'g';
-$_REQUEST['h'] = 'h';
-$GLOBALS['i']  = 'i';
-
 class TestCaseTest extends TestCase
 {
     protected $backupGlobalsBlacklist = ['i', 'singleton'];
 
-    protected static $_testStatic = 0;
+    protected static $testStatic = 0;
+
+    public static function setUpBeforeClass()
+    {
+        $GLOBALS['a']  = 'a';
+        $_ENV['b']     = 'b';
+        $_POST['c']    = 'c';
+        $_GET['d']     = 'd';
+        $_COOKIE['e']  = 'e';
+        $_SERVER['f']  = 'f';
+        $_FILES['g']   = 'g';
+        $_REQUEST['h'] = 'h';
+        $GLOBALS['i']  = 'i';
+    }
+
+    public static function tearDownAfterClass()
+    {
+        unset($GLOBALS['a']);
+        unset($_ENV['b']);
+        unset($_POST['c']);
+        unset($_GET['d']);
+        unset($_COOKIE['e']);
+        unset($_SERVER['f']);
+        unset($_FILES['g']);
+        unset($_REQUEST['h']);
+        unset($GLOBALS['i']);
+    }
 
     public function testCaseToString()
     {
@@ -377,7 +393,7 @@ class TestCaseTest extends TestCase
     public function testStaticAttributesBackupPre()
     {
         $GLOBALS['singleton'] = \Singleton::getInstance();
-        self::$_testStatic    = 123;
+        self::$testStatic    = 123;
     }
 
     /**
@@ -386,7 +402,7 @@ class TestCaseTest extends TestCase
     public function testStaticAttributesBackupPost()
     {
         $this->assertNotSame($GLOBALS['singleton'], \Singleton::getInstance());
-        $this->assertSame(0, self::$_testStatic);
+        $this->assertSame(0, self::$testStatic);
     }
 
     public function testIsInIsolationReturnsFalse()
