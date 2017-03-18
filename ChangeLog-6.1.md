@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 6.1 release series are documented in this fil
 * Implemented [#2533](https://github.com/sebastianbergmann/phpunit/pull/2533): Implement configuration option to set a default test suite
 * Implemented [#2541](https://github.com/sebastianbergmann/phpunit/issues/2541): Implement configuration option to ignore deprecated code from code coverage
 * Implemented [#2546](https://github.com/sebastianbergmann/phpunit/issues/2546): Render `__FILE__` and `__DIR__` in `SKIPIF` section of PHPT tests
+* Implemented [#2551](https://github.com/sebastianbergmann/phpunit/issues/2551): Allow directory traversal in `FILE_EXTERNAL` section of PHPT tests
 
 ### Changed
 
