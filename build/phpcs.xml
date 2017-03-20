@@ -11,5 +11,9 @@
 
     <rule ref="PSR2">
         <exclude name="Generic.Files.LineLength"/>
+        <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+        <exclude name="PSR1.Classes.ClassDeclaration.MultipleClasses"/>
+        <exclude name="PSR1.Files.SideEffects.FoundWithSymbols"/>
+        <exclude name="Squiz.Classes.ValidClassName.NotCamelCaps"/>
     </rule>
 </ruleset>
