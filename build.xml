@@ -378,27 +378,19 @@
 
     <target name="phpcs">
         <exec executable="${basedir}/build/tools/phpcs" taskname="phpcs">
-            <arg value="--standard=PSR2"/>
+            <arg value="--standard=${basedir}/build/phpcs.xml"/>
             <arg value="--extensions=php"/>
-            <arg value="--exclude=Generic.Files.LineLength"/>
-            <arg path="${basedir}/src"/>
-            <arg path="${basedir}/tests/Framework"/>
-            <arg path="${basedir}/tests/Runner"/>
-            <arg path="${basedir}/tests/Util"/>
+            <arg value="--cache"/>
         </exec>
     </target>
 
     <target name="-phpcs" depends="prepare">
         <exec executable="${basedir}/build/tools/phpcs" output="/dev/null" taskname="phpcs">
+            <arg value="--standard=${basedir}/build/phpcs.xml"/>
+            <arg value="--extensions=php"/>
+            <arg value="--cache"/>
             <arg value="--report=checkstyle"/>
             <arg value="--report-file=${basedir}/build/logfiles/checkstyle.xml"/>
-            <arg value="--standard=PSR2"/>
-            <arg value="--extensions=php"/>
-            <arg value="--exclude=Generic.Files.LineLength"/>
-            <arg path="${basedir}/src"/>
-            <arg path="${basedir}/tests/Framework"/>
-            <arg path="${basedir}/tests/Runner"/>
-            <arg path="${basedir}/tests/Util"/>
         </exec>
     </target>
 
