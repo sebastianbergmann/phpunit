@@ -160,6 +160,8 @@ class Test
             $element = explode(' ', $element);
             $element = $element[0];
 
+            $element = explode(' ', $element)[0];
+
             $codeList = array_merge(
                 $codeList,
                 self::resolveElementToReflectionObjects($element)
