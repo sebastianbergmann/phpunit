@@ -797,6 +797,13 @@ class PHPUnit_Util_Configuration
             );
         }
 
+        if ($root->hasAttribute('onlyRepeatFailed')) {
+            $result['onlyRepeatFailed'] = $this->getBoolean(
+                (string) $root->getAttribute('onlyRepeatFailed'),
+                false
+            );
+        }
+
         return $result;
     }
 

@@ -68,6 +68,7 @@ Test Execution Options:
 
   --loader <loader>         TestSuiteLoader implementation to use.
   --repeat <times>          Runs the test(s) repeatedly.
+  --only-repeat-failed      Only repeats tests that failed in the previous run.
   --tap                     Report test execution progress in TAP format.
   --testdox                 Report test execution progress in TestDox format.
   --printer <printer>       TestListener implementation to use.

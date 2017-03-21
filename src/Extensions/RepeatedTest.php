@@ -16,7 +16,17 @@
 class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
 {
     /**
+     * @var PHPUnit_Framework_TestCase[]
+     */
+    protected $testCaseChildren = array();
+
+    /**
      * @var bool
+     */
+    protected $onlyRepeatFailed = false;
+
+    /**
+     * @var boolean
      */
     protected $processIsolation = false;
 
@@ -29,10 +39,11 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
      * @param PHPUnit_Framework_Test $test
      * @param int                    $timesRepeat
      * @param bool                   $processIsolation
+     * @param boolean                $onlyRepeatFailed
      *
      * @throws PHPUnit_Framework_Exception
      */
-    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = false)
+    public function __construct(PHPUnit_Framework_Test $test, $timesRepeat = 1, $processIsolation = false, $onlyRepeatFailed = false)
     {
         parent::__construct($test);
 
@@ -47,6 +58,10 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         }
 
         $this->processIsolation = $processIsolation;
+        $this->onlyRepeatFailed = $onlyRepeatFailed;
+        if ($test instanceof PHPUnit_Framework_TestSuite) {
+            $this->getAllTestCaseChildren($test);
+        }
     }
 
     /**
@@ -77,14 +92,79 @@ class PHPUnit_Extensions_RepeatedTest extends PHPUnit_Extensions_TestDecorator
         }
 
         //@codingStandardsIgnoreStart
-        for ($i = 0; $i < $this->timesRepeat && !$result->shouldStop(); $i++) {
+        for ($i = 1; $i <= $this->timesRepeat && !$result->shouldStop(); $i++) {
+            if ($this->onlyRepeatFailed &&
+                $i > 1 &&
+                $this->test instanceof PHPUnit_Framework_TestCase &&
+                $result->wasSuccessful()) {
+                // The previous test case run succeeded.
+                $this->skipTestCase($this->test, $result, $i);
+                // Go to the next repeat at once, skipping the execution of the test.
+                continue;
+            }
             //@codingStandardsIgnoreEnd
             if ($this->test instanceof PHPUnit_Framework_TestSuite) {
                 $this->test->setRunTestInSeparateProcess($this->processIsolation);
+
+                if ($this->onlyRepeatFailed && $i > 1) {
+                    $testsToRepeat = array();
+                    foreach ($this->testCaseChildren as $test) {
+                        $skipped = false;
+                        foreach ($result->passed() as $key => $data) {
+                            // The 'passed' array is keyed by test key.
+                            // @see TestResult::endTest()
+                            if ($key == get_class($test) . '::' . $test->getName()) {
+                                // A previous test run succeeded.
+                                $this->skipTestCase($test, $result, $i);
+                                $skipped = true;
+                                // Quit the foreach because we found a match.
+                                break;
+                            }
+                        }
+                        if (!$skipped) {
+                            $testsToRepeat[] = $test;
+                        }
+                    }
+                    $this->test->setTests($testsToRepeat);
+                    // Don't filter tests any more, we just filtered them.
+                    // Reset the filter.
+                    $this->test->injectFilter(new PHPUnit_Runner_Filter_Factory());
+                }
             }
-            $this->test->run($result);
+            $this->basicRun($result);
         }
 
         return $result;
+    }
+
+    /**
+     * Get all children test cases from a test suite.
+     *
+     * @param PHPUnit_Framework_TestSuite $test
+     */
+    public function getAllTestCaseChildren(PHPUnit_Framework_TestSuite $test)
+    {
+        foreach ($test as $testChild) {
+            if ($testChild instanceof PHPUnit_Framework_TestSuite) {
+                // If the test itself is another test suite, then recurse.
+                $this->getAllTestCaseChildren($testChild);
+            } else {
+                $this->testCaseChildren[] = $testChild;
+            }
+        }
+    }
+
+    /**
+     * Skip the given test case once.
+     *
+     * @param PHPUnit_Framework_Test $test
+     * @param PHPUnit_Framework_TestResult $result
+     * @param int $ranCount
+     *   How many times the test already ran or got skipped.
+     */
+    protected function skipTestCase($test, $result, $ranCount)
+    {
+        $message = sprintf('Test skipped in run number %d because it succeeded during a previous run.', $ranCount);
+        $result->addFailure($test, new PHPUnit_Framework_SkippedTestError($message), 0);
     }
 }
