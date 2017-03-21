@@ -322,6 +322,7 @@ class JUnit extends Printer implements TestListener
                 $method = $class->getMethod($test->getName());
 
                 $testCase->setAttribute('class', $class->getName());
+                $testCase->setAttribute('classname', str_replace('\\', '.', $class->getName()));
                 $testCase->setAttribute('file', $class->getFileName());
                 $testCase->setAttribute('line', $method->getStartLine());
             }
