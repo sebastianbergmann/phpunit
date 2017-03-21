@@ -17,6 +17,17 @@ use PHPUnit\Framework\SyntheticError;
  */
 class Filter
 {
+    private static $custom_stacktrace_callback;
+
+    /**
+     * Set custom stack trace callback that can deal with rewritten files and extra stack trace lines
+     * @param callable $callback (Exception $e, $asString = true): string
+     */
+    public static function setCustomStackTraceCallback(Callable $callback)
+    {
+        self::$custom_stacktrace_callback = $callback;
+    }
+
     /**
      * Filters stack frames from PHPUnit classes.
      *
@@ -27,6 +38,10 @@ class Filter
      */
     public static function getFilteredStacktrace($e, $asString = true)
     {
+        if ($stackTraceCb = self::$custom_stacktrace_callback) {
+            return $stackTraceCb($e, $asString);
+        }
+
         $prefix = false;
         $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 
