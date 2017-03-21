@@ -65,6 +65,11 @@
             "tests/_files/CoveredFunction.php"
         ]
     },
+    "config": {
+        "platform": {
+            "php": "5.3.3"
+        }
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "4.8.x-dev"
