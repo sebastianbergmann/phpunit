@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann\Comparator\ComparisonFailure;
+
 /**
  * Asserts whether or not two JSON objects are equal.
  */
@@ -53,6 +56,43 @@ class JsonMatches extends Constraint
         }
 
         return $recodedOther == $recodedValue;
+    }
+
+    /**
+     * Throws an exception for the given compared value and test description
+     *
+     * @param mixed             $other             Evaluated value or object.
+     * @param string            $description       Additional information about the test
+     * @param ComparisonFailure $comparisonFailure
+     *
+     * @throws ExpectationFailedException
+     */
+    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null)
+    {
+        if ($comparisonFailure === null) {
+            list($error) = $this->canonicalizeJson($other);
+            if ($error) {
+                parent::fail($other, $description);
+                return;
+            }
+
+            list($error) = $this->canonicalizeJson($this->value);
+            if ($error) {
+                parent::fail($other, $description);
+                return;
+            }
+
+            $comparisonFailure = new ComparisonFailure(
+                \json_decode($this->value),
+                \json_decode($other),
+                $other,
+                $this->value,
+                false,
+                'Failed asserting that two json values are equal.'
+            );
+        }
+
+        parent::fail($other, $description, $comparisonFailure);
     }
 
     /*

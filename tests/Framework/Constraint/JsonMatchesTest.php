@@ -10,6 +10,7 @@
 
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 class JsonMatchesTest extends TestCase
@@ -22,6 +23,24 @@ class JsonMatchesTest extends TestCase
         $constraint = new JsonMatches($jsonValue);
 
         $this->assertEquals($expected, $constraint->evaluate($jsonOther, '', true));
+    }
+
+    /**
+     * @dataProvider evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider
+     */
+    public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch($jsonOther, $jsonValue)
+    {
+        $constraint = new JsonMatches($jsonValue);
+        try {
+            $constraint->evaluate($jsonOther, '', false);
+            $this->fail(sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
+        } catch (ExpectationFailedException $expectedException) {
+            $comparisonFailure = $expectedException->getComparisonFailure();
+            $this->assertNotNull($comparisonFailure);
+            $this->assertSame($jsonOther, $comparisonFailure->getExpectedAsString());
+            $this->assertSame($jsonValue, $comparisonFailure->getActualAsString());
+            $this->assertSame('Failed asserting that two json values are equal.', $comparisonFailure->getMessage());
+        }
     }
 
     public function testToString()
@@ -49,6 +68,18 @@ class JsonMatchesTest extends TestCase
             'single boolean valid json'               => [true, 'true', 'true'],
             'single number valid json'                => [true, '5.3', '5.3'],
             'single null valid json'                  => [true, 'null', 'null'],
+        ];
+    }
+
+    public static function evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider()
+    {
+        return [
+            'error UTF-8'                             => [json_encode('\xB1\x31'), json_encode(['Mascott' => 'Tux'])],
+            'string type not equals number'           => ['{"age": "5"}', '{"age": 5}'],
+            'string type not equals boolean'          => ['{"age": "true"}', '{"age": true}'],
+            'string type not equals null'             => ['{"age": "null"}', '{"age": null}'],
+            'null field different from missing field' => ['{"present": true, "missing": null}', '{"present": true}'],
+            'array elements are ordered'              => ['["first", "second"]', '["second", "first"]']
         ];
     }
 }
