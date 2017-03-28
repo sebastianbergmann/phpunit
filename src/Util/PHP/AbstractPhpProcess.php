@@ -225,7 +225,7 @@ abstract class AbstractPhpProcess
             if ($file) {
                 $command .= '-e ' . escapeshellarg($file);
             } else {
-                $command .= escapeshellarg(__DIR__ . '/PHP/eval-stdin.php');
+                $command .= escapeshellarg(__DIR__ . '/eval-stdin.php');
             }
         } elseif ($file) {
             $command .= ' -f ' . escapeshellarg($file);
