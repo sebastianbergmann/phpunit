@@ -894,6 +894,7 @@ class Configuration
 
     /**
      * @param DOMElement $testSuiteNode
+     * @param array|null $testSuiteFilter
      *
      * @return TestSuite
      */
