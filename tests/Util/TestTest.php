@@ -381,6 +381,9 @@ class TestTest extends TestCase
             ['testExtensionVersionOperatorEquals', ['Extension testExtOne = 1.0 is required.']],
             ['testExtensionVersionOperatorDoubleEquals', ['Extension testExtOne == 1.0 is required.']],
             ['testExtensionVersionOperatorNoSpace', ['Extension testExtOne >= 99 is required.']],
+            ['testPackageNoVersion', ['Package test/non-existing-package is required.']],
+            ['testPackageVersionOperatorNoSpace', ['Package sebastian/comparator < 2.0 is required.']],
+            ['testPackageVersionOperatorSpace', ['Package sebastian/comparator < 2.0 is required.']],
         ];
     }
 
