@@ -433,52 +433,54 @@ class TestRunner extends BaseTestRunner
             if (isset($arguments['whitelist'])) {
                 $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
             }
-            else {
-                $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
 
-                $codeCoverageReports = 0;
-
-                unset($codeCoverage);
-            }
-
-            if (isset($codeCoverage) && isset($arguments['configuration'])) {
+            if (isset($arguments['configuration'])) {
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-                $codeCoverage->setAddUncoveredFilesFromWhitelist(
-                    $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
-                );
+                if (empty($filterConfiguration['whitelist'])) {
+                    $this->writeMessage('Error', 'No whitelist is configured, no code coverage will be generated.');
 
-                $codeCoverage->setProcessUncoveredFilesFromWhitelist(
-                    $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist']
-                );
+                    $codeCoverageReports = 0;
 
-                foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                    $this->codeCoverageFilter->addDirectoryToWhitelist(
-                        $dir['path'],
-                        $dir['suffix'],
-                        $dir['prefix']
+                    unset($codeCoverage);
+
+                } else {
+                    $codeCoverage->setAddUncoveredFilesFromWhitelist(
+                        $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
                     );
-                }
 
-                foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                    $this->codeCoverageFilter->addFileToWhitelist($file);
-                }
-
-                foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
-                    $this->codeCoverageFilter->removeDirectoryFromWhitelist(
-                        $dir['path'],
-                        $dir['suffix'],
-                        $dir['prefix']
+                    $codeCoverage->setProcessUncoveredFilesFromWhitelist(
+                        $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist']
                     );
-                }
 
-                foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
-                    $this->codeCoverageFilter->removeFileFromWhitelist($file);
+                    foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
+                        $this->codeCoverageFilter->addDirectoryToWhitelist(
+                            $dir['path'],
+                            $dir['suffix'],
+                            $dir['prefix']
+                        );
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
+                        $this->codeCoverageFilter->addFileToWhitelist($file);
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
+                        $this->codeCoverageFilter->removeDirectoryFromWhitelist(
+                            $dir['path'],
+                            $dir['suffix'],
+                            $dir['prefix']
+                        );
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
+                        $this->codeCoverageFilter->removeFileFromWhitelist($file);
+                    }
                 }
             }
 
-            if (!$this->codeCoverageFilter->hasWhitelist()) {
-                $this->writeMessage('Error', 'Whitelist is improperly configured, no files listed for testing.');
+            if (isset($codeCoverage) && !$this->codeCoverageFilter->hasWhitelist()) {
+                $this->writeMessage('Error', 'Incorrect whitelist configuration. No code coverage will be generated.');
 
                 $codeCoverageReports = 0;
 
