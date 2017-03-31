@@ -53,4 +53,4 @@ install:
 
 test_script:
   - cd c:\phpunit
-  - php phpunit --coverage-clover=coverage.xml
+  - php phpunit
