@@ -32,6 +32,7 @@ return PhpCsFixer\Config::create()
             'lowercase_constants' => true,
             'lowercase_keywords' => true,
             'method_argument_space' => true,
+            'native_function_invocation' => true,
             'no_alias_functions' => true,
             'no_blank_lines_after_class_opening' => true,
             'no_blank_lines_after_phpdoc' => true,
