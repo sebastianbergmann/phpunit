@@ -50,7 +50,7 @@ use PHPUnit\Framework\TestCase;
  */
 function any()
 {
-    return TestCase::any(...func_get_args());
+    return TestCase::any(...\func_get_args());
 }
 
 /**
@@ -60,7 +60,7 @@ function any()
  */
 function anything()
 {
-    return Assert::anything(...func_get_args());
+    return Assert::anything(...\func_get_args());
 }
 
 /**
@@ -72,7 +72,7 @@ function anything()
  */
 function arrayHasKey($key)
 {
-    Assert::arrayHasKey(...func_get_args());
+    Assert::arrayHasKey(...\func_get_args());
 }
 
 /**
@@ -84,7 +84,7 @@ function arrayHasKey($key)
  */
 function assertArrayHasKey($key, $array, $message = '')
 {
-    return Assert::assertArrayHasKey(...func_get_args());
+    return Assert::assertArrayHasKey(...\func_get_args());
 }
 
 /**
@@ -97,7 +97,7 @@ function assertArrayHasKey($key, $array, $message = '')
  */
 function assertArraySubset($subset, $array, $strict = false, $message = '')
 {
-    return Assert::assertArraySubset(...func_get_args());
+    return Assert::assertArraySubset(...\func_get_args());
 }
 
 /**
@@ -109,7 +109,7 @@ function assertArraySubset($subset, $array, $strict = false, $message = '')
  */
 function assertArrayNotHasKey($key, $array, $message = '')
 {
-    return Assert::assertArrayNotHasKey(...func_get_args());
+    return Assert::assertArrayNotHasKey(...\func_get_args());
 }
 
 /**
@@ -126,7 +126,7 @@ function assertArrayNotHasKey($key, $array, $message = '')
  */
 function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
 {
-    return Assert::assertAttributeContains(...func_get_args());
+    return Assert::assertAttributeContains(...\func_get_args());
 }
 
 /**
@@ -141,7 +141,7 @@ function assertAttributeContains($needle, $haystackAttributeName, $haystackClass
  */
 function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, $message = '')
 {
-    return Assert::assertAttributeContainsOnly(...func_get_args());
+    return Assert::assertAttributeContainsOnly(...\func_get_args());
 }
 
 /**
@@ -155,7 +155,7 @@ function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackCla
  */
 function assertAttributeCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
 {
-    return Assert::assertAttributeCount(...func_get_args());
+    return Assert::assertAttributeCount(...\func_get_args());
 }
 
 /**
@@ -168,7 +168,7 @@ function assertAttributeCount($expectedCount, $haystackAttributeName, $haystackC
  */
 function assertAttributeEmpty($haystackAttributeName, $haystackClassOrObject, $message = '')
 {
-    return Assert::assertAttributeEmpty(...func_get_args());
+    return Assert::assertAttributeEmpty(...\func_get_args());
 }
 
 /**
@@ -185,7 +185,7 @@ function assertAttributeEmpty($haystackAttributeName, $haystackClassOrObject, $m
  */
 function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
-    return Assert::assertAttributeEquals(...func_get_args());
+    return Assert::assertAttributeEquals(...\func_get_args());
 }
 
 /**
@@ -198,7 +198,7 @@ function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrOb
  */
 function assertAttributeGreaterThan($expected, $actualAttributeName, $actualClassOrObject, $message = '')
 {
-    return Assert::assertAttributeGreaterThan(...func_get_args());
+    return Assert::assertAttributeGreaterThan(...\func_get_args());
 }
 
 /**
@@ -211,7 +211,7 @@ function assertAttributeGreaterThan($expected, $actualAttributeName, $actualClas
  */
 function assertAttributeGreaterThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = '')
 {
-    return Assert::assertAttributeGreaterThanOrEqual(...func_get_args());
+    return Assert::assertAttributeGreaterThanOrEqual(...\func_get_args());
 }
 
 /**
@@ -224,7 +224,7 @@ function assertAttributeGreaterThanOrEqual($expected, $actualAttributeName, $act
  */
 function assertAttributeInstanceOf($expected, $attributeName, $classOrObject, $message = '')
 {
-    return Assert::assertAttributeInstanceOf(...func_get_args());
+    return Assert::assertAttributeInstanceOf(...\func_get_args());
 }
 
 /**
@@ -237,7 +237,7 @@ function assertAttributeInstanceOf($expected, $attributeName, $classOrObject, $m
  */
 function assertAttributeInternalType($expected, $attributeName, $classOrObject, $message = '')
 {
-    return Assert::assertAttributeInternalType(...func_get_args());
+    return Assert::assertAttributeInternalType(...\func_get_args());
 }
 
 /**
@@ -250,7 +250,7 @@ function assertAttributeInternalType($expected, $attributeName, $classOrObject, 
  */
 function assertAttributeLessThan($expected, $actualAttributeName, $actualClassOrObject, $message = '')
 {
-    return Assert::assertAttributeLessThan(...func_get_args());
+    return Assert::assertAttributeLessThan(...\func_get_args());
 }
 
 /**
@@ -263,7 +263,7 @@ function assertAttributeLessThan($expected, $actualAttributeName, $actualClassOr
  */
 function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = '')
 {
-    return Assert::assertAttributeLessThanOrEqual(...func_get_args());
+    return Assert::assertAttributeLessThanOrEqual(...\func_get_args());
 }
 
 /**
@@ -280,7 +280,7 @@ function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actual
  */
 function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
 {
-    return Assert::assertAttributeNotContains(...func_get_args());
+    return Assert::assertAttributeNotContains(...\func_get_args());
 }
 
 /**
@@ -296,7 +296,7 @@ function assertAttributeNotContains($needle, $haystackAttributeName, $haystackCl
  */
 function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, $message = '')
 {
-    return Assert::assertAttributeNotContainsOnly(...func_get_args());
+    return Assert::assertAttributeNotContainsOnly(...\func_get_args());
 }
 
 /**
@@ -310,7 +310,7 @@ function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystack
  */
 function assertAttributeNotCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
 {
-    return Assert::assertAttributeNotCount(...func_get_args());
+    return Assert::assertAttributeNotCount(...\func_get_args());
 }
 
 /**
@@ -323,7 +323,7 @@ function assertAttributeNotCount($expectedCount, $haystackAttributeName, $haysta
  */
 function assertAttributeNotEmpty($haystackAttributeName, $haystackClassOrObject, $message = '')
 {
-    return Assert::assertAttributeNotEmpty(...func_get_args());
+    return Assert::assertAttributeNotEmpty(...\func_get_args());
 }
 
 /**
@@ -340,7 +340,7 @@ function assertAttributeNotEmpty($haystackAttributeName, $haystackClassOrObject,
  */
 function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
-    return Assert::assertAttributeNotEquals(...func_get_args());
+    return Assert::assertAttributeNotEquals(...\func_get_args());
 }
 
 /**
@@ -353,7 +353,7 @@ function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassO
  */
 function assertAttributeNotInstanceOf($expected, $attributeName, $classOrObject, $message = '')
 {
-    return Assert::assertAttributeNotInstanceOf(...func_get_args());
+    return Assert::assertAttributeNotInstanceOf(...\func_get_args());
 }
 
 /**
@@ -366,7 +366,7 @@ function assertAttributeNotInstanceOf($expected, $attributeName, $classOrObject,
  */
 function assertAttributeNotInternalType($expected, $attributeName, $classOrObject, $message = '')
 {
-    return Assert::assertAttributeNotInternalType(...func_get_args());
+    return Assert::assertAttributeNotInternalType(...\func_get_args());
 }
 
 /**
@@ -380,7 +380,7 @@ function assertAttributeNotInternalType($expected, $attributeName, $classOrObjec
  */
 function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
 {
-    return Assert::assertAttributeNotSame(...func_get_args());
+    return Assert::assertAttributeNotSame(...\func_get_args());
 }
 
 /**
@@ -394,7 +394,7 @@ function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrO
  */
 function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
 {
-    return Assert::assertAttributeSame(...func_get_args());
+    return Assert::assertAttributeSame(...\func_get_args());
 }
 
 /**
@@ -406,7 +406,7 @@ function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObje
  */
 function assertClassHasAttribute($attributeName, $className, $message = '')
 {
-    return Assert::assertClassHasAttribute(...func_get_args());
+    return Assert::assertClassHasAttribute(...\func_get_args());
 }
 
 /**
@@ -418,7 +418,7 @@ function assertClassHasAttribute($attributeName, $className, $message = '')
  */
 function assertClassHasStaticAttribute($attributeName, $className, $message = '')
 {
-    return Assert::assertClassHasStaticAttribute(...func_get_args());
+    return Assert::assertClassHasStaticAttribute(...\func_get_args());
 }
 
 /**
@@ -430,7 +430,7 @@ function assertClassHasStaticAttribute($attributeName, $className, $message = ''
  */
 function assertClassNotHasAttribute($attributeName, $className, $message = '')
 {
-    return Assert::assertClassNotHasAttribute(...func_get_args());
+    return Assert::assertClassNotHasAttribute(...\func_get_args());
 }
 
 /**
@@ -442,7 +442,7 @@ function assertClassNotHasAttribute($attributeName, $className, $message = '')
  */
 function assertClassNotHasStaticAttribute($attributeName, $className, $message = '')
 {
-    return Assert::assertClassNotHasStaticAttribute(...func_get_args());
+    return Assert::assertClassNotHasStaticAttribute(...\func_get_args());
 }
 
 /**
@@ -457,7 +457,7 @@ function assertClassNotHasStaticAttribute($attributeName, $className, $message =
  */
 function assertContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
 {
-    return Assert::assertContains(...func_get_args());
+    return Assert::assertContains(...\func_get_args());
 }
 
 /**
@@ -470,7 +470,7 @@ function assertContains($needle, $haystack, $message = '', $ignoreCase = false, 
  */
 function assertContainsOnly($type, $haystack, $isNativeType = null, $message = '')
 {
-    return Assert::assertContainsOnly(...func_get_args());
+    return Assert::assertContainsOnly(...\func_get_args());
 }
 
 /**
@@ -482,7 +482,7 @@ function assertContainsOnly($type, $haystack, $isNativeType = null, $message = '
  */
 function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
 {
-    return Assert::assertContainsOnlyInstancesOf(...func_get_args());
+    return Assert::assertContainsOnlyInstancesOf(...\func_get_args());
 }
 
 /**
@@ -494,7 +494,7 @@ function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
  */
 function assertCount($expectedCount, $haystack, $message = '')
 {
-    return Assert::assertCount(...func_get_args());
+    return Assert::assertCount(...\func_get_args());
 }
 
 /**
@@ -507,7 +507,7 @@ function assertCount($expectedCount, $haystack, $message = '')
  */
 function assertEmpty($actual, $message = '')
 {
-    return Assert::assertEmpty(...func_get_args());
+    return Assert::assertEmpty(...\func_get_args());
 }
 
 /**
@@ -520,7 +520,7 @@ function assertEmpty($actual, $message = '')
  */
 function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = '')
 {
-    return Assert::assertEqualXMLStructure(...func_get_args());
+    return Assert::assertEqualXMLStructure(...\func_get_args());
 }
 
 /**
@@ -536,7 +536,7 @@ function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actual
  */
 function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
-    return Assert::assertEquals(...func_get_args());
+    return Assert::assertEquals(...\func_get_args());
 }
 
 /**
@@ -549,7 +549,7 @@ function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth
  */
 function assertNotTrue($condition, $message = '')
 {
-    return Assert::assertNotTrue(...func_get_args());
+    return Assert::assertNotTrue(...\func_get_args());
 }
 
 /**
@@ -562,7 +562,7 @@ function assertNotTrue($condition, $message = '')
  */
 function assertFalse($condition, $message = '')
 {
-    return Assert::assertFalse(...func_get_args());
+    return Assert::assertFalse(...\func_get_args());
 }
 
 /**
@@ -577,7 +577,7 @@ function assertFalse($condition, $message = '')
  */
 function assertFileEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false)
 {
-    return Assert::assertFileEquals(...func_get_args());
+    return Assert::assertFileEquals(...\func_get_args());
 }
 
 /**
@@ -588,7 +588,7 @@ function assertFileEquals($expected, $actual, $message = '', $canonicalize = fal
  */
 function assertFileExists($filename, $message = '')
 {
-    return Assert::assertFileExists(...func_get_args());
+    return Assert::assertFileExists(...\func_get_args());
 }
 
 /**
@@ -603,7 +603,7 @@ function assertFileExists($filename, $message = '')
  */
 function assertFileNotEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false)
 {
-    return Assert::assertFileNotEquals(...func_get_args());
+    return Assert::assertFileNotEquals(...\func_get_args());
 }
 
 /**
@@ -614,7 +614,7 @@ function assertFileNotEquals($expected, $actual, $message = '', $canonicalize = 
  */
 function assertFileNotExists($filename, $message = '')
 {
-    return Assert::assertFileNotExists(...func_get_args());
+    return Assert::assertFileNotExists(...\func_get_args());
 }
 
 /**
@@ -626,7 +626,7 @@ function assertFileNotExists($filename, $message = '')
  */
 function assertGreaterThan($expected, $actual, $message = '')
 {
-    return Assert::assertGreaterThan(...func_get_args());
+    return Assert::assertGreaterThan(...\func_get_args());
 }
 
 /**
@@ -638,7 +638,7 @@ function assertGreaterThan($expected, $actual, $message = '')
  */
 function assertGreaterThanOrEqual($expected, $actual, $message = '')
 {
-    return Assert::assertGreaterThanOrEqual(...func_get_args());
+    return Assert::assertGreaterThanOrEqual(...\func_get_args());
 }
 
 /**
@@ -650,7 +650,7 @@ function assertGreaterThanOrEqual($expected, $actual, $message = '')
  */
 function assertInstanceOf($expected, $actual, $message = '')
 {
-    return Assert::assertInstanceOf(...func_get_args());
+    return Assert::assertInstanceOf(...\func_get_args());
 }
 
 /**
@@ -662,7 +662,7 @@ function assertInstanceOf($expected, $actual, $message = '')
  */
 function assertInternalType($expected, $actual, $message = '')
 {
-    return Assert::assertInternalType(...func_get_args());
+    return Assert::assertInternalType(...\func_get_args());
 }
 
 /**
@@ -673,7 +673,7 @@ function assertInternalType($expected, $actual, $message = '')
  */
 function assertJson($actualJson, $message = '')
 {
-    return Assert::assertJson(...func_get_args());
+    return Assert::assertJson(...\func_get_args());
 }
 
 /**
@@ -685,7 +685,7 @@ function assertJson($actualJson, $message = '')
  */
 function assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message = '')
 {
-    return Assert::assertJsonFileEqualsJsonFile(...func_get_args());
+    return Assert::assertJsonFileEqualsJsonFile(...\func_get_args());
 }
 
 /**
@@ -697,7 +697,7 @@ function assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message = '')
  */
 function assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = '')
 {
-    return Assert::assertJsonFileNotEqualsJsonFile(...func_get_args());
+    return Assert::assertJsonFileNotEqualsJsonFile(...\func_get_args());
 }
 
 /**
@@ -709,7 +709,7 @@ function assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = 
  */
 function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '')
 {
-    return Assert::assertJsonStringEqualsJsonFile(...func_get_args());
+    return Assert::assertJsonStringEqualsJsonFile(...\func_get_args());
 }
 
 /**
@@ -721,7 +721,7 @@ function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '
  */
 function assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message = '')
 {
-    return Assert::assertJsonStringEqualsJsonString(...func_get_args());
+    return Assert::assertJsonStringEqualsJsonString(...\func_get_args());
 }
 
 /**
@@ -733,7 +733,7 @@ function assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message =
  */
 function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message = '')
 {
-    return Assert::assertJsonStringNotEqualsJsonFile(...func_get_args());
+    return Assert::assertJsonStringNotEqualsJsonFile(...\func_get_args());
 }
 
 /**
@@ -745,7 +745,7 @@ function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message 
  */
 function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message = '')
 {
-    return Assert::assertJsonStringNotEqualsJsonString(...func_get_args());
+    return Assert::assertJsonStringNotEqualsJsonString(...\func_get_args());
 }
 
 /**
@@ -757,7 +757,7 @@ function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $messag
  */
 function assertLessThan($expected, $actual, $message = '')
 {
-    return Assert::assertLessThan(...func_get_args());
+    return Assert::assertLessThan(...\func_get_args());
 }
 
 /**
@@ -769,7 +769,7 @@ function assertLessThan($expected, $actual, $message = '')
  */
 function assertLessThanOrEqual($expected, $actual, $message = '')
 {
-    return Assert::assertLessThanOrEqual(...func_get_args());
+    return Assert::assertLessThanOrEqual(...\func_get_args());
 }
 
 /**
@@ -780,7 +780,7 @@ function assertLessThanOrEqual($expected, $actual, $message = '')
  */
 function assertFinite($actual, $message = '')
 {
-    return Assert::assertFinite(...func_get_args());
+    return Assert::assertFinite(...\func_get_args());
 }
 
 /**
@@ -791,7 +791,7 @@ function assertFinite($actual, $message = '')
  */
 function assertInfinite($actual, $message = '')
 {
-    return Assert::assertInfinite(...func_get_args());
+    return Assert::assertInfinite(...\func_get_args());
 }
 
 /**
@@ -802,7 +802,7 @@ function assertInfinite($actual, $message = '')
  */
 function assertNan($actual, $message = '')
 {
-    return Assert::assertNan(...func_get_args());
+    return Assert::assertNan(...\func_get_args());
 }
 
 /**
@@ -817,7 +817,7 @@ function assertNan($actual, $message = '')
  */
 function assertNotContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
 {
-    return Assert::assertNotContains(...func_get_args());
+    return Assert::assertNotContains(...\func_get_args());
 }
 
 /**
@@ -830,7 +830,7 @@ function assertNotContains($needle, $haystack, $message = '', $ignoreCase = fals
  */
 function assertNotContainsOnly($type, $haystack, $isNativeType = null, $message = '')
 {
-    return Assert::assertNotContainsOnly(...func_get_args());
+    return Assert::assertNotContainsOnly(...\func_get_args());
 }
 
 /**
@@ -842,7 +842,7 @@ function assertNotContainsOnly($type, $haystack, $isNativeType = null, $message 
  */
 function assertNotCount($expectedCount, $haystack, $message = '')
 {
-    return Assert::assertNotCount(...func_get_args());
+    return Assert::assertNotCount(...\func_get_args());
 }
 
 /**
@@ -855,7 +855,7 @@ function assertNotCount($expectedCount, $haystack, $message = '')
  */
 function assertNotEmpty($actual, $message = '')
 {
-    return Assert::assertNotEmpty(...func_get_args());
+    return Assert::assertNotEmpty(...\func_get_args());
 }
 
 /**
@@ -871,7 +871,7 @@ function assertNotEmpty($actual, $message = '')
  */
 function assertNotEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
-    return Assert::assertNotEquals(...func_get_args());
+    return Assert::assertNotEquals(...\func_get_args());
 }
 
 /**
@@ -883,7 +883,7 @@ function assertNotEquals($expected, $actual, $message = '', $delta = 0.0, $maxDe
  */
 function assertNotInstanceOf($expected, $actual, $message = '')
 {
-    return Assert::assertNotInstanceOf(...func_get_args());
+    return Assert::assertNotInstanceOf(...\func_get_args());
 }
 
 /**
@@ -895,7 +895,7 @@ function assertNotInstanceOf($expected, $actual, $message = '')
  */
 function assertNotInternalType($expected, $actual, $message = '')
 {
-    return Assert::assertNotInternalType(...func_get_args());
+    return Assert::assertNotInternalType(...\func_get_args());
 }
 
 /**
@@ -908,7 +908,7 @@ function assertNotInternalType($expected, $actual, $message = '')
  */
 function assertNotFalse($condition, $message = '')
 {
-    return Assert::assertNotFalse(...func_get_args());
+    return Assert::assertNotFalse(...\func_get_args());
 }
 
 /**
@@ -919,7 +919,7 @@ function assertNotFalse($condition, $message = '')
  */
 function assertNotNull($actual, $message = '')
 {
-    return Assert::assertNotNull(...func_get_args());
+    return Assert::assertNotNull(...\func_get_args());
 }
 
 /**
@@ -931,7 +931,7 @@ function assertNotNull($actual, $message = '')
  */
 function assertNotRegExp($pattern, $string, $message = '')
 {
-    return Assert::assertNotRegExp(...func_get_args());
+    return Assert::assertNotRegExp(...\func_get_args());
 }
 
 /**
@@ -945,7 +945,7 @@ function assertNotRegExp($pattern, $string, $message = '')
  */
 function assertNotSame($expected, $actual, $message = '')
 {
-    return Assert::assertNotSame(...func_get_args());
+    return Assert::assertNotSame(...\func_get_args());
 }
 
 /**
@@ -958,7 +958,7 @@ function assertNotSame($expected, $actual, $message = '')
  */
 function assertNotSameSize($expected, $actual, $message = '')
 {
-    return Assert::assertNotSameSize(...func_get_args());
+    return Assert::assertNotSameSize(...\func_get_args());
 }
 
 /**
@@ -969,7 +969,7 @@ function assertNotSameSize($expected, $actual, $message = '')
  */
 function assertNull($actual, $message = '')
 {
-    return Assert::assertNull(...func_get_args());
+    return Assert::assertNull(...\func_get_args());
 }
 
 /**
@@ -981,7 +981,7 @@ function assertNull($actual, $message = '')
  */
 function assertObjectHasAttribute($attributeName, $object, $message = '')
 {
-    return Assert::assertObjectHasAttribute(...func_get_args());
+    return Assert::assertObjectHasAttribute(...\func_get_args());
 }
 
 /**
@@ -993,7 +993,7 @@ function assertObjectHasAttribute($attributeName, $object, $message = '')
  */
 function assertObjectNotHasAttribute($attributeName, $object, $message = '')
 {
-    return Assert::assertObjectNotHasAttribute(...func_get_args());
+    return Assert::assertObjectNotHasAttribute(...\func_get_args());
 }
 
 /**
@@ -1005,7 +1005,7 @@ function assertObjectNotHasAttribute($attributeName, $object, $message = '')
  */
 function assertRegExp($pattern, $string, $message = '')
 {
-    return Assert::assertRegExp(...func_get_args());
+    return Assert::assertRegExp(...\func_get_args());
 }
 
 /**
@@ -1019,7 +1019,7 @@ function assertRegExp($pattern, $string, $message = '')
  */
 function assertSame($expected, $actual, $message = '')
 {
-    return Assert::assertSame(...func_get_args());
+    return Assert::assertSame(...\func_get_args());
 }
 
 /**
@@ -1032,7 +1032,7 @@ function assertSame($expected, $actual, $message = '')
  */
 function assertSameSize($expected, $actual, $message = '')
 {
-    return Assert::assertSameSize(...func_get_args());
+    return Assert::assertSameSize(...\func_get_args());
 }
 
 /**
@@ -1044,7 +1044,7 @@ function assertSameSize($expected, $actual, $message = '')
  */
 function assertStringEndsNotWith($suffix, $string, $message = '')
 {
-    return Assert::assertStringEndsNotWith(...func_get_args());
+    return Assert::assertStringEndsNotWith(...\func_get_args());
 }
 
 /**
@@ -1056,7 +1056,7 @@ function assertStringEndsNotWith($suffix, $string, $message = '')
  */
 function assertStringEndsWith($suffix, $string, $message = '')
 {
-    return Assert::assertStringEndsWith(...func_get_args());
+    return Assert::assertStringEndsWith(...\func_get_args());
 }
 
 /**
@@ -1071,7 +1071,7 @@ function assertStringEndsWith($suffix, $string, $message = '')
  */
 function assertStringEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false)
 {
-    return Assert::assertStringEqualsFile(...func_get_args());
+    return Assert::assertStringEqualsFile(...\func_get_args());
 }
 
 /**
@@ -1083,7 +1083,7 @@ function assertStringEqualsFile($expectedFile, $actualString, $message = '', $ca
  */
 function assertStringMatchesFormat($format, $string, $message = '')
 {
-    return Assert::assertStringMatchesFormat(...func_get_args());
+    return Assert::assertStringMatchesFormat(...\func_get_args());
 }
 
 /**
@@ -1095,7 +1095,7 @@ function assertStringMatchesFormat($format, $string, $message = '')
  */
 function assertStringMatchesFormatFile($formatFile, $string, $message = '')
 {
-    return Assert::assertStringMatchesFormatFile(...func_get_args());
+    return Assert::assertStringMatchesFormatFile(...\func_get_args());
 }
 
 /**
@@ -1110,7 +1110,7 @@ function assertStringMatchesFormatFile($formatFile, $string, $message = '')
  */
 function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false)
 {
-    return Assert::assertStringNotEqualsFile(...func_get_args());
+    return Assert::assertStringNotEqualsFile(...\func_get_args());
 }
 
 /**
@@ -1122,7 +1122,7 @@ function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', 
  */
 function assertStringNotMatchesFormat($format, $string, $message = '')
 {
-    return Assert::assertStringNotMatchesFormat(...func_get_args());
+    return Assert::assertStringNotMatchesFormat(...\func_get_args());
 }
 
 /**
@@ -1134,7 +1134,7 @@ function assertStringNotMatchesFormat($format, $string, $message = '')
  */
 function assertStringNotMatchesFormatFile($formatFile, $string, $message = '')
 {
-    return Assert::assertStringNotMatchesFormatFile(...func_get_args());
+    return Assert::assertStringNotMatchesFormatFile(...\func_get_args());
 }
 
 /**
@@ -1146,7 +1146,7 @@ function assertStringNotMatchesFormatFile($formatFile, $string, $message = '')
  */
 function assertStringStartsNotWith($prefix, $string, $message = '')
 {
-    return Assert::assertStringStartsNotWith(...func_get_args());
+    return Assert::assertStringStartsNotWith(...\func_get_args());
 }
 
 /**
@@ -1158,7 +1158,7 @@ function assertStringStartsNotWith($prefix, $string, $message = '')
  */
 function assertStringStartsWith($prefix, $string, $message = '')
 {
-    return Assert::assertStringStartsWith(...func_get_args());
+    return Assert::assertStringStartsWith(...\func_get_args());
 }
 
 /**
@@ -1170,7 +1170,7 @@ function assertStringStartsWith($prefix, $string, $message = '')
  */
 function assertThat($value, Constraint $constraint, $message = '')
 {
-    return Assert::assertThat(...func_get_args());
+    return Assert::assertThat(...\func_get_args());
 }
 
 /**
@@ -1183,7 +1183,7 @@ function assertThat($value, Constraint $constraint, $message = '')
  */
 function assertTrue($condition, $message = '')
 {
-    return Assert::assertTrue(...func_get_args());
+    return Assert::assertTrue(...\func_get_args());
 }
 
 /**
@@ -1195,7 +1195,7 @@ function assertTrue($condition, $message = '')
  */
 function assertXmlFileEqualsXmlFile($expectedFile, $actualFile, $message = '')
 {
-    return Assert::assertXmlFileEqualsXmlFile(...func_get_args());
+    return Assert::assertXmlFileEqualsXmlFile(...\func_get_args());
 }
 
 /**
@@ -1207,7 +1207,7 @@ function assertXmlFileEqualsXmlFile($expectedFile, $actualFile, $message = '')
  */
 function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = '')
 {
-    return Assert::assertXmlFileNotEqualsXmlFile(...func_get_args());
+    return Assert::assertXmlFileNotEqualsXmlFile(...\func_get_args());
 }
 
 /**
@@ -1219,7 +1219,7 @@ function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = ''
  */
 function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
 {
-    return Assert::assertXmlStringEqualsXmlFile(...func_get_args());
+    return Assert::assertXmlStringEqualsXmlFile(...\func_get_args());
 }
 
 /**
@@ -1231,7 +1231,7 @@ function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
  */
 function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
 {
-    return Assert::assertXmlStringEqualsXmlString(...func_get_args());
+    return Assert::assertXmlStringEqualsXmlString(...\func_get_args());
 }
 
 /**
@@ -1243,7 +1243,7 @@ function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
  */
 function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '')
 {
-    return Assert::assertXmlStringNotEqualsXmlFile(...func_get_args());
+    return Assert::assertXmlStringNotEqualsXmlFile(...\func_get_args());
 }
 
 /**
@@ -1255,7 +1255,7 @@ function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '
  */
 function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
 {
-    return Assert::assertXmlStringNotEqualsXmlString(...func_get_args());
+    return Assert::assertXmlStringNotEqualsXmlString(...\func_get_args());
 }
 
 /**
@@ -1268,7 +1268,7 @@ function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = 
  */
 function at($index)
 {
-    return TestCase::at(...func_get_args());
+    return TestCase::at(...\func_get_args());
 }
 
 /**
@@ -1278,7 +1278,7 @@ function at($index)
  */
 function atLeastOnce()
 {
-    return TestCase::atLeastOnce(...func_get_args());
+    return TestCase::atLeastOnce(...\func_get_args());
 }
 
 /**
@@ -1291,7 +1291,7 @@ function atLeastOnce()
  */
 function attribute(Constraint $constraint, $attributeName)
 {
-    return Assert::attribute(...func_get_args());
+    return Assert::attribute(...\func_get_args());
 }
 
 /**
@@ -1310,7 +1310,7 @@ function attribute(Constraint $constraint, $attributeName)
  */
 function attributeEqualTo($attributeName, $value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
-    return Assert::attributeEqualTo(...func_get_args());
+    return Assert::attributeEqualTo(...\func_get_args());
 }
 
 /**
@@ -1322,7 +1322,7 @@ function attributeEqualTo($attributeName, $value, $delta = 0.0, $maxDepth = 10, 
  */
 function callback($callback)
 {
-    return Assert::callback(...func_get_args());
+    return Assert::callback(...\func_get_args());
 }
 
 /**
@@ -1334,7 +1334,7 @@ function callback($callback)
  */
 function classHasAttribute($attributeName)
 {
-    return Assert::classHasAttribute(...func_get_args());
+    return Assert::classHasAttribute(...\func_get_args());
 }
 
 /**
@@ -1347,7 +1347,7 @@ function classHasAttribute($attributeName)
  */
 function classHasStaticAttribute($attributeName)
 {
-    return Assert::classHasStaticAttribute(...func_get_args());
+    return Assert::classHasStaticAttribute(...\func_get_args());
 }
 
 /**
@@ -1362,7 +1362,7 @@ function classHasStaticAttribute($attributeName)
  */
 function contains($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
 {
-    return Assert::contains(...func_get_args());
+    return Assert::contains(...\func_get_args());
 }
 
 /**
@@ -1375,7 +1375,7 @@ function contains($value, $checkForObjectIdentity = true, $checkForNonObjectIden
  */
 function containsOnly($type)
 {
-    return Assert::containsOnly(...func_get_args());
+    return Assert::containsOnly(...\func_get_args());
 }
 
 /**
@@ -1388,7 +1388,7 @@ function containsOnly($type)
  */
 function containsOnlyInstancesOf($classname)
 {
-    return Assert::containsOnlyInstancesOf(...func_get_args());
+    return Assert::containsOnlyInstancesOf(...\func_get_args());
 }
 
 /**
@@ -1400,7 +1400,7 @@ function containsOnlyInstancesOf($classname)
  */
 function countOf($count)
 {
-    return Assert::countOf(...func_get_args());
+    return Assert::countOf(...\func_get_args());
 }
 
 /**
@@ -1416,7 +1416,7 @@ function countOf($count)
  */
 function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
 {
-    return Assert::equalTo(...func_get_args());
+    return Assert::equalTo(...\func_get_args());
 }
 
 /**
@@ -1429,7 +1429,7 @@ function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $i
  */
 function exactly($count)
 {
-    return TestCase::exactly(...func_get_args());
+    return TestCase::exactly(...\func_get_args());
 }
 
 /**
@@ -1439,7 +1439,7 @@ function exactly($count)
  */
 function fileExists()
 {
-    return Assert::fileExists(...func_get_args());
+    return Assert::fileExists(...\func_get_args());
 }
 
 /**
@@ -1451,7 +1451,7 @@ function fileExists()
  */
 function greaterThan($value)
 {
-    return Assert::greaterThan(...func_get_args());
+    return Assert::greaterThan(...\func_get_args());
 }
 
 /**
@@ -1465,7 +1465,7 @@ function greaterThan($value)
  */
 function greaterThanOrEqual($value)
 {
-    return Assert::greaterThanOrEqual(...func_get_args());
+    return Assert::greaterThanOrEqual(...\func_get_args());
 }
 
 /**
@@ -1477,7 +1477,7 @@ function greaterThanOrEqual($value)
  */
 function identicalTo($value)
 {
-    return Assert::identicalTo(...func_get_args());
+    return Assert::identicalTo(...\func_get_args());
 }
 
 /**
@@ -1487,7 +1487,7 @@ function identicalTo($value)
  */
 function isEmpty()
 {
-    return Assert::isEmpty(...func_get_args());
+    return Assert::isEmpty(...\func_get_args());
 }
 
 /**
@@ -1497,7 +1497,7 @@ function isEmpty()
  */
 function isFalse()
 {
-    return Assert::isFalse(...func_get_args());
+    return Assert::isFalse(...\func_get_args());
 }
 
 /**
@@ -1509,7 +1509,7 @@ function isFalse()
  */
 function isInstanceOf($className)
 {
-    return Assert::isInstanceOf(...func_get_args());
+    return Assert::isInstanceOf(...\func_get_args());
 }
 
 /**
@@ -1519,7 +1519,7 @@ function isInstanceOf($className)
  */
 function isJson()
 {
-    return Assert::isJson(...func_get_args());
+    return Assert::isJson(...\func_get_args());
 }
 
 /**
@@ -1529,7 +1529,7 @@ function isJson()
  */
 function isNull()
 {
-    return Assert::isNull(...func_get_args());
+    return Assert::isNull(...\func_get_args());
 }
 
 /**
@@ -1539,7 +1539,7 @@ function isNull()
  */
 function isTrue()
 {
-    return Assert::isTrue(...func_get_args());
+    return Assert::isTrue(...\func_get_args());
 }
 
 /**
@@ -1551,7 +1551,7 @@ function isTrue()
  */
 function isType($type)
 {
-    return Assert::isType(...func_get_args());
+    return Assert::isType(...\func_get_args());
 }
 
 /**
@@ -1563,7 +1563,7 @@ function isType($type)
  */
 function lessThan($value)
 {
-    return Assert::lessThan(...func_get_args());
+    return Assert::lessThan(...\func_get_args());
 }
 
 /**
@@ -1577,7 +1577,7 @@ function lessThan($value)
  */
 function lessThanOrEqual($value)
 {
-    return Assert::lessThanOrEqual(...func_get_args());
+    return Assert::lessThanOrEqual(...\func_get_args());
 }
 
 /**
@@ -1587,7 +1587,7 @@ function lessThanOrEqual($value)
  */
 function logicalAnd()
 {
-    return Assert::logicalAnd(...func_get_args());
+    return Assert::logicalAnd(...\func_get_args());
 }
 
 /**
@@ -1599,7 +1599,7 @@ function logicalAnd()
  */
 function logicalNot(Constraint $constraint)
 {
-    return Assert::logicalNot(...func_get_args());
+    return Assert::logicalNot(...\func_get_args());
 }
 
 /**
@@ -1609,7 +1609,7 @@ function logicalNot(Constraint $constraint)
  */
 function logicalOr()
 {
-    return Assert::logicalOr(...func_get_args());
+    return Assert::logicalOr(...\func_get_args());
 }
 
 /**
@@ -1619,7 +1619,7 @@ function logicalOr()
  */
 function logicalXor()
 {
-    return Assert::logicalXor(...func_get_args());
+    return Assert::logicalXor(...\func_get_args());
 }
 
 /**
@@ -1631,7 +1631,7 @@ function logicalXor()
  */
 function matches($string)
 {
-    return Assert::matches(...func_get_args());
+    return Assert::matches(...\func_get_args());
 }
 
 /**
@@ -1643,7 +1643,7 @@ function matches($string)
  */
 function matchesRegularExpression($pattern)
 {
-    return Assert::matchesRegularExpression(...func_get_args());
+    return Assert::matchesRegularExpression(...\func_get_args());
 }
 
 /**
@@ -1653,7 +1653,7 @@ function matchesRegularExpression($pattern)
  */
 function never()
 {
-    return TestCase::never(...func_get_args());
+    return TestCase::never(...\func_get_args());
 }
 
 /**
@@ -1665,7 +1665,7 @@ function never()
  */
 function objectHasAttribute($attributeName)
 {
-    return Assert::objectHasAttribute(...func_get_args());
+    return Assert::objectHasAttribute(...\func_get_args());
 }
 
 /**
@@ -1675,7 +1675,7 @@ function objectHasAttribute($attributeName)
  */
 function onConsecutiveCalls()
 {
-    return TestCase::onConsecutiveCalls(...func_get_args());
+    return TestCase::onConsecutiveCalls(...\func_get_args());
 }
 
 /**
@@ -1685,7 +1685,7 @@ function onConsecutiveCalls()
  */
 function once()
 {
-    return TestCase::once(...func_get_args());
+    return TestCase::once(...\func_get_args());
 }
 
 /**
@@ -1695,7 +1695,7 @@ function once()
  */
 function returnArgument($argumentIndex)
 {
-    return TestCase::returnArgument(...func_get_args());
+    return TestCase::returnArgument(...\func_get_args());
 }
 
 /**
@@ -1705,7 +1705,7 @@ function returnArgument($argumentIndex)
  */
 function returnCallback($callback)
 {
-    return TestCase::returnCallback(...func_get_args());
+    return TestCase::returnCallback(...\func_get_args());
 }
 
 /**
@@ -1717,7 +1717,7 @@ function returnCallback($callback)
  */
 function returnSelf()
 {
-    return TestCase::returnSelf(...func_get_args());
+    return TestCase::returnSelf(...\func_get_args());
 }
 
 /**
@@ -1727,7 +1727,7 @@ function returnSelf()
  */
 function returnValue($value)
 {
-    return TestCase::returnValue(...func_get_args());
+    return TestCase::returnValue(...\func_get_args());
 }
 
 /**
@@ -1737,7 +1737,7 @@ function returnValue($value)
  */
 function returnValueMap(array $valueMap)
 {
-    return TestCase::returnValueMap(...func_get_args());
+    return TestCase::returnValueMap(...\func_get_args());
 }
 
 /**
@@ -1750,7 +1750,7 @@ function returnValueMap(array $valueMap)
  */
 function stringContains($string, $case = true)
 {
-    return Assert::stringContains(...func_get_args());
+    return Assert::stringContains(...\func_get_args());
 }
 
 /**
@@ -1762,7 +1762,7 @@ function stringContains($string, $case = true)
  */
 function stringEndsWith($suffix)
 {
-    return Assert::stringEndsWith(...func_get_args());
+    return Assert::stringEndsWith(...\func_get_args());
 }
 
 /**
@@ -1774,7 +1774,7 @@ function stringEndsWith($suffix)
  */
 function stringStartsWith($prefix)
 {
-    return Assert::stringStartsWith(...func_get_args());
+    return Assert::stringStartsWith(...\func_get_args());
 }
 
 /**
@@ -1784,5 +1784,5 @@ function stringStartsWith($prefix)
  */
 function throwException(Exception $exception)
 {
-    return TestCase::throwException(...func_get_args());
+    return TestCase::throwException(...\func_get_args());
 }

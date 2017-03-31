@@ -22,7 +22,7 @@ class Type
      */
     public static function isType($type)
     {
-        return in_array(
+        return \in_array(
             $type,
             [
                 'numeric',

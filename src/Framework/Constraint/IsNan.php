@@ -24,7 +24,7 @@ class IsNan extends Constraint
      */
     protected function matches($other)
     {
-        return is_nan($other);
+        return \is_nan($other);
     }
 
     /**

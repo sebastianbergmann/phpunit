@@ -108,7 +108,7 @@ class LogicalOr extends Constraint
         $count = 0;
 
         foreach ($this->constraints as $constraint) {
-            $count += count($constraint);
+            $count += \count($constraint);
         }
 
         return $count;

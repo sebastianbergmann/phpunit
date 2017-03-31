@@ -179,7 +179,7 @@ class XmlResultPrinter extends Printer implements TestListener
 
         /* @var TestCase $test */
 
-        $groups = array_filter(
+        $groups = \array_filter(
             $test->getGroups(),
             function ($group) {
                 if ($group == 'small' || $group == 'medium' || $group == 'large') {
@@ -192,16 +192,16 @@ class XmlResultPrinter extends Printer implements TestListener
 
         $node = $this->document->createElement('test');
 
-        $node->setAttribute('className', get_class($test));
+        $node->setAttribute('className', \get_class($test));
         $node->setAttribute('methodName', $test->getName());
-        $node->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(get_class($test)));
+        $node->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(\get_class($test)));
         $node->setAttribute('prettifiedMethodName', $this->prettifier->prettifyTestMethod($test->getName()));
         $node->setAttribute('status', $test->getStatus());
         $node->setAttribute('time', $time);
         $node->setAttribute('size', $test->getSize());
-        $node->setAttribute('groups', implode(',', $groups));
+        $node->setAttribute('groups', \implode(',', $groups));
 
-        $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(get_class($test), $test->getName());
+        $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(\get_class($test), $test->getName());
 
         if (isset($inlineAnnotations['given']) && isset($inlineAnnotations['when']) && isset($inlineAnnotations['then'])) {
             $node->setAttribute('given', $inlineAnnotations['given']['value']);

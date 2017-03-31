@@ -69,9 +69,9 @@ EOF;
 
     protected function setUp()
     {
-        $this->dirname  = sys_get_temp_dir();
+        $this->dirname  = \sys_get_temp_dir();
         $this->filename = $this->dirname . '/phpunit.phpt';
-        touch($this->filename);
+        \touch($this->filename);
 
         $this->phpProcess = $this->getMockForAbstractClass(AbstractPhpProcess::class, [], '', false);
         $this->testCase   = new PhptTestCase($this->filename, $this->phpProcess);
@@ -79,7 +79,7 @@ EOF;
 
     protected function tearDown()
     {
-        @unlink($this->filename);
+        @\unlink($this->filename);
 
         $this->filename = null;
         $this->testCase = null;
@@ -92,7 +92,7 @@ EOF;
      */
     private function setPhpContent($content)
     {
-        file_put_contents($this->filename, $content);
+        \file_put_contents($this->filename, $content);
     }
 
     public function testShouldRunFileSectionAsTest()

@@ -64,12 +64,12 @@ class JsonMatches extends Constraint
      */
     private function canonicalizeJson($json)
     {
-        $decodedJson = json_decode($json, true);
-        if (json_last_error()) {
+        $decodedJson = \json_decode($json, true);
+        if (\json_last_error()) {
             return [true, null];
         }
         $this->recursiveSort($decodedJson);
-        $reencodedJson = json_encode($decodedJson);
+        $reencodedJson = \json_encode($decodedJson);
 
         return [false, $reencodedJson];
     }
@@ -81,8 +81,8 @@ class JsonMatches extends Constraint
      */
     private function recursiveSort(&$json)
     {
-        if (is_array($json)) {
-            ksort($json);
+        if (\is_array($json)) {
+            \ksort($json);
             foreach ($json as $key => &$value) {
                 $this->recursiveSort($value);
             }
@@ -96,7 +96,7 @@ class JsonMatches extends Constraint
      */
     public function toString()
     {
-        return sprintf(
+        return \sprintf(
             'matches JSON string "%s"',
             $this->value
         );

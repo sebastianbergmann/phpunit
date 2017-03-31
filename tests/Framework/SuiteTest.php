@@ -192,7 +192,7 @@ class SuiteTest extends TestCase
         $suite->run($this->result);
 
         $skipped           = $this->result->skipped();
-        $lastSkippedResult = array_pop($skipped);
+        $lastSkippedResult = \array_pop($skipped);
         $message           = $lastSkippedResult->thrownException()->getMessage();
 
         $this->assertContains('Test for DataProviderDependencyTest::testDependency skipped by data provider', $message);
@@ -224,7 +224,7 @@ class SuiteTest extends TestCase
             'DontSkipInheritedClass'
         );
 
-        $dir = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Inheritance' . DIRECTORY_SEPARATOR;
+        $dir = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'Inheritance' . DIRECTORY_SEPARATOR;
 
         $suite->addTestFile($dir . 'InheritanceA.php');
         $suite->addTestFile($dir . 'InheritanceB.php');

@@ -60,15 +60,15 @@ class Exception extends Constraint
                     . "\n" . Filter::getFilteredStacktrace($other);
             }
 
-            return sprintf(
+            return \sprintf(
                 'exception of type "%s" matches expected exception "%s"%s',
-                get_class($other),
+                \get_class($other),
                 $this->className,
                 $message
             );
         }
 
-        return sprintf(
+        return \sprintf(
             'exception of type "%s" is thrown',
             $this->className
         );
@@ -81,7 +81,7 @@ class Exception extends Constraint
      */
     public function toString()
     {
-        return sprintf(
+        return \sprintf(
             'exception of type "%s"',
             $this->className
         );

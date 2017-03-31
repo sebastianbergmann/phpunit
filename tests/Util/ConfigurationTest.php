@@ -24,7 +24,7 @@ class ConfigurationTest extends TestCase
     protected function setUp()
     {
         $this->configuration = Configuration::getInstance(
-            dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.xml'
+            \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.xml'
         );
     }
 
@@ -37,7 +37,7 @@ class ConfigurationTest extends TestCase
 
     public function testShouldReadColorsWhenTrueInConfigurationFile()
     {
-        $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.true.xml';
+        $configurationFilename =  \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.true.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
@@ -46,7 +46,7 @@ class ConfigurationTest extends TestCase
 
     public function testShouldReadColorsWhenFalseInConfigurationFile()
     {
-        $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.false.xml';
+        $configurationFilename =  \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.false.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
@@ -55,7 +55,7 @@ class ConfigurationTest extends TestCase
 
     public function testShouldReadColorsWhenEmptyInConfigurationFile()
     {
-        $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.empty.xml';
+        $configurationFilename =  \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.empty.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
@@ -64,7 +64,7 @@ class ConfigurationTest extends TestCase
 
     public function testShouldReadColorsWhenInvalidInConfigurationFile()
     {
-        $configurationFilename =  dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.invalid.xml';
+        $configurationFilename =  \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.invalid.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
@@ -157,9 +157,9 @@ class ConfigurationTest extends TestCase
     public function testListenerConfigurationIsReadCorrectly()
     {
         $dir         = __DIR__;
-        $includePath = ini_get('include_path');
+        $includePath = \ini_get('include_path');
 
-        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
+        \ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
 
         $this->assertEquals(
             [
@@ -178,8 +178,8 @@ class ConfigurationTest extends TestCase
                 3 => 19.78,
                 4 => null,
                 5 => new \stdClass,
-                6 => dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
-                7 => dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
+                6 => \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
+                7 => \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
               ],
             ],
             [
@@ -199,7 +199,7 @@ class ConfigurationTest extends TestCase
             $this->configuration->getListenerConfiguration()
         );
 
-        ini_set('include_path', $includePath);
+        \ini_set('include_path', $includePath);
     }
 
     public function testLoggingConfigurationIsReadCorrectly()
@@ -228,7 +228,7 @@ class ConfigurationTest extends TestCase
             [
             'include_path' =>
             [
-              dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.',
+              \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.',
               '/path/to/lib'
             ],
             'ini'    => ['foo' => 'bar'],
@@ -253,13 +253,13 @@ class ConfigurationTest extends TestCase
     {
         $this->configuration->handlePHPConfiguration();
 
-        $path = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.' . PATH_SEPARATOR . '/path/to/lib';
-        $this->assertStringStartsWith($path, ini_get('include_path'));
+        $path = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.' . PATH_SEPARATOR . '/path/to/lib';
+        $this->assertStringStartsWith($path, \ini_get('include_path'));
         $this->assertEquals(false, \FOO);
         $this->assertEquals(true, \BAR);
         $this->assertEquals(false, $GLOBALS['foo']);
         $this->assertEquals(true, $_ENV['foo']);
-        $this->assertEquals(true, getenv('foo'));
+        $this->assertEquals(true, \getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
         $this->assertEquals('bar', $_COOKIE['foo']);
@@ -279,7 +279,7 @@ class ConfigurationTest extends TestCase
         $this->configuration->handlePHPConfiguration();
 
         $this->assertEquals(false, $_ENV['foo']);
-        $this->assertEquals(true, getenv('foo'));
+        $this->assertEquals(true, \getenv('foo'));
     }
 
     /**
@@ -289,11 +289,11 @@ class ConfigurationTest extends TestCase
      */
     public function testHandlePHPConfigurationDoesNotOverriteVariablesFromPutEnv()
     {
-        putenv('foo=putenv');
+        \putenv('foo=putenv');
         $this->configuration->handlePHPConfiguration();
 
         $this->assertEquals(true, $_ENV['foo']);
-        $this->assertEquals('putenv', getenv('foo'));
+        $this->assertEquals('putenv', \getenv('foo'));
     }
 
     public function testPHPUnitConfigurationIsReadCorrectly()
@@ -339,7 +339,7 @@ class ConfigurationTest extends TestCase
     public function testXincludeInConfiguration()
     {
         $configurationWithXinclude = Configuration::getInstance(
-            dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration_xinclude.xml'
+            \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration_xinclude.xml'
         );
 
         $this->assertConfigurationEquals(
@@ -354,7 +354,7 @@ class ConfigurationTest extends TestCase
     public function testWithEmptyConfigurations()
     {
         $emptyConfiguration = Configuration::getInstance(
-            dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration_empty.xml'
+            \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration_empty.xml'
         );
 
         $logging = $emptyConfiguration->getLoggingConfiguration();
@@ -425,7 +425,7 @@ class ConfigurationTest extends TestCase
     public function testGetTestSuiteNamesReturnsTheNamesIfDefined()
     {
         $configuration = Configuration::getInstance(
-            dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.suites.xml'
+            \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.suites.xml'
         );
 
         $names = $configuration->getTestSuiteNames();
@@ -436,12 +436,12 @@ class ConfigurationTest extends TestCase
     public function testTestSuiteConfigurationForASingleFileInASuite()
     {
         $configuration = Configuration::getInstance(
-            dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.one-file-suite.xml'
+            \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.one-file-suite.xml'
         );
 
         $config = $configuration->getTestSuiteConfiguration();
         $tests  = $config->tests();
 
-        $this->assertEquals(1, count($tests));
+        $this->assertEquals(1, \count($tests));
     }
 }

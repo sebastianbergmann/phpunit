@@ -49,7 +49,7 @@ class TestSuiteIterator implements RecursiveIterator
      */
     public function valid()
     {
-        return $this->position < count($this->tests);
+        return $this->position < \count($this->tests);
     }
 
     /**

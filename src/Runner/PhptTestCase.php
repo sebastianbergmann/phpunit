@@ -72,13 +72,13 @@ class PhptTestCase implements Test, SelfDescribing
      */
     public function __construct($filename, $phpUtil = null)
     {
-        if (!is_string($filename)) {
+        if (!\is_string($filename)) {
             throw InvalidArgumentHelper::factory(1, 'string');
         }
 
-        if (!is_file($filename)) {
+        if (!\is_file($filename)) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     'File "%s" does not exist.',
                     $filename
                 )
@@ -111,11 +111,11 @@ class PhptTestCase implements Test, SelfDescribing
             'EXPECTREGEX' => 'assertRegExp',
         ];
 
-        $actual = preg_replace('/\r\n/', "\n", trim($output));
+        $actual = \preg_replace('/\r\n/', "\n", \trim($output));
 
         foreach ($assertions as $sectionName => $sectionAssertion) {
             if (isset($sections[$sectionName])) {
-                $sectionContent = preg_replace('/\r\n/', "\n", trim($sections[$sectionName]));
+                $sectionContent = \preg_replace('/\r\n/', "\n", \trim($sections[$sectionName]));
                 $assertion      = $sectionAssertion;
                 $expected       = $sectionName == 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
 
@@ -150,7 +150,7 @@ class PhptTestCase implements Test, SelfDescribing
         $result->startTest($this);
 
         if (isset($sections['INI'])) {
-            $settings = array_merge($settings, $this->parseIniSection($sections['INI']));
+            $settings = \array_merge($settings, $this->parseIniSection($sections['INI']));
         }
 
         if (isset($sections['ENV'])) {
@@ -169,9 +169,9 @@ class PhptTestCase implements Test, SelfDescribing
             $skipif    = $this->render($sections['SKIPIF']);
             $jobResult = $this->phpUtil->runJob($skipif, $settings);
 
-            if (!strncasecmp('skip', ltrim($jobResult['stdout']), 4)) {
-                if (preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $message)) {
-                    $message = substr($message[1], 2);
+            if (!\strncasecmp('skip', \ltrim($jobResult['stdout']), 4)) {
+                if (\preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $message)) {
+                    $message = \substr($message[1], 2);
                 } else {
                     $message = '';
                 }
@@ -183,7 +183,7 @@ class PhptTestCase implements Test, SelfDescribing
         }
 
         if (isset($sections['XFAIL'])) {
-            $xfail = trim($sections['XFAIL']);
+            $xfail = \trim($sections['XFAIL']);
         }
 
         if (!$skip) {
@@ -308,8 +308,8 @@ class PhptTestCase implements Test, SelfDescribing
             'PHPDBG'
         ];
 
-        foreach (file($this->filename) as $line) {
-            if (preg_match('/^--([_A-Z]+)--/', $line, $result)) {
+        foreach (\file($this->filename) as $line) {
+            if (\preg_match('/^--([_A-Z]+)--/', $line, $result)) {
                 $section            = $result[1];
                 $sections[$section] = '';
 
@@ -322,19 +322,19 @@ class PhptTestCase implements Test, SelfDescribing
         }
 
         if (isset($sections['FILEEOF'])) {
-            $sections['FILE'] = rtrim($sections['FILEEOF'], "\r\n");
+            $sections['FILE'] = \rtrim($sections['FILEEOF'], "\r\n");
             unset($sections['FILEEOF']);
         }
 
-        $testDirectory = dirname($this->filename) . DIRECTORY_SEPARATOR;
+        $testDirectory = \dirname($this->filename) . DIRECTORY_SEPARATOR;
 
         foreach ($allowExternalSections as $section) {
             if (isset($sections[$section . '_EXTERNAL'])) {
-                $externalFilename = trim($sections[$section . '_EXTERNAL']);
+                $externalFilename = \trim($sections[$section . '_EXTERNAL']);
 
-                if (!is_file($testDirectory . $externalFilename) || !is_readable($testDirectory . $externalFilename)) {
+                if (!\is_file($testDirectory . $externalFilename) || !\is_readable($testDirectory . $externalFilename)) {
                     throw new Exception(
-                        sprintf(
+                        \sprintf(
                             'Could not load --%s-- %s for PHPT file',
                             $section . '_EXTERNAL',
                             $testDirectory . $externalFilename
@@ -342,7 +342,7 @@ class PhptTestCase implements Test, SelfDescribing
                     );
                 }
 
-                $sections[$section] = file_get_contents($testDirectory . $externalFilename);
+                $sections[$section] = \file_get_contents($testDirectory . $externalFilename);
 
                 unset($sections[$section . '_EXTERNAL']);
             }
@@ -351,7 +351,7 @@ class PhptTestCase implements Test, SelfDescribing
         $isValid = true;
 
         foreach ($requiredSections as $section) {
-            if (is_array($section)) {
+            if (\is_array($section)) {
                 $foundSection = false;
 
                 foreach ($section as $anySection) {
@@ -398,13 +398,13 @@ class PhptTestCase implements Test, SelfDescribing
      */
     private function render($code)
     {
-        return str_replace(
+        return \str_replace(
             [
                 '__DIR__',
                 '__FILE__'
             ],
             [
-                "'" . dirname($this->filename) . "'",
+                "'" . \dirname($this->filename) . "'",
                 "'" . $this->filename . "'"
             ],
             $code
@@ -420,15 +420,15 @@ class PhptTestCase implements Test, SelfDescribing
      */
     protected function parseIniSection($content)
     {
-        return preg_split('/\n|\r/', $content, -1, PREG_SPLIT_NO_EMPTY);
+        return \preg_split('/\n|\r/', $content, -1, PREG_SPLIT_NO_EMPTY);
     }
 
     protected function parseEnvSection($content)
     {
         $env = [];
 
-        foreach (explode("\n", trim($content)) as $e) {
-            $e = explode('=', trim($e), 2);
+        foreach (\explode("\n", \trim($content)) as $e) {
+            $e = \explode('=', \trim($e), 2);
 
             if (!empty($e[0]) && isset($e[1])) {
                 $env[$e[0]] = $e[1];

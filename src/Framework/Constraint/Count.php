@@ -50,8 +50,8 @@ class Count extends Constraint
      */
     protected function getCountOf($other)
     {
-        if ($other instanceof Countable || is_array($other)) {
-            return count($other);
+        if ($other instanceof Countable || \is_array($other)) {
+            return \count($other);
         }
 
         if ($other instanceof Traversable) {
@@ -66,7 +66,7 @@ class Count extends Constraint
             }
 
             $key   = $iterator->key();
-            $count = iterator_count($iterator);
+            $count = \iterator_count($iterator);
 
             // Manually rewind $iterator to previous key, since iterator_count
             // moves pointer.
@@ -110,7 +110,7 @@ class Count extends Constraint
      */
     protected function failureDescription($other)
     {
-        return sprintf(
+        return \sprintf(
             'actual size %d matches expected size %d',
             $this->getCountOf($other),
             $this->expectedCount
@@ -122,7 +122,7 @@ class Count extends Constraint
      */
     public function toString()
     {
-        return sprintf(
+        return \sprintf(
             'count matches %d',
             $this->expectedCount
         );

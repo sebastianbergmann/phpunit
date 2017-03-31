@@ -26,7 +26,7 @@ class DirectoryExists extends Constraint
      */
     protected function matches($other)
     {
-        return is_dir($other);
+        return \is_dir($other);
     }
 
     /**
@@ -41,7 +41,7 @@ class DirectoryExists extends Constraint
      */
     protected function failureDescription($other)
     {
-        return sprintf(
+        return \sprintf(
             'directory "%s" exists',
             $other
         );

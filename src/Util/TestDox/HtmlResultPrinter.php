@@ -92,7 +92,7 @@ EOT;
     protected function startClass($name)
     {
         $this->write(
-            sprintf(
+            \sprintf(
                 $this->classHeader,
                 $name,
                 $this->currentTestClassPrettified
@@ -109,7 +109,7 @@ EOT;
     protected function onTest($name, $success = true)
     {
         $this->write(
-            sprintf(
+            \sprintf(
                 "            <li style=\"color: %s;\">%s %s</li>\n",
                 $success ? '#555753' : '#ef2929',
                 $success ? '✓' : '❌',

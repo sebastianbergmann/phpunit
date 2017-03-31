@@ -201,7 +201,7 @@ class JUnit extends Printer implements TestListener
             )
         );
 
-        $error->setAttribute('type', get_class($e));
+        $error->setAttribute('type', \get_class($e));
 
         $this->currentTestCase->appendChild($error);
 
@@ -230,7 +230,7 @@ class JUnit extends Printer implements TestListener
         $testSuite = $this->document->createElement('testsuite');
         $testSuite->setAttribute('name', $suite->getName());
 
-        if (class_exists($suite->getName(), false)) {
+        if (\class_exists($suite->getName(), false)) {
             try {
                 $class = new ReflectionClass($suite->getName());
 
@@ -289,16 +289,16 @@ class JUnit extends Printer implements TestListener
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'time',
-            sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel])
+            \sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel])
         );
 
         if ($this->testSuiteLevel > 1) {
-            $this->testSuiteTests[$this->testSuiteLevel - 1]      += $this->testSuiteTests[$this->testSuiteLevel];
+            $this->testSuiteTests[$this->testSuiteLevel - 1] += $this->testSuiteTests[$this->testSuiteLevel];
             $this->testSuiteAssertions[$this->testSuiteLevel - 1] += $this->testSuiteAssertions[$this->testSuiteLevel];
-            $this->testSuiteErrors[$this->testSuiteLevel - 1]     += $this->testSuiteErrors[$this->testSuiteLevel];
-            $this->testSuiteFailures[$this->testSuiteLevel - 1]   += $this->testSuiteFailures[$this->testSuiteLevel];
-            $this->testSuiteSkipped[$this->testSuiteLevel - 1]    += $this->testSuiteSkipped[$this->testSuiteLevel];
-            $this->testSuiteTimes[$this->testSuiteLevel - 1]      += $this->testSuiteTimes[$this->testSuiteLevel];
+            $this->testSuiteErrors[$this->testSuiteLevel - 1] += $this->testSuiteErrors[$this->testSuiteLevel];
+            $this->testSuiteFailures[$this->testSuiteLevel - 1] += $this->testSuiteFailures[$this->testSuiteLevel];
+            $this->testSuiteSkipped[$this->testSuiteLevel - 1] += $this->testSuiteSkipped[$this->testSuiteLevel];
+            $this->testSuiteTimes[$this->testSuiteLevel - 1] += $this->testSuiteTimes[$this->testSuiteLevel];
         }
 
         $this->testSuiteLevel--;
@@ -322,7 +322,7 @@ class JUnit extends Printer implements TestListener
                 $method = $class->getMethod($test->getName());
 
                 $testCase->setAttribute('class', $class->getName());
-                $testCase->setAttribute('classname', str_replace('\\', '.', $class->getName()));
+                $testCase->setAttribute('classname', \str_replace('\\', '.', $class->getName()));
                 $testCase->setAttribute('file', $class->getFileName());
                 $testCase->setAttribute('line', $method->getStartLine());
             }
@@ -351,7 +351,7 @@ class JUnit extends Printer implements TestListener
 
         $this->currentTestCase->setAttribute(
             'time',
-            sprintf('%F', $time)
+            \sprintf('%F', $time)
         );
 
         $this->testSuites[$this->testSuiteLevel]->appendChild(
@@ -361,7 +361,7 @@ class JUnit extends Printer implements TestListener
         $this->testSuiteTests[$this->testSuiteLevel]++;
         $this->testSuiteTimes[$this->testSuiteLevel] += $time;
 
-        if (method_exists($test, 'hasOutput') && $test->hasOutput()) {
+        if (\method_exists($test, 'hasOutput') && $test->hasOutput()) {
             $systemOut = $this->document->createElement('system-out');
 
             $systemOut->appendChild(
@@ -395,7 +395,7 @@ class JUnit extends Printer implements TestListener
      */
     public function setWriteDocument($flag)
     {
-        if (is_bool($flag)) {
+        if (\is_bool($flag)) {
             $this->writeDocument = $flag;
         }
     }
@@ -431,7 +431,7 @@ class JUnit extends Printer implements TestListener
         if ($e instanceof ExceptionWrapper) {
             $fault->setAttribute('type', $e->getClassName());
         } else {
-            $fault->setAttribute('type', get_class($e));
+            $fault->setAttribute('type', \get_class($e));
         }
 
         $this->currentTestCase->appendChild($fault);

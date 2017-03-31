@@ -31,9 +31,9 @@ class XmlTest extends TestCase
         } catch (Exception $e) {
         }
 
-        $this->assertNull($e, sprintf(
+        $this->assertNull($e, \sprintf(
             'PHPUnit_Util_XML::prepareString("\x%02x") should not crash DomDocument',
-            ord($char)
+            \ord($char)
         ));
     }
 
@@ -42,7 +42,7 @@ class XmlTest extends TestCase
         $data = [];
 
         for ($i = 0; $i < 256; $i++) {
-            $data[] = [chr($i)];
+            $data[] = [\chr($i)];
         }
 
         return $data;

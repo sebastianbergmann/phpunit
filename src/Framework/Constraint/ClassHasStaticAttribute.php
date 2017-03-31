@@ -47,7 +47,7 @@ class ClassHasStaticAttribute extends ClassHasAttribute
      */
     public function toString()
     {
-        return sprintf(
+        return \sprintf(
             'has static attribute "%s"',
             $this->attributeName
         );

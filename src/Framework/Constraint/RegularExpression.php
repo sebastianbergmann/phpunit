@@ -44,7 +44,7 @@ class RegularExpression extends Constraint
      */
     protected function matches($other)
     {
-        return preg_match($this->pattern, $other) > 0;
+        return \preg_match($this->pattern, $other) > 0;
     }
 
     /**
@@ -54,7 +54,7 @@ class RegularExpression extends Constraint
      */
     public function toString()
     {
-        return sprintf(
+        return \sprintf(
             'matches PCRE pattern "%s"',
             $this->pattern
         );

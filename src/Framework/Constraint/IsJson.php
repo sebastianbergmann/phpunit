@@ -28,8 +28,8 @@ class IsJson extends Constraint
             return false;
         }
 
-        json_decode($other);
-        if (json_last_error()) {
+        \json_decode($other);
+        if (\json_last_error()) {
             return false;
         }
 
@@ -52,12 +52,12 @@ class IsJson extends Constraint
             return 'an empty string is valid JSON';
         }
 
-        json_decode($other);
+        \json_decode($other);
         $error = JsonMatchesErrorMessageProvider::determineJsonError(
-            json_last_error()
+            \json_last_error()
         );
 
-        return sprintf(
+        return \sprintf(
             '%s is valid JSON (%s)',
             $this->exporter->shortenedExport($other),
             $error

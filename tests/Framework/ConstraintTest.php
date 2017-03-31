@@ -248,7 +248,7 @@ EOF
 
     public function testConstraintFileNotExists()
     {
-        $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
+        $file = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
 
         $constraint = Assert::logicalNot(
             Assert::fileExists()
@@ -278,7 +278,7 @@ EOF
 
     public function testConstraintFileNotExists2()
     {
-        $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
+        $file = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
 
         $constraint = Assert::logicalNot(
             Assert::fileExists()
@@ -579,8 +579,8 @@ EOF
         $a      = new \stdClass;
         $a->foo = 'bar';
         $b      = new \stdClass;
-        $ahash  = spl_object_hash($a);
-        $bhash  = spl_object_hash($b);
+        $ahash  = \spl_object_hash($a);
+        $bhash  = \spl_object_hash($b);
 
         $c               = new \stdClass;
         $c->foo          = 'bar';
@@ -604,8 +604,8 @@ EOF
         $storage1->attach($b);
         $storage2 = new \SplObjectStorage;
         $storage2->attach($b);
-        $storage1hash = spl_object_hash($storage1);
-        $storage2hash = spl_object_hash($storage2);
+        $storage1hash = \spl_object_hash($storage1);
+        $storage2hash = \spl_object_hash($storage2);
 
         $dom1                     = new \DOMDocument;
         $dom1->preserveWhiteSpace = false;
@@ -1239,11 +1239,11 @@ EOF
 
     public function resources()
     {
-        $fh = fopen(__FILE__, 'r');
-        fclose($fh);
+        $fh = \fopen(__FILE__, 'r');
+        \fclose($fh);
 
         return [
-            'open resource'     => [fopen(__FILE__, 'r')],
+            'open resource'     => [\fopen(__FILE__, 'r')],
             'closed resource'   => [$fh],
         ];
     }
@@ -1257,7 +1257,7 @@ EOF
 
         $this->assertTrue($constraint->evaluate($resource, '', true));
 
-        @fclose($resource);
+        @\fclose($resource);
     }
 
     public function testConstraintIsNotType()
@@ -2284,7 +2284,7 @@ EOF
         $this->assertTrue($constraint->evaluate('ORYGINAŁ', '', true));
         $this->assertTrue($constraint->evaluate('oryginał', '', true));
         $this->assertEquals('contains "oryginał"', $constraint->toString());
-        $this->assertEquals(1, count($constraint));
+        $this->assertEquals(1, \count($constraint));
 
         $this->expectException(ExpectationFailedException::class);
 
@@ -2299,7 +2299,7 @@ EOF
         $this->assertFalse($constraint->evaluate('ORYGINAŁ', '', true));
         $this->assertTrue($constraint->evaluate('oryginał', '', true));
         $this->assertEquals('contains "oryginał"', $constraint->toString());
-        $this->assertEquals(1, count($constraint));
+        $this->assertEquals(1, \count($constraint));
 
         $this->expectException(ExpectationFailedException::class);
 
@@ -2368,7 +2368,7 @@ EOF
         $this->assertFalse($constraint->evaluate('ORYGINAŁ', '', true));
         $this->assertFalse($constraint->evaluate('oryginał', '', true));
         $this->assertEquals('does not contain "oryginał"', $constraint->toString());
-        $this->assertEquals(1, count($constraint));
+        $this->assertEquals(1, \count($constraint));
 
         $this->expectException(ExpectationFailedException::class);
 
@@ -2385,7 +2385,7 @@ EOF
         $this->assertTrue($constraint->evaluate('ORYGINAŁ', '', true));
         $this->assertFalse($constraint->evaluate('oryginał', '', true));
         $this->assertEquals('does not contain "oryginał"', $constraint->toString());
-        $this->assertEquals(1, count($constraint));
+        $this->assertEquals(1, \count($constraint));
 
         $this->expectException(ExpectationFailedException::class);
 
@@ -3033,6 +3033,6 @@ EOF
      */
     private function trimnl($string)
     {
-        return preg_replace('/[ ]*\n/', "\n", $string);
+        return \preg_replace('/[ ]*\n/', "\n", $string);
     }
 }

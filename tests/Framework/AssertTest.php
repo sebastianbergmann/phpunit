@@ -21,7 +21,7 @@ class AssertTest extends TestCase
 
     protected function setUp()
     {
-        $this->filesDirectory = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
+        $this->filesDirectory = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
     }
 
     public function testFail()
@@ -501,8 +501,8 @@ class AssertTest extends TestCase
         $object = new \SampleClass(4, 8, 15);
         // cannot use $filesDirectory, because neither setUp() nor
         // setUpBeforeClass() are executed before the data providers
-        $file     = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml';
-        $resource = fopen($file, 'r');
+        $file     = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml';
+        $resource = \fopen($file, 'r');
 
         return [
             // null
@@ -514,7 +514,7 @@ class AssertTest extends TestCase
             // floats
             [2.3, 2.3],
             [1 / 3, 1 - 2 / 3],
-            [log(0), log(0)],
+            [\log(0), \log(0)],
             // arrays
             [[], []],
             [[0 => 1], [0 => 1]],
@@ -552,7 +552,7 @@ class AssertTest extends TestCase
 
         // cannot use $filesDirectory, because neither setUp() nor
         // setUpBeforeClass() are executed before the data providers
-        $file = dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml';
+        $file = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'foo.xml';
 
         return [
             // strings
@@ -584,7 +584,7 @@ class AssertTest extends TestCase
             [$book1, $book2],
             [$book3, $book4], // same content, different class
             // resources
-            [fopen($file, 'r'), fopen($file, 'r')],
+            [\fopen($file, 'r'), \fopen($file, 'r')],
             // SplObjectStorage
             [$storage1, $storage2],
             // DOMDocument
@@ -665,8 +665,8 @@ class AssertTest extends TestCase
             // We want these values to differ
             [0, 'Foobar'],
             ['Foobar', 0],
-            [3, acos(8)],
-            [acos(8), 3]
+            [3, \acos(8)],
+            [\acos(8), 3]
         ];
     }
 
@@ -785,7 +785,7 @@ class AssertTest extends TestCase
     public function equalProvider()
     {
         // same |= equal
-        return array_merge($this->equalValues(), $this->sameValues());
+        return \array_merge($this->equalValues(), $this->sameValues());
     }
 
     public function notEqualProvider()
@@ -802,7 +802,7 @@ class AssertTest extends TestCase
     {
         // not equal |= not same
         // equal, ¬same |= not same
-        return array_merge($this->notEqualValues(), $this->equalValues());
+        return \array_merge($this->notEqualValues(), $this->equalValues());
     }
 
     /**
@@ -911,14 +911,14 @@ class AssertTest extends TestCase
     {
         $this->assertXmlStringEqualsXmlFile(
             $this->filesDirectory . 'foo.xml',
-            file_get_contents($this->filesDirectory . 'foo.xml')
+            \file_get_contents($this->filesDirectory . 'foo.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertXmlStringEqualsXmlFile(
             $this->filesDirectory . 'foo.xml',
-            file_get_contents($this->filesDirectory . 'bar.xml')
+            \file_get_contents($this->filesDirectory . 'bar.xml')
         );
     }
 
@@ -926,14 +926,14 @@ class AssertTest extends TestCase
     {
         $this->assertXmlStringNotEqualsXmlFile(
             $this->filesDirectory . 'foo.xml',
-            file_get_contents($this->filesDirectory . 'bar.xml')
+            \file_get_contents($this->filesDirectory . 'bar.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertXmlStringNotEqualsXmlFile(
             $this->filesDirectory . 'foo.xml',
-            file_get_contents($this->filesDirectory . 'foo.xml')
+            \file_get_contents($this->filesDirectory . 'foo.xml')
         );
     }
 
@@ -2510,14 +2510,14 @@ XML;
     {
         $this->assertStringEqualsFile(
             $this->filesDirectory . 'foo.xml',
-            file_get_contents($this->filesDirectory . 'foo.xml')
+            \file_get_contents($this->filesDirectory . 'foo.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringEqualsFile(
             $this->filesDirectory . 'foo.xml',
-            file_get_contents($this->filesDirectory . 'bar.xml')
+            \file_get_contents($this->filesDirectory . 'bar.xml')
         );
     }
 
@@ -2525,14 +2525,14 @@ XML;
     {
         $this->assertStringNotEqualsFile(
             $this->filesDirectory . 'foo.xml',
-            file_get_contents($this->filesDirectory . 'bar.xml')
+            \file_get_contents($this->filesDirectory . 'bar.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringNotEqualsFile(
             $this->filesDirectory . 'foo.xml',
-            file_get_contents($this->filesDirectory . 'foo.xml')
+            \file_get_contents($this->filesDirectory . 'foo.xml')
         );
     }
 
@@ -2943,7 +2943,7 @@ XML;
     public function testAssertJsonStringEqualsJsonFile()
     {
         $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        $actual  = json_encode(['Mascott' => 'Tux']);
+        $actual  = \json_encode(['Mascott' => 'Tux']);
         $message = '';
 
         $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
@@ -2952,7 +2952,7 @@ XML;
     public function testAssertJsonStringEqualsJsonFileExpectingExpectationFailedException()
     {
         $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        $actual  = json_encode(['Mascott' => 'Beastie']);
+        $actual  = \json_encode(['Mascott' => 'Beastie']);
         $message = '';
 
         try {
@@ -2985,7 +2985,7 @@ XML;
     public function testAssertJsonStringNotEqualsJsonFile()
     {
         $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
-        $actual  = json_encode(['Mascott' => 'Beastie']);
+        $actual  = \json_encode(['Mascott' => 'Beastie']);
         $message = '';
 
         $this->assertJsonStringNotEqualsJsonFile($file, $actual, $message);

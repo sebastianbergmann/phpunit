@@ -25,7 +25,7 @@ class Callback extends Constraint
      */
     public function __construct($callback)
     {
-        if (!is_callable($callback)) {
+        if (!\is_callable($callback)) {
             throw InvalidArgumentHelper::factory(
                 1,
                 'callable'
@@ -47,7 +47,7 @@ class Callback extends Constraint
      */
     protected function matches($other)
     {
-        return call_user_func($this->callback, $other);
+        return \call_user_func($this->callback, $other);
     }
 
     /**
