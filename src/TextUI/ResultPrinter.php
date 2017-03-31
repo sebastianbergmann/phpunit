@@ -121,7 +121,7 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @var bool
      */
-    private $reverse = false;
+    private $reverse;
 
     /**
      * @var bool

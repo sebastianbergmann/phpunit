@@ -151,12 +151,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @var array
      */
-    private $data = [];
+    private $data;
 
     /**
      * @var string
      */
-    private $dataName = '';
+    private $dataName;
 
     /**
      * @var bool
