@@ -433,6 +433,13 @@ class TestRunner extends BaseTestRunner
             if (isset($arguments['whitelist'])) {
                 $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
             }
+            else {
+                $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
+
+                $codeCoverageReports = 0;
+
+                unset($codeCoverage);
+            }
 
             if (isset($arguments['configuration'])) {
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
@@ -471,7 +478,7 @@ class TestRunner extends BaseTestRunner
             }
 
             if (!$this->codeCoverageFilter->hasWhitelist()) {
-                $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
+                $this->writeMessage('Error', 'Whitelist is improperly configured, no files listed fort testing.');
 
                 $codeCoverageReports = 0;
 
