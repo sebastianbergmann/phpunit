@@ -428,7 +428,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
                 unset($codeCoverage);
             }
 
-            if (isset($arguments['configuration'])) {
+            if (isset($codeCoverage) && isset($arguments['configuration'])) {
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
                 $codeCoverage->setAddUncoveredFilesFromWhitelist(
