@@ -9,7 +9,7 @@ $_SERVER['argv'][3] = '--stop-on-error';
 $_SERVER['argv'][4] = __DIR__ . '/2145/Issue2145Test.php';
 
 require __DIR__ . '/../../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 ?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
