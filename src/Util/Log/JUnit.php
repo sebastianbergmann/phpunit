@@ -96,7 +96,7 @@ class JUnit extends Printer implements TestListener
     /**
      * @var DOMElement
      */
-    protected $currentTestCase = null;
+    protected $currentTestCase;
 
     /**
      * Constructor.

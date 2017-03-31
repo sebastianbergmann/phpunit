@@ -105,7 +105,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @var bool
      */
-    protected $backupGlobals = null;
+    protected $backupGlobals;
 
     /**
      * @var array
@@ -119,7 +119,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @var bool
      */
-    protected $backupStaticAttributes = null;
+    protected $backupStaticAttributes;
 
     /**
      * @var array
@@ -131,7 +131,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @var bool
      */
-    protected $runTestInSeparateProcess = null;
+    protected $runTestInSeparateProcess;
 
     /**
      * Whether or not this test should preserve the global state when
@@ -161,14 +161,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @var bool
      */
-    private $useErrorHandler = null;
+    private $useErrorHandler;
 
     /**
      * The name of the expected Exception.
      *
      * @var string
      */
-    private $expectedException = null;
+    private $expectedException;
 
     /**
      * The message of the expected Exception.
@@ -196,7 +196,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @var string
      */
-    private $name = null;
+    private $name;
 
     /**
      * @var array
@@ -226,7 +226,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @var array
      */
-    private $mockObjectGenerator = null;
+    private $mockObjectGenerator;
 
     /**
      * @var int
@@ -261,12 +261,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @var string
      */
-    private $outputExpectedRegex = null;
+    private $outputExpectedRegex;
 
     /**
      * @var string
      */
-    private $outputExpectedString = null;
+    private $outputExpectedString;
 
     /**
      * @var mixed
