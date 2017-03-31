@@ -465,7 +465,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             if (!$this->codeCoverageFilter->hasWhitelist()) {
-                $this->writeMessage('Error', 'Whitelist is improperly configured, no files listed for testing.');
+                $this->writeMessage('Error', 'Incorrect whitelist configuration, no code coverage will be generated');
 
                 $codeCoverageReports = 0;
 
