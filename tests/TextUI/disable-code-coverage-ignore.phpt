@@ -5,6 +5,11 @@ phpunit --colors=never --coverage-text=php://stdout --disable-coverage-ignore Ig
 if (!extension_loaded('xdebug')) {
     print 'skip: Extension xdebug is required.';
 }
+
+require __DIR__ . '/../bootstrap.php';
+if (!class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
+    print 'skip: phpunit/php-code-coverage is required.';
+}
 ?>
 --FILE--
 <?php

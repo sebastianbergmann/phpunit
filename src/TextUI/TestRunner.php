@@ -91,10 +91,6 @@ class TestRunner extends BaseTestRunner
      */
     public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
     {
-        if ($filter === null) {
-            $filter = new CodeCoverageFilter;
-        }
-
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
         $this->runtime            = new Runtime;
@@ -388,10 +384,16 @@ class TestRunner extends BaseTestRunner
             $codeCoverageReports = 0;
         }
 
-        if ($codeCoverageReports > 0 && !$this->runtime->canCollectCodeCoverage()) {
-            $this->writeMessage('Error', 'No code coverage driver is available');
+        if ($codeCoverageReports > 0) {
+            if (!class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
+                $this->writeMessage('Error', 'phpunit/php-code-coverage is not installed');
+                $codeCoverageReports = 0;
+            }
 
-            $codeCoverageReports = 0;
+            if (!$this->runtime->canCollectCodeCoverage()) {
+                $this->writeMessage('Error', 'No code coverage driver is available');
+                $codeCoverageReports = 0;
+            }
         }
 
         $this->printer->write("\n");
@@ -431,7 +433,7 @@ class TestRunner extends BaseTestRunner
             }
 
             if (isset($arguments['whitelist'])) {
-                $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
+                $codeCoverage->filter()->addDirectoryToWhitelist($arguments['whitelist']);
             }
 
             if (isset($arguments['configuration'])) {
@@ -446,7 +448,7 @@ class TestRunner extends BaseTestRunner
                 );
 
                 foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                    $this->codeCoverageFilter->addDirectoryToWhitelist(
+                    $codeCoverage->filter()->addDirectoryToWhitelist(
                         $dir['path'],
                         $dir['suffix'],
                         $dir['prefix']
@@ -454,11 +456,11 @@ class TestRunner extends BaseTestRunner
                 }
 
                 foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                    $this->codeCoverageFilter->addFileToWhitelist($file);
+                    $codeCoverage-filter()->addFileToWhitelist($file);
                 }
 
                 foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
-                    $this->codeCoverageFilter->removeDirectoryFromWhitelist(
+                    $codeCoverage->filter()->removeDirectoryFromWhitelist(
                         $dir['path'],
                         $dir['suffix'],
                         $dir['prefix']
@@ -466,11 +468,11 @@ class TestRunner extends BaseTestRunner
                 }
 
                 foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
-                    $this->codeCoverageFilter->removeFileFromWhitelist($file);
+                    $codeCoverage->filter()->removeFileFromWhitelist($file);
                 }
             }
 
-            if (!$this->codeCoverageFilter->hasWhitelist()) {
+            if (!$codeCoverage->filter()->hasWhitelist()) {
                 $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
 
                 $codeCoverageReports = 0;

@@ -20,6 +20,7 @@ before_install:
 
 install:
   - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable; fi
+  - if [[ "$DEPENDENCIES" = 'high-code-coverage' ]]; then travis_retry composer require --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable phpunit/php-code-coverage; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable --prefer-lowest; fi
 
 before_script:
