@@ -76,7 +76,7 @@ class Filter
                     $filteredStacktrace .= sprintf(
                         "%s:%s\n",
                         $frame['file'],
-                        isset($frame['line']) ? $frame['line'] : '?'
+                        $frame['line'] ?? '?'
                     );
                 } else {
                     $filteredStacktrace[] = $frame;

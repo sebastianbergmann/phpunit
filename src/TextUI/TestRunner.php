@@ -733,9 +733,9 @@ class TestRunner extends BaseTestRunner
             );
         }
 
-        $arguments['debug']     = isset($arguments['debug'])     ? $arguments['debug']     : false;
-        $arguments['filter']    = isset($arguments['filter'])    ? $arguments['filter']    : false;
-        $arguments['listeners'] = isset($arguments['listeners']) ? $arguments['listeners'] : [];
+        $arguments['debug']     = $arguments['debug']     ?? false;
+        $arguments['filter']    = $arguments['filter']    ?? false;
+        $arguments['listeners'] = $arguments['listeners'] ?? [];
 
         if (isset($arguments['configuration'])) {
             $arguments['configuration']->handlePHPConfiguration();
@@ -1017,46 +1017,46 @@ class TestRunner extends BaseTestRunner
             }
         }
 
-        $arguments['addUncoveredFilesFromWhitelist']                  = isset($arguments['addUncoveredFilesFromWhitelist'])                  ? $arguments['addUncoveredFilesFromWhitelist']                  : true;
-        $arguments['backupGlobals']                                   = isset($arguments['backupGlobals'])                                   ? $arguments['backupGlobals']                                   : null;
-        $arguments['backupStaticAttributes']                          = isset($arguments['backupStaticAttributes'])                          ? $arguments['backupStaticAttributes']                          : null;
-        $arguments['beStrictAboutChangesToGlobalState']               = isset($arguments['beStrictAboutChangesToGlobalState'])               ? $arguments['beStrictAboutChangesToGlobalState']               : null;
-        $arguments['beStrictAboutResourceUsageDuringSmallTests']      = isset($arguments['beStrictAboutResourceUsageDuringSmallTests'])      ? $arguments['beStrictAboutResourceUsageDuringSmallTests']      : false;
-        $arguments['cacheTokens']                                     = isset($arguments['cacheTokens'])                                     ? $arguments['cacheTokens']                                     : false;
-        $arguments['colors']                                          = isset($arguments['colors'])                                          ? $arguments['colors']                                          : ResultPrinter::COLOR_DEFAULT;
-        $arguments['columns']                                         = isset($arguments['columns'])                                         ? $arguments['columns']                                         : 80;
-        $arguments['convertErrorsToExceptions']                       = isset($arguments['convertErrorsToExceptions'])                       ? $arguments['convertErrorsToExceptions']                       : true;
-        $arguments['convertNoticesToExceptions']                      = isset($arguments['convertNoticesToExceptions'])                      ? $arguments['convertNoticesToExceptions']                      : true;
-        $arguments['convertWarningsToExceptions']                     = isset($arguments['convertWarningsToExceptions'])                     ? $arguments['convertWarningsToExceptions']                     : true;
-        $arguments['crap4jThreshold']                                 = isset($arguments['crap4jThreshold'])                                 ? $arguments['crap4jThreshold']                                 : 30;
-        $arguments['disallowTestOutput']                              = isset($arguments['disallowTestOutput'])                              ? $arguments['disallowTestOutput']                              : false;
-        $arguments['disallowTodoAnnotatedTests']                      = isset($arguments['disallowTodoAnnotatedTests'])                      ? $arguments['disallowTodoAnnotatedTests']                      : false;
-        $arguments['enforceTimeLimit']                                = isset($arguments['enforceTimeLimit'])                                ? $arguments['enforceTimeLimit']                                : false;
-        $arguments['excludeGroups']                                   = isset($arguments['excludeGroups'])                                   ? $arguments['excludeGroups']                                   : [];
-        $arguments['failOnRisky']                                     = isset($arguments['failOnRisky'])                                     ? $arguments['failOnRisky']                                     : false;
-        $arguments['failOnWarning']                                   = isset($arguments['failOnWarning'])                                   ? $arguments['failOnWarning']                                   : false;
-        $arguments['groups']                                          = isset($arguments['groups'])                                          ? $arguments['groups']                                          : [];
-        $arguments['processIsolation']                                = isset($arguments['processIsolation'])                                ? $arguments['processIsolation']                                : false;
-        $arguments['processUncoveredFilesFromWhitelist']              = isset($arguments['processUncoveredFilesFromWhitelist'])              ? $arguments['processUncoveredFilesFromWhitelist']              : false;
-        $arguments['registerMockObjectsFromTestArgumentsRecursively'] = isset($arguments['registerMockObjectsFromTestArgumentsRecursively']) ? $arguments['registerMockObjectsFromTestArgumentsRecursively'] : false;
-        $arguments['repeat']                                          = isset($arguments['repeat'])                                          ? $arguments['repeat']                                          : false;
-        $arguments['reportHighLowerBound']                            = isset($arguments['reportHighLowerBound'])                            ? $arguments['reportHighLowerBound']                            : 90;
-        $arguments['reportLowUpperBound']                             = isset($arguments['reportLowUpperBound'])                             ? $arguments['reportLowUpperBound']                             : 50;
-        $arguments['reportUselessTests']                              = isset($arguments['reportUselessTests'])                              ? $arguments['reportUselessTests']                              : true;
-        $arguments['reverseList']                                     = isset($arguments['reverseList'])                                     ? $arguments['reverseList']                                     : false;
-        $arguments['stopOnError']                                     = isset($arguments['stopOnError'])                                     ? $arguments['stopOnError']                                     : false;
-        $arguments['stopOnFailure']                                   = isset($arguments['stopOnFailure'])                                   ? $arguments['stopOnFailure']                                   : false;
-        $arguments['stopOnIncomplete']                                = isset($arguments['stopOnIncomplete'])                                ? $arguments['stopOnIncomplete']                                : false;
-        $arguments['stopOnRisky']                                     = isset($arguments['stopOnRisky'])                                     ? $arguments['stopOnRisky']                                     : false;
-        $arguments['stopOnSkipped']                                   = isset($arguments['stopOnSkipped'])                                   ? $arguments['stopOnSkipped']                                   : false;
-        $arguments['stopOnWarning']                                   = isset($arguments['stopOnWarning'])                                   ? $arguments['stopOnWarning']                                   : false;
-        $arguments['strictCoverage']                                  = isset($arguments['strictCoverage'])                                  ? $arguments['strictCoverage']                                  : false;
-        $arguments['testdoxExcludeGroups']                            = isset($arguments['testdoxExcludeGroups'])                            ? $arguments['testdoxExcludeGroups']                            : [];
-        $arguments['testdoxGroups']                                   = isset($arguments['testdoxGroups'])                                   ? $arguments['testdoxGroups']                                   : [];
-        $arguments['timeoutForLargeTests']                            = isset($arguments['timeoutForLargeTests'])                            ? $arguments['timeoutForLargeTests']                            : 60;
-        $arguments['timeoutForMediumTests']                           = isset($arguments['timeoutForMediumTests'])                           ? $arguments['timeoutForMediumTests']                           : 10;
-        $arguments['timeoutForSmallTests']                            = isset($arguments['timeoutForSmallTests'])                            ? $arguments['timeoutForSmallTests']                            : 1;
-        $arguments['verbose']                                         = isset($arguments['verbose'])                                         ? $arguments['verbose']                                         : false;
+        $arguments['addUncoveredFilesFromWhitelist']                  = $arguments['addUncoveredFilesFromWhitelist']                  ?? true;
+        $arguments['backupGlobals']                                   = $arguments['backupGlobals']                                   ?? null;
+        $arguments['backupStaticAttributes']                          = $arguments['backupStaticAttributes']                          ?? null;
+        $arguments['beStrictAboutChangesToGlobalState']               = $arguments['beStrictAboutChangesToGlobalState']               ?? null;
+        $arguments['beStrictAboutResourceUsageDuringSmallTests']      = $arguments['beStrictAboutResourceUsageDuringSmallTests']      ?? false;
+        $arguments['cacheTokens']                                     = $arguments['cacheTokens']                                     ?? false;
+        $arguments['colors']                                          = $arguments['colors']                                          ?? ResultPrinter::COLOR_DEFAULT;
+        $arguments['columns']                                         = $arguments['columns']                                         ?? 80;
+        $arguments['convertErrorsToExceptions']                       = $arguments['convertErrorsToExceptions']                       ?? true;
+        $arguments['convertNoticesToExceptions']                      = $arguments['convertNoticesToExceptions']                      ?? true;
+        $arguments['convertWarningsToExceptions']                     = $arguments['convertWarningsToExceptions']                     ?? true;
+        $arguments['crap4jThreshold']                                 = $arguments['crap4jThreshold']                                 ?? 30;
+        $arguments['disallowTestOutput']                              = $arguments['disallowTestOutput']                              ?? false;
+        $arguments['disallowTodoAnnotatedTests']                      = $arguments['disallowTodoAnnotatedTests']                      ?? false;
+        $arguments['enforceTimeLimit']                                = $arguments['enforceTimeLimit']                                ?? false;
+        $arguments['excludeGroups']                                   = $arguments['excludeGroups']                                   ?? [];
+        $arguments['failOnRisky']                                     = $arguments['failOnRisky']                                     ?? false;
+        $arguments['failOnWarning']                                   = $arguments['failOnWarning']                                   ?? false;
+        $arguments['groups']                                          = $arguments['groups']                                          ?? [];
+        $arguments['processIsolation']                                = $arguments['processIsolation']                                ?? false;
+        $arguments['processUncoveredFilesFromWhitelist']              = $arguments['processUncoveredFilesFromWhitelist']              ?? false;
+        $arguments['registerMockObjectsFromTestArgumentsRecursively'] = $arguments['registerMockObjectsFromTestArgumentsRecursively'] ?? false;
+        $arguments['repeat']                                          = $arguments['repeat']                                          ?? false;
+        $arguments['reportHighLowerBound']                            = $arguments['reportHighLowerBound']                            ?? 90;
+        $arguments['reportLowUpperBound']                             = $arguments['reportLowUpperBound']                             ?? 50;
+        $arguments['reportUselessTests']                              = $arguments['reportUselessTests']                              ?? true;
+        $arguments['reverseList']                                     = $arguments['reverseList']                                     ?? false;
+        $arguments['stopOnError']                                     = $arguments['stopOnError']                                     ?? false;
+        $arguments['stopOnFailure']                                   = $arguments['stopOnFailure']                                   ?? false;
+        $arguments['stopOnIncomplete']                                = $arguments['stopOnIncomplete']                                ?? false;
+        $arguments['stopOnRisky']                                     = $arguments['stopOnRisky']                                     ?? false;
+        $arguments['stopOnSkipped']                                   = $arguments['stopOnSkipped']                                   ?? false;
+        $arguments['stopOnWarning']                                   = $arguments['stopOnWarning']                                   ?? false;
+        $arguments['strictCoverage']                                  = $arguments['strictCoverage']                                  ?? false;
+        $arguments['testdoxExcludeGroups']                            = $arguments['testdoxExcludeGroups']                            ?? [];
+        $arguments['testdoxGroups']                                   = $arguments['testdoxGroups']                                   ?? [];
+        $arguments['timeoutForLargeTests']                            = $arguments['timeoutForLargeTests']                            ?? 60;
+        $arguments['timeoutForMediumTests']                           = $arguments['timeoutForMediumTests']                           ?? 10;
+        $arguments['timeoutForSmallTests']                            = $arguments['timeoutForSmallTests']                            ?? 1;
+        $arguments['verbose']                                         = $arguments['verbose']                                         ?? false;
     }
 
     /**

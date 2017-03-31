@@ -781,7 +781,7 @@ class Command
             }
 
             if (!isset($this->arguments['test'])) {
-                $testSuite = $configuration->getTestSuiteConfiguration(isset($this->arguments['testsuite']) ? $this->arguments['testsuite'] : null);
+                $testSuite = $configuration->getTestSuiteConfiguration($this->arguments['testsuite'] ?? null);
 
                 if ($testSuite !== null) {
                     $this->arguments['test'] = $testSuite;
