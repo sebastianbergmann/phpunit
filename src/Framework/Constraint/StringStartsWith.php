@@ -39,7 +39,7 @@ class StringStartsWith extends Constraint
      */
     protected function matches($other)
     {
-        return strpos($other, $this->prefix) === 0;
+        return \strpos($other, $this->prefix) === 0;
     }
 
     /**

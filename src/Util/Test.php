@@ -56,12 +56,12 @@ class Test
                 return $test->toString();
             }
 
-            return get_class($test);
+            return \get_class($test);
         }
 
         if ($test instanceof TestCase) {
             return [
-                get_class($test), $test->getName()
+                \get_class($test), $test->getName()
             ];
         }
 
@@ -69,7 +69,7 @@ class Test
             return ['', $test->toString()];
         }
 
-        return ['', get_class($test)];
+        return ['', \get_class($test)];
     }
 
     /**
@@ -126,9 +126,9 @@ class Test
         $classShortcut = null;
 
         if (!empty($annotations['class'][$mode . 'DefaultClass'])) {
-            if (count($annotations['class'][$mode . 'DefaultClass']) > 1) {
+            if (\count($annotations['class'][$mode . 'DefaultClass']) > 1) {
                 throw new CodeCoverageException(
-                    sprintf(
+                    \sprintf(
                         'More than one @%sClass annotation in class or interface "%s".',
                         $mode,
                         $className
@@ -146,21 +146,21 @@ class Test
         }
 
         if (isset($annotations['method'][$mode])) {
-            $list = array_merge($list, $annotations['method'][$mode]);
+            $list = \array_merge($list, $annotations['method'][$mode]);
         }
 
         $codeList = [];
 
-        foreach (array_unique($list) as $element) {
-            if ($classShortcut && strncmp($element, '::', 2) === 0) {
+        foreach (\array_unique($list) as $element) {
+            if ($classShortcut && \strncmp($element, '::', 2) === 0) {
                 $element = $classShortcut . $element;
             }
 
-            $element = preg_replace('/[\s()]+$/', '', $element);
-            $element = explode(' ', $element);
+            $element = \preg_replace('/[\s()]+$/', '', $element);
+            $element = \explode(' ', $element);
             $element = $element[0];
 
-            $codeList = array_merge(
+            $codeList = \array_merge(
                 $codeList,
                 self::resolveElementToReflectionObjects($element)
             );
@@ -185,14 +185,14 @@ class Test
         $docComment .= "\n" . $reflector->getDocComment();
         $requires = [];
 
-        if ($count = preg_match_all(self::REGEX_REQUIRES_OS, $docComment, $matches)) {
-            $requires['OS'] = sprintf(
+        if ($count = \preg_match_all(self::REGEX_REQUIRES_OS, $docComment, $matches)) {
+            $requires['OS'] = \sprintf(
                 '/%s/i',
-                addcslashes($matches['value'][$count - 1], '/')
+                \addcslashes($matches['value'][$count - 1], '/')
             );
         }
 
-        if ($count = preg_match_all(self::REGEX_REQUIRES_VERSION, $docComment, $matches)) {
+        if ($count = \preg_match_all(self::REGEX_REQUIRES_VERSION, $docComment, $matches)) {
             for ($i = 0; $i < $count; $i++) {
                 $requires[$matches['name'][$i]] = [
                     'version'  => $matches['version'][$i],
@@ -201,7 +201,7 @@ class Test
             }
         }
 
-        if ($count = preg_match_all(self::REGEX_REQUIRES, $docComment, $matches)) {
+        if ($count = \preg_match_all(self::REGEX_REQUIRES, $docComment, $matches)) {
             for ($i = 0; $i < $count; $i++) {
                 $name = $matches['name'][$i] . 's';
 
@@ -240,8 +240,8 @@ class Test
 
         $operator = empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator'];
 
-        if (!empty($required['PHP']) && !version_compare(PHP_VERSION, $required['PHP']['version'], $operator)) {
-            $missing[] = sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
+        if (!empty($required['PHP']) && !\version_compare(PHP_VERSION, $required['PHP']['version'], $operator)) {
+            $missing[] = \sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
         }
 
         if (!empty($required['PHPUnit'])) {
@@ -249,28 +249,28 @@ class Test
 
             $operator = empty($required['PHPUnit']['operator']) ? '>=' : $required['PHPUnit']['operator'];
 
-            if (!version_compare($phpunitVersion, $required['PHPUnit']['version'], $operator)) {
-                $missing[] = sprintf('PHPUnit %s %s is required.', $operator, $required['PHPUnit']['version']);
+            if (!\version_compare($phpunitVersion, $required['PHPUnit']['version'], $operator)) {
+                $missing[] = \sprintf('PHPUnit %s %s is required.', $operator, $required['PHPUnit']['version']);
             }
         }
 
-        if (!empty($required['OS']) && !preg_match($required['OS'], PHP_OS)) {
-            $missing[] = sprintf('Operating system matching %s is required.', $required['OS']);
+        if (!empty($required['OS']) && !\preg_match($required['OS'], PHP_OS)) {
+            $missing[] = \sprintf('Operating system matching %s is required.', $required['OS']);
         }
 
         if (!empty($required['functions'])) {
             foreach ($required['functions'] as $function) {
-                $pieces = explode('::', $function);
+                $pieces = \explode('::', $function);
 
-                if (2 === count($pieces) && method_exists($pieces[0], $pieces[1])) {
+                if (2 === \count($pieces) && \method_exists($pieces[0], $pieces[1])) {
                     continue;
                 }
 
-                if (function_exists($function)) {
+                if (\function_exists($function)) {
                     continue;
                 }
 
-                $missing[] = sprintf('Function %s is required.', $function);
+                $missing[] = \sprintf('Function %s is required.', $function);
             }
         }
 
@@ -280,20 +280,20 @@ class Test
                     continue;
                 }
 
-                if (!extension_loaded($extension)) {
-                    $missing[] = sprintf('Extension %s is required.', $extension);
+                if (!\extension_loaded($extension)) {
+                    $missing[] = \sprintf('Extension %s is required.', $extension);
                 }
             }
         }
 
         if (!empty($required['extension_versions'])) {
             foreach ($required['extension_versions'] as $extension => $required) {
-                $actualVersion = phpversion($extension);
+                $actualVersion = \phpversion($extension);
 
                 $operator = empty($required['operator']) ? '>=' : $required['operator'];
 
-                if (false === $actualVersion || !version_compare($actualVersion, $required['version'], $operator)) {
-                    $missing[] = sprintf('Extension %s %s %s is required.', $extension, $operator, $required['version']);
+                if (false === $actualVersion || !\version_compare($actualVersion, $required['version'], $operator)) {
+                    $missing[] = \sprintf('Extension %s %s %s is required.', $extension, $operator, $required['version']);
                 }
             }
         }
@@ -313,9 +313,9 @@ class Test
     {
         $reflector  = new ReflectionMethod($className, $methodName);
         $docComment = $reflector->getDocComment();
-        $docComment = substr($docComment, 3, -2);
+        $docComment = \substr($docComment, 3, -2);
 
-        if (preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
+        if (\preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
             $annotations = self::parseTestMethodAnnotations(
                 $className,
                 $methodName
@@ -327,7 +327,7 @@ class Test
             $messageRegExp = '';
 
             if (isset($matches[2])) {
-                $message = trim($matches[2]);
+                $message = \trim($matches[2]);
             } elseif (isset($annotations['method']['expectedExceptionMessage'])) {
                 $message = self::parseAnnotationContent(
                     $annotations['method']['expectedExceptionMessage'][0]
@@ -348,10 +348,10 @@ class Test
                 );
             }
 
-            if (is_numeric($code)) {
+            if (\is_numeric($code)) {
                 $code = (int) $code;
-            } elseif (is_string($code) && defined($code)) {
-                $code = (int) constant($code);
+            } elseif (\is_string($code) && \defined($code)) {
+                $code = (int) \constant($code);
             }
 
             return [
@@ -375,9 +375,9 @@ class Test
      */
     private static function parseAnnotationContent($message)
     {
-        if (strpos($message, '::') !== false && count(explode('::', $message)) == 2) {
-            if (defined($message)) {
-                $message = constant($message);
+        if (\strpos($message, '::') !== false && \count(\explode('::', $message)) == 2) {
+            if (\defined($message)) {
+                $message = \constant($message);
             }
         }
 
@@ -391,7 +391,7 @@ class Test
      * @param string $methodName
      *
      * @return array When a data provider is specified and exists
-     *         null  When no data provider is specified
+     *               null  When no data provider is specified
      *
      * @throws Exception
      */
@@ -406,17 +406,17 @@ class Test
             $data = self::getDataFromTestWithAnnotation($docComment);
         }
 
-        if (is_array($data) && empty($data)) {
+        if (\is_array($data) && empty($data)) {
             throw new SkippedTestError;
         }
 
         if ($data !== null) {
             foreach ($data as $key => $value) {
-                if (!is_array($value)) {
+                if (!\is_array($value)) {
                     throw new Exception(
-                        sprintf(
+                        \sprintf(
                             'Data set %s is invalid.',
-                            is_int($key) ? '#' . $key : '"' . $key . '"'
+                            \is_int($key) ? '#' . $key : '"' . $key . '"'
                         )
                     );
                 }
@@ -440,22 +440,22 @@ class Test
      */
     private static function getDataFromDataProviderAnnotation($docComment, $className, $methodName)
     {
-        if (preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
+        if (\preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             $result = [];
 
             foreach ($matches[1] as $match) {
-                $dataProviderMethodNameNamespace = explode('\\', $match);
-                $leaf                            = explode('::', array_pop($dataProviderMethodNameNamespace));
-                $dataProviderMethodName          = array_pop($leaf);
+                $dataProviderMethodNameNamespace = \explode('\\', $match);
+                $leaf                            = \explode('::', \array_pop($dataProviderMethodNameNamespace));
+                $dataProviderMethodName          = \array_pop($leaf);
 
                 if (!empty($dataProviderMethodNameNamespace)) {
-                    $dataProviderMethodNameNamespace = implode('\\', $dataProviderMethodNameNamespace) . '\\';
+                    $dataProviderMethodNameNamespace = \implode('\\', $dataProviderMethodNameNamespace) . '\\';
                 } else {
                     $dataProviderMethodNameNamespace = '';
                 }
 
                 if (!empty($leaf)) {
-                    $dataProviderClassName = $dataProviderMethodNameNamespace . array_pop($leaf);
+                    $dataProviderClassName = $dataProviderMethodNameNamespace . \array_pop($leaf);
                 } else {
                     $dataProviderClassName = $className;
                 }
@@ -478,11 +478,11 @@ class Test
                 }
 
                 if ($data instanceof Iterator) {
-                    $data = iterator_to_array($data);
+                    $data = \iterator_to_array($data);
                 }
 
-                if (is_array($data)) {
-                    $result = array_merge($result, $data);
+                if (\is_array($data)) {
+                    $result = \array_merge($result, $data);
                 }
             }
 
@@ -502,23 +502,23 @@ class Test
     {
         $docComment = self::cleanUpMultiLineAnnotation($docComment);
 
-        if (preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
-            $offset            = strlen($matches[0][0]) + $matches[0][1];
-            $annotationContent = substr($docComment, $offset);
+        if (\preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
+            $offset            = \strlen($matches[0][0]) + $matches[0][1];
+            $annotationContent = \substr($docComment, $offset);
             $data              = [];
 
-            foreach (explode("\n", $annotationContent) as $candidateRow) {
-                $candidateRow = trim($candidateRow);
+            foreach (\explode("\n", $annotationContent) as $candidateRow) {
+                $candidateRow = \trim($candidateRow);
 
                 if ($candidateRow[0] !== '[') {
                     break;
                 }
 
-                $dataSet = json_decode($candidateRow, true);
+                $dataSet = \json_decode($candidateRow, true);
 
-                if (json_last_error() != JSON_ERROR_NONE) {
+                if (\json_last_error() != JSON_ERROR_NONE) {
                     throw new Exception(
-                        'The dataset for the @testWith annotation cannot be parsed: ' . json_last_error_msg()
+                        'The dataset for the @testWith annotation cannot be parsed: ' . \json_last_error_msg()
                     );
                 }
 
@@ -536,10 +536,10 @@ class Test
     private static function cleanUpMultiLineAnnotation($docComment)
     {
         //removing initial '   * ' for docComment
-        $docComment = str_replace("\r\n", "\n", $docComment);
-        $docComment = preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
-        $docComment = substr($docComment, 0, -1);
-        $docComment = rtrim($docComment, "\n");
+        $docComment = \str_replace("\r\n", "\n", $docComment);
+        $docComment = \preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
+        $docComment = \substr($docComment, 0, -1);
+        $docComment = \rtrim($docComment, "\n");
 
         return $docComment;
     }
@@ -560,13 +560,13 @@ class Test
             $annotations = [];
 
             foreach ($traits as $trait) {
-                $annotations = array_merge(
+                $annotations = \array_merge(
                     $annotations,
                     self::parseAnnotations($trait->getDocComment())
                 );
             }
 
-            self::$annotationCache[$className] = array_merge(
+            self::$annotationCache[$className] = \array_merge(
                 $annotations,
                 self::parseAnnotations($class->getDocComment())
             );
@@ -598,16 +598,16 @@ class Test
     public static function getInlineAnnotations($className, $methodName)
     {
         $method      = new ReflectionMethod($className, $methodName);
-        $code        = file($method->getFileName());
+        $code        = \file($method->getFileName());
         $lineNumber  = $method->getStartLine();
         $startLine   = $method->getStartLine() - 1;
         $endLine     = $method->getEndLine() - 1;
-        $methodLines = array_slice($code, $startLine, $endLine - $startLine + 1);
+        $methodLines = \array_slice($code, $startLine, $endLine - $startLine + 1);
         $annotations = [];
 
         foreach ($methodLines as $line) {
-            if (preg_match('#/\*\*?\s*@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?\*/$#m', $line, $matches)) {
-                $annotations[strtolower($matches['name'])] = [
+            if (\preg_match('#/\*\*?\s*@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?\*/$#m', $line, $matches)) {
+                $annotations[\strtolower($matches['name'])] = [
                     'line'  => $lineNumber,
                     'value' => $matches['value']
                 ];
@@ -628,10 +628,10 @@ class Test
     {
         $annotations = [];
         // Strip away the docblock header and footer to ease parsing of one line annotations
-        $docblock = substr($docblock, 3, -2);
+        $docblock = \substr($docblock, 3, -2);
 
-        if (preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docblock, $matches)) {
-            $numMatches = count($matches[0]);
+        if (\preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docblock, $matches)) {
+            $numMatches = \count($matches[0]);
 
             for ($i = 0; $i < $numMatches; ++$i) {
                 $annotations[$matches['name'][$i]][] = (string) $matches['value'][$i];
@@ -687,13 +687,13 @@ class Test
         }
 
         if (isset($annotations['method']['depends'])) {
-            $dependencies = array_merge(
+            $dependencies = \array_merge(
                 $dependencies,
                 $annotations['method']['depends']
             );
         }
 
-        return array_unique($dependencies);
+        return \array_unique($dependencies);
     }
 
     /**
@@ -737,19 +737,19 @@ class Test
         }
 
         if (isset($annotations['class']['group'])) {
-            $groups = array_merge($groups, $annotations['class']['group']);
+            $groups = \array_merge($groups, $annotations['class']['group']);
         }
 
         if (isset($annotations['method']['group'])) {
-            $groups = array_merge($groups, $annotations['method']['group']);
+            $groups = \array_merge($groups, $annotations['method']['group']);
         }
 
         if (isset($annotations['class']['ticket'])) {
-            $groups = array_merge($groups, $annotations['class']['ticket']);
+            $groups = \array_merge($groups, $annotations['class']['ticket']);
         }
 
         if (isset($annotations['method']['ticket'])) {
-            $groups = array_merge($groups, $annotations['method']['ticket']);
+            $groups = \array_merge($groups, $annotations['method']['ticket']);
         }
 
         foreach (['method', 'class'] as $element) {
@@ -761,7 +761,7 @@ class Test
             }
         }
 
-        return array_unique($groups);
+        return \array_unique($groups);
     }
 
     /**
@@ -774,11 +774,11 @@ class Test
      */
     public static function getSize($className, $methodName)
     {
-        $groups = array_flip(self::getGroups($className, $methodName));
+        $groups = \array_flip(self::getGroups($className, $methodName));
         $class  = new ReflectionClass($className);
 
         if (isset($groups['large']) ||
-            (class_exists('PHPUnit\DbUnit\TestCase', false) &&
+            (\class_exists('PHPUnit\DbUnit\TestCase', false) &&
                 $class->isSubclassOf('PHPUnit\DbUnit\TestCase'))
         ) {
             return self::LARGE;
@@ -843,7 +843,7 @@ class Test
      */
     public static function getHookMethods($className)
     {
-        if (!class_exists($className, false)) {
+        if (!\class_exists($className, false)) {
             return self::emptyHookMethodsArray();
         }
 
@@ -855,14 +855,14 @@ class Test
 
                 foreach ($class->getMethods() as $method) {
                     if (self::isBeforeClassMethod($method)) {
-                        array_unshift(
+                        \array_unshift(
                             self::$hookMethods[$className]['beforeClass'],
                             $method->getName()
                         );
                     }
 
                     if (self::isBeforeMethod($method)) {
-                        array_unshift(
+                        \array_unshift(
                             self::$hookMethods[$className]['before'],
                             $method->getName()
                         );
@@ -944,21 +944,21 @@ class Test
     {
         $codeToCoverList = [];
 
-        if (strpos($element, '\\') !== false && function_exists($element)) {
+        if (\strpos($element, '\\') !== false && \function_exists($element)) {
             $codeToCoverList[] = new ReflectionFunction($element);
-        } elseif (strpos($element, '::') !== false) {
-            list($className, $methodName) = explode('::', $element);
+        } elseif (\strpos($element, '::') !== false) {
+            list($className, $methodName) = \explode('::', $element);
 
             if (isset($methodName[0]) && $methodName[0] == '<') {
                 $classes = [$className];
 
                 foreach ($classes as $className) {
-                    if (!class_exists($className) &&
-                        !interface_exists($className) &&
-                        !trait_exists($className)
+                    if (!\class_exists($className) &&
+                        !\interface_exists($className) &&
+                        !\trait_exists($className)
                     ) {
                         throw new InvalidCoversTargetException(
-                            sprintf(
+                            \sprintf(
                                 'Trying to @cover or @use not existing class or ' .
                                 'interface "%s".',
                                 $className
@@ -970,11 +970,11 @@ class Test
                     $methods = $class->getMethods();
                     $inverse = isset($methodName[1]) && $methodName[1] == '!';
 
-                    if (strpos($methodName, 'protected')) {
+                    if (\strpos($methodName, 'protected')) {
                         $visibility = 'isProtected';
-                    } elseif (strpos($methodName, 'private')) {
+                    } elseif (\strpos($methodName, 'private')) {
                         $visibility = 'isPrivate';
-                    } elseif (strpos($methodName, 'public')) {
+                    } elseif (\strpos($methodName, 'public')) {
                         $visibility = 'isPublic';
                     }
 
@@ -990,18 +990,18 @@ class Test
                 $classes = [$className];
 
                 foreach ($classes as $className) {
-                    if ($className == '' && function_exists($methodName)) {
+                    if ($className == '' && \function_exists($methodName)) {
                         $codeToCoverList[] = new ReflectionFunction(
                             $methodName
                         );
                     } else {
-                        if (!((class_exists($className) ||
-                                interface_exists($className) ||
-                                trait_exists($className)) &&
-                            method_exists($className, $methodName))
+                        if (!((\class_exists($className) ||
+                                \interface_exists($className) ||
+                                \trait_exists($className)) &&
+                            \method_exists($className, $methodName))
                         ) {
                             throw new InvalidCoversTargetException(
-                                sprintf(
+                                \sprintf(
                                     'Trying to @cover or @use not existing method "%s::%s".',
                                     $className,
                                     $methodName
@@ -1019,28 +1019,28 @@ class Test
         } else {
             $extended = false;
 
-            if (strpos($element, '<extended>') !== false) {
-                $element  = str_replace('<extended>', '', $element);
+            if (\strpos($element, '<extended>') !== false) {
+                $element  = \str_replace('<extended>', '', $element);
                 $extended = true;
             }
 
             $classes = [$element];
 
             if ($extended) {
-                $classes = array_merge(
+                $classes = \array_merge(
                     $classes,
-                    class_implements($element),
-                    class_parents($element)
+                    \class_implements($element),
+                    \class_parents($element)
                 );
             }
 
             foreach ($classes as $className) {
-                if (!class_exists($className) &&
-                    !interface_exists($className) &&
-                    !trait_exists($className)
+                if (!\class_exists($className) &&
+                    !\interface_exists($className) &&
+                    !\trait_exists($className)
                 ) {
                     throw new InvalidCoversTargetException(
-                        sprintf(
+                        \sprintf(
                             'Trying to @cover or @use not existing class or ' .
                             'interface "%s".',
                             $className
@@ -1071,10 +1071,10 @@ class Test
                 $result[$filename] = [];
             }
 
-            $result[$filename] = array_unique(
-                array_merge(
+            $result[$filename] = \array_unique(
+                \array_merge(
                     $result[$filename],
-                    range($reflector->getStartLine(), $reflector->getEndLine())
+                    \range($reflector->getStartLine(), $reflector->getEndLine())
                 )
             );
         }
@@ -1089,7 +1089,7 @@ class Test
      */
     private static function isBeforeClassMethod(ReflectionMethod $method)
     {
-        return $method->isStatic() && strpos($method->getDocComment(), '@beforeClass') !== false;
+        return $method->isStatic() && \strpos($method->getDocComment(), '@beforeClass') !== false;
     }
 
     /**
@@ -1099,7 +1099,7 @@ class Test
      */
     private static function isBeforeMethod(ReflectionMethod $method)
     {
-        return preg_match('/@before\b/', $method->getDocComment());
+        return \preg_match('/@before\b/', $method->getDocComment());
     }
 
     /**
@@ -1109,7 +1109,7 @@ class Test
      */
     private static function isAfterClassMethod(ReflectionMethod $method)
     {
-        return $method->isStatic() && strpos($method->getDocComment(), '@afterClass') !== false;
+        return $method->isStatic() && \strpos($method->getDocComment(), '@afterClass') !== false;
     }
 
     /**
@@ -1119,6 +1119,6 @@ class Test
      */
     private static function isAfterMethod(ReflectionMethod $method)
     {
-        return preg_match('/@after\b/', $method->getDocComment());
+        return \preg_match('/@after\b/', $method->getDocComment());
     }
 }

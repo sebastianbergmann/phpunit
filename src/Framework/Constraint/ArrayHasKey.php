@@ -45,8 +45,8 @@ class ArrayHasKey extends Constraint
      */
     protected function matches($other)
     {
-        if (is_array($other)) {
-            return array_key_exists($this->key, $other);
+        if (\is_array($other)) {
+            return \array_key_exists($this->key, $other);
         }
 
         if ($other instanceof ArrayAccess) {

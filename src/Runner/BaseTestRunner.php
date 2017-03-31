@@ -53,8 +53,8 @@ abstract class BaseTestRunner
      */
     public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = '')
     {
-        if (is_dir($suiteClassName) &&
-            !is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
+        if (\is_dir($suiteClassName) &&
+            !\is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
             $facade = new File_Iterator_Facade;
             $files  = $facade->getFilesAsArray(
                 $suiteClassName,
@@ -93,7 +93,7 @@ abstract class BaseTestRunner
                 $test = $suiteMethod->invoke(null, $testClass->getName());
             } catch (ReflectionException $e) {
                 $this->runFailed(
-                    sprintf(
+                    \sprintf(
                         "Failed to invoke suite() method.\n%s",
                         $e->getMessage()
                     )

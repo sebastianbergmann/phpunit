@@ -30,7 +30,7 @@ class Factory
     {
         if (!$filter->isSubclassOf(\RecursiveFilterIterator::class)) {
             throw new InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'Class "%s" does not extend RecursiveFilterIterator',
                     $filter->name
                 )

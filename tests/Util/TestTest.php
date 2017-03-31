@@ -389,23 +389,23 @@ class TestTest extends TestCase
      */
     public function testGetProvidedDataRegEx()
     {
-        $result = preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
+        $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('method', $matches[1]);
 
-        $result = preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
+        $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('class::method', $matches[1]);
 
-        $result = preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
+        $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\class::method', $matches[1]);
 
-        $result = preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
+        $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\namespace\class::method', $matches[1]);
 
-        $result = preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
+        $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('メソッド', $matches[1]);
     }
@@ -438,7 +438,7 @@ class TestTest extends TestCase
     {
         $dataSets = Test::getProvidedData(\MultipleDataProviderTest::class, 'testTwo');
 
-        $this->assertEquals(9, count($dataSets));
+        $this->assertEquals(9, \count($dataSets));
 
         $aCount = 0;
         $bCount = 0;
@@ -544,7 +544,7 @@ class TestTest extends TestCase
     {
         $this->assertEquals(
             ['Foo', 'ほげ'],
-            Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
+            Test::getDependencies(\get_class($this), 'methodForTestParseAnnotation')
         );
     }
 
@@ -562,7 +562,7 @@ class TestTest extends TestCase
     {
         $this->assertEquals(
             ['Bar'],
-            Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
+            Test::getDependencies(\get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
         );
     }
 
@@ -577,7 +577,7 @@ class TestTest extends TestCase
      */
     public function testGetLinesToBeCovered($test, $lines)
     {
-        if (strpos($test, 'Namespace') === 0) {
+        if (\strpos($test, 'Namespace') === 0) {
             $expected = [
               TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines
             ];
@@ -656,7 +656,7 @@ class TestTest extends TestCase
     public function testFunctionParenthesesAreAllowed()
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredFunction.php' => range(2, 4)],
+            [TEST_FILES_PATH . 'CoveredFunction.php' => \range(2, 4)],
             Test::getLinesToBeCovered(
                 'CoverageFunctionParenthesesTest',
                 'testSomething'
@@ -667,7 +667,7 @@ class TestTest extends TestCase
     public function testFunctionParenthesesAreAllowedWithWhitespace()
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredFunction.php' => range(2, 4)],
+            [TEST_FILES_PATH . 'CoveredFunction.php' => \range(2, 4)],
             Test::getLinesToBeCovered(
                 'CoverageFunctionParenthesesWhitespaceTest',
                 'testSomething'
@@ -678,7 +678,7 @@ class TestTest extends TestCase
     public function testMethodParenthesesAreAllowed()
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
+            [TEST_FILES_PATH . 'CoveredClass.php' => \range(31, 35)],
             Test::getLinesToBeCovered(
                 'CoverageMethodParenthesesTest',
                 'testSomething'
@@ -689,7 +689,7 @@ class TestTest extends TestCase
     public function testMethodParenthesesAreAllowedWithWhitespace()
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
+            [TEST_FILES_PATH . 'CoveredClass.php' => \range(31, 35)],
             Test::getLinesToBeCovered(
                 'CoverageMethodParenthesesWhitespaceTest',
                 'testSomething'
@@ -701,7 +701,7 @@ class TestTest extends TestCase
     {
         $this->assertEquals(
             [
-                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(4, 7)
+                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => \range(4, 7)
             ],
             Test::getLinesToBeCovered(
                 \CoverageNamespacedFunctionTest::class,
@@ -719,91 +719,91 @@ class TestTest extends TestCase
           ],
           [
             'CoverageClassExtendedTest',
-            array_merge(range(19, 36), range(2, 17))
+            \array_merge(\range(19, 36), \range(2, 17))
           ],
           [
             'CoverageClassTest',
-            range(19, 36)
+            \range(19, 36)
           ],
           [
             'CoverageMethodTest',
-            range(31, 35)
+            \range(31, 35)
           ],
           [
             'CoverageMethodOneLineAnnotationTest',
-            range(31, 35)
+            \range(31, 35)
           ],
           [
             'CoverageNotPrivateTest',
-            array_merge(range(25, 29), range(31, 35))
+            \array_merge(\range(25, 29), \range(31, 35))
           ],
           [
             'CoverageNotProtectedTest',
-            array_merge(range(21, 23), range(31, 35))
+            \array_merge(\range(21, 23), \range(31, 35))
           ],
           [
             'CoverageNotPublicTest',
-            array_merge(range(21, 23), range(25, 29))
+            \array_merge(\range(21, 23), \range(25, 29))
           ],
           [
             'CoveragePrivateTest',
-            range(21, 23)
+            \range(21, 23)
           ],
           [
             'CoverageProtectedTest',
-            range(25, 29)
+            \range(25, 29)
           ],
           [
             'CoveragePublicTest',
-            range(31, 35)
+            \range(31, 35)
           ],
           [
             'CoverageFunctionTest',
-            range(2, 4)
+            \range(2, 4)
           ],
           [
             'NamespaceCoverageClassExtendedTest',
-            array_merge(range(21, 38), range(4, 19))
+            \array_merge(\range(21, 38), \range(4, 19))
           ],
           [
             'NamespaceCoverageClassTest',
-            range(21, 38)
+            \range(21, 38)
           ],
           [
             'NamespaceCoverageMethodTest',
-            range(33, 37)
+            \range(33, 37)
           ],
           [
             'NamespaceCoverageNotPrivateTest',
-            array_merge(range(27, 31), range(33, 37))
+            \array_merge(\range(27, 31), \range(33, 37))
           ],
           [
             'NamespaceCoverageNotProtectedTest',
-            array_merge(range(23, 25), range(33, 37))
+            \array_merge(\range(23, 25), \range(33, 37))
           ],
           [
             'NamespaceCoverageNotPublicTest',
-            array_merge(range(23, 25), range(27, 31))
+            \array_merge(\range(23, 25), \range(27, 31))
           ],
           [
             'NamespaceCoveragePrivateTest',
-            range(23, 25)
+            \range(23, 25)
           ],
           [
             'NamespaceCoverageProtectedTest',
-            range(27, 31)
+            \range(27, 31)
           ],
           [
             'NamespaceCoveragePublicTest',
-            range(33, 37)
+            \range(33, 37)
           ],
           [
             'NamespaceCoverageCoversClassTest',
-            array_merge(range(23, 25), range(27, 31), range(33, 37), range(6, 8), range(10, 13), range(15, 18))
+            \array_merge(\range(23, 25), \range(27, 31), \range(33, 37), \range(6, 8), \range(10, 13), \range(15, 18))
           ],
           [
             'NamespaceCoverageCoversClassPublicTest',
-            range(33, 37)
+            \range(33, 37)
           ],
           [
             'CoverageNothingTest',

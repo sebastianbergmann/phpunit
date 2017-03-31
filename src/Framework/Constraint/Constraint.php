@@ -99,7 +99,7 @@ abstract class Constraint implements Countable, SelfDescribing
      */
     protected function fail($other, $description, ComparisonFailure $comparisonFailure = null)
     {
-        $failureDescription = sprintf(
+        $failureDescription = \sprintf(
             'Failed asserting that %s.',
             $this->failureDescription($other)
         );

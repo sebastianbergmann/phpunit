@@ -28,11 +28,11 @@ class Fileloader
      */
     public static function checkAndLoad($filename)
     {
-        $includePathFilename = stream_resolve_include_path($filename);
+        $includePathFilename = \stream_resolve_include_path($filename);
 
-        if (!$includePathFilename || !is_readable($includePathFilename)) {
+        if (!$includePathFilename || !\is_readable($includePathFilename)) {
             throw new Exception(
-                sprintf('Cannot open file "%s".' . "\n", $filename)
+                \sprintf('Cannot open file "%s".' . "\n", $filename)
             );
         }
 
@@ -50,13 +50,13 @@ class Fileloader
      */
     public static function load($filename)
     {
-        $oldVariableNames = array_keys(get_defined_vars());
+        $oldVariableNames = \array_keys(\get_defined_vars());
 
         include_once $filename;
 
-        $newVariables     = get_defined_vars();
-        $newVariableNames = array_diff(
-            array_keys($newVariables),
+        $newVariables     = \get_defined_vars();
+        $newVariableNames = \array_diff(
+            \array_keys($newVariables),
             $oldVariableNames
         );
 

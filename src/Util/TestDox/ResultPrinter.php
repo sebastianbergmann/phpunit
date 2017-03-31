@@ -252,7 +252,7 @@ abstract class ResultPrinter extends Printer implements TestListener
             return;
         }
 
-        $class = get_class($test);
+        $class = \get_class($test);
 
         if ($this->testClass != $class) {
             if ($this->testClass != '') {
@@ -387,7 +387,7 @@ abstract class ResultPrinter extends Printer implements TestListener
 
         if (!empty($this->groups)) {
             foreach ($test->getGroups() as $group) {
-                if (in_array($group, $this->groups)) {
+                if (\in_array($group, $this->groups)) {
                     return true;
                 }
             }
@@ -397,7 +397,7 @@ abstract class ResultPrinter extends Printer implements TestListener
 
         if (!empty($this->excludeGroups)) {
             foreach ($test->getGroups() as $group) {
-                if (in_array($group, $this->excludeGroups)) {
+                if (\in_array($group, $this->excludeGroups)) {
                     return false;
                 }
             }

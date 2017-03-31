@@ -43,7 +43,7 @@ class TestFailure
         if ($failedTest instanceof SelfDescribing) {
             $this->testName = $failedTest->toString();
         } else {
-            $this->testName = get_class($failedTest);
+            $this->testName = \get_class($failedTest);
         }
 
         if (!$failedTest instanceof TestCase || !$failedTest->isInIsolation()) {
@@ -60,7 +60,7 @@ class TestFailure
      */
     public function toString()
     {
-        return sprintf(
+        return \sprintf(
             '%s: %s',
             $this->testName,
             $this->thrownException->getMessage()
@@ -94,7 +94,7 @@ class TestFailure
             }
 
             if (!empty($buffer)) {
-                $buffer = trim($buffer) . "\n";
+                $buffer = \trim($buffer) . "\n";
             }
 
             return $buffer;
@@ -108,7 +108,7 @@ class TestFailure
             return $e->getClassName() . ': ' . $e->getMessage() . "\n";
         }
 
-        return get_class($e) . ': ' . $e->getMessage() . "\n";
+        return \get_class($e) . ': ' . $e->getMessage() . "\n";
     }
 
     /**

@@ -67,14 +67,14 @@ class Blacklist
      */
     public function isBlacklisted($file)
     {
-        if (defined('PHPUNIT_TESTSUITE')) {
+        if (\defined('PHPUNIT_TESTSUITE')) {
             return false;
         }
 
         $this->initialize();
 
         foreach (self::$directories as $directory) {
-            if (strpos($file, $directory) === 0) {
+            if (\strpos($file, $directory) === 0) {
                 return true;
             }
         }
@@ -88,7 +88,7 @@ class Blacklist
             self::$directories = [];
 
             foreach (self::$blacklistedClassNames as $className => $parent) {
-                if (!class_exists($className)) {
+                if (!\class_exists($className)) {
                     continue;
                 }
 
@@ -96,7 +96,7 @@ class Blacklist
                 $directory = $reflector->getFileName();
 
                 for ($i = 0; $i < $parent; $i++) {
-                    $directory = dirname($directory);
+                    $directory = \dirname($directory);
                 }
 
                 self::$directories[] = $directory;
@@ -108,7 +108,7 @@ class Blacklist
             if (DIRECTORY_SEPARATOR === '\\') {
                 // tempnam() prefix is limited to first 3 chars.
                 // @see http://php.net/manual/en/function.tempnam.php
-                self::$directories[] = sys_get_temp_dir() . '\\PHP';
+                self::$directories[] = \sys_get_temp_dir() . '\\PHP';
             }
         }
     }
