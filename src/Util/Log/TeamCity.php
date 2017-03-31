@@ -339,11 +339,11 @@ class TeamCity extends ResultPrinter
 
         if (!$e instanceof Exception) {
             if (strlen(get_class($e)) != 0) {
-                $message = $message . get_class($e);
+                $message .= get_class($e);
             }
 
             if (strlen($message) != 0 && strlen($e->getMessage()) != 0) {
-                $message = $message . ' : ';
+                $message .= ' : ';
             }
         }
 
