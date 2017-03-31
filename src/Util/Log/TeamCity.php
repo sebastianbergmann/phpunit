@@ -185,7 +185,7 @@ class TeamCity extends ResultPrinter
         }
     }
 
-    public function printIgnoredTest($testName, Exception $e)
+    public function printIgnoredTest($testName, \Exception $e)
     {
         $this->printEvent(
             'testIgnored',
@@ -329,11 +329,11 @@ class TeamCity extends ResultPrinter
     }
 
     /**
-     * @param Exception $e
+     * @param \Exception $e
      *
      * @return string
      */
-    private static function getMessage(Exception $e)
+    private static function getMessage(\Exception $e)
     {
         $message = '';
 
@@ -351,11 +351,11 @@ class TeamCity extends ResultPrinter
     }
 
     /**
-     * @param Exception $e
+     * @param \Exception $e
      *
      * @return string
      */
-    private static function getDetails(Exception $e)
+    private static function getDetails(\Exception $e)
     {
         $stackTrace = Filter::getFilteredStacktrace($e);
         $previous   = $e instanceof ExceptionWrapper ?
