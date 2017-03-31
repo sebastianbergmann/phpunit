@@ -148,6 +148,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 * The `--tap` and `--log-tap` commandline options have been deprecated
 * The `--self-update` and `--self-upgrade` commandline options have been deprecated (PHAR binary only)
 
+[5.7.18]: https://github.com/sebastianbergmann/phpunit/compare/5.7.17...5.7.18
 [5.7.17]: https://github.com/sebastianbergmann/phpunit/compare/5.7.16...5.7.17
 [5.7.16]: https://github.com/sebastianbergmann/phpunit/compare/5.7.15...5.7.16
 [5.7.15]: https://github.com/sebastianbergmann/phpunit/compare/5.7.14...5.7.15
