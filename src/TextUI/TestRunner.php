@@ -420,15 +420,8 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             if (isset($arguments['whitelist'])) {
                 $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
             }
-            else {
-                $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
 
-                $codeCoverageReports = 0;
-
-                unset($codeCoverage);
-            }
-
-            if (isset($codeCoverage) && isset($arguments['configuration'])) {
+            if (isset($arguments['configuration'])) {
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
                 $codeCoverage->setAddUncoveredFilesFromWhitelist(
@@ -465,7 +458,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
             }
 
             if (!$this->codeCoverageFilter->hasWhitelist()) {
-                $this->writeMessage('Error', 'Incorrect whitelist configuration, no code coverage will be generated');
+                $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
 
                 $codeCoverageReports = 0;
 

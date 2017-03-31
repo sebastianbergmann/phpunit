@@ -6,7 +6,6 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 
 ### Fixed
 
-* Fixed [#2049](https://github.com/sebastianbergmann/phpunit/issues/2049): Misleading error message when whitelist configuration contains paths that do not exist
 * Fixed [#2145](https://github.com/sebastianbergmann/phpunit/issues/2145): `--stop-on-failure` fails to stop on PHP 7
 
 ## [5.7.17] - 2017-03-19
