@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Attribute;
