@@ -98,9 +98,13 @@ class ArraySubset extends Constraint
     {
         if (is_array($other)) {
             return $other;
-        } elseif ($other instanceof \ArrayObject) {
+        }
+
+        if ($other instanceof \ArrayObject) {
             return $other->getArrayCopy();
-        } elseif ($other instanceof \Traversable) {
+        }
+
+        if ($other instanceof \Traversable) {
             return iterator_to_array($other);
         }
 
