@@ -391,7 +391,7 @@ class Test
      * @param string $methodName
      *
      * @return array When a data provider is specified and exists
-     *         null  When no data provider is specified
+     *               null  When no data provider is specified
      *
      * @throws Exception
      */
