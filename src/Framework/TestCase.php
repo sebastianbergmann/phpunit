@@ -2346,9 +2346,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param array $testArguments
+     * @param array $originalTestArguments
      */
-    private function registerMockObjectsFromTestArguments(array $testArguments)
-    {
+    private function registerMockObjectsFromTestArguments(
+        array $testArguments,
+        array $originalTestArguments = null
+    ) {
         if ($this->registerMockObjectsFromTestArgumentsRecursively) {
             $enumerator = new Enumerator;
 
@@ -2365,8 +2368,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     }
 
                     $this->registerMockObject($testArgument);
-                } elseif (is_array($testArgument)) {
-                    $this->registerMockObjectsFromTestArguments($testArgument);
+                } elseif (is_array($testArgument) && $testArgument != $testArguments) {
+                    $this->registerMockObjectsFromTestArguments($testArgument, $originalTestArguments === null ? $testArguments : $originalTestArguments);
                 }
             }
         }
