@@ -38,19 +38,19 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @var bool
      */
-    protected $backupGlobals = null;
+    protected $backupGlobals;
 
     /**
      * Enable or disable the backup and restoration of static attributes.
      *
      * @var bool
      */
-    protected $backupStaticAttributes = null;
+    protected $backupStaticAttributes;
 
     /**
      * @var bool
      */
-    private $beStrictAboutChangesToGlobalState = null;
+    private $beStrictAboutChangesToGlobalState;
 
     /**
      * @var bool
@@ -98,7 +98,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * @var Factory
      */
-    private $iteratorFilter = null;
+    private $iteratorFilter;
 
     /**
      * Constructs a new TestSuite:

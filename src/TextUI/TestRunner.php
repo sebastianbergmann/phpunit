@@ -63,12 +63,12 @@ class TestRunner extends BaseTestRunner
     /**
      * @var TestSuiteLoader
      */
-    protected $loader = null;
+    protected $loader;
 
     /**
      * @var ResultPrinter
      */
-    protected $printer = null;
+    protected $printer;
 
     /**
      * @var bool

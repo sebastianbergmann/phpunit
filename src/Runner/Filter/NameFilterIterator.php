@@ -20,7 +20,7 @@ class NameFilterIterator extends RecursiveFilterIterator
     /**
      * @var string
      */
-    protected $filter = null;
+    protected $filter;
 
     /**
      * @var int

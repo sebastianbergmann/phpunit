@@ -86,7 +86,7 @@ class TestResult implements Countable
     /**
      * @var TestSuite
      */
-    protected $topTestSuite = null;
+    protected $topTestSuite;
 
     /**
      * Code Coverage information.
