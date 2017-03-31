@@ -478,7 +478,7 @@ class TestRunner extends BaseTestRunner
             }
 
             if (!$this->codeCoverageFilter->hasWhitelist()) {
-                $this->writeMessage('Error', 'Whitelist is improperly configured, no files listed fort testing.');
+                $this->writeMessage('Error', 'Whitelist is improperly configured, no files listed for testing.');
 
                 $codeCoverageReports = 0;
 
