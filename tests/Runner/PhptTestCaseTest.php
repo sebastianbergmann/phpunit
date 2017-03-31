@@ -99,6 +99,7 @@ EOF;
      * Ensures the correct line ending is used for comparison
      *
      * @param string $content
+     *
      * @return string
      */
     private function ensureCorrectEndOfLine($content)
@@ -107,8 +108,8 @@ EOF;
             $content,
             [
                 "\r\n" => PHP_EOL,
-                "\r" => PHP_EOL,
-                "\n" => PHP_EOL
+                "\r"   => PHP_EOL,
+                "\n"   => PHP_EOL
             ]
         );
     }
