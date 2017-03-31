@@ -9,12 +9,16 @@ environment:
 
   matrix:
     - PHP_VERSION: '7.0.16'
+      XDEBUG_VERSION: '2.5.1-7.0'
       DEPENDENCIES: '--prefer-lowest'
     - PHP_VERSION: '7.0.17'
+      XDEBUG_VERSION: '2.5.1-7.0'
       DEPENDENCIES: ''
     - PHP_VERSION: '7.1.2'
+      XDEBUG_VERSION: '2.5.1-7.1'
       DEPENDENCIES: '--prefer-lowest'
     - PHP_VERSION: '7.1.2'
+      XDEBUG_VERSION: '2.5.1-7.1'
       DEPENDENCIES: ''
 
 matrix:
@@ -31,8 +35,8 @@ install:
   - IF NOT EXIST c:\php mkdir c:\php
   - IF NOT EXIST c:\php\%PHP_VERSION% mkdir c:\php\%PHP_VERSION%
   - cd c:\php\%PHP_VERSION%
-  - IF NOT EXIST php-installed.txt appveyor DownloadFile http://windows.php.net/downloads/releases/archives/php-%PHP_VERSION%-nts-Win32-VC14-x86.zip
-  - IF NOT EXIST php-installed.txt 7z x php-%PHP_VERSION%-nts-Win32-VC14-x86.zip -y >nul
+  - IF NOT EXIST php-installed.txt appveyor DownloadFile http://windows.php.net/downloads/releases/archives/php-%PHP_VERSION%-Win32-VC14-x86.zip
+  - IF NOT EXIST php-installed.txt 7z x php-%PHP_VERSION%-Win32-VC14-x86.zip -y >nul
   - IF NOT EXIST php-installed.txt del /Q *.zip
   - IF NOT EXIST php-installed.txt copy /Y php.ini-development php.ini
   - IF NOT EXIST php-installed.txt echo max_execution_time=1200 >> php.ini
@@ -47,6 +51,8 @@ install:
   - IF NOT EXIST php-installed.txt echo assert.exception=On >> php.ini
   - IF NOT EXIST php-installed.txt appveyor DownloadFile https://getcomposer.org/composer.phar
   - IF NOT EXIST php-installed.txt echo @php %%~dp0composer.phar %%* > composer.bat
+  - IF NOT EXIST php-installed.txt appveyor DownloadFile https://xdebug.org/files/php_xdebug-%XDEBUG_VERSION%-vc14.dll -FileName c:\php\%PHP_VERSION%\ext\php_xdebug-%XDEBUG_VERSION%-vc14.dll
+  - IF NOT EXIST php-installed.txt echo zend_extension=php_xdebug-%XDEBUG_VERSION%-vc14.dll >> php.ini
   - IF NOT EXIST php-installed.txt type nul >> php-installed.txt
   - cd c:\phpunit
   - composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable %DEPENDENCIES%
