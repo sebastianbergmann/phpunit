@@ -711,6 +711,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $numTests = count($this);
 
             for ($i = 0; $i < $numTests; $i++) {
+                if ($result->shouldStop()) {
+                    break;
+                }
                 $result->startTest($this);
                 $result->addError($this, $t, 0);
                 $result->endTest($this, 0);
