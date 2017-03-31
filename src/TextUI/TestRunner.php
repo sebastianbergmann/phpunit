@@ -135,8 +135,8 @@ class TestRunner extends BaseTestRunner
     }
 
     /**
-     * @param PHPUnit_Framework_TestSuite $suite
-     * @param array                       $arguments
+     * @param TestSuite $suite
+     * @param array     $arguments
      */
     private function processSuiteFilters(TestSuite $suite, array $arguments)
     {

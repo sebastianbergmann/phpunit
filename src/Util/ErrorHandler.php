@@ -88,7 +88,7 @@ class ErrorHandler
      *
      * @param int $severity PHP predefined error constant
      *
-     * @throws Exception if event of specified severity is emitted
+     * @throws \Exception if event of specified severity is emitted
      */
     public static function handleErrorOnce($severity = E_WARNING)
     {
