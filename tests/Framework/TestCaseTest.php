@@ -664,7 +664,7 @@ class TestCaseTest extends TestCase
 
     public function testConfiguredMockCanBeCreatedWithProtectedMethod()
     {
-        /** @var \Mockable $mock */
+        /** @var \MockableWithProtectedMethod $mock */
         $mock = $this->createConfiguredMock(
             \MockableWithProtectedMethod::class,
             [
