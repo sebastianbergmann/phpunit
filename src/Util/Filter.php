@@ -97,8 +97,9 @@ class Filter
     private static function frameExists(array $trace, $file, $line)
     {
         foreach ($trace as $frame) {
-            if (isset($frame['file']) && $frame['file'] == $file &&
-                isset($frame['line']) && $frame['line'] == $line
+            if (isset($frame['file'], $frame['line'])
+                && $frame['file'] == $file
+                && $frame['line'] == $line
             ) {
                 return true;
             }
