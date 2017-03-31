@@ -79,7 +79,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
         $env = null;
         if ($this->env) {
-            $env = isset($_SERVER) ? $_SERVER : [];
+            $env = $_SERVER ?? [];
             unset($env['argv'], $env['argc']);
             $env = array_merge($env, $this->env);
 
@@ -91,9 +91,9 @@ class DefaultPhpProcess extends AbstractPhpProcess
         }
 
         $pipeSpec = [
-            0 => isset($handles[0]) ? $handles[0] : ['pipe', 'r'],
-            1 => isset($handles[1]) ? $handles[1] : ['pipe', 'w'],
-            2 => isset($handles[2]) ? $handles[2] : ['pipe', 'w'],
+            0 => $handles[0] ?? ['pipe', 'r'],
+            1 => $handles[1] ?? ['pipe', 'w'],
+            2 => $handles[2] ?? ['pipe', 'w'],
         ];
         $process = proc_open(
             $this->getCommand($settings, $this->tempFile),
