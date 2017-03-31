@@ -10,6 +10,7 @@
 
 namespace PHPUnit\Util;
 
+use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
@@ -304,10 +305,47 @@ class TestTest extends TestCase
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']]
                 ]
-            ],
+            ]
         ];
     }
 
+    /**
+     * @dataProvider requirementsWithVersionConstraintsProvider
+     */
+    public function testGetRequirementsWithVersionConstraints($test, $result)
+    {
+        $requirements = Test::getRequirements(\RequirementsTest::class, $test);
+        $this->assertArrayHasKey(
+            'PHP',
+            $requirements
+        );
+        $this->assertArrayHasKey(
+            'constraint',
+            $requirements[ 'PHP' ]
+        );
+        $this->assertInstanceOf(
+            VersionConstraint::class,
+            $requirements[ 'PHP' ]['constraint']
+        );
+        $this->assertSame(
+            $result[ 'PHP' ][ 'constraint' ],
+            $requirements[ 'PHP' ]['constraint']->asString()
+        );
+    }
+
+    public function requirementsWithVersionConstraintsProvider()
+    {
+        return [
+            [
+                'testVersionConstraintTildeMajor',
+                [
+                    'PHP' => [
+                        'constraint' => '~1.0'
+                    ]
+                ]
+            ]
+        ];
+    }
     public function testGetRequirementsMergesClassAndMethodDocBlocks()
     {
         $expectedAnnotations = [
@@ -381,6 +419,8 @@ class TestTest extends TestCase
             ['testExtensionVersionOperatorEquals', ['Extension testExtOne = 1.0 is required.']],
             ['testExtensionVersionOperatorDoubleEquals', ['Extension testExtOne == 1.0 is required.']],
             ['testExtensionVersionOperatorNoSpace', ['Extension testExtOne >= 99 is required.']],
+            ['testVersionConstraintTildeMajor', ['PHP Version does not match the required constraint ~1.0.']],
+            ['testVersionConstraintCaretMajor', ['PHP Version does not match the required constraint ^1.0.']]
         ];
     }
 

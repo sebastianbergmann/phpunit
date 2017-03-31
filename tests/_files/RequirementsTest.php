@@ -344,4 +344,18 @@ class RequirementsTest extends TestCase
     public function testExtensionVersionOperatorNoSpace()
     {
     }
+
+    /**
+     * @requires PHP ~1.0
+     */
+    public function testVersionConstraintTildeMajor()
+    {
+    }
+
+    /**
+     * @requires PHP ^1.0
+     */
+    public function testVersionConstraintCaretMajor()
+    {
+    }
 }

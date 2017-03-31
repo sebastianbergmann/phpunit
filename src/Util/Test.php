@@ -27,12 +27,13 @@ use ReflectionMethod;
  */
 class Test
 {
-    const REGEX_DATA_PROVIDER      = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
-    const REGEX_TEST_WITH          = '/@testWith\s+/';
-    const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
-    const REGEX_REQUIRES_VERSION   = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
-    const REGEX_REQUIRES_OS        = '/@requires\s+OS\s+(?P<value>.+?)[ \t]*\r?$/m';
-    const REGEX_REQUIRES           = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
+    const REGEX_DATA_PROVIDER               = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
+    const REGEX_TEST_WITH                   = '/@testWith\s+/';
+    const REGEX_EXPECTED_EXCEPTION          = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
+    const REGEX_REQUIRES_VERSION            = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
+    const REGEX_REQUIRES_VERSION_CONSTRAINT = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<constraint>[\d\t -.|~^]+)[ \t]*\r?$/m';
+    const REGEX_REQUIRES_OS                 = '/@requires\s+OS\s+(?P<value>.+?)[ \t]*\r?$/m';
+    const REGEX_REQUIRES                    = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
 
     const UNKNOWN = -1;
     const SMALL   = 0;
@@ -42,6 +43,8 @@ class Test
     private static $annotationCache = [];
 
     private static $hookMethods = [];
+
+    private static $versionConstraintParser;
 
     /**
      * @param \PHPUnit\Framework\Test $test
@@ -179,6 +182,9 @@ class Test
      */
     public static function getRequirements($className, $methodName)
     {
+        if (!self::$versionConstraintParser) {
+            self::$versionConstraintParser = new \PharIo\Version\VersionConstraintParser();
+        }
         $reflector  = new ReflectionClass($className);
         $docComment = $reflector->getDocComment();
         $reflector  = new ReflectionMethod($className, $methodName);
@@ -198,6 +204,20 @@ class Test
                     'version'  => $matches['version'][$i],
                     'operator' => $matches['operator'][$i]
                 ];
+            }
+        }
+        if ($count = preg_match_all(self::REGEX_REQUIRES_VERSION_CONSTRAINT, $docComment, $matches)) {
+            for ($i = 0; $i < $count; $i++) {
+                if (!empty($requires[$matches['name'][$i]])) {
+                    continue;
+                }
+                try {
+                    $requires[ $matches[ 'name' ][ $i ] ] = [
+                        'constraint' => self::$versionConstraintParser->parse(trim($matches[ 'constraint' ][$i]))
+                    ];
+                } catch (\PharIo\Version\Exception $e) {
+                    throw $e; //Todo how should we handle errors
+                }
             }
         }
 
@@ -238,10 +258,21 @@ class Test
         $required = static::getRequirements($className, $methodName);
         $missing  = [];
 
-        $operator = empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator'];
-
-        if (!empty($required['PHP']) && !version_compare(PHP_VERSION, $required['PHP']['version'], $operator)) {
-            $missing[] = sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
+        if (!empty($required['PHP'])) {
+            if (!empty($required['PHP']['constraint'])) {
+                $version = new \PharIo\Version\Version(self::semanticPhpVersion());
+                if (!$required['PHP']['constraint']->complies($version)) {
+                    $missing[] = sprintf(
+                        'PHP Version does not match the required constraint %s.',
+                        $required['PHP']['constraint']->asString()
+                    );
+                }
+            } else {
+                $operator = empty($required[ 'PHP' ][ 'operator' ]) ? '>=' : $required[ 'PHP' ][ 'operator' ];
+                if (!version_compare(PHP_VERSION, $required['PHP']['version'], $operator)) {
+                    $missing[] = sprintf('PHP %s %s is required.', $operator, $required[ 'PHP' ][ 'version' ]);
+                }
+            }
         }
 
         if (!empty($required['PHPUnit'])) {
@@ -391,7 +422,7 @@ class Test
      * @param string $methodName
      *
      * @return array When a data provider is specified and exists
-     *         null  When no data provider is specified
+     *               null  When no data provider is specified
      *
      * @throws Exception
      */
@@ -1120,5 +1151,22 @@ class Test
     private static function isAfterMethod(ReflectionMethod $method)
     {
         return preg_match('/@after\b/', $method->getDocComment());
+    }
+
+    /**
+     * Trims any extensions from version string that follows after
+     * the <major>.<minor>.<patch> format
+     *
+     * @param $php_version (Optional)
+     *
+     * @return mixed
+     */
+    private static function semanticPhpVersion($php_version = PHP_VERSION)
+    {
+        return preg_replace(
+            '/^(\d+\.\d+.\d+).*$/',
+            '$1',
+            $php_version
+        );
     }
 }
