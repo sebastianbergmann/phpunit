@@ -315,22 +315,24 @@ class TestTest extends TestCase
     public function testGetRequirementsWithVersionConstraints($test, $result)
     {
         $requirements = Test::getRequirements(\RequirementsTest::class, $test);
-        $this->assertArrayHasKey(
-            'PHP',
-            $requirements
-        );
-        $this->assertArrayHasKey(
-            'constraint',
-            $requirements[ 'PHP' ]
-        );
-        $this->assertInstanceOf(
-            VersionConstraint::class,
-            $requirements[ 'PHP' ]['constraint']
-        );
-        $this->assertSame(
-            $result[ 'PHP' ][ 'constraint' ],
-            $requirements[ 'PHP' ]['constraint']->asString()
-        );
+        foreach ($result as $type => $expected_requirement) {
+            $this->assertArrayHasKey(
+                "{$type}_constraint",
+                $requirements
+            );
+            $this->assertArrayHasKey(
+                'constraint',
+                $requirements["{$type}_constraint"]
+            );
+            $this->assertInstanceOf(
+                VersionConstraint::class,
+                $requirements["{$type}_constraint"]['constraint']
+            );
+            $this->assertSame(
+                $expected_requirement['constraint'],
+                $requirements["{$type}_constraint"]['constraint']->asString()
+            );
+        }
     }
 
     public function requirementsWithVersionConstraintsProvider()
