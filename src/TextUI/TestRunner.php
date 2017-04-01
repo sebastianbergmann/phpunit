@@ -477,7 +477,7 @@ class TestRunner extends BaseTestRunner
             }
 
             if (isset($codeCoverage) && !$this->codeCoverageFilter->hasWhitelist()) {
-                $this->writeMessage('Error', 'Whitelist configuration incorrect, no code coverage will be generated.');
+                $this->writeMessage('Error', 'Incorrect whitelist config, no code coverage will be generated.');
 
                 $codeCoverageReports = 0;
 
