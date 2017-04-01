@@ -538,9 +538,13 @@ class TestRunner extends BaseTestRunner
                     "\nGenerating code coverage report in Clover XML format ..."
                 );
 
+                if (!isset($report)) {
+                    $report = $codeCoverage->getReport();
+                }
+
                 try {
                     $writer = new CloverReport;
-                    $writer->process($codeCoverage, $arguments['coverageClover']);
+                    $writer->process($report, $arguments['coverageClover']);
 
                     $this->printer->write(" done\n");
                     unset($writer);
@@ -556,9 +560,13 @@ class TestRunner extends BaseTestRunner
                     "\nGenerating Crap4J report XML file ..."
                 );
 
+                if (!isset($report)) {
+                    $report = $codeCoverage->getReport();
+                }
+
                 try {
                     $writer = new Crap4jReport($arguments['crap4jThreshold']);
-                    $writer->process($codeCoverage, $arguments['coverageCrap4J']);
+                    $writer->process($report, $arguments['coverageCrap4J']);
 
                     $this->printer->write(" done\n");
                     unset($writer);
@@ -574,6 +582,10 @@ class TestRunner extends BaseTestRunner
                     "\nGenerating code coverage report in HTML format ..."
                 );
 
+                if (!isset($report)) {
+                    $report = $codeCoverage->getReport();
+                }
+
                 try {
                     $writer = new HtmlReport(
                         $arguments['reportLowUpperBound'],
@@ -584,7 +596,7 @@ class TestRunner extends BaseTestRunner
                         )
                     );
 
-                    $writer->process($codeCoverage, $arguments['coverageHtml']);
+                    $writer->process($report, $arguments['coverageHtml']);
 
                     $this->printer->write(" done\n");
                     unset($writer);
@@ -622,6 +634,10 @@ class TestRunner extends BaseTestRunner
                     $colors       = false;
                 }
 
+                if (!isset($report)) {
+                    $report = $codeCoverage->getReport();
+                }
+
                 $processor = new TextReport(
                     $arguments['reportLowUpperBound'],
                     $arguments['reportHighLowerBound'],
@@ -630,7 +646,7 @@ class TestRunner extends BaseTestRunner
                 );
 
                 $outputStream->write(
-                    $processor->process($codeCoverage, $colors)
+                    $processor->process($report, $colors)
                 );
             }
 
@@ -639,9 +655,13 @@ class TestRunner extends BaseTestRunner
                     "\nGenerating code coverage report in PHPUnit XML format ..."
                 );
 
+                if (!isset($report)) {
+                    $report = $codeCoverage->getReport();
+                }
+
                 try {
                     $writer = new XmlReport;
-                    $writer->process($codeCoverage, $arguments['coverageXml']);
+                    $writer->process($report, $codeCoverage, $arguments['coverageXml']);
 
                     $this->printer->write(" done\n");
                     unset($writer);
