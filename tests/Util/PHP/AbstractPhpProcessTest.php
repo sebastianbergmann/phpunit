@@ -87,8 +87,9 @@ class AbstractPhpProcessTest extends TestCase
 
     public function testShouldHaveFileToCreateCommand()
     {
-        $expectedCommandFormat  = '%s -%c \'file.php\'';
-        $actualCommand          = $this->phpProcess->getCommand([], 'file.php');
+        $argumentEscapingCharacter = DIRECTORY_SEPARATOR === '\\' ? '"' : '\'';
+        $expectedCommandFormat     = sprintf('%%s -%%c %1$sfile.php%1$s', $argumentEscapingCharacter);
+        $actualCommand             = $this->phpProcess->getCommand([], 'file.php');
 
         $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
     }

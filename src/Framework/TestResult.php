@@ -86,7 +86,7 @@ class TestResult implements Countable
     /**
      * @var TestSuite
      */
-    protected $topTestSuite = null;
+    protected $topTestSuite;
 
     /**
      * Code Coverage information.
@@ -310,9 +310,7 @@ class TestResult implements Countable
      */
     public function addFailure(Test $test, AssertionFailedError $e, $time)
     {
-        if ($e instanceof RiskyTest ||
-            $e instanceof OutputError
-        ) {
+        if ($e instanceof RiskyTest || $e instanceof OutputError) {
             $this->risky[] = new TestFailure($test, $e);
             $notifyMethod  = 'addRiskyTest';
 
@@ -675,8 +673,7 @@ class TestResult implements Countable
             if (!$test instanceof WarningTestCase &&
                 $test->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
                 $this->enforceTimeLimit &&
-                extension_loaded('pcntl') && class_exists('PHP_Invoker')
-            ) {
+                extension_loaded('pcntl') && class_exists('PHP_Invoker')) {
                 switch ($test->getSize()) {
                     case \PHPUnit\Util\Test::SMALL:
                         $_timeout = $this->timeoutForSmallTests;
@@ -772,8 +769,7 @@ class TestResult implements Countable
         }
 
         if ($this->beStrictAboutTestsThatDoNotTestAnything &&
-            $test->getNumAssertions() == 0
-        ) {
+            $test->getNumAssertions() == 0) {
             $risky = true;
         }
 
@@ -859,8 +855,7 @@ class TestResult implements Countable
             $this->addWarning($test, $e, $time);
         } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
             !$test->doesNotPerformAssertions() &&
-            $test->getNumAssertions() == 0
-        ) {
+            $test->getNumAssertions() == 0) {
             $this->addFailure(
                 $test,
                 new RiskyTestError(

@@ -90,7 +90,7 @@ class TestFailure
             $buffer = $e->toString();
 
             if ($e instanceof ExpectationFailedException && $e->getComparisonFailure()) {
-                $buffer = $buffer . $e->getComparisonFailure()->getDiff();
+                $buffer .= $e->getComparisonFailure()->getDiff();
             }
 
             if (!empty($buffer)) {

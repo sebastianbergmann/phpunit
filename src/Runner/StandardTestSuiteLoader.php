@@ -53,8 +53,7 @@ class StandardTestSuiteLoader implements TestSuiteLoader
             foreach ($loadedClasses as $loadedClass) {
                 $class = new ReflectionClass($loadedClass);
                 if (substr($loadedClass, $offset) === $suiteClassName &&
-                    $class->getFileName() == $filename
-                ) {
+                    $class->getFileName() == $filename) {
                     $suiteClassName = $loadedClass;
                     break;
                 }
@@ -68,9 +67,7 @@ class StandardTestSuiteLoader implements TestSuiteLoader
                 $class     = new ReflectionClass($loadedClass);
                 $classFile = $class->getFileName();
 
-                if ($class->isSubclassOf($testCaseClass) &&
-                    !$class->isAbstract()
-                ) {
+                if ($class->isSubclassOf($testCaseClass) && !$class->isAbstract()) {
                     $suiteClassName = $loadedClass;
                     $testCaseClass  = $loadedClass;
 
@@ -82,10 +79,7 @@ class StandardTestSuiteLoader implements TestSuiteLoader
                 if ($class->hasMethod('suite')) {
                     $method = $class->getMethod('suite');
 
-                    if (!$method->isAbstract() &&
-                        $method->isPublic() &&
-                        $method->isStatic()
-                    ) {
+                    if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
                         $suiteClassName = $loadedClass;
 
                         if ($classFile == realpath($suiteClassFile)) {
