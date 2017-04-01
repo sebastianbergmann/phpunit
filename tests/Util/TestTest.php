@@ -345,6 +345,70 @@ class TestTest extends TestCase
                         'constraint' => '~1.0'
                     ]
                 ]
+            ],
+            [
+                'testVersionConstraintCaretMajor',
+                [
+                    'PHP' => [
+                        'constraint' => '^1.0'
+                    ]
+                ]
+            ],
+            [
+                'testVersionConstraintTildeMinor',
+                [
+                    'PHP' => [
+                        'constraint' => '~3.4.7'
+                    ]
+                ]
+            ],
+            [
+                'testVersionConstraintCaretMinor',
+                [
+                    'PHP' => [
+                        'constraint' => '^7.0.17'
+                    ]
+                ]
+            ],
+            [
+                'testVersionConstraintCaretOr',
+                [
+                    'PHP' => [
+                        'constraint' => '^5.6 || ^7.0'
+                    ]
+                ]
+            ],
+            [
+                'testVersionConstraintTildeOr',
+                [
+                    'PHP' => [
+                        'constraint' => '~5.6.22 || ~7.0.17'
+                    ]
+                ]
+            ],
+            [
+                'testVersionConstraintTildeOrCaret',
+                [
+                    'PHP' => [
+                        'constraint' => '~5.6.22 || ^7.0'
+                    ]
+                ]
+            ],
+            [
+                'testVersionConstraintCaretOrTilde',
+                [
+                    'PHP' => [
+                        'constraint' => '^5.6 || ~7.0.17'
+                    ]
+                ]
+            ],
+            [
+                'testVersionConstraintRegexpIgnoresWhitespace',
+                [
+                    'PHP' => [
+                        'constraint' => '~5.6.22 || ~7.0.17'
+                    ]
+                ]
             ]
         ];
     }
