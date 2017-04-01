@@ -212,8 +212,8 @@ class Test
                     continue;
                 }
                 try {
-                    $requires[ $matches[ 'name' ][ $i ] ] = [
-                        'constraint' => self::$versionConstraintParser->parse(trim($matches[ 'constraint' ][$i]))
+                    $requires[$matches['name'][$i] . '_constraint'] = [
+                        'constraint' => self::$versionConstraintParser->parse(trim($matches['constraint'][$i]))
                     ];
                 } catch (\PharIo\Version\Exception $e) {
                     throw $e; //Todo how should we handle errors
@@ -259,19 +259,19 @@ class Test
         $missing  = [];
 
         if (!empty($required['PHP'])) {
-            if (!empty($required['PHP']['constraint'])) {
-                $version = new \PharIo\Version\Version(self::semanticPhpVersion());
-                if (!$required['PHP']['constraint']->complies($version)) {
-                    $missing[] = sprintf(
-                        'PHP Version does not match the required constraint %s.',
-                        $required['PHP']['constraint']->asString()
-                    );
-                }
-            } else {
-                $operator = empty($required[ 'PHP' ][ 'operator' ]) ? '>=' : $required[ 'PHP' ][ 'operator' ];
-                if (!version_compare(PHP_VERSION, $required['PHP']['version'], $operator)) {
-                    $missing[] = sprintf('PHP %s %s is required.', $operator, $required[ 'PHP' ][ 'version' ]);
-                }
+            $operator = empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator'];
+
+            if (!version_compare(PHP_VERSION, $required['PHP']['version'], $operator)) {
+                $missing[] = sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
+            }
+        } elseif (!empty($required['PHP_constraint'])) {
+            $version = new \PharIo\Version\Version(self::semanticPhpVersion());
+
+            if (!$required['PHP_constraint']['constraint']->complies($version)) {
+                $missing[] = sprintf(
+                    'PHP Version does not match the required constraint %s.',
+                    $required['PHP_constraint']['constraint']->asString()
+                );
             }
         }
 
