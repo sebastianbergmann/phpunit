@@ -172,7 +172,7 @@ class ResultPrinter extends Printer implements TestListener
         $console            = new Console;
         $maxNumberOfColumns = $console->getNumberOfColumns();
 
-        if ($numberOfColumns == 'max' || $numberOfColumns > $maxNumberOfColumns) {
+        if ($numberOfColumns == 'max' || ($numberOfColumns !== 80 && $numberOfColumns > $maxNumberOfColumns)) {
             $numberOfColumns = $maxNumberOfColumns;
         }
 
