@@ -441,7 +441,6 @@ class TestRunner extends BaseTestRunner
                     $codeCoverageReports = 0;
 
                     unset($codeCoverage);
-
                 } else {
                     $codeCoverage->setAddUncoveredFilesFromWhitelist(
                         $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
