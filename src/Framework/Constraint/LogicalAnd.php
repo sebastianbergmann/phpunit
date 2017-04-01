@@ -24,7 +24,7 @@ class LogicalAnd extends Constraint
     /**
      * @var Constraint
      */
-    protected $lastConstraint = null;
+    protected $lastConstraint;
 
     /**
      * @param Constraint[] $constraints

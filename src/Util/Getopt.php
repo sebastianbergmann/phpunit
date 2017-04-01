@@ -48,9 +48,7 @@ class Getopt
                 break;
             }
 
-            if ($arg[0] != '-' ||
-                (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)
-            ) {
+            if ($arg[0] != '-' || (strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
                 $non_opts[] = $args[$i];
                 continue;
             } elseif (strlen($arg) > 1 && $arg[1] == '-') {
@@ -81,9 +79,7 @@ class Getopt
             $opt     = $arg[$i];
             $opt_arg = null;
 
-            if (($spec = strstr($short_options, $opt)) === false ||
-                $arg[$i] == ':'
-            ) {
+            if (($spec = strstr($short_options, $opt)) === false || $arg[$i] == ':') {
                 throw new Exception(
                     "unrecognized option -- $opt"
                 );
@@ -132,8 +128,7 @@ class Getopt
             $opt_rest = substr($long_opt, $opt_len);
 
             if ($opt_rest != '' && $opt[0] != '=' && $i + 1 < $count &&
-                $opt == substr($long_options[$i + 1], 0, $opt_len)
-            ) {
+                $opt == substr($long_options[$i + 1], 0, $opt_len)) {
                 throw new Exception(
                     "option --$opt is ambiguous"
                 );

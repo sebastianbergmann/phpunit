@@ -70,13 +70,12 @@ class Filter
             if (isset($frame['file']) && is_file($frame['file']) &&
                 !$blacklist->isBlacklisted($frame['file']) &&
                 ($prefix === false || strpos($frame['file'], $prefix) !== 0) &&
-                $frame['file'] !== $script
-            ) {
+                $frame['file'] !== $script) {
                 if ($asString === true) {
                     $filteredStacktrace .= sprintf(
                         "%s:%s\n",
                         $frame['file'],
-                        isset($frame['line']) ? $frame['line'] : '?'
+                        $frame['line'] ?? '?'
                     );
                 } else {
                     $filteredStacktrace[] = $frame;
@@ -98,8 +97,7 @@ class Filter
     {
         foreach ($trace as $frame) {
             if (isset($frame['file']) && $frame['file'] == $file &&
-                isset($frame['line']) && $frame['line'] == $line
-            ) {
+                isset($frame['line']) && $frame['line'] == $line) {
                 return true;
             }
         }

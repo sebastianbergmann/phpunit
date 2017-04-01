@@ -105,7 +105,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @var bool
      */
-    protected $backupGlobals = null;
+    protected $backupGlobals;
 
     /**
      * @var array
@@ -119,7 +119,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @var bool
      */
-    protected $backupStaticAttributes = null;
+    protected $backupStaticAttributes;
 
     /**
      * @var array
@@ -131,7 +131,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @var bool
      */
-    protected $runTestInSeparateProcess = null;
+    protected $runTestInSeparateProcess;
 
     /**
      * Whether or not this test should preserve the global state when
@@ -151,24 +151,24 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @var array
      */
-    private $data = [];
+    private $data;
 
     /**
      * @var string
      */
-    private $dataName = '';
+    private $dataName;
 
     /**
      * @var bool
      */
-    private $useErrorHandler = null;
+    private $useErrorHandler;
 
     /**
      * The name of the expected Exception.
      *
      * @var string
      */
-    private $expectedException = null;
+    private $expectedException;
 
     /**
      * The message of the expected Exception.
@@ -196,7 +196,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @var string
      */
-    private $name = null;
+    private $name;
 
     /**
      * @var array
@@ -226,7 +226,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @var array
      */
-    private $mockObjectGenerator = null;
+    private $mockObjectGenerator;
 
     /**
      * @var int
@@ -261,12 +261,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @var string
      */
-    private $outputExpectedRegex = null;
+    private $outputExpectedRegex;
 
     /**
      * @var string
      */
-    private $outputExpectedString = null;
+    private $outputExpectedString;
 
     /**
      * @var mixed
@@ -758,8 +758,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         if ($this->runTestInSeparateProcess === true &&
             $this->inIsolation !== true &&
-            !$this instanceof PhptTestCase
-        ) {
+            !$this instanceof PhptTestCase) {
             $class = new ReflectionClass($this);
 
             $template = new Text_Template(
@@ -820,7 +819,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $includePath        = "'." . $includePath . ".'";
             $codeCoverageFilter = "'." . $codeCoverageFilter . ".'";
 
-            $configurationFilePath = (isset($GLOBALS['__PHPUNIT_CONFIGURATION_FILE']) ? $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] : '');
+            $configurationFilePath = $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] ?? '';
 
             $template->setVar(
                 [
@@ -1058,8 +1057,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
                 if ($this->expectedException === 'PHPUnit\Framework\Exception' ||
                     $this->expectedException === '\PHPUnit\Framework\Exception' ||
-                    $reflector->isSubclassOf('PHPUnit\Framework\Exception')
-                ) {
+                    $reflector->isSubclassOf('PHPUnit\Framework\Exception')) {
                     $checkException = true;
                 }
             }
@@ -1073,8 +1071,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 );
 
                 if (is_string($this->expectedExceptionMessage) &&
-                    !empty($this->expectedExceptionMessage)
-                ) {
+                    !empty($this->expectedExceptionMessage)) {
                     $this->assertThat(
                         $e,
                         new ExceptionMessage(
@@ -1084,8 +1081,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (is_string($this->expectedExceptionMessageRegExp) &&
-                    !empty($this->expectedExceptionMessageRegExp)
-                ) {
+                    !empty($this->expectedExceptionMessageRegExp)) {
                     $this->assertThat(
                         $e,
                         new ExceptionMessageRegularExpression(
@@ -1225,8 +1221,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function setBackupStaticAttributes($backupStaticAttributes)
     {
         if (is_null($this->backupStaticAttributes) &&
-            is_bool($backupStaticAttributes)
-        ) {
+            is_bool($backupStaticAttributes)) {
             $this->backupStaticAttributes = $backupStaticAttributes;
         }
     }
@@ -2004,8 +1999,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 if (isset($passed[$dependency])) {
                     if ($passed[$dependency]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
                         $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
-                        $passed[$dependency]['size'] > $this->getSize()
-                    ) {
+                        $passed[$dependency]['size'] > $this->getSize()) {
                         $this->result->addError(
                             $this,
                             new SkippedTestError(
@@ -2395,8 +2389,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         if ($reflector->hasMethod('__clone') &&
-            $reflector->getMethod('__clone')->isPublic()
-        ) {
+            $reflector->getMethod('__clone')->isPublic()) {
             return true;
         }
 

@@ -809,9 +809,7 @@ class Test
         $class  = new ReflectionClass($className);
 
         if (isset($groups['large']) ||
-            (class_exists('PHPUnit\DbUnit\TestCase', false) &&
-                $class->isSubclassOf('PHPUnit\DbUnit\TestCase'))
-        ) {
+            (class_exists('PHPUnit\DbUnit\TestCase', false) && $class->isSubclassOf('PHPUnit\DbUnit\TestCase'))) {
             return self::LARGE;
         }
 
@@ -842,8 +840,7 @@ class Test
         );
 
         if (isset($annotations['class']['runTestsInSeparateProcesses']) ||
-            isset($annotations['method']['runInSeparateProcess'])
-        ) {
+            isset($annotations['method']['runInSeparateProcess'])) {
             return true;
         }
 
@@ -986,8 +983,7 @@ class Test
                 foreach ($classes as $className) {
                     if (!class_exists($className) &&
                         !interface_exists($className) &&
-                        !trait_exists($className)
-                    ) {
+                        !trait_exists($className)) {
                         throw new InvalidCoversTargetException(
                             sprintf(
                                 'Trying to @cover or @use not existing class or ' .
@@ -1026,11 +1022,8 @@ class Test
                             $methodName
                         );
                     } else {
-                        if (!((class_exists($className) ||
-                                interface_exists($className) ||
-                                trait_exists($className)) &&
-                            method_exists($className, $methodName))
-                        ) {
+                        if (!((class_exists($className) || interface_exists($className) || trait_exists($className)) &&
+                            method_exists($className, $methodName))) {
                             throw new InvalidCoversTargetException(
                                 sprintf(
                                     'Trying to @cover or @use not existing method "%s::%s".',
@@ -1068,8 +1061,7 @@ class Test
             foreach ($classes as $className) {
                 if (!class_exists($className) &&
                     !interface_exists($className) &&
-                    !trait_exists($className)
-                ) {
+                    !trait_exists($className)) {
                     throw new InvalidCoversTargetException(
                         sprintf(
                             'Trying to @cover or @use not existing class or ' .

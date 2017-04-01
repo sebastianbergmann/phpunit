@@ -334,9 +334,7 @@ class Configuration
                 if ($node instanceof DOMElement && $node->tagName == 'arguments') {
                     foreach ($node->childNodes as $argument) {
                         if ($argument instanceof DOMElement) {
-                            if ($argument->tagName == 'file' ||
-                                $argument->tagName == 'directory'
-                            ) {
+                            if ($argument->tagName == 'file' || $argument->tagName == 'directory') {
                                 $arguments[] = $this->toAbsolutePath((string) $argument->textContent);
                             } else {
                                 $arguments[] = Xml::xmlToVariable($argument);
@@ -1133,9 +1131,7 @@ class Configuration
         //  - C:/windows
         //  - c:/windows
         if (defined('PHP_WINDOWS_VERSION_BUILD') &&
-            ($path[0] === '\\' ||
-                (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))
-        ) {
+            ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))) {
             return $path;
         }
 

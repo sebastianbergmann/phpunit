@@ -119,9 +119,7 @@ class GlobalState
         $superGlobalArrays = self::getSuperGlobalArrays();
 
         foreach ($superGlobalArrays as $superGlobalArray) {
-            if (isset($GLOBALS[$superGlobalArray]) &&
-                is_array($GLOBALS[$superGlobalArray])
-            ) {
+            if (isset($GLOBALS[$superGlobalArray]) && is_array($GLOBALS[$superGlobalArray])) {
                 foreach (array_keys($GLOBALS[$superGlobalArray]) as $key) {
                     if ($GLOBALS[$superGlobalArray][$key] instanceof Closure) {
                         continue;
@@ -164,8 +162,7 @@ class GlobalState
     protected static function exportVariable($variable)
     {
         if (is_scalar($variable) || is_null($variable) ||
-            (is_array($variable) && self::arrayOnlyContainsScalars($variable))
-        ) {
+            (is_array($variable) && self::arrayOnlyContainsScalars($variable))) {
             return var_export($variable, true);
         }
 

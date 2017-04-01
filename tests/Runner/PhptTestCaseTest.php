@@ -95,9 +95,28 @@ EOF;
         file_put_contents($this->filename, $content);
     }
 
+    /**
+     * Ensures the correct line ending is used for comparison
+     *
+     * @param string $content
+     *
+     * @return string
+     */
+    private function ensureCorrectEndOfLine($content)
+    {
+        return strtr(
+            $content,
+            [
+                "\r\n" => PHP_EOL,
+                "\r"   => PHP_EOL,
+                "\n"   => PHP_EOL
+            ]
+        );
+    }
+
     public function testShouldRunFileSectionAsTest()
     {
-        $this->setPhpContent(self::EXPECT_CONTENT);
+        $this->setPhpContent($this->ensureCorrectEndOfLine(self::EXPECT_CONTENT));
 
         $fileSection = '<?php echo "Hello PHPUnit!"; ?>' . PHP_EOL;
 
@@ -112,7 +131,7 @@ EOF;
 
     public function testRenderFileSection()
     {
-        $this->setPhpContent(
+        $this->setPhpContent($this->ensureCorrectEndOfLine(
             <<<EOF
 --TEST--
 Something to decribe it
@@ -121,7 +140,7 @@ Something to decribe it
 --EXPECT--
 Something
 EOF
-        );
+        ));
 
         $renderedCode = "<?php echo '" . $this->dirname . "' . '" . $this->filename . "'; ?>" . PHP_EOL;
 
