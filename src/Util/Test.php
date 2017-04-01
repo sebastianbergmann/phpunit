@@ -16,6 +16,7 @@ use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
 use ReflectionClass;
 use ReflectionException;
@@ -216,7 +217,7 @@ class Test
                         'constraint' => self::$versionConstraintParser->parse(trim($matches['constraint'][$i]))
                     ];
                 } catch (\PharIo\Version\Exception $e) {
-                    throw $e; //Todo how should we handle errors
+                    throw new Warning($e->getMessage(), $e->getCode(), $e);
                 }
             }
         }

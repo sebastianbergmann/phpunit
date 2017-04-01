@@ -14,6 +14,7 @@ use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Warning;
 
 class TestTest extends TestCase
 {
@@ -439,6 +440,24 @@ class TestTest extends TestCase
             ]
         ];
     }
+
+    /**
+     * @dataProvider requirementsWithInvalidVersionConstraintsThrowsExceptionProvider
+     */
+    public function testGetRequirementsWithInvalidVersionConstraintsThrowsException($test)
+    {
+        $this->expectException(Warning::class);
+        Test::getRequirements(\RequirementsTest::class, $test);
+    }
+
+    public function requirementsWithInvalidVersionConstraintsThrowsExceptionProvider()
+    {
+        return [
+            ['testVersionConstraintInvalidPhpConstraint'],
+            ['testVersionConstraintInvalidPhpUnitConstraint']
+        ];
+    }
+
     public function testGetRequirementsMergesClassAndMethodDocBlocks()
     {
         $expectedAnnotations = [

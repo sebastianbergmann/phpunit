@@ -423,4 +423,17 @@ class RequirementsTest extends TestCase
     public function testVersionConstraintRegexpIgnoresWhitespace()
     {
     }
+
+    /**
+     * @requires   PHP ~^12345
+     */
+    public function testVersionConstraintInvalidPhpConstraint()
+    {
+    }
+    /**
+     * @requires   PHPUnit ~^12345
+     */
+    public function testVersionConstraintInvalidPhpUnitConstraint()
+    {
+    }
 }
