@@ -260,8 +260,6 @@ class PHPUnit_Framework_MockObject_Matcher implements PHPUnit_Framework_MockObje
         }
     }
 
-    /**
-     */
     public function hasMatchers()
     {
         if ($this->invocationMatcher !== null &&
