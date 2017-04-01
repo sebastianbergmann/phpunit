@@ -1073,7 +1073,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 );
 
                 if (is_string($this->expectedExceptionMessage) &&
-                    !empty($this->expectedExceptionMessage)
+                    $this->expectedExceptionMessage != ''
                 ) {
                     $this->assertThat(
                         $e,
@@ -1084,7 +1084,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (is_string($this->expectedExceptionMessageRegExp) &&
-                    !empty($this->expectedExceptionMessageRegExp)
+                    $this->expectedExceptionMessageRegExp != ''
                 ) {
                     $this->assertThat(
                         $e,
