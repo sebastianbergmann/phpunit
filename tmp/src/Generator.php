@@ -318,11 +318,11 @@ class PHPUnit_Framework_MockObject_Generator
                 $callAutoload,
                 $cloneArguments
             );
-        } else {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
-                sprintf('Class "%s" does not exist.', $originalClassName)
-            );
         }
+
+        throw new PHPUnit_Framework_MockObject_RuntimeException(
+            sprintf('Class "%s" does not exist.', $originalClassName)
+        );
     }
 
     /**
@@ -533,9 +533,8 @@ class PHPUnit_Framework_MockObject_Generator
                         strpos($method, ')') - $nameEnd - 1
                     )
                 );
-                $numArgs = count($args);
 
-                for ($i = 0; $i < $numArgs; $i++) {
+                foreach (range(0, count($args) - 1) as $i) {
                     $args[$i] = substr($args[$i], strpos($args[$i], '$'));
                 }
 
@@ -1067,9 +1066,9 @@ class PHPUnit_Framework_MockObject_Generator
             if ($parameter->isVariadic()) {
                 if ($forCall) {
                     continue;
-                } else {
-                    $name = '...' . $name;
                 }
+
+                $name = '...' . $name;
             }
 
             $nullable        = '';
