@@ -265,11 +265,11 @@ class Test
                 $missing[] = sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
             }
         } elseif (!empty($required['PHP_constraint'])) {
-            $version = new \PharIo\Version\Version(self::semanticPhpVersion());
+            $version = new \PharIo\Version\Version(self::sanitizeVersionNumber(PHP_VERSION));
 
             if (!$required['PHP_constraint']['constraint']->complies($version)) {
                 $missing[] = sprintf(
-                    'PHP Version does not match the required constraint %s.',
+                    'PHP version does not match the required constraint %s.',
                     $required['PHP_constraint']['constraint']->asString()
                 );
             }
@@ -282,6 +282,15 @@ class Test
 
             if (!version_compare($phpunitVersion, $required['PHPUnit']['version'], $operator)) {
                 $missing[] = sprintf('PHPUnit %s %s is required.', $operator, $required['PHPUnit']['version']);
+            }
+        } elseif (!empty($required['PHPUnit_constraint'])) {
+            $phpunitVersion = new \PharIo\Version\Version(self::sanitizeVersionNumber(Version::id()));
+
+            if (!$required['PHPUnit_constraint']['constraint']->complies($phpunitVersion)) {
+                $missing[] = sprintf(
+                    'PHPUnit version does not match the required constraint %s.',
+                    $required['PHPUnit_constraint']['constraint']->asString()
+                );
             }
         }
 
@@ -1149,16 +1158,16 @@ class Test
      * Trims any extensions from version string that follows after
      * the <major>.<minor>.<patch> format
      *
-     * @param $php_version (Optional)
+     * @param $version (Optional)
      *
      * @return mixed
      */
-    private static function semanticPhpVersion($php_version = PHP_VERSION)
+    private static function sanitizeVersionNumber($version)
     {
         return preg_replace(
-            '/^(\d+\.\d+.\d+).*$/',
+            '/^(\d+\.\d+(?:.\d+)?).*$/',
             '$1',
-            $php_version
+            $version
         );
     }
 }

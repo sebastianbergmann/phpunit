@@ -343,6 +343,9 @@ class TestTest extends TestCase
                 [
                     'PHP' => [
                         'constraint' => '~1.0'
+                    ],
+                    'PHPUnit' => [
+                        'constraint' => '~2.0'
                     ]
                 ]
             ],
@@ -351,6 +354,9 @@ class TestTest extends TestCase
                 [
                     'PHP' => [
                         'constraint' => '^1.0'
+                    ],
+                    'PHPUnit' => [
+                        'constraint' => '^2.0'
                     ]
                 ]
             ],
@@ -359,6 +365,9 @@ class TestTest extends TestCase
                 [
                     'PHP' => [
                         'constraint' => '~3.4.7'
+                    ],
+                    'PHPUnit' => [
+                        'constraint' => '~4.7.1'
                     ]
                 ]
             ],
@@ -367,6 +376,9 @@ class TestTest extends TestCase
                 [
                     'PHP' => [
                         'constraint' => '^7.0.17'
+                    ],
+                    'PHPUnit' => [
+                        'constraint' => '^4.7.1'
                     ]
                 ]
             ],
@@ -375,6 +387,9 @@ class TestTest extends TestCase
                 [
                     'PHP' => [
                         'constraint' => '^5.6 || ^7.0'
+                    ],
+                    'PHPUnit' => [
+                        'constraint' => '^5.0 || ^6.0'
                     ]
                 ]
             ],
@@ -383,6 +398,9 @@ class TestTest extends TestCase
                 [
                     'PHP' => [
                         'constraint' => '~5.6.22 || ~7.0.17'
+                    ],
+                    'PHPUnit' => [
+                        'constraint' => '^5.0.5 || ^6.0.6'
                     ]
                 ]
             ],
@@ -390,6 +408,9 @@ class TestTest extends TestCase
                 'testVersionConstraintTildeOrCaret',
                 [
                     'PHP' => [
+                        'constraint' => '~5.6.22 || ^7.0'
+                    ],
+                    'PHPUnit' => [
                         'constraint' => '~5.6.22 || ^7.0'
                     ]
                 ]
@@ -399,6 +420,9 @@ class TestTest extends TestCase
                 [
                     'PHP' => [
                         'constraint' => '^5.6 || ~7.0.17'
+                    ],
+                    'PHPUnit' => [
+                        'constraint' => '^5.6 || ~7.0.17'
                     ]
                 ]
             ],
@@ -406,6 +430,9 @@ class TestTest extends TestCase
                 'testVersionConstraintRegexpIgnoresWhitespace',
                 [
                     'PHP' => [
+                        'constraint' => '~5.6.22 || ~7.0.17'
+                    ],
+                    'PHPUnit' => [
                         'constraint' => '~5.6.22 || ~7.0.17'
                     ]
                 ]
@@ -485,8 +512,14 @@ class TestTest extends TestCase
             ['testExtensionVersionOperatorEquals', ['Extension testExtOne = 1.0 is required.']],
             ['testExtensionVersionOperatorDoubleEquals', ['Extension testExtOne == 1.0 is required.']],
             ['testExtensionVersionOperatorNoSpace', ['Extension testExtOne >= 99 is required.']],
-            ['testVersionConstraintTildeMajor', ['PHP Version does not match the required constraint ~1.0.']],
-            ['testVersionConstraintCaretMajor', ['PHP Version does not match the required constraint ^1.0.']]
+            ['testVersionConstraintTildeMajor', [
+                'PHP version does not match the required constraint ~1.0.',
+                'PHPUnit version does not match the required constraint ~2.0.'
+            ]],
+            ['testVersionConstraintCaretMajor', [
+                'PHP version does not match the required constraint ^1.0.',
+                'PHPUnit version does not match the required constraint ^2.0.'
+            ]]
         ];
     }
 
