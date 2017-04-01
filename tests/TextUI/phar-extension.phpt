@@ -11,7 +11,7 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
-Configuration: %s/phpunit-example-extension/phpunit.xml
+Configuration: %s%ephpunit-example-extension%ephpunit.xml
 Extension:     phpunit/phpunit-example-extension 1.0.1
 
 .                                                                   1 / 1 (100%)

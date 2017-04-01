@@ -32,7 +32,7 @@ There was 1 error:
 1) vendor\project\StatusTest::testError
 RuntimeException:%s
 
-%s/StatusTest.php:%d
+%s%eStatusTest.php:%d
 
 --
 
@@ -40,7 +40,7 @@ There was 1 warning:
 
 1) vendor\project\StatusTest::testWarning
 
-%s/StatusTest.php:%d
+%s%eStatusTest.php:%d
 
 --
 
@@ -49,7 +49,7 @@ There was 1 failure:
 1) vendor\project\StatusTest::testFailure
 Failed asserting that false is true.
 
-%s/StatusTest.php:%d
+%s%eStatusTest.php:%d
 
 --
 
