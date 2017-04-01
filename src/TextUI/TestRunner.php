@@ -394,8 +394,6 @@ class TestRunner extends BaseTestRunner
             $codeCoverageReports = 0;
         }
 
-        $this->printer->write("\n");
-
         if ($codeCoverageReports > 0) {
             $codeCoverage = new CodeCoverage(
                 null,
@@ -437,47 +435,57 @@ class TestRunner extends BaseTestRunner
             if (isset($arguments['configuration'])) {
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-                $codeCoverage->setAddUncoveredFilesFromWhitelist(
-                    $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
-                );
+                if (empty($filterConfiguration['whitelist'])) {
+                    $this->writeMessage('Error', 'No whitelist is configured, no code coverage will be generated.');
 
-                $codeCoverage->setProcessUncoveredFilesFromWhitelist(
-                    $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist']
-                );
+                    $codeCoverageReports = 0;
 
-                foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                    $this->codeCoverageFilter->addDirectoryToWhitelist(
-                        $dir['path'],
-                        $dir['suffix'],
-                        $dir['prefix']
+                    unset($codeCoverage);
+                } else {
+                    $codeCoverage->setAddUncoveredFilesFromWhitelist(
+                        $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
                     );
-                }
 
-                foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                    $this->codeCoverageFilter->addFileToWhitelist($file);
-                }
-
-                foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
-                    $this->codeCoverageFilter->removeDirectoryFromWhitelist(
-                        $dir['path'],
-                        $dir['suffix'],
-                        $dir['prefix']
+                    $codeCoverage->setProcessUncoveredFilesFromWhitelist(
+                        $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist']
                     );
-                }
 
-                foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
-                    $this->codeCoverageFilter->removeFileFromWhitelist($file);
+                    foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
+                        $this->codeCoverageFilter->addDirectoryToWhitelist(
+                            $dir['path'],
+                            $dir['suffix'],
+                            $dir['prefix']
+                        );
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
+                        $this->codeCoverageFilter->addFileToWhitelist($file);
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
+                        $this->codeCoverageFilter->removeDirectoryFromWhitelist(
+                            $dir['path'],
+                            $dir['suffix'],
+                            $dir['prefix']
+                        );
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
+                        $this->codeCoverageFilter->removeFileFromWhitelist($file);
+                    }
                 }
             }
 
-            if (!$this->codeCoverageFilter->hasWhitelist()) {
-                $this->writeMessage('Error', 'No whitelist configured, no code coverage will be generated');
+            if (isset($codeCoverage) && !$this->codeCoverageFilter->hasWhitelist()) {
+                $this->writeMessage('Error', 'Incorrect whitelist config, no code coverage will be generated.');
 
                 $codeCoverageReports = 0;
 
                 unset($codeCoverage);
             }
         }
+
+        $this->printer->write("\n");
 
         if (isset($codeCoverage)) {
             $result->setCodeCoverage($codeCoverage);

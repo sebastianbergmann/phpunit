@@ -222,6 +222,12 @@ class Configuration
 
         $tmp = $this->xpath->query('filter/whitelist');
 
+        if ($tmp->length == 0) {
+            return [
+                'whitelist' => []
+            ];
+        }
+
         if ($tmp->length == 1) {
             if ($tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
                 $addUncoveredFilesFromWhitelist = $this->getBoolean(
