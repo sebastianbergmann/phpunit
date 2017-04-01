@@ -11,7 +11,7 @@ environment:
     - PHP_VERSION: '7.0.16'
       XDEBUG_VERSION: '2.5.1-7.0'
       DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.0.17'
+    - PHP_VERSION: '7.0.16'
       XDEBUG_VERSION: '2.5.1-7.0'
       DEPENDENCIES: ''
     - PHP_VERSION: '7.1.2'
