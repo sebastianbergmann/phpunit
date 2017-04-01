@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2145](https://github.com/sebastianbergmann/phpunit/issues/2145): `--stop-on-failure` fails to stop on PHP 7
+* Fixed [#2572](https://github.com/sebastianbergmann/phpunit/issues/2572): `PHPUnit\Framework\TestCase:.registerMockObjectsFromTestArguments()` does not correctly handle arrays that reference themselves
 
 ## [5.7.17] - 2017-03-19
 
