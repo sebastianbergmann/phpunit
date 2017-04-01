@@ -394,8 +394,6 @@ class TestRunner extends BaseTestRunner
             $codeCoverageReports = 0;
         }
 
-        $this->printer->write("\n");
-
         if ($codeCoverageReports > 0) {
             $codeCoverage = new CodeCoverage(
                 null,
@@ -480,13 +478,15 @@ class TestRunner extends BaseTestRunner
             }
 
             if (isset($codeCoverage) && !$this->codeCoverageFilter->hasWhitelist()) {
-                $this->writeMessage('Error', 'Incorrect whitelist configuration. No code coverage will be generated.');
+                $this->writeMessage('Error', 'Whitelist configuration incorrect, no code coverage will be generated.');
 
                 $codeCoverageReports = 0;
 
                 unset($codeCoverage);
             }
         }
+
+        $this->printer->write("\n");
 
         if (isset($codeCoverage)) {
             $result->setCodeCoverage($codeCoverage);
