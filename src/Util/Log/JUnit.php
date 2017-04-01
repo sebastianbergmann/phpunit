@@ -420,7 +420,7 @@ class JUnit extends Printer implements TestListener
             $buffer = '';
         }
 
-        $buffer .= TestFailure::exceptionToString($e) . PHP_EOL .
+        $buffer .= TestFailure::exceptionToString($e) . "\n" .
                    Filter::getFilteredStacktrace($e);
 
         $fault = $this->document->createElement(
