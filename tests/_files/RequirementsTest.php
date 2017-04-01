@@ -355,6 +355,7 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires PHP ~1.0
+     * @requires PHPUnit ~2.0
      */
     public function testVersionConstraintTildeMajor()
     {
@@ -362,6 +363,7 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires PHP ^1.0
+     * @requires PHPUnit ^2.0
      */
     public function testVersionConstraintCaretMajor()
     {
@@ -369,6 +371,7 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires PHP ~3.4.7
+     * @requires PHPUnit ~4.7.1
      */
     public function testVersionConstraintTildeMinor()
     {
@@ -376,6 +379,7 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires PHP ^7.0.17
+     * @requires PHPUnit ^4.7.1
      */
     public function testVersionConstraintCaretMinor()
     {
@@ -383,6 +387,7 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires PHP ^5.6 || ^7.0
+     * @requires PHPUnit ^5.0 || ^6.0
      */
     public function testVersionConstraintCaretOr()
     {
@@ -390,6 +395,7 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires PHP ~5.6.22 || ~7.0.17
+     * @requires @requires PHPUnit ^5.0.5 || ^6.0.6
      */
     public function testVersionConstraintTildeOr()
     {
@@ -397,19 +403,22 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires PHP ~5.6.22 || ^7.0
+     * @requires PHPUnit ~5.6.22 || ^7.0
      */
     public function testVersionConstraintTildeOrCaret()
     {
     }
     /**
      * @requires PHP ^5.6 || ~7.0.17
+     * @requires PHPUnit ^5.6 || ~7.0.17
      */
     public function testVersionConstraintCaretOrTilde()
     {
     }
 
     /**
-     * @requires   PHP       ~5.6.22 || ~7.0.17
+     * @requires   PHP        ~5.6.22 || ~7.0.17
+     * @requires   PHPUnit    ~5.6.22 || ~7.0.17
      */
     public function testVersionConstraintRegexpIgnoresWhitespace()
     {
