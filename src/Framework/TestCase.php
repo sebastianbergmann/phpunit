@@ -1455,7 +1455,16 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function createConfiguredMock($originalClassName, array $configuration)
     {
-        $o = $this->createMock($originalClassName);
+        $methods = array_keys($configuration);
+
+        $o = $this->getMockBuilder($originalClassName)
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->setMethods(empty($methods) ? null : $methods)
+            ->getMock();
+
 
         foreach ($configuration as $method => $return) {
             $o->method($method)->willReturn($return);

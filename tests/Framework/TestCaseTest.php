@@ -661,4 +661,17 @@ class TestCaseTest extends TestCase
         $this->assertFalse($mock->foo());
         $this->assertNull($mock->bar());
     }
+
+    public function testConfiguredMockCanBeCreatedWithProtectedMethod()
+    {
+        /** @var \MockableWithProtectedMethod $mock */
+        $mock = $this->createConfiguredMock(
+            \MockableWithProtectedMethod::class,
+            [
+                'bar' => true,
+            ]
+        );
+
+        $this->assertTrue($mock->foo());
+    }
 }
