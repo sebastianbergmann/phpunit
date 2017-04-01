@@ -30,7 +30,7 @@ class StringMatchesFormatDescription extends RegularExpression
         parent::__construct($string);
 
         $this->pattern = $this->createPatternFromFormat(
-            preg_replace('/\r\n/', "\n", $string)
+            \preg_replace('/\r\n/', "\n", $string)
         );
 
         $this->string = $string;
@@ -43,21 +43,21 @@ class StringMatchesFormatDescription extends RegularExpression
 
     protected function additionalFailureDescription($other)
     {
-        $from = preg_split('(\r\n|\r|\n)', $this->string);
-        $to   = preg_split('(\r\n|\r|\n)', $other);
+        $from = \preg_split('(\r\n|\r|\n)', $this->string);
+        $to   = \preg_split('(\r\n|\r|\n)', $other);
 
         foreach ($from as $index => $line) {
             if (isset($to[$index]) && $line !== $to[$index]) {
                 $line = $this->createPatternFromFormat($line);
 
-                if (preg_match($line, $to[$index]) > 0) {
+                if (\preg_match($line, $to[$index]) > 0) {
                     $from[$index] = $to[$index];
                 }
             }
         }
 
-        $this->string = implode("\n", $from);
-        $other        = implode("\n", $to);
+        $this->string = \implode("\n", $from);
+        $other        = \implode("\n", $to);
 
         $differ = new Differ("--- Expected\n+++ Actual\n");
 
@@ -66,7 +66,7 @@ class StringMatchesFormatDescription extends RegularExpression
 
     protected function createPatternFromFormat($string)
     {
-        $string = str_replace(
+        $string = \str_replace(
             [
                 '%e',
                 '%s',
@@ -93,7 +93,7 @@ class StringMatchesFormatDescription extends RegularExpression
                 '[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?',
                 '.'
             ],
-            preg_quote($string, '/')
+            \preg_quote($string, '/')
         );
 
         return '/^' . $string . '$/s';

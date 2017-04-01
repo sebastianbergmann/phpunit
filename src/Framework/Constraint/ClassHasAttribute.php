@@ -55,7 +55,7 @@ class ClassHasAttribute extends Constraint
      */
     public function toString()
     {
-        return sprintf(
+        return \sprintf(
             'has attribute "%s"',
             $this->attributeName
         );
@@ -73,10 +73,10 @@ class ClassHasAttribute extends Constraint
      */
     protected function failureDescription($other)
     {
-        return sprintf(
+        return \sprintf(
             '%sclass "%s" %s',
-            is_object($other) ? 'object of ' : '',
-            is_object($other) ? get_class($other) : $other,
+            \is_object($other) ? 'object of ' : '',
+            \is_object($other) ? \get_class($other) : $other,
             $this->toString()
         );
     }

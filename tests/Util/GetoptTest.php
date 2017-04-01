@@ -170,7 +170,7 @@ class GetoptTest extends TestCase
     public function testItHandlesLongParametesWithValues()
     {
         $command = 'command parameter-0 --exec parameter-1 --conf config.xml --optn parameter-2 --optn=content-of-o parameter-n';
-        $args    = explode(' ', $command);
+        $args    = \explode(' ', $command);
         unset($args[0]);
         $expected = [
             [
@@ -193,7 +193,7 @@ class GetoptTest extends TestCase
     public function testItHandlesShortParametesWithValues()
     {
         $command = 'command parameter-0 -x parameter-1 -c config.xml -o parameter-2 -ocontent-of-o parameter-n';
-        $args    = explode(' ', $command);
+        $args    = \explode(' ', $command);
         unset($args[0]);
         $expected = [
             [

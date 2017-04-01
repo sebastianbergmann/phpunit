@@ -75,6 +75,6 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
 
     public function __sleep()
     {
-        return array_keys(get_object_vars($this));
+        return \array_keys(\get_object_vars($this));
     }
 }

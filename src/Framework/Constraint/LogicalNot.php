@@ -42,7 +42,7 @@ class LogicalNot extends Constraint
      */
     public static function negate($string)
     {
-        return str_replace(
+        return \str_replace(
             [
                 'contains ',
                 'exists',
@@ -114,7 +114,7 @@ class LogicalNot extends Constraint
      */
     protected function failureDescription($other)
     {
-        switch (get_class($this->constraint)) {
+        switch (\get_class($this->constraint)) {
             case LogicalAnd::class:
             case self::class:
             case LogicalOr::class:
@@ -134,7 +134,7 @@ class LogicalNot extends Constraint
      */
     public function toString()
     {
-        switch (get_class($this->constraint)) {
+        switch (\get_class($this->constraint)) {
             case LogicalAnd::class:
             case self::class:
             case LogicalOr::class:
@@ -154,6 +154,6 @@ class LogicalNot extends Constraint
      */
     public function count()
     {
-        return count($this->constraint);
+        return \count($this->constraint);
     }
 }

@@ -26,7 +26,7 @@ class JsonMatchesTest extends TestCase
 
     public function testToString()
     {
-        $jsonValue  = json_encode(['Mascott' => 'Tux']);
+        $jsonValue  = \json_encode(['Mascott' => 'Tux']);
         $constraint = new JsonMatches($jsonValue);
 
         $this->assertEquals('matches JSON string "' . $jsonValue . '"', $constraint->toString());
@@ -35,10 +35,10 @@ class JsonMatchesTest extends TestCase
     public static function evaluateDataprovider()
     {
         return [
-            'valid JSON'                              => [true, json_encode(['Mascott'                           => 'Tux']), json_encode(['Mascott'                           => 'Tux'])],
-            'error syntax'                            => [false, '{"Mascott"::}', json_encode(['Mascott'         => 'Tux'])],
-            'error UTF-8'                             => [false, json_encode('\xB1\x31'), json_encode(['Mascott' => 'Tux'])],
-            'invalid JSON in class instantiation'     => [false, json_encode(['Mascott'                          => 'Tux']), '{"Mascott"::}'],
+            'valid JSON'                              => [true, \json_encode(['Mascott'                           => 'Tux']), \json_encode(['Mascott'                           => 'Tux'])],
+            'error syntax'                            => [false, '{"Mascott"::}', \json_encode(['Mascott'         => 'Tux'])],
+            'error UTF-8'                             => [false, \json_encode('\xB1\x31'), \json_encode(['Mascott' => 'Tux'])],
+            'invalid JSON in class instantiation'     => [false, \json_encode(['Mascott'                          => 'Tux']), '{"Mascott"::}'],
             'string type not equals number'           => [false, '{"age": "5"}', '{"age": 5}'],
             'string type not equals boolean'          => [false, '{"age": "true"}', '{"age": true}'],
             'string type not equals null'             => [false, '{"age": "null"}', '{"age": null}'],

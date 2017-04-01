@@ -27,7 +27,7 @@ class IsEmpty extends Constraint
     protected function matches($other)
     {
         if ($other instanceof Countable) {
-            return count($other) === 0;
+            return \count($other) === 0;
         }
 
         return empty($other);
@@ -55,9 +55,9 @@ class IsEmpty extends Constraint
      */
     protected function failureDescription($other)
     {
-        $type = gettype($other);
+        $type = \gettype($other);
 
-        return sprintf(
+        return \sprintf(
             '%s %s %s',
             $type[0] == 'a' || $type[0] == 'o' ? 'an' : 'a',
             $type,

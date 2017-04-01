@@ -28,9 +28,9 @@ class Filter
     public static function getFilteredStacktrace($e, $asString = true)
     {
         $prefix = false;
-        $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
+        $script = \realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 
-        if (defined('__PHPUNIT_PHAR_ROOT__')) {
+        if (\defined('__PHPUNIT_PHAR_ROOT__')) {
             $prefix = __PHPUNIT_PHAR_ROOT__;
         }
 
@@ -58,7 +58,7 @@ class Filter
         }
 
         if (!self::frameExists($eTrace, $eFile, $eLine)) {
-            array_unshift(
+            \array_unshift(
                 $eTrace,
                 ['file' => $eFile, 'line' => $eLine]
             );
@@ -67,12 +67,12 @@ class Filter
         $blacklist = new Blacklist;
 
         foreach ($eTrace as $frame) {
-            if (isset($frame['file']) && is_file($frame['file']) &&
+            if (isset($frame['file']) && \is_file($frame['file']) &&
                 !$blacklist->isBlacklisted($frame['file']) &&
-                ($prefix === false || strpos($frame['file'], $prefix) !== 0) &&
+                ($prefix === false || \strpos($frame['file'], $prefix) !== 0) &&
                 $frame['file'] !== $script) {
                 if ($asString === true) {
-                    $filteredStacktrace .= sprintf(
+                    $filteredStacktrace .= \sprintf(
                         "%s:%s\n",
                         $frame['file'],
                         $frame['line'] ?? '?'

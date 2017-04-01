@@ -36,7 +36,7 @@ class ExceptionMessage extends Constraint
      */
     protected function matches($other)
     {
-        return strpos($other->getMessage(), $this->expectedMessage) !== false;
+        return \strpos($other->getMessage(), $this->expectedMessage) !== false;
     }
 
     /**
@@ -51,7 +51,7 @@ class ExceptionMessage extends Constraint
      */
     protected function failureDescription($other)
     {
-        return sprintf(
+        return \sprintf(
             "exception message '%s' contains '%s'",
             $other->getMessage(),
             $this->expectedMessage

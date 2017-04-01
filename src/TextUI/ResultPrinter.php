@@ -144,28 +144,28 @@ class ResultPrinter extends Printer implements TestListener
     {
         parent::__construct($out);
 
-        if (!is_bool($verbose)) {
+        if (!\is_bool($verbose)) {
             throw InvalidArgumentHelper::factory(2, 'boolean');
         }
 
         $availableColors = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
 
-        if (!in_array($colors, $availableColors)) {
+        if (!\in_array($colors, $availableColors)) {
             throw InvalidArgumentHelper::factory(
                 3,
-                vsprintf('value from "%s", "%s" or "%s"', $availableColors)
+                \vsprintf('value from "%s", "%s" or "%s"', $availableColors)
             );
         }
 
-        if (!is_bool($debug)) {
+        if (!\is_bool($debug)) {
             throw InvalidArgumentHelper::factory(4, 'boolean');
         }
 
-        if (!is_int($numberOfColumns) && $numberOfColumns != 'max') {
+        if (!\is_int($numberOfColumns) && $numberOfColumns != 'max') {
             throw InvalidArgumentHelper::factory(5, 'integer or "max"');
         }
 
-        if (!is_bool($reverse)) {
+        if (!\is_bool($reverse)) {
             throw InvalidArgumentHelper::factory(6, 'boolean');
         }
 
@@ -213,7 +213,7 @@ class ResultPrinter extends Printer implements TestListener
      */
     protected function printDefects(array $defects, $type)
     {
-        $count = count($defects);
+        $count = \count($defects);
 
         if ($count == 0) {
             return;
@@ -224,7 +224,7 @@ class ResultPrinter extends Printer implements TestListener
         }
 
         $this->write(
-            sprintf(
+            \sprintf(
                 "There %s %d %s%s:\n",
                 ($count == 1) ? 'was' : 'were',
                 $count,
@@ -236,7 +236,7 @@ class ResultPrinter extends Printer implements TestListener
         $i = 1;
 
         if ($this->reverse) {
-            $defects = array_reverse($defects);
+            $defects = \array_reverse($defects);
         }
 
         foreach ($defects as $defect) {
@@ -263,7 +263,7 @@ class ResultPrinter extends Printer implements TestListener
     protected function printDefectHeader(TestFailure $defect, $count)
     {
         $this->write(
-            sprintf(
+            \sprintf(
                 "\n%d) %s\n",
                 $count,
                 $defect->getTestName()
@@ -342,7 +342,7 @@ class ResultPrinter extends Printer implements TestListener
      */
     protected function printFooter(TestResult $result)
     {
-        if (count($result) === 0) {
+        if (\count($result) === 0) {
             $this->writeWithColor(
                 'fg-black, bg-yellow',
                 'No tests executed!'
@@ -357,10 +357,10 @@ class ResultPrinter extends Printer implements TestListener
             $result->noneSkipped()) {
             $this->writeWithColor(
                 'fg-black, bg-green',
-                sprintf(
+                \sprintf(
                     'OK (%d test%s, %d assertion%s)',
-                    count($result),
-                    (count($result) == 1) ? '' : 's',
+                    \count($result),
+                    (\count($result) == 1) ? '' : 's',
                     $this->numAssertions,
                     ($this->numAssertions == 1) ? '' : 's'
                 )
@@ -404,7 +404,7 @@ class ResultPrinter extends Printer implements TestListener
                 }
             }
 
-            $this->writeCountString(count($result), 'Tests', $color, true);
+            $this->writeCountString(\count($result), 'Tests', $color, true);
             $this->writeCountString($this->numAssertions, 'Assertions', $color, true);
             $this->writeCountString($result->errorCount(), 'Errors', $color);
             $this->writeCountString($result->failureCount(), 'Failures', $color);
@@ -507,9 +507,9 @@ class ResultPrinter extends Printer implements TestListener
     public function startTestSuite(TestSuite $suite)
     {
         if ($this->numTests == -1) {
-            $this->numTests      = count($suite);
-            $this->numTestsWidth = strlen((string) $this->numTests);
-            $this->maxColumn     = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numTestsWidth);
+            $this->numTests      = \count($suite);
+            $this->numTestsWidth = \strlen((string) $this->numTests);
+            $this->maxColumn     = $this->numberOfColumns - \strlen('  /  (XXX%)') - (2 * $this->numTestsWidth);
         }
     }
 
@@ -531,7 +531,7 @@ class ResultPrinter extends Printer implements TestListener
     {
         if ($this->debug) {
             $this->write(
-                sprintf(
+                \sprintf(
                     "\nStarting test '%s'.\n",
                     \PHPUnit\Util\Test::describe($test)
                 )
@@ -577,16 +577,16 @@ class ResultPrinter extends Printer implements TestListener
 
         if ($this->column == $this->maxColumn || $this->numTestsRun == $this->numTests) {
             if ($this->numTestsRun == $this->numTests) {
-                $this->write(str_repeat(' ', $this->maxColumn - $this->column));
+                $this->write(\str_repeat(' ', $this->maxColumn - $this->column));
             }
 
             $this->write(
-                sprintf(
+                \sprintf(
                     ' %' . $this->numTestsWidth . 'd / %' .
                     $this->numTestsWidth . 'd (%3s%%)',
                     $this->numTestsRun,
                     $this->numTests,
-                    floor(($this->numTestsRun / $this->numTests) * 100)
+                    \floor(($this->numTestsRun / $this->numTests) * 100)
                 )
             );
 
@@ -617,24 +617,24 @@ class ResultPrinter extends Printer implements TestListener
             return $buffer;
         }
 
-        $codes   = array_map('trim', explode(',', $color));
-        $lines   = explode("\n", $buffer);
-        $padding = max(array_map('strlen', $lines));
+        $codes   = \array_map('trim', \explode(',', $color));
+        $lines   = \explode("\n", $buffer);
+        $padding = \max(\array_map('strlen', $lines));
         $styles  = [];
 
         foreach ($codes as $code) {
             $styles[] = self::$ansiCodes[$code];
         }
 
-        $style = sprintf("\x1b[%sm", implode(';', $styles));
+        $style = \sprintf("\x1b[%sm", \implode(';', $styles));
 
         $styledLines = [];
 
         foreach ($lines as $line) {
-            $styledLines[] = $style . str_pad($line, $padding) . "\x1b[0m";
+            $styledLines[] = $style . \str_pad($line, $padding) . "\x1b[0m";
         }
 
-        return implode("\n", $styledLines);
+        return \implode("\n", $styledLines);
     }
 
     /**
@@ -678,7 +678,7 @@ class ResultPrinter extends Printer implements TestListener
         if ($always || $count > 0) {
             $this->writeWithColor(
                 $color,
-                sprintf(
+                \sprintf(
                     '%s%s: %d',
                     !$first ? ', ' : '',
                     $name,

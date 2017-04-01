@@ -578,12 +578,12 @@ class TestCaseTest extends TestCase
 
     public function testCurrentWorkingDirectoryIsRestored()
     {
-        $expectedCwd = getcwd();
+        $expectedCwd = \getcwd();
 
         $test = new \ChangeCurrentWorkingDirectoryTest('testSomethingThatChangesTheCwd');
         $test->run();
 
-        $this->assertSame($expectedCwd, getcwd());
+        $this->assertSame($expectedCwd, \getcwd());
     }
 
     /**

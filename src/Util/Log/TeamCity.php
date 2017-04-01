@@ -121,17 +121,17 @@ class TeamCity extends ResultPrinter
             if ($comparisonFailure instanceof ComparisonFailure) {
                 $expectedString = $comparisonFailure->getExpectedAsString();
 
-                if (is_null($expectedString) || empty($expectedString)) {
+                if (\is_null($expectedString) || empty($expectedString)) {
                     $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
                 }
 
                 $actualString = $comparisonFailure->getActualAsString();
 
-                if (is_null($actualString) || empty($actualString)) {
+                if (\is_null($actualString) || empty($actualString)) {
                     $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
                 }
 
-                if (!is_null($actualString) && !is_null($expectedString)) {
+                if (!\is_null($actualString) && !\is_null($expectedString)) {
                     $parameters['type']     = 'comparisonFailure';
                     $parameters['actual']   = $actualString;
                     $parameters['expected'] = $expectedString;
@@ -204,8 +204,8 @@ class TeamCity extends ResultPrinter
      */
     public function startTestSuite(TestSuite $suite)
     {
-        if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
-            $this->flowId = getmypid();
+        if (\stripos(\ini_get('disable_functions'), 'getmypid') === false) {
+            $this->flowId = \getmypid();
         } else {
             $this->flowId = false;
         }
@@ -215,7 +215,7 @@ class TeamCity extends ResultPrinter
 
             $this->printEvent(
                 'testCount',
-                ['count' => count($suite)]
+                ['count' => \count($suite)]
             );
         }
 
@@ -227,13 +227,13 @@ class TeamCity extends ResultPrinter
 
         $parameters = ['name' => $suiteName];
 
-        if (class_exists($suiteName, false)) {
+        if (\class_exists($suiteName, false)) {
             $fileName                   = self::getFileName($suiteName);
             $parameters['locationHint'] = "php_qn://$fileName::\\$suiteName";
         } else {
-            $split = preg_split('/::/', $suiteName);
+            $split = \preg_split('/::/', $suiteName);
 
-            if (count($split) == 2 && method_exists($split[0], $split[1])) {
+            if (\count($split) == 2 && \method_exists($split[0], $split[1])) {
                 $fileName                   = self::getFileName($split[0]);
                 $parameters['locationHint'] = "php_qn://$fileName::\\$suiteName";
                 $parameters['name']         = $split[1];
@@ -258,10 +258,10 @@ class TeamCity extends ResultPrinter
 
         $parameters = ['name' => $suiteName];
 
-        if (!class_exists($suiteName, false)) {
-            $split = preg_split('/::/', $suiteName);
+        if (!\class_exists($suiteName, false)) {
+            $split = \preg_split('/::/', $suiteName);
 
-            if (count($split) == 2 && method_exists($split[0], $split[1])) {
+            if (\count($split) == 2 && \method_exists($split[0], $split[1])) {
                 $parameters['name'] = $split[1];
             }
         }
@@ -281,7 +281,7 @@ class TeamCity extends ResultPrinter
         $params                = ['name' => $testName];
 
         if ($test instanceof TestCase) {
-            $className              = get_class($test);
+            $className              = \get_class($test);
             $fileName               = self::getFileName($className);
             $params['locationHint'] = "php_qn://$fileName::\\$className::$testName";
         }
@@ -303,7 +303,7 @@ class TeamCity extends ResultPrinter
             'testFinished',
             [
                 'name'     => $test->getName(),
-                'duration' => (int) (round($time, 2) * 1000)
+                'duration' => (int) (\round($time, 2) * 1000)
             ]
         );
     }
@@ -338,11 +338,11 @@ class TeamCity extends ResultPrinter
         $message = '';
 
         if (!$e instanceof Exception) {
-            if (strlen(get_class($e)) != 0) {
-                $message .= get_class($e);
+            if (\strlen(\get_class($e)) != 0) {
+                $message .= \get_class($e);
             }
 
-            if (strlen($message) != 0 && strlen($e->getMessage()) != 0) {
+            if (\strlen($message) != 0 && \strlen($e->getMessage()) != 0) {
                 $message .= ' : ';
             }
         }
@@ -370,7 +370,7 @@ class TeamCity extends ResultPrinter
                 $previous->getPreviousWrapped() : $previous->getPrevious();
         }
 
-        return ' ' . str_replace("\n", "\n ", $stackTrace);
+        return ' ' . \str_replace("\n", "\n ", $stackTrace);
     }
 
     /**
@@ -380,16 +380,16 @@ class TeamCity extends ResultPrinter
      */
     private static function getPrimitiveValueAsString($value)
     {
-        if (is_null($value)) {
+        if (\is_null($value)) {
             return 'null';
         }
 
-        if (is_bool($value)) {
+        if (\is_bool($value)) {
             return $value == true ? 'true' : 'false';
         }
 
-        if (is_scalar($value)) {
-            return print_r($value, true);
+        if (\is_scalar($value)) {
+            return \print_r($value, true);
         }
     }
 
@@ -400,12 +400,12 @@ class TeamCity extends ResultPrinter
      */
     private static function escapeValue($text)
     {
-        $text = str_replace('|', '||', $text);
-        $text = str_replace("'", "|'", $text);
-        $text = str_replace("\n", '|n', $text);
-        $text = str_replace("\r", '|r', $text);
-        $text = str_replace(']', '|]', $text);
-        $text = str_replace('[', '|[', $text);
+        $text = \str_replace('|', '||', $text);
+        $text = \str_replace("'", "|'", $text);
+        $text = \str_replace("\n", '|n', $text);
+        $text = \str_replace("\r", '|r', $text);
+        $text = \str_replace(']', '|]', $text);
+        $text = \str_replace('[', '|[', $text);
 
         return $text;
     }

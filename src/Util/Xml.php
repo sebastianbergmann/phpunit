@@ -50,8 +50,8 @@ class Xml
             return $actual;
         }
 
-        if (!is_string($actual)) {
-            throw new Exception('Could not load XML from ' . gettype($actual));
+        if (!\is_string($actual)) {
+            throw new Exception('Could not load XML from ' . \gettype($actual));
         }
 
         if ($actual === '') {
@@ -60,16 +60,16 @@ class Xml
 
         // Required for XInclude on Windows.
         if ($xinclude) {
-            $cwd = getcwd();
-            @chdir(dirname($filename));
+            $cwd = \getcwd();
+            @\chdir(\dirname($filename));
         }
 
         $document                     = new DOMDocument;
         $document->preserveWhiteSpace = false;
 
-        $internal  = libxml_use_internal_errors(true);
+        $internal  = \libxml_use_internal_errors(true);
         $message   = '';
-        $reporting = error_reporting(0);
+        $reporting = \error_reporting(0);
 
         if ('' !== $filename) {
             // Necessary for xinclude
@@ -86,21 +86,21 @@ class Xml
             $document->xinclude();
         }
 
-        foreach (libxml_get_errors() as $error) {
+        foreach (\libxml_get_errors() as $error) {
             $message .= "\n" . $error->message;
         }
 
-        libxml_use_internal_errors($internal);
-        error_reporting($reporting);
+        \libxml_use_internal_errors($internal);
+        \error_reporting($reporting);
 
         if ($xinclude) {
-            @chdir($cwd);
+            @\chdir($cwd);
         }
 
         if ($loaded === false || ($strict && $message !== '')) {
             if ($filename !== '') {
                 throw new Exception(
-                    sprintf(
+                    \sprintf(
                         'Could not load "%s".%s',
                         $filename,
                         $message != '' ? "\n" . $message : ''
@@ -130,13 +130,13 @@ class Xml
      */
     public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
     {
-        $reporting = error_reporting(0);
-        $contents  = file_get_contents($filename);
-        error_reporting($reporting);
+        $reporting = \error_reporting(0);
+        $contents  = \file_get_contents($filename);
+        \error_reporting($reporting);
 
         if ($contents === false) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     'Could not read "%s".',
                     $filename
                 )
@@ -172,10 +172,10 @@ class Xml
      */
     public static function prepareString($string)
     {
-        return preg_replace(
+        return \preg_replace(
             '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
             '',
-            htmlspecialchars(
+            \htmlspecialchars(
                 self::convertToUtf8($string),
                 ENT_QUOTES,
                 'UTF-8'
@@ -247,7 +247,7 @@ class Xml
             case 'string':
                 $variable = $element->textContent;
 
-                settype($variable, $element->tagName);
+                \settype($variable, $element->tagName);
                 break;
         }
 
@@ -264,11 +264,11 @@ class Xml
     private static function convertToUtf8($string)
     {
         if (!self::isUtf8($string)) {
-            if (function_exists('mb_convert_encoding')) {
-                return mb_convert_encoding($string, 'UTF-8');
+            if (\function_exists('mb_convert_encoding')) {
+                return \mb_convert_encoding($string, 'UTF-8');
             }
 
-            return utf8_encode($string);
+            return \utf8_encode($string);
         }
 
         return $string;
@@ -283,23 +283,23 @@ class Xml
      */
     private static function isUtf8($string)
     {
-        $length = strlen($string);
+        $length = \strlen($string);
 
         for ($i = 0; $i < $length; $i++) {
-            if (ord($string[$i]) < 0x80) {
+            if (\ord($string[$i]) < 0x80) {
                 $n = 0;
-            } elseif ((ord($string[$i]) & 0xE0) == 0xC0) {
+            } elseif ((\ord($string[$i]) & 0xE0) == 0xC0) {
                 $n = 1;
-            } elseif ((ord($string[$i]) & 0xF0) == 0xE0) {
+            } elseif ((\ord($string[$i]) & 0xF0) == 0xE0) {
                 $n = 2;
-            } elseif ((ord($string[$i]) & 0xF0) == 0xF0) {
+            } elseif ((\ord($string[$i]) & 0xF0) == 0xF0) {
                 $n = 3;
             } else {
                 return false;
             }
 
             for ($j = 0; $j < $n; $j++) {
-                if ((++$i == $length) || ((ord($string[$i]) & 0xC0) != 0x80)) {
+                if ((++$i == $length) || ((\ord($string[$i]) & 0xC0) != 0x80)) {
                     return false;
                 }
             }

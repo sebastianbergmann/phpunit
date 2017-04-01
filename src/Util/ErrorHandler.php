@@ -42,14 +42,14 @@ class ErrorHandler
      */
     public static function handleError($errno, $errstr, $errfile, $errline)
     {
-        if (!($errno & error_reporting())) {
+        if (!($errno & \error_reporting())) {
             return false;
         }
 
         self::$errorStack[] = [$errno, $errstr, $errfile, $errline];
 
-        $trace = debug_backtrace(false);
-        array_shift($trace);
+        $trace = \debug_backtrace(false);
+        \array_shift($trace);
 
         foreach ($trace as $frame) {
             if ($frame['function'] == '__toString') {
@@ -97,11 +97,11 @@ class ErrorHandler
             if (!$expired) {
                 $expired = true;
                 // cleans temporary error handler
-                return restore_error_handler();
+                return \restore_error_handler();
             }
         };
 
-        set_error_handler(function ($errno, $errstr) use ($severity) {
+        \set_error_handler(function ($errno, $errstr) use ($severity) {
             if ($errno === $severity) {
                 return;
             }

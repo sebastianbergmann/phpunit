@@ -74,7 +74,7 @@ abstract class AbstractPhpProcess
      */
     public function setUseStderrRedirection($stderrRedirection)
     {
-        if (!is_bool($stderrRedirection)) {
+        if (!\is_bool($stderrRedirection)) {
             throw InvalidArgumentHelper::factory(1, 'boolean');
         }
 
@@ -223,12 +223,12 @@ abstract class AbstractPhpProcess
             $command .= ' -qrr ';
 
             if ($file) {
-                $command .= '-e ' . escapeshellarg($file);
+                $command .= '-e ' . \escapeshellarg($file);
             } else {
-                $command .= escapeshellarg(__DIR__ . '/eval-stdin.php');
+                $command .= \escapeshellarg(__DIR__ . '/eval-stdin.php');
             }
         } elseif ($file) {
-            $command .= ' -f ' . escapeshellarg($file);
+            $command .= ' -f ' . \escapeshellarg($file);
         }
 
         if ($this->args) {
@@ -285,27 +285,27 @@ abstract class AbstractPhpProcess
         if (!empty($stderr)) {
             $result->addError(
                 $test,
-                new Exception(trim($stderr)),
+                new Exception(\trim($stderr)),
                 $time
             );
         } else {
-            set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+            \set_error_handler(function ($errno, $errstr, $errfile, $errline) {
                 throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
             });
             try {
-                if (strpos($stdout, "#!/usr/bin/env php\n") === 0) {
-                    $stdout = substr($stdout, 19);
+                if (\strpos($stdout, "#!/usr/bin/env php\n") === 0) {
+                    $stdout = \substr($stdout, 19);
                 }
 
-                $childResult = unserialize(str_replace("#!/usr/bin/env php\n", '', $stdout));
-                restore_error_handler();
+                $childResult = \unserialize(\str_replace("#!/usr/bin/env php\n", '', $stdout));
+                \restore_error_handler();
             } catch (ErrorException $e) {
-                restore_error_handler();
+                \restore_error_handler();
                 $childResult = false;
 
                 $result->addError(
                     $test,
-                    new Exception(trim($stdout), 0, $e),
+                    new Exception(\trim($stdout), 0, $e),
                     $time
                 );
             }
@@ -398,12 +398,12 @@ abstract class AbstractPhpProcess
         if ($exception instanceof __PHP_Incomplete_Class) {
             $exceptionArray = [];
             foreach ((array) $exception as $key => $value) {
-                $key                  = substr($key, strrpos($key, "\0") + 1);
+                $key                  = \substr($key, \strrpos($key, "\0") + 1);
                 $exceptionArray[$key] = $value;
             }
 
             $exception = new SyntheticError(
-                sprintf(
+                \sprintf(
                     '%s: %s',
                     $exceptionArray['_PHP_Incomplete_Class_Name'],
                     $exceptionArray['message']

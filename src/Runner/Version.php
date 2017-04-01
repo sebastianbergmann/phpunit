@@ -32,7 +32,7 @@ class Version
         }
 
         if (self::$version === null) {
-            $version       = new VersionId('6.1', dirname(dirname(__DIR__)));
+            $version       = new VersionId('6.1', \dirname(\dirname(__DIR__)));
             self::$version = $version->getVersion();
         }
 
@@ -44,13 +44,13 @@ class Version
      */
     public static function series()
     {
-        if (strpos(self::id(), '-')) {
-            $version = explode('-', self::id())[0];
+        if (\strpos(self::id(), '-')) {
+            $version = \explode('-', self::id())[0];
         } else {
             $version = self::id();
         }
 
-        return implode('.', array_slice(explode('.', $version), 0, 2));
+        return \implode('.', \array_slice(\explode('.', $version), 0, 2));
     }
 
     /**
@@ -66,7 +66,7 @@ class Version
      */
     public static function getReleaseChannel()
     {
-        if (strpos(self::$pharVersion, '-') !== false) {
+        if (\strpos(self::$pharVersion, '-') !== false) {
             return '-nightly';
         }
 

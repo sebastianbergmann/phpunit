@@ -39,7 +39,7 @@ class StringEndsWith extends Constraint
      */
     protected function matches($other)
     {
-        return substr($other, 0 - strlen($this->suffix)) == $this->suffix;
+        return \substr($other, 0 - \strlen($this->suffix)) == $this->suffix;
     }
 
     /**
