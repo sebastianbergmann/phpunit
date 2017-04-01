@@ -758,8 +758,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         if ($this->runTestInSeparateProcess === true &&
             $this->inIsolation !== true &&
-            !$this instanceof PhptTestCase
-        ) {
+            !$this instanceof PhptTestCase) {
             $class = new ReflectionClass($this);
 
             $template = new Text_Template(
@@ -1058,8 +1057,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
                 if ($this->expectedException === 'PHPUnit\Framework\Exception' ||
                     $this->expectedException === '\PHPUnit\Framework\Exception' ||
-                    $reflector->isSubclassOf('PHPUnit\Framework\Exception')
-                ) {
+                    $reflector->isSubclassOf('PHPUnit\Framework\Exception')) {
                     $checkException = true;
                 }
             }
@@ -1073,8 +1071,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 );
 
                 if (is_string($this->expectedExceptionMessage) &&
-                    !empty($this->expectedExceptionMessage)
-                ) {
+                    !empty($this->expectedExceptionMessage)) {
                     $this->assertThat(
                         $e,
                         new ExceptionMessage(
@@ -1084,8 +1081,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (is_string($this->expectedExceptionMessageRegExp) &&
-                    !empty($this->expectedExceptionMessageRegExp)
-                ) {
+                    !empty($this->expectedExceptionMessageRegExp)) {
                     $this->assertThat(
                         $e,
                         new ExceptionMessageRegularExpression(
@@ -1225,8 +1221,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function setBackupStaticAttributes($backupStaticAttributes)
     {
         if (is_null($this->backupStaticAttributes) &&
-            is_bool($backupStaticAttributes)
-        ) {
+            is_bool($backupStaticAttributes)) {
             $this->backupStaticAttributes = $backupStaticAttributes;
         }
     }
@@ -2004,8 +1999,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 if (isset($passed[$dependency])) {
                     if ($passed[$dependency]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
                         $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
-                        $passed[$dependency]['size'] > $this->getSize()
-                    ) {
+                        $passed[$dependency]['size'] > $this->getSize()) {
                         $this->result->addError(
                             $this,
                             new SkippedTestError(
@@ -2395,8 +2389,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         if ($reflector->hasMethod('__clone') &&
-            $reflector->getMethod('__clone')->isPublic()
-        ) {
+            $reflector->getMethod('__clone')->isPublic()) {
             return true;
         }
 

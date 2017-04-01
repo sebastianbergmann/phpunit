@@ -127,13 +127,11 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         $argumentsValid = false;
 
         if (is_object($theClass) &&
-            $theClass instanceof ReflectionClass
-        ) {
+            $theClass instanceof ReflectionClass) {
             $argumentsValid = true;
         } elseif (is_string($theClass) &&
             $theClass !== '' &&
-            class_exists($theClass, false)
-        ) {
+            class_exists($theClass, false)) {
             $argumentsValid = true;
 
             if ($name == '') {
@@ -166,8 +164,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         $constructor = $theClass->getConstructor();
 
         if ($constructor !== null &&
-            !$constructor->isPublic()
-        ) {
+            !$constructor->isPublic()) {
             $this->addTest(
                 self::warning(
                     sprintf(
@@ -222,9 +219,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $this->tests[]  = $test;
             $this->numTests = -1;
 
-            if ($test instanceof self &&
-                empty($groups)
-            ) {
+            if ($test instanceof self && empty($groups)) {
                 $groups = $test->getGroups();
             }
 
@@ -388,8 +383,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     public function addTestFiles($filenames)
     {
         if (!(is_array($filenames) ||
-            (is_object($filenames) && $filenames instanceof Iterator))
-        ) {
+            (is_object($filenames) && $filenames instanceof Iterator))) {
             throw InvalidArgumentHelper::factory(
                 1,
                 'array or iterator'
@@ -542,8 +536,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
                     if ($data instanceof WarningTestCase ||
                         $data instanceof SkippedTestCase ||
-                        $data instanceof IncompleteTestCase
-                    ) {
+                        $data instanceof IncompleteTestCase) {
                         $test->addTest($data, $groups);
                     } else {
                         foreach ($data as $_dataName => $_data) {
@@ -679,8 +672,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
                 if ($this->testCase === true &&
                     class_exists($this->name, false) &&
-                    method_exists($this->name, $beforeClassMethod)
-                ) {
+                    method_exists($this->name, $beforeClassMethod)) {
                     if ($missingRequirements = \PHPUnit\Util\Test::getMissingRequirements($this->name, $beforeClassMethod)) {
                         $this->markTestSuiteSkipped(implode(PHP_EOL, $missingRequirements));
                     }
@@ -730,9 +722,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 break;
             }
 
-            if ($test instanceof TestCase ||
-                $test instanceof self
-            ) {
+            if ($test instanceof TestCase || $test instanceof self) {
                 $test->setbeStrictAboutChangesToGlobalState($this->beStrictAboutChangesToGlobalState);
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
@@ -868,9 +858,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
         $test = self::createTest($class, $name);
 
-        if ($test instanceof TestCase ||
-            $test instanceof DataProviderTestSuite
-        ) {
+        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(
                 \PHPUnit\Util\Test::getDependencies($class->getName(), $name)
             );
@@ -960,9 +948,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      */
     public function setBackupStaticAttributes($backupStaticAttributes)
     {
-        if (is_null($this->backupStaticAttributes) &&
-            is_bool($backupStaticAttributes)
-        ) {
+        if (is_null($this->backupStaticAttributes) && is_bool($backupStaticAttributes)) {
             $this->backupStaticAttributes = $backupStaticAttributes;
         }
     }

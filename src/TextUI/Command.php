@@ -152,9 +152,7 @@ class Command
 
         $runner = $this->createRunner();
 
-        if (is_object($this->arguments['test']) &&
-            $this->arguments['test'] instanceof Test
-        ) {
+        if ($this->arguments['test'] instanceof Test) {
             $suite = $this->arguments['test'];
         } else {
             $suite = $runner->getTest(
@@ -664,8 +662,7 @@ class Command
 
             if (isset($this->arguments['test']) &&
                 is_file($this->arguments['test']) &&
-                substr($this->arguments['test'], -5, 5) != '.phpt'
-            ) {
+                substr($this->arguments['test'], -5, 5) != '.phpt') {
                 $this->arguments['testFile'] = realpath($this->arguments['test']);
                 $this->arguments['test']     = substr($this->arguments['test'], 0, strrpos($this->arguments['test'], '.'));
             }
@@ -687,8 +684,7 @@ class Command
         }
 
         if (isset($this->arguments['configuration']) &&
-            is_dir($this->arguments['configuration'])
-        ) {
+            is_dir($this->arguments['configuration'])) {
             $configurationFile = $this->arguments['configuration'] . '/phpunit.xml';
 
             if (file_exists($configurationFile)) {
@@ -701,8 +697,7 @@ class Command
                 );
             }
         } elseif (!isset($this->arguments['configuration']) &&
-            $this->arguments['useDefaultConfiguration']
-        ) {
+            $this->arguments['useDefaultConfiguration']) {
             if (file_exists('phpunit.xml')) {
                 $this->arguments['configuration'] = realpath('phpunit.xml');
             } elseif (file_exists('phpunit.xml.dist')) {
@@ -792,8 +787,7 @@ class Command
         }
 
         if (isset($this->arguments['printer']) &&
-            is_string($this->arguments['printer'])
-        ) {
+            is_string($this->arguments['printer'])) {
             $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
         }
 
@@ -805,8 +799,7 @@ class Command
         }
 
         if (!isset($this->arguments['test']) ||
-            (isset($this->arguments['testDatabaseLogRevision']) && !isset($this->arguments['testDatabaseDSN']))
-        ) {
+            (isset($this->arguments['testDatabaseLogRevision']) && !isset($this->arguments['testDatabaseDSN']))) {
             $this->showHelp();
             exit(TestRunner::EXCEPTION_EXIT);
         }
@@ -840,8 +833,7 @@ class Command
             $class = new ReflectionClass($loaderClass);
 
             if ($class->implementsInterface(TestSuiteLoader::class) &&
-                $class->isInstantiable()
-            ) {
+                $class->isInstantiable()) {
                 return $class->newInstance();
             }
         }
@@ -887,8 +879,7 @@ class Command
 
             if ($class->implementsInterface(TestListener::class) &&
                 $class->isSubclassOf(Printer::class) &&
-                $class->isInstantiable()
-            ) {
+                $class->isInstantiable()) {
                 if ($class->isSubclassOf(ResultPrinter::class)) {
                     return $printerClass;
                 }

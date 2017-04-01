@@ -726,8 +726,7 @@ class TestRunner extends BaseTestRunner
     protected function handleConfiguration(array &$arguments)
     {
         if (isset($arguments['configuration']) &&
-            !$arguments['configuration'] instanceof Configuration
-        ) {
+            !$arguments['configuration'] instanceof Configuration) {
             $arguments['configuration'] = Configuration::getInstance(
                 $arguments['configuration']
             );

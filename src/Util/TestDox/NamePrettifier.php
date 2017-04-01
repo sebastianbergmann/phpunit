@@ -42,14 +42,12 @@ class NamePrettifier
         $title = $name;
 
         if ($this->suffix !== null &&
-            $this->suffix == substr($name, -1 * strlen($this->suffix))
-        ) {
+            $this->suffix == substr($name, -1 * strlen($this->suffix))) {
             $title = substr($title, 0, strripos($title, $this->suffix));
         }
 
         if ($this->prefix !== null &&
-            $this->prefix == substr($name, 0, strlen($this->prefix))
-        ) {
+            $this->prefix == substr($name, 0, strlen($this->prefix))) {
             $title = substr($title, strlen($this->prefix));
         }
 
@@ -101,10 +99,7 @@ class NamePrettifier
         $wasNumeric = false;
 
         for ($i = 0; $i < $max; $i++) {
-            if ($i > 0 &&
-                ord($name[$i]) >= 65 &&
-                ord($name[$i]) <= 90
-            ) {
+            if ($i > 0 && ord($name[$i]) >= 65 && ord($name[$i]) <= 90) {
                 $buffer .= ' ' . strtolower($name[$i]);
             } else {
                 $isNumeric = is_numeric($name[$i]);

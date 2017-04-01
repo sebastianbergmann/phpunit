@@ -354,8 +354,7 @@ class ResultPrinter extends Printer implements TestListener
         if ($result->wasSuccessful() &&
             $result->allHarmless() &&
             $result->allCompletelyImplemented() &&
-            $result->noneSkipped()
-        ) {
+            $result->noneSkipped()) {
             $this->writeWithColor(
                 'fg-black, bg-green',
                 sprintf(
@@ -576,9 +575,7 @@ class ResultPrinter extends Printer implements TestListener
         $this->column++;
         $this->numTestsRun++;
 
-        if ($this->column == $this->maxColumn
-            || $this->numTestsRun == $this->numTests
-        ) {
+        if ($this->column == $this->maxColumn || $this->numTestsRun == $this->numTests) {
             if ($this->numTestsRun == $this->numTests) {
                 $this->write(str_repeat(' ', $this->maxColumn - $this->column));
             }
