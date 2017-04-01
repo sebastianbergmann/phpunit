@@ -1,8 +1,10 @@
 build: false
-platform: x86
 clone_folder: c:\phpunit
-services:
-  - mysql
+max_jobs: 3
+platform: x86
+pull_requests:
+  do_not_increment_build_number: true
+version: '{build}.{branch}'
 
 environment:
   COMPOSER_ROOT_VERSION: '6.1.x-dev'
