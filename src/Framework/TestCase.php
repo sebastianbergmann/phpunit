@@ -1071,7 +1071,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 );
 
                 if (\is_string($this->expectedExceptionMessage) &&
-                    !empty($this->expectedExceptionMessage)) {
+                    $this->expectedExceptionMessage == '') {
                     $this->assertThat(
                         $e,
                         new ExceptionMessage(
@@ -1081,7 +1081,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (\is_string($this->expectedExceptionMessageRegExp) &&
-                    !empty($this->expectedExceptionMessageRegExp)) {
+                    $this->expectedExceptionMessageRegExp == '') {
                     $this->assertThat(
                         $e,
                         new ExceptionMessageRegularExpression(
