@@ -1156,7 +1156,7 @@ class Test
 
     /**
      * Trims any extensions from version string that follows after
-     * the <major>.<minor>.<patch> format
+     * the <major>.<minor>[.<patch>] format
      *
      * @param $version (Optional)
      *
