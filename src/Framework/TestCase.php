@@ -2421,9 +2421,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @param array $testArguments
+     * @param array $originalTestArguments
      */
-    private function registerMockObjectsFromTestArguments(array $testArguments)
-    {
+    private function registerMockObjectsFromTestArguments(
+        array $testArguments,
+        array &$visited = []
+    ) {
         if ($this->registerMockObjectsFromTestArgumentsRecursively) {
             $enumerator = new Enumerator;
 
@@ -2440,8 +2443,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     }
 
                     $this->registerMockObject($testArgument);
-                } elseif (is_array($testArgument)) {
-                    $this->registerMockObjectsFromTestArguments($testArgument);
+                } elseif (is_array($testArgument) && !in_array($testArgument, $visited)) {
+                    $visited[] = $testArgument;
+                    $this->registerMockObjectsFromTestArguments(
+                        $testArgument,
+                        $visited
+                    );
                 }
             }
         }
