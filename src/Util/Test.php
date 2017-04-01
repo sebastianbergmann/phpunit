@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use Iterator;
+use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidCoversTargetException;
@@ -44,8 +45,6 @@ class Test
     private static $annotationCache = [];
 
     private static $hookMethods = [];
-
-    private static $versionConstraintParser;
 
     /**
      * @param \PHPUnit\Framework\Test $test
@@ -183,9 +182,6 @@ class Test
      */
     public static function getRequirements($className, $methodName)
     {
-        if (!self::$versionConstraintParser) {
-            self::$versionConstraintParser = new \PharIo\Version\VersionConstraintParser();
-        }
         $reflector  = new ReflectionClass($className);
         $docComment = $reflector->getDocComment();
         $reflector  = new ReflectionMethod($className, $methodName);
@@ -200,7 +196,7 @@ class Test
         }
 
         if ($count = preg_match_all(self::REGEX_REQUIRES_VERSION, $docComment, $matches)) {
-            for ($i = 0; $i < $count; $i++) {
+            foreach (range(0, $count - 1) as $i) {
                 $requires[$matches['name'][$i]] = [
                     'version'  => $matches['version'][$i],
                     'operator' => $matches['operator'][$i]
@@ -208,13 +204,16 @@ class Test
             }
         }
         if ($count = preg_match_all(self::REGEX_REQUIRES_VERSION_CONSTRAINT, $docComment, $matches)) {
-            for ($i = 0; $i < $count; $i++) {
+            foreach (range(0, $count - 1) as $i) {
                 if (!empty($requires[$matches['name'][$i]])) {
                     continue;
                 }
+
                 try {
+                    $versionConstraintParser = new VersionConstraintParser;
+
                     $requires[$matches['name'][$i] . '_constraint'] = [
-                        'constraint' => self::$versionConstraintParser->parse(trim($matches['constraint'][$i]))
+                        'constraint' => $versionConstraintParser->parse(trim($matches['constraint'][$i]))
                     ];
                 } catch (\PharIo\Version\Exception $e) {
                     throw new Warning($e->getMessage(), $e->getCode(), $e);
@@ -223,7 +222,7 @@ class Test
         }
 
         if ($count = preg_match_all(self::REGEX_REQUIRES, $docComment, $matches)) {
-            for ($i = 0; $i < $count; $i++) {
+            foreach (range(0, $count - 1) as $i) {
                 $name = $matches['name'][$i] . 's';
 
                 if (!isset($requires[$name])) {
