@@ -660,7 +660,7 @@ class TestRunner extends BaseTestRunner
                 }
 
                 try {
-                    $writer = new XmlReport;
+                    $writer = new XmlReport(Version::id());
                     $writer->process($report, $codeCoverage, $arguments['coverageXml']);
 
                     $this->printer->write(" done\n");
