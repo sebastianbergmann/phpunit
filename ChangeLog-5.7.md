@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.7 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.7.18] - 2017-XX-XX
+
+### Fixed
+
+* Fixed [#2572](https://github.com/sebastianbergmann/phpunit/issues/2572): Self referencing array breaks with PHPUnit 5.7 but worked with PHPUnit 4.8
+
 ## [5.7.17] - 2017-03-19
 
 ### Fixed
