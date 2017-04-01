@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 6.1 release series are documented in this fil
 * Implemented [#2546](https://github.com/sebastianbergmann/phpunit/issues/2546): Render `__FILE__` and `__DIR__` in `SKIPIF` section of PHPT tests
 * Implemented [#2551](https://github.com/sebastianbergmann/phpunit/issues/2551): Allow directory traversal in `FILE_EXTERNAL` section of PHPT tests
 * Implemented [#2579](https://github.com/sebastianbergmann/phpunit/issues/2579): Added `classname` attribute to JUnit XML logfile
+* Implemented [#2623](https://github.com/sebastianbergmann/phpunit/pull/2623): Added support for Composer-style version constraints to `@requires` annotation
 
 ### Changed
 
