@@ -344,4 +344,25 @@ class RequirementsTest extends TestCase
     public function testExtensionVersionOperatorNoSpace()
     {
     }
+
+    /**
+     * @requires package test/non-existing-package
+     */
+    public function testPackageNoVersion()
+    {
+    }
+
+    /**
+     * @requires package sebastian/comparator <2.0
+     */
+    public function testPackageVersionOperatorNoSpace()
+    {
+    }
+
+    /**
+     * @requires package sebastian/comparator < 2.0
+     */
+    public function testPackageVersionOperatorSpace()
+    {
+    }
 }

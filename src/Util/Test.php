@@ -32,7 +32,7 @@ class Test
     const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
     const REGEX_REQUIRES_VERSION   = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
     const REGEX_REQUIRES_OS        = '/@requires\s+OS\s+(?P<value>.+?)[ \t]*\r?$/m';
-    const REGEX_REQUIRES           = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
+    const REGEX_REQUIRES           = '/@requires\s+(?P<name>function|extension|package)\s+(?P<value>([^ ]+?))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
 
     const UNKNOWN = -1;
     const SMALL   = 0;
@@ -42,6 +42,8 @@ class Test
     private static $annotationCache = [];
 
     private static $hookMethods = [];
+    
+    private static $installedPackages;
 
     /**
      * @param \PHPUnit\Framework\Test $test
@@ -203,6 +205,7 @@ class Test
 
         if ($count = preg_match_all(self::REGEX_REQUIRES, $docComment, $matches)) {
             for ($i = 0; $i < $count; $i++) {
+                $versionsKey = $matches['name'][$i] . '_versions';
                 $name = $matches['name'][$i] . 's';
 
                 if (!isset($requires[$name])) {
@@ -211,11 +214,11 @@ class Test
 
                 $requires[$name][] = $matches['value'][$i];
 
-                if (empty($matches['version'][$i]) || $name != 'extensions') {
+                if (empty($matches['version'][$i]) || !in_array($name, ['extensions', 'packages'], true)) {
                     continue;
                 }
 
-                $requires['extension_versions'][$matches['value'][$i]] = [
+                $requires[$versionsKey][$matches['value'][$i]] = [
                     'version'  => $matches['version'][$i],
                     'operator' => $matches['operator'][$i]
                 ];
@@ -297,8 +300,122 @@ class Test
                 }
             }
         }
+        
+        $packages = self::getInstalledPackages();
+
+        if (!empty($required['packages'])) {
+            foreach ($required['packages'] as $package) {
+                if (isset($required['package_versions'][$package])) {
+                    continue;
+                }
+
+                if (!array_key_exists($package, $packages)) {
+                    $missing[] = sprintf('Package %s is required.', $package);
+                }
+            }
+        }
+
+        if (!empty($required['package_versions'])) {
+            foreach ($required['package_versions'] as $package => $required) {
+                $actualVersion = $packages[$package];
+
+                $operator = empty($required['operator']) ? '>=' : $required['operator'];
+
+                if (false === $actualVersion || !version_compare($actualVersion, $required['version'], $operator)) {
+                    $missing[] = sprintf('Package %s %s %s is required.', $package, $operator, $required['version']);
+                }
+            }
+        }
 
         return $missing;
+    }
+    
+    /**
+     * @return mixed[]
+     */
+    private static function getInstalledPackages()
+    {
+        if (self::$installedPackages === null) {
+            try {
+                self::$installedPackages = self::parseInstalledPackages();
+            } catch (\Exception $e) {
+                // TODO Log it?
+                
+                self::$installedPackages = [];
+            }
+        }
+        
+        return self::$installedPackages;
+    }
+    
+    /**
+     * @return \mixed[]
+     */
+    private static function parseInstalledPackages()
+    {
+        $file = self::getComposerLockFile();
+    
+        $json = self::parseComposerLockFile($file);
+        
+        if (!is_array($json)) {
+            throw new \RuntimeException('Parsed composer.lock must be an array.');
+        }
+        
+        if (!array_key_exists('packages', $json)) {
+            throw new \RuntimeException('Key `packages` in composer.lock is required.');
+        }
+        
+        $jsonPackages = $json['packages'];
+        if (!is_array($jsonPackages)) {
+            throw new \RuntimeException('Key `packages` in composer.lock must be an array.');
+        }
+        
+        $packages = [];
+        
+        /** @var mixed[] $jsonPackages */
+        foreach ($jsonPackages as $package) {
+            $package = (array) $package;
+            if (array_key_exists('name', $package) && array_key_exists('version', $package)) {
+                $packages[$package['name']] = $package['version'];
+            }
+        }
+        
+        return $packages;
+    }
+    
+    /**
+     * TODO Find a better way to get the Composer lock file handle.
+     *
+     * @return \SplFileInfo
+     */
+    private static function getComposerLockFile()
+    {
+        if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
+            throw new \RuntimeException('PHPUNIT_COMPOSER_INSTALL must be defined.');
+        }
+    
+        $autoloadFile = constant('PHPUNIT_COMPOSER_INSTALL');
+    
+        return new \SplFileInfo(dirname($autoloadFile, 2) . '/composer.lock');
+    }
+    
+    /**
+     * TODO Find a better way to get the Composer lock file handle.
+     *
+     * @param \SplFileInfo $file
+     * @return \mixed[]
+     */
+    private static function parseComposerLockFile(\SplFileInfo $file)
+    {
+        if (!$file->isFile()) {
+            throw new \RuntimeException(sprintf('%s must be a readable file.', $file->getFilename()));
+        }
+        
+        if (!$file->isReadable()) {
+            throw new \RuntimeException(sprintf('%s must be a readable file.', $file->getFilename()));
+        }
+        
+        return json_decode(file_get_contents($file->getFilename()), 1);
     }
 
     /**
