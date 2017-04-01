@@ -28,6 +28,7 @@
         "ext-xml": "*",
         "myclabs/deep-copy": "^1.3",
         "phar-io/manifest": "^1.0.1",
+        "phar-io/version": "^1.0",
         "phpspec/prophecy": "^1.7",
         "phpunit/php-code-coverage": "^5.0",
         "phpunit/php-file-iterator": "^1.4",
