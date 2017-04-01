@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 use PHPUnit\Framework\TestCase;
 
 class RequirementsTest extends TestCase
@@ -356,6 +364,54 @@ class RequirementsTest extends TestCase
      * @requires PHP ^1.0
      */
     public function testVersionConstraintCaretMajor()
+    {
+    }
+
+    /**
+     * @requires PHP ~3.4.7
+     */
+    public function testVersionConstraintTildeMinor()
+    {
+    }
+
+    /**
+     * @requires PHP ^7.0.17
+     */
+    public function testVersionConstraintCaretMinor()
+    {
+    }
+
+    /**
+     * @requires PHP ^5.6 || ^7.0
+     */
+    public function testVersionConstraintCaretOr()
+    {
+    }
+
+    /**
+     * @requires PHP ~5.6.22 || ~7.0.17
+     */
+    public function testVersionConstraintTildeOr()
+    {
+    }
+
+    /**
+     * @requires PHP ~5.6.22 || ^7.0
+     */
+    public function testVersionConstraintTildeOrCaret()
+    {
+    }
+    /**
+     * @requires PHP ^5.6 || ~7.0.17
+     */
+    public function testVersionConstraintCaretOrTilde()
+    {
+    }
+
+    /**
+     * @requires   PHP       ~5.6.22 || ~7.0.17
+     */
+    public function testVersionConstraintRegexpIgnoresWhitespace()
     {
     }
 }
