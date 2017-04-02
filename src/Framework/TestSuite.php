@@ -706,6 +706,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 if ($result->shouldStop()) {
                     break;
                 }
+
                 $result->startTest($this);
                 $result->addError($this, $t, 0);
                 $result->endTest($this, 0);
