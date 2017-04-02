@@ -2348,7 +2348,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param array $testArguments
      * @param array $originalTestArguments
      */
-    private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = []) {
+    private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = [])
+    {
         if ($this->registerMockObjectsFromTestArgumentsRecursively) {
             $enumerator = new Enumerator;
 

@@ -393,7 +393,7 @@ class TestCaseTest extends TestCase
     public function testStaticAttributesBackupPre()
     {
         $GLOBALS['singleton'] = \Singleton::getInstance();
-        self::$testStatic    = 123;
+        self::$testStatic     = 123;
     }
 
     /**
