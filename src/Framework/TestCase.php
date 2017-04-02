@@ -2441,7 +2441,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     }
 
                     $this->registerMockObject($testArgument);
-                } elseif (is_array($testArgument) && !in_array($testArgument, $visited)) {
+                } elseif (is_array($testArgument) && !in_array($testArgument, $visited, true)) {
                     $visited[] = $testArgument;
 
                     $this->registerMockObjectsFromTestArguments(
