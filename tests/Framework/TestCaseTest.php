@@ -378,7 +378,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
     public function testStaticAttributesBackupPre()
     {
         $GLOBALS['singleton'] = Singleton::getInstance();
-        self::$testStatic    = 123;
+        self::$testStatic     = 123;
     }
 
     /**

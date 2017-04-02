@@ -694,6 +694,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 if ($result->shouldStop()) {
                     break;
                 }
+
                 $result->startTest($this);
                 $result->addError($this, $t, 0);
                 $result->endTest($this, 0);

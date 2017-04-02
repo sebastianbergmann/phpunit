@@ -2423,7 +2423,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @param array $testArguments
      * @param array $originalTestArguments
      */
-    private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = []) {
+    private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = [])
+    {
         if ($this->registerMockObjectsFromTestArgumentsRecursively) {
             $enumerator = new Enumerator;
 
