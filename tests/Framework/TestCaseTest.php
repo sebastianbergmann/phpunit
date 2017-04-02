@@ -647,7 +647,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertNull($mock->bar());
     }
 
-    public function testProvidingOfAuoreferencedArray()
+    public function testProvidingOfAutoreferencedArray()
     {
         $test = new \TestAutoreferenced('testJsonEncodeException', $this->getAutoreferencedArray());
         $test->runBare();
@@ -670,5 +670,18 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
                 'data' => $recursionData
             ]
         ];
+    }
+
+    public function testProvidingSimilarArrays()
+    {
+        $data = [
+            ['foo'],
+            ['foo'],
+        ];
+
+        $test = new \TestAutoreferenced('testJsonEncodeException', $data);
+        $test->runBare();
+
+        $this->assertSame($data, $test->myTestData);
     }
 }
