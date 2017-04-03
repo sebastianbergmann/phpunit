@@ -2,12 +2,18 @@
 
 All notable changes of the PHPUnit 5.7 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.7.19] - 2017-04-03
+
+### Fixed
+
+* Fixed [#2638](https://github.com/sebastianbergmann/phpunit/pull/2638): Regression in `PHPUnit\Framework\TestCase:registerMockObjectsFromTestArguments()`
+
 ## [5.7.18] - 2017-04-02
 
 ### Fixed
 
 * Fixed [#2145](https://github.com/sebastianbergmann/phpunit/issues/2145): `--stop-on-failure` fails to stop on PHP 7
-* Fixed [#2572](https://github.com/sebastianbergmann/phpunit/issues/2572): `PHPUnit\Framework\TestCase:.registerMockObjectsFromTestArguments()` does not correctly handle arrays that reference themselves
+* Fixed [#2572](https://github.com/sebastianbergmann/phpunit/issues/2572): `PHPUnit\Framework\TestCase:registerMockObjectsFromTestArguments()` does not correctly handle arrays that reference themselves
 
 ## [5.7.17] - 2017-03-19
 
@@ -149,6 +155,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 * The `--tap` and `--log-tap` commandline options have been deprecated
 * The `--self-update` and `--self-upgrade` commandline options have been deprecated (PHAR binary only)
 
+[5.7.19]: https://github.com/sebastianbergmann/phpunit/compare/5.7.18...5.7.19
 [5.7.18]: https://github.com/sebastianbergmann/phpunit/compare/5.7.17...5.7.18
 [5.7.17]: https://github.com/sebastianbergmann/phpunit/compare/5.7.16...5.7.17
 [5.7.16]: https://github.com/sebastianbergmann/phpunit/compare/5.7.15...5.7.16
