@@ -692,7 +692,7 @@ class TestCaseTest extends TestCase
         $data = [
             [123],
             ['foo'],
-            [$this->createMock(Mockable::class)],
+            [$this->createMock(\Mockable::class)],
         ];
 
         $test = new \TestAutoreferenced('testJsonEncodeException', [$data]);
