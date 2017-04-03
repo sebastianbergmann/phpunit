@@ -2360,7 +2360,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     }
 
                     $this->registerMockObject($testArgument);
-                } elseif (\is_array($testArgument) && !\in_array($testArgument, $visited)) {
+                } elseif (\is_array($testArgument) && !\in_array($testArgument, $visited, true)) {
                     $visited[] = $testArgument;
 
                     $this->registerMockObjectsFromTestArguments(
