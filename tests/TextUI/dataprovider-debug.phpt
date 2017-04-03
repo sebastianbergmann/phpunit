@@ -19,7 +19,7 @@ Starting test 'DataProviderDebugTest::testProvider with data set #1 (1.2, resour
 .
 Starting test 'DataProviderDebugTest::testProvider with data set #2 (array(array(1, 2, 3), array(3, 4, 5)))'.
 .
-Starting test 'DataProviderDebugTest::testProvider with data set #3 ('this\nis\na\nvery\nvery\nvery\nvery...g\ntext')'.
+Starting test 'DataProviderDebugTest::testProvider with data set #3 ('this\nis\na\nvery\nvery\nvery...\rtext')'.
 .
 Starting test 'DataProviderDebugTest::testProvider with data set #4 (stdClass Object (), stdClass Object (...), array(), SplObjectStorage Object (...), stdClass Object (...))'.
 .

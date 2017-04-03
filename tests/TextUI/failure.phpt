@@ -72,9 +72,9 @@ Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
 @@ @@
- 'foo
--bar
-+baz
+ 'foo\n
+-bar\n
++baz\n
  '
 
 %s:%i
