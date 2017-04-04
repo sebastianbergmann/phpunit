@@ -640,14 +640,14 @@ Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
 @@ @@
- 'a
--b
-+p
+ 'a\\n
+-b\\n
++p\\n
 
 @@ @@
- i
--j
-+w
+ i\\n
+-j\\n
++w\\n
  k'
 
 EOF
@@ -740,14 +740,14 @@ Failed asserting that two objects are equal.
 +            0 => 4
 
 @@ @@
-         'foo' => 'a
--        b
-+        p
+         'foo' => 'a\\n
+-        b\\n
++        p\\n
 
 @@ @@
-         i
--        j
-+        w
+         i\\n
+-        j\\n
++        w\\n
          k'
      )
      'self' => stdClass Object (...)
