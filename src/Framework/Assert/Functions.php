@@ -50,7 +50,7 @@ use PHPUnit\Framework\TestCase;
  */
 function any()
 {
-    return TestCase::any(...\func_get_args());
+    return TestCase::any();
 }
 
 /**
@@ -60,7 +60,7 @@ function any()
  */
 function anything()
 {
-    return Assert::anything(...\func_get_args());
+    return Assert::anything();
 }
 
 /**
@@ -1278,7 +1278,7 @@ function at($index)
  */
 function atLeastOnce()
 {
-    return TestCase::atLeastOnce(...\func_get_args());
+    return TestCase::atLeastOnce();
 }
 
 /**
@@ -1439,7 +1439,7 @@ function exactly($count)
  */
 function fileExists()
 {
-    return Assert::fileExists(...\func_get_args());
+    return Assert::fileExists();
 }
 
 /**
@@ -1487,7 +1487,7 @@ function identicalTo($value)
  */
 function isEmpty()
 {
-    return Assert::isEmpty(...\func_get_args());
+    return Assert::isEmpty();
 }
 
 /**
@@ -1497,7 +1497,7 @@ function isEmpty()
  */
 function isFalse()
 {
-    return Assert::isFalse(...\func_get_args());
+    return Assert::isFalse();
 }
 
 /**
@@ -1519,7 +1519,7 @@ function isInstanceOf($className)
  */
 function isJson()
 {
-    return Assert::isJson(...\func_get_args());
+    return Assert::isJson();
 }
 
 /**
@@ -1529,7 +1529,7 @@ function isJson()
  */
 function isNull()
 {
-    return Assert::isNull(...\func_get_args());
+    return Assert::isNull();
 }
 
 /**
@@ -1539,7 +1539,7 @@ function isNull()
  */
 function isTrue()
 {
-    return Assert::isTrue(...\func_get_args());
+    return Assert::isTrue();
 }
 
 /**
@@ -1653,7 +1653,7 @@ function matchesRegularExpression($pattern)
  */
 function never()
 {
-    return TestCase::never(...\func_get_args());
+    return TestCase::never();
 }
 
 /**
@@ -1685,7 +1685,7 @@ function onConsecutiveCalls()
  */
 function once()
 {
-    return TestCase::once(...\func_get_args());
+    return TestCase::once();
 }
 
 /**
@@ -1717,7 +1717,7 @@ function returnCallback($callback)
  */
 function returnSelf()
 {
-    return TestCase::returnSelf(...\func_get_args());
+    return TestCase::returnSelf();
 }
 
 /**
