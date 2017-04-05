@@ -12,6 +12,7 @@ namespace PHPUnit\Util\Log;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\TestSuite;
@@ -357,14 +358,16 @@ class TeamCity extends ResultPrinter
     private static function getDetails(\Exception $e)
     {
         $stackTrace = Filter::getFilteredStacktrace($e);
-        $previous   = $e->getPrevious();
+        $previous   = $e instanceof ExceptionWrapper ?
+            $e->getPreviousWrapped() : $e->getPrevious();
 
         while ($previous) {
             $stackTrace .= "\nCaused by\n" .
                 TestFailure::exceptionToString($previous) . "\n" .
                 Filter::getFilteredStacktrace($previous);
 
-            $previous = $previous->getPrevious();
+            $previous = $previous instanceof ExceptionWrapper ?
+                $previous->getPreviousWrapped() : $previous->getPrevious();
         }
 
         return ' ' . str_replace("\n", "\n ", $stackTrace);
