@@ -25,6 +25,7 @@ use PHPUnit\Runner\Version;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Util\Configuration;
 use PHPUnit\Util\ConfigurationGenerator;
+use PHPUnit\Util\DependencyResolver\Solver;
 use PHPUnit\Util\Fileloader;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Getopt;
@@ -204,6 +205,7 @@ class Command
 
         unset($this->arguments['test']);
         unset($this->arguments['testFile']);
+        $this->resolveTestSuite($suite);
 
         try {
             $result = $runner->doRun($suite, $this->arguments, $exit);
@@ -803,6 +805,16 @@ class Command
             exit(TestRunner::EXCEPTION_EXIT);
         }
     }
+
+    /**
+     * @param TestSuite $testSuite
+     */
+    protected function resolveTestSuite(TestSuite $testSuite)
+    {
+        $solver = new Solver();
+        $solver->resolve($testSuite);
+    }
+
 
     /**
      * Handles the loading of the PHPUnit_Runner_TestSuiteLoader implementation.
