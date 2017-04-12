@@ -412,6 +412,10 @@ class TestRunner extends BaseTestRunner
                 $arguments['strictCoverage']
             );
 
+            $codeCoverage->setCheckForUnexecutedCoveredCode(
+                $arguments['strictCoverage']
+            );
+
             if (isset($arguments['forceCoversAnnotation'])) {
                 $codeCoverage->setForceCoversAnnotation(
                     $arguments['forceCoversAnnotation']
