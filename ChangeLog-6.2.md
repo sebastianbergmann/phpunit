@@ -1,4 +1,4 @@
-# Changes in PHPUnit 6.1
+# Changes in PHPUnit 6.2
 
 All notable changes of the PHPUnit 6.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
