@@ -42,7 +42,7 @@ class TeamCity extends ResultPrinter
     private $startedTestName;
 
     /**
-     * @var string
+     * @var int|false
      */
     private $flowId;
 

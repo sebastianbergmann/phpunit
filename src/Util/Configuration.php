@@ -1016,10 +1016,13 @@ class Configuration
     }
 
     /**
+     * if $value is 'false' or 'true', this returns the value that $value represents.
+     * Otherwise, returns $default, which may be a string in rare cases.
+     * See PHPUnit\Util\ConfigurationTest::testPHPConfigurationIsReadCorrectly
      * @param string $value
-     * @param bool   $default
+     * @param string|bool   $default
      *
-     * @return bool
+     * @return string|bool
      */
     protected function getBoolean($value, $default)
     {
@@ -1036,9 +1039,9 @@ class Configuration
 
     /**
      * @param string $value
-     * @param bool   $default
+     * @param int    $default
      *
-     * @return bool
+     * @return int
      */
     protected function getInteger($value, $default)
     {

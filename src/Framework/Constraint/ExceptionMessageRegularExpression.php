@@ -14,7 +14,7 @@ use PHPUnit\Util\RegularExpression as RegularExpressionUtil;
 class ExceptionMessageRegularExpression extends Constraint
 {
     /**
-     * @var int
+     * @var string
      */
     protected $expectedMessageRegExp;
 

@@ -94,7 +94,7 @@ class JUnit extends Printer implements TestListener
     protected $testSuiteLevel = 0;
 
     /**
-     * @var DOMElement
+     * @var ?DOMElement
      */
     protected $currentTestCase;
 
