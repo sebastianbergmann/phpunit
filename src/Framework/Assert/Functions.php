@@ -72,7 +72,7 @@ function anything()
  */
 function arrayHasKey($key)
 {
-    Assert::arrayHasKey(...\func_get_args());
+    return Assert::arrayHasKey(...\func_get_args());
 }
 
 /**

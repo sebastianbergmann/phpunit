@@ -44,9 +44,9 @@ class Count extends Constraint
     }
 
     /**
-     * @param mixed $other
+     * @param \Countable|\Traversable\|array $other
      *
-     * @return bool
+     * @return int
      */
     protected function getCountOf($other)
     {

@@ -347,7 +347,7 @@ class Test
      * @param string $className
      * @param string $methodName
      *
-     * @return array
+     * @return array|false
      */
     public static function getExpectedException($className, $methodName)
     {
@@ -742,7 +742,7 @@ class Test
      * @param string $className
      * @param string $methodName
      *
-     * @return bool
+     * @return ?bool
      */
     public static function getErrorHandlerSettings($className, $methodName)
     {
@@ -862,7 +862,7 @@ class Test
      * @param string $className
      * @param string $methodName
      *
-     * @return bool
+     * @return ?bool
      */
     public static function getPreserveGlobalStateSettings($className, $methodName)
     {
@@ -938,7 +938,7 @@ class Test
      * @param string $methodName
      * @param string $settingName
      *
-     * @return bool
+     * @return ?bool
      */
     private static function getBooleanAnnotationSetting($className, $methodName, $settingName)
     {
@@ -967,7 +967,7 @@ class Test
             }
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -1131,7 +1131,7 @@ class Test
      */
     private static function isBeforeMethod(ReflectionMethod $method)
     {
-        return \preg_match('/@before\b/', $method->getDocComment());
+        return \preg_match('/@before\b/', $method->getDocComment()) > 0;
     }
 
     /**
@@ -1151,7 +1151,7 @@ class Test
      */
     private static function isAfterMethod(ReflectionMethod $method)
     {
-        return \preg_match('/@after\b/', $method->getDocComment());
+        return \preg_match('/@after\b/', $method->getDocComment()) > 0;
     }
 
     /**
