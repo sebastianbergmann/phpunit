@@ -362,7 +362,7 @@ class ResultPrinter extends Printer implements TestListener
                     \count($result),
                     (\count($result) == 1) ? '' : 's',
                     $this->numAssertions,
-                    ($this->numAssertions == 1) ? '' : 's'
+                    ($this->numAssertions <= 1) ? '' : 's'
                 )
             );
         } else {
