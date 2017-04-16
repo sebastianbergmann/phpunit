@@ -422,6 +422,17 @@ class ResultPrinter extends Printer implements TestListener
     }
 
     /**
+     * nothing occurred.
+     *
+     * @param PHPUnit_Framework_Test $test
+     * @param float $time
+     */
+    public function addSuccess(PHPUnit_Framework_Test $test, $time)
+    {
+        $this->writeProgress('.');
+    }
+
+    /**
      * An error occurred.
      *
      * @param Test       $test
@@ -548,7 +559,7 @@ class ResultPrinter extends Printer implements TestListener
     public function endTest(Test $test, $time)
     {
         if (!$this->lastTestFailed) {
-            $this->writeProgress('.');
+            $this->addSuccess($test, $time);
         }
 
         if ($test instanceof TestCase) {
