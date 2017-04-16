@@ -647,8 +647,6 @@ class Command
             }
         }
 
-        $this->handleCustomTestSuite();
-
         if (!isset($this->arguments['test'])) {
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
@@ -1030,13 +1028,6 @@ Miscellaneous Options:
   --check-version             Check whether PHPUnit is the latest version.
 
 EOT;
-    }
-
-    /**
-     * Custom callback for test suite discovery.
-     */
-    protected function handleCustomTestSuite()
-    {
     }
 
     private function printVersionString()
