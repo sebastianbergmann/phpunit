@@ -2113,7 +2113,19 @@ abstract class Assert
     {
         self::$count += \count($constraint);
 
-        $constraint->evaluate($value, $message);
+        $constraint->evaluate($value, static::formatMessage($message));
+    }
+
+    /**
+     * Formats messages prior to output.
+     *
+     * Can be overridden to alter the format of all messages that are output.
+     * @param string The message string.
+     * @return string A formatted version of the message string.
+     */
+    protected static function formatMessage($message)
+    {
+        return $message;
     }
 
     /**
