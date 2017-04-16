@@ -122,6 +122,7 @@
         <xs:restriction base="xs:string">
           <xs:enumeration value="coverage-html"/>
           <xs:enumeration value="coverage-text"/>
+          <xs:enumeration value="coverage-crap4j"/>
           <xs:enumeration value="coverage-clover"/>
           <xs:enumeration value="coverage-crap4j"/>
           <xs:enumeration value="coverage-xml"/>
