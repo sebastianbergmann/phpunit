@@ -395,7 +395,7 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires PHP ~5.6.22 || ~7.0.17
-     * @requires @requires PHPUnit ^5.0.5 || ^6.0.6
+     * @requires PHPUnit ^5.0.5 || ^6.0.6
      */
     public function testVersionConstraintTildeOr()
     {
