@@ -30,7 +30,7 @@
         "phar-io/manifest": "^1.0.1",
         "phar-io/version": "^1.0",
         "phpspec/prophecy": "^1.7",
-        "phpunit/php-code-coverage": "^5.0",
+        "phpunit/php-code-coverage": "^5.2",
         "phpunit/php-file-iterator": "^1.4",
         "phpunit/php-text-template": "^1.2",
         "phpunit/php-timer": "^1.0.6",
