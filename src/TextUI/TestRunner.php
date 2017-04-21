@@ -324,6 +324,10 @@ class TestRunner extends BaseTestRunner
             }
         }
 
+        if ($this->runtime->discardsComments()) {
+            $this->writeMessage('Warning', 'opcache.save_comments=0 set; annotations will not work');
+        }
+
         foreach ($arguments['listeners'] as $listener) {
             $result->addListener($listener);
         }
