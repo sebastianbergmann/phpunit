@@ -444,4 +444,16 @@ class ConfigurationTest extends TestCase
 
         $this->assertEquals(1, \count($tests));
     }
+
+    public function testTestSuiteConfigurationWhyTestsuiteFilterSetted()
+    {
+        $configuration = Configuration::getInstance(
+            dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.one-file-suite.xml'
+        );
+
+        $config = $configuration->getTestSuiteConfiguration('One File Suite');
+        $tests = $config->tests();
+
+        $this->assertEquals(1, count($tests));
+    }
 }
