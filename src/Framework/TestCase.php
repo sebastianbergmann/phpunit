@@ -1965,7 +1965,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $passedKeys = \array_flip(\array_unique($passedKeys));
 
             foreach ($this->dependencies as $dependency) {
-                $clone = false;
+                $clone           = false;
+                $dependencyValue = null;
 
                 if (\strpos($dependency, 'clone ') === 0) {
                     $clone      = true;
@@ -2011,21 +2012,33 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                         return false;
                     }
 
-                    if ($clone) {
-                        $deepCopy = new DeepCopy;
-                        $deepCopy->skipUncloneable(false);
+                    $dependencyValue = $passed[$dependency]['result'];
 
-                        $this->dependencyInput[$dependency] = $deepCopy->copy($passed[$dependency]['result']);
-                    } else {
-                        $this->dependencyInput[$dependency] = $passed[$dependency]['result'];
+                    if ($clone) {
+                        $dependencyValue = $this->retrieveClonedDependencyValue($dependencyValue);
                     }
-                } else {
-                    $this->dependencyInput[$dependency] = null;
                 }
+
+                $this->dependencyInput[$dependency] = $dependencyValue;
             }
         }
 
         return true;
+    }
+
+    /**
+     * Override if you need to modify cloning mechanism
+     *
+     * @param mixed $dependency
+     *
+     * @return mixed
+     */
+    protected function retrieveClonedDependencyValue($dependency)
+    {
+        $deepCopy = new DeepCopy;
+        $deepCopy->skipUncloneable(false);
+
+        return $deepCopy->copy($dependency);
     }
 
     /**
