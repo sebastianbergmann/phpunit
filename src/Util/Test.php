@@ -856,6 +856,19 @@ class Test
         return false;
     }
 
+    public static function getClassProcessIsolationSettings($className, $methodName)
+    {
+        $annotations = self::parseTestMethodAnnotations(
+            $className,
+            $methodName
+        );
+
+        if (isset($annotations['class']['runClassInSeparateProcess'])) {
+            return true;
+        }
+        return false;
+    }
+
     /**
      * Returns the preserve global state settings for a test.
      *
