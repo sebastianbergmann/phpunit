@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 6.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.1.4] - 2017-MM-DD
+
+### Changed
+
+* Version 3.0.2 of `sebastian/environment` is now required
+
 ## [6.1.3] - 2017-04-29
 
 * Fixed [#2661](https://github.com/sebastianbergmann/phpunit/pull/2661): Inconsistent information in JUnit XML logfile for tests that use data provider
@@ -41,6 +47,7 @@ All notable changes of the PHPUnit 6.1 release series are documented in this fil
 * Fixed [#2049](https://github.com/sebastianbergmann/phpunit/issues/2049): Misleading error message when whitelist configuration contains paths that do not exist
 * Fixed [#2472](https://github.com/sebastianbergmann/phpunit/issues/2472): `PHPUnit\Util\Getopt` uses deprecated `each()` function
 
+[6.1.4]: https://github.com/sebastianbergmann/phpunit/compare/6.1.3...6.1.4
 [6.1.3]: https://github.com/sebastianbergmann/phpunit/compare/6.1.2...6.1.3
 [6.1.2]: https://github.com/sebastianbergmann/phpunit/compare/6.1.1...6.1.2
 [6.1.1]: https://github.com/sebastianbergmann/phpunit/compare/6.1.0...6.1.1
