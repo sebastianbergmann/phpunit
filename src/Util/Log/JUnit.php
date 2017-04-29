@@ -316,10 +316,10 @@ class JUnit extends Printer implements TestListener
 
         if ($test instanceof TestCase) {
             $class      = new ReflectionClass($test);
-            $methodName = $test->getName();
+            $methodName = $test->getName(!$test->usesDataProvider());
 
             if ($class->hasMethod($methodName)) {
-                $method = $class->getMethod($test->getName());
+                $method = $class->getMethod($methodName);
 
                 $testCase->setAttribute('class', $class->getName());
                 $testCase->setAttribute('classname', \str_replace('\\', '.', $class->getName()));
