@@ -2,11 +2,16 @@
 use PhpUnit\Framework\TestCase;
 
 /**
- * @runTestsInSeparateProcesses
+ * @runClassInSeparateProcess
  * @preserveGlobalState enabled
  */
-class Issue2591_SeparateFunctionPreserveTest extends TestCase
+class Issue2591_SeparateClassPreserveTest extends TestCase
 {
+    public function testOriginalGlobalString()
+    {
+        $this->assertEquals('Hello', $GLOBALS['globalString']);
+    }
+
     public function testChangedGlobalString()
     {
         $GLOBALS['globalString'] = "Hello!";
@@ -15,7 +20,7 @@ class Issue2591_SeparateFunctionPreserveTest extends TestCase
 
     public function testGlobalString()
     {
-        $this->assertEquals('Hello', $GLOBALS['globalString']);
+        $this->assertEquals('Hello!', $GLOBALS['globalString']);
     }
 
 }

@@ -5,7 +5,7 @@ use PhpUnit\Framework\TestCase;
  * @runTestsInSeparateProcesses
  * @preserveGlobalState disabled
  */
-class Issue2591Test extends TestCase
+class Issue2591_SeparateFunctionNoPreserveTest extends TestCase
 {
     public function testChangedGlobalString()
     {

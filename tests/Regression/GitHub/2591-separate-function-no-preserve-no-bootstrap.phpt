@@ -1,5 +1,6 @@
 --TEST--
 GH-2591: Test method process isolation without preserving global state and without loaded bootstrap.
+Expected result is to have an error, because of no classes loaded.
 --FILE--
 <?php
 
@@ -19,33 +20,25 @@ Time: %s, Memory: %s
 
 There were 2 errors:
 
-1) Issue2591Test::testChangedGlobalString
-PHPUnit\Framework\Exception: PHP Fatal error:  Class 'PhpUnit\Framework\TestCase' not found in %s/tests/Regression/GitHub/2591/SeparateFunctionNoPreserveTest.php on line 8
+1) Issue2591_SeparateFunctionNoPreserveTest::testChangedGlobalString
+PHPUnit\Framework\Exception: PHP Fatal error:  Class 'PhpUnit\Framework\TestCase' not found %s
 PHP Stack trace:
-PHP   1. {main}() -:0
-PHP   2. __phpunit_run_isolated_test() -:108
-PHP   3. require_once() -:30
+%a
 
-Fatal error: Class 'PhpUnit\Framework\TestCase' not found in %s/tests/Regression/GitHub/2591/SeparateFunctionNoPreserveTest.php on line 8
+Fatal error: Class 'PhpUnit\Framework\TestCase' not found in %s on line %s
 
 Call Stack:
-    %s     %s   1. {main}() -:0
-    %s     %s   2. __phpunit_run_isolated_test() -:108
-    %s     %s   3. require_once('%s/tests/Regression/GitHub/2591/SeparateFunctionNoPreserveTest.php') -:30
+%a
 
-2) Issue2591Test::testGlobalString
-PHPUnit\Framework\Exception: PHP Fatal error:  Class 'PhpUnit\Framework\TestCase' not found in %s/tests/Regression/GitHub/2591/SeparateFunctionNoPreserveTest.php on line 8
+2) Issue2591_SeparateFunctionNoPreserveTest::testGlobalString
+PHPUnit\Framework\Exception: PHP Fatal error:  Class 'PhpUnit\Framework\TestCase' not found %s
 PHP Stack trace:
-PHP   1. {main}() -:0
-PHP   2. __phpunit_run_isolated_test() -:108
-PHP   3. require_once() -:30
+%a
 
-Fatal error: Class 'PhpUnit\Framework\TestCase' not found in %s/tests/Regression/GitHub/2591/SeparateFunctionNoPreserveTest.php on line 8
+Fatal error: Class 'PhpUnit\Framework\TestCase' not found in %s on line %s
 
 Call Stack:
-    %s     %s   1. {main}() -:0
-    %s     %s   2. __phpunit_run_isolated_test() -:108
-    %s     %s   3. require_once('%s/tests/Regression/GitHub/2591/SeparateFunctionNoPreserveTest.php') -:30
+%a
 
 ERRORS!
 Tests: 2, Assertions: 0, Errors: 2.

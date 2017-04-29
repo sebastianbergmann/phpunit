@@ -452,6 +452,11 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $name
         );
 
+        $runClassInSeparateProcess = \PHPUnit\Util\Test::getClassProcessIsolationSettings(
+            $className,
+            $name
+        );
+
         $constructor = $theClass->getConstructor();
 
         if ($constructor !== null) {
@@ -544,6 +549,14 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
                             if ($runTestInSeparateProcess) {
                                 $_test->setRunTestInSeparateProcess(true);
+
+                                if ($preserveGlobalState !== null) {
+                                    $_test->setPreserveGlobalState($preserveGlobalState);
+                                }
+                            }
+
+                            if ($runClassInSeparateProcess) {
+                                $_test->setRunClassInSeparateProcess(true);
 
                                 if ($preserveGlobalState !== null) {
                                     $_test->setPreserveGlobalState($preserveGlobalState);
