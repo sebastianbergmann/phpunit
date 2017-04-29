@@ -866,6 +866,7 @@ class Test
         if (isset($annotations['class']['runClassInSeparateProcess'])) {
             return true;
         }
+
         return false;
     }
 
@@ -980,7 +981,7 @@ class Test
             }
         }
 
-        return null;
+        return;
     }
 
     /**

@@ -21,7 +21,7 @@ class Filter
      * Filters stack frames from PHPUnit classes.
      *
      * @param \Throwable $e
-     * @param bool      $asString
+     * @param bool       $asString
      *
      * @return string
      */

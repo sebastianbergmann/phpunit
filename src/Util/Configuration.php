@@ -1019,8 +1019,9 @@ class Configuration
      * if $value is 'false' or 'true', this returns the value that $value represents.
      * Otherwise, returns $default, which may be a string in rare cases.
      * See PHPUnit\Util\ConfigurationTest::testPHPConfigurationIsReadCorrectly
-     * @param string $value
-     * @param string|bool   $default
+     *
+     * @param string      $value
+     * @param string|bool $default
      *
      * @return string|bool
      */
