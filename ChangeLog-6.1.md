@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 6.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [6.1.3] - 2017-MM-DD
+## [6.1.3] - 2017-04-29
 
 * Fixed [#2661](https://github.com/sebastianbergmann/phpunit/pull/2661): Inconsistent information in JUnit XML logfile for tests that use data provider
 
