@@ -771,7 +771,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             return;
         }
 
-        if ( ($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true ) &&
+        if (($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
             $this->inIsolation !== true &&
             !$this instanceof PhptTestCase) {
             $class = new ReflectionClass($this);
@@ -844,7 +844,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     'phar'                                       => $phar,
                     'filename'                                   => $class->getFileName(),
                     'className'                                  => $class->getName(),
-                    'methodName'                                 => $runEntireClass? null : $this->name,
+                    'methodName'                                 => $runEntireClass ? null : $this->name,
                     'runEntireClass'                             => $runEntireClass,
                     'collectCodeCoverageInformation'             => $coverage,
                     'data'                                       => $data,
