@@ -838,31 +838,36 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
             $runEntireClass =  $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
 
+            $var = [
+                'composerAutoload'                           => $composerAutoload,
+                'phar'                                       => $phar,
+                'filename'                                   => $class->getFileName(),
+                'className'                                  => $class->getName(),
+                'runEntireClass'                             => $runEntireClass,
+                'collectCodeCoverageInformation'             => $coverage,
+                'data'                                       => $data,
+                'dataName'                                   => $dataName,
+                'dependencyInput'                            => $dependencyInput,
+                'constants'                                  => $constants,
+                'globals'                                    => $globals,
+                'include_path'                               => $includePath,
+                'included_files'                             => $includedFiles,
+                'iniSettings'                                => $iniSettings,
+                'isStrictAboutTestsThatDoNotTestAnything'    => $isStrictAboutTestsThatDoNotTestAnything,
+                'isStrictAboutOutputDuringTests'             => $isStrictAboutOutputDuringTests,
+                'enforcesTimeLimit'                          => $enforcesTimeLimit,
+                'isStrictAboutTodoAnnotatedTests'            => $isStrictAboutTodoAnnotatedTests,
+                'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
+                'codeCoverageFilter'                         => $codeCoverageFilter,
+                'configurationFilePath'                      => $configurationFilePath
+            ];
+
+            if (!$runEntireClass) {
+                $var['methodName'] = $this->name;
+            }
+
             $template->setVar(
-                [
-                    'composerAutoload'                           => $composerAutoload,
-                    'phar'                                       => $phar,
-                    'filename'                                   => $class->getFileName(),
-                    'className'                                  => $class->getName(),
-                    'methodName'                                 => $runEntireClass ? null : $this->name,
-                    'runEntireClass'                             => $runEntireClass,
-                    'collectCodeCoverageInformation'             => $coverage,
-                    'data'                                       => $data,
-                    'dataName'                                   => $dataName,
-                    'dependencyInput'                            => $dependencyInput,
-                    'constants'                                  => $constants,
-                    'globals'                                    => $globals,
-                    'include_path'                               => $includePath,
-                    'included_files'                             => $includedFiles,
-                    'iniSettings'                                => $iniSettings,
-                    'isStrictAboutTestsThatDoNotTestAnything'    => $isStrictAboutTestsThatDoNotTestAnything,
-                    'isStrictAboutOutputDuringTests'             => $isStrictAboutOutputDuringTests,
-                    'enforcesTimeLimit'                          => $enforcesTimeLimit,
-                    'isStrictAboutTodoAnnotatedTests'            => $isStrictAboutTodoAnnotatedTests,
-                    'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
-                    'codeCoverageFilter'                         => $codeCoverageFilter,
-                    'configurationFilePath'                      => $configurationFilePath
-                ]
+                $var
             );
 
             $this->prepareTemplate($template);
