@@ -23,7 +23,7 @@ There was 1 error:
 1) Issue2591_SeparateClassPreserveTest::testOriginalGlobalString
 Undefined index: globalString
 
-%s/SeparateClassPreserveTest.php:%d
+%sSeparateClassPreserveTest.php:%d
 
 ERRORS!
 Tests: 3, Assertions: 2, Errors: 1.
