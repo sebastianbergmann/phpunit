@@ -23,6 +23,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionFunction;
 use ReflectionMethod;
+use Traversable;
 
 /**
  * Test helpers.
@@ -517,7 +518,7 @@ class Test
                     $data = $dataProviderMethod->invoke($object, $methodName);
                 }
 
-                if ($data instanceof Iterator) {
+                if ($data instanceof Traversable) {
                     $data = \iterator_to_array($data);
                 }
 
