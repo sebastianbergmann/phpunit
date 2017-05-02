@@ -549,6 +549,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * @return string
+     */
+    public function getExpectedExceptionMessageRegExp()
+    {
+        return $this->expectedExceptionMessageRegExp;
+    }
+
+    /**
      * @param string $exception
      */
     public function expectException($exception)
