@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 6.1 release series are documented in this fil
 
 * Version 3.0.2 of `sebastian/environment` is now required
 
+### Fixed
+
+* Fixed [#2563](https://github.com/sebastianbergmann/phpunit/pull/2563): `phpunit --version` does not display version when running unsupported PHP
+
 ## [6.1.3] - 2017-04-29
 
 * Fixed [#2661](https://github.com/sebastianbergmann/phpunit/pull/2661): Inconsistent information in JUnit XML logfile for tests that use data provider
