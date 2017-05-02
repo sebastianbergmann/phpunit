@@ -37,6 +37,10 @@ class ExceptionMessageRegularExpression extends Constraint
      */
     protected function matches($other)
     {
+        if ($this->expectedMessageRegExp == '') {
+            return ($other->getMessage() == '');
+        }
+
         $match = RegularExpressionUtil::safeMatch($this->expectedMessageRegExp, $other->getMessage());
 
         if (false === $match) {
