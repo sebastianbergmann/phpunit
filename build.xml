@@ -339,6 +339,9 @@
             <arg path="${basedir}/build/phar" />
         </exec>
 
+        <copy file="${basedir}/build/binary-phar-autoload.php.in" tofile="${basedir}/build/binary-phar-autoload.php"/>
+        <replace file="${basedir}/build/binary-phar-autoload.php" token="X.Y.Z" value="${_version}"/>
+
         <exec executable="${basedir}/build/tools/phpab" taskname="phpab">
             <arg value="--all" />
             <arg value="--nolower" />
@@ -349,13 +352,14 @@
             <arg value="--output" />
             <arg path="${basedir}/build/phpunit-${_version}.phar" />
             <arg value="--template" />
-            <arg path="${basedir}/build/binary-phar-autoload.php.in" />
+            <arg path="${basedir}/build/binary-phar-autoload.php" />
             <arg path="${basedir}/build/phar" />
         </exec>
 
         <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
 
         <delete dir="${basedir}/build/phar"/>
+        <delete file="${basedir}/build/binary-phar-autoload.php"/>
     </target>
 
     <target name="-phar-determine-version">
