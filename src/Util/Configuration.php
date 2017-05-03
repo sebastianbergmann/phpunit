@@ -30,6 +30,7 @@ use PHPUnit\TextUI\ResultPrinter;
  *          columns="80"
  *          colors="false"
  *          stderr="false"
+ *          convertDeprecationsToExceptions="true"
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
@@ -610,6 +611,13 @@ class Configuration
         if ($root->getAttribute('bootstrap')) {
             $result['bootstrap'] = $this->toAbsolutePath(
                 (string) $root->getAttribute('bootstrap')
+            );
+        }
+
+        if ($root->hasAttribute('convertDeprecationsToExceptions')) {
+            $result['convertDeprecationsToExceptions'] = $this->getBoolean(
+                (string) $root->getAttribute('convertDeprecationsToExceptions'),
+                true
             );
         }
 
