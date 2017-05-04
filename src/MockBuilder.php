@@ -170,7 +170,7 @@ class MockBuilder
     }
 
     /**
-     * Specifies the subset of methods to mock. Default is to mock all of them.
+     * Specifies the subset of methods to mock. Default is to mock none of them.
      *
      * @param array|null $methods
      *
