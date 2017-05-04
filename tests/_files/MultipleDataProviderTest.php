@@ -57,9 +57,11 @@ class MultipleDataProviderTest extends TestCase
 
     public static function providerE()
     {
-        yield [null, 'ok', null];
-        yield [null, 'ok', null];
-        yield [null, 'ok', null];
+        return new WrapperIteratorAggregate([
+            [null, 'ok', null],
+            [null, 'ok', null],
+            [null, 'ok', null],
+        ]);
     }
 
     public static function providerF()
