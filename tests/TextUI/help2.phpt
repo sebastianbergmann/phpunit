@@ -85,6 +85,7 @@ Test Execution Options:
 Configuration Options:
 
   --bootstrap <file>          A "bootstrap" PHP file that is run before the tests.
+  --no-bootstrap              Ignore default bootstrap from configuration file.
   -c|--configuration <file>   Read configuration from XML file.
   --no-configuration          Ignore default configuration file (phpunit.xml).
   --no-coverage               Ignore code coverage configuration.
