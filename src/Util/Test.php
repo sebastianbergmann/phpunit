@@ -968,7 +968,7 @@ class Test
             }
         }
 
-        return null;
+        return;
     }
 
     /**
