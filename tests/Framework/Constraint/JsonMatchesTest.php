@@ -33,7 +33,7 @@ class JsonMatchesTest extends TestCase
         $constraint = new JsonMatches($jsonValue);
         try {
             $constraint->evaluate($jsonOther, '', false);
-            $this->fail(sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
+            $this->fail(\sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
         } catch (ExpectationFailedException $expectedException) {
             $comparisonFailure = $expectedException->getComparisonFailure();
             $this->assertNotNull($comparisonFailure);
@@ -74,7 +74,7 @@ class JsonMatchesTest extends TestCase
     public static function evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider()
     {
         return [
-            'error UTF-8'                             => [json_encode('\xB1\x31'), json_encode(['Mascott' => 'Tux'])],
+            'error UTF-8'                             => [\json_encode('\xB1\x31'), \json_encode(['Mascott' => 'Tux'])],
             'string type not equals number'           => ['{"age": "5"}', '{"age": 5}'],
             'string type not equals boolean'          => ['{"age": "true"}', '{"age": true}'],
             'string type not equals null'             => ['{"age": "null"}', '{"age": null}'],

@@ -73,12 +73,14 @@ class JsonMatches extends Constraint
             list($error) = $this->canonicalizeJson($other);
             if ($error) {
                 parent::fail($other, $description);
+
                 return;
             }
 
             list($error) = $this->canonicalizeJson($this->value);
             if ($error) {
                 parent::fail($other, $description);
+
                 return;
             }
 
