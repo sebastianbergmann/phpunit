@@ -76,7 +76,7 @@ class ExceptionWrapper extends Exception
      */
     public function getOriginalException()
     {
-        return $this->originalException;   
+        return $this->originalException;
     }
 
     /**
