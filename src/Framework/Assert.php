@@ -1965,9 +1965,9 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param string $expectedFile
-     * @param string $actualXml
-     * @param string $message
+     * @param string             $expectedFile
+     * @param string|DOMDocument $actualXml
+     * @param string             $message
      */
     public static function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
     {
@@ -1980,9 +1980,9 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param string $expectedFile
-     * @param string $actualXml
-     * @param string $message
+     * @param string             $expectedFile
+     * @param string|DOMDocument $actualXml
+     * @param string             $message
      */
     public static function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '')
     {
@@ -1995,9 +1995,9 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param string $expectedXml
-     * @param string $actualXml
-     * @param string $message
+     * @param string|DOMDocument $expectedXml
+     * @param string|DOMDocument $actualXml
+     * @param string             $message
      */
     public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
     {
@@ -2010,9 +2010,9 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param string $expectedXml
-     * @param string $actualXml
-     * @param string $message
+     * @param string|DOMDocument $expectedXml
+     * @param string|DOMDocument $actualXml
+     * @param string             $message
      */
     public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
     {
