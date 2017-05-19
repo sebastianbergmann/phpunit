@@ -536,7 +536,22 @@ class TestRunner extends BaseTestRunner
             $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
         }
 
+        $suite_run_ok = false;
+        if ($this->printer instanceof PHPUnit_TextUI_ResultPrinter && isset($arguments['shutdownManager'])) {
+            $printer = $this->printer;
+            $shutdown = function() use ($result, $printer, &$suite_run_ok) {
+                if (!$suite_run_ok) {
+                    $suite_run_ok = true;
+                    $result->flushListeners();
+                    $printer->printResult($result);
+                }
+            };
+            $arguments['shutdownManager']($shutdown);
+        }
+
         $suite->run($result);
+
+        $suite_run_ok = true;
 
         unset($suite);
         $result->flushListeners();

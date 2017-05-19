@@ -148,6 +148,8 @@ class Command
      */
     public function run(array $argv, $exit = true)
     {
+        $this->arguments['shutdownManager'] = $this->installShutdownManager();
+
         $this->handleArguments($argv);
 
         $runner = $this->createRunner();
@@ -224,6 +226,21 @@ class Command
         }
 
         return $return;
+    }
+
+    protected function installShutdownManager()
+    {
+        $shutdowns = [];
+        $shutdown = function() use (&$shutdowns) {
+            foreach ($shutdowns as $shutdown) {
+                $shutdown();
+            }
+        };
+        $register = function($shutdown) use (&$shutdowns) {
+            $shutdowns[] = $shutdown;
+        };
+        register_shutdown_function($shutdown);
+        return $register;
     }
 
     /**
