@@ -643,7 +643,6 @@ Failed asserting that two strings are equal.
  'a\\n
 -b\\n
 +p\\n
-
 @@ @@
  i\\n
 -j\\n
@@ -738,12 +737,10 @@ Failed asserting that two objects are equal.
          1 => Array (
 -            0 => 1
 +            0 => 4
-
 @@ @@
          'foo' => 'a\\n
 -        b\\n
 +        p\\n
-
 @@ @@
          i\\n
 -        j\\n
