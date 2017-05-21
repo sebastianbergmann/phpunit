@@ -138,7 +138,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @var bool
      */
-    private $runClassInSeparateProcess;
+    protected $runClassInSeparateProcess;
 
     /**
      * Whether or not this test should preserve the global state when
