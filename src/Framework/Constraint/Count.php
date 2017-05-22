@@ -56,11 +56,11 @@ class Count extends Constraint
         }
 
         if ($other instanceof Traversable) {
-            if ($other instanceof IteratorAggregate) {
-                $iterator = $other->getIterator();
-            } else {
-                $iterator = $other;
+            while ($other instanceof IteratorAggregate) {
+                $other = $other->getIterator();
             }
+
+            $iterator = $other;
 
             if ($iterator instanceof Generator) {
                 return $this->getCountOfGenerator($iterator);
