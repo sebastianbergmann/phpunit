@@ -24,8 +24,10 @@ class CountTest extends TestCase
 
         $countConstraint = new Count(2);
         $it              = new \TestIterator([1, 2]);
+        $ia              = new \TestIteratorAggregate($it);
 
         $this->assertTrue($countConstraint->evaluate($it, '', true));
+        $this->assertTrue($countConstraint->evaluate($ia, '', true));
     }
 
     public function testCountDoesNotChangeIteratorKey()
@@ -59,6 +61,22 @@ class CountTest extends TestCase
 
         $it->next();
         $countConstraint->evaluate($it, '', true);
+        $this->assertFalse($it->valid());
+
+        // test with IteratorAggregate
+        $it = new \TestIterator([1, 2]);
+        $ia = new \TestIteratorAggregate($it);
+
+        $countConstraint = new Count(2);
+        $countConstraint->evaluate($ia, '', true);
+        $this->assertEquals(1, $it->current());
+
+        $it->next();
+        $countConstraint->evaluate($ia, '', true);
+        $this->assertEquals(2, $it->current());
+
+        $it->next();
+        $countConstraint->evaluate($ia, '', true);
         $this->assertFalse($it->valid());
     }
 
