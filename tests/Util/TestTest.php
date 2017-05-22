@@ -613,6 +613,23 @@ class TestTest extends TestCase
         $this->assertEquals(3, $cCount);
     }
 
+    public function testWithVariousIterableDataProviders()
+    {
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'test');
+
+        $this->assertEquals([
+            ['A'],
+            ['B'],
+            ['C'],
+            ['D'],
+            ['E'],
+            ['F'],
+            ['G'],
+            ['H'],
+            ['I'],
+        ], $dataSets);
+    }
+
     public function testTestWithEmptyAnnotation()
     {
         $result = Test::getDataFromTestWithAnnotation("/**\n * @anotherAnnotation\n */");
