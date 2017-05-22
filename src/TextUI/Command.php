@@ -876,9 +876,7 @@ class Command
         if (\class_exists($printerClass)) {
             $class = new ReflectionClass($printerClass);
 
-            if ($class->implementsInterface(TestListener::class) &&
-                $class->isSubclassOf(Printer::class) &&
-                $class->isInstantiable()) {
+            if ($class->implementsInterface(TestListener::class) && $class->isInstantiable()) {
                 if ($class->isSubclassOf(ResultPrinter::class)) {
                     return $printerClass;
                 }
