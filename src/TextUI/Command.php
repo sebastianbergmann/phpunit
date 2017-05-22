@@ -90,6 +90,7 @@ class Command
         'loader='                   => null,
         'log-junit='                => null,
         'log-teamcity='             => null,
+        'no-bootstrap'              => null,
         'no-configuration'          => null,
         'no-coverage'               => null,
         'no-extensions'             => null,
@@ -301,6 +302,10 @@ class Command
 
                 case '--bootstrap':
                     $this->arguments['bootstrap'] = $option[1];
+                    break;
+
+                case '--no-bootstrap':
+                    $this->arguments['bootstrap'] = "";
                     break;
 
                 case '--columns':
@@ -725,7 +730,9 @@ class Command
              * Issue #1216
              */
             if (isset($this->arguments['bootstrap'])) {
-                $this->handleBootstrap($this->arguments['bootstrap']);
+                if (!empty($this->arguments['bootstrap'])) {
+                    $this->handleBootstrap($this->arguments['bootstrap']);
+                }
             } elseif (isset($phpunitConfiguration['bootstrap'])) {
                 $this->handleBootstrap($phpunitConfiguration['bootstrap']);
             }
@@ -1014,6 +1021,7 @@ Test Execution Options:
 Configuration Options:
 
   --bootstrap <file>          A "bootstrap" PHP file that is run before the tests.
+  --no-bootstrap              Ignore default bootstrap from configuration file.
   -c|--configuration <file>   Read configuration from XML file.
   --no-configuration          Ignore default configuration file (phpunit.xml).
   --no-coverage               Ignore code coverage configuration.
