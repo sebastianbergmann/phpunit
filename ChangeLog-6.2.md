@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 6.2 release series are documented in this fil
 
 ### Added
 
+* Implemented [#2642](https://github.com/sebastianbergmann/phpunit/pull/2642): Support counting non-`Iterator` `Traversable` objects
 * Implemented [#2666](https://github.com/sebastianbergmann/phpunit/pull/2666): Allow using a `Traversable` as data provider (not only `Iterator`)
 * Implemented [#2670](https://github.com/sebastianbergmann/phpunit/issues/2670): Add support for disabling the conversion of `E_DEPRECATED` to exceptions
 
