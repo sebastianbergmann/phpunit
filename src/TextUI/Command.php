@@ -92,6 +92,7 @@ class Command
         'log-teamcity='             => null,
         'no-configuration'          => null,
         'no-coverage'               => null,
+        'no-logging'                => null,
         'no-extensions'             => null,
         'printer='                  => null,
         'process-isolation'         => null,
@@ -561,6 +562,10 @@ class Command
                     $this->arguments['noCoverage'] = true;
                     break;
 
+                case '--no-logging':
+                    $this->arguments['noLogging'] = true;
+                    break;
+
                 case '--globals-backup':
                     $this->arguments['backupGlobals'] = true;
                     break;
@@ -1017,6 +1022,7 @@ Configuration Options:
   -c|--configuration <file>   Read configuration from XML file.
   --no-configuration          Ignore default configuration file (phpunit.xml).
   --no-coverage               Ignore code coverage configuration.
+  --no-logging                Ignore logging configuration.
   --no-extensions             Do not load PHPUnit extensions.
   --include-path <path(s)>    Prepend PHP's include_path with given path(s).
   -d key[=value]              Sets a php.ini value.
