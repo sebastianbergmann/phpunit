@@ -339,58 +339,75 @@ class TestRunner extends BaseTestRunner
 
         $result->addListener($this->printer);
 
-        if (isset($arguments['testdoxHTMLFile'])) {
-            $result->addListener(
-                new HtmlResultPrinter(
-                    $arguments['testdoxHTMLFile'],
-                    $arguments['testdoxGroups'],
-                    $arguments['testdoxExcludeGroups']
-                )
-            );
-        }
-
-        if (isset($arguments['testdoxTextFile'])) {
-            $result->addListener(
-                new TextResultPrinter(
-                    $arguments['testdoxTextFile'],
-                    $arguments['testdoxGroups'],
-                    $arguments['testdoxExcludeGroups']
-                )
-            );
-        }
-
-        if (isset($arguments['testdoxXMLFile'])) {
-            $result->addListener(
-                new XmlResultPrinter(
-                    $arguments['testdoxXMLFile']
-                )
-            );
-        }
-
         $codeCoverageReports = 0;
 
-        if (isset($arguments['coverageClover'])) {
-            $codeCoverageReports++;
-        }
+        if (!isset($arguments['noLogging'])) {
+            if (isset($arguments['testdoxHTMLFile'])) {
+                $result->addListener(
+                    new HtmlResultPrinter(
+                        $arguments['testdoxHTMLFile'],
+                        $arguments['testdoxGroups'],
+                        $arguments['testdoxExcludeGroups']
+                    )
+                );
+            }
 
-        if (isset($arguments['coverageCrap4J'])) {
-            $codeCoverageReports++;
-        }
+            if (isset($arguments['testdoxTextFile'])) {
+                $result->addListener(
+                    new TextResultPrinter(
+                        $arguments['testdoxTextFile'],
+                        $arguments['testdoxGroups'],
+                        $arguments['testdoxExcludeGroups']
+                    )
+                );
+            }
 
-        if (isset($arguments['coverageHtml'])) {
-            $codeCoverageReports++;
-        }
+            if (isset($arguments['testdoxXMLFile'])) {
+                $result->addListener(
+                    new XmlResultPrinter(
+                        $arguments['testdoxXMLFile']
+                    )
+                );
+            }
 
-        if (isset($arguments['coveragePHP'])) {
-            $codeCoverageReports++;
-        }
+            if (isset($arguments['teamcityLogfile'])) {
+                $result->addListener(
+                    new TeamCity($arguments['teamcityLogfile'])
+                );
+            }
 
-        if (isset($arguments['coverageText'])) {
-            $codeCoverageReports++;
-        }
+            if (isset($arguments['junitLogfile'])) {
+                $result->addListener(
+                    new JUnit(
+                        $arguments['junitLogfile'],
+                        $arguments['reportUselessTests']
+                    )
+                );
+            }
 
-        if (isset($arguments['coverageXml'])) {
-            $codeCoverageReports++;
+            if (isset($arguments['coverageClover'])) {
+                $codeCoverageReports++;
+            }
+
+            if (isset($arguments['coverageCrap4J'])) {
+                $codeCoverageReports++;
+            }
+
+            if (isset($arguments['coverageHtml'])) {
+                $codeCoverageReports++;
+            }
+
+            if (isset($arguments['coveragePHP'])) {
+                $codeCoverageReports++;
+            }
+
+            if (isset($arguments['coverageText'])) {
+                $codeCoverageReports++;
+            }
+
+            if (isset($arguments['coverageXml'])) {
+                $codeCoverageReports++;
+            }
         }
 
         if (isset($arguments['noCoverage'])) {
@@ -506,21 +523,6 @@ class TestRunner extends BaseTestRunner
             if ($codeCoverageReports > 1 && isset($arguments['cacheTokens'])) {
                 $codeCoverage->setCacheTokens($arguments['cacheTokens']);
             }
-        }
-
-        if (isset($arguments['teamcityLogfile'])) {
-            $result->addListener(
-                new TeamCity($arguments['teamcityLogfile'])
-            );
-        }
-
-        if (isset($arguments['junitLogfile'])) {
-            $result->addListener(
-                new JUnit(
-                    $arguments['junitLogfile'],
-                    $arguments['reportUselessTests']
-                )
-            );
         }
 
         $result->beStrictAboutTestsThatDoNotTestAnything($arguments['reportUselessTests']);
