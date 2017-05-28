@@ -29,6 +29,7 @@ use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
 use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit\Framework\Constraint\IsNull;
+use PHPUnit\Framework\Constraint\IsReadable;
 use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\LessThan;
@@ -1563,6 +1564,16 @@ function isNan()
 function isNull()
 {
     return Assert::isNull();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsReadable matcher object.
+ *
+ * @return IsReadable
+ */
+function isReadable()
+{
+  return Assert::isReadable();
 }
 
 /**
