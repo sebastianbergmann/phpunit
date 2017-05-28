@@ -27,6 +27,7 @@ use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInfinite;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
+use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Constraint\IsType;
@@ -1542,6 +1543,16 @@ function isInstanceOf($className)
 function isJson()
 {
     return Assert::isJson();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsNan matcher object.
+ *
+ * @return IsNan
+ */
+function isNan()
+{
+  return Assert::isNan();
 }
 
 /**
