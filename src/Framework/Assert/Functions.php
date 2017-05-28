@@ -16,6 +16,7 @@ use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
+use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
@@ -1401,6 +1402,16 @@ function containsOnlyInstancesOf($classname)
 function countOf($count)
 {
     return Assert::countOf(...\func_get_args());
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_DirectoryExists matcher object.
+ *
+ * @return DirectoryExists
+ */
+function directoryExists()
+{
+  return Assert::directoryExists();
 }
 
 /**
