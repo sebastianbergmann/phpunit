@@ -1415,7 +1415,7 @@ function countOf($count)
  */
 function directoryExists()
 {
-  return Assert::directoryExists();
+    return Assert::directoryExists();
 }
 
 /**
@@ -1522,7 +1522,7 @@ function isFalse()
  */
 function isInfinite()
 {
-  return Assert::isInfinite();
+    return Assert::isInfinite();
 }
 
 /**
@@ -1554,7 +1554,7 @@ function isJson()
  */
 function isNan()
 {
-  return Assert::isNan();
+    return Assert::isNan();
 }
 
 /**
@@ -1574,7 +1574,7 @@ function isNull()
  */
 function isReadable()
 {
-  return Assert::isReadable();
+    return Assert::isReadable();
 }
 
 /**
@@ -1606,7 +1606,7 @@ function isType($type)
  */
 function isWritable()
 {
-  return Assert::isWritable();
+    return Assert::isWritable();
 }
 
 /**
