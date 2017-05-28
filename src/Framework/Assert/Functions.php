@@ -24,6 +24,7 @@ use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsIdentical;
+use PHPUnit\Framework\Constraint\IsInfinite;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
 use PHPUnit\Framework\Constraint\IsNull;
@@ -1509,6 +1510,16 @@ function isEmpty()
 function isFalse()
 {
     return Assert::isFalse();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsInfinite matcher object.
+ *
+ * @return IsInfinite
+ */
+function isInfinite()
+{
+  return Assert::isInfinite();
 }
 
 /**
