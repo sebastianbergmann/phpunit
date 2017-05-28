@@ -32,6 +32,7 @@ use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
 use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Constraint\IsType;
+use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
@@ -1596,6 +1597,16 @@ function isTrue()
 function isType($type)
 {
     return Assert::isType(...\func_get_args());
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsWritable matcher object.
+ *
+ * @return IsWritable
+ */
+function isWritable()
+{
+  return Assert::isWritable();
 }
 
 /**
