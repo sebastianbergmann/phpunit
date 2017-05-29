@@ -134,6 +134,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected $runTestInSeparateProcess;
 
     /**
+     * Whether or not this class is to be run in a separate PHP process.
+     *
+     * @var bool
+     */
+    protected $runClassInSeparateProcess;
+
+    /**
      * Whether or not this test should preserve the global state when
      * running in a separate PHP process.
      *
@@ -764,7 +771,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             return;
         }
 
-        if ($this->runTestInSeparateProcess === true &&
+        if (($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
             $this->inIsolation !== true &&
             !$this instanceof PhptTestCase) {
             $class = new ReflectionClass($this);
@@ -829,13 +836,16 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
             $configurationFilePath = $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] ?? '';
 
+            $runEntireClass =  $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
+
             $template->setVar(
                 [
                     'composerAutoload'                           => $composerAutoload,
                     'phar'                                       => $phar,
                     'filename'                                   => $class->getFileName(),
                     'className'                                  => $class->getName(),
-                    'methodName'                                 => $this->name,
+                    'methodName'                                 => $runEntireClass ? null : $this->name,
+                    'runEntireClass'                             => $runEntireClass,
                     'collectCodeCoverageInformation'             => $coverage,
                     'data'                                       => $data,
                     'dataName'                                   => $dataName,
@@ -1242,6 +1252,22 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if (\is_bool($runTestInSeparateProcess)) {
             if ($this->runTestInSeparateProcess === null) {
                 $this->runTestInSeparateProcess = $runTestInSeparateProcess;
+            }
+        } else {
+            throw InvalidArgumentHelper::factory(1, 'boolean');
+        }
+    }
+
+    /**
+     * @param bool $runClassInSeparateProcess
+     *
+     * @throws Exception
+     */
+    public function setRunClassInSeparateProcess($runClassInSeparateProcess)
+    {
+        if (\is_bool($runClassInSeparateProcess)) {
+            if ($this->runClassInSeparateProcess === null) {
+                $this->runClassInSeparateProcess = $runClassInSeparateProcess;
             }
         } else {
             throw InvalidArgumentHelper::factory(1, 'boolean');
