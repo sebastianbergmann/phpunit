@@ -770,15 +770,23 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             !$this->handleDependencies()) {
             return;
         }
+        
+        $runEntireClass =  $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
 
         if (($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
             $this->inIsolation !== true &&
             !$this instanceof PhptTestCase) {
             $class = new ReflectionClass($this);
 
-            $template = new Text_Template(
-                __DIR__ . '/../Util/PHP/Template/TestCaseMethod.tpl'
-            );
+            if ($runEntireClass) {
+	            $template = new Text_Template(
+	                __DIR__ . '/../Util/PHP/Template/TestCaseClass.tpl'
+	            );
+            } else {
+                $template = new Text_Template(
+                    __DIR__ . '/../Util/PHP/Template/TestCaseMethod.tpl'
+                );
+            }
 
             if ($this->preserveGlobalState) {
                 $constants     = GlobalState::getConstantsAsString();
@@ -836,14 +844,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
             $configurationFilePath = $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] ?? '';
 
-            $runEntireClass =  $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
-
             $var = [
                 'composerAutoload'                           => $composerAutoload,
                 'phar'                                       => $phar,
                 'filename'                                   => $class->getFileName(),
                 'className'                                  => $class->getName(),
-                'runEntireClass'                             => $runEntireClass,
                 'collectCodeCoverageInformation'             => $coverage,
                 'data'                                       => $data,
                 'dataName'                                   => $dataName,
