@@ -16,6 +16,7 @@ use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
+use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
@@ -23,11 +24,15 @@ use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsIdentical;
+use PHPUnit\Framework\Constraint\IsInfinite;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
+use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit\Framework\Constraint\IsNull;
+use PHPUnit\Framework\Constraint\IsReadable;
 use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Constraint\IsType;
+use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
@@ -1213,9 +1218,9 @@ function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = ''
 /**
  * Asserts that two XML documents are equal.
  *
- * @param string $expectedFile
- * @param string $actualXml
- * @param string $message
+ * @param string             $expectedFile
+ * @param string|DOMDocument $actualXml
+ * @param string             $message
  */
 function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
 {
@@ -1225,9 +1230,9 @@ function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
 /**
  * Asserts that two XML documents are equal.
  *
- * @param string $expectedXml
- * @param string $actualXml
- * @param string $message
+ * @param string|DOMDocument $expectedXml
+ * @param string|DOMDocument $actualXml
+ * @param string             $message
  */
 function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
 {
@@ -1237,9 +1242,9 @@ function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
 /**
  * Asserts that two XML documents are not equal.
  *
- * @param string $expectedFile
- * @param string $actualXml
- * @param string $message
+ * @param string             $expectedFile
+ * @param string|DOMDocument $actualXml
+ * @param string             $message
  */
 function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '')
 {
@@ -1249,9 +1254,9 @@ function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '
 /**
  * Asserts that two XML documents are not equal.
  *
- * @param string $expectedXml
- * @param string $actualXml
- * @param string $message
+ * @param string|DOMDocument $expectedXml
+ * @param string|DOMDocument $actualXml
+ * @param string             $message
  */
 function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
 {
@@ -1404,6 +1409,16 @@ function countOf($count)
 }
 
 /**
+ * Returns a PHPUnit_Framework_Constraint_DirectoryExists matcher object.
+ *
+ * @return DirectoryExists
+ */
+function directoryExists()
+{
+    return Assert::directoryExists();
+}
+
+/**
  * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object.
  *
  * @param mixed $value
@@ -1501,6 +1516,16 @@ function isFalse()
 }
 
 /**
+ * Returns a PHPUnit_Framework_Constraint_IsInfinite matcher object.
+ *
+ * @return IsInfinite
+ */
+function isInfinite()
+{
+    return Assert::isInfinite();
+}
+
+/**
  * Returns a PHPUnit_Framework_Constraint_IsInstanceOf matcher object.
  *
  * @param string $className
@@ -1523,6 +1548,16 @@ function isJson()
 }
 
 /**
+ * Returns a PHPUnit_Framework_Constraint_IsNan matcher object.
+ *
+ * @return IsNan
+ */
+function isNan()
+{
+    return Assert::isNan();
+}
+
+/**
  * Returns a PHPUnit_Framework_Constraint_IsNull matcher object.
  *
  * @return IsNull
@@ -1530,6 +1565,16 @@ function isJson()
 function isNull()
 {
     return Assert::isNull();
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsReadable matcher object.
+ *
+ * @return IsReadable
+ */
+function isReadable()
+{
+    return Assert::isReadable();
 }
 
 /**
@@ -1552,6 +1597,16 @@ function isTrue()
 function isType($type)
 {
     return Assert::isType(...\func_get_args());
+}
+
+/**
+ * Returns a PHPUnit_Framework_Constraint_IsWritable matcher object.
+ *
+ * @return IsWritable
+ */
+function isWritable()
+{
+    return Assert::isWritable();
 }
 
 /**

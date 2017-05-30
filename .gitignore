@@ -6,6 +6,7 @@
 /build/phpdox
 /build/*.phar
 /build/*.phar.asc
+/build/binary-phar-autoload.php
 /tests/TextUI/*.diff
 /tests/TextUI/*.exp
 /tests/TextUI/*.log

@@ -173,7 +173,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * The name of the expected Exception.
      *
-     * @var string
+     * @var null|string
      */
     private $expectedException;
 
@@ -194,7 +194,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * The code of the expected Exception.
      *
-     * @var int|string
+     * @var null|int|string
      */
     private $expectedExceptionCode;
 
@@ -532,7 +532,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @return string
+     * @return null|string
      */
     public function getExpectedException()
     {
@@ -540,7 +540,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @return int|string
+     * @return null|int|string
      */
     public function getExpectedExceptionCode()
     {
@@ -553,6 +553,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function getExpectedExceptionMessage()
     {
         return $this->expectedExceptionMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getExpectedExceptionMessageRegExp()
+    {
+        return $this->expectedExceptionMessageRegExp;
     }
 
     /**
@@ -1085,8 +1093,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     )
                 );
 
-                if (\is_string($this->expectedExceptionMessage) &&
-                    !empty($this->expectedExceptionMessage)) {
+                if (!empty($this->expectedExceptionMessage)) {
                     $this->assertThat(
                         $e,
                         new ExceptionMessage(
@@ -1095,8 +1102,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     );
                 }
 
-                if (\is_string($this->expectedExceptionMessageRegExp) &&
-                    !empty($this->expectedExceptionMessageRegExp)) {
+                if (!empty($this->expectedExceptionMessageRegExp)) {
                     $this->assertThat(
                         $e,
                         new ExceptionMessageRegularExpression(

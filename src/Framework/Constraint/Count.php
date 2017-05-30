@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use Countable;
+use Iterator;
 use IteratorAggregate;
 use Traversable;
 use Generator;
@@ -63,6 +64,10 @@ class Count extends Constraint
 
             if ($iterator instanceof Generator) {
                 return $this->getCountOfGenerator($iterator);
+            }
+
+            if (!$iterator instanceof Iterator) {
+                return \iterator_count($iterator);
             }
 
             $key   = $iterator->key();

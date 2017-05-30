@@ -7,6 +7,7 @@
          columns="80"
          colors="false"
          stderr="false"
+         convertDeprecationsToExceptions="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"

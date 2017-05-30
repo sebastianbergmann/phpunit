@@ -308,6 +308,7 @@ class ConfigurationTest extends TestCase
             'columns'                                    => 80,
             'colors'                                     => 'never',
             'stderr'                                     => false,
+            'convertDeprecationsToExceptions'            => true,
             'convertErrorsToExceptions'                  => true,
             'convertNoticesToExceptions'                 => true,
             'convertWarningsToExceptions'                => true,

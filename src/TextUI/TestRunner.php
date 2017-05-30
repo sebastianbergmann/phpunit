@@ -10,6 +10,7 @@
 
 namespace PHPUnit\TextUI;
 
+use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\Exception;
@@ -220,6 +221,10 @@ class TestRunner extends BaseTestRunner
 
         if (!$arguments['convertErrorsToExceptions']) {
             $result->convertErrorsToExceptions(false);
+        }
+
+        if (!$arguments['convertDeprecationsToExceptions']) {
+            Deprecated::$enabled = false;
         }
 
         if (!$arguments['convertNoticesToExceptions']) {
@@ -781,6 +786,10 @@ class TestRunner extends BaseTestRunner
                 $arguments['colors'] = $phpunitConfiguration['colors'];
             }
 
+            if (isset($phpunitConfiguration['convertDeprecationsToExceptions']) && !isset($arguments['convertDeprecationsToExceptions'])) {
+                $arguments['convertDeprecationsToExceptions'] = $phpunitConfiguration['convertDeprecationsToExceptions'];
+            }
+
             if (isset($phpunitConfiguration['convertErrorsToExceptions']) && !isset($arguments['convertErrorsToExceptions'])) {
                 $arguments['convertErrorsToExceptions'] = $phpunitConfiguration['convertErrorsToExceptions'];
             }
@@ -1040,6 +1049,7 @@ class TestRunner extends BaseTestRunner
         $arguments['cacheTokens']                                     = $arguments['cacheTokens'] ?? false;
         $arguments['colors']                                          = $arguments['colors'] ?? ResultPrinter::COLOR_DEFAULT;
         $arguments['columns']                                         = $arguments['columns'] ?? 80;
+        $arguments['convertDeprecationsToExceptions']                 = $arguments['convertDeprecationsToExceptions'] ?? true;
         $arguments['convertErrorsToExceptions']                       = $arguments['convertErrorsToExceptions'] ?? true;
         $arguments['convertNoticesToExceptions']                      = $arguments['convertNoticesToExceptions'] ?? true;
         $arguments['convertWarningsToExceptions']                     = $arguments['convertWarningsToExceptions'] ?? true;
