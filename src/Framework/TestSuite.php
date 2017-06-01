@@ -451,10 +451,21 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             } // TestCase($name, $data)
             else {
                 try {
+                    // We must set an error handler if we want to catch warnings
+                    // possibly thrown by our data provider.
+                    $oldErrorHandler = set_error_handler(
+                        ['PHPUnit_Util_ErrorHandler', 'handleError'],
+                        E_ALL | E_STRICT
+                    );
+
                     $data = PHPUnit_Util_Test::getProvidedData(
                         $className,
                         $name
                     );
+
+                    if ($oldErrorHandler !== null) {
+                        restore_error_handler();
+                    }
                 } catch (PHPUnit_Framework_IncompleteTestError $e) {
                     $message = sprintf(
                         'Test for %s::%s marked incomplete by data provider',
