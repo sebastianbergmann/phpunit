@@ -32,11 +32,6 @@ class ExceptionWrapper extends Exception
      * @var ExceptionWrapper|null
      */
     protected $previous;
-    
-    /**
-     * @var Throwable
-     */
-    protected $originalException;
 
     /**
      * @param Throwable $t
@@ -50,7 +45,6 @@ class ExceptionWrapper extends Exception
         $this->className = \get_class($t);
         $this->file      = $t->getFile();
         $this->line      = $t->getLine();
-        $this->originalException = $t;
 
         $this->serializableTrace = $t->getTrace();
 
@@ -69,14 +63,6 @@ class ExceptionWrapper extends Exception
     public function getClassName()
     {
         return $this->className;
-    }
-    
-    /**
-     * @return Throwable
-     */
-    public function getOriginalException()
-    {
-        return $this->originalException;
     }
 
     /**
