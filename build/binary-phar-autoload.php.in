@@ -21,6 +21,15 @@ if (__FILE__ == realpath($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
     $execute = false;
 }
 
+if (file_exists('./vendor/phpunit/phpunit/phpunit') && file_exists($auto='./vendor/autoload.php')) {
+  echo "\n==== Redirecting to composer installed version in vendor/phpunit ====\n\n";
+  define ('PHPUNIT_COMPOSER_INSTALL', realpath($auto));
+  require PHPUNIT_COMPOSER_INSTALL;
+  PHPUnit_TextUI_Command::main();
+  exit(0);
+}
+unset($auto);
+
 define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', __FILE__));
 define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
