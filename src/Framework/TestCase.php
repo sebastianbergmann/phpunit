@@ -770,7 +770,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             !$this->handleDependencies()) {
             return;
         }
-        
+
         $runEntireClass =  $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
 
         if (($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&

@@ -82,8 +82,8 @@ class CountTest extends TestCase
         $this->assertFalse($it->valid());
 
         // test with nested IteratorAggregate
-        $it = new \TestIterator([1, 2]);
-        $ia = new \TestIteratorAggregate($it);
+        $it  = new \TestIterator([1, 2]);
+        $ia  = new \TestIteratorAggregate($it);
         $ia2 = new \TestIteratorAggregate2($ia);
 
         $countConstraint = new Count(2);
