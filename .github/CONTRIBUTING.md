@@ -51,6 +51,14 @@ The `phpunit` script can be used to invoke the PHPUnit test runner:
 $ ./phpunit --version
 ```
 
+## Running PHPUnit's own test suite
+
+After following the steps shown above, PHPUnit's own test suite is run like this:
+
+```bash
+$ ./phpunit
+```
+
 ## Reporting issues
 
 Please use the most specific issue tracker to search for existing tickets and to open new tickets:
