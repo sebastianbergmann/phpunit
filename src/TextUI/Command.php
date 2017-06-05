@@ -359,6 +359,14 @@ class Command
                     }
                     break;
 
+                case 's':
+                case '--server':
+                    $server = \explode('=', $option[1]);
+                    if (count($server) == 2) {
+                        $_SERVER[$server[0]] = $server[1];
+                    }
+                    break;
+
                 case '--debug':
                     $this->arguments['debug'] = true;
                     break;
