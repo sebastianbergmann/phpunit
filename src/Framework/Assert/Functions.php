@@ -1419,6 +1419,21 @@ function directoryExists()
 }
 
 /**
+ * Returns a PHPUnit_Framework_Constraint_Count matcher object.
+ *
+ * @param int $count
+ *
+ * @return Count
+ */
+function countOf($count)
+{
+    return call_user_func_array(
+        'PHPUnit\Framework\Assert::countOf',
+        func_get_args()
+    );
+}
+
+/**
  * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object.
  *
  * @param mixed $value
