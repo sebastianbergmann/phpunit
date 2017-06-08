@@ -54,7 +54,7 @@ abstract class Composite extends Constraint
                 $returnResult
             );
         } catch (ExpectationFailedException $e) {
-            $this->fail($other, $description);
+            $this->fail($other, $description, $e->getComparisonFailure());
         }
     }
 
