@@ -161,7 +161,7 @@ class ResultPrinter extends Printer implements TestListener
             throw InvalidArgumentHelper::factory(4, 'boolean');
         }
 
-        if (!\is_int($numberOfColumns) && $numberOfColumns != 'max') {
+        if (!\is_int($numberOfColumns) && $numberOfColumns !== 'max') {
             throw InvalidArgumentHelper::factory(5, 'integer or "max"');
         }
 
@@ -172,7 +172,7 @@ class ResultPrinter extends Printer implements TestListener
         $console            = new Console;
         $maxNumberOfColumns = $console->getNumberOfColumns();
 
-        if ($numberOfColumns == 'max' || ($numberOfColumns !== 80 && $numberOfColumns > $maxNumberOfColumns)) {
+        if ($numberOfColumns === 'max' || ($numberOfColumns !== 80 && $numberOfColumns > $maxNumberOfColumns)) {
             $numberOfColumns = $maxNumberOfColumns;
         }
 

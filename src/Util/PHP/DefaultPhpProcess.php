@@ -77,6 +77,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
         $handles = $this->getHandles();
 
         $env = null;
+
         if ($this->env) {
             $env = $_SERVER ?? [];
             unset($env['argv'], $env['argc']);
@@ -94,6 +95,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
             1 => $handles[1] ?? ['pipe', 'w'],
             2 => $handles[2] ?? ['pipe', 'w'],
         ];
+
         $process = \proc_open(
             $this->getCommand($settings, $this->tempFile),
             $pipeSpec,
@@ -111,10 +113,12 @@ class DefaultPhpProcess extends AbstractPhpProcess
         if ($job) {
             $this->process($pipes[0], $job);
         }
+
         \fclose($pipes[0]);
 
         if ($this->timeout) {
             $stderr = $stdout = '';
+
             unset($pipes[0]);
 
             while (true) {
@@ -128,13 +132,21 @@ class DefaultPhpProcess extends AbstractPhpProcess
                     break;
                 } elseif ($n === 0) {
                     \proc_terminate($process, 9);
-                    throw new Exception(\sprintf('Job execution aborted after %d seconds', $this->timeout));
+
+                    throw new Exception(
+                        \sprintf(
+                            'Job execution aborted after %d seconds',
+                            $this->timeout
+                        )
+                    );
                 } elseif ($n > 0) {
                     foreach ($r as $pipe) {
                         $pipeOffset = 0;
+
                         foreach ($pipes as $i => $origPipe) {
                             if ($pipe == $origPipe) {
                                 $pipeOffset = $i;
+
                                 break;
                             }
                         }
@@ -144,8 +156,10 @@ class DefaultPhpProcess extends AbstractPhpProcess
                         }
 
                         $line = \fread($pipe, 8192);
+
                         if (\strlen($line) == 0) {
                             \fclose($pipes[$pipeOffset]);
+
                             unset($pipes[$pipeOffset]);
                         } else {
                             if ($pipeOffset == 1) {
@@ -164,28 +178,35 @@ class DefaultPhpProcess extends AbstractPhpProcess
         } else {
             if (isset($pipes[1])) {
                 $stdout = \stream_get_contents($pipes[1]);
+
                 \fclose($pipes[1]);
             }
 
             if (isset($pipes[2])) {
                 $stderr = \stream_get_contents($pipes[2]);
+
                 \fclose($pipes[2]);
             }
         }
 
         if (isset($handles[1])) {
             \rewind($handles[1]);
+
             $stdout = \stream_get_contents($handles[1]);
+
             \fclose($handles[1]);
         }
 
         if (isset($handles[2])) {
             \rewind($handles[2]);
+
             $stderr = \stream_get_contents($handles[2]);
+
             \fclose($handles[2]);
         }
 
         \proc_close($process);
+
         $this->cleanup();
 
         return ['stdout' => $stdout, 'stderr' => $stderr];
