@@ -10,10 +10,6 @@
 
 namespace PHPUnit\Framework;
 
-/**
- * Extension to PHPUnit_Framework_AssertionFailedError to mark a test as risky
- * when it does not have a @covers annotation but is expected to have one.
- */
 class MissingCoversAnnotationException extends RiskyTestError
 {
 }

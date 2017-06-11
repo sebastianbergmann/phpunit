@@ -383,7 +383,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Gets the thrown exception from a PHPUnit_Framework_TestFailure.
+     * Gets the thrown exception from a PHPUnit\Framework\TestFailure.
      *
      * @param TestFailure $error
      *

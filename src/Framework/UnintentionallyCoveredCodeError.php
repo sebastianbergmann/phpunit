@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework;
 
 /**
- * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
+ * Extension to PHPUnit\Framework\AssertionFailedError to mark the special
  * case of a test that unintentionally covers code.
  */
 class UnintentionallyCoveredCodeError extends RiskyTestError

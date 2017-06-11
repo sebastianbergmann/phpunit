@@ -9,14 +9,6 @@
  */
 namespace PHPUnit\Framework\Error;
 
-/**
- * Wrapper for PHP notices.
- * You can disable notice-to-exception conversion by setting
- *
- * <code>
- * PHPUnit_Framework_Error_Notice::$enabled = false;
- * </code>
- */
 class Notice extends Error
 {
     public static $enabled = true;

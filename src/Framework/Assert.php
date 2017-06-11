@@ -2103,7 +2103,7 @@ abstract class Assert
     }
 
     /**
-     * Evaluates a PHPUnit_Framework_Constraint matcher object.
+     * Evaluates a PHPUnit\Framework\Constraint matcher object.
      *
      * @param mixed      $value
      * @param Constraint $constraint
@@ -2270,8 +2270,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_And matcher object.
-     *
      * @return LogicalAnd
      */
     public static function logicalAnd()
@@ -2285,8 +2283,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_Or matcher object.
-     *
      * @return LogicalOr
      */
     public static function logicalOr()
@@ -2300,8 +2296,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_Not matcher object.
-     *
      * @param Constraint $constraint
      *
      * @return LogicalNot
@@ -2312,8 +2306,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_Xor matcher object.
-     *
      * @return LogicalXor
      */
     public static function logicalXor()
@@ -2327,8 +2319,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsAnything matcher object.
-     *
      * @return IsAnything
      */
     public static function anything()
@@ -2337,8 +2327,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsTrue matcher object.
-     *
      * @return IsTrue
      */
     public static function isTrue()
@@ -2347,8 +2335,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_Callback matcher object.
-     *
      * @param callable $callback
      *
      * @return Callback
@@ -2359,8 +2345,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsFalse matcher object.
-     *
      * @return IsFalse
      */
     public static function isFalse()
@@ -2369,8 +2353,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsJson matcher object.
-     *
      * @return IsJson
      */
     public static function isJson()
@@ -2379,8 +2361,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsNull matcher object.
-     *
      * @return IsNull
      */
     public static function isNull()
@@ -2389,8 +2369,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsFinite matcher object.
-     *
      * @return IsFinite
      */
     public static function isFinite()
@@ -2399,8 +2377,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsInfinite matcher object.
-     *
      * @return IsInfinite
      */
     public static function isInfinite()
@@ -2409,8 +2385,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsNan matcher object.
-     *
      * @return IsNan
      */
     public static function isNan()
@@ -2419,8 +2393,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_Attribute matcher object.
-     *
      * @param Constraint $constraint
      * @param string     $attributeName
      *
@@ -2435,9 +2407,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_TraversableContains matcher
-     * object.
-     *
      * @param mixed $value
      * @param bool  $checkForObjectIdentity
      * @param bool  $checkForNonObjectIdentity
@@ -2450,9 +2419,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_TraversableContainsOnly matcher
-     * object.
-     *
      * @param string $type
      *
      * @return TraversableContainsOnly
@@ -2463,9 +2429,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_TraversableContainsOnly matcher
-     * object.
-     *
      * @param string $classname
      *
      * @return TraversableContainsOnly
@@ -2476,8 +2439,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_ArrayHasKey matcher object.
-     *
      * @param mixed $key
      *
      * @return ArrayHasKey
@@ -2488,8 +2449,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object.
-     *
      * @param mixed $value
      * @param float $delta
      * @param int   $maxDepth
@@ -2510,10 +2469,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object
-     * that is wrapped in a PHPUnit_Framework_Constraint_Attribute matcher
-     * object.
-     *
      * @param string $attributeName
      * @param mixed  $value
      * @param float  $delta
@@ -2538,8 +2493,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsEmpty matcher object.
-     *
      * @return IsEmpty
      */
     public static function isEmpty()
@@ -2548,8 +2501,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsWritable matcher object.
-     *
      * @return IsWritable
      */
     public static function isWritable()
@@ -2558,8 +2509,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsReadable matcher object.
-     *
      * @return IsReadable
      */
     public static function isReadable()
@@ -2568,8 +2517,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_DirectoryExists matcher object.
-     *
      * @return DirectoryExists
      */
     public static function directoryExists()
@@ -2578,8 +2525,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
-     *
      * @return FileExists
      */
     public static function fileExists()
@@ -2588,8 +2533,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_GreaterThan matcher object.
-     *
      * @param mixed $value
      *
      * @return GreaterThan
@@ -2600,10 +2543,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_Or matcher object that wraps
-     * a PHPUnit_Framework_Constraint_IsEqual and a
-     * PHPUnit_Framework_Constraint_GreaterThan matcher object.
-     *
      * @param mixed $value
      *
      * @return LogicalOr
@@ -2617,8 +2556,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_ClassHasAttribute matcher object.
-     *
      * @param string $attributeName
      *
      * @return ClassHasAttribute
@@ -2631,9 +2568,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_ClassHasStaticAttribute matcher
-     * object.
-     *
      * @param string $attributeName
      *
      * @return ClassHasStaticAttribute
@@ -2646,8 +2580,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_ObjectHasAttribute matcher object.
-     *
      * @param string $attributeName
      *
      * @return ObjectHasAttribute
@@ -2660,8 +2592,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsIdentical matcher object.
-     *
      * @param mixed $value
      *
      * @return IsIdentical
@@ -2672,8 +2602,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsInstanceOf matcher object.
-     *
      * @param string $className
      *
      * @return IsInstanceOf
@@ -2684,8 +2612,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_IsType matcher object.
-     *
      * @param string $type
      *
      * @return IsType
@@ -2696,8 +2622,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_LessThan matcher object.
-     *
      * @param mixed $value
      *
      * @return LessThan
@@ -2708,10 +2632,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_Or matcher object that wraps
-     * a PHPUnit_Framework_Constraint_IsEqual and a
-     * PHPUnit_Framework_Constraint_LessThan matcher object.
-     *
      * @param mixed $value
      *
      * @return LogicalOr
@@ -2725,8 +2645,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_PCREMatch matcher object.
-     *
      * @param string $pattern
      *
      * @return RegularExpression
@@ -2737,8 +2655,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_StringMatches matcher object.
-     *
      * @param string $string
      *
      * @return StringMatchesFormatDescription
@@ -2749,8 +2665,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_StringStartsWith matcher object.
-     *
      * @param mixed $prefix
      *
      * @return StringStartsWith
@@ -2761,8 +2675,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_StringContains matcher object.
-     *
      * @param string $string
      * @param bool   $case
      *
@@ -2774,8 +2686,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_StringEndsWith matcher object.
-     *
      * @param mixed $suffix
      *
      * @return StringEndsWith
@@ -2786,8 +2696,6 @@ abstract class Assert
     }
 
     /**
-     * Returns a PHPUnit_Framework_Constraint_Count matcher object.
-     *
      * @param int $count
      *
      * @return Count
