@@ -59,7 +59,7 @@ function any()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsAnything matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsAnything matcher object.
  *
  * @return IsAnything
  */
@@ -69,7 +69,7 @@ function anything()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_ArrayHasKey matcher object.
+ * Returns a PHPUnit\Framework\Constraint\ArrayHasKey matcher object.
  *
  * @param mixed $key
  *
@@ -1167,7 +1167,7 @@ function assertStringStartsWith($prefix, $string, $message = '')
 }
 
 /**
- * Evaluates a PHPUnit_Framework_Constraint matcher object.
+ * Evaluates a PHPUnit\Framework\Constraint matcher object.
  *
  * @param mixed      $value
  * @param Constraint $constraint
@@ -1287,7 +1287,7 @@ function atLeastOnce()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_Attribute matcher object.
+ * Returns a PHPUnit\Framework\Constraint\Attribute matcher object.
  *
  * @param Constraint $constraint
  * @param string     $attributeName
@@ -1300,8 +1300,8 @@ function attribute(Constraint $constraint, $attributeName)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object
- * that is wrapped in a PHPUnit_Framework_Constraint_Attribute matcher
+ * Returns a PHPUnit\Framework\Constraint\IsEqual matcher object
+ * that is wrapped in a PHPUnit\Framework\Constraint\Attribute matcher
  * object.
  *
  * @param string $attributeName
@@ -1319,7 +1319,7 @@ function attributeEqualTo($attributeName, $value, $delta = 0.0, $maxDepth = 10, 
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_Callback matcher object.
+ * Returns a PHPUnit\Framework\Constraint\Callback matcher object.
  *
  * @param callable $callback
  *
@@ -1331,7 +1331,7 @@ function callback($callback)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_ClassHasAttribute matcher object.
+ * Returns a PHPUnit\Framework\Constraint\ClassHasAttribute matcher object.
  *
  * @param string $attributeName
  *
@@ -1343,7 +1343,7 @@ function classHasAttribute($attributeName)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_ClassHasStaticAttribute matcher
+ * Returns a PHPUnit\Framework\Constraint\ClassHasStaticAttribute matcher
  * object.
  *
  * @param string $attributeName
@@ -1356,7 +1356,7 @@ function classHasStaticAttribute($attributeName)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_TraversableContains matcher
+ * Returns a PHPUnit\Framework\Constraint\TraversableContains matcher
  * object.
  *
  * @param mixed $value
@@ -1371,7 +1371,7 @@ function contains($value, $checkForObjectIdentity = true, $checkForNonObjectIden
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_TraversableContainsOnly matcher
+ * Returns a PHPUnit\Framework\Constraint\TraversableContainsOnly matcher
  * object.
  *
  * @param string $type
@@ -1384,7 +1384,7 @@ function containsOnly($type)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_TraversableContainsOnly matcher
+ * Returns a PHPUnit\Framework\Constraint\TraversableContainsOnly matcher
  * object.
  *
  * @param string $classname
@@ -1397,7 +1397,7 @@ function containsOnlyInstancesOf($classname)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_Count matcher object.
+ * Returns a PHPUnit\Framework\Constraint\Count matcher object.
  *
  * @param int $count
  *
@@ -1409,7 +1409,7 @@ function countOf($count)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_DirectoryExists matcher object.
+ * Returns a PHPUnit\Framework\Constraint\DirectoryExists matcher object.
  *
  * @return DirectoryExists
  */
@@ -1419,7 +1419,7 @@ function directoryExists()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsEqual matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsEqual matcher object.
  *
  * @param mixed $value
  * @param float $delta
@@ -1448,7 +1448,7 @@ function exactly($count)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_FileExists matcher object.
+ * Returns a PHPUnit\Framework\Constraint\FileExists matcher object.
  *
  * @return FileExists
  */
@@ -1458,7 +1458,7 @@ function fileExists()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_GreaterThan matcher object.
+ * Returns a PHPUnit\Framework\Constraint\GreaterThan matcher object.
  *
  * @param mixed $value
  *
@@ -1470,9 +1470,9 @@ function greaterThan($value)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_Or matcher object that wraps
- * a PHPUnit_Framework_Constraint_IsEqual and a
- * PHPUnit_Framework_Constraint_GreaterThan matcher object.
+ * Returns a PHPUnit\Framework\Constraint\Or matcher object that wraps
+ * a PHPUnit\Framework\Constraint\IsEqual and a
+ * PHPUnit\Framework\Constraint\GreaterThan matcher object.
  *
  * @param mixed $value
  *
@@ -1484,7 +1484,7 @@ function greaterThanOrEqual($value)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsIdentical matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsIdentical matcher object.
  *
  * @param mixed $value
  *
@@ -1496,7 +1496,7 @@ function identicalTo($value)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsEmpty matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsEmpty matcher object.
  *
  * @return IsEmpty
  */
@@ -1506,7 +1506,7 @@ function isEmpty()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsFalse matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsFalse matcher object.
  *
  * @return IsFalse
  */
@@ -1516,7 +1516,7 @@ function isFalse()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsInfinite matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsInfinite matcher object.
  *
  * @return IsInfinite
  */
@@ -1526,7 +1526,7 @@ function isInfinite()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsInstanceOf matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsInstanceOf matcher object.
  *
  * @param string $className
  *
@@ -1538,7 +1538,7 @@ function isInstanceOf($className)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsJson matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsJson matcher object.
  *
  * @return IsJson
  */
@@ -1548,7 +1548,7 @@ function isJson()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsNan matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsNan matcher object.
  *
  * @return IsNan
  */
@@ -1558,7 +1558,7 @@ function isNan()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsNull matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsNull matcher object.
  *
  * @return IsNull
  */
@@ -1568,7 +1568,7 @@ function isNull()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsReadable matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsReadable matcher object.
  *
  * @return IsReadable
  */
@@ -1578,7 +1578,7 @@ function isReadable()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsTrue matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsTrue matcher object.
  *
  * @return IsTrue
  */
@@ -1588,7 +1588,7 @@ function isTrue()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsType matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsType matcher object.
  *
  * @param string $type
  *
@@ -1600,7 +1600,7 @@ function isType($type)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_IsWritable matcher object.
+ * Returns a PHPUnit\Framework\Constraint\IsWritable matcher object.
  *
  * @return IsWritable
  */
@@ -1610,7 +1610,7 @@ function isWritable()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_LessThan matcher object.
+ * Returns a PHPUnit\Framework\Constraint\LessThan matcher object.
  *
  * @param mixed $value
  *
@@ -1622,9 +1622,9 @@ function lessThan($value)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_Or matcher object that wraps
- * a PHPUnit_Framework_Constraint_IsEqual and a
- * PHPUnit_Framework_Constraint_LessThan matcher object.
+ * Returns a PHPUnit\Framework\Constraint\Or matcher object that wraps
+ * a PHPUnit\Framework\Constraint\IsEqual and a
+ * PHPUnit\Framework\Constraint\LessThan matcher object.
  *
  * @param mixed $value
  *
@@ -1636,7 +1636,7 @@ function lessThanOrEqual($value)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_And matcher object.
+ * Returns a PHPUnit\Framework\Constraint\And matcher object.
  *
  * @return LogicalAnd
  */
@@ -1646,7 +1646,7 @@ function logicalAnd()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_Not matcher object.
+ * Returns a PHPUnit\Framework\Constraint\Not matcher object.
  *
  * @param Constraint $constraint
  *
@@ -1658,7 +1658,7 @@ function logicalNot(Constraint $constraint)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_Or matcher object.
+ * Returns a PHPUnit\Framework\Constraint\Or matcher object.
  *
  * @return LogicalOr
  */
@@ -1668,7 +1668,7 @@ function logicalOr()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_Xor matcher object.
+ * Returns a PHPUnit\Framework\Constraint\Xor matcher object.
  *
  * @return LogicalXor
  */
@@ -1678,7 +1678,7 @@ function logicalXor()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_StringMatches matcher object.
+ * Returns a PHPUnit\Framework\Constraint\StringMatches matcher object.
  *
  * @param string $string
  *
@@ -1690,7 +1690,7 @@ function matches($string)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_PCREMatch matcher object.
+ * Returns a PHPUnit\Framework\Constraint\PCREMatch matcher object.
  *
  * @param string $pattern
  *
@@ -1712,7 +1712,7 @@ function never()
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_ObjectHasAttribute matcher object.
+ * Returns a PHPUnit\Framework\Constraint\ObjectHasAttribute matcher object.
  *
  * @param string $attributeName
  *
@@ -1796,7 +1796,7 @@ function returnValueMap(array $valueMap)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_StringContains matcher object.
+ * Returns a PHPUnit\Framework\Constraint\StringContains matcher object.
  *
  * @param string $string
  * @param bool   $case
@@ -1809,7 +1809,7 @@ function stringContains($string, $case = true)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_StringEndsWith matcher object.
+ * Returns a PHPUnit\Framework\Constraint\StringEndsWith matcher object.
  *
  * @param mixed $suffix
  *
@@ -1821,7 +1821,7 @@ function stringEndsWith($suffix)
 }
 
 /**
- * Returns a PHPUnit_Framework_Constraint_StringStartsWith matcher object.
+ * Returns a PHPUnit\Framework\Constraint\StringStartsWith matcher object.
  *
  * @param mixed $prefix
  *

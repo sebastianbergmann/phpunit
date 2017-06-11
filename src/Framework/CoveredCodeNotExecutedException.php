@@ -10,10 +10,6 @@
 
 namespace PHPUnit\Framework;
 
-/**
- * Extension to PHPUnit_Framework_AssertionFailedError to mark the special
- * case of a test that does not execute the code it wants to cover.
- */
 class CoveredCodeNotExecutedException extends RiskyTestError
 {
 }
