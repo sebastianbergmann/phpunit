@@ -93,7 +93,7 @@ class Xml
         \libxml_use_internal_errors($internal);
         \error_reporting($reporting);
 
-        if ($xinclude) {
+        if (isset($cwd)) {
             @\chdir($cwd);
         }
 

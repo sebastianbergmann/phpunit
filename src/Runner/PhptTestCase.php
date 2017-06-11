@@ -102,6 +102,8 @@ class PhptTestCase implements Test, SelfDescribing
     /**
      * @param array  $sections
      * @param string $output
+     *
+     * @throws Exception
      */
     private function assertPhptExpectation(array $sections, $output)
     {
@@ -117,10 +119,18 @@ class PhptTestCase implements Test, SelfDescribing
             if (isset($sections[$sectionName])) {
                 $sectionContent = \preg_replace('/\r\n/', "\n", \trim($sections[$sectionName]));
                 $assertion      = $sectionAssertion;
-                $expected       = $sectionName == 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
+                $expected       = $sectionName === 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
 
                 break;
             }
+        }
+
+        if (!isset($assertion)) {
+            throw new Exception('No PHPT assertion found');
+        }
+
+        if (!isset($expected)) {
+            throw new Exception('No PHPT expectation found');
         }
 
         Assert::$assertion($expected, $actual);

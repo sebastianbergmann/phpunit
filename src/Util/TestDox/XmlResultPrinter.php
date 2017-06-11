@@ -39,7 +39,7 @@ class XmlResultPrinter extends Printer implements TestListener
     private $prettifier;
 
     /**
-     * @var Exception
+     * @var \Exception|null
      */
     private $exception;
 
