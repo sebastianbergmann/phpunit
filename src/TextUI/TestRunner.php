@@ -279,7 +279,7 @@ class TestRunner extends BaseTestRunner
                 }
 
                 $this->printer = new $printerClass(
-                    isset($arguments['stderr']) ? 'php://stderr' : null,
+                    (isset($arguments['stderr']) && $arguments['stderr'] === true) ? 'php://stderr' : null,
                     $arguments['verbose'],
                     $arguments['colors'],
                     $arguments['debug'],
