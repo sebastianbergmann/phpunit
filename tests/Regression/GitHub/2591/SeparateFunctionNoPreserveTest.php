@@ -1,5 +1,5 @@
 <?php
-use PhpUnit\Framework\TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @runTestsInSeparateProcesses
