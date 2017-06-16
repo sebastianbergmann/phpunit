@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Json;
 
 class JsonMatchesTest extends TestCase
 {
@@ -38,8 +39,8 @@ class JsonMatchesTest extends TestCase
         } catch (ExpectationFailedException $expectedException) {
             $comparisonFailure = $expectedException->getComparisonFailure();
             $this->assertNotNull($comparisonFailure);
-            $this->assertSame($jsonOther, $comparisonFailure->getExpectedAsString());
-            $this->assertSame($jsonValue, $comparisonFailure->getActualAsString());
+            $this->assertSame(Json::prettify($jsonOther), $comparisonFailure->getActualAsString());
+            $this->assertSame(Json::prettify($jsonValue), $comparisonFailure->getExpectedAsString());
             $this->assertSame('Failed asserting that two json values are equal.', $comparisonFailure->getMessage());
         }
     }
