@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 4.8 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [4.8.36] - 2017-06-21
+
+### Added
+
+* Added `PHPUnit\Framework\AssertionFailedError`, `PHPUnit\Framework\Test`, and `PHPUnit\Framework\TestSuite` to the forward compatibility layer for PHPUnit 6
+
 ## [4.8.35] - 2017-02-06
 
 ### Added
@@ -247,6 +253,7 @@ New PHAR release due to updated dependencies
 * Made the argument check of `assertContains()` and `assertNotContains()` more strict to prevent undefined behavior such as [#1808](https://github.com/sebastianbergmann/phpunit/issues/1808)
 * Changed the name of the default group from `__nogroup__` to `default`
 
+[4.8.36]: https://github.com/sebastianbergmann/phpunit/compare/4.8.35...4.8.36
 [4.8.35]: https://github.com/sebastianbergmann/phpunit/compare/4.8.34...4.8.35
 [4.8.34]: https://github.com/sebastianbergmann/phpunit/compare/4.8.33...4.8.34
 [4.8.33]: https://github.com/sebastianbergmann/phpunit/compare/4.8.32...4.8.33
