@@ -2,7 +2,11 @@
 
 All notable changes of the PHPUnit 5.7 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [5.7.21] - 2017-MM-DD
+## [5.7.21] - 2017-06-21
+
+### Added
+
+* Added `PHPUnit\Framework\AssertionFailedError`, `PHPUnit\Framework\Test`, and `PHPUnit\Framework\TestSuite` to the forward compatibility layer for PHPUnit 6
 
 ### Fixed
 
