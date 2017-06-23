@@ -4,7 +4,7 @@
     <xs:documentation source="https://phpunit.de/manual/5.7/en/appendixes.configuration.html">
       This Schema file defines the rules by which the XML configuration file of PHPUnit 5.7 may be structured.
     </xs:documentation>
-    <xs:appinfo source="http://www.phpunit.de/manual/current/en/appendixes.configuration.html"/>
+    <xs:appinfo source="https://phpunit.de/manual/5.7/en/appendixes.configuration.html"/>
   </xs:annotation>
   <xs:element name="phpunit" type="phpUnitType">
     <xs:annotation>
