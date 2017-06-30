@@ -825,7 +825,7 @@ class PHPUnit_Framework_MockObject_Generator
         if ($className == '') {
             do {
                 $className = $prefix . $type . '_' .
-                             substr(md5(microtime()), 0, 8);
+                             substr(md5(mt_rand()), 0, 8);
             } while (class_exists($className, false));
         }
 
