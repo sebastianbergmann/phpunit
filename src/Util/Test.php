@@ -192,12 +192,7 @@ class Test
 
         if ($count = \preg_match_all(self::REGEX_REQUIRES_OS, $docComment, $matches)) {
             foreach (\range(0, $count - 1) as $i) {
-                $requires[$matches['name'][$i]] = $matches['name'][$i] === 'OSFAMILY'
-                    ? $matches['value'][$i]
-                    : \sprintf(
-                        '/%s/i',
-                        \addcslashes($matches['value'][$i], '/')
-                    );
+                $requires[$matches['name'][$i]] = $matches['value'][$i];
             }
         }
 
@@ -304,8 +299,11 @@ class Test
             $missing[] = \sprintf('Operating system %s is required.', $required['OSFAMILY']);
         }
 
-        if (!empty($required['OS']) && !\preg_match($required['OS'], PHP_OS)) {
-            $missing[] = \sprintf('Operating system matching %s is required.', $required['OS']);
+        if (!empty($required['OS'])) {
+            $requiredOsPattern = \sprintf('/%s/i', \addcslashes($required['OS'], '/'));
+            if (!\preg_match($requiredOsPattern, PHP_OS)) {
+                $missing[] = \sprintf('Operating system matching %s is required.', $requiredOsPattern);
+            }
         }
 
         if (!empty($required['functions'])) {
