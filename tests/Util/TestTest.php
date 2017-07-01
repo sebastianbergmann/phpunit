@@ -127,41 +127,44 @@ class TestTest extends TestCase
             ['testThree',  ['PHP'        => ['version' => '2.0', 'operator' => '']]],
             ['testFour',   [
                 'PHPUnit'    => ['version' => '2.0', 'operator' => ''],
-                'PHP'        => ['version' => '1.0', 'operator' => '']]
-            ],
+                'PHP'        => ['version' => '1.0', 'operator' => ''],
+            ]],
             ['testFive',   ['PHP'        => ['version' => '5.4.0RC6', 'operator' => '']]],
             ['testSix',    ['PHP'        => ['version' => '5.4.0-alpha1', 'operator' => '']]],
             ['testSeven',  ['PHP'        => ['version' => '5.4.0beta2', 'operator' => '']]],
             ['testEight',  ['PHP'        => ['version' => '5.4-dev', 'operator' => '']]],
             ['testNine',   ['functions'  => ['testFunc']]],
             ['testTen',    ['extensions' => ['testExt']]],
-            ['testEleven', ['OS'         => '/Linux/i']],
+            ['testEleven', [
+                'OS'         => '/SunOS/i',
+                'OSFAMILY'   => 'Solaris',
+            ]],
             [
-              'testSpace',
-              [
-                'extensions' => ['spl'],
-                'OS'         => '/.*/i'
-              ]
+                'testSpace',
+                [
+                    'extensions' => ['spl'],
+                    'OS'         => '/.*/i',
+                ],
             ],
             [
-              'testAllPossibleRequirements',
-              [
-                'PHP'       => ['version' => '99-dev', 'operator' => ''],
-                'PHPUnit'   => ['version' => '9-dev', 'operator' => ''],
-                'OS'        => '/DOESNOTEXIST/i',
-                'functions' => [
-                  'testFuncOne',
-                  'testFuncTwo',
+                'testAllPossibleRequirements',
+                [
+                    'PHP'       => ['version' => '99-dev', 'operator' => ''],
+                    'PHPUnit'   => ['version' => '9-dev', 'operator' => ''],
+                    'OS'        => '/DOESNOTEXIST/i',
+                    'functions' => [
+                        'testFuncOne',
+                        'testFuncTwo',
+                    ],
+                    'extensions' => [
+                        'testExtOne',
+                        'testExtTwo',
+                        'testExtThree',
+                    ],
+                    'extension_versions' => [
+                        'testExtThree' => ['version' => '2.0', 'operator' => ''],
+                    ],
                 ],
-                'extensions' => [
-                  'testExtOne',
-                  'testExtTwo',
-                  'testExtThree',
-                ],
-                'extension_versions' => [
-                    'testExtThree' => ['version' => '2.0', 'operator' => '']
-                ]
-              ]
             ],
             ['testSpecificExtensionVersion',
                 [
