@@ -4,5 +4,9 @@ All notable changes of the PHPUnit 6.3 release series are documented in this fil
 
 ## [6.3.0] - 2017-08-04
 
+### Added
+
+* Implemented [#2722](https://github.com/sebastianbergmann/phpunit/pull/2722): `@requires OSFAMILY` annotation
+
 [6.3.0]: https://github.com/sebastianbergmann/phpunit/compare/6.2...6.3.0
 
