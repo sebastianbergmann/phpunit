@@ -136,14 +136,14 @@ class TestTest extends TestCase
             ['testNine',   ['functions'  => ['testFunc']]],
             ['testTen',    ['extensions' => ['testExt']]],
             ['testEleven', [
-                'OS'         => '/SunOS/i',
+                'OS'         => 'SunOS',
                 'OSFAMILY'   => 'Solaris',
             ]],
             [
                 'testSpace',
                 [
                     'extensions' => ['spl'],
-                    'OS'         => '/.*/i',
+                    'OS'         => '.*',
                 ],
             ],
             [
@@ -151,7 +151,7 @@ class TestTest extends TestCase
                 [
                     'PHP'       => ['version' => '99-dev', 'operator' => ''],
                     'PHPUnit'   => ['version' => '9-dev', 'operator' => ''],
-                    'OS'        => '/DOESNOTEXIST/i',
+                    'OS'        => 'DOESNOTEXIST',
                     'functions' => [
                         'testFuncOne',
                         'testFuncTwo',
@@ -466,7 +466,7 @@ class TestTest extends TestCase
         $expectedAnnotations = [
             'PHP'       => ['version' => '5.4', 'operator' => ''],
             'PHPUnit'   => ['version' => '3.7', 'operator' => ''],
-            'OS'        => '/WINNT/i',
+            'OS'        => 'WINNT',
             'functions' => [
               'testFuncClass',
               'testFuncMethod',
