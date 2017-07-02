@@ -188,6 +188,7 @@
     <xs:attribute name="name" use="required" type="xs:string"/>
     <xs:attribute name="value" use="required" type="xs:anySimpleType"/>
     <xs:attribute name="verbatim" use="optional" type="xs:boolean"/>
+    <xs:attribute name="force" use="optional" type="xs:boolean"/>
   </xs:complexType>
   <xs:complexType name="phpUnitType">
     <xs:annotation>
