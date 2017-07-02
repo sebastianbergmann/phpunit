@@ -231,16 +231,16 @@ class ConfigurationTest extends TestCase
               \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.',
               '/path/to/lib'
             ],
-            'ini'    => ['foo' => 'bar'],
-            'const'  => ['FOO' => false, 'BAR' => true],
-            'var'    => ['foo' => false],
-            'env'    => ['foo' => true, 'bar' => 'true'],
-            'post'   => ['foo' => 'bar'],
-            'get'    => ['foo' => 'bar'],
-            'cookie' => ['foo' => 'bar'],
-            'server' => ['foo' => 'bar'],
-            'files'  => ['foo' => 'bar'],
-            'request'=> ['foo' => 'bar'],
+            'ini'    => ['foo' => ['value' => 'bar']],
+            'const'  => ['FOO' => ['value' => false], 'BAR' => ['value' => true]],
+            'var'    => ['foo' => ['value' => false]],
+            'env'    => ['foo' => ['value' => true], 'bar' => ['value' => 'true', 'verbatim' => true], 'foo_force' => ['value' => 'forced', 'force' => true]],
+            'post'   => ['foo' => ['value' => 'bar']],
+            'get'    => ['foo' => ['value' => 'bar']],
+            'cookie' => ['foo' => ['value' => 'bar']],
+            'server' => ['foo' => ['value' => 'bar']],
+            'files'  => ['foo' => ['value' => 'bar']],
+            'request'=> ['foo' => ['value' => 'bar']],
             ],
             $this->configuration->getPHPConfiguration()
         );
@@ -280,6 +280,20 @@ class ConfigurationTest extends TestCase
 
         $this->assertEquals(false, $_ENV['foo']);
         $this->assertEquals(true, \getenv('foo'));
+    }
+
+    /**
+     * @backupGlobals enabled
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/2353
+     */
+    public function testHandlePHPConfigurationDoesForceOverwrittenExistingEnvArrayVariables()
+    {
+        $_ENV['foo_force'] = false;
+        $this->configuration->handlePHPConfiguration();
+
+        $this->assertEquals('forced', $_ENV['foo_force']);
+        $this->assertEquals('forced', \getenv('foo_force'));
     }
 
     /**

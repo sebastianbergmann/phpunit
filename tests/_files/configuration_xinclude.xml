@@ -66,6 +66,7 @@
     <const name="BAR" value="true"/>
     <var name="foo" value="false"/>
     <env name="foo" value="true"/>
+    <env name="foo_force" value="forced" force="true"/>
     <env name="bar" value="true" verbatim="true"/>
     <post name="foo" value="bar"/>
     <get name="foo" value="bar"/>
