@@ -1069,34 +1069,36 @@ EOT;
 
 
     /**
-     * Handles the command line global definitions.
+     * Handles the command line global assignments.
      *
-     * @param array $globalDefinitionsArray
+     * @param array $globalAssignments
      */
-    protected function handleGlobals($globalDefinitionsArray)
+    protected function handleGlobals($globalAssignments)
     {
-        foreach ($globalDefinitionsArray as $definition) {
-            echo "DEBUG: \$definition = '$definition'\n";
-            if (strpos($definition, '=') === false) {
+        foreach ($globalAssignments as $assignment) {
+            echo "DEBUG: \$assignment = '$assignment'\n";
+            if (strpos($assignment, '=') === false) {
                 continue;
             }
-            list($name, $value) = explode('=', $definition, 2);
+            list($name, $value) = explode('=', $assignment, 2);
             echo "DEBUG: \$name = '$name'\n";
             echo "DEBUG: \$value = '$value'\n";
-            if (is_null($value)) {
-                continue;
-            }
 
             switch (true) {
-                case strcmp($value,"true") === 0:
+                case strcmp($value, "true") === 0:
                     echo "DEBUG: assigning as boolean true\n";
                     $GLOBALS[$name] = true;
                     break;
-                case strcmp($value,"false") === 0:
+                case strcmp($value, "false") === 0:
                     echo "DEBUG: assigning as boolean false\n";
                     $GLOBALS[$name] = false;
                     break;
+                case strcmp($value, "null") === 0:
+                    echo "DEBUG: assigning as null\n";
+                    $GLOBALS[$name] = null;
+                    break;
                 case preg_match('/^\[.*\]$/', $value) :
+                    // if $value begins and ends with brackets then eval()
                     $tmpValue = "";
                     echo "DEBUG: assigning as an array using eval\n";
                     eval("\$tmpValue = " . $value . ";");
@@ -1107,10 +1109,10 @@ EOT;
                     $GLOBALS[$name] = (float)$value;
                     break;
                 default:
+                    // all other globals are assigned as strings
                     $GLOBALS[$name] = $value;
                     break;
             }
-
         }
     }
 
