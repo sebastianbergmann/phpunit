@@ -378,7 +378,6 @@ class Command
                     break;
 
                 case 'g':
-                    echo "DEBUG: \$option[1] = '$option[1]'\n";
                     $this->arguments['globals'][] = $option[1];
                     break;
 
@@ -731,7 +730,7 @@ class Command
 
             $configuration->handlePHPConfiguration();
 
-            // command line globals (-g option) override PHP config (in phpunit.xml) (Issue #2271)
+            // command line globals (-g option) override PHP config <var>s (in phpunit.xml) (Issue #2271)
             if (isset($this->arguments['globals'])) {
                 $this->handleGlobals($this->arguments['globals']);
             }
@@ -1069,43 +1068,39 @@ EOT;
 
 
     /**
-     * Handles the command line global assignments.
+     * Handles the command line global assignments (-g options).
+     *
+     * This method iterates through each user (-g) option, performs a simple syntax check (must contain "="),
+     * then assigns the global variable named on the left-hand side to the value on the right-hand side.
+     * Certain values are determined to have special data types (numeric, boolean, null, or array), otherwise text.
      *
      * @param array $globalAssignments
      */
     protected function handleGlobals($globalAssignments)
     {
         foreach ($globalAssignments as $assignment) {
-            echo "DEBUG: \$assignment = '$assignment'\n";
             if (strpos($assignment, '=') === false) {
                 continue;
             }
             list($name, $value) = explode('=', $assignment, 2);
-            echo "DEBUG: \$name = '$name'\n";
-            echo "DEBUG: \$value = '$value'\n";
 
             switch (true) {
                 case strcmp($value, "true") === 0:
-                    echo "DEBUG: assigning as boolean true\n";
                     $GLOBALS[$name] = true;
                     break;
                 case strcmp($value, "false") === 0:
-                    echo "DEBUG: assigning as boolean false\n";
                     $GLOBALS[$name] = false;
                     break;
                 case strcmp($value, "null") === 0:
-                    echo "DEBUG: assigning as null\n";
                     $GLOBALS[$name] = null;
                     break;
                 case preg_match('/^\[.*\]$/', $value) :
                     // if $value begins and ends with brackets then eval()
                     $tmpValue = "";
-                    echo "DEBUG: assigning as an array using eval\n";
                     eval("\$tmpValue = " . $value . ";");
                     $GLOBALS[$name] = $tmpValue;
                     break;
                 case is_numeric($value):
-                    echo "DEBUG: assigning as a float\n";
                     $GLOBALS[$name] = (float)$value;
                     break;
                 default:
