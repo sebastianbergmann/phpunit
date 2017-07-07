@@ -7,7 +7,7 @@ class Issue523Test extends TestCase
     {
         $this->assertAttributeEquals('foo', 'field', new Issue523());
     }
-};
+}
 
 class Issue523 extends ArrayIterator
 {

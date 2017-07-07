@@ -38,6 +38,8 @@ class ErrorHandler
      * @param string $errfile
      * @param int    $errline
      *
+     * @return false
+     *
      * @throws Error
      */
     public static function handleError($errno, $errstr, $errfile, $errline)
@@ -87,6 +89,8 @@ class ErrorHandler
      * the previous handler when invoked
      *
      * @param int $severity PHP predefined error constant
+     *
+     * @return \Closure
      *
      * @throws \Exception if event of specified severity is emitted
      */

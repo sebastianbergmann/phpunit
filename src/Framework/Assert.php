@@ -174,7 +174,7 @@ abstract class Assert
     public static function assertContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
     {
         if (\is_array($haystack) ||
-            \is_object($haystack) && $haystack instanceof Traversable) {
+            (\is_object($haystack) && $haystack instanceof Traversable)) {
             $constraint = new TraversableContains(
                 $needle,
                 $checkForObjectIdentity,
@@ -239,7 +239,7 @@ abstract class Assert
     public static function assertNotContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
     {
         if (\is_array($haystack) ||
-            \is_object($haystack) && $haystack instanceof Traversable) {
+            (\is_object($haystack) && $haystack instanceof Traversable)) {
             $constraint = new LogicalNot(
                 new TraversableContains(
                     $needle,
@@ -305,8 +305,8 @@ abstract class Assert
      */
     public static function assertContainsOnly($type, $haystack, $isNativeType = null, $message = '')
     {
-        if (!(\is_array($haystack) ||
-            \is_object($haystack) && $haystack instanceof Traversable)) {
+        if (!\is_array($haystack) &&
+            !(\is_object($haystack) && $haystack instanceof Traversable)) {
             throw InvalidArgumentHelper::factory(
                 2,
                 'array or traversable'
@@ -330,14 +330,14 @@ abstract class Assert
     /**
      * Asserts that a haystack contains only instances of a given classname
      *
-     * @param string            $classname
-     * @param array|Traversable $haystack
-     * @param string            $message
+     * @param string             $classname
+     * @param array|\Traversable $haystack
+     * @param string             $message
      */
     public static function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
     {
-        if (!(\is_array($haystack) ||
-            \is_object($haystack) && $haystack instanceof Traversable)) {
+        if (!\is_array($haystack) &&
+            !(\is_object($haystack) && $haystack instanceof Traversable)) {
             throw InvalidArgumentHelper::factory(
                 2,
                 'array or traversable'
@@ -384,8 +384,8 @@ abstract class Assert
      */
     public static function assertNotContainsOnly($type, $haystack, $isNativeType = null, $message = '')
     {
-        if (!(\is_array($haystack) ||
-            \is_object($haystack) && $haystack instanceof Traversable)) {
+        if (!\is_array($haystack) &&
+            !(\is_object($haystack) && $haystack instanceof Traversable)) {
             throw InvalidArgumentHelper::factory(
                 2,
                 'array or traversable'
@@ -1692,9 +1692,9 @@ abstract class Assert
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is the same.
      *
-     * @param array|Countable|Traversable $expected
-     * @param array|Countable|Traversable $actual
-     * @param string                      $message
+     * @param array|\Countable|\Traversable $expected
+     * @param array|\Countable|\Traversable $actual
+     * @param string                        $message
      */
     public static function assertSameSize($expected, $actual, $message = '')
     {
@@ -1721,9 +1721,9 @@ abstract class Assert
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is not the same.
      *
-     * @param array|Countable|Traversable $expected
-     * @param array|Countable|Traversable $actual
-     * @param string                      $message
+     * @param array|\Countable|\Traversable $expected
+     * @param array|\Countable|\Traversable $actual
+     * @param string                        $message
      */
     public static function assertNotSameSize($expected, $actual, $message = '')
     {

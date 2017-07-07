@@ -15,10 +15,10 @@ use PHPUnit\Framework\TestCase;
 class ArraySubsetTest extends TestCase
 {
     /**
-     * @param bool              $expected
-     * @param array|Traversable $subset
-     * @param array|Traversable $other
-     * @param bool              $strict
+     * @param bool               $expected
+     * @param array|\Traversable $subset
+     * @param array|\Traversable $other
+     * @param bool               $strict
      * @dataProvider evaluateDataProvider
      */
     public function testEvaluate($expected, $subset, $other, $strict)

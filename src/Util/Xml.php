@@ -239,7 +239,7 @@ class Xml
                 break;
 
             case 'boolean':
-                $variable = $element->textContent == 'true' ? true : false;
+                $variable = $element->textContent == 'true';
                 break;
 
             case 'integer':

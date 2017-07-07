@@ -206,7 +206,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $name;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $dependencies = [];
 
@@ -504,7 +504,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             throw new Exception;
         }
 
-        if (\is_string($expectedRegex) || \is_null($expectedRegex)) {
+        if (\is_string($expectedRegex) || null === $expectedRegex) {
             $this->outputExpectedRegex = $expectedRegex;
         }
     }
@@ -518,7 +518,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             throw new Exception;
         }
 
-        if (\is_string($expectedString) || \is_null($expectedString)) {
+        if (\is_string($expectedString) || null === $expectedString) {
             $this->outputExpectedString = $expectedString;
         }
     }
@@ -745,7 +745,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param TestResult $result
      *
-     * @return TestResult
+     * @return TestResult|null
      *
      * @throws Exception
      */
@@ -1192,7 +1192,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Sets the dependencies of a TestCase.
      *
-     * @param array $dependencies
+     * @param string[] $dependencies
      */
     public function setDependencies(array $dependencies)
     {
@@ -1234,7 +1234,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function setBackupGlobals($backupGlobals)
     {
-        if (\is_null($this->backupGlobals) && \is_bool($backupGlobals)) {
+        if (null === $this->backupGlobals && \is_bool($backupGlobals)) {
             $this->backupGlobals = $backupGlobals;
         }
     }
@@ -1246,7 +1246,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function setBackupStaticAttributes($backupStaticAttributes)
     {
-        if (\is_null($this->backupStaticAttributes) &&
+        if (null === $this->backupStaticAttributes &&
             \is_bool($backupStaticAttributes)) {
             $this->backupStaticAttributes = $backupStaticAttributes;
         }
@@ -1422,8 +1422,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             throw new Exception;
         }
 
-        $category = $args[0];
-        $locale   = $args[1];
+        list($category, $locale) = $args;
 
         $categories = [
             LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME
@@ -1509,8 +1508,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a partial test double for the specified class.
      *
-     * @param string $originalClassName
-     * @param array  $methods
+     * @param string   $originalClassName
+     * @param string[] $methods
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
@@ -2382,7 +2381,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param array $testArguments
-     * @param array $originalTestArguments
+     * @param array $visited
      */
     private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = [])
     {
