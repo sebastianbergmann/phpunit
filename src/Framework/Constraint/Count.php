@@ -45,9 +45,9 @@ class Count extends Constraint
     }
 
     /**
-     * @param \Countable|\Traversable\|array $other
+     * @param \Countable|\Traversable|array $other
      *
-     * @return int
+     * @return int|null
      */
     protected function getCountOf($other)
     {
@@ -97,7 +97,7 @@ class Count extends Constraint
     protected function getCountOfGenerator(Generator $generator)
     {
         for ($count = 0; $generator->valid(); $generator->next()) {
-            $count += 1;
+            ++$count;
         }
 
         return $count;

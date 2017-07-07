@@ -252,7 +252,7 @@ class Test
      * @param string $className
      * @param string $methodName
      *
-     * @return array
+     * @return string[]
      */
     public static function getMissingRequirements($className, $methodName)
     {
@@ -416,10 +416,11 @@ class Test
      */
     private static function parseAnnotationContent($message)
     {
-        if (\strpos($message, '::') !== false && \count(\explode('::', $message)) == 2) {
-            if (\defined($message)) {
-                $message = \constant($message);
-            }
+        if (
+            (\strpos($message, '::') !== false && \count(\explode('::', $message)) == 2)
+            && \defined($message)
+        ) {
+            $message = \constant($message);
         }
 
         return $message;
@@ -534,8 +535,8 @@ class Test
     /**
      * @param string $docComment full docComment string
      *
-     * @return array when @testWith annotation is defined
-     *               null  when @testWith annotation is omitted
+     * @return array|null array when @testWith annotation is defined,
+     *                    null when @testWith annotation is omitted
      *
      * @throws Exception when @testWith annotation is defined but cannot be parsed
      */
@@ -688,7 +689,7 @@ class Test
      * @param string $className
      * @param string $methodName
      *
-     * @return array
+     * @return array<string, bool|null>
      */
     public static function getBackupSettings($className, $methodName)
     {
@@ -849,12 +850,7 @@ class Test
             $methodName
         );
 
-        if (isset($annotations['class']['runTestsInSeparateProcesses']) ||
-            isset($annotations['method']['runInSeparateProcess'])) {
-            return true;
-        }
-
-        return false;
+        return isset($annotations['class']['runTestsInSeparateProcesses']) || isset($annotations['method']['runInSeparateProcess']);
     }
 
     public static function getClassProcessIsolationSettings($className, $methodName)
@@ -864,11 +860,7 @@ class Test
             $methodName
         );
 
-        if (isset($annotations['class']['runClassInSeparateProcess'])) {
-            return true;
-        }
-
-        return false;
+        return isset($annotations['class']['runClassInSeparateProcess']);
     }
 
     /**
@@ -981,8 +973,6 @@ class Test
                 return false;
             }
         }
-
-        return;
     }
 
     /**
