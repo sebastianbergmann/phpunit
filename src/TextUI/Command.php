@@ -287,7 +287,7 @@ class Command
         try {
             $this->options = Getopt::getopt(
                 $argv,
-                'd:c:hv',
+                'd:c:g:hv',
                 \array_keys($this->longOptions)
             );
         } catch (Exception $t) {
@@ -375,6 +375,11 @@ class Command
 
                 case '--testsuite':
                     $this->arguments['testsuite'] = $option[1];
+                    break;
+
+                case 'g':
+                    echo "DEBUG: \$option[1] = '$option[1]'\n";
+                    $this->arguments['globals'][] = $option[1];
                     break;
 
                 case '--generate-configuration':
@@ -726,6 +731,11 @@ class Command
 
             $configuration->handlePHPConfiguration();
 
+            // command line globals (-g option) override PHP config (in phpunit.xml) (Issue #2271)
+            if (isset($this->arguments['globals'])) {
+                $this->handleGlobals($this->arguments['globals']);
+            }
+
             /*
              * Issue #1216
              */
@@ -1027,6 +1037,7 @@ Configuration Options:
   --include-path <path(s)>    Prepend PHP's include_path with given path(s).
   -d key[=value]              Sets a php.ini value.
   --generate-configuration    Generate configuration file with suggested settings.
+  -g <assignment>             Define a global variable.
 
 Miscellaneous Options:
 
@@ -1054,6 +1065,53 @@ EOT;
         print Version::getVersionString() . "\n\n";
 
         $this->versionStringPrinted = true;
+    }
+
+
+    /**
+     * Handles the command line global definitions.
+     *
+     * @param array $globalDefinitionsArray
+     */
+    protected function handleGlobals($globalDefinitionsArray)
+    {
+        foreach ($globalDefinitionsArray as $definition) {
+            echo "DEBUG: \$definition = '$definition'\n";
+            if (strpos($definition, '=') === false) {
+                continue;
+            }
+            list($name, $value) = explode('=', $definition, 2);
+            echo "DEBUG: \$name = '$name'\n";
+            echo "DEBUG: \$value = '$value'\n";
+            if (is_null($value)) {
+                continue;
+            }
+
+            switch (true) {
+                case strcmp($value,"true") === 0:
+                    echo "DEBUG: assigning as boolean true\n";
+                    $GLOBALS[$name] = true;
+                    break;
+                case strcmp($value,"false") === 0:
+                    echo "DEBUG: assigning as boolean false\n";
+                    $GLOBALS[$name] = false;
+                    break;
+                case preg_match('/^\[.*\]$/', $value) :
+                    $tmpValue = "";
+                    echo "DEBUG: assigning as an array using eval\n";
+                    eval("\$tmpValue = " . $value . ";");
+                    $GLOBALS[$name] = $tmpValue;
+                    break;
+                case is_numeric($value):
+                    echo "DEBUG: assigning as a float\n";
+                    $GLOBALS[$name] = (float)$value;
+                    break;
+                default:
+                    $GLOBALS[$name] = $value;
+                    break;
+            }
+
+        }
     }
 
     /**
