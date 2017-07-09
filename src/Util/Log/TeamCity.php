@@ -121,17 +121,17 @@ class TeamCity extends ResultPrinter
             if ($comparisonFailure instanceof ComparisonFailure) {
                 $expectedString = $comparisonFailure->getExpectedAsString();
 
-                if (\is_null($expectedString) || empty($expectedString)) {
+                if (null === $expectedString || empty($expectedString)) {
                     $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
                 }
 
                 $actualString = $comparisonFailure->getActualAsString();
 
-                if (\is_null($actualString) || empty($actualString)) {
+                if (null === $actualString || empty($actualString)) {
                     $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
                 }
 
-                if (!\is_null($actualString) && !\is_null($expectedString)) {
+                if (null !== $actualString && null !== $expectedString) {
                     $parameters['type']     = 'comparisonFailure';
                     $parameters['actual']   = $actualString;
                     $parameters['expected'] = $expectedString;
@@ -380,7 +380,7 @@ class TeamCity extends ResultPrinter
      */
     private static function getPrimitiveValueAsString($value)
     {
-        if (\is_null($value)) {
+        if (null === $value) {
             return 'null';
         }
 
@@ -418,8 +418,7 @@ class TeamCity extends ResultPrinter
     private static function getFileName($className)
     {
         $reflectionClass = new ReflectionClass($className);
-        $fileName        = $reflectionClass->getFileName();
 
-        return $fileName;
+        return $reflectionClass->getFileName();
     }
 }

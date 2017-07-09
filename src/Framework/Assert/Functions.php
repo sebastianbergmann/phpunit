@@ -481,9 +481,9 @@ function assertContainsOnly($type, $haystack, $isNativeType = null, $message = '
 /**
  * Asserts that a haystack contains only instances of a given classname
  *
- * @param string            $classname
- * @param array|Traversable $haystack
- * @param string            $message
+ * @param string             $classname
+ * @param array|\Traversable $haystack
+ * @param string             $message
  */
 function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
 {
@@ -957,9 +957,9 @@ function assertNotSame($expected, $actual, $message = '')
  * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
  * is not the same.
  *
- * @param array|Countable|Traversable $expected
- * @param array|Countable|Traversable $actual
- * @param string                      $message
+ * @param array|\Countable|\Traversable $expected
+ * @param array|\Countable|\Traversable $actual
+ * @param string                        $message
  */
 function assertNotSameSize($expected, $actual, $message = '')
 {
@@ -1031,9 +1031,9 @@ function assertSame($expected, $actual, $message = '')
  * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
  * is the same.
  *
- * @param array|Countable|Traversable $expected
- * @param array|Countable|Traversable $actual
- * @param string                      $message
+ * @param array|\Countable|\Traversable $expected
+ * @param array|\Countable|\Traversable $actual
+ * @param string                        $message
  */
 function assertSameSize($expected, $actual, $message = '')
 {

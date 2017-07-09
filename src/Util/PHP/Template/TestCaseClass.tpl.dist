@@ -91,7 +91,7 @@ function __phpunit_error_handler($errno, $errstr, $errfile, $errline, $errcontex
    return true;
 }
 
-set_error_handler("__phpunit_error_handler");
+set_error_handler('__phpunit_error_handler');
 
 {constants}
 {included_files}

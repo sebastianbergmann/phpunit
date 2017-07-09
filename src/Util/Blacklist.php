@@ -46,12 +46,12 @@ class Blacklist
     ];
 
     /**
-     * @var array
+     * @var string[]
      */
     private static $directories;
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getBlacklistedDirectories()
     {

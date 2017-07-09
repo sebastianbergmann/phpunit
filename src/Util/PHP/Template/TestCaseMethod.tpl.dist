@@ -1,4 +1,5 @@
 <?php
+use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 
 if (!defined('STDOUT')) {
@@ -47,6 +48,7 @@ function __phpunit_run_isolated_test()
     $result->beStrictAboutTodoAnnotatedTests({isStrictAboutTodoAnnotatedTests});
     $result->beStrictAboutResourceUsageDuringSmallTests({isStrictAboutResourceUsageDuringSmallTests});
 
+    /** @var TestCase $test */
     $test = new {className}('{methodName}', unserialize('{data}'), '{dataName}');
     $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(TRUE);
@@ -91,7 +93,7 @@ function __phpunit_error_handler($errno, $errstr, $errfile, $errline, $errcontex
    return true;
 }
 
-set_error_handler("__phpunit_error_handler");
+set_error_handler('__phpunit_error_handler');
 
 {constants}
 {included_files}

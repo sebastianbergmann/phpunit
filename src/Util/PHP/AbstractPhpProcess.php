@@ -46,7 +46,7 @@ abstract class AbstractPhpProcess
     protected $args = '';
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $env = [];
 
@@ -134,7 +134,7 @@ abstract class AbstractPhpProcess
     /**
      * Sets the array of environment variables to start the child process with
      *
-     * @param array $env
+     * @param array<string, string> $env
      */
     public function setEnv(array $env)
     {
@@ -144,7 +144,7 @@ abstract class AbstractPhpProcess
     /**
      * Returns the array of environment variables to start the child process with
      *
-     * @return array
+     * @return array<string, string>
      */
     public function getEnv()
     {
@@ -318,8 +318,8 @@ abstract class AbstractPhpProcess
                 $test->setResult($childResult['testResult']);
                 $test->addToAssertionCount($childResult['numAssertions']);
 
+                /** @var TestResult $childResult */
                 $childResult = $childResult['result'];
-                /* @var $childResult TestResult */
 
                 if ($result->getCollectCodeCoverageInformation()) {
                     $result->getCodeCoverage()->merge(

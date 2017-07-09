@@ -17,7 +17,7 @@ class SameSize extends Count
     protected $expectedCount;
 
     /**
-     * @param \Countable|\Traversable\|array $expected
+     * @param \Countable|\Traversable|array $expected
      */
     public function __construct($expected)
     {
