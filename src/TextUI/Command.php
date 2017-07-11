@@ -203,8 +203,10 @@ class Command
             return TestRunner::SUCCESS_EXIT;
         }
 
-        unset($this->arguments['test']);
-        unset($this->arguments['testFile']);
+        unset(
+            $this->arguments['test'],
+            $this->arguments['testFile']
+        );
 
         try {
             $result = $runner->doRun($suite, $this->arguments, $exit);
@@ -824,7 +826,7 @@ class Command
      * @param string $loaderClass
      * @param string $loaderFile
      *
-     * @return TestSuiteLoader
+     * @return TestSuiteLoader|null
      */
     protected function handleLoader($loaderClass, $loaderFile = '')
     {
@@ -869,7 +871,7 @@ class Command
      * @param string $printerClass
      * @param string $printerFile
      *
-     * @return Printer|string
+     * @return Printer|string|null
      */
     protected function handlePrinter($printerClass, $printerFile = '')
     {

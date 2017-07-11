@@ -3173,7 +3173,7 @@ XML;
     }
 
     /**
-     * @return array
+     * @return array<string, string[]>
      */
     public static function validInvalidJsonDataprovider()
     {

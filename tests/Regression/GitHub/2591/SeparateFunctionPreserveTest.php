@@ -9,7 +9,7 @@ class Issue2591_SeparateFunctionPreserveTest extends TestCase
 {
     public function testChangedGlobalString()
     {
-        $GLOBALS['globalString'] = "Hello!";
+        $GLOBALS['globalString'] = 'Hello!';
         $this->assertEquals('Hello!', $GLOBALS['globalString']);
     }
 

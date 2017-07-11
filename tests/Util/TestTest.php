@@ -316,7 +316,7 @@ class TestTest extends TestCase
     /**
      * @dataProvider requirementsWithVersionConstraintsProvider
      */
-    public function testGetRequirementsWithVersionConstraints($test, $result)
+    public function testGetRequirementsWithVersionConstraints($test, array $result)
     {
         $requirements = Test::getRequirements(\RequirementsTest::class, $test);
         foreach ($result as $type => $expected_requirement) {

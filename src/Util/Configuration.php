@@ -880,7 +880,9 @@ class Configuration
     /**
      * Returns the test suite configuration.
      *
-     * @return TestSuite|null
+     * @param string|null $testSuiteFilter
+     *
+     * @return TestSuite
      */
     public function getTestSuiteConfiguration($testSuiteFilter = null)
     {
@@ -894,17 +896,16 @@ class Configuration
             return $this->getTestSuite($testSuiteNodes->item(0), $testSuiteFilter);
         }
 
-        if ($testSuiteNodes->length > 1) {
-            $suite = new TestSuite;
+        //if ($testSuiteNodes->length > 1) { there cannot be a negative number of Nodes
+        $suite = new TestSuite;
 
-            foreach ($testSuiteNodes as $testSuiteNode) {
-                $suite->addTestSuite(
-                    $this->getTestSuite($testSuiteNode, $testSuiteFilter)
-                );
-            }
-
-            return $suite;
+        foreach ($testSuiteNodes as $testSuiteNode) {
+            $suite->addTestSuite(
+                $this->getTestSuite($testSuiteNode, $testSuiteFilter)
+            );
         }
+
+        return $suite;
     }
 
     /**
@@ -924,7 +925,8 @@ class Configuration
     }
 
     /**
-     * @param DOMElement $testSuiteNode
+     * @param DOMElement  $testSuiteNode
+     * @param string|null $testSuiteFilter
      *
      * @return TestSuite
      */

@@ -14,7 +14,7 @@ use Closure;
 class GlobalState
 {
     /**
-     * @var array
+     * @var string[]
      */
     protected static $superGlobalArrays = [
         '_ENV',
@@ -152,7 +152,7 @@ class GlobalState
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     protected static function getSuperGlobalArrays()
     {
@@ -161,7 +161,7 @@ class GlobalState
 
     protected static function exportVariable($variable)
     {
-        if (\is_scalar($variable) || \is_null($variable) ||
+        if (\is_scalar($variable) || null === $variable ||
             (\is_array($variable) && self::arrayOnlyContainsScalars($variable))) {
             return \var_export($variable, true);
         }
@@ -183,7 +183,7 @@ class GlobalState
         foreach ($array as $element) {
             if (\is_array($element)) {
                 $result = self::arrayOnlyContainsScalars($element);
-            } elseif (!\is_scalar($element) && !\is_null($element)) {
+            } elseif (!\is_scalar($element) && null !== $element) {
                 $result = false;
             }
 
