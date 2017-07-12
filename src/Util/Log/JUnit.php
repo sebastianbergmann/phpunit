@@ -229,6 +229,7 @@ class JUnit extends Printer implements TestListener
     {
         $testSuite = $this->document->createElement('testsuite');
         $testSuite->setAttribute('name', $suite->getName());
+        $testSuite->setAttribute('package', $suite->getName());
 
         if (\class_exists($suite->getName(), false)) {
             try {
