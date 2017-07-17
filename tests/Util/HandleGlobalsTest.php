@@ -78,10 +78,14 @@ class HandleGlobalsTest extends TestCase
     }
 
     /**
-     * Workaround to call protected methods
-     * https://stackoverflow.com/questions/249664/best-practices-to-test-protected-methods-with-phpunit
+     * Workaround to call protected methods.
+     *
+     * See https://stackoverflow.com/questions/249664/best-practices-to-test-protected-methods-with-phpunit for details.
+     *
+     * @param string $name name of method in (hardcoded) Command class
      */
-    protected static function getMethod($name) {
+    protected static function getMethod($name)
+    {
         $class = new \ReflectionClass('PHPUnit\TextUI\Command');    // hardcoded class
         $method = $class->getMethod($name);
         $method->setAccessible(true);

@@ -1096,7 +1096,7 @@ EOT;
                 case strcmp($value, "null") === 0:
                     $GLOBALS[$name] = null;
                     break;
-                case preg_match('/^\[.*\]$/', $value) :
+                case preg_match('/^\[.*\]$/', $value):
                     // if $value begins and ends with brackets then eval()
                     $tmpValue = "";
                     eval("\$tmpValue = " . $value . ";");
