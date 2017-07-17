@@ -177,7 +177,7 @@ class JUnit extends Printer implements TestListener
      */
     public function addIncompleteTest(Test $test, \Exception $e, $time)
     {
-        $this->doAddSkipped($test);
+        $this->doAddSkipped($test, $e);
     }
 
     /**
@@ -217,7 +217,7 @@ class JUnit extends Printer implements TestListener
      */
     public function addSkippedTest(Test $test, \Exception $e, $time)
     {
-        $this->doAddSkipped($test);
+        $this->doAddSkipped($test, $e);
     }
 
     /**
@@ -437,13 +437,18 @@ class JUnit extends Printer implements TestListener
         $this->currentTestCase->appendChild($fault);
     }
 
-    private function doAddSkipped(Test $test)
+    private function doAddSkipped(Test $test, \Exception $e)
     {
         if ($this->currentTestCase === null) {
             return;
         }
 
-        $skipped = $this->document->createElement('skipped');
+        $buffer = TestFailure::exceptionToString($e);
+
+        $skipped = $this->document->createElement(
+            'skipped',
+            Xml::prepareString($buffer)
+        );
         $this->currentTestCase->appendChild($skipped);
 
         $this->testSuiteSkipped[$this->testSuiteLevel]++;
