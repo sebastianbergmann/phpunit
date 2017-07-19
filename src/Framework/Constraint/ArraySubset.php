@@ -81,8 +81,8 @@ class ArraySubset extends Constraint
             $f = new SebastianBergmann\Comparator\ComparisonFailure(
                 $patched,
                 $other,
-                print_r($patched, true),
-                print_r($other, true)
+                \print_r($patched, true),
+                \print_r($other, true)
             );
             $this->fail($other, $description, $f);
         }
