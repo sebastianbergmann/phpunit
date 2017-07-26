@@ -1454,9 +1454,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * Returns a builder object to create mock objects using a fluent interface.
+     * Returns a builder object to create mock objects using a fluent interface(s).
      *
-     * @param string $className
+     * @param array|string $className
      *
      * @return PHPUnit_Framework_MockObject_MockBuilder
      */
