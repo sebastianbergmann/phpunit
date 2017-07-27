@@ -47,17 +47,17 @@ class PHPUnit_Framework_MockObject_Generator
     /**
      * Returns a mock object for the specified class.
      *
-     * @param array|string $type
-     * @param array        $methods
-     * @param array        $arguments
-     * @param string       $mockClassName
-     * @param bool         $callOriginalConstructor
-     * @param bool         $callOriginalClone
-     * @param bool         $callAutoload
-     * @param bool         $cloneArguments
-     * @param bool         $callOriginalMethods
-     * @param object       $proxyTarget
-     * @param bool         $allowMockingUnknownTypes
+     * @param string|string[] $type
+     * @param array           $methods
+     * @param array           $arguments
+     * @param string          $mockClassName
+     * @param bool            $callOriginalConstructor
+     * @param bool            $callOriginalClone
+     * @param bool            $callAutoload
+     * @param bool            $cloneArguments
+     * @param bool            $callOriginalMethods
+     * @param object          $proxyTarget
+     * @param bool            $allowMockingUnknownTypes
      *
      * @return PHPUnit_Framework_MockObject_MockObject
      *
