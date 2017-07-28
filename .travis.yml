@@ -4,6 +4,7 @@ sudo: false
 
 git:
     depth: 1
+
 php:
   - 7.0
   - 7.0snapshot
