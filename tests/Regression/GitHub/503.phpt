@@ -25,8 +25,8 @@ Failed asserting that two strings are identical.
 +++ Actual
 @@ @@
  #Warning: Strings contain different line endings!
- 'foo
- '
+-'foo
++'foo
 
 %s:%i
 

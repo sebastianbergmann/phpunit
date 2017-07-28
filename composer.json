@@ -36,7 +36,6 @@
         "phpunit/php-timer": "^1.0.6",
         "phpunit/phpunit-mock-objects": "^4.0",
         "sebastian/comparator": "^2.0",
-        "sebastian/diff": "^1.4.3 || ^2.0",
         "sebastian/environment": "^3.0.2",
         "sebastian/exporter": "^3.1",
         "sebastian/global-state": "^1.1 || ^2.0",
@@ -45,7 +44,8 @@
         "sebastian/version": "^2.0"
     },
     "require-dev": {
-        "ext-PDO": "*"
+        "ext-PDO": "*",
+        "sebastian/diff": "^2.0"
     },
     "conflict": {
         "phpunit/dbunit": "<3.0",
@@ -55,7 +55,8 @@
         "platform": {
             "php": "7.0.0"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "optimize-autoloader": true
     },
     "suggest": {
         "phpunit/php-invoker": "^1.1",
@@ -78,6 +79,7 @@
             "tests/_files/CoveredFunction.php"
         ]
     },
+    "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
             "dev-master": "6.2.x-dev"
