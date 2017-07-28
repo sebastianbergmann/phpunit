@@ -55,7 +55,8 @@
         "platform": {
             "php": "7.0.0"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "optimize-autoloader": true
     },
     "suggest": {
         "phpunit/php-invoker": "^1.1",

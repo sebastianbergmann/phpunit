@@ -1,5 +1,10 @@
 language: php
 
+sudo: false
+
+git:
+    depth: 1
+
 php:
   - 7.0
   - 7.0snapshot
@@ -11,16 +16,17 @@ env:
   matrix:
     - DEPENDENCIES="high"
     - DEPENDENCIES="low"
-
-sudo: false
+  global:
+    - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader"
 
 before_install:
   - composer self-update
   - composer clear-cache
 
 install:
-  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable; fi
-  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable --prefer-lowest; fi
+  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS --prefer-stable; fi
+  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS --prefer-lowest; fi
+  - composer info -D | sort
 
 before_script:
   - echo 'zend.assertions=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -39,4 +45,3 @@ after_success:
 
 notifications:
   email: false
-
