@@ -53,6 +53,7 @@
         "platform": {
             "php": "5.6.0"
         },
+        "optimize-autoloader": true,
         "sort-packages": true
     },
     "suggest": {
