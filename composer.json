@@ -19,6 +19,7 @@
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit/issues"
     },
+    "prefer-stable": true,
     "require": {
         "php": "^7.0",
         "ext-dom": "*",
