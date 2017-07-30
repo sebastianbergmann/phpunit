@@ -19,6 +19,7 @@
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit/issues"
     },
+    "prefer-stable": true,
     "require": {
         "php": "^5.6 || ^7.0",
         "phpunit/php-file-iterator": "~1.4",
