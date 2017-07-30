@@ -4,7 +4,6 @@ sudo: false
 
 php:
   - 5.6
-  - 5.6snapshot
   - 7.0
   - 7.0snapshot
   - 7.1
