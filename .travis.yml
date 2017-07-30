@@ -1,5 +1,7 @@
 language: php
 
+sudo: false
+
 php:
   - 5.6
   - 7.0
@@ -10,8 +12,6 @@ env:
   matrix:
     - DEPENDENCIES="high"
     - DEPENDENCIES="low"
-
-sudo: false
 
 before_install:
   - composer self-update
