@@ -36,7 +36,9 @@ class Fileloader
         //current working directory.
         $localFile = __DIR__ . DIRECTORY_SEPARATOR . $filename;
 
-        if (!$includePathFilename || !\is_readable($includePathFilename) || $includePathFilename === $localFile) {
+        $isReadable = @\fopen($includePathFilename, 'r') !== false;
+
+        if (!$includePathFilename || !$isReadable || $includePathFilename === $localFile) {
             throw new Exception(
                 \sprintf('Cannot open file "%s".' . "\n", $filename)
             );
