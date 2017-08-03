@@ -36,6 +36,7 @@ class Fileloader
         //current working directory.
         $localFile = __DIR__ . DIRECTORY_SEPARATOR . $filename;
 
+        // @see https://github.com/sebastianbergmann/phpunit/pull/2751
         $isReadable = @\fopen($includePathFilename, 'r') !== false;
 
         if (!$includePathFilename || !$isReadable || $includePathFilename === $localFile) {
