@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 6.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.2.4] - 2017-08-03
+
+### Changed
+
+* Do not pull in `sebastian/diff` `^2.0`
+
 ## [6.2.3] - 2017-07-03
 
 ### Fixed
@@ -35,6 +41,7 @@ All notable changes of the PHPUnit 6.2 release series are documented in this fil
 * Implemented [#2689](https://github.com/sebastianbergmann/phpunit/pull/2689): Unpack nested `IteratorAggregate` objects for `Count` constraint 
 * When `beStrictAboutCoversAnnotation="true"` is configured or `--strict-coverage` is used then a test is now also marked as risky when it specifies units of code using `@covers` or `@uses` that are not executed by the test
 
+[6.2.4]: https://github.com/sebastianbergmann/phpunit/compare/6.2.3...6.2.4
 [6.2.3]: https://github.com/sebastianbergmann/phpunit/compare/6.2.2...6.2.3
 [6.2.2]: https://github.com/sebastianbergmann/phpunit/compare/6.2.1...6.2.2
 [6.2.1]: https://github.com/sebastianbergmann/phpunit/compare/6.2.0...6.2.1
