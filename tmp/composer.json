@@ -21,8 +21,8 @@
     },
     "require": {
         "php": "^7.0",
-        "phpunit/php-text-template": "^1.2",
-        "doctrine/instantiator": "^1.0.2",
+        "phpunit/php-text-template": "^1.2.1",
+        "doctrine/instantiator": "^1.0.5",
         "sebastian/exporter": "^3.0"
     },
     "require-dev": {
