@@ -37,7 +37,7 @@
         "phpunit/php-timer": "^1.0.6",
         "phpunit/phpunit-mock-objects": "^4.0",
         "sebastian/comparator": "^2.0",
-        "sebastian/diff": "^1.4.3 || ^2.0",
+        "sebastian/diff": "^1.4.3",
         "sebastian/environment": "^3.0.2",
         "sebastian/exporter": "^3.1",
         "sebastian/global-state": "^1.1 || ^2.0",
