@@ -293,7 +293,7 @@ class Command
                 \array_keys($this->longOptions)
             );
         } catch (Exception $t) {
-            $this->showError($t->getMessage());
+            $this->exitWithErrorMessage($t->getMessage());
         }
 
         foreach ($this->options[0] as $option) {
@@ -848,7 +848,7 @@ class Command
             return;
         }
 
-        $this->showError(
+        $this->exitWithErrorMessage(
             \sprintf(
                 'Could not use "%s" as loader.',
                 $loaderClass
@@ -896,7 +896,7 @@ class Command
             }
         }
 
-        $this->showError(
+        $this->exitWithErrorMessage(
             \sprintf(
                 'Could not use "%s" as printer.',
                 $printerClass
@@ -914,7 +914,7 @@ class Command
         try {
             Fileloader::checkAndLoad($filename);
         } catch (Exception $e) {
-            $this->showError($e->getMessage());
+            $this->exitWithErrorMessage($e->getMessage());
         }
     }
 
@@ -1061,7 +1061,7 @@ EOT;
     /**
      * @param string $message
      */
-    private function showError($message)
+    private function exitWithErrorMessage($message)
     {
         $this->printVersionString();
 
