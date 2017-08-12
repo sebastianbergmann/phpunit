@@ -880,28 +880,53 @@ class Command
             }
         }
 
-        if (\class_exists($printerClass)) {
-            $class = new ReflectionClass($printerClass);
-
-            if ($class->implementsInterface(TestListener::class) &&
-                $class->isSubclassOf(Printer::class) &&
-                $class->isInstantiable()) {
-                if ($class->isSubclassOf(ResultPrinter::class)) {
-                    return $printerClass;
-                }
-
-                $outputStream = isset($this->arguments['stderr']) ? 'php://stderr' : null;
-
-                return $class->newInstance($outputStream);
-            }
+        if (!\class_exists($printerClass)) {
+            $this->exitWithErrorMessage(
+                \sprintf(
+                    'Could not use "%s" as printer: class does not exist',
+                    $printerClass
+                )
+            );
         }
 
-        $this->exitWithErrorMessage(
-            \sprintf(
-                'Could not use "%s" as printer.',
-                $printerClass
-            )
-        );
+        $class = new ReflectionClass($printerClass);
+
+        if (!$class->implementsInterface(TestListener::class)) {
+            $this->exitWithErrorMessage(
+                \sprintf(
+                    'Could not use "%s" as printer: class does not implement %s',
+                    $printerClass,
+                    TestListener::class
+                )
+            );
+        }
+
+        if (!$class->isSubclassOf(Printer::class)) {
+            $this->exitWithErrorMessage(
+                \sprintf(
+                    'Could not use "%s" as printer: class does not extend %s',
+                    $printerClass,
+                    Printer::class
+                )
+            );
+        }
+
+        if (!$class->isInstantiable()) {
+            $this->exitWithErrorMessage(
+                \sprintf(
+                    'Could not use "%s" as printer: class cannot be instantiated',
+                    $printerClass
+                )
+            );
+        }
+
+        if ($class->isSubclassOf(ResultPrinter::class)) {
+            return $printerClass;
+        }
+
+        $outputStream = isset($this->arguments['stderr']) ? 'php://stderr' : null;
+
+        return $class->newInstance($outputStream);
     }
 
     /**
