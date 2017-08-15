@@ -168,25 +168,7 @@ class Command
         }
 
         if ($this->arguments['listSuites']) {
-            $this->printVersionString();
-
-            print "Available test suite(s):\n";
-
-            $configuration = Configuration::getInstance(
-                $this->arguments['configuration']
-            );
-
-            $suiteNames = $configuration->getTestSuiteNames();
-
-            foreach ($suiteNames as $suiteName) {
-                print " - $suiteName\n";
-            }
-
-            if ($exit) {
-                exit(TestRunner::SUCCESS_EXIT);
-            }
-
-            return TestRunner::SUCCESS_EXIT;
+            return $this->handleListSuites($exit);
         }
 
         unset(
@@ -1134,6 +1116,29 @@ EOT;
 
         foreach ($groups as $group) {
             print " - $group\n";
+        }
+
+        if ($exit) {
+            exit(TestRunner::SUCCESS_EXIT);
+        }
+
+        return TestRunner::SUCCESS_EXIT;
+    }
+
+    private function handleListSuites(bool $exit): int
+    {
+        $this->printVersionString();
+
+        print "Available test suite(s):\n";
+
+        $configuration = Configuration::getInstance(
+            $this->arguments['configuration']
+        );
+
+        $suiteNames = $configuration->getTestSuiteNames();
+
+        foreach ($suiteNames as $suiteName) {
+            print " - $suiteName\n";
         }
 
         if ($exit) {
