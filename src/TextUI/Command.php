@@ -48,6 +48,7 @@ class Command
         'listGroups'              => false,
         'listSuites'              => false,
         'listTests'               => false,
+        'listTestsRaw'            => false,
         'loader'                  => null,
         'useDefaultConfiguration' => true,
         'loadedExtensions'        => [],
@@ -90,6 +91,7 @@ class Command
         'list-groups'               => null,
         'list-suites'               => null,
         'list-tests'                => null,
+        'list-tests-raw'            => null,
         'loader='                   => null,
         'log-junit='                => null,
         'log-teamcity='             => null,
@@ -175,7 +177,11 @@ class Command
         }
 
         if ($this->arguments['listTests']) {
-            return $this->handleListTests($suite, $exit);
+            return $this->handleListTests($suite, false, $exit);
+        }
+
+        if ($this->arguments['listTestsRaw']) {
+            return $this->handleListTests($suite, true, $exit);
         }
 
         unset(
@@ -435,6 +441,10 @@ class Command
 
                 case '--list-tests':
                     $this->arguments['listTests'] = true;
+                    break;
+
+                case '--list-tests-raw':
+                    $this->arguments['listTestsRaw'] = true;
                     break;
 
                 case '--printer':
@@ -983,6 +993,7 @@ Test Selection Options:
   --list-groups               List available test groups.
   --list-suites               List available test suites.
   --list-tests                List available tests.
+  --list-tests-raw            List available tests (raw format).
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
 
@@ -1160,18 +1171,26 @@ EOT;
         return TestRunner::SUCCESS_EXIT;
     }
 
-    private function handleListTests(TestSuite $suite, bool $exit): int
+    private function handleListTests(TestSuite $suite, bool $raw = false, bool $exit): int
     {
-        $this->printVersionString();
+        if (!$raw) {
+            $this->printVersionString();
 
-        print "Available test(s):\n";
+            print "Available test(s):\n";
+        }
 
         foreach (new \RecursiveIteratorIterator($suite->getIterator()) as $test) {
             if ($test instanceof TestCase || $test instanceof PhptTestCase) {
-                \printf(
-                    ' - %s' . PHP_EOL,
-                    \str_replace(' with data set ', '', $test->getName())
-                );
+                $name = \str_replace(' with data set ', '', $test->getName());
+
+                if ($raw) {
+                    print $name . PHP_EOL;
+                } else {
+                    \printf(
+                        ' - %s' . PHP_EOL,
+                        $name
+                    );
+                }
             }
         }
 

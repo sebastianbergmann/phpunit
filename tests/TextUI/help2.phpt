@@ -43,6 +43,7 @@ Test Selection Options:
   --list-groups               List available test groups.
   --list-suites               List available test suites.
   --list-tests                List available tests.
+  --list-tests-raw            List available tests (raw format).
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
 
