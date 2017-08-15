@@ -164,22 +164,7 @@ class Command
         }
 
         if ($this->arguments['listGroups']) {
-            $this->printVersionString();
-
-            print "Available test group(s):\n";
-
-            $groups = $suite->getGroups();
-            \sort($groups);
-
-            foreach ($groups as $group) {
-                print " - $group\n";
-            }
-
-            if ($exit) {
-                exit(TestRunner::SUCCESS_EXIT);
-            }
-
-            return TestRunner::SUCCESS_EXIT;
+            return $this->handleListGroups($suite, $exit);
         }
 
         if ($this->arguments['listSuites']) {
@@ -1136,5 +1121,25 @@ EOT;
 
             $this->arguments['loadedExtensions'][] = $manifest->getName() . ' ' . $manifest->getVersion()->getVersionString();
         }
+    }
+
+    private function handleListGroups(TestSuite $suite, bool $exit): int
+    {
+        $this->printVersionString();
+
+        print "Available test group(s):\n";
+
+        $groups = $suite->getGroups();
+        \sort($groups);
+
+        foreach ($groups as $group) {
+            print " - $group\n";
+        }
+
+        if ($exit) {
+            exit(TestRunner::SUCCESS_EXIT);
+        }
+
+        return TestRunner::SUCCESS_EXIT;
     }
 }
