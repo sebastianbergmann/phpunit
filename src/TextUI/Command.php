@@ -46,7 +46,9 @@ class Command
      */
     protected $arguments = [
         'listGroups'              => false,
+        'listGroupsRaw'           => false,
         'listSuites'              => false,
+        'listSuitesRaw'           => false,
         'listTests'               => false,
         'listTestsRaw'            => false,
         'loader'                  => null,
@@ -89,7 +91,9 @@ class Command
         'help'                      => null,
         'include-path='             => null,
         'list-groups'               => null,
+        'list-groups-raw'           => null,
         'list-suites'               => null,
+        'list-suites-raw'           => null,
         'list-tests'                => null,
         'list-tests-raw'            => null,
         'loader='                   => null,
@@ -169,11 +173,19 @@ class Command
         }
 
         if ($this->arguments['listGroups']) {
-            return $this->handleListGroups($suite, $exit);
+            return $this->handleListGroups($suite, false, $exit);
+        }
+
+        if ($this->arguments['listGroupsRaw']) {
+            return $this->handleListGroups($suite, true, $exit);
         }
 
         if ($this->arguments['listSuites']) {
-            return $this->handleListSuites($exit);
+            return $this->handleListSuites(false, $exit);
+        }
+
+        if ($this->arguments['listSuitesRaw']) {
+            return $this->handleListSuites(true, $exit);
         }
 
         if ($this->arguments['listTests']) {
@@ -429,8 +441,16 @@ class Command
                     $this->arguments['listGroups'] = true;
                     break;
 
+                case '--list-groups-raw':
+                    $this->arguments['listGroupsRaw'] = true;
+                    break;
+
                 case '--list-suites':
                     $this->arguments['listSuites'] = true;
+                    break;
+
+                case '--list-suites-raw':
+                    $this->arguments['listSuitesRaw'] = true;
                     break;
 
                 case '--list-tests':
@@ -985,9 +1005,11 @@ Test Selection Options:
   --group ...                 Only runs tests from the specified group(s).
   --exclude-group ...         Exclude tests from the specified group(s).
   --list-groups               List available test groups.
+  --list-groups-raw           List available test groups (raw output).
   --list-suites               List available test suites.
+  --list-suites-raw           List available test suites (raw output).
   --list-tests                List available tests.
-  --list-tests-raw            List available tests (raw format).
+  --list-tests-raw            List available tests (raw output).
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
 
@@ -1122,20 +1144,26 @@ EOT;
         }
     }
 
-    private function handleListGroups(TestSuite $suite, bool $exit): int
+    private function handleListGroups(TestSuite $suite, bool $raw, bool $exit): int
     {
-        $this->printVersionString();
+        if (!$raw) {
+            $this->printVersionString();
 
-        print 'Available test group(s):' . PHP_EOL;
+            print 'Available test group(s):' . PHP_EOL;
+        }
 
         $groups = $suite->getGroups();
         \sort($groups);
 
         foreach ($groups as $group) {
-            \printf(
-                ' - %s' . PHP_EOL,
-                $group
-            );
+            if ($raw) {
+                print $group . PHP_EOL;
+            } else {
+                \printf(
+                    ' - %s' . PHP_EOL,
+                    $group
+                );
+            }
         }
 
         if ($exit) {
@@ -1145,11 +1173,13 @@ EOT;
         return TestRunner::SUCCESS_EXIT;
     }
 
-    private function handleListSuites(bool $exit): int
+    private function handleListSuites(bool $raw, bool $exit): int
     {
-        $this->printVersionString();
+        if (!$raw) {
+            $this->printVersionString();
 
-        print 'Available test suite(s):' . PHP_EOL;
+            print 'Available test suite(s):' . PHP_EOL;
+        }
 
         $configuration = Configuration::getInstance(
             $this->arguments['configuration']
@@ -1158,10 +1188,14 @@ EOT;
         $suiteNames = $configuration->getTestSuiteNames();
 
         foreach ($suiteNames as $suiteName) {
-            \printf(
-                ' - %s' . PHP_EOL,
-                $suiteName
-            );
+            if ($raw) {
+                print $suiteName . PHP_EOL;
+            } else {
+                \printf(
+                    ' - %s' . PHP_EOL,
+                    $suiteName
+                );
+            }
         }
 
         if ($exit) {
