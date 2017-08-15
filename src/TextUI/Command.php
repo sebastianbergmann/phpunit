@@ -290,7 +290,7 @@ class Command
                 case '--columns':
                     if (\is_numeric($option[1])) {
                         $this->arguments['columns'] = (int) $option[1];
-                    } elseif ($option[1] == 'max') {
+                    } elseif ($option[1] === 'max') {
                         $this->arguments['columns'] = 'max';
                     }
                     break;
@@ -374,15 +374,15 @@ class Command
                     print 'Source directory (relative to path shown above; default: src): ';
                     $src = \trim(\fgets(STDIN));
 
-                    if ($bootstrapScript == '') {
+                    if ($bootstrapScript === '') {
                         $bootstrapScript = 'vendor/autoload.php';
                     }
 
-                    if ($testsDirectory == '') {
+                    if ($testsDirectory === '') {
                         $testsDirectory = 'tests';
                     }
 
-                    if ($src == '') {
+                    if ($src === '') {
                         $src = 'src';
                     }
 
