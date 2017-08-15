@@ -192,7 +192,7 @@ class Command
         try {
             $result = $runner->doRun($suite, $this->arguments, $exit);
         } catch (Exception $e) {
-            print $e->getMessage() . "\n";
+            print $e->getMessage() . PHP_EOL;
         }
 
         $return = TestRunner::FAILURE_EXIT;
@@ -363,10 +363,7 @@ class Command
                 case '--generate-configuration':
                     $this->printVersionString();
 
-                    \printf(
-                        "Generating phpunit.xml in %s\n\n",
-                        \getcwd()
-                    );
+                    print 'Generating phpunit.xml in ' . \getcwd() . PHP_EOL . PHP_EOL;
 
                     print 'Bootstrap script (relative to path shown above; default: vendor/autoload.php): ';
                     $bootstrapScript = \trim(\fgets(STDIN));
@@ -401,10 +398,7 @@ class Command
                         )
                     );
 
-                    \printf(
-                        "\nGenerated phpunit.xml in %s\n",
-                        \getcwd()
-                    );
+                    print PHP_EOL . 'Generated phpunit.xml in ' . \getcwd() . PHP_EOL;
 
                     exit(TestRunner::SUCCESS_EXIT);
                     break;
@@ -709,7 +703,7 @@ class Command
                     $this->arguments['configuration']
                 );
             } catch (Throwable $t) {
-                print $t->getMessage() . "\n";
+                print $t->getMessage() . PHP_EOL;
                 exit(TestRunner::FAILURE_EXIT);
             }
 
@@ -941,12 +935,12 @@ class Command
 
         if ($isOutdated) {
             \printf(
-                "You are not using the latest version of PHPUnit.\n" .
-                "The latest version is PHPUnit %s.\n",
+                'You are not using the latest version of PHPUnit.' . PHP_EOL .
+                'The latest version is PHPUnit %s.' . PHP_EOL,
                 $latestVersion
             );
         } else {
-            print "You are using the latest version of PHPUnit.\n";
+            print 'You are using the latest version of PHPUnit.' . PHP_EOL;
         }
 
         exit(TestRunner::SUCCESS_EXIT);
@@ -1069,7 +1063,7 @@ EOT;
             return;
         }
 
-        print Version::getVersionString() . "\n\n";
+        print Version::getVersionString() . PHP_EOL . PHP_EOL;
 
         $this->versionStringPrinted = true;
     }
@@ -1081,7 +1075,7 @@ EOT;
     {
         $this->printVersionString();
 
-        print $message . "\n";
+        print $message . PHP_EOL;
 
         exit(TestRunner::FAILURE_EXIT);
     }
@@ -1132,13 +1126,16 @@ EOT;
     {
         $this->printVersionString();
 
-        print "Available test group(s):\n";
+        print 'Available test group(s):' . PHP_EOL;
 
         $groups = $suite->getGroups();
         \sort($groups);
 
         foreach ($groups as $group) {
-            print " - $group\n";
+            \printf(
+                ' - %s' . PHP_EOL,
+                $group
+            );
         }
 
         if ($exit) {
@@ -1152,7 +1149,7 @@ EOT;
     {
         $this->printVersionString();
 
-        print "Available test suite(s):\n";
+        print 'Available test suite(s):' . PHP_EOL;
 
         $configuration = Configuration::getInstance(
             $this->arguments['configuration']
@@ -1161,7 +1158,10 @@ EOT;
         $suiteNames = $configuration->getTestSuiteNames();
 
         foreach ($suiteNames as $suiteName) {
-            print " - $suiteName\n";
+            \printf(
+                ' - %s' . PHP_EOL,
+                $suiteName
+            );
         }
 
         if ($exit) {
@@ -1176,7 +1176,7 @@ EOT;
         if (!$raw) {
             $this->printVersionString();
 
-            print "Available test(s):\n";
+            print 'Available test(s):' . PHP_EOL;
         }
 
         foreach (new \RecursiveIteratorIterator($suite->getIterator()) as $test) {
