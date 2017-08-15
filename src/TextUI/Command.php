@@ -192,6 +192,7 @@ class Command
             );
 
             $suiteNames = $configuration->getTestSuiteNames();
+
             foreach ($suiteNames as $suiteName) {
                 print " - $suiteName\n";
             }
