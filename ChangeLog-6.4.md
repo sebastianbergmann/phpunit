@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 
 ### Added
 
+* Implemented [#1993](https://github.com/sebastianbergmann/phpunit/issues/1993): Add `--list-tests` option for listing all available tests (without executing them)
 * Added `TestListenerDefaultImplementation` trait that provides empty implementations of the `TestListener` methods
 
 ### Changed

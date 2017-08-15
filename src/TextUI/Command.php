@@ -16,6 +16,7 @@ use PharIo\Manifest\ManifestLoader;
 use PharIo\Version\Version as PharIoVersion;
 use PharIo\Manifest\Exception as ManifestException;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
@@ -46,6 +47,7 @@ class Command
     protected $arguments = [
         'listGroups'              => false,
         'listSuites'              => false,
+        'listTests'               => false,
         'loader'                  => null,
         'useDefaultConfiguration' => true,
         'loadedExtensions'        => [],
@@ -87,6 +89,7 @@ class Command
         'include-path='             => null,
         'list-groups'               => null,
         'list-suites'               => null,
+        'list-tests'                => null,
         'loader='                   => null,
         'log-junit='                => null,
         'log-teamcity='             => null,
@@ -169,6 +172,10 @@ class Command
 
         if ($this->arguments['listSuites']) {
             return $this->handleListSuites($exit);
+        }
+
+        if ($this->arguments['listTests']) {
+            return $this->handleListTests($suite, $exit);
         }
 
         unset(
@@ -424,6 +431,10 @@ class Command
 
                 case '--list-suites':
                     $this->arguments['listSuites'] = true;
+                    break;
+
+                case '--list-tests':
+                    $this->arguments['listTests'] = true;
                     break;
 
                 case '--printer':
@@ -971,6 +982,7 @@ Test Selection Options:
   --exclude-group ...         Exclude tests from the specified group(s).
   --list-groups               List available test groups.
   --list-suites               List available test suites.
+  --list-tests                List available tests.
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
 
@@ -1139,6 +1151,28 @@ EOT;
 
         foreach ($suiteNames as $suiteName) {
             print " - $suiteName\n";
+        }
+
+        if ($exit) {
+            exit(TestRunner::SUCCESS_EXIT);
+        }
+
+        return TestRunner::SUCCESS_EXIT;
+    }
+
+    private function handleListTests(TestSuite $suite, bool $exit): int
+    {
+        $this->printVersionString();
+
+        print "Available test(s):\n";
+
+        foreach (new \RecursiveIteratorIterator($suite->getIterator()) as $test) {
+            if ($test instanceof TestCase || $test instanceof PhptTestCase) {
+                \printf(
+                    ' - %s' . PHP_EOL,
+                    \str_replace(' with data set ', '', $test->getName())
+                );
+            }
         }
 
         if ($exit) {
