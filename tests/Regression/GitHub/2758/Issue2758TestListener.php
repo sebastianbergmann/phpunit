@@ -1,9 +1,13 @@
 <?php
-class Issue2758TestListener extends PHPUnit_Framework_BaseTestListener
+use PHPUnit\Framework\BaseTestListener;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
+
+class Issue2758TestListener extends BaseTestListener
 {
-    public function endTest(PHPUnit_Framework_Test $test, $time)
+    public function endTest(Test $test, $time)
     {
-        if (!$test instanceof PHPUnit_Framework_TestCase) {
+        if (!$test instanceof TestCase) {
             return;
         }
 

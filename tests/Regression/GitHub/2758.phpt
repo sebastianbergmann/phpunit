@@ -10,7 +10,7 @@ $_SERVER['argv'][4] = __DIR__ . '/2758/Issue2758Test.php';
 require __DIR__ . '/../../bootstrap.php';
 require __DIR__ . '/2758/Issue2758TestListener.php';
 
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 ?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
