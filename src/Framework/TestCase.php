@@ -40,6 +40,8 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionObject;
 use SebastianBergmann;
+use SebastianBergmann\Comparator\Comparator;
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Blacklist;
@@ -324,6 +326,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @var bool
      */
     private $doesNotPerformAssertions = false;
+
+    /**
+     * @var Comparator[]
+     */
+    private $customComparators = [];
 
     /**
      * Constructs a test case with the given name.
@@ -1002,6 +1009,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         $this->restoreGlobalState();
+        $this->unregisterCustomComparators();
 
         // Clean up INI settings.
         foreach ($this->iniSettings as $varName => $oldValue) {
@@ -1939,6 +1947,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return \is_string($this->dataName) ? $this->dataName : '';
     }
 
+    public function registerComparator(Comparator $comparator)
+    {
+        ComparatorFactory::getInstance()->register($comparator);
+
+        $this->customComparators[] = $comparator;
+    }
+
     /**
      * Gets the data set description of a TestCase.
      *
@@ -2441,5 +2456,16 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         return false;
+    }
+
+    private function unregisterCustomComparators()
+    {
+        $factory = ComparatorFactory::getInstance();
+
+        foreach ($this->customComparators as $comparator) {
+            $factory->unregister($comparator);
+        }
+
+        $this->customComparators = [];
     }
 }
