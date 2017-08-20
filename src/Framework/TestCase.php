@@ -1010,18 +1010,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         $this->restoreGlobalState();
         $this->unregisterCustomComparators();
-
-        // Clean up INI settings.
-        foreach ($this->iniSettings as $varName => $oldValue) {
-            \ini_set($varName, $oldValue);
-        }
-
-        $this->iniSettings = [];
-
-        // Clean up locale settings.
-        foreach ($this->locale as $category => $locale) {
-            \setlocale($category, $locale);
-        }
+        $this->cleanupIniSettings();
+        $this->cleanupLocaleSettings();
 
         // Perform assertion on output.
         if (!isset($e)) {
@@ -2467,5 +2457,23 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         $this->customComparators = [];
+    }
+
+    private function cleanupIniSettings(): void
+    {
+        foreach ($this->iniSettings as $varName => $oldValue) {
+            \ini_set($varName, $oldValue);
+        }
+
+        $this->iniSettings = [];
+    }
+
+    private function cleanupLocaleSettings(): void
+    {
+        foreach ($this->locale as $category => $locale) {
+            \setlocale($category, $locale);
+        }
+
+        $this->locale = [];
     }
 }
