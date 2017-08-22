@@ -2459,7 +2459,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->customComparators = [];
     }
 
-    private function cleanupIniSettings(): void
+    private function cleanupIniSettings()
     {
         foreach ($this->iniSettings as $varName => $oldValue) {
             \ini_set($varName, $oldValue);
@@ -2468,7 +2468,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->iniSettings = [];
     }
 
-    private function cleanupLocaleSettings(): void
+    private function cleanupLocaleSettings()
     {
         foreach ($this->locale as $category => $locale) {
             \setlocale($category, $locale);
