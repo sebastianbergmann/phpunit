@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use numeric;
-
 /**
  * Constraint that asserts that the value it is evaluated for is less than
  * a given value.
@@ -18,16 +16,17 @@ use numeric;
 class LessThan extends Constraint
 {
     /**
-     * @var numeric
+     * @var int|float
      */
     protected $value;
 
     /**
-     * @param numeric $value
+     * @param int|float $value
      */
     public function __construct($value)
     {
         parent::__construct();
+
         $this->value = $value;
     }
 
