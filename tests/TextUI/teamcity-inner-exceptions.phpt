@@ -19,7 +19,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ##teamcity[testStarted name='testPrintingChildException' locationHint='php_qn://%s%etests%e_files%eExceptionStackTest.php::\ExceptionStackTest::testPrintingChildException' flowId='%d']
 
-##teamcity[testFailed name='testPrintingChildException' message='Child exception|nmessage|nFailed asserting that two arrays are equal.|n--- Expected|n+++ Actual|n@@ @@|n Array (|n-    0 => 1|n+    0 => 2|n' details=' %s/ExceptionStackTest.php:14|n |n Caused by|n message|n Failed asserting that two arrays are equal.|n --- Expected|n +++ Actual|n @@ @@|n  Array (|n -    0 => 1|n +    0 => 2|n |n %s/ExceptionStackTest.php:10|n ' flowId='%d']
+##teamcity[testFailed name='testPrintingChildException' message='Child exception|nmessage|nFailed asserting that two arrays are equal.|n--- Expected|n+++ Actual|n@@ @@|n Array (|n-    0 => 1|n+    0 => 2|n' details=' %s%eExceptionStackTest.php:14|n |n Caused by|n message|n Failed asserting that two arrays are equal.|n --- Expected|n +++ Actual|n @@ @@|n  Array (|n -    0 => 1|n +    0 => 2|n |n %s%eExceptionStackTest.php:10|n ' flowId='%d']
 
 ##teamcity[testFinished name='testPrintingChildException' duration='%d' flowId='%d']
 
