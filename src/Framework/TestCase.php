@@ -860,7 +860,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
             $result->run($this);
         }
 
-        if ($this->useErrorHandler !== null) {
+        if (isset($oldErrorHandlerSetting)) {
             $result->convertErrorsToExceptions($oldErrorHandlerSetting);
         }
 
