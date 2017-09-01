@@ -883,7 +883,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $result->run($this);
         }
 
-        if ($this->useErrorHandler !== null) {
+        if (isset($oldErrorHandlerSetting)) {
             $result->convertErrorsToExceptions($oldErrorHandlerSetting);
         }
 
