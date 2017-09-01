@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 6.3 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.3.1] - 2017-MM-DD
+
+### Fixed
+
+* Fixed [#2769](https://github.com/sebastianbergmann/phpunit/issues/2769): Usage of `setUseErrorHandler()` produces `Undefined variable` error
+
 ## [6.3.0] - 2017-08-04
 
 ### Added
@@ -13,5 +19,6 @@ All notable changes of the PHPUnit 6.3 release series are documented in this fil
 
 * Implemented [#2751](https://github.com/sebastianbergmann/phpunit/pull/2751): Use `fopen()` instead of `is_readable()` to check if a file is readable (workaround for Windows and network shares) 
 
+[6.3.1]: https://github.com/sebastianbergmann/phpunit/compare/6.3.0...6.3.1
 [6.3.0]: https://github.com/sebastianbergmann/phpunit/compare/6.2...6.3.0
 
