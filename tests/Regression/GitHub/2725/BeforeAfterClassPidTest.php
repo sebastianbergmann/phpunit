@@ -1,10 +1,13 @@
 <?php
+
+namespace Issue2725;
+
 use PHPUnit\Framework\TestCase;
 
 /**
  * @runClassInSeparateProcess
  */
-class Issue2725_BeforeAfterClassPidTest extends TestCase
+class BeforeAfterClassPidTest extends TestCase
 {
     /**
      * @beforeClass
