@@ -4,7 +4,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @runClassInSeparateProcess
  */
-class Issue2591_SeparateClassPreserveTest extends TestCase
+class Issue2725_BeforeAfterClassPidTest extends TestCase
 {
     /**
      * @beforeClass
@@ -31,5 +31,4 @@ class Issue2591_SeparateClassPreserveTest extends TestCase
     {
         echo "\n@afterClass output - PID difference should be zero: " . ($GLOBALS['PID_BEFORE'] - getmypid());
     }
-
 }
