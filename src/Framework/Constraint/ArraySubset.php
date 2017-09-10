@@ -49,22 +49,42 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
      */
     protected function matches($other)
     {
-        //type cast $other & $this->subset as an array to allow 
+        //type cast $other & $this->subset as an array to allow
         //support in standard array functions.
-        if($other instanceof ArrayAccess) {
+        if ($other instanceof \ArrayAccess) {
             $other = (array) $other;
         }
 
-        if($this->subset instanceof ArrayAccess) {
+        if ($this->subset instanceof \ArrayAccess) {
             $this->subset = (array) $this->subset;
         }
 
-        $patched = array_replace_recursive($other, $this->subset);
+        if (!$this->isArrayAssociative($this->subset)) {
+            $diff = \array_uintersect($other, $this->subset, function ($other_value, $subset_value) {
+                if ($this->strict) {
+                    if ($other_value === $subset_value) {
+                        return 0;
+                    }
+                } else {
+                    if ($other_value == $subset_value) {
+                        return 0;
+                    }
+                }
+                if ($other_value > $subset_value) {
+                    return 1;
+                }
+                return -1;
+            });
 
-        if ($this->strict) {
-            return $other === $patched;
+            return !empty($diff);
         } else {
-            return $other == $patched;
+            $patched = \array_replace_recursive($other, $this->subset);
+
+            if ($this->strict) {
+                return $other === $patched;
+            } else {
+                return $other == $patched;
+            }
         }
     }
 
@@ -91,5 +111,15 @@ class PHPUnit_Framework_Constraint_ArraySubset extends PHPUnit_Framework_Constra
     protected function failureDescription($other)
     {
         return 'an array ' . $this->toString();
+    }
+
+    /**
+     * @param array $subject
+     *
+     * @return bool
+     */
+    private function isArrayAssociative(array $subject)
+    {
+        return !empty(\array_filter(array_keys($subject), 'is_string'));
     }
 }
