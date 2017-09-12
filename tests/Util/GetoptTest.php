@@ -196,7 +196,18 @@ class Util_GetoptTest extends PHPUnit_Framework_TestCase
 
     public function testItHandlesLongParametesWithValues()
     {
-        $command = 'command parameter-0 --exec parameter-1 --conf config.xml --optn parameter-2 --optn=content-of-o parameter-n';
+        $command = implode(' ', array(
+            'command',
+            'parameter-0',
+            '--exec',
+            'parameter-1',
+            '--conf',
+            'config.xml',
+            '--optn',
+            'parameter-2',
+            '--optn=content-of-o',
+            'parameter-n',
+        ));
         $args    = explode(' ', $command);
         unset($args[0]);
         $expected = array(
