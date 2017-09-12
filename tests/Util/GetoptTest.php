@@ -62,106 +62,136 @@ class Util_GetoptTest extends PHPUnit_Framework_TestCase
 
     public function testShortOptionUnrecognizedException()
     {
-        $args = [
+        $args = array(
             'command',
             'myArgument',
             '-v',
-        ];
+        );
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
-        $this->expectExceptionMessage('unrecognized option -- v');
-
-        Getopt::getopt($args, '');
+        try {
+            PHPUnit_Util_Getopt::getopt($args, '');
+            $exception = null;
+        } catch (Exception $x) {
+            $exception = $x;
+        }
+        $this->assertNotNull($exception);
+        $this->assertInstanceOf('PHPUnit_Framework_Exception', $exception);
+        $this->assertSame('unrecognized option -- v', $exception->getMessage());
     }
 
     public function testShortOptionRequiresAnArgumentException()
     {
-        $args = [
+        $args = array(
             'command',
             'myArgument',
             '-f',
-        ];
+        );
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
-        $this->expectExceptionMessage('option requires an argument -- f');
-
-        Getopt::getopt($args, 'f:');
+        try {
+            PHPUnit_Util_Getopt::getopt($args, 'f:');
+            $exception = null;
+        } catch (Exception $x) {
+            $exception = $x;
+        }
+        $this->assertNotNull($exception);
+        $this->assertInstanceOf('PHPUnit_Framework_Exception', $exception);
+        $this->assertSame('option requires an argument -- f', $exception->getMessage());
     }
 
     public function testShortOptionHandleAnOptionalValue()
     {
-        $args = [
+        $args = array(
             'command',
             'myArgument',
             '-f',
-        ];
-        $actual   = Getopt::getopt($args, 'f::');
-        $expected = [
-            [
-                [
+        );
+        $actual   = PHPUnit_Util_Getopt::getopt($args, 'f::');
+        $expected = array(
+            array(
+                array(
                     'f',
                     null,
-                ],
-            ],
-            [
+                ),
+            ),
+            array(
                 'myArgument',
-            ],
-        ];
+            ),
+        );
         $this->assertEquals($expected, $actual);
     }
 
     public function testLongOptionIsAmbiguousException()
     {
-        $args = [
+        $args = array(
             'command',
             '--col',
-        ];
+        );
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
-        $this->expectExceptionMessage('option --col is ambiguous');
-
-        Getopt::getopt($args, '', ['columns', 'colors']);
+        try {
+            PHPUnit_Util_Getopt::getopt($args, '', array('columns', 'colors'));
+            $exception = null;
+        } catch (Exception $x) {
+            $exception = $x;
+        }
+        $this->assertNotNull($exception);
+        $this->assertInstanceOf('PHPUnit_Framework_Exception', $exception);
+        $this->assertSame('option --col is ambiguous', $exception->getMessage());
     }
 
     public function testLongOptionUnrecognizedException()
     {
         // the exception 'unrecognized option --option' is not thrown
         // if the there are not defined extended options
-        $args = [
+        $args = array(
             'command',
             '--foo',
-        ];
+        );
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
-        $this->expectExceptionMessage('unrecognized option --foo');
-
-        Getopt::getopt($args, '', ['colors']);
+        try {
+            PHPUnit_Util_Getopt::getopt($args, '', array('colors'));
+            $exception = null;
+        } catch (Exception $x) {
+            $exception = $x;
+        }
+        $this->assertNotNull($exception);
+        $this->assertInstanceOf('PHPUnit_Framework_Exception', $exception);
+        $this->assertSame('unrecognized option --foo', $exception->getMessage());
     }
 
     public function testLongOptionRequiresAnArgumentException()
     {
-        $args = [
+        $args = array(
             'command',
             '--foo',
-        ];
+        );
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
-        $this->expectExceptionMessage('option --foo requires an argument');
-
-        Getopt::getopt($args, '', ['foo=']);
+        try {
+            PHPUnit_Util_Getopt::getopt($args, '', array('foo='));
+            $exception = null;
+        } catch (Exception $x) {
+            $exception = $x;
+        }
+        $this->assertNotNull($exception);
+        $this->assertInstanceOf('PHPUnit_Framework_Exception', $exception);
+        $this->assertSame('option --foo requires an argument', $exception->getMessage());
     }
 
     public function testLongOptionDoesNotAllowAnArgumentException()
     {
-        $args = [
+        $args = array(
             'command',
             '--foo=bar',
-        ];
+        );
 
-        $this->expectException(PHPUnit\Framework\Exception::class);
-        $this->expectExceptionMessage("option --foo doesn't allow an argument");
-
-        Getopt::getopt($args, '', ['foo']);
+        try {
+            PHPUnit_Util_Getopt::getopt($args, '', array('foo'));
+            $exception = null;
+        } catch (Exception $x) {
+            $exception = $x;
+        }
+        $this->assertNotNull($exception);
+        $this->assertInstanceOf('PHPUnit_Framework_Exception', $exception);
+        $this->assertSame("option --foo doesn't allow an argument", $exception->getMessage());
     }
 
     public function testItHandlesLongParametesWithValues()
@@ -169,21 +199,21 @@ class Util_GetoptTest extends PHPUnit_Framework_TestCase
         $command = 'command parameter-0 --exec parameter-1 --conf config.xml --optn parameter-2 --optn=content-of-o parameter-n';
         $args    = explode(' ', $command);
         unset($args[0]);
-        $expected = [
-            [
-                ['--exec', null],
-                ['--conf', 'config.xml'],
-                ['--optn', null],
-                ['--optn', 'content-of-o'],
-            ],
-            [
+        $expected = array(
+            array(
+                array('--exec', null),
+                array('--conf', 'config.xml'),
+                array('--optn', null),
+                array('--optn', 'content-of-o'),
+            ),
+            array(
                 'parameter-0',
                 'parameter-1',
                 'parameter-2',
                 'parameter-n',
-            ],
-        ];
-        $actual = Getopt::getopt($args, '', ['exec', 'conf=', 'optn==']);
+            ),
+        );
+        $actual = PHPUnit_Util_Getopt::getopt($args, '', array('exec', 'conf=', 'optn=='));
         $this->assertEquals($expected, $actual);
     }
 
@@ -192,21 +222,21 @@ class Util_GetoptTest extends PHPUnit_Framework_TestCase
         $command = 'command parameter-0 -x parameter-1 -c config.xml -o parameter-2 -ocontent-of-o parameter-n';
         $args    = explode(' ', $command);
         unset($args[0]);
-        $expected = [
-            [
-                ['x', null],
-                ['c', 'config.xml'],
-                ['o', null],
-                ['o', 'content-of-o'],
-            ],
-            [
+        $expected = array(
+            array(
+                array('x', null),
+                array('c', 'config.xml'),
+                array('o', null),
+                array('o', 'content-of-o'),
+            ),
+            array(
                 'parameter-0',
                 'parameter-1',
                 'parameter-2',
                 'parameter-n',
-            ],
-        ];
-        $actual = Getopt::getopt($args, 'xc:o::');
+            ),
+        );
+        $actual = PHPUnit_Util_Getopt::getopt($args, 'xc:o::');
         $this->assertEquals($expected, $actual);
     }
 }
