@@ -7,7 +7,6 @@ addons:
     packages:
       - libxml2-utils
 
-
 php:
   - 7.0
   - 7.0snapshot
