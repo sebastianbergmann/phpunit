@@ -93,6 +93,11 @@ class AssertTest extends TestCase
         $this->assertContainsOnlyInstancesOf(\Book::class, $test2);
     }
 
+    public function testAssertContainsEmptyStringInString()
+    {
+        $this->assertContains('', 'test');
+    }
+
     public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument()
     {
         $this->expectException(Exception::class);
