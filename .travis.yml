@@ -2,6 +2,11 @@ language: php
 
 sudo: false
 
+addons:
+  apt:
+    packages:
+      - libxml2-utils
+
 php:
   - 5.6
   - 7.0
