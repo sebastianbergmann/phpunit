@@ -633,6 +633,22 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * @param $exception \Exception
+     *
+     * @throws Exception
+     */
+    public function expectExceptionObject($exception)
+    {
+        if (!\is_a($exception, \Exception::class)) {
+            throw InvalidArgumentHelper::factory(1, 'exception');
+        }
+
+        $this->expectException(get_class($exception));
+        $this->expectExceptionMessage($exception->getMessage());
+        $this->expectExceptionCode($exception->getCode());
+    }
+
+    /**
      * @param bool $flag
      */
     public function setRegisterMockObjectsFromTestArgumentsRecursively($flag)
