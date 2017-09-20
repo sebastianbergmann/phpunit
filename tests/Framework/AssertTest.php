@@ -205,6 +205,52 @@ class Framework_AssertTest extends PHPUnit_Framework_TestCase
      * @covers PHPUnit_Framework_Assert::assertArraySubset
      * @covers PHPUnit_Framework_Constraint_ArraySubset
      */
+    public function testAssertFlatArraySubset()
+    {
+        $array = ['0', '1', 'a', 'b', 'c', 'd', 'e', 'f' => 'f', 'g' => null];
+
+        $this->assertArraySubset(['a', 'b'], $array);
+        $this->assertArraySubset([null], $array);
+        $this->assertArraySubset(['b', 'c', 'd'], $array);
+
+        $this->assertArraySubset(['b', 'f', 'e'], $array);
+        $this->assertArraySubset(['b', 'c', 'e'], $array, true);
+
+        $this->assertArraySubset([0, 1], $array);
+        try {
+            $this->assertArraySubset([1, 0], $array, true);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+        }
+
+        try {
+            $this->assertArraySubset(['aa', 'bb'], $array);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+        }
+
+        $arrayAccessData = new ArrayObject($array);
+
+        $this->assertArraySubset(['a', 'b'], $arrayAccessData);
+        $this->assertArraySubset(['b', 'c', 'd'], $arrayAccessData);
+        $this->assertArraySubset(['b', 'd', 'e'], $arrayAccessData);
+
+        try {
+            $this->assertArraySubset(['g' => 'bad value'], $array);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+        }
+
+        try {
+            $this->assertArraySubset([], $array);
+        } catch (PHPUnit_Framework_AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @covers PHPUnit_Framework_Assert::assertArraySubset
+     * @covers PHPUnit_Framework_Constraint_ArraySubset
+     */
     public function testAssertArraySubsetWithDeepNestedArrays()
     {
         $array = [
