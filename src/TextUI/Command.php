@@ -1214,17 +1214,25 @@ EOT;
         }
 
         foreach (new \RecursiveIteratorIterator($suite->getIterator()) as $test) {
-            if ($test instanceof TestCase || $test instanceof PhptTestCase) {
-                $name = \str_replace(' with data set ', '', $test->getName());
+            if ($test instanceof TestCase) {
+                $name = sprintf(
+                    '%s::%s',
+                    get_class($test),
+                    \str_replace(' with data set ', '', $test->getName())
+                );
+            } elseif ($test instanceof PhptTestCase) {
+                $name = $test->getName();
+            } else {
+                continue;
+            }
 
-                if ($raw) {
-                    print $name . PHP_EOL;
-                } else {
-                    \printf(
-                        ' - %s' . PHP_EOL,
-                        $name
-                    );
-                }
+            if ($raw) {
+                print $name . PHP_EOL;
+            } else {
+                \printf(
+                    ' - %s' . PHP_EOL,
+                    $name
+                );
             }
         }
 
