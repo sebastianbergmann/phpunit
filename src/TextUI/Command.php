@@ -16,7 +16,6 @@ use PharIo\Manifest\ManifestLoader;
 use PharIo\Version\Version as PharIoVersion;
 use PharIo\Manifest\Exception as ManifestException;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
@@ -32,6 +31,8 @@ use PHPUnit\Util\Getopt;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\Printer;
+use PHPUnit\Util\TextTestListRenderer;
+use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
 use Throwable;
 
@@ -1175,26 +1176,9 @@ EOT;
     {
         $this->printVersionString();
 
-        print 'Available test(s):' . PHP_EOL;
+        $renderer = new TextTestListRenderer;
 
-        foreach (new \RecursiveIteratorIterator($suite->getIterator()) as $test) {
-            if ($test instanceof TestCase) {
-                $name = sprintf(
-                    '%s::%s',
-                    get_class($test),
-                    \str_replace(' with data set ', '', $test->getName())
-                );
-            } elseif ($test instanceof PhptTestCase) {
-                $name = $test->getName();
-            } else {
-                continue;
-            }
-
-            \printf(
-                ' - %s' . PHP_EOL,
-                $name
-            );
-        }
+        print $renderer->render($suite);
 
         if ($exit) {
             exit(TestRunner::SUCCESS_EXIT);
@@ -1205,66 +1189,9 @@ EOT;
 
     private function handleListTestsXml(TestSuite $suite, bool $exit): int
     {
-        $writer = new \XmlWriter;
+        $renderer = new XmlTestListRenderer;
 
-        $writer->openMemory();
-        $writer->setIndent(true);
-        $writer->startDocument();
-        $writer->startElement('tests');
-
-        $currentTestCase = null;
-
-        foreach (new \RecursiveIteratorIterator($suite->getIterator()) as $test) {
-            if ($test instanceof TestCase) {
-                if (get_class($test) !== $currentTestCase) {
-                    if ($currentTestCase !== null) {
-                        $writer->endElement();
-                    }
-
-                    $writer->startElement('testCaseClass');
-                    $writer->writeAttribute('name', get_class($test));
-
-                    $currentTestCase = get_class($test);
-                }
-
-                $writer->startElement('testCaseMethod');
-                $writer->writeAttribute('name', $test->getName(false));
-                $writer->writeAttribute('groups', implode(',', $test->getGroups()));
-
-                if (!empty($test->getDataSetAsString(false))) {
-                    $writer->writeAttribute(
-                        'dataSet',
-                        str_replace(
-                            ' with data set ',
-                            '',
-                            $test->getDataSetAsString(false)
-                        )
-                    );
-                }
-
-                $writer->endElement();
-            } elseif ($test instanceof PhptTestCase) {
-                if ($currentTestCase !== null) {
-                    $writer->endElement();
-
-                    $currentTestCase = null;
-                }
-
-                $writer->startElement('phptFile');
-                $writer->writeAttribute('path', $test->getName());
-                $writer->endElement();
-            } else {
-                continue;
-            }
-        }
-
-        if ($currentTestCase !== null) {
-            $writer->endElement();
-        }
-
-        $writer->endElement();
-
-        print $writer->outputMemory();
+        print $renderer->render($suite);
 
         if ($exit) {
             exit(TestRunner::SUCCESS_EXIT);
