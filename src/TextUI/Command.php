@@ -34,6 +34,7 @@ use PHPUnit\Util\Printer;
 use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
+use SebastianBergmann\CodeCoverage\Report\PHP;
 use Throwable;
 
 /**
@@ -92,7 +93,7 @@ class Command
         'list-groups'               => null,
         'list-suites'               => null,
         'list-tests'                => null,
-        'list-tests-xml'            => null,
+        'list-tests-xml='           => null,
         'loader='                   => null,
         'log-junit='                => null,
         'log-teamcity='             => null,
@@ -182,7 +183,7 @@ class Command
         }
 
         if ($this->arguments['listTestsXml']) {
-            return $this->handleListTestsXml($suite, $exit);
+            return $this->handleListTestsXml($suite, $this->arguments['listTestsXml'], $exit);
         }
 
         unset(
@@ -439,7 +440,7 @@ class Command
                     break;
 
                 case '--list-tests-xml':
-                    $this->arguments['listTestsXml'] = true;
+                    $this->arguments['listTestsXml'] = $option[1];
                     break;
 
                 case '--printer':
@@ -988,7 +989,7 @@ Test Selection Options:
   --list-groups               List available test groups.
   --list-suites               List available test suites.
   --list-tests                List available tests.
-  --list-tests-xml            List available tests in XML format.
+  --list-tests-xml <file>     List available tests in XML format.
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
 
@@ -1187,11 +1188,18 @@ EOT;
         return TestRunner::SUCCESS_EXIT;
     }
 
-    private function handleListTestsXml(TestSuite $suite, bool $exit): int
+    private function handleListTestsXml(TestSuite $suite, string $target, bool $exit): int
     {
+        $this->printVersionString();
+
         $renderer = new XmlTestListRenderer;
 
-        print $renderer->render($suite);
+        file_put_contents($target, $renderer->render($suite));
+
+        \printf(
+            'Wrote list of tests that would have been run to %s' . \PHP_EOL,
+            $target
+        );
 
         if ($exit) {
             exit(TestRunner::SUCCESS_EXIT);
