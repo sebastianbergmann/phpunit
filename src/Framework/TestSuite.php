@@ -176,6 +176,17 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             return;
         }
 
+        if ($constructor->class !== TestCase::class) {
+            $this->addTest(
+                self::warning(
+                    sprintf(
+                        'Class "%s" overrides the constructor, you should override the `setUp()` method instead.',
+                        $theClass->getName()
+                    )
+                )
+            );
+        }
+
         foreach ($theClass->getMethods() as $method) {
             $this->addTestMethod($theClass, $method);
         }
