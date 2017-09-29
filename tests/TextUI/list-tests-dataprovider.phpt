@@ -1,5 +1,5 @@
 --TEST--
-phpunit --list-tests-raw DataProviderTest ../_files/DataProviderTest.php
+phpunit --list-tests DataProviderTest ../_files/DataProviderTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';

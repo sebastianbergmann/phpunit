@@ -40,11 +40,9 @@ Test Selection Options:
   --group ...                 Only runs tests from the specified group(s).
   --exclude-group ...         Exclude tests from the specified group(s).
   --list-groups               List available test groups.
-  --list-groups-raw           List available test groups (raw output).
   --list-suites               List available test suites.
-  --list-suites-raw           List available test suites (raw output).
   --list-tests                List available tests.
-  --list-tests-raw            List available tests (raw output).
+  --list-tests-xml            List available tests in XML format.
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
 

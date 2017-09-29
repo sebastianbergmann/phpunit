@@ -46,11 +46,9 @@ class Command
      */
     protected $arguments = [
         'listGroups'              => false,
-        'listGroupsRaw'           => false,
         'listSuites'              => false,
-        'listSuitesRaw'           => false,
         'listTests'               => false,
-        'listTestsRaw'            => false,
+        'listTestsXml'            => false,
         'loader'                  => null,
         'useDefaultConfiguration' => true,
         'loadedExtensions'        => [],
@@ -91,11 +89,9 @@ class Command
         'help'                      => null,
         'include-path='             => null,
         'list-groups'               => null,
-        'list-groups-raw'           => null,
         'list-suites'               => null,
-        'list-suites-raw'           => null,
         'list-tests'                => null,
-        'list-tests-raw'            => null,
+        'list-tests-xml'            => null,
         'loader='                   => null,
         'log-junit='                => null,
         'log-teamcity='             => null,
@@ -173,27 +169,19 @@ class Command
         }
 
         if ($this->arguments['listGroups']) {
-            return $this->handleListGroups($suite, false, $exit);
-        }
-
-        if ($this->arguments['listGroupsRaw']) {
-            return $this->handleListGroups($suite, true, $exit);
+            return $this->handleListGroups($suite, $exit);
         }
 
         if ($this->arguments['listSuites']) {
-            return $this->handleListSuites(false, $exit);
-        }
-
-        if ($this->arguments['listSuitesRaw']) {
-            return $this->handleListSuites(true, $exit);
+            return $this->handleListSuites($exit);
         }
 
         if ($this->arguments['listTests']) {
-            return $this->handleListTests($suite, false, $exit);
+            return $this->handleListTests($suite, $exit);
         }
 
-        if ($this->arguments['listTestsRaw']) {
-            return $this->handleListTests($suite, true, $exit);
+        if ($this->arguments['listTestsXml']) {
+            return $this->handleListTestsXml($suite, $exit);
         }
 
         unset(
@@ -441,24 +429,16 @@ class Command
                     $this->arguments['listGroups'] = true;
                     break;
 
-                case '--list-groups-raw':
-                    $this->arguments['listGroupsRaw'] = true;
-                    break;
-
                 case '--list-suites':
                     $this->arguments['listSuites'] = true;
-                    break;
-
-                case '--list-suites-raw':
-                    $this->arguments['listSuitesRaw'] = true;
                     break;
 
                 case '--list-tests':
                     $this->arguments['listTests'] = true;
                     break;
 
-                case '--list-tests-raw':
-                    $this->arguments['listTestsRaw'] = true;
+                case '--list-tests-xml':
+                    $this->arguments['listTestsXml'] = true;
                     break;
 
                 case '--printer':
@@ -1005,11 +985,9 @@ Test Selection Options:
   --group ...                 Only runs tests from the specified group(s).
   --exclude-group ...         Exclude tests from the specified group(s).
   --list-groups               List available test groups.
-  --list-groups-raw           List available test groups (raw output).
   --list-suites               List available test suites.
-  --list-suites-raw           List available test suites (raw output).
   --list-tests                List available tests.
-  --list-tests-raw            List available tests (raw output).
+  --list-tests-xml            List available tests in XML format.
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
 
@@ -1144,26 +1122,20 @@ EOT;
         }
     }
 
-    private function handleListGroups(TestSuite $suite, bool $raw, bool $exit): int
+    private function handleListGroups(TestSuite $suite, bool $exit): int
     {
-        if (!$raw) {
-            $this->printVersionString();
+        $this->printVersionString();
 
-            print 'Available test group(s):' . PHP_EOL;
-        }
+        print 'Available test group(s):' . PHP_EOL;
 
         $groups = $suite->getGroups();
         \sort($groups);
 
         foreach ($groups as $group) {
-            if ($raw) {
-                print $group . PHP_EOL;
-            } else {
-                \printf(
-                    ' - %s' . PHP_EOL,
-                    $group
-                );
-            }
+            \printf(
+                ' - %s' . PHP_EOL,
+                $group
+            );
         }
 
         if ($exit) {
@@ -1173,13 +1145,11 @@ EOT;
         return TestRunner::SUCCESS_EXIT;
     }
 
-    private function handleListSuites(bool $raw, bool $exit): int
+    private function handleListSuites(bool $exit): int
     {
-        if (!$raw) {
-            $this->printVersionString();
+        $this->printVersionString();
 
-            print 'Available test suite(s):' . PHP_EOL;
-        }
+        print 'Available test suite(s):' . PHP_EOL;
 
         $configuration = Configuration::getInstance(
             $this->arguments['configuration']
@@ -1188,14 +1158,10 @@ EOT;
         $suiteNames = $configuration->getTestSuiteNames();
 
         foreach ($suiteNames as $suiteName) {
-            if ($raw) {
-                print $suiteName . PHP_EOL;
-            } else {
-                \printf(
-                    ' - %s' . PHP_EOL,
-                    $suiteName
-                );
-            }
+            \printf(
+                ' - %s' . PHP_EOL,
+                $suiteName
+            );
         }
 
         if ($exit) {
@@ -1205,13 +1171,11 @@ EOT;
         return TestRunner::SUCCESS_EXIT;
     }
 
-    private function handleListTests(TestSuite $suite, bool $raw = false, bool $exit): int
+    private function handleListTests(TestSuite $suite, bool $exit): int
     {
-        if (!$raw) {
-            $this->printVersionString();
+        $this->printVersionString();
 
-            print 'Available test(s):' . PHP_EOL;
-        }
+        print 'Available test(s):' . PHP_EOL;
 
         foreach (new \RecursiveIteratorIterator($suite->getIterator()) as $test) {
             if ($test instanceof TestCase) {
@@ -1226,15 +1190,81 @@ EOT;
                 continue;
             }
 
-            if ($raw) {
-                print $name . PHP_EOL;
+            \printf(
+                ' - %s' . PHP_EOL,
+                $name
+            );
+        }
+
+        if ($exit) {
+            exit(TestRunner::SUCCESS_EXIT);
+        }
+
+        return TestRunner::SUCCESS_EXIT;
+    }
+
+    private function handleListTestsXml(TestSuite $suite, bool $exit): int
+    {
+        $writer = new \XmlWriter;
+
+        $writer->openMemory();
+        $writer->setIndent(true);
+        $writer->startDocument();
+        $writer->startElement('tests');
+
+        $currentTestCase = null;
+
+        foreach (new \RecursiveIteratorIterator($suite->getIterator()) as $test) {
+            if ($test instanceof TestCase) {
+                if (get_class($test) !== $currentTestCase) {
+                    if ($currentTestCase !== null) {
+                        $writer->endElement();
+                    }
+
+                    $writer->startElement('testCaseClass');
+                    $writer->writeAttribute('name', get_class($test));
+
+                    $currentTestCase = get_class($test);
+                }
+
+                $writer->startElement('testCaseMethod');
+                $writer->writeAttribute('name', $test->getName(false));
+                $writer->writeAttribute('groups', implode(',', $test->getGroups()));
+
+                if (!empty($test->getDataSetAsString(false))) {
+                    $writer->writeAttribute(
+                        'dataSet',
+                        str_replace(
+                            ' with data set ',
+                            '',
+                            $test->getDataSetAsString(false)
+                        )
+                    );
+                }
+
+                $writer->endElement();
+            } elseif ($test instanceof PhptTestCase) {
+                if ($currentTestCase !== null) {
+                    $writer->endElement();
+
+                    $currentTestCase = null;
+                }
+
+                $writer->startElement('phptFile');
+                $writer->writeAttribute('path', $test->getName());
+                $writer->endElement();
             } else {
-                \printf(
-                    ' - %s' . PHP_EOL,
-                    $name
-                );
+                continue;
             }
         }
+
+        if ($currentTestCase !== null) {
+            $writer->endElement();
+        }
+
+        $writer->endElement();
+
+        print $writer->outputMemory();
 
         if ($exit) {
             exit(TestRunner::SUCCESS_EXIT);
