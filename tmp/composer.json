@@ -35,9 +35,9 @@
         "ext-soap": "*"
     },
     "autoload": {
-        "classmap": [
-            "src/"
-        ]
+        "psr-4": {
+            "PHPUnit\\Framework\\MockObject\\": "src/"
+        }
     },
     "autoload-dev": {
         "classmap": [

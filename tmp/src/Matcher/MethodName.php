@@ -7,10 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Util\InvalidArgumentHelper;
+use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Invocation matcher which looks for a specific method name in the invocations.
@@ -19,7 +21,7 @@ use PHPUnit\Util\InvalidArgumentHelper;
  * the defined constraint $constraint. If the constraint is met it will return
  * true in matches().
  */
-class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
+class MethodName extends StatelessInvocation
 {
     /**
      * @var Constraint
@@ -59,11 +61,11 @@ class PHPUnit_Framework_MockObject_Matcher_MethodName extends PHPUnit_Framework_
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param Invocation $invocation
      *
      * @return bool
      */
-    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function matches(Invocation $invocation)
     {
         return $this->constraint->evaluate($invocation->methodName, '', true);
     }

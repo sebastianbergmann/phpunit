@@ -7,11 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
  * Invocation matcher which looks for specific parameters in the invocations.
@@ -20,7 +22,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  * checked against the defined constraints in $parameters. If the constraint
  * is met it will return true in matches().
  */
-class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
+class Parameters extends StatelessInvocation
 {
     /**
      * @var Constraint[]
@@ -28,7 +30,7 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     protected $parameters = [];
 
     /**
-     * @var PHPUnit_Framework_MockObject_Invocation
+     * @var BaseInvocation
      */
     protected $invocation;
 
@@ -72,11 +74,11 @@ class PHPUnit_Framework_MockObject_Matcher_Parameters extends PHPUnit_Framework_
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param BaseInvocation $invocation
      *
      * @return bool
      */
-    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function matches(BaseInvocation $invocation)
     {
         $this->invocation                  = $invocation;
         $this->parameterVerificationResult = null;

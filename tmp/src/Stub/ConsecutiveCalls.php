@@ -7,13 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject\Stub;
 
 use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * Stubs a method by returning a user-defined stack of values.
  */
-class PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls implements PHPUnit_Framework_MockObject_Stub
+class ConsecutiveCalls implements Stub
 {
     protected $stack;
     protected $value;
@@ -23,11 +26,11 @@ class PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls implements PHPUnit_Fram
         $this->stack = $stack;
     }
 
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function invoke(Invocation $invocation)
     {
         $this->value = array_shift($this->stack);
 
-        if ($this->value instanceof PHPUnit_Framework_MockObject_Stub) {
+        if ($this->value instanceof Stub) {
             $this->value = $this->value->invoke($invocation);
         }
 

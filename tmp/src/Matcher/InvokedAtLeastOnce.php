@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -16,7 +17,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  *
  * If the number of invocations is 0 it will throw an exception in verify.
  */
-class PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce extends PHPUnit_Framework_MockObject_Matcher_InvokedRecorder
+class InvokedAtLeastOnce extends InvokedRecorder
 {
     /**
      * @return string

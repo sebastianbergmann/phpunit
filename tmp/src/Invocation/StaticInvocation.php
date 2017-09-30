@@ -7,14 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject\Invocation;
 
 use PHPUnit\Framework\SelfDescribing;
 use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\MockObject\Generator;
 
 /**
  * Represents a static invocation.
  */
-class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framework_MockObject_Invocation, SelfDescribing
+class StaticInvocation implements Invocation, SelfDescribing
 {
     /**
      * @var array
@@ -151,7 +154,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
                     return;
                 }
 
-                $generator = new PHPUnit_Framework_MockObject_Generator;
+                $generator = new Generator();
 
                 return $generator->getMock($this->returnType, [], [], '', false);
         }

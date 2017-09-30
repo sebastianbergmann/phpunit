@@ -7,8 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
  * Invocation matcher which checks if a method was invoked at a certain index.
@@ -20,7 +22,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  *
  * If the index is never reached it will throw an exception in index.
  */
-class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Framework_MockObject_Matcher_Invocation
+class InvokedAtIndex implements Invocation
 {
     /**
      * @var int
@@ -49,11 +51,11 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Fra
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param BaseInvocation $invocation
      *
      * @return bool
      */
-    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function matches(BaseInvocation $invocation)
     {
         $this->currentIndex++;
 
@@ -61,9 +63,9 @@ class PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex implements PHPUnit_Fra
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param BaseInvocation $invocation
      */
-    public function invoked(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function invoked(BaseInvocation $invocation)
     {
     }
 
