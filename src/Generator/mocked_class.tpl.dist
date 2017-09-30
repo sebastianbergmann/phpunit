@@ -5,7 +5,7 @@
     private $__phpunit_configurable = {configurable};
 
 {clone}{mocked_methods}
-    public function expects(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher)
+    public function expects(\PHPUnit\Framework\MockObject\Matcher\Invocation $matcher)
     {
         return $this->__phpunit_getInvocationMocker()->expects($matcher);
     }
@@ -18,7 +18,7 @@
     public function __phpunit_getInvocationMocker()
     {
         if ($this->__phpunit_invocationMocker === null) {
-            $this->__phpunit_invocationMocker = new PHPUnit_Framework_MockObject_InvocationMocker($this->__phpunit_configurable);
+            $this->__phpunit_invocationMocker = new PHPUnit\Framework\MockObject\InvocationMocker($this->__phpunit_configurable);
         }
 
         return $this->__phpunit_invocationMocker;

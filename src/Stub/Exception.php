@@ -7,13 +7,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject\Stub;
 
 use SebastianBergmann\Exporter\Exporter;
+use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\MockObject\Exception\RuntimeException;
 
 /**
  * Stubs a method by raising a user-defined exception.
  */
-class PHPUnit_Framework_MockObject_Stub_Exception implements PHPUnit_Framework_MockObject_Stub
+class Exception implements Stub
 {
     protected $exception;
 
@@ -21,7 +25,7 @@ class PHPUnit_Framework_MockObject_Stub_Exception implements PHPUnit_Framework_M
     {
         // TODO Replace check with type declaration when support for PHP 5 is dropped
         if (!$exception instanceof Throwable && !$exception instanceof Exception) {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
+            throw new RuntimeException(
                 'Exception must be an instance of Throwable (PHP 7) or Exception (PHP 5)'
             );
         }
@@ -29,7 +33,7 @@ class PHPUnit_Framework_MockObject_Stub_Exception implements PHPUnit_Framework_M
         $this->exception = $exception;
     }
 
-    public function invoke(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function invoke(Invocation $invocation)
     {
         throw $this->exception;
     }

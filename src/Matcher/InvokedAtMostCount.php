@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -14,7 +15,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  * Invocation matcher which checks if a method has been invoked at least
  * N times.
  */
-class PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount extends PHPUnit_Framework_MockObject_Matcher_InvokedRecorder
+class InvokedAtMostCount extends InvokedRecorder
 {
     /**
      * @var int

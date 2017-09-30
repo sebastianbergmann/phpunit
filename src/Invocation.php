@@ -7,11 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject;
 
 /**
  * Interface for invocations.
  */
-interface PHPUnit_Framework_MockObject_Invocation
+interface Invocation
 {
     /**
      * @return mixed Mocked return value.

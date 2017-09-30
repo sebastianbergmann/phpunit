@@ -7,16 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject;
 
 use Doctrine\Instantiator\Instantiator;
 use Doctrine\Instantiator\Exception\InvalidArgumentException as InstantiatorInvalidArgumentException;
 use Doctrine\Instantiator\Exception\UnexpectedValueException as InstantiatorUnexpectedValueException;
 use PHPUnit\Util\InvalidArgumentHelper;
+use PHPUnit\Framework\MockObject\Exception\RuntimeException;
+use PHPUnit\Framework\Exception;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 
 /**
  * Mock Object Code Generator
  */
-class PHPUnit_Framework_MockObject_Generator
+class Generator
 {
     /**
      * @var array
@@ -59,11 +65,11 @@ class PHPUnit_Framework_MockObject_Generator
      * @param object          $proxyTarget
      * @param bool            $allowMockingUnknownTypes
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws InvalidArgumentException
-     * @throws PHPUnit\Framework\Exception
-     * @throws PHPUnit_Framework_MockObject_RuntimeException
+     * @throws Exception
+     * @throws RuntimeException
      */
     public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true)
     {
@@ -105,7 +111,7 @@ class PHPUnit_Framework_MockObject_Generator
                 foreach ($type as $_type) {
                     if (!class_exists($_type, $callAutoload) &&
                         !interface_exists($_type, $callAutoload)) {
-                        throw new PHPUnit_Framework_MockObject_RuntimeException(
+                        throw new RuntimeException(
                             sprintf(
                                 'Cannot stub or mock class or interface "%s" which does not exist',
                                 $_type
@@ -117,7 +123,7 @@ class PHPUnit_Framework_MockObject_Generator
                 if (!class_exists($type, $callAutoload) &&
                     !interface_exists($type, $callAutoload)
                 ) {
-                    throw new PHPUnit_Framework_MockObject_RuntimeException(
+                    throw new RuntimeException(
                         sprintf(
                             'Cannot stub or mock class or interface "%s" which does not exist',
                             $type
@@ -130,7 +136,7 @@ class PHPUnit_Framework_MockObject_Generator
         if (null !== $methods) {
             foreach ($methods as $method) {
                 if (!preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', $method)) {
-                    throw new PHPUnit_Framework_MockObject_RuntimeException(
+                    throw new RuntimeException(
                         sprintf(
                             'Cannot stub or mock method with invalid name "%s"',
                             $method
@@ -140,7 +146,7 @@ class PHPUnit_Framework_MockObject_Generator
             }
 
             if ($methods != array_unique($methods)) {
-                throw new PHPUnit_Framework_MockObject_RuntimeException(
+                throw new RuntimeException(
                     sprintf(
                         'Cannot stub or mock using a method list that contains duplicates: "%s" (duplicate: "%s")',
                         implode(', ', $methods),
@@ -153,8 +159,8 @@ class PHPUnit_Framework_MockObject_Generator
         if ($mockClassName != '' && class_exists($mockClassName, false)) {
             $reflect = new ReflectionClass($mockClassName);
 
-            if (!$reflect->implementsInterface('PHPUnit_Framework_MockObject_MockObject')) {
-                throw new PHPUnit_Framework_MockObject_RuntimeException(
+            if (!$reflect->implementsInterface('MockObject')) {
+                throw new RuntimeException(
                     sprintf(
                         'Class "%s" already exists.',
                         $mockClassName
@@ -164,7 +170,7 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if ($callOriginalConstructor === false && $callOriginalMethods === true) {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
+            throw new RuntimeException(
                 'Proxying to original methods requires invoking the original constructor'
             );
         }
@@ -201,9 +207,9 @@ class PHPUnit_Framework_MockObject_Generator
      * @param bool         $callOriginalMethods
      * @param object       $proxyTarget
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
-     * @throws PHPUnit_Framework_MockObject_RuntimeException
+     * @throws RuntimeException
      */
     private function getObject($code, $className, $type = '', $callOriginalConstructor = false, $callAutoload = false, array $arguments = [], $callOriginalMethods = false, $proxyTarget = null)
     {
@@ -227,11 +233,11 @@ class PHPUnit_Framework_MockObject_Generator
                     $exception = $exception->getPrevious();
                 }
 
-                throw new PHPUnit_Framework_MockObject_RuntimeException(
+                throw new RuntimeException(
                     $exception->getMessage()
                 );
             } catch (InstantiatorInvalidArgumentException $exception) {
-                throw new PHPUnit_Framework_MockObject_RuntimeException(
+                throw new RuntimeException(
                     $exception->getMessage()
                 );
             }
@@ -278,10 +284,10 @@ class PHPUnit_Framework_MockObject_Generator
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
-     * @throws PHPUnit_Framework_MockObject_RuntimeException
-     * @throws PHPUnit\Framework\Exception
+     * @throws RuntimeException
+     * @throws Exception
      */
     public function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true)
     {
@@ -320,7 +326,7 @@ class PHPUnit_Framework_MockObject_Generator
             );
         }
 
-        throw new PHPUnit_Framework_MockObject_RuntimeException(
+        throw new RuntimeException(
             sprintf('Class "%s" does not exist.', $originalClassName)
         );
     }
@@ -339,10 +345,10 @@ class PHPUnit_Framework_MockObject_Generator
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
-     * @throws PHPUnit_Framework_MockObject_RuntimeException
-     * @throws PHPUnit\Framework\Exception
+     * @throws RuntimeException
+     * @throws Exception
      */
     public function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true)
     {
@@ -355,7 +361,7 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if (!trait_exists($traitName, $callAutoload)) {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
+            throw new RuntimeException(
                 sprintf(
                     'Trait "%s" does not exist.',
                     $traitName
@@ -399,8 +405,8 @@ class PHPUnit_Framework_MockObject_Generator
      *
      * @return object
      *
-     * @throws PHPUnit_Framework_MockObject_RuntimeException
-     * @throws PHPUnit\Framework\Exception
+     * @throws RuntimeException
+     * @throws Exception
      */
     public function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)
     {
@@ -413,7 +419,7 @@ class PHPUnit_Framework_MockObject_Generator
         }
 
         if (!trait_exists($traitName, $callAutoload)) {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
+            throw new RuntimeException(
                 sprintf(
                     'Trait "%s" does not exist.',
                     $traitName
@@ -499,12 +505,12 @@ class PHPUnit_Framework_MockObject_Generator
      *
      * @return string
      *
-     * @throws PHPUnit_Framework_MockObject_RuntimeException
+     * @throws RuntimeException
      */
     public function generateClassFromWsdl($wsdlFile, $className, array $methods = [], array $options = [])
     {
         if (!extension_loaded('soap')) {
-            throw new PHPUnit_Framework_MockObject_RuntimeException(
+            throw new RuntimeException(
                 'The SOAP extension is required to generate a mock object from WSDL.'
             );
         }
@@ -590,7 +596,7 @@ class PHPUnit_Framework_MockObject_Generator
      *
      * @return array
      *
-     * @throws PHPUnit_Framework_MockObject_RuntimeException
+     * @throws RuntimeException
      */
     private function generateMock($type, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
     {
@@ -606,7 +612,7 @@ class PHPUnit_Framework_MockObject_Generator
         if (is_array($type)) {
             foreach ($type as $_type) {
                 if (!interface_exists($_type, $callAutoload)) {
-                    throw new PHPUnit_Framework_MockObject_RuntimeException(
+                    throw new RuntimeException(
                         sprintf(
                             'Interface "%s" does not exist.',
                             $_type
@@ -626,7 +632,7 @@ class PHPUnit_Framework_MockObject_Generator
 
                 foreach ($this->getClassMethods($_type) as $method) {
                     if (in_array($method, $methods)) {
-                        throw new PHPUnit_Framework_MockObject_RuntimeException(
+                        throw new RuntimeException(
                             sprintf(
                                 'Duplicate method "%s" not allowed.',
                                 $method
@@ -668,7 +674,7 @@ class PHPUnit_Framework_MockObject_Generator
             $class = new ReflectionClass($mockClassName['fullClassName']);
 
             if ($class->isFinal()) {
-                throw new PHPUnit_Framework_MockObject_RuntimeException(
+                throw new RuntimeException(
                     sprintf(
                         'Class "%s" is declared "final" and cannot be mocked.',
                         $mockClassName['fullClassName']
@@ -848,7 +854,7 @@ class PHPUnit_Framework_MockObject_Generator
     {
         $buffer = 'class ';
 
-        $additionalInterfaces[] = 'PHPUnit_Framework_MockObject_MockObject';
+        $additionalInterfaces[] = 'MockObject';
         $interfaces             = implode(', ', $additionalInterfaces);
 
         if ($isInterface) {
@@ -1047,7 +1053,7 @@ class PHPUnit_Framework_MockObject_Generator
      *
      * @return string
      *
-     * @throws PHPUnit_Framework_MockObject_RuntimeException
+     * @throws RuntimeException
      */
     private function getMethodParameters(ReflectionMethod $method, $forCall = false)
     {
@@ -1091,7 +1097,7 @@ class PHPUnit_Framework_MockObject_Generator
                     try {
                         $class = $parameter->getClass();
                     } catch (ReflectionException $e) {
-                        throw new PHPUnit_Framework_MockObject_RuntimeException(
+                        throw new RuntimeException(
                             sprintf(
                                 'Cannot mock %s::%s() because a class or ' .
                                 'interface used in the signature is not loaded',

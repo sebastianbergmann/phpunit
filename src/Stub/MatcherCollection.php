@@ -7,17 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject\Stub;
+
+use PHPUnit\Framework\MockObject\Matcher\Invocation;
 
 /**
  * Stubs a method by returning a user-defined value.
  */
-interface PHPUnit_Framework_MockObject_Stub_MatcherCollection
+interface MatcherCollection
 {
     /**
      * Adds a new matcher to the collection which can be used as an expectation
      * or a stub.
      *
-     * @param PHPUnit_Framework_MockObject_Matcher_Invocation $matcher Matcher for invocations to mock objects
+     * @param Invocation $matcher Matcher for invocations to mock objects
      */
-    public function addMatcher(PHPUnit_Framework_MockObject_Matcher_Invocation $matcher);
+    public function addMatcher(Invocation $matcher);
 }

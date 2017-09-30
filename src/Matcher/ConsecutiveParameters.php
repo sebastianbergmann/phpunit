@@ -7,10 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
  * Invocation matcher which looks for sets of specific parameters in the invocations.
@@ -22,7 +24,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  * It takes a list of match groups and and increases a call index after each invocation.
  * So the first invocation uses the first group of constraints, the second the next and so on.
  */
-class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit_Framework_MockObject_Matcher_StatelessInvocation
+class ConsecutiveParameters extends StatelessInvocation
 {
     /**
      * @var array
@@ -61,11 +63,11 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param BaseInvocation $invocation
      *
      * @return bool
      */
-    public function matches(PHPUnit_Framework_MockObject_Invocation $invocation)
+    public function matches(BaseInvocation $invocation)
     {
         $this->invocations[] = $invocation;
         $callIndex           = count($this->invocations) - 1;
@@ -85,12 +87,12 @@ class PHPUnit_Framework_MockObject_Matcher_ConsecutiveParameters extends PHPUnit
     /**
      * Verify a single invocation
      *
-     * @param PHPUnit_Framework_MockObject_Invocation $invocation
+     * @param BaseInvocation $invocation
      * @param int                                     $callIndex
      *
      * @throws ExpectationFailedException
      */
-    private function verifyInvocation(PHPUnit_Framework_MockObject_Invocation $invocation, $callIndex)
+    private function verifyInvocation(BaseInvocation $invocation, $callIndex)
     {
         if (isset($this->parameterGroups[$callIndex])) {
             $parameters = $this->parameterGroups[$callIndex];
