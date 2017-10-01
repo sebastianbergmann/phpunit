@@ -9,31 +9,30 @@
  */
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\Invocation\StaticInvocation;
 
-class Framework_MockObject_Invocation_ObjectTest extends TestCase
+class StaticInvocationTest extends TestCase
 {
-    public function testConstructorRequiresClassAndMethodAndParametersAndObject()
+    public function testConstructorRequiresClassAndMethodAndParameters()
     {
         $this->assertInstanceOf(
-            PHPUnit_Framework_MockObject_Invocation_Object::class,
-            new PHPUnit_Framework_MockObject_Invocation_Object(
+            StaticInvocation::class,
+            new StaticInvocation(
                 'FooClass',
                 'FooMethod',
                 ['an_argument'],
-                'ReturnType',
-                new stdClass
+                'ReturnType'
             )
         );
     }
 
     public function testAllowToGetClassNameSetInConstructor()
     {
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Object(
+        $invocation = new StaticInvocation(
             'FooClass',
             'FooMethod',
             ['an_argument'],
-            'ReturnType',
-            new stdClass
+            'ReturnType'
         );
 
         $this->assertSame('FooClass', $invocation->className);
@@ -41,30 +40,14 @@ class Framework_MockObject_Invocation_ObjectTest extends TestCase
 
     public function testAllowToGetMethodNameSetInConstructor()
     {
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Object(
+        $invocation = new StaticInvocation(
             'FooClass',
             'FooMethod',
             ['an_argument'],
-            'ReturnType',
-            new stdClass
+            'ReturnType'
         );
 
         $this->assertSame('FooMethod', $invocation->methodName);
-    }
-
-    public function testAllowToGetObjectSetInConstructor()
-    {
-        $expectedObject = new stdClass;
-
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Object(
-            'FooClass',
-            'FooMethod',
-            ['an_argument'],
-            'ReturnType',
-            $expectedObject
-        );
-
-        $this->assertSame($expectedObject, $invocation->object);
     }
 
     public function testAllowToGetMethodParametersSetInConstructor()
@@ -73,12 +56,11 @@ class Framework_MockObject_Invocation_ObjectTest extends TestCase
           'foo', 5, ['a', 'b'], new stdClass, null, false
         ];
 
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Object(
+        $invocation = new StaticInvocation(
             'FooClass',
             'FooMethod',
             $expectedParameters,
-            'ReturnType',
-            new stdClass
+            'ReturnType'
         );
 
         $this->assertSame($expectedParameters, $invocation->parameters);
@@ -89,12 +71,11 @@ class Framework_MockObject_Invocation_ObjectTest extends TestCase
         $parameters   = [new stdClass];
         $cloneObjects = true;
 
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Object(
+        $invocation = new StaticInvocation(
             'FooClass',
             'FooMethod',
             $parameters,
             'ReturnType',
-            new stdClass,
             $cloneObjects
         );
 
@@ -106,12 +87,11 @@ class Framework_MockObject_Invocation_ObjectTest extends TestCase
     {
         $expectedReturnType = 'string';
 
-        $invocation = new PHPUnit_Framework_MockObject_Invocation_Object(
+        $invocation = new StaticInvocation(
             'FooClass',
             'FooMethod',
             ['an_argument'],
-            $expectedReturnType,
-            new stdClass
+            $expectedReturnType
         );
 
         $this->assertSame($expectedReturnType, $invocation->returnType);
