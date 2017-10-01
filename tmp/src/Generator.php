@@ -18,6 +18,8 @@ use PHPUnit\Framework\Exception;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
+use Text_Template;
+use Traversable;
 
 /**
  * Mock Object Code Generator
