@@ -20,6 +20,8 @@ use ReflectionException;
 use ReflectionMethod;
 use Text_Template;
 use Traversable;
+use Iterator;
+use IteratorAggregate;
 
 /**
  * Mock Object Code Generator

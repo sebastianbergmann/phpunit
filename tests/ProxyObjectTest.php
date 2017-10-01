@@ -10,7 +10,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-class Framework_ProxyObjectTest extends TestCase
+class ProxyObjectTest extends TestCase
 {
     public function testMockedMethodIsProxiedToOriginalMethod()
     {
