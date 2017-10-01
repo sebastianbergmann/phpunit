@@ -13,6 +13,7 @@ use PHPUnit\Framework\SelfDescribing;
 use SebastianBergmann\Exporter\Exporter;
 use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\MockObject\Generator;
+use ReflectionObject;
 
 /**
  * Represents a static invocation.
