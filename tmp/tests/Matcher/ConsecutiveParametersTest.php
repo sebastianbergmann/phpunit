@@ -11,7 +11,7 @@
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
 
-class Framework_MockObject_Matcher_ConsecutiveParametersTest extends TestCase
+class ConsecutiveParametersTest extends TestCase
 {
     public function testIntegration()
     {
