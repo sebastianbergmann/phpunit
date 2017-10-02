@@ -22,6 +22,7 @@ use Text_Template;
 use Traversable;
 use Iterator;
 use IteratorAggregate;
+use SoapClient;
 
 /**
  * Mock Object Code Generator
@@ -858,7 +859,7 @@ class Generator
     {
         $buffer = 'class ';
 
-        $additionalInterfaces[] = 'MockObject';
+        $additionalInterfaces[] = '\PHPUnit\Framework\MockObject\MockObject';
         $interfaces             = implode(', ', $additionalInterfaces);
 
         if ($isInterface) {
