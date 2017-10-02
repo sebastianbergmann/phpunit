@@ -10,7 +10,6 @@
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
-use Exception;
 
 class MockObjectTest extends TestCase
 {
@@ -721,7 +720,7 @@ class MockObjectTest extends TestCase
 
 // CHECKOUT THIS MORE CAREFULLY
 //            $this->fail('Expected exception');
-            
+
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
                 'Expectation failed for method name is equal to "right" when invoked 1 time(s).' . PHP_EOL .
