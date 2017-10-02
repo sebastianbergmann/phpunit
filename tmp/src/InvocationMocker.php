@@ -15,6 +15,7 @@ use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMo
 use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
 use PHPUnit\Framework\MockObject\Builder\Match;
 use PHPUnit\Framework\MockObject\Exception\RuntimeException;
+use Exception;
 
 /**
  * Mocker for invocations which are sent from
