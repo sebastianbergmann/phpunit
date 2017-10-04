@@ -1194,7 +1194,7 @@ EOT;
 
         $renderer = new XmlTestListRenderer;
 
-        file_put_contents($target, $renderer->render($suite));
+        \file_put_contents($target, $renderer->render($suite));
 
         \printf(
             'Wrote list of tests that would have been run to %s' . \PHP_EOL,
