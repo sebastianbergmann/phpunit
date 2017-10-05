@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 ### Added
 
 * Implemented [#1993](https://github.com/sebastianbergmann/phpunit/issues/1993): Add `--list-tests` and `--list-tests-xml` options for listing all tests (without executing them)
+* Implemented [#2780](https://github.com/sebastianbergmann/phpunit/pull/2780): Add support for expecting exceptions based on `Exception` objects
 * Added `TestCase::registerComparator()` to register custom `Comparator` implementations for use with `assertEquals()` that are automatically unregistered after the test
 * Added `TestListenerDefaultImplementation` trait that provides empty implementations of the `TestListener` methods
 
