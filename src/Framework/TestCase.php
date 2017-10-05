@@ -632,6 +632,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->expectedExceptionMessageRegExp = $messageRegExp;
     }
 
+    /**
+     * Sets up an expectation for an exception to be raised by the code under test.
+     * Information for expected exception class, expected exception message, and
+     * expected exception code are retrieved from a given Exception object.
+     */
     public function expectExceptionObject(Exception $exception)
     {
         $this->expectException(get_class($exception));
