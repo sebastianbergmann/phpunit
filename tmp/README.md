@@ -8,7 +8,7 @@
 
 ## Requirements
 
-* PHP 5.6 is required but using the latest version of PHP is highly recommended
+* PHP 7 is required
 
 ## Installation
 
