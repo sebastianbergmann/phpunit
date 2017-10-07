@@ -1,5 +1,5 @@
 #!/usr/bin/env php
-<?php declare(strict_types=1);
+<?php
 require __DIR__ . '/../vendor/autoload.php';
 
 use SebastianBergmann\Version;

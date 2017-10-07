@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -26,7 +26,7 @@ class InvalidArgumentHelper
      */
     public static function factory($argument, $type, $value = null)
     {
-        $stack = \debug_backtrace();
+        $stack = \debug_backtrace(false);
 
         return new Exception(
             \sprintf(
