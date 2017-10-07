@@ -2,8 +2,9 @@
 
 All notable changes of the PHPUnit 6.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [6.4.1] - 2017-MM-DD
+## [6.4.1] - 2017-10-07
 
+* Fixed [#2791](https://github.com/sebastianbergmann/phpunit/issues/2791): Process Isolation does not work with PHPUnit PHAR
 * Fixed [#2792](https://github.com/sebastianbergmann/phpunit/issues/2792): `get_resource_type()` expects parameter 1 to be resource, string given
 
 ## [6.4.0] - 2017-10-06
