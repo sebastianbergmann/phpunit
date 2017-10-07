@@ -117,7 +117,7 @@ class IsType extends Constraint
                 return \is_object($other);
 
             case 'resource':
-                return \is_resource($other) || gettype($other) === 'unknown type';
+                return \is_resource($other) || \is_string(@\get_resource_type($other));
 
             case 'scalar':
                 return \is_scalar($other);
