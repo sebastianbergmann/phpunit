@@ -26,7 +26,7 @@ class InvalidArgumentHelper
      */
     public static function factory($argument, $type, $value = null)
     {
-        $stack = \debug_backtrace(false);
+        $stack = \debug_backtrace();
 
         return new Exception(
             \sprintf(
