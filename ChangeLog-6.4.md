@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 6.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.4.1] - 2017-MM-DD
+
+* Fixed [#2792](https://github.com/sebastianbergmann/phpunit/issues/2792): `get_resource_type()` expects parameter 1 to be resource, string given
+
 ## [6.4.0] - 2017-10-06
 
 ### Added
@@ -19,5 +23,6 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 
 * Fixed [#2750](https://github.com/sebastianbergmann/phpunit/issues/2750): Useless call to `array_map()`
 
+[6.4.1]: https://github.com/sebastianbergmann/phpunit/compare/6.4.0...6.4.1
 [6.4.0]: https://github.com/sebastianbergmann/phpunit/compare/6.3...6.4.0
 
