@@ -633,6 +633,18 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * Sets up an expectation for an exception to be raised by the code under test.
+     * Information for expected exception class, expected exception message, and
+     * expected exception code are retrieved from a given Exception object.
+     */
+    public function expectExceptionObject(Exception $exception)
+    {
+        $this->expectException(get_class($exception));
+        $this->expectExceptionMessage($exception->getMessage());
+        $this->expectExceptionCode($exception->getCode());
+    }
+
+    /**
      * @param bool $flag
      */
     public function setRegisterMockObjectsFromTestArgumentsRecursively($flag)
@@ -1951,7 +1963,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return string
      */
-    protected function getDataSetAsString($includeData = true)
+    public function getDataSetAsString($includeData = true)
     {
         $buffer = '';
 

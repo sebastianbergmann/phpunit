@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -16,7 +16,6 @@ use PharIo\Manifest\ManifestLoader;
 use PharIo\Version\Version as PharIoVersion;
 use PharIo\Manifest\Exception as ManifestException;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
@@ -32,7 +31,10 @@ use PHPUnit\Util\Getopt;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\Printer;
+use PHPUnit\Util\TextTestListRenderer;
+use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
+use SebastianBergmann\CodeCoverage\Report\PHP;
 use Throwable;
 
 /**
@@ -46,11 +48,9 @@ class Command
      */
     protected $arguments = [
         'listGroups'              => false,
-        'listGroupsRaw'           => false,
         'listSuites'              => false,
-        'listSuitesRaw'           => false,
         'listTests'               => false,
-        'listTestsRaw'            => false,
+        'listTestsXml'            => false,
         'loader'                  => null,
         'useDefaultConfiguration' => true,
         'loadedExtensions'        => [],
@@ -91,11 +91,9 @@ class Command
         'help'                      => null,
         'include-path='             => null,
         'list-groups'               => null,
-        'list-groups-raw'           => null,
         'list-suites'               => null,
-        'list-suites-raw'           => null,
         'list-tests'                => null,
-        'list-tests-raw'            => null,
+        'list-tests-xml='           => null,
         'loader='                   => null,
         'log-junit='                => null,
         'log-teamcity='             => null,
@@ -173,27 +171,19 @@ class Command
         }
 
         if ($this->arguments['listGroups']) {
-            return $this->handleListGroups($suite, false, $exit);
-        }
-
-        if ($this->arguments['listGroupsRaw']) {
-            return $this->handleListGroups($suite, true, $exit);
+            return $this->handleListGroups($suite, $exit);
         }
 
         if ($this->arguments['listSuites']) {
-            return $this->handleListSuites(false, $exit);
-        }
-
-        if ($this->arguments['listSuitesRaw']) {
-            return $this->handleListSuites(true, $exit);
+            return $this->handleListSuites($exit);
         }
 
         if ($this->arguments['listTests']) {
-            return $this->handleListTests($suite, false, $exit);
+            return $this->handleListTests($suite, $exit);
         }
 
-        if ($this->arguments['listTestsRaw']) {
-            return $this->handleListTests($suite, true, $exit);
+        if ($this->arguments['listTestsXml']) {
+            return $this->handleListTestsXml($suite, $this->arguments['listTestsXml'], $exit);
         }
 
         unset(
@@ -441,24 +431,16 @@ class Command
                     $this->arguments['listGroups'] = true;
                     break;
 
-                case '--list-groups-raw':
-                    $this->arguments['listGroupsRaw'] = true;
-                    break;
-
                 case '--list-suites':
                     $this->arguments['listSuites'] = true;
-                    break;
-
-                case '--list-suites-raw':
-                    $this->arguments['listSuitesRaw'] = true;
                     break;
 
                 case '--list-tests':
                     $this->arguments['listTests'] = true;
                     break;
 
-                case '--list-tests-raw':
-                    $this->arguments['listTestsRaw'] = true;
+                case '--list-tests-xml':
+                    $this->arguments['listTestsXml'] = $option[1];
                     break;
 
                 case '--printer':
@@ -1005,11 +987,9 @@ Test Selection Options:
   --group ...                 Only runs tests from the specified group(s).
   --exclude-group ...         Exclude tests from the specified group(s).
   --list-groups               List available test groups.
-  --list-groups-raw           List available test groups (raw output).
   --list-suites               List available test suites.
-  --list-suites-raw           List available test suites (raw output).
   --list-tests                List available tests.
-  --list-tests-raw            List available tests (raw output).
+  --list-tests-xml <file>     List available tests in XML format.
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
 
@@ -1144,26 +1124,20 @@ EOT;
         }
     }
 
-    private function handleListGroups(TestSuite $suite, bool $raw, bool $exit): int
+    private function handleListGroups(TestSuite $suite, bool $exit): int
     {
-        if (!$raw) {
-            $this->printVersionString();
+        $this->printVersionString();
 
-            print 'Available test group(s):' . PHP_EOL;
-        }
+        print 'Available test group(s):' . PHP_EOL;
 
         $groups = $suite->getGroups();
         \sort($groups);
 
         foreach ($groups as $group) {
-            if ($raw) {
-                print $group . PHP_EOL;
-            } else {
-                \printf(
-                    ' - %s' . PHP_EOL,
-                    $group
-                );
-            }
+            \printf(
+                ' - %s' . PHP_EOL,
+                $group
+            );
         }
 
         if ($exit) {
@@ -1173,13 +1147,11 @@ EOT;
         return TestRunner::SUCCESS_EXIT;
     }
 
-    private function handleListSuites(bool $raw, bool $exit): int
+    private function handleListSuites(bool $exit): int
     {
-        if (!$raw) {
-            $this->printVersionString();
+        $this->printVersionString();
 
-            print 'Available test suite(s):' . PHP_EOL;
-        }
+        print 'Available test suite(s):' . PHP_EOL;
 
         $configuration = Configuration::getInstance(
             $this->arguments['configuration']
@@ -1188,14 +1160,10 @@ EOT;
         $suiteNames = $configuration->getTestSuiteNames();
 
         foreach ($suiteNames as $suiteName) {
-            if ($raw) {
-                print $suiteName . PHP_EOL;
-            } else {
-                \printf(
-                    ' - %s' . PHP_EOL,
-                    $suiteName
-                );
-            }
+            \printf(
+                ' - %s' . PHP_EOL,
+                $suiteName
+            );
         }
 
         if ($exit) {
@@ -1205,28 +1173,33 @@ EOT;
         return TestRunner::SUCCESS_EXIT;
     }
 
-    private function handleListTests(TestSuite $suite, bool $raw = false, bool $exit): int
+    private function handleListTests(TestSuite $suite, bool $exit): int
     {
-        if (!$raw) {
-            $this->printVersionString();
+        $this->printVersionString();
 
-            print 'Available test(s):' . PHP_EOL;
+        $renderer = new TextTestListRenderer;
+
+        print $renderer->render($suite);
+
+        if ($exit) {
+            exit(TestRunner::SUCCESS_EXIT);
         }
 
-        foreach (new \RecursiveIteratorIterator($suite->getIterator()) as $test) {
-            if ($test instanceof TestCase || $test instanceof PhptTestCase) {
-                $name = \str_replace(' with data set ', '', $test->getName());
+        return TestRunner::SUCCESS_EXIT;
+    }
 
-                if ($raw) {
-                    print $name . PHP_EOL;
-                } else {
-                    \printf(
-                        ' - %s' . PHP_EOL,
-                        $name
-                    );
-                }
-            }
-        }
+    private function handleListTestsXml(TestSuite $suite, string $target, bool $exit): int
+    {
+        $this->printVersionString();
+
+        $renderer = new XmlTestListRenderer;
+
+        \file_put_contents($target, $renderer->render($suite));
+
+        \printf(
+            'Wrote list of tests that would have been run to %s' . \PHP_EOL,
+            $target
+        );
 
         if ($exit) {
             exit(TestRunner::SUCCESS_EXIT);
