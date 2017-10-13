@@ -2023,14 +2023,23 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $passedKeys = \array_flip(\array_unique($passedKeys));
 
             foreach ($this->dependencies as $dependency) {
-                $clone = false;
+                $deepClone    = false;
+                $shallowClone = false;
 
                 if (\strpos($dependency, 'clone ') === 0) {
-                    $clone      = true;
+                    $deepClone  = true;
                     $dependency = \substr($dependency, \strlen('clone '));
                 } elseif (\strpos($dependency, '!clone ') === 0) {
-                    $clone      = false;
+                    $deepClone  = false;
                     $dependency = \substr($dependency, \strlen('!clone '));
+                }
+
+                if (\strpos($dependency, 'shallowClone ') === 0) {
+                    $shallowClone = true;
+                    $dependency   = \substr($dependency, \strlen('shallowClone '));
+                } elseif (\strpos($dependency, '!shallowClone ') === 0) {
+                    $shallowClone = false;
+                    $dependency   = \substr($dependency, \strlen('!shallowClone '));
                 }
 
                 if (\strpos($dependency, '::') === false) {
@@ -2069,11 +2078,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                         return false;
                     }
 
-                    if ($clone) {
+                    if ($deepClone) {
                         $deepCopy = new DeepCopy;
                         $deepCopy->skipUncloneable(false);
 
                         $this->dependencyInput[$dependency] = $deepCopy->copy($passed[$dependency]['result']);
+                    } elseif ($shallowClone) {
+                        $this->dependencyInput[$dependency] = clone $passed[$dependency]['result'];
                     } else {
                         $this->dependencyInput[$dependency] = $passed[$dependency]['result'];
                     }
