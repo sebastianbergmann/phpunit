@@ -14,6 +14,7 @@ use ArrayAccess;
 use Countable;
 use DOMDocument;
 use DOMElement;
+use PHPUnit\Framework\Constraint\Any;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
@@ -2267,6 +2268,29 @@ abstract class Assert
 
         static::assertThat($expectedJson, new LogicalNot($constraintActual), $message);
         static::assertThat($actualJson, new LogicalNot($constraintExpected), $message);
+    }
+
+    /**
+     * Asserts that at least one element of haystack passes the test of the provided
+     * callback function
+     *
+     * @param mixed    $haystack
+     * @param callable $callback
+     * @param string   $message
+     */
+    public static function assertAny($haystack, callable $callback, $message = '')
+    {
+        if (!\is_array($haystack) &&
+            !(\is_object($haystack) && $haystack instanceof Traversable)) {
+            throw InvalidArgumentHelper::factory(
+                2,
+                'array or traversable'
+            );
+        }
+
+        $constraint = new Any($callback);
+
+        static::assertThat($haystack, $constraint, $message);
     }
 
     /**

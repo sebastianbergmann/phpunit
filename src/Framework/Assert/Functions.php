@@ -1264,6 +1264,19 @@ function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = 
 }
 
 /**
+ * Asserts that at least one element of haystack passes the test of the provided
+ * callback function
+ *
+ * @param mixed    $haystack
+ * @param callable $callback
+ * @param string   $message
+ */
+function assertAny($haystack, callable $callback, $message = '')
+{
+    return Assert::assertAny(...\func_get_args());
+}
+
+/**
  * Returns a matcher that matches when the method is executed
  * at the given $index.
  *
