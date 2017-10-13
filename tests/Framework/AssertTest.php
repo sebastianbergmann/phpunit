@@ -3200,6 +3200,34 @@ XML;
         });
     }
 
+    public function testAssertNoneWithArray()
+    {
+        $items = ['foo', 'bar', 'baz'];
+
+        $this->assertNone($items, function($item) {
+            return 'qux' == $item;
+        });
+    }
+
+    public function testAssertNoneWithTraversable()
+    {
+        $items = ['foo', 'bar', 'baz'];
+        $iterator = new \TestIterator($items);
+
+        $this->assertNone($iterator, function ($item) {
+            return 'qux' == $item;
+        });
+    }
+
+    public function testAssertNoneWithInvalidTypeThrowsExceptionForInvalidArgument()
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertNone(new \stdClass(), function($item) {
+            return true; // should never be called
+        });
+    }
+
     /**
      * @return array<string, string[]>
      */

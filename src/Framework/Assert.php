@@ -45,6 +45,7 @@ use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\JsonMatches;
 use PHPUnit\Framework\Constraint\LessThan;
 use PHPUnit\Framework\Constraint\LogicalNot;
+use PHPUnit\Framework\Constraint\None;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\RegularExpression;
@@ -2289,6 +2290,29 @@ abstract class Assert
         }
 
         $constraint = new Any($callback);
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    /**
+     * Asserts that at none of the elements of haystack passes the test of the provided
+     * callback function
+     *
+     * @param mixed    $haystack
+     * @param callable $callback
+     * @param string   $message
+     */
+    public static function assertNone($haystack, callable $callback, $message = '')
+    {
+        if (!\is_array($haystack) &&
+            !(\is_object($haystack) && $haystack instanceof Traversable)) {
+            throw InvalidArgumentHelper::factory(
+                2,
+                'array or traversable'
+            );
+        }
+
+        $constraint = new None($callback);
 
         static::assertThat($haystack, $constraint, $message);
     }

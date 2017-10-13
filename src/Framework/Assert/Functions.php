@@ -1277,6 +1277,19 @@ function assertAny($haystack, callable $callback, $message = '')
 }
 
 /**
+ * Asserts that at none of the elements of haystack passes the test of the provided
+ * callback function
+ *
+ * @param mixed    $haystack
+ * @param callable $callback
+ * @param string   $message
+ */
+function assertNone($haystack, callable $callback, $message = '')
+{
+    return Assert::assertNone(...\func_get_args());
+}
+
+/**
  * Returns a matcher that matches when the method is executed
  * at the given $index.
  *
