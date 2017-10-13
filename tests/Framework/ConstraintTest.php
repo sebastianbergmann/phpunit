@@ -2119,55 +2119,6 @@ EOF
         $this->assertCount(1, $constraint);
     }
 
-    public function testConstraintStringStartsWith()
-    {
-        $constraint = Assert::stringStartsWith('prefix');
-
-        $this->assertFalse($constraint->evaluate('foo', '', true));
-        $this->assertTrue($constraint->evaluate('prefixfoo', '', true));
-        $this->assertEquals('starts with "prefix"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate('foo');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that 'foo' starts with "prefix".
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintStringStartsWith2()
-    {
-        $constraint = Assert::stringStartsWith('prefix');
-
-        try {
-            $constraint->evaluate('foo', 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-custom message\nFailed asserting that 'foo' starts with "prefix".
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintStringStartsNotWith()
     {
         $constraint = Assert::logicalNot(
