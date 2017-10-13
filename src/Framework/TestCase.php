@@ -184,14 +184,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @var string
      */
-    private $expectedExceptionMessage = '';
+    private $expectedExceptionMessage;
 
     /**
      * The regex pattern to validate the expected Exception message.
      *
      * @var string
      */
-    private $expectedExceptionMessageRegExp = '';
+    private $expectedExceptionMessageRegExp;
 
     /**
      * The code of the expected Exception.
@@ -589,10 +589,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function expectExceptionCode($code)
     {
-        if (!$this->expectedException) {
-            $this->expectedException = \Exception::class;
-        }
-
         if (!\is_int($code) && !\is_string($code)) {
             throw InvalidArgumentHelper::factory(1, 'integer or string');
         }
@@ -607,10 +603,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function expectExceptionMessage($message)
     {
-        if (!$this->expectedException) {
-            $this->expectedException = \Exception::class;
-        }
-
         if (!\is_string($message)) {
             throw InvalidArgumentHelper::factory(1, 'string');
         }
@@ -1101,14 +1093,16 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             }
 
             if ($checkException) {
-                $this->assertThat(
-                    $e,
-                    new ExceptionConstraint(
-                        $this->expectedException
-                    )
-                );
+                if ($this->expectedException !== null) {
+                    $this->assertThat(
+                        $e,
+                        new ExceptionConstraint(
+                            $this->expectedException
+                        )
+                    );
+                }
 
-                if (!empty($this->expectedExceptionMessage)) {
+                if ($this->expectedExceptionMessage !== null) {
                     $this->assertThat(
                         $e,
                         new ExceptionMessage(
@@ -1117,7 +1111,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     );
                 }
 
-                if (!empty($this->expectedExceptionMessageRegExp)) {
+                if ($this->expectedExceptionMessageRegExp !== null) {
                     $this->assertThat(
                         $e,
                         new ExceptionMessageRegularExpression(
@@ -1146,6 +1140,33 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 null,
                 new ExceptionConstraint(
                     $this->expectedException
+                )
+            );
+        } elseif ($this->expectedExceptionMessage !== null) {
+            $this->numAssertions++;
+
+            throw new AssertionFailedError(
+                sprintf(
+                    'Failed asserting that exception with message "%s" is thrown',
+                    $this->expectedExceptionMessage
+                )
+            );
+        } elseif ($this->expectedExceptionMessageRegExp !== null) {
+            $this->numAssertions++;
+
+            throw new AssertionFailedError(
+                sprintf(
+                    'Failed asserting that exception with message matching "%s" is thrown',
+                    $this->expectedExceptionMessageRegExp
+                )
+            );
+        } elseif ($this->expectedExceptionCode !== null) {
+            $this->numAssertions++;
+
+            throw new AssertionFailedError(
+                sprintf(
+                    'Failed asserting that exception with code "%s" is thrown',
+                    $this->expectedExceptionCode
                 )
             );
         }
