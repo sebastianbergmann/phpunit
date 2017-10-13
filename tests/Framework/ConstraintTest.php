@@ -2494,71 +2494,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintArrayContainsCheckForObjectIdentity()
-    {
-        // Check for primitive type.
-        $constraint = new TraversableContains('foo', true, true);
-
-        $this->assertFalse($constraint->evaluate([0], '', true));
-        $this->assertFalse($constraint->evaluate([true], '', true));
-
-        // Default case.
-        $constraint = new TraversableContains('foo');
-
-        $this->assertTrue($constraint->evaluate([0], '', true));
-        $this->assertTrue($constraint->evaluate([true], '', true));
-    }
-
-    public function testConstraintArrayContains()
-    {
-        $constraint = new TraversableContains('foo');
-
-        $this->assertFalse($constraint->evaluate(['bar'], '', true));
-        $this->assertTrue($constraint->evaluate(['foo'], '', true));
-        $this->assertEquals("contains 'foo'", $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate(['bar']);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that an array contains 'foo'.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintArrayContains2()
-    {
-        $constraint = new TraversableContains('foo');
-
-        try {
-            $constraint->evaluate(['bar'], 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-custom message
-Failed asserting that an array contains 'foo'.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintArrayNotContains()
     {
         $constraint = Assert::logicalNot(
@@ -2601,60 +2536,6 @@ EOF
                 <<<EOF
 custom message
 Failed asserting that an array does not contain 'foo'.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintSplObjectStorageContains()
-    {
-        $object     = new \stdClass;
-        $constraint = new TraversableContains($object);
-        $this->assertStringMatchesFormat('contains stdClass Object &%s ()', $constraint->toString());
-
-        $storage = new \SplObjectStorage;
-        $this->assertFalse($constraint->evaluate($storage, '', true));
-
-        $storage->attach($object);
-        $this->assertTrue($constraint->evaluate($storage, '', true));
-
-        try {
-            $constraint->evaluate(new \SplObjectStorage);
-        } catch (ExpectationFailedException $e) {
-            $this->assertStringMatchesFormat(
-                <<<EOF
-Failed asserting that a traversable contains stdClass Object &%x ().
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintSplObjectStorageContains2()
-    {
-        $object     = new \stdClass;
-        $constraint = new TraversableContains($object);
-
-        try {
-            $constraint->evaluate(new \SplObjectStorage, 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertStringMatchesFormat(
-                <<<EOF
-custom message
-Failed asserting that a traversable contains stdClass Object &%x ().
 
 EOF
                 ,
