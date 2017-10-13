@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 6.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.4.2] - 2017-10-13
+
+* Fixed [#2688](https://github.com/sebastianbergmann/phpunit/issues/2688): `assertNotContains()` interferes with actual string
+
 ## [6.4.1] - 2017-10-07
 
 * Fixed [#2791](https://github.com/sebastianbergmann/phpunit/issues/2791): Process Isolation does not work with PHPUnit PHAR
@@ -24,6 +28,7 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 
 * Fixed [#2750](https://github.com/sebastianbergmann/phpunit/issues/2750): Useless call to `array_map()`
 
+[6.4.2]: https://github.com/sebastianbergmann/phpunit/compare/6.4.1...6.4.2
 [6.4.1]: https://github.com/sebastianbergmann/phpunit/compare/6.4.0...6.4.1
 [6.4.0]: https://github.com/sebastianbergmann/phpunit/compare/6.3...6.4.0
 
