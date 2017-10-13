@@ -70,7 +70,7 @@ class LogicalNot extends Constraint
         
         \preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
         
-        if(count($matches) > 0){
+        if (count($matches) > 0) {
             $nonInput = $matches[2];
             
             $negatedString = \str_replace(
@@ -82,7 +82,7 @@ class LogicalNot extends Constraint
                 ),
                 $string
             );
-        }else{
+        } else {
             $negatedString = \str_replace(
                 $positives,
                 $negatives,
