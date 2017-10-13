@@ -42,33 +42,55 @@ class LogicalNot extends Constraint
      */
     public static function negate($string)
     {
-        return \str_replace(
-            [
-                'contains ',
-                'exists',
-                'has ',
-                'is ',
-                'are ',
-                'matches ',
-                'starts with ',
-                'ends with ',
-                'reference ',
-                'not not '
-            ],
-            [
-                'does not contain ',
-                'does not exist',
-                'does not have ',
-                'is not ',
-                'are not ',
-                'does not match ',
-                'starts not with ',
-                'ends not with ',
-                'don\'t reference ',
-                'not '
-            ],
-            $string
-        );
+        $positives = [
+            'contains ',
+            'exists',
+            'has ',
+            'is ',
+            'are ',
+            'matches ',
+            'starts with ',
+            'ends with ',
+            'reference ',
+            'not not '
+        ];
+        
+        $negatives = [
+            'does not contain ',
+            'does not exist',
+            'does not have ',
+            'is not ',
+            'are not ',
+            'does not match ',
+            'starts not with ',
+            'ends not with ',
+            'don\'t reference ',
+            'not '
+        ];
+        
+        \preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
+        
+        if(count($matches) > 0){
+            $nonInput = $matches[2];
+            
+            $negatedString = \str_replace(
+                $nonInput,
+                \str_replace(
+                    $positives,
+                    $negatives,
+                    $nonInput
+                ),
+                $string
+            );
+        }else{
+            $negatedString = \str_replace(
+                $positives,
+                $negatives,
+                $string
+            );
+        }
+        
+        return $negatedString;
     }
 
     /**
