@@ -2241,56 +2241,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintStringEndsWith()
-    {
-        $constraint = Assert::stringEndsWith('suffix');
-
-        $this->assertFalse($constraint->evaluate('foo', '', true));
-        $this->assertTrue($constraint->evaluate('foosuffix', '', true));
-        $this->assertEquals('ends with "suffix"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate('foo');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that 'foo' ends with "suffix".
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintStringEndsWith2()
-    {
-        $constraint = Assert::stringEndsWith('suffix');
-
-        try {
-            $constraint->evaluate('foo', 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-custom message
-Failed asserting that 'foo' ends with "suffix".
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintStringEndsNotWith()
     {
         $constraint = Assert::logicalNot(
