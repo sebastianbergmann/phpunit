@@ -3176,7 +3176,7 @@ XML;
     {
         $items = ['foo', 'bar', 'baz'];
 
-        $this->assertAny($items, function($item) {
+        $this->assertAny($items, function ($item) {
             return 'bar' == $item;
         });
     }
@@ -3186,7 +3186,7 @@ XML;
         $items = ['foo', 'bar', 'baz'];
         $iterator = new \TestIterator($items);
 
-        $this->assertAny($iterator, function($item) {
+        $this->assertAny($iterator, function ($item) {
             return 'bar' == $item;
         });
     }
@@ -3195,7 +3195,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertAny(new \stdClass(), function($item) {
+        $this->assertAny(new \stdClass(), function ($item) {
             return true; // should never be called
         });
     }
@@ -3204,7 +3204,7 @@ XML;
     {
         $items = ['foo', 'bar', 'baz'];
 
-        $this->assertNone($items, function($item) {
+        $this->assertNone($items, function ($item) {
             return 'qux' == $item;
         });
     }
@@ -3223,7 +3223,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertNone(new \stdClass(), function($item) {
+        $this->assertNone(new \stdClass(), function ($item) {
             return true; // should never be called
         });
     }
