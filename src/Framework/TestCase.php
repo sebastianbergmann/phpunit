@@ -141,21 +141,21 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      *
      * @var string
      */
-    private $expectedExceptionMessage = '';
+    private $expectedExceptionMessage = null;
 
     /**
      * The regex pattern to validate the expected Exception message.
      *
      * @var string
      */
-    private $expectedExceptionMessageRegExp = '';
+    private $expectedExceptionMessageRegExp = null;
 
     /**
      * The code of the expected Exception.
      *
      * @var int|string
      */
-    private $expectedExceptionCode;
+    private $expectedExceptionCode = null;
 
     /**
      * The name of the test case.
@@ -1085,8 +1085,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     )
                 );
 
-                if (is_string($this->expectedExceptionMessage) &&
-                    !empty($this->expectedExceptionMessage)) {
+                if ($this->expectedExceptionMessage !== null) {
                     $this->assertThat(
                         $e,
                         new PHPUnit_Framework_Constraint_ExceptionMessage(
@@ -1095,8 +1094,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     );
                 }
 
-                if (is_string($this->expectedExceptionMessageRegExp) &&
-                    !empty($this->expectedExceptionMessageRegExp)) {
+                if ($this->expectedExceptionMessageRegExp !== null) {
                     $this->assertThat(
                         $e,
                         new PHPUnit_Framework_Constraint_ExceptionMessageRegExp(
