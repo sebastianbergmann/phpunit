@@ -71,32 +71,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintIsReadable()
-    {
-        $constraint = Assert::isReadable();
-
-        $this->assertFalse($constraint->evaluate('foo', '', true));
-        $this->assertEquals('is readable', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate('foo');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that "foo" is readable.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintDirectoryExists()
     {
         $constraint = Assert::directoryExists();
