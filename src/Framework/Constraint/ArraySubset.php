@@ -9,7 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use SebastianBergmann;
+use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Constraint that asserts that the array it is evaluated for has a specified subset.
@@ -36,6 +37,7 @@ class ArraySubset extends Constraint
     public function __construct($subset, $strict = false)
     {
         parent::__construct();
+
         $this->strict = $strict;
         $this->subset = $subset;
     }
@@ -78,12 +80,13 @@ class ArraySubset extends Constraint
         }
 
         if (!$result) {
-            $f = new SebastianBergmann\Comparator\ComparisonFailure(
+            $f = new ComparisonFailure(
                 $patched,
                 $other,
                 \print_r($patched, true),
                 \print_r($other, true)
             );
+
             $this->fail($other, $description, $f);
         }
     }
