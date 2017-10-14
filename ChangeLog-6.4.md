@@ -2,8 +2,9 @@
 
 All notable changes of the PHPUnit 6.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [6.4.2] - 2017-10-13
+## [6.4.2] - 2017-MM-DD
 
+* Fixed [#2237](https://github.com/sebastianbergmann/phpunit/issues/2237): `assertArraySubset()` should provide the diff when the assertion fails
 * Fixed [#2688](https://github.com/sebastianbergmann/phpunit/issues/2688): `assertNotContains()` interferes with actual string
 * Fixed [#2731](https://github.com/sebastianbergmann/phpunit/issues/2731): Empty exception message cannot be expected
 * Fixed [#2778](https://github.com/sebastianbergmann/phpunit/issues/2778): `assertContains()` does not handle empty strings in strings correctly
