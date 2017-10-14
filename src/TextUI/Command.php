@@ -272,7 +272,7 @@ class Command
         try {
             $this->options = Getopt::getopt(
                 $argv,
-                'd:c:hv',
+                'd:c:g:hv',
                 \array_keys($this->longOptions)
             );
         } catch (Exception $t) {
@@ -360,6 +360,10 @@ class Command
 
                 case '--testsuite':
                     $this->arguments['testsuite'] = $option[1];
+                    break;
+
+                case 'g':
+                    $this->arguments['globals'][] = $option[1];
                     break;
 
                 case '--generate-configuration':
@@ -713,6 +717,11 @@ class Command
 
             $configuration->handlePHPConfiguration();
 
+            // command line globals (-g option) override PHP config <var>s (in phpunit.xml) (Issue #2271)
+            if (isset($this->arguments['globals'])) {
+                $this->handleGlobals($this->arguments['globals']);
+            }
+
             /*
              * Issue #1216
              */
@@ -1041,6 +1050,7 @@ Configuration Options:
   --include-path <path(s)>    Prepend PHP's include_path with given path(s).
   -d key[=value]              Sets a php.ini value.
   --generate-configuration    Generate configuration file with suggested settings.
+  -g <assignment>             Define a global variable.
 
 Miscellaneous Options:
 
@@ -1068,6 +1078,51 @@ EOT;
         print Version::getVersionString() . PHP_EOL . PHP_EOL;
 
         $this->versionStringPrinted = true;
+    }
+
+
+    /**
+     * Handles the command line global assignments (-g options).
+     *
+     * This method iterates through each user (-g) option, performs a simple syntax check (must contain "="),
+     * then assigns the global variable named on the left-hand side to the value on the right-hand side.
+     * Certain values are determined to have special data types (numeric, boolean, null, or array), otherwise text.
+     *
+     * @param array $globalAssignments
+     */
+    protected function handleGlobals($globalAssignments)
+    {
+        foreach ($globalAssignments as $assignment) {
+            if (strpos($assignment, '=') === false) {
+                continue;
+            }
+            list($name, $value) = explode('=', $assignment, 2);
+
+            switch (true) {
+                case strcmp($value, "true") === 0:
+                    $GLOBALS[$name] = true;
+                    break;
+                case strcmp($value, "false") === 0:
+                    $GLOBALS[$name] = false;
+                    break;
+                case strcmp($value, "null") === 0:
+                    $GLOBALS[$name] = null;
+                    break;
+                case preg_match('/^\[.*\]$/', $value):
+                    // if $value begins and ends with brackets then eval()
+                    $tmpValue = "";
+                    eval("\$tmpValue = " . $value . ";");
+                    $GLOBALS[$name] = $tmpValue;
+                    break;
+                case is_numeric($value):
+                    $GLOBALS[$name] = (float)$value;
+                    break;
+                default:
+                    // all other globals are assigned as strings
+                    $GLOBALS[$name] = $value;
+                    break;
+            }
+        }
     }
 
     /**
