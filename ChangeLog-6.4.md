@@ -5,6 +5,7 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 ## [6.4.2] - 2017-10-13
 
 * Fixed [#2688](https://github.com/sebastianbergmann/phpunit/issues/2688): `assertNotContains()` interferes with actual string
+* Fixed [#2731](https://github.com/sebastianbergmann/phpunit/issues/2731): Empty exception message cannot be expected
 * Fixed [#2778](https://github.com/sebastianbergmann/phpunit/issues/2778): `assertContains()` does not handle empty strings in strings correctly
 
 ## [6.4.1] - 2017-10-07
