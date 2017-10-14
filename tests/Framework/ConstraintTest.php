@@ -1424,56 +1424,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintCallback()
-    {
-        $closureReflect = function ($parameter) {
-            return $parameter;
-        };
-
-        $closureWithoutParameter = function () {
-            return true;
-        };
-
-        $constraint = Assert::callback($closureWithoutParameter);
-        $this->assertTrue($constraint->evaluate('', '', true));
-
-        $constraint = Assert::callback($closureReflect);
-        $this->assertTrue($constraint->evaluate(true, '', true));
-        $this->assertFalse($constraint->evaluate(false, '', true));
-
-        $callback   = [$this, 'callbackReturningTrue'];
-        $constraint = Assert::callback($callback);
-        $this->assertTrue($constraint->evaluate(false, '', true));
-
-        $callback   = [self::class, 'staticCallbackReturningTrue'];
-        $constraint = Assert::callback($callback);
-        $this->assertTrue($constraint->evaluate(null, '', true));
-
-        $this->assertEquals('is accepted by specified callback', $constraint->toString());
-    }
-
-    public function testConstraintCallbackFailure()
-    {
-        $constraint = Assert::callback(function () {
-            return false;
-        });
-
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Failed asserting that \'This fails\' is accepted by specified callback.');
-
-        $constraint->evaluate('This fails');
-    }
-
-    public function callbackReturningTrue()
-    {
-        return true;
-    }
-
-    public static function staticCallbackReturningTrue()
-    {
-        return true;
-    }
-
     public function testConstraintLessThanOrEqual2()
     {
         $constraint = Assert::lessThanOrEqual(1);
