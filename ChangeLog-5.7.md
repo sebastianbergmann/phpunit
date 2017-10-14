@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 5.7 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [5.7.23] - 2017-MM-DD
+
+### Fixed
+
+* Fixed [#2731](https://github.com/sebastianbergmann/phpunit/issues/2731): Empty exception message cannot be expected
+
 ## [5.7.22] - 2017-09-24
 
 ### Fixed
@@ -177,6 +183,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 * The `--tap` and `--log-tap` commandline options have been deprecated
 * The `--self-update` and `--self-upgrade` commandline options have been deprecated (PHAR binary only)
 
+[5.7.23]: https://github.com/sebastianbergmann/phpunit/compare/5.7.22...5.7.23
 [5.7.22]: https://github.com/sebastianbergmann/phpunit/compare/5.7.21...5.7.22
 [5.7.21]: https://github.com/sebastianbergmann/phpunit/compare/5.7.20...5.7.21
 [5.7.20]: https://github.com/sebastianbergmann/phpunit/compare/5.7.19...5.7.20
