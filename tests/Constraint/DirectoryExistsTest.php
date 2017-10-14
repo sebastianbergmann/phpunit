@@ -16,22 +16,46 @@ use PHPUnit\Framework\TestFailure;
 
 class DirectoryExistsTest extends TestCase
 {
-    public function testConstraintDirectoryExists()
+    public function testDefaults()
     {
         $constraint = new DirectoryExists();
 
-        $this->assertFalse($constraint->evaluate('foo', '', true));
-        $this->assertEquals('directory exists', $constraint->toString());
         $this->assertCount(1, $constraint);
+        $this->assertEquals('directory exists', $constraint->toString());
+    }
+
+    public function testEvaluateReturnsFalseWhenDirectoryDoesNotExist()
+    {
+        $directory = __DIR__ . '/NonExistentDirectory';
+
+        $constraint = new DirectoryExists();
+
+        $this->assertFalse($constraint->evaluate($directory, '', true));
+    }
+
+    public function testEvaluateReturnsTrueWhenDirectoryExists()
+    {
+        $directory = __DIR__;
+
+        $constraint = new DirectoryExists();
+
+        $this->assertTrue($constraint->evaluate($directory, '', true));
+    }
+
+    public function testEvaluateThrowsExpectationFailedExceptionWhenDirectoryDoesNotExist()
+    {
+        $directory = __DIR__ . '/NonExistentDirectory';
+
+        $constraint = new DirectoryExists();
 
         try {
-            $constraint->evaluate('foo');
+            $constraint->evaluate($directory);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
-Failed asserting that directory "foo" exists.
+                <<<PHP
+Failed asserting that directory "$directory" exists.
 
-EOF
+PHP
                 ,
                 TestFailure::exceptionToString($e)
             );
