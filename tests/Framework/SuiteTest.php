@@ -32,6 +32,7 @@ class SuiteTest extends TestCase
         $suite->addTest(new self('testNoTestCaseClass'));
         $suite->addTest(new self('testNotExistingTestCase'));
         $suite->addTest(new self('testNotPublicTestCase'));
+        $suite->addTest(new self('testConstructorOverrideTestCase'));
         $suite->addTest(new self('testNotVoidTestCase'));
         $suite->addTest(new self('testOneTestCase'));
         $suite->addTest(new self('testShadowedTests'));
@@ -102,6 +103,19 @@ class SuiteTest extends TestCase
         $suite = new TestSuite(\NotPublicTestCase::class);
 
         $this->assertCount(2, $suite);
+    }
+
+    public function testConstructorOverrideTestCase()
+    {
+        $suite = new TestSuite(\ConstructorOverrideTestCase::class);
+
+        $suite->run($this->result);
+
+        $warnings = $this->result->warnings();
+        $firstWarning = \array_shift($warnings);
+        $message = $firstWarning->failedTest()->getMessage();
+
+        $this->assertContains('Class "ConstructorOverrideTestCase" overrides the constructor', $message);
     }
 
     public function testNotVoidTestCase()

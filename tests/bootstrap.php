@@ -20,6 +20,7 @@ require_once TEST_FILES_PATH . 'InheritedTestCase.php';
 require_once TEST_FILES_PATH . 'NoTestCaseClass.php';
 require_once TEST_FILES_PATH . 'NoTestCases.php';
 require_once TEST_FILES_PATH . 'NotPublicTestCase.php';
+require_once TEST_FILES_PATH . 'ConstructorOverrideTestCase.php';
 require_once TEST_FILES_PATH . 'NotVoidTestCase.php';
 require_once TEST_FILES_PATH . 'OverrideTestCase.php';
 require_once TEST_FILES_PATH . 'RequirementsClassBeforeClassHookTest.php';
