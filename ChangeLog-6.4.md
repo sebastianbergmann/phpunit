@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 
 * Fixed [#2237](https://github.com/sebastianbergmann/phpunit/issues/2237): `assertArraySubset()` should provide the diff when the assertion fails
 * Fixed [#2688](https://github.com/sebastianbergmann/phpunit/issues/2688): `assertNotContains()` interferes with actual string
+* Fixed [#2693](https://github.com/sebastianbergmann/phpunit/issues/2693): Second `yield from` is not called from a data provider
 * Fixed [#2721](https://github.com/sebastianbergmann/phpunit/issues/2721): Confusing failure message when `assertFileNotEquals()` is used on two empty files
 * Fixed [#2731](https://github.com/sebastianbergmann/phpunit/issues/2731): Empty exception message cannot be expected
 * Fixed [#2778](https://github.com/sebastianbergmann/phpunit/issues/2778): `assertContains()` does not handle empty strings in strings correctly
