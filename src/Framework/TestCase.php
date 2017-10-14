@@ -69,7 +69,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Overwrite this attribute in a child class of TestCase.
      * Setting this attribute in setUp() has no effect!
      *
-     * @var bool
+     * @var ?bool
      */
     protected $backupGlobals = null;
 
@@ -83,7 +83,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Overwrite this attribute in a child class of TestCase.
      * Setting this attribute in setUp() has no effect!
      *
-     * @var bool
+     * @var ?bool
      */
     protected $backupStaticAttributes = null;
 
@@ -95,7 +95,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Whether or not this test is to be run in a separate PHP process.
      *
-     * @var bool
+     * @var ?bool
      */
     protected $runTestInSeparateProcess = null;
 
@@ -125,42 +125,42 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $dataName = '';
 
     /**
-     * @var bool
+     * @var ?bool
      */
     private $useErrorHandler = null;
 
     /**
      * The name of the expected Exception.
      *
-     * @var string
+     * @var ?string
      */
     private $expectedException = null;
 
     /**
      * The message of the expected Exception.
      *
-     * @var string
+     * @var ?string
      */
     private $expectedExceptionMessage = null;
 
     /**
      * The regex pattern to validate the expected Exception message.
      *
-     * @var string
+     * @var ?string
      */
     private $expectedExceptionMessageRegExp = null;
 
     /**
      * The code of the expected Exception.
      *
-     * @var int|string
+     * @var ?int|?string
      */
     private $expectedExceptionCode = null;
 
     /**
      * The name of the test case.
      *
-     * @var string
+     * @var ?string
      */
     private $name = null;
 
@@ -190,7 +190,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $mockObjects = [];
 
     /**
-     * @var array
+     * @var ?array
      */
     private $mockObjectGenerator = null;
 
@@ -225,12 +225,12 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     private $output = '';
 
     /**
-     * @var string
+     * @var ?string
      */
     private $outputExpectedRegex = null;
 
     /**
-     * @var string
+     * @var ?string
      */
     private $outputExpectedString = null;
 
@@ -287,9 +287,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     /**
      * Constructs a test case with the given name.
      *
-     * @param string $name
-     * @param array  $data
-     * @param string $dataName
+     * @param ?string $name
+     * @param array   $data
+     * @param string  $dataName
      */
     public function __construct($name = null, array $data = [], $dataName = '')
     {
@@ -453,7 +453,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param string $expectedRegex
+     * @param ?string $expectedRegex
      *
      * @throws PHPUnit_Framework_Exception
      */
@@ -469,7 +469,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param string $expectedString
+     * @param ?string $expectedString
      */
     public function expectOutputString($expectedString)
     {
@@ -501,7 +501,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @return string
+     * @return ?string
      */
     public function getExpectedException()
     {
@@ -509,9 +509,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param mixed      $exception
-     * @param string     $message
-     * @param int|string $code
+     * @param mixed        $exception
+     * @param string       $message
+     * @param ?int|?string $code
      *
      * @throws PHPUnit_Framework_Exception
      *
@@ -531,9 +531,9 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
-     * @param mixed  $exception
-     * @param string $messageRegExp
-     * @param int    $code
+     * @param mixed        $exception
+     * @param string       $messageRegExp
+     * @param ?int|?string $code
      *
      * @throws PHPUnit_Framework_Exception
      *
@@ -733,7 +733,7 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * Runs the test case and collects the results in a TestResult object.
      * If no TestResult object is passed a new one will be created.
      *
-     * @param PHPUnit_Framework_TestResult $result
+     * @param ?PHPUnit_Framework_TestResult $result
      *
      * @return PHPUnit_Framework_TestResult
      *
