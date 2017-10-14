@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#1873](https://github.com/sebastianbergmann/phpunit/issues/1873): Arguments for an object within a listener cannot accept multiple arguments of the same type
 * Fixed [#2237](https://github.com/sebastianbergmann/phpunit/issues/2237): `assertArraySubset()` should provide the diff when the assertion fails
 * Fixed [#2688](https://github.com/sebastianbergmann/phpunit/issues/2688): `assertNotContains()` interferes with actual string
 * Fixed [#2693](https://github.com/sebastianbergmann/phpunit/issues/2693): Second `yield from` is not called from a data provider
