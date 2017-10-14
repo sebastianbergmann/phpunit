@@ -97,32 +97,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintIsWritable()
-    {
-        $constraint = Assert::isWritable();
-
-        $this->assertFalse($constraint->evaluate('foo', '', true));
-        $this->assertEquals('is writable', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate('foo');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that "foo" is writable.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintDirectoryExists()
     {
         $constraint = Assert::directoryExists();
