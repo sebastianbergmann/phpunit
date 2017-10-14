@@ -21,7 +21,7 @@ class DirectoryExistsTest extends TestCase
         $constraint = new DirectoryExists();
 
         $this->assertCount(1, $constraint);
-        $this->assertEquals('directory exists', $constraint->toString());
+        $this->assertSame('directory exists', $constraint->toString());
     }
 
     public function testEvaluateReturnsFalseWhenDirectoryDoesNotExist()
@@ -51,7 +51,7 @@ class DirectoryExistsTest extends TestCase
         try {
             $constraint->evaluate($directory);
         } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
+            $this->assertSame(
                 <<<PHP
 Failed asserting that directory "$directory" exists.
 
