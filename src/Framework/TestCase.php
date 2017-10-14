@@ -510,8 +510,8 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
 
     /**
      * @param mixed      $exception
-     * @param string     $message
-     * @param int|string $code
+     * @param string     $message   Null means we do not check message at all, string (even empty) means we do. Default: null.
+     * @param int|string $code      Null means we do not check code at all, non-null means we do.
      *
      * @throws PHPUnit_Framework_Exception
      *
@@ -519,9 +519,17 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      */
     public function setExpectedException($exception, $message = '', $code = null)
     {
+        if (null !== $message && !is_string($message)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(2, 'string');
+        }
+
+        if (func_num_args() < 2) {
+            $message = null;
+        }
+
         $this->expectedException = $exception;
 
-        if ($message !== null && $message !== '') {
+        if ($message !== null) {
             $this->expectExceptionMessage($message);
         }
 
