@@ -631,7 +631,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function expectExceptionObject(Exception $exception)
     {
-        $this->expectException(get_class($exception));
+        $this->expectException(\get_class($exception));
         $this->expectExceptionMessage($exception->getMessage());
         $this->expectExceptionCode($exception->getCode());
     }
@@ -1146,7 +1146,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $this->numAssertions++;
 
             throw new AssertionFailedError(
-                sprintf(
+                \sprintf(
                     'Failed asserting that exception with message "%s" is thrown',
                     $this->expectedExceptionMessage
                 )
@@ -1155,7 +1155,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $this->numAssertions++;
 
             throw new AssertionFailedError(
-                sprintf(
+                \sprintf(
                     'Failed asserting that exception with message matching "%s" is thrown',
                     $this->expectedExceptionMessageRegExp
                 )
@@ -1164,7 +1164,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $this->numAssertions++;
 
             throw new AssertionFailedError(
-                sprintf(
+                \sprintf(
                     'Failed asserting that exception with code "%s" is thrown',
                     $this->expectedExceptionCode
                 )

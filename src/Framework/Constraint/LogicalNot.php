@@ -54,7 +54,7 @@ class LogicalNot extends Constraint
             'reference ',
             'not not '
         ];
-        
+
         $negatives = [
             'does not contain ',
             'does not exist',
@@ -67,12 +67,12 @@ class LogicalNot extends Constraint
             'don\'t reference ',
             'not '
         ];
-        
+
         \preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
-        
-        if (count($matches) > 0) {
+
+        if (\count($matches) > 0) {
             $nonInput = $matches[2];
-            
+
             $negatedString = \str_replace(
                 $nonInput,
                 \str_replace(
@@ -89,7 +89,7 @@ class LogicalNot extends Constraint
                 $string
             );
         }
-        
+
         return $negatedString;
     }
 
