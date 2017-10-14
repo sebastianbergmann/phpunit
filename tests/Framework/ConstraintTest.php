@@ -1456,56 +1456,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintClassHasStaticAttribute()
-    {
-        $constraint = Assert::classHasStaticAttribute('privateStaticAttribute');
-
-        $this->assertTrue($constraint->evaluate(\ClassWithNonPublicAttributes::class, '', true));
-        $this->assertFalse($constraint->evaluate(\stdClass::class, '', true));
-        $this->assertEquals('has static attribute "privateStaticAttribute"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate(\stdClass::class);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that class "stdClass" has static attribute "privateStaticAttribute".
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintClassHasStaticAttribute2()
-    {
-        $constraint = Assert::classHasStaticAttribute('foo');
-
-        try {
-            $constraint->evaluate(\stdClass::class, 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-custom message
-Failed asserting that class "stdClass" has static attribute "foo".
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintClassNotHasStaticAttribute()
     {
         $constraint = Assert::logicalNot(
