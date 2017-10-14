@@ -850,7 +850,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
                     'codeCoverageFilter'                         => $codeCoverageFilter,
                     'configurationFilePath'                      => $configurationFilePath,
-                    'configurationFilePath'                      => $configurationFilePath,
                     'convertDeprecatedToExceptions'              => $convertDeprecatedToExceptions,
                     'convertNoticeToExceptions'                  => $convertNoticeToExceptions,
                     'convertWarningToExceptions'                 => $convertWarningToExceptions,
