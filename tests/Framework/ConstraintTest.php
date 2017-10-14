@@ -2217,60 +2217,6 @@ EOF
         $this->fail();
     }
 
-    public function testAttributeEqualTo()
-    {
-        $object     = new \ClassWithNonPublicAttributes;
-        $constraint = Assert::attributeEqualTo('foo', 1);
-
-        $this->assertTrue($constraint->evaluate($object, '', true));
-        $this->assertEquals('attribute "foo" is equal to 1', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        $constraint = Assert::attributeEqualTo('foo', 2);
-
-        $this->assertFalse($constraint->evaluate($object, '', true));
-
-        try {
-            $constraint->evaluate($object);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that attribute "foo" is equal to 2.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testAttributeEqualTo2()
-    {
-        $object     = new \ClassWithNonPublicAttributes;
-        $constraint = Assert::attributeEqualTo('foo', 2);
-
-        try {
-            $constraint->evaluate($object, 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-custom message\nFailed asserting that attribute "foo" is equal to 2.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testAttributeNotEqualTo()
     {
         $object     = new \ClassWithNonPublicAttributes;
