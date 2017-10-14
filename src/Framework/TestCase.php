@@ -14,6 +14,9 @@ use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
 use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
+use PHPUnit\Framework\Error\Deprecated;
+use PHPUnit\Framework\Error\Notice;
+use PHPUnit\Framework\Error\Warning as ErrorWarning;
 use PHPUnit_Framework_MockObject_Generator;
 use PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
 use PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex;
@@ -787,6 +790,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $enforcesTimeLimit                          = $result->enforcesTimeLimit() ? 'true' : 'false';
             $isStrictAboutTodoAnnotatedTests            = $result->isStrictAboutTodoAnnotatedTests() ? 'true' : 'false';
             $isStrictAboutResourceUsageDuringSmallTests = $result->isStrictAboutResourceUsageDuringSmallTests() ? 'true' : 'false';
+            $convertDeprecatedToExceptions              = Deprecated::$enabled ? 'true' : 'false';
+            $convertNoticeToExceptions                  = Notice::$enabled ? 'true' : 'false';
+            $convertWarningToExceptions                 = ErrorWarning::$enabled ? 'true' : 'false';
 
             if (\defined('PHPUNIT_COMPOSER_INSTALL')) {
                 $composerAutoload = \var_export(PHPUNIT_COMPOSER_INSTALL, true);
@@ -843,7 +849,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     'isStrictAboutTodoAnnotatedTests'            => $isStrictAboutTodoAnnotatedTests,
                     'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
                     'codeCoverageFilter'                         => $codeCoverageFilter,
-                    'configurationFilePath'                      => $configurationFilePath
+                    'configurationFilePath'                      => $configurationFilePath,
+                    'convertDeprecatedToExceptions'              => $convertDeprecatedToExceptions,
+                    'convertNoticeToExceptions'                  => $convertNoticeToExceptions,
+                    'convertWarningToExceptions'                 => $convertWarningToExceptions,
                 ]
             );
 
