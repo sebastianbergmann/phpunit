@@ -1809,56 +1809,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintObjectHasAttribute()
-    {
-        $constraint = Assert::objectHasAttribute('privateAttribute');
-
-        $this->assertTrue($constraint->evaluate(new \ClassWithNonPublicAttributes, '', true));
-        $this->assertFalse($constraint->evaluate(new \stdClass, '', true));
-        $this->assertEquals('has attribute "privateAttribute"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate(new \stdClass);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that object of class "stdClass" has attribute "privateAttribute".
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintObjectHasAttribute2()
-    {
-        $constraint = Assert::objectHasAttribute('privateAttribute');
-
-        try {
-            $constraint->evaluate(new \stdClass, 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-custom message
-Failed asserting that object of class "stdClass" has attribute "privateAttribute".
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintObjectNotHasAttribute()
     {
         $constraint = Assert::logicalNot(
