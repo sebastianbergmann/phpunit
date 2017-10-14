@@ -8,13 +8,14 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework\Constraint;
+namespace PHPUnit\Framework;
 
+use PHPUnit\Framework\Constraint\JsonMatches;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Json;
 
-class JsonMatchesTest extends TestCase
+class JsonMatchesTest extends ConstraintTestCase
 {
     /**
      * @dataProvider evaluateDataprovider
