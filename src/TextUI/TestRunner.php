@@ -104,12 +104,13 @@ class TestRunner extends BaseTestRunner
     /**
      * @param Test|ReflectionClass $test
      * @param array                $arguments
+     * @param bool                 $exit
      *
      * @return TestResult
      *
      * @throws Exception
      */
-    public static function run($test, array $arguments = [])
+    public static function run($test, array $arguments = [], $exit = true)
     {
         if ($test instanceof ReflectionClass) {
             $test = new TestSuite($test);
@@ -120,7 +121,8 @@ class TestRunner extends BaseTestRunner
 
             return $aTestRunner->doRun(
                 $test,
-                $arguments
+                $arguments,
+                $exit
             );
         }
 

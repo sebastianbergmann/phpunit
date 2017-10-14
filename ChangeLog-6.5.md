@@ -4,6 +4,9 @@ All notable changes of the PHPUnit 6.5 release series are documented in this fil
 
 ## [6.5.0] - 2017-12-01
 
+### Added
+
+* Implemented [#2286](https://github.com/sebastianbergmann/phpunit/issues/2286): Optional `$exit` parameter for `PHPUnit\TextUI\TestRunner::run()`
 * Implemented [#2496](https://github.com/sebastianbergmann/phpunit/issues/2496): Allow shallow copy of dependencies
 
 [6.5.0]: https://github.com/sebastianbergmann/phpunit/compare/6.4...6.5.0
