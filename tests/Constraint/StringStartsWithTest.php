@@ -16,21 +16,44 @@ use PHPUnit\Framework\TestFailure;
 
 class StringStartsWithTest extends TestCase
 {
-    public function testConstraintStringStartsWith()
+    public function testConstraintStringStartsWithCorrectValueAndReturnResult()
     {
         $constraint = new StringStartsWith('prefix');
 
-        $this->assertFalse($constraint->evaluate('foo', '', true));
         $this->assertTrue($constraint->evaluate('prefixfoo', '', true));
+    }
+
+    public function testConstraintStringStartsWithNotCorrectValueAndReturnResult()
+    {
+        $constraint = new StringStartsWith('prefix');
+
+        $this->assertFalse($constraint->evaluate('error', '', true));
+    }
+
+    public function testConstraintStringStartsWithToStringMethod()
+    {
+        $constraint = new StringStartsWith('prefix');
+
         $this->assertEquals('starts with "prefix"', $constraint->toString());
+    }
+
+    public function testConstraintStringStartsWitCountMethod()
+    {
+        $constraint = new StringStartsWith('prefix');
+
         $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringStartsWithNotCorrectValueAndExpectation()
+    {
+        $constraint = new StringStartsWith('prefix');
 
         try {
-            $constraint->evaluate('foo');
+            $constraint->evaluate('error');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that 'foo' starts with "prefix".
+Failed asserting that 'error' starts with "prefix".
 
 EOF
                 ,
@@ -43,16 +66,16 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintStringStartsWith2()
+    public function testConstraintStringStartsWithNotCorrectValueExceptionAndCustomMessage()
     {
         $constraint = new StringStartsWith('prefix');
 
         try {
-            $constraint->evaluate('foo', 'custom message');
+            $constraint->evaluate('error', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-custom message\nFailed asserting that 'foo' starts with "prefix".
+custom message\nFailed asserting that 'error' starts with "prefix".
 
 EOF
                 ,
