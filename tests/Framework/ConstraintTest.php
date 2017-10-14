@@ -71,55 +71,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintFileExists()
-    {
-        $constraint = Assert::fileExists();
-
-        $this->assertFalse($constraint->evaluate('foo', '', true));
-        $this->assertEquals('file exists', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate('foo');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that file "foo" exists.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintFileExists2()
-    {
-        $constraint = Assert::fileExists();
-
-        try {
-            $constraint->evaluate('foo', 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-custom message
-Failed asserting that file "foo" exists.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintFileNotExists()
     {
         $file = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'ClassWithNonPublicAttributes.php';
