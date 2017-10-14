@@ -4,12 +4,16 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 
 ## [6.4.2] - 2017-MM-DD
 
+### Fixed
+
 * Fixed [#2237](https://github.com/sebastianbergmann/phpunit/issues/2237): `assertArraySubset()` should provide the diff when the assertion fails
 * Fixed [#2688](https://github.com/sebastianbergmann/phpunit/issues/2688): `assertNotContains()` interferes with actual string
 * Fixed [#2731](https://github.com/sebastianbergmann/phpunit/issues/2731): Empty exception message cannot be expected
 * Fixed [#2778](https://github.com/sebastianbergmann/phpunit/issues/2778): `assertContains()` does not handle empty strings in strings correctly
 
 ## [6.4.1] - 2017-10-07
+
+### Fixed
 
 * Fixed [#2791](https://github.com/sebastianbergmann/phpunit/issues/2791): Process Isolation does not work with PHPUnit PHAR
 * Fixed [#2792](https://github.com/sebastianbergmann/phpunit/issues/2792): `get_resource_type()` expects parameter 1 to be resource, string given
