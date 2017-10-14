@@ -71,32 +71,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintDirectoryExists()
-    {
-        $constraint = Assert::directoryExists();
-
-        $this->assertFalse($constraint->evaluate('foo', '', true));
-        $this->assertEquals('directory exists', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate('foo');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that directory "foo" exists.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintFileExists()
     {
         $constraint = Assert::fileExists();
