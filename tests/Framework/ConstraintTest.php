@@ -2017,60 +2017,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintStringMatches()
-    {
-        $constraint = Assert::matches('*%c*');
-        $this->assertFalse($constraint->evaluate('**', '', true));
-        $this->assertTrue($constraint->evaluate('***', '', true));
-        $this->assertEquals('matches PCRE pattern "/^\*.\*$/s"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-    }
-
-    public function testConstraintStringMatches2()
-    {
-        $constraint = Assert::matches('*%s*');
-        $this->assertFalse($constraint->evaluate('**', '', true));
-        $this->assertTrue($constraint->evaluate('***', '', true));
-        $this->assertEquals('matches PCRE pattern "/^\*[^\r\n]+\*$/s"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-    }
-
-    public function testConstraintStringMatches3()
-    {
-        $constraint = Assert::matches('*%i*');
-        $this->assertFalse($constraint->evaluate('**', '', true));
-        $this->assertTrue($constraint->evaluate('*0*', '', true));
-        $this->assertEquals('matches PCRE pattern "/^\*[+-]?\d+\*$/s"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-    }
-
-    public function testConstraintStringMatches4()
-    {
-        $constraint = Assert::matches('*%d*');
-        $this->assertFalse($constraint->evaluate('**', '', true));
-        $this->assertTrue($constraint->evaluate('*0*', '', true));
-        $this->assertEquals('matches PCRE pattern "/^\*\d+\*$/s"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-    }
-
-    public function testConstraintStringMatches5()
-    {
-        $constraint = Assert::matches('*%x*');
-        $this->assertFalse($constraint->evaluate('**', '', true));
-        $this->assertTrue($constraint->evaluate('*0f0f0f*', '', true));
-        $this->assertEquals('matches PCRE pattern "/^\*[0-9a-fA-F]+\*$/s"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-    }
-
-    public function testConstraintStringMatches6()
-    {
-        $constraint = Assert::matches('*%f*');
-        $this->assertFalse($constraint->evaluate('**', '', true));
-        $this->assertTrue($constraint->evaluate('*1.0*', '', true));
-        $this->assertEquals('matches PCRE pattern "/^\*[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?\*$/s"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-    }
-
     public function testConstraintStringStartsNotWith()
     {
         $constraint = Assert::logicalNot(
