@@ -10,9 +10,7 @@
 
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\TestCase;
-
-class StringMatchesFormatDescriptionTest extends TestCase
+class StringMatchesFormatDescriptionTest extends ConstraintTestCase
 {
     public function testConstraintStringMatches()
     {

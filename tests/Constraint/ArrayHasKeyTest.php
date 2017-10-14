@@ -11,10 +11,9 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 
-class ArrayHasKeyTest extends TestCase
+class ArrayHasKeyTest extends ConstraintTestCase
 {
     public function testConstraintArrayHasKey()
     {

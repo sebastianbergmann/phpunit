@@ -11,10 +11,9 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 
-class RegularExpressionTest extends TestCase
+class RegularExpressionTest extends ConstraintTestCase
 {
     public function testConstraintRegularExpression()
     {

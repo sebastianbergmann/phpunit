@@ -10,9 +10,7 @@
 
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\TestCase;
-
-class CountTest extends TestCase
+class CountTest extends ConstraintTestCase
 {
     public function testCount()
     {

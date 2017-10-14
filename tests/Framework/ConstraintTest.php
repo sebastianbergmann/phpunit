@@ -10,13 +10,13 @@
 
 namespace PHPUnit\Framework;
 
+use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Constraint\Count;
-use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Util\Filter;
 
-class ConstraintTest extends TestCase
+class ConstraintTest extends ConstraintTestCase
 {
     public function testConstraintArrayNotHasKey()
     {
