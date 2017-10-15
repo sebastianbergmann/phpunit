@@ -3177,6 +3177,62 @@ XML;
         $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "FOO\n");
     }
 
+    public function testAssertAnyWithArray()
+    {
+        $items = ['foo', 'bar', 'baz'];
+
+        $this->assertAny($items, function ($item) {
+            return 'bar' == $item;
+        });
+    }
+
+    public function testAssertAnyWithTraversable()
+    {
+        $items = ['foo', 'bar', 'baz'];
+        $iterator = new \TestIterator($items);
+
+        $this->assertAny($iterator, function ($item) {
+            return 'bar' == $item;
+        });
+    }
+
+    public function testAssertAnyWithInvalidTypeThrowsExceptionForInvalidArgument()
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertAny(new \stdClass(), function ($item) {
+            return true; // should never be called
+        });
+    }
+
+    public function testAssertNoneWithArray()
+    {
+        $items = ['foo', 'bar', 'baz'];
+
+        $this->assertNone($items, function ($item) {
+            return 'qux' == $item;
+        });
+    }
+
+    public function testAssertNoneWithTraversable()
+    {
+        $items = ['foo', 'bar', 'baz'];
+        $iterator = new \TestIterator($items);
+
+        $this->assertNone($iterator, function ($item) {
+            return 'qux' == $item;
+        });
+    }
+
+    public function testAssertNoneWithInvalidTypeThrowsExceptionForInvalidArgument()
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertNone(new \stdClass(), function ($item) {
+            return true; // should never be called
+        });
+    }
+
     /**
      * @return array<string, string[]>
      */
