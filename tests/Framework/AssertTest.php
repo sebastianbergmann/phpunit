@@ -2568,6 +2568,43 @@ XML;
         $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "FOO\n");
     }
 
+    public function testAssertResourceTypeForMemoryStream()
+    {
+        // GIVEN
+        $resource = fopen("php://memory", 'rb');
+
+        // WHEN
+        $this->assertResourceType('stream', $resource);
+
+        fclose($resource);
+    }
+
+    public function testAssertResourceTypeThrowForNotAResource()
+    {
+        // GIVEN
+        $notAResource = 'test';
+
+        // EXPECT
+        $this->expectException(AssertionFailedError::class);
+
+        // WHEN
+        $this->assertResourceType('stream', $notAResource);
+    }
+
+    public function testAssertResourceTypeThrowWhenExpectingOtherType()
+    {
+        // GIVEN
+        $resource = fopen("php://memory", 'rb');
+
+        // EXPECT
+        $this->expectException(AssertionFailedError::class);
+
+        // WHEN
+        $this->assertResourceType('foo', $resource);
+
+        fclose($resource);
+    }
+
     protected function sameValues()
     {
         $object = new \SampleClass(4, 8, 15);

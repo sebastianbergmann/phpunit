@@ -2375,6 +2375,15 @@ abstract class Assert
         static::assertThat($actualJson, new LogicalNot($constraintExpected), $message);
     }
 
+    public static function assertResourceType($expectedType, $actual, $message = '')
+    {
+        static::assertThat(is_resource($actual), new IsTrue(), $message);
+        static::assertEquals($expectedType, get_resource_type($actual), $message);
+    }
+
+    /**
+     * @throws Exception
+     */
     public static function logicalAnd(): LogicalAnd
     {
         $constraints = \func_get_args();
