@@ -205,10 +205,22 @@ class PhptTestCase implements Test, SelfDescribing
                 $this->phpUtil->setArgs($sections['ARGS']);
             }
 
+            if ($result->getCollectCodeCoverageInformation()) {
+                $code = $this->renderForCoverage($code);
+            }
+
             PHP_Timer::start();
 
             $jobResult = $this->phpUtil->runJob($code, $settings);
             $time      = PHP_Timer::stop();
+
+            if ($result->getCollectCodeCoverageInformation()) {
+                $coverage = $this->cleanupForCoverage();
+
+                if ($coverage !== false) {
+                    $result->getCodeCoverage()->append($coverage, $this);
+                }
+            }
 
             try {
                 $this->assertPhptExpectation($sections, $jobResult['stdout']);
@@ -419,6 +431,58 @@ class PhptTestCase implements Test, SelfDescribing
             ],
             $code
         );
+    }
+
+    private function getCoverageFiles()
+    {
+        $baseDir          = dirname($this->filename) . DIRECTORY_SEPARATOR;
+        $basename         = basename($this->filename, 'phpt');
+        $coverageFilename = $baseDir . $basename . 'coverage';
+
+        return [
+            'coverage' => $coverageFilename,
+        ];
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return string
+     */
+    private function renderForCoverage($code)
+    {
+        $files = $this->getCoverageFiles();
+
+        $template = new Text_Template(
+            __DIR__ . '/../Util/PHP/Template/PhptTestCase.tpl'
+        );
+
+        if (defined('PHPUNIT_COMPOSER_INSTALL')) {
+            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
+        } else {
+            $composerAutoload = '\'\'';
+        }
+
+        if (defined('__PHPUNIT_PHAR__')) {
+            $phar = var_export(__PHPUNIT_PHAR__, true);
+        } else {
+            $phar = '\'\'';
+        }
+
+        if (!defined('PHPUNIT_COMPOSER_INSTALL') && !defined('__PHPUNIT_PHAR__')) {
+            $composerAutoload = var_export(__DIR__ . '/../../vendor/autoload.php', true);
+        }
+
+        $template->setVar(
+            [
+                'composerAutoload' => $composerAutoload,
+                'phar'             => $phar,
+                'job'              => $code,
+                'coverageFile'     => $files['coverage']
+            ]
+        );
+
+        return $template->render();
     }
 
     /**
