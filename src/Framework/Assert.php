@@ -14,6 +14,9 @@ use ArrayAccess;
 use Countable;
 use DOMDocument;
 use DOMElement;
+use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\IsResource;
+use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\Constraint\Attribute;
@@ -2377,7 +2380,7 @@ abstract class Assert
 
     public static function assertResourceType($expectedType, $actual, $message = '')
     {
-        static::assertThat(is_resource($actual), new IsTrue(), $message);
+        static::assertThat($actual, new IsResource(), $message);
         static::assertEquals($expectedType, get_resource_type($actual), $message);
     }
 
