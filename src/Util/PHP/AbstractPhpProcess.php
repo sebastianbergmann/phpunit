@@ -264,7 +264,7 @@ abstract class AbstractPhpProcess
         $buffer = '';
 
         foreach ($settings as $setting) {
-            $buffer .= ' -d ' . $setting;
+            $buffer .= ' -d ' . \escapeshellarg($setting);
         }
 
         return $buffer;

@@ -59,7 +59,7 @@ class AbstractPhpProcessTest extends TestCase
             'display_errors=1',
         ];
 
-        $expectedCommandFormat  = '%s -d allow_url_fopen=1 -d auto_append_file= -d display_errors=1';
+        $expectedCommandFormat  = "%s -d 'allow_url_fopen=1' -d 'auto_append_file=' -d 'display_errors=1'";
         $actualCommand          = $this->phpProcess->getCommand($settings);
 
         $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
