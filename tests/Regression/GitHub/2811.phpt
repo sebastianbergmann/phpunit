@@ -17,4 +17,4 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Time: %s, Memory: %s
 
-OK (1 test, 2 assertions)
+OK (1 test, 1 assertion)

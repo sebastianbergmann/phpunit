@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 6.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.4.3] - 2017-MM-DD
+
+### Fixed
+
+* Fixed [#2811](https://github.com/sebastianbergmann/phpunit/issues/2811): `expectExceptionMessage()` does not work without `expectException()`
+
 ## [6.4.2] - 2017-10-15
 
 ### Fixed
@@ -38,6 +44,7 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 
 * Fixed [#2750](https://github.com/sebastianbergmann/phpunit/issues/2750): Useless call to `array_map()`
 
+[6.4.3]: https://github.com/sebastianbergmann/phpunit/compare/6.4.2...6.4.3
 [6.4.2]: https://github.com/sebastianbergmann/phpunit/compare/6.4.1...6.4.2
 [6.4.1]: https://github.com/sebastianbergmann/phpunit/compare/6.4.0...6.4.1
 [6.4.0]: https://github.com/sebastianbergmann/phpunit/compare/6.3...6.4.0
