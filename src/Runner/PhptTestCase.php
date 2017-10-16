@@ -19,6 +19,7 @@ use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
+use Text_Template;
 use Throwable;
 
 /**
@@ -152,15 +153,13 @@ class PhptTestCase implements Test, SelfDescribing
             $result = new TestResult;
         }
 
-        $skip     = false;
         $xfail    = false;
-        $time     = 0;
-        $settings = $this->settings;
+        $settings = $this->parseIniSection($this->settings);
 
         $result->startTest($this);
 
         if (isset($sections['INI'])) {
-            $settings = \array_merge($settings, $this->parseIniSection($sections['INI']));
+            $settings = $this->parseIniSection($sections['INI'], $settings);
         }
 
         if (isset($sections['ENV'])) {
@@ -168,103 +167,110 @@ class PhptTestCase implements Test, SelfDescribing
             $this->phpUtil->setEnv($env);
         }
 
-        // Redirects STDERR to STDOUT
         $this->phpUtil->setUseStderrRedirection(true);
 
         if ($result->enforcesTimeLimit()) {
             $this->phpUtil->setTimeout($result->getTimeoutForLargeTests());
         }
 
-        if (isset($sections['SKIPIF'])) {
-            $skipif    = $this->render($sections['SKIPIF']);
-            $jobResult = $this->phpUtil->runJob($skipif, $settings);
+        $skip = $this->runSkip($sections, $result, $settings);
 
-            if (!\strncasecmp('skip', \ltrim($jobResult['stdout']), 4)) {
-                if (\preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $message)) {
-                    $message = \substr($message[1], 2);
-                } else {
-                    $message = '';
-                }
-
-                $result->addFailure($this, new SkippedTestError($message), 0);
-
-                $skip = true;
-            }
+        if ($skip) {
+            return $result;
         }
 
         if (isset($sections['XFAIL'])) {
             $xfail = \trim($sections['XFAIL']);
         }
 
-        if (!$skip) {
-            if (isset($sections['STDIN'])) {
-                $this->phpUtil->setStdin($sections['STDIN']);
-            }
-
-            if (isset($sections['ARGS'])) {
-                $this->phpUtil->setArgs($sections['ARGS']);
-            }
-
-            if ($result->getCollectCodeCoverageInformation()) {
-                $code = $this->renderForCoverage($code);
-            }
-
-            PHP_Timer::start();
-
-            $jobResult = $this->phpUtil->runJob($code, $settings);
-            $time      = PHP_Timer::stop();
-
-            if ($result->getCollectCodeCoverageInformation()) {
-                $coverage = $this->cleanupForCoverage();
-
-                if ($coverage !== false) {
-                    $result->getCodeCoverage()->append($coverage, $this);
-                }
-            }
-
-            try {
-                $this->assertPhptExpectation($sections, $jobResult['stdout']);
-            } catch (AssertionFailedError $e) {
-                if ($xfail !== false) {
-                    $result->addFailure(
-                        $this,
-                        new IncompleteTestError(
-                            $xfail,
-                            0,
-                            $e
-                        ),
-                        $time
-                    );
-                } else {
-                    $result->addFailure($this, $e, $time);
-                }
-            } catch (Throwable $t) {
-                $result->addError($this, $t, $time);
-            }
-
-            if ($result->allCompletelyImplemented() && $xfail !== false) {
-                $result->addFailure(
-                    $this,
-                    new IncompleteTestError(
-                        'XFAIL section but test passes'
-                    ),
-                    $time
-                );
-            }
-
-            $this->phpUtil->setStdin('');
-            $this->phpUtil->setArgs('');
-
-            if (isset($sections['CLEAN'])) {
-                $cleanCode = $this->render($sections['CLEAN']);
-
-                $this->phpUtil->runJob($cleanCode, $this->settings);
-            }
+        if (isset($sections['STDIN'])) {
+            $this->phpUtil->setStdin($sections['STDIN']);
         }
+
+        if (isset($sections['ARGS'])) {
+            $this->phpUtil->setArgs($sections['ARGS']);
+        }
+
+        if ($result->getCollectCodeCoverageInformation()) {
+            $this->renderForCoverage($settings);
+        }
+
+        PHP_Timer::start();
+
+        $jobResult = $this->phpUtil->runJob($code, $this->stringifyIni($settings));
+        $time      = PHP_Timer::stop();
+
+        if ($result->getCollectCodeCoverageInformation() && ($coverage = $this->cleanupForCoverage())) {
+            $result->getCodeCoverage()->append($coverage, $this);
+        }
+
+        try {
+            $this->assertPhptExpectation($sections, $jobResult['stdout']);
+        } catch (AssertionFailedError $e) {
+            $failure = $e;
+            if ($xfail !== false) {
+                $failure = new IncompleteTestError($xfail, 0, $e);
+            }
+            $result->addFailure($this, $failure, $time);
+        } catch (Throwable $t) {
+            $result->addError($this, $t, $time);
+        }
+
+        if ($result->allCompletelyImplemented() && $xfail !== false) {
+            $result->addFailure($this, new IncompleteTestError('XFAIL section but test passes'), $time);
+        }
+
+        $this->runClean($sections);
 
         $result->endTest($this, $time);
 
         return $result;
+    }
+
+    /**
+     * @param array<string, string> $sections
+     * @param TestResult            $result
+     * @param array                 $settings
+     *
+     * @return bool
+     */
+    private function runSkip(&$sections, TestResult $result, $settings)
+    {
+        if (!isset($sections['SKIPIF'])) {
+            return false;
+        }
+
+        $skipif    = $this->render($sections['SKIPIF']);
+        $jobResult = $this->phpUtil->runJob($skipif, $this->stringifyIni($settings));
+
+        if (!\strncasecmp('skip', \ltrim($jobResult['stdout']), 4)) {
+            $message = '';
+            if (\preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $skipMatch)) {
+                $message = \substr($skipMatch[1], 2);
+            }
+
+            $result->addFailure($this, new SkippedTestError($message), 0);
+            $result->endTest($this, 0);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array<string, string> $sections
+     */
+    private function runClean(&$sections)
+    {
+        $this->phpUtil->setStdin('');
+        $this->phpUtil->setArgs('');
+
+        if (isset($sections['CLEAN'])) {
+            $cleanCode = $this->render($sections['CLEAN']);
+
+            $this->phpUtil->runJob($cleanCode, $this->settings);
+        }
     }
 
     /**
@@ -296,22 +302,6 @@ class PhptTestCase implements Test, SelfDescribing
     {
         $sections = [];
         $section  = '';
-
-        $allowExternalSections = [
-            'FILE',
-            'EXPECT',
-            'EXPECTF',
-            'EXPECTREGEX'
-        ];
-
-        $requiredSections = [
-            'FILE',
-            [
-                'EXPECT',
-                'EXPECTF',
-                'EXPECTREGEX'
-            ]
-        ];
 
         $unsupportedSections = [
             'REDIRECTTEST',
@@ -348,13 +338,42 @@ class PhptTestCase implements Test, SelfDescribing
             unset($sections['FILEEOF']);
         }
 
+        $this->parseExtenal($sections);
+
+        if (!$this->validate($sections)) {
+            throw new Exception('Invalid PHPT file');
+        }
+
+        foreach ($unsupportedSections as $section) {
+            if (isset($sections[$section])) {
+                throw new Exception(
+                    'PHPUnit does not support this PHPT file'
+                );
+            }
+        }
+
+        return $sections;
+    }
+
+    /**
+     * @param array<string, string> $sections
+     */
+    private function parseExtenal(&$sections)
+    {
+        $allowSections = [
+            'FILE',
+            'EXPECT',
+            'EXPECTF',
+            'EXPECTREGEX'
+        ];
         $testDirectory = \dirname($this->filename) . DIRECTORY_SEPARATOR;
 
-        foreach ($allowExternalSections as $section) {
+        foreach ($allowSections as $section) {
             if (isset($sections[$section . '_EXTERNAL'])) {
                 $externalFilename = \trim($sections[$section . '_EXTERNAL']);
 
-                if (!\is_file($testDirectory . $externalFilename) || !\is_readable($testDirectory . $externalFilename)) {
+                if (!\is_file($testDirectory . $externalFilename) ||
+                    !\is_readable($testDirectory . $externalFilename)) {
                     throw new Exception(
                         \sprintf(
                             'Could not load --%s-- %s for PHPT file',
@@ -369,8 +388,23 @@ class PhptTestCase implements Test, SelfDescribing
                 unset($sections[$section . '_EXTERNAL']);
             }
         }
+    }
 
-        $isValid = true;
+    /**
+     * @param array<string, string> $sections
+     *
+     * @return bool
+     */
+    private function validate(&$sections)
+    {
+        $requiredSections = [
+            'FILE',
+            [
+                'EXPECT',
+                'EXPECTF',
+                'EXPECTREGEX'
+            ]
+        ];
 
         foreach ($requiredSections as $section) {
             if (\is_array($section)) {
@@ -385,32 +419,18 @@ class PhptTestCase implements Test, SelfDescribing
                 }
 
                 if (!$foundSection) {
-                    $isValid = false;
-
-                    break;
+                    return false;
                 }
-            } else {
-                if (!isset($sections[$section])) {
-                    $isValid = false;
 
-                    break;
-                }
+                continue;
+            }
+
+            if (!isset($sections[$section])) {
+                return false;
             }
         }
 
-        if (!$isValid) {
-            throw new Exception('Invalid PHPT file');
-        }
-
-        foreach ($unsupportedSections as $section) {
-            if (isset($sections[$section])) {
-                throw new Exception(
-                    'PHPUnit does not support this PHPT file'
-                );
-            }
-        }
-
-        return $sections;
+        return true;
     }
 
     /**
@@ -433,23 +453,26 @@ class PhptTestCase implements Test, SelfDescribing
         );
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getCoverageFiles()
     {
-        $baseDir          = dirname($this->filename) . DIRECTORY_SEPARATOR;
-        $basename         = basename($this->filename, 'phpt');
-        $coverageFilename = $baseDir . $basename . 'coverage';
+        $baseDir          = \dirname($this->filename) . DIRECTORY_SEPARATOR;
+        $basename         = \basename($this->filename, 'phpt');
 
         return [
-            'coverage' => $coverageFilename,
+            'coverage' => $baseDir . $basename . 'coverage',
+            'job'      => $baseDir . $basename . 'php'
         ];
     }
 
     /**
-     * @param string $code
+     * @param array $settings
      *
      * @return string
      */
-    private function renderForCoverage($code)
+    private function renderForCoverage(&$settings)
     {
         $files = $this->getCoverageFiles();
 
@@ -457,32 +480,38 @@ class PhptTestCase implements Test, SelfDescribing
             __DIR__ . '/../Util/PHP/Template/PhptTestCase.tpl'
         );
 
-        if (defined('PHPUNIT_COMPOSER_INSTALL')) {
-            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
-        } else {
-            $composerAutoload = '\'\'';
+        $composerAutoload = '\'\'';
+        if (\defined('PHPUNIT_COMPOSER_INSTALL') && !\defined('PHPUNIT_TESTSUITE')) {
+            $composerAutoload = \var_export(PHPUNIT_COMPOSER_INSTALL, true);
         }
 
-        if (defined('__PHPUNIT_PHAR__')) {
-            $phar = var_export(__PHPUNIT_PHAR__, true);
-        } else {
-            $phar = '\'\'';
+        $phar = '\'\'';
+        if (\defined('__PHPUNIT_PHAR__')) {
+            $phar = \var_export(__PHPUNIT_PHAR__, true);
         }
 
-        if (!defined('PHPUNIT_COMPOSER_INSTALL') && !defined('__PHPUNIT_PHAR__')) {
-            $composerAutoload = var_export(__DIR__ . '/../../vendor/autoload.php', true);
+        $globals = '';
+        if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
+            $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . \var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
         }
 
         $template->setVar(
             [
                 'composerAutoload' => $composerAutoload,
                 'phar'             => $phar,
-                'job'              => $code,
-                'coverageFile'     => $files['coverage']
+                'globals'          => $globals,
+                'job'              => $files['job'],
+                'coverageFile'     => $files['coverage'],
+                'autoPrependFile'  => \var_export(
+                    !empty($settings['auto_prepend_file']) ? $settings['auto_prepend_file'] : false,
+                    true
+                )
             ]
         );
 
-        return $template->render();
+        \file_put_contents($files['job'], $template->render());
+
+        $settings['auto_prepend_file'] = $files['job'];
     }
 
     /**
@@ -491,25 +520,74 @@ class PhptTestCase implements Test, SelfDescribing
     private function cleanupForCoverage()
     {
         $files    = $this->getCoverageFiles();
-        $coverage = @unserialize(file_get_contents($files['coverage']));
+        $coverage = @\unserialize(\file_get_contents($files['coverage']));
 
         foreach ($files as $file) {
-            @unlink($file);
+            @\unlink($file);
         }
 
         return $coverage;
     }
 
     /**
-     * Parse --INI-- section key value pairs and return as array.
-     *
-     * @param string
+     * @param array $ini
      *
      * @return array
      */
-    protected function parseIniSection($content)
+    private function stringifyIni($ini)
     {
-        return \preg_split('/\n|\r/', $content, -1, PREG_SPLIT_NO_EMPTY);
+        $settings = [];
+
+        foreach ($ini as $key => $value) {
+            if (\is_array($value)) {
+                foreach ($value as $val) {
+                    $settings[] = $key . '=' . $val;
+                }
+
+                continue;
+            }
+
+            $settings[] = $key . '=' . $value;
+        }
+
+        return $settings;
+    }
+
+    /**
+     * Parse --INI-- section key value pairs and return as array.
+     *
+     * @param string|array
+     *
+     * @return array
+     */
+    protected function parseIniSection($content, $ini = [])
+    {
+        if (\is_string($content)) {
+            $content = \explode("\n", \trim($content));
+        }
+
+        foreach ($content as $setting) {
+            if (\strpos($setting, '=') === false) {
+                continue;
+            }
+
+            $setting = \explode('=', $setting, 2);
+            $name    = \trim($setting[0]);
+            $value   = \trim($setting[1]);
+
+            if ($name === 'extension' || $name === 'zend_extension') {
+                if (!isset($ini[$name])) {
+                    $ini[$name] = [];
+                }
+
+                $ini[$name][] = $value;
+                continue;
+            }
+
+            $ini[$name] = $value;
+        }
+
+        return $ini;
     }
 
     /**
