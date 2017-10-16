@@ -1069,33 +1069,15 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         try {
             $testResult = $method->invokeArgs($this, $testArguments);
-        } catch (Throwable $_e) {
-            $e = $_e;
+        } catch (Throwable $t) {
+            $exception = $t;
         }
 
-        if (isset($e)) {
-            $checkException = false;
-
-            if (!($e instanceof SkippedTestError) && \is_string($this->expectedException)) {
-                $checkException = true;
-
-                if ($e instanceof Exception) {
-                    $checkException = false;
-                }
-
-                $reflector = new ReflectionClass($this->expectedException);
-
-                if ($this->expectedException === 'PHPUnit\Framework\Exception' ||
-                    $this->expectedException === '\PHPUnit\Framework\Exception' ||
-                    $reflector->isSubclassOf('PHPUnit\Framework\Exception')) {
-                    $checkException = true;
-                }
-            }
-
-            if ($checkException) {
+        if (isset($exception)) {
+            if ($this->checkExceptionExpectations($exception)) {
                 if ($this->expectedException !== null) {
                     $this->assertThat(
-                        $e,
+                        $exception,
                         new ExceptionConstraint(
                             $this->expectedException
                         )
@@ -1104,7 +1086,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
                 if ($this->expectedExceptionMessage !== null) {
                     $this->assertThat(
-                        $e,
+                        $exception,
                         new ExceptionMessage(
                             $this->expectedExceptionMessage
                         )
@@ -1113,7 +1095,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
                 if ($this->expectedExceptionMessageRegExp !== null) {
                     $this->assertThat(
-                        $e,
+                        $exception,
                         new ExceptionMessageRegularExpression(
                             $this->expectedExceptionMessageRegExp
                         )
@@ -1122,7 +1104,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
                 if ($this->expectedExceptionCode !== null) {
                     $this->assertThat(
-                        $e,
+                        $exception,
                         new ExceptionCode(
                             $this->expectedExceptionCode
                         )
@@ -1132,7 +1114,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 return;
             }
 
-            throw $e;
+            throw $exception;
         }
 
         if ($this->expectedException !== null) {
@@ -2508,5 +2490,30 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         $this->locale = [];
+    }
+
+    private function checkExceptionExpectations(Throwable $throwable): bool
+    {
+        $result = false;
+
+        if ($this->expectedException !== null || $this->expectedExceptionCode !== null || $this->expectedExceptionMessage !== null || $this->expectedExceptionMessageRegExp !== null) {
+            $result = true;
+        }
+
+        if ($throwable instanceof Exception) {
+            $result = false;
+        }
+
+        if (\is_string($this->expectedException)) {
+            $reflector = new ReflectionClass($this->expectedException);
+
+            if ($this->expectedException === 'PHPUnit\Framework\Exception' ||
+                $this->expectedException === '\PHPUnit\Framework\Exception' ||
+                $reflector->isSubclassOf('PHPUnit\Framework\Exception')) {
+                $result = true;
+            }
+        }
+
+        return $result;
     }
 }
