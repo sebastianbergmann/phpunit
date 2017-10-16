@@ -9,14 +9,16 @@ if (!extension_loaded('xdebug')) {
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--colors=never';
-$_SERVER['argv'][3] = '--coverage-text=php://stdout';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/phpt-for-coverage.phpt';
-$_SERVER['argv'][5] = '--whitelist';
-$_SERVER['argv'][6] = __DIR__ . '/../_files/CoveredClass.php';
+$_SERVER['argv'][2] = '--bootstrap';
+$_SERVER['argv'][3] = __DIR__ . '/../bootstrap.php';
+$_SERVER['argv'][4] = '--colors=never';
+$_SERVER['argv'][5] = '--coverage-text=php://stdout';
+$_SERVER['argv'][6] = __DIR__ . '/../_files/phpt-for-coverage.phpt';
+$_SERVER['argv'][7] = '--whitelist';
+$_SERVER['argv'][8] = __DIR__ . '/../_files/CoveredClass.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit_TextUI_Command::main();
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

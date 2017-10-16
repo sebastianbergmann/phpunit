@@ -52,6 +52,11 @@ class GlobalState
         for ($i = \count($files) - 1; $i > 0; $i--) {
             $file = $files[$i];
 
+            if (!empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST']) &&
+                \in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'])) {
+                continue;
+            }
+
             if ($prefix !== false && \strpos($file, $prefix) === 0) {
                 continue;
             }
