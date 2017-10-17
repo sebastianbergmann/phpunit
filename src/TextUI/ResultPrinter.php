@@ -532,7 +532,7 @@ class ResultPrinter extends Printer implements TestListener
         if ($this->debug) {
             $this->write(
                 \sprintf(
-                    "\nStarting test '%s'.\n",
+                    "Test '%s' started\n",
                     \PHPUnit\Util\Test::describe($test)
                 )
             );
@@ -547,6 +547,15 @@ class ResultPrinter extends Printer implements TestListener
      */
     public function endTest(Test $test, $time)
     {
+        if ($this->debug) {
+            $this->write(
+                \sprintf(
+                    "Test '%s' ended\n",
+                    \PHPUnit\Util\Test::describe($test)
+                )
+            );
+        }
+
         if (!$this->lastTestFailed) {
             $this->writeProgress('.');
         }
@@ -571,6 +580,10 @@ class ResultPrinter extends Printer implements TestListener
      */
     protected function writeProgress($progress)
     {
+        if ($this->debug) {
+            return;
+        }
+
         $this->write($progress);
         $this->column++;
         $this->numTestsRun++;

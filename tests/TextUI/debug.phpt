@@ -12,13 +12,13 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Test 'BankAccountTest::testBalanceIsInitiallyZero' started
+Test 'BankAccountTest::testBalanceIsInitiallyZero' ended
+Test 'BankAccountTest::testBalanceCannotBecomeNegative' started
+Test 'BankAccountTest::testBalanceCannotBecomeNegative' ended
+Test 'BankAccountTest::testBalanceCannotBecomeNegative2' started
+Test 'BankAccountTest::testBalanceCannotBecomeNegative2' ended
 
-Starting test 'BankAccountTest::testBalanceIsInitiallyZero'.
-.
-Starting test 'BankAccountTest::testBalanceCannotBecomeNegative'.
-.
-Starting test 'BankAccountTest::testBalanceCannotBecomeNegative2'.
-.                                                                 3 / 3 (100%)
 
 Time: %s, Memory: %s
 

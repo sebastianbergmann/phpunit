@@ -17,10 +17,11 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Test 'Issue322Test::testOne' started
+Test 'Issue322Test::testOne' ended
 
-Starting test 'Issue322Test::testOne'.
-.                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
 OK (1 test, 1 assertion)
+
