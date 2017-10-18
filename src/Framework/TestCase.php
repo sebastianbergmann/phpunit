@@ -2128,7 +2128,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Performs assertions shared by all tests of a test case.
      *
-     * This method is called before the execution of a test ends
+     * This method is called after the execution of a test ends
      * and before tearDown() is called.
      */
     protected function assertPostConditions()
