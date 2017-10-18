@@ -27,11 +27,9 @@ There were 2 errors:
 
 1) Issue2591_SeparateFunctionNoPreserveTest::testChangedGlobalString
 PHPUnit\Framework\Exception: PHP Fatal error:  Class 'PHPUnit\Framework\TestCase' not found %s
-Fatal error: Class 'PHPUnit\Framework\TestCase' not found %s
 
 2) Issue2591_SeparateFunctionNoPreserveTest::testGlobalString
 PHPUnit\Framework\Exception: PHP Fatal error:  Class 'PHPUnit\Framework\TestCase' not found %s
-Fatal error: Class 'PHPUnit\Framework\TestCase' not found %s
 
 ERRORS!
 Tests: 2, Assertions: 0, Errors: 2.
