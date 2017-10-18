@@ -14,8 +14,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Test 'DataProviderDebugTest::testProvider with data set #0 (null, true, 1, 1.0)' started
 Test 'DataProviderDebugTest::testProvider with data set #0 (null, true, 1, 1.0)' ended
-Test 'DataProviderDebugTest::testProvider with data set #1 (1.2, resource(46) of type (stream), '1')' started
-Test 'DataProviderDebugTest::testProvider with data set #1 (1.2, resource(46) of type (stream), '1')' ended
+Test 'DataProviderDebugTest::testProvider with data set #1 (1.2, resource(%s) of type (stream), '1')' started
+Test 'DataProviderDebugTest::testProvider with data set #1 (1.2, resource(%s) of type (stream), '1')' ended
 Test 'DataProviderDebugTest::testProvider with data set #2 (array(array(1, 2, 3), array(3, 4, 5)))' started
 Test 'DataProviderDebugTest::testProvider with data set #2 (array(array(1, 2, 3), array(3, 4, 5)))' ended
 Test 'DataProviderDebugTest::testProvider with data set #3 ('this\nis\na\nvery\nvery\nvery...\rtext')' started
