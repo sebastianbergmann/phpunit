@@ -50,7 +50,7 @@ class StringEndsWithTest extends ConstraintTestCase
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that 'foo' ends with "suffix".
+Failed asserting that 'error' ends with "suffix".
 
 EOF
                 ,
