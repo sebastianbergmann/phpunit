@@ -15,17 +15,38 @@ use PHPUnit\Framework\TestFailure;
 
 class StringEndsWithTest extends ConstraintTestCase
 {
-    public function testConstraintStringEndsWith()
+    public function testConstraintStringEndsWithCorrectValueAndReturnResult()
+    {
+        $constraint = new StringEndsWith('suffix');
+        $this->assertTrue($constraint->evaluate('foosuffix', '', true));
+    }
+
+    public function testConstraintStringEndsWithNotCorrectValueAndReturnResult()
+    {
+        $constraint = new StringEndsWith('suffix');
+        $this->assertFalse($constraint->evaluate('suffixerror', '', true));
+    }
+
+    public function testConstraintStringEndsWithToStringMethod()
     {
         $constraint = new StringEndsWith('suffix');
 
-        $this->assertFalse($constraint->evaluate('foo', '', true));
-        $this->assertTrue($constraint->evaluate('foosuffix', '', true));
         $this->assertEquals('ends with "suffix"', $constraint->toString());
+    }
+
+    public function testConstraintStringEndsWithCountMethod()
+    {
+        $constraint = new StringEndsWith('suffix');
+
         $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringEndsWithNotCorrectValueAndExpectation()
+    {
+        $constraint = new StringEndsWith('suffix');
 
         try {
-            $constraint->evaluate('foo');
+            $constraint->evaluate('error');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
@@ -42,17 +63,17 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintStringEndsWith2()
+    public function testConstraintStringEndsWithNotCorrectValueExceptionAndCustomMessage()
     {
         $constraint = new StringEndsWith('suffix');
 
         try {
-            $constraint->evaluate('foo', 'custom message');
+            $constraint->evaluate('error', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
 custom message
-Failed asserting that 'foo' ends with "suffix".
+Failed asserting that 'error' ends with "suffix".
 
 EOF
                 ,
