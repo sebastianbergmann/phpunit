@@ -14,16 +14,16 @@ use ArrayAccess;
 use Countable;
 use DOMDocument;
 use DOMElement;
+use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
-use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
-use PHPUnit\Framework\Constraint\Exception\InvalidArgumentException;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
@@ -43,11 +43,9 @@ use PHPUnit\Framework\Constraint\IsType;
 use PHPUnit\Framework\Constraint\IsWritable;
 use PHPUnit\Framework\Constraint\JsonMatches;
 use PHPUnit\Framework\Constraint\LessThan;
-use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\LogicalNot;
-use PHPUnit\Framework\Constraint\LogicalOr;
-use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
+use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\StringContains;
@@ -56,6 +54,8 @@ use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
+use PHPUnit\Framework\Constraint\LogicalXor;
+use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
@@ -84,14 +84,14 @@ abstract class Assert
     public static function assertArrayHasKey($key, $array, $message = '')
     {
         if (!(\is_int($key) || \is_string($key))) {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 1,
                 'integer or string'
             );
         }
 
         if (!(\is_array($array) || $array instanceof ArrayAccess)) {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 2,
                 'array or ArrayAccess'
             );
@@ -113,14 +113,14 @@ abstract class Assert
     public static function assertArraySubset($subset, $array, $strict = false, $message = '')
     {
         if (!(\is_array($subset) || $subset instanceof ArrayAccess)) {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 1,
                 'array or ArrayAccess'
             );
         }
 
         if (!(\is_array($array) || $array instanceof ArrayAccess)) {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 2,
                 'array or ArrayAccess'
             );
@@ -141,14 +141,14 @@ abstract class Assert
     public static function assertArrayNotHasKey($key, $array, $message = '')
     {
         if (!(\is_int($key) || \is_string($key))) {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 1,
                 'integer or string'
             );
         }
 
         if (!(\is_array($array) || $array instanceof ArrayAccess)) {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 2,
                 'array or ArrayAccess'
             );
@@ -182,7 +182,7 @@ abstract class Assert
             );
         } elseif (\is_string($haystack)) {
             if (!\is_string($needle)) {
-                throw InvalidArgumentException::type(
+                throw InvalidArgumentHelper::factory(
                     1,
                     'string'
                 );
@@ -193,7 +193,7 @@ abstract class Assert
                 $ignoreCase
             );
         } else {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 2,
                 'array, traversable or string'
             );
@@ -249,7 +249,7 @@ abstract class Assert
             );
         } elseif (\is_string($haystack)) {
             if (!\is_string($needle)) {
-                throw InvalidArgumentException::type(
+                throw InvalidArgumentHelper::factory(
                     1,
                     'string'
                 );
@@ -262,7 +262,7 @@ abstract class Assert
                 )
             );
         } else {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 2,
                 'array, traversable or string'
             );
@@ -307,7 +307,7 @@ abstract class Assert
     {
         if (!\is_array($haystack) &&
             !(\is_object($haystack) && $haystack instanceof Traversable)) {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 2,
                 'array or traversable'
             );
@@ -338,7 +338,7 @@ abstract class Assert
     {
         if (!\is_array($haystack) &&
             !(\is_object($haystack) && $haystack instanceof Traversable)) {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 2,
                 'array or traversable'
             );
@@ -386,7 +386,7 @@ abstract class Assert
     {
         if (!\is_array($haystack) &&
             !(\is_object($haystack) && $haystack instanceof Traversable)) {
-            throw InvalidArgumentException::type(
+            throw InvalidArgumentHelper::factory(
                 2,
                 'array or traversable'
             );
@@ -439,13 +439,13 @@ abstract class Assert
     public static function assertCount($expectedCount, $haystack, $message = '')
     {
         if (!\is_int($expectedCount)) {
-            throw InvalidArgumentException::type(1, 'integer');
+            throw InvalidArgumentHelper::factory(1, 'integer');
         }
 
         if (!$haystack instanceof Countable &&
             !$haystack instanceof Traversable &&
             !\is_array($haystack)) {
-            throw InvalidArgumentException::type(2, 'countable or traversable');
+            throw InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         static::assertThat(
@@ -483,13 +483,13 @@ abstract class Assert
     public static function assertNotCount($expectedCount, $haystack, $message = '')
     {
         if (!\is_int($expectedCount)) {
-            throw InvalidArgumentException::type(1, 'integer');
+            throw InvalidArgumentHelper::factory(1, 'integer');
         }
 
         if (!$haystack instanceof Countable &&
             !$haystack instanceof Traversable &&
             !\is_array($haystack)) {
-            throw InvalidArgumentException::type(2, 'countable or traversable');
+            throw InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         $constraint = new LogicalNot(
@@ -906,7 +906,7 @@ abstract class Assert
     public static function assertIsReadable($filename, $message = '')
     {
         if (!\is_string($filename)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $constraint = new IsReadable;
@@ -923,7 +923,7 @@ abstract class Assert
     public static function assertNotIsReadable($filename, $message = '')
     {
         if (!\is_string($filename)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $constraint = new LogicalNot(
@@ -942,7 +942,7 @@ abstract class Assert
     public static function assertIsWritable($filename, $message = '')
     {
         if (!\is_string($filename)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $constraint = new IsWritable;
@@ -959,7 +959,7 @@ abstract class Assert
     public static function assertNotIsWritable($filename, $message = '')
     {
         if (!\is_string($filename)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $constraint = new LogicalNot(
@@ -978,7 +978,7 @@ abstract class Assert
     public static function assertDirectoryExists($directory, $message = '')
     {
         if (!\is_string($directory)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $constraint = new DirectoryExists;
@@ -995,7 +995,7 @@ abstract class Assert
     public static function assertDirectoryNotExists($directory, $message = '')
     {
         if (!\is_string($directory)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $constraint = new LogicalNot(
@@ -1062,7 +1062,7 @@ abstract class Assert
     public static function assertFileExists($filename, $message = '')
     {
         if (!\is_string($filename)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $constraint = new FileExists;
@@ -1079,7 +1079,7 @@ abstract class Assert
     public static function assertFileNotExists($filename, $message = '')
     {
         if (!\is_string($filename)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $constraint = new LogicalNot(
@@ -1254,15 +1254,15 @@ abstract class Assert
     public static function assertClassHasAttribute($attributeName, $className, $message = '')
     {
         if (!\is_string($attributeName)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
-            throw InvalidArgumentException::type(1, 'valid attribute name');
+            throw InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
         if (!\is_string($className) || !\class_exists($className)) {
-            throw InvalidArgumentException::type(2, 'class name', $className);
+            throw InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
         $constraint = new ClassHasAttribute(
@@ -1282,15 +1282,15 @@ abstract class Assert
     public static function assertClassNotHasAttribute($attributeName, $className, $message = '')
     {
         if (!\is_string($attributeName)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
-            throw InvalidArgumentException::type(1, 'valid attribute name');
+            throw InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
         if (!\is_string($className) || !\class_exists($className)) {
-            throw InvalidArgumentException::type(2, 'class name', $className);
+            throw InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
         $constraint = new LogicalNot(
@@ -1310,15 +1310,15 @@ abstract class Assert
     public static function assertClassHasStaticAttribute($attributeName, $className, $message = '')
     {
         if (!\is_string($attributeName)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
-            throw InvalidArgumentException::type(1, 'valid attribute name');
+            throw InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
         if (!\is_string($className) || !\class_exists($className)) {
-            throw InvalidArgumentException::type(2, 'class name', $className);
+            throw InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
         $constraint = new ClassHasStaticAttribute(
@@ -1338,15 +1338,15 @@ abstract class Assert
     public static function assertClassNotHasStaticAttribute($attributeName, $className, $message = '')
     {
         if (!\is_string($attributeName)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
-            throw InvalidArgumentException::type(1, 'valid attribute name');
+            throw InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
         if (!\is_string($className) || !\class_exists($className)) {
-            throw InvalidArgumentException::type(2, 'class name', $className);
+            throw InvalidArgumentHelper::factory(2, 'class name', $className);
         }
 
         $constraint = new LogicalNot(
@@ -1368,15 +1368,15 @@ abstract class Assert
     public static function assertObjectHasAttribute($attributeName, $object, $message = '')
     {
         if (!\is_string($attributeName)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
-            throw InvalidArgumentException::type(1, 'valid attribute name');
+            throw InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
         if (!\is_object($object)) {
-            throw InvalidArgumentException::type(2, 'object');
+            throw InvalidArgumentHelper::factory(2, 'object');
         }
 
         $constraint = new ObjectHasAttribute(
@@ -1396,15 +1396,15 @@ abstract class Assert
     public static function assertObjectNotHasAttribute($attributeName, $object, $message = '')
     {
         if (!\is_string($attributeName)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
-            throw InvalidArgumentException::type(1, 'valid attribute name');
+            throw InvalidArgumentHelper::factory(1, 'valid attribute name');
         }
 
         if (!\is_object($object)) {
-            throw InvalidArgumentException::type(2, 'object');
+            throw InvalidArgumentHelper::factory(2, 'object');
         }
 
         $constraint = new LogicalNot(
@@ -1504,7 +1504,7 @@ abstract class Assert
     public static function assertInstanceOf($expected, $actual, $message = '')
     {
         if (!(\is_string($expected) && (\class_exists($expected) || \interface_exists($expected)))) {
-            throw InvalidArgumentException::type(1, 'class or interface name');
+            throw InvalidArgumentHelper::factory(1, 'class or interface name');
         }
 
         $constraint = new IsInstanceOf(
@@ -1541,7 +1541,7 @@ abstract class Assert
     public static function assertNotInstanceOf($expected, $actual, $message = '')
     {
         if (!(\is_string($expected) && (\class_exists($expected) || \interface_exists($expected)))) {
-            throw InvalidArgumentException::type(1, 'class or interface name');
+            throw InvalidArgumentHelper::factory(1, 'class or interface name');
         }
 
         $constraint = new LogicalNot(
@@ -1578,7 +1578,7 @@ abstract class Assert
     public static function assertInternalType($expected, $actual, $message = '')
     {
         if (!\is_string($expected)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $constraint = new IsType(
@@ -1615,7 +1615,7 @@ abstract class Assert
     public static function assertNotInternalType($expected, $actual, $message = '')
     {
         if (!\is_string($expected)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         $constraint = new LogicalNot(
@@ -1652,11 +1652,11 @@ abstract class Assert
     public static function assertRegExp($pattern, $string, $message = '')
     {
         if (!\is_string($pattern)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\is_string($string)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new RegularExpression($pattern);
@@ -1674,11 +1674,11 @@ abstract class Assert
     public static function assertNotRegExp($pattern, $string, $message = '')
     {
         if (!\is_string($pattern)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\is_string($string)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new LogicalNot(
@@ -1701,13 +1701,13 @@ abstract class Assert
         if (!$expected instanceof Countable &&
             !$expected instanceof Traversable &&
             !\is_array($expected)) {
-            throw InvalidArgumentException::type(1, 'countable or traversable');
+            throw InvalidArgumentHelper::factory(1, 'countable or traversable');
         }
 
         if (!$actual instanceof Countable &&
             !$actual instanceof Traversable &&
             !\is_array($actual)) {
-            throw InvalidArgumentException::type(2, 'countable or traversable');
+            throw InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         static::assertThat(
@@ -1730,13 +1730,13 @@ abstract class Assert
         if (!$expected instanceof Countable &&
             !$expected instanceof Traversable &&
             !\is_array($expected)) {
-            throw InvalidArgumentException::type(1, 'countable or traversable');
+            throw InvalidArgumentHelper::factory(1, 'countable or traversable');
         }
 
         if (!$actual instanceof Countable &&
             !$actual instanceof Traversable &&
             !\is_array($actual)) {
-            throw InvalidArgumentException::type(2, 'countable or traversable');
+            throw InvalidArgumentHelper::factory(2, 'countable or traversable');
         }
 
         $constraint = new LogicalNot(
@@ -1756,11 +1756,11 @@ abstract class Assert
     public static function assertStringMatchesFormat($format, $string, $message = '')
     {
         if (!\is_string($format)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\is_string($string)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new StringMatchesFormatDescription($format);
@@ -1778,11 +1778,11 @@ abstract class Assert
     public static function assertStringNotMatchesFormat($format, $string, $message = '')
     {
         if (!\is_string($format)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\is_string($string)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new LogicalNot(
@@ -1804,7 +1804,7 @@ abstract class Assert
         static::assertFileExists($formatFile, $message);
 
         if (!\is_string($string)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new StringMatchesFormatDescription(
@@ -1826,7 +1826,7 @@ abstract class Assert
         static::assertFileExists($formatFile, $message);
 
         if (!\is_string($string)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new LogicalNot(
@@ -1848,11 +1848,11 @@ abstract class Assert
     public static function assertStringStartsWith($prefix, $string, $message = '')
     {
         if (!\is_string($prefix)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\is_string($string)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new StringStartsWith(
@@ -1872,11 +1872,11 @@ abstract class Assert
     public static function assertStringStartsNotWith($prefix, $string, $message = '')
     {
         if (!\is_string($prefix)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\is_string($string)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new LogicalNot(
@@ -1896,11 +1896,11 @@ abstract class Assert
     public static function assertStringEndsWith($suffix, $string, $message = '')
     {
         if (!\is_string($suffix)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\is_string($string)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new StringEndsWith($suffix);
@@ -1918,11 +1918,11 @@ abstract class Assert
     public static function assertStringEndsNotWith($suffix, $string, $message = '')
     {
         if (!\is_string($suffix)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\is_string($string)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         $constraint = new LogicalNot(
@@ -2125,7 +2125,7 @@ abstract class Assert
     public static function assertJson($actualJson, $message = '')
     {
         if (!\is_string($actualJson)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         static::assertThat($actualJson, static::isJson(), $message);
@@ -2733,16 +2733,16 @@ abstract class Assert
     public static function readAttribute($classOrObject, $attributeName)
     {
         if (!\is_string($attributeName)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         if (!\preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
-            throw InvalidArgumentException::type(2, 'valid attribute name');
+            throw InvalidArgumentHelper::factory(2, 'valid attribute name');
         }
 
         if (\is_string($classOrObject)) {
             if (!\class_exists($classOrObject)) {
-                throw InvalidArgumentException::type(
+                throw InvalidArgumentHelper::factory(
                     1,
                     'class name'
                 );
@@ -2761,7 +2761,7 @@ abstract class Assert
             );
         }
 
-        throw InvalidArgumentException::type(
+        throw InvalidArgumentHelper::factory(
             1,
             'class name or object'
         );
@@ -2781,19 +2781,19 @@ abstract class Assert
     public static function getStaticAttribute($className, $attributeName)
     {
         if (!\is_string($className)) {
-            throw InvalidArgumentException::type(1, 'string');
+            throw InvalidArgumentHelper::factory(1, 'string');
         }
 
         if (!\class_exists($className)) {
-            throw InvalidArgumentException::type(1, 'class name');
+            throw InvalidArgumentHelper::factory(1, 'class name');
         }
 
         if (!\is_string($attributeName)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         if (!\preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
-            throw InvalidArgumentException::type(2, 'valid attribute name');
+            throw InvalidArgumentHelper::factory(2, 'valid attribute name');
         }
 
         $class = new ReflectionClass($className);
@@ -2830,15 +2830,15 @@ abstract class Assert
     public static function getObjectAttribute($object, $attributeName)
     {
         if (!\is_object($object)) {
-            throw InvalidArgumentException::type(1, 'object');
+            throw InvalidArgumentHelper::factory(1, 'object');
         }
 
         if (!\is_string($attributeName)) {
-            throw InvalidArgumentException::type(2, 'string');
+            throw InvalidArgumentHelper::factory(2, 'string');
         }
 
         if (!\preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName)) {
-            throw InvalidArgumentException::type(2, 'valid attribute name');
+            throw InvalidArgumentHelper::factory(2, 'valid attribute name');
         }
 
         try {
