@@ -63,11 +63,12 @@ class Json
      */
     private static function recursiveSort(&$json)
     {
-        if (\is_array($json)) {
-            \ksort($json);
-            foreach ($json as $key => &$value) {
-                self::recursiveSort($value);
-            }
+        if (false === \is_array($json)) {
+            return;
+        }
+        \ksort($json);
+        foreach ($json as $key => &$value) {
+            self::recursiveSort($value);
         }
     }
 }
