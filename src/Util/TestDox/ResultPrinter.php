@@ -10,12 +10,12 @@
 namespace PHPUnit\Util\TestDox;
 
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\WarningTestCase;
-use PHPUnit\Framework\Warning;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\TestListener;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestListener;
+use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\Warning;
+use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Util\Printer;
 

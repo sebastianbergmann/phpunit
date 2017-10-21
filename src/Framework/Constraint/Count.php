@@ -10,10 +10,10 @@
 namespace PHPUnit\Framework\Constraint;
 
 use Countable;
+use Generator;
 use Iterator;
 use IteratorAggregate;
 use Traversable;
-use Generator;
 
 class Count extends Constraint
 {
