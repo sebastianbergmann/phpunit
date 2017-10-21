@@ -11,8 +11,8 @@ namespace PHPUnit\Runner;
 
 use File_Iterator_Facade;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
 use ReflectionException;
 

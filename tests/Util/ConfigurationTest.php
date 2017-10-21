@@ -10,8 +10,8 @@
 
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\ResultPrinter;
 
 class ConfigurationTest extends TestCase

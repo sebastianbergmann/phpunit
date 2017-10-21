@@ -10,8 +10,8 @@
 
 namespace PHPUnit\Util\PHP;
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestCase;
 
 class AbstractPhpProcessTest extends TestCase
 {
@@ -59,7 +59,7 @@ class AbstractPhpProcessTest extends TestCase
             'display_errors=1',
         ];
 
-        $expectedCommandFormat  = "%s -d %callow_url_fopen=1%c -d %cauto_append_file=%c -d %cdisplay_errors=1%c";
+        $expectedCommandFormat  = '%s -d %callow_url_fopen=1%c -d %cauto_append_file=%c -d %cdisplay_errors=1%c';
         $actualCommand          = $this->phpProcess->getCommand($settings);
 
         $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);

@@ -13,10 +13,10 @@ namespace PHPUnit\Util\PHP;
 use __PHP_Incomplete_Class;
 use ErrorException;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestFailure;
-use PHPUnit\Framework\Test;
 use PHPUnit\Framework\SyntheticError;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestFailure;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\InvalidArgumentHelper;
 use SebastianBergmann\Environment\Runtime;
 
