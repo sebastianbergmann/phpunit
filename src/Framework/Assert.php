@@ -15,7 +15,7 @@ use Countable;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsResource;
+use PHPUnit\Framework\Constraint\IsResourceType;
 use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\ArraySubset;
@@ -2378,10 +2378,10 @@ abstract class Assert
         static::assertThat($actualJson, new LogicalNot($constraintExpected), $message);
     }
 
-    public static function assertResourceType($expectedType, $actual, $message = '')
+    public static function assertResourceWithType($expectedType, $actual, $message = '')
     {
-        static::assertThat($actual, new IsResource(), $message);
-        static::assertEquals($expectedType, get_resource_type($actual), $message);
+        static::assertThat($actual, new IsType('resource'), $message);
+        static::assertThat($actual, new IsResourceType($expectedType), $message);
     }
 
     /**

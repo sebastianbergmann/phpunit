@@ -10,12 +10,24 @@
 namespace PHPUnit\Framework\Constraint;
 
 /**
- * Constraint that checks if value is resource
+ * Constraint that checks if value is resource type
  *
  * The file path to check is passed as $other in evaluate().
  */
-class IsResource extends Constraint
+class IsResourceType extends Constraint
 {
+    /**
+     * @var string
+     */
+    private $type;
+
+    public function __construct($type)
+    {
+        parent::__construct();
+
+        $this->type = $type;
+    }
+
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
@@ -26,7 +38,7 @@ class IsResource extends Constraint
      */
     protected function matches($other)
     {
-        return \is_resource($other);
+        return $this->type === get_resource_type($other);
     }
 
     /**
@@ -36,6 +48,9 @@ class IsResource extends Constraint
      */
     public function toString()
     {
-        return 'is resource';
+        return \sprintf(
+            'is resource of type "%s"',
+            $this->type
+        );
     }
 }
