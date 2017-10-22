@@ -18,7 +18,11 @@ return PhpCsFixer\Config::create()
                 'align_equals' => true
             ],
             'blank_line_after_namespace' => true,
-            'blank_line_before_return' => true,
+            'blank_line_before_statement' => [
+                'statements' => [
+                    'return',
+                ],
+            ],
             'braces' => true,
             'cast_spaces' => true,
             'concat_space' => ['spacing' => 'one'],
