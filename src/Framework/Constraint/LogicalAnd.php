@@ -26,6 +26,15 @@ class LogicalAnd extends Constraint
      */
     protected $lastConstraint;
 
+    public static function fromConstraints(Constraint ...$constraints): self
+    {
+        $instance = new self();
+
+        $instance->constraints = \array_values($constraints);
+
+        return $instance;
+    }
+
     /**
      * @param Constraint[] $constraints
      *
