@@ -55,12 +55,15 @@ class JsonMatchesErrorMessageProvider
         switch (\strtolower($type)) {
             case 'expected':
                 $prefix = 'Expected value JSON decode error - ';
+
                 break;
             case 'actual':
                 $prefix = 'Actual value JSON decode error - ';
+
                 break;
             default:
                 $prefix = '';
+
                 break;
         }
 

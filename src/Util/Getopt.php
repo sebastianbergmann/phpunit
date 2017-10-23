@@ -46,11 +46,13 @@ class Getopt
 
             if ($arg == '--') {
                 $non_opts = \array_merge($non_opts, \array_slice($args, $i + 1));
+
                 break;
             }
 
             if ($arg[0] != '-' || (\strlen($arg) > 1 && $arg[1] == '-' && !$long_options)) {
                 $non_opts[] = $args[$i];
+
                 continue;
             } elseif (\strlen($arg) > 1 && $arg[1] == '-') {
                 self::parseLongOption(
@@ -89,6 +91,7 @@ class Getopt
             if (\strlen($spec) > 1 && $spec[1] == ':') {
                 if ($i + 1 < $argLen) {
                     $opts[] = [$opt, \substr($arg, $i + 1)];
+
                     break;
                 }
                 if (!(\strlen($spec) > 2 && $spec[2] == ':')) {

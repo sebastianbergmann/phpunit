@@ -31,6 +31,7 @@ class JsonMatchesTest extends TestCase
     public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch($jsonOther, $jsonValue)
     {
         $constraint = new JsonMatches($jsonValue);
+
         try {
             $constraint->evaluate($jsonOther, '', false);
             $this->fail(\sprintf('Expected %s to be thrown.', ExpectationFailedException::class));

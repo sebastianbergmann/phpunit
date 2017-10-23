@@ -283,10 +283,12 @@ class Command
             switch ($option[0]) {
                 case '--colors':
                     $this->arguments['colors'] = $option[1] ?: ResultPrinter::COLOR_AUTO;
+
                     break;
 
                 case '--bootstrap':
                     $this->arguments['bootstrap'] = $option[1];
+
                     break;
 
                 case '--columns':
@@ -295,27 +297,33 @@ class Command
                     } elseif ($option[1] === 'max') {
                         $this->arguments['columns'] = 'max';
                     }
+
                     break;
 
                 case 'c':
                 case '--configuration':
                     $this->arguments['configuration'] = $option[1];
+
                     break;
 
                 case '--coverage-clover':
                     $this->arguments['coverageClover'] = $option[1];
+
                     break;
 
                 case '--coverage-crap4j':
                     $this->arguments['coverageCrap4J'] = $option[1];
+
                     break;
 
                 case '--coverage-html':
                     $this->arguments['coverageHtml'] = $option[1];
+
                     break;
 
                 case '--coverage-php':
                     $this->arguments['coveragePHP'] = $option[1];
+
                     break;
 
                 case '--coverage-text':
@@ -326,10 +334,12 @@ class Command
                     $this->arguments['coverageText']                   = $option[1];
                     $this->arguments['coverageTextShowUncoveredFiles'] = false;
                     $this->arguments['coverageTextShowOnlySummary']    = false;
+
                     break;
 
                 case '--coverage-xml':
                     $this->arguments['coverageXml'] = $option[1];
+
                     break;
 
                 case 'd':
@@ -342,24 +352,29 @@ class Command
                             \ini_set($ini[0], true);
                         }
                     }
+
                     break;
 
                 case '--debug':
                     $this->arguments['debug'] = true;
+
                     break;
 
                 case 'h':
                 case '--help':
                     $this->showHelp();
                     exit(TestRunner::SUCCESS_EXIT);
+
                     break;
 
                 case '--filter':
                     $this->arguments['filter'] = $option[1];
+
                     break;
 
                 case '--testsuite':
                     $this->arguments['testsuite'] = $option[1];
+
                     break;
 
                 case '--generate-configuration':
@@ -403,10 +418,12 @@ class Command
                     print PHP_EOL . 'Generated phpunit.xml in ' . \getcwd() . PHP_EOL;
 
                     exit(TestRunner::SUCCESS_EXIT);
+
                     break;
 
                 case '--group':
                     $this->arguments['groups'] = \explode(',', $option[1]);
+
                     break;
 
                 case '--exclude-group':
@@ -414,6 +431,7 @@ class Command
                         ',',
                         $option[1]
                     );
+
                     break;
 
                 case '--test-suffix':
@@ -421,94 +439,117 @@ class Command
                         ',',
                         $option[1]
                     );
+
                     break;
 
                 case '--include-path':
                     $includePath = $option[1];
+
                     break;
 
                 case '--list-groups':
                     $this->arguments['listGroups'] = true;
+
                     break;
 
                 case '--list-suites':
                     $this->arguments['listSuites'] = true;
+
                     break;
 
                 case '--list-tests':
                     $this->arguments['listTests'] = true;
+
                     break;
 
                 case '--list-tests-xml':
                     $this->arguments['listTestsXml'] = $option[1];
+
                     break;
 
                 case '--printer':
                     $this->arguments['printer'] = $option[1];
+
                     break;
 
                 case '--loader':
                     $this->arguments['loader'] = $option[1];
+
                     break;
 
                 case '--log-junit':
                     $this->arguments['junitLogfile'] = $option[1];
+
                     break;
 
                 case '--log-teamcity':
                     $this->arguments['teamcityLogfile'] = $option[1];
+
                     break;
 
                 case '--process-isolation':
                     $this->arguments['processIsolation'] = true;
+
                     break;
 
                 case '--repeat':
                     $this->arguments['repeat'] = (int) $option[1];
+
                     break;
 
                 case '--stderr':
                     $this->arguments['stderr'] = true;
+
                     break;
 
                 case '--stop-on-error':
                     $this->arguments['stopOnError'] = true;
+
                     break;
 
                 case '--stop-on-failure':
                     $this->arguments['stopOnFailure'] = true;
+
                     break;
 
                 case '--stop-on-warning':
                     $this->arguments['stopOnWarning'] = true;
+
                     break;
 
                 case '--stop-on-incomplete':
                     $this->arguments['stopOnIncomplete'] = true;
+
                     break;
 
                 case '--stop-on-risky':
                     $this->arguments['stopOnRisky'] = true;
+
                     break;
 
                 case '--stop-on-skipped':
                     $this->arguments['stopOnSkipped'] = true;
+
                     break;
 
                 case '--fail-on-warning':
                     $this->arguments['failOnWarning'] = true;
+
                     break;
 
                 case '--fail-on-risky':
                     $this->arguments['failOnRisky'] = true;
+
                     break;
 
                 case '--teamcity':
                     $this->arguments['printer'] = TeamCity::class;
+
                     break;
 
                 case '--testdox':
                     $this->arguments['printer'] = TextResultPrinter::class;
+
                     break;
 
                 case '--testdox-group':
@@ -516,6 +557,7 @@ class Command
                         ',',
                         $option[1]
                     );
+
                     break;
 
                 case '--testdox-exclude-group':
@@ -523,47 +565,58 @@ class Command
                         ',',
                         $option[1]
                     );
+
                     break;
 
                 case '--testdox-html':
                     $this->arguments['testdoxHTMLFile'] = $option[1];
+
                     break;
 
                 case '--testdox-text':
                     $this->arguments['testdoxTextFile'] = $option[1];
+
                     break;
 
                 case '--testdox-xml':
                     $this->arguments['testdoxXMLFile'] = $option[1];
+
                     break;
 
                 case '--no-configuration':
                     $this->arguments['useDefaultConfiguration'] = false;
+
                     break;
 
                 case '--no-extensions':
                     $this->arguments['noExtensions'] = true;
+
                     break;
 
                 case '--no-coverage':
                     $this->arguments['noCoverage'] = true;
+
                     break;
 
                 case '--no-logging':
                     $this->arguments['noLogging'] = true;
+
                     break;
 
                 case '--globals-backup':
                     $this->arguments['backupGlobals'] = true;
+
                     break;
 
                 case '--static-backup':
                     $this->arguments['backupStaticAttributes'] = true;
+
                     break;
 
                 case 'v':
                 case '--verbose':
                     $this->arguments['verbose'] = true;
+
                     break;
 
                 case '--atleast-version':
@@ -572,55 +625,68 @@ class Command
                     }
 
                     exit(TestRunner::FAILURE_EXIT);
+
                     break;
 
                 case '--version':
                     $this->printVersionString();
                     exit(TestRunner::SUCCESS_EXIT);
+
                     break;
 
                 case '--dont-report-useless-tests':
                     $this->arguments['reportUselessTests'] = false;
+
                     break;
 
                 case '--strict-coverage':
                     $this->arguments['strictCoverage'] = true;
+
                     break;
 
                 case '--disable-coverage-ignore':
                     $this->arguments['disableCodeCoverageIgnore'] = true;
+
                     break;
 
                 case '--strict-global-state':
                     $this->arguments['beStrictAboutChangesToGlobalState'] = true;
+
                     break;
 
                 case '--disallow-test-output':
                     $this->arguments['disallowTestOutput'] = true;
+
                     break;
 
                 case '--disallow-resource-usage':
                     $this->arguments['beStrictAboutResourceUsageDuringSmallTests'] = true;
+
                     break;
 
                 case '--enforce-time-limit':
                     $this->arguments['enforceTimeLimit'] = true;
+
                     break;
 
                 case '--disallow-todo-tests':
                     $this->arguments['disallowTodoAnnotatedTests'] = true;
+
                     break;
 
                 case '--reverse-list':
                     $this->arguments['reverseList'] = true;
+
                     break;
 
                 case '--check-version':
                     $this->handleVersionCheck();
+
                     break;
 
                 case '--whitelist':
                     $this->arguments['whitelist'] = $option[1];
+
                     break;
 
                 default:

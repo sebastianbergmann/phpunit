@@ -73,6 +73,7 @@ class LogicalAnd extends Constraint
         foreach ($this->constraints as $constraint) {
             if (!$constraint->evaluate($other, $description, true)) {
                 $success = false;
+
                 break;
             }
         }

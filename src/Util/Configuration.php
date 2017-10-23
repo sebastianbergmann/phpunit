@@ -532,14 +532,17 @@ class Configuration
             switch ($array) {
                 case 'var':
                     $target = &$GLOBALS;
+
                     break;
 
                 case 'server':
                     $target = &$_SERVER;
+
                     break;
 
                 default:
                     $target = &$GLOBALS['_' . \strtoupper($array)];
+
                     break;
             }
 

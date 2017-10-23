@@ -292,6 +292,7 @@ abstract class AbstractPhpProcess
             \set_error_handler(function ($errno, $errstr, $errfile, $errline) {
                 throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
             });
+
             try {
                 if (\strpos($stdout, "#!/usr/bin/env php\n") === 0) {
                     $stdout = \substr($stdout, 19);

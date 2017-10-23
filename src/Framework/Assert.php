@@ -2849,6 +2849,7 @@ abstract class Assert
             while ($reflector = $reflector->getParentClass()) {
                 try {
                     $attribute = $reflector->getProperty($attributeName);
+
                     break;
                 } catch (ReflectionException $e) {
                 }
