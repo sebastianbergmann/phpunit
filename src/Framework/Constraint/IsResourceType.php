@@ -21,6 +21,10 @@ class IsResourceType extends Constraint
      */
     private $type;
 
+    /**
+     * IsResourceType constructor.
+     * @param string $type
+     */
     public function __construct($type)
     {
         parent::__construct();
