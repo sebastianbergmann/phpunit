@@ -20,7 +20,11 @@ return PhpCsFixer\Config::create()
             'blank_line_after_namespace' => true,
             'blank_line_before_statement' => [
                 'statements' => [
+                    'break',
+                    'continue',
                     'return',
+                    'throw',
+                    'try',
                 ],
             ],
             'braces' => true,
