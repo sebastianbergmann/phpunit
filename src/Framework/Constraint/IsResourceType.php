@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Util\InvalidArgumentHelper;
+
 /**
  * Constraint that checks if value is resource type
  *
@@ -24,10 +26,16 @@ class IsResourceType extends Constraint
     /**
      * IsResourceType constructor.
      * @param string $type
+     *
+     * @throws \PHPUnit\Framework\Exception
      */
     public function __construct($type)
     {
         parent::__construct();
+
+        if (!\is_string($type)) {
+            throw InvalidArgumentHelper::factory(1, 'string');
+        }
 
         $this->type = $type;
     }
