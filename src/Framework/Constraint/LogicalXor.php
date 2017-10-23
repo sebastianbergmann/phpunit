@@ -68,6 +68,7 @@ class LogicalXor extends Constraint
 
             if ($result === $lastResult) {
                 $success = false;
+
                 break;
             }
 

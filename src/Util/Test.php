@@ -802,6 +802,7 @@ class Test
             foreach (['small', 'medium', 'large'] as $size) {
                 if (isset($annotations[$element][$size])) {
                     $groups[] = $size;
+
                     break 2;
                 }
             }

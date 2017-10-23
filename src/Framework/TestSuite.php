@@ -344,6 +344,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 if ($class->getFileName() == $filename) {
                     $newClasses = [$className];
                     unset($this->foundClasses[$i]);
+
                     break;
                 }
             }

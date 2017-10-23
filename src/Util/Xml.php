@@ -216,6 +216,7 @@ class Xml
                         $variable[] = $value;
                     }
                 }
+
                 break;
 
             case 'object':
@@ -236,10 +237,12 @@ class Xml
                 } else {
                     $variable = new $className;
                 }
+
                 break;
 
             case 'boolean':
                 $variable = $element->textContent == 'true';
+
                 break;
 
             case 'integer':
@@ -248,6 +251,7 @@ class Xml
                 $variable = $element->textContent;
 
                 \settype($variable, $element->tagName);
+
                 break;
         }
 

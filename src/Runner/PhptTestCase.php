@@ -581,6 +581,7 @@ class PhptTestCase implements Test, SelfDescribing
                 }
 
                 $ini[$name][] = $value;
+
                 continue;
             }
 
