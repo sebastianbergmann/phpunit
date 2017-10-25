@@ -23,7 +23,7 @@ final class LogicalXorTest extends TestCase
         $constraints = \array_map(function () use ($other) {
             static $count = 0;
 
-            $constraint = $this->createMock(Constraint::class);
+            $constraint = $this->getMockBuilder(Constraint::class)->getMock();
 
             $constraint
                 ->expects($this->once())

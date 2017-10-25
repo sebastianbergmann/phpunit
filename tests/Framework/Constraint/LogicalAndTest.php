@@ -21,7 +21,7 @@ final class LogicalAndTest extends TestCase
         $count = 5;
 
         $constraints = \array_map(function () use ($other) {
-            $constraint = $this->createMock(Constraint::class);
+            $constraint = $this->getMockBuilder(Constraint::class)->getMock();
 
             $constraint
                 ->expects($this->once())
