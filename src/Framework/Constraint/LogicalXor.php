@@ -23,11 +23,11 @@ class LogicalXor extends Constraint
 
     public static function fromConstraints(Constraint ...$constraints): self
     {
-        $instance = new self();
+        $constraint = new self;
 
-        $instance->constraints = \array_values($constraints);
+        $constraint->constraints = \array_values($constraints);
 
-        return $instance;
+        return $constraint;
     }
 
     /**
