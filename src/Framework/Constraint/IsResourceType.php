@@ -24,7 +24,6 @@ class IsResourceType extends Constraint
     private $type;
 
     /**
-     * IsResourceType constructor.
      * @param string $type
      *
      * @throws \PHPUnit\Framework\Exception
@@ -41,12 +40,7 @@ class IsResourceType extends Constraint
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns true if the
-     * constraint is met, false otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
+     * @inheritdoc
      */
     protected function matches($other)
     {
@@ -54,9 +48,7 @@ class IsResourceType extends Constraint
     }
 
     /**
-     * Returns a string representation of the object.
-     *
-     * @return string
+     * @inheritdoc
      */
     public function toString()
     {
