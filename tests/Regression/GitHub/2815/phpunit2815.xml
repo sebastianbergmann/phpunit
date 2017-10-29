@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/6.4/phpunit.xsd"
+         verbose="true">
+    <testsuite>
+        <directory suffix="Test.php">tests/*/integrational</directory>
+        <exclude>tests/mysuite</exclude>
+    </testsuite>
+</phpunit>
