@@ -39,7 +39,7 @@ class GeneratorTest extends TestCase
 
     public function testGetMockFailsWhenInvalidFunctionNameIsPassedInAsAFunctionToMock()
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\Exception\RuntimeException::class);
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
 
         $this->generator->getMock(stdClass::class, [0]);
     }
@@ -53,7 +53,7 @@ class GeneratorTest extends TestCase
 
     public function testGetMockGeneratorFails()
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\Exception\RuntimeException::class);
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
         $this->expectExceptionMessage('duplicates: "foo, bar, foo" (duplicate: "foo")');
 
         $this->generator->getMock(stdClass::class, ['foo', 'bar', 'foo']);
@@ -124,7 +124,7 @@ class GeneratorTest extends TestCase
 
     public function testGetMockForAbstractClassAbstractClassDoesNotExist()
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\Exception\RuntimeException::class);
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
 
         $this->generator->getMockForAbstractClass('Tux');
     }
@@ -171,7 +171,7 @@ class GeneratorTest extends TestCase
 
     public function testExceptionIsRaisedForMutuallyExclusiveOptions()
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\Exception\RuntimeException::class);
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
 
         $this->generator->getMock(stdClass::class, [], [], '', false, true, true, true, true);
     }

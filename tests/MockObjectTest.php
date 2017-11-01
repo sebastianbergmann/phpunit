@@ -956,7 +956,7 @@ class MockObjectTest extends TestCase
     {
         $mock = $this->getMockBuilder(ClassWithStaticMethod::class)->getMock();
 
-        $this->expectException(\PHPUnit\Framework\MockObject\Exception\BadMethodCallException::class);
+        $this->expectException(\PHPUnit\Framework\MockObject\BadMethodCallException::class);
 
         $mock->staticMethod();
     }

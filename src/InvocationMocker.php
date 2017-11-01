@@ -14,7 +14,7 @@ use PHPUnit\Framework\MockObject\Builder\NamespaceMatch;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMocker;
 use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
 use PHPUnit\Framework\MockObject\Builder\Match;
-use PHPUnit\Framework\MockObject\Exception\RuntimeException;
+use PHPUnit\Framework\MockObject\RuntimeException;
 use Exception;
 
 /**
