@@ -162,7 +162,7 @@ class InvocationMocker implements MethodNameMatch
     }
 
     /**
-     * @return                  InvocationMocker
+     * @return InvocationMocker
      */
     public function willReturnSelf()
     {
