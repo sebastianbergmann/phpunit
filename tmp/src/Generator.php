@@ -163,7 +163,7 @@ class Generator
         if ($mockClassName != '' && class_exists($mockClassName, false)) {
             $reflect = new ReflectionClass($mockClassName);
 
-            if (!$reflect->implementsInterface('MockObject')) {
+            if (!$reflect->implementsInterface(MockObject::class)) {
                 throw new RuntimeException(
                     sprintf(
                         'Class "%s" already exists.',
