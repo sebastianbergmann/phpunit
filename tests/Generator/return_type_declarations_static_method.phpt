@@ -38,7 +38,7 @@ class MockFoo extends Foo implements \PHPUnit\Framework\MockObject\MockObject
 
     public static function bar(string $baz): Bar
     {
-        throw new \PHPUnit\Framework\MockObject\Exception\BadMethodCallException('Static method "bar" cannot be invoked on mock object');
+        throw new \PHPUnit\Framework\MockObject\BadMethodCallException('Static method "bar" cannot be invoked on mock object');
     }
 
     public function expects(\PHPUnit\Framework\MockObject\Matcher\Invocation $matcher)
