@@ -22,4 +22,8 @@
             <directory suffix=".php">src</directory>
         </whitelist>
     </filter>
+
+    <php>
+        <const name="PHPUNIT_TESTSUITE" value="true"/>
+    </php>
 </phpunit>
