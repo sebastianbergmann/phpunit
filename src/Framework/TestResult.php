@@ -19,7 +19,7 @@ use PHP_Timer;
 use PHPUnit\Util\Blacklist;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
-use PHPUnit_Framework_MockObject_Exception;
+use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCoveredCodeNotExecutedException;
@@ -707,7 +707,7 @@ class TestResult implements Countable
             );
 
             $risky = true;
-        } catch (PHPUnit_Framework_MockObject_Exception $e) {
+        } catch (MockObjectException $e) {
             $e = new Warning(
                 $e->getMessage()
             );

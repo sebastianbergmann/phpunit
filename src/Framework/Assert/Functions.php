@@ -51,7 +51,7 @@ use PHPUnit\Framework\TestCase;
  * Returns a matcher that matches when the method is executed
  * zero or more times.
  *
- * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
+ * @return PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount
  */
 function any()
 {
@@ -1269,7 +1269,7 @@ function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = 
  *
  * @param int $index
  *
- * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
+ * @return PHPUnit\Framework\MockObject\Matcher\InvokedAtIndex
  */
 function at($index)
 {
@@ -1279,7 +1279,7 @@ function at($index)
 /**
  * Returns a matcher that matches when the method is executed at least once.
  *
- * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
+ * @return PHPUnit\Framework\MockObject\Matcher\InvokedAtLeastOnce
  */
 function atLeastOnce()
 {
@@ -1440,7 +1440,7 @@ function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $i
  *
  * @param int $count
  *
- * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
+ * @return PHPUnit\Framework\MockObject\Matcher\InvokedCount
  */
 function exactly($count)
 {
@@ -1704,7 +1704,7 @@ function matchesRegularExpression($pattern)
 /**
  * Returns a matcher that matches when the method is never executed.
  *
- * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
+ * @return PHPUnit\Framework\MockObject\Matcher\InvokedCount
  */
 function never()
 {
@@ -1726,7 +1726,7 @@ function objectHasAttribute($attributeName)
 /**
  * @param mixed $value, ...
  *
- * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
+ * @return PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls
  */
 function onConsecutiveCalls()
 {
@@ -1736,7 +1736,7 @@ function onConsecutiveCalls()
 /**
  * Returns a matcher that matches when the method is executed exactly once.
  *
- * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
+ * @return PHPUnit\Framework\MockObject\Matcher\InvokedCount
  */
 function once()
 {
@@ -1746,7 +1746,7 @@ function once()
 /**
  * @param int $argumentIndex
  *
- * @return PHPUnit_Framework_MockObject_Stub_ReturnArgument
+ * @return PHPUnit\Framework\MockObject\Stub\ReturnArgument
  */
 function returnArgument($argumentIndex)
 {
@@ -1756,7 +1756,7 @@ function returnArgument($argumentIndex)
 /**
  * @param mixed $callback
  *
- * @return PHPUnit_Framework_MockObject_Stub_ReturnCallback
+ * @return PHPUnit\Framework\MockObject\Stub\ReturnCallback
  */
 function returnCallback($callback)
 {
@@ -1768,7 +1768,7 @@ function returnCallback($callback)
  *
  * This method is useful when mocking a fluent interface.
  *
- * @return PHPUnit_Framework_MockObject_Stub_ReturnSelf
+ * @return PHPUnit\Framework\MockObject\Stub\ReturnSelf
  */
 function returnSelf()
 {
@@ -1778,7 +1778,7 @@ function returnSelf()
 /**
  * @param mixed $value
  *
- * @return PHPUnit_Framework_MockObject_Stub_Return
+ * @return PHPUnit\Framework\MockObject\Stub\Return
  */
 function returnValue($value)
 {
@@ -1788,7 +1788,7 @@ function returnValue($value)
 /**
  * @param array $valueMap
  *
- * @return PHPUnit_Framework_MockObject_Stub_ReturnValueMap
+ * @return PHPUnit\Framework\MockObject\Stub\ReturnValueMap
  */
 function returnValueMap(array $valueMap)
 {
@@ -1835,7 +1835,7 @@ function stringStartsWith($prefix)
 /**
  * @param Exception $exception
  *
- * @return PHPUnit_Framework_MockObject_Stub_Exception
+ * @return PHPUnit\Framework\MockObject\Stub\Exception
  */
 function throwException(Exception $exception)
 {

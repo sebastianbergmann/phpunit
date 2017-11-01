@@ -27,7 +27,7 @@ class Blacklist
         'PHP_Token'                                   => 1,
         'PHPUnit\Framework\TestCase'                  => 2,
         'PHPUnit\DbUnit\TestCase'                     => 2,
-        'PHPUnit_Framework_MockObject_Generator'      => 1,
+        'PHPUnit\Framework\MockObject\Generator'      => 1,
         'Text_Template'                               => 1,
         'Symfony\Component\Yaml\Yaml'                 => 1,
         'SebastianBergmann\CodeCoverage\CodeCoverage' => 1,

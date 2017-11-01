@@ -20,22 +20,22 @@ use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
-use PHPUnit_Framework_MockObject_Generator;
-use PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
-use PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex;
-use PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount;
-use PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce;
-use PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount;
-use PHPUnit_Framework_MockObject_Matcher_InvokedCount;
-use PHPUnit_Framework_MockObject_MockBuilder;
-use PHPUnit_Framework_MockObject_MockObject;
-use PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls;
-use PHPUnit_Framework_MockObject_Stub_Exception;
-use PHPUnit_Framework_MockObject_Stub_Return;
-use PHPUnit_Framework_MockObject_Stub_ReturnArgument;
-use PHPUnit_Framework_MockObject_Stub_ReturnCallback;
-use PHPUnit_Framework_MockObject_Stub_ReturnSelf;
-use PHPUnit_Framework_MockObject_Stub_ReturnValueMap;
+use PHPUnit\Framework\MockObject\Generator as MockGenerator;
+use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount as AnyInvokedCountMatcher;
+use PHPUnit\Framework\MockObject\Matcher\InvokedAtIndex as InvokedAtIndexMatcher;
+use PHPUnit\Framework\MockObject\Matcher\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
+use PHPUnit\Framework\MockObject\Matcher\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
+use PHPUnit\Framework\MockObject\Matcher\InvokedAtMostCount as InvokedAtMostCountMatcher;
+use PHPUnit\Framework\MockObject\Matcher\InvokedCount as InvokedCountMatcher;
+use PHPUnit\Framework\MockObject\MockBuilder;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls as ConsecutiveCallsStub;
+use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
+use PHPUnit\Framework\MockObject\Stub\ReturnStub;
+use PHPUnit\Framework\MockObject\Stub\ReturnArgument as ReturnArgumentStub;
+use PHPUnit\Framework\MockObject\Stub\ReturnCallback as ReturnCallbackStub;
+use PHPUnit\Framework\MockObject\Stub\ReturnSelf as ReturnSelfStub;
+use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use Prophecy;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophet;
@@ -1380,9 +1380,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_MockObject $mockObject
+     * @param MockObject $mockObject
      */
-    public function registerMockObject(PHPUnit_Framework_MockObject_MockObject $mockObject)
+    public function registerMockObject(MockObject $mockObject)
     {
         $this->mockObjects[] = $mockObject;
     }
@@ -1471,11 +1471,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param string|string[] $className
      *
-     * @return PHPUnit_Framework_MockObject_MockBuilder
+     * @return MockBuilder
      */
     public function getMockBuilder($className)
     {
-        return new PHPUnit_Framework_MockObject_MockBuilder($this, $className);
+        return new MockBuilder($this, $className);
     }
 
     /**
@@ -1483,18 +1483,18 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param string $originalClassName
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws Exception
      */
     protected function createMock($originalClassName)
     {
         return $this->getMockBuilder($originalClassName)
-            ->disableOriginalConstructor()
-            ->disableOriginalClone()
-            ->disableArgumentCloning()
-            ->disallowMockingUnknownTypes()
-            ->getMock();
+                    ->disableOriginalConstructor()
+                    ->disableOriginalClone()
+                    ->disableArgumentCloning()
+                    ->disallowMockingUnknownTypes()
+                    ->getMock();
     }
 
     /**
@@ -1503,7 +1503,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string $originalClassName
      * @param array  $configuration
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws Exception
      */
@@ -1524,19 +1524,19 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string   $originalClassName
      * @param string[] $methods
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws Exception
      */
     protected function createPartialMock($originalClassName, array $methods)
     {
         return $this->getMockBuilder($originalClassName)
-            ->disableOriginalConstructor()
-            ->disableOriginalClone()
-            ->disableArgumentCloning()
-            ->disallowMockingUnknownTypes()
-            ->setMethods(empty($methods) ? null : $methods)
-            ->getMock();
+                    ->disableOriginalConstructor()
+                    ->disableOriginalClone()
+                    ->disableArgumentCloning()
+                    ->disallowMockingUnknownTypes()
+                    ->setMethods(empty($methods) ? null : $methods)
+                    ->getMock();
     }
 
     /**
@@ -1545,16 +1545,16 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string $originalClassName
      * @param array  $constructorArguments
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws Exception
      */
     protected function createTestProxy($originalClassName, array $constructorArguments = [])
     {
         return $this->getMockBuilder($originalClassName)
-            ->setConstructorArgs($constructorArguments)
-            ->enableProxyingToOriginalMethods()
-            ->getMock();
+                    ->setConstructorArgs($constructorArguments)
+                    ->enableProxyingToOriginalMethods()
+                    ->getMock();
     }
 
     /**
@@ -1603,7 +1603,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws Exception
      */
@@ -1635,7 +1635,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param bool   $callOriginalConstructor
      * @param array  $options                 An array of options passed to SOAPClient::_construct
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = [])
     {
@@ -1683,7 +1683,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
      *
-     * @return PHPUnit_Framework_MockObject_MockObject
+     * @return MockObject
      *
      * @throws Exception
      */
@@ -1767,21 +1767,21 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns a matcher that matches when the method is executed
      * zero or more times.
      *
-     * @return PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount
+     * @return AnyInvokedCountMatcher
      */
     public static function any()
     {
-        return new PHPUnit_Framework_MockObject_Matcher_AnyInvokedCount;
+        return new AnyInvokedCountMatcher;
     }
 
     /**
      * Returns a matcher that matches when the method is never executed.
      *
-     * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
+     * @return InvokedCountMatcher
      */
     public static function never()
     {
-        return new PHPUnit_Framework_MockObject_Matcher_InvokedCount(0);
+        return new InvokedCountMatcher(0);
     }
 
     /**
@@ -1790,11 +1790,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param int $requiredInvocations
      *
-     * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount
+     * @return InvokedAtLeastCountMatcher
      */
     public static function atLeast($requiredInvocations)
     {
-        return new PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastCount(
+        return new InvokedAtLeastCountMatcher(
             $requiredInvocations
         );
     }
@@ -1802,21 +1802,21 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a matcher that matches when the method is executed at least once.
      *
-     * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce
+     * @return InvokedAtLeastOnceMatcher
      */
     public static function atLeastOnce()
     {
-        return new PHPUnit_Framework_MockObject_Matcher_InvokedAtLeastOnce;
+        return new InvokedAtLeastOnceMatcher;
     }
 
     /**
      * Returns a matcher that matches when the method is executed exactly once.
      *
-     * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
+     * @return InvokedCountMatcher
      */
     public static function once()
     {
-        return new PHPUnit_Framework_MockObject_Matcher_InvokedCount(1);
+        return new InvokedCountMatcher(1);
     }
 
     /**
@@ -1825,11 +1825,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param int $count
      *
-     * @return PHPUnit_Framework_MockObject_Matcher_InvokedCount
+     * @return InvokedCountMatcher
      */
     public static function exactly($count)
     {
-        return new PHPUnit_Framework_MockObject_Matcher_InvokedCount($count);
+        return new InvokedCountMatcher($count);
     }
 
     /**
@@ -1838,13 +1838,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param int $allowedInvocations
      *
-     * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount
+     * @return InvokedAtMostCountMatcher
      */
     public static function atMost($allowedInvocations)
     {
-        return new PHPUnit_Framework_MockObject_Matcher_InvokedAtMostCount(
-            $allowedInvocations
-        );
+        return new InvokedAtMostCountMatcher($allowedInvocations);
     }
 
     /**
@@ -1853,53 +1851,51 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param int $index
      *
-     * @return PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex
+     * @return InvokedAtIndexMatcher
      */
     public static function at($index)
     {
-        return new PHPUnit_Framework_MockObject_Matcher_InvokedAtIndex($index);
+        return new InvokedAtIndexMatcher($index);
     }
 
     /**
      * @param mixed $value
      *
-     * @return PHPUnit_Framework_MockObject_Stub_Return
+     * @return ReturnStub
      */
     public static function returnValue($value)
     {
-        return new PHPUnit_Framework_MockObject_Stub_Return($value);
+        return new ReturnStub($value);
     }
 
     /**
      * @param array $valueMap
      *
-     * @return PHPUnit_Framework_MockObject_Stub_ReturnValueMap
+     * @return ReturnValueMapStub
      */
     public static function returnValueMap(array $valueMap)
     {
-        return new PHPUnit_Framework_MockObject_Stub_ReturnValueMap($valueMap);
+        return new ReturnValueMapStub($valueMap);
     }
 
     /**
      * @param int $argumentIndex
      *
-     * @return PHPUnit_Framework_MockObject_Stub_ReturnArgument
+     * @return ReturnArgumentStub
      */
     public static function returnArgument($argumentIndex)
     {
-        return new PHPUnit_Framework_MockObject_Stub_ReturnArgument(
-            $argumentIndex
-        );
+        return new ReturnArgumentStub($argumentIndex);
     }
 
     /**
      * @param mixed $callback
      *
-     * @return PHPUnit_Framework_MockObject_Stub_ReturnCallback
+     * @return ReturnCallbackStub
      */
     public static function returnCallback($callback)
     {
-        return new PHPUnit_Framework_MockObject_Stub_ReturnCallback($callback);
+        return new ReturnCallbackStub($callback);
     }
 
     /**
@@ -1907,33 +1903,33 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * This method is useful when mocking a fluent interface.
      *
-     * @return PHPUnit_Framework_MockObject_Stub_ReturnSelf
+     * @return ReturnSelfStub
      */
     public static function returnSelf()
     {
-        return new PHPUnit_Framework_MockObject_Stub_ReturnSelf();
+        return new ReturnSelfStub;
     }
 
     /**
      * @param Throwable $exception
      *
-     * @return PHPUnit_Framework_MockObject_Stub_Exception
+     * @return ExceptionStub
      */
     public static function throwException(Throwable $exception)
     {
-        return new PHPUnit_Framework_MockObject_Stub_Exception($exception);
+        return new ExceptionStub($exception);
     }
 
     /**
      * @param mixed $value , ...
      *
-     * @return PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls
+     * @return ConsecutiveCallsStub
      */
     public static function onConsecutiveCalls()
     {
         $args = \func_get_args();
 
-        return new PHPUnit_Framework_MockObject_Stub_ConsecutiveCalls($args);
+        return new ConsecutiveCallsStub($args);
     }
 
     /**
@@ -2174,12 +2170,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Get the mock object generator, creating it if it doesn't exist.
      *
-     * @return PHPUnit_Framework_MockObject_Generator
+     * @return MockGenerator
      */
     private function getMockObjectGenerator()
     {
         if (null === $this->mockObjectGenerator) {
-            $this->mockObjectGenerator = new PHPUnit_Framework_MockObject_Generator;
+            $this->mockObjectGenerator = new MockGenerator;
         }
 
         return $this->mockObjectGenerator;
@@ -2383,11 +2379,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_MockObject $mock
+     * @param MockObject $mock
      *
      * @return bool
      */
-    private function shouldInvocationMockerBeReset(PHPUnit_Framework_MockObject_MockObject $mock)
+    private function shouldInvocationMockerBeReset(MockObject $mock)
     {
         $enumerator = new Enumerator;
 
@@ -2420,13 +2416,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $enumerator = new Enumerator;
 
             foreach ($enumerator->enumerate($testArguments) as $object) {
-                if ($object instanceof PHPUnit_Framework_MockObject_MockObject) {
+                if ($object instanceof MockObject) {
                     $this->registerMockObject($object);
                 }
             }
         } else {
             foreach ($testArguments as $testArgument) {
-                if ($testArgument instanceof PHPUnit_Framework_MockObject_MockObject) {
+                if ($testArgument instanceof MockObject) {
                     if ($this->isCloneable($testArgument)) {
                         $testArgument = clone $testArgument;
                     }
@@ -2454,11 +2450,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param PHPUnit_Framework_MockObject_MockObject $testArgument
+     * @param MockObject $testArgument
      *
      * @return bool
      */
-    private function isCloneable(PHPUnit_Framework_MockObject_MockObject $testArgument)
+    private function isCloneable(MockObject $testArgument)
     {
         $reflector = new ReflectionObject($testArgument);
 
