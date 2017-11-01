@@ -26,7 +26,7 @@
         "sebastian/exporter": "^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0"
+        "phpunit/phpunit": "^6.4.3"
     },
     "conflict": {
         "phpunit/phpunit": "<6.0"
