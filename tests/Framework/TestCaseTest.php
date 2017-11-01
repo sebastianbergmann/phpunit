@@ -10,8 +10,8 @@
 
 namespace PHPUnit\Framework;
 
-use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Runner\BaseTestRunner;
 
 class TestCaseTest extends TestCase
 {
