@@ -907,7 +907,7 @@ class MockObjectTest extends TestCase
      */
     public function testCreateMockFromWsdl()
     {
-        $mock = $this->getMockFromWsdl(__DIR__ . '/Fixtures/GoogleSearch.wsdl', 'WsdlMock');
+        $mock = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl', 'WsdlMock');
 
         $this->assertStringStartsWith(
             'Mock_WsdlMock_',
@@ -920,7 +920,7 @@ class MockObjectTest extends TestCase
      */
     public function testCreateNamespacedMockFromWsdl()
     {
-        $mock = $this->getMockFromWsdl(__DIR__ . '/Fixtures/GoogleSearch.wsdl', 'My\\Space\\WsdlMock');
+        $mock = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl', 'My\\Space\\WsdlMock');
 
         $this->assertStringStartsWith(
             'Mock_WsdlMock_',
@@ -933,8 +933,8 @@ class MockObjectTest extends TestCase
      */
     public function testCreateTwoMocksOfOneWsdlFile()
     {
-        $a = $this->getMockFromWsdl(__DIR__ . '/Fixtures/GoogleSearch.wsdl');
-        $b = $this->getMockFromWsdl(__DIR__ . '/Fixtures/GoogleSearch.wsdl');
+        $a = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl');
+        $b = $this->getMockFromWsdl(__DIR__ . '/_fixture/GoogleSearch.wsdl');
 
         $this->assertStringStartsWith('Mock_GoogleSearch_', get_class($a));
         $this->assertEquals(get_class($a), get_class($b));
