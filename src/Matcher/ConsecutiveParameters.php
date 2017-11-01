@@ -88,7 +88,7 @@ class ConsecutiveParameters extends StatelessInvocation
      * Verify a single invocation
      *
      * @param BaseInvocation $invocation
-     * @param int                                     $callIndex
+     * @param int            $callIndex
      *
      * @throws ExpectationFailedException
      */

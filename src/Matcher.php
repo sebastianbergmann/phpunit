@@ -17,7 +17,6 @@ use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
 use PHPUnit\Framework\MockObject\Matcher\MethodName;
 use PHPUnit\Framework\MockObject\Matcher\Parameters;
 use PHPUnit\Framework\MockObject\Matcher\AnyParameters;
-use PHPUnit\Framework\MockObject\RuntimeException;
 
 /**
  * Main matcher which defines a full expectation using method, parameter and
