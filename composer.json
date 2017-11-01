@@ -20,6 +20,7 @@
         "issues": "https://github.com/sebastianbergmann/phpunit/issues"
     },
     "prefer-stable": true,
+    "minimum-stability": "dev",
     "require": {
         "php": "^7.0",
         "ext-dom": "*",
@@ -35,7 +36,7 @@
         "phpunit/php-file-iterator": "^1.4.2",
         "phpunit/php-text-template": "^1.2.1",
         "phpunit/php-timer": "^1.0.9",
-        "phpunit/phpunit-mock-objects": "^4.0.3",
+        "phpunit/phpunit-mock-objects": "^5.0",
         "sebastian/comparator": "^2.0.2",
         "sebastian/diff": "^2.0",
         "sebastian/environment": "^3.1",
