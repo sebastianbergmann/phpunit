@@ -11,7 +11,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 print $generator->generateClassFromWsdl(
-    __DIR__ . '/../Fixtures/GoogleSearch.wsdl',
+    __DIR__ . '/../_fixture/GoogleSearch.wsdl',
     'My\\Space\\GoogleSearch'
 );
 ?>
