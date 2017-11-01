@@ -13,7 +13,7 @@ use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
 use PHPUnit\Framework\MockObject\Matcher;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 use PHPUnit\Framework\MockObject\Stub;
-use PHPUnit\Framework\MockObject\Exception\RuntimeException;
+use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit\Framework\Constraint\Constraint;
 
 /**

@@ -13,7 +13,7 @@ use Doctrine\Instantiator\Instantiator;
 use Doctrine\Instantiator\Exception\InvalidArgumentException as InstantiatorInvalidArgumentException;
 use Doctrine\Instantiator\Exception\UnexpectedValueException as InstantiatorUnexpectedValueException;
 use PHPUnit\Util\InvalidArgumentHelper;
-use PHPUnit\Framework\MockObject\Exception\RuntimeException;
+use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit\Framework\Exception;
 use ReflectionClass;
 use ReflectionException;

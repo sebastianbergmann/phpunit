@@ -7,10 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Exception;
+namespace PHPUnit\Framework\MockObject;
 
-use RuntimeException as BaseRuntimeException;
-
-class RuntimeException extends BaseRuntimeException implements Exception
+class RuntimeException extends \RuntimeException implements Exception
 {
 }

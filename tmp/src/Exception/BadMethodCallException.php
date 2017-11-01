@@ -7,10 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Exception;
+namespace PHPUnit\Framework\MockObject;
 
-use BadMethodCallException as BaseBadMethodCallException;
-
-class BadMethodCallException extends BaseBadMethodCallException implements Exception
+class BadMethodCallException extends \BadMethodCallException implements Exception
 {
 }
