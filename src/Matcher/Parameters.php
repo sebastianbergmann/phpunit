@@ -27,12 +27,12 @@ class Parameters extends StatelessInvocation
     /**
      * @var Constraint[]
      */
-    protected $parameters = [];
+    private $parameters = [];
 
     /**
      * @var BaseInvocation
      */
-    protected $invocation;
+    private $invocation;
 
     /**
      * @var ExpectationFailedException
@@ -41,6 +41,8 @@ class Parameters extends StatelessInvocation
 
     /**
      * @param array $parameters
+     *
+     * @throws \PHPUnit\Framework\Exception
      */
     public function __construct(array $parameters)
     {
@@ -77,6 +79,8 @@ class Parameters extends StatelessInvocation
      * @param BaseInvocation $invocation
      *
      * @return bool
+     *
+     * @throws \Exception
      */
     public function matches(BaseInvocation $invocation)
     {
@@ -110,32 +114,30 @@ class Parameters extends StatelessInvocation
         }
 
         if ($this->invocation === null) {
-            throw new ExpectationFailedException(
-                'Mocked method does not exist.'
-            );
+            throw new ExpectationFailedException('Mocked method does not exist.');
         }
 
-        if (count($this->invocation->parameters) < count($this->parameters)) {
+        if (\count($this->invocation->getParameters()) < \count($this->parameters)) {
             $message = 'Parameter count for invocation %s is too low.';
 
             // The user called `->with($this->anything())`, but may have meant
             // `->withAnyParameters()`.
             //
             // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/199
-            if (count($this->parameters) === 1 &&
-                get_class($this->parameters[0]) === IsAnything::class) {
+            if (\count($this->parameters) === 1 &&
+                \get_class($this->parameters[0]) === IsAnything::class) {
                 $message .= "\nTo allow 0 or more parameters with any value, omit ->with() or use ->withAnyParameters() instead.";
             }
 
             throw new ExpectationFailedException(
-                sprintf($message, $this->invocation->toString())
+                \sprintf($message, $this->invocation->toString())
             );
         }
 
         foreach ($this->parameters as $i => $parameter) {
             $parameter->evaluate(
-                $this->invocation->parameters[$i],
-                sprintf(
+                $this->invocation->getParameters()[$i],
+                \sprintf(
                     'Parameter %s for invocation %s does not match expected ' .
                     'value.',
                     $i,

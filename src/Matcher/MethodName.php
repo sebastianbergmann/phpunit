@@ -11,8 +11,8 @@ namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
-use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Util\InvalidArgumentHelper;
 
 /**
  * Invocation matcher which looks for a specific method name in the invocations.
@@ -26,17 +26,18 @@ class MethodName extends StatelessInvocation
     /**
      * @var Constraint
      */
-    protected $constraint;
+    private $constraint;
 
     /**
      * @param  Constraint|string
      *
      * @throws Constraint
+     * @throws \PHPUnit\Framework\Exception
      */
     public function __construct($constraint)
     {
         if (!$constraint instanceof Constraint) {
-            if (!is_string($constraint)) {
+            if (!\is_string($constraint)) {
                 throw InvalidArgumentHelper::factory(1, 'string');
             }
 
@@ -67,6 +68,6 @@ class MethodName extends StatelessInvocation
      */
     public function matches(Invocation $invocation)
     {
-        return $this->constraint->evaluate($invocation->methodName, '', true);
+        return $this->constraint->evaluate($invocation->getMethodName(), '', true);
     }
 }

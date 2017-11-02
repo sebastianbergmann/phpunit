@@ -195,7 +195,7 @@ class MockBuilder
         $this->methodsExcept = $methods;
 
         $this->setMethods(
-            array_diff(
+            \array_diff(
                 $this->generator->getClassMethods($this->type),
                 $this->methodsExcept
             )

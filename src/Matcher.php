@@ -11,12 +11,12 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
-use PHPUnit\Framework\MockObject\Matcher\InvokedCount;
-use PHPUnit\Framework\TestFailure;
+use PHPUnit\Framework\MockObject\Matcher\AnyParameters;
 use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
+use PHPUnit\Framework\MockObject\Matcher\InvokedCount;
 use PHPUnit\Framework\MockObject\Matcher\MethodName;
 use PHPUnit\Framework\MockObject\Matcher\Parameters;
-use PHPUnit\Framework\MockObject\Matcher\AnyParameters;
+use PHPUnit\Framework\TestFailure;
 
 /**
  * Main matcher which defines a full expectation using method, parameter and
@@ -32,32 +32,32 @@ class Matcher implements MatcherInvocation
     /**
      * @var MatcherInvocation
      */
-    public $invocationMatcher;
+    private $invocationMatcher;
 
     /**
      * @var mixed
      */
-    public $afterMatchBuilderId = null;
+    private $afterMatchBuilderId = null;
 
     /**
      * @var bool
      */
-    public $afterMatchBuilderIsInvoked = false;
+    private $afterMatchBuilderIsInvoked = false;
 
     /**
      * @var MethodName
      */
-    public $methodNameMatcher = null;
+    private $methodNameMatcher = null;
 
     /**
      * @var Parameters
      */
-    public $parametersMatcher = null;
+    private $parametersMatcher = null;
 
     /**
      * @var Stub
      */
-    public $stub = null;
+    private $stub = null;
 
     /**
      * @param MatcherInvocation $invocationMatcher
@@ -67,40 +67,59 @@ class Matcher implements MatcherInvocation
         $this->invocationMatcher = $invocationMatcher;
     }
 
-    /**
-     * @return string
-     */
-    public function toString()
+    public function hasMatchers(): bool
     {
-        $list = [];
+        return $this->invocationMatcher !== null && !$this->invocationMatcher instanceof AnyInvokedCount;
+    }
 
-        if ($this->invocationMatcher !== null) {
-            $list[] = $this->invocationMatcher->toString();
-        }
+    public function hasMethodNameMatcher(): bool
+    {
+        return $this->methodNameMatcher !== null;
+    }
 
-        if ($this->methodNameMatcher !== null) {
-            $list[] = 'where ' . $this->methodNameMatcher->toString();
-        }
+    public function getMethodNameMatcher(): MethodName
+    {
+        return $this->methodNameMatcher;
+    }
 
-        if ($this->parametersMatcher !== null) {
-            $list[] = 'and ' . $this->parametersMatcher->toString();
-        }
+    public function setMethodNameMatcher(MethodName $matcher)
+    {
+        $this->methodNameMatcher = $matcher;
+    }
 
-        if ($this->afterMatchBuilderId !== null) {
-            $list[] = 'after ' . $this->afterMatchBuilderId;
-        }
+    public function hasParametersMatcher(): bool
+    {
+        return $this->parametersMatcher !== null;
+    }
 
-        if ($this->stub !== null) {
-            $list[] = 'will ' . $this->stub->toString();
-        }
+    public function getParametersMatcher(): Parameters
+    {
+        return $this->parametersMatcher;
+    }
 
-        return implode(' ', $list);
+    public function setParametersMatcher($matcher)
+    {
+        $this->parametersMatcher = $matcher;
+    }
+
+    public function setStub($stub)
+    {
+        $this->stub = $stub;
+    }
+
+    public function setAfterMatchBuilderId($id)
+    {
+        $this->afterMatchBuilderId = $id;
     }
 
     /**
      * @param Invocation $invocation
      *
      * @return mixed
+     *
+     * @throws \Exception
+     * @throws RuntimeException
+     * @throws ExpectationFailedException
      */
     public function invoked(Invocation $invocation)
     {
@@ -115,13 +134,13 @@ class Matcher implements MatcherInvocation
         }
 
         if ($this->afterMatchBuilderId !== null) {
-            $builder = $invocation->object
+            $builder = $invocation->getObject()
                                   ->__phpunit_getInvocationMocker()
                                   ->lookupId($this->afterMatchBuilderId);
 
             if (!$builder) {
                 throw new RuntimeException(
-                    sprintf(
+                    \sprintf(
                         'No builder found for match builder identification <%s>',
                         $this->afterMatchBuilderId
                     )
@@ -144,7 +163,7 @@ class Matcher implements MatcherInvocation
             }
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
-                sprintf(
+                \sprintf(
                     "Expectation failed for %s when %s\n%s",
                     $this->methodNameMatcher->toString(),
                     $this->invocationMatcher->toString(),
@@ -165,17 +184,20 @@ class Matcher implements MatcherInvocation
      * @param Invocation $invocation
      *
      * @return bool
+     *
+     * @throws RuntimeException
+     * @throws ExpectationFailedException
      */
     public function matches(Invocation $invocation)
     {
         if ($this->afterMatchBuilderId !== null) {
-            $builder = $invocation->object
+            $builder = $invocation->getObject()
                                   ->__phpunit_getInvocationMocker()
                                   ->lookupId($this->afterMatchBuilderId);
 
             if (!$builder) {
                 throw new RuntimeException(
-                    sprintf(
+                    \sprintf(
                         'No builder found for match builder identification <%s>',
                         $this->afterMatchBuilderId
                     )
@@ -213,7 +235,7 @@ class Matcher implements MatcherInvocation
             }
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
-                sprintf(
+                \sprintf(
                     "Expectation failed for %s when %s\n%s",
                     $this->methodNameMatcher->toString(),
                     $this->invocationMatcher->toString(),
@@ -257,7 +279,7 @@ class Matcher implements MatcherInvocation
             }
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
-                sprintf(
+                \sprintf(
                     "Expectation failed for %s when %s.\n%s",
                     $this->methodNameMatcher->toString(),
                     $this->invocationMatcher->toString(),
@@ -267,13 +289,33 @@ class Matcher implements MatcherInvocation
         }
     }
 
-    public function hasMatchers()
+    /**
+     * @return string
+     */
+    public function toString()
     {
-        if ($this->invocationMatcher !== null &&
-            !$this->invocationMatcher instanceof AnyInvokedCount) {
-            return true;
+        $list = [];
+
+        if ($this->invocationMatcher !== null) {
+            $list[] = $this->invocationMatcher->toString();
         }
 
-        return false;
+        if ($this->methodNameMatcher !== null) {
+            $list[] = 'where ' . $this->methodNameMatcher->toString();
+        }
+
+        if ($this->parametersMatcher !== null) {
+            $list[] = 'and ' . $this->parametersMatcher->toString();
+        }
+
+        if ($this->afterMatchBuilderId !== null) {
+            $list[] = 'after ' . $this->afterMatchBuilderId;
+        }
+
+        if ($this->stub !== null) {
+            $list[] = 'will ' . $this->stub->toString();
+        }
+
+        return \implode(' ', $list);
     }
 }

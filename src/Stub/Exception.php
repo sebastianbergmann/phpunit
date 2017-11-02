@@ -9,29 +9,19 @@
  */
 namespace PHPUnit\Framework\MockObject\Stub;
 
-use SebastianBergmann\Exporter\Exporter;
-use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Invocation;
-use PHPUnit\Framework\MockObject\RuntimeException;
-use Throwable;
-use Exception as BaseException;
+use PHPUnit\Framework\MockObject\Stub;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Stubs a method by raising a user-defined exception.
  */
 class Exception implements Stub
 {
-    protected $exception;
+    private $exception;
 
-    public function __construct($exception)
+    public function __construct(\Throwable $exception)
     {
-        // TODO Replace check with type declaration when support for PHP 5 is dropped
-        if (!$exception instanceof Throwable && !$exception instanceof BaseException) {
-            throw new RuntimeException(
-                'Exception must be an instance of Throwable (PHP 7) or Exception (PHP 5)'
-            );
-        }
-
         $this->exception = $exception;
     }
 
@@ -44,7 +34,7 @@ class Exception implements Stub
     {
         $exporter = new Exporter;
 
-        return sprintf(
+        return \sprintf(
             'raise user-specified exception %s',
             $exporter->export($this->exception)
         );

@@ -27,12 +27,12 @@ class InvokedAtIndex implements Invocation
     /**
      * @var int
      */
-    protected $sequenceIndex;
+    private $sequenceIndex;
 
     /**
      * @var int
      */
-    protected $currentIndex = -1;
+    private $currentIndex = -1;
 
     /**
      * @param int $sequenceIndex
@@ -79,7 +79,7 @@ class InvokedAtIndex implements Invocation
     {
         if ($this->currentIndex < $this->sequenceIndex) {
             throw new ExpectationFailedException(
-                sprintf(
+                \sprintf(
                     'The expected invocation at index %s was never reached.',
                     $this->sequenceIndex
                 )

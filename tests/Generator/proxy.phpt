@@ -24,7 +24,7 @@ $mock = $generator->generate(
 print $mock['code'];
 ?>
 --EXPECTF--
-class ProxyFoo extends Foo implements \PHPUnit\Framework\MockObject\MockObject
+class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     private $__phpunit_invocationMocker;
     private $__phpunit_originalObject;
