@@ -57,20 +57,20 @@ class ConsecutiveParameters extends StatelessInvocation
      */
     public function toString()
     {
-        $text = 'with consecutive parameters';
-
-        return $text;
+        return 'with consecutive parameters';
     }
 
     /**
      * @param BaseInvocation $invocation
      *
      * @return bool
+     *
+     * @throws \PHPUnit\Framework\ExpectationFailedException
      */
     public function matches(BaseInvocation $invocation)
     {
         $this->invocations[] = $invocation;
-        $callIndex           = count($this->invocations) - 1;
+        $callIndex           = \count($this->invocations) - 1;
 
         $this->verifyInvocation($invocation, $callIndex);
 
@@ -107,9 +107,9 @@ class ConsecutiveParameters extends StatelessInvocation
             );
         }
 
-        if (count($invocation->parameters) < count($parameters)) {
+        if (\count($invocation->getParameters()) < \count($parameters)) {
             throw new ExpectationFailedException(
-                sprintf(
+                \sprintf(
                     'Parameter count for invocation %s is too low.',
                     $invocation->toString()
                 )
@@ -118,8 +118,8 @@ class ConsecutiveParameters extends StatelessInvocation
 
         foreach ($parameters as $i => $parameter) {
             $parameter->evaluate(
-                $invocation->parameters[$i],
-                sprintf(
+                $invocation->getParameters()[$i],
+                \sprintf(
                     'Parameter %s for invocation #%d %s does not match expected ' .
                     'value.',
                     $i,

@@ -35,7 +35,7 @@ class StaticInvocationTest extends TestCase
             'ReturnType'
         );
 
-        $this->assertSame('FooClass', $invocation->className);
+        $this->assertSame('FooClass', $invocation->getClassName());
     }
 
     public function testAllowToGetMethodNameSetInConstructor()
@@ -47,7 +47,7 @@ class StaticInvocationTest extends TestCase
             'ReturnType'
         );
 
-        $this->assertSame('FooMethod', $invocation->methodName);
+        $this->assertSame('FooMethod', $invocation->getMethodName());
     }
 
     public function testAllowToGetMethodParametersSetInConstructor()
@@ -63,7 +63,7 @@ class StaticInvocationTest extends TestCase
             'ReturnType'
         );
 
-        $this->assertSame($expectedParameters, $invocation->parameters);
+        $this->assertSame($expectedParameters, $invocation->getParameters());
     }
 
     public function testConstructorAllowToSetFlagCloneObjectsInParameters()
@@ -79,8 +79,8 @@ class StaticInvocationTest extends TestCase
             $cloneObjects
         );
 
-        $this->assertEquals($parameters, $invocation->parameters);
-        $this->assertNotSame($parameters, $invocation->parameters);
+        $this->assertEquals($parameters, $invocation->getParameters());
+        $this->assertNotSame($parameters, $invocation->getParameters());
     }
 
     public function testAllowToGetReturnTypeSetInConstructor()
@@ -94,6 +94,6 @@ class StaticInvocationTest extends TestCase
             $expectedReturnType
         );
 
-        $this->assertSame($expectedReturnType, $invocation->returnType);
+        $this->assertSame($expectedReturnType, $invocation->getReturnType());
     }
 }

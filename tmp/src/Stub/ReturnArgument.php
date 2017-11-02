@@ -16,7 +16,10 @@ use PHPUnit\Framework\MockObject\Invocation;
  */
 class ReturnArgument extends ReturnStub
 {
-    protected $argumentIndex;
+    /**
+     * @var int
+     */
+    private $argumentIndex;
 
     public function __construct($argumentIndex)
     {
@@ -25,15 +28,15 @@ class ReturnArgument extends ReturnStub
 
     public function invoke(Invocation $invocation)
     {
-        if (isset($invocation->parameters[$this->argumentIndex])) {
-            return $invocation->parameters[$this->argumentIndex];
-        } else {
-            return;
+        if (isset($invocation->getParameters()[$this->argumentIndex])) {
+            return $invocation->getParameters()[$this->argumentIndex];
         }
+
+        return;
     }
 
     public function toString()
     {
-        return sprintf('return argument #%d', $this->argumentIndex);
+        return \sprintf('return argument #%d', $this->argumentIndex);
     }
 }

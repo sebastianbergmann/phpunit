@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
-use PHPUnit\Framework\MockObject\Builder\NamespaceMatch;
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMocker;
-use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
-use PHPUnit\Framework\MockObject\Builder\Match;
 use Exception;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMocker;
+use PHPUnit\Framework\MockObject\Builder\Match;
+use PHPUnit\Framework\MockObject\Builder\NamespaceMatch;
+use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
+use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
 
 /**
  * Mocker for invocations which are sent from
@@ -28,12 +28,12 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     /**
      * @var MatcherInvocation[]
      */
-    protected $matchers = [];
+    private $matchers = [];
 
     /**
      * @var Match[]
      */
-    protected $builderMap = [];
+    private $builderMap = [];
 
     /**
      * @var string[]
@@ -146,7 +146,9 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
 
         if ($hasReturnValue) {
             return $returnValue;
-        } elseif (strtolower($invocation->methodName) == '__tostring') {
+        }
+
+        if (\strtolower($invocation->getMethodName()) === '__tostring') {
             return '';
         }
 
@@ -171,6 +173,8 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
 
     /**
      * @return bool
+     *
+     * @throws \PHPUnit\Framework\ExpectationFailedException
      */
     public function verify()
     {

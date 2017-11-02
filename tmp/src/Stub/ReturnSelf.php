@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\Framework\MockObject\Stub;
 
-use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Invocation;
-use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit\Framework\MockObject\Invocation\ObjectInvocation;
+use PHPUnit\Framework\MockObject\RuntimeException;
+use PHPUnit\Framework\MockObject\Stub;
 
 /**
  * Stubs a method by returning the current object.
@@ -28,7 +28,7 @@ class ReturnSelf implements Stub
             );
         }
 
-        return $invocation->object;
+        return $invocation->getObject();
     }
 
     public function toString()

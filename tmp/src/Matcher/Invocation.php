@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Framework\MockObject\Matcher;
 
-use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Framework\MockObject\Verifiable;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
+use PHPUnit\Framework\MockObject\Verifiable;
+use PHPUnit\Framework\SelfDescribing;
 
 /**
  * Interface for classes which matches an invocation based on its

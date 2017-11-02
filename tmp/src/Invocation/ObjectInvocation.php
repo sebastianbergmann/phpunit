@@ -17,7 +17,7 @@ class ObjectInvocation extends StaticInvocation
     /**
      * @var object
      */
-    public $object;
+    private $object;
 
     /**
      * @param string $className
@@ -32,5 +32,10 @@ class ObjectInvocation extends StaticInvocation
         parent::__construct($className, $methodName, $parameters, $returnType, $cloneObjects);
 
         $this->object = $object;
+    }
+
+    public function getObject()
+    {
+        return $this->object;
     }
 }

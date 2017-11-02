@@ -25,7 +25,7 @@ class InvokedCount extends InvokedRecorder
     /**
      * @var int
      */
-    protected $expectedCount;
+    private $expectedCount;
 
     /**
      * @param int $expectedCount
@@ -66,22 +66,21 @@ class InvokedCount extends InvokedRecorder
             $message = $invocation->toString() . ' ';
 
             switch ($this->expectedCount) {
-                case 0: {
+                case 0:
                     $message .= 'was not expected to be called.';
-                }
-                break;
 
-                case 1: {
+                    break;
+
+                case 1:
                     $message .= 'was not expected to be called more than once.';
-                }
-                break;
 
-                default: {
-                    $message .= sprintf(
+                    break;
+
+                default:
+                    $message .= \sprintf(
                         'was not expected to be called more than %d times.',
                         $this->expectedCount
                     );
-                    }
             }
 
             throw new ExpectationFailedException($message);
@@ -100,7 +99,7 @@ class InvokedCount extends InvokedRecorder
 
         if ($count !== $this->expectedCount) {
             throw new ExpectationFailedException(
-                sprintf(
+                \sprintf(
                     'Method was expected to be called %d times, ' .
                     'actually called %d times.',
                     $this->expectedCount,

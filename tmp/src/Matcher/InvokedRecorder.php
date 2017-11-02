@@ -22,14 +22,14 @@ abstract class InvokedRecorder implements Invocation
     /**
      * @var BaseInvocation[]
      */
-    protected $invocations = [];
+    private $invocations = [];
 
     /**
      * @return int
      */
     public function getInvocationCount()
     {
-        return count($this->invocations);
+        return \count($this->invocations);
     }
 
     /**
@@ -45,7 +45,7 @@ abstract class InvokedRecorder implements Invocation
      */
     public function hasBeenInvoked()
     {
-        return count($this->invocations) > 0;
+        return \count($this->invocations) > 0;
     }
 
     /**

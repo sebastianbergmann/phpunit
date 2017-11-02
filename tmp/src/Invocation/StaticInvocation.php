@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\Framework\MockObject\Invocation;
 
-use PHPUnit\Framework\SelfDescribing;
-use SebastianBergmann\Exporter\Exporter;
-use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\MockObject\Generator;
+use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\SelfDescribing;
 use ReflectionObject;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * Represents a static invocation.
@@ -23,7 +23,7 @@ class StaticInvocation implements Invocation, SelfDescribing
     /**
      * @var array
      */
-    protected static $uncloneableExtensions = [
+    private static $uncloneableExtensions = [
         'mysqli'    => true,
         'SQLite'    => true,
         'sqlite3'   => true,
@@ -35,7 +35,7 @@ class StaticInvocation implements Invocation, SelfDescribing
     /**
      * @var array
      */
-    protected static $uncloneableClasses = [
+    private static $uncloneableClasses = [
         'Closure',
         'COMPersistHelper',
         'IteratorIterator',
@@ -48,27 +48,27 @@ class StaticInvocation implements Invocation, SelfDescribing
     /**
      * @var string
      */
-    public $className;
+    private $className;
 
     /**
      * @var string
      */
-    public $methodName;
+    private $methodName;
 
     /**
      * @var array
      */
-    public $parameters;
+    private $parameters;
 
     /**
      * @var string
      */
-    public $returnType;
+    private $returnType;
 
     /**
      * @var bool
      */
-    public $returnTypeNullable = false;
+    private $isReturnTypeNullable = false;
 
     /**
      * @param string $className
@@ -83,9 +83,9 @@ class StaticInvocation implements Invocation, SelfDescribing
         $this->methodName = $methodName;
         $this->parameters = $parameters;
 
-        if (strpos($returnType, '?') === 0) {
-            $returnType               = substr($returnType, 1);
-            $this->returnTypeNullable = true;
+        if (\strpos($returnType, '?') === 0) {
+            $returnType                 = \substr($returnType, 1);
+            $this->isReturnTypeNullable = true;
         }
 
         $this->returnType = $returnType;
@@ -95,46 +95,52 @@ class StaticInvocation implements Invocation, SelfDescribing
         }
 
         foreach ($this->parameters as $key => $value) {
-            if (is_object($value)) {
+            if (\is_object($value)) {
                 $this->parameters[$key] = $this->cloneObject($value);
             }
         }
     }
 
-    /**
-     * @return string
-     */
-    public function toString()
+    public function getClassName(): string
     {
-        $exporter = new Exporter;
+        return $this->className;
+    }
 
-        return sprintf(
-            '%s::%s(%s)%s',
-            $this->className,
-            $this->methodName,
-            implode(
-                ', ',
-                array_map(
-                    [$exporter, 'shortenedExport'],
-                    $this->parameters
-                )
-            ),
-            $this->returnType ? sprintf(': %s', $this->returnType) : ''
-        );
+    public function getMethodName(): string
+    {
+        return $this->methodName;
+    }
+
+    public function getParameters(): array
+    {
+        return $this->parameters;
+    }
+
+    public function getReturnType(): string
+    {
+        return $this->returnType;
+    }
+
+    public function isReturnTypeNullable(): bool
+    {
+        return $this->isReturnTypeNullable;
     }
 
     /**
-     * @return mixed Mocked return value.
+     * @return mixed Mocked return value
+     *
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws \PHPUnit\Framework\Exception
      */
     public function generateReturnValue()
     {
         switch ($this->returnType) {
             case '':       return;
-            case 'string': return $this->returnTypeNullable ? null : '';
-            case 'float':  return $this->returnTypeNullable ? null : 0.0;
-            case 'int':    return $this->returnTypeNullable ? null : 0;
-            case 'bool':   return $this->returnTypeNullable ? null : false;
-            case 'array':  return $this->returnTypeNullable ? null : [];
+            case 'string': return $this->isReturnTypeNullable ? null : '';
+            case 'float':  return $this->isReturnTypeNullable ? null : 0.0;
+            case 'int':    return $this->isReturnTypeNullable ? null : 0;
+            case 'bool':   return $this->isReturnTypeNullable ? null : false;
+            case 'array':  return $this->isReturnTypeNullable ? null : [];
             case 'void':   return;
 
             case 'callable':
@@ -151,7 +157,7 @@ class StaticInvocation implements Invocation, SelfDescribing
                 return $generator();
 
             default:
-                if ($this->returnTypeNullable) {
+                if ($this->isReturnTypeNullable) {
                     return;
                 }
 
@@ -161,12 +167,31 @@ class StaticInvocation implements Invocation, SelfDescribing
         }
     }
 
+    public function toString(): string
+    {
+        $exporter = new Exporter;
+
+        return \sprintf(
+            '%s::%s(%s)%s',
+            $this->className,
+            $this->methodName,
+            \implode(
+                ', ',
+                \array_map(
+                    [$exporter, 'shortenedExport'],
+                    $this->parameters
+                )
+            ),
+            $this->returnType ? \sprintf(': %s', $this->returnType) : ''
+        );
+    }
+
     /**
      * @param object $original
      *
      * @return object
      */
-    protected function cloneObject($original)
+    private function cloneObject($original)
     {
         $cloneable = null;
         $object    = new ReflectionObject($original);
@@ -182,12 +207,13 @@ class StaticInvocation implements Invocation, SelfDescribing
             foreach (self::$uncloneableClasses as $class) {
                 if ($original instanceof $class) {
                     $cloneable = false;
+
                     break;
                 }
             }
         }
 
-        if ($cloneable === null && method_exists($object, 'isCloneable')) {
+        if ($cloneable === null && \method_exists($object, 'isCloneable')) {
             $cloneable = $object->isCloneable();
         }
 
@@ -203,7 +229,7 @@ class StaticInvocation implements Invocation, SelfDescribing
         if ($cloneable) {
             try {
                 return clone $original;
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 return $original;
             }
         } else {
