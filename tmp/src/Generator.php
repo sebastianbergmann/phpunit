@@ -1021,7 +1021,19 @@ class Generator
      */
     private function canMockMethod(ReflectionMethod $method)
     {
-        return !($method->isConstructor() || $method->isFinal() || $method->isPrivate() || $this->isMethodNameBlacklisted($method->getName()));
+        return !($method->isConstructor() || $method->isFinal() || $this->isReturnTypeFinal($method) || $method->isPrivate() || $this->isMethodNameBlacklisted($method->getName()));
+    }
+
+    /**
+     * @param ReflectionMethod $method
+     *
+     * @return bool
+     */
+    private function isReturnTypeFinal(ReflectionMethod $method)
+    {
+        return $method->hasReturnType() &&
+             \class_exists($class = $method->getReturnType()->__toString()) &&
+             (new ReflectionClass($class))->isFinal();
     }
 
     /**
