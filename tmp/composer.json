@@ -19,6 +19,7 @@
         "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues",
         "irc": "irc://irc.freenode.net/phpunit"
     },
+    "prefer-stable": true,
     "minimum-stability": "dev",
     "require": {
         "php": "^7.0",
@@ -31,6 +32,10 @@
     },
     "conflict": {
         "phpunit/phpunit": "<6.0"
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
     },
     "suggest": {
         "ext-soap": "*"

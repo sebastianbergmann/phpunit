@@ -14,8 +14,6 @@
             <arg value="--no-progress"/>
             <arg value="--no-ansi"/>
             <arg value="--no-suggest"/>
-            <arg value="--optimize-autoloader"/>
-            <arg value="--prefer-stable"/>
         </exec>
     </target>
 </project>
