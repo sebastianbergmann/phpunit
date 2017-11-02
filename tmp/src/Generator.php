@@ -912,7 +912,7 @@ class Generator
         }
 
         if ($method->hasReturnType()) {
-            $returnType = $method->getReturnType()->getName();
+            $returnType = (string) $method->getReturnType();
         } else {
             $returnType = '';
         }
@@ -1037,7 +1037,7 @@ class Generator
             return false;
         }
 
-        $returnType = $method->getReturnType()->getName();
+        $returnType = (string) $method->getReturnType();
 
         if (\class_exists($returnType)) {
             $class = new ReflectionClass($returnType);
