@@ -912,7 +912,7 @@ class Generator
         }
 
         if ($method->hasReturnType()) {
-            $returnType = (string) $method->getReturnType();
+            $returnType = $method->getReturnType()->getName();
         } else {
             $returnType = '';
         }
@@ -1028,12 +1028,24 @@ class Generator
      * @param ReflectionMethod $method
      *
      * @return bool
+     *
+     * @throws \ReflectionException
      */
     private function isReturnTypeFinal(ReflectionMethod $method)
     {
-        return $method->hasReturnType() &&
-             \class_exists($class = $method->getReturnType()->__toString()) &&
-             (new ReflectionClass($class))->isFinal();
+        if (!$method->hasReturnType()) {
+            return false;
+        }
+
+        $returnType = $method->getReturnType()->getName();
+
+        if (\class_exists($returnType)) {
+            $class = new ReflectionClass($returnType);
+
+            return $class->isFinal();
+        }
+
+        return false;
     }
 
     /**
