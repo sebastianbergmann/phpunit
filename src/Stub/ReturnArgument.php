@@ -10,11 +10,12 @@
 namespace PHPUnit\Framework\MockObject\Stub;
 
 use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\MockObject\Stub;
 
 /**
  * Stubs a method by returning an argument that was passed to the mocked method.
  */
-class ReturnArgument extends ReturnStub
+class ReturnArgument implements Stub
 {
     /**
      * @var int

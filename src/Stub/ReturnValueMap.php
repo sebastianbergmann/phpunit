@@ -37,6 +37,7 @@ class ReturnValueMap implements Stub
             }
 
             $return = \array_pop($map);
+
             if ($invocation->getParameters() === $map) {
                 return $return;
             }

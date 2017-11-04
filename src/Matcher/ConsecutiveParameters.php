@@ -38,6 +38,8 @@ class ConsecutiveParameters extends StatelessInvocation
 
     /**
      * @param array $parameterGroups
+     *
+     * @throws \PHPUnit\Framework\Exception
      */
     public function __construct(array $parameterGroups)
     {

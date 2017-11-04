@@ -18,7 +18,10 @@ use SebastianBergmann\Exporter\Exporter;
  */
 class ReturnStub implements Stub
 {
-    protected $value;
+    /**
+     * @var mixed
+     */
+    private $value;
 
     public function __construct($value)
     {
