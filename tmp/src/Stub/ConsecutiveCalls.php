@@ -28,7 +28,7 @@ class ConsecutiveCalls implements Stub
      */
     private $value;
 
-    public function __construct($stack)
+    public function __construct(array $stack)
     {
         $this->stack = $stack;
     }

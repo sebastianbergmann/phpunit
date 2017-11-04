@@ -96,11 +96,13 @@ class InvocationMocker implements MethodNameMatch
      */
     public function willReturn($value, ...$nextValues)
     {
-        $stub = \count($nextValues) === 0 ?
-            new Stub\ReturnStub($value) :
-            new Stub\ConsecutiveCalls(
-               \array_merge([$value], $nextValues)
+        if (\count($nextValues) === 0) {
+            $stub = new Stub\ReturnStub($value);
+        } else {
+            $stub = new Stub\ConsecutiveCalls(
+                \array_merge([$value], $nextValues)
             );
+        }
 
         return $this->will($stub);
     }
@@ -124,9 +126,7 @@ class InvocationMocker implements MethodNameMatch
      */
     public function willReturnMap(array $valueMap)
     {
-        $stub = new Stub\ReturnValueMap(
-            $valueMap
-        );
+        $stub = new Stub\ReturnValueMap($valueMap);
 
         return $this->will($stub);
     }
@@ -138,9 +138,7 @@ class InvocationMocker implements MethodNameMatch
      */
     public function willReturnArgument($argumentIndex)
     {
-        $stub = new Stub\ReturnArgument(
-            $argumentIndex
-        );
+        $stub = new Stub\ReturnArgument($argumentIndex);
 
         return $this->will($stub);
     }
@@ -152,9 +150,7 @@ class InvocationMocker implements MethodNameMatch
      */
     public function willReturnCallback($callback)
     {
-        $stub = new Stub\ReturnCallback(
-            $callback
-        );
+        $stub = new Stub\ReturnCallback($callback);
 
         return $this->will($stub);
     }

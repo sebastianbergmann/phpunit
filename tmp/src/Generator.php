@@ -70,10 +70,10 @@ class Generator
      *
      * @return MockObject
      *
-     * @throws \ReflectionException
-     * @throws InvalidArgumentException
      * @throws Exception
      * @throws RuntimeException
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \ReflectionException
      */
     public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true)
     {
@@ -85,7 +85,7 @@ class Generator
             throw InvalidArgumentHelper::factory(4, 'string');
         }
 
-        if (!\is_array($methods) && !\is_null($methods)) {
+        if (!\is_array($methods) && null !== $methods) {
             throw InvalidArgumentHelper::factory(2, 'array', $methods);
         }
 
@@ -455,6 +455,7 @@ class Generator
      *
      * @return array
      *
+     * @throws \ReflectionException
      * @throws \PHPUnit\Framework\MockObject\RuntimeException
      */
     public function generate($type, array $methods = null, $mockClassName = '', $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false)
@@ -593,6 +594,7 @@ class Generator
      *
      * @return array
      *
+     * @throws \InvalidArgumentException
      * @throws \ReflectionException
      * @throws RuntimeException
      */
@@ -712,7 +714,7 @@ class Generator
         $configurable  = [];
 
         foreach ($methods as $methodName) {
-            if ($methodName != '__construct' && $methodName != '__clone') {
+            if ($methodName !== '__construct' && $methodName !== '__clone') {
                 $configurable[] = \strtolower($methodName);
             }
         }
@@ -890,6 +892,8 @@ class Generator
      * @param bool             $callOriginalMethods
      *
      * @return string
+     *
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
      */
     private function generateMockedMethodDefinitionFromExisting(ReflectionMethod $method, $cloneArguments, $callOriginalMethods)
     {
@@ -954,6 +958,8 @@ class Generator
      * @param bool        $allowsReturnNull
      *
      * @return string
+     *
+     * @throws \InvalidArgumentException
      */
     private function generateMockedMethodDefinition($className, $methodName, $cloneArguments = true, $modifier = 'public', $argumentsForDeclaration = '', $argumentsForCall = '', $returnType = '', $reference = '', $callOriginalMethods = false, $static = false, $deprecation = false, $allowsReturnNull = false)
     {
@@ -1001,7 +1007,7 @@ class Generator
                 'arguments_call'  => $argumentsForCall,
                 'return_delim'    => $returnType ? ': ' : '',
                 'return_type'     => $allowsReturnNull ? '?' . $returnType : $returnType,
-                'arguments_count' => !empty($argumentsForCall) ? \count(\explode(',', $argumentsForCall)) : 0,
+                'arguments_count' => !empty($argumentsForCall) ? \substr_count($argumentsForCall, ',') + 1 : 0,
                 'class_name'      => $className,
                 'method_name'     => $methodName,
                 'modifier'        => $modifier,
@@ -1018,6 +1024,8 @@ class Generator
      * @param ReflectionMethod $method
      *
      * @return bool
+     *
+     * @throws \ReflectionException
      */
     private function canMockMethod(ReflectionMethod $method)
     {

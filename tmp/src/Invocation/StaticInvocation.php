@@ -129,6 +129,7 @@ class StaticInvocation implements Invocation, SelfDescribing
     /**
      * @return mixed Mocked return value
      *
+     * @throws \ReflectionException
      * @throws \PHPUnit\Framework\MockObject\RuntimeException
      * @throws \PHPUnit\Framework\Exception
      */

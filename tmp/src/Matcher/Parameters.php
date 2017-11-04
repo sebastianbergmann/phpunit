@@ -156,7 +156,7 @@ class Parameters extends StatelessInvocation
      */
     private function guardAgainstDuplicateEvaluationOfParameterConstraints()
     {
-        if ($this->parameterVerificationResult instanceof Exception) {
+        if ($this->parameterVerificationResult instanceof \Exception) {
             throw $this->parameterVerificationResult;
         }
 
