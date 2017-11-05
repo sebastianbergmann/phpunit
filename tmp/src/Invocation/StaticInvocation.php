@@ -135,15 +135,32 @@ class StaticInvocation implements Invocation, SelfDescribing
      */
     public function generateReturnValue()
     {
-        switch (strtolower($this->returnType)) {
-            case '':       return;
-            case 'string': return $this->isReturnTypeNullable ? null : '';
-            case 'float':  return $this->isReturnTypeNullable ? null : 0.0;
-            case 'int':    return $this->isReturnTypeNullable ? null : 0;
-            case 'bool':   return $this->isReturnTypeNullable ? null : false;
-            case 'array':  return $this->isReturnTypeNullable ? null : [];
-            case 'void':   return;
-            case 'object': return $this->isReturnTypeNullable ? null : new \stdClass;
+        if ($this->isReturnTypeNullable) {
+            return null;
+        }
+
+        switch (\strtolower($this->returnType)) {
+            case '':
+            case 'void':
+                return;
+
+            case 'string':
+                return '';
+
+            case 'float':
+                return 0.0;
+
+            case 'int':
+                return 0;
+
+            case 'bool':
+                return false;
+
+            case 'array':
+                return [];
+
+            case 'object':
+                return new \stdClass;
 
             case 'callable':
             case 'closure':
@@ -160,11 +177,7 @@ class StaticInvocation implements Invocation, SelfDescribing
                 return $generator();
 
             default:
-                if ($this->isReturnTypeNullable) {
-                    return;
-                }
-
-                $generator = new Generator();
+                $generator = new Generator;
 
                 return $generator->getMock($this->returnType, [], [], '', false);
         }
