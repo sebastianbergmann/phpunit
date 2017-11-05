@@ -124,7 +124,7 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
      */
     public function generateReturnValue()
     {
-        switch ($this->returnType) {
+        switch (strtolower($this->returnType)) {
             case '':       return;
             case 'string': return $this->returnTypeNullable ? null : '';
             case 'float':  return $this->returnTypeNullable ? null : 0.0;
@@ -134,12 +134,13 @@ class PHPUnit_Framework_MockObject_Invocation_Static implements PHPUnit_Framewor
             case 'void':   return;
 
             case 'callable':
-            case 'Closure':
+            case 'closure':
                 return function () {
                 };
 
-            case 'Traversable':
-            case 'Generator':
+            case 'traversable':
+            case 'generator':
+            case 'iterable':
                 $generator = function () {
                     yield;
                 };
