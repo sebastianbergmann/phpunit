@@ -135,7 +135,7 @@ class StaticInvocation implements Invocation, SelfDescribing
      */
     public function generateReturnValue()
     {
-        switch ($this->returnType) {
+        switch (strtolower($this->returnType)) {
             case '':       return;
             case 'string': return $this->isReturnTypeNullable ? null : '';
             case 'float':  return $this->isReturnTypeNullable ? null : 0.0;
@@ -145,12 +145,13 @@ class StaticInvocation implements Invocation, SelfDescribing
             case 'void':   return;
 
             case 'callable':
-            case 'Closure':
+            case 'closure':
                 return function () {
                 };
 
-            case 'Traversable':
-            case 'Generator':
+            case 'traversable':
+            case 'generator':
+            case 'iterable':
                 $generator = function () {
                     yield;
                 };
