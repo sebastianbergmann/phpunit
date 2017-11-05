@@ -143,6 +143,7 @@ class StaticInvocation implements Invocation, SelfDescribing
             case 'bool':   return $this->isReturnTypeNullable ? null : false;
             case 'array':  return $this->isReturnTypeNullable ? null : [];
             case 'void':   return;
+            case 'object': return $this->isReturnTypeNullable ? null : new \stdClass;
 
             case 'callable':
             case 'closure':
