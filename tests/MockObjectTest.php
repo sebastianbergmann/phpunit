@@ -1037,9 +1037,6 @@ class MockObjectTest extends TestCase
         }
     }
 
-    /**
-     * @covers StaticInvocation::generateReturnValue()
-     */
     public function testReturnTypesAreMockedCorrectly()
     {
         /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
@@ -1055,8 +1052,6 @@ class MockObjectTest extends TestCase
     }
 
     /**
-     * @covers StaticInvocation::generateReturnValue()
-     *
      * @requires PHP 7.1
      */
     public function testVoidReturnTypeIsMockedCorrectly()
@@ -1068,8 +1063,6 @@ class MockObjectTest extends TestCase
     }
 
     /**
-     * @covers StaticInvocation::generateReturnValue()
-     *
      * @requires PHP 7.2
      */
     public function testObjectReturnTypeIsMockedCorrectly()
