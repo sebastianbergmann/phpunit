@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
 
@@ -1034,5 +1035,24 @@ class MockObjectTest extends TestCase
         for ($i = 0; $i < $expectedNumberOfCalls; $i++) {
             $mock->bar('call_' . $i);
         }
+    }
+
+    /**
+     * @covers StaticInvocation::generateReturnValue()
+     */
+    public function testReturnTypesAreMockedCorrectly()
+    {
+        /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
+        $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
+
+        $this->assertNull($stub->methodWithNoReturnTypeDeclaration());
+        $this->assertNull($stub->methodWithVoidReturnTypeDeclaration());
+        $this->assertSame('', $stub->methodWithStringReturnTypeDeclaration());
+        $this->assertSame(0.0, $stub->methodWithFloatReturnTypeDeclaration());
+        $this->assertSame(0, $stub->methodWithIntReturnTypeDeclaration());
+        $this->assertFalse($stub->methodWithBoolReturnTypeDeclaration());
+        $this->assertSame([], $stub->methodWithArrayReturnTypeDeclaration());
+        $this->assertInstanceOf(stdClass::class, $stub->methodWithObjectReturnTypeDeclaration());
+        $this->assertInstanceOf(MockObject::class, $stub->methodWithClassReturnTypeDeclaration());
     }
 }
