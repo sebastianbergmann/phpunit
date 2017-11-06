@@ -1046,13 +1046,37 @@ class MockObjectTest extends TestCase
         $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
 
         $this->assertNull($stub->methodWithNoReturnTypeDeclaration());
-        $this->assertNull($stub->methodWithVoidReturnTypeDeclaration());
         $this->assertSame('', $stub->methodWithStringReturnTypeDeclaration());
         $this->assertSame(0.0, $stub->methodWithFloatReturnTypeDeclaration());
         $this->assertSame(0, $stub->methodWithIntReturnTypeDeclaration());
         $this->assertFalse($stub->methodWithBoolReturnTypeDeclaration());
         $this->assertSame([], $stub->methodWithArrayReturnTypeDeclaration());
-        $this->assertInstanceOf(stdClass::class, $stub->methodWithObjectReturnTypeDeclaration());
         $this->assertInstanceOf(MockObject::class, $stub->methodWithClassReturnTypeDeclaration());
+    }
+
+    /**
+     * @covers StaticInvocation::generateReturnValue()
+     *
+     * @requires PHP 7.1
+     */
+    public function testVoidReturnTypeIsMockedCorrectly()
+    {
+        /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
+        $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
+
+        $this->assertNull($stub->methodWithVoidReturnTypeDeclaration());
+    }
+
+    /**
+     * @covers StaticInvocation::generateReturnValue()
+     *
+     * @requires PHP 7.2
+     */
+    public function testObjectReturnTypeIsMockedCorrectly()
+    {
+        /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
+        $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
+
+        $this->assertInstanceOf(stdClass::class, $stub->methodWithObjectReturnTypeDeclaration());
     }
 }
