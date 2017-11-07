@@ -32,7 +32,7 @@
         "phar-io/version": "^1.0",
         "phpspec/prophecy": "^1.7",
         "phpunit/php-code-coverage": "^5.2.2",
-        "phpunit/php-file-iterator": "^1.4.2",
+        "phpunit/php-file-iterator": "1.4.x-dev#f7c4bddb6acca98ba2e754545a24dfdcb8513461",
         "phpunit/php-text-template": "^1.2.1",
         "phpunit/php-timer": "^1.0.9",
         "phpunit/phpunit-mock-objects": "^4.0.3",
