@@ -230,11 +230,11 @@ class Configuration
                     'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
                     'include'                            => [
                         'directory' => [],
-                        'file' => []
+                        'file'      => []
                     ],
                     'exclude' => [
                         'directory' => [],
-                        'file' => []
+                        'file'      => []
                     ]
                 ]
             ];
