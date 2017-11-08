@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2814](https://github.com/sebastianbergmann/phpunit/pull/2814): Incorrect signature of `expectExceptionObject()`
+* Fixed [#2844](https://github.com/sebastianbergmann/phpunit/issues/2844): The commandline option `--whitelist` has no effect
 
 ## [6.4.3] - 2017-10-16
 
