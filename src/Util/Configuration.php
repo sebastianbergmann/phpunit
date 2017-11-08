@@ -269,11 +269,11 @@ class Configuration
                 'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
                 'include'                            => [
                     'directory' => $includeDirectory,
-                    'file' => $includeFile
+                    'file'      => $includeFile
                 ],
                 'exclude' => [
                     'directory' => $excludeDirectory,
-                    'file' => $excludeFile
+                    'file'      => $excludeFile
                 ]
             ]
         ];
