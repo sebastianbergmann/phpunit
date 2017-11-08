@@ -225,7 +225,18 @@ class Configuration
 
         if ($tmp->length == 0) {
             return [
-                'whitelist' => []
+                'whitelist' => [
+                    'addUncoveredFilesFromWhitelist'     => $addUncoveredFilesFromWhitelist,
+                    'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
+                    'include'                            => [
+                        'directory' => [],
+                        'file' => []
+                    ],
+                    'exclude' => [
+                        'directory' => [],
+                        'file' => []
+                    ]
+                ]
             ];
         }
 
