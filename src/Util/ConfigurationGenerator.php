@@ -24,7 +24,7 @@ class PHPUnit_Util_ConfigurationGenerator
          beStrictAboutTestsThatDoNotTestAnything="true"
          beStrictAboutTodoAnnotatedTests="true"
          verbose="true">
-    <testsuite>
+    <testsuite name="default">
         <directory suffix="Test.php">{tests_directory}</directory>
     </testsuite>
 
