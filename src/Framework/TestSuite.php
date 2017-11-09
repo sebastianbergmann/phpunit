@@ -88,6 +88,11 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     private $iteratorFilter = null;
 
     /**
+     * @var array
+     */
+    private $declaredClasses;
+
+    /**
      * Constructs a new TestSuite:
      *
      *   - PHPUnit_Framework_TestSuite() constructs an empty TestSuite.
@@ -111,6 +116,8 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function __construct($theClass = '', $name = '')
     {
+        $this->declaredClasses = get_declared_classes();
+
         $argumentsValid = false;
 
         if (is_object($theClass) &&
@@ -292,12 +299,6 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
      */
     public function addTestFile($filename)
     {
-        static $declaredClasses;
-
-        if ($declaredClasses === null) {
-            $declaredClasses = get_declared_classes();
-        }
-
         if (!is_string($filename)) {
             throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
         }
@@ -313,7 +314,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         // The given file may contain further stub classes in addition to the
         // test class itself. Figure out the actual test class.
         $filename   = PHPUnit_Util_Fileloader::checkAndLoad($filename);
-        $newClasses = array_diff(get_declared_classes(), $declaredClasses);
+        $newClasses = array_diff(get_declared_classes(), $this->declaredClasses);
 
         // The diff is empty in case a parent class (with test methods) is added
         // AFTER a child class that inherited from it. To account for that case,
@@ -324,7 +325,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
             // process discovered classes in approximate LIFO order, so as to
             // avoid unnecessary reflection.
             $this->foundClasses = array_merge($newClasses, $this->foundClasses);
-            $declaredClasses    = get_declared_classes();
+            $this->declaredClasses = get_declared_classes();
         }
 
         // The test class's name must match the filename, either in full, or as
