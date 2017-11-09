@@ -454,20 +454,23 @@ class TestRunner extends BaseTestRunner
                 $codeCoverage->setDisableIgnoredLines(true);
             }
 
+            $whitelistFromConfigurationFile = false;
+            $whitelistFromOption            = false;
+
             if (isset($arguments['whitelist'])) {
                 $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
+
+                $whitelistFromOption = true;
             }
 
             if (isset($arguments['configuration'])) {
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-                if (empty($filterConfiguration['whitelist']) && !isset($arguments['whitelist'])) {
-                    $this->writeMessage('Error', 'No whitelist is configured, no code coverage will be generated.');
+                if (!empty($filterConfiguration['whitelist'])) {
+                    $whitelistFromConfigurationFile = true;
+                }
 
-                    $codeCoverageReports = 0;
-
-                    unset($codeCoverage);
-                } else {
+                if (!empty($filterConfiguration['whitelist'])) {
                     $codeCoverage->setAddUncoveredFilesFromWhitelist(
                         $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
                     );
@@ -503,7 +506,11 @@ class TestRunner extends BaseTestRunner
             }
 
             if (isset($codeCoverage) && !$this->codeCoverageFilter->hasWhitelist()) {
-                $this->writeMessage('Error', 'Incorrect whitelist config, no code coverage will be generated.');
+                if (!$whitelistFromConfigurationFile && !$whitelistFromOption) {
+                    $this->writeMessage('Error', 'No whitelist is configured, no code coverage will be generated.');
+                } else {
+                    $this->writeMessage('Error', 'Incorrect whitelist config, no code coverage will be generated.');
+                }
 
                 $codeCoverageReports = 0;
 
