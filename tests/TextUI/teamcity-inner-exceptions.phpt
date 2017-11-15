@@ -25,7 +25,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ##teamcity[testStarted name='testNestedExceptions' locationHint='php_qn://%s%etests%e_files%eExceptionStackTest.php::\ExceptionStackTest::testNestedExceptions' flowId='%d']
 
-##teamcity[testFailed name='testNestedExceptions' message='One' details=' %s%etests%e_files%eExceptionStackTest.php:22|n |n Caused by|n InvalidArgumentException: Two|n |n %s%etests%e_files%eExceptionStackTest.php:21|n |n Caused by|n Exception: Three|n |n %s%etests%e_files%eExceptionStackTest.php:20|n ' flowId='%d']
+##teamcity[testFailed name='testNestedExceptions' message='Exception : One' details=' %s%etests%e_files%eExceptionStackTest.php:22|n |n Caused by|n InvalidArgumentException: Two|n |n %s%etests%e_files%eExceptionStackTest.php:21|n |n Caused by|n Exception: Three|n |n %s%etests%e_files%eExceptionStackTest.php:20|n ' flowId='%d']
 
 ##teamcity[testFinished name='testNestedExceptions' duration='%d' flowId='%d']
 
