@@ -11,7 +11,6 @@
 namespace PHPUnit\Util\Log;
 
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\Test;
@@ -337,9 +336,9 @@ class TeamCity extends ResultPrinter
     {
         $message = '';
 
-        if (!$e instanceof Exception) {
-            if (\strlen(\get_class($e)) != 0) {
-                $message .= \get_class($e);
+        if ($e instanceof ExceptionWrapper) {
+            if (\strlen($e->getClassName()) != 0) {
+                $message .= $e->getClassName();
             }
 
             if (\strlen($message) != 0 && \strlen($e->getMessage()) != 0) {
