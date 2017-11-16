@@ -322,9 +322,9 @@ class PHPUnit_Util_Log_TeamCity extends PHPUnit_TextUI_ResultPrinter
     {
         $message = '';
 
-        if (!$e instanceof PHPUnit_Framework_Exception) {
-            if (strlen(get_class($e)) != 0) {
-                $message = $message . get_class($e);
+        if ($e instanceof PHPUnit_Framework_ExceptionWrapper) {
+            if (strlen($e->getClassName()) != 0) {
+                $message = $message . $e->getClassName();
             }
 
             if (strlen($message) != 0 && strlen($e->getMessage()) != 0) {
