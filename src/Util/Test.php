@@ -524,7 +524,15 @@ class Test
                 }
 
                 if ($data instanceof Traversable) {
-                    $data = \iterator_to_array($data, false);
+                    $origData = $data;
+                    $data = [];
+                    foreach ($origData as $key => $value) {
+                        if (is_int($key)) {
+                            $data[] = $value;
+                        } else {
+                            $data[$key] = $value;
+                        }
+                    }
                 }
 
                 if (\is_array($data)) {
