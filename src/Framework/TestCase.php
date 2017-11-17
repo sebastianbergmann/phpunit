@@ -1948,6 +1948,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return \is_string($this->dataName) ? $this->dataName : '';
     }
 
+    /**
+     * @return int|string
+     */
+    public function dataID()
+    {
+        return $this->dataName;
+    }
+
     public function registerComparator(Comparator $comparator)
     {
         ComparatorFactory::getInstance()->register($comparator);
