@@ -1,9 +1,9 @@
 --TEST--
-phpunit ../_files/DataProviderDeclaringClass
+phpunit ../_files/DataProviderIssue2833
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = __DIR__ . '/../_files/DataProviderDeclaringClass';
+$_SERVER['argv'][2] = __DIR__ . '/../_files/DataProviderIssue2833';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit_TextUI_Command::main();
