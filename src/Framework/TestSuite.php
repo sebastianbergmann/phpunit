@@ -348,6 +348,10 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
         }
 
         foreach ($newClasses as $className) {
+            if ($className === 'PHPUnit_Framework_TestSuite_DataProvider') {
+                continue;
+            }
+
             $class = new ReflectionClass($className);
 
             if (!$class->isAbstract()) {
