@@ -88,7 +88,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
     private $iteratorFilter = null;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $declaredClasses;
 
