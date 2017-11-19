@@ -1951,7 +1951,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return int|string
      */
-    public function dataID()
+    public function dataName()
     {
         return $this->dataName;
     }
