@@ -1047,6 +1047,10 @@ class Generator
 
         $returnType = (string) $method->getReturnType();
 
+        if ($returnType === \Generator::class || $returnType === \Closure::class) {
+            return false;
+        }
+
         if (\class_exists($returnType)) {
             $class = new ReflectionClass($returnType);
 
