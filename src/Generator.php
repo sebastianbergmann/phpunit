@@ -1029,7 +1029,7 @@ class Generator
      */
     private function canMockMethod(ReflectionMethod $method)
     {
-        return !($method->isConstructor() || $method->isFinal() || $this->isReturnTypeFinal($method) || $method->isPrivate() || $this->isMethodNameBlacklisted($method->getName()));
+        return !($method->isConstructor() || $method->isFinal() || $this->canReturnTypeBeStubbed($method) || $method->isPrivate() || $this->isMethodNameBlacklisted($method->getName()));
     }
 
     /**
@@ -1039,7 +1039,7 @@ class Generator
      *
      * @throws \ReflectionException
      */
-    private function isReturnTypeFinal(ReflectionMethod $method)
+    private function canReturnTypeBeStubbed(ReflectionMethod $method)
     {
         if (!$method->hasReturnType()) {
             return false;
