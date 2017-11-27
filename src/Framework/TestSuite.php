@@ -323,7 +323,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         // The given file may contain further stub classes in addition to the
         // test class itself. Figure out the actual test class.
         $filename   = Fileloader::checkAndLoad($filename);
-        $newClasses = array_diff(\get_declared_classes(), $this->declaredClasses);
+        $newClasses = \array_diff(\get_declared_classes(), $this->declaredClasses);
 
         // The diff is empty in case a parent class (with test methods) is added
         // AFTER a child class that inherited from it. To account for that case,

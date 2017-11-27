@@ -12,17 +12,16 @@ namespace PHPUnit\Util;
 
 use PHPUnit\Framework\Exception;
 
-/**
- * JSON helpers.
- * Class Json
- * @package PHPUnit\Util
- */
 class Json
 {
     /**
      * Prettify json string
+     *
      * @param string $json
+     *
      * @return string
+     *
+     * @throws \PHPUnit\Framework\Exception
      */
     public static function prettify(string $json)
     {
@@ -47,10 +46,13 @@ class Json
     public static function canonicalize(string $json)
     {
         $decodedJson = \json_decode($json, true);
+
         if (\json_last_error()) {
             return [true, null];
         }
+
         self::recursiveSort($decodedJson);
+
         $reencodedJson = \json_encode($decodedJson);
 
         return [false, $reencodedJson];
@@ -66,7 +68,9 @@ class Json
         if (false === \is_array($json)) {
             return;
         }
+
         \ksort($json);
+
         foreach ($json as $key => &$value) {
             self::recursiveSort($value);
         }

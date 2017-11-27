@@ -10,8 +10,8 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
-use SebastianBergmann\Comparator\ComparisonFailure;
 use PHPUnit\Util\Json;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * Asserts whether or not two JSON objects are equal.

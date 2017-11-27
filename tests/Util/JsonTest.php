@@ -12,10 +12,6 @@ namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * Class JsonTest
- * @package PHPUnit\Util
- */
 class JsonTest extends TestCase
 {
     /**
