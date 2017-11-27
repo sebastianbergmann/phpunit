@@ -11,7 +11,8 @@ All notable changes of the PHPUnit 6.5 release series are documented in this fil
 
 ### Fixed
 
-* Implemented [#2810](https://github.com/sebastianbergmann/phpunit/pull/2810): Restore PHPT code coverage support
+* Fixed [#2654](https://github.com/sebastianbergmann/phpunit/issues/2654): Problems with `assertJsonStringEqualsJsonString()`
+* Fixed [#2810](https://github.com/sebastianbergmann/phpunit/pull/2810): Code Coverage for PHPT tests does not work
 
 [6.5.0]: https://github.com/sebastianbergmann/phpunit/compare/6.4...6.5.0
 
