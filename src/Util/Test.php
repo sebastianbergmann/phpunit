@@ -525,9 +525,9 @@ class Test
 
                 if ($data instanceof Traversable) {
                     $origData = $data;
-                    $data = [];
+                    $data     = [];
                     foreach ($origData as $key => $value) {
-                        if (is_int($key)) {
+                        if (\is_int($key)) {
                             $data[] = $value;
                         } else {
                             $data[$key] = $value;
