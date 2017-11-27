@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 6.4 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2833](https://github.com/sebastianbergmann/phpunit/issues/2833): Test class loaded during data provider execution is not discovered
+* Fixed [#2867](https://github.com/sebastianbergmann/phpunit/issues/2867): Regression introduced by fix for [#2693](https://github.com/sebastianbergmann/phpunit/issues/2693)
 
 ## [6.4.4] - 2017-11-08
 
