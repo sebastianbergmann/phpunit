@@ -49,10 +49,6 @@
     "require-dev": {
         "ext-PDO": "*"
     },
-    "conflict": {
-        "phpunit/dbunit": "<3.0",
-        "phpdocumentor/reflection-docblock": "3.0.2"
-    },
     "config": {
         "platform": {
             "php": "7.0.0"
@@ -83,7 +79,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.5.x-dev"
+            "dev-master": "7.0-dev"
         }
     }
 }
