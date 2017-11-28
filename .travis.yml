@@ -8,7 +8,6 @@ addons:
       - libxml2-utils
 
 php:
-  - 7.0
   - 7.1
   - 7.2
   - master

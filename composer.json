@@ -22,7 +22,7 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.0",
+        "php": "^7.1",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-libxml": "*",
@@ -51,7 +51,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.0.0"
+            "php": "7.1.0"
         },
         "optimize-autoloader": true,
         "sort-packages": true
