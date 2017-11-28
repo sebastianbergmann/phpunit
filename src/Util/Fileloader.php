@@ -64,15 +64,14 @@ class Fileloader
         include_once $filename;
 
         $newVariables     = \get_defined_vars();
+        unset($newVariables['oldVariableNames']);
         $newVariableNames = \array_diff(
             \array_keys($newVariables),
             $oldVariableNames
         );
 
         foreach ($newVariableNames as $variableName) {
-            if ($variableName != 'oldVariableNames') {
-                $GLOBALS[$variableName] = $newVariables[$variableName];
-            }
+            $GLOBALS[$variableName] = $newVariables[$variableName];
         }
 
         return $filename;
