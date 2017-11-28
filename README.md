@@ -4,7 +4,7 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/phpunit/phpunit.svg?style=flat-square)](https://packagist.org/packages/phpunit/phpunit)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.0-8892BF.svg?style=flat-square)](https://php.net/)
-[![Build Status](https://img.shields.io/travis/sebastianbergmann/phpunit/master.svg?style=flat-square)](https://phpunit.de/build-status.html)
+[![Build Status](https://img.shields.io/travis/sebastianbergmann/phpunit/6.5.svg?style=flat-square)](https://phpunit.de/build-status.html)
 
 ## Installation
 
