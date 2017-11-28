@@ -11,13 +11,12 @@
     "authors": [
         {
             "name": "Sebastian Bergmann",
-            "email": "sb@sebastian-bergmann.de",
+            "email": "sebastian@phpunit.de",
             "role": "lead"
         }
     ],
     "support": {
-        "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues",
-        "irc": "irc://irc.freenode.net/phpunit"
+        "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues"
     },
     "prefer-stable": true,
     "minimum-stability": "dev",
