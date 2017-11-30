@@ -310,6 +310,20 @@ class ConfigurationTest extends TestCase
         $this->assertEquals('putenv', \getenv('foo'));
     }
 
+    /**
+     * @backupGlobals enabled
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/1181
+     */
+    public function testHandlePHPConfigurationDoesOverwriteVariablesFromPutEnvWhenForced()
+    {
+        \putenv('foo_force=putenv');
+        $this->configuration->handlePHPConfiguration();
+
+        $this->assertEquals('forced', $_ENV['foo_force']);
+        $this->assertEquals('forced', \getenv('foo_force'));
+    }
+
     public function testPHPUnitConfigurationIsReadCorrectly()
     {
         $this->assertEquals(
