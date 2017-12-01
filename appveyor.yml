@@ -7,20 +7,20 @@ pull_requests:
 version: '{build}.{branch}'
 
 environment:
-  COMPOSER_ROOT_VERSION: '6.1.x-dev'
+  COMPOSER_ROOT_VERSION: '6.5.x-dev'
 
   matrix:
-    - PHP_VERSION: '7.0.16'
-      XDEBUG_VERSION: '2.5.1-7.0'
+    - PHP_VERSION: '7.0.25'
+      XDEBUG_VERSION: '2.5.5-7.0'
       DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.0.16'
-      XDEBUG_VERSION: '2.5.1-7.0'
+    - PHP_VERSION: '7.0.25'
+      XDEBUG_VERSION: '2.5.5-7.0'
       DEPENDENCIES: ''
-    - PHP_VERSION: '7.1.2'
-      XDEBUG_VERSION: '2.5.1-7.1'
+    - PHP_VERSION: '7.1.11'
+      XDEBUG_VERSION: '2.5.5-7.1'
       DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.1.2'
-      XDEBUG_VERSION: '2.5.1-7.1'
+    - PHP_VERSION: '7.1.11'
+      XDEBUG_VERSION: '2.5.5-7.1'
       DEPENDENCIES: ''
 
 matrix:
