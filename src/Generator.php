@@ -939,7 +939,7 @@ class Generator
             $callOriginalMethods,
             $method->isStatic(),
             $deprecation,
-            $method->hasReturnType() && $method->getReturnType()->allowsNull()
+            $method->hasReturnType() && PHP_VERSION_ID >= 70100 && $method->getReturnType()->allowsNull()
         );
     }
 
