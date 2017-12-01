@@ -136,7 +136,7 @@ class StaticInvocation implements Invocation, SelfDescribing
     public function generateReturnValue()
     {
         if ($this->isReturnTypeNullable) {
-            return null;
+            return;
         }
 
         switch (\strtolower($this->returnType)) {
