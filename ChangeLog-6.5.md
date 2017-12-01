@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 6.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [6.5.1] - 2017-MM-DD
+## [6.5.1] - 2017-12-01
 
 * Fixed [#2886](https://github.com/sebastianbergmann/phpunit/pull/2886): Forced environment variables do not affect `getenv()`
 
