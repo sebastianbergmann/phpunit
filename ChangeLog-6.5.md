@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 6.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.5.1] - 2017-MM-DD
+
+* Fixed [#2886](https://github.com/sebastianbergmann/phpunit/pull/2886): Forced environment variables do not affect `getenv()`
+
 ## [6.5.0] - 2017-12-01
 
 ### Added
@@ -14,5 +18,6 @@ All notable changes of the PHPUnit 6.5 release series are documented in this fil
 * Fixed [#2654](https://github.com/sebastianbergmann/phpunit/issues/2654): Problems with `assertJsonStringEqualsJsonString()`
 * Fixed [#2810](https://github.com/sebastianbergmann/phpunit/pull/2810): Code Coverage for PHPT tests does not work
 
+[6.5.1]: https://github.com/sebastianbergmann/phpunit/compare/6.5.0...6.5.1
 [6.5.0]: https://github.com/sebastianbergmann/phpunit/compare/6.4...6.5.0
 
