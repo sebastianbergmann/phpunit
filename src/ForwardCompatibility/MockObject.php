@@ -8,8 +8,10 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\MockObject\MockObject;
+namespace PHPUnit\Framework\MockObject;
 
-interface PHPUnit_Framework_MockObject_MockObject extends MockObject
+use PHPUnit_Framework_MockObject_MockObject;
+
+interface MockObject extends PHPUnit_Framework_MockObject_MockObject
 {
 }
