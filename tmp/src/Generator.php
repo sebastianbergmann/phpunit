@@ -1045,6 +1045,10 @@ class Generator
             return false;
         }
 
+        if (PHP_VERSION_ID >= 70100 && $method->getReturnType()->allowsNull()) {
+            return false;
+        }
+
         $returnType = (string) $method->getReturnType();
 
         if ($returnType === \Generator::class || $returnType === \Closure::class) {
