@@ -8,7 +8,7 @@ if ($_SERVER['SCRIPT_NAME'] != '-') {
 }
 
 define('__PHPLOC_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', $phar));
-define('__PHPLOC_PHAR_ROOT__', 'phar://phploc-4.0.0.phar');
+define('__PHPLOC_PHAR_ROOT__', 'phar://phploc-4.0.1.phar');
 
 spl_autoload_register(
   function ($class)
@@ -164,12 +164,12 @@ spl_autoload_register(
       $class = strtolower($class);
 
       if (isset($classes[$class])) {
-          require 'phar://phploc-4.0.0.phar' . $classes[$class];
+          require 'phar://phploc-4.0.1.phar' . $classes[$class];
       }
   }
 );
 
-Phar::mapPhar('phploc-4.0.0.phar');
+Phar::mapPhar('phploc-4.0.1.phar');
 
 if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
     print file_get_contents(__PHPLOC_PHAR_ROOT__ . '/manifest.txt');
@@ -180,20 +180,20 @@ $application = new SebastianBergmann\PHPLOC\CLI\Application;
 $application->run();
 
 __HALT_COMPILER(); ?>
-&'  í          phploc-4.0.0.phar       src/Analyser.phpuO  ©6YuO  *o≈≤∂         src/CLI/Application.phpy  ©6Yy  Ræs∂         src/CLI/Command.php|  ©6Y|  L†÷j∂         src/Collector.phpO  ©6YO  Û	Ü¶∂         src/Exception/Exception.php!  ©6Y!  ı_ä√∂      "   src/Exception/RuntimeException.phpS  ©6YS  Fáñ∂         src/Log/Csv.php.  ©6Y.  "Ç˘∂         src/Log/Text.php5!  ©6Y5!  ≠FßX∂         src/Log/Xml.php  ©6Y   ™Ü˚∂         src/Publisher.php&-  ©6Y&-  CºßÍ∂         finder-facade/Configuration.php¬  ©6Y¬  Xt&∂         finder-facade/FinderFacade.php  ©6Y  Oüzâ∂         version/Version.php±  ©6Y±  N\«∂         symfony/console/Application.phpdó  ©6Ydó  b'k$∂      #   symfony/console/Command/Command.php√K  ©6Y√K  ¬Æ“∂      '   symfony/console/Command/HelpCommand.php´	  ©6Y´	  ŸqÉ¶∂      '   symfony/console/Command/ListCommand.php	
-  ©6Y	
-  Í¬4∂      )   symfony/console/Command/LockableTrait.php›  ©6Y›  òã§∂      !   symfony/console/ConsoleEvents.phpâ  ©6Yâ  µ6¨∂      =   symfony/console/DependencyInjection/AddConsoleCommandPass.php˜  ©6Y˜  ßôRã∂      5   symfony/console/Descriptor/ApplicationDescription.php“  ©6Y“  Tà—9∂      )   symfony/console/Descriptor/Descriptor.php  ©6Y  ı‰∏ˇ∂      2   symfony/console/Descriptor/DescriptorInterface.php·  ©6Y·  JZ0<∂      -   symfony/console/Descriptor/JsonDescriptor.php˝  ©6Y˝  ≈«H$∂      1   symfony/console/Descriptor/MarkdownDescriptor.php„  ©6Y„  Ø®`Ô∂      -   symfony/console/Descriptor/TextDescriptor.phpF0  ©6YF0  ;¸˚Ü∂      ,   symfony/console/Descriptor/XmlDescriptor.php§%  ©6Y§%  ÊR#
-∂      -   symfony/console/Event/ConsoleCommandEvent.php=  ©6Y=  %mf∂      +   symfony/console/Event/ConsoleErrorEvent.php  ©6Y  ˜.∂      &   symfony/console/Event/ConsoleEvent.phpƒ  ©6Yƒ  xS*∂      /   symfony/console/Event/ConsoleExceptionEvent.phpS  ©6YS  Ω±Ò^∂      /   symfony/console/Event/ConsoleTerminateEvent.php  ©6Y  {e∂      /   symfony/console/EventListener/ErrorListener.php¯
-  ©6Y¯
-  %/Ω∂      6   symfony/console/Exception/CommandNotFoundException.phpæ  ©6Yæ  ﬁ¯µÏ∂      0   symfony/console/Exception/ExceptionInterface.phpñ  ©6Yñ  „Î⁄U∂      6   symfony/console/Exception/InvalidArgumentException.phpæ  ©6Yæ  Óu i∂      4   symfony/console/Exception/InvalidOptionException.php¸  ©6Y¸  Ìì;∂      ,   symfony/console/Exception/LogicException.php™  ©6Y™  SMLè∂      .   symfony/console/Exception/RuntimeException.phpÆ  ©6YÆ  ∂*b∂      -   symfony/console/Formatter/OutputFormatter.php-  ©6Y-  ƒLx∂      6   symfony/console/Formatter/OutputFormatterInterface.php¶  ©6Y¶  #7Íu∂      2   symfony/console/Formatter/OutputFormatterStyle.php¿  ©6Y¿  D1©∂      ;   symfony/console/Formatter/OutputFormatterStyleInterface.php[  ©6Y[  f@Ü≥∂      7   symfony/console/Formatter/OutputFormatterStyleStack.php  ©6Y  `4ßH∂      /   symfony/console/Helper/DebugFormatterHelper.phpV  ©6YV  ò›î™∂      +   symfony/console/Helper/DescriptorHelper.phpU
-  ©6YU
-  §ã2/∂      *   symfony/console/Helper/FormatterHelper.phpí  ©6Yí  µÌ∑ˇ∂      !   symfony/console/Helper/Helper.phpâ  ©6Yâ  QVßÀ∂      *   symfony/console/Helper/HelperInterface.phpØ  ©6YØ  ÔÀËˆ∂      $   symfony/console/Helper/HelperSet.phpg
-  ©6Yg
-  f÷Ù∂      +   symfony/console/Helper/InputAwareHelper.phpÎ  ©6YÎ  ÏìÎÀ∂      (   symfony/console/Helper/ProcessHelper.phpá  ©6Yá  åÆA∂      &   symfony/console/Helper/ProgressBar.php˝C  ©6Y˝C  ∑™E•∂      ,   symfony/console/Helper/ProgressIndicator.php  ©6Y  fG.∂      )   symfony/console/Helper/QuestionHelper.php=9  ©6Y=9  ¡ùÃ∂      0   symfony/console/Helper/SymfonyQuestionHelper.phpÀ  ©6YÀ  øÁÊ≠∂          symfony/console/Helper/Table.phpµM  ©6YµM  ããå∂      $   symfony/console/Helper/TableCell.phpø  ©6Yø  I‚∏¯∂      )   symfony/console/Helper/TableSeparator.phpE  ©6YE  p|’∂      %   symfony/console/Helper/TableStyle.phpà  ©6Yà  wÓU\∂      #   symfony/console/Input/ArgvInput.php¯(  ©6Y¯(  -fR∂      $   symfony/console/Input/ArrayInput.phpK  ©6YK  §Ï ∂         symfony/console/Input/Input.php$  ©6Y$  k†@B∂      '   symfony/console/Input/InputArgument.php  ©6Y  ÊmB∂      -   symfony/console/Input/InputAwareInterface.php^  ©6Y^  9KËh∂      )   symfony/console/Input/InputDefinition.php2-  ©6Y2-  Yõª,∂      (   symfony/console/Input/InputInterface.phpn  ©6Yn  lääz∂      %   symfony/console/Input/InputOption.phpw  ©6Yw  £8s∂      2   symfony/console/Input/StreamableInputInterface.phpi  ©6Yi  ıôÌ∂      %   symfony/console/Input/StringInput.phpr	  ©6Yr	  ˝fIy∂      (   symfony/console/Logger/ConsoleLogger.php»  ©6Y»  LCk\∂      )   symfony/console/Output/BufferedOutput.phpk  ©6Yk  Ò3ê∂      (   symfony/console/Output/ConsoleOutput.phpÓ  ©6YÓ  Ü£⁄\∂      1   symfony/console/Output/ConsoleOutputInterface.phpK  ©6YK  Ï≈0û∂      %   symfony/console/Output/NullOutput.phpn  ©6Yn  tèDª∂      !   symfony/console/Output/Output.phpñ  ©6Yñ  ¬Ñóü∂      *   symfony/console/Output/OutputInterface.phpr  ©6Yr  ÈÀ>Z∂      '   symfony/console/Output/StreamOutput.php  ©6Y  ∏WÆÍ∂      +   symfony/console/Question/ChoiceQuestion.php€  ©6Y€  Ø*û;∂      1   symfony/console/Question/ConfirmationQuestion.php7  ©6Y7  ‚ú&É∂      %   symfony/console/Question/Question.phpà  ©6Yà  ~5D∂      %   symfony/console/Style/OutputStyle.php3  ©6Y3  ◊ÿ+>∂      (   symfony/console/Style/StyleInterface.phpµ  ©6Yµ  3®ıZ∂      &   symfony/console/Style/SymfonyStyle.phpç/  ©6Yç/  ∑Cc”∂         symfony/console/Terminal.php§  ©6Y§  hÒ´7∂      ,   symfony/console/Tester/ApplicationTester.php  ©6Y  e5∂      (   symfony/console/Tester/CommandTester.php  ©6Y  ›ïå∂      !   symfony/debug/BufferingLogger.php  ©6Y  M0	=∂         symfony/debug/Debug.php˝  ©6Y˝  ˆêf∂      "   symfony/debug/DebugClassLoader.phpU7  ©6YU7  b=#∂         symfony/debug/ErrorHandler.php3f  ©6Y3f  i≈∂      2   symfony/debug/Exception/ClassNotFoundException.php<  ©6Y<  'Dªç∂      1   symfony/debug/Exception/ContextErrorException.phpS  ©6YS  ;I“´∂      /   symfony/debug/Exception/FatalErrorException.php  ©6Y  UπÆl∂      /   symfony/debug/Exception/FatalThrowableError.php4  ©6Y4   √Ï∂      ,   symfony/debug/Exception/FlattenException.php(  ©6Y(  ˝DÙD∂      0   symfony/debug/Exception/OutOfMemoryException.php®  ©6Y®  ™¯h∂      0   symfony/debug/Exception/SilencedErrorContext.phpG  ©6YG  ™Ê~T∂      6   symfony/debug/Exception/UndefinedFunctionException.php+  ©6Y+  €O˘∂      4   symfony/debug/Exception/UndefinedMethodException.php&  ©6Y&  √Øyﬂ∂      "   symfony/debug/ExceptionHandler.phpöÄ  ©6YöÄ  E6O=∂      B   symfony/debug/FatalErrorHandler/ClassNotFoundFatalErrorHandler.phpÃ  ©6YÃ  ‰û(∂      >   symfony/debug/FatalErrorHandler/FatalErrorHandlerInterface.phpø  ©6Yø  «iAº∂      F   symfony/debug/FatalErrorHandler/UndefinedFunctionFatalErrorHandler.phpı  ©6Yı  Ãg˝ê∂      D   symfony/debug/FatalErrorHandler/UndefinedMethodFatalErrorHandler.phpZ  ©6YZ  √2∂      (   symfony/finder/Comparator/Comparator.php  ©6Y  Áù∂∂      ,   symfony/finder/Comparator/DateComparator.phpπ  ©6Yπ  ∏'e∂      .   symfony/finder/Comparator/NumberComparator.php.
-  ©6Y.
-  –BpC∂      2   symfony/finder/Exception/AccessDeniedException.php´  ©6Y´   cWﬁ∂      /   symfony/finder/Exception/ExceptionInterface.php"  ©6Y"  ⁄ÄfW∂         symfony/finder/Finder.phpùJ  ©6YùJ  É˛åÒ∂         symfony/finder/Glob.php’  ©6Y’  J…@∂      0   symfony/finder/Iterator/CustomFilterIterator.php  ©6Y  ˙g3,∂      3   symfony/finder/Iterator/DateRangeFilterIterator.php≈  ©6Y≈  FÃı∂      4   symfony/finder/Iterator/DepthRangeFilterIterator.phpÂ  ©6YÂ  -,Ï∂      :   symfony/finder/Iterator/ExcludeDirectoryFilterIterator.php¿	  ©6Y¿	  DÌÇÀ∂      2   symfony/finder/Iterator/FileTypeFilterIterator.phpY  ©6YY  ô]∞%∂      5   symfony/finder/Iterator/FilecontentFilterIterator.php¶  ©6Y¶  r‹~∂      2   symfony/finder/Iterator/FilenameFilterIterator.phpï  ©6Yï  Àp¿∂      *   symfony/finder/Iterator/FilterIterator.phpñ  ©6Yñ  8=/©∂      6   symfony/finder/Iterator/MultiplePcreFilterIterator.php∏  ©6Y∏  Ôq˜–∂      .   symfony/finder/Iterator/PathFilterIterator.php™  ©6Y™  Ù˘¥Ñ∂      6   symfony/finder/Iterator/RecursiveDirectoryIterator.php˙  ©6Y˙  æ!Ó∂      3   symfony/finder/Iterator/SizeRangeFilterIterator.php¢  ©6Y¢  §ß∞∂      ,   symfony/finder/Iterator/SortableIterator.php7
-  ©6Y7
-  ◊å0∂         symfony/finder/SplFileInfo.phpu  ©6Yu  "PÍ¸∂      &   symfony/polyfill-mbstring/Mbstring.php„S  ©6Y„S  ∫	]∂      9   symfony/polyfill-mbstring/Resources/unidata/lowerCase.php∫I  ©6Y∫I  Íê“à∂      9   symfony/polyfill-mbstring/Resources/unidata/upperCase.php9J  ©6Y9J  |Q˘∂      '   symfony/polyfill-mbstring/bootstrap.php'  ©6Y'  p#Di∂         fdomdocument/XPathQuery.php¨  ©6Y¨  œË∑ﬂ∂      $   fdomdocument/XPathQueryException.php¯  ©6Y¯  Êâ*˝∂         fdomdocument/autoload.phpæ  ©6Yæ  !ÂH∂      $   fdomdocument/css/DollarEqualRule.php  ©6Y  pîˇ∂         fdomdocument/css/NotRule.php7  ©6Y7  ∞˘Íô∂      !   fdomdocument/css/NthChildRule.php…  ©6Y…  [4ñé∂         fdomdocument/css/RegexRule.php«  ©6Y«  ˘ÆÅs∂      "   fdomdocument/css/RuleInterface.php–   ©6Y–   Œ,ó·∂         fdomdocument/css/Translator.phpÅ  ©6YÅ  F]hX∂         fdomdocument/fDOMDocument.php"[  ©6Y"[  7h&∂      %   fdomdocument/fDOMDocumentFragment.phpÀ  ©6YÀ  Í%å∂         fdomdocument/fDOMElement.phpU7  ©6YU7  ÿ¡z&∂         fdomdocument/fDOMException.php©  ©6Y©  ñdÕO∂         fdomdocument/fDOMNode.php⁄  ©6Y⁄  VGQ∂         fdomdocument/fDOMXPath.php·  ©6Y·  ü!XÃ∂         manifest.txtﬂ   ©6Yﬂ   8Ï+∂      <?php
+&'  í          phploc-4.0.1.phar       src/Analyser.phpvO  äoZvO  ÆXA‰∂         src/CLI/Application.phpy  äoZy  †.®¸∂         src/CLI/Command.php|  äoZ|  L†÷j∂         src/Collector.phpO  äoZO  Û	Ü¶∂         src/Exception/Exception.php!  äoZ!  ı_ä√∂      "   src/Exception/RuntimeException.phpS  äoZS  Fáñ∂         src/Log/Csv.php.  äoZ.  "Ç˘∂         src/Log/Text.php5!  äoZ5!  ≠FßX∂         src/Log/Xml.php  äoZ   ™Ü˚∂         src/Publisher.php&-  äoZ&-  CºßÍ∂         finder-facade/Configuration.php¬  äoZ¬  Xt&∂         finder-facade/FinderFacade.php  äoZ  Oüzâ∂         version/Version.php±  äoZ±  N\«∂         symfony/console/Application.phpPï  äoZPï  ∫™ıB∂      #   symfony/console/Command/Command.phpáH  äoZáH  %?8$∂      '   symfony/console/Command/HelpCommand.phpI	  äoZI	  ¥)~°∂      '   symfony/console/Command/ListCommand.php	
+  äoZ	
+  Í¬4∂      )   symfony/console/Command/LockableTrait.php›  äoZ›  òã§∂      !   symfony/console/ConsoleEvents.php!  äoZ!  üìŒ©∂      =   symfony/console/DependencyInjection/AddConsoleCommandPass.php˜  äoZ˜  ßôRã∂      5   symfony/console/Descriptor/ApplicationDescription.php  äoZ  £îÆ∂      )   symfony/console/Descriptor/Descriptor.phpÅ  äoZÅ  ñj∂      2   symfony/console/Descriptor/DescriptorInterface.php·  äoZ·  JZ0<∂      -   symfony/console/Descriptor/JsonDescriptor.phpd  äoZd  Ÿm˘h∂      1   symfony/console/Descriptor/MarkdownDescriptor.php„  äoZ„  Ø®`Ô∂      -   symfony/console/Descriptor/TextDescriptor.phpå0  äoZå0   4ÿt∂      ,   symfony/console/Descriptor/XmlDescriptor.php$  äoZ$  {gÊL∂      -   symfony/console/Event/ConsoleCommandEvent.php%  äoZ%  {Àæ‡∂      +   symfony/console/Event/ConsoleErrorEvent.php  äoZ  ˜.∂      &   symfony/console/Event/ConsoleEvent.phpƒ  äoZƒ  xS*∂      /   symfony/console/Event/ConsoleExceptionEvent.phpS  äoZS  Ω±Ò^∂      /   symfony/console/Event/ConsoleTerminateEvent.php  äoZ  {e∂      /   symfony/console/EventListener/ErrorListener.php¯
+  äoZ¯
+  è/≈±∂      6   symfony/console/Exception/CommandNotFoundException.php¬  äoZ¬  ØõÕ∂      0   symfony/console/Exception/ExceptionInterface.phpñ  äoZñ  „Î⁄U∂      6   symfony/console/Exception/InvalidArgumentException.phpæ  äoZæ  Óu i∂      4   symfony/console/Exception/InvalidOptionException.php¸  äoZ¸  Ìì;∂      ,   symfony/console/Exception/LogicException.php™  äoZ™  SMLè∂      .   symfony/console/Exception/RuntimeException.phpÆ  äoZÆ  ∂*b∂      -   symfony/console/Formatter/OutputFormatter.php_  äoZ_  áj7∂      6   symfony/console/Formatter/OutputFormatterInterface.php¶  äoZ¶  #7Íu∂      2   symfony/console/Formatter/OutputFormatterStyle.phpÖ  äoZÖ  úóÉ ∂      ;   symfony/console/Formatter/OutputFormatterStyleInterface.php7  äoZ7  ñ.@Y∂      7   symfony/console/Formatter/OutputFormatterStyleStack.php∏	  äoZ∏	  \gàV∂      /   symfony/console/Helper/DebugFormatterHelper.phpV  äoZV  ò›î™∂      +   symfony/console/Helper/DescriptorHelper.php1
+  äoZ1
+  iñ∂      *   symfony/console/Helper/FormatterHelper.phpí  äoZí  µÌ∑ˇ∂      !   symfony/console/Helper/Helper.phpﬂ  äoZﬂ  
+FY>∂      *   symfony/console/Helper/HelperInterface.phpp  äoZp  ë‡Òn∂      $   symfony/console/Helper/HelperSet.php 	  äoZ 	  .Éàÿ∂      +   symfony/console/Helper/InputAwareHelper.phpÎ  äoZÎ  ÏìÎÀ∂      (   symfony/console/Helper/ProcessHelper.phpá  äoZá  åÆA∂      &   symfony/console/Helper/ProgressBar.php¡C  äoZ¡C  âVde∂      ,   symfony/console/Helper/ProgressIndicator.php  äoZ  fG.∂      )   symfony/console/Helper/QuestionHelper.php[8  äoZ[8  á”Ã∂      0   symfony/console/Helper/SymfonyQuestionHelper.phpÀ  äoZÀ  øÁÊ≠∂          symfony/console/Helper/Table.phpˇL  äoZˇL  rÈ:∂      $   symfony/console/Helper/TableCell.phpy  äoZy  p/#6∂      )   symfony/console/Helper/TableSeparator.php  äoZ  ‘=_∂      %   symfony/console/Helper/TableStyle.phpà  äoZà  wÓU\∂      #   symfony/console/Input/ArgvInput.php›(  äoZ›(  ƒÔ”ä∂      $   symfony/console/Input/ArrayInput.phpø  äoZø  πpGW∂         symfony/console/Input/Input.phpÉ  äoZÉ  ç´⁄≈∂      '   symfony/console/Input/InputArgument.php¸  äoZ¸  	Ÿ∂      -   symfony/console/Input/InputAwareInterface.php^  äoZ^  9KËh∂      )   symfony/console/Input/InputDefinition.php,  äoZ,  Y≥™Z∂      (   symfony/console/Input/InputInterface.php"  äoZ"  ±SOπ∂      %   symfony/console/Input/InputOption.php!  äoZ!  ˇy∂      2   symfony/console/Input/StreamableInputInterface.phpi  äoZi  ıôÌ∂      %   symfony/console/Input/StringInput.phpW	  äoZW	  ÿô°Ú∂      (   symfony/console/Logger/ConsoleLogger.php√  äoZ√  S"Mı∂      )   symfony/console/Output/BufferedOutput.phpH  äoZH  †9ø‘∂      (   symfony/console/Output/ConsoleOutput.php™  äoZ™  È£…U∂      1   symfony/console/Output/ConsoleOutputInterface.phpﬁ  äoZﬁ  ø†É∂      %   symfony/console/Output/NullOutput.phpn  äoZn  tèDª∂      !   symfony/console/Output/Output.php{  äoZ{  Îm¬n∂      *   symfony/console/Output/OutputInterface.php  äoZ  ÌÁ9∂      '   symfony/console/Output/StreamOutput.php˜  äoZ˜  Ö¬ÍÏ∂      +   symfony/console/Question/ChoiceQuestion.php¿  äoZ¿  ∫Ï÷∂      1   symfony/console/Question/ConfirmationQuestion.php  äoZ  æô∑Å∂      %   symfony/console/Question/Question.php˙  äoZ˙  üæ ¡∂      %   symfony/console/Style/OutputStyle.php˝  äoZ˝  È®g›∂      (   symfony/console/Style/StyleInterface.phpR  äoZR  ≈◊‡∂      &   symfony/console/Style/SymfonyStyle.php
+/  äoZ
+/  ˛¨ë÷∂         symfony/console/Terminal.php§  äoZ§  hÒ´7∂      ,   symfony/console/Tester/ApplicationTester.php  äoZ  e5∂      (   symfony/console/Tester/CommandTester.php≈  äoZ≈  	Aé∂      !   symfony/debug/BufferingLogger.php  äoZ  M0	=∂         symfony/debug/Debug.php˝  äoZ˝  ˆêf∂      "   symfony/debug/DebugClassLoader.php6  äoZ6  V¶ y∂         symfony/debug/ErrorHandler.phpj  äoZj  66∂      2   symfony/debug/Exception/ClassNotFoundException.php<  äoZ<  'Dªç∂      1   symfony/debug/Exception/ContextErrorException.phpS  äoZS  ;I“´∂      /   symfony/debug/Exception/FatalErrorException.php  äoZ  UπÆl∂      /   symfony/debug/Exception/FatalThrowableError.php4  äoZ4   √Ï∂      ,   symfony/debug/Exception/FlattenException.php(  äoZ(  ˝DÙD∂      0   symfony/debug/Exception/OutOfMemoryException.php®  äoZ®  ™¯h∂      0   symfony/debug/Exception/SilencedErrorContext.phph  äoZh  z=Ü∂      6   symfony/debug/Exception/UndefinedFunctionException.php+  äoZ+  €O˘∂      4   symfony/debug/Exception/UndefinedMethodException.php&  äoZ&  √Øyﬂ∂      "   symfony/debug/ExceptionHandler.phpË  äoZË  G]3∂      B   symfony/debug/FatalErrorHandler/ClassNotFoundFatalErrorHandler.phpÃ  äoZÃ  ‰û(∂      >   symfony/debug/FatalErrorHandler/FatalErrorHandlerInterface.phpø  äoZø  «iAº∂      F   symfony/debug/FatalErrorHandler/UndefinedFunctionFatalErrorHandler.phpı  äoZı  Ãg˝ê∂      D   symfony/debug/FatalErrorHandler/UndefinedMethodFatalErrorHandler.phpZ  äoZZ  √2∂      (   symfony/finder/Comparator/Comparator.php  äoZ  Áù∂∂      ,   symfony/finder/Comparator/DateComparator.phpû  äoZû  äºG√∂      .   symfony/finder/Comparator/NumberComparator.php
+  äoZ
+  ÿŸ∫∂      2   symfony/finder/Exception/AccessDeniedException.php´  äoZ´   cWﬁ∂      /   symfony/finder/Exception/ExceptionInterface.php"  äoZ"  ⁄ÄfW∂         symfony/finder/Finder.php˛I  äoZ˛I  ◊∑ú∂         symfony/finder/Glob.php’  äoZ’  J…@∂      0   symfony/finder/Iterator/CustomFilterIterator.phpÏ  äoZÏ  cÀÄS∂      3   symfony/finder/Iterator/DateRangeFilterIterator.php™  äoZ™  €÷@∑∂      4   symfony/finder/Iterator/DepthRangeFilterIterator.php   äoZ   Ö≠Ù∂      :   symfony/finder/Iterator/ExcludeDirectoryFilterIterator.php•	  äoZ•	  ,ä∂      2   symfony/finder/Iterator/FileTypeFilterIterator.php>  äoZ>  p¿üY∂      5   symfony/finder/Iterator/FilecontentFilterIterator.php¶  äoZ¶  r‹~∂      2   symfony/finder/Iterator/FilenameFilterIterator.phpï  äoZï  Àp¿∂      *   symfony/finder/Iterator/FilterIterator.phpñ  äoZñ  8=/©∂      6   symfony/finder/Iterator/MultiplePcreFilterIterator.phpù  äoZù  5õí∂      .   symfony/finder/Iterator/PathFilterIterator.php™  äoZ™  Ù˘¥Ñ∂      6   symfony/finder/Iterator/RecursiveDirectoryIterator.phpﬂ  äoZﬂ  È´˝∂      3   symfony/finder/Iterator/SizeRangeFilterIterator.phpá  äoZá  ¢:~–∂      ,   symfony/finder/Iterator/SortableIterator.php
+  äoZ
+  !∆∞∂         symfony/finder/SplFileInfo.phpZ  äoZZ  iqƒp∂      &   symfony/polyfill-mbstring/Mbstring.phpjV  äoZjV  ⁄v∏ö∂      9   symfony/polyfill-mbstring/Resources/unidata/lowerCase.php∫I  äoZ∫I  Íê“à∂      9   symfony/polyfill-mbstring/Resources/unidata/upperCase.php9J  äoZ9J  |Q˘∂      '   symfony/polyfill-mbstring/bootstrap.php'  äoZ'  p#Di∂         fdomdocument/XPathQuery.php¨  äoZ¨  œË∑ﬂ∂      $   fdomdocument/XPathQueryException.php¯  äoZ¯  Êâ*˝∂         fdomdocument/autoload.phpæ  äoZæ  !ÂH∂      $   fdomdocument/css/DollarEqualRule.php  äoZ  pîˇ∂         fdomdocument/css/NotRule.php7  äoZ7  ∞˘Íô∂      !   fdomdocument/css/NthChildRule.php…  äoZ…  [4ñé∂         fdomdocument/css/RegexRule.php«  äoZ«  ˘ÆÅs∂      "   fdomdocument/css/RuleInterface.php–   äoZ–   Œ,ó·∂         fdomdocument/css/Translator.phpÅ  äoZÅ  F]hX∂         fdomdocument/fDOMDocument.php"[  äoZ"[  7h&∂      %   fdomdocument/fDOMDocumentFragment.phpI  äoZI  ]≈~∂         fdomdocument/fDOMElement.phpœ8  äoZœ8  π™oÂ∂         fdomdocument/fDOMException.php©  äoZ©  ñdÕO∂         fdomdocument/fDOMNode.php⁄  äoZ⁄  VGQ∂         fdomdocument/fDOMXPath.php·  äoZ·  ü!XÃ∂         manifest.txt‚   äoZ‚   ºS‚„∂      <?php
 /*
  * This file is part of PHPLOC.
  *
@@ -547,7 +547,7 @@ class Analyser
                 case T_DOC_COMMENT:
                     // We want to count all intermediate lines before the token ends
                     // But sometimes a new token starts after a newline, we don't want to count that.
-                    // That happend with /* */ and /**  */, but not with // since it'll end at the end
+                    // That happened with /* */ and /**  */, but not with // since it'll end at the end
                     $this->collector->incrementCommentLines(\substr_count(\rtrim($value, "\n"), "\n") + 1);
                     break;
                 case T_CONST:
@@ -822,7 +822,7 @@ class Application extends AbstractApplication
 {
     public function __construct()
     {
-        $version = new Version('4.0.0', \dirname(\dirname(__DIR__)));
+        $version = new Version('4.0.1', \dirname(\dirname(__DIR__)));
         parent::__construct('phploc', $version->getVersion());
     }
 
@@ -2494,6 +2494,7 @@ class Application
     private $terminal;
     private $defaultCommand;
     private $singleCommand;
+    private $initialized;
 
     /**
      * @param string $name    The name of the application
@@ -2505,12 +2506,6 @@ class Application
         $this->version = $version;
         $this->terminal = new Terminal();
         $this->defaultCommand = 'list';
-        $this->helperSet = $this->getDefaultHelperSet();
-        $this->definition = $this->getDefaultInputDefinition();
-
-        foreach ($this->getDefaultCommands() as $command) {
-            $this->add($command);
-        }
     }
 
     public function setDispatcher(EventDispatcherInterface $dispatcher)
@@ -2520,9 +2515,6 @@ class Application
 
     /**
      * Runs the current application.
-     *
-     * @param InputInterface  $input  An Input instance
-     * @param OutputInterface $output An Output instance
      *
      * @return int 0 if everything went fine, or an error code
      *
@@ -2550,15 +2542,13 @@ class Application
         try {
             $e = null;
             $exitCode = $this->doRun($input, $output);
-        } catch (\Exception $x) {
-            $e = $x;
-        } catch (\Throwable $x) {
-            $e = new FatalThrowableError($x);
+        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
         }
 
         if (null !== $e) {
-            if (!$this->catchExceptions || !$x instanceof \Exception) {
-                throw $x;
+            if (!$this->catchExceptions || !$e instanceof \Exception) {
+                throw $e;
             }
 
             if ($output instanceof ConsoleOutputInterface) {
@@ -2592,9 +2582,6 @@ class Application
     /**
      * Runs the current application.
      *
-     * @param InputInterface  $input  An Input instance
-     * @param OutputInterface $output An Output instance
-     *
      * @return int 0 if everything went fine, or an error code
      */
     public function doRun(InputInterface $input, OutputInterface $output)
@@ -2617,7 +2604,13 @@ class Application
 
         if (!$name) {
             $name = $this->defaultCommand;
-            $input = new ArrayInput(array('command' => $this->defaultCommand));
+            $definition = $this->getDefinition();
+            $definition->setArguments(array_merge(
+                $definition->getArguments(),
+                array(
+                    'command' => new InputArgument('command', InputArgument::OPTIONAL, $definition->getArgument('command')->getDescription(), $name),
+                )
+            ));
         }
 
         try {
@@ -2648,11 +2641,6 @@ class Application
         return $exitCode;
     }
 
-    /**
-     * Set a helper set to be used with the command.
-     *
-     * @param HelperSet $helperSet The helper set
-     */
     public function setHelperSet(HelperSet $helperSet)
     {
         $this->helperSet = $helperSet;
@@ -2665,14 +2653,13 @@ class Application
      */
     public function getHelperSet()
     {
+        if (!$this->helperSet) {
+            $this->helperSet = $this->getDefaultHelperSet();
+        }
+
         return $this->helperSet;
     }
 
-    /**
-     * Set an input definition to be used with this application.
-     *
-     * @param InputDefinition $definition The input definition
-     */
     public function setDefinition(InputDefinition $definition)
     {
         $this->definition = $definition;
@@ -2685,6 +2672,10 @@ class Application
      */
     public function getDefinition()
     {
+        if (!$this->definition) {
+            $this->definition = $this->getDefaultInputDefinition();
+        }
+
         if ($this->singleCommand) {
             $inputDefinition = $this->definition;
             $inputDefinition->setArguments();
@@ -2835,12 +2826,12 @@ class Application
      * If a command with the same name already exists, it will be overridden.
      * If the command is not enabled it will not be added.
      *
-     * @param Command $command A Command object
-     *
      * @return Command|null The registered command if enabled or null
      */
     public function add(Command $command)
     {
+        $this->init();
+
         $command->setApplication($this);
 
         if (!$command->isEnabled()) {
@@ -2873,6 +2864,8 @@ class Application
      */
     public function get($name)
     {
+        $this->init();
+
         if (!isset($this->commands[$name])) {
             throw new CommandNotFoundException(sprintf('The command "%s" does not exist.', $name));
         }
@@ -2900,6 +2893,8 @@ class Application
      */
     public function has($name)
     {
+        $this->init();
+
         return isset($this->commands[$name]);
     }
 
@@ -2977,6 +2972,8 @@ class Application
      */
     public function find($name)
     {
+        $this->init();
+
         $allCommands = array_keys($this->commands);
         $expr = preg_replace_callback('{([^:]+|)}', function ($matches) { return preg_quote($matches[1]).'[^:]*'; }, $name);
         $commands = preg_grep('{^'.$expr.'}', $allCommands);
@@ -3043,6 +3040,8 @@ class Application
      */
     public function all($namespace = null)
     {
+        $this->init();
+
         if (null === $namespace) {
             return $this->commands;
         }
@@ -3079,9 +3078,6 @@ class Application
 
     /**
      * Renders a caught exception.
-     *
-     * @param \Exception      $e      An exception instance
-     * @param OutputInterface $output An OutputInterface instance
      */
     public function renderException(\Exception $e, OutputInterface $output)
     {
@@ -3102,7 +3098,7 @@ class Application
                 $width = 1 << 31;
             }
             $lines = array();
-            foreach (preg_split('/\r?\n/', $e->getMessage()) as $line) {
+            foreach (preg_split('/\r?\n/', trim($e->getMessage())) as $line) {
                 foreach ($this->splitStringByWidth($line, $width - 4) as $line) {
                     // pre-format lines to get the right string length
                     $lineLength = Helper::strlen($line) + 4;
@@ -3130,8 +3126,8 @@ class Application
                 $trace = $e->getTrace();
                 array_unshift($trace, array(
                     'function' => '',
-                    'file' => $e->getFile() !== null ? $e->getFile() : 'n/a',
-                    'line' => $e->getLine() !== null ? $e->getLine() : 'n/a',
+                    'file' => null !== $e->getFile() ? $e->getFile() : 'n/a',
+                    'line' => null !== $e->getLine() ? $e->getLine() : 'n/a',
                     'args' => array(),
                 ));
 
@@ -3221,9 +3217,6 @@ class Application
 
     /**
      * Configures the input and output instances based on the user arguments and options.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
      */
     protected function configureIO(InputInterface $input, OutputInterface $output)
     {
@@ -3257,9 +3250,9 @@ class Application
             $output->setVerbosity(OutputInterface::VERBOSITY_QUIET);
             $input->setInteractive(false);
         } else {
-            if ($input->hasParameterOption('-vvv', true) || $input->hasParameterOption('--verbose=3', true) || $input->getParameterOption('--verbose', false, true) === 3) {
+            if ($input->hasParameterOption('-vvv', true) || $input->hasParameterOption('--verbose=3', true) || 3 === $input->getParameterOption('--verbose', false, true)) {
                 $output->setVerbosity(OutputInterface::VERBOSITY_DEBUG);
-            } elseif ($input->hasParameterOption('-vv', true) || $input->hasParameterOption('--verbose=2', true) || $input->getParameterOption('--verbose', false, true) === 2) {
+            } elseif ($input->hasParameterOption('-vv', true) || $input->hasParameterOption('--verbose=2', true) || 2 === $input->getParameterOption('--verbose', false, true)) {
                 $output->setVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE);
             } elseif ($input->hasParameterOption('-v', true) || $input->hasParameterOption('--verbose=1', true) || $input->hasParameterOption('--verbose', true) || $input->getParameterOption('--verbose', false, true)) {
                 $output->setVerbosity(OutputInterface::VERBOSITY_VERBOSE);
@@ -3272,10 +3265,6 @@ class Application
      *
      * If an event dispatcher has been attached to the application,
      * events are also dispatched during the life-cycle of the command.
-     *
-     * @param Command         $command A Command instance
-     * @param InputInterface  $input   An Input instance
-     * @param OutputInterface $output  An Output instance
      *
      * @return int 0 if everything went fine, or an error code
      */
@@ -3344,8 +3333,6 @@ class Application
 
     /**
      * Gets the name of the command based on input.
-     *
-     * @param InputInterface $input The input interface
      *
      * @return string The command name
      */
@@ -3524,9 +3511,8 @@ class Application
             $lines[] = str_pad($line, $width);
             $line = $char;
         }
-        if ('' !== $line) {
-            $lines[] = count($lines) ? str_pad($line, $width) : $line;
-        }
+
+        $lines[] = count($lines) ? str_pad($line, $width) : $line;
 
         mb_convert_variables($encoding, 'utf8', $lines);
 
@@ -3555,6 +3541,18 @@ class Application
         }
 
         return $namespaces;
+    }
+
+    private function init()
+    {
+        if ($this->initialized) {
+            return;
+        }
+        $this->initialized = true;
+
+        foreach ($this->getDefaultCommands() as $command) {
+            $this->add($command);
+        }
     }
 }
 <?php
@@ -3605,8 +3603,6 @@ class Command
     private $helperSet;
 
     /**
-     * Constructor.
-     *
      * @param string|null $name The name of the command; passing null means it must be set in configure()
      *
      * @throws LogicException When the command name is empty
@@ -3636,11 +3632,6 @@ class Command
         $this->ignoreValidationErrors = true;
     }
 
-    /**
-     * Sets the application instance for this command.
-     *
-     * @param Application $application An Application instance
-     */
     public function setApplication(Application $application = null)
     {
         $this->application = $application;
@@ -3651,11 +3642,6 @@ class Command
         }
     }
 
-    /**
-     * Sets the helper set.
-     *
-     * @param HelperSet $helperSet A HelperSet instance
-     */
     public function setHelperSet(HelperSet $helperSet)
     {
         $this->helperSet = $helperSet;
@@ -3709,9 +3695,6 @@ class Command
      * execute() method, you set the code to execute by passing
      * a Closure to the setCode() method.
      *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
-     *
      * @return null|int null or 0 if everything went fine, or an error code
      *
      * @throws LogicException When this abstract method is not implemented
@@ -3729,9 +3712,6 @@ class Command
      * This method is executed before the InputDefinition is validated.
      * This means that this is the only place where the command can
      * interactively ask for values of missing required arguments.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
@@ -3742,9 +3722,6 @@ class Command
      *
      * This is mainly useful when a lot of commands extends one main command
      * where some things need to be initialized based on the input arguments and options.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
      */
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
@@ -3756,9 +3733,6 @@ class Command
      * The code to execute is either defined directly with the
      * setCode() method or by overriding the execute() method
      * in a sub-class.
-     *
-     * @param InputInterface  $input  An InputInterface instance
-     * @param OutputInterface $output An OutputInterface instance
      *
      * @return int The command exit code
      *
@@ -4034,7 +4008,7 @@ class Command
     }
 
     /**
-     * @return bool Whether the command should be publicly shown or not.
+     * @return bool whether the command should be publicly shown or not
      */
     public function isHidden()
     {
@@ -4284,11 +4258,6 @@ EOF
         ;
     }
 
-    /**
-     * Sets the command.
-     *
-     * @param Command $command The command to set
-     */
     public function setCommand(Command $command)
     {
         $this->command = $command;
@@ -4491,8 +4460,6 @@ final class ConsoleEvents
      * before they are handled to the command.
      *
      * @Event("Symfony\Component\Console\Event\ConsoleCommandEvent")
-     *
-     * @var string
      */
     const COMMAND = 'console.command';
 
@@ -4501,8 +4468,6 @@ final class ConsoleEvents
      * executed by the console.
      *
      * @Event("Symfony\Component\Console\Event\ConsoleTerminateEvent")
-     *
-     * @var string
      */
     const TERMINATE = 'console.terminate';
 
@@ -4515,8 +4480,6 @@ final class ConsoleEvents
      *
      * @Event("Symfony\Component\Console\Event\ConsoleExceptionEvent")
      *
-     * @var string
-     *
      * @deprecated The console.exception event is deprecated since version 3.3 and will be removed in 4.0. Use the console.error event instead.
      */
     const EXCEPTION = 'console.exception';
@@ -4528,8 +4491,6 @@ final class ConsoleEvents
      * to modify the thrown exception.
      *
      * @Event("Symfony\Component\Console\Event\ConsoleErrorEvent")
-     *
-     * @var string
      */
     const ERROR = 'console.error';
 }
@@ -4615,15 +4576,9 @@ class ApplicationDescription
 {
     const GLOBAL_NAMESPACE = '_global';
 
-    /**
-     * @var Application
-     */
     private $application;
-
-    /**
-     * @var null|string
-     */
     private $namespace;
+    private $showHidden;
 
     /**
      * @var array
@@ -4641,13 +4596,6 @@ class ApplicationDescription
     private $aliases;
 
     /**
-     * @var bool
-     */
-    private $showHidden;
-
-    /**
-     * Constructor.
-     *
      * @param Application $application
      * @param string|null $namespace
      * @param bool        $showHidden
@@ -4728,8 +4676,6 @@ class ApplicationDescription
     }
 
     /**
-     * @param array $commands
-     *
      * @return array
      */
     private function sortCommands(array $commands)
@@ -4831,18 +4777,12 @@ abstract class Descriptor implements DescriptorInterface
     /**
      * Describes an InputArgument instance.
      *
-     * @param InputArgument $argument
-     * @param array         $options
-     *
      * @return string|mixed
      */
     abstract protected function describeInputArgument(InputArgument $argument, array $options = array());
 
     /**
      * Describes an InputOption instance.
-     *
-     * @param InputOption $option
-     * @param array       $options
      *
      * @return string|mixed
      */
@@ -4851,9 +4791,6 @@ abstract class Descriptor implements DescriptorInterface
     /**
      * Describes an InputDefinition instance.
      *
-     * @param InputDefinition $definition
-     * @param array           $options
-     *
      * @return string|mixed
      */
     abstract protected function describeInputDefinition(InputDefinition $definition, array $options = array());
@@ -4861,18 +4798,12 @@ abstract class Descriptor implements DescriptorInterface
     /**
      * Describes a Command instance.
      *
-     * @param Command $command
-     * @param array   $options
-     *
      * @return string|mixed
      */
     abstract protected function describeCommand(Command $command, array $options = array());
 
     /**
      * Describes an Application instance.
-     *
-     * @param Application $application
-     * @param array       $options
      *
      * @return string|mixed
      */
@@ -5004,9 +4935,6 @@ class JsonDescriptor extends Descriptor
     /**
      * Writes data as json.
      *
-     * @param array $data
-     * @param array $options
-     *
      * @return array|string
      */
     private function writeData(array $data, array $options)
@@ -5015,8 +4943,6 @@ class JsonDescriptor extends Descriptor
     }
 
     /**
-     * @param InputArgument $argument
-     *
      * @return array
      */
     private function getInputArgumentData(InputArgument $argument)
@@ -5026,13 +4952,11 @@ class JsonDescriptor extends Descriptor
             'is_required' => $argument->isRequired(),
             'is_array' => $argument->isArray(),
             'description' => preg_replace('/\s*[\r\n]\s*/', ' ', $argument->getDescription()),
-            'default' => $argument->getDefault(),
+            'default' => INF === $argument->getDefault() ? 'INF' : $argument->getDefault(),
         );
     }
 
     /**
-     * @param InputOption $option
-     *
      * @return array
      */
     private function getInputOptionData(InputOption $option)
@@ -5044,13 +4968,11 @@ class JsonDescriptor extends Descriptor
             'is_value_required' => $option->isValueRequired(),
             'is_multiple' => $option->isArray(),
             'description' => preg_replace('/\s*[\r\n]\s*/', ' ', $option->getDescription()),
-            'default' => $option->getDefault(),
+            'default' => INF === $option->getDefault() ? 'INF' : $option->getDefault(),
         );
     }
 
     /**
-     * @param InputDefinition $definition
-     *
      * @return array
      */
     private function getInputDefinitionData(InputDefinition $definition)
@@ -5069,8 +4991,6 @@ class JsonDescriptor extends Descriptor
     }
 
     /**
-     * @param Command $command
-     *
      * @return array
      */
     private function getCommandData(Command $command)
@@ -5415,7 +5335,7 @@ class TextDescriptor extends Descriptor
         $this->writeText('<comment>Usage:</comment>', $options);
         foreach (array_merge(array($command->getSynopsis(true)), $command->getAliases(), $command->getUsages()) as $usage) {
             $this->writeText("\n");
-            $this->writeText('  '.$usage, $options);
+            $this->writeText('  '.OutputFormatter::escape($usage), $options);
         }
         $this->writeText("\n");
 
@@ -5525,11 +5445,9 @@ class TextDescriptor extends Descriptor
     /**
      * Formats command aliases to show them in the command description.
      *
-     * @param Command $command
-     *
      * @return string
      */
-    private function getCommandAliasesText($command)
+    private function getCommandAliasesText(Command $command)
     {
         $text = '';
         $aliases = $command->getAliases();
@@ -5550,6 +5468,10 @@ class TextDescriptor extends Descriptor
      */
     private function formatDefaultValue($default)
     {
+        if (INF === $default) {
+            return 'INF';
+        }
+
         if (is_string($default)) {
             $default = OutputFormatter::escape($default);
         } elseif (is_array($default)) {
@@ -5591,7 +5513,7 @@ class TextDescriptor extends Descriptor
      *
      * @return int
      */
-    private function calculateTotalWidthForOptions($options)
+    private function calculateTotalWidthForOptions(array $options)
     {
         $totalWidth = 0;
         foreach ($options as $option) {
@@ -5639,8 +5561,6 @@ use Symfony\Component\Console\Input\InputOption;
 class XmlDescriptor extends Descriptor
 {
     /**
-     * @param InputDefinition $definition
-     *
      * @return \DOMDocument
      */
     public function getInputDefinitionDocument(InputDefinition $definition)
@@ -5662,8 +5582,6 @@ class XmlDescriptor extends Descriptor
     }
 
     /**
-     * @param Command $command
-     *
      * @return \DOMDocument
      */
     public function getCommandDocument(Command $command)
@@ -5707,9 +5625,9 @@ class XmlDescriptor extends Descriptor
         $dom = new \DOMDocument('1.0', 'UTF-8');
         $dom->appendChild($rootXml = $dom->createElement('symfony'));
 
-        if ($application->getName() !== 'UNKNOWN') {
+        if ('UNKNOWN' !== $application->getName()) {
             $rootXml->setAttribute('name', $application->getName());
-            if ($application->getVersion() !== 'UNKNOWN') {
+            if ('UNKNOWN' !== $application->getVersion()) {
                 $rootXml->setAttribute('version', $application->getVersion());
             }
         }
@@ -5785,9 +5703,6 @@ class XmlDescriptor extends Descriptor
 
     /**
      * Appends document children to parent node.
-     *
-     * @param \DOMNode $parentNode
-     * @param \DOMNode $importedParent
      */
     private function appendDocument(\DOMNode $parentNode, \DOMNode $importedParent)
     {
@@ -5799,8 +5714,6 @@ class XmlDescriptor extends Descriptor
     /**
      * Writes DOM document.
      *
-     * @param \DOMDocument $dom
-     *
      * @return \DOMDocument|string
      */
     private function writeDocument(\DOMDocument $dom)
@@ -5810,8 +5723,6 @@ class XmlDescriptor extends Descriptor
     }
 
     /**
-     * @param InputArgument $argument
-     *
      * @return \DOMDocument
      */
     private function getInputArgumentDocument(InputArgument $argument)
@@ -5836,8 +5747,6 @@ class XmlDescriptor extends Descriptor
     }
 
     /**
-     * @param InputOption $option
-     *
      * @return \DOMDocument
      */
     private function getInputOptionDocument(InputOption $option)
@@ -5901,8 +5810,6 @@ class ConsoleCommandEvent extends ConsoleEvent
 
     /**
      * Indicates if the command should be run or skipped.
-     *
-     * @var bool
      */
     private $commandShouldRun = true;
 
@@ -6276,10 +6183,10 @@ class ErrorListener implements EventSubscriberInterface
         }
 
         if (!$inputString = $this->getInputString($event)) {
-            return $this->logger->error('The console exited with code "{code}"', array('code' => $exitCode));
+            return $this->logger->debug('The console exited with code "{code}"', array('code' => $exitCode));
         }
 
-        $this->logger->error('Command "{command}" exited with code "{code}"', array('command' => $inputString, 'code' => $exitCode));
+        $this->logger->debug('Command "{command}" exited with code "{code}"', array('command' => $inputString, 'code' => $exitCode));
     }
 
     public static function getSubscribedEvents()
@@ -6329,10 +6236,10 @@ class CommandNotFoundException extends \InvalidArgumentException implements Exce
     private $alternatives;
 
     /**
-     * @param string    $message      Exception message to throw
-     * @param array     $alternatives List of similar defined names
-     * @param int       $code         Exception code
-     * @param Exception $previous     previous exception used for the exception chaining
+     * @param string     $message      Exception message to throw
+     * @param array      $alternatives List of similar defined names
+     * @param int        $code         Exception code
+     * @param \Exception $previous     Previous exception used for the exception chaining
      */
     public function __construct($message, array $alternatives = array(), $code = 0, \Exception $previous = null)
     {
@@ -6502,7 +6409,8 @@ class OutputFormatter implements OutputFormatterInterface
         if ('\\' === substr($text, -1)) {
             $len = strlen($text);
             $text = rtrim($text, '\\');
-            $text .= str_repeat('<<', $len - strlen($text));
+            $text = str_replace("\0", '', $text);
+            $text .= str_repeat("\0", $len - strlen($text));
         }
 
         return $text;
@@ -6617,8 +6525,8 @@ class OutputFormatter implements OutputFormatterInterface
 
         $output .= $this->applyCurrentStyle(substr($message, $offset));
 
-        if (false !== strpos($output, '<<')) {
-            return strtr($output, array('\\<' => '<', '<<' => '\\'));
+        if (false !== strpos($output, "\0")) {
+            return strtr($output, array("\0" => '\\', '\\<' => '<'));
         }
 
         return str_replace('\\<', '<', $output);
@@ -6934,9 +6842,7 @@ class OutputFormatterStyle implements OutputFormatterStyleInterface
     }
 
     /**
-     * Sets multiple style options at once.
-     *
-     * @param array $options
+     * {@inheritdoc}
      */
     public function setOptions(array $options)
     {
@@ -7031,8 +6937,6 @@ interface OutputFormatterStyleInterface
 
     /**
      * Sets multiple style options at once.
-     *
-     * @param array $options
      */
     public function setOptions(array $options);
 
@@ -7070,16 +6974,8 @@ class OutputFormatterStyleStack
      */
     private $styles;
 
-    /**
-     * @var OutputFormatterStyleInterface
-     */
     private $emptyStyle;
 
-    /**
-     * Constructor.
-     *
-     * @param OutputFormatterStyleInterface|null $emptyStyle
-     */
     public function __construct(OutputFormatterStyleInterface $emptyStyle = null)
     {
         $this->emptyStyle = $emptyStyle ?: new OutputFormatterStyle();
@@ -7096,8 +6992,6 @@ class OutputFormatterStyleStack
 
     /**
      * Pushes a style in the stack.
-     *
-     * @param OutputFormatterStyleInterface $style
      */
     public function push(OutputFormatterStyleInterface $style)
     {
@@ -7106,8 +7000,6 @@ class OutputFormatterStyleStack
 
     /**
      * Pops a style from the stack.
-     *
-     * @param OutputFormatterStyleInterface|null $style
      *
      * @return OutputFormatterStyleInterface
      *
@@ -7149,8 +7041,6 @@ class OutputFormatterStyleStack
     }
 
     /**
-     * @param OutputFormatterStyleInterface $emptyStyle
-     *
      * @return $this
      */
     public function setEmptyStyle(OutputFormatterStyleInterface $emptyStyle)
@@ -7328,9 +7218,6 @@ class DescriptorHelper extends Helper
      */
     private $descriptors = array();
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this
@@ -7523,9 +7410,7 @@ abstract class Helper implements HelperInterface
     protected $helperSet = null;
 
     /**
-     * Sets the helper set associated with this helper.
-     *
-     * @param HelperSet $helperSet A HelperSet instance
+     * {@inheritdoc}
      */
     public function setHelperSet(HelperSet $helperSet = null)
     {
@@ -7533,9 +7418,7 @@ abstract class Helper implements HelperInterface
     }
 
     /**
-     * Gets the helper set associated with this helper.
-     *
-     * @return HelperSet|null
+     * {@inheritdoc}
      */
     public function getHelperSet()
     {
@@ -7662,8 +7545,6 @@ interface HelperInterface
 {
     /**
      * Sets the helper set associated with this helper.
-     *
-     * @param HelperSet $helperSet A HelperSet instance
      */
     public function setHelperSet(HelperSet $helperSet = null);
 
@@ -7711,8 +7592,6 @@ class HelperSet implements \IteratorAggregate
     private $command;
 
     /**
-     * Constructor.
-     *
      * @param Helper[] $helpers An array of helper
      */
     public function __construct(array $helpers = array())
@@ -7768,11 +7647,6 @@ class HelperSet implements \IteratorAggregate
         return $this->helpers[$name];
     }
 
-    /**
-     * Sets the command associated with this helper set.
-     *
-     * @param Command $command A Command instance
-     */
     public function setCommand(Command $command = null)
     {
         $this->command = $command;
@@ -7999,7 +7873,6 @@ use Symfony\Component\Console\Terminal;
  */
 final class ProgressBar
 {
-    // options
     private $barWidth = 28;
     private $barChar;
     private $emptyBarChar = '-';
@@ -8007,10 +7880,6 @@ final class ProgressBar
     private $format;
     private $internalFormat;
     private $redrawFreq = 1;
-
-    /**
-     * @var OutputInterface
-     */
     private $output;
     private $step = 0;
     private $max;
@@ -8881,11 +8750,12 @@ namespace Symfony\Component\Console\Helper;
 
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\RuntimeException;
+use Symfony\Component\Console\Formatter\OutputFormatter;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StreamableInputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 
@@ -8902,10 +8772,6 @@ class QuestionHelper extends Helper
 
     /**
      * Asks a question to the user.
-     *
-     * @param InputInterface  $input    An InputInterface instance
-     * @param OutputInterface $output   An OutputInterface instance
-     * @param Question        $question The question to ask
      *
      * @return mixed The user answer
      *
@@ -8995,13 +8861,9 @@ class QuestionHelper extends Helper
     /**
      * Asks the question to the user.
      *
-     * @param OutputInterface $output
-     * @param Question        $question
-     *
      * @return bool|mixed|null|string
      *
-     * @throws \Exception
-     * @throws \RuntimeException
+     * @throws RuntimeException In case the fallback is deactivated and the response cannot be hidden
      */
     private function doAsk(OutputInterface $output, Question $question)
     {
@@ -9015,7 +8877,7 @@ class QuestionHelper extends Helper
             if ($question->isHidden()) {
                 try {
                     $ret = trim($this->getHiddenResponse($output, $inputStream));
-                } catch (\RuntimeException $e) {
+                } catch (RuntimeException $e) {
                     if (!$question->isHiddenFallback()) {
                         throw $e;
                     }
@@ -9030,7 +8892,7 @@ class QuestionHelper extends Helper
                 $ret = trim($ret);
             }
         } else {
-            $ret = trim($this->autocomplete($output, $question, $inputStream));
+            $ret = trim($this->autocomplete($output, $question, $inputStream, is_array($autocomplete) ? $autocomplete : iterator_to_array($autocomplete, false)));
         }
 
         $ret = strlen($ret) > 0 ? $ret : $question->getDefault();
@@ -9044,9 +8906,6 @@ class QuestionHelper extends Helper
 
     /**
      * Outputs the question prompt.
-     *
-     * @param OutputInterface $output
-     * @param Question        $question
      */
     protected function writePrompt(OutputInterface $output, Question $question)
     {
@@ -9071,9 +8930,6 @@ class QuestionHelper extends Helper
 
     /**
      * Outputs an error message.
-     *
-     * @param OutputInterface $output
-     * @param \Exception      $error
      */
     protected function writeError(OutputInterface $output, \Exception $error)
     {
@@ -9092,12 +8948,12 @@ class QuestionHelper extends Helper
      * @param OutputInterface $output
      * @param Question        $question
      * @param resource        $inputStream
+     * @param array           $autocomplete
      *
      * @return string
      */
-    private function autocomplete(OutputInterface $output, Question $question, $inputStream)
+    private function autocomplete(OutputInterface $output, Question $question, $inputStream, array $autocomplete)
     {
-        $autocomplete = $question->getAutocompleterValues();
         $ret = '';
 
         $i = 0;
@@ -9125,7 +8981,7 @@ class QuestionHelper extends Helper
                     $output->write("\033[1D");
                 }
 
-                if ($i === 0) {
+                if (0 === $i) {
                     $ofs = -1;
                     $matches = $autocomplete;
                     $numMatches = count($matches);
@@ -9193,7 +9049,7 @@ class QuestionHelper extends Helper
                 // Save cursor position
                 $output->write("\0337");
                 // Write highlighted text
-                $output->write('<hl>'.substr($matches[$ofs], $i).'</hl>');
+                $output->write('<hl>'.OutputFormatter::escapeTrailingBackslash(substr($matches[$ofs], $i)).'</hl>');
                 // Restore cursor position
                 $output->write("\0338");
             }
@@ -9255,7 +9111,7 @@ class QuestionHelper extends Helper
         }
 
         if (false !== $shell = $this->getShell()) {
-            $readCmd = $shell === 'csh' ? 'set mypassword = $<' : 'read -r mypassword';
+            $readCmd = 'csh' === $shell ? 'set mypassword = $<' : 'read -r mypassword';
             $command = sprintf("/usr/bin/env %s -c 'stty -echo; %s; stty echo; echo \$mypassword'", $shell, $readCmd);
             $value = rtrim(shell_exec($command));
             $output->writeln('');
@@ -9337,7 +9193,7 @@ class QuestionHelper extends Helper
 
         exec('stty 2>&1', $output, $exitcode);
 
-        return self::$stty = $exitcode === 0;
+        return self::$stty = 0 === $exitcode;
     }
 }
 <?php
@@ -9488,29 +9344,23 @@ class Table
 {
     /**
      * Table headers.
-     *
-     * @var array
      */
     private $headers = array();
 
     /**
      * Table rows.
-     *
-     * @var array
      */
     private $rows = array();
 
     /**
      * Column widths cache.
-     *
-     * @var array
      */
     private $effectiveColumnWidths = array();
 
     /**
      * Number of columns cache.
      *
-     * @var array
+     * @var int
      */
     private $numberOfColumns;
 
@@ -9921,7 +9771,7 @@ class Table
      *
      * @return array
      */
-    private function fillNextRows($rows, $line)
+    private function fillNextRows(array $rows, $line)
     {
         $unmergedRows = array();
         foreach ($rows[$line] as $column => $cell) {
@@ -9972,8 +9822,6 @@ class Table
     /**
      * fill cells for a row that contains colspan > 1.
      *
-     * @param array $row
-     *
      * @return array
      */
     private function fillCells($row)
@@ -9998,7 +9846,7 @@ class Table
      *
      * @return array
      */
-    private function copyRow($rows, $line)
+    private function copyRow(array $rows, $line)
     {
         $row = $rows[$line];
         foreach ($row as $cellKey => $cellValue) {
@@ -10013,8 +9861,6 @@ class Table
 
     /**
      * Gets number of columns by row.
-     *
-     * @param array $row
      *
      * @return int
      */
@@ -10031,11 +9877,9 @@ class Table
     /**
      * Gets list of columns for the given row.
      *
-     * @param array $row
-     *
      * @return array
      */
-    private function getRowColumns($row)
+    private function getRowColumns(array $row)
     {
         $columns = range(0, $this->numberOfColumns - 1);
         foreach ($row as $cellKey => $cell) {
@@ -10050,10 +9894,8 @@ class Table
 
     /**
      * Calculates columns widths.
-     *
-     * @param array $rows
      */
-    private function calculateColumnsWidth($rows)
+    private function calculateColumnsWidth(array $rows)
     {
         for ($column = 0; $column < $this->numberOfColumns; ++$column) {
             $lengths = array();
@@ -10189,14 +10031,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
  */
 class TableCell
 {
-    /**
-     * @var string
-     */
     private $value;
-
-    /**
-     * @var array
-     */
     private $options = array(
         'rowspan' => 1,
         'colspan' => 1,
@@ -10272,9 +10107,6 @@ namespace Symfony\Component\Console\Helper;
  */
 class TableSeparator extends TableCell
 {
-    /**
-     * @param array $options
-     */
     public function __construct(array $options = array())
     {
         parent::__construct('', $options);
@@ -10584,8 +10416,6 @@ class ArgvInput extends Input
     private $parsed;
 
     /**
-     * Constructor.
-     *
      * @param array|null           $argv       An array of parameters from the CLI (in the argv format)
      * @param InputDefinition|null $definition A InputDefinition instance
      */
@@ -10820,7 +10650,7 @@ class ArgvInput extends Input
         $values = (array) $values;
 
         foreach ($this->tokens as $token) {
-            if ($onlyParams && $token === '--') {
+            if ($onlyParams && '--' === $token) {
                 return false;
             }
             foreach ($values as $value) {
@@ -10843,7 +10673,7 @@ class ArgvInput extends Input
 
         while (0 < count($tokens)) {
             $token = array_shift($tokens);
-            if ($onlyParams && $token === '--') {
+            if ($onlyParams && '--' === $token) {
                 return false;
             }
 
@@ -10873,7 +10703,7 @@ class ArgvInput extends Input
                 return $match[1].$this->escapeToken($match[2]);
             }
 
-            if ($token && $token[0] !== '-') {
+            if ($token && '-' !== $token[0]) {
                 return $this->escapeToken($token);
             }
 
@@ -10912,12 +10742,6 @@ class ArrayInput extends Input
 {
     private $parameters;
 
-    /**
-     * Constructor.
-     *
-     * @param array                $parameters An array of parameters
-     * @param InputDefinition|null $definition A InputDefinition instance
-     */
     public function __construct(array $parameters, InputDefinition $definition = null)
     {
         $this->parameters = $parameters;
@@ -10951,7 +10775,7 @@ class ArrayInput extends Input
                 $v = $k;
             }
 
-            if ($onlyParams && $v === '--') {
+            if ($onlyParams && '--' === $v) {
                 return false;
             }
 
@@ -10971,7 +10795,7 @@ class ArrayInput extends Input
         $values = (array) $values;
 
         foreach ($this->parameters as $k => $v) {
-            if ($onlyParams && ($k === '--' || (is_int($k) && $v === '--'))) {
+            if ($onlyParams && ('--' === $k || (is_int($k) && '--' === $v))) {
                 return false;
             }
 
@@ -10997,9 +10821,15 @@ class ArrayInput extends Input
         $params = array();
         foreach ($this->parameters as $param => $val) {
             if ($param && '-' === $param[0]) {
-                $params[] = $param.('' != $val ? '='.$this->escapeToken($val) : '');
+                if (is_array($val)) {
+                    foreach ($val as $v) {
+                        $params[] = $param.('' != $v ? '='.$this->escapeToken($v) : '');
+                    }
+                } else {
+                    $params[] = $param.('' != $val ? '='.$this->escapeToken($val) : '');
+                }
             } else {
-                $params[] = $this->escapeToken($val);
+                $params[] = is_array($val) ? array_map(array($this, 'escapeToken'), $val) : $this->escapeToken($val);
             }
         }
 
@@ -11012,7 +10842,7 @@ class ArrayInput extends Input
     protected function parse()
     {
         foreach ($this->parameters as $key => $value) {
-            if ($key === '--') {
+            if ('--' === $key) {
                 return;
             }
             if (0 === strpos($key, '--')) {
@@ -11118,20 +10948,12 @@ use Symfony\Component\Console\Exception\RuntimeException;
  */
 abstract class Input implements InputInterface, StreamableInputInterface
 {
-    /**
-     * @var InputDefinition
-     */
     protected $definition;
     protected $stream;
     protected $options = array();
     protected $arguments = array();
     protected $interactive = true;
 
-    /**
-     * Constructor.
-     *
-     * @param InputDefinition|null $definition A InputDefinition instance
-     */
     public function __construct(InputDefinition $definition = null)
     {
         if (null === $definition) {
@@ -11333,8 +11155,6 @@ class InputArgument
     private $description;
 
     /**
-     * Constructor.
-     *
      * @param string $name        The argument name
      * @param int    $mode        The argument mode: self::REQUIRED or self::OPTIONAL
      * @param string $description A description text
@@ -11497,8 +11317,6 @@ class InputDefinition
     private $shortcuts;
 
     /**
-     * Constructor.
-     *
      * @param array $definition An array of InputArgument and InputOption instance
      */
     public function __construct(array $definition = array())
@@ -11508,8 +11326,6 @@ class InputDefinition
 
     /**
      * Sets the definition of the input.
-     *
-     * @param array $definition The definition array
      */
     public function setDefinition(array $definition)
     {
@@ -11556,10 +11372,6 @@ class InputDefinition
     }
 
     /**
-     * Adds an InputArgument object.
-     *
-     * @param InputArgument $argument An InputArgument object
-     *
      * @throws LogicException When incorrect argument is given
      */
     public function addArgument(InputArgument $argument)
@@ -11693,10 +11505,6 @@ class InputDefinition
     }
 
     /**
-     * Adds an InputOption object.
-     *
-     * @param InputOption $option An InputOption object
-     *
      * @throws LogicException When option given already exist
      */
     public function addOption(InputOption $option)
@@ -11779,7 +11587,7 @@ class InputDefinition
     /**
      * Gets an InputOption by shortcut.
      *
-     * @param string $shortcut the Shortcut name
+     * @param string $shortcut The Shortcut name
      *
      * @return InputOption An InputOption object
      */
@@ -11932,8 +11740,6 @@ interface InputInterface
 
     /**
      * Binds the current Input instance with the given arguments and options.
-     *
-     * @param InputDefinition $definition A InputDefinition instance
      */
     public function bind(InputDefinition $definition);
 
@@ -12067,8 +11873,6 @@ class InputOption
     private $description;
 
     /**
-     * Constructor.
-     *
      * @param string       $name        The option name
      * @param string|array $shortcut    The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
      * @param int          $mode        The option mode: One of the VALUE_* constants
@@ -12229,8 +12033,6 @@ class InputOption
     /**
      * Checks whether the given option equals this one.
      *
-     * @param InputOption $option option to compare
-     *
      * @return bool
      */
     public function equals(InputOption $option)
@@ -12311,8 +12113,6 @@ class StringInput extends ArgvInput
     const REGEX_QUOTED_STRING = '(?:"([^"\\\\]*(?:\\\\.[^"\\\\]*)*)"|\'([^\'\\\\]*(?:\\\\.[^\'\\\\]*)*)\')';
 
     /**
-     * Constructor.
-     *
      * @param string $input An array of parameters from the CLI (in the argv format)
      */
     public function __construct($input)
@@ -12386,13 +12186,7 @@ class ConsoleLogger extends AbstractLogger
     const INFO = 'info';
     const ERROR = 'error';
 
-    /**
-     * @var OutputInterface
-     */
     private $output;
-    /**
-     * @var array
-     */
     private $verbosityLevelMap = array(
         LogLevel::EMERGENCY => OutputInterface::VERBOSITY_NORMAL,
         LogLevel::ALERT => OutputInterface::VERBOSITY_NORMAL,
@@ -12403,9 +12197,6 @@ class ConsoleLogger extends AbstractLogger
         LogLevel::INFO => OutputInterface::VERBOSITY_VERY_VERBOSE,
         LogLevel::DEBUG => OutputInterface::VERBOSITY_DEBUG,
     );
-    /**
-     * @var array
-     */
     private $formatLevelMap = array(
         LogLevel::EMERGENCY => self::ERROR,
         LogLevel::ALERT => self::ERROR,
@@ -12418,11 +12209,6 @@ class ConsoleLogger extends AbstractLogger
     );
     private $errored = false;
 
-    /**
-     * @param OutputInterface $output
-     * @param array           $verbosityLevelMap
-     * @param array           $formatLevelMap
-     */
     public function __construct(OutputInterface $output, array $verbosityLevelMap = array(), array $formatLevelMap = array())
     {
         $this->output = $output;
@@ -12442,7 +12228,7 @@ class ConsoleLogger extends AbstractLogger
         $output = $this->output;
 
         // Write to the error output if necessary and available
-        if ($this->formatLevelMap[$level] === self::ERROR) {
+        if (self::ERROR === $this->formatLevelMap[$level]) {
             if ($this->output instanceof ConsoleOutputInterface) {
                 $output = $output->getErrorOutput();
             }
@@ -12506,9 +12292,6 @@ namespace Symfony\Component\Console\Output;
  */
 class BufferedOutput extends Output
 {
-    /**
-     * @var string
-     */
     private $buffer = '';
 
     /**
@@ -12567,14 +12350,9 @@ use Symfony\Component\Console\Formatter\OutputFormatterInterface;
  */
 class ConsoleOutput extends StreamOutput implements ConsoleOutputInterface
 {
-    /**
-     * @var StreamOutput
-     */
     private $stderr;
 
     /**
-     * Constructor.
-     *
      * @param int                           $verbosity The verbosity level (one of the VERBOSITY constants in OutputInterface)
      * @param bool|null                     $decorated Whether to decorate messages (null for auto-guessing)
      * @param OutputFormatterInterface|null $formatter Output formatter instance (null to use default OutputFormatter)
@@ -12721,11 +12499,6 @@ interface ConsoleOutputInterface extends OutputInterface
      */
     public function getErrorOutput();
 
-    /**
-     * Sets the OutputInterface used for errors.
-     *
-     * @param OutputInterface $error
-     */
     public function setErrorOutput(OutputInterface $error);
 }
 <?php
@@ -12886,8 +12659,6 @@ abstract class Output implements OutputInterface
     private $formatter;
 
     /**
-     * Constructor.
-     *
      * @param int                           $verbosity The verbosity level (one of the VERBOSITY constants in OutputInterface)
      * @param bool                          $decorated Whether to decorate messages
      * @param OutputFormatterInterface|null $formatter Output formatter instance (null to use default OutputFormatter)
@@ -13133,11 +12904,6 @@ interface OutputInterface
      */
     public function isDecorated();
 
-    /**
-     * Sets output formatter.
-     *
-     * @param OutputFormatterInterface $formatter
-     */
     public function setFormatter(OutputFormatterInterface $formatter);
 
     /**
@@ -13182,8 +12948,6 @@ class StreamOutput extends Output
     private $stream;
 
     /**
-     * Constructor.
-     *
      * @param resource                      $stream    A stream resource
      * @param int                           $verbosity The verbosity level (one of the VERBOSITY constants in OutputInterface)
      * @param bool|null                     $decorated Whether to decorate messages (null for auto-guessing)
@@ -13280,8 +13044,6 @@ class ChoiceQuestion extends Question
     private $errorMessage = 'Value "%s" is invalid';
 
     /**
-     * Constructor.
-     *
      * @param string $question The question to ask to the user
      * @param array  $choices  The list of available choices
      * @param mixed  $default  The default answer to return
@@ -13466,8 +13228,6 @@ class ConfirmationQuestion extends Question
     private $trueAnswerRegex;
 
     /**
-     * Constructor.
-     *
      * @param string $question        The question to ask to the user
      * @param bool   $default         The default answer to return, true or false
      * @param string $trueAnswerRegex A regex to match the "yes" answer
@@ -13537,8 +13297,6 @@ class Question
     private $normalizer;
 
     /**
-     * Constructor.
-     *
      * @param string $question The question to ask to the user
      * @param mixed  $default  The default answer to return if the user enters nothing
      */
@@ -13648,10 +13406,8 @@ class Question
             $values = $this->isAssoc($values) ? array_merge(array_keys($values), array_values($values)) : array_values($values);
         }
 
-        if (null !== $values && !is_array($values)) {
-            if (!$values instanceof \Traversable || !$values instanceof \Countable) {
-                throw new InvalidArgumentException('Autocompleter values can be either an array, `null` or an object implementing both `Countable` and `Traversable` interfaces.');
-            }
+        if (null !== $values && !is_array($values) && !$values instanceof \Traversable) {
+            throw new InvalidArgumentException('Autocompleter values can be either an array, `null` or a `Traversable` object.');
         }
 
         if ($this->hidden) {
@@ -13696,7 +13452,7 @@ class Question
      *
      * @return $this
      *
-     * @throws InvalidArgumentException In case the number of attempts is invalid.
+     * @throws InvalidArgumentException in case the number of attempts is invalid
      */
     public function setMaxAttempts($attempts)
     {
@@ -13781,9 +13537,6 @@ abstract class OutputStyle implements OutputInterface, StyleInterface
 {
     private $output;
 
-    /**
-     * @param OutputInterface $output
-     */
     public function __construct(OutputInterface $output)
     {
         $this->output = $output;
@@ -13948,8 +13701,6 @@ interface StyleInterface
 
     /**
      * Formats a list.
-     *
-     * @param array $elements
      */
     public function listing(array $elements);
 
@@ -13997,9 +13748,6 @@ interface StyleInterface
 
     /**
      * Formats a table.
-     *
-     * @param array $headers
-     * @param array $rows
      */
     public function table(array $headers, array $rows);
 
@@ -14113,10 +13861,6 @@ class SymfonyStyle extends OutputStyle
     private $lineLength;
     private $bufferedOutput;
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
     public function __construct(InputInterface $input, OutputInterface $output)
     {
         $this->input = $input;
@@ -14356,8 +14100,6 @@ class SymfonyStyle extends OutputStyle
     }
 
     /**
-     * @param Question $question
-     *
      * @return string
      */
     public function askQuestion(Question $question)
@@ -14852,11 +14594,6 @@ class CommandTester
     private $inputs = array();
     private $statusCode;
 
-    /**
-     * Constructor.
-     *
-     * @param Command $command A Command instance to test
-     */
     public function __construct(Command $command)
     {
         $this->command = $command;
@@ -14958,8 +14695,8 @@ class CommandTester
     /**
      * Sets the user inputs.
      *
-     * @param array An array of strings representing each input
-     *              passed to the command input stream.
+     * @param array $inputs An array of strings representing each input
+     *                      passed to the command input stream
      *
      * @return CommandTester
      */
@@ -15108,6 +14845,7 @@ class DebugClassLoader
 {
     private $classLoader;
     private $isFinder;
+    private $loaded = array();
     private static $caseCheck;
     private static $final = array();
     private static $finalMethods = array();
@@ -15115,11 +14853,6 @@ class DebugClassLoader
     private static $php7Reserved = array('int', 'float', 'bool', 'string', 'true', 'false', 'null');
     private static $darwinCache = array('/' => array('/', array()));
 
-    /**
-     * Constructor.
-     *
-     * @param callable $classLoader A class loader
-     */
     public function __construct(callable $classLoader)
     {
         $this->classLoader = $classLoader;
@@ -15221,9 +14954,10 @@ class DebugClassLoader
         ErrorHandler::stackErrors();
 
         try {
-            if ($this->isFinder) {
+            if ($this->isFinder && !isset($this->loaded[$class])) {
+                $this->loaded[$class] = true;
                 if ($file = $this->classLoader[0]->findFile($class)) {
-                    require_once $file;
+                    require $file;
                 }
             } else {
                 call_user_func($this->classLoader, $class);
@@ -15289,18 +15023,11 @@ class DebugClassLoader
                 self::$deprecated[$name] = preg_replace('#\s*\r?\n \* +#', ' ', $notice[1]);
             } else {
                 // Don't trigger deprecations for classes in the same vendor
-                if (2 > $len = 1 + (strpos($name, '\\', 1 + strpos($name, '\\')) ?: strpos($name, '_'))) {
+                if (2 > $len = 1 + (strpos($name, '\\') ?: strpos($name, '_'))) {
                     $len = 0;
                     $ns = '';
                 } else {
-                    switch ($ns = substr($name, 0, $len)) {
-                        case 'Symfony\Bridge\\':
-                        case 'Symfony\Bundle\\':
-                        case 'Symfony\Component\\':
-                            $ns = 'Symfony\\';
-                            $len = strlen($ns);
-                            break;
-                    }
+                    $ns = substr($name, 0, $len);
                 }
 
                 if (!$parent || strncmp($ns, $parent, $len)) {
@@ -15534,6 +15261,8 @@ class ErrorHandler
     private static $stackedErrors = array();
     private static $stackedErrorLevels = array();
     private static $toStringException = null;
+    private static $silencedErrorCache = array();
+    private static $silencedErrorCount = 0;
     private static $exitCode = 0;
 
     /**
@@ -15841,7 +15570,24 @@ class ErrorHandler
             $errorAsException = self::$toStringException;
             self::$toStringException = null;
         } elseif (!$throw && !($type & $level)) {
-            $errorAsException = new SilencedErrorContext($type, $file, $line);
+            if (isset(self::$silencedErrorCache[$message])) {
+                $lightTrace = null;
+                $errorAsException = self::$silencedErrorCache[$message];
+                ++$errorAsException->count;
+            } else {
+                $lightTrace = $this->tracedErrors & $type ? $this->cleanTrace(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3), $type, $file, $line, false) : array();
+                $errorAsException = new SilencedErrorContext($type, $file, $line, $lightTrace);
+            }
+
+            if (100 < ++self::$silencedErrorCount) {
+                self::$silencedErrorCache = $lightTrace = array();
+                self::$silencedErrorCount = 1;
+            }
+            self::$silencedErrorCache[$message] = $errorAsException;
+
+            if (null === $lightTrace) {
+                return;
+            }
         } else {
             if ($scope) {
                 $errorAsException = new ContextErrorException($logMessage, 0, $type, $file, $line, $context);
@@ -15852,19 +15598,7 @@ class ErrorHandler
             // Clean the trace by removing function arguments and the first frames added by the error handler itself.
             if ($throw || $this->tracedErrors & $type) {
                 $backtrace = $backtrace ?: $errorAsException->getTrace();
-                $lightTrace = $backtrace;
-
-                for ($i = 0; isset($backtrace[$i]); ++$i) {
-                    if (isset($backtrace[$i]['file'], $backtrace[$i]['line']) && $backtrace[$i]['line'] === $line && $backtrace[$i]['file'] === $file) {
-                        $lightTrace = array_slice($lightTrace, 1 + $i);
-                        break;
-                    }
-                }
-                if (!($throw || $this->scopedErrors & $type)) {
-                    for ($i = 0; isset($lightTrace[$i]); ++$i) {
-                        unset($lightTrace[$i]['args']);
-                    }
-                }
+                $lightTrace = $this->cleanTrace($backtrace, $type, $file, $line, $throw);
                 $this->traceReflector->setValue($errorAsException, $lightTrace);
             } else {
                 $this->traceReflector->setValue($errorAsException, array());
@@ -16120,6 +15854,25 @@ class ErrorHandler
             new UndefinedMethodFatalErrorHandler(),
             new ClassNotFoundFatalErrorHandler(),
         );
+    }
+
+    private function cleanTrace($backtrace, $type, $file, $line, $throw)
+    {
+        $lightTrace = $backtrace;
+
+        for ($i = 0; isset($backtrace[$i]); ++$i) {
+            if (isset($backtrace[$i]['file'], $backtrace[$i]['line']) && $backtrace[$i]['line'] === $line && $backtrace[$i]['file'] === $file) {
+                $lightTrace = array_slice($lightTrace, 1 + $i);
+                break;
+            }
+        }
+        if (!($throw || $this->scopedErrors & $type)) {
+            for ($i = 0; isset($lightTrace[$i]); ++$i) {
+                unset($lightTrace[$i]['args'], $lightTrace[$i]['object']);
+            }
+        }
+
+        return $lightTrace;
     }
 }
 <?php
@@ -16625,15 +16378,20 @@ namespace Symfony\Component\Debug\Exception;
  */
 class SilencedErrorContext implements \JsonSerializable
 {
+    public $count = 1;
+
     private $severity;
     private $file;
     private $line;
+    private $trace;
 
-    public function __construct($severity, $file, $line)
+    public function __construct($severity, $file, $line, array $trace = array(), $count = 1)
     {
         $this->severity = $severity;
         $this->file = $file;
         $this->line = $line;
+        $this->trace = $trace;
+        $this->count = $count;
     }
 
     public function getSeverity()
@@ -16651,12 +16409,19 @@ class SilencedErrorContext implements \JsonSerializable
         return $this->line;
     }
 
+    public function getTrace()
+    {
+        return $this->trace;
+    }
+
     public function JsonSerialize()
     {
         return array(
             'severity' => $this->severity,
             'file' => $this->file,
             'line' => $this->line,
+            'trace' => $this->trace,
+            'count' => $this->count,
         );
     }
 }
@@ -16924,8 +16689,6 @@ class ExceptionHandler
     /**
      * Gets the HTML content associated with the given exception.
      *
-     * @param FlattenException $exception A FlattenException instance
-     *
      * @return string The content as a string
      */
     public function getContent(FlattenException $exception)
@@ -17004,8 +16767,6 @@ EOF;
     /**
      * Gets the stylesheet associated with the given exception.
      *
-     * @param FlattenException $exception A FlattenException instance
-     *
      * @return string The stylesheet as a string
      */
     public function getStylesheet(FlattenException $exception)
@@ -17038,8 +16799,8 @@ EOF;
             .exception-message { flex-grow: 1; padding: 30px 0; }
             .exception-message, .exception-message a { color: #FFF; font-size: 21px; font-weight: 400; margin: 0; }
             .exception-message.long { font-size: 18px; }
-            .exception-message a { text-decoration: none; }
-            .exception-message a:hover { text-decoration: underline; }
+            .exception-message a { border-bottom: 1px solid rgba(255, 255, 255, 0.5); font-size: inherit; text-decoration: none; }
+            .exception-message a:hover { border-bottom-color: #ffffff; }
 
             .exception-illustration { flex-basis: 111px; flex-shrink: 0; height: 66px; margin-left: 15px; opacity: .7; }
 
@@ -17048,11 +16809,11 @@ EOF;
 
             .trace-message { font-size: 14px; font-weight: normal; margin: .5em 0 0; }
 
-            .trace-file-path, .trace-file-path a { margin-top: 3px; color: #999; color: #795da3; color: #B0413E; color: #222; font-size: 13px; }
+            .trace-file-path, .trace-file-path a { color: #222; margin-top: 3px; font-size: 13px; }
             .trace-class { color: #B0413E; }
             .trace-type { padding: 0 2px; }
-            .trace-method { color: #B0413E; color: #222; font-weight: bold; color: #B0413E; }
-            .trace-arguments { color: #222; color: #999; font-weight: normal; color: #795da3; color: #777; padding-left: 2px; }
+            .trace-method { color: #B0413E; font-weight: bold; }
+            .trace-arguments { color: #777; font-weight: normal; padding-left: 2px; }
 
             @media (min-width: 575px) {
                 .hidden-xs-down { display: initial; }
@@ -17121,7 +16882,7 @@ EOF;
                 $formattedValue = str_replace("\n", '', $this->escapeHtml(var_export($item[1], true)));
             }
 
-            $result[] = is_int($key) ? $formattedValue : sprintf("'%s' => %s", $key, $formattedValue);
+            $result[] = is_int($key) ? $formattedValue : sprintf("'%s' => %s", $this->escapeHtml($key), $formattedValue);
         }
 
         return implode(', ', $result);
@@ -17647,8 +17408,6 @@ namespace Symfony\Component\Finder\Comparator;
 class DateComparator extends Comparator
 {
     /**
-     * Constructor.
-     *
      * @param string $test A comparison string
      *
      * @throws \InvalidArgumentException If the test is not understood
@@ -17716,8 +17475,6 @@ namespace Symfony\Component\Finder\Comparator;
 class NumberComparator extends Comparator
 {
     /**
-     * Constructor.
-     *
      * @param string|int $test A comparison string or an integer
      *
      * @throws \InvalidArgumentException If the test is not understood
@@ -17867,9 +17624,6 @@ class Finder implements \IteratorAggregate, \Countable
 
     private static $vcsPatterns = array('.svn', '_svn', 'CVS', '_darcs', '.arch-params', '.monotone', '.bzr', '.git', '.hg');
 
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         $this->ignore = static::IGNORE_VCS_FILES | static::IGNORE_DOT_FILES;
@@ -18182,8 +17936,6 @@ class Finder implements \IteratorAggregate, \Countable
      *
      * This can be slow as all the matching files and directories must be retrieved for comparison.
      *
-     * @param \Closure $closure An anonymous function
-     *
      * @return $this
      *
      * @see SortableIterator
@@ -18288,8 +18040,6 @@ class Finder implements \IteratorAggregate, \Countable
      *
      * The anonymous function receives a \SplFileInfo and must return false
      * to remove files.
-     *
-     * @param \Closure $closure An anonymous function
      *
      * @return $this
      *
@@ -18398,7 +18148,7 @@ class Finder implements \IteratorAggregate, \Countable
      *
      * @return $this
      *
-     * @throws \InvalidArgumentException When the given argument is not iterable.
+     * @throws \InvalidArgumentException when the given argument is not iterable
      */
     public function append($iterator)
     {
@@ -18662,8 +18412,6 @@ class CustomFilterIterator extends FilterIterator
     private $filters = array();
 
     /**
-     * Constructor.
-     *
      * @param \Iterator  $iterator The Iterator to filter
      * @param callable[] $filters  An array of PHP callbacks
      *
@@ -18724,8 +18472,6 @@ class DateRangeFilterIterator extends FilterIterator
     private $comparators = array();
 
     /**
-     * Constructor.
-     *
      * @param \Iterator        $iterator    The Iterator to filter
      * @param DateComparator[] $comparators An array of DateComparator instances
      */
@@ -18782,8 +18528,6 @@ class DepthRangeFilterIterator extends FilterIterator
     private $minDepth = 0;
 
     /**
-     * Constructor.
-     *
      * @param \RecursiveIteratorIterator $iterator The Iterator to filter
      * @param int                        $minDepth The min depth
      * @param int                        $maxDepth The max depth
@@ -18832,8 +18576,6 @@ class ExcludeDirectoryFilterIterator extends FilterIterator implements \Recursiv
     private $excludedPattern;
 
     /**
-     * Constructor.
-     *
      * @param \Iterator $iterator    The Iterator to filter
      * @param array     $directories An array of directories to exclude
      */
@@ -18918,8 +18660,6 @@ class FileTypeFilterIterator extends FilterIterator
     private $mode;
 
     /**
-     * Constructor.
-     *
      * @param \Iterator $iterator The Iterator to filter
      * @param int       $mode     The mode (self::ONLY_FILES or self::ONLY_DIRECTORIES)
      */
@@ -19134,8 +18874,6 @@ abstract class MultiplePcreFilterIterator extends FilterIterator
     protected $noMatchRegexps = array();
 
     /**
-     * Constructor.
-     *
      * @param \Iterator $iterator        The Iterator to filter
      * @param array     $matchPatterns   An array of patterns that need to match
      * @param array     $noMatchPatterns An array of patterns that need to not match
@@ -19319,8 +19057,6 @@ class RecursiveDirectoryIterator extends \RecursiveDirectoryIterator
     private $directorySeparator = '/';
 
     /**
-     * Constructor.
-     *
      * @param string $path
      * @param int    $flags
      * @param bool   $ignoreUnreadableDirs
@@ -19461,8 +19197,6 @@ class SizeRangeFilterIterator extends FilterIterator
     private $comparators = array();
 
     /**
-     * Constructor.
-     *
      * @param \Iterator          $iterator    The Iterator to filter
      * @param NumberComparator[] $comparators An array of NumberComparator instances
      */
@@ -19525,8 +19259,6 @@ class SortableIterator implements \IteratorAggregate
     private $sort;
 
     /**
-     * Constructor.
-     *
      * @param \Traversable $iterator The Iterator to filter
      * @param int|callable $sort     The sort type (SORT_BY_NAME, SORT_BY_TYPE, or a PHP callback)
      *
@@ -19601,8 +19333,6 @@ class SplFileInfo extends \SplFileInfo
     private $relativePathname;
 
     /**
-     * Constructor.
-     *
      * @param string $file             The file name
      * @param string $relativePath     The relative path
      * @param string $relativePathname The relative path name
@@ -19807,6 +19537,9 @@ final class Mbstring
 
         if ('UTF-8' === $encoding) {
             $encoding = null;
+            if (!preg_match('//u', $s)) {
+                $s = @iconv('UTF-8', 'UTF-8//IGNORE', $s);
+            }
         } else {
             $s = iconv($encoding, 'UTF-8//IGNORE', $s);
         }
@@ -19996,10 +19729,9 @@ final class Mbstring
 
     public static function mb_strlen($s, $encoding = null)
     {
-        switch ($encoding = self::getEncoding($encoding)) {
-            case 'ASCII':
-            case 'CP850':
-                return strlen($s);
+        $encoding = self::getEncoding($encoding);
+        if ('CP850' === $encoding || 'ASCII' === $encoding) {
+            return strlen($s);
         }
 
         return @iconv_strlen($s, $encoding);
@@ -20008,6 +19740,9 @@ final class Mbstring
     public static function mb_strpos($haystack, $needle, $offset = 0, $encoding = null)
     {
         $encoding = self::getEncoding($encoding);
+        if ('CP850' === $encoding || 'ASCII' === $encoding) {
+            return strpos($haystack, $needle, $offset);
+        }
 
         if ('' === $needle .= '') {
             trigger_error(__METHOD__.': Empty delimiter', E_USER_WARNING);
@@ -20021,6 +19756,9 @@ final class Mbstring
     public static function mb_strrpos($haystack, $needle, $offset = 0, $encoding = null)
     {
         $encoding = self::getEncoding($encoding);
+        if ('CP850' === $encoding || 'ASCII' === $encoding) {
+            return strrpos($haystack, $needle, $offset);
+        }
 
         if ($offset != (int) $offset) {
             $offset = 0;
@@ -20060,6 +19798,9 @@ final class Mbstring
     public static function mb_substr($s, $start, $length = null, $encoding = null)
     {
         $encoding = self::getEncoding($encoding);
+        if ('CP850' === $encoding || 'ASCII' === $encoding) {
+            return substr($s, $start, null === $length ? 2147483647 : $length);
+        }
 
         if ($start < 0) {
             $start = iconv_strlen($s, $encoding) + $start;
@@ -20098,6 +19839,9 @@ final class Mbstring
     public static function mb_strrchr($haystack, $needle, $part = false, $encoding = null)
     {
         $encoding = self::getEncoding($encoding);
+        if ('CP850' === $encoding || 'ASCII' === $encoding) {
+            return strrchr($haystack, $needle, $part);
+        }
         $needle = self::mb_substr($needle, 0, 1, $encoding);
         $pos = iconv_strrpos($haystack, $needle, $encoding);
 
@@ -23933,11 +23677,12 @@ namespace TheSeer\fDOM {
          * @param string $prefix   Namespace prefix for node to create
          * @param string $name     Name of not element to create
          * @param string $content  Optional content to be set
+         * @param bool $asTextnode Create content as textNode rather then setting nodeValue
          *
          * @return fDOMElement Reference to created fDOMElement
          */
-        public function appendElementPrefix($prefix, $name, $content = null) {
-            $node = $this->ownerDocument->createElementPrefix($prefix, $name, $content);
+        public function appendElementPrefix($prefix, $name, $content = null, $asTextnode = FALSE) {
+            $node = $this->ownerDocument->createElementPrefix($prefix, $name, $content, $asTextnode);
             $this->appendChild($node);
             return $node;
         }
@@ -24131,11 +23876,12 @@ namespace TheSeer\fDOM {
          *
          * @param string $name     Name of not element to create
          * @param string $content  Optional content to be set
+         * @param bool $asTextnode Create content as textNode rather then setting nodeValue
          *
          * @return fDOMElement Reference to created fDOMElement
          */
-        public function appendElement($name, $content = null) {
-            $node = $this->ownerDocument->createElement($name, $content);
+        public function appendElement($name, $content = null, $asTextnode = FALSE) {
+            $node = $this->ownerDocument->createElement($name, $content, $asTextnode);
             $this->appendChild($node);
             return $node;
         }
@@ -24146,11 +23892,12 @@ namespace TheSeer\fDOM {
          * @param string $ns       Namespace of node to create
          * @param string $name     Name of not element to create
          * @param string $content  Optional content to be set
+         * @param bool $asTextnode Create content as textNode rather then setting nodeValue
          *
          * @return fDOMElement Reference to created fDOMElement
          */
-        public function appendElementNS($ns, $name, $content = null) {
-            $node = $this->ownerDocument->createElementNS($ns, $name, $content);
+        public function appendElementNS($ns, $name, $content = null, $asTextnode = FALSE) {
+            $node = $this->ownerDocument->createElementNS($ns, $name, $content, $asTextnode);
             $this->appendChild($node);
             return $node;
         }
@@ -24161,11 +23908,12 @@ namespace TheSeer\fDOM {
          * @param string $prefix   Namespace prefix for node to create
          * @param string $name     Name of not element to create
          * @param string $content  Optional content to be set
+         * @param bool $asTextnode Create content as textNode rather then setting nodeValue
          *
          * @return fDOMElement Reference to created fDOMElement
          */
-        public function appendElementPrefix($prefix, $name, $content = null) {
-            $node = $this->ownerDocument->createElementPrefix($prefix, $name, $content);
+        public function appendElementPrefix($prefix, $name, $content = null, $asTextnode = FALSE) {
+            $node = $this->ownerDocument->createElementPrefix($prefix, $name, $content, $asTextnode);
             $this->appendChild($node);
             return $node;
         }
@@ -24929,13 +24677,14 @@ namespace TheSeer\fDOM {
         }
     }
 }
-phploc/phploc: 4.0.0
+phploc/phploc: 4.0.1
 psr/log: 1.0.2
 sebastian/finder-facade: 1.2.1
 sebastian/version: 2.0.1
-symfony/console: v3.3.2
-symfony/debug: v3.3.2
-symfony/finder: v3.3.2
-symfony/polyfill-mbstring: v1.3.0
-theseer/fdomdocument: 1.6.5
-AˆÆ„É≈óBlÃâ?ç »ÂáºGn =À÷ñUπxeîK?2˙†DIÈ‹V|.àr¬â@µXX`3Û)±7µ¢   GBMB
+symfony/console: v3.3.13
+symfony/debug: v3.3.13
+symfony/finder: v3.3.13
+symfony/polyfill-mbstring: v1.6.0
+theseer/fdomdocument: 1.6.6
+∆D'm:≤ÛrHYå˜‡SÍ	∑
+lÆ–%‰»•ùÌ≈Î±–âùßu“B‹ò!ñ0wµf˝´qóGı   GBMB
