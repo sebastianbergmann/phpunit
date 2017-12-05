@@ -4,7 +4,7 @@ namespace PHPUnit;
 
 use PHPUnit\Framework\TestCase;
 
-class TestSkippedFromAnnotation extends TestCase
+class TestSkippedFromMethodAnnotation extends TestCase
 {
     /**
      * @testSkipped

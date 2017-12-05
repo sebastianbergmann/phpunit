@@ -673,6 +673,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
+    /**
+     * Mark test skipped if testSkipped annotation exists in
+     * class or method definition
+     */
     protected function setMarkTestSkippedFromAnnotation()
     {
         try {

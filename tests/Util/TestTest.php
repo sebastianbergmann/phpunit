@@ -15,6 +15,7 @@ use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
+use PHPUnit\TestSkippedFromClassAnnotation;
 
 class TestTest extends TestCase
 {
@@ -1007,5 +1008,7 @@ class TestTest extends TestCase
         $this->assertEquals('', Test::getTestSkipped(\My\Space\TestSkippedTest::class, 'skippedTestWithoutComment'));
 
         $this->assertEquals('some smart comment', Test::getTestSkipped(\My\Space\TestSkippedTest::class, 'skippedTestWithComment'));
+
+        $this->assertEquals('', Test::getTestSkipped(TestSkippedFromClassAnnotation::class, 'testSkipped'));
     }
 }

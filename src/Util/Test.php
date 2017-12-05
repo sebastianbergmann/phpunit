@@ -412,6 +412,8 @@ class Test
     }
 
     /**
+     * Check testSkipped annotation in class or method definition
+     *
      * @param string $className
      * @param string $methodName
      *
@@ -419,12 +421,14 @@ class Test
      */
     public static function getTestSkipped($className, $methodName)
     {
-        $reflector  = new ReflectionMethod($className, $methodName);
-        $docComment = $reflector->getDocComment();
-        $docComment = \substr($docComment, 3, -2);
+        $classReflector = new ReflectionClass($className);
+        $methodReflection = $classReflector->getMethod($methodName);
 
-        if (\preg_match(self::REGEX_TEST_SKIPPED, $docComment, $matches)) {
-            return trim($matches[1]);
+        foreach ([$classReflector, $methodReflection] as $reflection) {
+            $docComment = \substr($reflection->getDocComment(), 3, -2);
+            if (\preg_match(self::REGEX_TEST_SKIPPED, $docComment, $matches)) {
+                return trim($matches[1]);
+            }
         }
 
         return false;

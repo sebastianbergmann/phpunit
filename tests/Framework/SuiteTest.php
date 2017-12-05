@@ -44,7 +44,8 @@ class SuiteTest extends TestCase
         $suite->addTest(new self('testIncompleteTestDataProvider'));
         $suite->addTest(new self('testRequirementsBeforeClassHook'));
         $suite->addTest(new self('testDoNotSkipInheritedClass'));
-        $suite->addTest(new self('testSkippedFromAnnotation'));
+        $suite->addTest(new self('testSkippedFromMethodAnnotation'));
+        $suite->addTest(new self('testSkippedFromClassAnnotation'));
 
         return $suite;
     }
@@ -235,14 +236,25 @@ class SuiteTest extends TestCase
         $this->assertCount(2, $result);
     }
 
-    public function testSkippedFromAnnotation()
+    public function testSkippedFromMethodAnnotation()
     {
-        $suite = new TestSuite(\PHPUnit\TestSkippedFromAnnotation::class);
+        $suite = new TestSuite(\PHPUnit\TestSkippedFromMethodAnnotation::class);
 
         $suite->run($this->result);
 
         $this->assertEquals(2, $this->result->count());
         $this->assertEquals(2, $this->result->skippedCount());
+        $this->assertEquals(0, $this->result->failureCount());
+    }
+
+    public function testSkippedFromClassAnnotation()
+    {
+        $suite = new TestSuite(\PHPUnit\TestSkippedFromClassAnnotation::class);
+
+        $suite->run($this->result);
+
+        $this->assertEquals(1, $this->result->count());
+        $this->assertEquals(1, $this->result->skippedCount());
         $this->assertEquals(0, $this->result->failureCount());
     }
 }
