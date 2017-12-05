@@ -999,4 +999,13 @@ class TestTest extends TestCase
         $this->assertArrayHasKey('theClassAnnotation', $result['class']);
         $this->assertArrayHasKey('theTraitAnnotation', $result['class']);
     }
+
+    public function testGetTestSkipped()
+    {
+        $this->assertFalse(Test::getTestSkipped(\My\Space\TestSkippedTest::class, 'notSkippedTest'));
+
+        $this->assertEquals('', Test::getTestSkipped(\My\Space\TestSkippedTest::class, 'skippedTestWithoutComment'));
+
+        $this->assertEquals('some smart comment', Test::getTestSkipped(\My\Space\TestSkippedTest::class, 'skippedTestWithComment'));
+    }
 }
