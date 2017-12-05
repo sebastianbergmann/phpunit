@@ -34,6 +34,7 @@ class Test
     const REGEX_DATA_PROVIDER               = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
     const REGEX_TEST_WITH                   = '/@testWith\s+/';
     const REGEX_EXPECTED_EXCEPTION          = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
+    const REGEX_TEST_SKIPPED                = '/@testSkipped(\s+.*)?/';
     const REGEX_REQUIRES_VERSION            = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
     const REGEX_REQUIRES_VERSION_CONSTRAINT = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<constraint>[\d\t -.|~^]+)[ \t]*\r?$/m';
     const REGEX_REQUIRES_OS                 = '/@requires\s+(?P<name>OS(?:FAMILY)?)\s+(?P<value>.+?)[ \t]*\r?$/m';
@@ -405,6 +406,29 @@ class Test
             return [
                 'class' => $class, 'code' => $code, 'message' => $message, 'message_regex' => $messageRegExp
             ];
+        }
+
+        return false;
+    }
+
+    /**
+     * Check testSkipped annotation in class or method definition
+     *
+     * @param string $className
+     * @param string $methodName
+     *
+     * @return string|false
+     */
+    public static function getTestSkipped($className, $methodName)
+    {
+        $classReflector = new ReflectionClass($className);
+        $methodReflection = $classReflector->getMethod($methodName);
+
+        foreach ([$classReflector, $methodReflection] as $reflection) {
+            $docComment = \substr($reflection->getDocComment(), 3, -2);
+            if (\preg_match(self::REGEX_TEST_SKIPPED, $docComment, $matches)) {
+                return trim($matches[1]);
+            }
         }
 
         return false;

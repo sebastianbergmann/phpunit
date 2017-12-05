@@ -674,6 +674,25 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * Mark test skipped if testSkipped annotation exists in
+     * class or method definition
+     */
+    protected function setMarkTestSkippedFromAnnotation()
+    {
+        try {
+            $testSkipped = \PHPUnit\Util\Test::getTestSkipped(
+                \get_class($this),
+                $this->name
+            );
+
+            if ($testSkipped !== false) {
+                $this->markTestSkipped($testSkipped);
+            }
+        } catch (ReflectionException $e) {
+        }
+    }
+
+    /**
      * @param bool $useErrorHandler
      */
     public function setUseErrorHandler($useErrorHandler)
@@ -928,6 +947,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
             }
 
+            $this->setMarkTestSkippedFromAnnotation();
             $this->setExpectedExceptionFromAnnotation();
             $this->setDoesNotPerformAssertionsFromAnnotation();
 
