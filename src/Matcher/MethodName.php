@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
-use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Util\InvalidArgumentHelper;
 
 /**
@@ -62,11 +62,11 @@ class MethodName extends StatelessInvocation
     }
 
     /**
-     * @param Invocation $invocation
+     * @param BaseInvocation $invocation
      *
      * @return bool
      */
-    public function matches(Invocation $invocation)
+    public function matches(BaseInvocation $invocation)
     {
         return $this->constraint->evaluate($invocation->getMethodName(), '', true);
     }
