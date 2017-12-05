@@ -1,5 +1,7 @@
 <?php
 
+namespace PHPUnit;
+
 use PHPUnit\Framework\TestCase;
 
 class TestSkippedFromAnnotation extends TestCase

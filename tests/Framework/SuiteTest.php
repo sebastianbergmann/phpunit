@@ -237,7 +237,7 @@ class SuiteTest extends TestCase
 
     public function testSkippedFromAnnotation()
     {
-        $suite = new TestSuite(\TestSkippedFromAnnotation::class);
+        $suite = new TestSuite(\PHPUnit\TestSkippedFromAnnotation::class);
 
         $suite->run($this->result);
 
