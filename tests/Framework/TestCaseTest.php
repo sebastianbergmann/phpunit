@@ -322,6 +322,17 @@ class TestCaseTest extends TestCase
         $this->assertCount(1, $result);
     }
 
+    public function testDoesNotPerformAssertions()
+    {
+        $test = new \DoNoAssertionTestCase('testNothing');
+        $test->expectNotToPerformAssertions();
+
+        $result = $test->run();
+
+        $this->assertEquals(0, $result->riskyCount());
+        $this->assertCount(1, $result);
+    }
+
     /**
      * @backupGlobals enabled
      */

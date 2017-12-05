@@ -636,6 +636,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->expectExceptionCode($exception->getCode());
     }
 
+    public function expectNotToPerformAssertions()
+    {
+        $this->doesNotPerformAssertions = true;
+    }
+
     /**
      * @param bool $flag
      */
