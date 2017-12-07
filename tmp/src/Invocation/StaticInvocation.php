@@ -229,7 +229,7 @@ class StaticInvocation implements Invocation, SelfDescribing
             }
         }
 
-        if ($cloneable === null && \method_exists($object, 'isCloneable')) {
+        if ($cloneable === null) {
             $cloneable = $object->isCloneable();
         }
 
