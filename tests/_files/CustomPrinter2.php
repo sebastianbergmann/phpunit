@@ -1,4 +1,5 @@
 <?php
+
 use PHPUnit\TextUI\ResultPrinter;
 
 class CustomPrinter2 extends ResultPrinter
@@ -17,5 +18,4 @@ class CustomPrinter2 extends ResultPrinter
 
         parent::__construct(STDOUT, $verbose, $colors, $debug, $numberOfColumns, $reverse);
     }
-
 }
