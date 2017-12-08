@@ -72,9 +72,19 @@ class Printer
      */
     public function flush()
     {
-        if ($this->out && \strncmp($this->outTarget, 'php://', 6) !== 0 && $this->out !== STDOUT && $this->out !== STDERR) {
-            \fclose($this->out);
+        if (!$this->out) {
+            return;
         }
+        if (\strncmp($this->outTarget, 'php://', 6) === 0) {
+            return;
+        }
+        if (defined('STDOUT') && $this->out === STDOUT) {
+            return;
+        }
+        if (defined('STDERR') && $this->out === STDERR) {
+            return;
+        }
+        \fclose($this->out);
     }
 
     /**
