@@ -471,6 +471,6 @@ class ConfigurationTest extends TestCase
         $config = $configuration->getTestSuiteConfiguration();
         $tests  = $config->tests();
 
-        $this->assertEquals(1, \count($tests));
+        $this->assertCount(1, $tests);
     }
 }
