@@ -599,7 +599,7 @@ class TestTest extends TestCase
     {
         $dataSets = Test::getProvidedData(\MultipleDataProviderTest::class, 'testTwo');
 
-        $this->assertEquals(9, \count($dataSets));
+        $this->assertCount(9, $dataSets);
 
         $aCount = 0;
         $bCount = 0;
