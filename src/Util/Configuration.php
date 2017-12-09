@@ -559,7 +559,7 @@ class Configuration
 
         foreach ($configuration['env'] as $name => $data) {
             $value = $data['value'];
-            $force = isset($data['force']) ? $data['force'] : false;
+            $force = $data['force'] ?? false;
 
             if ($force || false === \getenv($name)) {
                 \putenv("{$name}={$value}");
