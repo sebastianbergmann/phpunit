@@ -135,6 +135,11 @@ class StringMatchesFormatDescriptionTest extends TestCase
                 false,
                 '%c',
                 'abc'
+            ],
+            'Escaped %' => [
+                true,
+                'Escaped %%e %%s %%S %%a %%A %%w %%i %%d %%x %%f %%c',
+                'Escaped %e %s %S %a %A %w %i %d %x %f %c'
             ]
         ];
     }
