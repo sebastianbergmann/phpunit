@@ -66,19 +66,19 @@ class StringMatchesFormatDescription extends RegularExpression
 
     protected function createPatternFromFormat($string)
     {
-        $string = \str_replace(
+        $string = \preg_replace(
             [
-                '%e',
-                '%s',
-                '%S',
-                '%a',
-                '%A',
-                '%w',
-                '%i',
-                '%d',
-                '%x',
-                '%f',
-                '%c'
+                '/(?<!%)%e/',
+                '/(?<!%)%s/',
+                '/(?<!%)%S/',
+                '/(?<!%)%a/',
+                '/(?<!%)%A/',
+                '/(?<!%)%w/',
+                '/(?<!%)%i/',
+                '/(?<!%)%d/',
+                '/(?<!%)%x/',
+                '/(?<!%)%f/',
+                '/(?<!%)%c/'
             ],
             [
                 '\\' . DIRECTORY_SEPARATOR,
@@ -95,6 +95,8 @@ class StringMatchesFormatDescription extends RegularExpression
             ],
             \preg_quote($string, '/')
         );
+
+        $string = \str_replace('%%', '%', $string);
 
         return '/^' . $string . '$/s';
     }
