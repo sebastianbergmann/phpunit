@@ -42,6 +42,14 @@
     </target>
 
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
+        <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
+
+        <exec executable="${basedir}/build/tools/composer" taskname="composer">
+            <arg value="require"/>
+            <arg value="--no-update"/>
+            <arg value="phpunit/php-invoker:^2.0"/>
+        </exec>
+
         <exec executable="${basedir}/build/tools/composer" taskname="composer">
             <arg value="update"/>
             <arg value="--no-interaction"/>
@@ -49,6 +57,8 @@
             <arg value="--no-ansi"/>
             <arg value="--no-suggest"/>
         </exec>
+
+        <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
     </target>
 
     <target name="php-syntax-check" unless="php-syntax-check.done" description="Perform syntax check on PHP files">
@@ -114,14 +124,6 @@
 
     <target name="-phar-prepare" depends="clean,install-dependencies">
         <mkdir dir="${basedir}/build/phar"/>
-        <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
-
-        <exec executable="${basedir}/build/tools/composer">
-            <arg value="require"/>
-            <arg value="phpunit/php-invoker:^2.0"/>
-        </exec>
-
-        <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
 
         <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt"/>
         <copy todir="${basedir}/build/phar" file="${basedir}/build/ca.pem" />
