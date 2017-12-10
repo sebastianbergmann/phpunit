@@ -22,7 +22,6 @@ class Blacklist
      */
     public static $blacklistedClassNames = [
         'File_Iterator'                               => 1,
-        'PHP_Invoker'                                 => 1,
         'PHP_Timer'                                   => 1,
         'PHP_Token'                                   => 1,
         'PHPUnit\Framework\TestCase'                  => 2,
@@ -36,6 +35,7 @@ class Blacklist
         'SebastianBergmann\Comparator\Comparator'     => 1,
         'SebastianBergmann\Exporter\Exporter'         => 1,
         'SebastianBergmann\GlobalState\Snapshot'      => 1,
+        'SebastianBergmann\Invoker\Invoker'           => 1,
         'SebastianBergmann\RecursionContext\Context'  => 1,
         'SebastianBergmann\Version'                   => 1,
         'Composer\Autoload\ClassLoader'               => 1,

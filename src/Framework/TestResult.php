@@ -13,8 +13,8 @@ namespace PHPUnit\Framework;
 use AssertionError;
 use Countable;
 use Error;
-use PHP_Invoker;
-use PHP_Invoker_TimeoutException;
+use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\Invoker\TimeoutException;
 use PHP_Timer;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Util\Blacklist;
@@ -674,7 +674,7 @@ class TestResult implements Countable
             if (!$test instanceof WarningTestCase &&
                 $test->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
                 $this->enforceTimeLimit &&
-                \extension_loaded('pcntl') && \class_exists('PHP_Invoker')) {
+                \extension_loaded('pcntl') && \class_exists('SebastianBergmann\Invoker\Invoker')) {
                 switch ($test->getSize()) {
                     case \PHPUnit\Util\Test::SMALL:
                         $_timeout = $this->timeoutForSmallTests;
@@ -692,12 +692,12 @@ class TestResult implements Countable
                         break;
                 }
 
-                $invoker = new PHP_Invoker;
+                $invoker = new Invoker;
                 $invoker->invoke([$test, 'runBare'], [], $_timeout);
             } else {
                 $test->runBare();
             }
-        } catch (PHP_Invoker_TimeoutException $e) {
+        } catch (TimeoutException $e) {
             $this->addFailure(
                 $test,
                 new RiskyTestError(

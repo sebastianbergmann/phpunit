@@ -118,7 +118,7 @@
 
         <exec executable="${basedir}/build/tools/composer">
             <arg value="require"/>
-            <arg value="phpunit/php-invoker:~1.1"/>
+            <arg value="phpunit/php-invoker:^2.0"/>
         </exec>
 
         <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>

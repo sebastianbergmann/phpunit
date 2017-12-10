@@ -2288,7 +2288,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $blacklist->addClassNamePrefix('PHPUnit');
             $blacklist->addClassNamePrefix('File_Iterator');
             $blacklist->addClassNamePrefix('SebastianBergmann\CodeCoverage');
-            $blacklist->addClassNamePrefix('PHP_Invoker');
+            $blacklist->addClassNamePrefix('SebastianBergmann\Invoker');
             $blacklist->addClassNamePrefix('PHP_Timer');
             $blacklist->addClassNamePrefix('PHP_Token');
             $blacklist->addClassNamePrefix('Symfony');

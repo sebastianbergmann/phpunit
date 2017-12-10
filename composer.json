@@ -57,7 +57,7 @@
         "sort-packages": true
     },
     "suggest": {
-        "phpunit/php-invoker": "^1.1",
+        "phpunit/php-invoker": "^2.0",
         "ext-xdebug": "*"
     },
     "bin": [
