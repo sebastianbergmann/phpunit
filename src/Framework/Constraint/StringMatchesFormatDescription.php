@@ -81,7 +81,7 @@ class StringMatchesFormatDescription extends RegularExpression
                 '/(?<!%)%c/'
             ],
             [
-                '\\' . DIRECTORY_SEPARATOR,
+                \str_replace('\\', '\\\\', '\\' . DIRECTORY_SEPARATOR),
                 '[^\r\n]+',
                 '[^\r\n]*',
                 '.+',
