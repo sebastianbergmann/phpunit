@@ -35,7 +35,7 @@
         "phpunit/php-file-iterator": "^1.4.3",
         "phpunit/php-text-template": "^1.2.1",
         "phpunit/php-timer": "^1.0.9",
-        "phpunit/phpunit-mock-objects": "^5.0.4",
+        "phpunit/phpunit-mock-objects": "^5.0.5",
         "sebastian/comparator": "^2.1",
         "sebastian/diff": "^2.0",
         "sebastian/environment": "^3.1",
