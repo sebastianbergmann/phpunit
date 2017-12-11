@@ -1264,47 +1264,4 @@ class TestResult implements Countable
 
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
-
-    /**
-     * Returns the class hierarchy for a given class.
-     *
-     * @param string $className
-     * @param bool   $asReflectionObjects
-     *
-     * @return array
-     */
-    protected function getHierarchy($className, $asReflectionObjects = false)
-    {
-        if ($asReflectionObjects) {
-            $classes = [new ReflectionClass($className)];
-        } else {
-            $classes = [$className];
-        }
-
-        $done = false;
-
-        while (!$done) {
-            if ($asReflectionObjects) {
-                $class = new ReflectionClass(
-                    $classes[\count($classes) - 1]->getName()
-                );
-            } else {
-                $class = new ReflectionClass($classes[\count($classes) - 1]);
-            }
-
-            $parent = $class->getParentClass();
-
-            if ($parent !== false) {
-                if ($asReflectionObjects) {
-                    $classes[] = $parent;
-                } else {
-                    $classes[] = $parent->getName();
-                }
-            } else {
-                $done = true;
-            }
-        }
-
-        return $classes;
-    }
 }
