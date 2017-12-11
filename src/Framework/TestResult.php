@@ -13,8 +13,6 @@ namespace PHPUnit\Framework;
 use AssertionError;
 use Countable;
 use Error;
-use SebastianBergmann\Invoker\Invoker;
-use SebastianBergmann\Invoker\TimeoutException;
 use PHP_Timer;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Util\Blacklist;
@@ -26,6 +24,8 @@ use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCo
 use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
 use SebastianBergmann\CodeCoverage\MissingCoversAnnotationException as OriginalMissingCoversAnnotationException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
+use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\Invoker\TimeoutException;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
 use Throwable;
 
