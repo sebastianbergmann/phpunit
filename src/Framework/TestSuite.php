@@ -904,12 +904,34 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             return true;
         }
 
-        // @scenario on TestCase::testMethod()
         // @test     on TestCase::testMethod()
         $docComment = $method->getDocComment();
 
-        return \strpos($docComment, '@test') !== false ||
-            \strpos($docComment, '@scenario') !== false;
+        return $docComment !== false && self::isDocBlockTest($docComment);
+    }
+
+    /**
+     * @param string $docComment
+     *
+     * @return bool
+     */
+    private static function isDocBlockTest(string $docComment)
+    {
+        $position = \strpos($docComment, '@test');
+        if ($position === false) {
+            return false;
+        }
+        $commentArray = \str_split($docComment);
+        if ($commentArray[$position - 1] === ' ' || $commentArray[$position - 1] === '*') {
+            return \strpos($docComment, '@test ') !== false ||
+                \strpos($docComment, "@test\r\n") !== false ||
+                \strpos($docComment, "@test\n") !== false ||
+                \strpos($docComment, "@test\r") !== false ||
+                \strpos($docComment, "@test\t") !== false ||
+                \strpos($docComment, "@test\0") !== false;
+        }
+
+        return false;
     }
 
     /**
