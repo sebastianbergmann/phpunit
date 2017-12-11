@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 7.0 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#2902](https://github.com/sebastianbergmann/phpunit/issues/2902): `@test` annotation gets accepted no matter what
 * Fixed [#2907](https://github.com/sebastianbergmann/phpunit/issues/2907): `StringMatchesFormatDescription` constraint does not handle escaped `%` correctly
 
 ### Removed

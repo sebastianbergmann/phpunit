@@ -678,7 +678,7 @@ class Test
      *
      * @return array
      */
-    private static function parseAnnotations($docblock)
+    public static function parseAnnotations($docblock)
     {
         $annotations = [];
         // Strip away the docblock header and footer to ease parsing of one line annotations

@@ -904,10 +904,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             return true;
         }
 
-        // @test on TestCase::testMethod()
-        $docComment = $method->getDocComment();
+        $annotations = \PHPUnit\Util\Test::parseAnnotations($method->getDocComment());
 
-        return \strpos($docComment, '@test') !== false;
+        return isset($annotations['test']);
     }
 
     /**
