@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 7.0 release series are documented in this fil
 
 ## [7.0.0] - 2018-02-02
 
+### Fixed
+
+* Fixed [#2907](https://github.com/sebastianbergmann/phpunit/issues/2907): `StringMatchesFormatDescription` constraint does not handle escaped `%` correctly
+
 ### Removed
 
 * Implemented [#2473](https://github.com/sebastianbergmann/phpunit/issues/2473): Drop support for PHP 7.0
