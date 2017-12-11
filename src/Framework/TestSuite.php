@@ -904,12 +904,10 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             return true;
         }
 
-        // @scenario on TestCase::testMethod()
-        // @test     on TestCase::testMethod()
+        // @test on TestCase::testMethod()
         $docComment = $method->getDocComment();
 
-        return \strpos($docComment, '@test') !== false ||
-            \strpos($docComment, '@scenario') !== false;
+        return \strpos($docComment, '@test') !== false;
     }
 
     /**

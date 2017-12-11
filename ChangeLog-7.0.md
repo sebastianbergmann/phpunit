@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 7.0 release series are documented in this fil
 ### Removed
 
 * Implemented [#2473](https://github.com/sebastianbergmann/phpunit/issues/2473): Drop support for PHP 7.0
+* `@scenario` is no longer an alias for `@test`
 
 [7.0.0]: https://github.com/sebastianbergmann/phpunit/compare/6.5...7.0.0
 
