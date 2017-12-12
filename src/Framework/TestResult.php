@@ -16,6 +16,7 @@ use Error;
 use PHP_Timer;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Util\Blacklist;
+use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -639,7 +640,7 @@ class TestResult implements Countable
 
         if ($this->convertErrorsToExceptions) {
             $oldErrorHandler = \set_error_handler(
-                [\PHPUnit\Util\ErrorHandler::class, 'handleError'],
+                [ErrorHandler::class, 'handleError'],
                 E_ALL | E_STRICT
             );
 

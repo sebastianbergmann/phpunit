@@ -12,6 +12,7 @@ namespace PHPUnit\Runner\Filter;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Util\RegularExpression;
+use PHPUnit\Util\Test;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
@@ -100,7 +101,7 @@ class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        $tmp = \PHPUnit\Util\Test::describe($test, false);
+        $tmp = Test::describe($test, false);
 
         if ($test instanceof WarningTestCase) {
             $name = $test->getMessage();
