@@ -1455,7 +1455,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         $this->locale[$category] = \setlocale($category, 0);
 
-        $result = \call_user_func_array('setlocale', $args);
+        $result = setlocale(...$args);
 
         if ($result === false) {
             throw new Exception(
