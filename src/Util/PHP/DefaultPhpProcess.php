@@ -22,11 +22,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
     protected $tempFile;
 
     /**
-     * @var bool
-     */
-    protected $useTempFile = false;
-
-    /**
      * Runs a single job (PHP code) using a separate PHP process.
      *
      * @param string $job
@@ -38,7 +33,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
      */
     public function runJob($job, array $settings = [])
     {
-        if ($this->useTempFile || $this->stdin) {
+        if ($this->useTemporaryFile() || $this->stdin) {
             if (!($this->tempFile = \tempnam(\sys_get_temp_dir(), 'PHPUnit')) ||
                 \file_put_contents($this->tempFile, $job) === false) {
                 throw new Exception(
@@ -228,5 +223,10 @@ class DefaultPhpProcess extends AbstractPhpProcess
         if ($this->tempFile) {
             \unlink($this->tempFile);
         }
+    }
+
+    protected function useTemporaryFile(): bool
+    {
+        return false;
     }
 }
