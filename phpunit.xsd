@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:annotation>
-    <xs:documentation source="https://phpunit.de/manual/6.3/en/appendixes.configuration.html">
-      This Schema file defines the rules by which the XML configuration file of PHPUnit 6.3 may be structured.
+    <xs:documentation source="https://phpunit.de/manual/6.5/en/appendixes.configuration.html">
+      This Schema file defines the rules by which the XML configuration file of PHPUnit 6.5 may be structured.
     </xs:documentation>
-    <xs:appinfo source="https://phpunit.de/manual/6.3/en/appendixes.configuration.html"/>
+    <xs:appinfo source="https://phpunit.de/manual/6.5/en/appendixes.configuration.html"/>
   </xs:annotation>
   <xs:element name="phpunit" type="phpUnitType">
     <xs:annotation>
