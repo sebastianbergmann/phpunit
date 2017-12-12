@@ -18,7 +18,6 @@ use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Util\Blacklist;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
-use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCoveredCodeNotExecutedException;
 use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
