@@ -328,13 +328,13 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a haystack contains only instances of a given classname
+     * Asserts that a haystack contains only instances of a given class name
      *
-     * @param string             $classname
+     * @param string             $className
      * @param array|\Traversable $haystack
      * @param string             $message
      */
-    public static function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
+    public static function assertContainsOnlyInstancesOf($className, $haystack, $message = '')
     {
         if (!\is_array($haystack) &&
             !(\is_object($haystack) && $haystack instanceof Traversable)) {
@@ -347,7 +347,7 @@ abstract class Assert
         static::assertThat(
             $haystack,
             new TraversableContainsOnly(
-                $classname,
+                $className,
                 false
             ),
             $message
@@ -2429,13 +2429,13 @@ abstract class Assert
     }
 
     /**
-     * @param string $classname
+     * @param string $className
      *
      * @return TraversableContainsOnly
      */
-    public static function containsOnlyInstancesOf($classname)
+    public static function containsOnlyInstancesOf($className)
     {
-        return new TraversableContainsOnly($classname, false);
+        return new TraversableContainsOnly($className, false);
     }
 
     /**

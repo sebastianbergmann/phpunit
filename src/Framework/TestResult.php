@@ -354,7 +354,7 @@ class TestResult implements Countable
     }
 
     /**
-     * Informs the result that a testsuite will be started.
+     * Informs the result that a test suite will be started.
      *
      * @param TestSuite $suite
      */
@@ -370,7 +370,7 @@ class TestResult implements Countable
     }
 
     /**
-     * Informs the result that a testsuite was completed.
+     * Informs the result that a test suite was completed.
      *
      * @param TestSuite $suite
      */

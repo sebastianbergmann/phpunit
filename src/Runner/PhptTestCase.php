@@ -338,7 +338,7 @@ class PhptTestCase implements Test, SelfDescribing
             unset($sections['FILEEOF']);
         }
 
-        $this->parseExtenal($sections);
+        $this->parseExternal($sections);
 
         if (!$this->validate($sections)) {
             throw new Exception('Invalid PHPT file');
@@ -358,7 +358,7 @@ class PhptTestCase implements Test, SelfDescribing
     /**
      * @param array<string, string> $sections
      */
-    private function parseExtenal(&$sections)
+    private function parseExternal(&$sections)
     {
         $allowSections = [
             'FILE',

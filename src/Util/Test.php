@@ -674,17 +674,17 @@ class Test
     }
 
     /**
-     * @param string $docblock
+     * @param string $docBlock
      *
      * @return array
      */
-    public static function parseAnnotations($docblock)
+    public static function parseAnnotations($docBlock)
     {
         $annotations = [];
         // Strip away the docblock header and footer to ease parsing of one line annotations
-        $docblock = \substr($docblock, 3, -2);
+        $docBlock = \substr($docBlock, 3, -2);
 
-        if (\preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docblock, $matches)) {
+        if (\preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)) {
             $numMatches = \count($matches[0]);
 
             for ($i = 0; $i < $numMatches; ++$i) {

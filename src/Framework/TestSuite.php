@@ -342,14 +342,14 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
 
         // The test class's name must match the filename, either in full, or as
-        // a PEAR/PSR-0 prefixed shortname ('NameSpace_ShortName'), or as a
-        // PSR-1 local shortname ('NameSpace\ShortName'). The comparison must be
+        // a PEAR/PSR-0 prefixed short name ('NameSpace_ShortName'), or as a
+        // PSR-1 local short name ('NameSpace\ShortName'). The comparison must be
         // anchored to prevent false-positive matches (e.g., 'OtherShortName').
-        $shortname      = \basename($filename, '.php');
-        $shortnameRegEx = '/(?:^|_|\\\\)' . \preg_quote($shortname, '/') . '$/';
+        $shortName      = \basename($filename, '.php');
+        $shortNameRegEx = '/(?:^|_|\\\\)' . \preg_quote($shortName, '/') . '$/';
 
         foreach ($this->foundClasses as $i => $className) {
-            if (\preg_match($shortnameRegEx, $className)) {
+            if (\preg_match($shortNameRegEx, $className)) {
                 $class = new ReflectionClass($className);
 
                 if ($class->getFileName() == $filename) {
@@ -389,21 +389,21 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * Wrapper for addTestFile() that adds multiple test files.
      *
-     * @param array|Iterator $filenames
+     * @param array|Iterator $fileNames
      *
      * @throws Exception
      */
-    public function addTestFiles($filenames)
+    public function addTestFiles($fileNames)
     {
-        if (!(\is_array($filenames) ||
-            (\is_object($filenames) && $filenames instanceof Iterator))) {
+        if (!(\is_array($fileNames) ||
+            (\is_object($fileNames) && $fileNames instanceof Iterator))) {
             throw InvalidArgumentHelper::factory(
                 1,
                 'array or iterator'
             );
         }
 
-        foreach ($filenames as $filename) {
+        foreach ($fileNames as $filename) {
             $this->addTestFile((string) $filename);
         }
     }
@@ -950,7 +950,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * @param bool $beStrictAboutChangesToGlobalState
      */
-    public function setbeStrictAboutChangesToGlobalState($beStrictAboutChangesToGlobalState)
+    public function setBeStrictAboutChangesToGlobalState($beStrictAboutChangesToGlobalState)
     {
         if (null === $this->beStrictAboutChangesToGlobalState && \is_bool($beStrictAboutChangesToGlobalState)) {
             $this->beStrictAboutChangesToGlobalState = $beStrictAboutChangesToGlobalState;

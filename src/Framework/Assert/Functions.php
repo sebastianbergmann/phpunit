@@ -479,13 +479,13 @@ function assertContainsOnly($type, $haystack, $isNativeType = null, $message = '
 }
 
 /**
- * Asserts that a haystack contains only instances of a given classname
+ * Asserts that a haystack contains only instances of a given class name
  *
- * @param string             $classname
+ * @param string             $className
  * @param array|\Traversable $haystack
  * @param string             $message
  */
-function assertContainsOnlyInstancesOf($classname, $haystack, $message = '')
+function assertContainsOnlyInstancesOf($className, $haystack, $message = '')
 {
     return Assert::assertContainsOnlyInstancesOf(...\func_get_args());
 }
@@ -1387,11 +1387,11 @@ function containsOnly($type)
  * Returns a PHPUnit\Framework\Constraint\TraversableContainsOnly matcher
  * object.
  *
- * @param string $classname
+ * @param string $className
  *
  * @return TraversableContainsOnly
  */
-function containsOnlyInstancesOf($classname)
+function containsOnlyInstancesOf($className)
 {
     return Assert::containsOnlyInstancesOf(...\func_get_args());
 }
