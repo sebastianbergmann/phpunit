@@ -69,7 +69,7 @@ class NamePrettifier
     {
         $buffer = '';
 
-        if (!\is_string($name) || \strlen($name) == 0) {
+        if (!\is_string($name) || '' === $name) {
             return $buffer;
         }
 
@@ -85,7 +85,7 @@ class NamePrettifier
             $name = \substr($name, 4);
         }
 
-        if (\strlen($name) == 0) {
+        if ('' === $name) {
             return $buffer;
         }
 

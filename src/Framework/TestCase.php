@@ -481,7 +481,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function hasOutput()
     {
-        if (\strlen($this->output) === 0) {
+        if ('' === $this->output) {
             return false;
         }
 

@@ -337,11 +337,11 @@ class TeamCity extends ResultPrinter
         $message = '';
 
         if ($e instanceof ExceptionWrapper) {
-            if (\strlen($e->getClassName()) != 0) {
+            if ('' !== $e->getClassName()) {
                 $message .= $e->getClassName();
             }
 
-            if (\strlen($message) != 0 && \strlen($e->getMessage()) != 0) {
+            if ('' !== $message && '' !== $e->getMessage()) {
                 $message .= ' : ';
             }
         }
