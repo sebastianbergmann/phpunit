@@ -23,10 +23,10 @@ class StandardTestSuiteLoader implements TestSuiteLoader
      * @param string $suiteClassName
      * @param string $suiteClassFile
      *
-     * @return ReflectionClass
-     *
      * @throws Exception
      * @throws \PHPUnit\Framework\Exception
+     *
+     * @return ReflectionClass
      */
     public function load($suiteClassName, $suiteClassFile = ''): ReflectionClass
     {

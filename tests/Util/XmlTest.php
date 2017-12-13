@@ -17,6 +17,8 @@ class XmlTest extends TestCase
 {
     /**
      * @dataProvider charProvider
+     *
+     * @param mixed $char
      */
     public function testPrepareString($char)
     {

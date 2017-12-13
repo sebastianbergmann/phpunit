@@ -56,14 +56,6 @@ class IncompleteTestCase extends TestCase
     }
 
     /**
-     * @throws Exception
-     */
-    protected function runTest()
-    {
-        $this->markTestIncomplete($this->message);
-    }
-
-    /**
      * @return string
      */
     public function getMessage(): string
@@ -79,5 +71,13 @@ class IncompleteTestCase extends TestCase
     public function toString(): string
     {
         return $this->getName();
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function runTest()
+    {
+        $this->markTestIncomplete($this->message);
     }
 }

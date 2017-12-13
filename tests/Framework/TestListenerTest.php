@@ -22,6 +22,19 @@ class TestListenerTest extends TestCase implements TestListener
     protected $result;
     protected $startCount;
 
+    protected function setUp()
+    {
+        $this->result = new TestResult;
+        $this->result->addListener($this);
+
+        $this->endCount            = 0;
+        $this->failureCount        = 0;
+        $this->notImplementedCount = 0;
+        $this->riskyCount          = 0;
+        $this->skippedCount        = 0;
+        $this->startCount          = 0;
+    }
+
     public function addError(Test $test, \Exception $e, $time)
     {
         $this->errorCount++;
@@ -68,19 +81,6 @@ class TestListenerTest extends TestCase implements TestListener
     public function endTest(Test $test, $time)
     {
         $this->endCount++;
-    }
-
-    protected function setUp()
-    {
-        $this->result = new TestResult;
-        $this->result->addListener($this);
-
-        $this->endCount            = 0;
-        $this->failureCount        = 0;
-        $this->notImplementedCount = 0;
-        $this->riskyCount          = 0;
-        $this->skippedCount        = 0;
-        $this->startCount          = 0;
     }
 
     public function testError()

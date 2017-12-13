@@ -35,12 +35,25 @@ class JsonMatches extends Constraint
     }
 
     /**
+     * Returns a string representation of the object.
+     *
+     * @return string
+     */
+    public function toString(): string
+    {
+        return \sprintf(
+            'matches JSON string "%s"',
+            $this->value
+        );
+    }
+
+    /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
      * This method can be overridden to implement the evaluation algorithm.
      *
-     * @param mixed $other Value or object to evaluate.
+     * @param mixed $other value or object to evaluate
      *
      * @return bool
      */
@@ -64,7 +77,7 @@ class JsonMatches extends Constraint
     /**
      * Throws an exception for the given compared value and test description
      *
-     * @param mixed             $other             Evaluated value or object.
+     * @param mixed             $other             evaluated value or object
      * @param string            $description       Additional information about the test
      * @param ComparisonFailure $comparisonFailure
      *
@@ -100,18 +113,5 @@ class JsonMatches extends Constraint
         }
 
         parent::fail($other, $description, $comparisonFailure);
-    }
-
-    /**
-     * Returns a string representation of the object.
-     *
-     * @return string
-     */
-    public function toString(): string
-    {
-        return \sprintf(
-            'matches JSON string "%s"',
-            $this->value
-        );
     }
 }

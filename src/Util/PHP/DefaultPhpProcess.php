@@ -27,9 +27,9 @@ class DefaultPhpProcess extends AbstractPhpProcess
      * @param string $job
      * @param array  $settings
      *
-     * @return array<string, string>
-     *
      * @throws Exception
+     *
+     * @return array<string, string>
      */
     public function runJob($job, array $settings = []): array
     {
@@ -63,9 +63,9 @@ class DefaultPhpProcess extends AbstractPhpProcess
      * @param string $job
      * @param array  $settings
      *
-     * @return array<string, string>
-     *
      * @throws Exception
+     *
+     * @return array<string, string>
      */
     protected function runProcess($job, $settings): array
     {
@@ -125,7 +125,8 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
                 if ($n === false) {
                     break;
-                } elseif ($n === 0) {
+                }
+                if ($n === 0) {
                     \proc_terminate($process, 9);
 
                     throw new Exception(
@@ -134,7 +135,8 @@ class DefaultPhpProcess extends AbstractPhpProcess
                             $this->timeout
                         )
                     );
-                } elseif ($n > 0) {
+                }
+                if ($n > 0) {
                     foreach ($r as $pipe) {
                         $pipeOffset = 0;
 

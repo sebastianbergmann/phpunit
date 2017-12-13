@@ -152,11 +152,11 @@ class Configuration
 {
     public const TEST_SUITE_FILTER_SEPARATOR = ',';
 
-    private static $instances = [];
-
     protected $document;
     protected $xpath;
     protected $filename;
+
+    private static $instances = [];
 
     /**
      * Loads a PHPUnit configuration file.
@@ -170,7 +170,7 @@ class Configuration
         $this->xpath    = new DOMXPath($this->document);
     }
 
-    final private function __clone()
+    private function __clone()
     {
     }
 
@@ -297,29 +297,6 @@ class Configuration
     public function getTestdoxGroupConfiguration(): array
     {
         return $this->parseGroupConfiguration('testdoxGroups');
-    }
-
-    /**
-     * @param string $root
-     *
-     * @return array
-     */
-    private function parseGroupConfiguration($root): array
-    {
-        $groups = [
-            'include' => [],
-            'exclude' => []
-        ];
-
-        foreach ($this->xpath->query($root . '/include/group') as $group) {
-            $groups['include'][] = (string) $group->textContent;
-        }
-
-        foreach ($this->xpath->query($root . '/exclude/group') as $group) {
-            $groups['exclude'][] = (string) $group->textContent;
-        }
-
-        return $groups;
     }
 
     /**
@@ -888,7 +865,7 @@ class Configuration
     /**
      * Returns the test suite configuration.
      *
-     * @param string|null $testSuiteFilter
+     * @param null|string $testSuiteFilter
      *
      * @return TestSuite
      */
@@ -934,7 +911,7 @@ class Configuration
 
     /**
      * @param DOMElement  $testSuiteNode
-     * @param string|null $testSuiteFilter
+     * @param null|string $testSuiteFilter
      *
      * @return TestSuite
      */
@@ -1058,9 +1035,9 @@ class Configuration
      * See PHPUnit\Util\ConfigurationTest::testPHPConfigurationIsReadCorrectly
      *
      * @param string      $value
-     * @param string|bool $default
+     * @param bool|string $default
      *
-     * @return string|bool
+     * @return bool|string
      */
     protected function getBoolean($value, $default)
     {
@@ -1198,5 +1175,28 @@ class Configuration
         }
 
         return $file;
+    }
+
+    /**
+     * @param string $root
+     *
+     * @return array
+     */
+    private function parseGroupConfiguration($root): array
+    {
+        $groups = [
+            'include' => [],
+            'exclude' => []
+        ];
+
+        foreach ($this->xpath->query($root . '/include/group') as $group) {
+            $groups['include'][] = (string) $group->textContent;
+        }
+
+        foreach ($this->xpath->query($root . '/exclude/group') as $group) {
+            $groups['exclude'][] = (string) $group->textContent;
+        }
+
+        return $groups;
     }
 }

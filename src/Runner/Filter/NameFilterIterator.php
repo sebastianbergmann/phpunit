@@ -43,6 +43,39 @@ class NameFilterIterator extends RecursiveFilterIterator
     }
 
     /**
+     * @return bool
+     */
+    public function accept(): bool
+    {
+        $test = $this->getInnerIterator()->current();
+
+        if ($test instanceof TestSuite) {
+            return true;
+        }
+
+        $tmp = Test::describe($test, false);
+
+        if ($test instanceof WarningTestCase) {
+            $name = $test->getMessage();
+        } else {
+            if ($tmp[0] != '') {
+                $name = \implode('::', $tmp);
+            } else {
+                $name = $tmp[1];
+            }
+        }
+
+        $accepted = @\preg_match($this->filter, $name, $matches);
+
+        if ($accepted && isset($this->filterMax)) {
+            $set      = \end($matches);
+            $accepted = $set >= $this->filterMin && $set <= $this->filterMax;
+        }
+
+        return $accepted;
+    }
+
+    /**
      * @param string $filter
      */
     protected function setFilter($filter)
@@ -88,38 +121,5 @@ class NameFilterIterator extends RecursiveFilterIterator
         }
 
         $this->filter = $filter;
-    }
-
-    /**
-     * @return bool
-     */
-    public function accept(): bool
-    {
-        $test = $this->getInnerIterator()->current();
-
-        if ($test instanceof TestSuite) {
-            return true;
-        }
-
-        $tmp = Test::describe($test, false);
-
-        if ($test instanceof WarningTestCase) {
-            $name = $test->getMessage();
-        } else {
-            if ($tmp[0] != '') {
-                $name = \implode('::', $tmp);
-            } else {
-                $name = $tmp[1];
-            }
-        }
-
-        $accepted = @\preg_match($this->filter, $name, $matches);
-
-        if ($accepted && isset($this->filterMax)) {
-            $set      = \end($matches);
-            $accepted = $set >= $this->filterMin && $set <= $this->filterMax;
-        }
-
-        return $accepted;
     }
 }

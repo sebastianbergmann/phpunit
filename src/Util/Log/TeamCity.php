@@ -41,16 +41,9 @@ class TeamCity extends ResultPrinter
     private $startedTestName;
 
     /**
-     * @var int|false
+     * @var false|int
      */
     private $flowId;
-
-    /**
-     * @param string $progress
-     */
-    protected function writeProgress($progress)
-    {
-    }
 
     /**
      * @param TestResult $result
@@ -305,6 +298,13 @@ class TeamCity extends ResultPrinter
                 'duration' => (int) (\round($time, 2) * 1000)
             ]
         );
+    }
+
+    /**
+     * @param string $progress
+     */
+    protected function writeProgress($progress)
+    {
     }
 
     /**

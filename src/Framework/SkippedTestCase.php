@@ -46,19 +46,13 @@ class SkippedTestCase extends TestCase
 
     /**
      * @param string $message
+     * @param mixed  $className
+     * @param mixed  $methodName
      */
     public function __construct($className, $methodName, $message = '')
     {
         $this->message = $message;
         parent::__construct($className . '::' . $methodName);
-    }
-
-    /**
-     * @throws Exception
-     */
-    protected function runTest()
-    {
-        $this->markTestSkipped($this->message);
     }
 
     /**
@@ -77,5 +71,13 @@ class SkippedTestCase extends TestCase
     public function toString(): string
     {
         return $this->getName();
+    }
+
+    /**
+     * @throws Exception
+     */
+    protected function runTest()
+    {
+        $this->markTestSkipped($this->message);
     }
 }

@@ -102,13 +102,13 @@ class TestRunner extends BaseTestRunner
     }
 
     /**
-     * @param Test|ReflectionClass $test
+     * @param ReflectionClass|Test $test
      * @param array                $arguments
      * @param bool                 $exit
      *
-     * @return TestResult
-     *
      * @throws Exception
+     *
+     * @return TestResult
      */
     public static function run($test, array $arguments = [], $exit = true): TestResult
     {
@@ -127,52 +127,6 @@ class TestRunner extends BaseTestRunner
         }
 
         throw new Exception('No test case or test suite found.');
-    }
-
-    /**
-     * @return TestResult
-     */
-    protected function createTestResult(): TestResult
-    {
-        return new TestResult;
-    }
-
-    /**
-     * @param TestSuite $suite
-     * @param array     $arguments
-     */
-    private function processSuiteFilters(TestSuite $suite, array $arguments)
-    {
-        if (!$arguments['filter'] &&
-            empty($arguments['groups']) &&
-            empty($arguments['excludeGroups'])) {
-            return;
-        }
-
-        $filterFactory = new Factory;
-
-        if (!empty($arguments['excludeGroups'])) {
-            $filterFactory->addFilter(
-                new ReflectionClass(ExcludeGroupFilterIterator::class),
-                $arguments['excludeGroups']
-            );
-        }
-
-        if (!empty($arguments['groups'])) {
-            $filterFactory->addFilter(
-                new ReflectionClass(IncludeGroupFilterIterator::class),
-                $arguments['groups']
-            );
-        }
-
-        if ($arguments['filter']) {
-            $filterFactory->addFilter(
-                new ReflectionClass(NameFilterIterator::class),
-                $arguments['filter']
-            );
-        }
-
-        $suite->injectFilter($filterFactory);
     }
 
     /**
@@ -706,6 +660,28 @@ class TestRunner extends BaseTestRunner
     }
 
     /**
+     * Returns the loader to be used.
+     *
+     * @return TestSuiteLoader
+     */
+    public function getLoader(): TestSuiteLoader
+    {
+        if ($this->loader === null) {
+            $this->loader = new StandardTestSuiteLoader;
+        }
+
+        return $this->loader;
+    }
+
+    /**
+     * @return TestResult
+     */
+    protected function createTestResult(): TestResult
+    {
+        return new TestResult;
+    }
+
+    /**
      * Override to define how to handle a failed loading of
      * a test suite.
      *
@@ -731,20 +707,6 @@ class TestRunner extends BaseTestRunner
         } else {
             print $buffer;
         }
-    }
-
-    /**
-     * Returns the loader to be used.
-     *
-     * @return TestSuiteLoader
-     */
-    public function getLoader(): TestSuiteLoader
-    {
-        if ($this->loader === null) {
-            $this->loader = new StandardTestSuiteLoader;
-        }
-
-        return $this->loader;
     }
 
     /**
@@ -1088,6 +1050,44 @@ class TestRunner extends BaseTestRunner
         $arguments['timeoutForMediumTests']                           = $arguments['timeoutForMediumTests'] ?? 10;
         $arguments['timeoutForSmallTests']                            = $arguments['timeoutForSmallTests'] ?? 1;
         $arguments['verbose']                                         = $arguments['verbose'] ?? false;
+    }
+
+    /**
+     * @param TestSuite $suite
+     * @param array     $arguments
+     */
+    private function processSuiteFilters(TestSuite $suite, array $arguments)
+    {
+        if (!$arguments['filter'] &&
+            empty($arguments['groups']) &&
+            empty($arguments['excludeGroups'])) {
+            return;
+        }
+
+        $filterFactory = new Factory;
+
+        if (!empty($arguments['excludeGroups'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass(ExcludeGroupFilterIterator::class),
+                $arguments['excludeGroups']
+            );
+        }
+
+        if (!empty($arguments['groups'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass(IncludeGroupFilterIterator::class),
+                $arguments['groups']
+            );
+        }
+
+        if ($arguments['filter']) {
+            $filterFactory->addFilter(
+                new ReflectionClass(NameFilterIterator::class),
+                $arguments['filter']
+            );
+        }
+
+        $suite->injectFilter($filterFactory);
     }
 
     /**

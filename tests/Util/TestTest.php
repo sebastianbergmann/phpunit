@@ -110,6 +110,9 @@ class TestTest extends TestCase
 
     /**
      * @dataProvider requirementsProvider
+     *
+     * @param mixed $test
+     * @param mixed $result
      */
     public function testGetRequirements($test, $result)
     {
@@ -315,6 +318,8 @@ class TestTest extends TestCase
 
     /**
      * @dataProvider requirementsWithVersionConstraintsProvider
+     *
+     * @param mixed $test
      */
     public function testGetRequirementsWithVersionConstraints($test, array $result)
     {
@@ -446,6 +451,8 @@ class TestTest extends TestCase
 
     /**
      * @dataProvider requirementsWithInvalidVersionConstraintsThrowsExceptionProvider
+     *
+     * @param mixed $test
      */
     public function testGetRequirementsWithInvalidVersionConstraintsThrowsException($test)
     {
@@ -485,6 +492,9 @@ class TestTest extends TestCase
 
     /**
      * @dataProvider missingRequirementsProvider
+     *
+     * @param mixed $test
+     * @param mixed $result
      */
     public function testGetMissingRequirements($test, $result)
     {
@@ -752,6 +762,9 @@ class TestTest extends TestCase
 
     /**
      * @dataProvider getLinesToBeCoveredProvider
+     *
+     * @param mixed $test
+     * @param mixed $lines
      */
     public function testGetLinesToBeCovered($test, $lines)
     {

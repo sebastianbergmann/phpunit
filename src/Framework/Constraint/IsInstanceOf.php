@@ -35,39 +35,6 @@ class IsInstanceOf extends Constraint
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns true if the
-     * constraint is met, false otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
-     */
-    protected function matches($other): bool
-    {
-        return ($other instanceof $this->className);
-    }
-
-    /**
-     * Returns the description of the failure
-     *
-     * The beginning of failure messages is "Failed asserting that" in most
-     * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other Evaluated value or object.
-     *
-     * @return string
-     */
-    protected function failureDescription($other): string
-    {
-        return \sprintf(
-            '%s is an instance of %s "%s"',
-            $this->exporter->shortenedExport($other),
-            $this->getType(),
-            $this->className
-        );
-    }
-
-    /**
      * Returns a string representation of the constraint.
      *
      * @return string
@@ -76,6 +43,39 @@ class IsInstanceOf extends Constraint
     {
         return \sprintf(
             'is instance of %s "%s"',
+            $this->getType(),
+            $this->className
+        );
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
+     *
+     * @param mixed $other value or object to evaluate
+     *
+     * @return bool
+     */
+    protected function matches($other): bool
+    {
+        return $other instanceof $this->className;
+    }
+
+    /**
+     * Returns the description of the failure
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param mixed $other evaluated value or object
+     *
+     * @return string
+     */
+    protected function failureDescription($other): string
+    {
+        return \sprintf(
+            '%s is an instance of %s "%s"',
+            $this->exporter->shortenedExport($other),
             $this->getType(),
             $this->className
         );

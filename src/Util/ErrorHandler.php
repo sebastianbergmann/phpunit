@@ -38,9 +38,9 @@ class ErrorHandler
      * @param string $errfile
      * @param int    $errline
      *
-     * @return false
-     *
      * @throws Error
+     *
+     * @return false
      */
     public static function handleError($errno, $errstr, $errfile, $errline): bool
     {
@@ -90,9 +90,9 @@ class ErrorHandler
      *
      * @param int $severity PHP predefined error constant
      *
-     * @return \Closure
-     *
      * @throws \Exception if event of specified severity is emitted
+     *
+     * @return \Closure
      */
     public static function handleErrorOnce($severity = E_WARNING): callable
     {

@@ -103,13 +103,13 @@ class LogicalNot extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param mixed  $other        Value or object to evaluate.
+     * @param mixed  $other        value or object to evaluate
      * @param string $description  Additional information about the test
      * @param bool   $returnResult Whether to return a result or throw an exception
      *
-     * @return mixed
-     *
      * @throws ExpectationFailedException
+     *
+     * @return mixed
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
@@ -121,31 +121,6 @@ class LogicalNot extends Constraint
 
         if (!$success) {
             $this->fail($other, $description);
-        }
-    }
-
-    /**
-     * Returns the description of the failure
-     *
-     * The beginning of failure messages is "Failed asserting that" in most
-     * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other Evaluated value or object.
-     *
-     * @return string
-     */
-    protected function failureDescription($other): string
-    {
-        switch (\get_class($this->constraint)) {
-            case LogicalAnd::class:
-            case self::class:
-            case LogicalOr::class:
-                return 'not( ' . $this->constraint->failureDescription($other) . ' )';
-
-            default:
-                return self::negate(
-                    $this->constraint->failureDescription($other)
-                );
         }
     }
 
@@ -177,5 +152,30 @@ class LogicalNot extends Constraint
     public function count(): int
     {
         return \count($this->constraint);
+    }
+
+    /**
+     * Returns the description of the failure
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param mixed $other evaluated value or object
+     *
+     * @return string
+     */
+    protected function failureDescription($other): string
+    {
+        switch (\get_class($this->constraint)) {
+            case LogicalAnd::class:
+            case self::class:
+            case LogicalOr::class:
+                return 'not( ' . $this->constraint->failureDescription($other) . ' )';
+
+            default:
+                return self::negate(
+                    $this->constraint->failureDescription($other)
+                );
+        }
     }
 }

@@ -50,16 +50,6 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
     }
 
     /**
-     * Returns the serializable trace (without 'args').
-     *
-     * @return array
-     */
-    public function getSerializableTrace(): array
-    {
-        return $this->serializableTrace;
-    }
-
-    /**
      * @return string
      */
     public function __toString()
@@ -76,5 +66,15 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
     public function __sleep()
     {
         return \array_keys(\get_object_vars($this));
+    }
+
+    /**
+     * Returns the serializable trace (without 'args').
+     *
+     * @return array
+     */
+    public function getSerializableTrace(): array
+    {
+        return $this->serializableTrace;
     }
 }

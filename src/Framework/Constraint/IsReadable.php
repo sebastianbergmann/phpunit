@@ -17,10 +17,20 @@ namespace PHPUnit\Framework\Constraint;
 class IsReadable extends Constraint
 {
     /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString(): string
+    {
+        return 'is readable';
+    }
+
+    /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other Value or object to evaluate.
+     * @param mixed $other value or object to evaluate
      *
      * @return bool
      */
@@ -35,7 +45,7 @@ class IsReadable extends Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other Evaluated value or object.
+     * @param mixed $other evaluated value or object
      *
      * @return string
      */
@@ -45,15 +55,5 @@ class IsReadable extends Constraint
             '"%s" is readable',
             $other
         );
-    }
-
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
-     */
-    public function toString(): string
-    {
-        return 'is readable';
     }
 }

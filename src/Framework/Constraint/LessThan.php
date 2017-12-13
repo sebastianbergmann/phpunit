@@ -16,31 +16,18 @@ namespace PHPUnit\Framework\Constraint;
 class LessThan extends Constraint
 {
     /**
-     * @var int|float
+     * @var float|int
      */
     protected $value;
 
     /**
-     * @param int|float $value
+     * @param float|int $value
      */
     public function __construct($value)
     {
         parent::__construct();
 
         $this->value = $value;
-    }
-
-    /**
-     * Evaluates the constraint for parameter $other. Returns true if the
-     * constraint is met, false otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
-     */
-    protected function matches($other): bool
-    {
-        return $this->value > $other;
     }
 
     /**
@@ -51,5 +38,18 @@ class LessThan extends Constraint
     public function toString(): string
     {
         return 'is less than ' . $this->exporter->export($this->value);
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
+     *
+     * @param mixed $other value or object to evaluate
+     *
+     * @return bool
+     */
+    protected function matches($other): bool
+    {
+        return $this->value > $other;
     }
 }

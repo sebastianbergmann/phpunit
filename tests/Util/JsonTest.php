@@ -16,10 +16,14 @@ class JsonTest extends TestCase
 {
     /**
      * @dataProvider canonicalizeProvider
+     *
+     * @param mixed $actual
+     * @param mixed $expected
+     * @param mixed $expectError
      */
     public function testCanonicalize($actual, $expected, $expectError)
     {
-        list($error, $canonicalized) = Json::canonicalize($actual);
+        [$error, $canonicalized] = Json::canonicalize($actual);
         $this->assertEquals($expectError, $error);
         if (!$expectError) {
             $this->assertEquals($expected, $canonicalized);
@@ -40,6 +44,9 @@ class JsonTest extends TestCase
 
     /**
      * @dataProvider prettifyProvider
+     *
+     * @param mixed $actual
+     * @param mixed $expected
      */
     public function testPrettify($actual, $expected)
     {
@@ -60,6 +67,8 @@ class JsonTest extends TestCase
      * @dataProvider prettifyExceptionProvider
      * @expectedException \PHPUnit\Framework\Exception
      * @expectedExceptionMessage Cannot prettify invalid json
+     *
+     * @param mixed $json
      */
     public function testPrettifyException($json)
     {

@@ -28,14 +28,22 @@ class ExceptionMessageRegularExpression extends Constraint
     }
 
     /**
+     * @return string
+     */
+    public function toString(): string
+    {
+        return 'exception message matches ';
+    }
+
+    /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
      * @param \PHPUnit\Framework\Exception $other
      *
-     * @return bool
-     *
      * @throws \PHPUnit\Framework\Exception
+     *
+     * @return bool
      */
     protected function matches($other): bool
     {
@@ -56,7 +64,7 @@ class ExceptionMessageRegularExpression extends Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other Evaluated value or object.
+     * @param mixed $other evaluated value or object
      *
      * @return string
      */
@@ -67,13 +75,5 @@ class ExceptionMessageRegularExpression extends Constraint
             $other->getMessage(),
             $this->expectedMessageRegExp
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function toString(): string
-    {
-        return 'exception message matches ';
     }
 }

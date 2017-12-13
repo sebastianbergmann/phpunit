@@ -39,12 +39,12 @@ class XmlResultPrinter extends Printer implements TestListener
     private $prettifier;
 
     /**
-     * @var \Exception|null
+     * @var null|\Exception
      */
     private $exception;
 
     /**
-     * @param string|resource $out
+     * @param resource|string $out
      */
     public function __construct($out = null)
     {

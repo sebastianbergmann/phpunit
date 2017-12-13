@@ -27,19 +27,6 @@ class Callback extends Constraint
     }
 
     /**
-     * Evaluates the constraint for parameter $value. Returns true if the
-     * constraint is met, false otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
-     */
-    protected function matches($other): bool
-    {
-        return \call_user_func($this->callback, $other);
-    }
-
-    /**
      * Returns a string representation of the constraint.
      *
      * @return string
@@ -47,5 +34,18 @@ class Callback extends Constraint
     public function toString(): string
     {
         return 'is accepted by specified callback';
+    }
+
+    /**
+     * Evaluates the constraint for parameter $value. Returns true if the
+     * constraint is met, false otherwise.
+     *
+     * @param mixed $other value or object to evaluate
+     *
+     * @return bool
+     */
+    protected function matches($other): bool
+    {
+        return \call_user_func($this->callback, $other);
     }
 }

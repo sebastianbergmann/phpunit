@@ -23,7 +23,7 @@ class ObjectHasAttribute extends ClassHasAttribute
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other Value or object to evaluate.
+     * @param mixed $other value or object to evaluate
      *
      * @return bool
      */

@@ -38,13 +38,13 @@ abstract class Constraint implements Countable, SelfDescribing
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param mixed  $other        Value or object to evaluate.
+     * @param mixed  $other        value or object to evaluate
      * @param string $description  Additional information about the test
      * @param bool   $returnResult Whether to return a result or throw an exception
      *
-     * @return mixed
-     *
      * @throws ExpectationFailedException
+     *
+     * @return mixed
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
@@ -64,21 +64,6 @@ abstract class Constraint implements Countable, SelfDescribing
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns true if the
-     * constraint is met, false otherwise.
-     *
-     * This method can be overridden to implement the evaluation algorithm.
-     *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
-     */
-    protected function matches($other): bool
-    {
-        return false;
-    }
-
-    /**
      * Counts the number of constraint elements.
      *
      * @return int
@@ -89,9 +74,24 @@ abstract class Constraint implements Countable, SelfDescribing
     }
 
     /**
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
+     *
+     * This method can be overridden to implement the evaluation algorithm.
+     *
+     * @param mixed $other value or object to evaluate
+     *
+     * @return bool
+     */
+    protected function matches($other): bool
+    {
+        return false;
+    }
+
+    /**
      * Throws an exception for the given compared value and test description
      *
-     * @param mixed             $other             Evaluated value or object.
+     * @param mixed             $other             evaluated value or object
      * @param string            $description       Additional information about the test
      * @param ComparisonFailure $comparisonFailure
      *
@@ -126,7 +126,7 @@ abstract class Constraint implements Countable, SelfDescribing
      * The function can be overridden to provide additional failure
      * information like a diff
      *
-     * @param mixed $other Evaluated value or object.
+     * @param mixed $other evaluated value or object
      *
      * @return string
      */
@@ -144,7 +144,7 @@ abstract class Constraint implements Countable, SelfDescribing
      * To provide additional failure information additionalFailureDescription
      * can be used.
      *
-     * @param mixed $other Evaluated value or object.
+     * @param mixed $other evaluated value or object
      *
      * @return string
      */

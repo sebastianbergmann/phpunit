@@ -68,9 +68,10 @@ abstract class AbstractPhpProcess
      *
      * Then $stderrRedirection is TRUE, STDERR is redirected to STDOUT.
      *
-     * @throws Exception
      *
      * @param bool $stderrRedirection
+     *
+     * @throws Exception
      */
     public function setUseStderrRedirection(bool $stderrRedirection): void
     {
@@ -206,7 +207,7 @@ abstract class AbstractPhpProcess
      * Returns the command based into the configurations.
      *
      * @param array       $settings
-     * @param string|null $file
+     * @param null|string $file
      *
      * @return string
      */

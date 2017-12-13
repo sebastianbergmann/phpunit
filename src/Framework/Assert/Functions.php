@@ -1219,7 +1219,7 @@ function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = ''
  * Asserts that two XML documents are equal.
  *
  * @param string             $expectedFile
- * @param string|DOMDocument $actualXml
+ * @param DOMDocument|string $actualXml
  * @param string             $message
  */
 function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
@@ -1230,8 +1230,8 @@ function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
 /**
  * Asserts that two XML documents are equal.
  *
- * @param string|DOMDocument $expectedXml
- * @param string|DOMDocument $actualXml
+ * @param DOMDocument|string $expectedXml
+ * @param DOMDocument|string $actualXml
  * @param string             $message
  */
 function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
@@ -1243,7 +1243,7 @@ function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
  * Asserts that two XML documents are not equal.
  *
  * @param string             $expectedFile
- * @param string|DOMDocument $actualXml
+ * @param DOMDocument|string $actualXml
  * @param string             $message
  */
 function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '')
@@ -1254,8 +1254,8 @@ function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '
 /**
  * Asserts that two XML documents are not equal.
  *
- * @param string|DOMDocument $expectedXml
- * @param string|DOMDocument $actualXml
+ * @param DOMDocument|string $expectedXml
+ * @param DOMDocument|string $actualXml
  * @param string             $message
  */
 function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')

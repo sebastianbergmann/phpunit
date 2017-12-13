@@ -54,7 +54,8 @@ class Getopt
                 $non_opts[] = $args[$i];
 
                 continue;
-            } elseif (\strlen($arg) > 1 && $arg[1] == '-') {
+            }
+            if (\strlen($arg) > 1 && $arg[1] == '-') {
                 self::parseLongOption(
                     \substr($arg, 2),
                     $long_options,

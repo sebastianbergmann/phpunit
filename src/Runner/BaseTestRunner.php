@@ -49,7 +49,7 @@ abstract class BaseTestRunner
      * @param string $suiteClassFile
      * @param mixed  $suffixes
      *
-     * @return Test|null
+     * @return null|Test
      */
     public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = ''): ?Test
     {

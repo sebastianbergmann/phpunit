@@ -54,13 +54,13 @@ class IsIdentical extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param mixed  $other        Value or object to evaluate.
+     * @param mixed  $other        value or object to evaluate
      * @param string $description  Additional information about the test
      * @param bool   $returnResult Whether to return a result or throw an exception
      *
-     * @return mixed
-     *
      * @throws ExpectationFailedException
+     *
+     * @return mixed
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
@@ -94,12 +94,27 @@ class IsIdentical extends Constraint
     }
 
     /**
+     * Returns a string representation of the constraint.
+     *
+     * @return string
+     */
+    public function toString(): string
+    {
+        if (\is_object($this->value)) {
+            return 'is identical to an object of class "' .
+                \get_class($this->value) . '"';
+        }
+
+        return 'is identical to ' . $this->exporter->export($this->value);
+    }
+
+    /**
      * Returns the description of the failure
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other Evaluated value or object.
+     * @param mixed $other evaluated value or object
      *
      * @return string
      */
@@ -114,20 +129,5 @@ class IsIdentical extends Constraint
         }
 
         return parent::failureDescription($other);
-    }
-
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @return string
-     */
-    public function toString(): string
-    {
-        if (\is_object($this->value)) {
-            return 'is identical to an object of class "' .
-                \get_class($this->value) . '"';
-        }
-
-        return 'is identical to ' . $this->exporter->export($this->value);
     }
 }

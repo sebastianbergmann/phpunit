@@ -19,9 +19,9 @@ class Json
      *
      * @param string $json
      *
-     * @return string
-     *
      * @throws \PHPUnit\Framework\Exception
+     *
+     * @return string
      */
     public static function prettify(string $json): string
     {

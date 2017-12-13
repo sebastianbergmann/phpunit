@@ -18,12 +18,7 @@ use Throwable;
 class TestFailure
 {
     /**
-     * @var string
-     */
-    private $testName;
-
-    /**
-     * @var Test|null
+     * @var null|Test
      */
     protected $failedTest;
 
@@ -31,6 +26,10 @@ class TestFailure
      * @var Throwable
      */
     protected $thrownException;
+    /**
+     * @var string
+     */
+    private $testName;
 
     /**
      * Constructs a TestFailure with the given test and exception.
@@ -129,7 +128,7 @@ class TestFailure
      *
      * @see Exception
      *
-     * @return Test|null
+     * @return null|Test
      */
     public function failedTest(): ?Test
     {
@@ -164,6 +163,6 @@ class TestFailure
      */
     public function isFailure(): bool
     {
-        return ($this->thrownException() instanceof AssertionFailedError);
+        return $this->thrownException() instanceof AssertionFailedError;
     }
 }

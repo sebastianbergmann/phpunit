@@ -16,6 +16,9 @@ class JsonMatchesErrorMessageProviderTest extends TestCase
 {
     /**
      * @dataProvider translateTypeToPrefixDataprovider
+     *
+     * @param mixed $expected
+     * @param mixed $type
      */
     public function testTranslateTypeToPrefix($expected, $type)
     {
@@ -27,6 +30,10 @@ class JsonMatchesErrorMessageProviderTest extends TestCase
 
     /**
      * @dataProvider determineJsonErrorDataprovider
+     *
+     * @param mixed $expected
+     * @param mixed $error
+     * @param mixed $prefix
      */
     public function testDetermineJsonError($expected, $error, $prefix)
     {

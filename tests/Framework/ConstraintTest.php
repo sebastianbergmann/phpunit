@@ -810,6 +810,10 @@ EOF
 
     /**
      * @dataProvider isEqualProvider
+     *
+     * @param mixed $expected
+     * @param mixed $actual
+     * @param mixed $message
      */
     public function testConstraintIsEqual2($expected, $actual, $message)
     {
@@ -1223,6 +1227,8 @@ EOF
 
     /**
      * @dataProvider resources
+     *
+     * @param mixed $resource
      */
     public function testConstraintIsResourceTypeEvaluatesCorrectlyWithResources($resource)
     {

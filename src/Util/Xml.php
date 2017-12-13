@@ -36,7 +36,7 @@ class Xml
      * not a string as it currently does.  To load a file into a
      * DOMDocument, use loadFile() instead.
      *
-     * @param string|DOMDocument $actual
+     * @param DOMDocument|string $actual
      * @param bool               $isHtml
      * @param string             $filename
      * @param bool               $xinclude

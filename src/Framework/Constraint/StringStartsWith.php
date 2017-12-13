@@ -31,19 +31,6 @@ class StringStartsWith extends Constraint
     }
 
     /**
-     * Evaluates the constraint for parameter $other. Returns true if the
-     * constraint is met, false otherwise.
-     *
-     * @param mixed $other Value or object to evaluate.
-     *
-     * @return bool
-     */
-    protected function matches($other): bool
-    {
-        return \strpos($other, $this->prefix) === 0;
-    }
-
-    /**
      * Returns a string representation of the constraint.
      *
      * @return string
@@ -51,5 +38,18 @@ class StringStartsWith extends Constraint
     public function toString(): string
     {
         return 'starts with "' . $this->prefix . '"';
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
+     *
+     * @param mixed $other value or object to evaluate
+     *
+     * @return bool
+     */
+    protected function matches($other): bool
+    {
+        return \strpos($other, $this->prefix) === 0;
     }
 }

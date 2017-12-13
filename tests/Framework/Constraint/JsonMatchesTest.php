@@ -18,6 +18,10 @@ class JsonMatchesTest extends TestCase
 {
     /**
      * @dataProvider evaluateDataprovider
+     *
+     * @param mixed $expected
+     * @param mixed $jsonOther
+     * @param mixed $jsonValue
      */
     public function testEvaluate($expected, $jsonOther, $jsonValue)
     {
@@ -28,6 +32,9 @@ class JsonMatchesTest extends TestCase
 
     /**
      * @dataProvider evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider
+     *
+     * @param mixed $jsonOther
+     * @param mixed $jsonValue
      */
     public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch($jsonOther, $jsonValue)
     {

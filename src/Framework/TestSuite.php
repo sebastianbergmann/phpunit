@@ -26,13 +26,6 @@ use Throwable;
 class TestSuite implements Test, SelfDescribing, IteratorAggregate
 {
     /**
-     * Last count of tests in this suite.
-     *
-     * @var int|null
-     */
-    private $cachedNumTests;
-
-    /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
      * @var bool
@@ -45,11 +38,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @var bool
      */
     protected $backupStaticAttributes;
-
-    /**
-     * @var bool
-     */
-    private $beStrictAboutChangesToGlobalState;
 
     /**
      * @var bool
@@ -93,6 +81,17 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @var array
      */
     protected $foundClasses = [];
+    /**
+     * Last count of tests in this suite.
+     *
+     * @var null|int
+     */
+    private $cachedNumTests;
+
+    /**
+     * @var bool
+     */
+    private $beStrictAboutChangesToGlobalState;
 
     /**
      * @var Factory
@@ -203,6 +202,22 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
 
         $this->testCase = true;
+    }
+
+    /**
+     * Template Method that is called before the tests
+     * of this test suite are run.
+     */
+    protected function setUp()
+    {
+    }
+
+    /**
+     * Template Method that is called after the tests
+     * of this test suite have finished running.
+     */
+    protected function tearDown()
+    {
     }
 
     /**
@@ -407,7 +422,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * Counts the number of test cases that will be run by this test.
      *
-     * @param bool $preferCache Indicates if cache is preferred.
+     * @param bool $preferCache indicates if cache is preferred
      *
      * @return int
      */
@@ -432,9 +447,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param ReflectionClass $theClass
      * @param string          $name
      *
-     * @return Test
-     *
      * @throws Exception
+     *
+     * @return Test
      */
     public static function createTest(ReflectionClass $theClass, $name): Test
     {
@@ -625,16 +640,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     }
 
     /**
-     * Creates a default TestResult object.
-     *
-     * @return TestResult
-     */
-    protected function createResult(): TestResult
-    {
-        return new TestResult;
-    }
-
-    /**
      * Returns the name of the suite.
      *
      * @return string
@@ -801,6 +806,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * Sets the name of the suite.
      *
      * @param  string
+     * @param mixed $name
      */
     public function setName($name): void
     {
@@ -810,9 +816,10 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * Returns the test at the given index.
      *
-     * @param  int|false
+     * @param  false|int
+     * @param mixed $index
      *
-     * @return Test|false
+     * @return false|Test
      */
     public function testAt($index)
     {
@@ -856,46 +863,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     }
 
     /**
-     * @param ReflectionClass  $class
-     * @param ReflectionMethod $method
-     */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
-    {
-        if (!$this->isTestMethod($method)) {
-            return;
-        }
-
-        $name = $method->getName();
-
-        if (!$method->isPublic()) {
-            $this->addTest(
-                self::warning(
-                    \sprintf(
-                        'Test method "%s" in test class "%s" is not public.',
-                        $name,
-                        $class->getName()
-                    )
-                )
-            );
-
-            return;
-        }
-
-        $test = self::createTest($class, $name);
-
-        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
-            $test->setDependencies(
-                \PHPUnit\Util\Test::getDependencies($class->getName(), $name)
-            );
-        }
-
-        $this->addTest(
-            $test,
-            \PHPUnit\Util\Test::getGroups($class->getName(), $name)
-        );
-    }
-
-    /**
      * @param ReflectionMethod $method
      *
      * @return bool
@@ -909,40 +876,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         $annotations = \PHPUnit\Util\Test::parseAnnotations($method->getDocComment());
 
         return isset($annotations['test']);
-    }
-
-    /**
-     * @param string $message
-     *
-     * @return WarningTestCase
-     */
-    protected static function warning($message): WarningTestCase
-    {
-        return new WarningTestCase($message);
-    }
-
-    /**
-     * @param string $class
-     * @param string $methodName
-     * @param string $message
-     *
-     * @return SkippedTestCase
-     */
-    protected static function skipTest($class, $methodName, $message): SkippedTestCase
-    {
-        return new SkippedTestCase($class, $methodName, $message);
-    }
-
-    /**
-     * @param string $class
-     * @param string $methodName
-     * @param string $message
-     *
-     * @return IncompleteTestCase
-     */
-    protected static function incompleteTest($class, $methodName, $message): IncompleteTestCase
-    {
-        return new IncompleteTestCase($class, $methodName, $message);
     }
 
     /**
@@ -1003,18 +936,86 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     }
 
     /**
-     * Template Method that is called before the tests
-     * of this test suite are run.
+     * Creates a default TestResult object.
+     *
+     * @return TestResult
      */
-    protected function setUp()
+    protected function createResult(): TestResult
     {
+        return new TestResult;
     }
 
     /**
-     * Template Method that is called after the tests
-     * of this test suite have finished running.
+     * @param ReflectionClass  $class
+     * @param ReflectionMethod $method
      */
-    protected function tearDown()
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
     {
+        if (!$this->isTestMethod($method)) {
+            return;
+        }
+
+        $name = $method->getName();
+
+        if (!$method->isPublic()) {
+            $this->addTest(
+                self::warning(
+                    \sprintf(
+                        'Test method "%s" in test class "%s" is not public.',
+                        $name,
+                        $class->getName()
+                    )
+                )
+            );
+
+            return;
+        }
+
+        $test = self::createTest($class, $name);
+
+        if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
+            $test->setDependencies(
+                \PHPUnit\Util\Test::getDependencies($class->getName(), $name)
+            );
+        }
+
+        $this->addTest(
+            $test,
+            \PHPUnit\Util\Test::getGroups($class->getName(), $name)
+        );
+    }
+
+    /**
+     * @param string $message
+     *
+     * @return WarningTestCase
+     */
+    protected static function warning($message): WarningTestCase
+    {
+        return new WarningTestCase($message);
+    }
+
+    /**
+     * @param string $class
+     * @param string $methodName
+     * @param string $message
+     *
+     * @return SkippedTestCase
+     */
+    protected static function skipTest($class, $methodName, $message): SkippedTestCase
+    {
+        return new SkippedTestCase($class, $methodName, $message);
+    }
+
+    /**
+     * @param string $class
+     * @param string $methodName
+     * @param string $message
+     *
+     * @return IncompleteTestCase
+     */
+    protected static function incompleteTest($class, $methodName, $message): IncompleteTestCase
+    {
+        return new IncompleteTestCase($class, $methodName, $message);
     }
 }

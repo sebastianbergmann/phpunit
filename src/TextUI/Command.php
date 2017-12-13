@@ -868,7 +868,7 @@ class Command
      * @param string $loaderClass
      * @param string $loaderFile
      *
-     * @return TestSuiteLoader|null
+     * @return null|TestSuiteLoader
      */
     protected function handleLoader($loaderClass, $loaderFile = ''): ?TestSuiteLoader
     {
@@ -915,7 +915,7 @@ class Command
      * @param string $printerClass
      * @param string $printerFile
      *
-     * @return Printer|string|null
+     * @return null|Printer|string
      */
     protected function handlePrinter($printerClass, $printerFile = '')
     {

@@ -32,6 +32,17 @@ class Count extends Constraint
     }
 
     /**
+     * @return string
+     */
+    public function toString(): string
+    {
+        return \sprintf(
+            'count matches %d',
+            $this->expectedCount
+        );
+    }
+
+    /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
@@ -45,9 +56,9 @@ class Count extends Constraint
     }
 
     /**
-     * @param \Countable|\Traversable|array $other
+     * @param array|\Countable|\Traversable $other
      *
-     * @return int|null
+     * @return null|int
      */
     protected function getCountOf($other): ?int
     {
@@ -109,7 +120,7 @@ class Count extends Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other Evaluated value or object.
+     * @param mixed $other evaluated value or object
      *
      * @return string
      */
@@ -118,17 +129,6 @@ class Count extends Constraint
         return \sprintf(
             'actual size %d matches expected size %d',
             $this->getCountOf($other),
-            $this->expectedCount
-        );
-    }
-
-    /**
-     * @return string
-     */
-    public function toString(): string
-    {
-        return \sprintf(
-            'count matches %d',
             $this->expectedCount
         );
     }

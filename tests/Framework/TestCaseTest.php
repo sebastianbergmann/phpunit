@@ -687,21 +687,6 @@ class TestCaseTest extends TestCase
         $this->assertEquals($test->myTestData['data'][0], $test->myTestData['data']);
     }
 
-    /**
-     * @return array<string, array>
-     */
-    private function getAutoreferencedArray()
-    {
-        $recursionData   = [];
-        $recursionData[] = &$recursionData;
-
-        return [
-            'RECURSION' => [
-                'data' => $recursionData
-            ]
-        ];
-    }
-
     public function testProvidingArrayThatMixesObjectsAndScalars()
     {
         $data = [
@@ -715,5 +700,20 @@ class TestCaseTest extends TestCase
 
         $this->assertInternalType('array', $test->myTestData);
         $this->assertSame($data, $test->myTestData);
+    }
+
+    /**
+     * @return array<string, array>
+     */
+    private function getAutoreferencedArray()
+    {
+        $recursionData   = [];
+        $recursionData[] = &$recursionData;
+
+        return [
+            'RECURSION' => [
+                'data' => $recursionData
+            ]
+        ];
     }
 }

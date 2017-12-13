@@ -407,6 +407,29 @@ class ConfigurationTest extends TestCase
         $this->assertEmpty($filter['whitelist']['exclude']['file']);
     }
 
+    public function testGetTestSuiteNamesReturnsTheNamesIfDefined()
+    {
+        $configuration = Configuration::getInstance(
+            \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.suites.xml'
+        );
+
+        $names = $configuration->getTestSuiteNames();
+
+        $this->assertEquals(['Suite One', 'Suite Two'], $names);
+    }
+
+    public function testTestSuiteConfigurationForASingleFileInASuite()
+    {
+        $configuration = Configuration::getInstance(
+            \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.one-file-suite.xml'
+        );
+
+        $config = $configuration->getTestSuiteConfiguration();
+        $tests  = $config->tests();
+
+        $this->assertCount(1, $tests);
+    }
+
     /**
      * Asserts that the values in $actualConfiguration equal $expectedConfiguration.
      *
@@ -449,28 +472,5 @@ class ConfigurationTest extends TestCase
             $expectedConfiguration->getTestSuiteConfiguration(),
             $actualConfiguration->getTestSuiteConfiguration()
         );
-    }
-
-    public function testGetTestSuiteNamesReturnsTheNamesIfDefined()
-    {
-        $configuration = Configuration::getInstance(
-            \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.suites.xml'
-        );
-
-        $names = $configuration->getTestSuiteNames();
-
-        $this->assertEquals(['Suite One', 'Suite Two'], $names);
-    }
-
-    public function testTestSuiteConfigurationForASingleFileInASuite()
-    {
-        $configuration = Configuration::getInstance(
-            \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.one-file-suite.xml'
-        );
-
-        $config = $configuration->getTestSuiteConfiguration();
-        $tests  = $config->tests();
-
-        $this->assertCount(1, $tests);
     }
 }

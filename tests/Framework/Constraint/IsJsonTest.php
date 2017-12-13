@@ -16,6 +16,9 @@ class IsJsonTest extends TestCase
 {
     /**
      * @dataProvider evaluateDataprovider
+     *
+     * @param mixed $expected
+     * @param mixed $jsonOther
      */
     public function testEvaluate($expected, $jsonOther)
     {

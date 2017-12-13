@@ -216,7 +216,7 @@ abstract class Assert
      *
      * @param mixed         $needle
      * @param string        $haystackAttributeName
-     * @param string|object $haystackClassOrObject
+     * @param object|string $haystackClassOrObject
      * @param string        $message
      * @param bool          $ignoreCase
      * @param bool          $checkForObjectIdentity
@@ -289,7 +289,7 @@ abstract class Assert
      *
      * @param mixed         $needle
      * @param string        $haystackAttributeName
-     * @param string|object $haystackClassOrObject
+     * @param object|string $haystackClassOrObject
      * @param string        $message
      * @param bool          $ignoreCase
      * @param bool          $checkForObjectIdentity
@@ -314,7 +314,7 @@ abstract class Assert
      *
      * @param string    $type
      * @param iterable  $haystack
-     * @param bool|null $isNativeType
+     * @param null|bool $isNativeType
      * @param string    $message
      *
      * @throws ExpectationFailedException
@@ -362,7 +362,7 @@ abstract class Assert
      *
      * @param string        $type
      * @param string        $haystackAttributeName
-     * @param string|object $haystackClassOrObject
+     * @param object|string $haystackClassOrObject
      * @param bool          $isNativeType
      * @param string        $message
      *
@@ -383,7 +383,7 @@ abstract class Assert
      *
      * @param string    $type
      * @param iterable  $haystack
-     * @param bool|null $isNativeType
+     * @param null|bool $isNativeType
      * @param string    $message
      *
      * @throws ExpectationFailedException
@@ -413,7 +413,7 @@ abstract class Assert
      *
      * @param string        $type
      * @param string        $haystackAttributeName
-     * @param string|object $haystackClassOrObject
+     * @param object|string $haystackClassOrObject
      * @param bool          $isNativeType
      * @param string        $message
      *
@@ -457,7 +457,7 @@ abstract class Assert
      *
      * @param int           $expectedCount
      * @param string        $haystackAttributeName
-     * @param string|object $haystackClassOrObject
+     * @param object|string $haystackClassOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -499,7 +499,7 @@ abstract class Assert
      *
      * @param int           $expectedCount
      * @param string        $haystackAttributeName
-     * @param string|object $haystackClassOrObject
+     * @param object|string $haystackClassOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -544,7 +544,7 @@ abstract class Assert
      *
      * @param mixed         $expected
      * @param string        $actualAttributeName
-     * @param string|object $actualClassOrObject
+     * @param object|string $actualClassOrObject
      * @param string        $message
      * @param float         $delta
      * @param int           $maxDepth
@@ -599,7 +599,7 @@ abstract class Assert
      *
      * @param mixed         $expected
      * @param string        $actualAttributeName
-     * @param string|object $actualClassOrObject
+     * @param object|string $actualClassOrObject
      * @param string        $message
      * @param float         $delta
      * @param int           $maxDepth
@@ -639,7 +639,7 @@ abstract class Assert
      * is empty.
      *
      * @param string        $haystackAttributeName
-     * @param string|object $haystackClassOrObject
+     * @param object|string $haystackClassOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -670,7 +670,7 @@ abstract class Assert
      * is not empty.
      *
      * @param string        $haystackAttributeName
-     * @param string|object $haystackClassOrObject
+     * @param object|string $haystackClassOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -702,7 +702,7 @@ abstract class Assert
      *
      * @param mixed         $expected
      * @param string        $actualAttributeName
-     * @param string|object $actualClassOrObject
+     * @param object|string $actualClassOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -739,7 +739,7 @@ abstract class Assert
      *
      * @param mixed         $expected
      * @param string        $actualAttributeName
-     * @param string|object $actualClassOrObject
+     * @param object|string $actualClassOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -772,7 +772,7 @@ abstract class Assert
      *
      * @param mixed         $expected
      * @param string        $actualAttributeName
-     * @param string|object $actualClassOrObject
+     * @param object|string $actualClassOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -805,7 +805,7 @@ abstract class Assert
      *
      * @param mixed         $expected
      * @param string        $actualAttributeName
-     * @param string|object $actualClassOrObject
+     * @param object|string $actualClassOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -1451,7 +1451,7 @@ abstract class Assert
      *
      * @param mixed         $expected
      * @param string        $actualAttributeName
-     * @param string|object $actualClassOrObject
+     * @param object|string $actualClassOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -1497,7 +1497,7 @@ abstract class Assert
      *
      * @param mixed         $expected
      * @param string        $actualAttributeName
-     * @param string|object $actualClassOrObject
+     * @param object|string $actualClassOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -1538,7 +1538,7 @@ abstract class Assert
      *
      * @param string        $expected
      * @param string        $attributeName
-     * @param string|object $classOrObject
+     * @param object|string $classOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -1581,7 +1581,7 @@ abstract class Assert
      *
      * @param string        $expected
      * @param string        $attributeName
-     * @param string|object $classOrObject
+     * @param object|string $classOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -1618,7 +1618,7 @@ abstract class Assert
      *
      * @param string        $expected
      * @param string        $attributeName
-     * @param string|object $classOrObject
+     * @param object|string $classOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -1657,7 +1657,7 @@ abstract class Assert
      *
      * @param string        $expected
      * @param string        $attributeName
-     * @param string|object $classOrObject
+     * @param object|string $classOrObject
      * @param string        $message
      *
      * @throws Exception
@@ -1947,7 +1947,7 @@ abstract class Assert
      * Asserts that two XML documents are equal.
      *
      * @param string             $expectedFile
-     * @param string|DOMDocument $actualXml
+     * @param DOMDocument|string $actualXml
      * @param string             $message
      *
      * @throws Exception
@@ -1964,7 +1964,7 @@ abstract class Assert
      * Asserts that two XML documents are not equal.
      *
      * @param string             $expectedFile
-     * @param string|DOMDocument $actualXml
+     * @param DOMDocument|string $actualXml
      * @param string             $message
      *
      * @throws Exception
@@ -1980,8 +1980,8 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param string|DOMDocument $expectedXml
-     * @param string|DOMDocument $actualXml
+     * @param DOMDocument|string $expectedXml
+     * @param DOMDocument|string $actualXml
      * @param string             $message
      *
      * @throws Exception
@@ -1997,8 +1997,8 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param string|DOMDocument $expectedXml
-     * @param string|DOMDocument $actualXml
+     * @param DOMDocument|string $expectedXml
+     * @param DOMDocument|string $actualXml
      * @param string             $message
      *
      * @throws Exception
@@ -2533,12 +2533,12 @@ abstract class Assert
      * Returns the value of an attribute of a class or an object.
      * This also works for attributes that are declared protected or private.
      *
-     * @param string|object $classOrObject
+     * @param object|string $classOrObject
      * @param string        $attributeName
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public static function readAttribute($classOrObject, string $attributeName)
     {
@@ -2580,9 +2580,9 @@ abstract class Assert
      * @param string $className
      * @param string $attributeName
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public static function getStaticAttribute(string $className, string $attributeName)
     {
@@ -2621,9 +2621,9 @@ abstract class Assert
      * @param object $object
      * @param string $attributeName
      *
-     * @return mixed
-     *
      * @throws Exception
+     *
+     * @return mixed
      */
     public static function getObjectAttribute($object, string $attributeName)
     {

@@ -24,8 +24,8 @@ class ExpectationFailedException extends AssertionFailedError
 
     /**
      * @param string                 $message
-     * @param ComparisonFailure|null $comparisonFailure
-     * @param \Exception|null        $previous
+     * @param null|ComparisonFailure $comparisonFailure
+     * @param null|\Exception        $previous
      */
     public function __construct($message, ComparisonFailure $comparisonFailure = null, \Exception $previous = null)
     {

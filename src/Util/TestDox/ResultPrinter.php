@@ -75,12 +75,12 @@ abstract class ResultPrinter extends Printer implements TestListener
     protected $incomplete = 0;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $currentTestClassPrettified;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $currentTestMethodPrettified;
 

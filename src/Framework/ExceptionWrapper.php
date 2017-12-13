@@ -29,7 +29,7 @@ class ExceptionWrapper extends Exception
     protected $className;
 
     /**
-     * @var ExceptionWrapper|null
+     * @var null|ExceptionWrapper
      */
     protected $previous;
 
@@ -60,22 +60,6 @@ class ExceptionWrapper extends Exception
     /**
      * @return string
      */
-    public function getClassName(): string
-    {
-        return $this->className;
-    }
-
-    /**
-     * @return ExceptionWrapper
-     */
-    public function getPreviousWrapped(): ?self
-    {
-        return $this->previous;
-    }
-
-    /**
-     * @return string
-     */
     public function __toString()
     {
         $string = TestFailure::exceptionToString($this);
@@ -89,5 +73,21 @@ class ExceptionWrapper extends Exception
         }
 
         return $string;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassName(): string
+    {
+        return $this->className;
+    }
+
+    /**
+     * @return ExceptionWrapper
+     */
+    public function getPreviousWrapped(): ?self
+    {
+        return $this->previous;
     }
 }
