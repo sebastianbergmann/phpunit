@@ -19,6 +19,7 @@
         "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues"
     },
     "prefer-stable": true,
+    "minimum-stability": "dev",
     "require": {
         "php": "^7.0",
         "phpunit/php-text-template": "^1.2.1",
@@ -26,10 +27,7 @@
         "sebastian/exporter": "^3.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5"
-    },
-    "conflict": {
-        "phpunit/phpunit": "<6.0"
+        "phpunit/phpunit": "^7.0"
     },
     "config": {
         "optimize-autoloader": true,
@@ -50,7 +48,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "5.0.x-dev"
+            "dev-master": "6.0.x-dev"
         }
     }
 }
