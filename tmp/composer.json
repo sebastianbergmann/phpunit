@@ -21,7 +21,7 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "require": {
-        "php": "^7.0",
+        "php": "^7.1",
         "phpunit/php-text-template": "^1.2.1",
         "doctrine/instantiator": "^1.0.5",
         "sebastian/exporter": "^3.1"
