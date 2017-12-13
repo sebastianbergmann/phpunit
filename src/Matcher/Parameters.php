@@ -60,7 +60,7 @@ class Parameters extends StatelessInvocation
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         $text = 'with parameter';
 

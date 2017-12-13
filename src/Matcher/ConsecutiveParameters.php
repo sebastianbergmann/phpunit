@@ -57,7 +57,7 @@ class ConsecutiveParameters extends StatelessInvocation
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'with consecutive parameters';
     }

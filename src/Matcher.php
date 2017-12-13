@@ -292,7 +292,7 @@ class Matcher implements MatcherInvocation
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         $list = [];
 

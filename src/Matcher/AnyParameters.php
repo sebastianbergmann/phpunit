@@ -19,7 +19,7 @@ class AnyParameters extends StatelessInvocation
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'with any parameters';
     }

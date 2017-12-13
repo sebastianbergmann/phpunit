@@ -56,7 +56,7 @@ class MethodName extends StatelessInvocation
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'method name ' . $this->constraint->toString();
     }

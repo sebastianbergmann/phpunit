@@ -26,7 +26,7 @@ class ReturnCallback implements Stub
         return \call_user_func_array($this->callback, $invocation->getParameters());
     }
 
-    public function toString()
+    public function toString(): string
     {
         if (\is_array($this->callback)) {
             if (\is_object($this->callback[0])) {

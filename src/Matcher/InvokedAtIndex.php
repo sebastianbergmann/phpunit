@@ -45,7 +45,7 @@ class InvokedAtIndex implements Invocation
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'invoked at sequence index ' . $this->sequenceIndex;
     }
