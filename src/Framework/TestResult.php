@@ -190,7 +190,7 @@ class TestResult implements Countable
      *
      * @param TestListener $listener
      */
-    public function addListener(TestListener $listener)
+    public function addListener(TestListener $listener): void
     {
         $this->listeners[] = $listener;
     }
@@ -200,7 +200,7 @@ class TestResult implements Countable
      *
      * @param TestListener $listener
      */
-    public function removeListener(TestListener $listener)
+    public function removeListener(TestListener $listener): void
     {
         foreach ($this->listeners as $key => $_listener) {
             if ($listener === $_listener) {
@@ -212,7 +212,7 @@ class TestResult implements Countable
     /**
      * Flushes all flushable TestListeners.
      */
-    public function flushListeners()
+    public function flushListeners(): void
     {
         foreach ($this->listeners as $listener) {
             if ($listener instanceof Printer) {
@@ -228,7 +228,7 @@ class TestResult implements Countable
      * @param Throwable $t
      * @param float     $time
      */
-    public function addError(Test $test, Throwable $t, $time)
+    public function addError(Test $test, Throwable $t, $time): void
     {
         if ($t instanceof RiskyTest) {
             $this->risky[] = new TestFailure($test, $t);
@@ -285,7 +285,7 @@ class TestResult implements Countable
      * @param Warning $e
      * @param float   $time
      */
-    public function addWarning(Test $test, Warning $e, $time)
+    public function addWarning(Test $test, Warning $e, $time): void
     {
         if ($this->stopOnWarning) {
             $this->stop();
@@ -308,7 +308,7 @@ class TestResult implements Countable
      * @param AssertionFailedError $e
      * @param float                $time
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time): void
     {
         if ($e instanceof RiskyTest || $e instanceof OutputError) {
             $this->risky[] = new TestFailure($test, $e);
@@ -357,7 +357,7 @@ class TestResult implements Countable
      *
      * @param TestSuite $suite
      */
-    public function startTestSuite(TestSuite $suite)
+    public function startTestSuite(TestSuite $suite): void
     {
         if ($this->topTestSuite === null) {
             $this->topTestSuite = $suite;
@@ -373,7 +373,7 @@ class TestResult implements Countable
      *
      * @param TestSuite $suite
      */
-    public function endTestSuite(TestSuite $suite)
+    public function endTestSuite(TestSuite $suite): void
     {
         foreach ($this->listeners as $listener) {
             $listener->endTestSuite($suite);
@@ -385,7 +385,7 @@ class TestResult implements Countable
      *
      * @param Test $test
      */
-    public function startTest(Test $test)
+    public function startTest(Test $test): void
     {
         $this->lastTestFailed = false;
         $this->runTests += \count($test);
@@ -401,7 +401,7 @@ class TestResult implements Countable
      * @param Test  $test
      * @param float $time
      */
-    public function endTest(Test $test, $time)
+    public function endTest(Test $test, $time): void
     {
         foreach ($this->listeners as $listener) {
             $listener->endTest($test, $time);
@@ -608,7 +608,7 @@ class TestResult implements Countable
      *
      * @param Test $test
      */
-    public function run(Test $test)
+    public function run(Test $test): void
     {
         Assert::resetCount();
 
@@ -917,7 +917,7 @@ class TestResult implements Countable
     /**
      * Marks that the test run should stop.
      */
-    public function stop()
+    public function stop(): void
     {
         $this->stop = true;
     }
@@ -947,7 +947,7 @@ class TestResult implements Countable
      *
      * @param bool $flag
      */
-    public function convertErrorsToExceptions(bool $flag)
+    public function convertErrorsToExceptions(bool $flag): void
     {
         $this->convertErrorsToExceptions = $flag;
     }
@@ -965,7 +965,7 @@ class TestResult implements Countable
      *
      * @param bool $flag
      */
-    public function stopOnError(bool $flag)
+    public function stopOnError(bool $flag): void
     {
         $this->stopOnError = $flag;
     }
@@ -975,7 +975,7 @@ class TestResult implements Countable
      *
      * @param bool $flag
      */
-    public function stopOnFailure(bool $flag)
+    public function stopOnFailure(bool $flag): void
     {
         $this->stopOnFailure = $flag;
     }
@@ -985,7 +985,7 @@ class TestResult implements Countable
      *
      * @param bool $flag
      */
-    public function stopOnWarning(bool $flag)
+    public function stopOnWarning(bool $flag): void
     {
         $this->stopOnWarning = $flag;
     }
@@ -993,7 +993,7 @@ class TestResult implements Countable
     /**
      * @param bool $flag
      */
-    public function beStrictAboutTestsThatDoNotTestAnything(bool $flag)
+    public function beStrictAboutTestsThatDoNotTestAnything(bool $flag): void
     {
         $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
     }
@@ -1009,7 +1009,7 @@ class TestResult implements Countable
     /**
      * @param bool $flag
      */
-    public function beStrictAboutOutputDuringTests(bool $flag)
+    public function beStrictAboutOutputDuringTests(bool $flag): void
     {
         $this->beStrictAboutOutputDuringTests = $flag;
     }
@@ -1025,7 +1025,7 @@ class TestResult implements Countable
     /**
      * @param bool $flag
      */
-    public function beStrictAboutResourceUsageDuringSmallTests(bool $flag)
+    public function beStrictAboutResourceUsageDuringSmallTests(bool $flag): void
     {
         $this->beStrictAboutResourceUsageDuringSmallTests = $flag;
     }
@@ -1041,7 +1041,7 @@ class TestResult implements Countable
     /**
      * @param bool $flag
      */
-    public function enforceTimeLimit(bool $flag)
+    public function enforceTimeLimit(bool $flag): void
     {
         $this->enforceTimeLimit = $flag;
     }
@@ -1057,7 +1057,7 @@ class TestResult implements Countable
     /**
      * @param bool $flag
      */
-    public function beStrictAboutTodoAnnotatedTests(bool $flag)
+    public function beStrictAboutTodoAnnotatedTests(bool $flag): void
     {
         $this->beStrictAboutTodoAnnotatedTests = $flag;
     }
@@ -1075,7 +1075,7 @@ class TestResult implements Countable
      *
      * @param bool $flag
      */
-    public function stopOnRisky(bool $flag)
+    public function stopOnRisky(bool $flag): void
     {
         $this->stopOnRisky = $flag;
     }
@@ -1085,7 +1085,7 @@ class TestResult implements Countable
      *
      * @param bool $flag
      */
-    public function stopOnIncomplete(bool $flag)
+    public function stopOnIncomplete(bool $flag): void
     {
         $this->stopOnIncomplete = $flag;
     }
@@ -1095,7 +1095,7 @@ class TestResult implements Countable
      *
      * @param bool $flag
      */
-    public function stopOnSkipped(bool $flag)
+    public function stopOnSkipped(bool $flag): void
     {
         $this->stopOnSkipped = $flag;
     }
@@ -1125,7 +1125,7 @@ class TestResult implements Countable
      *
      * @param int $timeout
      */
-    public function setTimeoutForSmallTests(int $timeout)
+    public function setTimeoutForSmallTests(int $timeout): void
     {
         $this->timeoutForSmallTests = $timeout;
     }
@@ -1135,7 +1135,7 @@ class TestResult implements Countable
      *
      * @param int $timeout
      */
-    public function setTimeoutForMediumTests(int $timeout)
+    public function setTimeoutForMediumTests(int $timeout): void
     {
         $this->timeoutForMediumTests = $timeout;
     }
@@ -1145,7 +1145,7 @@ class TestResult implements Countable
      *
      * @param int $timeout
      */
-    public function setTimeoutForLargeTests(int $timeout)
+    public function setTimeoutForLargeTests(int $timeout): void
     {
         $this->timeoutForLargeTests = $timeout;
     }
@@ -1163,7 +1163,7 @@ class TestResult implements Countable
     /**
      * @param bool $flag
      */
-    public function setRegisterMockObjectsFromTestArgumentsRecursively(bool $flag)
+    public function setRegisterMockObjectsFromTestArgumentsRecursively(bool $flag): void
     {
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }

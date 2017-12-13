@@ -221,7 +221,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param Test  $test
      * @param array $groups
      */
-    public function addTest(Test $test, $groups = [])
+    public function addTest(Test $test, $groups = []): void
     {
         $class = new ReflectionClass($test);
 
@@ -258,7 +258,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @throws Exception
      */
-    public function addTestSuite($testClass)
+    public function addTestSuite($testClass): void
     {
         if (\is_string($testClass) && \class_exists($testClass)) {
             $testClass = new ReflectionClass($testClass);
@@ -310,7 +310,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @throws Exception
      */
-    public function addTestFile(string $filename)
+    public function addTestFile(string $filename): void
     {
         if (\file_exists($filename) && \substr($filename, -5) == '.phpt') {
             $this->addTest(
@@ -389,7 +389,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @throws Exception
      */
-    public function addTestFiles($fileNames)
+    public function addTestFiles($fileNames): void
     {
         if (!(\is_array($fileNames) ||
             (\is_object($fileNames) && $fileNames instanceof Iterator))) {
@@ -664,7 +664,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @param array $groups
      */
-    public function setGroupDetails(array $groups)
+    public function setGroupDetails(array $groups): void
     {
         $this->groups = $groups;
     }
@@ -775,7 +775,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @throws Exception
      */
-    public function setRunTestInSeparateProcess($runTestInSeparateProcess)
+    public function setRunTestInSeparateProcess($runTestInSeparateProcess): void
     {
         if (\is_bool($runTestInSeparateProcess)) {
             $this->runTestInSeparateProcess = $runTestInSeparateProcess;
@@ -792,7 +792,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param Test       $test
      * @param TestResult $result
      */
-    public function runTest(Test $test, TestResult $result)
+    public function runTest(Test $test, TestResult $result): void
     {
         $test->run($result);
     }
@@ -802,7 +802,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @param  string
      */
-    public function setName($name)
+    public function setName($name): void
     {
         $this->name = $name;
     }
@@ -838,7 +838,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @param array $tests
      */
-    public function setTests(array $tests)
+    public function setTests(array $tests): void
     {
         $this->tests = $tests;
     }
@@ -850,7 +850,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @throws SkippedTestSuiteError
      */
-    public function markTestSuiteSkipped($message = '')
+    public function markTestSuiteSkipped($message = ''): void
     {
         throw new SkippedTestSuiteError($message);
     }
@@ -859,7 +859,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param ReflectionClass  $class
      * @param ReflectionMethod $method
      */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method)
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
     {
         if (!$this->isTestMethod($method)) {
             return;
@@ -948,7 +948,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * @param bool $beStrictAboutChangesToGlobalState
      */
-    public function setBeStrictAboutChangesToGlobalState($beStrictAboutChangesToGlobalState)
+    public function setBeStrictAboutChangesToGlobalState($beStrictAboutChangesToGlobalState): void
     {
         if (null === $this->beStrictAboutChangesToGlobalState && \is_bool($beStrictAboutChangesToGlobalState)) {
             $this->beStrictAboutChangesToGlobalState = $beStrictAboutChangesToGlobalState;
@@ -958,7 +958,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * @param bool $backupGlobals
      */
-    public function setBackupGlobals($backupGlobals)
+    public function setBackupGlobals($backupGlobals): void
     {
         if (null === $this->backupGlobals && \is_bool($backupGlobals)) {
             $this->backupGlobals = $backupGlobals;
@@ -968,7 +968,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * @param bool $backupStaticAttributes
      */
-    public function setBackupStaticAttributes($backupStaticAttributes)
+    public function setBackupStaticAttributes($backupStaticAttributes): void
     {
         if (null === $this->backupStaticAttributes && \is_bool($backupStaticAttributes)) {
             $this->backupStaticAttributes = $backupStaticAttributes;
@@ -991,7 +991,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         return $iterator;
     }
 
-    public function injectFilter(Factory $filter)
+    public function injectFilter(Factory $filter): void
     {
         $this->iteratorFilter = $filter;
 
