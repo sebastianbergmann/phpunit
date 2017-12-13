@@ -38,6 +38,7 @@ use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use Prophecy;
 use Prophecy\Exception\Prediction\PredictionException;
+use Prophecy\Prophecy\MethodProphecy;
 use Prophecy\Prophet;
 use ReflectionClass;
 use ReflectionException;
@@ -1180,6 +1181,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
             foreach ($this->prophet->getProphecies() as $objectProphecy) {
                 foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
+                    /** @var MethodProphecy[] $methodProphecies */
                     foreach ($methodProphecies as $methodProphecy) {
                         $this->numAssertions += \count($methodProphecy->getCheckedPredictions());
                     }
