@@ -51,7 +51,7 @@ class NamePrettifier
             $title = \substr($title, \strlen($this->prefix));
         }
 
-        if (\substr($title, 0, 1) == '\\') {
+        if ($title[0] === '\\') {
             $title = \substr($title, 1);
         }
 
