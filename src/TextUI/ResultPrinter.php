@@ -30,15 +30,15 @@ use SebastianBergmann\Environment\Console;
  */
 class ResultPrinter extends Printer implements TestListener
 {
-    const EVENT_TEST_START      = 0;
-    const EVENT_TEST_END        = 1;
-    const EVENT_TESTSUITE_START = 2;
-    const EVENT_TESTSUITE_END   = 3;
+    public const EVENT_TEST_START      = 0;
+    public const EVENT_TEST_END        = 1;
+    public const EVENT_TESTSUITE_START = 2;
+    public const EVENT_TESTSUITE_END   = 3;
 
-    const COLOR_NEVER   = 'never';
-    const COLOR_AUTO    = 'auto';
-    const COLOR_ALWAYS  = 'always';
-    const COLOR_DEFAULT = self::COLOR_NEVER;
+    public const COLOR_NEVER   = 'never';
+    public const COLOR_AUTO    = 'auto';
+    public const COLOR_ALWAYS  = 'always';
+    public const COLOR_DEFAULT = self::COLOR_NEVER;
 
     /**
      * @var array

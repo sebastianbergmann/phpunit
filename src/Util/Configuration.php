@@ -150,7 +150,7 @@ use PHPUnit\TextUI\ResultPrinter;
  */
 class Configuration
 {
-    const TEST_SUITE_FILTER_SEPARATOR = ',';
+    public const TEST_SUITE_FILTER_SEPARATOR = ',';
 
     private static $instances = [];
 

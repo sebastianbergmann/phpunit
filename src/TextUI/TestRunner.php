@@ -52,9 +52,9 @@ use SebastianBergmann\Environment\Runtime;
  */
 class TestRunner extends BaseTestRunner
 {
-    const SUCCESS_EXIT   = 0;
-    const FAILURE_EXIT   = 1;
-    const EXCEPTION_EXIT = 2;
+    public const SUCCESS_EXIT   = 0;
+    public const FAILURE_EXIT   = 1;
+    public const EXCEPTION_EXIT = 2;
 
     /**
      * @var CodeCoverageFilter

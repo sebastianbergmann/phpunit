@@ -17,17 +17,17 @@ namespace PHPUnit\Framework\Constraint;
  */
 class IsType extends Constraint
 {
-    const TYPE_ARRAY    = 'array';
-    const TYPE_BOOL     = 'bool';
-    const TYPE_FLOAT    = 'float';
-    const TYPE_INT      = 'int';
-    const TYPE_NULL     = 'null';
-    const TYPE_NUMERIC  = 'numeric';
-    const TYPE_OBJECT   = 'object';
-    const TYPE_RESOURCE = 'resource';
-    const TYPE_STRING   = 'string';
-    const TYPE_SCALAR   = 'scalar';
-    const TYPE_CALLABLE = 'callable';
+    public const TYPE_ARRAY    = 'array';
+    public const TYPE_BOOL     = 'bool';
+    public const TYPE_FLOAT    = 'float';
+    public const TYPE_INT      = 'int';
+    public const TYPE_NULL     = 'null';
+    public const TYPE_NUMERIC  = 'numeric';
+    public const TYPE_OBJECT   = 'object';
+    public const TYPE_RESOURCE = 'resource';
+    public const TYPE_STRING   = 'string';
+    public const TYPE_SCALAR   = 'scalar';
+    public const TYPE_CALLABLE = 'callable';
 
     /**
      * @var array

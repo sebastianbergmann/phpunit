@@ -546,7 +546,7 @@ class TestTest extends TestCase
     }
 
     /**
-     * @todo   This test does not really test functionality of \PHPUnit\Util\Test
+     * @todo This test does not really test functionality of \PHPUnit\Util\Test
      */
     public function testGetProvidedDataRegEx()
     {
