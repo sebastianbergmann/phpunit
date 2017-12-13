@@ -95,7 +95,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return 1;
     }
@@ -143,8 +143,16 @@ class PhptTestCase implements Test, SelfDescribing
      * @param TestResult $result
      *
      * @return TestResult
+     * @throws Exception
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException
+     * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
+     * @throws \SebastianBergmann\CodeCoverage\MissingCoversAnnotationException
+     * @throws \SebastianBergmann\CodeCoverage\RuntimeException
+     * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      */
-    public function run(TestResult $result = null)
+    public function run(TestResult $result = null): TestResult
     {
         $sections = $this->parse();
         $code     = $this->render($sections['FILE']);
@@ -234,7 +242,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return bool
      */
-    private function runSkip(&$sections, TestResult $result, $settings)
+    private function runSkip(&$sections, TestResult $result, $settings): bool
     {
         if (!isset($sections['SKIPIF'])) {
             return false;
@@ -278,7 +286,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->toString();
     }
@@ -288,7 +296,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return $this->filename;
     }
@@ -298,7 +306,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    private function parse()
+    private function parse(): array
     {
         $sections = [];
         $section  = '';
@@ -395,7 +403,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return bool
      */
-    private function validate(&$sections)
+    private function validate(&$sections): bool
     {
         $requiredSections = [
             'FILE',
@@ -438,7 +446,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return string
      */
-    private function render($code)
+    private function render($code): string
     {
         return \str_replace(
             [
@@ -456,7 +464,7 @@ class PhptTestCase implements Test, SelfDescribing
     /**
      * @return array<string, string>
      */
-    private function getCoverageFiles()
+    private function getCoverageFiles(): array
     {
         $baseDir          = \dirname($this->filename) . DIRECTORY_SEPARATOR;
         $basename         = \basename($this->filename, 'phpt');
@@ -469,10 +477,8 @@ class PhptTestCase implements Test, SelfDescribing
 
     /**
      * @param array $settings
-     *
-     * @return string
      */
-    private function renderForCoverage(&$settings)
+    private function renderForCoverage(&$settings): void
     {
         $files = $this->getCoverageFiles();
 
@@ -517,7 +523,7 @@ class PhptTestCase implements Test, SelfDescribing
     /**
      * @return array
      */
-    private function cleanupForCoverage()
+    private function cleanupForCoverage(): array
     {
         $files    = $this->getCoverageFiles();
         $coverage = @\unserialize(\file_get_contents($files['coverage']));
@@ -534,7 +540,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return array
      */
-    private function stringifyIni($ini)
+    private function stringifyIni($ini): array
     {
         $settings = [];
 
@@ -560,7 +566,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return array
      */
-    protected function parseIniSection($content, $ini = [])
+    protected function parseIniSection($content, $ini = []): array
     {
         if (\is_string($content)) {
             $content = \explode("\n", \trim($content));
@@ -596,7 +602,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return array<string, string>
      */
-    protected function parseEnvSection($content)
+    protected function parseEnvSection($content): array
     {
         $env = [];
 

@@ -73,7 +73,7 @@ abstract class AbstractPhpProcess
      *
      * @param bool $stderrRedirection
      */
-    public function setUseStderrRedirection($stderrRedirection)
+    public function setUseStderrRedirection($stderrRedirection): void
     {
         if (!\is_bool($stderrRedirection)) {
             throw InvalidArgumentHelper::factory(1, 'boolean');
@@ -87,7 +87,7 @@ abstract class AbstractPhpProcess
      *
      * @return bool
      */
-    public function useStderrRedirection()
+    public function useStderrRedirection(): bool
     {
         return $this->stderrRedirection;
     }
@@ -97,7 +97,7 @@ abstract class AbstractPhpProcess
      *
      * @param string $stdin
      */
-    public function setStdin($stdin)
+    public function setStdin($stdin): void
     {
         $this->stdin = (string) $stdin;
     }
@@ -107,7 +107,7 @@ abstract class AbstractPhpProcess
      *
      * @return string
      */
-    public function getStdin()
+    public function getStdin(): string
     {
         return $this->stdin;
     }
@@ -117,7 +117,7 @@ abstract class AbstractPhpProcess
      *
      * @param string $args
      */
-    public function setArgs($args)
+    public function setArgs($args): void
     {
         $this->args = (string) $args;
     }
@@ -127,7 +127,7 @@ abstract class AbstractPhpProcess
      *
      * @retrun string
      */
-    public function getArgs()
+    public function getArgs(): string
     {
         return $this->args;
     }
@@ -137,7 +137,7 @@ abstract class AbstractPhpProcess
      *
      * @param array<string, string> $env
      */
-    public function setEnv(array $env)
+    public function setEnv(array $env): void
     {
         $this->env = $env;
     }
@@ -147,7 +147,7 @@ abstract class AbstractPhpProcess
      *
      * @return array<string, string>
      */
-    public function getEnv()
+    public function getEnv(): array
     {
         return $this->env;
     }
@@ -157,7 +157,7 @@ abstract class AbstractPhpProcess
      *
      * @param int $timeout
      */
-    public function setTimeout($timeout)
+    public function setTimeout($timeout): void
     {
         $this->timeout = (int) $timeout;
     }
@@ -167,7 +167,7 @@ abstract class AbstractPhpProcess
      *
      * @return int
      */
-    public function getTimeout()
+    public function getTimeout(): int
     {
         return $this->timeout;
     }
@@ -175,7 +175,7 @@ abstract class AbstractPhpProcess
     /**
      * @return AbstractPhpProcess
      */
-    public static function factory()
+    public static function factory(): AbstractPhpProcess
     {
         if (DIRECTORY_SEPARATOR == '\\') {
             return new WindowsPhpProcess;
@@ -193,7 +193,7 @@ abstract class AbstractPhpProcess
      *
      * @throws Exception
      */
-    public function runTestJob($job, Test $test, TestResult $result)
+    public function runTestJob($job, Test $test, TestResult $result): void
     {
         $result->startTest($test);
 
@@ -215,7 +215,7 @@ abstract class AbstractPhpProcess
      *
      * @return string
      */
-    public function getCommand(array $settings, $file = null)
+    public function getCommand(array $settings, $file = null): string
     {
         $command = $this->runtime->getBinary();
         $command .= $this->settingsToParameters($settings);
@@ -251,16 +251,15 @@ abstract class AbstractPhpProcess
      *
      * @return array
      *
-     * @throws Exception
      */
-    abstract public function runJob($job, array $settings = []);
+    abstract public function runJob($job, array $settings = []): array;
 
     /**
      * @param array $settings
      *
      * @return string
      */
-    protected function settingsToParameters(array $settings)
+    protected function settingsToParameters(array $settings): string
     {
         $buffer = '';
 
@@ -279,7 +278,7 @@ abstract class AbstractPhpProcess
      * @param string     $stdout
      * @param string     $stderr
      */
-    private function processChildResult(Test $test, TestResult $result, $stdout, $stderr)
+    private function processChildResult(Test $test, TestResult $result, $stdout, $stderr): void
     {
         $time = 0;
 
@@ -395,7 +394,7 @@ abstract class AbstractPhpProcess
      *
      * @see    https://github.com/sebastianbergmann/phpunit/issues/74
      */
-    private function getException(TestFailure $error)
+    private function getException(TestFailure $error): Exception
     {
         $exception = $error->thrownException();
 

@@ -20,7 +20,7 @@ class Type
      *
      * @return bool
      */
-    public static function isType($type)
+    public static function isType($type): bool
     {
         return \in_array(
             $type,

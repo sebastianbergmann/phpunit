@@ -39,7 +39,7 @@ class Count extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return $this->expectedCount === $this->getCountOf($other);
     }
@@ -49,7 +49,7 @@ class Count extends Constraint
      *
      * @return int|null
      */
-    protected function getCountOf($other)
+    protected function getCountOf($other): ?int
     {
         if ($other instanceof Countable || \is_array($other)) {
             return \count($other);
@@ -94,7 +94,7 @@ class Count extends Constraint
      *
      * @return int
      */
-    protected function getCountOfGenerator(Generator $generator)
+    protected function getCountOfGenerator(Generator $generator): int
     {
         for ($count = 0; $generator->valid(); $generator->next()) {
             ++$count;
@@ -113,7 +113,7 @@ class Count extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return \sprintf(
             'actual size %d matches expected size %d',
@@ -125,7 +125,7 @@ class Count extends Constraint
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             'count matches %d',

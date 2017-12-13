@@ -58,7 +58,7 @@ class TestFailure
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             '%s: %s',
@@ -72,7 +72,7 @@ class TestFailure
      *
      * @return string
      */
-    public function getExceptionAsString()
+    public function getExceptionAsString(): string
     {
         return self::exceptionToString($this->thrownException);
     }
@@ -84,7 +84,7 @@ class TestFailure
      *
      * @return string
      */
-    public static function exceptionToString(Throwable $e)
+    public static function exceptionToString(Throwable $e): string
     {
         if ($e instanceof SelfDescribing) {
             $buffer = $e->toString();
@@ -116,7 +116,7 @@ class TestFailure
      *
      * @return string
      */
-    public function getTestName()
+    public function getTestName(): string
     {
         return $this->testName;
     }
@@ -131,7 +131,7 @@ class TestFailure
      *
      * @return Test|null
      */
-    public function failedTest()
+    public function failedTest(): ?Test
     {
         return $this->failedTest;
     }
@@ -141,7 +141,7 @@ class TestFailure
      *
      * @return Throwable
      */
-    public function thrownException()
+    public function thrownException(): Throwable
     {
         return $this->thrownException;
     }
@@ -151,7 +151,7 @@ class TestFailure
      *
      * @return string
      */
-    public function exceptionMessage()
+    public function exceptionMessage(): string
     {
         return $this->thrownException()->getMessage();
     }
@@ -162,7 +162,7 @@ class TestFailure
      *
      * @return bool
      */
-    public function isFailure()
+    public function isFailure(): bool
     {
         return ($this->thrownException() instanceof AssertionFailedError);
     }

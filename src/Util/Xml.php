@@ -44,7 +44,7 @@ class Xml
      *
      * @return DOMDocument
      */
-    public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false)
+    public static function load($actual, $isHtml = false, $filename = '', $xinclude = false, $strict = false): DOMDocument
     {
         if ($actual instanceof DOMDocument) {
             return $actual;
@@ -128,7 +128,7 @@ class Xml
      *
      * @return DOMDocument
      */
-    public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false)
+    public static function loadFile($filename, $isHtml = false, $xinclude = false, $strict = false): DOMDocument
     {
         $reporting = \error_reporting(0);
         $contents  = \file_get_contents($filename);
@@ -149,7 +149,7 @@ class Xml
     /**
      * @param DOMNode $node
      */
-    public static function removeCharacterDataNodes(DOMNode $node)
+    public static function removeCharacterDataNodes(DOMNode $node): void
     {
         if ($node->hasChildNodes()) {
             for ($i = $node->childNodes->length - 1; $i >= 0; $i--) {
@@ -170,7 +170,7 @@ class Xml
      *
      * @return string
      */
-    public static function prepareString($string)
+    public static function prepareString($string): string
     {
         return \preg_replace(
             '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
@@ -264,7 +264,7 @@ class Xml
      *
      * @return string
      */
-    private static function convertToUtf8($string)
+    private static function convertToUtf8($string): string
     {
         if (!self::isUtf8($string)) {
             if (\function_exists('mb_convert_encoding')) {
@@ -284,7 +284,7 @@ class Xml
      *
      * @return bool
      */
-    private static function isUtf8($string)
+    private static function isUtf8($string): bool
     {
         $length = \strlen($string);
 

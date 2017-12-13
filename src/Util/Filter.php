@@ -93,7 +93,7 @@ class Filter
      *
      * @return bool
      */
-    private static function frameExists(array $trace, $file, $line)
+    private static function frameExists(array $trace, $file, $line): bool
     {
         foreach ($trace as $frame) {
             if (isset($frame['file']) && $frame['file'] == $file &&

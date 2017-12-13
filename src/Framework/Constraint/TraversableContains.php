@@ -65,7 +65,7 @@ class TraversableContains extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         if ($other instanceof SplObjectStorage) {
             return $other->contains($this->value);
@@ -101,7 +101,7 @@ class TraversableContains extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         if (\is_string($this->value) && \strpos($this->value, "\n") !== false) {
             return 'contains "' . $this->value . '"';
@@ -120,7 +120,7 @@ class TraversableContains extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return \sprintf(
             '%s %s',

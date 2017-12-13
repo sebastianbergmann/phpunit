@@ -31,7 +31,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
      *
      * @throws Exception
      */
-    public function runJob($job, array $settings = [])
+    public function runJob($job, array $settings = []): array
     {
         if ($this->useTemporaryFile() || $this->stdin) {
             if (!($this->tempFile = \tempnam(\sys_get_temp_dir(), 'PHPUnit')) ||
@@ -52,7 +52,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
      *
      * @return array
      */
-    protected function getHandles()
+    protected function getHandles(): array
     {
         return [];
     }
@@ -67,7 +67,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
      *
      * @throws Exception
      */
-    protected function runProcess($job, $settings)
+    protected function runProcess($job, $settings): array
     {
         $handles = $this->getHandles();
 

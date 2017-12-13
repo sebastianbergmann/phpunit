@@ -44,7 +44,7 @@ class IsAnything extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'is anything';
     }
@@ -54,7 +54,7 @@ class IsAnything extends Constraint
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return 0;
     }

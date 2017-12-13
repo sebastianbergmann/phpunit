@@ -54,7 +54,7 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
      *
      * @return array
      */
-    public function getSerializableTrace()
+    public function getSerializableTrace(): array
     {
         return $this->serializableTrace;
     }

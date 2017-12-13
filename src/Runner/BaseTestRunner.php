@@ -35,7 +35,7 @@ abstract class BaseTestRunner
      *
      * @return TestSuiteLoader
      */
-    public function getLoader()
+    public function getLoader(): TestSuiteLoader
     {
         return new StandardTestSuiteLoader;
     }
@@ -51,7 +51,7 @@ abstract class BaseTestRunner
      *
      * @return Test|null
      */
-    public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = '')
+    public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = ''): ?Test
     {
         if (\is_dir($suiteClassName) &&
             !\is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
@@ -75,7 +75,7 @@ abstract class BaseTestRunner
         } catch (Exception $e) {
             $this->runFailed($e->getMessage());
 
-            return;
+            return null;
         }
 
         try {
@@ -86,7 +86,7 @@ abstract class BaseTestRunner
                     'suite() method must be static.'
                 );
 
-                return;
+                return null;
             }
 
             try {
@@ -99,7 +99,7 @@ abstract class BaseTestRunner
                     )
                 );
 
-                return;
+                return null;
             }
         } catch (ReflectionException $e) {
             try {
@@ -123,7 +123,7 @@ abstract class BaseTestRunner
      *
      * @return ReflectionClass
      */
-    protected function loadSuiteClass($suiteClassName, $suiteClassFile = '')
+    protected function loadSuiteClass($suiteClassName, $suiteClassFile = ''): ReflectionClass
     {
         $loader = $this->getLoader();
 
@@ -133,7 +133,7 @@ abstract class BaseTestRunner
     /**
      * Clears the status message.
      */
-    protected function clearStatus()
+    protected function clearStatus(): void
     {
     }
 

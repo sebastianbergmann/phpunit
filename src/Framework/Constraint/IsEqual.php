@@ -151,7 +151,7 @@ class IsEqual extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         $delta = '';
 

@@ -73,7 +73,7 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return false;
     }
@@ -83,7 +83,7 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return 1;
     }
@@ -130,7 +130,7 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @return string
      */
-    protected function additionalFailureDescription($other)
+    protected function additionalFailureDescription($other): string
     {
         return '';
     }
@@ -148,7 +148,7 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return $this->exporter->export($other) . ' ' . $this->toString();
     }

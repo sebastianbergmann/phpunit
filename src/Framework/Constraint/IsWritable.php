@@ -24,7 +24,7 @@ class IsWritable extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return \is_writable($other);
     }
@@ -39,7 +39,7 @@ class IsWritable extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return \sprintf(
             '"%s" is writable',
@@ -52,7 +52,7 @@ class IsWritable extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'is writable';
     }

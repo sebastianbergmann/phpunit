@@ -37,7 +37,7 @@ class NamePrettifier
      *
      * @return string
      */
-    public function prettifyTestClass($name)
+    public function prettifyTestClass($name): string
     {
         $title = $name;
 
@@ -65,7 +65,7 @@ class NamePrettifier
      *
      * @return string
      */
-    public function prettifyTestMethod($name)
+    public function prettifyTestMethod($name): string
     {
         $buffer = '';
 
@@ -125,7 +125,7 @@ class NamePrettifier
      *
      * @param string $prefix
      */
-    public function setPrefix($prefix)
+    public function setPrefix($prefix): void
     {
         $this->prefix = $prefix;
     }
@@ -135,7 +135,7 @@ class NamePrettifier
      *
      * @param string $suffix
      */
-    public function setSuffix($suffix)
+    public function setSuffix($suffix): void
     {
         $this->suffix = $suffix;
     }

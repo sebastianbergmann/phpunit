@@ -53,7 +53,7 @@ class Blacklist
     /**
      * @return string[]
      */
-    public function getBlacklistedDirectories()
+    public function getBlacklistedDirectories(): array
     {
         $this->initialize();
 
@@ -65,7 +65,7 @@ class Blacklist
      *
      * @return bool
      */
-    public function isBlacklisted($file)
+    public function isBlacklisted($file): bool
     {
         if (\defined('PHPUNIT_TESTSUITE')) {
             return false;
@@ -82,7 +82,7 @@ class Blacklist
         return false;
     }
 
-    private function initialize()
+    private function initialize(): void
     {
         if (self::$directories === null) {
             self::$directories = [];

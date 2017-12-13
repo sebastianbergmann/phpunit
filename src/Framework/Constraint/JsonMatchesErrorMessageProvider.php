@@ -23,11 +23,11 @@ class JsonMatchesErrorMessageProvider
      *
      * @return string
      */
-    public static function determineJsonError($error, $prefix = '')
+    public static function determineJsonError($error, $prefix = ''): ?string
     {
         switch ($error) {
             case JSON_ERROR_NONE:
-                return;
+                return null;
             case JSON_ERROR_DEPTH:
                 return $prefix . 'Maximum stack depth exceeded';
             case JSON_ERROR_STATE_MISMATCH:
@@ -50,7 +50,7 @@ class JsonMatchesErrorMessageProvider
      *
      * @return string
      */
-    public static function translateTypeToPrefix($type)
+    public static function translateTypeToPrefix($type): string
     {
         switch (\strtolower($type)) {
             case 'expected':

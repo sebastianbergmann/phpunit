@@ -40,7 +40,7 @@ class LogicalNot extends Constraint
      *
      * @return string
      */
-    public static function negate($string)
+    public static function negate($string): string
     {
         $positives = [
             'contains ',
@@ -134,7 +134,7 @@ class LogicalNot extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         switch (\get_class($this->constraint)) {
             case LogicalAnd::class:
@@ -154,7 +154,7 @@ class LogicalNot extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         switch (\get_class($this->constraint)) {
             case LogicalAnd::class:
@@ -174,7 +174,7 @@ class LogicalNot extends Constraint
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->constraint);
     }

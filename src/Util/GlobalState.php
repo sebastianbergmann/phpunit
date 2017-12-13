@@ -29,7 +29,7 @@ class GlobalState
     /**
      * @return string
      */
-    public static function getIncludedFilesAsString()
+    public static function getIncludedFilesAsString(): string
     {
         return static::processIncludedFilesAsString(\get_included_files());
     }
@@ -39,7 +39,7 @@ class GlobalState
      *
      * @return string
      */
-    public static function processIncludedFilesAsString(array $files)
+    public static function processIncludedFilesAsString(array $files): string
     {
         $blacklist = new Blacklist;
         $prefix    = false;
@@ -77,7 +77,7 @@ class GlobalState
     /**
      * @return string
      */
-    public static function getIniSettingsAsString()
+    public static function getIniSettingsAsString(): string
     {
         $result      = '';
         $iniSettings = \ini_get_all(null, false);
@@ -96,7 +96,7 @@ class GlobalState
     /**
      * @return string
      */
-    public static function getConstantsAsString()
+    public static function getConstantsAsString(): string
     {
         $constants = \get_defined_constants(true);
         $result    = '';
@@ -118,7 +118,7 @@ class GlobalState
     /**
      * @return string
      */
-    public static function getGlobalsAsString()
+    public static function getGlobalsAsString(): string
     {
         $result            = '';
         $superGlobalArrays = self::getSuperGlobalArrays();
@@ -159,7 +159,7 @@ class GlobalState
     /**
      * @return string[]
      */
-    protected static function getSuperGlobalArrays()
+    protected static function getSuperGlobalArrays(): array
     {
         return self::$superGlobalArrays;
     }
@@ -181,7 +181,7 @@ class GlobalState
      *
      * @return bool
      */
-    protected static function arrayOnlyContainsScalars(array $array)
+    protected static function arrayOnlyContainsScalars(array $array): bool
     {
         $result = true;
 

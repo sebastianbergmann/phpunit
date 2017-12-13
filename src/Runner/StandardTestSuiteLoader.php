@@ -26,8 +26,9 @@ class StandardTestSuiteLoader implements TestSuiteLoader
      * @return ReflectionClass
      *
      * @throws Exception
+     * @throws \PHPUnit\Framework\Exception
      */
-    public function load($suiteClassName, $suiteClassFile = '')
+    public function load($suiteClassName, $suiteClassFile = ''): ReflectionClass
     {
         $suiteClassName = \str_replace('.php', '', $suiteClassName);
 
@@ -113,7 +114,7 @@ class StandardTestSuiteLoader implements TestSuiteLoader
      *
      * @return ReflectionClass
      */
-    public function reload(ReflectionClass $aClass)
+    public function reload(ReflectionClass $aClass): ReflectionClass
     {
         return $aClass;
     }

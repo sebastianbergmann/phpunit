@@ -45,7 +45,7 @@ class Callback extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return \call_user_func($this->callback, $other);
     }
@@ -55,7 +55,7 @@ class Callback extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'is accepted by specified callback';
     }

@@ -36,12 +36,12 @@ class StringMatchesFormatDescription extends RegularExpression
         $this->string = $string;
     }
 
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return 'string matches format description';
     }
 
-    protected function additionalFailureDescription($other)
+    protected function additionalFailureDescription($other): string
     {
         $from = \preg_split('(\r\n|\r|\n)', $this->string);
         $to   = \preg_split('(\r\n|\r|\n)', $other);

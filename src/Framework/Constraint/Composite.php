@@ -63,7 +63,7 @@ abstract class Composite extends Constraint
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return \count($this->innerConstraint);
     }

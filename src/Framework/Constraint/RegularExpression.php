@@ -42,7 +42,7 @@ class RegularExpression extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return \preg_match($this->pattern, $other) > 0;
     }
@@ -52,7 +52,7 @@ class RegularExpression extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             'matches PCRE pattern "%s"',

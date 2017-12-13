@@ -120,7 +120,7 @@ class JUnit extends Printer implements TestListener
     /**
      * Flush buffer and close output.
      */
-    public function flush()
+    public function flush(): void
     {
         if ($this->writeDocument === true) {
             $this->write($this->getXML());
@@ -379,7 +379,7 @@ class JUnit extends Printer implements TestListener
      *
      * @return string
      */
-    public function getXML()
+    public function getXML(): string
     {
         return $this->document->saveXML();
     }
@@ -393,7 +393,7 @@ class JUnit extends Printer implements TestListener
      *
      * @return string
      */
-    public function setWriteDocument($flag)
+    public function setWriteDocument($flag): ?string
     {
         if (\is_bool($flag)) {
             $this->writeDocument = $flag;

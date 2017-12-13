@@ -181,7 +181,7 @@ class Configuration
      *
      * @return Configuration
      */
-    public static function getInstance($filename)
+    public static function getInstance($filename): Configuration
     {
         $realpath = \realpath($filename);
 
@@ -206,7 +206,7 @@ class Configuration
      *
      * @return string
      */
-    public function getFilename()
+    public function getFilename(): string
     {
         return $this->filename;
     }
@@ -216,7 +216,7 @@ class Configuration
      *
      * @return array
      */
-    public function getFilterConfiguration()
+    public function getFilterConfiguration(): array
     {
         $addUncoveredFilesFromWhitelist     = true;
         $processUncoveredFilesFromWhitelist = false;
@@ -284,7 +284,7 @@ class Configuration
      *
      * @return array
      */
-    public function getGroupConfiguration()
+    public function getGroupConfiguration(): array
     {
         return $this->parseGroupConfiguration('groups');
     }
@@ -294,7 +294,7 @@ class Configuration
      *
      * @return array
      */
-    public function getTestdoxGroupConfiguration()
+    public function getTestdoxGroupConfiguration(): array
     {
         return $this->parseGroupConfiguration('testdoxGroups');
     }
@@ -304,7 +304,7 @@ class Configuration
      *
      * @return array
      */
-    private function parseGroupConfiguration($root)
+    private function parseGroupConfiguration($root): array
     {
         $groups = [
             'include' => [],
@@ -327,7 +327,7 @@ class Configuration
      *
      * @return array
      */
-    public function getListenerConfiguration()
+    public function getListenerConfiguration(): array
     {
         $result = [];
 
@@ -372,7 +372,7 @@ class Configuration
      *
      * @return array
      */
-    public function getLoggingConfiguration()
+    public function getLoggingConfiguration(): array
     {
         $result = [];
 
@@ -433,7 +433,7 @@ class Configuration
      *
      * @return array
      */
-    public function getPHPConfiguration()
+    public function getPHPConfiguration(): array
     {
         $result = [
             'include_path' => [],
@@ -501,7 +501,7 @@ class Configuration
     /**
      * Handles the PHP configuration.
      */
-    public function handlePHPConfiguration()
+    public function handlePHPConfiguration(): void
     {
         $configuration = $this->getPHPConfiguration();
 
@@ -579,7 +579,7 @@ class Configuration
      *
      * @return array
      */
-    public function getPHPUnitConfiguration()
+    public function getPHPUnitConfiguration(): array
     {
         $result = [];
         $root   = $this->document->documentElement;
@@ -892,7 +892,7 @@ class Configuration
      *
      * @return TestSuite
      */
-    public function getTestSuiteConfiguration($testSuiteFilter = null)
+    public function getTestSuiteConfiguration($testSuiteFilter = null): TestSuite
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
@@ -921,7 +921,7 @@ class Configuration
      *
      * @return array
      */
-    public function getTestSuiteNames()
+    public function getTestSuiteNames(): array
     {
         $names = [];
         $nodes = $this->xpath->query('*/testsuite');
@@ -938,7 +938,7 @@ class Configuration
      *
      * @return TestSuite
      */
-    protected function getTestSuite(DOMElement $testSuiteNode, $testSuiteFilter = null)
+    protected function getTestSuite(DOMElement $testSuiteNode, $testSuiteFilter = null): TestSuite
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new TestSuite(
@@ -1081,7 +1081,7 @@ class Configuration
      *
      * @return int
      */
-    protected function getInteger($value, $default)
+    protected function getInteger($value, $default): int
     {
         if (\is_numeric($value)) {
             return (int) $value;
@@ -1095,7 +1095,7 @@ class Configuration
      *
      * @return array
      */
-    protected function readFilterDirectories($query)
+    protected function readFilterDirectories($query): array
     {
         $directories = [];
 
@@ -1140,7 +1140,7 @@ class Configuration
      *
      * @return array
      */
-    protected function readFilterFiles($query)
+    protected function readFilterFiles($query): array
     {
         $files = [];
 
@@ -1161,7 +1161,7 @@ class Configuration
      *
      * @return string
      */
-    protected function toAbsolutePath($path, $useIncludePath = false)
+    protected function toAbsolutePath($path, $useIncludePath = false): string
     {
         $path = \trim($path);
 

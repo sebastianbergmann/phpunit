@@ -70,7 +70,7 @@ class Printer
     /**
      * Flush buffer and close output if it's not to a PHP stream
      */
-    public function flush()
+    public function flush(): void
     {
         if ($this->out && \strncmp($this->outTarget, 'php://', 6) !== 0) {
             \fclose($this->out);
@@ -84,7 +84,7 @@ class Printer
      * since the flush() function may close the file being written to, rendering
      * the current object no longer usable.
      */
-    public function incrementalFlush()
+    public function incrementalFlush(): void
     {
         if ($this->out) {
             \fflush($this->out);
@@ -96,7 +96,7 @@ class Printer
     /**
      * @param string $buffer
      */
-    public function write($buffer)
+    public function write($buffer): void
     {
         if ($this->out) {
             \fwrite($this->out, $buffer);
@@ -122,7 +122,7 @@ class Printer
      *
      * @return bool
      */
-    public function getAutoFlush()
+    public function getAutoFlush(): bool
     {
         return $this->autoFlush;
     }
@@ -135,7 +135,7 @@ class Printer
      *
      * @param bool $autoFlush
      */
-    public function setAutoFlush($autoFlush)
+    public function setAutoFlush($autoFlush): void
     {
         if (\is_bool($autoFlush)) {
             $this->autoFlush = $autoFlush;

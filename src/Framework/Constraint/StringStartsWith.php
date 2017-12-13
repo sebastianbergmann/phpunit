@@ -37,7 +37,7 @@ class StringStartsWith extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return \strpos($other, $this->prefix) === 0;
     }
@@ -47,7 +47,7 @@ class StringStartsWith extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'starts with "' . $this->prefix . '"';
     }

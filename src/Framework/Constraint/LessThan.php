@@ -38,7 +38,7 @@ class LessThan extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return $this->value > $other;
     }
@@ -48,7 +48,7 @@ class LessThan extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'is less than ' . $this->exporter->export($this->value);
     }

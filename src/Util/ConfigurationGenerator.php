@@ -46,7 +46,7 @@ EOT;
      *
      * @return string
      */
-    public function generateDefaultConfiguration($phpunitVersion, $bootstrapScript, $testsDirectory, $srcDirectory)
+    public function generateDefaultConfiguration($phpunitVersion, $bootstrapScript, $testsDirectory, $srcDirectory): string
     {
         return \str_replace(
             [

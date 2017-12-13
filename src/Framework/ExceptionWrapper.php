@@ -60,7 +60,7 @@ class ExceptionWrapper extends Exception
     /**
      * @return string
      */
-    public function getClassName()
+    public function getClassName(): string
     {
         return $this->className;
     }
@@ -68,7 +68,7 @@ class ExceptionWrapper extends Exception
     /**
      * @return ExceptionWrapper
      */
-    public function getPreviousWrapped()
+    public function getPreviousWrapped(): ?ExceptionWrapper
     {
         return $this->previous;
     }

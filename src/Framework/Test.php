@@ -24,5 +24,5 @@ interface Test extends Countable
      *
      * @return TestResult
      */
-    public function run(TestResult $result = null);
+    public function run(TestResult $result = null): TestResult;
 }

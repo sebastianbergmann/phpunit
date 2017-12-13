@@ -624,7 +624,7 @@ class ResultPrinter extends Printer implements TestListener
      *
      * @return string
      */
-    protected function formatWithColor($color, $buffer)
+    protected function formatWithColor($color, $buffer): string
     {
         if (!$this->colors) {
             return $buffer;

@@ -103,7 +103,7 @@ class IsIdentical extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         if (\is_object($this->value) && \is_object($other)) {
             return 'two variables reference the same object';
@@ -121,7 +121,7 @@ class IsIdentical extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         if (\is_object($this->value)) {
             return 'is identical to an object of class "' .

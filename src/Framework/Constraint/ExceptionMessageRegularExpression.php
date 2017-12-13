@@ -34,8 +34,9 @@ class ExceptionMessageRegularExpression extends Constraint
      * @param \PHPUnit\Framework\Exception $other
      *
      * @return bool
+     * @throws \PHPUnit\Framework\Exception
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         $match = RegularExpressionUtil::safeMatch($this->expectedMessageRegExp, $other->getMessage());
 
@@ -58,7 +59,7 @@ class ExceptionMessageRegularExpression extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return \sprintf(
             "exception message '%s' matches '%s'",
@@ -70,7 +71,7 @@ class ExceptionMessageRegularExpression extends Constraint
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'exception message matches ';
     }

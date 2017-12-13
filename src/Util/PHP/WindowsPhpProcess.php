@@ -21,7 +21,7 @@ use PHPUnit\Framework\Exception;
  */
 class WindowsPhpProcess extends DefaultPhpProcess
 {
-    protected function getHandles()
+    protected function getHandles(): array
     {
         if (false === $stdout_handle = \tmpfile()) {
             throw new Exception(
@@ -34,7 +34,7 @@ class WindowsPhpProcess extends DefaultPhpProcess
         ];
     }
 
-    public function getCommand(array $settings, $file = null)
+    public function getCommand(array $settings, $file = null): string
     {
         return '"' . parent::getCommand($settings, $file) . '"';
     }

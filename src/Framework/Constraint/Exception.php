@@ -36,7 +36,7 @@ class Exception extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return $other instanceof $this->className;
     }
@@ -51,7 +51,7 @@ class Exception extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         if ($other !== null) {
             $message = '';
@@ -79,7 +79,7 @@ class Exception extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             'exception of type "%s"',

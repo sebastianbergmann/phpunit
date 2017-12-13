@@ -27,7 +27,7 @@ class ErrorHandler
      *
      * @return array
      */
-    public static function getErrorStack()
+    public static function getErrorStack(): array
     {
         return self::$errorStack;
     }
@@ -42,7 +42,7 @@ class ErrorHandler
      *
      * @throws Error
      */
-    public static function handleError($errno, $errstr, $errfile, $errline)
+    public static function handleError($errno, $errstr, $errfile, $errline): bool
     {
         if (!($errno & \error_reporting())) {
             return false;
@@ -94,7 +94,7 @@ class ErrorHandler
      *
      * @throws \Exception if event of specified severity is emitted
      */
-    public static function handleErrorOnce($severity = E_WARNING)
+    public static function handleErrorOnce($severity = E_WARNING): callable
     {
         $terminator = function () {
             static $expired = false;

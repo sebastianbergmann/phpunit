@@ -85,7 +85,7 @@ class IsType extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         switch ($this->type) {
             case 'numeric':
@@ -132,7 +132,7 @@ class IsType extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             'is of type "%s"',

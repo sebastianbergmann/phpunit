@@ -81,7 +81,7 @@ abstract class Assert
      * @param array|ArrayAccess $array
      * @param string            $message
      */
-    public static function assertArrayHasKey($key, $array, $message = '')
+    public static function assertArrayHasKey($key, $array, $message = ''): void
     {
         if (!(\is_int($key) || \is_string($key))) {
             throw InvalidArgumentHelper::factory(
@@ -110,7 +110,7 @@ abstract class Assert
      * @param bool              $strict  Check for object identity
      * @param string            $message
      */
-    public static function assertArraySubset($subset, $array, $strict = false, $message = '')
+    public static function assertArraySubset($subset, $array, $strict = false, $message = ''): void
     {
         if (!(\is_array($subset) || $subset instanceof ArrayAccess)) {
             throw InvalidArgumentHelper::factory(
@@ -138,7 +138,7 @@ abstract class Assert
      * @param array|ArrayAccess $array
      * @param string            $message
      */
-    public static function assertArrayNotHasKey($key, $array, $message = '')
+    public static function assertArrayNotHasKey($key, $array, $message = ''): void
     {
         if (!(\is_int($key) || \is_string($key))) {
             throw InvalidArgumentHelper::factory(
@@ -171,7 +171,7 @@ abstract class Assert
      * @param bool   $checkForObjectIdentity
      * @param bool   $checkForNonObjectIdentity
      */
-    public static function assertContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public static function assertContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false): void
     {
         if (\is_array($haystack) ||
             (\is_object($haystack) && $haystack instanceof Traversable)) {
@@ -214,7 +214,7 @@ abstract class Assert
      * @param bool          $checkForObjectIdentity
      * @param bool          $checkForNonObjectIdentity
      */
-    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public static function assertAttributeContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false): void
     {
         static::assertContains(
             $needle,
@@ -236,7 +236,7 @@ abstract class Assert
      * @param bool   $checkForObjectIdentity
      * @param bool   $checkForNonObjectIdentity
      */
-    public static function assertNotContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public static function assertNotContains($needle, $haystack, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false): void
     {
         if (\is_array($haystack) ||
             (\is_object($haystack) && $haystack instanceof Traversable)) {
@@ -283,7 +283,7 @@ abstract class Assert
      * @param bool          $checkForObjectIdentity
      * @param bool          $checkForNonObjectIdentity
      */
-    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public static function assertAttributeNotContains($needle, $haystackAttributeName, $haystackClassOrObject, $message = '', $ignoreCase = false, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false): void
     {
         static::assertNotContains(
             $needle,
@@ -303,7 +303,7 @@ abstract class Assert
      * @param bool   $isNativeType
      * @param string $message
      */
-    public static function assertContainsOnly($type, $haystack, $isNativeType = null, $message = '')
+    public static function assertContainsOnly($type, $haystack, $isNativeType = null, $message = ''): void
     {
         if (!\is_array($haystack) &&
             !(\is_object($haystack) && $haystack instanceof Traversable)) {
@@ -334,7 +334,7 @@ abstract class Assert
      * @param array|\Traversable $haystack
      * @param string             $message
      */
-    public static function assertContainsOnlyInstancesOf($className, $haystack, $message = '')
+    public static function assertContainsOnlyInstancesOf($className, $haystack, $message = ''): void
     {
         if (!\is_array($haystack) &&
             !(\is_object($haystack) && $haystack instanceof Traversable)) {
@@ -364,7 +364,7 @@ abstract class Assert
      * @param bool          $isNativeType
      * @param string        $message
      */
-    public static function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, $message = '')
+    public static function assertAttributeContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, $message = ''): void
     {
         static::assertContainsOnly(
             $type,
@@ -382,7 +382,7 @@ abstract class Assert
      * @param bool   $isNativeType
      * @param string $message
      */
-    public static function assertNotContainsOnly($type, $haystack, $isNativeType = null, $message = '')
+    public static function assertNotContainsOnly($type, $haystack, $isNativeType = null, $message = ''): void
     {
         if (!\is_array($haystack) &&
             !(\is_object($haystack) && $haystack instanceof Traversable)) {
@@ -419,7 +419,7 @@ abstract class Assert
      * @param bool          $isNativeType
      * @param string        $message
      */
-    public static function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, $message = '')
+    public static function assertAttributeNotContainsOnly($type, $haystackAttributeName, $haystackClassOrObject, $isNativeType = null, $message = ''): void
     {
         static::assertNotContainsOnly(
             $type,
@@ -436,7 +436,7 @@ abstract class Assert
      * @param mixed  $haystack
      * @param string $message
      */
-    public static function assertCount($expectedCount, $haystack, $message = '')
+    public static function assertCount($expectedCount, $haystack, $message = ''): void
     {
         if (!\is_int($expectedCount)) {
             throw InvalidArgumentHelper::factory(1, 'integer');
@@ -464,7 +464,7 @@ abstract class Assert
      * @param string|object $haystackClassOrObject
      * @param string        $message
      */
-    public static function assertAttributeCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = ''): void
     {
         static::assertCount(
             $expectedCount,
@@ -480,7 +480,7 @@ abstract class Assert
      * @param mixed  $haystack
      * @param string $message
      */
-    public static function assertNotCount($expectedCount, $haystack, $message = '')
+    public static function assertNotCount($expectedCount, $haystack, $message = ''): void
     {
         if (!\is_int($expectedCount)) {
             throw InvalidArgumentHelper::factory(1, 'integer');
@@ -508,7 +508,7 @@ abstract class Assert
      * @param string|object $haystackClassOrObject
      * @param string        $message
      */
-    public static function assertAttributeNotCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeNotCount($expectedCount, $haystackAttributeName, $haystackClassOrObject, $message = ''): void
     {
         static::assertNotCount(
             $expectedCount,
@@ -528,7 +528,7 @@ abstract class Assert
      * @param bool   $canonicalize
      * @param bool   $ignoreCase
      */
-    public static function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false): void
     {
         $constraint = new IsEqual(
             $expected,
@@ -553,7 +553,7 @@ abstract class Assert
      * @param bool          $canonicalize
      * @param bool          $ignoreCase
      */
-    public static function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertAttributeEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false): void
     {
         static::assertEquals(
             $expected,
@@ -577,7 +577,7 @@ abstract class Assert
      * @param bool   $canonicalize
      * @param bool   $ignoreCase
      */
-    public static function assertNotEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertNotEquals($expected, $actual, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false): void
     {
         $constraint = new LogicalNot(
             new IsEqual(
@@ -604,7 +604,7 @@ abstract class Assert
      * @param bool          $canonicalize
      * @param bool          $ignoreCase
      */
-    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function assertAttributeNotEquals($expected, $actualAttributeName, $actualClassOrObject, $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false): void
     {
         static::assertNotEquals(
             $expected,
@@ -625,7 +625,7 @@ abstract class Assert
      *
      * @throws AssertionFailedError
      */
-    public static function assertEmpty($actual, $message = '')
+    public static function assertEmpty($actual, $message = ''): void
     {
         static::assertThat($actual, static::isEmpty(), $message);
     }
@@ -638,7 +638,7 @@ abstract class Assert
      * @param string|object $haystackClassOrObject
      * @param string        $message
      */
-    public static function assertAttributeEmpty($haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeEmpty($haystackAttributeName, $haystackClassOrObject, $message = ''): void
     {
         static::assertEmpty(
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
@@ -654,7 +654,7 @@ abstract class Assert
      *
      * @throws AssertionFailedError
      */
-    public static function assertNotEmpty($actual, $message = '')
+    public static function assertNotEmpty($actual, $message = ''): void
     {
         static::assertThat($actual, static::logicalNot(static::isEmpty()), $message);
     }
@@ -667,7 +667,7 @@ abstract class Assert
      * @param string|object $haystackClassOrObject
      * @param string        $message
      */
-    public static function assertAttributeNotEmpty($haystackAttributeName, $haystackClassOrObject, $message = '')
+    public static function assertAttributeNotEmpty($haystackAttributeName, $haystackClassOrObject, $message = ''): void
     {
         static::assertNotEmpty(
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
@@ -682,7 +682,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertGreaterThan($expected, $actual, $message = '')
+    public static function assertGreaterThan($expected, $actual, $message = ''): void
     {
         static::assertThat($actual, static::greaterThan($expected), $message);
     }
@@ -695,7 +695,7 @@ abstract class Assert
      * @param string|object $actualClassOrObject
      * @param string        $message
      */
-    public static function assertAttributeGreaterThan($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeGreaterThan($expected, $actualAttributeName, $actualClassOrObject, $message = ''): void
     {
         static::assertGreaterThan(
             $expected,
@@ -711,7 +711,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertGreaterThanOrEqual($expected, $actual, $message = '')
+    public static function assertGreaterThanOrEqual($expected, $actual, $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -728,7 +728,7 @@ abstract class Assert
      * @param string|object $actualClassOrObject
      * @param string        $message
      */
-    public static function assertAttributeGreaterThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeGreaterThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = ''): void
     {
         static::assertGreaterThanOrEqual(
             $expected,
@@ -744,7 +744,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertLessThan($expected, $actual, $message = '')
+    public static function assertLessThan($expected, $actual, $message = ''): void
     {
         static::assertThat($actual, static::lessThan($expected), $message);
     }
@@ -757,7 +757,7 @@ abstract class Assert
      * @param string|object $actualClassOrObject
      * @param string        $message
      */
-    public static function assertAttributeLessThan($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeLessThan($expected, $actualAttributeName, $actualClassOrObject, $message = ''): void
     {
         static::assertLessThan(
             $expected,
@@ -773,7 +773,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertLessThanOrEqual($expected, $actual, $message = '')
+    public static function assertLessThanOrEqual($expected, $actual, $message = ''): void
     {
         static::assertThat($actual, static::lessThanOrEqual($expected), $message);
     }
@@ -786,7 +786,7 @@ abstract class Assert
      * @param string|object $actualClassOrObject
      * @param string        $message
      */
-    public static function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeLessThanOrEqual($expected, $actualAttributeName, $actualClassOrObject, $message = ''): void
     {
         static::assertLessThanOrEqual(
             $expected,
@@ -805,7 +805,7 @@ abstract class Assert
      * @param bool   $canonicalize
      * @param bool   $ignoreCase
      */
-    public static function assertFileEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false)
+    public static function assertFileEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false): void
     {
         static::assertFileExists($expected, $message);
         static::assertFileExists($actual, $message);
@@ -831,7 +831,7 @@ abstract class Assert
      * @param bool   $canonicalize
      * @param bool   $ignoreCase
      */
-    public static function assertFileNotEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false)
+    public static function assertFileNotEquals($expected, $actual, $message = '', $canonicalize = false, $ignoreCase = false): void
     {
         static::assertFileExists($expected, $message);
         static::assertFileExists($actual, $message);
@@ -857,7 +857,7 @@ abstract class Assert
      * @param bool   $canonicalize
      * @param bool   $ignoreCase
      */
-    public static function assertStringEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false)
+    public static function assertStringEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false): void
     {
         static::assertFileExists($expectedFile, $message);
 
@@ -882,7 +882,7 @@ abstract class Assert
      * @param bool   $canonicalize
      * @param bool   $ignoreCase
      */
-    public static function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false)
+    public static function assertStringNotEqualsFile($expectedFile, $actualString, $message = '', $canonicalize = false, $ignoreCase = false): void
     {
         static::assertFileExists($expectedFile, $message);
 
@@ -903,7 +903,7 @@ abstract class Assert
      * @param string $filename
      * @param string $message
      */
-    public static function assertIsReadable($filename, $message = '')
+    public static function assertIsReadable($filename, $message = ''): void
     {
         if (!\is_string($filename)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -920,7 +920,7 @@ abstract class Assert
      * @param string $filename
      * @param string $message
      */
-    public static function assertNotIsReadable($filename, $message = '')
+    public static function assertNotIsReadable($filename, $message = ''): void
     {
         if (!\is_string($filename)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -939,7 +939,7 @@ abstract class Assert
      * @param string $filename
      * @param string $message
      */
-    public static function assertIsWritable($filename, $message = '')
+    public static function assertIsWritable($filename, $message = ''): void
     {
         if (!\is_string($filename)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -956,7 +956,7 @@ abstract class Assert
      * @param string $filename
      * @param string $message
      */
-    public static function assertNotIsWritable($filename, $message = '')
+    public static function assertNotIsWritable($filename, $message = ''): void
     {
         if (!\is_string($filename)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -975,7 +975,7 @@ abstract class Assert
      * @param string $directory
      * @param string $message
      */
-    public static function assertDirectoryExists($directory, $message = '')
+    public static function assertDirectoryExists($directory, $message = ''): void
     {
         if (!\is_string($directory)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -992,7 +992,7 @@ abstract class Assert
      * @param string $directory
      * @param string $message
      */
-    public static function assertDirectoryNotExists($directory, $message = '')
+    public static function assertDirectoryNotExists($directory, $message = ''): void
     {
         if (!\is_string($directory)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1011,7 +1011,7 @@ abstract class Assert
      * @param string $directory
      * @param string $message
      */
-    public static function assertDirectoryIsReadable($directory, $message = '')
+    public static function assertDirectoryIsReadable($directory, $message = ''): void
     {
         self::assertDirectoryExists($directory, $message);
         self::assertIsReadable($directory, $message);
@@ -1023,7 +1023,7 @@ abstract class Assert
      * @param string $directory
      * @param string $message
      */
-    public static function assertDirectoryNotIsReadable($directory, $message = '')
+    public static function assertDirectoryNotIsReadable($directory, $message = ''): void
     {
         self::assertDirectoryExists($directory, $message);
         self::assertNotIsReadable($directory, $message);
@@ -1035,7 +1035,7 @@ abstract class Assert
      * @param string $directory
      * @param string $message
      */
-    public static function assertDirectoryIsWritable($directory, $message = '')
+    public static function assertDirectoryIsWritable($directory, $message = ''): void
     {
         self::assertDirectoryExists($directory, $message);
         self::assertIsWritable($directory, $message);
@@ -1047,7 +1047,7 @@ abstract class Assert
      * @param string $directory
      * @param string $message
      */
-    public static function assertDirectoryNotIsWritable($directory, $message = '')
+    public static function assertDirectoryNotIsWritable($directory, $message = ''): void
     {
         self::assertDirectoryExists($directory, $message);
         self::assertNotIsWritable($directory, $message);
@@ -1059,7 +1059,7 @@ abstract class Assert
      * @param string $filename
      * @param string $message
      */
-    public static function assertFileExists($filename, $message = '')
+    public static function assertFileExists($filename, $message = ''): void
     {
         if (!\is_string($filename)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1076,7 +1076,7 @@ abstract class Assert
      * @param string $filename
      * @param string $message
      */
-    public static function assertFileNotExists($filename, $message = '')
+    public static function assertFileNotExists($filename, $message = ''): void
     {
         if (!\is_string($filename)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1095,7 +1095,7 @@ abstract class Assert
      * @param string $file
      * @param string $message
      */
-    public static function assertFileIsReadable($file, $message = '')
+    public static function assertFileIsReadable($file, $message = ''): void
     {
         self::assertFileExists($file, $message);
         self::assertIsReadable($file, $message);
@@ -1107,7 +1107,7 @@ abstract class Assert
      * @param string $file
      * @param string $message
      */
-    public static function assertFileNotIsReadable($file, $message = '')
+    public static function assertFileNotIsReadable($file, $message = ''): void
     {
         self::assertFileExists($file, $message);
         self::assertNotIsReadable($file, $message);
@@ -1119,7 +1119,7 @@ abstract class Assert
      * @param string $file
      * @param string $message
      */
-    public static function assertFileIsWritable($file, $message = '')
+    public static function assertFileIsWritable($file, $message = ''): void
     {
         self::assertFileExists($file, $message);
         self::assertIsWritable($file, $message);
@@ -1131,7 +1131,7 @@ abstract class Assert
      * @param string $file
      * @param string $message
      */
-    public static function assertFileNotIsWritable($file, $message = '')
+    public static function assertFileNotIsWritable($file, $message = ''): void
     {
         self::assertFileExists($file, $message);
         self::assertNotIsWritable($file, $message);
@@ -1145,7 +1145,7 @@ abstract class Assert
      *
      * @throws AssertionFailedError
      */
-    public static function assertTrue($condition, $message = '')
+    public static function assertTrue($condition, $message = ''): void
     {
         static::assertThat($condition, static::isTrue(), $message);
     }
@@ -1158,7 +1158,7 @@ abstract class Assert
      *
      * @throws AssertionFailedError
      */
-    public static function assertNotTrue($condition, $message = '')
+    public static function assertNotTrue($condition, $message = ''): void
     {
         static::assertThat($condition, static::logicalNot(static::isTrue()), $message);
     }
@@ -1171,7 +1171,7 @@ abstract class Assert
      *
      * @throws AssertionFailedError
      */
-    public static function assertFalse($condition, $message = '')
+    public static function assertFalse($condition, $message = ''): void
     {
         static::assertThat($condition, static::isFalse(), $message);
     }
@@ -1184,7 +1184,7 @@ abstract class Assert
      *
      * @throws AssertionFailedError
      */
-    public static function assertNotFalse($condition, $message = '')
+    public static function assertNotFalse($condition, $message = ''): void
     {
         static::assertThat($condition, static::logicalNot(static::isFalse()), $message);
     }
@@ -1195,7 +1195,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertNull($actual, $message = '')
+    public static function assertNull($actual, $message = ''): void
     {
         static::assertThat($actual, static::isNull(), $message);
     }
@@ -1206,7 +1206,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertNotNull($actual, $message = '')
+    public static function assertNotNull($actual, $message = ''): void
     {
         static::assertThat($actual, static::logicalNot(static::isNull()), $message);
     }
@@ -1217,7 +1217,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertFinite($actual, $message = '')
+    public static function assertFinite($actual, $message = ''): void
     {
         static::assertThat($actual, static::isFinite(), $message);
     }
@@ -1228,7 +1228,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertInfinite($actual, $message = '')
+    public static function assertInfinite($actual, $message = ''): void
     {
         static::assertThat($actual, static::isInfinite(), $message);
     }
@@ -1239,7 +1239,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertNan($actual, $message = '')
+    public static function assertNan($actual, $message = ''): void
     {
         static::assertThat($actual, static::isNan(), $message);
     }
@@ -1251,7 +1251,7 @@ abstract class Assert
      * @param string $className
      * @param string $message
      */
-    public static function assertClassHasAttribute($attributeName, $className, $message = '')
+    public static function assertClassHasAttribute($attributeName, $className, $message = ''): void
     {
         if (!\is_string($attributeName)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1279,7 +1279,7 @@ abstract class Assert
      * @param string $className
      * @param string $message
      */
-    public static function assertClassNotHasAttribute($attributeName, $className, $message = '')
+    public static function assertClassNotHasAttribute($attributeName, $className, $message = ''): void
     {
         if (!\is_string($attributeName)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1307,7 +1307,7 @@ abstract class Assert
      * @param string $className
      * @param string $message
      */
-    public static function assertClassHasStaticAttribute($attributeName, $className, $message = '')
+    public static function assertClassHasStaticAttribute($attributeName, $className, $message = ''): void
     {
         if (!\is_string($attributeName)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1335,7 +1335,7 @@ abstract class Assert
      * @param string $className
      * @param string $message
      */
-    public static function assertClassNotHasStaticAttribute($attributeName, $className, $message = '')
+    public static function assertClassNotHasStaticAttribute($attributeName, $className, $message = ''): void
     {
         if (!\is_string($attributeName)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1365,7 +1365,7 @@ abstract class Assert
      * @param object $object
      * @param string $message
      */
-    public static function assertObjectHasAttribute($attributeName, $object, $message = '')
+    public static function assertObjectHasAttribute($attributeName, $object, $message = ''): void
     {
         if (!\is_string($attributeName)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1393,7 +1393,7 @@ abstract class Assert
      * @param object $object
      * @param string $message
      */
-    public static function assertObjectNotHasAttribute($attributeName, $object, $message = '')
+    public static function assertObjectNotHasAttribute($attributeName, $object, $message = ''): void
     {
         if (!\is_string($attributeName)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1423,7 +1423,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertSame($expected, $actual, $message = '')
+    public static function assertSame($expected, $actual, $message = ''): void
     {
         if (\is_bool($expected) && \is_bool($actual)) {
             static::assertEquals($expected, $actual, $message);
@@ -1445,7 +1445,7 @@ abstract class Assert
      * @param string|object $actualClassOrObject
      * @param string        $message
      */
-    public static function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeSame($expected, $actualAttributeName, $actualClassOrObject, $message = ''): void
     {
         static::assertSame(
             $expected,
@@ -1463,7 +1463,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertNotSame($expected, $actual, $message = '')
+    public static function assertNotSame($expected, $actual, $message = ''): void
     {
         if (\is_bool($expected) && \is_bool($actual)) {
             static::assertNotEquals($expected, $actual, $message);
@@ -1485,7 +1485,7 @@ abstract class Assert
      * @param string|object $actualClassOrObject
      * @param string        $message
      */
-    public static function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrObject, $message = '')
+    public static function assertAttributeNotSame($expected, $actualAttributeName, $actualClassOrObject, $message = ''): void
     {
         static::assertNotSame(
             $expected,
@@ -1501,7 +1501,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertInstanceOf($expected, $actual, $message = '')
+    public static function assertInstanceOf($expected, $actual, $message = ''): void
     {
         if (!(\is_string($expected) && (\class_exists($expected) || \interface_exists($expected)))) {
             throw InvalidArgumentHelper::factory(1, 'class or interface name');
@@ -1522,7 +1522,7 @@ abstract class Assert
      * @param string|object $classOrObject
      * @param string        $message
      */
-    public static function assertAttributeInstanceOf($expected, $attributeName, $classOrObject, $message = '')
+    public static function assertAttributeInstanceOf($expected, $attributeName, $classOrObject, $message = ''): void
     {
         static::assertInstanceOf(
             $expected,
@@ -1538,7 +1538,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertNotInstanceOf($expected, $actual, $message = '')
+    public static function assertNotInstanceOf($expected, $actual, $message = ''): void
     {
         if (!(\is_string($expected) && (\class_exists($expected) || \interface_exists($expected)))) {
             throw InvalidArgumentHelper::factory(1, 'class or interface name');
@@ -1559,7 +1559,7 @@ abstract class Assert
      * @param string|object $classOrObject
      * @param string        $message
      */
-    public static function assertAttributeNotInstanceOf($expected, $attributeName, $classOrObject, $message = '')
+    public static function assertAttributeNotInstanceOf($expected, $attributeName, $classOrObject, $message = ''): void
     {
         static::assertNotInstanceOf(
             $expected,
@@ -1575,7 +1575,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertInternalType($expected, $actual, $message = '')
+    public static function assertInternalType($expected, $actual, $message = ''): void
     {
         if (!\is_string($expected)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1596,7 +1596,7 @@ abstract class Assert
      * @param string|object $classOrObject
      * @param string        $message
      */
-    public static function assertAttributeInternalType($expected, $attributeName, $classOrObject, $message = '')
+    public static function assertAttributeInternalType($expected, $attributeName, $classOrObject, $message = ''): void
     {
         static::assertInternalType(
             $expected,
@@ -1612,7 +1612,7 @@ abstract class Assert
      * @param mixed  $actual
      * @param string $message
      */
-    public static function assertNotInternalType($expected, $actual, $message = '')
+    public static function assertNotInternalType($expected, $actual, $message = ''): void
     {
         if (!\is_string($expected)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1633,7 +1633,7 @@ abstract class Assert
      * @param string|object $classOrObject
      * @param string        $message
      */
-    public static function assertAttributeNotInternalType($expected, $attributeName, $classOrObject, $message = '')
+    public static function assertAttributeNotInternalType($expected, $attributeName, $classOrObject, $message = ''): void
     {
         static::assertNotInternalType(
             $expected,
@@ -1649,7 +1649,7 @@ abstract class Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertRegExp($pattern, $string, $message = '')
+    public static function assertRegExp($pattern, $string, $message = ''): void
     {
         if (!\is_string($pattern)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1671,7 +1671,7 @@ abstract class Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertNotRegExp($pattern, $string, $message = '')
+    public static function assertNotRegExp($pattern, $string, $message = ''): void
     {
         if (!\is_string($pattern)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1696,7 +1696,7 @@ abstract class Assert
      * @param array|\Countable|\Traversable $actual
      * @param string                        $message
      */
-    public static function assertSameSize($expected, $actual, $message = '')
+    public static function assertSameSize($expected, $actual, $message = ''): void
     {
         if (!$expected instanceof Countable &&
             !$expected instanceof Traversable &&
@@ -1725,7 +1725,7 @@ abstract class Assert
      * @param array|\Countable|\Traversable $actual
      * @param string                        $message
      */
-    public static function assertNotSameSize($expected, $actual, $message = '')
+    public static function assertNotSameSize($expected, $actual, $message = ''): void
     {
         if (!$expected instanceof Countable &&
             !$expected instanceof Traversable &&
@@ -1753,7 +1753,7 @@ abstract class Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertStringMatchesFormat($format, $string, $message = '')
+    public static function assertStringMatchesFormat($format, $string, $message = ''): void
     {
         if (!\is_string($format)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1775,7 +1775,7 @@ abstract class Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertStringNotMatchesFormat($format, $string, $message = '')
+    public static function assertStringNotMatchesFormat($format, $string, $message = ''): void
     {
         if (!\is_string($format)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1799,7 +1799,7 @@ abstract class Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertStringMatchesFormatFile($formatFile, $string, $message = '')
+    public static function assertStringMatchesFormatFile($formatFile, $string, $message = ''): void
     {
         static::assertFileExists($formatFile, $message);
 
@@ -1821,7 +1821,7 @@ abstract class Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertStringNotMatchesFormatFile($formatFile, $string, $message = '')
+    public static function assertStringNotMatchesFormatFile($formatFile, $string, $message = ''): void
     {
         static::assertFileExists($formatFile, $message);
 
@@ -1845,7 +1845,7 @@ abstract class Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertStringStartsWith($prefix, $string, $message = '')
+    public static function assertStringStartsWith($prefix, $string, $message = ''): void
     {
         if (!\is_string($prefix)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1869,7 +1869,7 @@ abstract class Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertStringStartsNotWith($prefix, $string, $message = '')
+    public static function assertStringStartsNotWith($prefix, $string, $message = ''): void
     {
         if (!\is_string($prefix)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1893,7 +1893,7 @@ abstract class Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertStringEndsWith($suffix, $string, $message = '')
+    public static function assertStringEndsWith($suffix, $string, $message = ''): void
     {
         if (!\is_string($suffix)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1915,7 +1915,7 @@ abstract class Assert
      * @param string $string
      * @param string $message
      */
-    public static function assertStringEndsNotWith($suffix, $string, $message = '')
+    public static function assertStringEndsNotWith($suffix, $string, $message = ''): void
     {
         if (!\is_string($suffix)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -1939,7 +1939,7 @@ abstract class Assert
      * @param string $actualFile
      * @param string $message
      */
-    public static function assertXmlFileEqualsXmlFile($expectedFile, $actualFile, $message = '')
+    public static function assertXmlFileEqualsXmlFile($expectedFile, $actualFile, $message = ''): void
     {
         $expected = Xml::loadFile($expectedFile);
         $actual   = Xml::loadFile($actualFile);
@@ -1954,7 +1954,7 @@ abstract class Assert
      * @param string $actualFile
      * @param string $message
      */
-    public static function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = '')
+    public static function assertXmlFileNotEqualsXmlFile($expectedFile, $actualFile, $message = ''): void
     {
         $expected = Xml::loadFile($expectedFile);
         $actual   = Xml::loadFile($actualFile);
@@ -1969,7 +1969,7 @@ abstract class Assert
      * @param string|DOMDocument $actualXml
      * @param string             $message
      */
-    public static function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = '')
+    public static function assertXmlStringEqualsXmlFile($expectedFile, $actualXml, $message = ''): void
     {
         $expected = Xml::loadFile($expectedFile);
         $actual   = Xml::load($actualXml);
@@ -1984,7 +1984,7 @@ abstract class Assert
      * @param string|DOMDocument $actualXml
      * @param string             $message
      */
-    public static function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = '')
+    public static function assertXmlStringNotEqualsXmlFile($expectedFile, $actualXml, $message = ''): void
     {
         $expected = Xml::loadFile($expectedFile);
         $actual   = Xml::load($actualXml);
@@ -1999,7 +1999,7 @@ abstract class Assert
      * @param string|DOMDocument $actualXml
      * @param string             $message
      */
-    public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = '')
+    public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, $message = ''): void
     {
         $expected = Xml::load($expectedXml);
         $actual   = Xml::load($actualXml);
@@ -2014,7 +2014,7 @@ abstract class Assert
      * @param string|DOMDocument $actualXml
      * @param string             $message
      */
-    public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = '')
+    public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, $message = ''): void
     {
         $expected = Xml::load($expectedXml);
         $actual   = Xml::load($actualXml);
@@ -2030,7 +2030,7 @@ abstract class Assert
      * @param bool       $checkAttributes
      * @param string     $message
      */
-    public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = '')
+    public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, $checkAttributes = false, $message = ''): void
     {
         $tmp             = new DOMDocument;
         $expectedElement = $tmp->importNode($expectedElement, true);
@@ -2109,7 +2109,7 @@ abstract class Assert
      * @param Constraint $constraint
      * @param string     $message
      */
-    public static function assertThat($value, Constraint $constraint, $message = '')
+    public static function assertThat($value, Constraint $constraint, $message = ''): void
     {
         self::$count += \count($constraint);
 
@@ -2122,7 +2122,7 @@ abstract class Assert
      * @param string $actualJson
      * @param string $message
      */
-    public static function assertJson($actualJson, $message = '')
+    public static function assertJson($actualJson, $message = ''): void
     {
         if (!\is_string($actualJson)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -2138,7 +2138,7 @@ abstract class Assert
      * @param string $actualJson
      * @param string $message
      */
-    public static function assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message = '')
+    public static function assertJsonStringEqualsJsonString($expectedJson, $actualJson, $message = ''): void
     {
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
@@ -2157,7 +2157,7 @@ abstract class Assert
      * @param string $actualJson
      * @param string $message
      */
-    public static function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message = '')
+    public static function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, $message = ''): void
     {
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
@@ -2176,7 +2176,7 @@ abstract class Assert
      * @param string $actualJson
      * @param string $message
      */
-    public static function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = '')
+    public static function assertJsonStringEqualsJsonFile($expectedFile, $actualJson, $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
         $expectedJson = \file_get_contents($expectedFile);
@@ -2198,7 +2198,7 @@ abstract class Assert
      * @param string $actualJson
      * @param string $message
      */
-    public static function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message = '')
+    public static function assertJsonStringNotEqualsJsonFile($expectedFile, $actualJson, $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
         $expectedJson = \file_get_contents($expectedFile);
@@ -2220,7 +2220,7 @@ abstract class Assert
      * @param string $actualFile
      * @param string $message
      */
-    public static function assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message = '')
+    public static function assertJsonFileEqualsJsonFile($expectedFile, $actualFile, $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
         static::assertFileExists($actualFile, $message);
@@ -2248,7 +2248,7 @@ abstract class Assert
      * @param string $actualFile
      * @param string $message
      */
-    public static function assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = '')
+    public static function assertJsonFileNotEqualsJsonFile($expectedFile, $actualFile, $message = ''): void
     {
         static::assertFileExists($expectedFile, $message);
         static::assertFileExists($actualFile, $message);
@@ -2272,7 +2272,7 @@ abstract class Assert
     /**
      * @return LogicalAnd
      */
-    public static function logicalAnd()
+    public static function logicalAnd(): LogicalAnd
     {
         $constraints = \func_get_args();
 
@@ -2285,7 +2285,7 @@ abstract class Assert
     /**
      * @return LogicalOr
      */
-    public static function logicalOr()
+    public static function logicalOr(): LogicalOr
     {
         $constraints = \func_get_args();
 
@@ -2300,7 +2300,7 @@ abstract class Assert
      *
      * @return LogicalNot
      */
-    public static function logicalNot(Constraint $constraint)
+    public static function logicalNot(Constraint $constraint): LogicalNot
     {
         return new LogicalNot($constraint);
     }
@@ -2308,7 +2308,7 @@ abstract class Assert
     /**
      * @return LogicalXor
      */
-    public static function logicalXor()
+    public static function logicalXor(): LogicalXor
     {
         $constraints = \func_get_args();
 
@@ -2321,7 +2321,7 @@ abstract class Assert
     /**
      * @return IsAnything
      */
-    public static function anything()
+    public static function anything(): IsAnything
     {
         return new IsAnything;
     }
@@ -2329,7 +2329,7 @@ abstract class Assert
     /**
      * @return IsTrue
      */
-    public static function isTrue()
+    public static function isTrue(): IsTrue
     {
         return new IsTrue;
     }
@@ -2339,7 +2339,7 @@ abstract class Assert
      *
      * @return Callback
      */
-    public static function callback($callback)
+    public static function callback($callback): Callback
     {
         return new Callback($callback);
     }
@@ -2347,7 +2347,7 @@ abstract class Assert
     /**
      * @return IsFalse
      */
-    public static function isFalse()
+    public static function isFalse(): IsFalse
     {
         return new IsFalse;
     }
@@ -2355,7 +2355,7 @@ abstract class Assert
     /**
      * @return IsJson
      */
-    public static function isJson()
+    public static function isJson(): IsJson
     {
         return new IsJson;
     }
@@ -2363,7 +2363,7 @@ abstract class Assert
     /**
      * @return IsNull
      */
-    public static function isNull()
+    public static function isNull(): IsNull
     {
         return new IsNull;
     }
@@ -2371,7 +2371,7 @@ abstract class Assert
     /**
      * @return IsFinite
      */
-    public static function isFinite()
+    public static function isFinite(): IsFinite
     {
         return new IsFinite;
     }
@@ -2379,7 +2379,7 @@ abstract class Assert
     /**
      * @return IsInfinite
      */
-    public static function isInfinite()
+    public static function isInfinite(): IsInfinite
     {
         return new IsInfinite;
     }
@@ -2387,7 +2387,7 @@ abstract class Assert
     /**
      * @return IsNan
      */
-    public static function isNan()
+    public static function isNan(): IsNan
     {
         return new IsNan;
     }
@@ -2398,7 +2398,7 @@ abstract class Assert
      *
      * @return Attribute
      */
-    public static function attribute(Constraint $constraint, $attributeName)
+    public static function attribute(Constraint $constraint, $attributeName): Attribute
     {
         return new Attribute(
             $constraint,
@@ -2413,7 +2413,7 @@ abstract class Assert
      *
      * @return TraversableContains
      */
-    public static function contains($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public static function contains($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false): TraversableContains
     {
         return new TraversableContains($value, $checkForObjectIdentity, $checkForNonObjectIdentity);
     }
@@ -2423,7 +2423,7 @@ abstract class Assert
      *
      * @return TraversableContainsOnly
      */
-    public static function containsOnly($type)
+    public static function containsOnly($type): TraversableContainsOnly
     {
         return new TraversableContainsOnly($type);
     }
@@ -2433,7 +2433,7 @@ abstract class Assert
      *
      * @return TraversableContainsOnly
      */
-    public static function containsOnlyInstancesOf($className)
+    public static function containsOnlyInstancesOf($className): TraversableContainsOnly
     {
         return new TraversableContainsOnly($className, false);
     }
@@ -2443,7 +2443,7 @@ abstract class Assert
      *
      * @return ArrayHasKey
      */
-    public static function arrayHasKey($key)
+    public static function arrayHasKey($key): ArrayHasKey
     {
         return new ArrayHasKey($key);
     }
@@ -2457,7 +2457,7 @@ abstract class Assert
      *
      * @return IsEqual
      */
-    public static function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function equalTo($value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false): IsEqual
     {
         return new IsEqual(
             $value,
@@ -2478,7 +2478,7 @@ abstract class Assert
      *
      * @return Attribute
      */
-    public static function attributeEqualTo($attributeName, $value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false)
+    public static function attributeEqualTo($attributeName, $value, $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false): Attribute
     {
         return static::attribute(
             static::equalTo(
@@ -2495,7 +2495,7 @@ abstract class Assert
     /**
      * @return IsEmpty
      */
-    public static function isEmpty()
+    public static function isEmpty(): IsEmpty
     {
         return new IsEmpty;
     }
@@ -2503,7 +2503,7 @@ abstract class Assert
     /**
      * @return IsWritable
      */
-    public static function isWritable()
+    public static function isWritable(): IsWritable
     {
         return new IsWritable;
     }
@@ -2511,7 +2511,7 @@ abstract class Assert
     /**
      * @return IsReadable
      */
-    public static function isReadable()
+    public static function isReadable(): IsReadable
     {
         return new IsReadable;
     }
@@ -2519,7 +2519,7 @@ abstract class Assert
     /**
      * @return DirectoryExists
      */
-    public static function directoryExists()
+    public static function directoryExists(): DirectoryExists
     {
         return new DirectoryExists;
     }
@@ -2527,7 +2527,7 @@ abstract class Assert
     /**
      * @return FileExists
      */
-    public static function fileExists()
+    public static function fileExists(): FileExists
     {
         return new FileExists;
     }
@@ -2537,7 +2537,7 @@ abstract class Assert
      *
      * @return GreaterThan
      */
-    public static function greaterThan($value)
+    public static function greaterThan($value): GreaterThan
     {
         return new GreaterThan($value);
     }
@@ -2547,7 +2547,7 @@ abstract class Assert
      *
      * @return LogicalOr
      */
-    public static function greaterThanOrEqual($value)
+    public static function greaterThanOrEqual($value): LogicalOr
     {
         return static::logicalOr(
             new IsEqual($value),
@@ -2560,7 +2560,7 @@ abstract class Assert
      *
      * @return ClassHasAttribute
      */
-    public static function classHasAttribute($attributeName)
+    public static function classHasAttribute($attributeName): ClassHasAttribute
     {
         return new ClassHasAttribute(
             $attributeName
@@ -2572,7 +2572,7 @@ abstract class Assert
      *
      * @return ClassHasStaticAttribute
      */
-    public static function classHasStaticAttribute($attributeName)
+    public static function classHasStaticAttribute($attributeName): ClassHasStaticAttribute
     {
         return new ClassHasStaticAttribute(
             $attributeName
@@ -2584,7 +2584,7 @@ abstract class Assert
      *
      * @return ObjectHasAttribute
      */
-    public static function objectHasAttribute($attributeName)
+    public static function objectHasAttribute($attributeName): ObjectHasAttribute
     {
         return new ObjectHasAttribute(
             $attributeName
@@ -2596,7 +2596,7 @@ abstract class Assert
      *
      * @return IsIdentical
      */
-    public static function identicalTo($value)
+    public static function identicalTo($value): IsIdentical
     {
         return new IsIdentical($value);
     }
@@ -2606,7 +2606,7 @@ abstract class Assert
      *
      * @return IsInstanceOf
      */
-    public static function isInstanceOf($className)
+    public static function isInstanceOf($className): IsInstanceOf
     {
         return new IsInstanceOf($className);
     }
@@ -2616,7 +2616,7 @@ abstract class Assert
      *
      * @return IsType
      */
-    public static function isType($type)
+    public static function isType($type): IsType
     {
         return new IsType($type);
     }
@@ -2626,7 +2626,7 @@ abstract class Assert
      *
      * @return LessThan
      */
-    public static function lessThan($value)
+    public static function lessThan($value): LessThan
     {
         return new LessThan($value);
     }
@@ -2636,7 +2636,7 @@ abstract class Assert
      *
      * @return LogicalOr
      */
-    public static function lessThanOrEqual($value)
+    public static function lessThanOrEqual($value): LogicalOr
     {
         return static::logicalOr(
             new IsEqual($value),
@@ -2649,7 +2649,7 @@ abstract class Assert
      *
      * @return RegularExpression
      */
-    public static function matchesRegularExpression($pattern)
+    public static function matchesRegularExpression($pattern): RegularExpression
     {
         return new RegularExpression($pattern);
     }
@@ -2659,7 +2659,7 @@ abstract class Assert
      *
      * @return StringMatchesFormatDescription
      */
-    public static function matches($string)
+    public static function matches($string): StringMatchesFormatDescription
     {
         return new StringMatchesFormatDescription($string);
     }
@@ -2669,7 +2669,7 @@ abstract class Assert
      *
      * @return StringStartsWith
      */
-    public static function stringStartsWith($prefix)
+    public static function stringStartsWith($prefix): StringStartsWith
     {
         return new StringStartsWith($prefix);
     }
@@ -2680,7 +2680,7 @@ abstract class Assert
      *
      * @return StringContains
      */
-    public static function stringContains($string, $case = true)
+    public static function stringContains($string, $case = true): StringContains
     {
         return new StringContains($string, $case);
     }
@@ -2690,7 +2690,7 @@ abstract class Assert
      *
      * @return StringEndsWith
      */
-    public static function stringEndsWith($suffix)
+    public static function stringEndsWith($suffix): StringEndsWith
     {
         return new StringEndsWith($suffix);
     }
@@ -2700,7 +2700,7 @@ abstract class Assert
      *
      * @return Count
      */
-    public static function countOf($count)
+    public static function countOf($count): Count
     {
         return new Count($count);
     }
@@ -2712,7 +2712,7 @@ abstract class Assert
      *
      * @throws AssertionFailedError
      */
-    public static function fail($message = '')
+    public static function fail($message = ''): void
     {
         self::$count++;
 
@@ -2883,7 +2883,7 @@ abstract class Assert
      *
      * @throws IncompleteTestError
      */
-    public static function markTestIncomplete($message = '')
+    public static function markTestIncomplete($message = ''): void
     {
         throw new IncompleteTestError($message);
     }
@@ -2895,7 +2895,7 @@ abstract class Assert
      *
      * @throws SkippedTestError
      */
-    public static function markTestSkipped($message = '')
+    public static function markTestSkipped($message = ''): void
     {
         throw new SkippedTestError($message);
     }
@@ -2905,7 +2905,7 @@ abstract class Assert
      *
      * @return int
      */
-    public static function getCount()
+    public static function getCount(): int
     {
         return self::$count;
     }
@@ -2913,7 +2913,7 @@ abstract class Assert
     /**
      * Reset the assertion counter.
      */
-    public static function resetCount()
+    public static function resetCount(): void
     {
         self::$count = 0;
     }

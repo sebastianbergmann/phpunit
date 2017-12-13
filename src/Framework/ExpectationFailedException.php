@@ -37,7 +37,7 @@ class ExpectationFailedException extends AssertionFailedError
     /**
      * @return null|ComparisonFailure
      */
-    public function getComparisonFailure()
+    public function getComparisonFailure(): ?ComparisonFailure
     {
         return $this->comparisonFailure;
     }

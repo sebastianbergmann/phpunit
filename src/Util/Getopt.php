@@ -16,7 +16,7 @@ use PHPUnit\Framework\Exception;
  */
 class Getopt
 {
-    public static function getopt(array $args, $short_options, $long_options = null)
+    public static function getopt(array $args, $short_options, $long_options = null): array
     {
         if (empty($args)) {
             return [[], []];
@@ -74,7 +74,7 @@ class Getopt
         return [$opts, $non_opts];
     }
 
-    protected static function parseShortOption($arg, $short_options, &$opts, &$args)
+    protected static function parseShortOption($arg, $short_options, &$opts, &$args): void
     {
         $argLen = \strlen($arg);
 
@@ -108,7 +108,7 @@ class Getopt
         }
     }
 
-    protected static function parseLongOption($arg, $long_options, &$opts, &$args)
+    protected static function parseLongOption($arg, $long_options, &$opts, &$args): void
     {
         $count   = \count($long_options);
         $list    = \explode('=', $arg);

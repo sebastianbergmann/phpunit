@@ -92,7 +92,7 @@ class LogicalOr extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         $text = '';
 
@@ -112,7 +112,7 @@ class LogicalOr extends Constraint
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         $count = 0;
 

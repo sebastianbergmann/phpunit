@@ -96,7 +96,7 @@ class ArraySubset extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'has the subset ' . $this->exporter->export($this->subset);
     }
@@ -111,7 +111,7 @@ class ArraySubset extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return 'an array ' . $this->toString();
     }
@@ -121,7 +121,7 @@ class ArraySubset extends Constraint
      *
      * @return array
      */
-    private function toArray($other)
+    private function toArray($other): array
     {
         if (\is_array($other)) {
             return $other;

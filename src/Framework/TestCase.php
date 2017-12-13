@@ -355,7 +355,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         $class = new ReflectionClass($this);
 
@@ -373,7 +373,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return 1;
     }
@@ -396,7 +396,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return array
      */
-    public function getAnnotations()
+    public function getAnnotations(): array
     {
         return \PHPUnit\Util\Test::parseTestMethodAnnotations(
             \get_class($this),
@@ -411,7 +411,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return string
      */
-    public function getName($withDataSet = true)
+    public function getName($withDataSet = true): ?string
     {
         if ($withDataSet) {
             return $this->name . $this->getDataSetAsString(false);
@@ -425,7 +425,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return int
      */
-    public function getSize()
+    public function getSize(): int
     {
         return \PHPUnit\Util\Test::getSize(
             \get_class($this),
@@ -436,7 +436,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return bool
      */
-    public function hasSize()
+    public function hasSize(): bool
     {
         return $this->getSize() !== \PHPUnit\Util\Test::UNKNOWN;
     }
@@ -444,7 +444,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return bool
      */
-    public function isSmall()
+    public function isSmall(): bool
     {
         return $this->getSize() === \PHPUnit\Util\Test::SMALL;
     }
@@ -452,7 +452,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return bool
      */
-    public function isMedium()
+    public function isMedium(): bool
     {
         return $this->getSize() === \PHPUnit\Util\Test::MEDIUM;
     }
@@ -460,7 +460,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return bool
      */
-    public function isLarge()
+    public function isLarge(): bool
     {
         return $this->getSize() === \PHPUnit\Util\Test::LARGE;
     }
@@ -468,7 +468,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return string
      */
-    public function getActualOutput()
+    public function getActualOutput(): string
     {
         if (!$this->outputBufferingActive) {
             return $this->output;
@@ -480,7 +480,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return bool
      */
-    public function hasOutput()
+    public function hasOutput(): bool
     {
         if ('' === $this->output) {
             return false;
@@ -496,7 +496,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return bool
      */
-    public function doesNotPerformAssertions()
+    public function doesNotPerformAssertions(): bool
     {
         return $this->doesNotPerformAssertions;
     }
@@ -534,7 +534,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return bool
      */
-    public function hasExpectationOnOutput()
+    public function hasExpectationOnOutput(): bool
     {
         return \is_string($this->outputExpectedString) || \is_string($this->outputExpectedRegex);
     }
@@ -542,7 +542,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return null|string
      */
-    public function getExpectedException()
+    public function getExpectedException(): ?string
     {
         return $this->expectedException;
     }
@@ -558,7 +558,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return string
      */
-    public function getExpectedExceptionMessage()
+    public function getExpectedExceptionMessage(): string
     {
         return $this->expectedExceptionMessage;
     }
@@ -566,7 +566,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return string
      */
-    public function getExpectedExceptionMessageRegExp()
+    public function getExpectedExceptionMessageRegExp(): string
     {
         return $this->expectedExceptionMessageRegExp;
     }
@@ -718,7 +718,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return int
      */
-    public function getStatus()
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -733,7 +733,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return string
      */
-    public function getStatusMessage()
+    public function getStatusMessage(): string
     {
         return $this->statusMessage;
     }
@@ -743,7 +743,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return bool
      */
-    public function hasFailed()
+    public function hasFailed(): bool
     {
         $status = $this->getStatus();
 
@@ -761,7 +761,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    public function run(TestResult $result = null)
+    public function run(TestResult $result = null): TestResult
     {
         if ($result === null) {
             $result = $this->createResult();
@@ -780,7 +780,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if (!$this instanceof WarningTestCase &&
             !$this instanceof SkippedTestCase &&
             !$this->handleDependencies()) {
-            return;
+            return $result;
         }
 
         $runEntireClass =  $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
@@ -1219,7 +1219,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return bool
      */
-    public function hasDependencies()
+    public function hasDependencies(): bool
     {
         return \count($this->dependencies) > 0;
     }
@@ -1330,7 +1330,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return bool
      */
-    public function isInIsolation()
+    public function isInIsolation(): bool
     {
         return $this->inIsolation;
     }
@@ -1368,7 +1368,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return TestResult
      */
-    public function getTestResultObject()
+    public function getTestResultObject(): TestResult
     {
         return $this->result;
     }
@@ -1475,7 +1475,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return MockBuilder
      */
-    public function getMockBuilder($className)
+    public function getMockBuilder($className): MockBuilder
     {
         return new MockBuilder($this, $className);
     }
@@ -1489,7 +1489,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    protected function createMock($originalClassName)
+    protected function createMock($originalClassName): MockObject
     {
         return $this->getMockBuilder($originalClassName)
                     ->disableOriginalConstructor()
@@ -1509,7 +1509,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    protected function createConfiguredMock($originalClassName, array $configuration)
+    protected function createConfiguredMock($originalClassName, array $configuration): MockObject
     {
         $o = $this->createMock($originalClassName);
 
@@ -1530,7 +1530,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    protected function createPartialMock($originalClassName, array $methods)
+    protected function createPartialMock($originalClassName, array $methods): MockObject
     {
         return $this->getMockBuilder($originalClassName)
                     ->disableOriginalConstructor()
@@ -1551,7 +1551,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    protected function createTestProxy($originalClassName, array $constructorArguments = [])
+    protected function createTestProxy($originalClassName, array $constructorArguments = []): MockObject
     {
         return $this->getMockBuilder($originalClassName)
                     ->setConstructorArgs($constructorArguments)
@@ -1575,7 +1575,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false)
+    protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false): string
     {
         $mock = $this->getMockObjectGenerator()->getMock(
             $originalClassName,
@@ -1609,7 +1609,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false)
+    protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
         $mockObject = $this->getMockObjectGenerator()->getMockForAbstractClass(
             $originalClassName,
@@ -1639,7 +1639,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return MockObject
      */
-    protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = [])
+    protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = []): MockObject
     {
         if ($originalClassName === '') {
             $originalClassName = \pathinfo(\basename(\parse_url($wsdlFile)['path']), PATHINFO_FILENAME);
@@ -1689,7 +1689,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false)
+    protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
         $mockObject = $this->getMockObjectGenerator()->getMockForTrait(
             $traitName,
@@ -1740,7 +1740,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws \LogicException
      */
-    protected function prophesize($classOrInterface = null)
+    protected function prophesize($classOrInterface = null): \Prophecy\Prophecy\ObjectProphecy
     {
         return $this->getProphet()->prophesize($classOrInterface);
     }
@@ -1760,7 +1760,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return int
      */
-    public function getNumAssertions()
+    public function getNumAssertions(): int
     {
         return $this->numAssertions;
     }
@@ -1771,7 +1771,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return AnyInvokedCountMatcher
      */
-    public static function any()
+    public static function any(): AnyInvokedCountMatcher
     {
         return new AnyInvokedCountMatcher;
     }
@@ -1781,7 +1781,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return InvokedCountMatcher
      */
-    public static function never()
+    public static function never(): InvokedCountMatcher
     {
         return new InvokedCountMatcher(0);
     }
@@ -1794,7 +1794,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return InvokedAtLeastCountMatcher
      */
-    public static function atLeast($requiredInvocations)
+    public static function atLeast($requiredInvocations): InvokedAtLeastCountMatcher
     {
         return new InvokedAtLeastCountMatcher(
             $requiredInvocations
@@ -1806,7 +1806,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return InvokedAtLeastOnceMatcher
      */
-    public static function atLeastOnce()
+    public static function atLeastOnce(): InvokedAtLeastOnceMatcher
     {
         return new InvokedAtLeastOnceMatcher;
     }
@@ -1816,7 +1816,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return InvokedCountMatcher
      */
-    public static function once()
+    public static function once(): InvokedCountMatcher
     {
         return new InvokedCountMatcher(1);
     }
@@ -1829,7 +1829,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return InvokedCountMatcher
      */
-    public static function exactly($count)
+    public static function exactly($count): InvokedCountMatcher
     {
         return new InvokedCountMatcher($count);
     }
@@ -1842,7 +1842,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return InvokedAtMostCountMatcher
      */
-    public static function atMost($allowedInvocations)
+    public static function atMost($allowedInvocations): InvokedAtMostCountMatcher
     {
         return new InvokedAtMostCountMatcher($allowedInvocations);
     }
@@ -1855,7 +1855,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return InvokedAtIndexMatcher
      */
-    public static function at($index)
+    public static function at($index): InvokedAtIndexMatcher
     {
         return new InvokedAtIndexMatcher($index);
     }
@@ -1865,7 +1865,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return ReturnStub
      */
-    public static function returnValue($value)
+    public static function returnValue($value): ReturnStub
     {
         return new ReturnStub($value);
     }
@@ -1875,7 +1875,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return ReturnValueMapStub
      */
-    public static function returnValueMap(array $valueMap)
+    public static function returnValueMap(array $valueMap): ReturnValueMapStub
     {
         return new ReturnValueMapStub($valueMap);
     }
@@ -1885,7 +1885,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return ReturnArgumentStub
      */
-    public static function returnArgument($argumentIndex)
+    public static function returnArgument($argumentIndex): ReturnArgumentStub
     {
         return new ReturnArgumentStub($argumentIndex);
     }
@@ -1895,7 +1895,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return ReturnCallbackStub
      */
-    public static function returnCallback($callback)
+    public static function returnCallback($callback): ReturnCallbackStub
     {
         return new ReturnCallbackStub($callback);
     }
@@ -1907,7 +1907,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return ReturnSelfStub
      */
-    public static function returnSelf()
+    public static function returnSelf(): ReturnSelfStub
     {
         return new ReturnSelfStub;
     }
@@ -1917,7 +1917,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return ExceptionStub
      */
-    public static function throwException(Throwable $exception)
+    public static function throwException(Throwable $exception): ExceptionStub
     {
         return new ExceptionStub($exception);
     }
@@ -1927,7 +1927,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return ConsecutiveCallsStub
      */
-    public static function onConsecutiveCalls()
+    public static function onConsecutiveCalls(): ConsecutiveCallsStub
     {
         $args = \func_get_args();
 
@@ -1937,7 +1937,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return bool
      */
-    public function usesDataProvider()
+    public function usesDataProvider(): bool
     {
         return !empty($this->data);
     }
@@ -1945,7 +1945,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return string
      */
-    public function dataDescription()
+    public function dataDescription(): string
     {
         return \is_string($this->dataName) ? $this->dataName : '';
     }
@@ -1972,7 +1972,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return string
      */
-    public function getDataSetAsString($includeData = true)
+    public function getDataSetAsString($includeData = true): string
     {
         $buffer = '';
 
@@ -1998,7 +1998,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return array
      */
-    protected function getProvidedData()
+    protected function getProvidedData(): array
     {
         return $this->data;
     }
@@ -2008,7 +2008,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return TestResult
      */
-    protected function createResult()
+    protected function createResult(): TestResult
     {
         return new TestResult;
     }
@@ -2182,7 +2182,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return MockGenerator
      */
-    private function getMockObjectGenerator()
+    private function getMockObjectGenerator(): MockGenerator
     {
         if (null === $this->mockObjectGenerator) {
             $this->mockObjectGenerator = new MockGenerator;
@@ -2275,7 +2275,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return Snapshot
      */
-    private function createGlobalStateSnapshot($backupGlobals)
+    private function createGlobalStateSnapshot($backupGlobals): Snapshot
     {
         $blacklist = new Blacklist;
 
@@ -2376,7 +2376,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return Prophecy\Prophet
      */
-    private function getProphet()
+    private function getProphet(): Prophet
     {
         if ($this->prophet === null) {
             $this->prophet = new Prophet;
@@ -2390,7 +2390,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return bool
      */
-    private function shouldInvocationMockerBeReset(MockObject $mock)
+    private function shouldInvocationMockerBeReset(MockObject $mock): bool
     {
         $enumerator = new Enumerator;
 
@@ -2461,7 +2461,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return bool
      */
-    private function isCloneable(MockObject $testArgument)
+    private function isCloneable(MockObject $testArgument): bool
     {
         $reflector = new ReflectionObject($testArgument);
 

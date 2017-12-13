@@ -332,7 +332,7 @@ class TeamCity extends ResultPrinter
      *
      * @return string
      */
-    private static function getMessage(\Exception $e)
+    private static function getMessage(\Exception $e): string
     {
         $message = '';
 
@@ -354,7 +354,7 @@ class TeamCity extends ResultPrinter
      *
      * @return string
      */
-    private static function getDetails(\Exception $e)
+    private static function getDetails(\Exception $e): string
     {
         $stackTrace = Filter::getFilteredStacktrace($e);
         $previous   = $e instanceof ExceptionWrapper ?
@@ -377,7 +377,7 @@ class TeamCity extends ResultPrinter
      *
      * @return string
      */
-    private static function getPrimitiveValueAsString($value)
+    private static function getPrimitiveValueAsString($value): ?string
     {
         if (null === $value) {
             return 'null';
@@ -397,7 +397,7 @@ class TeamCity extends ResultPrinter
      *
      * @return string
      */
-    private static function escapeValue($text)
+    private static function escapeValue($text): string
     {
         $text = \str_replace('|', '||', $text);
         $text = \str_replace("'", "|'", $text);
@@ -414,7 +414,7 @@ class TeamCity extends ResultPrinter
      *
      * @return string
      */
-    private static function getFileName($className)
+    private static function getFileName($className): string
     {
         $reflectionClass = new ReflectionClass($className);
 

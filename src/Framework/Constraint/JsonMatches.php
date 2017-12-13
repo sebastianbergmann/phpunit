@@ -44,7 +44,7 @@ class JsonMatches extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         [$error, $recodedOther] = Json::canonicalize($other);
 
@@ -107,7 +107,7 @@ class JsonMatches extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             'matches JSON string "%s"',

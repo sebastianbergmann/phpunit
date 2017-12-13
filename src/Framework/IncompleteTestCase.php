@@ -66,7 +66,7 @@ class IncompleteTestCase extends TestCase
     /**
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -76,7 +76,7 @@ class IncompleteTestCase extends TestCase
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return $this->getName();
     }

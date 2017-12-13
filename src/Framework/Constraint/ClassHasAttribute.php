@@ -41,7 +41,7 @@ class ClassHasAttribute extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         $class = new ReflectionClass($other);
 
@@ -53,7 +53,7 @@ class ClassHasAttribute extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             'has attribute "%s"',
@@ -71,7 +71,7 @@ class ClassHasAttribute extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return \sprintf(
             '%sclass "%s" %s',

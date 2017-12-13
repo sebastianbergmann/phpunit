@@ -59,7 +59,7 @@ class WarningTestCase extends TestCase
     /**
      * @return string
      */
-    public function getMessage()
+    public function getMessage(): string
     {
         return $this->message;
     }
@@ -69,7 +69,7 @@ class WarningTestCase extends TestCase
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'Warning';
     }

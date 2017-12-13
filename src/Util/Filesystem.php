@@ -29,7 +29,7 @@ class Filesystem
      *
      * @return string
      */
-    public static function classNameToFilename($className)
+    public static function classNameToFilename($className): string
     {
         return \str_replace(
             ['_', '\\'],

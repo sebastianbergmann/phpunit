@@ -24,7 +24,7 @@ class FileExists extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return \file_exists($other);
     }
@@ -39,7 +39,7 @@ class FileExists extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return \sprintf(
             'file "%s" exists',
@@ -52,7 +52,7 @@ class FileExists extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'file exists';
     }

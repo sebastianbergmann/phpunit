@@ -90,7 +90,7 @@ class TraversableContainsOnly extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'contains only values of type "' . $this->type . '"';
     }

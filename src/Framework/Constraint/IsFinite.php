@@ -22,7 +22,7 @@ class IsFinite extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return \is_finite($other);
     }
@@ -32,7 +32,7 @@ class IsFinite extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'is finite';
     }

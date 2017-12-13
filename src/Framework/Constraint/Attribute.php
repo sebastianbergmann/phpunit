@@ -65,7 +65,7 @@ class Attribute extends Composite
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'attribute "' . $this->attributeName . '" ' .
             $this->innerConstraint->toString();
@@ -81,7 +81,7 @@ class Attribute extends Composite
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return $this->toString();
     }

@@ -24,7 +24,7 @@ class IsEmpty extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         if ($other instanceof Countable) {
             return \count($other) === 0;
@@ -38,7 +38,7 @@ class IsEmpty extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'is empty';
     }
@@ -53,7 +53,7 @@ class IsEmpty extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         $type = \gettype($other);
 

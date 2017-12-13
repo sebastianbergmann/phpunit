@@ -22,7 +22,7 @@ class IsJson extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         if ($other === '') {
             return false;
@@ -46,7 +46,7 @@ class IsJson extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         if ($other === '') {
             return 'an empty string is valid JSON';
@@ -69,7 +69,7 @@ class IsJson extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'is valid JSON';
     }

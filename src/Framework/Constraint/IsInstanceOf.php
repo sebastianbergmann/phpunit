@@ -42,7 +42,7 @@ class IsInstanceOf extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return ($other instanceof $this->className);
     }
@@ -57,7 +57,7 @@ class IsInstanceOf extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return \sprintf(
             '%s is an instance of %s "%s"',
@@ -72,7 +72,7 @@ class IsInstanceOf extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             'is instance of %s "%s"',

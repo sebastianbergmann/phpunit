@@ -7,7 +7,7 @@ class BaseTestListenerSample extends BaseTestListener
 {
     public $endCount = 0;
 
-    public function endTest(Test $test, $time)
+    public function endTest(Test $test, $time): void
     {
         $this->endCount++;
     }

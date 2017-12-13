@@ -110,7 +110,7 @@ class TestRunner extends BaseTestRunner
      *
      * @throws Exception
      */
-    public static function run($test, array $arguments = [], $exit = true)
+    public static function run($test, array $arguments = [], $exit = true): TestResult
     {
         if ($test instanceof ReflectionClass) {
             $test = new TestSuite($test);
@@ -132,7 +132,7 @@ class TestRunner extends BaseTestRunner
     /**
      * @return TestResult
      */
-    protected function createTestResult()
+    protected function createTestResult(): TestResult
     {
         return new TestResult;
     }
@@ -182,7 +182,7 @@ class TestRunner extends BaseTestRunner
      *
      * @return TestResult
      */
-    public function doRun(Test $suite, array $arguments = [], $exit = true)
+    public function doRun(Test $suite, array $arguments = [], $exit = true): TestResult
     {
         if (isset($arguments['configuration'])) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
@@ -711,7 +711,7 @@ class TestRunner extends BaseTestRunner
      *
      * @param string $message
      */
-    protected function runFailed($message)
+    protected function runFailed($message): void
     {
         $this->write($message . PHP_EOL);
         exit(self::FAILURE_EXIT);
@@ -738,7 +738,7 @@ class TestRunner extends BaseTestRunner
      *
      * @return TestSuiteLoader
      */
-    public function getLoader()
+    public function getLoader(): TestSuiteLoader
     {
         if ($this->loader === null) {
             $this->loader = new StandardTestSuiteLoader;

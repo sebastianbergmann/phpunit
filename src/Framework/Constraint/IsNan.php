@@ -22,7 +22,7 @@ class IsNan extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return \is_nan($other);
     }
@@ -32,7 +32,7 @@ class IsNan extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'is nan';
     }

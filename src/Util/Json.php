@@ -23,7 +23,7 @@ class Json
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public static function prettify(string $json)
+    public static function prettify(string $json): string
     {
         $decodedJson = \json_decode($json, true);
 
@@ -43,7 +43,7 @@ class Json
      * to indicate an error decoding the json.  This is used to avoid ambiguity
      * with JSON strings consisting entirely of 'null' or 'false'.
      */
-    public static function canonicalize(string $json)
+    public static function canonicalize(string $json): array
     {
         $decodedJson = \json_decode($json, true);
 
@@ -63,7 +63,7 @@ class Json
      * Sort all array keys to ensure both the expected and actual values have
      * their keys in the same order.
      */
-    private static function recursiveSort(&$json)
+    private static function recursiveSort(&$json): void
     {
         if (false === \is_array($json)) {
             return;

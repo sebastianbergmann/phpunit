@@ -113,7 +113,7 @@ abstract class ResultPrinter extends Printer implements TestListener
     /**
      * Flush buffer and close output.
      */
-    public function flush()
+    public function flush(): void
     {
         $this->doEndClass();
         $this->endRun();
@@ -377,7 +377,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      *
      * @return bool
      */
-    private function isOfInterest(Test $test)
+    private function isOfInterest(Test $test): bool
     {
         if (!$test instanceof TestCase) {
             return false;

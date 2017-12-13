@@ -25,7 +25,7 @@ class Version
      *
      * @return string
      */
-    public static function id()
+    public static function id(): string
     {
         if (self::$pharVersion !== null) {
             return self::$pharVersion;
@@ -42,7 +42,7 @@ class Version
     /**
      * @return string
      */
-    public static function series()
+    public static function series(): string
     {
         if (\strpos(self::id(), '-')) {
             $version = \explode('-', self::id())[0];
@@ -56,7 +56,7 @@ class Version
     /**
      * @return string
      */
-    public static function getVersionString()
+    public static function getVersionString(): string
     {
         return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann and contributors.';
     }
@@ -64,7 +64,7 @@ class Version
     /**
      * @return string
      */
-    public static function getReleaseChannel()
+    public static function getReleaseChannel(): string
     {
         if (\strpos(self::$pharVersion, '-') !== false) {
             return '-nightly';

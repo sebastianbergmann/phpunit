@@ -37,7 +37,7 @@ class TestSuiteIterator implements RecursiveIterator
     /**
      * Rewinds the Iterator to the first element.
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -47,7 +47,7 @@ class TestSuiteIterator implements RecursiveIterator
      *
      * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         return $this->position < \count($this->tests);
     }
@@ -57,7 +57,7 @@ class TestSuiteIterator implements RecursiveIterator
      *
      * @return int
      */
-    public function key()
+    public function key(): int
     {
         return $this->position;
     }
@@ -67,7 +67,7 @@ class TestSuiteIterator implements RecursiveIterator
      *
      * @return Test
      */
-    public function current()
+    public function current(): Test
     {
         return $this->valid() ? $this->tests[$this->position] : null;
     }
@@ -75,7 +75,7 @@ class TestSuiteIterator implements RecursiveIterator
     /**
      * Moves forward to next element.
      */
-    public function next()
+    public function next(): void
     {
         $this->position++;
     }
@@ -85,7 +85,7 @@ class TestSuiteIterator implements RecursiveIterator
      *
      * @return TestSuiteIterator
      */
-    public function getChildren()
+    public function getChildren(): TestSuiteIterator
     {
         return new self(
             $this->tests[$this->position]
@@ -97,7 +97,7 @@ class TestSuiteIterator implements RecursiveIterator
      *
      * @return bool
      */
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         return $this->tests[$this->position] instanceof TestSuite;
     }

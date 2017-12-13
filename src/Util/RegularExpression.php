@@ -21,7 +21,7 @@ class RegularExpression
      * @param int    $flags
      * @param int    $offset
      *
-     * @return int
+     * @return false|int
      */
     public static function safeMatch($pattern, $subject, $matches = null, $flags = 0, $offset = 0)
     {

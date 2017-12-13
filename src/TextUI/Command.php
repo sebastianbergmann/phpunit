@@ -154,7 +154,7 @@ class Command
      *
      * @return int
      */
-    public function run(array $argv, $exit = true)
+    public function run(array $argv, $exit = true): int
     {
         $this->handleArguments($argv);
 
@@ -217,7 +217,7 @@ class Command
      *
      * @return TestRunner
      */
-    protected function createRunner()
+    protected function createRunner(): TestRunner
     {
         return new TestRunner($this->arguments['loader']);
     }
@@ -267,7 +267,7 @@ class Command
      *
      * @param array $argv
      */
-    protected function handleArguments(array $argv)
+    protected function handleArguments(array $argv): void
     {
         try {
             $this->options = Getopt::getopt(
@@ -870,7 +870,7 @@ class Command
      *
      * @return TestSuiteLoader|null
      */
-    protected function handleLoader($loaderClass, $loaderFile = '')
+    protected function handleLoader($loaderClass, $loaderFile = ''): ?TestSuiteLoader
     {
         if (!\class_exists($loaderClass, false)) {
             if ($loaderFile == '') {
@@ -896,7 +896,7 @@ class Command
         }
 
         if ($loaderClass == StandardTestSuiteLoader::class) {
-            return;
+            return null;
         }
 
         $this->exitWithErrorMessage(
@@ -905,6 +905,8 @@ class Command
                 $loaderClass
             )
         );
+
+        return null;
     }
 
     /**
@@ -985,7 +987,7 @@ class Command
      *
      * @param string $filename
      */
-    protected function handleBootstrap($filename)
+    protected function handleBootstrap($filename): void
     {
         try {
             Fileloader::checkAndLoad($filename);
@@ -994,7 +996,7 @@ class Command
         }
     }
 
-    protected function handleVersionCheck()
+    protected function handleVersionCheck(): void
     {
         $this->printVersionString();
 
@@ -1017,7 +1019,7 @@ class Command
     /**
      * Show the help message.
      */
-    protected function showHelp()
+    protected function showHelp(): void
     {
         $this->printVersionString();
 
@@ -1121,11 +1123,11 @@ EOT;
     /**
      * Custom callback for test suite discovery.
      */
-    protected function handleCustomTestSuite()
+    protected function handleCustomTestSuite(): void
     {
     }
 
-    private function printVersionString()
+    private function printVersionString(): void
     {
         if ($this->versionStringPrinted) {
             return;
@@ -1139,7 +1141,7 @@ EOT;
     /**
      * @param string $message
      */
-    private function exitWithErrorMessage($message)
+    private function exitWithErrorMessage($message): void
     {
         $this->printVersionString();
 
@@ -1151,7 +1153,7 @@ EOT;
     /**
      * @param string $directory
      */
-    private function handleExtensions($directory)
+    private function handleExtensions($directory): void
     {
         $facade = new File_Iterator_Facade;
 

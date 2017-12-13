@@ -107,7 +107,7 @@ class Test
      *
      * @return array
      */
-    public static function getLinesToBeUsed($className, $methodName)
+    public static function getLinesToBeUsed($className, $methodName): array
     {
         return self::getLinesToBeCoveredOrUsed($className, $methodName, 'uses');
     }
@@ -121,7 +121,7 @@ class Test
      *
      * @throws CodeCoverageException
      */
-    private static function getLinesToBeCoveredOrUsed($className, $methodName, $mode)
+    private static function getLinesToBeCoveredOrUsed($className, $methodName, $mode): array
     {
         $annotations = self::parseTestMethodAnnotations(
             $className,
@@ -182,7 +182,7 @@ class Test
      *
      * @return array
      */
-    public static function getRequirements($className, $methodName)
+    public static function getRequirements($className, $methodName): array
     {
         $reflector  = new ReflectionClass($className);
         $docComment = $reflector->getDocComment();
@@ -254,7 +254,7 @@ class Test
      *
      * @return string[]
      */
-    public static function getMissingRequirements($className, $methodName)
+    public static function getMissingRequirements($className, $methodName): array
     {
         $required = static::getRequirements($className, $methodName);
         $missing  = [];
@@ -421,7 +421,7 @@ class Test
      *
      * @return string
      */
-    private static function parseAnnotationContent($message)
+    private static function parseAnnotationContent($message): string
     {
         if ((\strpos($message, '::') !== false && \substr_count($message, '::') + 1 === 2) && \defined($message)) {
             $message = \constant($message);
@@ -441,7 +441,7 @@ class Test
      *
      * @throws Exception
      */
-    public static function getProvidedData($className, $methodName)
+    public static function getProvidedData($className, $methodName): ?array
     {
         $reflector  = new ReflectionMethod($className, $methodName);
         $docComment = $reflector->getDocComment();
@@ -552,7 +552,7 @@ class Test
      *
      * @throws Exception when @testWith annotation is defined but cannot be parsed
      */
-    public static function getDataFromTestWithAnnotation($docComment)
+    public static function getDataFromTestWithAnnotation($docComment): ?array
     {
         $docComment = self::cleanUpMultiLineAnnotation($docComment);
 
@@ -585,6 +585,8 @@ class Test
 
             return $data;
         }
+
+        return null;
     }
 
     private static function cleanUpMultiLineAnnotation($docComment)
@@ -606,7 +608,7 @@ class Test
      *
      * @throws ReflectionException
      */
-    public static function parseTestMethodAnnotations($className, $methodName = '')
+    public static function parseTestMethodAnnotations($className, $methodName = ''): array
     {
         if (!isset(self::$annotationCache[$className])) {
             $class       = new ReflectionClass($className);
@@ -649,7 +651,7 @@ class Test
      *
      * @return array
      */
-    public static function getInlineAnnotations($className, $methodName)
+    public static function getInlineAnnotations($className, $methodName): array
     {
         $method      = new ReflectionMethod($className, $methodName);
         $code        = \file($method->getFileName());
@@ -678,7 +680,7 @@ class Test
      *
      * @return array
      */
-    public static function parseAnnotations($docBlock)
+    public static function parseAnnotations($docBlock): array
     {
         $annotations = [];
         // Strip away the docblock header and footer to ease parsing of one line annotations
@@ -703,7 +705,7 @@ class Test
      *
      * @return array<string, bool|null>
      */
-    public static function getBackupSettings($className, $methodName)
+    public static function getBackupSettings($className, $methodName): array
     {
         return [
             'backupGlobals' => self::getBooleanAnnotationSetting(
@@ -727,7 +729,7 @@ class Test
      *
      * @return array
      */
-    public static function getDependencies($className, $methodName)
+    public static function getDependencies($className, $methodName): array
     {
         $annotations = self::parseTestMethodAnnotations(
             $className,
@@ -758,7 +760,7 @@ class Test
      *
      * @return ?bool
      */
-    public static function getErrorHandlerSettings($className, $methodName)
+    public static function getErrorHandlerSettings($className, $methodName): ?bool
     {
         return self::getBooleanAnnotationSetting(
             $className,
@@ -775,7 +777,7 @@ class Test
      *
      * @return array
      */
-    public static function getGroups($className, $methodName = '')
+    public static function getGroups($className, $methodName = ''): array
     {
         $annotations = self::parseTestMethodAnnotations(
             $className,
@@ -827,7 +829,7 @@ class Test
      *
      * @return int
      */
-    public static function getSize($className, $methodName)
+    public static function getSize($className, $methodName): int
     {
         $groups = \array_flip(self::getGroups($className, $methodName));
         $class  = new ReflectionClass($className);
@@ -856,7 +858,7 @@ class Test
      *
      * @return bool
      */
-    public static function getProcessIsolationSettings($className, $methodName)
+    public static function getProcessIsolationSettings($className, $methodName): bool
     {
         $annotations = self::parseTestMethodAnnotations(
             $className,
@@ -866,7 +868,7 @@ class Test
         return isset($annotations['class']['runTestsInSeparateProcesses']) || isset($annotations['method']['runInSeparateProcess']);
     }
 
-    public static function getClassProcessIsolationSettings($className, $methodName)
+    public static function getClassProcessIsolationSettings($className, $methodName): bool
     {
         $annotations = self::parseTestMethodAnnotations(
             $className,
@@ -884,7 +886,7 @@ class Test
      *
      * @return ?bool
      */
-    public static function getPreserveGlobalStateSettings($className, $methodName)
+    public static function getPreserveGlobalStateSettings($className, $methodName): ?bool
     {
         return self::getBooleanAnnotationSetting(
             $className,
@@ -898,7 +900,7 @@ class Test
      *
      * @return array
      */
-    public static function getHookMethods($className)
+    public static function getHookMethods($className): array
     {
         if (!\class_exists($className, false)) {
             return self::emptyHookMethodsArray();
@@ -943,7 +945,7 @@ class Test
     /**
      * @return array
      */
-    private static function emptyHookMethodsArray()
+    private static function emptyHookMethodsArray(): array
     {
         return [
             'beforeClass' => ['setUpBeforeClass'],
@@ -960,7 +962,7 @@ class Test
      *
      * @return ?bool
      */
-    private static function getBooleanAnnotationSetting($className, $methodName, $settingName)
+    private static function getBooleanAnnotationSetting($className, $methodName, $settingName): ?bool
     {
         $annotations = self::parseTestMethodAnnotations(
             $className,
@@ -986,6 +988,8 @@ class Test
                 return false;
             }
         }
+
+        return null;
     }
 
     /**
@@ -995,7 +999,7 @@ class Test
      *
      * @throws InvalidCoversTargetException
      */
-    private static function resolveElementToReflectionObjects($element)
+    private static function resolveElementToReflectionObjects($element): array
     {
         $codeToCoverList = [];
 
@@ -1110,7 +1114,7 @@ class Test
      *
      * @return array
      */
-    private static function resolveReflectionObjectsToLines(array $reflectors)
+    private static function resolveReflectionObjectsToLines(array $reflectors): array
     {
         $result = [];
 
@@ -1139,7 +1143,7 @@ class Test
      *
      * @return bool
      */
-    private static function isBeforeClassMethod(ReflectionMethod $method)
+    private static function isBeforeClassMethod(ReflectionMethod $method): bool
     {
         return $method->isStatic() && \strpos($method->getDocComment(), '@beforeClass') !== false;
     }
@@ -1149,7 +1153,7 @@ class Test
      *
      * @return bool
      */
-    private static function isBeforeMethod(ReflectionMethod $method)
+    private static function isBeforeMethod(ReflectionMethod $method): bool
     {
         return \preg_match('/@before\b/', $method->getDocComment()) > 0;
     }
@@ -1159,7 +1163,7 @@ class Test
      *
      * @return bool
      */
-    private static function isAfterClassMethod(ReflectionMethod $method)
+    private static function isAfterClassMethod(ReflectionMethod $method): bool
     {
         return $method->isStatic() && \strpos($method->getDocComment(), '@afterClass') !== false;
     }
@@ -1169,7 +1173,7 @@ class Test
      *
      * @return bool
      */
-    private static function isAfterMethod(ReflectionMethod $method)
+    private static function isAfterMethod(ReflectionMethod $method): bool
     {
         return \preg_match('/@after\b/', $method->getDocComment()) > 0;
     }

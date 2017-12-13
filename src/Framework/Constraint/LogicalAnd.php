@@ -100,7 +100,7 @@ class LogicalAnd extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         $text = '';
 
@@ -120,7 +120,7 @@ class LogicalAnd extends Constraint
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         $count = 0;
 

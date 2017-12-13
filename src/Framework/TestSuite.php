@@ -210,7 +210,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return $this->getName();
     }
@@ -415,7 +415,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return int
      */
-    public function count($preferCache = false)
+    public function count($preferCache = false): int
     {
         if ($preferCache && $this->cachedNumTests !== null) {
             return $this->cachedNumTests;
@@ -440,7 +440,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @throws Exception
      */
-    public static function createTest(ReflectionClass $theClass, $name)
+    public static function createTest(ReflectionClass $theClass, $name): Test
     {
         $className = $theClass->getName();
 
@@ -633,7 +633,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return TestResult
      */
-    protected function createResult()
+    protected function createResult(): TestResult
     {
         return new TestResult;
     }
@@ -643,7 +643,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -653,7 +653,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return array
      */
-    public function getGroups()
+    public function getGroups(): array
     {
         return \array_keys($this->groups);
     }
@@ -680,7 +680,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return TestResult
      */
-    public function run(TestResult $result = null)
+    public function run(TestResult $result = null): TestResult
     {
         if ($result === null) {
             $result = $this->createResult();
@@ -832,7 +832,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return array
      */
-    public function tests()
+    public function tests(): array
     {
         return $this->tests;
     }
@@ -904,7 +904,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return bool
      */
-    public static function isTestMethod(ReflectionMethod $method)
+    public static function isTestMethod(ReflectionMethod $method): bool
     {
         if (\strpos($method->name, 'test') === 0) {
             return true;
@@ -920,7 +920,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return WarningTestCase
      */
-    protected static function warning($message)
+    protected static function warning($message): WarningTestCase
     {
         return new WarningTestCase($message);
     }
@@ -932,7 +932,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return SkippedTestCase
      */
-    protected static function skipTest($class, $methodName, $message)
+    protected static function skipTest($class, $methodName, $message): SkippedTestCase
     {
         return new SkippedTestCase($class, $methodName, $message);
     }
@@ -944,7 +944,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return IncompleteTestCase
      */
-    protected static function incompleteTest($class, $methodName, $message)
+    protected static function incompleteTest($class, $methodName, $message): IncompleteTestCase
     {
         return new IncompleteTestCase($class, $methodName, $message);
     }
@@ -984,7 +984,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @return TestSuiteIterator
      */
-    public function getIterator()
+    public function getIterator(): Iterator
     {
         $iterator = new TestSuiteIterator($this);
 
@@ -998,6 +998,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     public function injectFilter(Factory $filter)
     {
         $this->iteratorFilter = $filter;
+
         foreach ($this as $test) {
             if ($test instanceof self) {
                 $test->injectFilter($filter);

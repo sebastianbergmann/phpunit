@@ -50,7 +50,7 @@ class StringContains extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         if ('' === $this->string) {
             return true;
@@ -68,7 +68,7 @@ class StringContains extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         if ($this->ignoreCase) {
             $string = \mb_strtolower($this->string);

@@ -26,7 +26,7 @@ class Fileloader
      *
      * @throws Exception
      */
-    public static function checkAndLoad($filename)
+    public static function checkAndLoad($filename): string
     {
         $includePathFilename = \stream_resolve_include_path($filename);
 

@@ -34,7 +34,7 @@ class ExceptionMessage extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         if ($this->expectedMessage === '') {
             return $other->getMessage() === '';
@@ -53,7 +53,7 @@ class ExceptionMessage extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         if ($this->expectedMessage === '') {
             return \sprintf(
@@ -72,7 +72,7 @@ class ExceptionMessage extends Constraint
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         if ($this->expectedMessage === '') {
             return 'exception message is empty';

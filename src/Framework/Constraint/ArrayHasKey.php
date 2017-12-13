@@ -43,7 +43,7 @@ class ArrayHasKey extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         if (\is_array($other)) {
             return \array_key_exists($this->key, $other);
@@ -61,7 +61,7 @@ class ArrayHasKey extends Constraint
      *
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'has the key ' . $this->exporter->export($this->key);
     }
@@ -76,7 +76,7 @@ class ArrayHasKey extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return 'an array ' . $this->toString();
     }

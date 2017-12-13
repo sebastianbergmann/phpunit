@@ -429,7 +429,7 @@ class TestResult implements Countable
      *
      * @return bool
      */
-    public function allHarmless()
+    public function allHarmless(): bool
     {
         return $this->riskyCount() == 0;
     }
@@ -439,7 +439,7 @@ class TestResult implements Countable
      *
      * @return int
      */
-    public function riskyCount()
+    public function riskyCount(): int
     {
         return \count($this->risky);
     }
@@ -449,7 +449,7 @@ class TestResult implements Countable
      *
      * @return bool
      */
-    public function allCompletelyImplemented()
+    public function allCompletelyImplemented(): bool
     {
         return $this->notImplementedCount() == 0;
     }
@@ -459,7 +459,7 @@ class TestResult implements Countable
      *
      * @return int
      */
-    public function notImplementedCount()
+    public function notImplementedCount(): int
     {
         return \count($this->notImplemented);
     }
@@ -469,7 +469,7 @@ class TestResult implements Countable
      *
      * @return array
      */
-    public function risky()
+    public function risky(): array
     {
         return $this->risky;
     }
@@ -479,7 +479,7 @@ class TestResult implements Countable
      *
      * @return array
      */
-    public function notImplemented()
+    public function notImplemented(): array
     {
         return $this->notImplemented;
     }
@@ -489,7 +489,7 @@ class TestResult implements Countable
      *
      * @return bool
      */
-    public function noneSkipped()
+    public function noneSkipped(): bool
     {
         return $this->skippedCount() == 0;
     }
@@ -499,7 +499,7 @@ class TestResult implements Countable
      *
      * @return int
      */
-    public function skippedCount()
+    public function skippedCount(): int
     {
         return \count($this->skipped);
     }
@@ -509,7 +509,7 @@ class TestResult implements Countable
      *
      * @return array
      */
-    public function skipped()
+    public function skipped(): array
     {
         return $this->skipped;
     }
@@ -519,7 +519,7 @@ class TestResult implements Countable
      *
      * @return int
      */
-    public function errorCount()
+    public function errorCount(): int
     {
         return \count($this->errors);
     }
@@ -529,7 +529,7 @@ class TestResult implements Countable
      *
      * @return array
      */
-    public function errors()
+    public function errors(): array
     {
         return $this->errors;
     }
@@ -539,7 +539,7 @@ class TestResult implements Countable
      *
      * @return int
      */
-    public function failureCount()
+    public function failureCount(): int
     {
         return \count($this->failures);
     }
@@ -549,7 +549,7 @@ class TestResult implements Countable
      *
      * @return array
      */
-    public function failures()
+    public function failures(): array
     {
         return $this->failures;
     }
@@ -559,7 +559,7 @@ class TestResult implements Countable
      *
      * @return int
      */
-    public function warningCount()
+    public function warningCount(): int
     {
         return \count($this->warnings);
     }
@@ -569,7 +569,7 @@ class TestResult implements Countable
      *
      * @return array
      */
-    public function warnings()
+    public function warnings(): array
     {
         return $this->warnings;
     }
@@ -579,7 +579,7 @@ class TestResult implements Countable
      *
      * @return array
      */
-    public function passed()
+    public function passed(): array
     {
         return $this->passed;
     }
@@ -589,7 +589,7 @@ class TestResult implements Countable
      *
      * @return TestSuite
      */
-    public function topTestSuite()
+    public function topTestSuite(): TestSuite
     {
         return $this->topTestSuite;
     }
@@ -599,7 +599,7 @@ class TestResult implements Countable
      *
      * @return bool If code coverage should be collected
      */
-    public function getCollectCodeCoverageInformation()
+    public function getCollectCodeCoverageInformation(): bool
     {
         return $this->codeCoverage !== null;
     }
@@ -900,7 +900,7 @@ class TestResult implements Countable
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return $this->runTests;
     }
@@ -910,7 +910,7 @@ class TestResult implements Countable
      *
      * @return bool
      */
-    public function shouldStop()
+    public function shouldStop(): bool
     {
         return $this->stop;
     }
@@ -928,7 +928,7 @@ class TestResult implements Countable
      *
      * @return CodeCoverage
      */
-    public function getCodeCoverage()
+    public function getCodeCoverage(): ?CodeCoverage
     {
         return $this->codeCoverage;
     }
@@ -964,7 +964,7 @@ class TestResult implements Countable
      *
      * @return bool
      */
-    public function getConvertErrorsToExceptions()
+    public function getConvertErrorsToExceptions(): bool
     {
         return $this->convertErrorsToExceptions;
     }
@@ -1034,7 +1034,7 @@ class TestResult implements Countable
     /**
      * @return bool
      */
-    public function isStrictAboutTestsThatDoNotTestAnything()
+    public function isStrictAboutTestsThatDoNotTestAnything(): bool
     {
         return $this->beStrictAboutTestsThatDoNotTestAnything;
     }
@@ -1056,7 +1056,7 @@ class TestResult implements Countable
     /**
      * @return bool
      */
-    public function isStrictAboutOutputDuringTests()
+    public function isStrictAboutOutputDuringTests(): bool
     {
         return $this->beStrictAboutOutputDuringTests;
     }
@@ -1078,7 +1078,7 @@ class TestResult implements Countable
     /**
      * @return bool
      */
-    public function isStrictAboutResourceUsageDuringSmallTests()
+    public function isStrictAboutResourceUsageDuringSmallTests(): bool
     {
         return $this->beStrictAboutResourceUsageDuringSmallTests;
     }
@@ -1100,7 +1100,7 @@ class TestResult implements Countable
     /**
      * @return bool
      */
-    public function enforcesTimeLimit()
+    public function enforcesTimeLimit(): bool
     {
         return $this->enforceTimeLimit;
     }
@@ -1122,7 +1122,7 @@ class TestResult implements Countable
     /**
      * @return bool
      */
-    public function isStrictAboutTodoAnnotatedTests()
+    public function isStrictAboutTodoAnnotatedTests(): bool
     {
         return $this->beStrictAboutTodoAnnotatedTests;
     }
@@ -1180,7 +1180,7 @@ class TestResult implements Countable
      *
      * @return float
      */
-    public function time()
+    public function time(): float
     {
         return $this->time;
     }
@@ -1190,7 +1190,7 @@ class TestResult implements Countable
      *
      * @return bool
      */
-    public function wasSuccessful()
+    public function wasSuccessful(): bool
     {
         return empty($this->errors) && empty($this->failures) && empty($this->warnings);
     }
@@ -1248,7 +1248,7 @@ class TestResult implements Countable
      *
      * @return int
      */
-    public function getTimeoutForLargeTests()
+    public function getTimeoutForLargeTests(): int
     {
         return $this->timeoutForLargeTests;
     }

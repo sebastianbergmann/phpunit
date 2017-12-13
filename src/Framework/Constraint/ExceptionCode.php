@@ -34,7 +34,7 @@ class ExceptionCode extends Constraint
      *
      * @return bool
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
         return (string) $other->getCode() == (string) $this->expectedCode;
     }
@@ -49,7 +49,7 @@ class ExceptionCode extends Constraint
      *
      * @return string
      */
-    protected function failureDescription($other)
+    protected function failureDescription($other): string
     {
         return \sprintf(
             '%s is equal to expected exception code %s',
@@ -61,7 +61,7 @@ class ExceptionCode extends Constraint
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'exception code is ';
     }
