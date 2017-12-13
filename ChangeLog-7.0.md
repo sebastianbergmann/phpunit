@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 7.0 release series are documented in this fil
 
 * Implemented [#2473](https://github.com/sebastianbergmann/phpunit/issues/2473): Drop support for PHP 7.0
 * `@scenario` is no longer an alias for `@test`
+* The `PHPUnit\Framework\BaseTestListener` class has been removed (deprecated in PHPUnit 6.4)
 
 [7.0.0]: https://github.com/sebastianbergmann/phpunit/compare/6.5...7.0.0
 
