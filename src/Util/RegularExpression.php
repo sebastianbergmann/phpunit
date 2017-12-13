@@ -25,7 +25,7 @@ class RegularExpression
      */
     public static function safeMatch($pattern, $subject, $matches = null, $flags = 0, $offset = 0)
     {
-        $handler_terminator = ErrorHandler::handleErrorOnce(E_WARNING);
+        $handler_terminator = ErrorHandler::handleErrorOnce();
         $match              = \preg_match($pattern, $subject, $matches, $flags, $offset);
         $handler_terminator(); // cleaning
 

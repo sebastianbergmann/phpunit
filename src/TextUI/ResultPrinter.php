@@ -412,7 +412,7 @@ class ResultPrinter extends Printer implements TestListener
             $this->writeCountString($result->skippedCount(), 'Skipped', $color);
             $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
             $this->writeCountString($result->riskyCount(), 'Risky', $color);
-            $this->writeWithColor($color, '.', true);
+            $this->writeWithColor($color, '.');
         }
     }
 
