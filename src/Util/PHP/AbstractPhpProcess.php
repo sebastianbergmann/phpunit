@@ -18,7 +18,6 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Util\InvalidArgumentHelper;
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -73,12 +72,8 @@ abstract class AbstractPhpProcess
      *
      * @param bool $stderrRedirection
      */
-    public function setUseStderrRedirection($stderrRedirection): void
+    public function setUseStderrRedirection(bool $stderrRedirection): void
     {
-        if (!\is_bool($stderrRedirection)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->stderrRedirection = $stderrRedirection;
     }
 

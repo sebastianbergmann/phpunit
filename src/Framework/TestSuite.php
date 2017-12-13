@@ -310,12 +310,8 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @throws Exception
      */
-    public function addTestFile($filename)
+    public function addTestFile(string $filename)
     {
-        if (!\is_string($filename)) {
-            throw InvalidArgumentHelper::factory(1, 'string');
-        }
-
         if (\file_exists($filename) && \substr($filename, -5) == '.phpt') {
             $this->addTest(
                 new PhptTestCase($filename)

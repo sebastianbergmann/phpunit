@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Util\InvalidArgumentHelper;
 use SplObjectStorage;
 
 /**
@@ -40,17 +39,9 @@ class TraversableContains extends Constraint
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($value, $checkForObjectIdentity = true, $checkForNonObjectIdentity = false)
+    public function __construct($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false)
     {
         parent::__construct();
-
-        if (!\is_bool($checkForObjectIdentity)) {
-            throw InvalidArgumentHelper::factory(2, 'boolean');
-        }
-
-        if (!\is_bool($checkForNonObjectIdentity)) {
-            throw InvalidArgumentHelper::factory(3, 'boolean');
-        }
 
         $this->checkForObjectIdentity    = $checkForObjectIdentity;
         $this->checkForNonObjectIdentity = $checkForNonObjectIdentity;

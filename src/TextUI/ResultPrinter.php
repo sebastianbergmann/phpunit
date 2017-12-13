@@ -140,13 +140,9 @@ class ResultPrinter extends Printer implements TestListener
      *
      * @throws Exception
      */
-    public function __construct($out = null, $verbose = false, $colors = self::COLOR_DEFAULT, $debug = false, $numberOfColumns = 80, $reverse = false)
+    public function __construct($out = null, bool $verbose = false, $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out);
-
-        if (!\is_bool($verbose)) {
-            throw InvalidArgumentHelper::factory(2, 'boolean');
-        }
 
         $availableColors = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
 
@@ -157,16 +153,8 @@ class ResultPrinter extends Printer implements TestListener
             );
         }
 
-        if (!\is_bool($debug)) {
-            throw InvalidArgumentHelper::factory(4, 'boolean');
-        }
-
         if (!\is_int($numberOfColumns) && $numberOfColumns !== 'max') {
             throw InvalidArgumentHelper::factory(5, 'integer or "max"');
-        }
-
-        if (!\is_bool($reverse)) {
-            throw InvalidArgumentHelper::factory(6, 'boolean');
         }
 
         $console            = new Console;

@@ -135,12 +135,8 @@ class Printer
      *
      * @param bool $autoFlush
      */
-    public function setAutoFlush($autoFlush): void
+    public function setAutoFlush(bool $autoFlush): void
     {
-        if (\is_bool($autoFlush)) {
-            $this->autoFlush = $autoFlush;
-        } else {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
+        $this->autoFlush = $autoFlush;
     }
 }

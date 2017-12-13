@@ -17,7 +17,6 @@ use PHP_Timer;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Util\Blacklist;
 use PHPUnit\Util\ErrorHandler;
-use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCoveredCodeNotExecutedException;
@@ -947,22 +946,14 @@ class TestResult implements Countable
      * Enables or disables the error-to-exception conversion.
      *
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function convertErrorsToExceptions($flag)
+    public function convertErrorsToExceptions(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->convertErrorsToExceptions = $flag;
     }
 
     /**
      * Returns the error-to-exception conversion setting.
-     *
-     * @return bool
      */
     public function getConvertErrorsToExceptions(): bool
     {
@@ -973,15 +964,9 @@ class TestResult implements Countable
      * Enables or disables the stopping when an error occurs.
      *
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function stopOnError($flag)
+    public function stopOnError(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->stopOnError = $flag;
     }
 
@@ -989,15 +974,9 @@ class TestResult implements Countable
      * Enables or disables the stopping when a failure occurs.
      *
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function stopOnFailure($flag)
+    public function stopOnFailure(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->stopOnFailure = $flag;
     }
 
@@ -1005,29 +984,17 @@ class TestResult implements Countable
      * Enables or disables the stopping when a warning occurs.
      *
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function stopOnWarning($flag)
+    public function stopOnWarning(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->stopOnWarning = $flag;
     }
 
     /**
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function beStrictAboutTestsThatDoNotTestAnything($flag)
+    public function beStrictAboutTestsThatDoNotTestAnything(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
     }
 
@@ -1041,15 +1008,9 @@ class TestResult implements Countable
 
     /**
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function beStrictAboutOutputDuringTests($flag)
+    public function beStrictAboutOutputDuringTests(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->beStrictAboutOutputDuringTests = $flag;
     }
 
@@ -1063,15 +1024,9 @@ class TestResult implements Countable
 
     /**
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function beStrictAboutResourceUsageDuringSmallTests($flag)
+    public function beStrictAboutResourceUsageDuringSmallTests(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->beStrictAboutResourceUsageDuringSmallTests = $flag;
     }
 
@@ -1085,15 +1040,9 @@ class TestResult implements Countable
 
     /**
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function enforceTimeLimit($flag)
+    public function enforceTimeLimit(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->enforceTimeLimit = $flag;
     }
 
@@ -1107,15 +1056,9 @@ class TestResult implements Countable
 
     /**
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function beStrictAboutTodoAnnotatedTests($flag)
+    public function beStrictAboutTodoAnnotatedTests(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->beStrictAboutTodoAnnotatedTests = $flag;
     }
 
@@ -1131,15 +1074,9 @@ class TestResult implements Countable
      * Enables or disables the stopping for risky tests.
      *
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function stopOnRisky($flag)
+    public function stopOnRisky(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->stopOnRisky = $flag;
     }
 
@@ -1147,15 +1084,9 @@ class TestResult implements Countable
      * Enables or disables the stopping for incomplete tests.
      *
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function stopOnIncomplete($flag)
+    public function stopOnIncomplete(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->stopOnIncomplete = $flag;
     }
 
@@ -1163,15 +1094,9 @@ class TestResult implements Countable
      * Enables or disables the stopping for skipped tests.
      *
      * @param bool $flag
-     *
-     * @throws Exception
      */
-    public function stopOnSkipped($flag)
+    public function stopOnSkipped(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->stopOnSkipped = $flag;
     }
 
@@ -1199,15 +1124,9 @@ class TestResult implements Countable
      * Sets the timeout for small tests.
      *
      * @param int $timeout
-     *
-     * @throws Exception
      */
-    public function setTimeoutForSmallTests($timeout)
+    public function setTimeoutForSmallTests(int $timeout)
     {
-        if (!\is_int($timeout)) {
-            throw InvalidArgumentHelper::factory(1, 'integer');
-        }
-
         $this->timeoutForSmallTests = $timeout;
     }
 
@@ -1215,15 +1134,9 @@ class TestResult implements Countable
      * Sets the timeout for medium tests.
      *
      * @param int $timeout
-     *
-     * @throws Exception
      */
-    public function setTimeoutForMediumTests($timeout)
+    public function setTimeoutForMediumTests(int $timeout)
     {
-        if (!\is_int($timeout)) {
-            throw InvalidArgumentHelper::factory(1, 'integer');
-        }
-
         $this->timeoutForMediumTests = $timeout;
     }
 
@@ -1231,15 +1144,9 @@ class TestResult implements Countable
      * Sets the timeout for large tests.
      *
      * @param int $timeout
-     *
-     * @throws Exception
      */
-    public function setTimeoutForLargeTests($timeout)
+    public function setTimeoutForLargeTests(int $timeout)
     {
-        if (!\is_int($timeout)) {
-            throw InvalidArgumentHelper::factory(1, 'integer');
-        }
-
         $this->timeoutForLargeTests = $timeout;
     }
 
@@ -1256,12 +1163,8 @@ class TestResult implements Countable
     /**
      * @param bool $flag
      */
-    public function setRegisterMockObjectsFromTestArgumentsRecursively($flag)
+    public function setRegisterMockObjectsFromTestArgumentsRecursively(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
 }

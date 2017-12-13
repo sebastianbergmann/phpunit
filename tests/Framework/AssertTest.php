@@ -444,27 +444,6 @@ class AssertTest extends TestCase
         $this->assertNotContains('ORYGINAŁ', 'oryginał', '', true);
     }
 
-    public function testAssertContainsOnlyThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertContainsOnly(null, null);
-    }
-
-    public function testAssertNotContainsOnlyThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotContainsOnly(null, null);
-    }
-
-    public function testAssertContainsOnlyInstancesOfThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertContainsOnlyInstancesOf(null, null);
-    }
-
     public function testAssertArrayContainsOnlyIntegers()
     {
         $this->assertContainsOnly('integer', [1, 2, 3]);
@@ -1100,13 +1079,6 @@ XML;
         $this->assertNotEquals('A', 0);
     }
 
-    public function testAssertIsReadableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertIsReadable(null);
-    }
-
     public function testAssertIsReadable()
     {
         $this->assertIsReadable(__FILE__);
@@ -1116,25 +1088,11 @@ XML;
         $this->assertIsReadable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
-    public function testAssertNotIsReadableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotIsReadable(null);
-    }
-
     public function testAssertNotIsReadable()
     {
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotIsReadable(__FILE__);
-    }
-
-    public function testAssertIsWritableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertIsWritable(null);
     }
 
     public function testAssertIsWritable()
@@ -1146,25 +1104,11 @@ XML;
         $this->assertIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
-    public function testAssertNotIsWritableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotIsWritable(null);
-    }
-
     public function testAssertNotIsWritable()
     {
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotIsWritable(__FILE__);
-    }
-
-    public function testAssertDirectoryExistsThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertDirectoryExists(null);
     }
 
     public function testAssertDirectoryExists()
@@ -1176,13 +1120,6 @@ XML;
         $this->assertDirectoryExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
-    public function testAssertDirectoryNotExistsThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertDirectoryNotExists(null);
-    }
-
     public function testAssertDirectoryNotExists()
     {
         $this->assertDirectoryNotExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
@@ -1190,13 +1127,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertDirectoryNotExists(__DIR__);
-    }
-
-    public function testAssertDirectoryIsReadableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertDirectoryIsReadable(null);
     }
 
     public function testAssertDirectoryIsReadable()
@@ -1208,20 +1138,6 @@ XML;
         $this->assertDirectoryIsReadable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
-    public function testAssertDirectoryNotIsReadableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertDirectoryNotIsReadable(null);
-    }
-
-    public function testAssertDirectoryIsWritableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertDirectoryIsWritable(null);
-    }
-
     public function testAssertDirectoryIsWritable()
     {
         $this->assertDirectoryIsWritable(__DIR__);
@@ -1229,20 +1145,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertDirectoryIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
-    }
-
-    public function testAssertDirectoryNotIsWritableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertDirectoryNotIsWritable(null);
-    }
-
-    public function testAssertFileExistsThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertFileExists(null);
     }
 
     public function testAssertFileExists()
@@ -1254,13 +1156,6 @@ XML;
         $this->assertFileExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
-    public function testAssertFileNotExistsThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertFileNotExists(null);
-    }
-
     public function testAssertFileNotExists()
     {
         $this->assertFileNotExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
@@ -1268,13 +1163,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertFileNotExists(__FILE__);
-    }
-
-    public function testAssertFileIsReadableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertFileIsReadable(null);
     }
 
     public function testAssertFileIsReadable()
@@ -1286,20 +1174,6 @@ XML;
         $this->assertFileIsReadable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
-    public function testAssertFileNotIsReadableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertFileNotIsReadable(null);
-    }
-
-    public function testAssertFileIsWritableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertFileIsWritable(null);
-    }
-
     public function testAssertFileIsWritable()
     {
         $this->assertFileIsWritable(__FILE__);
@@ -1307,13 +1181,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertFileIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
-    }
-
-    public function testAssertFileNotIsWritableThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertFileNotIsWritable(null);
     }
 
     public function testAssertObjectHasAttribute()
@@ -1421,34 +1288,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotFalse(false);
-    }
-
-    public function testAssertRegExpThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertRegExp(null, null);
-    }
-
-    public function testAssertRegExpThrowsException2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertRegExp('', null);
-    }
-
-    public function testAssertNotRegExpThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotRegExp(null, null);
-    }
-
-    public function testAssertNotRegExpThrowsException2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotRegExp('', null);
     }
 
     public function testAssertRegExp()
@@ -1659,13 +1498,6 @@ XML;
         $this->assertEquals('foo', $this->readAttribute(\ClassWithNonPublicAttributes::class, 'privateStaticParentAttribute'));
     }
 
-    public function testReadAttribute3()
-    {
-        $this->expectException(Exception::class);
-
-        $this->readAttribute('StdClass', null);
-    }
-
     public function testReadAttribute4()
     {
         $this->expectException(Exception::class);
@@ -1687,25 +1519,11 @@ XML;
         $this->readAttribute(\stdClass::class, '2');
     }
 
-    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->getStaticAttribute(null, 'foo');
-    }
-
     public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument2()
     {
         $this->expectException(Exception::class);
 
         $this->getStaticAttribute('NotExistingClass', 'foo');
-    }
-
-    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->getStaticAttribute(\stdClass::class, null);
     }
 
     public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument2()
@@ -1727,13 +1545,6 @@ XML;
         $this->expectException(Exception::class);
 
         $this->getObjectAttribute(null, 'foo');
-    }
-
-    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->getObjectAttribute(new \stdClass, null);
     }
 
     public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument2()
@@ -2010,39 +1821,11 @@ XML;
         $this->assertAttributeNotEquals('baz', 'privateStaticAttribute', \ClassWithNonPublicAttributes::class);
     }
 
-    public function testAssertClassHasAttributeThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassHasAttribute(null, null);
-    }
-
-    public function testAssertClassHasAttributeThrowsException2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassHasAttribute('foo', null);
-    }
-
     public function testAssertClassHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
     {
         $this->expectException(Exception::class);
 
         $this->assertClassHasAttribute('1', \ClassWithNonPublicAttributes::class);
-    }
-
-    public function testAssertClassNotHasAttributeThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassNotHasAttribute(null, null);
-    }
-
-    public function testAssertClassNotHasAttributeThrowsException2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassNotHasAttribute('foo', null);
     }
 
     public function testAssertClassNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid()
@@ -2052,20 +1835,6 @@ XML;
         $this->assertClassNotHasAttribute('1', \ClassWithNonPublicAttributes::class);
     }
 
-    public function testAssertClassHasStaticAttributeThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassHasStaticAttribute(null, null);
-    }
-
-    public function testAssertClassHasStaticAttributeThrowsException2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassHasStaticAttribute('foo', null);
-    }
-
     public function testAssertClassHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid()
     {
         $this->expectException(Exception::class);
@@ -2073,32 +1842,11 @@ XML;
         $this->assertClassHasStaticAttribute('1', \ClassWithNonPublicAttributes::class);
     }
 
-    public function testAssertClassNotHasStaticAttributeThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassNotHasStaticAttribute(null, null);
-    }
-
-    public function testAssertClassNotHasStaticAttributeThrowsException2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassNotHasStaticAttribute('foo', null);
-    }
-
     public function testAssertClassNotHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid()
     {
         $this->expectException(Exception::class);
 
         $this->assertClassNotHasStaticAttribute('1', \ClassWithNonPublicAttributes::class);
-    }
-
-    public function testAssertObjectHasAttributeThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertObjectHasAttribute(null, null);
     }
 
     public function testAssertObjectHasAttributeThrowsException2()
@@ -2113,13 +1861,6 @@ XML;
         $this->expectException(Exception::class);
 
         $this->assertObjectHasAttribute('1', \ClassWithNonPublicAttributes::class);
-    }
-
-    public function testAssertObjectNotHasAttributeThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertObjectNotHasAttribute(null, null);
     }
 
     public function testAssertObjectNotHasAttributeThrowsException2()
@@ -2541,60 +2282,11 @@ XML;
         );
     }
 
-    public function testAssertStringStartsWithThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringStartsWith(null, null);
-    }
-
-    public function testAssertStringStartsWithThrowsException2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringStartsWith('', null);
-    }
-
-    public function testAssertStringStartsNotWithThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringStartsNotWith(null, null);
-    }
-
     public function testAssertStringStartsNotWithThrowsException2()
     {
         $this->expectException(Exception::class);
 
         $this->assertStringStartsNotWith('', null);
-    }
-
-    public function testAssertStringEndsWithThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringEndsWith(null, null);
-    }
-
-    public function testAssertStringEndsWithThrowsException2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringEndsWith('', null);
-    }
-
-    public function testAssertStringEndsNotWithThrowsException()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringEndsNotWith(null, null);
-    }
-
-    public function testAssertStringEndsNotWithThrowsException2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringEndsNotWith('', null);
     }
 
     public function testAssertStringStartsWith()
@@ -2633,20 +2325,6 @@ XML;
         $this->assertStringEndsNotWith('suffix', 'foosuffix');
     }
 
-    public function testAssertStringMatchesFormatRaisesExceptionForInvalidFirstArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringMatchesFormat(null, '');
-    }
-
-    public function testAssertStringMatchesFormatRaisesExceptionForInvalidSecondArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringMatchesFormat('', null);
-    }
-
     public function testAssertStringMatchesFormat()
     {
         $this->assertStringMatchesFormat('*%s*', '***');
@@ -2657,20 +2335,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringMatchesFormat('*%s*', '**');
-    }
-
-    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidFirstArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringNotMatchesFormat(null, '');
-    }
-
-    public function testAssertStringNotMatchesFormatRaisesExceptionForInvalidSecondArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringNotMatchesFormat('', null);
     }
 
     public function testAssertStringNotMatchesFormat()
@@ -2772,25 +2436,12 @@ XML;
         $this->assertCount(2, new \ArrayIterator([1, 2, 3]));
     }
 
-    public function testAssertCountThrowsExceptionIfExpectedCountIsNoInteger()
-    {
-        try {
-            $this->assertCount('a', []);
-        } catch (Exception $e) {
-            $this->assertEquals('Argument #1 (No Value) of PHPUnit\Framework\Assert::assertCount() must be a integer', $e->getMessage());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testAssertCountThrowsExceptionIfElementIsNotCountable()
     {
         try {
             $this->assertCount(2, '');
         } catch (Exception $e) {
-            $this->assertEquals('Argument #2 (No Value) of PHPUnit\Framework\Assert::assertCount() must be a countable or traversable', $e->getMessage());
+            $this->assertEquals('Argument #2 (No Value) of PHPUnit\Framework\Assert::assertCount() must be a countable or iterable', $e->getMessage());
 
             return;
         }
@@ -2813,13 +2464,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotCount(2, [1, 2]);
-    }
-
-    public function testAssertNotCountThrowsExceptionIfExpectedCountIsNoInteger()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotCount('a', []);
     }
 
     public function testAssertNotCountThrowsExceptionIfElementIsNotCountable()
@@ -2851,7 +2495,7 @@ XML;
         try {
             $this->assertSameSize('a', []);
         } catch (Exception $e) {
-            $this->assertEquals('Argument #1 (No Value) of PHPUnit\Framework\Assert::assertSameSize() must be a countable or traversable', $e->getMessage());
+            $this->assertEquals('Argument #1 (No Value) of PHPUnit\Framework\Assert::assertSameSize() must be a countable or iterable', $e->getMessage());
 
             return;
         }
@@ -2864,7 +2508,7 @@ XML;
         try {
             $this->assertSameSize([], '');
         } catch (Exception $e) {
-            $this->assertEquals('Argument #2 (No Value) of PHPUnit\Framework\Assert::assertSameSize() must be a countable or traversable', $e->getMessage());
+            $this->assertEquals('Argument #2 (No Value) of PHPUnit\Framework\Assert::assertSameSize() must be a countable or iterable', $e->getMessage());
 
             return;
         }
@@ -2893,13 +2537,6 @@ XML;
         $this->expectException(Exception::class);
 
         $this->assertNotSameSize([], '');
-    }
-
-    public function testAssertJsonRaisesExceptionForInvalidArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertJson(null);
     }
 
     public function testAssertJson()
@@ -2974,19 +2611,6 @@ XML;
         $this->fail('Expected Exception not thrown.');
     }
 
-    public function testAssertJsonStringEqualsJsonFileExpectingException()
-    {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
-
-        try {
-            $this->assertJsonStringEqualsJsonFile($file, null);
-        } catch (Exception $e) {
-            return;
-        }
-
-        $this->fail('Expected Exception not thrown.');
-    }
-
     public function testAssertJsonStringNotEqualsJsonFile()
     {
         $file    = __DIR__ . '/../_files/JsonData/simpleObject.json';
@@ -2994,19 +2618,6 @@ XML;
         $message = '';
 
         $this->assertJsonStringNotEqualsJsonFile($file, $actual, $message);
-    }
-
-    public function testAssertJsonStringNotEqualsJsonFileExpectingException()
-    {
-        $file = __DIR__ . '/../_files/JsonData/simpleObject.json';
-
-        try {
-            $this->assertJsonStringNotEqualsJsonFile($file, null);
-        } catch (Exception $e) {
-            return;
-        }
-
-        $this->fail('Expected exception not found.');
     }
 
     public function testAssertJsonFileNotEqualsJsonFile()
@@ -3035,13 +2646,6 @@ XML;
         $this->assertInstanceOf(\Exception::class, new \stdClass);
     }
 
-    public function testAssertInstanceOfThrowsExceptionForInvalidArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertInstanceOf(null, new \stdClass);
-    }
-
     public function testAssertAttributeInstanceOf()
     {
         $o    = new \stdClass;
@@ -3057,13 +2661,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotInstanceOf(\stdClass::class, new \stdClass);
-    }
-
-    public function testAssertNotInstanceOfThrowsExceptionForInvalidArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotInstanceOf(null, new \stdClass);
     }
 
     public function testAssertAttributeNotInstanceOf()
@@ -3092,13 +2689,6 @@ XML;
         $this->assertInternalType('double', 1);
     }
 
-    public function testAssertInternalTypeThrowsExceptionForInvalidArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertInternalType(null, 1);
-    }
-
     public function testAssertAttributeInternalType()
     {
         $o    = new \stdClass;
@@ -3116,13 +2706,6 @@ XML;
         $this->assertNotInternalType('integer', 1);
     }
 
-    public function testAssertNotInternalTypeThrowsExceptionForInvalidArgument()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotInternalType(null, 1);
-    }
-
     public function testAssertAttributeNotInternalType()
     {
         $o    = new \stdClass;
@@ -3136,13 +2719,6 @@ XML;
         $this->expectException(Exception::class);
 
         $this->assertStringMatchesFormatFile('not_existing_file', '');
-    }
-
-    public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', null);
     }
 
     public function testAssertStringMatchesFormatFile()
@@ -3159,13 +2735,6 @@ XML;
         $this->expectException(Exception::class);
 
         $this->assertStringNotMatchesFormatFile('not_existing_file', '');
-    }
-
-    public function testAssertStringNotMatchesFormatFileThrowsExceptionForInvalidArgument2()
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', null);
     }
 
     public function testAssertStringNotMatchesFormatFile()

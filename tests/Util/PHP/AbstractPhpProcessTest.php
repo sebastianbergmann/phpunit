@@ -10,7 +10,6 @@
 
 namespace PHPUnit\Util\PHP;
 
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
 class AbstractPhpProcessTest extends TestCase
@@ -42,13 +41,6 @@ class AbstractPhpProcessTest extends TestCase
         $this->phpProcess->setUseStderrRedirection(false);
 
         $this->assertFalse($this->phpProcess->useStderrRedirection());
-    }
-
-    public function testShouldThrowsExceptionWhenStderrRedirectionVariableIsNotABoolean()
-    {
-        $this->expectException(Exception::class);
-
-        $this->phpProcess->setUseStderrRedirection(null);
     }
 
     public function testShouldUseGivenSettingsToCreateCommand()

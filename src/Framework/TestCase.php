@@ -574,12 +574,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @param string $exception
      */
-    public function expectException($exception)
+    public function expectException(string $exception)
     {
-        if (!\is_string($exception)) {
-            throw InvalidArgumentHelper::factory(1, 'string');
-        }
-
         $this->expectedException = $exception;
     }
 
@@ -602,12 +598,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    public function expectExceptionMessage($message)
+    public function expectExceptionMessage(string $message)
     {
-        if (!\is_string($message)) {
-            throw InvalidArgumentHelper::factory(1, 'string');
-        }
-
         $this->expectedExceptionMessage = $message;
     }
 
@@ -616,12 +608,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    public function expectExceptionMessageRegExp($messageRegExp)
+    public function expectExceptionMessageRegExp(string $messageRegExp)
     {
-        if (!\is_string($messageRegExp)) {
-            throw InvalidArgumentHelper::factory(1, 'string');
-        }
-
         $this->expectedExceptionMessageRegExp = $messageRegExp;
     }
 
@@ -637,15 +625,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->expectExceptionCode($exception->getCode());
     }
 
-    /**
-     * @param bool $flag
-     */
-    public function setRegisterMockObjectsFromTestArgumentsRecursively($flag)
+    public function setRegisterMockObjectsFromTestArgumentsRecursively(bool $flag)
     {
-        if (!\is_bool($flag)) {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
-
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
 
@@ -1272,14 +1253,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    public function setRunTestInSeparateProcess($runTestInSeparateProcess)
+    public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess)
     {
-        if (\is_bool($runTestInSeparateProcess)) {
-            if ($this->runTestInSeparateProcess === null) {
-                $this->runTestInSeparateProcess = $runTestInSeparateProcess;
-            }
-        } else {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
+        if ($this->runTestInSeparateProcess === null) {
+            $this->runTestInSeparateProcess = $runTestInSeparateProcess;
         }
     }
 
@@ -1288,14 +1265,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    public function setRunClassInSeparateProcess($runClassInSeparateProcess)
+    public function setRunClassInSeparateProcess(bool $runClassInSeparateProcess)
     {
-        if (\is_bool($runClassInSeparateProcess)) {
-            if ($this->runClassInSeparateProcess === null) {
-                $this->runClassInSeparateProcess = $runClassInSeparateProcess;
-            }
-        } else {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
+        if ($this->runClassInSeparateProcess === null) {
+            $this->runClassInSeparateProcess = $runClassInSeparateProcess;
         }
     }
 
@@ -1304,13 +1277,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    public function setPreserveGlobalState($preserveGlobalState)
+    public function setPreserveGlobalState(bool $preserveGlobalState)
     {
-        if (\is_bool($preserveGlobalState)) {
-            $this->preserveGlobalState = $preserveGlobalState;
-        } else {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
+        $this->preserveGlobalState = $preserveGlobalState;
     }
 
     /**
@@ -1318,13 +1287,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    public function setInIsolation($inIsolation)
+    public function setInIsolation(bool $inIsolation)
     {
-        if (\is_bool($inIsolation)) {
-            $this->inIsolation = $inIsolation;
-        } else {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
+        $this->inIsolation = $inIsolation;
     }
 
     /**
@@ -1356,12 +1321,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    public function setOutputCallback($callback)
+    public function setOutputCallback(callable $callback)
     {
-        if (!\is_callable($callback)) {
-            throw InvalidArgumentHelper::factory(1, 'callback');
-        }
-
         $this->outputCallback = $callback;
     }
 
@@ -1399,12 +1360,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    protected function iniSet($varName, $newValue)
+    protected function iniSet(string $varName, $newValue)
     {
-        if (!\is_string($varName)) {
-            throw InvalidArgumentHelper::factory(1, 'string');
-        }
-
         $currentValue = \ini_set($varName, $newValue);
 
         if ($currentValue !== false) {
