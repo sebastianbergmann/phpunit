@@ -73,7 +73,6 @@ class ClassHasAttribute extends Constraint
      */
     protected function failureDescription($other)
     {
-        /** @noinspection SpellCheckingInspection */
         return \sprintf(
             '%sclass "%s" %s',
             \is_object($other) ? 'object of ' : '',
