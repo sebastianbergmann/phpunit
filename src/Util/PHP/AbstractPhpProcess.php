@@ -15,6 +15,7 @@ use ErrorException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\InvalidArgumentHelper;
@@ -315,6 +316,8 @@ abstract class AbstractPhpProcess
                 if (!empty($childResult['output'])) {
                     $output = $childResult['output'];
                 }
+
+                /** @var TestCase $test */
 
                 $test->setResult($childResult['testResult']);
                 $test->addToAssertionCount($childResult['numAssertions']);
