@@ -1778,7 +1778,7 @@ function returnSelf()
 /**
  * @param mixed $value
  *
- * @return PHPUnit\Framework\MockObject\Stub\Return
+ * @return PHPUnit\Framework\MockObject\Stub\ReturnStub
  */
 function returnValue($value)
 {
