@@ -37,7 +37,7 @@ class Test
     public const LARGE   = 2;
 
     /** TODO: This constant should be private (it's public because of TestTest::testGetProvidedDataRegEx) */
-    public const REGEX_DATA_PROVIDER               = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
+    public const REGEX_DATA_PROVIDER                = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
     private const REGEX_TEST_WITH                   = '/@testWith\s+/';
     private const REGEX_EXPECTED_EXCEPTION          = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
     private const REGEX_REQUIRES_VERSION            = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
@@ -46,7 +46,7 @@ class Test
     private const REGEX_REQUIRES                    = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
 
     private static $annotationCache = [];
-    private static $hookMethods = [];
+    private static $hookMethods     = [];
 
     /**
      * @param \PHPUnit\Framework\Test $test
@@ -423,7 +423,7 @@ class Test
      */
     private static function parseAnnotationContent($message)
     {
-        if ((\strpos($message, '::') !== false && substr_count($message, '::') + 1 === 2) && \defined($message)) {
+        if ((\strpos($message, '::') !== false && \substr_count($message, '::') + 1 === 2) && \defined($message)) {
             $message = \constant($message);
         }
 
