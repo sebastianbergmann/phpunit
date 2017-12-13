@@ -70,7 +70,6 @@ class LogicalXor extends Constraint
     {
         $success    = true;
         $lastResult = null;
-        $constraint = null;
 
         foreach ($this->constraints as $constraint) {
             $result = $constraint->evaluate($other, $description, true);

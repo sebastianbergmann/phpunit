@@ -76,8 +76,7 @@ class LogicalAnd extends Constraint
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
-        $success    = true;
-        $constraint = null;
+        $success = true;
 
         foreach ($this->constraints as $constraint) {
             if (!$constraint->evaluate($other, $description, true)) {

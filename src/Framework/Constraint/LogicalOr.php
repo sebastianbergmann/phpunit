@@ -68,8 +68,7 @@ class LogicalOr extends Constraint
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
-        $success    = false;
-        $constraint = null;
+        $success = false;
 
         foreach ($this->constraints as $constraint) {
             if ($constraint->evaluate($other, $description, true)) {
