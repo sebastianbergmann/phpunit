@@ -22,7 +22,7 @@ class InvokedAtLeastOnce extends InvokedRecorder
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'invoked at least once';
     }

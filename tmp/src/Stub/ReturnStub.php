@@ -33,7 +33,7 @@ class ReturnStub implements Stub
         return $this->value;
     }
 
-    public function toString()
+    public function toString(): string
     {
         $exporter = new Exporter;
 

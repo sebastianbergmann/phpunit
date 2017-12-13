@@ -18,7 +18,7 @@ class AnyInvokedCount extends InvokedRecorder
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'invoked zero or more times';
     }

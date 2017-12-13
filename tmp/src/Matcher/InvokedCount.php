@@ -46,7 +46,7 @@ class InvokedCount extends InvokedRecorder
     /**
      * @return string
      */
-    public function toString()
+    public function toString(): string
     {
         return 'invoked ' . $this->expectedCount . ' time(s)';
     }

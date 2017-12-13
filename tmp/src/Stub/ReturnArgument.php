@@ -36,7 +36,7 @@ class ReturnArgument implements Stub
         return;
     }
 
-    public function toString()
+    public function toString(): string
     {
         return \sprintf('return argument #%d', $this->argumentIndex);
     }
