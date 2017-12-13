@@ -26,6 +26,7 @@ use PHPUnit\Framework\Constraint\DirectoryExists;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
+use PHPUnit\Framework\Constraint\IsCountable;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Constraint\IsFalse;
@@ -515,6 +516,39 @@ abstract class Assert
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
             $message
         );
+    }
+
+    /**
+     * Asserts that a haystack is countable.
+     *
+     * @param array|\Countable $haystack
+     * @param string           $message
+     */
+    public static function assertIsCountable($haystack, $message = '')
+    {
+        if (!$haystack instanceof Countable &&
+            !\is_array($haystack)) {
+            throw InvalidArgumentHelper::factory(1, 'countable');
+        }
+
+        $constraint = new IsCountable;
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    /**
+     * Asserts that a haystack is not countable.
+     *
+     * @param mixed  $haystack
+     * @param string $message
+     */
+    public static function assertNotIsCountable($haystack, $message = '')
+    {
+        $constraint = new LogicalNot(
+            new IsCountable
+        );
+
+        static::assertThat($haystack, $constraint, $message);
     }
 
     /**

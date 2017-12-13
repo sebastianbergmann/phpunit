@@ -2763,6 +2763,27 @@ XML;
         $this->assertCount(2, [1, 2, 3]);
     }
 
+    public function testAssertIsCountable()
+    {
+        $this->assertIsCountable(new \ArrayObject);
+        $this->assertIsCountable([1, 2, 3]);
+
+        $this->expectException(Exception::class);
+
+        $this->assertIsCountable(1);
+    }
+
+
+    public function testAssertNotIsCountable()
+    {
+        $this->assertNotIsCountable(1);
+        $this->assertNotIsCountable('1');
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertNotIsCountable([1, 2, 3]);
+    }
+
     public function testAssertCountTraversable()
     {
         $this->assertCount(2, new \ArrayIterator([1, 2]));
