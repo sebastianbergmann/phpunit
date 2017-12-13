@@ -85,7 +85,7 @@ class TestSuiteIterator implements RecursiveIterator
      *
      * @return TestSuiteIterator
      */
-    public function getChildren(): TestSuiteIterator
+    public function getChildren(): self
     {
         return new self(
             $this->tests[$this->position]

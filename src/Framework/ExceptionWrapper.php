@@ -68,7 +68,7 @@ class ExceptionWrapper extends Exception
     /**
      * @return ExceptionWrapper
      */
-    public function getPreviousWrapped(): ?ExceptionWrapper
+    public function getPreviousWrapped(): ?self
     {
         return $this->previous;
     }

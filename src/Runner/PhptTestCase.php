@@ -143,6 +143,7 @@ class PhptTestCase implements Test, SelfDescribing
      * @param TestResult $result
      *
      * @return TestResult
+     *
      * @throws Exception
      * @throws \PHPUnit\Framework\Exception
      * @throws \ReflectionException

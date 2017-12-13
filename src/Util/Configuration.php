@@ -181,7 +181,7 @@ class Configuration
      *
      * @return Configuration
      */
-    public static function getInstance($filename): Configuration
+    public static function getInstance($filename): self
     {
         $realpath = \realpath($filename);
 

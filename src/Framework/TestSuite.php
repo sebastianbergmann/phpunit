@@ -560,7 +560,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                         foreach ($data as $_dataName => $_data) {
                             $_test = new $className($name, $_data, $_dataName);
 
-                            /** @var TestCase $_test */
+                            /* @var TestCase $_test */
 
                             if ($runTestInSeparateProcess) {
                                 $_test->setRunTestInSeparateProcess(true);

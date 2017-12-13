@@ -175,7 +175,7 @@ abstract class AbstractPhpProcess
     /**
      * @return AbstractPhpProcess
      */
-    public static function factory(): AbstractPhpProcess
+    public static function factory(): self
     {
         if (DIRECTORY_SEPARATOR == '\\') {
             return new WindowsPhpProcess;
@@ -250,7 +250,6 @@ abstract class AbstractPhpProcess
      * @param array  $settings
      *
      * @return array
-     *
      */
     abstract public function runJob($job, array $settings = []): array;
 
@@ -316,7 +315,7 @@ abstract class AbstractPhpProcess
                     $output = $childResult['output'];
                 }
 
-                /** @var TestCase $test */
+                /* @var TestCase $test */
 
                 $test->setResult($childResult['testResult']);
                 $test->addToAssertionCount($childResult['numAssertions']);
