@@ -34,7 +34,7 @@ use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
-use SebastianBergmann\CodeCoverage\Report\PHP;
+
 use Throwable;
 
 /**

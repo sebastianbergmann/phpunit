@@ -545,7 +545,6 @@ class TestRunner extends BaseTestRunner
 
         $suite->run($result);
 
-        unset($suite);
         $result->flushListeners();
 
         if ($this->printer instanceof ResultPrinter) {

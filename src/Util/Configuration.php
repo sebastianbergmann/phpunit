@@ -476,7 +476,6 @@ class Configuration
                 $name     = (string) $var->getAttribute('name');
                 $value    = (string) $var->getAttribute('value');
                 $verbatim = false;
-                $force    = false;
 
                 if ($var->hasAttribute('verbatim')) {
                     $verbatim                          = $this->getBoolean($var->getAttribute('verbatim'), false);
