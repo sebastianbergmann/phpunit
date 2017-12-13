@@ -46,12 +46,14 @@ class JsonMatches extends Constraint
      */
     protected function matches($other)
     {
-        list($error, $recodedOther) = Json::canonicalize($other);
+        [$error, $recodedOther] = Json::canonicalize($other);
+
         if ($error) {
             return false;
         }
 
-        list($error, $recodedValue) = Json::canonicalize($this->value);
+        [$error, $recodedValue] = Json::canonicalize($this->value);
+
         if ($error) {
             return false;
         }
@@ -71,14 +73,16 @@ class JsonMatches extends Constraint
     protected function fail($other, $description, ComparisonFailure $comparisonFailure = null)
     {
         if ($comparisonFailure === null) {
-            list($error) = Json::canonicalize($other);
+            [$error] = Json::canonicalize($other);
+
             if ($error) {
                 parent::fail($other, $description);
 
                 return;
             }
 
-            list($error) = Json::canonicalize($this->value);
+            [$error] = Json::canonicalize($this->value);
+
             if ($error) {
                 parent::fail($other, $description);
 

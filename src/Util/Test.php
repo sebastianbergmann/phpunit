@@ -1002,7 +1002,7 @@ class Test
         if (\strpos($element, '\\') !== false && \function_exists($element)) {
             $codeToCoverList[] = new ReflectionFunction($element);
         } elseif (\strpos($element, '::') !== false) {
-            list($className, $methodName) = \explode('::', $element);
+            [$className, $methodName] = \explode('::', $element);
 
             if (isset($methodName[0]) && $methodName[0] == '<') {
                 $classes = [$className];

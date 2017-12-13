@@ -46,8 +46,8 @@ class Factory
     public function factory(Iterator $iterator, TestSuite $suite)
     {
         foreach ($this->filters as $filter) {
-            list($class, $args) = $filter;
-            $iterator           = $class->newInstance($iterator, $args, $suite);
+            [$class, $args] = $filter;
+            $iterator       = $class->newInstance($iterator, $args, $suite);
         }
 
         return $iterator;
