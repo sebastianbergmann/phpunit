@@ -13,6 +13,10 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 BankAccount
- [x] Balance is initially zero
- [x] Balance cannot become negative
+ ✔ Balance is initially zero [%f ms]
+ ✔ Balance cannot become negative [%f ms]
 
+
+Time: %d ms, Memory: %fMB
+
+OK (3 tests, 3 assertions)

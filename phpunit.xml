@@ -8,6 +8,7 @@
             <directory suffix="Test.php">tests/Framework</directory>
             <directory suffix="Test.php">tests/Runner</directory>
             <directory suffix="Test.php">tests/Util</directory>
+            <directory suffix="Test.php">tests/TextUI</directory>
         </testsuite>
 
         <testsuite name="large">

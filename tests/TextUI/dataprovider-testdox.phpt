@@ -13,7 +13,12 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 DataProviderTestDox
- [x] Does something with one
- [x] Does something with two
- [x] Does something else with one
- [x] Does something else with two
+ ✔ Does something with data set "one" [%f ms]
+ ✔ Does something with data set "two" [%f ms]
+ ✔ Does something else with data set "one" [%f ms]
+ ✔ Does something else with data set "two" [%f ms]
+
+
+Time: %d ms, Memory: %fMB
+
+OK (4 tests, 4 assertions)
