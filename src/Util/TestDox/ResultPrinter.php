@@ -125,10 +125,10 @@ abstract class ResultPrinter extends Printer implements TestListener
      * An error occurred.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addError(Test $test, \Exception $e, $time): void
+    public function addError(Test $test, \Throwable $t, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -176,10 +176,10 @@ abstract class ResultPrinter extends Printer implements TestListener
      * Incomplete test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Exception $e, $time): void
+    public function addIncompleteTest(Test $test, \Throwable $t, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -193,10 +193,10 @@ abstract class ResultPrinter extends Printer implements TestListener
      * Risky test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Exception $e, $time): void
+    public function addRiskyTest(Test $test, \Throwable $t, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -210,10 +210,10 @@ abstract class ResultPrinter extends Printer implements TestListener
      * Skipped test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Exception $e, $time): void
+    public function addSkippedTest(Test $test, \Throwable $t, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;

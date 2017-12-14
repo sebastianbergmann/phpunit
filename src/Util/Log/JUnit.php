@@ -133,12 +133,12 @@ class JUnit extends Printer implements TestListener
      * An error occurred.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addError(Test $test, \Exception $e, $time): void
+    public function addError(Test $test, \Throwable $t, $time): void
     {
-        $this->doAddFault($test, $e, $time, 'error');
+        $this->doAddFault($test, $t, $time, 'error');
         $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
 
@@ -172,10 +172,10 @@ class JUnit extends Printer implements TestListener
      * Incomplete test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Exception $e, $time): void
+    public function addIncompleteTest(Test $test, \Throwable $t, $time): void
     {
         $this->doAddSkipped($test);
     }
@@ -184,10 +184,10 @@ class JUnit extends Printer implements TestListener
      * Risky test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Exception $e, $time): void
+    public function addRiskyTest(Test $test, \Throwable $t, $time): void
     {
         if (!$this->reportUselessTests || $this->currentTestCase === null) {
             return;
@@ -197,11 +197,11 @@ class JUnit extends Printer implements TestListener
             'error',
             Xml::prepareString(
                 "Risky Test\n" .
-                Filter::getFilteredStacktrace($e)
+                Filter::getFilteredStacktrace($t)
             )
         );
 
-        $error->setAttribute('type', \get_class($e));
+        $error->setAttribute('type', \get_class($t));
 
         $this->currentTestCase->appendChild($error);
 
@@ -212,10 +212,10 @@ class JUnit extends Printer implements TestListener
      * Skipped test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Exception $e, $time): void
+    public function addSkippedTest(Test $test, \Throwable $t, $time): void
     {
         $this->doAddSkipped($test);
     }
@@ -406,11 +406,11 @@ class JUnit extends Printer implements TestListener
      * Method which generalizes addError() and addFailure()
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      * @param string     $type
      */
-    private function doAddFault(Test $test, \Exception $e, $time, $type): void
+    private function doAddFault(Test $test, \Throwable $t, $time, $type): void
     {
         if ($this->currentTestCase === null) {
             return;
@@ -422,18 +422,18 @@ class JUnit extends Printer implements TestListener
             $buffer = '';
         }
 
-        $buffer .= TestFailure::exceptionToString($e) . "\n" .
-                   Filter::getFilteredStacktrace($e);
+        $buffer .= TestFailure::exceptionToString($t) . "\n" .
+                   Filter::getFilteredStacktrace($t);
 
         $fault = $this->document->createElement(
             $type,
             Xml::prepareString($buffer)
         );
 
-        if ($e instanceof ExceptionWrapper) {
-            $fault->setAttribute('type', $e->getClassName());
+        if ($t instanceof ExceptionWrapper) {
+            $fault->setAttribute('type', $t->getClassName());
         } else {
-            $fault->setAttribute('type', \get_class($e));
+            $fault->setAttribute('type', \get_class($t));
         }
 
         $this->currentTestCase->appendChild($fault);

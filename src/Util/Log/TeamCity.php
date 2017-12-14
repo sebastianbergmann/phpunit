@@ -58,17 +58,17 @@ class TeamCity extends ResultPrinter
      * An error occurred.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addError(Test $test, \Exception $e, $time): void
+    public function addError(Test $test, \Throwable $t, $time): void
     {
         $this->printEvent(
             'testFailed',
             [
                 'name'    => $test->getName(),
-                'message' => self::getMessage($e),
-                'details' => self::getDetails($e),
+                'message' => self::getMessage($t),
+                'details' => self::getDetails($t),
             ]
         );
     }
@@ -138,53 +138,53 @@ class TeamCity extends ResultPrinter
      * Incomplete test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Exception $e, $time): void
+    public function addIncompleteTest(Test $test, \Throwable $t, $time): void
     {
-        $this->printIgnoredTest($test->getName(), $e);
+        $this->printIgnoredTest($test->getName(), $t);
     }
 
     /**
      * Risky test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Exception $e, $time): void
+    public function addRiskyTest(Test $test, \Throwable $t, $time): void
     {
-        $this->addError($test, $e, $time);
+        $this->addError($test, $t, $time);
     }
 
     /**
      * Skipped test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Exception $e, $time): void
+    public function addSkippedTest(Test $test, \Throwable $t, $time): void
     {
         $testName = $test->getName();
         if ($this->startedTestName != $testName) {
             $this->startTest($test);
-            $this->printIgnoredTest($testName, $e);
+            $this->printIgnoredTest($testName, $t);
             $this->endTest($test, $time);
         } else {
-            $this->printIgnoredTest($testName, $e);
+            $this->printIgnoredTest($testName, $t);
         }
     }
 
-    public function printIgnoredTest($testName, \Exception $e): void
+    public function printIgnoredTest($testName, \Throwable $t): void
     {
         $this->printEvent(
             'testIgnored',
             [
                 'name'    => $testName,
-                'message' => self::getMessage($e),
-                'details' => self::getDetails($e),
+                'message' => self::getMessage($t),
+                'details' => self::getDetails($t),
             ]
         );
     }
@@ -328,37 +328,36 @@ class TeamCity extends ResultPrinter
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $t
      *
      * @return string
      */
-    private static function getMessage(\Exception $e): string
+    private static function getMessage(\Throwable $t): string
     {
         $message = '';
 
-        if ($e instanceof ExceptionWrapper) {
-            if ('' !== $e->getClassName()) {
-                $message .= $e->getClassName();
+        if ($t instanceof ExceptionWrapper) {
+            if ('' !== $t->getClassName()) {
+                $message .= $t->getClassName();
             }
 
-            if ('' !== $message && '' !== $e->getMessage()) {
+            if ('' !== $message && '' !== $t->getMessage()) {
                 $message .= ' : ';
             }
         }
 
-        return $message . $e->getMessage();
+        return $message . $t->getMessage();
     }
 
     /**
-     * @param \Exception $e
+     * @param \Throwable $t
      *
      * @return string
      */
-    private static function getDetails(\Exception $e): string
+    private static function getDetails(\Throwable $t): string
     {
-        $stackTrace = Filter::getFilteredStacktrace($e);
-        $previous   = $e instanceof ExceptionWrapper ?
-            $e->getPreviousWrapped() : $e->getPrevious();
+        $stackTrace = Filter::getFilteredStacktrace($t);
+        $previous   = $t instanceof ExceptionWrapper ? $t->getPreviousWrapped() : $t->getPrevious();
 
         while ($previous) {
             $stackTrace .= "\nCaused by\n" .

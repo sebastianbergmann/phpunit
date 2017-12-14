@@ -18,10 +18,10 @@ interface TestListener
      * An error occurred.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addError(Test $test, \Exception $e, $time);
+    public function addError(Test $test, \Throwable $t, $time);
 
     /**
      * A warning occurred.
@@ -45,28 +45,28 @@ interface TestListener
      * Incomplete test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Exception $e, $time);
+    public function addIncompleteTest(Test $test, \Throwable $t, $time);
 
     /**
      * Risky test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Exception $e, $time);
+    public function addRiskyTest(Test $test, \Throwable $t, $time);
 
     /**
      * Skipped test.
      *
      * @param Test       $test
-     * @param \Exception $e
+     * @param \Throwable $t
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Exception $e, $time);
+    public function addSkippedTest(Test $test, \Throwable $t, $time);
 
     /**
      * A test suite started.
