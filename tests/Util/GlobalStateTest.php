@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class GlobalStateTest extends TestCase
 {
-    public function testIncludedFilesAsStringSkipsVfsProtocols()
+    public function testIncludedFilesAsStringSkipsVfsProtocols(): void
     {
         $dir   = __DIR__;
         $files = [

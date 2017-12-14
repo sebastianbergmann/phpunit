@@ -19,12 +19,12 @@ class NamePrettifierTest extends TestCase
      */
     private $namePrettifier;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->namePrettifier = new NamePrettifier;
     }
 
-    public function testTitleHasSensibleDefaults()
+    public function testTitleHasSensibleDefaults(): void
     {
         $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('FooTest'));
         $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('TestFoo'));
@@ -32,7 +32,7 @@ class NamePrettifierTest extends TestCase
         $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('Test\FooTest'));
     }
 
-    public function testCaterForUserDefinedSuffix()
+    public function testCaterForUserDefinedSuffix(): void
     {
         $this->namePrettifier->setSuffix('TestCase');
         $this->namePrettifier->setPrefix(null);
@@ -42,7 +42,7 @@ class NamePrettifierTest extends TestCase
         $this->assertEquals('FooTest', $this->namePrettifier->prettifyTestClass('FooTest'));
     }
 
-    public function testCaterForUserDefinedPrefix()
+    public function testCaterForUserDefinedPrefix(): void
     {
         $this->namePrettifier->setSuffix(null);
         $this->namePrettifier->setPrefix('XXX');
@@ -52,7 +52,7 @@ class NamePrettifierTest extends TestCase
         $this->assertEquals('XXX', $this->namePrettifier->prettifyTestClass('XXXXXX'));
     }
 
-    public function testTestNameIsConvertedToASentence()
+    public function testTestNameIsConvertedToASentence(): void
     {
         $this->assertEquals('This is a test', $this->namePrettifier->prettifyTestMethod('testThisIsATest'));
         $this->assertEquals('This is a test', $this->namePrettifier->prettifyTestMethod('testThisIsATest2'));
@@ -65,7 +65,7 @@ class NamePrettifierTest extends TestCase
     /**
      * @ticket 224
      */
-    public function testTestNameIsNotGroupedWhenNotInSequence()
+    public function testTestNameIsNotGroupedWhenNotInSequence(): void
     {
         $this->assertEquals('Sets redirect header on 301', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn301'));
         $this->assertEquals('Sets redirect header on 302', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn302'));

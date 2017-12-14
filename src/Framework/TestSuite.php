@@ -208,7 +208,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * Template Method that is called before the tests
      * of this test suite are run.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
     }
 
@@ -216,7 +216,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * Template Method that is called after the tests
      * of this test suite have finished running.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
     }
 

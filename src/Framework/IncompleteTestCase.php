@@ -76,7 +76,7 @@ class IncompleteTestCase extends TestCase
     /**
      * @throws Exception
      */
-    protected function runTest()
+    protected function runTest(): void
     {
         $this->markTestIncomplete($this->message);
     }

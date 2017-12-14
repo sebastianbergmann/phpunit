@@ -5,7 +5,7 @@ help
 --FILE--
 <?php
 if ($argc > 0 && $argv[1] == 'help') {
-    echo 'Help';
+    print 'Help';
 }
 ?>
 --EXPECT--

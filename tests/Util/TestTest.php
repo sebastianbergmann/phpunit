@@ -21,7 +21,7 @@ class TestTest extends TestCase
     /**
      * @todo Split up in separate tests
      */
-    public function testGetExpectedException()
+    public function testGetExpectedException(): void
     {
         $this->assertArraySubset(
             ['class' => 'FooBarBaz', 'code' => null, 'message' => ''],
@@ -90,7 +90,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testGetExpectedRegExp()
+    public function testGetExpectedRegExp(): void
     {
         $this->assertArraySubset(
             ['message_regex' => '#regex#'],
@@ -114,7 +114,7 @@ class TestTest extends TestCase
      * @param mixed $test
      * @param mixed $result
      */
-    public function testGetRequirements($test, $result)
+    public function testGetRequirements($test, $result): void
     {
         $this->assertEquals(
             $result,
@@ -321,7 +321,7 @@ class TestTest extends TestCase
      *
      * @param mixed $test
      */
-    public function testGetRequirementsWithVersionConstraints($test, array $result)
+    public function testGetRequirementsWithVersionConstraints($test, array $result): void
     {
         $requirements = Test::getRequirements(\RequirementsTest::class, $test);
         foreach ($result as $type => $expected_requirement) {
@@ -454,7 +454,7 @@ class TestTest extends TestCase
      *
      * @param mixed $test
      */
-    public function testGetRequirementsWithInvalidVersionConstraintsThrowsException($test)
+    public function testGetRequirementsWithInvalidVersionConstraintsThrowsException($test): void
     {
         $this->expectException(Warning::class);
         Test::getRequirements(\RequirementsTest::class, $test);
@@ -468,7 +468,7 @@ class TestTest extends TestCase
         ];
     }
 
-    public function testGetRequirementsMergesClassAndMethodDocBlocks()
+    public function testGetRequirementsMergesClassAndMethodDocBlocks(): void
     {
         $expectedAnnotations = [
             'PHP'       => ['version' => '5.4', 'operator' => ''],
@@ -496,7 +496,7 @@ class TestTest extends TestCase
      * @param mixed $test
      * @param mixed $result
      */
-    public function testGetMissingRequirements($test, $result)
+    public function testGetMissingRequirements($test, $result): void
     {
         $this->assertEquals(
             $result,
@@ -558,7 +558,7 @@ class TestTest extends TestCase
     /**
      * @todo This test does not really test functionality of \PHPUnit\Util\Test
      */
-    public function testGetProvidedDataRegEx()
+    public function testGetProvidedDataRegEx(): void
     {
         $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
         $this->assertEquals(1, $result);
@@ -584,7 +584,7 @@ class TestTest extends TestCase
     /**
      * Check if all data providers are being merged.
      */
-    public function testMultipleDataProviders()
+    public function testMultipleDataProviders(): void
     {
         $dataSets = Test::getProvidedData(\MultipleDataProviderTest::class, 'testOne');
 
@@ -605,7 +605,7 @@ class TestTest extends TestCase
         $this->assertEquals(3, $cCount);
     }
 
-    public function testMultipleYieldIteratorDataProviders()
+    public function testMultipleYieldIteratorDataProviders(): void
     {
         $dataSets = Test::getProvidedData(\MultipleDataProviderTest::class, 'testTwo');
 
@@ -626,7 +626,7 @@ class TestTest extends TestCase
         $this->assertEquals(3, $cCount);
     }
 
-    public function testWithVariousIterableDataProviders()
+    public function testWithVariousIterableDataProviders(): void
     {
         $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'test');
 
@@ -643,13 +643,13 @@ class TestTest extends TestCase
         ], $dataSets);
     }
 
-    public function testTestWithEmptyAnnotation()
+    public function testTestWithEmptyAnnotation(): void
     {
         $result = Test::getDataFromTestWithAnnotation("/**\n * @anotherAnnotation\n */");
         $this->assertNull($result);
     }
 
-    public function testTestWithSimpleCase()
+    public function testTestWithSimpleCase(): void
     {
         $result = Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1]
@@ -657,7 +657,7 @@ class TestTest extends TestCase
         $this->assertEquals([[1]], $result);
     }
 
-    public function testTestWithMultiLineMultiParameterCase()
+    public function testTestWithMultiLineMultiParameterCase(): void
     {
         $result = Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1, 2]
@@ -666,7 +666,7 @@ class TestTest extends TestCase
         $this->assertEquals([[1, 2], [3, 4]], $result);
     }
 
-    public function testTestWithVariousTypes()
+    public function testTestWithVariousTypes(): void
     {
         $result = Test::getDataFromTestWithAnnotation('/**
             * @testWith ["ab"]
@@ -676,7 +676,7 @@ class TestTest extends TestCase
         $this->assertEquals([['ab'], [true], [null]], $result);
     }
 
-    public function testTestWithAnnotationAfter()
+    public function testTestWithAnnotationAfter(): void
     {
         $result = Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1]
@@ -686,7 +686,7 @@ class TestTest extends TestCase
         $this->assertEquals([[1], [2]], $result);
     }
 
-    public function testTestWithSimpleTextAfter()
+    public function testTestWithSimpleTextAfter(): void
     {
         $result = Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith [1]
@@ -696,7 +696,7 @@ class TestTest extends TestCase
         $this->assertEquals([[1], [2]], $result);
     }
 
-    public function testTestWithCharacterEscape()
+    public function testTestWithCharacterEscape(): void
     {
         $result = Test::getDataFromTestWithAnnotation('/**
                                                                      * @testWith ["\"", "\""]
@@ -704,7 +704,7 @@ class TestTest extends TestCase
         $this->assertEquals([['"', '"']], $result);
     }
 
-    public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed()
+    public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The dataset for the @testWith annotation cannot be parsed:/');
@@ -714,7 +714,7 @@ class TestTest extends TestCase
                                                            */');
     }
 
-    public function testTestWithThrowsProperExceptionIfMultiLineDatasetCannotBeParsed()
+    public function testTestWithThrowsProperExceptionIfMultiLineDatasetCannotBeParsed(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The dataset for the @testWith annotation cannot be parsed:/');
@@ -728,7 +728,7 @@ class TestTest extends TestCase
     /**
      * @todo Not sure what this test tests (name is misleading at least)
      */
-    public function testParseAnnotation()
+    public function testParseAnnotation(): void
     {
         $this->assertEquals(
             ['Foo', 'ほげ'],
@@ -742,11 +742,11 @@ class TestTest extends TestCase
      *
      * @todo Remove fixture from test class
      */
-    public function methodForTestParseAnnotation()
+    public function methodForTestParseAnnotation(): void
     {
     }
 
-    public function testParseAnnotationThatIsOnlyOneLine()
+    public function testParseAnnotationThatIsOnlyOneLine(): void
     {
         $this->assertEquals(
             ['Bar'],
@@ -755,7 +755,7 @@ class TestTest extends TestCase
     }
 
     /** @depends Bar */
-    public function methodForTestParseAnnotationThatIsOnlyOneLine()
+    public function methodForTestParseAnnotationThatIsOnlyOneLine(): void
     {
         // TODO Remove fixture from test class
     }
@@ -766,7 +766,7 @@ class TestTest extends TestCase
      * @param mixed $test
      * @param mixed $lines
      */
-    public function testGetLinesToBeCovered($test, $lines)
+    public function testGetLinesToBeCovered($test, $lines): void
     {
         if (\strpos($test, 'Namespace') === 0) {
             $expected = [
@@ -793,7 +793,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testGetLinesToBeCovered2()
+    public function testGetLinesToBeCovered2(): void
     {
         $this->expectException(CodeCoverageException::class);
 
@@ -803,7 +803,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testGetLinesToBeCovered3()
+    public function testGetLinesToBeCovered3(): void
     {
         $this->expectException(CodeCoverageException::class);
 
@@ -813,7 +813,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testGetLinesToBeCovered4()
+    public function testGetLinesToBeCovered4(): void
     {
         $this->expectException(CodeCoverageException::class);
 
@@ -823,7 +823,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testGetLinesToBeCoveredSkipsNonExistentMethods()
+    public function testGetLinesToBeCoveredSkipsNonExistentMethods(): void
     {
         $this->assertSame(
             [],
@@ -834,7 +834,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testTwoCoversDefaultClassAnnotationsAreNotAllowed()
+    public function testTwoCoversDefaultClassAnnotationsAreNotAllowed(): void
     {
         $this->expectException(CodeCoverageException::class);
 
@@ -844,7 +844,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testFunctionParenthesesAreAllowed()
+    public function testFunctionParenthesesAreAllowed(): void
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => \range(2, 4)],
@@ -855,7 +855,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testFunctionParenthesesAreAllowedWithWhitespace()
+    public function testFunctionParenthesesAreAllowedWithWhitespace(): void
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => \range(2, 4)],
@@ -866,7 +866,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testMethodParenthesesAreAllowed()
+    public function testMethodParenthesesAreAllowed(): void
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => \range(31, 35)],
@@ -877,7 +877,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testMethodParenthesesAreAllowedWithWhitespace()
+    public function testMethodParenthesesAreAllowedWithWhitespace(): void
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => \range(31, 35)],
@@ -888,7 +888,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function testNamespacedFunctionCanBeCoveredOrUsed()
+    public function testNamespacedFunctionCanBeCoveredOrUsed(): void
     {
         $this->assertEquals(
             [
@@ -1003,7 +1003,7 @@ class TestTest extends TestCase
         ];
     }
 
-    public function testParseTestMethodAnnotationsIncorporatesTraits()
+    public function testParseTestMethodAnnotationsIncorporatesTraits(): void
     {
         $result = Test::parseTestMethodAnnotations(\ParseTestMethodAnnotationsMock::class);
 

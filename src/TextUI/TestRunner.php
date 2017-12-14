@@ -654,7 +654,7 @@ class TestRunner extends BaseTestRunner
     /**
      * @param ResultPrinter $resultPrinter
      */
-    public function setPrinter(ResultPrinter $resultPrinter)
+    public function setPrinter(ResultPrinter $resultPrinter): void
     {
         $this->printer = $resultPrinter;
     }
@@ -696,7 +696,7 @@ class TestRunner extends BaseTestRunner
     /**
      * @param string $buffer
      */
-    protected function write($buffer)
+    protected function write($buffer): void
     {
         if (PHP_SAPI != 'cli' && PHP_SAPI != 'phpdbg') {
             $buffer = \htmlspecialchars($buffer);
@@ -712,7 +712,7 @@ class TestRunner extends BaseTestRunner
     /**
      * @param array $arguments
      */
-    protected function handleConfiguration(array &$arguments)
+    protected function handleConfiguration(array &$arguments): void
     {
         if (isset($arguments['configuration']) &&
             !$arguments['configuration'] instanceof Configuration) {
@@ -1056,7 +1056,7 @@ class TestRunner extends BaseTestRunner
      * @param TestSuite $suite
      * @param array     $arguments
      */
-    private function processSuiteFilters(TestSuite $suite, array $arguments)
+    private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {
         if (!$arguments['filter'] &&
             empty($arguments['groups']) &&
@@ -1094,7 +1094,7 @@ class TestRunner extends BaseTestRunner
      * @param string $type
      * @param string $message
      */
-    private function writeMessage($type, $message)
+    private function writeMessage($type, $message): void
     {
         if (!$this->messagePrinted) {
             $this->write("\n");

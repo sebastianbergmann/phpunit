@@ -40,7 +40,7 @@ class RegularExpressionTest extends TestCase
      * @param mixed $subject
      * @param mixed $return
      */
-    public function testValidRegex($pattern, $subject, $return)
+    public function testValidRegex($pattern, $subject, $return): void
     {
         $this->assertEquals($return, RegularExpression::safeMatch($pattern, $subject));
     }
@@ -51,7 +51,7 @@ class RegularExpressionTest extends TestCase
      * @param mixed $pattern
      * @param mixed $subject
      */
-    public function testInvalidRegex($pattern, $subject)
+    public function testInvalidRegex($pattern, $subject): void
     {
         $this->assertFalse(RegularExpression::safeMatch($pattern, $subject));
     }

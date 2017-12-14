@@ -179,7 +179,7 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @param TestResult $result
      */
-    public function printResult(TestResult $result)
+    public function printResult(TestResult $result): void
     {
         $this->printHeader();
         $this->printErrors($result);
@@ -195,7 +195,7 @@ class ResultPrinter extends Printer implements TestListener
         $this->printFooter($result);
     }
 
-    public function printWaitPrompt()
+    public function printWaitPrompt(): void
     {
         $this->write("\n<RETURN> to continue\n");
     }
@@ -207,7 +207,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addError(Test $test, \Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time): void
     {
         $this->writeProgressWithColor('fg-red, bold', 'E');
         $this->lastTestFailed = true;
@@ -220,7 +220,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param AssertionFailedError $e
      * @param float                $time
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time): void
     {
         $this->writeProgressWithColor('bg-red, fg-white', 'F');
         $this->lastTestFailed = true;
@@ -233,7 +233,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param Warning $e
      * @param float   $time
      */
-    public function addWarning(Test $test, Warning $e, $time)
+    public function addWarning(Test $test, Warning $e, $time): void
     {
         $this->writeProgressWithColor('fg-yellow, bold', 'W');
         $this->lastTestFailed = true;
@@ -246,7 +246,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time): void
     {
         $this->writeProgressWithColor('fg-yellow, bold', 'I');
         $this->lastTestFailed = true;
@@ -259,7 +259,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time): void
     {
         $this->writeProgressWithColor('fg-yellow, bold', 'R');
         $this->lastTestFailed = true;
@@ -272,7 +272,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time): void
     {
         $this->writeProgressWithColor('fg-cyan, bold', 'S');
         $this->lastTestFailed = true;
@@ -283,7 +283,7 @@ class ResultPrinter extends Printer implements TestListener
      *
      * @param TestSuite $suite
      */
-    public function startTestSuite(TestSuite $suite)
+    public function startTestSuite(TestSuite $suite): void
     {
         if ($this->numTests == -1) {
             $this->numTests      = \count($suite);
@@ -297,7 +297,7 @@ class ResultPrinter extends Printer implements TestListener
      *
      * @param TestSuite $suite
      */
-    public function endTestSuite(TestSuite $suite)
+    public function endTestSuite(TestSuite $suite): void
     {
     }
 
@@ -306,7 +306,7 @@ class ResultPrinter extends Printer implements TestListener
      *
      * @param Test $test
      */
-    public function startTest(Test $test)
+    public function startTest(Test $test): void
     {
         if ($this->debug) {
             $this->write(
@@ -324,7 +324,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param Test  $test
      * @param float $time
      */
-    public function endTest(Test $test, $time)
+    public function endTest(Test $test, $time): void
     {
         if ($this->debug) {
             $this->write(
@@ -358,7 +358,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param array  $defects
      * @param string $type
      */
-    protected function printDefects(array $defects, $type)
+    protected function printDefects(array $defects, $type): void
     {
         $count = \count($defects);
 
@@ -397,7 +397,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param TestFailure $defect
      * @param int         $count
      */
-    protected function printDefect(TestFailure $defect, $count)
+    protected function printDefect(TestFailure $defect, $count): void
     {
         $this->printDefectHeader($defect, $count);
         $this->printDefectTrace($defect);
@@ -407,7 +407,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param TestFailure $defect
      * @param int         $count
      */
-    protected function printDefectHeader(TestFailure $defect, $count)
+    protected function printDefectHeader(TestFailure $defect, $count): void
     {
         $this->write(
             \sprintf(
@@ -421,7 +421,7 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @param TestFailure $defect
      */
-    protected function printDefectTrace(TestFailure $defect)
+    protected function printDefectTrace(TestFailure $defect): void
     {
         $e = $defect->thrownException();
         $this->write((string) $e);
@@ -434,7 +434,7 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @param TestResult $result
      */
-    protected function printErrors(TestResult $result)
+    protected function printErrors(TestResult $result): void
     {
         $this->printDefects($result->errors(), 'error');
     }
@@ -442,7 +442,7 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @param TestResult $result
      */
-    protected function printFailures(TestResult $result)
+    protected function printFailures(TestResult $result): void
     {
         $this->printDefects($result->failures(), 'failure');
     }
@@ -450,7 +450,7 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @param TestResult $result
      */
-    protected function printWarnings(TestResult $result)
+    protected function printWarnings(TestResult $result): void
     {
         $this->printDefects($result->warnings(), 'warning');
     }
@@ -458,7 +458,7 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @param TestResult $result
      */
-    protected function printIncompletes(TestResult $result)
+    protected function printIncompletes(TestResult $result): void
     {
         $this->printDefects($result->notImplemented(), 'incomplete test');
     }
@@ -466,7 +466,7 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @param TestResult $result
      */
-    protected function printRisky(TestResult $result)
+    protected function printRisky(TestResult $result): void
     {
         $this->printDefects($result->risky(), 'risky test');
     }
@@ -474,12 +474,12 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @param TestResult $result
      */
-    protected function printSkipped(TestResult $result)
+    protected function printSkipped(TestResult $result): void
     {
         $this->printDefects($result->skipped(), 'skipped test');
     }
 
-    protected function printHeader()
+    protected function printHeader(): void
     {
         $this->write("\n\n" . PHP_Timer::resourceUsage() . "\n\n");
     }
@@ -487,7 +487,7 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @param TestResult $result
      */
-    protected function printFooter(TestResult $result)
+    protected function printFooter(TestResult $result): void
     {
         if (\count($result) === 0) {
             $this->writeWithColor(
@@ -566,7 +566,7 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * @param string $progress
      */
-    protected function writeProgress($progress)
+    protected function writeProgress($progress): void
     {
         if ($this->debug) {
             return;
@@ -597,7 +597,7 @@ class ResultPrinter extends Printer implements TestListener
         }
     }
 
-    protected function writeNewLine()
+    protected function writeNewLine(): void
     {
         $this->column = 0;
         $this->write("\n");
@@ -645,7 +645,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param string $buffer
      * @param bool   $lf
      */
-    protected function writeWithColor($color, $buffer, $lf = true)
+    protected function writeWithColor($color, $buffer, $lf = true): void
     {
         $this->write($this->formatWithColor($color, $buffer));
 
@@ -660,7 +660,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param string $color
      * @param string $buffer
      */
-    protected function writeProgressWithColor($color, $buffer)
+    protected function writeProgressWithColor($color, $buffer): void
     {
         $buffer = $this->formatWithColor($color, $buffer);
         $this->writeProgress($buffer);
@@ -672,7 +672,7 @@ class ResultPrinter extends Printer implements TestListener
      * @param string $color
      * @param bool   $always
      */
-    private function writeCountString($count, $name, $color, $always = false)
+    private function writeCountString($count, $name, $color, $always = false): void
     {
         static $first = true;
 

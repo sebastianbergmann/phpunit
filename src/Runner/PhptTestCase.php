@@ -285,7 +285,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    private function assertPhptExpectation(array $sections, $output)
+    private function assertPhptExpectation(array $sections, $output): void
     {
         $assertions = [
             'EXPECT'      => 'assertEquals',
@@ -350,7 +350,7 @@ class PhptTestCase implements Test, SelfDescribing
     /**
      * @param array<string, string> $sections
      */
-    private function runClean(&$sections)
+    private function runClean(&$sections): void
     {
         $this->phpUtil->setStdin('');
         $this->phpUtil->setArgs('');
@@ -428,7 +428,7 @@ class PhptTestCase implements Test, SelfDescribing
     /**
      * @param array<string, string> $sections
      */
-    private function parseExternal(&$sections)
+    private function parseExternal(&$sections): void
     {
         $allowSections = [
             'FILE',

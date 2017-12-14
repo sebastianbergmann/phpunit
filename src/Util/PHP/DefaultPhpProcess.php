@@ -215,12 +215,12 @@ class DefaultPhpProcess extends AbstractPhpProcess
      *
      * @throws Exception
      */
-    protected function process($pipe, $job)
+    protected function process($pipe, $job): void
     {
         \fwrite($pipe, $job);
     }
 
-    protected function cleanup()
+    protected function cleanup(): void
     {
         if ($this->tempFile) {
             \unlink($this->tempFile);

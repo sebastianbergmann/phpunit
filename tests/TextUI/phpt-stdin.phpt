@@ -4,8 +4,8 @@ PHPT runner supports STDIN section
 Hello World
 --FILE--
 <?php
-$input = file_get_contents('php://stdin');
-echo $input;
+$input = \file_get_contents('php://stdin');
+print $input;
 ?>
 --EXPECT--
 Hello World

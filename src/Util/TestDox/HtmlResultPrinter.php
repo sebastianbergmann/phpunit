@@ -79,7 +79,7 @@ EOT;
     /**
      * Handler for 'start run' event.
      */
-    protected function startRun()
+    protected function startRun(): void
     {
         $this->write($this->pageHeader);
     }
@@ -89,7 +89,7 @@ EOT;
      *
      * @param string $name
      */
-    protected function startClass($name)
+    protected function startClass($name): void
     {
         $this->write(
             \sprintf(
@@ -106,7 +106,7 @@ EOT;
      * @param string $name
      * @param bool   $success
      */
-    protected function onTest($name, $success = true)
+    protected function onTest($name, $success = true): void
     {
         $this->write(
             \sprintf(
@@ -123,7 +123,7 @@ EOT;
      *
      * @param string $name
      */
-    protected function endClass($name)
+    protected function endClass($name): void
     {
         $this->write($this->classFooter);
     }
@@ -131,7 +131,7 @@ EOT;
     /**
      * Handler for 'end run' event.
      */
-    protected function endRun()
+    protected function endRun(): void
     {
         $this->write($this->pageFooter);
     }

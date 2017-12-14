@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 
 class TestFailureTest extends TestCase
 {
-    public function testToString()
+    public function testToString(): void
     {
         $test      = new self(__FUNCTION__);
         $exception = new Exception('message');
@@ -21,7 +21,7 @@ class TestFailureTest extends TestCase
         $this->assertEquals(__METHOD__ . ': message', $failure->toString());
     }
 
-    public function testToStringForError()
+    public function testToStringForError(): void
     {
         $test      = new self(__FUNCTION__);
         $exception = new \Error('message');
@@ -30,7 +30,7 @@ class TestFailureTest extends TestCase
         $this->assertEquals(__METHOD__ . ': message', $failure->toString());
     }
 
-    public function testgetExceptionAsString()
+    public function testgetExceptionAsString(): void
     {
         $test      = new self(__FUNCTION__);
         $exception = new \Error('message');

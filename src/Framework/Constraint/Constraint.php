@@ -97,7 +97,7 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @throws ExpectationFailedException
      */
-    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null)
+    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
     {
         $failureDescription = \sprintf(
             'Failed asserting that %s.',

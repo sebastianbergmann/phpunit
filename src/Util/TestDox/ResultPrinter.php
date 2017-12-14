@@ -128,7 +128,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addError(Test $test, \Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -145,7 +145,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param Warning $e
      * @param float   $time
      */
-    public function addWarning(Test $test, Warning $e, $time)
+    public function addWarning(Test $test, Warning $e, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -162,7 +162,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param AssertionFailedError $e
      * @param float                $time
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -179,7 +179,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -196,7 +196,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -213,7 +213,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -228,7 +228,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      *
      * @param TestSuite $suite
      */
-    public function startTestSuite(TestSuite $suite)
+    public function startTestSuite(TestSuite $suite): void
     {
     }
 
@@ -237,7 +237,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      *
      * @param TestSuite $suite
      */
-    public function endTestSuite(TestSuite $suite)
+    public function endTestSuite(TestSuite $suite): void
     {
     }
 
@@ -246,7 +246,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      *
      * @param Test $test
      */
-    public function startTest(Test $test)
+    public function startTest(Test $test): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -295,7 +295,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param Test  $test
      * @param float $time
      */
-    public function endTest(Test $test, $time)
+    public function endTest(Test $test, $time): void
     {
         if (!$this->isOfInterest($test)) {
             return;
@@ -321,7 +321,7 @@ abstract class ResultPrinter extends Printer implements TestListener
         $this->currentTestMethodPrettified = null;
     }
 
-    protected function doEndClass()
+    protected function doEndClass(): void
     {
         foreach ($this->tests as $name => $data) {
             $this->onTest($name, $data['failure'] == 0);
@@ -333,7 +333,7 @@ abstract class ResultPrinter extends Printer implements TestListener
     /**
      * Handler for 'start run' event.
      */
-    protected function startRun()
+    protected function startRun(): void
     {
     }
 
@@ -342,7 +342,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      *
      * @param string $name
      */
-    protected function startClass($name)
+    protected function startClass($name): void
     {
     }
 
@@ -352,7 +352,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param string $name
      * @param bool   $success
      */
-    protected function onTest($name, $success = true)
+    protected function onTest($name, $success = true): void
     {
     }
 
@@ -361,14 +361,14 @@ abstract class ResultPrinter extends Printer implements TestListener
      *
      * @param string $name
      */
-    protected function endClass($name)
+    protected function endClass($name): void
     {
     }
 
     /**
      * Handler for 'end run' event.
      */
-    protected function endRun()
+    protected function endRun(): void
     {
     }
 

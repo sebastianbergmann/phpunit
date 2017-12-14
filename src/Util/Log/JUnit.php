@@ -136,7 +136,7 @@ class JUnit extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addError(Test $test, \Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time): void
     {
         $this->doAddFault($test, $e, $time, 'error');
         $this->testSuiteErrors[$this->testSuiteLevel]++;
@@ -149,7 +149,7 @@ class JUnit extends Printer implements TestListener
      * @param Warning $e
      * @param float   $time
      */
-    public function addWarning(Test $test, Warning $e, $time)
+    public function addWarning(Test $test, Warning $e, $time): void
     {
         $this->doAddFault($test, $e, $time, 'warning');
         $this->testSuiteFailures[$this->testSuiteLevel]++;
@@ -162,7 +162,7 @@ class JUnit extends Printer implements TestListener
      * @param AssertionFailedError $e
      * @param float                $time
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time): void
     {
         $this->doAddFault($test, $e, $time, 'failure');
         $this->testSuiteFailures[$this->testSuiteLevel]++;
@@ -175,7 +175,7 @@ class JUnit extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time): void
     {
         $this->doAddSkipped($test);
     }
@@ -187,7 +187,7 @@ class JUnit extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time): void
     {
         if (!$this->reportUselessTests || $this->currentTestCase === null) {
             return;
@@ -215,7 +215,7 @@ class JUnit extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time): void
     {
         $this->doAddSkipped($test);
     }
@@ -225,7 +225,7 @@ class JUnit extends Printer implements TestListener
      *
      * @param TestSuite $suite
      */
-    public function startTestSuite(TestSuite $suite)
+    public function startTestSuite(TestSuite $suite): void
     {
         $testSuite = $this->document->createElement('testsuite');
         $testSuite->setAttribute('name', $suite->getName());
@@ -260,7 +260,7 @@ class JUnit extends Printer implements TestListener
      *
      * @param TestSuite $suite
      */
-    public function endTestSuite(TestSuite $suite)
+    public function endTestSuite(TestSuite $suite): void
     {
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'tests',
@@ -309,7 +309,7 @@ class JUnit extends Printer implements TestListener
      *
      * @param Test $test
      */
-    public function startTest(Test $test)
+    public function startTest(Test $test): void
     {
         $testCase = $this->document->createElement('testcase');
         $testCase->setAttribute('name', $test->getName());
@@ -337,7 +337,7 @@ class JUnit extends Printer implements TestListener
      * @param Test  $test
      * @param float $time
      */
-    public function endTest(Test $test, $time)
+    public function endTest(Test $test, $time): void
     {
         if ($test instanceof TestCase) {
             $numAssertions = $test->getNumAssertions();
@@ -410,7 +410,7 @@ class JUnit extends Printer implements TestListener
      * @param float      $time
      * @param string     $type
      */
-    private function doAddFault(Test $test, \Exception $e, $time, $type)
+    private function doAddFault(Test $test, \Exception $e, $time, $type): void
     {
         if ($this->currentTestCase === null) {
             return;
@@ -439,7 +439,7 @@ class JUnit extends Printer implements TestListener
         $this->currentTestCase->appendChild($fault);
     }
 
-    private function doAddSkipped(Test $test)
+    private function doAddSkipped(Test $test): void
     {
         if ($this->currentTestCase === null) {
             return;

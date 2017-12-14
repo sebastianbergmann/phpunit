@@ -21,7 +21,7 @@ class JsonTest extends TestCase
      * @param mixed $expected
      * @param mixed $expectError
      */
-    public function testCanonicalize($actual, $expected, $expectError)
+    public function testCanonicalize($actual, $expected, $expectError): void
     {
         [$error, $canonicalized] = Json::canonicalize($actual);
         $this->assertEquals($expectError, $error);
@@ -48,7 +48,7 @@ class JsonTest extends TestCase
      * @param mixed $actual
      * @param mixed $expected
      */
-    public function testPrettify($actual, $expected)
+    public function testPrettify($actual, $expected): void
     {
         $this->assertEquals($expected, Json::prettify($actual));
     }
@@ -70,7 +70,7 @@ class JsonTest extends TestCase
      *
      * @param mixed $json
      */
-    public function testPrettifyException($json)
+    public function testPrettifyException($json): void
     {
         Json::prettify($json);
     }

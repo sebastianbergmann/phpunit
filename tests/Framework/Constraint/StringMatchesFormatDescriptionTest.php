@@ -20,7 +20,7 @@ class StringMatchesFormatDescriptionTest extends TestCase
      * @param string $other
      * @dataProvider evaluateDataProvider
      */
-    public function testEvaluate($expected, $format, $other)
+    public function testEvaluate($expected, $format, $other): void
     {
         $constraint = new StringMatchesFormatDescription($format);
 

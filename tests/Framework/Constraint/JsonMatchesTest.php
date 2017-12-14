@@ -23,7 +23,7 @@ class JsonMatchesTest extends TestCase
      * @param mixed $jsonOther
      * @param mixed $jsonValue
      */
-    public function testEvaluate($expected, $jsonOther, $jsonValue)
+    public function testEvaluate($expected, $jsonOther, $jsonValue): void
     {
         $constraint = new JsonMatches($jsonValue);
 
@@ -36,7 +36,7 @@ class JsonMatchesTest extends TestCase
      * @param mixed $jsonOther
      * @param mixed $jsonValue
      */
-    public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch($jsonOther, $jsonValue)
+    public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch($jsonOther, $jsonValue): void
     {
         $constraint = new JsonMatches($jsonValue);
 
@@ -52,7 +52,7 @@ class JsonMatchesTest extends TestCase
         }
     }
 
-    public function testToString()
+    public function testToString(): void
     {
         $jsonValue  = \json_encode(['Mascott' => 'Tux']);
         $constraint = new JsonMatches($jsonValue);

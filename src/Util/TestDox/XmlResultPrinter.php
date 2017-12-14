@@ -76,7 +76,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addError(Test $test, \Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time): void
     {
         $this->exception = $e;
     }
@@ -88,7 +88,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param Warning $e
      * @param float   $time
      */
-    public function addWarning(Test $test, Warning $e, $time)
+    public function addWarning(Test $test, Warning $e, $time): void
     {
     }
 
@@ -99,7 +99,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param AssertionFailedError $e
      * @param float                $time
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time): void
     {
         $this->exception = $e;
     }
@@ -111,7 +111,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time): void
     {
     }
 
@@ -122,7 +122,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time): void
     {
     }
 
@@ -133,7 +133,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param \Exception $e
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time): void
     {
     }
 
@@ -142,7 +142,7 @@ class XmlResultPrinter extends Printer implements TestListener
      *
      * @param TestSuite $suite
      */
-    public function startTestSuite(TestSuite $suite)
+    public function startTestSuite(TestSuite $suite): void
     {
     }
 
@@ -151,7 +151,7 @@ class XmlResultPrinter extends Printer implements TestListener
      *
      * @param TestSuite $suite
      */
-    public function endTestSuite(TestSuite $suite)
+    public function endTestSuite(TestSuite $suite): void
     {
     }
 
@@ -160,7 +160,7 @@ class XmlResultPrinter extends Printer implements TestListener
      *
      * @param Test $test
      */
-    public function startTest(Test $test)
+    public function startTest(Test $test): void
     {
         $this->exception = null;
     }
@@ -171,7 +171,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param Test  $test
      * @param float $time
      */
-    public function endTest(Test $test, $time)
+    public function endTest(Test $test, $time): void
     {
         if (!$test instanceof TestCase) {
             return;

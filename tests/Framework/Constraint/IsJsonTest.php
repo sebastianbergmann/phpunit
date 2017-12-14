@@ -20,7 +20,7 @@ class IsJsonTest extends TestCase
      * @param mixed $expected
      * @param mixed $jsonOther
      */
-    public function testEvaluate($expected, $jsonOther)
+    public function testEvaluate($expected, $jsonOther): void
     {
         $constraint = new IsJson;
 

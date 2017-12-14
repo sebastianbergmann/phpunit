@@ -83,7 +83,7 @@ class JsonMatches extends Constraint
      *
      * @throws ExpectationFailedException
      */
-    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null)
+    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
     {
         if ($comparisonFailure === null) {
             [$error] = Json::canonicalize($other);

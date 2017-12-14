@@ -18,7 +18,7 @@ class ExceptionMessageTest extends TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage A literal exception message
      */
-    public function testLiteralMessage()
+    public function testLiteralMessage(): void
     {
         throw new \Exception('A literal exception message');
     }
@@ -27,7 +27,7 @@ class ExceptionMessageTest extends TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage A partial
      */
-    public function testPartialMessageBegin()
+    public function testPartialMessageBegin(): void
     {
         throw new \Exception('A partial exception message');
     }
@@ -36,7 +36,7 @@ class ExceptionMessageTest extends TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage partial exception
      */
-    public function testPartialMessageMiddle()
+    public function testPartialMessageMiddle(): void
     {
         throw new \Exception('A partial exception message');
     }
@@ -45,7 +45,7 @@ class ExceptionMessageTest extends TestCase
      * @expectedException \Exception
      * @expectedExceptionMessage exception message
      */
-    public function testPartialMessageEnd()
+    public function testPartialMessageEnd(): void
     {
         throw new \Exception('A partial exception message');
     }

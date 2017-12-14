@@ -48,7 +48,7 @@ class TeamCity extends ResultPrinter
     /**
      * @param TestResult $result
      */
-    public function printResult(TestResult $result)
+    public function printResult(TestResult $result): void
     {
         $this->printHeader();
         $this->printFooter($result);
@@ -61,7 +61,7 @@ class TeamCity extends ResultPrinter
      * @param \Exception $e
      * @param float      $time
      */
-    public function addError(Test $test, \Exception $e, $time)
+    public function addError(Test $test, \Exception $e, $time): void
     {
         $this->printEvent(
             'testFailed',
@@ -80,7 +80,7 @@ class TeamCity extends ResultPrinter
      * @param Warning $e
      * @param float   $time
      */
-    public function addWarning(Test $test, Warning $e, $time)
+    public function addWarning(Test $test, Warning $e, $time): void
     {
         $this->printEvent(
             'testFailed',
@@ -99,7 +99,7 @@ class TeamCity extends ResultPrinter
      * @param AssertionFailedError $e
      * @param float                $time
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time)
+    public function addFailure(Test $test, AssertionFailedError $e, $time): void
     {
         $parameters = [
             'name'    => $test->getName(),
@@ -141,7 +141,7 @@ class TeamCity extends ResultPrinter
      * @param \Exception $e
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Exception $e, $time)
+    public function addIncompleteTest(Test $test, \Exception $e, $time): void
     {
         $this->printIgnoredTest($test->getName(), $e);
     }
@@ -153,7 +153,7 @@ class TeamCity extends ResultPrinter
      * @param \Exception $e
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Exception $e, $time)
+    public function addRiskyTest(Test $test, \Exception $e, $time): void
     {
         $this->addError($test, $e, $time);
     }
@@ -165,7 +165,7 @@ class TeamCity extends ResultPrinter
      * @param \Exception $e
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Exception $e, $time)
+    public function addSkippedTest(Test $test, \Exception $e, $time): void
     {
         $testName = $test->getName();
         if ($this->startedTestName != $testName) {
@@ -177,7 +177,7 @@ class TeamCity extends ResultPrinter
         }
     }
 
-    public function printIgnoredTest($testName, \Exception $e)
+    public function printIgnoredTest($testName, \Exception $e): void
     {
         $this->printEvent(
             'testIgnored',
@@ -194,7 +194,7 @@ class TeamCity extends ResultPrinter
      *
      * @param TestSuite $suite
      */
-    public function startTestSuite(TestSuite $suite)
+    public function startTestSuite(TestSuite $suite): void
     {
         if (\stripos(\ini_get('disable_functions'), 'getmypid') === false) {
             $this->flowId = \getmypid();
@@ -240,7 +240,7 @@ class TeamCity extends ResultPrinter
      *
      * @param TestSuite $suite
      */
-    public function endTestSuite(TestSuite $suite)
+    public function endTestSuite(TestSuite $suite): void
     {
         $suiteName = $suite->getName();
 
@@ -266,7 +266,7 @@ class TeamCity extends ResultPrinter
      *
      * @param Test $test
      */
-    public function startTest(Test $test)
+    public function startTest(Test $test): void
     {
         $testName              = $test->getName();
         $this->startedTestName = $testName;
@@ -287,7 +287,7 @@ class TeamCity extends ResultPrinter
      * @param Test  $test
      * @param float $time
      */
-    public function endTest(Test $test, $time)
+    public function endTest(Test $test, $time): void
     {
         parent::endTest($test, $time);
 
@@ -303,7 +303,7 @@ class TeamCity extends ResultPrinter
     /**
      * @param string $progress
      */
-    protected function writeProgress($progress)
+    protected function writeProgress($progress): void
     {
     }
 
@@ -311,7 +311,7 @@ class TeamCity extends ResultPrinter
      * @param string $eventName
      * @param array  $params
      */
-    private function printEvent($eventName, $params = [])
+    private function printEvent($eventName, $params = []): void
     {
         $this->write("\n##teamcity[$eventName");
 

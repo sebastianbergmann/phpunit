@@ -67,7 +67,7 @@ EOF;
      */
     private $phpProcess;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->dirname  = \sys_get_temp_dir();
         $this->filename = $this->dirname . '/phpunit.phpt';
@@ -77,7 +77,7 @@ EOF;
         $this->testCase   = new PhptTestCase($this->filename, $this->phpProcess);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         @\unlink($this->filename);
 
@@ -85,7 +85,7 @@ EOF;
         $this->testCase = null;
     }
 
-    public function testShouldRunFileSectionAsTest()
+    public function testShouldRunFileSectionAsTest(): void
     {
         $this->setPhpContent($this->ensureCorrectEndOfLine(self::EXPECT_CONTENT));
 
@@ -100,7 +100,7 @@ EOF;
         $this->testCase->run();
     }
 
-    public function testRenderFileSection()
+    public function testRenderFileSection(): void
     {
         $this->setPhpContent($this->ensureCorrectEndOfLine(
             <<<EOF
@@ -124,7 +124,7 @@ EOF
         $this->testCase->run();
     }
 
-    public function testRenderSkipifSection()
+    public function testRenderSkipifSection(): void
     {
         $phptContent = self::EXPECT_CONTENT . PHP_EOL;
         $phptContent .= '--SKIPIF--' . PHP_EOL;
@@ -143,7 +143,7 @@ EOF
         $this->testCase->run();
     }
 
-    public function testShouldRunSkipifSectionWhenExists()
+    public function testShouldRunSkipifSectionWhenExists(): void
     {
         $skipifSection = '<?php /** Nothing **/ ?>' . PHP_EOL;
 
@@ -162,7 +162,7 @@ EOF
         $this->testCase->run();
     }
 
-    public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord()
+    public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord(): void
     {
         $skipifSection = '<?php echo "skip: Reason"; ?>' . PHP_EOL;
 
@@ -181,7 +181,7 @@ EOF
         $this->testCase->run();
     }
 
-    public function testShouldRunCleanSectionWhenDefined()
+    public function testShouldRunCleanSectionWhenDefined(): void
     {
         $cleanSection = '<?php unlink("/tmp/something"); ?>' . PHP_EOL;
 
@@ -199,7 +199,7 @@ EOF
         $this->testCase->run();
     }
 
-    public function testShouldThrowsAnExceptionWhenPhptFileIsEmpty()
+    public function testShouldThrowsAnExceptionWhenPhptFileIsEmpty(): void
     {
         $this->setPhpContent('');
 
@@ -209,7 +209,7 @@ EOF
         $this->testCase->run();
     }
 
-    public function testShouldThrowsAnExceptionWhenFileSectionIsMissing()
+    public function testShouldThrowsAnExceptionWhenFileSectionIsMissing(): void
     {
         $this->setPhpContent(
             <<<EOF
@@ -226,7 +226,7 @@ EOF
         $this->testCase->run();
     }
 
-    public function testShouldThrowsAnExceptionWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile()
+    public function testShouldThrowsAnExceptionWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile(): void
     {
         $this->setPhpContent(
             <<<EOF
@@ -245,7 +245,7 @@ EOF
         $this->testCase->run();
     }
 
-    public function testShouldValidateExpectSession()
+    public function testShouldValidateExpectSession(): void
     {
         $this->setPhpContent(self::EXPECT_CONTENT);
 
@@ -260,7 +260,7 @@ EOF
         $this->assertTrue($result->wasSuccessful());
     }
 
-    public function testShouldValidateExpectfSession()
+    public function testShouldValidateExpectfSession(): void
     {
         $this->setPhpContent(self::EXPECTF_CONTENT);
 
@@ -275,7 +275,7 @@ EOF
         $this->assertTrue($result->wasSuccessful());
     }
 
-    public function testShouldValidateExpectregexSession()
+    public function testShouldValidateExpectregexSession(): void
     {
         $this->setPhpContent(self::EXPECTREGEX_CONTENT);
 
@@ -295,7 +295,7 @@ EOF
      *
      * @param string $content
      */
-    private function setPhpContent($content)
+    private function setPhpContent($content): void
     {
         \file_put_contents($this->filename, $content);
     }

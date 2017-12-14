@@ -284,7 +284,7 @@ abstract class AbstractPhpProcess
                 $time
             );
         } else {
-            \set_error_handler(function ($errno, $errstr, $errfile, $errline) {
+            \set_error_handler(function ($errno, $errstr, $errfile, $errline): void {
                 throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
             });
 

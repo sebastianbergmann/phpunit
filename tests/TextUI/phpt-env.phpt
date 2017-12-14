@@ -5,7 +5,7 @@ FOO=bar
 --FILE--
 <?php
 if (isset($_SERVER['FOO'])) {
-    var_dump($_SERVER['FOO']);
+    \var_dump($_SERVER['FOO']);
 }
 ?>
 --EXPECTF_EXTERNAL--

@@ -33,7 +33,7 @@ class LogicalXor extends Constraint
     /**
      * @param Constraint[] $constraints
      */
-    public function setConstraints(array $constraints)
+    public function setConstraints(array $constraints): void
     {
         $this->constraints = [];
 

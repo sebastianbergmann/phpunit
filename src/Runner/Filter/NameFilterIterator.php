@@ -78,7 +78,7 @@ class NameFilterIterator extends RecursiveFilterIterator
     /**
      * @param string $filter
      */
-    protected function setFilter($filter)
+    protected function setFilter($filter): void
     {
         if (RegularExpression::safeMatch($filter, '') === false) {
             // Handles:

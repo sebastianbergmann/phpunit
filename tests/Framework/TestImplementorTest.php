@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 
 class TestImplementorTest extends TestCase
 {
-    public function testSuccessfulRun()
+    public function testSuccessfulRun(): void
     {
         $result = new TestResult;
 

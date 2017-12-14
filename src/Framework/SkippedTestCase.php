@@ -76,7 +76,7 @@ class SkippedTestCase extends TestCase
     /**
      * @throws Exception
      */
-    protected function runTest()
+    protected function runTest(): void
     {
         $this->markTestSkipped($this->message);
     }

@@ -69,7 +69,7 @@ class WarningTestCase extends TestCase
     /**
      * @throws Exception
      */
-    protected function runTest()
+    protected function runTest(): void
     {
         throw new Warning($this->message);
     }

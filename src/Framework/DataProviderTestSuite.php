@@ -16,7 +16,7 @@ class DataProviderTestSuite extends TestSuite
      *
      * @param string[] $dependencies
      */
-    public function setDependencies(array $dependencies)
+    public function setDependencies(array $dependencies): void
     {
         foreach ($this->tests as $test) {
             $test->setDependencies($dependencies);

@@ -40,7 +40,7 @@ class LogicalAnd extends Constraint
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function setConstraints(array $constraints)
+    public function setConstraints(array $constraints): void
     {
         $this->constraints = [];
 

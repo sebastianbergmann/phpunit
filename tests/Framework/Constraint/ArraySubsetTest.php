@@ -22,7 +22,7 @@ class ArraySubsetTest extends TestCase
      * @param bool               $strict
      * @dataProvider evaluateDataProvider
      */
-    public function testEvaluate($expected, $subset, $other, $strict)
+    public function testEvaluate($expected, $subset, $other, $strict): void
     {
         $constraint = new ArraySubset($subset, $strict);
 
@@ -59,7 +59,7 @@ class ArraySubsetTest extends TestCase
         ];
     }
 
-    public function testEvaluateWithArrayAccess()
+    public function testEvaluateWithArrayAccess(): void
     {
         $arrayAccess = new \ArrayAccessible(['foo' => 'bar']);
 
@@ -68,7 +68,7 @@ class ArraySubsetTest extends TestCase
         $this->assertTrue($constraint->evaluate($arrayAccess, '', true));
     }
 
-    public function testEvaluateFailMessage()
+    public function testEvaluateFailMessage(): void
     {
         $constraint = new ArraySubset(['foo' => 'bar']);
 
