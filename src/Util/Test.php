@@ -663,10 +663,8 @@ class Test
     public static function getSize($className, $methodName): int
     {
         $groups = \array_flip(self::getGroups($className, $methodName));
-        $class  = new ReflectionClass($className);
 
-        if (isset($groups['large']) ||
-            (\class_exists('PHPUnit\DbUnit\TestCase', false) && $class->isSubclassOf('PHPUnit\DbUnit\TestCase'))) {
+        if (isset($groups['large'])) {
             return self::LARGE;
         }
 
