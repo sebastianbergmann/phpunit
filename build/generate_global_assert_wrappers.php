@@ -7,7 +7,7 @@ use PHPUnit\Framework\Constraint\Constraint;
 require __DIR__ . '/../vendor/autoload.php';
 
 /** @var string[] $lines */
-$lines = file(__DIR__ . '/../src/Framework/Assert.php');
+$lines = \file(__DIR__ . '/../src/Framework/Assert.php');
 
 $buffer = '<?php
 /*
@@ -56,18 +56,18 @@ foreach ($class->getMethods() as $method) {
 
     $usedClasses[] = $returnType->getName();
 
-    $constraintMethods .= sprintf(
+    $constraintMethods .= \sprintf(
         "%s\n{\n    return Assert::%s(...\\func_get_args());\n}\n\n",
-        str_replace('public static ', '', trim($lines[$method->getStartLine() - 1])),
+        \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1])),
         $method->getName()
     );
 }
 
-$usedClasses = array_unique($usedClasses);
-sort($usedClasses);
+$usedClasses = \array_unique($usedClasses);
+\sort($usedClasses);
 
 foreach ($usedClasses as $usedClass) {
-    $buffer .= sprintf(
+    $buffer .= \sprintf(
         "use %s;\n",
         $usedClass
     );
@@ -76,14 +76,14 @@ foreach ($usedClasses as $usedClass) {
 $buffer .= "\n";
 
 foreach ($class->getMethods() as $method) {
-    if (strpos($method->getName(), 'assert') !== 0) {
+    if (\strpos($method->getName(), 'assert') !== 0) {
         continue;
     }
 
-    $buffer .= sprintf(
+    $buffer .= \sprintf(
         "%s\n%s\n{\n    Assert::%s(...\\func_get_args());\n}\n\n",
-        str_replace('     *', ' *', $method->getDocComment()),
-        str_replace('public static ', '', trim($lines[$method->getStartLine() - 1])),
+        \str_replace('     *', ' *', $method->getDocComment()),
+        \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1])),
         $method->getName()
     );
 }
@@ -260,4 +260,4 @@ function onConsecutiveCalls(): ConsecutiveCallsStub
 }
 ';
 
-file_put_contents(__DIR__ . '/../src/Framework/Assert/Functions.php', $buffer);
+\file_put_contents(__DIR__ . '/../src/Framework/Assert/Functions.php', $buffer);
