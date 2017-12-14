@@ -75,6 +75,7 @@ class Test
      * @param string $methodName
      *
      * @throws CodeCoverageException
+     * @throws ReflectionException
      *
      * @return array|bool
      */
@@ -98,6 +99,8 @@ class Test
      * @param string $className
      * @param string $methodName
      *
+     * @throws CodeCoverageException
+     *
      * @return array
      */
     public static function getLinesToBeUsed($className, $methodName): array
@@ -110,6 +113,8 @@ class Test
      *
      * @param string $className
      * @param string $methodName
+     *
+     * @throws Warning
      *
      * @return array
      */
@@ -163,7 +168,7 @@ class Test
 
                 $requires[$name][] = $matches['value'][$i];
 
-                if (empty($matches['version'][$i]) || $name != 'extensions') {
+                if ($name !== 'extensions' || empty($matches['version'][$i])) {
                     continue;
                 }
 
@@ -182,6 +187,8 @@ class Test
      *
      * @param string $className
      * @param string $methodName
+     *
+     * @throws Warning
      *
      * @return string[]
      */
@@ -241,7 +248,7 @@ class Test
             foreach ($required['functions'] as $function) {
                 $pieces = \explode('::', $function);
 
-                if (2 === \count($pieces) && \method_exists($pieces[0], $pieces[1])) {
+                if (\count($pieces) === 2 && \method_exists($pieces[0], $pieces[1])) {
                     continue;
                 }
 
@@ -271,7 +278,7 @@ class Test
 
                 $operator = empty($required['operator']) ? '>=' : $required['operator'];
 
-                if (false === $actualVersion || !\version_compare($actualVersion, $required['version'], $operator)) {
+                if ($actualVersion === false || !\version_compare($actualVersion, $required['version'], $operator)) {
                     $missing[] = \sprintf('Extension %s %s %s is required.', $extension, $operator, $required['version']);
                 }
             }
@@ -285,6 +292,8 @@ class Test
      *
      * @param string $className
      * @param string $methodName
+     *
+     * @throws ReflectionException
      *
      * @return array|false
      */
@@ -409,7 +418,7 @@ class Test
 
                 $dataSet = \json_decode($candidateRow, true);
 
-                if (\json_last_error() != JSON_ERROR_NONE) {
+                if (\json_last_error() !== JSON_ERROR_NONE) {
                     throw new Exception(
                         'The dataset for the @testWith annotation cannot be parsed: ' . \json_last_error_msg()
                     );
@@ -428,15 +437,7 @@ class Test
         return null;
     }
 
-    /**
-     * @param string $className
-     * @param string $methodName
-     *
-     * @throws ReflectionException
-     *
-     * @return array
-     */
-    public static function parseTestMethodAnnotations($className, $methodName = ''): array
+    public static function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
     {
         if (!isset(self::$annotationCache[$className])) {
             $class       = new ReflectionClass($className);
@@ -456,7 +457,9 @@ class Test
             );
         }
 
-        if (!empty($methodName) && !isset(self::$annotationCache[$className . '::' . $methodName])) {
+        $cacheKey = $className . '::' . $methodName;
+
+        if ($methodName !== null && !isset(self::$annotationCache[$cacheKey])) {
             try {
                 $method      = new ReflectionMethod($className, $methodName);
                 $annotations = self::parseAnnotations($method->getDocComment());
@@ -464,12 +467,12 @@ class Test
                 $annotations = [];
             }
 
-            self::$annotationCache[$className . '::' . $methodName] = $annotations;
+            self::$annotationCache[$cacheKey] = $annotations;
         }
 
         return [
             'class'  => self::$annotationCache[$className],
-            'method' => !empty($methodName) ? self::$annotationCache[$className . '::' . $methodName] : []
+            'method' => $methodName !== null ? self::$annotationCache[$cacheKey] : []
         ];
     }
 
@@ -508,7 +511,7 @@ class Test
      *
      * @return array
      */
-    public static function parseAnnotations($docBlock): array
+    public static function parseAnnotations(string $docBlock): array
     {
         $annotations = [];
         // Strip away the docblock header and footer to ease parsing of one line annotations
@@ -924,7 +927,7 @@ class Test
         }
     }
 
-    private static function cleanUpMultiLineAnnotation($docComment)
+    private static function cleanUpMultiLineAnnotation($docComment): string
     {
         //removing initial '   * ' for docComment
         $docComment = \str_replace("\r\n", "\n", $docComment);
