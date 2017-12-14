@@ -98,6 +98,8 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param resource $out
      * @param array    $groups
      * @param array    $excludeGroups
+     *
+     * @throws \PHPUnit\Framework\Exception
      */
     public function __construct($out = null, array $groups = [], array $excludeGroups = [])
     {
@@ -254,12 +256,13 @@ abstract class ResultPrinter extends Printer implements TestListener
 
         $class = \get_class($test);
 
-        if ($this->testClass != $class) {
-            if ($this->testClass != '') {
+        if ($this->testClass !== $class) {
+            if ($this->testClass !== '') {
                 $this->doEndClass();
             }
 
             $classAnnotations = \PHPUnit\Util\Test::parseTestMethodAnnotations($class);
+
             if (isset($classAnnotations['class']['testdox'][0])) {
                 $this->currentTestClassPrettified = $classAnnotations['class']['testdox'][0];
             } else {
@@ -302,7 +305,7 @@ abstract class ResultPrinter extends Printer implements TestListener
         }
 
         if (!isset($this->tests[$this->currentTestMethodPrettified])) {
-            if ($this->testStatus == BaseTestRunner::STATUS_PASSED) {
+            if ($this->testStatus === BaseTestRunner::STATUS_PASSED) {
                 $this->tests[$this->currentTestMethodPrettified]['success'] = 1;
                 $this->tests[$this->currentTestMethodPrettified]['failure'] = 0;
             } else {
@@ -310,7 +313,7 @@ abstract class ResultPrinter extends Printer implements TestListener
                 $this->tests[$this->currentTestMethodPrettified]['failure'] = 1;
             }
         } else {
-            if ($this->testStatus == BaseTestRunner::STATUS_PASSED) {
+            if ($this->testStatus === BaseTestRunner::STATUS_PASSED) {
                 $this->tests[$this->currentTestMethodPrettified]['success']++;
             } else {
                 $this->tests[$this->currentTestMethodPrettified]['failure']++;
@@ -324,7 +327,7 @@ abstract class ResultPrinter extends Printer implements TestListener
     protected function doEndClass(): void
     {
         foreach ($this->tests as $name => $data) {
-            $this->onTest($name, $data['failure'] == 0);
+            $this->onTest($name, $data['failure'] === 0);
         }
 
         $this->endClass($this->testClass);
@@ -342,7 +345,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      *
      * @param string $name
      */
-    protected function startClass($name): void
+    protected function startClass(string $name): void
     {
     }
 
@@ -352,7 +355,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      * @param string $name
      * @param bool   $success
      */
-    protected function onTest($name, $success = true): void
+    protected function onTest($name, bool $success = true): void
     {
     }
 
@@ -361,7 +364,7 @@ abstract class ResultPrinter extends Printer implements TestListener
      *
      * @param string $name
      */
-    protected function endClass($name): void
+    protected function endClass(string $name): void
     {
     }
 
@@ -372,11 +375,6 @@ abstract class ResultPrinter extends Printer implements TestListener
     {
     }
 
-    /**
-     * @param Test $test
-     *
-     * @return bool
-     */
     private function isOfInterest(Test $test): bool
     {
         if (!$test instanceof TestCase) {

@@ -45,6 +45,8 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * @param resource|string $out
+     *
+     * @throws Exception
      */
     public function __construct($out = null)
     {
@@ -170,6 +172,8 @@ class XmlResultPrinter extends Printer implements TestListener
      *
      * @param Test  $test
      * @param float $time
+     *
+     * @throws \ReflectionException
      */
     public function endTest(Test $test, $time): void
     {
@@ -182,11 +186,7 @@ class XmlResultPrinter extends Printer implements TestListener
         $groups = \array_filter(
             $test->getGroups(),
             function ($group) {
-                if ($group == 'small' || $group == 'medium' || $group == 'large') {
-                    return false;
-                }
-
-                return true;
+                return !($group === 'small' || $group === 'medium' || $group === 'large');
             }
         );
 
@@ -223,7 +223,7 @@ class XmlResultPrinter extends Printer implements TestListener
             $file  = $class->getFileName();
 
             foreach ($steps as $step) {
-                if (isset($step['file']) && $step['file'] == $file) {
+                if (isset($step['file']) && $step['file'] === $file) {
                     $node->setAttribute('exceptionLine', $step['line']);
 
                     break;

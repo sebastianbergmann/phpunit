@@ -70,8 +70,6 @@ abstract class AbstractPhpProcess
      *
      *
      * @param bool $stderrRedirection
-     *
-     * @throws Exception
      */
     public function setUseStderrRedirection(bool $stderrRedirection): void
     {
@@ -173,7 +171,7 @@ abstract class AbstractPhpProcess
      */
     public static function factory(): self
     {
-        if (DIRECTORY_SEPARATOR == '\\') {
+        if (DIRECTORY_SEPARATOR === '\\') {
             return new WindowsPhpProcess;
         }
 
@@ -186,8 +184,6 @@ abstract class AbstractPhpProcess
      * @param string     $job
      * @param Test       $test
      * @param TestResult $result
-     *
-     * @throws Exception
      */
     public function runTestJob($job, Test $test, TestResult $result): void
     {
@@ -216,7 +212,7 @@ abstract class AbstractPhpProcess
         $command = $this->runtime->getBinary();
         $command .= $this->settingsToParameters($settings);
 
-        if ('phpdbg' === PHP_SAPI) {
+        if (PHP_SAPI === 'phpdbg') {
             $command .= ' -qrr ';
 
             if ($file) {
@@ -232,7 +228,7 @@ abstract class AbstractPhpProcess
             $command .= ' -- ' . $this->args;
         }
 
-        if (true === $this->stderrRedirection) {
+        if ($this->stderrRedirection === true) {
             $command .= ' 2>&1';
         }
 
@@ -387,7 +383,7 @@ abstract class AbstractPhpProcess
      *
      * @return Exception
      *
-     * @see    https://github.com/sebastianbergmann/phpunit/issues/74
+     * @see https://github.com/sebastianbergmann/phpunit/issues/74
      */
     private function getException(TestFailure $error): Exception
     {

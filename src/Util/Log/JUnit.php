@@ -94,7 +94,7 @@ class JUnit extends Printer implements TestListener
     protected $testSuiteLevel = 0;
 
     /**
-     * @var ?DOMElement
+     * @var DOMElement
      */
     protected $currentTestCase;
 
@@ -103,8 +103,10 @@ class JUnit extends Printer implements TestListener
      *
      * @param mixed $out
      * @param bool  $reportUselessTests
+     *
+     * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($out = null, $reportUselessTests = false)
+    public function __construct($out = null, bool $reportUselessTests = false)
     {
         $this->document               = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
@@ -308,6 +310,8 @@ class JUnit extends Printer implements TestListener
      * A test started.
      *
      * @param Test $test
+     *
+     * @throws \ReflectionException
      */
     public function startTest(Test $test): void
     {

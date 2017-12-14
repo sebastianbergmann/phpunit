@@ -113,17 +113,17 @@ class TeamCity extends ResultPrinter
             if ($comparisonFailure instanceof ComparisonFailure) {
                 $expectedString = $comparisonFailure->getExpectedAsString();
 
-                if (null === $expectedString || empty($expectedString)) {
+                if ($expectedString === null || empty($expectedString)) {
                     $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
                 }
 
                 $actualString = $comparisonFailure->getActualAsString();
 
-                if (null === $actualString || empty($actualString)) {
+                if ($actualString === null || empty($actualString)) {
                     $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
                 }
 
-                if (null !== $actualString && null !== $expectedString) {
+                if ($actualString !== null && $expectedString !== null) {
                     $parameters['type']     = 'comparisonFailure';
                     $parameters['actual']   = $actualString;
                     $parameters['expected'] = $expectedString;
@@ -168,7 +168,7 @@ class TeamCity extends ResultPrinter
     public function addSkippedTest(Test $test, \Throwable $t, $time): void
     {
         $testName = $test->getName();
-        if ($this->startedTestName != $testName) {
+        if ($this->startedTestName !== $testName) {
             $this->startTest($test);
             $this->printIgnoredTest($testName, $t);
             $this->endTest($test, $time);
@@ -225,7 +225,7 @@ class TeamCity extends ResultPrinter
         } else {
             $split = \explode('::', $suiteName);
 
-            if (\count($split) == 2 && \method_exists($split[0], $split[1])) {
+            if (\count($split) === 2 && \method_exists($split[0], $split[1])) {
                 $fileName                   = self::getFileName($split[0]);
                 $parameters['locationHint'] = "php_qn://$fileName::\\$suiteName";
                 $parameters['name']         = $split[1];
@@ -253,7 +253,7 @@ class TeamCity extends ResultPrinter
         if (!\class_exists($suiteName, false)) {
             $split = \explode('::', $suiteName);
 
-            if (\count($split) == 2 && \method_exists($split[0], $split[1])) {
+            if (\count($split) === 2 && \method_exists($split[0], $split[1])) {
                 $parameters['name'] = $split[1];
             }
         }
@@ -337,11 +337,11 @@ class TeamCity extends ResultPrinter
         $message = '';
 
         if ($t instanceof ExceptionWrapper) {
-            if ('' !== $t->getClassName()) {
+            if ($t->getClassName() !== '') {
                 $message .= $t->getClassName();
             }
 
-            if ('' !== $message && '' !== $t->getMessage()) {
+            if ($message !== '' && $t->getMessage() !== '') {
                 $message .= ' : ';
             }
         }
@@ -378,12 +378,12 @@ class TeamCity extends ResultPrinter
      */
     private static function getPrimitiveValueAsString($value): ?string
     {
-        if (null === $value) {
+        if ($value === null) {
             return 'null';
         }
 
         if (\is_bool($value)) {
-            return $value == true ? 'true' : 'false';
+            return $value === true ? 'true' : 'false';
         }
 
         if (\is_scalar($value)) {
@@ -407,6 +407,8 @@ class TeamCity extends ResultPrinter
 
     /**
      * @param string $className
+     *
+     * @throws \ReflectionException
      *
      * @return string
      */

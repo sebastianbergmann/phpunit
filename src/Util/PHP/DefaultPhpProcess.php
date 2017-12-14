@@ -141,7 +141,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
                         $pipeOffset = 0;
 
                         foreach ($pipes as $i => $origPipe) {
-                            if ($pipe == $origPipe) {
+                            if ($pipe === $origPipe) {
                                 $pipeOffset = $i;
 
                                 break;
@@ -154,12 +154,12 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
                         $line = \fread($pipe, 8192);
 
-                        if ('' === $line) {
+                        if ($line === '') {
                             \fclose($pipes[$pipeOffset]);
 
                             unset($pipes[$pipeOffset]);
                         } else {
-                            if ($pipeOffset == 1) {
+                            if ($pipeOffset === 1) {
                                 $stdout .= $line;
                             } else {
                                 $stderr .= $line;
@@ -212,8 +212,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
     /**
      * @param resource $pipe
      * @param string   $job
-     *
-     * @throws Exception
      */
     protected function process($pipe, $job): void
     {

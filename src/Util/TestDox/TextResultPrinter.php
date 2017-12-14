@@ -19,7 +19,7 @@ class TextResultPrinter extends ResultPrinter
      *
      * @param string $name
      */
-    protected function startClass($name): void
+    protected function startClass(string $name): void
     {
         $this->write($this->currentTestClassPrettified . "\n");
     }
@@ -30,7 +30,7 @@ class TextResultPrinter extends ResultPrinter
      * @param string $name
      * @param bool   $success
      */
-    protected function onTest($name, $success = true): void
+    protected function onTest($name, bool $success = true): void
     {
         if ($success) {
             $this->write(' [x] ');
@@ -46,7 +46,7 @@ class TextResultPrinter extends ResultPrinter
      *
      * @param string $name
      */
-    protected function endClass($name): void
+    protected function endClass(string $name): void
     {
         $this->write("\n");
     }
