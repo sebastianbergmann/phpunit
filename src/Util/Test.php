@@ -1182,11 +1182,11 @@ class Test
      * Trims any extensions from version string that follows after
      * the <major>.<minor>[.<patch>] format
      *
-     * @param $version (Optional)
+     * @param string $version
      *
      * @return mixed
      */
-    private static function sanitizeVersionNumber($version)
+    private static function sanitizeVersionNumber(string $version)
     {
         return \preg_replace(
             '/^(\d+\.\d+(?:.\d+)?).*$/',
