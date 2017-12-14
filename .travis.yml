@@ -32,7 +32,7 @@ before_script:
   - echo 'assert.exception=On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 script:
-  - ./phpunit --coverage-clover=coverage.xml
+  - ./phpunit --coverage-clover=coverage.xml --testdox --color=auto
   - ./phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
   - xmllint --noout --schema phpunit.xsd phpunit.xml
   - xmllint --noout --schema phpunit.xsd tests/_files/configuration.xml
