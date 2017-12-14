@@ -398,14 +398,11 @@ class TeamCity extends ResultPrinter
      */
     private static function escapeValue(string $text): string
     {
-        $text = \str_replace('|', '||', $text);
-        $text = \str_replace("'", "|'", $text);
-        $text = \str_replace("\n", '|n', $text);
-        $text = \str_replace("\r", '|r', $text);
-        $text = \str_replace(']', '|]', $text);
-        $text = \str_replace('[', '|[', $text);
-
-        return $text;
+        return \str_replace(
+            ['|', "'", "\n", "\r", ']', '['],
+            ['||', "|'", '|n', '|r', '|]', '|['],
+            $text
+        );
     }
 
     /**
