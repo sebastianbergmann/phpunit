@@ -45,7 +45,7 @@ class TemplateMethodsTest extends TestCase
         print __METHOD__ . "\n";
     }
 
-    protected function onNotSuccessfulTest(Exception $t)
+    protected function onNotSuccessfulTest(Throwable $t)
     {
         print __METHOD__ . "\n";
         throw $t;
