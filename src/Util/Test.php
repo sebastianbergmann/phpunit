@@ -48,26 +48,10 @@ class Test
     private static $annotationCache = [];
     private static $hookMethods     = [];
 
-    /**
-     * @param \PHPUnit\Framework\Test $test
-     * @param bool                    $asString
-     *
-     * @return mixed
-     */
-    public static function describe(\PHPUnit\Framework\Test $test, $asString = true)
+    public static function describe(\PHPUnit\Framework\Test $test): array
     {
-        if ($asString) {
-            if ($test instanceof SelfDescribing) {
-                return $test->toString();
-            }
-
-            return \get_class($test);
-        }
-
         if ($test instanceof TestCase) {
-            return [
-                \get_class($test), $test->getName()
-            ];
+            return [\get_class($test), $test->getName()];
         }
 
         if ($test instanceof SelfDescribing) {
@@ -75,6 +59,15 @@ class Test
         }
 
         return ['', \get_class($test)];
+    }
+
+    public static function describeAsString(\PHPUnit\Framework\Test $test): string
+    {
+        if ($test instanceof SelfDescribing) {
+            return $test->toString();
+        }
+
+        return \get_class($test);
     }
 
     /**

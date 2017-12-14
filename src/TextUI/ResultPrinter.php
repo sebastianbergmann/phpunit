@@ -312,7 +312,7 @@ class ResultPrinter extends Printer implements TestListener
             $this->write(
                 \sprintf(
                     "Test '%s' started\n",
-                    \PHPUnit\Util\Test::describe($test)
+                    \PHPUnit\Util\Test::describeAsString($test)
                 )
             );
         }
@@ -330,7 +330,7 @@ class ResultPrinter extends Printer implements TestListener
             $this->write(
                 \sprintf(
                     "Test '%s' ended\n",
-                    \PHPUnit\Util\Test::describe($test)
+                    \PHPUnit\Util\Test::describeAsString($test)
                 )
             );
         }

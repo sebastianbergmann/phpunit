@@ -53,7 +53,7 @@ class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        $tmp = Test::describe($test, false);
+        $tmp = Test::describe($test);
 
         if ($test instanceof WarningTestCase) {
             $name = $test->getMessage();
