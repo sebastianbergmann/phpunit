@@ -392,11 +392,11 @@ class TeamCity extends ResultPrinter
     }
 
     /**
-     * @param  $text
+     * @param string $text
      *
      * @return string
      */
-    private static function escapeValue($text): string
+    private static function escapeValue(string $text): string
     {
         $text = \str_replace('|', '||', $text);
         $text = \str_replace("'", "|'", $text);
