@@ -24,7 +24,7 @@ class InvalidArgumentHelper
      *
      * @return Exception
      */
-    public static function factory($argument, $type, $value = null): Exception
+    public static function factory(int $argument, string $type, $value = null): Exception
     {
         $stack = \debug_backtrace();
 

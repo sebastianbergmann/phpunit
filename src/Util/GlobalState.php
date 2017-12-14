@@ -16,7 +16,7 @@ class GlobalState
     /**
      * @var string[]
      */
-    protected static $superGlobalArrays = [
+    private static $superGlobalArrays = [
         '_ENV',
         '_POST',
         '_GET',
@@ -120,10 +120,9 @@ class GlobalState
      */
     public static function getGlobalsAsString(): string
     {
-        $result            = '';
-        $superGlobalArrays = self::getSuperGlobalArrays();
+        $result = '';
 
-        foreach ($superGlobalArrays as $superGlobalArray) {
+        foreach (self::$superGlobalArrays as $superGlobalArray) {
             if (isset($GLOBALS[$superGlobalArray]) && \is_array($GLOBALS[$superGlobalArray])) {
                 foreach (\array_keys($GLOBALS[$superGlobalArray]) as $key) {
                     if ($GLOBALS[$superGlobalArray][$key] instanceof Closure) {
@@ -140,11 +139,11 @@ class GlobalState
             }
         }
 
-        $blacklist   = $superGlobalArrays;
+        $blacklist   = self::$superGlobalArrays;
         $blacklist[] = 'GLOBALS';
 
         foreach (\array_keys($GLOBALS) as $key) {
-            if (!\in_array($key, $blacklist) && !$GLOBALS[$key] instanceof Closure) {
+            if (!$GLOBALS[$key] instanceof Closure && !\in_array($key, $blacklist)) {
                 $result .= \sprintf(
                     '$GLOBALS[\'%s\'] = %s;' . "\n",
                     $key,
@@ -156,24 +155,14 @@ class GlobalState
         return $result;
     }
 
-    /**
-     * @return string[]
-     */
-    protected static function getSuperGlobalArrays(): array
-    {
-        return self::$superGlobalArrays;
-    }
-
     protected static function exportVariable($variable): string
     {
-        if (\is_scalar($variable) || null === $variable ||
+        if (\is_scalar($variable) || $variable === null ||
             (\is_array($variable) && self::arrayOnlyContainsScalars($variable))) {
             return \var_export($variable, true);
         }
 
-        return 'unserialize(' .
-            \var_export(\serialize($variable), true) .
-            ')';
+        return 'unserialize(' . \var_export(\serialize($variable), true) . ')';
     }
 
     /**
@@ -188,7 +177,7 @@ class GlobalState
         foreach ($array as $element) {
             if (\is_array($element)) {
                 $result = self::arrayOnlyContainsScalars($element);
-            } elseif (!\is_scalar($element) && null !== $element) {
+            } elseif (!\is_scalar($element) && $element !== null) {
                 $result = false;
             }
 

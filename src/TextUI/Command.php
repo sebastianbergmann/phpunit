@@ -25,7 +25,7 @@ use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Configuration;
 use PHPUnit\Util\ConfigurationGenerator;
-use PHPUnit\Util\Fileloader;
+use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Getopt;
 use PHPUnit\Util\Log\TeamCity;
@@ -990,7 +990,7 @@ class Command
     protected function handleBootstrap($filename): void
     {
         try {
-            Fileloader::checkAndLoad($filename);
+            FileLoader::checkAndLoad($filename);
         } catch (Exception $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }

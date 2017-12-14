@@ -162,6 +162,8 @@ class Configuration
      * Loads a PHPUnit configuration file.
      *
      * @param string $filename
+     *
+     * @throws Exception
      */
     protected function __construct($filename)
     {
@@ -179,13 +181,15 @@ class Configuration
      *
      * @param string $filename
      *
+     * @throws Exception
+     *
      * @return Configuration
      */
     public static function getInstance($filename): self
     {
-        $realpath = \realpath($filename);
+        $realPath = \realpath($filename);
 
-        if ($realpath === false) {
+        if ($realPath === false) {
             throw new Exception(
                 \sprintf(
                     'Could not read "%s".',
@@ -194,15 +198,16 @@ class Configuration
             );
         }
 
-        if (!isset(self::$instances[$realpath])) {
-            self::$instances[$realpath] = new self($realpath);
+        /** @var string $realPath */
+        if (!isset(self::$instances[$realPath])) {
+            self::$instances[$realPath] = new self($realPath);
         }
 
-        return self::$instances[$realpath];
+        return self::$instances[$realPath];
     }
 
     /**
-     * Returns the realpath to the configuration file.
+     * Returns the real path to the configuration file.
      *
      * @return string
      */
@@ -309,6 +314,7 @@ class Configuration
         $result = [];
 
         foreach ($this->xpath->query('listeners/listener') as $listener) {
+            /** @var DOMElement $listener */
             $class     = (string) $listener->getAttribute('class');
             $file      = '';
             $arguments = [];
@@ -321,15 +327,23 @@ class Configuration
             }
 
             foreach ($listener->childNodes as $node) {
-                if ($node instanceof DOMElement && $node->tagName == 'arguments') {
-                    foreach ($node->childNodes as $argument) {
-                        if ($argument instanceof DOMElement) {
-                            if ($argument->tagName == 'file' || $argument->tagName == 'directory') {
-                                $arguments[] = $this->toAbsolutePath((string) $argument->textContent);
-                            } else {
-                                $arguments[] = Xml::xmlToVariable($argument);
-                            }
-                        }
+                if (!$node instanceof DOMElement) {
+                    continue;
+                }
+
+                if (!$node->tagName === 'arguments') {
+                    continue;
+                }
+
+                foreach ($node->childNodes as $argument) {
+                    if (!$argument instanceof DOMElement) {
+                        continue;
+                    }
+
+                    if ($argument->tagName === 'file' || $argument->tagName === 'directory') {
+                        $arguments[] = $this->toAbsolutePath((string) $argument->textContent);
+                    } else {
+                        $arguments[] = Xml::xmlToVariable($argument);
                     }
                 }
             }
@@ -354,6 +368,7 @@ class Configuration
         $result = [];
 
         foreach ($this->xpath->query('logging/log') as $log) {
+            /** @var DOMElement $log */
             $type   = (string) $log->getAttribute('type');
             $target = (string) $log->getAttribute('target');
 
@@ -363,7 +378,7 @@ class Configuration
 
             $target = $this->toAbsolutePath($target);
 
-            if ($type == 'coverage-html') {
+            if ($type === 'coverage-html') {
                 if ($log->hasAttribute('lowUpperBound')) {
                     $result['lowUpperBound'] = $this->getInteger(
                         (string) $log->getAttribute('lowUpperBound'),
@@ -377,14 +392,14 @@ class Configuration
                         90
                     );
                 }
-            } elseif ($type == 'coverage-crap4j') {
+            } elseif ($type === 'coverage-crap4j') {
                 if ($log->hasAttribute('threshold')) {
                     $result['crap4jThreshold'] = $this->getInteger(
                         (string) $log->getAttribute('threshold'),
                         30
                     );
                 }
-            } elseif ($type == 'coverage-text') {
+            } elseif ($type === 'coverage-text') {
                 if ($log->hasAttribute('showUncoveredFiles')) {
                     $result['coverageTextShowUncoveredFiles'] = $this->getBoolean(
                         (string) $log->getAttribute('showUncoveredFiles'),
@@ -435,6 +450,7 @@ class Configuration
         }
 
         foreach ($this->xpath->query('php/ini') as $ini) {
+            /** @var DOMElement $ini */
             $name  = (string) $ini->getAttribute('name');
             $value = (string) $ini->getAttribute('value');
 
@@ -442,6 +458,7 @@ class Configuration
         }
 
         foreach ($this->xpath->query('php/const') as $const) {
+            /** @var DOMElement $const */
             $name  = (string) $const->getAttribute('name');
             $value = (string) $const->getAttribute('value');
 
@@ -450,6 +467,7 @@ class Configuration
 
         foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($this->xpath->query('php/' . $array) as $var) {
+                /** @var DOMElement $var */
                 $name     = (string) $var->getAttribute('name');
                 $value    = (string) $var->getAttribute('value');
                 $verbatim = false;
@@ -510,7 +528,9 @@ class Configuration
         }
 
         foreach (['var', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
-            // See https://github.com/sebastianbergmann/phpunit/issues/277
+            /*
+             * @see https://github.com/sebastianbergmann/phpunit/issues/277
+             */
             switch ($array) {
                 case 'var':
                     $target = &$GLOBALS;
@@ -537,7 +557,7 @@ class Configuration
             $value = $data['value'];
             $force = $data['force'] ?? false;
 
-            if ($force || false === \getenv($name)) {
+            if ($force || \getenv($name) === false) {
                 \putenv("{$name}={$value}");
             }
 
@@ -545,7 +565,7 @@ class Configuration
                 $_ENV[$name] = $value;
             }
 
-            if (true === $force) {
+            if ($force === true) {
                 $_ENV[$name] = $value;
             }
         }
@@ -571,7 +591,7 @@ class Configuration
         if ($root->hasAttribute('columns')) {
             $columns = (string) $root->getAttribute('columns');
 
-            if ($columns == 'max') {
+            if ($columns === 'max') {
                 $result['columns'] = 'max';
             } else {
                 $result['columns'] = $this->getInteger($columns, 80);
@@ -589,7 +609,7 @@ class Configuration
         }
 
         /*
-         * Issue #657
+         * @see https://github.com/sebastianbergmann/phpunit/issues/657
          */
         if ($root->hasAttribute('stderr')) {
             $result['stderr'] = $this->getBoolean(
@@ -867,21 +887,22 @@ class Configuration
      *
      * @param null|string $testSuiteFilter
      *
+     * @throws Exception
+     *
      * @return TestSuite
      */
     public function getTestSuiteConfiguration($testSuiteFilter = null): TestSuite
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
-        if ($testSuiteNodes->length == 0) {
+        if ($testSuiteNodes->length === 0) {
             $testSuiteNodes = $this->xpath->query('testsuite');
         }
 
-        if ($testSuiteNodes->length == 1) {
+        if ($testSuiteNodes->length === 1) {
             return $this->getTestSuite($testSuiteNodes->item(0), $testSuiteFilter);
         }
 
-        //if ($testSuiteNodes->length > 1) { there cannot be a negative number of Nodes
         $suite = new TestSuite;
 
         foreach ($testSuiteNodes as $testSuiteNode) {
@@ -901,8 +922,9 @@ class Configuration
     public function getTestSuiteNames(): array
     {
         $names = [];
-        $nodes = $this->xpath->query('*/testsuite');
-        foreach ($nodes as $node) {
+
+        foreach ($this->xpath->query('*/testsuite') as $node) {
+            /* @var DOMElement $node */
             $names[] = $node->getAttribute('name');
         }
 
@@ -912,6 +934,8 @@ class Configuration
     /**
      * @param DOMElement  $testSuiteNode
      * @param null|string $testSuiteFilter
+     *
+     * @throws \PHPUnit\Framework\Exception
      *
      * @return TestSuite
      */
@@ -938,6 +962,7 @@ class Configuration
         $testSuiteFilter    = $testSuiteFilter ? \explode(self::TEST_SUITE_FILTER_SEPARATOR, $testSuiteFilter) : [];
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
+            /** @var DOMElement $directoryNode */
             if (!empty($testSuiteFilter) && !\in_array($directoryNode->parentNode->getAttribute('name'), $testSuiteFilter)) {
                 continue;
             }
@@ -948,16 +973,17 @@ class Configuration
                 continue;
             }
 
+            $phpVersion         = PHP_VERSION;
+            $phpVersionOperator = '>=';
+            $prefix             = '';
+            $suffix             = 'Test.php';
+
             if ($directoryNode->hasAttribute('phpVersion')) {
                 $phpVersion = (string) $directoryNode->getAttribute('phpVersion');
-            } else {
-                $phpVersion = PHP_VERSION;
             }
 
             if ($directoryNode->hasAttribute('phpVersionOperator')) {
                 $phpVersionOperator = (string) $directoryNode->getAttribute('phpVersionOperator');
-            } else {
-                $phpVersionOperator = '>=';
             }
 
             if (!\version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
@@ -966,14 +992,10 @@ class Configuration
 
             if ($directoryNode->hasAttribute('prefix')) {
                 $prefix = (string) $directoryNode->getAttribute('prefix');
-            } else {
-                $prefix = '';
             }
 
             if ($directoryNode->hasAttribute('suffix')) {
                 $suffix = (string) $directoryNode->getAttribute('suffix');
-            } else {
-                $suffix = 'Test.php';
             }
 
             $files = $fileIteratorFacade->getFilesAsArray(
@@ -982,10 +1004,12 @@ class Configuration
                 $prefix,
                 $exclude
             );
+
             $suite->addTestFiles($files);
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
+            /** @var DOMElement $fileNode */
             if (!empty($testSuiteFilter) && !\in_array($fileNode->parentNode->getAttribute('name'), $testSuiteFilter)) {
                 continue;
             }
@@ -996,7 +1020,6 @@ class Configuration
                 continue;
             }
 
-            // Get the absolute path to the file
             $file = $fileIteratorFacade->getFilesAsArray(
                 $this->toAbsolutePath($file)
             );
@@ -1005,18 +1028,16 @@ class Configuration
                 continue;
             }
 
-            $file = $file[0];
+            $file               = $file[0];
+            $phpVersion         = PHP_VERSION;
+            $phpVersionOperator = '>=';
 
             if ($fileNode->hasAttribute('phpVersion')) {
                 $phpVersion = (string) $fileNode->getAttribute('phpVersion');
-            } else {
-                $phpVersion = PHP_VERSION;
             }
 
             if ($fileNode->hasAttribute('phpVersionOperator')) {
                 $phpVersionOperator = (string) $fileNode->getAttribute('phpVersionOperator');
-            } else {
-                $phpVersionOperator = '>=';
             }
 
             if (!\version_compare(PHP_VERSION, $phpVersion, $phpVersionOperator)) {
@@ -1041,11 +1062,11 @@ class Configuration
      */
     protected function getBoolean($value, $default)
     {
-        if (\strtolower($value) == 'false') {
+        if (\strtolower($value) === 'false') {
             return false;
         }
 
-        if (\strtolower($value) == 'true') {
+        if (\strtolower($value) === 'true') {
             return true;
         }
 
@@ -1076,29 +1097,28 @@ class Configuration
     {
         $directories = [];
 
-        foreach ($this->xpath->query($query) as $directory) {
-            $directoryPath = (string) $directory->textContent;
+        foreach ($this->xpath->query($query) as $directoryNode) {
+            /** @var DOMElement $directoryNode */
+            $directoryPath = (string) $directoryNode->textContent;
 
             if (!$directoryPath) {
                 continue;
             }
 
-            if ($directory->hasAttribute('prefix')) {
-                $prefix = (string) $directory->getAttribute('prefix');
-            } else {
-                $prefix = '';
+            $prefix = '';
+            $suffix = '.php';
+            $group  = 'DEFAULT';
+
+            if ($directoryNode->hasAttribute('prefix')) {
+                $prefix = (string) $directoryNode->getAttribute('prefix');
             }
 
-            if ($directory->hasAttribute('suffix')) {
-                $suffix = (string) $directory->getAttribute('suffix');
-            } else {
-                $suffix = '.php';
+            if ($directoryNode->hasAttribute('suffix')) {
+                $suffix = (string) $directoryNode->getAttribute('suffix');
             }
 
-            if ($directory->hasAttribute('group')) {
-                $group = (string) $directory->getAttribute('group');
-            } else {
-                $group = 'DEFAULT';
+            if ($directoryNode->hasAttribute('group')) {
+                $group = (string) $directoryNode->getAttribute('group');
             }
 
             $directories[] = [
@@ -1159,7 +1179,6 @@ class Configuration
             return $path;
         }
 
-        // Stream
         if (\strpos($path, '://') !== false) {
             return $path;
         }

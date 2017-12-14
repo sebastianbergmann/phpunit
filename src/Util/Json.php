@@ -65,7 +65,7 @@ class Json
      */
     private static function recursiveSort(&$json): void
     {
-        if (false === \is_array($json)) {
+        if (\is_array($json) === false) {
             return;
         }
 

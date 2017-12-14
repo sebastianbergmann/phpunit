@@ -47,7 +47,7 @@ class Printer
                 if (\strpos($out, 'socket://') === 0) {
                     $out = \explode(':', \str_replace('socket://', '', $out));
 
-                    if (\count($out) != 2) {
+                    if (\count($out) !== 2) {
                         throw new Exception;
                     }
 
@@ -105,7 +105,7 @@ class Printer
                 $this->incrementalFlush();
             }
         } else {
-            if (PHP_SAPI != 'cli' && PHP_SAPI != 'phpdbg') {
+            if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
                 $buffer = \htmlspecialchars($buffer, ENT_SUBSTITUTE);
             }
 

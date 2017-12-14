@@ -10,7 +10,7 @@
 namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Fileloader;
+use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
 use ReflectionClass;
 
@@ -41,7 +41,7 @@ class StandardTestSuiteLoader implements TestSuiteLoader
         if (!\class_exists($suiteClassName, false)) {
             $loadedClasses = \get_declared_classes();
 
-            $filename = Fileloader::checkAndLoad($suiteClassFile);
+            $filename = FileLoader::checkAndLoad($suiteClassFile);
 
             $loadedClasses = \array_values(
                 \array_diff(\get_declared_classes(), $loadedClasses)

@@ -21,13 +21,15 @@ class RegularExpression
      * @param int    $flags
      * @param int    $offset
      *
+     * @throws \Exception
+     *
      * @return false|int
      */
     public static function safeMatch($pattern, $subject, $matches = null, $flags = 0, $offset = 0)
     {
         $handler_terminator = ErrorHandler::handleErrorOnce();
         $match              = \preg_match($pattern, $subject, $matches, $flags, $offset);
-        $handler_terminator(); // cleaning
+        $handler_terminator();
 
         return $match;
     }
