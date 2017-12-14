@@ -2001,7 +2001,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return new TestResult;
     }
 
-    protected function handleDependencies()
+    protected function handleDependencies(): bool
     {
         if (!empty($this->dependencies) && !$this->inIsolation) {
             $className  = \get_class($this);

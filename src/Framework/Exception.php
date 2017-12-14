@@ -52,7 +52,7 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         $string = TestFailure::exceptionToString($this);
 
@@ -63,7 +63,7 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
         return $string;
     }
 
-    public function __sleep()
+    public function __sleep(): array
     {
         return \array_keys(\get_object_vars($this));
     }

@@ -164,7 +164,7 @@ class GlobalState
         return self::$superGlobalArrays;
     }
 
-    protected static function exportVariable($variable)
+    protected static function exportVariable($variable): string
     {
         if (\is_scalar($variable) || null === $variable ||
             (\is_array($variable) && self::arrayOnlyContainsScalars($variable))) {

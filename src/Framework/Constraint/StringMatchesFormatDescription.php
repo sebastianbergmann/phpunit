@@ -64,7 +64,7 @@ class StringMatchesFormatDescription extends RegularExpression
         return $differ->diff($this->string, $other);
     }
 
-    protected function createPatternFromFormat($string)
+    protected function createPatternFromFormat(string $string): string
     {
         $string = \preg_replace(
             [
