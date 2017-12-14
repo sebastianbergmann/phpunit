@@ -229,7 +229,7 @@ class MockObjectTest extends TestCase
 
         $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
         $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
-        $this->assertEquals(null, $mock->doSomething('foo', 'bar'));
+        $this->assertNull($mock->doSomething('foo', 'bar'));
 
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -240,7 +240,7 @@ class MockObjectTest extends TestCase
 
         $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
         $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
-        $this->assertEquals(null, $mock->doSomething('foo', 'bar'));
+        $this->assertNull($mock->doSomething('foo', 'bar'));
     }
 
     public function testStubbedReturnArgument()
@@ -598,7 +598,7 @@ class MockObjectTest extends TestCase
 
         $mock->doSomethingElse($expectedObject);
 
-        $this->assertEquals(1, count($actualArguments));
+        $this->assertCount(1, $actualArguments);
         $this->assertEquals($expectedObject, $actualArguments[0]);
         $this->assertNotSame($expectedObject, $actualArguments[0]);
     }
@@ -626,7 +626,7 @@ class MockObjectTest extends TestCase
 
         $mock->doSomethingElse($expectedObject);
 
-        $this->assertEquals(1, count($actualArguments));
+        $this->assertCount(1, $actualArguments);
         $this->assertSame($expectedObject, $actualArguments[0]);
     }
 

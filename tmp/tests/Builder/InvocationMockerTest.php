@@ -65,7 +65,7 @@ class InvocationMockerTest extends TestCase
              ->method('foo')
              ->willReturnReference($value);
 
-        $this->assertSame(null, $mock->foo());
+        $this->assertNull($mock->foo());
         $value = 'foo';
         $this->assertSame('foo', $mock->foo());
         $value = 'bar';
