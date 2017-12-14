@@ -16,16 +16,6 @@ namespace PHPUnit\Util\TestDox;
 class NamePrettifier
 {
     /**
-     * @var string
-     */
-    private $prefix = 'Test';
-
-    /**
-     * @var string
-     */
-    private $suffix = 'Test';
-
-    /**
      * @var array
      */
     private $strings = [];
@@ -41,13 +31,12 @@ class NamePrettifier
     {
         $title = $name;
 
-        if ($this->suffix !== null &&
-            $this->suffix === \substr($name, -1 * \strlen($this->suffix))) {
-            $title = \substr($title, 0, \strripos($title, $this->suffix));
+        if (\substr($name, -1 * \strlen('Test')) === 'Test') {
+            $title = \substr($title, 0, \strripos($title, 'Test'));
         }
 
-        if ($this->prefix !== null && strpos($name, $this->prefix) === 0) {
-            $title = \substr($title, \strlen($this->prefix));
+        if (strpos($name, 'Test') === 0) {
+            $title = \substr($title, \strlen('Test'));
         }
 
         if ($title[0] === '\\') {
@@ -117,25 +106,5 @@ class NamePrettifier
         }
 
         return $buffer;
-    }
-
-    /**
-     * Sets the prefix of test names.
-     *
-     * @param string $prefix
-     */
-    public function setPrefix($prefix): void
-    {
-        $this->prefix = $prefix;
-    }
-
-    /**
-     * Sets the suffix of test names.
-     *
-     * @param string $suffix
-     */
-    public function setSuffix($suffix): void
-    {
-        $this->suffix = $suffix;
     }
 }

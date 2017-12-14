@@ -32,26 +32,6 @@ class NamePrettifierTest extends TestCase
         $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('Test\FooTest'));
     }
 
-    public function testCaterForUserDefinedSuffix(): void
-    {
-        $this->namePrettifier->setSuffix('TestCase');
-        $this->namePrettifier->setPrefix(null);
-
-        $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('FooTestCase'));
-        $this->assertEquals('TestFoo', $this->namePrettifier->prettifyTestClass('TestFoo'));
-        $this->assertEquals('FooTest', $this->namePrettifier->prettifyTestClass('FooTest'));
-    }
-
-    public function testCaterForUserDefinedPrefix(): void
-    {
-        $this->namePrettifier->setSuffix(null);
-        $this->namePrettifier->setPrefix('XXX');
-
-        $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('XXXFoo'));
-        $this->assertEquals('TestXXX', $this->namePrettifier->prettifyTestClass('TestXXX'));
-        $this->assertEquals('XXX', $this->namePrettifier->prettifyTestClass('XXXXXX'));
-    }
-
     public function testTestNameIsConvertedToASentence(): void
     {
         $this->assertEquals('This is a test', $this->namePrettifier->prettifyTestMethod('testThisIsATest'));
