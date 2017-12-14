@@ -18,17 +18,17 @@ class NamePrettifier
     /**
      * @var string
      */
-    protected $prefix = 'Test';
+    private $prefix = 'Test';
 
     /**
      * @var string
      */
-    protected $suffix = 'Test';
+    private $suffix = 'Test';
 
     /**
      * @var array
      */
-    protected $strings = [];
+    private $strings = [];
 
     /**
      * Prettifies the name of a test class.
@@ -37,17 +37,16 @@ class NamePrettifier
      *
      * @return string
      */
-    public function prettifyTestClass($name): string
+    public function prettifyTestClass(string $name): string
     {
         $title = $name;
 
         if ($this->suffix !== null &&
-            $this->suffix == \substr($name, -1 * \strlen($this->suffix))) {
+            $this->suffix === \substr($name, -1 * \strlen($this->suffix))) {
             $title = \substr($title, 0, \strripos($title, $this->suffix));
         }
 
-        if ($this->prefix !== null &&
-            $this->prefix == \substr($name, 0, \strlen($this->prefix))) {
+        if ($this->prefix !== null && strpos($name, $this->prefix) === 0) {
             $title = \substr($title, \strlen($this->prefix));
         }
 
@@ -65,11 +64,11 @@ class NamePrettifier
      *
      * @return string
      */
-    public function prettifyTestMethod($name): string
+    public function prettifyTestMethod(string $name): string
     {
         $buffer = '';
 
-        if (!\is_string($name) || '' === $name) {
+        if (!\is_string($name) || $name === '') {
             return $buffer;
         }
 
@@ -77,15 +76,15 @@ class NamePrettifier
 
         if (\in_array($string, $this->strings)) {
             $name = $string;
-        } elseif ($count == 0) {
+        } elseif ($count === 0) {
             $this->strings[] = $string;
         }
 
-        if (\substr($name, 0, 4) == 'test') {
+        if (strpos($name, 'test') === 0) {
             $name = \substr($name, 4);
         }
 
-        if ('' === $name) {
+        if ($name === '') {
             return $buffer;
         }
 
