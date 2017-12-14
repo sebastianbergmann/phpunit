@@ -707,7 +707,7 @@ class TestTest extends TestCase
     public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessageRegExp('/^The dataset for the @testWith annotation cannot be parsed:/');
+        $this->expectExceptionMessageRegExp('/^The data set for the @testWith annotation cannot be parsed:/');
 
         Test::getDataFromTestWithAnnotation('/**
                                                            * @testWith [s]
@@ -717,7 +717,7 @@ class TestTest extends TestCase
     public function testTestWithThrowsProperExceptionIfMultiLineDatasetCannotBeParsed(): void
     {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessageRegExp('/^The dataset for the @testWith annotation cannot be parsed:/');
+        $this->expectExceptionMessageRegExp('/^The data set for the @testWith annotation cannot be parsed:/');
 
         Test::getDataFromTestWithAnnotation('/**
                                                            * @testWith ["valid"]
