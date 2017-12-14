@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 class ExceptionMessage extends Constraint
 {
     /**
-     * @var int
+     * @var string
      */
     protected $expectedMessage;
 
