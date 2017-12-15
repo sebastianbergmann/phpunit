@@ -15,7 +15,7 @@ use PHPUnit\Framework\Exception;
  * Factory for PHPUnit\Framework\Exception objects that are used to describe
  * invalid arguments passed to a function or method.
  */
-class InvalidArgumentHelper
+final class InvalidArgumentHelper
 {
     /**
      * @param int    $argument
