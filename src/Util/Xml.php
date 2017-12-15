@@ -17,7 +17,7 @@ use DOMText;
 use PHPUnit\Framework\Exception;
 use ReflectionClass;
 
-class Xml
+final class Xml
 {
     /**
      * Load an $actual document into a DOMDocument.  This is called
