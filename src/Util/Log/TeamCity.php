@@ -61,7 +61,7 @@ class TeamCity extends ResultPrinter
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addError(Test $test, \Throwable $t, $time): void
+    public function addError(Test $test, \Throwable $t, float $time): void
     {
         $this->printEvent(
             'testFailed',
@@ -80,7 +80,7 @@ class TeamCity extends ResultPrinter
      * @param Warning $e
      * @param float   $time
      */
-    public function addWarning(Test $test, Warning $e, $time): void
+    public function addWarning(Test $test, Warning $e, float $time): void
     {
         $this->printEvent(
             'testFailed',
@@ -99,7 +99,7 @@ class TeamCity extends ResultPrinter
      * @param AssertionFailedError $e
      * @param float                $time
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time): void
+    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         $parameters = [
             'name'    => $test->getName(),
@@ -141,7 +141,7 @@ class TeamCity extends ResultPrinter
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Throwable $t, $time): void
+    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
         $this->printIgnoredTest($test->getName(), $t);
     }
@@ -153,7 +153,7 @@ class TeamCity extends ResultPrinter
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Throwable $t, $time): void
+    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
         $this->addError($test, $t, $time);
     }
@@ -165,7 +165,7 @@ class TeamCity extends ResultPrinter
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Throwable $t, $time): void
+    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
         $testName = $test->getName();
         if ($this->startedTestName !== $testName) {
@@ -193,6 +193,8 @@ class TeamCity extends ResultPrinter
      * A testsuite started.
      *
      * @param TestSuite $suite
+     *
+     * @throws \ReflectionException
      */
     public function startTestSuite(TestSuite $suite): void
     {
@@ -265,6 +267,8 @@ class TeamCity extends ResultPrinter
      * A test started.
      *
      * @param Test $test
+     *
+     * @throws \ReflectionException
      */
     public function startTest(Test $test): void
     {
@@ -287,7 +291,7 @@ class TeamCity extends ResultPrinter
      * @param Test  $test
      * @param float $time
      */
-    public function endTest(Test $test, $time): void
+    public function endTest(Test $test, float $time): void
     {
         parent::endTest($test, $time);
 

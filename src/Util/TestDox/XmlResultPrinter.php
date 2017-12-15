@@ -78,7 +78,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addError(Test $test, \Throwable $t, $time): void
+    public function addError(Test $test, \Throwable $t, float $time): void
     {
         $this->exception = $t;
     }
@@ -90,7 +90,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param Warning $e
      * @param float   $time
      */
-    public function addWarning(Test $test, Warning $e, $time): void
+    public function addWarning(Test $test, Warning $e, float $time): void
     {
     }
 
@@ -101,7 +101,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param AssertionFailedError $e
      * @param float                $time
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time): void
+    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         $this->exception = $e;
     }
@@ -113,7 +113,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Throwable $t, $time): void
+    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
     }
 
@@ -124,7 +124,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Throwable $t, $time): void
+    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
     }
 
@@ -135,7 +135,7 @@ class XmlResultPrinter extends Printer implements TestListener
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Throwable $t, $time): void
+    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
     }
 
@@ -172,10 +172,8 @@ class XmlResultPrinter extends Printer implements TestListener
      *
      * @param Test  $test
      * @param float $time
-     *
-     * @throws \ReflectionException
      */
-    public function endTest(Test $test, $time): void
+    public function endTest(Test $test, float $time): void
     {
         if (!$test instanceof TestCase) {
             return;

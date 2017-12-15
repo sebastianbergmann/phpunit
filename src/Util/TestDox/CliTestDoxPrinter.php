@@ -92,7 +92,7 @@ class CliTestDoxPrinter extends ResultPrinter
         parent::startTest($test);
     }
 
-    public function endTest(Test $test, $time): void
+    public function endTest(Test $test, float $time): void
     {
         if (!$test instanceof TestCase && !$test instanceof PhptTestCase) {
             return;
@@ -111,7 +111,7 @@ class CliTestDoxPrinter extends ResultPrinter
         }
     }
 
-    public function addError(Test $test, \Throwable $t, $time): void
+    public function addError(Test $test, \Throwable $t, float $time): void
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '✘'),
@@ -119,7 +119,7 @@ class CliTestDoxPrinter extends ResultPrinter
         );
     }
 
-    public function addWarning(Test $test, Warning $e, $time): void
+    public function addWarning(Test $test, Warning $e, float $time): void
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '✘'),
@@ -127,7 +127,7 @@ class CliTestDoxPrinter extends ResultPrinter
         );
     }
 
-    public function addFailure(Test $test, AssertionFailedError $e, $time): void
+    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-red', '✘'),
@@ -135,7 +135,7 @@ class CliTestDoxPrinter extends ResultPrinter
         );
     }
 
-    public function addIncompleteTest(Test $test, \Throwable $t, $time): void
+    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '∅'),
@@ -144,7 +144,7 @@ class CliTestDoxPrinter extends ResultPrinter
         );
     }
 
-    public function addRiskyTest(Test $test, \Throwable $t, $time): void
+    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '☢'),
@@ -153,11 +153,11 @@ class CliTestDoxPrinter extends ResultPrinter
         );
     }
 
-    public function addSkippedTest(Test $test, \Throwable $e, $time): void
+    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '→'),
-            (string) $e,
+            (string) $t,
             true
         );
     }

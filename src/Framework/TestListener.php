@@ -21,7 +21,7 @@ interface TestListener
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addError(Test $test, \Throwable $t, $time);
+    public function addError(Test $test, \Throwable $t, float $time): void;
 
     /**
      * A warning occurred.
@@ -30,7 +30,7 @@ interface TestListener
      * @param Warning $e
      * @param float   $time
      */
-    public function addWarning(Test $test, Warning $e, $time);
+    public function addWarning(Test $test, Warning $e, float $time): void;
 
     /**
      * A failure occurred.
@@ -39,7 +39,7 @@ interface TestListener
      * @param AssertionFailedError $e
      * @param float                $time
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time);
+    public function addFailure(Test $test, AssertionFailedError $e, float $time): void;
 
     /**
      * Incomplete test.
@@ -48,7 +48,7 @@ interface TestListener
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addIncompleteTest(Test $test, \Throwable $t, $time);
+    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void;
 
     /**
      * Risky test.
@@ -57,7 +57,7 @@ interface TestListener
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addRiskyTest(Test $test, \Throwable $t, $time);
+    public function addRiskyTest(Test $test, \Throwable $t, float $time): void;
 
     /**
      * Skipped test.
@@ -66,28 +66,28 @@ interface TestListener
      * @param \Throwable $t
      * @param float      $time
      */
-    public function addSkippedTest(Test $test, \Throwable $t, $time);
+    public function addSkippedTest(Test $test, \Throwable $t, float $time): void;
 
     /**
      * A test suite started.
      *
      * @param TestSuite $suite
      */
-    public function startTestSuite(TestSuite $suite);
+    public function startTestSuite(TestSuite $suite): void;
 
     /**
      * A test suite ended.
      *
      * @param TestSuite $suite
      */
-    public function endTestSuite(TestSuite $suite);
+    public function endTestSuite(TestSuite $suite): void;
 
     /**
      * A test started.
      *
      * @param Test $test
      */
-    public function startTest(Test $test);
+    public function startTest(Test $test): void;
 
     /**
      * A test ended.
@@ -95,5 +95,5 @@ interface TestListener
      * @param Test  $test
      * @param float $time
      */
-    public function endTest(Test $test, $time);
+    public function endTest(Test $test, float $time): void;
 }
