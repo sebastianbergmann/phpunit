@@ -96,7 +96,7 @@ class Printer
     /**
      * @param string $buffer
      */
-    public function write($buffer): void
+    public function write(string $buffer): void
     {
         if ($this->out) {
             \fwrite($this->out, $buffer);

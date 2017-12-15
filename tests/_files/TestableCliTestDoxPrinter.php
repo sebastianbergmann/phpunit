@@ -13,7 +13,7 @@ class TestableCliTestDoxPrinter extends CliTestDoxPrinter
 {
     private $buffer;
 
-    public function write($text): void
+    public function write(string $text): void
     {
         $this->buffer .= $text;
     }
