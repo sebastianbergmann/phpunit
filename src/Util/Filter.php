@@ -20,12 +20,12 @@ class Filter
     /**
      * Filters stack frames from PHPUnit classes.
      *
-     * @param \Throwable $e
+     * @param \Throwable $t
      * @param bool       $asString
      *
      * @return string|string[]
      */
-    public static function getFilteredStacktrace(\Throwable $e, bool $asString = true)
+    public static function getFilteredStacktrace(\Throwable $t, bool $asString = true)
     {
         $prefix = false;
         $script = \realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
@@ -40,21 +40,21 @@ class Filter
             $filteredStacktrace = [];
         }
 
-        if ($e instanceof SyntheticError) {
-            $eTrace = $e->getSyntheticTrace();
-            $eFile  = $e->getSyntheticFile();
-            $eLine  = $e->getSyntheticLine();
-        } elseif ($e instanceof Exception) {
-            $eTrace = $e->getSerializableTrace();
-            $eFile  = $e->getFile();
-            $eLine  = $e->getLine();
+        if ($t instanceof SyntheticError) {
+            $eTrace = $t->getSyntheticTrace();
+            $eFile  = $t->getSyntheticFile();
+            $eLine  = $t->getSyntheticLine();
+        } elseif ($t instanceof Exception) {
+            $eTrace = $t->getSerializableTrace();
+            $eFile  = $t->getFile();
+            $eLine  = $t->getLine();
         } else {
-            if ($e->getPrevious()) {
-                $e = $e->getPrevious();
+            if ($t->getPrevious()) {
+                $t = $t->getPrevious();
             }
-            $eTrace = $e->getTrace();
-            $eFile  = $e->getFile();
-            $eLine  = $e->getLine();
+            $eTrace = $t->getTrace();
+            $eFile  = $t->getFile();
+            $eLine  = $t->getLine();
         }
 
         if (!self::frameExists($eTrace, $eFile, $eLine)) {
