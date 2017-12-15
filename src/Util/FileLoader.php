@@ -30,7 +30,7 @@ class FileLoader
      *
      * @return string
      */
-    public static function checkAndLoad($filename): string
+    public static function checkAndLoad(string $filename): string
     {
         $includePathFilename = \stream_resolve_include_path($filename);
         $localFile           = __DIR__ . DIRECTORY_SEPARATOR . $filename;
@@ -58,7 +58,7 @@ class FileLoader
      *
      * @return mixed
      */
-    public static function load($filename)
+    public static function load(string $filename)
     {
         $oldVariableNames = \array_keys(\get_defined_vars());
 
