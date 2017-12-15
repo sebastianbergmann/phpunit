@@ -26,9 +26,6 @@ use ReflectionMethod;
 use SebastianBergmann\Environment\OperatingSystem;
 use Traversable;
 
-/**
- * Test helpers.
- */
 final class Test
 {
     /**
