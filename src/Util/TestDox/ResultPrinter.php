@@ -304,21 +304,7 @@ abstract class ResultPrinter extends Printer implements TestListener
             return;
         }
 
-        if (!isset($this->tests[$this->currentTestMethodPrettified])) {
-            if ($this->testStatus === BaseTestRunner::STATUS_PASSED) {
-                $this->tests[$this->currentTestMethodPrettified]['success'] = 1;
-                $this->tests[$this->currentTestMethodPrettified]['failure'] = 0;
-            } else {
-                $this->tests[$this->currentTestMethodPrettified]['success'] = 0;
-                $this->tests[$this->currentTestMethodPrettified]['failure'] = 1;
-            }
-        } else {
-            if ($this->testStatus === BaseTestRunner::STATUS_PASSED) {
-                $this->tests[$this->currentTestMethodPrettified]['success']++;
-            } else {
-                $this->tests[$this->currentTestMethodPrettified]['failure']++;
-            }
-        }
+        $this->tests[] = [$this->currentTestMethodPrettified, $this->testStatus];
 
         $this->currentTestClassPrettified  = null;
         $this->currentTestMethodPrettified = null;
@@ -326,8 +312,8 @@ abstract class ResultPrinter extends Printer implements TestListener
 
     protected function doEndClass(): void
     {
-        foreach ($this->tests as $name => $data) {
-            $this->onTest($name, $data['failure'] === 0);
+        foreach ($this->tests as $test) {
+            $this->onTest($test[0], $test[1] === BaseTestRunner::STATUS_PASSED);
         }
 
         $this->endClass($this->testClass);
