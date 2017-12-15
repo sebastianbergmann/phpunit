@@ -11,27 +11,27 @@ namespace PHPUnit\Framework;
 
 trait TestListenerDefaultImplementation
 {
-    public function addError(Test $test, \Throwable $t, $time): void
+    public function addError(Test $test, \Throwable $t, float $time): void
     {
     }
 
-    public function addWarning(Test $test, Warning $e, $time): void
+    public function addWarning(Test $test, Warning $e, float $time): void
     {
     }
 
-    public function addFailure(Test $test, AssertionFailedError $e, $time): void
+    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
     }
 
-    public function addIncompleteTest(Test $test, \Throwable $t, $time): void
+    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
     }
 
-    public function addRiskyTest(Test $test, \Throwable $t, $time): void
+    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
     }
 
-    public function addSkippedTest(Test $test, \Throwable $t, $time): void
+    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
     }
 
@@ -47,7 +47,7 @@ trait TestListenerDefaultImplementation
     {
     }
 
-    public function endTest(Test $test, $time): void
+    public function endTest(Test $test, float $time): void
     {
     }
 }
