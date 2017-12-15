@@ -30,6 +30,7 @@ use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Getopt;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\Printer;
+use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
@@ -547,7 +548,7 @@ class Command
                     break;
 
                 case '--testdox':
-                    $this->arguments['printer'] = TestDoxPrinter::class;
+                    $this->arguments['printer'] = CliTestDoxPrinter::class;
 
                     break;
 
