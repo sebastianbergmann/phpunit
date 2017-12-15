@@ -25,7 +25,7 @@ class Filter
      *
      * @return string|string[]
      */
-    public static function getFilteredStacktrace($e, $asString = true)
+    public static function getFilteredStacktrace(\Throwable $e, bool $asString = true)
     {
         $prefix = false;
         $script = \realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
