@@ -26,9 +26,6 @@ class GlobalState
         '_REQUEST'
     ];
 
-    /**
-     * @return string
-     */
     public static function getIncludedFilesAsString(): string
     {
         return static::processIncludedFilesAsString(\get_included_files());
@@ -74,9 +71,6 @@ class GlobalState
         return $result;
     }
 
-    /**
-     * @return string
-     */
     public static function getIniSettingsAsString(): string
     {
         $result      = '';
@@ -93,9 +87,6 @@ class GlobalState
         return $result;
     }
 
-    /**
-     * @return string
-     */
     public static function getConstantsAsString(): string
     {
         $constants = \get_defined_constants(true);
@@ -115,9 +106,6 @@ class GlobalState
         return $result;
     }
 
-    /**
-     * @return string
-     */
     public static function getGlobalsAsString(): string
     {
         $result = '';
