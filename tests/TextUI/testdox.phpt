@@ -15,6 +15,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 BankAccount
  ✔ Balance is initially zero [%f ms]
  ✔ Balance cannot become negative [%f ms]
+ ✔ Balance cannot become negative [%f ms]
 
 
 Time: %d ms, Memory: %fMB
