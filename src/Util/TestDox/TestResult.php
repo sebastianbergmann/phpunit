@@ -88,7 +88,8 @@ final class TestResult
     public function toString(?self $previousTestResult, $verbose = false): string
     {
         return \sprintf(
-            "%s %s %s %s\n%s",
+            "%s%s %s %s %s\n%s",
+            $previousTestResult && $previousTestResult->additionInformationPrintable($verbose) ? "\n" : '',
             $this->getClassNameHeader($previousTestResult ? $previousTestResult->testClass : null),
             $this->symbol,
             $this->testMethod,
@@ -125,16 +126,12 @@ final class TestResult
 
     private function getFormattedAdditionalInformation($verbose): string
     {
-        if ($this->additionalInformation === '') {
-            return '';
-        }
-
-        if ($this->additionalInformationVerbose && !$verbose) {
+        if (!$this->additionInformationPrintable($verbose)) {
             return '';
         }
 
         return \sprintf(
-            "   │\n%s\n\n",
+            "   │\n%s\n",
             \implode(
                 "\n",
                 \array_map(
@@ -145,5 +142,18 @@ final class TestResult
                 )
             )
         );
+    }
+
+    protected function additionInformationPrintable(bool $verbose): bool
+    {
+        if ($this->additionalInformation === '') {
+            return false;
+        }
+
+        if ($this->additionalInformationVerbose && !$verbose) {
+            return false;
+        }
+
+        return true;
     }
 }
