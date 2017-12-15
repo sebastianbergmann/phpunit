@@ -12,9 +12,6 @@ namespace PHPUnit\Util;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
 
-/**
- * Utility class for code filtering.
- */
 class Filter
 {
     public static function getFilteredStacktrace(\Throwable $t): string
