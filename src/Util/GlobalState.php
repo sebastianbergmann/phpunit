@@ -11,7 +11,7 @@ namespace PHPUnit\Util;
 
 use Closure;
 
-class GlobalState
+final class GlobalState
 {
     /**
      * @var string[]
@@ -143,7 +143,7 @@ class GlobalState
         return $result;
     }
 
-    protected static function exportVariable($variable): string
+    private static function exportVariable($variable): string
     {
         if (\is_scalar($variable) || $variable === null ||
             (\is_array($variable) && self::arrayOnlyContainsScalars($variable))) {
@@ -158,7 +158,7 @@ class GlobalState
      *
      * @return bool
      */
-    protected static function arrayOnlyContainsScalars(array $array): bool
+    private static function arrayOnlyContainsScalars(array $array): bool
     {
         $result = true;
 
