@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
 
-class TextTestListRenderer
+final class TextTestListRenderer
 {
     public function render(TestSuite $suite): string
     {

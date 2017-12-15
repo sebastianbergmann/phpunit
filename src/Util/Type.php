@@ -10,7 +10,7 @@
 
 namespace PHPUnit\Util;
 
-class Type
+final class Type
 {
     public static function isType(string $type): bool
     {
