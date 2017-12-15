@@ -14,7 +14,7 @@ use PHPUnit\Framework\Exception;
 /**
  * Command-line options parsing class.
  */
-class Getopt
+final class Getopt
 {
     /**
      * @param array      $args
@@ -94,7 +94,7 @@ class Getopt
      *
      * @throws Exception
      */
-    protected static function parseShortOption(string $arg, string $short_options, array &$opts, array &$args): void
+    private static function parseShortOption(string $arg, string $short_options, array &$opts, array &$args): void
     {
         $argLen = \strlen($arg);
 
@@ -139,7 +139,7 @@ class Getopt
      *
      * @throws Exception
      */
-    protected static function parseLongOption(string $arg, array $long_options, array &$opts, array &$args): void
+    private static function parseLongOption(string $arg, array $long_options, array &$opts, array &$args): void
     {
         $count   = \count($long_options);
         $list    = \explode('=', $arg);
