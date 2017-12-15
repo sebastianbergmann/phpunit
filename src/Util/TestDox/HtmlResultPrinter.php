@@ -17,7 +17,7 @@ final class HtmlResultPrinter extends ResultPrinter
     /**
      * @var string
      */
-    private $pageHeader = <<<EOT
+    private const PAGE_HEADER = <<<EOT
 <!doctype html>
 <html lang="en">
     <head>
@@ -53,7 +53,7 @@ EOT;
     /**
      * @var string
      */
-    private $classHeader = <<<EOT
+    private const CLASS_HEADER = <<<EOT
 
         <h2 id="%s">%s</h2>
         <ul>
@@ -63,14 +63,14 @@ EOT;
     /**
      * @var string
      */
-    private $classFooter = <<<EOT
+    private const CLASS_FOOTER = <<<EOT
         </ul>
 EOT;
 
     /**
      * @var string
      */
-    private $pageFooter = <<<EOT
+    private const PAGE_FOOTER = <<<EOT
 
     </body>
 </html>
@@ -81,7 +81,7 @@ EOT;
      */
     protected function startRun(): void
     {
-        $this->write($this->pageHeader);
+        $this->write(self::PAGE_HEADER);
     }
 
     /**
@@ -93,7 +93,7 @@ EOT;
     {
         $this->write(
             \sprintf(
-                $this->classHeader,
+                self::CLASS_HEADER,
                 $name,
                 $this->currentTestClassPrettified
             )
@@ -125,7 +125,7 @@ EOT;
      */
     protected function endClass(string $name): void
     {
-        $this->write($this->classFooter);
+        $this->write(self::CLASS_FOOTER);
     }
 
     /**
@@ -133,6 +133,6 @@ EOT;
      */
     protected function endRun(): void
     {
-        $this->write($this->pageFooter);
+        $this->write(self::PAGE_FOOTER);
     }
 }
