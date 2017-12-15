@@ -150,10 +150,24 @@ use PHPUnit\TextUI\ResultPrinter;
  */
 class Configuration
 {
+    /**
+     * @var \DOMDocument
+     */
     protected $document;
+
+    /**
+     * @var DOMXPath
+     */
     protected $xpath;
+
+    /**
+     * @var string
+     */
     protected $filename;
 
+    /**
+     * @var self[]
+     */
     private static $instances = [];
 
     /**
