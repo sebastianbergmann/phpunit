@@ -79,7 +79,7 @@ class CliTestDoxPrinter extends ResultPrinter
             } else {
                 $testMethod = $this->prettifier->prettifyTestMethod($test->getName(false));
             }
-            $testMethod .= substr($test->getDataSetAsString(false), 5);
+            $testMethod .= \substr($test->getDataSetAsString(false), 5);
         } elseif ($test instanceof PhptTestCase) {
             $className  = $class;
             $testMethod = $test->getName();
@@ -184,11 +184,6 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->printFooter($result);
     }
 
-    protected function printHeader(): void
-    {
-        $this->write("\n" . PHP_Timer::resourceUsage() . "\n\n");
-    }
-
     public function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void
     {
         $numberOfNonSuccessfulTests = \count($this->nonSuccessfulTestResults);
@@ -207,5 +202,10 @@ class CliTestDoxPrinter extends ResultPrinter
             $this->write($testResult->toString($previousTestResult, $this->verbose));
             $previousTestResult = $testResult;
         }
+    }
+
+    protected function printHeader(): void
+    {
+        $this->write("\n" . PHP_Timer::resourceUsage() . "\n\n");
     }
 }

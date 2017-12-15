@@ -17,247 +17,187 @@ use PHPUnit\Framework\Warning;
 final class CliTestDoxPrinterTest extends TestCase
 {
     /**
-     * @test
+     * @var TestableCliTestDoxPrinter
      */
-    public function it_should_print_the_class_name_of_test_class()
-    {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->endTest($this, 0);
-
-        $this->assertStringStartsWith('PHPUnit\Util\TestDox\CliTestDoxPrinter', $printer->getBuffer());
-    }
+    private $printer;
 
     /**
-     * @test
+     * @var TestableCliTestDoxPrinter
      */
-    public function it_should_print_testdox_version_of_test_method()
-    {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->endTest($this, 0.001);
+    private $verbosePrinter;
 
-        $this->assertContains('It should print testdox version of test method', $printer->getBuffer());
+    protected function setUp(): void
+    {
+        $this->printer        = new TestableCliTestDoxPrinter;
+        $this->verbosePrinter = new TestableCliTestDoxPrinter(null, true);
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_check_mark_on_passed_test()
+    public function testPrintsTheClassNameOfTheTestClass(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->endTest($this, 0);
 
-        $this->assertContains('✔', $printer->getBuffer());
+        $this->assertStringStartsWith('PHPUnit\Util\TestDox\CliTestDoxPrinter', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_not_print_additional_information_on_test_passed()
+    public function testPrintsThePrettifiedMethodName(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertNotContains('│', $printer->getBuffer());
+        $this->assertContains('Prints the prettified method name', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_cross_on_test_with_error()
+    public function testPrintsCheckMarkForSuccessfulTest(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addError($this, new Exception(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('✘', $printer->getBuffer());
+        $this->assertContains('✔', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_additional_information_on_test_with_error()
+    public function testDoesNotPrintAdditionalInformationForSuccessfulTest(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addError($this, new Exception(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('│', $printer->getBuffer());
+        $this->assertNotContains('│', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_cross_on_test_with_warning()
+    public function testPrintsCrossForTestWithError(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addWarning($this, new Warning(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addError($this, new Exception(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('✘', $printer->getBuffer());
+        $this->assertContains('✘', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_additional_information_on_test_with_warning()
+    public function testPrintsAdditionalInformationForTestWithError(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addWarning($this, new Warning(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addError($this, new Exception(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('│', $printer->getBuffer());
+        $this->assertContains('│', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_cross_on_test_with_failure()
+    public function testPrintsCrossForTestWithWarning(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addFailure($this, new AssertionFailedError(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addWarning($this, new Warning(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('✘', $printer->getBuffer());
+        $this->assertContains('✘', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_additional_information_on_test_with_failure()
+    public function testPrintsAdditionalInformationForTestWithWarning(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addFailure($this, new AssertionFailedError(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addWarning($this, new Warning(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('│', $printer->getBuffer());
+        $this->assertContains('│', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_empty_set_symbol_on_incomplete_test()
+    public function testPrintsCrossForTestWithFailure(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addIncompleteTest($this, new Exception(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addFailure($this, new AssertionFailedError(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('∅', $printer->getBuffer());
+        $this->assertContains('✘', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_not_print_additional_information_on_incomplete_test_when_not_verbose()
+    public function testPrintsAdditionalInformationForTestWithFailure(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addIncompleteTest($this, new Exception(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addFailure($this, new AssertionFailedError(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertNotContains('│', $printer->getBuffer());
+        $this->assertContains('│', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_additional_information_on_incomplete_test_when_verbose()
+    public function testPrintsEmptySetSymbolForTestWithFailure(): void
     {
-        $printer = new TestableCliTestDoxPrinter(null, true);
-        $printer->startTest($this);
-        $printer->addIncompleteTest($this, new Exception('E_X_C_E_P_T_I_O_N'), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addIncompleteTest($this, new Exception(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('│', $printer->getBuffer());
-        $this->assertContains('E_X_C_E_P_T_I_O_N', $printer->getBuffer());
+        $this->assertContains('∅', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_radioactive_symbol_on_test_risky()
+    public function testDoesNotPrintAdditionalInformationForIncompleteTestByDefault(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addRiskyTest($this, new Exception(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addIncompleteTest($this, new Exception(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('☢', $printer->getBuffer());
+        $this->assertNotContains('│', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_not_print_additional_information_on_risky_test_when_not_verbose()
+    public function testPrintsAdditionalInformationForIncompleteTestInVerboseMode(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addRiskyTest($this, new Exception(), 0);
-        $printer->endTest($this, 0.001);
+        $this->verbosePrinter->startTest($this);
+        $this->verbosePrinter->addIncompleteTest($this, new Exception('E_X_C_E_P_T_I_O_N'), 0);
+        $this->verbosePrinter->endTest($this, 0.001);
 
-        $this->assertNotContains('│', $printer->getBuffer());
+        $this->assertContains('│', $this->verbosePrinter->getBuffer());
+        $this->assertContains('E_X_C_E_P_T_I_O_N', $this->verbosePrinter->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_additional_information_on_risky_test_when_verbose()
+    public function testPrintsRadioactiveSymbolForRiskyTest(): void
     {
-        $printer = new TestableCliTestDoxPrinter(null, true);
-        $printer->startTest($this);
-        $printer->addRiskyTest($this, new Exception(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addRiskyTest($this, new Exception(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('│', $printer->getBuffer());
+        $this->assertContains('☢', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_arrow_on_skipped_test()
+    public function testDoesNotPrintAdditionalInformationForRiskyTestByDefault(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addSkippedTest($this, new Exception(), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addRiskyTest($this, new Exception(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('→', $printer->getBuffer());
+        $this->assertNotContains('│', $this->printer->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_not_print_additional_information_on_skipped_test_when_not_verbose()
+    public function testPrintsAdditionalInformationForRiskyTestInVerboseMode(): void
     {
-        $printer = new TestableCliTestDoxPrinter();
-        $printer->startTest($this);
-        $printer->addSkippedTest($this, new Exception(), 0);
-        $printer->endTest($this, 0.001);
+        $this->verbosePrinter->startTest($this);
+        $this->verbosePrinter->addRiskyTest($this, new Exception(), 0);
+        $this->verbosePrinter->endTest($this, 0.001);
 
-        $this->assertNotContains('│', $printer->getBuffer());
+        $this->assertContains('│', $this->verbosePrinter->getBuffer());
     }
 
-    /**
-     * @test
-     */
-    public function it_should_print_additional_information_on_skipped_test_when_verbose()
+    public function testPrintsArrowForSkippedTest(): void
     {
-        $printer = new TestableCliTestDoxPrinter(null, true);
-        $printer->startTest($this);
-        $printer->addSkippedTest($this, new Exception('S_K_I_P_P_E_D'), 0);
-        $printer->endTest($this, 0.001);
+        $this->printer->startTest($this);
+        $this->printer->addSkippedTest($this, new Exception(), 0);
+        $this->printer->endTest($this, 0.001);
 
-        $this->assertContains('│', $printer->getBuffer());
-        $this->assertContains('S_K_I_P_P_E_D', $printer->getBuffer());
+        $this->assertContains('→', $this->printer->getBuffer());
+    }
+
+    public function testDoesNotPrintAdditionalInformationForSkippedTestByDefault(): void
+    {
+        $this->printer->startTest($this);
+        $this->printer->addSkippedTest($this, new Exception(), 0);
+        $this->printer->endTest($this, 0.001);
+
+        $this->assertNotContains('│', $this->printer->getBuffer());
+    }
+
+    public function testPrintsAdditionalInformationForSkippedTestInVerboseMode(): void
+    {
+        $this->verbosePrinter->startTest($this);
+        $this->verbosePrinter->addSkippedTest($this, new Exception('S_K_I_P_P_E_D'), 0);
+        $this->verbosePrinter->endTest($this, 0.001);
+
+        $this->assertContains('│', $this->verbosePrinter->getBuffer());
+        $this->assertContains('S_K_I_P_P_E_D', $this->verbosePrinter->getBuffer());
     }
 }

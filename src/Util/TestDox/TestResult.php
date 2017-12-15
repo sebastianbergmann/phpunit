@@ -144,7 +144,7 @@ final class TestResult
         );
     }
 
-    protected function additionInformationPrintable(bool $verbose): bool
+    private function additionInformationPrintable(bool $verbose): bool
     {
         if ($this->additionalInformation === '') {
             return false;
