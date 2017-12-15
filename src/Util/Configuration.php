@@ -150,8 +150,6 @@ use PHPUnit\TextUI\ResultPrinter;
  */
 class Configuration
 {
-    public const TEST_SUITE_FILTER_SEPARATOR = ',';
-
     protected $document;
     protected $xpath;
     protected $filename;
@@ -959,7 +957,7 @@ class Configuration
         }
 
         $fileIteratorFacade = new File_Iterator_Facade;
-        $testSuiteFilter    = $testSuiteFilter ? \explode(self::TEST_SUITE_FILTER_SEPARATOR, $testSuiteFilter) : [];
+        $testSuiteFilter    = $testSuiteFilter ? \explode(',', $testSuiteFilter) : [];
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
             /** @var DOMElement $directoryNode */
