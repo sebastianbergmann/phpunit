@@ -85,7 +85,7 @@ class Blacklist
      *
      * @return bool
      */
-    public function isBlacklisted($file): bool
+    public function isBlacklisted(string $file): bool
     {
         if (\defined('PHPUNIT_TESTSUITE')) {
             return false;
