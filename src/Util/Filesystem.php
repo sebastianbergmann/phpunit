@@ -13,7 +13,7 @@ namespace PHPUnit\Util;
 /**
  * Filesystem helpers.
  */
-class Filesystem
+final class Filesystem
 {
     /**
      * Maps class names to source file names:
