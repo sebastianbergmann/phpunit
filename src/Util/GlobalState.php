@@ -32,7 +32,7 @@ class GlobalState
     }
 
     /**
-     * @param array $files
+     * @param string[] $files
      *
      * @return string
      */
