@@ -14,7 +14,7 @@ use PHPUnit\Framework\Exception;
 /**
  * Utility methods to load PHP sourcefiles.
  */
-class FileLoader
+final class FileLoader
 {
     /**
      * Checks if a PHP sourcecode file is readable. The sourcecode file is loaded through the load() method.
