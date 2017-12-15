@@ -71,14 +71,7 @@ class Filter
         return $filteredStacktrace;
     }
 
-    /**
-     * @param array  $trace
-     * @param string $file
-     * @param int    $line
-     *
-     * @return bool
-     */
-    private static function frameExists(array $trace, $file, $line): bool
+    private static function frameExists(array $trace, string $file, int $line): bool
     {
         foreach ($trace as $frame) {
             if (isset($frame['file']) && $frame['file'] === $file &&
