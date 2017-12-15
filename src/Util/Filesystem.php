@@ -16,11 +16,6 @@ namespace PHPUnit\Util;
 class Filesystem
 {
     /**
-     * @var array
-     */
-    protected static $buffer = [];
-
-    /**
      * Maps class names to source file names:
      *   - PEAR CS:   Foo_Bar_Baz -> Foo/Bar/Baz.php
      *   - Namespace: Foo\Bar\Baz -> Foo/Bar/Baz.php
