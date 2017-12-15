@@ -165,7 +165,7 @@ class Configuration
      *
      * @throws Exception
      */
-    protected function __construct($filename)
+    protected function __construct(string $filename)
     {
         $this->filename = $filename;
         $this->document = Xml::loadFile($filename, false, true, true);
@@ -185,7 +185,7 @@ class Configuration
      *
      * @return Configuration
      */
-    public static function getInstance($filename): self
+    public static function getInstance(string $filename): self
     {
         $realPath = \realpath($filename);
 
@@ -885,13 +885,13 @@ class Configuration
     /**
      * Returns the test suite configuration.
      *
-     * @param null|string $testSuiteFilter
+     * @param string $testSuiteFilter
      *
      * @throws Exception
      *
      * @return TestSuite
      */
-    public function getTestSuiteConfiguration($testSuiteFilter = null): TestSuite
+    public function getTestSuiteConfiguration(string $testSuiteFilter = ''): TestSuite
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
@@ -932,14 +932,14 @@ class Configuration
     }
 
     /**
-     * @param DOMElement  $testSuiteNode
-     * @param null|string $testSuiteFilter
+     * @param DOMElement $testSuiteNode
+     * @param string     $testSuiteFilter
      *
      * @throws \PHPUnit\Framework\Exception
      *
      * @return TestSuite
      */
-    protected function getTestSuite(DOMElement $testSuiteNode, $testSuiteFilter = null): TestSuite
+    protected function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new TestSuite(
@@ -1060,7 +1060,7 @@ class Configuration
      *
      * @return bool|string
      */
-    protected function getBoolean($value, $default)
+    protected function getBoolean(string $value, $default)
     {
         if (\strtolower($value) === 'false') {
             return false;
@@ -1079,7 +1079,7 @@ class Configuration
      *
      * @return int
      */
-    protected function getInteger($value, $default): int
+    protected function getInteger(string $value, $default): int
     {
         if (\is_numeric($value)) {
             return (int) $value;
@@ -1093,7 +1093,7 @@ class Configuration
      *
      * @return array
      */
-    protected function readFilterDirectories($query): array
+    protected function readFilterDirectories(string $query): array
     {
         $directories = [];
 
@@ -1135,9 +1135,9 @@ class Configuration
     /**
      * @param string $query
      *
-     * @return array
+     * @return string[]
      */
-    protected function readFilterFiles($query): array
+    protected function readFilterFiles(string $query): array
     {
         $files = [];
 
@@ -1152,13 +1152,7 @@ class Configuration
         return $files;
     }
 
-    /**
-     * @param string $path
-     * @param bool   $useIncludePath
-     *
-     * @return string
-     */
-    protected function toAbsolutePath($path, $useIncludePath = false): string
+    protected function toAbsolutePath(string $path, bool $useIncludePath = false): string
     {
         $path = \trim($path);
 
@@ -1196,12 +1190,7 @@ class Configuration
         return $file;
     }
 
-    /**
-     * @param string $root
-     *
-     * @return array
-     */
-    private function parseGroupConfiguration($root): array
+    private function parseGroupConfiguration(string $root): array
     {
         $groups = [
             'include' => [],
