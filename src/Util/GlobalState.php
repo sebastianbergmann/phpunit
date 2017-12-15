@@ -16,7 +16,7 @@ class GlobalState
     /**
      * @var string[]
      */
-    private static $superGlobalArrays = [
+    private const SUPER_GLOBAL_ARRAYS = [
         '_ENV',
         '_POST',
         '_GET',
@@ -122,7 +122,7 @@ class GlobalState
     {
         $result = '';
 
-        foreach (self::$superGlobalArrays as $superGlobalArray) {
+        foreach (self::SUPER_GLOBAL_ARRAYS as $superGlobalArray) {
             if (isset($GLOBALS[$superGlobalArray]) && \is_array($GLOBALS[$superGlobalArray])) {
                 foreach (\array_keys($GLOBALS[$superGlobalArray]) as $key) {
                     if ($GLOBALS[$superGlobalArray][$key] instanceof Closure) {
@@ -139,7 +139,7 @@ class GlobalState
             }
         }
 
-        $blacklist   = self::$superGlobalArrays;
+        $blacklist   = self::SUPER_GLOBAL_ARRAYS;
         $blacklist[] = 'GLOBALS';
 
         foreach (\array_keys($GLOBALS) as $key) {
