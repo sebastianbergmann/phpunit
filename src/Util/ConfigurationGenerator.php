@@ -10,7 +10,7 @@
 
 namespace PHPUnit\Util;
 
-class ConfigurationGenerator
+final class ConfigurationGenerator
 {
     /**
      * @var string
