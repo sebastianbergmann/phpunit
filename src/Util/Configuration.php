@@ -148,22 +148,22 @@ use PHPUnit\TextUI\ResultPrinter;
  * </phpunit>
  * </code>
  */
-class Configuration
+final class Configuration
 {
     /**
      * @var \DOMDocument
      */
-    protected $document;
+    private $document;
 
     /**
      * @var DOMXPath
      */
-    protected $xpath;
+    private $xpath;
 
     /**
      * @var string
      */
-    protected $filename;
+    private $filename;
 
     /**
      * @var self[]
@@ -177,7 +177,7 @@ class Configuration
      *
      * @throws Exception
      */
-    protected function __construct(string $filename)
+    private function __construct(string $filename)
     {
         $this->filename = $filename;
         $this->document = Xml::loadFile($filename, false, true, true);
@@ -951,7 +951,7 @@ class Configuration
      *
      * @return TestSuite
      */
-    protected function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
+    private function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new TestSuite(
@@ -1072,7 +1072,7 @@ class Configuration
      *
      * @return bool|string
      */
-    protected function getBoolean(string $value, $default)
+    private function getBoolean(string $value, $default)
     {
         if (\strtolower($value) === 'false') {
             return false;
@@ -1091,7 +1091,7 @@ class Configuration
      *
      * @return int
      */
-    protected function getInteger(string $value, $default): int
+    private function getInteger(string $value, $default): int
     {
         if (\is_numeric($value)) {
             return (int) $value;
@@ -1105,7 +1105,7 @@ class Configuration
      *
      * @return array
      */
-    protected function readFilterDirectories(string $query): array
+    private function readFilterDirectories(string $query): array
     {
         $directories = [];
 
@@ -1149,7 +1149,7 @@ class Configuration
      *
      * @return string[]
      */
-    protected function readFilterFiles(string $query): array
+    private function readFilterFiles(string $query): array
     {
         $files = [];
 
@@ -1164,7 +1164,7 @@ class Configuration
         return $files;
     }
 
-    protected function toAbsolutePath(string $path, bool $useIncludePath = false): string
+    private function toAbsolutePath(string $path, bool $useIncludePath = false): string
     {
         $path = \trim($path);
 
