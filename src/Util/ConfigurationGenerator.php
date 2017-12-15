@@ -38,15 +38,7 @@ class ConfigurationGenerator
 
 EOT;
 
-    /**
-     * @param string $phpunitVersion
-     * @param string $bootstrapScript
-     * @param string $testsDirectory
-     * @param string $srcDirectory
-     *
-     * @return string
-     */
-    public function generateDefaultConfiguration($phpunitVersion, $bootstrapScript, $testsDirectory, $srcDirectory): string
+    public function generateDefaultConfiguration(string $phpunitVersion, string $bootstrapScript, string $testsDirectory, string $srcDirectory): string
     {
         return \str_replace(
             [
