@@ -12,7 +12,7 @@ namespace PHPUnit\Util;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
 
-class Filter
+final class Filter
 {
     public static function getFilteredStacktrace(\Throwable $t): string
     {
