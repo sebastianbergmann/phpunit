@@ -12,7 +12,7 @@ namespace PHPUnit\Util\TestDox;
 /**
  * Prints TestDox documentation in HTML format.
  */
-class HtmlResultPrinter extends ResultPrinter
+final class HtmlResultPrinter extends ResultPrinter
 {
     /**
      * @var string
