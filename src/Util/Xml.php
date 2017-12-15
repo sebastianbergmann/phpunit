@@ -17,9 +17,6 @@ use DOMText;
 use PHPUnit\Framework\Exception;
 use ReflectionClass;
 
-/**
- * XML helpers.
- */
 class Xml
 {
     /**
