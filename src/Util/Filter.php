@@ -17,15 +17,7 @@ use PHPUnit\Framework\SyntheticError;
  */
 class Filter
 {
-    /**
-     * Filters stack frames from PHPUnit classes.
-     *
-     * @param \Throwable $t
-     * @param bool       $asString
-     *
-     * @return string|string[]
-     */
-    public static function getFilteredStacktrace(\Throwable $t, bool $asString = true)
+    public static function getFilteredStacktrace(\Throwable $t): string
     {
         $prefix = false;
         $script = \realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
@@ -34,11 +26,7 @@ class Filter
             $prefix = __PHPUNIT_PHAR_ROOT__;
         }
 
-        if ($asString === true) {
-            $filteredStacktrace = '';
-        } else {
-            $filteredStacktrace = [];
-        }
+        $filteredStacktrace = '';
 
         if ($t instanceof SyntheticError) {
             $eTrace = $t->getSyntheticTrace();
@@ -52,6 +40,7 @@ class Filter
             if ($t->getPrevious()) {
                 $t = $t->getPrevious();
             }
+
             $eTrace = $t->getTrace();
             $eFile  = $t->getFile();
             $eLine  = $t->getLine();
@@ -71,15 +60,11 @@ class Filter
                 !$blacklist->isBlacklisted($frame['file']) &&
                 ($prefix === false || \strpos($frame['file'], $prefix) !== 0) &&
                 $frame['file'] !== $script) {
-                if ($asString === true) {
-                    $filteredStacktrace .= \sprintf(
-                        "%s:%s\n",
-                        $frame['file'],
-                        $frame['line'] ?? '?'
-                    );
-                } else {
-                    $filteredStacktrace[] = $frame;
-                }
+                $filteredStacktrace .= \sprintf(
+                    "%s:%s\n",
+                    $frame['file'],
+                    $frame['line'] ?? '?'
+                );
             }
         }
 
