@@ -29,7 +29,7 @@ use Traversable;
 /**
  * Test helpers.
  */
-class Test
+final class Test
 {
     /**
      * @var int
