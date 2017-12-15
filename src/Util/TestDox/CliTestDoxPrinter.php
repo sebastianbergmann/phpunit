@@ -45,17 +45,11 @@ class CliTestDoxPrinter extends ResultPrinter
      */
     private $prettifier;
 
-    public function __construct(
-        $out = null,
-        $verbose = false,
-        $colors = self::COLOR_DEFAULT,
-        $debug = false,
-        $numberOfColumns = 80,
-        $reverse = false
-    ) {
+    public function __construct($out = null, bool $verbose = false, $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
+    {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
-        $this->prettifier = new NamePrettifier();
+        $this->prettifier = new NamePrettifier;
     }
 
     public function startTest(Test $test): void
@@ -65,6 +59,7 @@ class CliTestDoxPrinter extends ResultPrinter
         }
 
         $class = \get_class($test);
+
         if ($test instanceof TestCase) {
             $annotations = $test->getAnnotations();
 
@@ -79,6 +74,7 @@ class CliTestDoxPrinter extends ResultPrinter
             } else {
                 $testMethod = $this->prettifier->prettifyTestMethod($test->getName(false));
             }
+
             $testMethod .= \substr($test->getDataSetAsString(false), 5);
         } elseif ($test instanceof PhptTestCase) {
             $className  = $class;
@@ -168,7 +164,6 @@ class CliTestDoxPrinter extends ResultPrinter
 
     public function writeProgress($progress): void
     {
-        // NOOP, block normal behavior of \PHPUnit\TextUI\ResultPrinter
     }
 
     public function flush(): void
@@ -184,9 +179,15 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->printFooter($result);
     }
 
-    public function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void
+    protected function printHeader(): void
+    {
+        $this->write("\n" . PHP_Timer::resourceUsage() . "\n\n");
+    }
+
+    private function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void
     {
         $numberOfNonSuccessfulTests = \count($this->nonSuccessfulTestResults);
+
         if ($numberOfNonSuccessfulTests === 0) {
             return;
         }
@@ -198,14 +199,11 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->write("Summary of non-successful tests:\n\n");
 
         $previousTestResult = null;
+
         foreach ($this->nonSuccessfulTestResults as $testResult) {
             $this->write($testResult->toString($previousTestResult, $this->verbose));
+
             $previousTestResult = $testResult;
         }
-    }
-
-    protected function printHeader(): void
-    {
-        $this->write("\n" . PHP_Timer::resourceUsage() . "\n\n");
     }
 }
