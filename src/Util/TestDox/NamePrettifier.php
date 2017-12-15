@@ -13,7 +13,7 @@ namespace PHPUnit\Util\TestDox;
 /**
  * Prettifies class and method names for use in TestDox documentation.
  */
-class NamePrettifier
+final class NamePrettifier
 {
     /**
      * @var array
