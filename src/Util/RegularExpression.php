@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-/**
- * Error handler that converts PHP errors and warnings to exceptions.
- */
 final class RegularExpression
 {
     /**
