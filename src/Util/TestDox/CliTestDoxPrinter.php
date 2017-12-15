@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI;
+namespace PHPUnit\Util\TestDox;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
@@ -15,14 +15,14 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\TextUI\TestDox\TestResult as TestDoxTestResult;
-use PHPUnit\Util\TestDox\NamePrettifier;
+use PHPUnit\TextUI\ResultPrinter;
+use PHPUnit\Util\TestDox\TestResult as TestDoxTestResult;
 
 /**
  * This printer is for CLI output only. For the classes that output to file, html and xml,
  * please refer to the PHPUnit\Util\TestDox namespace
  */
-class TestDoxPrinter extends ResultPrinter
+class CliTestDoxPrinter extends ResultPrinter
 {
     /**
      * @var TestDoxTestResult
