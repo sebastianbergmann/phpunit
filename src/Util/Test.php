@@ -125,7 +125,6 @@ class Test
      * @param string $methodName
      *
      * @throws CodeCoverageException
-     * @throws ReflectionException
      *
      * @return array|bool
      */
