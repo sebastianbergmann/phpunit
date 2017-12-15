@@ -12,7 +12,7 @@ namespace PHPUnit\Util;
 
 use PHPUnit\Framework\Exception;
 
-class Json
+final class Json
 {
     /**
      * Prettify json string
