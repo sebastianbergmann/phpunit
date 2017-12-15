@@ -12,7 +12,7 @@ namespace PHPUnit\Util;
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
  */
-class RegularExpression
+final class RegularExpression
 {
     /**
      * @param string $pattern
