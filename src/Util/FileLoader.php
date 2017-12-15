@@ -55,10 +55,8 @@ class FileLoader
      * Loads a PHP sourcefile.
      *
      * @param string $filename
-     *
-     * @return mixed
      */
-    public static function load(string $filename)
+    public static function load(string $filename): void
     {
         $oldVariableNames = \array_keys(\get_defined_vars());
 
@@ -72,7 +70,5 @@ class FileLoader
                 $GLOBALS[$variableName] = $newVariables[$variableName];
             }
         }
-
-        return $filename;
     }
 }
