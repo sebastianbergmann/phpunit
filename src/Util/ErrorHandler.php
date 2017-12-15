@@ -18,9 +18,9 @@ use PHPUnit\Framework\Error\Warning;
 /**
  * Error handler that converts PHP errors and warnings to exceptions.
  */
-class ErrorHandler
+final class ErrorHandler
 {
-    protected static $errorStack = [];
+    private static $errorStack = [];
 
     /**
      * Returns the error stack.
