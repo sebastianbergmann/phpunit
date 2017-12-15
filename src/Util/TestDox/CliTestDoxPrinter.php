@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\TestDox;
 
+use PHP_Timer;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -181,6 +182,11 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->printNonSuccessfulTestsSummary($result->count());
 
         $this->printFooter($result);
+    }
+
+    protected function printHeader(): void
+    {
+        $this->write("\n" . PHP_Timer::resourceUsage() . "\n\n");
     }
 
     public function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void

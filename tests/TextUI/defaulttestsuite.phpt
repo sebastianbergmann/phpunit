@@ -14,7 +14,6 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 DummyBar
  ✔ Bar equals bar [%f ms]
 
-
 Time: %d ms, Memory: %fMB
 
 OK (1 test, 1 assertion)

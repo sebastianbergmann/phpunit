@@ -18,7 +18,6 @@ DataProviderTestDox
  ✔ Does something else with data set "one" [%f ms]
  ✔ Does something else with data set "two" [%f ms]
 
-
 Time: %d ms, Memory: %fMB
 
 OK (4 tests, 4 assertions)
