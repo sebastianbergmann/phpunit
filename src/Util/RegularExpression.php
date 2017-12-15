@@ -17,7 +17,7 @@ class RegularExpression
     /**
      * @param string $pattern
      * @param string $subject
-     * @param null   $matches
+     * @param array  $matches
      * @param int    $flags
      * @param int    $offset
      *
@@ -25,7 +25,7 @@ class RegularExpression
      *
      * @return false|int
      */
-    public static function safeMatch($pattern, $subject, $matches = null, $flags = 0, $offset = 0)
+    public static function safeMatch(string $pattern, string $subject, ?array $matches = null, int $flags = 0, int $offset = 0)
     {
         $handler_terminator = ErrorHandler::handleErrorOnce();
         $match              = \preg_match($pattern, $subject, $matches, $flags, $offset);
