@@ -35,7 +35,7 @@ use Text_Template;
 /**
  * Utility class for blacklisting PHPUnit's own source code files.
  */
-class Blacklist
+final class Blacklist
 {
     /**
      * @var array
