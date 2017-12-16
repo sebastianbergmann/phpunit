@@ -24,6 +24,11 @@ class AbstractPhpProcessTest extends TestCase
         $this->phpProcess = $this->getMockForAbstractClass(AbstractPhpProcess::class);
     }
 
+    protected function tearDown(): void
+    {
+        $this->phpProcess = null;
+    }
+
     public function testShouldNotUseStderrRedirectionByDefault(): void
     {
         $this->assertFalse($this->phpProcess->useStderrRedirection());

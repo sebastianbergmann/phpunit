@@ -32,6 +32,12 @@ final class CliTestDoxPrinterTest extends TestCase
         $this->verbosePrinter = new TestableCliTestDoxPrinter(null, true);
     }
 
+    protected function tearDown(): void
+    {
+        $this->printer        = null;
+        $this->verbosePrinter = null;
+    }
+
     public function testPrintsTheClassNameOfTheTestClass(): void
     {
         $this->printer->startTest($this);

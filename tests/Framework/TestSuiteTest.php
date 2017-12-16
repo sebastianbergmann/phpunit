@@ -22,6 +22,11 @@ class TestSuiteTest extends TestCase
         $this->result = new TestResult;
     }
 
+    protected function tearDown(): void
+    {
+        $this->result = null;
+    }
+
     public static function suite()
     {
         $suite = new TestSuite;

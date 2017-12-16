@@ -24,6 +24,11 @@ class NamePrettifierTest extends TestCase
         $this->namePrettifier = new NamePrettifier;
     }
 
+    protected function tearDown(): void
+    {
+        $this->namePrettifier = null;
+    }
+
     public function testTitleHasSensibleDefaults(): void
     {
         $this->assertEquals('Foo', $this->namePrettifier->prettifyTestClass('FooTest'));

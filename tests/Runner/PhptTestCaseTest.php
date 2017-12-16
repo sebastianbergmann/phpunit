@@ -81,8 +81,8 @@ EOF;
     {
         @\unlink($this->filename);
 
-        $this->filename = null;
-        $this->testCase = null;
+        $this->phpProcess = null;
+        $this->testCase   = null;
     }
 
     public function testShouldRunFileSectionAsTest(): void
