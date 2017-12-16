@@ -177,7 +177,7 @@ class PHPUnit_TextUI_TestRunner extends PHPUnit_Runner_BaseTestRunner
         }
 
         if ($arguments['beStrictAboutChangesToGlobalState'] === true) {
-            $suite->setbeStrictAboutChangesToGlobalState(true);
+            $suite->setBeStrictAboutChangesToGlobalState(true);
         }
 
         if (is_int($arguments['repeat'])) {
