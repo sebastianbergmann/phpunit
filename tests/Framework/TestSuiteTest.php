@@ -10,7 +10,7 @@
 
 namespace PHPUnit\Framework;
 
-class SuiteTest extends TestCase
+class TestSuiteTest extends TestCase
 {
     /**
      * @var TestResult
