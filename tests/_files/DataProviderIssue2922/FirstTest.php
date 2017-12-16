@@ -19,6 +19,6 @@ class FirstTest extends TestCase
 
     public function provide()
     {
-        throw new \FooException();
+        throw new \Exception();
     }
 }
