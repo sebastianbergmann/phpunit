@@ -30,6 +30,7 @@ class MethodName extends StatelessInvocation
 
     /**
      * @param  Constraint|string
+     * @param mixed $constraint
      *
      * @throws Constraint
      * @throws \PHPUnit\Framework\Exception

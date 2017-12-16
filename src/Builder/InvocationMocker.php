@@ -204,9 +204,9 @@ class InvocationMocker implements MethodNameMatch
     /**
      * @param array ...$arguments
      *
-     * @return InvocationMocker
-     *
      * @throws RuntimeException
+     *
+     * @return InvocationMocker
      */
     public function with(...$arguments)
     {
@@ -220,9 +220,9 @@ class InvocationMocker implements MethodNameMatch
     /**
      * @param array ...$arguments
      *
-     * @return InvocationMocker
-     *
      * @throws RuntimeException
+     *
+     * @return InvocationMocker
      */
     public function withConsecutive(...$arguments)
     {
@@ -234,9 +234,9 @@ class InvocationMocker implements MethodNameMatch
     }
 
     /**
-     * @return InvocationMocker
-     *
      * @throws RuntimeException
+     *
+     * @return InvocationMocker
      */
     public function withAnyParameters()
     {
@@ -250,9 +250,9 @@ class InvocationMocker implements MethodNameMatch
     /**
      * @param Constraint|string $constraint
      *
-     * @return InvocationMocker
-     *
      * @throws RuntimeException
+     *
+     * @return InvocationMocker
      */
     public function method($constraint)
     {

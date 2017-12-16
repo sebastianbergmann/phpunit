@@ -24,7 +24,7 @@ interface Identity
      *
      * @note The identifier is unique per mock object.
      *
-     * @param string $id Unique identification of expectation.
+     * @param string $id unique identification of expectation
      */
     public function id($id);
 }

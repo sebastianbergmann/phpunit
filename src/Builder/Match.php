@@ -17,8 +17,8 @@ interface Match extends Stub
     /**
      * Defines the expectation which must occur before the current is valid.
      *
-     * @param string $id The identification of the expectation that should
-     *                   occur before this one.
+     * @param string $id the identification of the expectation that should
+     *                   occur before this one
      *
      * @return Stub
      */
