@@ -65,9 +65,9 @@ class ConsecutiveParameters extends StatelessInvocation
     /**
      * @param BaseInvocation $invocation
      *
-     * @return bool
-     *
      * @throws \PHPUnit\Framework\ExpectationFailedException
+     *
+     * @return bool
      */
     public function matches(BaseInvocation $invocation)
     {
