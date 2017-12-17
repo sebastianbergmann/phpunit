@@ -393,6 +393,7 @@ class TeamCity extends ResultPrinter
         if (\is_scalar($value)) {
             return \print_r($value, true);
         }
+        return null;
     }
 
     /**
