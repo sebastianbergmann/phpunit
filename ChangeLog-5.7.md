@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 5.7 release series are documented in this fil
 
 * Fixed [#2472](https://github.com/sebastianbergmann/phpunit/issues/2472): `PHPUnit\Util\Getopt` uses deprecated `each()` function
 * Fixed [#2833](https://github.com/sebastianbergmann/phpunit/issues/2833): Test class loaded during data provider execution is not discovered
+* Fixed [#2922](https://github.com/sebastianbergmann/phpunit/issues/2922): Test class is not discovered when there is a test class with `@group` and provider throwing exception in it, tests are run with `--exclude-group` for that group, there is another class called later (after the class from above), and the name of that another class does not match its filename
 
 ## [5.7.25] - 2017-11-14
 
