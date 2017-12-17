@@ -360,7 +360,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         foreach ($newClasses as $className) {
             $class = new ReflectionClass($className);
 
-            if (dirname($class->getFileName()) === __DIR__) {
+            if (\dirname($class->getFileName()) === __DIR__) {
                 continue;
             }
 
