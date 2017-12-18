@@ -13,10 +13,10 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 DataProviderTestDox
- ✔ Does something with data set "one" [%f ms]
- ✔ Does something with data set "two" [%f ms]
- ✔ Does something else with data set "one" [%f ms]
- ✔ Does something else with data set "two" [%f ms]
+ ✔ Does something with data set "one"
+ ✔ Does something with data set "two"
+ ✔ Does something else with data set "one"
+ ✔ Does something else with data set "two"
 
 Time: %d ms, Memory: %fMB
 

@@ -82,12 +82,12 @@ final class TestResult
     public function toString(?self $previousTestResult, $verbose = false): string
     {
         return \sprintf(
-            "%s%s %s %s %s\n%s",
+            "%s%s %s %s%s\n%s",
             $previousTestResult && $previousTestResult->additionalInformationPrintable($verbose) ? "\n" : '',
             $this->getClassNameHeader($previousTestResult ? $previousTestResult->testClass : null),
             $this->symbol,
             $this->testMethod,
-            $this->getFormattedRuntime(),
+            $verbose ? ' ' . $this->getFormattedRuntime() : '',
             $this->getFormattedAdditionalInformation($verbose)
         );
     }

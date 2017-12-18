@@ -1,5 +1,5 @@
 --TEST--
-phpunit --testdox php://stdout BankAccountTest ../_files/BankAccountTest.php
+phpunit --testdox BankAccountTest ../_files/BankAccountTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
@@ -13,9 +13,9 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 BankAccount
- ✔ Balance is initially zero [%f ms]
- ✔ Balance cannot become negative [%f ms]
- ✔ Balance cannot become negative [%f ms]
+ ✔ Balance is initially zero
+ ✔ Balance cannot become negative
+ ✔ Balance cannot become negative
 
 Time: %d ms, Memory: %fMB
 
