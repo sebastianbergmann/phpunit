@@ -51,11 +51,8 @@ final class TestResult
      */
     private $runtime;
 
-    public function __construct(
-        callable $colorize,
-        string $testClass,
-        string $testMethod
-    ) {
+    public function __construct(callable $colorize, string $testClass, string $testMethod)
+    {
         $this->colorize              = $colorize;
         $this->testClass             = $testClass;
         $this->testMethod            = $testMethod;
@@ -69,11 +66,8 @@ final class TestResult
         return $this->testSuccesful;
     }
 
-    public function fail(
-        string $symbol,
-        string $additionalInformation,
-        bool $additionalInformationVerbose = false
-    ): void {
+    public function fail(string $symbol, string $additionalInformation, bool $additionalInformationVerbose = false): void
+    {
         $this->testSuccesful                = false;
         $this->symbol                       = $symbol;
         $this->additionalInformation        = $additionalInformation;
@@ -101,10 +95,12 @@ final class TestResult
     private function getClassNameHeader(?string $previousTestClass): string
     {
         $className = '';
+
         if ($this->testClass !== $previousTestClass) {
             if (null !== $previousTestClass) {
                 $className = "\n";
             }
+
             $className .= \sprintf("%s\n", $this->testClass);
         }
 
