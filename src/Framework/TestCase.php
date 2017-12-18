@@ -481,6 +481,92 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * @param string $exception
+     *
+     * @since Method available since Release 4.9.0
+     */
+    public function expectException($exception)
+    {
+        if (!is_string($exception)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->expectedException = $exception;
+    }
+
+    /**
+     * @param int|string $code
+     *
+     * @throws PHPUnit_Framework_Exception
+     *
+     * @since Method available since Release 4.9.0
+     */
+    public function expectExceptionCode($code)
+    {
+        if (!$this->expectedException) {
+            $this->expectedException = \Exception::class;
+        }
+
+        if (!is_int($code) && !is_string($code)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'integer or string');
+        }
+
+        $this->expectedExceptionCode = $code;
+    }
+
+    /**
+     * @param string $message
+     *
+     * @throws PHPUnit_Framework_Exception
+     *
+     * @since Method available since Release 4.9.0
+     */
+    public function expectExceptionMessage($message)
+    {
+        if (!$this->expectedException) {
+            $this->expectedException = \Exception::class;
+        }
+
+        if (!is_string($message)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->expectedExceptionMessage = $message;
+    }
+
+    /**
+     * @param string $messageRegExp
+     *
+     * @throws PHPUnit_Framework_Exception
+     *
+     * @since Method available since Release 4.9.0
+     */
+    public function expectExceptionMessageRegExp($messageRegExp)
+    {
+        if (!is_string($messageRegExp)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'string');
+        }
+
+        $this->expectedExceptionMessageRegExp = $messageRegExp;
+    }
+
+    /**
+     * Sets up an expectation for an exception to be raised by the code under test.
+     * Information for expected exception class, expected exception message, and
+     * expected exception code are retrieved from a given Exception object.
+     *
+     * @param \Exception $exception
+     *
+     * @since Method available since Release 4.9.0
+     */
+    public function expectExceptionObject(\Exception $exception)
+    {
+        $this->expectException(\get_class($exception));
+        $this->expectExceptionMessage($exception->getMessage());
+        $this->expectExceptionCode($exception->getCode());
+    }
+
+    /**
      * @since  Method available since Release 3.4.0
      */
     protected function setExpectedExceptionFromAnnotation()
