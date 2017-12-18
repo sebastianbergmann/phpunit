@@ -15,4 +15,5 @@
 /cache.properties
 /composer.lock
 /vendor
+/.php_cs
 /.php_cs.cache
