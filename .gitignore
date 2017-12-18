@@ -1,5 +1,6 @@
 /.ant_targets
 /.idea
+/.php_cs
 /.php_cs.cache
 /build/documentation
 /build/logfiles
