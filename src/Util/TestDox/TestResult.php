@@ -83,7 +83,7 @@ final class TestResult
     {
         return \sprintf(
             "%s%s %s %s %s\n%s",
-            $previousTestResult && $previousTestResult->additionInformationPrintable($verbose) ? "\n" : '',
+            $previousTestResult && $previousTestResult->additionalInformationPrintable($verbose) ? "\n" : '',
             $this->getClassNameHeader($previousTestResult ? $previousTestResult->testClass : null),
             $this->symbol,
             $this->testMethod,
@@ -122,7 +122,7 @@ final class TestResult
 
     private function getFormattedAdditionalInformation($verbose): string
     {
-        if (!$this->additionInformationPrintable($verbose)) {
+        if (!$this->additionalInformationPrintable($verbose)) {
             return '';
         }
 
@@ -140,7 +140,7 @@ final class TestResult
         );
     }
 
-    private function additionInformationPrintable(bool $verbose): bool
+    private function additionalInformationPrintable(bool $verbose): bool
     {
         if ($this->additionalInformation === '') {
             return false;
