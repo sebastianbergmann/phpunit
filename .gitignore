@@ -1,5 +1,7 @@
 /.ant_targets
 /.idea
+/.php_cs
+/.php_cs.cache
 /build/documentation
 /build/logfiles
 /build/phar
@@ -7,12 +9,12 @@
 /build/*.phar
 /build/*.phar.asc
 /build/binary-phar-autoload.php
+/cache.properties
+/composer.lock
 /tests/TextUI/*.diff
 /tests/TextUI/*.exp
 /tests/TextUI/*.log
 /tests/TextUI/*.out
 /tests/TextUI/*.php
-/cache.properties
-/composer.lock
 /vendor
-/.php_cs.cache
+
