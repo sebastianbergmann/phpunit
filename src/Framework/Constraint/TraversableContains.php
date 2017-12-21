@@ -84,7 +84,7 @@ class TraversableContains extends Constraint
 
         if (\is_object($this->value)) {
             foreach ($other as $element) {
-                if(\is_string($this->value) && \is_string($element)) {
+                if (\is_string($this->value) && \is_string($element)) {
                     return $this->matchesString($element);
                 }
 
@@ -98,7 +98,7 @@ class TraversableContains extends Constraint
             }
         } else {
             foreach ($other as $element) {
-                if(\is_string($this->value) && \is_string($element)) {
+                if (\is_string($this->value) && \is_string($element)) {
                     return $this->matchesString($element);
                 }
 
