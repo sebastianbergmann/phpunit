@@ -93,6 +93,24 @@ class AssertTest extends TestCase
         $this->assertContainsOnlyInstancesOf(\Book::class, $test2);
     }
 
+    public function testAssertContainsPartialStringInString(): void
+    {
+        $this->assertContains('bar', 'foo bar');
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertContains('cake', 'foo bar');
+    }
+
+    public function testAssertContainsNonCaseSensitiveStringInString(): void
+    {
+        $this->assertContains('Foo', 'foo', '', true);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertContains('Foo', 'foo', '', false);
+    }
+
     public function testAssertContainsEmptyStringInString(): void
     {
         $this->assertContains('', 'test');
