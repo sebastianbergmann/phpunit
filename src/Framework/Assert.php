@@ -186,7 +186,8 @@ abstract class Assert
             $constraint = new TraversableContains(
                 $needle,
                 $checkForObjectIdentity,
-                $checkForNonObjectIdentity
+                $checkForNonObjectIdentity,
+                $ignoreCase
             );
         } elseif (\is_string($haystack)) {
             if (!\is_string($needle)) {
