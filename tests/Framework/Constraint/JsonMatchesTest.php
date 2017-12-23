@@ -77,6 +77,7 @@ class JsonMatchesTest extends TestCase
             'single boolean valid json'               => [true, 'true', 'true'],
             'single number valid json'                => [true, '5.3', '5.3'],
             'single null valid json'                  => [true, 'null', 'null'],
+            'objects are not arrays'                  => [false, '{}', '[]']
         ];
     }
 
