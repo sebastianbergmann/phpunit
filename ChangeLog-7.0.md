@@ -6,7 +6,6 @@ All notable changes of the PHPUnit 7.0 release series are documented in this fil
 
 ### Changed
 
-* Implemented [#2015](https://github.com/sebastianbergmann/phpunit/issues/2015): Prefix all code bundled in PHAR distribution with `PHPUnit` namespace 
 * Implemented [#2566](https://github.com/sebastianbergmann/phpunit/issues/2566): Use `Throwable` instead of `Exception` in `PHPUnit\Framework\TestListener` method signatures
 * Implemented [#2920](https://github.com/sebastianbergmann/phpunit/pull/2920): Replace CLI TestDox printer with `rpkamp/fancy-testdox-printer`
 
