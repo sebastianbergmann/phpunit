@@ -48,6 +48,7 @@ notifications:
 jobs:
   include:
     - stage: Code Quality
+      php: 7.2
       env: STATIC_ANALYSIS
       install: travis_retry composer update --prefer-dist --prefer-stable
       before_script:
