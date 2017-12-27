@@ -260,11 +260,11 @@ class ConfigurationTest extends TestCase
 
         $path = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.' . PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, \ini_get('include_path'));
-        $this->assertEquals(false, \FOO);
-        $this->assertEquals(true, \BAR);
-        $this->assertEquals(false, $GLOBALS['foo']);
-        $this->assertEquals(true, $_ENV['foo']);
-        $this->assertEquals(true, \getenv('foo'));
+        $this->assertFalse(\FOO);
+        $this->assertTrue(\BAR);
+        $this->assertFalse($GLOBALS['foo']);
+        $this->assertTrue($_ENV['foo']);
+        $this->assertEquals(1, \getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
         $this->assertEquals('bar', $_COOKIE['foo']);
@@ -283,8 +283,8 @@ class ConfigurationTest extends TestCase
         $_ENV['foo'] = false;
         $this->configuration->handlePHPConfiguration();
 
-        $this->assertEquals(false, $_ENV['foo']);
-        $this->assertEquals(true, \getenv('foo'));
+        $this->assertFalse($_ENV['foo']);
+        $this->assertEquals(1, \getenv('foo'));
     }
 
     /**
@@ -311,7 +311,7 @@ class ConfigurationTest extends TestCase
         \putenv('foo=putenv');
         $this->configuration->handlePHPConfiguration();
 
-        $this->assertEquals(true, $_ENV['foo']);
+        $this->assertTrue($_ENV['foo']);
         $this->assertEquals('putenv', \getenv('foo'));
     }
 
