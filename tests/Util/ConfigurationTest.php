@@ -75,46 +75,46 @@ class ConfigurationTest extends TestCase
     {
         $this->assertEquals(
             [
-            'whitelist' =>
-            [
-              'addUncoveredFilesFromWhitelist'     => true,
-              'processUncoveredFilesFromWhitelist' => false,
-              'include'                            =>
-              [
-                'directory' =>
-                [
-                  0 =>
-                  [
-                    'path'   => '/path/to/files',
-                    'prefix' => '',
-                    'suffix' => '.php',
-                    'group'  => 'DEFAULT'
-                  ],
-                ],
-                'file' =>
-                [
-                  0 => '/path/to/file',
-                  1 => '/path/to/file',
-                ],
-              ],
-              'exclude' =>
-              [
-                'directory' =>
-                [
-                  0 =>
-                  [
-                    'path'   => '/path/to/files',
-                    'prefix' => '',
-                    'suffix' => '.php',
-                    'group'  => 'DEFAULT'
-                  ],
-                ],
-                'file' =>
-                [
-                  0 => '/path/to/file',
-                ],
-              ],
-            ],
+                'whitelist' =>
+                    [
+                        'addUncoveredFilesFromWhitelist'     => true,
+                        'processUncoveredFilesFromWhitelist' => false,
+                        'include'                            =>
+                            [
+                                'directory' =>
+                                    [
+                                        0 =>
+                                            [
+                                                'path'   => '/path/to/files',
+                                                'prefix' => '',
+                                                'suffix' => '.php',
+                                                'group'  => 'DEFAULT'
+                                            ],
+                                    ],
+                                'file' =>
+                                    [
+                                        0 => '/path/to/file',
+                                        1 => '/path/to/file',
+                                    ],
+                            ],
+                        'exclude' =>
+                            [
+                                'directory' =>
+                                    [
+                                        0 =>
+                                            [
+                                                'path'   => '/path/to/files',
+                                                'prefix' => '',
+                                                'suffix' => '.php',
+                                                'group'  => 'DEFAULT'
+                                            ],
+                                    ],
+                                'file' =>
+                                    [
+                                        0 => '/path/to/file',
+                                    ],
+                            ],
+                    ],
             ],
             $this->configuration->getFilterConfiguration()
         );
@@ -124,14 +124,14 @@ class ConfigurationTest extends TestCase
     {
         $this->assertEquals(
             [
-            'include' =>
-            [
-              0 => 'name',
-            ],
-            'exclude' =>
-            [
-              0 => 'name',
-            ],
+                'include' =>
+                    [
+                        0 => 'name',
+                    ],
+                'exclude' =>
+                    [
+                        0 => 'name',
+                    ],
             ],
             $this->configuration->getGroupConfiguration()
         );
@@ -163,38 +163,38 @@ class ConfigurationTest extends TestCase
 
         $this->assertEquals(
             [
-            0 =>
-            [
-              'class'     => 'MyListener',
-              'file'      => '/optional/path/to/MyListener.php',
-              'arguments' =>
-              [
                 0 =>
+                    [
+                        'class'     => 'MyListener',
+                        'file'      => '/optional/path/to/MyListener.php',
+                        'arguments' =>
+                            [
+                                0 =>
+                                    [
+                                        0 => 'Sebastian',
+                                    ],
+                                1 => 22,
+                                2 => 'April',
+                                3 => 19.78,
+                                4 => null,
+                                5 => new \stdClass,
+                                6 => \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
+                                7 => \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
+                            ],
+                    ],
                 [
-                  0 => 'Sebastian',
+                    'class'     => 'IncludePathListener',
+                    'file'      => __FILE__,
+                    'arguments' => []
                 ],
-                1 => 22,
-                2 => 'April',
-                3 => 19.78,
-                4 => null,
-                5 => new \stdClass,
-                6 => \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
-                7 => \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
-              ],
-            ],
-            [
-              'class'     => 'IncludePathListener',
-              'file'      => __FILE__,
-              'arguments' => []
-            ],
-            [
-              'class'     => 'CompactArgumentsListener',
-              'file'      => '/CompactArgumentsListener.php',
-              'arguments' =>
-              [
-                0 => 42
-              ],
-            ],
+                [
+                    'class'     => 'CompactArgumentsListener',
+                    'file'      => '/CompactArgumentsListener.php',
+                    'arguments' =>
+                        [
+                            0 => 42
+                        ],
+                ],
             ],
             $this->configuration->getListenerConfiguration()
         );
@@ -206,17 +206,22 @@ class ConfigurationTest extends TestCase
     {
         $this->assertEquals(
             [
-            'lowUpperBound'        => '50',
-            'highLowerBound'       => '90',
-            'coverage-html'        => '/tmp/report',
-            'coverage-clover'      => '/tmp/clover.xml',
-            'json'                 => '/tmp/logfile.json',
-            'plain'                => '/tmp/logfile.txt',
-            'tap'                  => '/tmp/logfile.tap',
-            'junit'                => '/tmp/logfile.xml',
-            'testdox-html'         => '/tmp/testdox.html',
-            'testdox-text'         => '/tmp/testdox.txt',
-            'testdox-xml'          => '/tmp/testdox.xml'
+                'lowUpperBound'                  => '50',
+                'highLowerBound'                 => '90',
+                'coverage-html'                  => '/tmp/report',
+                'coverage-clover'                => '/tmp/clover.xml',
+                'coverage-crap4j'                => '/tmp/crap4j.xml',
+                'crap4jThreshold'                => 50,
+                'coverage-text'                  => '/tmp/coverage.txt',
+                'coverageTextShowUncoveredFiles' => true,
+                'coverageTextShowOnlySummary'    => true,
+                'json'                           => '/tmp/logfile.json',
+                'plain'                          => '/tmp/logfile.txt',
+                'tap'                            => '/tmp/logfile.tap',
+                'junit'                          => '/tmp/logfile.xml',
+                'testdox-html'                   => '/tmp/testdox.html',
+                'testdox-text'                   => '/tmp/testdox.txt',
+                'testdox-xml'                    => '/tmp/testdox.xml'
             ],
             $this->configuration->getLoggingConfiguration()
         );
@@ -226,21 +231,21 @@ class ConfigurationTest extends TestCase
     {
         $this->assertEquals(
             [
-            'include_path' =>
-            [
-              \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.',
-              '/path/to/lib'
-            ],
-            'ini'    => ['foo' => ['value' => 'bar']],
-            'const'  => ['FOO' => ['value' => false], 'BAR' => ['value' => true]],
-            'var'    => ['foo' => ['value' => false]],
-            'env'    => ['foo' => ['value' => true], 'bar' => ['value' => 'true', 'verbatim' => true], 'foo_force' => ['value' => 'forced', 'force' => true]],
-            'post'   => ['foo' => ['value' => 'bar']],
-            'get'    => ['foo' => ['value' => 'bar']],
-            'cookie' => ['foo' => ['value' => 'bar']],
-            'server' => ['foo' => ['value' => 'bar']],
-            'files'  => ['foo' => ['value' => 'bar']],
-            'request'=> ['foo' => ['value' => 'bar']],
+                'include_path' =>
+                    [
+                        \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.',
+                        '/path/to/lib'
+                    ],
+                'ini'    => ['foo' => ['value' => 'bar']],
+                'const'  => ['FOO' => ['value' => false], 'BAR' => ['value' => true]],
+                'var'    => ['foo' => ['value' => false]],
+                'env'    => ['foo' => ['value' => true], 'bar' => ['value' => 'true', 'verbatim' => true], 'foo_force' => ['value' => 'forced', 'force' => true]],
+                'post'   => ['foo' => ['value' => 'bar']],
+                'get'    => ['foo' => ['value' => 'bar']],
+                'cookie' => ['foo' => ['value' => 'bar']],
+                'server' => ['foo' => ['value' => 'bar']],
+                'files'  => ['foo' => ['value' => 'bar']],
+                'request'=> ['foo' => ['value' => 'bar']],
             ],
             $this->configuration->getPHPConfiguration()
         );
@@ -255,11 +260,11 @@ class ConfigurationTest extends TestCase
 
         $path = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.' . PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, \ini_get('include_path'));
-        $this->assertEquals(false, \FOO);
-        $this->assertEquals(true, \BAR);
-        $this->assertEquals(false, $GLOBALS['foo']);
-        $this->assertEquals(true, $_ENV['foo']);
-        $this->assertEquals(true, \getenv('foo'));
+        $this->assertFalse(\FOO);
+        $this->assertTrue(\BAR);
+        $this->assertFalse($GLOBALS['foo']);
+        $this->assertTrue($_ENV['foo']);
+        $this->assertEquals(1, \getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
         $this->assertEquals('bar', $_COOKIE['foo']);
@@ -278,8 +283,8 @@ class ConfigurationTest extends TestCase
         $_ENV['foo'] = false;
         $this->configuration->handlePHPConfiguration();
 
-        $this->assertEquals(false, $_ENV['foo']);
-        $this->assertEquals(true, \getenv('foo'));
+        $this->assertFalse($_ENV['foo']);
+        $this->assertEquals(1, \getenv('foo'));
     }
 
     /**
@@ -306,7 +311,7 @@ class ConfigurationTest extends TestCase
         \putenv('foo=putenv');
         $this->configuration->handlePHPConfiguration();
 
-        $this->assertEquals(true, $_ENV['foo']);
+        $this->assertTrue($_ENV['foo']);
         $this->assertEquals('putenv', \getenv('foo'));
     }
 
@@ -328,38 +333,38 @@ class ConfigurationTest extends TestCase
     {
         $this->assertEquals(
             [
-            'backupGlobals'                              => true,
-            'backupStaticAttributes'                     => false,
-            'beStrictAboutChangesToGlobalState'          => false,
-            'bootstrap'                                  => '/path/to/bootstrap.php',
-            'cacheTokens'                                => false,
-            'columns'                                    => 80,
-            'colors'                                     => 'never',
-            'stderr'                                     => false,
-            'convertDeprecationsToExceptions'            => true,
-            'convertErrorsToExceptions'                  => true,
-            'convertNoticesToExceptions'                 => true,
-            'convertWarningsToExceptions'                => true,
-            'forceCoversAnnotation'                      => false,
-            'stopOnFailure'                              => false,
-            'stopOnWarning'                              => false,
-            'reportUselessTests'                         => false,
-            'strictCoverage'                             => false,
-            'disallowTestOutput'                         => false,
-            'enforceTimeLimit'                           => false,
-            'extensionsDirectory'                        => '/tmp',
-            'printerClass'                               => 'PHPUnit\TextUI\ResultPrinter',
-            'testSuiteLoaderClass'                       => 'PHPUnit\Runner\StandardTestSuiteLoader',
-            'defaultTestSuite'                           => 'My Test Suite',
-            'verbose'                                    => false,
-            'timeoutForSmallTests'                       => 1,
-            'timeoutForMediumTests'                      => 10,
-            'timeoutForLargeTests'                       => 60,
-            'beStrictAboutResourceUsageDuringSmallTests' => false,
-            'disallowTodoAnnotatedTests'                 => false,
-            'failOnWarning'                              => false,
-            'failOnRisky'                                => false,
-            'ignoreDeprecatedCodeUnitsFromCodeCoverage'  => false
+                'backupGlobals'                              => true,
+                'backupStaticAttributes'                     => false,
+                'beStrictAboutChangesToGlobalState'          => false,
+                'bootstrap'                                  => '/path/to/bootstrap.php',
+                'cacheTokens'                                => false,
+                'columns'                                    => 80,
+                'colors'                                     => 'never',
+                'stderr'                                     => false,
+                'convertDeprecationsToExceptions'            => true,
+                'convertErrorsToExceptions'                  => true,
+                'convertNoticesToExceptions'                 => true,
+                'convertWarningsToExceptions'                => true,
+                'forceCoversAnnotation'                      => false,
+                'stopOnFailure'                              => false,
+                'stopOnWarning'                              => false,
+                'reportUselessTests'                         => false,
+                'strictCoverage'                             => false,
+                'disallowTestOutput'                         => false,
+                'enforceTimeLimit'                           => false,
+                'extensionsDirectory'                        => '/tmp',
+                'printerClass'                               => 'PHPUnit\TextUI\ResultPrinter',
+                'testSuiteLoaderClass'                       => 'PHPUnit\Runner\StandardTestSuiteLoader',
+                'defaultTestSuite'                           => 'My Test Suite',
+                'verbose'                                    => false,
+                'timeoutForSmallTests'                       => 1,
+                'timeoutForMediumTests'                      => 10,
+                'timeoutForLargeTests'                       => 60,
+                'beStrictAboutResourceUsageDuringSmallTests' => false,
+                'disallowTodoAnnotatedTests'                 => false,
+                'failOnWarning'                              => false,
+                'failOnRisky'                                => false,
+                'ignoreDeprecatedCodeUnitsFromCodeCoverage'  => false
             ],
             $this->configuration->getPHPUnitConfiguration()
         );

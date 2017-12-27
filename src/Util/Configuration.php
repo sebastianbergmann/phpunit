@@ -184,6 +184,9 @@ final class Configuration
         $this->xpath    = new DOMXPath($this->document);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     private function __clone()
     {
     }
