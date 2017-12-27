@@ -99,6 +99,8 @@
     <logging>
         <log type="coverage-html" target="/tmp/report" lowUpperBound="50" highLowerBound="90"/>
         <log type="coverage-clover" target="/tmp/clover.xml"/>
+        <log type="coverage-crap4j" threshold="50" target="/tmp/crap4j.xml"/>
+        <log type="coverage-text" showUncoveredFiles="true" showOnlySummary="true" target="/tmp/coverage.txt"/>
         <log type="json" target="/tmp/logfile.json"/>
         <log type="plain" target="/tmp/logfile.txt"/>
         <log type="tap" target="/tmp/logfile.tap"/>

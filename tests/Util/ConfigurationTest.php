@@ -206,17 +206,22 @@ class ConfigurationTest extends TestCase
     {
         $this->assertEquals(
             [
-                'lowUpperBound'        => '50',
-                'highLowerBound'       => '90',
-                'coverage-html'        => '/tmp/report',
-                'coverage-clover'      => '/tmp/clover.xml',
-                'json'                 => '/tmp/logfile.json',
-                'plain'                => '/tmp/logfile.txt',
-                'tap'                  => '/tmp/logfile.tap',
-                'junit'                => '/tmp/logfile.xml',
-                'testdox-html'         => '/tmp/testdox.html',
-                'testdox-text'         => '/tmp/testdox.txt',
-                'testdox-xml'          => '/tmp/testdox.xml'
+                'lowUpperBound'                  => '50',
+                'highLowerBound'                 => '90',
+                'coverage-html'                  => '/tmp/report',
+                'coverage-clover'                => '/tmp/clover.xml',
+                'coverage-crap4j'                => '/tmp/crap4j.xml',
+                'crap4jThreshold'                => 50,
+                'coverage-text'                  => '/tmp/coverage.txt',
+                'coverageTextShowUncoveredFiles' => true,
+                'coverageTextShowOnlySummary'    => true,
+                'json'                           => '/tmp/logfile.json',
+                'plain'                          => '/tmp/logfile.txt',
+                'tap'                            => '/tmp/logfile.tap',
+                'junit'                          => '/tmp/logfile.xml',
+                'testdox-html'                   => '/tmp/testdox.html',
+                'testdox-text'                   => '/tmp/testdox.txt',
+                'testdox-xml'                    => '/tmp/testdox.xml'
             ],
             $this->configuration->getLoggingConfiguration()
         );
