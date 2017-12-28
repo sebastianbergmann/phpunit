@@ -56,9 +56,4 @@ class NamePrettifierTest extends TestCase
         $this->assertEquals('Sets redirect header on 301', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn301'));
         $this->assertEquals('Sets redirect header on 302', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn302'));
     }
-
-    public function testReturnsEmptyStringForInvalidMethodName()
-    {
-        $this->assertEquals('', $this->namePrettifier->prettifyTestMethod(null));
-    }
 }
