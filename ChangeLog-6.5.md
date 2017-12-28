@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 6.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.5.6] - 201Y-MM-DD
+
+### Fixed
+
+* Fixed [#2236](https://github.com/sebastianbergmann/phpunit/issues/2236): Exceptions in `tearDown()` do not affect `getStatus()`
+
 ## [6.5.5] - 2017-12-17
 
 ### Fixed
@@ -42,6 +48,7 @@ All notable changes of the PHPUnit 6.5 release series are documented in this fil
 * Fixed [#2654](https://github.com/sebastianbergmann/phpunit/issues/2654): Problems with `assertJsonStringEqualsJsonString()`
 * Fixed [#2810](https://github.com/sebastianbergmann/phpunit/pull/2810): Code Coverage for PHPT tests does not work
 
+[6.5.6]: https://github.com/sebastianbergmann/phpunit/compare/6.5.5...6.5.6
 [6.5.5]: https://github.com/sebastianbergmann/phpunit/compare/6.5.4...6.5.5
 [6.5.4]: https://github.com/sebastianbergmann/phpunit/compare/6.5.3...6.5.4
 [6.5.3]: https://github.com/sebastianbergmann/phpunit/compare/6.5.2...6.5.3
