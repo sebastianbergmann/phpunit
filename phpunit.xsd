@@ -140,6 +140,7 @@
     <xs:attribute name="lowUpperBound" type="xs:nonNegativeInteger" default="35"/>
     <xs:attribute name="highLowerBound" type="xs:nonNegativeInteger" default="70"/>
     <xs:attribute name="showUncoveredFiles" type="xs:boolean" default="false"/>
+    <xs:attribute name="showOnlySummary" type="xs:boolean" default="false"/>
     <xs:attribute name="threshold" type="xs:nonNegativeInteger" default="30"/>
   </xs:complexType>
   <xs:group name="pathGroup">
