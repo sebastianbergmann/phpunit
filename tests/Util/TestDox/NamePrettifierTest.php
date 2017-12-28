@@ -44,6 +44,7 @@ class NamePrettifierTest extends TestCase
         $this->assertEquals('This is a test', $this->namePrettifier->prettifyTestMethod('this_is_a_test'));
         $this->assertEquals('Foo for bar is 0', $this->namePrettifier->prettifyTestMethod('testFooForBarIs0'));
         $this->assertEquals('Foo for baz is 1', $this->namePrettifier->prettifyTestMethod('testFooForBazIs1'));
+        $this->assertEquals('This has a 123 in its name', $this->namePrettifier->prettifyTestMethod('testThisHasA123InItsName'));
         $this->assertEquals('', $this->namePrettifier->prettifyTestMethod('test'));
     }
 
@@ -54,5 +55,10 @@ class NamePrettifierTest extends TestCase
     {
         $this->assertEquals('Sets redirect header on 301', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn301'));
         $this->assertEquals('Sets redirect header on 302', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn302'));
+    }
+
+    public function testReturnsEmptyStringForInvalidMethodName()
+    {
+        $this->assertEquals('', $this->namePrettifier->prettifyTestMethod(null));
     }
 }
