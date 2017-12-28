@@ -159,6 +159,7 @@ class Framework_TestCaseTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($test->testSomething);
         $this->assertTrue($test->assertPostConditions);
         $this->assertTrue($test->tearDown);
+        $this->assertEquals(PHPUnit_Runner_BaseTestRunner::STATUS_ERROR, $test->getStatus());
     }
 
     public function testNoArgTestCasePasses()
