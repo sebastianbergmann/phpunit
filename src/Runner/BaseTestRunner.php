@@ -21,7 +21,6 @@ use ReflectionException;
  */
 abstract class BaseTestRunner
 {
-    public const STATUS_UNKNOWN    = -1;
     public const STATUS_PASSED     = 0;
     public const STATUS_SKIPPED    = 1;
     public const STATUS_INCOMPLETE = 2;

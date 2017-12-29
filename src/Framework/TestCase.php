@@ -241,7 +241,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @var int
      */
-    private $status = BaseTestRunner::STATUS_UNKNOWN;
+    private $status;
 
     /**
      * @var string
