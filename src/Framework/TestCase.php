@@ -233,7 +233,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $mockObjects = [];
 
     /**
-     * @var array
+     * @var MockGenerator
      */
     private $mockObjectGenerator;
 
