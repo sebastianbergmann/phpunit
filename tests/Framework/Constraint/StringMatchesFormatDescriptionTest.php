@@ -18,6 +18,10 @@ class StringMatchesFormatDescriptionTest extends TestCase
      * @param bool   $expected
      * @param string $format
      * @param string $other
+     *
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @dataProvider evaluateDataProvider
      */
     public function testEvaluate($expected, $format, $other): void

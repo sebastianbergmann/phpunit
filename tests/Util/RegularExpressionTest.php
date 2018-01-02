@@ -39,6 +39,9 @@ class RegularExpressionTest extends TestCase
      * @param mixed $pattern
      * @param mixed $subject
      * @param mixed $return
+     *
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
      */
     public function testValidRegex($pattern, $subject, $return): void
     {
@@ -50,6 +53,9 @@ class RegularExpressionTest extends TestCase
      *
      * @param mixed $pattern
      * @param mixed $subject
+     *
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
      */
     public function testInvalidRegex($pattern, $subject): void
     {

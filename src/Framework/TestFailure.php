@@ -69,6 +69,8 @@ class TestFailure
     /**
      * Returns a description for the thrown exception.
      *
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public function getExceptionAsString(): string
@@ -80,6 +82,8 @@ class TestFailure
      * Returns a description for an exception.
      *
      * @param Throwable $e
+     *
+     * @throws \InvalidArgumentException
      *
      * @return string
      */

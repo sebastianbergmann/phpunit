@@ -70,6 +70,7 @@ class PhptTestCase implements Test, SelfDescribing
      * @param AbstractPhpProcess $phpUtil
      *
      * @throws Exception
+     * @throws \PHPUnit\Framework\Exception
      */
     public function __construct($filename, $phpUtil = null)
     {
@@ -106,13 +107,14 @@ class PhptTestCase implements Test, SelfDescribing
      * @param TestResult $result
      *
      * @throws Exception
-     * @throws \PHPUnit\Framework\Exception
      * @throws \ReflectionException
      * @throws \SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\MissingCoversAnnotationException
      * @throws \SebastianBergmann\CodeCoverage\RuntimeException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
      *
      * @return TestResult
      */
@@ -317,9 +319,12 @@ class PhptTestCase implements Test, SelfDescribing
     }
 
     /**
-     * @param array<string, string> $sections
-     * @param TestResult            $result
-     * @param array                 $settings
+     * @param            $sections
+     * @param TestResult $result
+     * @param array      $settings
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
      *
      * @return bool
      */
@@ -427,6 +432,8 @@ class PhptTestCase implements Test, SelfDescribing
 
     /**
      * @param array<string, string> $sections
+     *
+     * @throws Exception
      */
     private function parseExternal(&$sections): void
     {

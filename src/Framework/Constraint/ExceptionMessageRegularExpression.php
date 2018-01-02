@@ -41,6 +41,7 @@ class ExceptionMessageRegularExpression extends Constraint
      *
      * @param \PHPUnit\Framework\Exception $other
      *
+     * @throws \Exception
      * @throws \PHPUnit\Framework\Exception
      *
      * @return bool

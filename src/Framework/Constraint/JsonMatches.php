@@ -82,6 +82,9 @@ class JsonMatches extends Constraint
      * @param ComparisonFailure $comparisonFailure
      *
      * @throws ExpectationFailedException
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
      */
     protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
     {

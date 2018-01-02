@@ -113,6 +113,11 @@ class TestTest extends TestCase
      *
      * @param mixed $test
      * @param mixed $result
+     *
+     * @throws Warning
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testGetRequirements($test, $result): void
     {
@@ -320,6 +325,13 @@ class TestTest extends TestCase
      * @dataProvider requirementsWithVersionConstraintsProvider
      *
      * @param mixed $test
+     * @param array $result
+     *
+     * @throws Exception
+     * @throws Warning
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testGetRequirementsWithVersionConstraints($test, array $result): void
     {
@@ -453,6 +465,8 @@ class TestTest extends TestCase
      * @dataProvider requirementsWithInvalidVersionConstraintsThrowsExceptionProvider
      *
      * @param mixed $test
+     *
+     * @throws Warning
      */
     public function testGetRequirementsWithInvalidVersionConstraintsThrowsException($test): void
     {
@@ -495,6 +509,11 @@ class TestTest extends TestCase
      *
      * @param mixed $test
      * @param mixed $result
+     *
+     * @throws Warning
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testGetMissingRequirements($test, $result): void
     {
@@ -765,6 +784,11 @@ class TestTest extends TestCase
      *
      * @param mixed $test
      * @param mixed $lines
+     *
+     * @throws CodeCoverageException
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testGetLinesToBeCovered($test, $lines): void
     {

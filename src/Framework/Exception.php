@@ -50,6 +50,8 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
     }
 
     /**
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public function __toString(): string

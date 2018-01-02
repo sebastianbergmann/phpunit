@@ -814,6 +814,12 @@ EOF
      * @param mixed $expected
      * @param mixed $actual
      * @param mixed $message
+     *
+     * @throws AssertionFailedError
+     * @throws ExpectationFailedException
+     * @throws \Exception
+     * @throws \InvalidArgumentException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testConstraintIsEqual2($expected, $actual, $message): void
     {
@@ -1229,6 +1235,10 @@ EOF
      * @dataProvider resources
      *
      * @param mixed $resource
+     *
+     * @throws ExpectationFailedException
+     * @throws \Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testConstraintIsResourceTypeEvaluatesCorrectlyWithResources($resource): void
     {

@@ -20,6 +20,10 @@ class ArraySubsetTest extends TestCase
      * @param array|\Traversable $subset
      * @param array|\Traversable $other
      * @param bool               $strict
+     *
+     * @throws ExpectationFailedException
+     * @throws \Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @dataProvider evaluateDataProvider
      */
     public function testEvaluate($expected, $subset, $other, $strict): void

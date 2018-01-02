@@ -440,6 +440,11 @@ class ConfigurationTest extends TestCase
      *
      * @param Configuration $expectedConfiguration
      * @param Configuration $actualConfiguration
+     *
+     * @throws Exception
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function assertConfigurationEquals(Configuration $expectedConfiguration, Configuration $actualConfiguration): void
     {

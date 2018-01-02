@@ -58,6 +58,8 @@ class ExceptionWrapper extends Exception
     }
 
     /**
+     * @throws \InvalidArgumentException
+     *
      * @return string
      */
     public function __toString(): string

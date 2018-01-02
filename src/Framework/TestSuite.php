@@ -679,6 +679,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      *
      * @param TestResult $result
      *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return TestResult
      */
     public function run(TestResult $result = null): TestResult
@@ -948,6 +951,8 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * @param ReflectionClass  $class
      * @param ReflectionMethod $method
+     *
+     * @throws Exception
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
     {

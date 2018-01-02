@@ -106,7 +106,10 @@ class TestRunner extends BaseTestRunner
      * @param array                $arguments
      * @param bool                 $exit
      *
+     * @throws \RuntimeException
+     * @throws \InvalidArgumentException
      * @throws Exception
+     * @throws \ReflectionException
      *
      * @return TestResult
      */
@@ -133,6 +136,11 @@ class TestRunner extends BaseTestRunner
      * @param Test  $suite
      * @param array $arguments
      * @param bool  $exit
+     *
+     * @throws Exception
+     * @throws \InvalidArgumentException
+     * @throws \RuntimeException
+     * @throws \ReflectionException
      *
      * @return TestResult
      */
@@ -711,6 +719,8 @@ class TestRunner extends BaseTestRunner
 
     /**
      * @param array $arguments
+     *
+     * @throws Exception
      */
     protected function handleConfiguration(array &$arguments): void
     {
@@ -1055,6 +1065,9 @@ class TestRunner extends BaseTestRunner
     /**
      * @param TestSuite $suite
      * @param array     $arguments
+     *
+     * @throws \ReflectionException
+     * @throws \InvalidArgumentException
      */
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {

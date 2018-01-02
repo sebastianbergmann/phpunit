@@ -60,6 +60,8 @@ class TeamCity extends ResultPrinter
      * @param Test       $test
      * @param \Throwable $t
      * @param float      $time
+     *
+     * @throws \InvalidArgumentException
      */
     public function addError(Test $test, \Throwable $t, float $time): void
     {
@@ -79,6 +81,8 @@ class TeamCity extends ResultPrinter
      * @param Test    $test
      * @param Warning $e
      * @param float   $time
+     *
+     * @throws \InvalidArgumentException
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
@@ -98,6 +102,8 @@ class TeamCity extends ResultPrinter
      * @param Test                 $test
      * @param AssertionFailedError $e
      * @param float                $time
+     *
+     * @throws \InvalidArgumentException
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
@@ -152,6 +158,8 @@ class TeamCity extends ResultPrinter
      * @param Test       $test
      * @param \Throwable $t
      * @param float      $time
+     *
+     * @throws \InvalidArgumentException
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
@@ -164,10 +172,13 @@ class TeamCity extends ResultPrinter
      * @param Test       $test
      * @param \Throwable $t
      * @param float      $time
+     *
+     * @throws \ReflectionException
      */
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
         $testName = $test->getName();
+
         if ($this->startedTestName !== $testName) {
             $this->startTest($test);
             $this->printIgnoredTest($testName, $t);
@@ -355,6 +366,8 @@ class TeamCity extends ResultPrinter
 
     /**
      * @param \Throwable $t
+     *
+     * @throws \InvalidArgumentException
      *
      * @return string
      */

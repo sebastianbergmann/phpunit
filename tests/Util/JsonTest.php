@@ -20,6 +20,10 @@ class JsonTest extends TestCase
      * @param mixed $actual
      * @param mixed $expected
      * @param mixed $expectError
+     *
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testCanonicalize($actual, $expected, $expectError): void
     {
@@ -47,6 +51,11 @@ class JsonTest extends TestCase
      *
      * @param mixed $actual
      * @param mixed $expected
+     *
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testPrettify($actual, $expected): void
     {

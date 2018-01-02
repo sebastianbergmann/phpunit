@@ -59,6 +59,8 @@ class IsIdentical extends Constraint
      * @param bool   $returnResult Whether to return a result or throw an exception
      *
      * @throws ExpectationFailedException
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
      *
      * @return mixed
      */
@@ -96,6 +98,9 @@ class IsIdentical extends Constraint
     /**
      * Returns a string representation of the constraint.
      *
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return string
      */
     public function toString(): string
@@ -115,6 +120,9 @@ class IsIdentical extends Constraint
      * cases. This method should return the second part of that sentence.
      *
      * @param mixed $other evaluated value or object
+     *
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
      *
      * @return string
      */

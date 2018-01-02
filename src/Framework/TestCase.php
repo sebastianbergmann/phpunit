@@ -383,6 +383,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a string representation of the test case.
      *
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return string
      */
     public function toString(): string
@@ -439,6 +442,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param bool $withDataSet
      *
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return string
      */
     public function getName($withDataSet = true): ?string
@@ -453,6 +459,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns the size of the test.
      *
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return int
      */
     public function getSize(): int
@@ -464,6 +473,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return bool
      */
     public function hasSize(): bool
@@ -472,6 +484,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return bool
      */
     public function isSmall(): bool
@@ -480,6 +495,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return bool
      */
     public function isMedium(): bool
@@ -488,6 +506,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return bool
      */
     public function isLarge(): bool
@@ -549,6 +570,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param string $expectedString
+     *
+     * @throws Exception
      */
     public function expectOutputString($expectedString): void
     {
@@ -712,7 +735,15 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param TestResult $result
      *
-     * @throws Exception
+     * @throws CodeCoverageException
+     * @throws ReflectionException
+     * @throws SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException
+     * @throws SebastianBergmann\CodeCoverage\InvalidArgumentException
+     * @throws SebastianBergmann\CodeCoverage\MissingCoversAnnotationException
+     * @throws SebastianBergmann\CodeCoverage\RuntimeException
+     * @throws SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
      *
      * @return null|TestResult
      */
@@ -1409,6 +1440,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param bool $includeData
      *
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return string
      */
     public function getDataSetAsString($includeData = true): string
@@ -1491,8 +1525,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Override to run the test and assert its state.
      *
-     * @throws Exception|Exception
+     * @throws AssertionFailedError
      * @throws Exception
+     * @throws ExpectationFailedException
+     * @throws SebastianBergmann\ObjectEnumerator\InvalidArgumentException
+     * @throws Throwable
      *
      * @return mixed
      */
@@ -1722,6 +1759,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string $originalClassName
      *
      * @throws Exception
+     * @throws ReflectionException
+     * @throws \InvalidArgumentException
      *
      * @return MockObject
      */
@@ -1742,6 +1781,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param array  $configuration
      *
      * @throws Exception
+     * @throws ReflectionException
+     * @throws \InvalidArgumentException
      *
      * @return MockObject
      */
@@ -1763,6 +1804,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string[] $methods
      *
      * @throws Exception
+     * @throws ReflectionException
+     * @throws \InvalidArgumentException
      *
      * @return MockObject
      */
@@ -1784,6 +1827,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param array  $constructorArguments
      *
      * @throws Exception
+     * @throws ReflectionException
+     * @throws \InvalidArgumentException
      *
      * @return MockObject
      */
@@ -1808,6 +1853,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param bool   $cloneArguments
      *
      * @throws Exception
+     * @throws ReflectionException
+     * @throws \InvalidArgumentException
      *
      * @return string
      */
@@ -1842,6 +1889,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param bool   $cloneArguments
      *
      * @throws Exception
+     * @throws ReflectionException
+     * @throws \InvalidArgumentException
      *
      * @return MockObject
      */
@@ -1872,6 +1921,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param array  $methods
      * @param bool   $callOriginalConstructor
      * @param array  $options                 An array of options passed to SOAPClient::_construct
+     *
+     * @throws Exception
+     * @throws ReflectionException
+     * @throws \InvalidArgumentException
      *
      * @return MockObject
      */
@@ -1922,6 +1975,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param bool   $cloneArguments
      *
      * @throws Exception
+     * @throws ReflectionException
+     * @throws \InvalidArgumentException
      *
      * @return MockObject
      */
@@ -1954,6 +2009,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param bool   $callAutoload
      *
      * @throws Exception
+     * @throws ReflectionException
+     * @throws \InvalidArgumentException
      *
      * @return object
      */
@@ -1972,7 +2029,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @param null|string $classOrInterface
      *
-     * @throws \LogicException
+     * @throws Prophecy\Exception\Doubler\ClassNotFoundException
+     * @throws Prophecy\Exception\Doubler\DoubleException
+     * @throws Prophecy\Exception\Doubler\InterfaceNotFoundException
      *
      * @return \Prophecy\Prophecy\ObjectProphecy
      */
@@ -2279,6 +2338,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param Snapshot $after
      *
      * @throws RiskyTestError
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
     {
@@ -2313,6 +2375,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string $header
      *
      * @throws RiskyTestError
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     * @throws \InvalidArgumentException
      */
     private function compareGlobalStateSnapshotPart(array $before, array $after, $header): void
     {
@@ -2346,6 +2411,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @param MockObject $mock
      *
+     * @throws SebastianBergmann\ObjectEnumerator\InvalidArgumentException
+     * @throws SebastianBergmann\ObjectReflector\InvalidArgumentException
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     *
      * @return bool
      */
     private function shouldInvocationMockerBeReset(MockObject $mock): bool
@@ -2374,6 +2444,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @param array $testArguments
      * @param array $visited
+     *
+     * @throws SebastianBergmann\ObjectEnumerator\InvalidArgumentException
+     * @throws SebastianBergmann\ObjectReflector\InvalidArgumentException
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
      */
     private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = []): void
     {

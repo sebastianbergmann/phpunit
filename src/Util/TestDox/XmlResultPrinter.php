@@ -172,6 +172,9 @@ class XmlResultPrinter extends Printer implements TestListener
      *
      * @param Test  $test
      * @param float $time
+     *
+     * @throws \Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function endTest(Test $test, float $time): void
     {

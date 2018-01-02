@@ -140,6 +140,11 @@ class Command
 
     /**
      * @param bool $exit
+     *
+     * @throws \RuntimeException
+     * @throws \ReflectionException
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \InvalidArgumentException
      */
     public static function main($exit = true)
     {
@@ -151,6 +156,11 @@ class Command
     /**
      * @param array $argv
      * @param bool  $exit
+     *
+     * @throws \RuntimeException
+     * @throws \ReflectionException
+     * @throws \InvalidArgumentException
+     * @throws Exception
      *
      * @return int
      */
@@ -266,6 +276,8 @@ class Command
      * </code>
      *
      * @param array $argv
+     *
+     * @throws Exception
      */
     protected function handleArguments(array $argv): void
     {

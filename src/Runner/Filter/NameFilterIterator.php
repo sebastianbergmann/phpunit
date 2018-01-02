@@ -35,6 +35,8 @@ class NameFilterIterator extends RecursiveFilterIterator
     /**
      * @param RecursiveIterator $iterator
      * @param string            $filter
+     *
+     * @throws \Exception
      */
     public function __construct(RecursiveIterator $iterator, $filter)
     {
@@ -77,6 +79,8 @@ class NameFilterIterator extends RecursiveFilterIterator
 
     /**
      * @param string $filter
+     *
+     * @throws \Exception
      */
     protected function setFilter($filter): void
     {

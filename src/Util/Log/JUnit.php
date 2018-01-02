@@ -137,6 +137,8 @@ class JUnit extends Printer implements TestListener
      * @param Test       $test
      * @param \Throwable $t
      * @param float      $time
+     *
+     * @throws \InvalidArgumentException
      */
     public function addError(Test $test, \Throwable $t, float $time): void
     {
@@ -150,6 +152,8 @@ class JUnit extends Printer implements TestListener
      * @param Test    $test
      * @param Warning $e
      * @param float   $time
+     *
+     * @throws \InvalidArgumentException
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
@@ -163,6 +167,8 @@ class JUnit extends Printer implements TestListener
      * @param Test                 $test
      * @param AssertionFailedError $e
      * @param float                $time
+     *
+     * @throws \InvalidArgumentException
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
@@ -310,6 +316,9 @@ class JUnit extends Printer implements TestListener
      * A test started.
      *
      * @param Test $test
+     *
+     * @throws \Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function startTest(Test $test): void
     {
@@ -411,6 +420,8 @@ class JUnit extends Printer implements TestListener
      * @param \Throwable $t
      * @param float      $time
      * @param string     $type
+     *
+     * @throws \InvalidArgumentException
      */
     private function doAddFault(Test $test, \Throwable $t, $time, $type): void
     {

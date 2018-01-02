@@ -22,6 +22,10 @@ class JsonMatchesTest extends TestCase
      * @param mixed $expected
      * @param mixed $jsonOther
      * @param mixed $jsonValue
+     *
+     * @throws ExpectationFailedException
+     * @throws \Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testEvaluate($expected, $jsonOther, $jsonValue): void
     {
@@ -35,6 +39,12 @@ class JsonMatchesTest extends TestCase
      *
      * @param mixed $jsonOther
      * @param mixed $jsonValue
+     *
+     * @throws ExpectationFailedException
+     * @throws \Exception
+     * @throws \PHPUnit\Framework\AssertionFailedError
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch($jsonOther, $jsonValue): void
     {

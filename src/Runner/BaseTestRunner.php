@@ -49,6 +49,8 @@ abstract class BaseTestRunner
      * @param string $suiteClassFile
      * @param mixed  $suffixes
      *
+     * @throws Exception
+     *
      * @return null|Test
      */
     public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = ''): ?Test
