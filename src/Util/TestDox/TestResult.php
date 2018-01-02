@@ -61,7 +61,7 @@ final class TestResult
         $this->additionalInformation = '';
     }
 
-    public function isTestSuccessful()
+    public function isTestSuccessful(): bool
     {
         return $this->testSuccesful;
     }
