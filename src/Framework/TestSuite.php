@@ -783,19 +783,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         $this->runTestInSeparateProcess = $runTestInSeparateProcess;
     }
 
-    /**
-     * Runs a test.
-     *
-     * @deprecated
-     *
-     * @param Test       $test
-     * @param TestResult $result
-     */
-    public function runTest(Test $test, TestResult $result): void
-    {
-        $test->run($result);
-    }
-
     public function setName(string $name): void
     {
         $this->name = $name;
