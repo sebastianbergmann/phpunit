@@ -34,7 +34,6 @@ use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\GlobalState;
-use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use Prophecy;
 use Prophecy\Exception\Prediction\PredictionException;
@@ -634,22 +633,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param int|string $code
-     *
-     * @throws Exception
      */
     public function expectExceptionCode($code): void
     {
-        if (!\is_int($code) && !\is_string($code)) {
-            throw InvalidArgumentHelper::factory(1, 'integer or string');
-        }
-
         $this->expectedExceptionCode = $code;
     }
 
     /**
      * @param string $message
-     *
-     * @throws Exception
      */
     public function expectExceptionMessage(string $message): void
     {
@@ -658,8 +649,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @param string $messageRegExp
-     *
-     * @throws Exception
      */
     public function expectExceptionMessageRegExp(string $messageRegExp): void
     {

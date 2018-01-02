@@ -16,7 +16,6 @@ use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\Timer\Timer;
 use Text_Template;
@@ -66,18 +65,10 @@ class PhptTestCase implements Test, SelfDescribing
     /**
      * Constructs a test case with the given filename.
      *
-     * @param string             $filename
-     * @param AbstractPhpProcess $phpUtil
-     *
      * @throws Exception
-     * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($filename, $phpUtil = null)
+    public function __construct(string $filename, AbstractPhpProcess $phpUtil = null)
     {
-        if (!\is_string($filename)) {
-            throw InvalidArgumentHelper::factory(1, 'string');
-        }
-
         if (!\is_file($filename)) {
             throw new Exception(
                 \sprintf(

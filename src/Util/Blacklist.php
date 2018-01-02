@@ -80,11 +80,6 @@ final class Blacklist
         return self::$directories;
     }
 
-    /**
-     * @param string $file
-     *
-     * @return bool
-     */
     public function isBlacklisted(string $file): bool
     {
         if (\defined('PHPUNIT_TESTSUITE')) {

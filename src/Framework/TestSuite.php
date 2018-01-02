@@ -778,18 +778,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         return $result;
     }
 
-    /**
-     * @param bool $runTestInSeparateProcess
-     *
-     * @throws Exception
-     */
-    public function setRunTestInSeparateProcess($runTestInSeparateProcess): void
+    public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess): void
     {
-        if (\is_bool($runTestInSeparateProcess)) {
-            $this->runTestInSeparateProcess = $runTestInSeparateProcess;
-        } else {
-            throw InvalidArgumentHelper::factory(1, 'boolean');
-        }
+        $this->runTestInSeparateProcess = $runTestInSeparateProcess;
     }
 
     /**
@@ -805,13 +796,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         $test->run($result);
     }
 
-    /**
-     * Sets the name of the suite.
-     *
-     * @param  string
-     * @param mixed $name
-     */
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -819,12 +804,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * Returns the test at the given index.
      *
-     * @param  false|int
-     * @param mixed $index
-     *
      * @return false|Test
      */
-    public function testAt($index)
+    public function testAt(int $index)
     {
         if (isset($this->tests[$index])) {
             return $this->tests[$index];
