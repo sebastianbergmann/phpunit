@@ -20,14 +20,12 @@ class Count extends Constraint
     /**
      * @var int
      */
-    protected $expectedCount = 0;
+    private $expectedCount = 0;
 
-    /**
-     * @param int $expected
-     */
-    public function __construct($expected)
+    public function __construct(int $expected)
     {
         parent::__construct();
+
         $this->expectedCount = $expected;
     }
 
@@ -57,8 +55,6 @@ class Count extends Constraint
 
     /**
      * @param array|\Countable|\Traversable $other
-     *
-     * @return null|int
      */
     protected function getCountOf($other): ?int
     {
@@ -88,6 +84,7 @@ class Count extends Constraint
             // moves pointer.
             if ($key !== null) {
                 $iterator->rewind();
+
                 while ($iterator->valid() && $key !== $iterator->key()) {
                     $iterator->next();
                 }
@@ -100,10 +97,6 @@ class Count extends Constraint
     /**
      * Returns the total number of iterations from a generator.
      * This will fully exhaust the generator.
-     *
-     * @param Generator $generator
-     *
-     * @return int
      */
     protected function getCountOfGenerator(Generator $generator): int
     {
@@ -121,8 +114,6 @@ class Count extends Constraint
      * cases. This method should return the second part of that sentence.
      *
      * @param mixed $other evaluated value or object
-     *
-     * @return string
      */
     protected function failureDescription($other): string
     {

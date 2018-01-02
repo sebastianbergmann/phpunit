@@ -24,12 +24,10 @@ class ClassHasAttribute extends Constraint
      */
     protected $attributeName;
 
-    /**
-     * @param string $attributeName
-     */
-    public function __construct($attributeName)
+    public function __construct(string $attributeName)
     {
         parent::__construct();
+
         $this->attributeName = $attributeName;
     }
 
