@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util\TestDox;
 
-use PHP_Timer;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -18,6 +17,7 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\TextUI\ResultPrinter;
 use PHPUnit\Util\TestDox\TestResult as TestDoxTestResult;
+use SebastianBergmann\Timer\Timer;
 
 /**
  * This printer is for CLI output only. For the classes that output to file, html and xml,
@@ -181,7 +181,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
     protected function printHeader(): void
     {
-        $this->write("\n" . PHP_Timer::resourceUsage() . "\n\n");
+        $this->write("\n" . Timer::resourceUsage() . "\n\n");
     }
 
     private function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void

@@ -13,7 +13,6 @@ namespace PHPUnit\Framework;
 use AssertionError;
 use Countable;
 use Error;
-use PHP_Timer;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Util\Blacklist;
 use PHPUnit\Util\ErrorHandler;
@@ -26,6 +25,7 @@ use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Invoker\TimeoutException;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
+use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
@@ -667,7 +667,7 @@ class TestResult implements Countable
             \xdebug_start_function_monitor(ResourceOperations::getFunctions());
         }
 
-        PHP_Timer::start();
+        Timer::start();
 
         try {
             if (!$test instanceof WarningTestCase &&
@@ -745,7 +745,7 @@ class TestResult implements Countable
             $error = true;
         }
 
-        $time = PHP_Timer::stop();
+        $time = Timer::stop();
         $test->addToAssertionCount(Assert::getCount());
 
         if ($monitorFunctions) {

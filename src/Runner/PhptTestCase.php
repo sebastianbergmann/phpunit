@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner;
 
-use PHP_Timer;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\IncompleteTestError;
@@ -19,6 +18,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
+use SebastianBergmann\Timer\Timer;
 use Text_Template;
 use Throwable;
 
@@ -167,10 +167,10 @@ class PhptTestCase implements Test, SelfDescribing
             $this->renderForCoverage($settings);
         }
 
-        PHP_Timer::start();
+        Timer::start();
 
         $jobResult = $this->phpUtil->runJob($code, $this->stringifyIni($settings));
-        $time      = PHP_Timer::stop();
+        $time      = Timer::stop();
 
         if ($result->getCollectCodeCoverageInformation() && ($coverage = $this->cleanupForCoverage())) {
             $result->getCodeCoverage()->append($coverage, $this, true, [], [], true);

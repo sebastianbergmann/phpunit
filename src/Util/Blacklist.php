@@ -14,7 +14,6 @@ use Composer\Autoload\ClassLoader;
 use DeepCopy\DeepCopy;
 use Doctrine\Instantiator\Instantiator;
 use File_Iterator;
-use PHP_Timer;
 use PHP_Token;
 use phpDocumentor\Reflection\DocBlock;
 use PHPUnit\Framework\MockObject\Generator;
@@ -29,6 +28,7 @@ use SebastianBergmann\Exporter\Exporter;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\RecursionContext\Context;
+use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Version;
 use Text_Template;
 
@@ -42,7 +42,7 @@ final class Blacklist
      */
     public static $blacklistedClassNames = [
         File_Iterator::class          => 1,
-        PHP_Timer::class              => 1,
+        Timer::class                  => 1,
         PHP_Token::class              => 1,
         TestCase::class               => 2,
         'PHPUnit\DbUnit\TestCase'     => 2,
