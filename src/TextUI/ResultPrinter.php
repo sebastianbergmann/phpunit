@@ -618,9 +618,9 @@ class ResultPrinter extends Printer implements TestListener
             return $buffer;
         }
 
-        $codes   = \array_map('trim', \explode(',', $color));
+        $codes   = \array_map('\trim', \explode(',', $color));
         $lines   = \explode("\n", $buffer);
-        $padding = \max(\array_map('strlen', $lines));
+        $padding = \max(\array_map('\strlen', $lines));
         $styles  = [];
 
         foreach ($codes as $code) {
