@@ -34,6 +34,32 @@ class AssertTest extends TestCase
 
         throw new AssertionFailedError('Fail did not throw fail exception');
     }
+    
+    public function testAssertClassHasMethod(): void
+    {
+        $stubClass = new class {
+            private function methodOne() {}
+            protected function methodTwo() {}
+            public function methodThree() {}
+        };
+
+        $this->assertClassHasMethod('methodOne', get_class($stubClass));
+        $this->assertClassHasMethod('methodTwo', $stubClass);
+        $this->assertClassHasMethod('methodThree', $stubClass);
+
+        $this->expectException(Exception::class);
+        $this->assertClassHasMethod('notExistsMethod', 'NotExistsClass');
+    }
+
+    public function testAssertClassNotHasMethod(): void
+    {
+        $stubClass = new class {};
+
+        $this->assertClassNotHasMethod('notExistsMethod', $stubClass);
+
+        $this->expectException(Exception::class);
+        $this->assertClassNotHasMethod('notExistsMethod', 'NotExistsClass');
+    }
 
     public function testAssertSplObjectStorageContainsObject(): void
     {

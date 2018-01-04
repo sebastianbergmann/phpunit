@@ -19,6 +19,7 @@ use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
+use PHPUnit\Framework\Constraint\ClassHasMethod;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
@@ -1577,6 +1578,54 @@ abstract class Assert
             $object,
             new LogicalNot(
                 new ObjectHasAttribute($attributeName)
+            ),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that an object has a specified method.
+     *
+     * @param string $methodName
+     * @param string|object $classOrObject
+     * @param string $message
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    public static function assertClassHasMethod(string $methodName, $classOrObject, string $message = ''): void
+    {
+        if (is_string($classOrObject) && !class_exists($classOrObject)) {
+            throw InvalidArgumentHelper::factory(2, 'valid class name');
+        }
+
+        static::assertThat(
+            $classOrObject,
+            new ClassHasMethod($methodName),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that an object does not have a specified method.
+     *
+     * @param string $methodName
+     * @param $classOrObject
+     * @param string $message
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    public static function assertClassNotHasMethod(string $methodName, $classOrObject, string $message = ''): void
+    {
+        if (is_string($classOrObject) && !class_exists($classOrObject)) {
+            throw InvalidArgumentHelper::factory(2, 'valid class name');
+        }
+
+        static::assertThat(
+            $classOrObject,
+            new LogicalNot(
+                new ClassHasMethod($methodName)
             ),
             $message
         );
