@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wg
- * Date: 04.01.18
- * Time: 16:54
- */
 
 namespace PHPUnit\Framework\Constraint;
 
