@@ -1117,6 +1117,37 @@ function assertObjectNotHasAttribute(string $attributeName, $object, string $mes
     Assert::assertObjectNotHasAttribute(...\func_get_args());
 }
 
+
+/**
+ * Asserts that an object has a specified method.
+ *
+ * @param string $methodName
+ * @param string|object $classOrObject
+ * @param string $message
+ *
+ * @throws Exception
+ * @throws ExpectationFailedException
+ */
+function assertClassHasMethod(string $methodName, $classOrObject, string $message = ''): void
+{
+    Assert::assertClassHasMethod(...\func_get_args());
+}
+
+/**
+ * Asserts that an object does not have a specified method.
+ *
+ * @param string $methodName
+ * @param $classOrObject
+ * @param string $message
+ *
+ * @throws Exception
+ * @throws ExpectationFailedException
+ */
+function assertClassNotHasMethod(string $methodName, $classOrObject, string $message = ''): void
+{
+    Assert::assertClassNotHasMethod(...\func_get_args());
+}
+
 /**
  * Asserts that two variables have the same type and value.
  * Used on objects, it asserts that two variables reference
