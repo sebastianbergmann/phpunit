@@ -961,7 +961,7 @@ class Generator
             $callOriginalMethods,
             $method->isStatic(),
             $deprecation,
-            $method->hasReturnType() && PHP_VERSION_ID >= 70100 && $method->getReturnType()->allowsNull()
+            $method->hasReturnType() && $method->getReturnType()->allowsNull()
         );
     }
 
@@ -1104,7 +1104,7 @@ class Generator
             $typeDeclaration = '';
 
             if (!$forCall) {
-                if (PHP_VERSION_ID >= 70100 && $parameter->hasType() && $parameter->allowsNull()) {
+                if ($parameter->hasType() && $parameter->allowsNull()) {
                     $nullable = '?';
                 }
 
