@@ -2510,7 +2510,7 @@ XML;
     {
         $resource = fopen("php://memory", 'rb');
 
-        $this->assertResourceWithType('stream', $resource);
+        $this->assertResourceOfType('stream', $resource);
 
         fclose($resource);
     }
@@ -2521,7 +2521,7 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertResourceWithType('stream', $notAResource);
+        $this->assertResourceOfType('stream', $notAResource);
     }
 
     public function testAssertResourceWithTypeThrowWhenExpectingOtherType()
@@ -2530,7 +2530,7 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertResourceWithType('foo', $resource);
+        $this->assertResourceOfType('foo', $resource);
 
         fclose($resource);
     }
