@@ -1,5 +1,5 @@
 --TEST--
-\PHPUnit\Framework\MockObject\Generator::generate('NonExistentClass', array(), 'MockFoo', true, true)
+\PHPUnit\Framework\MockObject\Generator::generate('NonExistentClass', [], 'MockFoo', true, true)
 --FILE--
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
@@ -8,7 +8,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
     'NonExistentClass',
-    array(),
+    [],
     'MockFoo',
     true,
     true

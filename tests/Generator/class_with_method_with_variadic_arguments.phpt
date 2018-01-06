@@ -1,5 +1,5 @@
 --TEST--
-\PHPUnit\Framework\MockObject\Generator::generate('ClassWithMethodWithVariadicArguments', array(), 'MockFoo', true, true)
+\PHPUnit\Framework\MockObject\Generator::generate('ClassWithMethodWithVariadicArguments', [], 'MockFoo', true, true)
 --FILE--
 <?php
 class ClassWithMethodWithVariadicArguments
@@ -15,7 +15,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
     'ClassWithMethodWithVariadicArguments',
-    array(),
+    [],
     'MockFoo',
     true,
     true
