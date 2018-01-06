@@ -18,7 +18,7 @@ require __DIR__ . '/../../vendor/autoload.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
-    'Foo', array(), 'ProxyFoo', true, true, true, true
+    'Foo', [], 'ProxyFoo', true, true, true, true
 );
 
 print $mock['code'];

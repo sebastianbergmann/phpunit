@@ -1,5 +1,5 @@
 --TEST--
-\PHPUnit\Framework\MockObject\Generator::generate('ClassWithDeprecatedMethod', array(), 'MockFoo', TRUE, TRUE)
+\PHPUnit\Framework\MockObject\Generator::generate('ClassWithDeprecatedMethod', [], 'MockFoo', TRUE, TRUE)
 --FILE--
 <?php
 class ClassWithDeprecatedMethod
@@ -19,7 +19,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
   'ClassWithDeprecatedMethod',
-  array(),
+  [],
   'MockFoo',
   TRUE,
   TRUE

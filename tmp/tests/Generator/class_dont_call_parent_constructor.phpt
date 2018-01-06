@@ -1,5 +1,5 @@
 --TEST--
-\PHPUnit\Framework\MockObject\Generator::generate('Foo', array(), 'MockFoo', true)
+\PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true)
 --FILE--
 <?php
 class Foo
@@ -15,7 +15,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
     'Foo',
-    array(),
+    [],
     'MockFoo',
     true
 );
