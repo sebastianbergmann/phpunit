@@ -42,7 +42,7 @@ class IsResourceOfType extends Constraint
      */
     protected function matches($other): bool
     {
-        return $this->internalTypeConstraint->evaluate($other)
+        return $this->internalTypeConstraint->evaluate($other, '', true)
             && $this->type === get_resource_type($other);
     }
 
