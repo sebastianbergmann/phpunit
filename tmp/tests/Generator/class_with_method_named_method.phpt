@@ -23,7 +23,7 @@ $mock = $generator->generate(
 
 print $mock['code'];
 ?>
---EXPECTF--
+--EXPECT--
 class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     private $__phpunit_invocationMocker;
@@ -37,7 +37,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 
     public function method()
     {
-        $arguments = array();
+        $arguments = [];
         $count     = func_num_args();
 
         if ($count > 0) {

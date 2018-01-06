@@ -16,7 +16,7 @@ $mock = $generator->generate(
 
 print $mock['code'];
 ?>
---EXPECTF--
+--EXPECT--
 namespace NS {
 
 class Foo
@@ -45,9 +45,10 @@ class MockFoo extends NS\Foo implements PHPUnit\Framework\MockObject\MockObject
 
     public function method()
     {
-        $any = new \PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
+        $any     = new \PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
         $expects = $this->expects($any);
-        return call_user_func_array(array($expects, 'method'), func_get_args());
+
+        return call_user_func_array([$expects, 'method'], func_get_args());
     }
 
     public function __phpunit_setOriginalObject($originalObject)
