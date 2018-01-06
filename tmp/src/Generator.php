@@ -1082,11 +1082,11 @@ class Generator
             $typeDeclaration = '';
 
             if (!$forCall) {
-                if ($parameter->hasType() && (string) $parameter->getType() !== 'self') {
-                    if (PHP_VERSION_ID >= 70100 && $parameter->allowsNull()) {
-                        $nullable = '?';
-                    }
+                if (PHP_VERSION_ID >= 70100 && $parameter->hasType() && $parameter->allowsNull()) {
+                    $nullable = '?';
+                }
 
+                if ($parameter->hasType() && (string) $parameter->getType() !== 'self') {
                     $typeDeclaration = (string) $parameter->getType() . ' ';
                 } elseif ($parameter->isArray()) {
                     $typeDeclaration = 'array ';
