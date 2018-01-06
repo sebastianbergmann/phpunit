@@ -16,12 +16,12 @@ print $generator->generateClassFromWsdl(
     array('doGoogleSearch')
 );
 ?>
---EXPECTF--
+--EXPECT--
 class GoogleSearch extends \SoapClient
 {
     public function __construct($wsdl, array $options)
     {
-        parent::__construct('%s/GoogleSearch.wsdl', $options);
+        parent::__construct('/usr/local/src/phpunit-mock-objects/tests/Generator/../_fixture/GoogleSearch.wsdl', $options);
     }
 
     public function doGoogleSearch($key, $q, $start, $maxResults, $filter, $restrict, $safeSearch, $lr, $ie, $oe)

@@ -22,7 +22,7 @@ $mock = $generator->generate(
 );
 
 print $mock['code'];
---EXPECTF--
+--EXPECT--
 class MockC extends C implements PHPUnit\Framework\MockObject\MockObject
 {
     private $__phpunit_invocationMocker;
@@ -36,7 +36,7 @@ class MockC extends C implements PHPUnit\Framework\MockObject\MockObject
 
     public function m(?C $other): C
     {
-        $arguments = array($other);
+        $arguments = [$other];
         $count     = func_num_args();
 
         if ($count > 1) {
@@ -63,9 +63,10 @@ class MockC extends C implements PHPUnit\Framework\MockObject\MockObject
 
     public function method()
     {
-        $any = new \PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
+        $any     = new \PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
         $expects = $this->expects($any);
-        return call_user_func_array(array($expects, 'method'), func_get_args());
+
+        return call_user_func_array([$expects, 'method'], func_get_args());
     }
 
     public function __phpunit_setOriginalObject($originalObject)
