@@ -9,14 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Util\InvalidArgumentHelper;
-
 /**
- * Constraint that checks if value is resource type
- *
- * The file path to check is passed as $other in evaluate().
+ * Constraint that checks if value is a resource of given type
  */
-class IsResourceType extends Constraint
+class IsResourceOfType extends Constraint
 {
     /**
      * @var string
@@ -24,33 +20,36 @@ class IsResourceType extends Constraint
     private $type;
 
     /**
+     * @var IsType
+     */
+    private $internalTypeConstraint;
+
+    /**
      * @param string $type
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($type)
+    public function __construct(string $type)
     {
         parent::__construct();
 
-        if (!\is_string($type)) {
-            throw InvalidArgumentHelper::factory(1, 'string');
-        }
-
+        $this->internalTypeConstraint = new IsType('resource');
         $this->type = $type;
     }
 
     /**
      * @inheritdoc
      */
-    protected function matches($other)
+    protected function matches($other): bool
     {
-        return $this->type === get_resource_type($other);
+        return $this->internalTypeConstraint->evaluate($other)
+            && $this->type === get_resource_type($other);
     }
 
     /**
      * @inheritdoc
      */
-    public function toString()
+    public function toString(): string
     {
         return \sprintf(
             'is resource of type "%s"',
