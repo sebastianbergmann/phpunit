@@ -1,9 +1,5 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true)
---SKIPIF--
-<?php
-if (!version_compare(PHP_VERSION, '7.0', '>=')) print 'skip: PHP >= 7.0 required';
-?>
 --FILE--
 <?php
 final class FinalClass
