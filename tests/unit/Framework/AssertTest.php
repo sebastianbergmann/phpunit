@@ -2506,7 +2506,7 @@ XML;
         $this->assertStringNotMatchesFormatFile(TEST_FILES_PATH . 'expectedFileFormat.txt', "FOO\n");
     }
 
-    public function testAssertResourceWithTypeForMemoryStream()
+    public function testAssertResourceOfTypeForMemoryStream()
     {
         $resource = fopen("php://memory", 'rb');
 
@@ -2515,7 +2515,7 @@ XML;
         fclose($resource);
     }
 
-    public function testAssertResourceWithTypeThrowForNotAResource()
+    public function testAssertResourceOfTypeThrowForNotAResource()
     {
         $notAResource = 'test';
 
@@ -2524,7 +2524,7 @@ XML;
         $this->assertResourceOfType('stream', $notAResource);
     }
 
-    public function testAssertResourceWithTypeThrowWhenExpectingOtherType()
+    public function testAssertResourceOfTypeThrowWhenExpectingOtherType()
     {
         $resource = fopen("php://memory", 'rb');
 
