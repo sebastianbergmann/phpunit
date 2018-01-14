@@ -8,11 +8,9 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework;
+namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\Constraint\JsonMatches;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Json;
 
 class JsonMatchesTest extends ConstraintTestCase

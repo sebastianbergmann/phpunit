@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of sebastian/phpunit-framework-constraint.
+ * This file is part of PHPUnit.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -10,18 +10,17 @@
 
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class IsReadableTest extends ConstraintTestCase
+class IsWritableTest extends ConstraintTestCase
 {
-    public function testConstraintIsReadable()
+    public function testConstraintIsWritable()
     {
-        $constraint = new IsReadable();
+        $constraint = new IsWritable();
 
         $this->assertFalse($constraint->evaluate('foo', '', true));
-        $this->assertEquals('is readable', $constraint->toString());
+        $this->assertEquals('is writable', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
@@ -29,7 +28,7 @@ class IsReadableTest extends ConstraintTestCase
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that "foo" is readable.
+Failed asserting that "foo" is writable.
 
 EOF
                 ,

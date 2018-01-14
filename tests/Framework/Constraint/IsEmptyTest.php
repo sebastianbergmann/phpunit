@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of sebastian/phpunit-framework-constraint.
+ * This file is part of PHPUnit.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -13,22 +13,25 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class FileExistsTest extends ConstraintTestCase
+class IsEmptyTest extends ConstraintTestCase
 {
-    public function testConstraintFileExists()
+    public function testConstraintIsEmpty()
     {
-        $constraint = new FileExists();
+        $constraint = new IsEmpty();
 
-        $this->assertFalse($constraint->evaluate('foo', '', true));
-        $this->assertEquals('file exists', $constraint->toString());
+        $this->assertFalse($constraint->evaluate(['foo'], '', true));
+        $this->assertTrue($constraint->evaluate([], '', true));
+        $this->assertFalse($constraint->evaluate(new \ArrayObject(['foo']), '', true));
+        $this->assertTrue($constraint->evaluate(new \ArrayObject([]), '', true));
+        $this->assertEquals('is empty', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate('foo');
+            $constraint->evaluate(['foo']);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that file "foo" exists.
+Failed asserting that an array is empty.
 
 EOF
                 ,
@@ -41,17 +44,16 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintFileExists2()
+    public function testConstraintIsEmpty2()
     {
-        $constraint = new FileExists();
+        $constraint = new IsEmpty();
 
         try {
-            $constraint->evaluate('foo', 'custom message');
+            $constraint->evaluate(['foo'], 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-custom message
-Failed asserting that file "foo" exists.
+custom message\nFailed asserting that an array is empty.
 
 EOF
                 ,

@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of sebastian/phpunit-framework-constraint.
+ * This file is part of PHPUnit.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -13,23 +13,22 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class GreaterThanTest extends ConstraintTestCase
+class FileExistsTest extends ConstraintTestCase
 {
-    public function testConstraintGreaterThan()
+    public function testConstraintFileExists()
     {
-        $constraint = new GreaterThan(1);
+        $constraint = new FileExists();
 
-        $this->assertFalse($constraint->evaluate(0, '', true));
-        $this->assertTrue($constraint->evaluate(2, '', true));
-        $this->assertEquals('is greater than 1', $constraint->toString());
+        $this->assertFalse($constraint->evaluate('foo', '', true));
+        $this->assertEquals('file exists', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate(0);
+            $constraint->evaluate('foo');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that 0 is greater than 1.
+Failed asserting that file "foo" exists.
 
 EOF
                 ,
@@ -42,17 +41,17 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintGreaterThan2()
+    public function testConstraintFileExists2()
     {
-        $constraint = new GreaterThan(1);
+        $constraint = new FileExists();
 
         try {
-            $constraint->evaluate(0, 'custom message');
+            $constraint->evaluate('foo', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
 custom message
-Failed asserting that 0 is greater than 1.
+Failed asserting that file "foo" exists.
 
 EOF
                 ,
