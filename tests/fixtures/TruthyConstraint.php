@@ -1,5 +1,4 @@
 <?php
-
 use PHPUnit\Framework\Constraint\Constraint;
 
 final class TruthyConstraint extends Constraint
