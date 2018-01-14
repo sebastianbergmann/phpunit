@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of sebastian/phpunit-framework-constraint.
+ * This file is part of PHPUnit.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -13,23 +13,25 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class LessThanTest extends ConstraintTestCase
+class ClassHasAttributeTest extends ConstraintTestCase
 {
-    public function testConstraintLessThan()
+    public function testConstraintClassHasAttribute()
     {
-        $constraint = new LessThan(1);
+        $constraint = new ClassHasAttribute(
+            'privateAttribute'
+        );
 
-        $this->assertTrue($constraint->evaluate(0, '', true));
-        $this->assertFalse($constraint->evaluate(1, '', true));
-        $this->assertEquals('is less than 1', $constraint->toString());
+        $this->assertTrue($constraint->evaluate(\ClassWithNonPublicAttributes::class, '', true));
+        $this->assertFalse($constraint->evaluate(\stdClass::class, '', true));
+        $this->assertEquals('has attribute "privateAttribute"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate(1);
+            $constraint->evaluate(\stdClass::class);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that 1 is less than 1.
+Failed asserting that class "stdClass" has attribute "privateAttribute".
 
 EOF
                 ,
@@ -42,17 +44,19 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintLessThan2()
+    public function testConstraintClassHasAttribute2()
     {
-        $constraint = new LessThan(1);
+        $constraint = new ClassHasAttribute(
+            'privateAttribute'
+        );
 
         try {
-            $constraint->evaluate(1, 'custom message');
+            $constraint->evaluate(\stdClass::class, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
 custom message
-Failed asserting that 1 is less than 1.
+Failed asserting that class "stdClass" has attribute "privateAttribute".
 
 EOF
                 ,

@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of sebastian/phpunit-framework-constraint.
+ * This file is part of PHPUnit.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -13,23 +13,22 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class ObjectHasAttributeTest extends ConstraintTestCase
+class ArrayHasKeyTest extends ConstraintTestCase
 {
-    public function testConstraintObjectHasAttribute()
+    public function testConstraintArrayHasKey()
     {
-        $constraint = new ObjectHasAttribute('privateAttribute');
+        $constraint = new ArrayHasKey(0);
 
-        $this->assertTrue($constraint->evaluate(new \ClassWithNonPublicAttributes, '', true));
-        $this->assertFalse($constraint->evaluate(new \stdClass, '', true));
-        $this->assertEquals('has attribute "privateAttribute"', $constraint->toString());
+        $this->assertFalse($constraint->evaluate([], '', true));
+        $this->assertEquals('has the key 0', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate(new \stdClass);
+            $constraint->evaluate([]);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that object of class "stdClass" has attribute "privateAttribute".
+Failed asserting that an array has the key 0.
 
 EOF
                 ,
@@ -42,17 +41,16 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintObjectHasAttribute2()
+    public function testConstraintArrayHasKey2()
     {
-        $constraint = new ObjectHasAttribute('privateAttribute');
+        $constraint = new ArrayHasKey(0);
 
         try {
-            $constraint->evaluate(new \stdClass, 'custom message');
+            $constraint->evaluate([], 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-custom message
-Failed asserting that object of class "stdClass" has attribute "privateAttribute".
+custom message\nFailed asserting that an array has the key 0.
 
 EOF
                 ,

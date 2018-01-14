@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of sebastian/phpunit-framework-constraint.
+ * This file is part of PHPUnit.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -11,7 +11,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 

@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of sebastian/phpunit-framework-constraint.
+ * This file is part of PHPUnit.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -13,25 +13,23 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class ClassHasAttributeTest extends ConstraintTestCase
+class ObjectHasAttributeTest extends ConstraintTestCase
 {
-    public function testConstraintClassHasAttribute()
+    public function testConstraintObjectHasAttribute()
     {
-        $constraint = new ClassHasAttribute(
-            'privateAttribute'
-        );
+        $constraint = new ObjectHasAttribute('privateAttribute');
 
-        $this->assertTrue($constraint->evaluate(\ClassWithNonPublicAttributes::class, '', true));
-        $this->assertFalse($constraint->evaluate(\stdClass::class, '', true));
+        $this->assertTrue($constraint->evaluate(new \ClassWithNonPublicAttributes, '', true));
+        $this->assertFalse($constraint->evaluate(new \stdClass, '', true));
         $this->assertEquals('has attribute "privateAttribute"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate(\stdClass::class);
+            $constraint->evaluate(new \stdClass);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that class "stdClass" has attribute "privateAttribute".
+Failed asserting that object of class "stdClass" has attribute "privateAttribute".
 
 EOF
                 ,
@@ -44,19 +42,17 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintClassHasAttribute2()
+    public function testConstraintObjectHasAttribute2()
     {
-        $constraint = new ClassHasAttribute(
-            'privateAttribute'
-        );
+        $constraint = new ObjectHasAttribute('privateAttribute');
 
         try {
-            $constraint->evaluate(\stdClass::class, 'custom message');
+            $constraint->evaluate(new \stdClass, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
 custom message
-Failed asserting that class "stdClass" has attribute "privateAttribute".
+Failed asserting that object of class "stdClass" has attribute "privateAttribute".
 
 EOF
                 ,

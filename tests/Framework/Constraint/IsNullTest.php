@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of sebastian/phpunit-framework-constraint.
+ * This file is part of PHPUnit.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -13,23 +13,23 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class RegularExpressionTest extends ConstraintTestCase
+class IsNullTest extends ConstraintTestCase
 {
-    public function testConstraintRegularExpression()
+    public function testConstraintIsNull()
     {
-        $constraint = new RegularExpression('/foo/');
+        $constraint = new IsNull();
 
-        $this->assertFalse($constraint->evaluate('barbazbar', '', true));
-        $this->assertTrue($constraint->evaluate('barfoobar', '', true));
-        $this->assertEquals('matches PCRE pattern "/foo/"', $constraint->toString());
+        $this->assertFalse($constraint->evaluate(0, '', true));
+        $this->assertTrue($constraint->evaluate(null, '', true));
+        $this->assertEquals('is null', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate('barbazbar');
+            $constraint->evaluate(0);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that 'barbazbar' matches PCRE pattern "/foo/".
+Failed asserting that 0 is null.
 
 EOF
                 ,
@@ -42,17 +42,17 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintRegularExpression2()
+    public function testConstraintIsNull2()
     {
-        $constraint = new RegularExpression('/foo/');
+        $constraint = new IsNull();
 
         try {
-            $constraint->evaluate('barbazbar', 'custom message');
+            $constraint->evaluate(0, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
 custom message
-Failed asserting that 'barbazbar' matches PCRE pattern "/foo/".
+Failed asserting that 0 is null.
 
 EOF
                 ,

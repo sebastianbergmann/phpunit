@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of sebastian/phpunit-framework-constraint.
+ * This file is part of PHPUnit.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -13,22 +13,23 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class ArrayHasKeyTest extends ConstraintTestCase
+class GreaterThanTest extends ConstraintTestCase
 {
-    public function testConstraintArrayHasKey()
+    public function testConstraintGreaterThan()
     {
-        $constraint = new ArrayHasKey(0);
+        $constraint = new GreaterThan(1);
 
-        $this->assertFalse($constraint->evaluate([], '', true));
-        $this->assertEquals('has the key 0', $constraint->toString());
+        $this->assertFalse($constraint->evaluate(0, '', true));
+        $this->assertTrue($constraint->evaluate(2, '', true));
+        $this->assertEquals('is greater than 1', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate([]);
+            $constraint->evaluate(0);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that an array has the key 0.
+Failed asserting that 0 is greater than 1.
 
 EOF
                 ,
@@ -41,16 +42,17 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintArrayHasKey2()
+    public function testConstraintGreaterThan2()
     {
-        $constraint = new ArrayHasKey(0);
+        $constraint = new GreaterThan(1);
 
         try {
-            $constraint->evaluate([], 'custom message');
+            $constraint->evaluate(0, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-custom message\nFailed asserting that an array has the key 0.
+custom message
+Failed asserting that 0 is greater than 1.
 
 EOF
                 ,
