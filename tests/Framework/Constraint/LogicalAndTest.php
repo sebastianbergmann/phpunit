@@ -7,34 +7,232 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Framework\Constraint;
 
-use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\LogicalAnd;
-use PHPUnit\Framework\TestCase;
+namespace PHPUnit\Framework\Constraint;
 
-final class LogicalAndTest extends TestCase
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestFailure;
+
+final class LogicalAndTest extends ConstraintTestCase
 {
-    public function testFromConstraintsReturnsConstraint(): void
+    public function testSetConstraintsRejectsInvalidConstraint(): void
     {
-        $other = 'Foo';
-        $count = 5;
+        $constraints = [
+            new \TruthyConstraint(),
+            new \FalsyConstraint(),
+            new \stdClass(),
+        ];
 
-        $constraints = \array_map(function () use ($other) {
-            $constraint = $this->getMockBuilder(Constraint::class)->getMock();
+        $constraint = new LogicalAnd();
 
-            $constraint
-                ->expects($this->once())
-                ->method('evaluate')
-                ->with($this->identicalTo($other))
-                ->willReturn(true);
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage(\sprintf(
+            'All parameters to %s must be a constraint object.',
+            LogicalAnd::class
+        ));
 
-            return $constraint;
-        }, \array_fill(0, $count, null));
+        $constraint->setConstraints($constraints);
+    }
 
-        $constraint = LogicalAnd::fromConstraints(...$constraints);
+    public function testCountReturnsCountOfComposedConstraints(): void
+    {
+        $counts = [
+            3,
+            5,
+            8,
+        ];
 
-        $this->assertInstanceOf(LogicalAnd::class, $constraint);
-        $this->assertTrue($constraint->evaluate($other, '', true));
+        $constraints = \array_map(function (int $count) {
+            return \CountConstraint::fromCount($count);
+        }, $counts);
+
+        $constraint = new LogicalAnd();
+
+        $constraint->setConstraints($constraints);
+
+        $expected = \array_sum($counts);
+
+        $this->assertSame($expected, $constraint->count());
+    }
+
+    public function testToStringReturnsImplodedStringRepresentationOfComposedConstraintsGluedWithAnd(): void
+    {
+        $names = [
+            'is healthy',
+            'is rich in amino acids',
+            'is rich in unsaturated fats',
+        ];
+
+        $constraints = \array_map(function (string $name) {
+            return \NamedConstraint::fromName($name);
+        }, $names);
+
+        $constraint = new LogicalAnd();
+
+        $constraint->setConstraints($constraints);
+
+        $expected = \implode(' and ', $names);
+
+        $this->assertSame($expected, $constraint->toString());
+    }
+
+    /**
+     * @dataProvider providerFailingConstraints
+     *
+     * @param Constraint[] $constraints
+     */
+    public function testEvaluateReturnsFalseIfAnyOfTheComposedConstraintsEvaluateToFalse(array $constraints): void
+    {
+        $constraint = new LogicalAnd();
+
+        $constraint->setConstraints($constraints);
+
+        $this->assertFalse($constraint->evaluate('whatever', '', true));
+    }
+
+    /**
+     * @dataProvider providerSucceedingConstraints
+     *
+     * @param Constraint[] $constraints
+     */
+    public function testEvaluateReturnsTrueIfAllOfTheComposedConstraintsEvaluateToTrue(array $constraints): void
+    {
+        $constraint = new LogicalAnd();
+
+        $constraint->setConstraints($constraints);
+
+        $this->assertTrue($constraint->evaluate('whatever', '', true));
+    }
+
+    /**
+     * @dataProvider providerFailingConstraints
+     *
+     * @param Constraint[] $constraints
+     */
+    public function testEvaluateThrowsExceptionIfAnyOfTheComposedConstraintsEvaluateToFalse(array $constraints): void
+    {
+        $other = 'whatever';
+
+        $constraint = new LogicalAnd();
+
+        $constraint->setConstraints($constraints);
+
+        try {
+            $constraint->evaluate($other);
+        } catch (ExpectationFailedException $exception) {
+            $toString = $this->stringify($constraints);
+
+            $expectedDescription = <<<EOF
+Failed asserting that '$other' $toString.
+
+EOF;
+
+            $this->assertEquals($expectedDescription, TestFailure::exceptionToString($exception));
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @dataProvider providerFailingConstraints
+     *
+     * @param Constraint[] $constraints
+     */
+    public function testEvaluateThrowsExceptionWithCustomMessageIfAnyOfTheComposedConstraintsEvaluateToFalse(array $constraints): void
+    {
+        $other             = 'whatever';
+        $customDescription = 'Not very happy about the results at this point in time, I have to admit!';
+
+        $constraint = new LogicalAnd();
+
+        $constraint->setConstraints($constraints);
+
+        try {
+            $constraint->evaluate(
+                $other,
+                $customDescription
+            );
+        } catch (ExpectationFailedException $exception) {
+            $toString = $this->stringify($constraints);
+
+            $expectedDescription = <<<EOF
+$customDescription
+Failed asserting that '$other' $toString.
+
+EOF;
+
+            $this->assertEquals($expectedDescription, TestFailure::exceptionToString($exception));
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    /**
+     * @dataProvider providerSucceedingConstraints
+     *
+     * @param Constraint[] $constraints
+     */
+    public function testEvaluateReturnsNothingIfAllOfTheComposedConstraintsEvaluateToTrue(array $constraints): void
+    {
+        $constraint = new LogicalAnd();
+
+        $constraint->setConstraints($constraints);
+
+        $this->assertNull($constraint->evaluate('whatever'));
+    }
+
+    public function providerFailingConstraints(): \Generator
+    {
+        $values = [
+            'single' => [
+                new \FalsyConstraint(),
+            ],
+            'multiple' => [
+                new \TruthyConstraint(),
+                new \FalsyConstraint(),
+                new \TruthyConstraint(),
+            ],
+        ];
+
+        foreach ($values as $key => $constraints) {
+            yield $key => [
+                $constraints,
+            ];
+        }
+    }
+
+    public function providerSucceedingConstraints(): \Generator
+    {
+        $values = [
+            'single' => [
+                new \TruthyConstraint(),
+            ],
+            'multiple' => [
+                new \TruthyConstraint(),
+                new \TruthyConstraint(),
+                new \TruthyConstraint(),
+            ],
+        ];
+
+        foreach ($values as $key => $constraints) {
+            yield $key => [
+                $constraints,
+            ];
+        }
+    }
+
+    private function stringify(array $constraints): string
+    {
+        return \implode(
+            ' and ',
+            \array_map(function (Constraint $constraint) {
+                return $constraint->toString();
+            }, $constraints)
+        );
     }
 }

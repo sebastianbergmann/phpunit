@@ -10,141 +10,65 @@
 
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\TestCase;
-
-class StringMatchesFormatDescriptionTest extends TestCase
+class StringMatchesFormatDescriptionTest extends ConstraintTestCase
 {
-    /**
-     * @param bool   $expected
-     * @param string $format
-     * @param string $other
-     *
-     * @throws \Exception
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @dataProvider evaluateDataProvider
-     */
-    public function testEvaluate($expected, $format, $other): void
+    public function testConstraintStringMatches(): void
     {
-        $constraint = new StringMatchesFormatDescription($format);
+        $constraint = new StringMatchesFormatDescription('*%c*');
 
-        $this->assertSame($expected, $constraint->evaluate($other, '', true));
+        $this->assertFalse($constraint->evaluate('**', '', true));
+        $this->assertTrue($constraint->evaluate('***', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*.\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
     }
 
-    public function evaluateDataProvider()
+    public function testConstraintStringMatches2(): void
     {
-        return [
-            'Simple %e' => [
-                true,
-                '%e',
-                DIRECTORY_SEPARATOR
-            ],
-            'Negative %e' => [
-                false,
-                '%e',
-                'a'
-            ],
-            'Simple %s' => [
-                true,
-                '%s',
-                'string'
-            ],
-            'Negative %s' => [
-                false,
-                '%s',
-                "\n"
-            ],
-            'Simple %S' => [
-                true,
-                '%S',
-                'string'
-            ],
-            'Negative %S' => [
-                false,
-                '%S',
-                "1\n2\n2"
-            ],
-            'Simple %a' => [
-                true,
-                '%a',
-                'string'
-            ],
-            'Negative %a' => [
-                false,
-                '%a',
-                ''
-            ],
-            'Simple %A' => [
-                true,
-                '%A',
-                'string'
-            ],
-            // Negative %A is not possible - it will match pretty much anything.
-            'Simple %w' => [
-                true,
-                '%w',
-                ' '
-            ],
-            'Negative %w' => [
-                false,
-                '%w',
-                'nowhitespace'
-            ],
-            'Simple %i' => [
-                true,
-                '%i',
-                '-10'
-            ],
-            'Negative %i' => [
-                false,
-                '%i',
-                'abc'
-            ],
-            'Simple %d' => [
-                true,
-                '%d',
-                '1'
-            ],
-            'Negative %d' => [
-                false,
-                '%d',
-                'abc'
-            ],
-            'Simple %x' => [
-                true,
-                '%x',
-                '0123456789abcdefABCDEF'
-            ],
-            'Negative %x' => [
-                false,
-                '%x',
-                '_'
-            ],
-            'Simple %f' => [
-                true,
-                '%f',
-                '-1.2e-10'
-            ],
-            'Negative %f' => [
-                false,
-                '%f',
-                'foo'
-            ],
-            'Simple %c' => [
-                true,
-                '%c',
-                'a'
-            ],
-            'Negative %c' => [
-                false,
-                '%c',
-                'abc'
-            ],
-            'Escaped %' => [
-                true,
-                'Escaped %%e %%s %%S %%a %%A %%w %%i %%d %%x %%f %%c',
-                'Escaped %e %s %S %a %A %w %i %d %x %f %c'
-            ]
-        ];
+        $constraint = new StringMatchesFormatDescription('*%s*');
+
+        $this->assertFalse($constraint->evaluate('**', '', true));
+        $this->assertTrue($constraint->evaluate('***', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*[^\r\n]+\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringMatches3(): void
+    {
+        $constraint = new StringMatchesFormatDescription('*%i*');
+
+        $this->assertFalse($constraint->evaluate('**', '', true));
+        $this->assertTrue($constraint->evaluate('*0*', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*[+-]?\d+\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringMatches4(): void
+    {
+        $constraint = new StringMatchesFormatDescription('*%d*');
+
+        $this->assertFalse($constraint->evaluate('**', '', true));
+        $this->assertTrue($constraint->evaluate('*0*', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*\d+\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringMatches5(): void
+    {
+        $constraint = new StringMatchesFormatDescription('*%x*');
+
+        $this->assertFalse($constraint->evaluate('**', '', true));
+        $this->assertTrue($constraint->evaluate('*0f0f0f*', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*[0-9a-fA-F]+\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringMatches6(): void
+    {
+        $constraint = new StringMatchesFormatDescription('*%f*');
+
+        $this->assertFalse($constraint->evaluate('**', '', true));
+        $this->assertTrue($constraint->evaluate('*1.0*', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
     }
 }
