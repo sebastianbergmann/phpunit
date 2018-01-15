@@ -1745,7 +1745,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a test double for the specified class.
      *
-     * @param string $originalClassName
+     * @param string|string[] $originalClassName
      *
      * @throws Exception
      * @throws ReflectionException
