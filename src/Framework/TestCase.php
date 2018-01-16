@@ -1018,11 +1018,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * Sets the name of a TestCase.
-     *
-     * @param  string
-     * @param mixed $name
      */
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
