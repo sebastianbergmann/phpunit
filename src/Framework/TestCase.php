@@ -54,57 +54,9 @@ use SebastianBergmann\ObjectEnumerator\Enumerator;
 use Text_Template;
 use Throwable;
 
-/**
- * A TestCase defines the fixture to run multiple tests.
- *
- * To define a TestCase
- *
- *   1) Implement a subclass of PHPUnit\Framework\TestCase.
- *   2) Define instance variables that store the state of the fixture.
- *   3) Initialize the fixture state by overriding setUp().
- *   4) Clean-up after a test by overriding tearDown().
- *
- * Each test runs in its own fixture so there can be no side effects
- * among test runs.
- *
- * Here is an example:
- *
- * <code>
- * <?php
- * class MathTest extends PHPUnit\Framework\TestCase
- * {
- *     public $value1;
- *     public $value2;
- *
- *     protected function setUp()
- *     {
- *         $this->value1 = 2;
- *         $this->value2 = 3;
- *     }
- * }
- * ?>
- * </code>
- *
- * For each test implement a method which interacts with the fixture.
- * Verify the expected results with assertions specified by calling
- * assert with a boolean.
- *
- * <code>
- * <?php
- * public function testPass()
- * {
- *     $this->assertTrue($this->value1 + $this->value2 == 5);
- * }
- * ?>
- * </code>
- */
 abstract class TestCase extends Assert implements Test, SelfDescribing
 {
     /**
-     * Enable or disable the backup and restoration of the $GLOBALS array.
-     * Overwrite this attribute in a child class of TestCase.
-     * Setting this attribute in setUp() has no effect!
-     *
      * @var bool
      */
     protected $backupGlobals;
@@ -115,10 +67,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected $backupGlobalsBlacklist = [];
 
     /**
-     * Enable or disable the backup and restoration of static attributes.
-     * Overwrite this attribute in a child class of TestCase.
-     * Setting this attribute in setUp() has no effect!
-     *
      * @var bool
      */
     protected $backupStaticAttributes;
@@ -129,30 +77,21 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected $backupStaticAttributesBlacklist = [];
 
     /**
-     * Whether or not this test is to be run in a separate PHP process.
-     *
      * @var bool
      */
     protected $runTestInSeparateProcess;
 
     /**
-     * Whether or not this test should preserve the global state when
-     * running in a separate PHP process.
-     *
      * @var bool
      */
     protected $preserveGlobalState = true;
 
     /**
-     * Whether or not this class is to be run in a separate PHP process.
-     *
      * @var bool
      */
     private $runClassInSeparateProcess;
 
     /**
-     * Whether or not this test is running in a separate PHP process.
-     *
      * @var bool
      */
     private $inIsolation = false;
@@ -173,36 +112,26 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $useErrorHandler;
 
     /**
-     * The name of the expected Exception.
-     *
      * @var null|string
      */
     private $expectedException;
 
     /**
-     * The message of the expected Exception.
-     *
      * @var string
      */
     private $expectedExceptionMessage;
 
     /**
-     * The regex pattern to validate the expected Exception message.
-     *
      * @var string
      */
     private $expectedExceptionMessageRegExp;
 
     /**
-     * The code of the expected Exception.
-     *
      * @var null|int|string
      */
     private $expectedExceptionCode;
 
     /**
-     * The name of the test case.
-     *
      * @var string
      */
     private $name;
@@ -333,8 +262,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $customComparators = [];
 
     /**
-     * Constructs a test case with the given name.
-     *
      * @param string $name
      * @param array  $data
      * @param string $dataName
@@ -384,8 +311,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -400,11 +325,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $buffer . $this->getDataSetAsString();
     }
 
-    /**
-     * Counts the number of test cases executed by run(TestResult result).
-     *
-     * @return int
-     */
     public function count(): int
     {
         return 1;
@@ -415,19 +335,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $this->groups;
     }
 
-    /**
-     * @param array $groups
-     */
     public function setGroups(array $groups): void
     {
         $this->groups = $groups;
     }
 
-    /**
-     * Returns the annotations for this test.
-     *
-     * @return array
-     */
     public function getAnnotations(): array
     {
         return \PHPUnit\Util\Test::parseTestMethodAnnotations(
@@ -437,16 +349,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * Gets the name of a TestCase.
-     *
-     * @param bool $withDataSet
-     *
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
-     *
-     * @return string
      */
-    public function getName($withDataSet = true): ?string
+    public function getName(bool $withDataSet = true): ?string
     {
         if ($withDataSet) {
             return $this->name . $this->getDataSetAsString(false);
@@ -460,8 +366,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
-     *
-     * @return int
      */
     public function getSize(): int
     {
@@ -474,8 +378,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
-     *
-     * @return bool
      */
     public function hasSize(): bool
     {
@@ -485,8 +387,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
-     *
-     * @return bool
      */
     public function isSmall(): bool
     {
@@ -496,8 +396,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
-     *
-     * @return bool
      */
     public function isMedium(): bool
     {
@@ -507,17 +405,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
-     *
-     * @return bool
      */
     public function isLarge(): bool
     {
         return $this->getSize() === \PHPUnit\Util\Test::LARGE;
     }
 
-    /**
-     * @return string
-     */
     public function getActualOutput(): string
     {
         if (!$this->outputBufferingActive) {
@@ -527,9 +420,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return \ob_get_contents();
     }
 
-    /**
-     * @return bool
-     */
     public function hasOutput(): bool
     {
         if ('' === $this->output) {
@@ -543,20 +433,15 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return true;
     }
 
-    /**
-     * @return bool
-     */
     public function doesNotPerformAssertions(): bool
     {
         return $this->doesNotPerformAssertions;
     }
 
     /**
-     * @param string $expectedRegex
-     *
      * @throws Exception
      */
-    public function expectOutputRegex($expectedRegex): void
+    public function expectOutputRegex(string $expectedRegex): void
     {
         if ($this->outputExpectedString !== null) {
             throw new Exception;
@@ -568,11 +453,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param string $expectedString
-     *
      * @throws Exception
      */
-    public function expectOutputString($expectedString): void
+    public function expectOutputString(string $expectedString): void
     {
         if ($this->outputExpectedRegex !== null) {
             throw new Exception;
@@ -583,17 +466,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    /**
-     * @return bool
-     */
     public function hasExpectationOnOutput(): bool
     {
         return \is_string($this->outputExpectedString) || \is_string($this->outputExpectedRegex);
     }
 
-    /**
-     * @return null|string
-     */
     public function getExpectedException(): ?string
     {
         return $this->expectedException;
@@ -607,25 +484,16 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $this->expectedExceptionCode;
     }
 
-    /**
-     * @return string
-     */
     public function getExpectedExceptionMessage(): string
     {
         return $this->expectedExceptionMessage;
     }
 
-    /**
-     * @return string
-     */
     public function getExpectedExceptionMessageRegExp(): string
     {
         return $this->expectedExceptionMessageRegExp;
     }
 
-    /**
-     * @param string $exception
-     */
     public function expectException(string $exception): void
     {
         $this->expectedException = $exception;
@@ -639,17 +507,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->expectedExceptionCode = $code;
     }
 
-    /**
-     * @param string $message
-     */
     public function expectExceptionMessage(string $message): void
     {
         $this->expectedExceptionMessage = $message;
     }
 
-    /**
-     * @param string $messageRegExp
-     */
     public function expectExceptionMessageRegExp(string $messageRegExp): void
     {
         $this->expectedExceptionMessageRegExp = $messageRegExp;
@@ -672,19 +534,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
 
-    /**
-     * @param bool $useErrorHandler
-     */
-    public function setUseErrorHandler($useErrorHandler): void
+    public function setUseErrorHandler(bool $useErrorHandler): void
     {
         $this->useErrorHandler = $useErrorHandler;
     }
 
-    /**
-     * Returns the status of this test.
-     *
-     * @return int
-     */
     public function getStatus(): int
     {
         return (int) $this->status;
@@ -695,34 +549,21 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->status = BaseTestRunner::STATUS_RISKY;
     }
 
-    /**
-     * Returns the status message of this test.
-     *
-     * @return string
-     */
     public function getStatusMessage(): string
     {
         return $this->statusMessage;
     }
 
-    /**
-     * Returns whether or not this test has failed.
-     *
-     * @return bool
-     */
     public function hasFailed(): bool
     {
         $status = $this->getStatus();
 
-        return $status == BaseTestRunner::STATUS_FAILURE ||
-            $status == BaseTestRunner::STATUS_ERROR;
+        return $status === BaseTestRunner::STATUS_FAILURE || $status === BaseTestRunner::STATUS_ERROR;
     }
 
     /**
      * Runs the test case and collects the results in a TestResult object.
      * If no TestResult object is passed a new one will be created.
-     *
-     * @param TestResult $result
      *
      * @throws CodeCoverageException
      * @throws ReflectionException
@@ -733,8 +574,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
-     *
-     * @return null|TestResult
      */
     public function run(TestResult $result = null): TestResult
     {
@@ -879,9 +718,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $result;
     }
 
-    /**
-     * Runs the bare test sequence.
-     */
     public function runBare(): void
     {
         $this->numAssertions = 0;
@@ -945,7 +781,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $e = $_e;
         }
 
-        // Clean up the mock objects.
         $this->mockObjects = [];
         $this->prophet     = null;
 
@@ -1016,17 +851,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    /**
-     * Sets the name of a TestCase.
-     */
     public function setName(string $name): void
     {
         $this->name = $name;
     }
 
     /**
-     * Sets the dependencies of a TestCase.
-     *
      * @param string[] $dependencies
      */
     public function setDependencies(array $dependencies): void
@@ -1034,62 +864,36 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->dependencies = $dependencies;
     }
 
-    /**
-     * Returns true if the tests has dependencies
-     *
-     * @return bool
-     */
     public function hasDependencies(): bool
     {
         return \count($this->dependencies) > 0;
     }
 
-    /**
-     * Sets
-     *
-     * @param array $dependencyInput
-     */
     public function setDependencyInput(array $dependencyInput): void
     {
         $this->dependencyInput = $dependencyInput;
     }
 
-    /**
-     * @param bool $beStrictAboutChangesToGlobalState
-     */
-    public function setBeStrictAboutChangesToGlobalState($beStrictAboutChangesToGlobalState): void
+    public function setBeStrictAboutChangesToGlobalState(?bool $beStrictAboutChangesToGlobalState): void
     {
         $this->beStrictAboutChangesToGlobalState = $beStrictAboutChangesToGlobalState;
     }
 
-    /**
-     * Calling this method in setUp() has no effect!
-     *
-     * @param bool $backupGlobals
-     */
-    public function setBackupGlobals($backupGlobals): void
+    public function setBackupGlobals(?bool $backupGlobals): void
     {
-        if (null === $this->backupGlobals && \is_bool($backupGlobals)) {
+        if ($this->backupGlobals === null && $backupGlobals !== null) {
             $this->backupGlobals = $backupGlobals;
         }
     }
 
-    /**
-     * Calling this method in setUp() has no effect!
-     *
-     * @param bool $backupStaticAttributes
-     */
-    public function setBackupStaticAttributes($backupStaticAttributes): void
+    public function setBackupStaticAttributes(?bool $backupStaticAttributes): void
     {
-        if (null === $this->backupStaticAttributes &&
-            \is_bool($backupStaticAttributes)) {
+        if ($this->backupStaticAttributes === null && $backupStaticAttributes !== null) {
             $this->backupStaticAttributes = $backupStaticAttributes;
         }
     }
 
     /**
-     * @param bool $runTestInSeparateProcess
-     *
      * @throws Exception
      */
     public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess): void
@@ -1100,8 +904,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param bool $runClassInSeparateProcess
-     *
      * @throws Exception
      */
     public function setRunClassInSeparateProcess(bool $runClassInSeparateProcess): void
@@ -1112,8 +914,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param bool $preserveGlobalState
-     *
      * @throws Exception
      */
     public function setPreserveGlobalState(bool $preserveGlobalState): void
@@ -1122,8 +922,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param bool $inIsolation
-     *
      * @throws Exception
      */
     public function setInIsolation(bool $inIsolation): void
@@ -1131,9 +929,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->inIsolation = $inIsolation;
     }
 
-    /**
-     * @return bool
-     */
     public function isInIsolation(): bool
     {
         return $this->inIsolation;
@@ -1156,8 +951,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param callable $callback
-     *
      * @throws Exception
      */
     public function setOutputCallback(callable $callback): void
@@ -1165,25 +958,16 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->outputCallback = $callback;
     }
 
-    /**
-     * @return TestResult
-     */
     public function getTestResultObject(): TestResult
     {
         return $this->result;
     }
 
-    /**
-     * @param TestResult $result
-     */
     public function setTestResultObject(TestResult $result): void
     {
         $this->result = $result;
     }
 
-    /**
-     * @param MockObject $mockObject
-     */
     public function registerMockObject(MockObject $mockObject): void
     {
         $this->mockObjects[] = $mockObject;
@@ -1193,28 +977,19 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns a builder object to create mock objects using a fluent interface.
      *
      * @param string|string[] $className
-     *
-     * @return MockBuilder
      */
     public function getMockBuilder($className): MockBuilder
     {
         return new MockBuilder($this, $className);
     }
 
-    /**
-     * Adds a value to the assertion counter.
-     *
-     * @param int $count
-     */
-    public function addToAssertionCount($count): void
+    public function addToAssertionCount(int $count): void
     {
         $this->numAssertions += $count;
     }
 
     /**
      * Returns the number of assertions performed by this test.
-     *
-     * @return int
      */
     public function getNumAssertions(): int
     {
@@ -1224,8 +999,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
-     *
-     * @return AnyInvokedCountMatcher
      */
     public static function any(): AnyInvokedCountMatcher
     {
@@ -1234,8 +1007,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * Returns a matcher that matches when the method is never executed.
-     *
-     * @return InvokedCountMatcher
      */
     public static function never(): InvokedCountMatcher
     {
@@ -1245,12 +1016,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a matcher that matches when the method is executed
      * at least N times.
-     *
-     * @param int $requiredInvocations
-     *
-     * @return InvokedAtLeastCountMatcher
      */
-    public static function atLeast($requiredInvocations): InvokedAtLeastCountMatcher
+    public static function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
     {
         return new InvokedAtLeastCountMatcher(
             $requiredInvocations
@@ -1259,8 +1026,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * Returns a matcher that matches when the method is executed at least once.
-     *
-     * @return InvokedAtLeastOnceMatcher
      */
     public static function atLeastOnce(): InvokedAtLeastOnceMatcher
     {
@@ -1269,8 +1034,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * Returns a matcher that matches when the method is executed exactly once.
-     *
-     * @return InvokedCountMatcher
      */
     public static function once(): InvokedCountMatcher
     {
@@ -1280,12 +1043,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a matcher that matches when the method is executed
      * exactly $count times.
-     *
-     * @param int $count
-     *
-     * @return InvokedCountMatcher
      */
-    public static function exactly($count): InvokedCountMatcher
+    public static function exactly(int $count): InvokedCountMatcher
     {
         return new InvokedCountMatcher($count);
     }
@@ -1293,12 +1052,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a matcher that matches when the method is executed
      * at most N times.
-     *
-     * @param int $allowedInvocations
-     *
-     * @return InvokedAtMostCountMatcher
      */
-    public static function atMost($allowedInvocations): InvokedAtMostCountMatcher
+    public static function atMost(int $allowedInvocations): InvokedAtMostCountMatcher
     {
         return new InvokedAtMostCountMatcher($allowedInvocations);
     }
@@ -1306,50 +1061,32 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a matcher that matches when the method is executed
      * at the given index.
-     *
-     * @param int $index
-     *
-     * @return InvokedAtIndexMatcher
      */
-    public static function at($index): InvokedAtIndexMatcher
+    public static function at(int $index): InvokedAtIndexMatcher
     {
         return new InvokedAtIndexMatcher($index);
     }
 
     /**
      * @param mixed $value
-     *
-     * @return ReturnStub
      */
     public static function returnValue($value): ReturnStub
     {
         return new ReturnStub($value);
     }
 
-    /**
-     * @param array $valueMap
-     *
-     * @return ReturnValueMapStub
-     */
     public static function returnValueMap(array $valueMap): ReturnValueMapStub
     {
         return new ReturnValueMapStub($valueMap);
     }
 
-    /**
-     * @param int $argumentIndex
-     *
-     * @return ReturnArgumentStub
-     */
-    public static function returnArgument($argumentIndex): ReturnArgumentStub
+    public static function returnArgument(int $argumentIndex): ReturnArgumentStub
     {
         return new ReturnArgumentStub($argumentIndex);
     }
 
     /**
      * @param mixed $callback
-     *
-     * @return ReturnCallbackStub
      */
     public static function returnCallback($callback): ReturnCallbackStub
     {
@@ -1360,47 +1097,27 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns the current object.
      *
      * This method is useful when mocking a fluent interface.
-     *
-     * @return ReturnSelfStub
      */
     public static function returnSelf(): ReturnSelfStub
     {
         return new ReturnSelfStub;
     }
 
-    /**
-     * @param Throwable $exception
-     *
-     * @return ExceptionStub
-     */
     public static function throwException(Throwable $exception): ExceptionStub
     {
         return new ExceptionStub($exception);
     }
 
-    /**
-     * @param mixed $value , ...
-     *
-     * @return ConsecutiveCallsStub
-     */
-    public static function onConsecutiveCalls(): ConsecutiveCallsStub
+    public static function onConsecutiveCalls(...$args): ConsecutiveCallsStub
     {
-        $args = \func_get_args();
-
         return new ConsecutiveCallsStub($args);
     }
 
-    /**
-     * @return bool
-     */
     public function usesDataProvider(): bool
     {
         return !empty($this->data);
     }
 
-    /**
-     * @return string
-     */
     public function dataDescription(): string
     {
         return \is_string($this->dataName) ? $this->dataName : '';
@@ -1422,16 +1139,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * Gets the data set description of a TestCase.
-     *
-     * @param bool $includeData
-     *
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
-     *
-     * @return string
      */
-    public function getDataSetAsString($includeData = true): string
+    public function getDataSetAsString(bool $includeData = true): string
     {
         $buffer = '';
 
@@ -1627,9 +1338,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $testResult;
     }
 
-    /**
-     * Verifies the mock object expectations.
-     */
     protected function verifyMockObjects(): void
     {
         foreach ($this->mockObjects as $mockObject) {
@@ -1669,8 +1377,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * resets the modified php.ini setting to its original value after the
      * test is run.
      *
-     * @param string $varName
-     * @param string $newValue
+     * @param mixed $newValue
      *
      * @throws Exception
      */
@@ -1695,15 +1402,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * This method is a wrapper for the setlocale() function that automatically
      * resets the locale to its original value after the test is run.
      *
-     * @param int    $category
-     * @param string $locale
-     *
      * @throws Exception
      */
-    protected function setLocale(): void
+    protected function setLocale(...$args): void
     {
-        $args = \func_get_args();
-
         if (\count($args) < 2) {
             throw new Exception;
         }
@@ -1747,8 +1449,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws Exception
      * @throws ReflectionException
      * @throws \InvalidArgumentException
-     *
-     * @return MockObject
      */
     protected function createMock($originalClassName): MockObject
     {
@@ -1763,14 +1463,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a configured test double for the specified class.
      *
-     * @param string $originalClassName
-     * @param array  $configuration
+     * @param string|string[] $originalClassName
+     * @param array           $configuration
      *
      * @throws Exception
      * @throws ReflectionException
      * @throws \InvalidArgumentException
-     *
-     * @return MockObject
      */
     protected function createConfiguredMock($originalClassName, array $configuration): MockObject
     {
@@ -1786,14 +1484,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a partial test double for the specified class.
      *
-     * @param string   $originalClassName
-     * @param string[] $methods
+     * @param string|string[] $originalClassName
+     * @param string[]        $methods
      *
      * @throws Exception
      * @throws ReflectionException
      * @throws \InvalidArgumentException
-     *
-     * @return MockObject
      */
     protected function createPartialMock($originalClassName, array $methods): MockObject
     {
@@ -1809,16 +1505,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a test proxy for the specified class.
      *
-     * @param string $originalClassName
-     * @param array  $constructorArguments
-     *
      * @throws Exception
      * @throws ReflectionException
      * @throws \InvalidArgumentException
-     *
-     * @return MockObject
      */
-    protected function createTestProxy($originalClassName, array $constructorArguments = []): MockObject
+    protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
         return $this->getMockBuilder($originalClassName)
                     ->setConstructorArgs($constructorArguments)
@@ -1841,8 +1532,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws Exception
      * @throws ReflectionException
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false): string
     {
@@ -1877,8 +1566,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws Exception
      * @throws ReflectionException
      * @throws \InvalidArgumentException
-     *
-     * @return MockObject
      */
     protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
@@ -2273,12 +1960,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    /**
-     * @param bool $backupGlobals
-     *
-     * @return Snapshot
-     */
-    private function createGlobalStateSnapshot($backupGlobals): Snapshot
+    private function createGlobalStateSnapshot(bool $backupGlobals): Snapshot
     {
         $blacklist = new Blacklist;
 
@@ -2320,9 +2002,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param Snapshot $before
-     * @param Snapshot $after
-     *
      * @throws RiskyTestError
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
@@ -2356,16 +2035,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param array  $before
-     * @param array  $after
-     * @param string $header
-     *
      * @throws RiskyTestError
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
      * @throws \InvalidArgumentException
      */
-    private function compareGlobalStateSnapshotPart(array $before, array $after, $header): void
+    private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {
         if ($before != $after) {
             $differ   = new Differ($header);
@@ -2382,9 +2057,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    /**
-     * @return Prophecy\Prophet
-     */
     private function getProphet(): Prophet
     {
         if ($this->prophet === null) {
@@ -2395,14 +2067,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param MockObject $mock
-     *
      * @throws SebastianBergmann\ObjectEnumerator\InvalidArgumentException
      * @throws SebastianBergmann\ObjectReflector\InvalidArgumentException
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \Exception
-     *
-     * @return bool
      */
     private function shouldInvocationMockerBeReset(MockObject $mock): bool
     {
@@ -2428,9 +2096,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param array $testArguments
-     * @param array $visited
-     *
      * @throws SebastianBergmann\ObjectEnumerator\InvalidArgumentException
      * @throws SebastianBergmann\ObjectReflector\InvalidArgumentException
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -2475,11 +2140,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    /**
-     * @param MockObject $testArgument
-     *
-     * @return bool
-     */
     private function isCloneable(MockObject $testArgument): bool
     {
         $reflector = new ReflectionObject($testArgument);
