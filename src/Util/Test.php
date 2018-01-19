@@ -83,6 +83,11 @@ final class Test
     /**
      * @var string
      */
+    private const REGEX_REQUIRES_SETTING = '/@requires\s+(?P<name>setting)\s+(?P<setting>([^ ]+?))\s*(?P<value>[\w\.-]+[\w\.]?)?[ \t]*\r?$/m';
+
+    /**
+     * @var string
+     */
     private const REGEX_REQUIRES = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
 
     /**
@@ -186,6 +191,7 @@ final class Test
                 ];
             }
         }
+
         if ($count = \preg_match_all(self::REGEX_REQUIRES_VERSION_CONSTRAINT, $docComment, $matches)) {
             foreach (\range(0, $count - 1) as $i) {
                 if (!empty($requires[$matches['name'][$i]])) {
@@ -201,6 +207,14 @@ final class Test
                 } catch (\PharIo\Version\Exception $e) {
                     throw new Warning($e->getMessage(), $e->getCode(), $e);
                 }
+            }
+        }
+
+        if ($count = \preg_match_all(self::REGEX_REQUIRES_SETTING, $docComment, $matches)) {
+            $requires['setting'] = [];
+
+            foreach (\range(0, $count - 1) as $i) {
+                $requires['setting'][$matches['setting'][$i]] = $matches['value'][$i];
             }
         }
 
@@ -303,6 +317,14 @@ final class Test
                 }
 
                 $missing[] = \sprintf('Function %s is required.', $function);
+            }
+        }
+
+        if (!empty($required['setting'])) {
+            foreach ($required['setting'] as $setting => $value) {
+                if (ini_get($setting) != $value) {
+                    $missing[] = \sprintf('Setting "%s" must be "%s".', $setting, $value);
+                }
             }
         }
 

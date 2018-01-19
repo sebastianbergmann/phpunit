@@ -164,6 +164,9 @@ class TestTest extends TestCase
                         'testFuncOne',
                         'testFuncTwo',
                     ],
+                    'setting'   => [
+                        'not_a_setting' => 'Off'
+                    ],
                     'extensions' => [
                         'testExtOne',
                         'testExtTwo',
@@ -538,6 +541,7 @@ class TestTest extends TestCase
               'Operating system matching /DOESNOTEXIST/i is required.',
               'Function testFuncOne is required.',
               'Function testFuncTwo is required.',
+              'Setting "not_a_setting" must be "Off".',
               'Extension testExtOne is required.',
               'Extension testExtTwo is required.',
               'Extension testExtThree >= 2.0 is required.',
