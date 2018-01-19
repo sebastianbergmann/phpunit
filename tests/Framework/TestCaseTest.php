@@ -557,6 +557,7 @@ class TestCaseTest extends TestCase
             'Operating system matching /DOESNOTEXIST/i is required.' . PHP_EOL .
             'Function testFuncOne is required.' . PHP_EOL .
             'Function testFuncTwo is required.' . PHP_EOL .
+            'Setting "not_a_setting" must be "Off".' . PHP_EOL .
             'Extension testExtOne is required.' . PHP_EOL .
             'Extension testExtTwo is required.' . PHP_EOL .
             'Extension testExtThree >= 2.0 is required.',
@@ -590,6 +591,24 @@ class TestCaseTest extends TestCase
         $test   = new \RequirementsTest('testExistingOs');
         $result = $test->run();
         $this->assertEquals(0, $result->skippedCount());
+    }
+
+    public function testRequiringASetting(): void
+    {
+        $test   = new \RequirementsTest('testSettingDisplayErrorsOn');
+
+        // Get this so we can return it to whatever it was before the test.
+        $displayErrorsVal = ini_get('display_errors');
+
+        ini_set('display_errors', 'On');
+        $result = $test->run();
+        $this->assertEquals(0, $result->skippedCount());
+
+        ini_set('display_errors', 'Off');
+        $result = $test->run();
+        $this->assertEquals(1, $result->skippedCount());
+
+        ini_set('display_errors', $displayErrorsVal);
     }
 
     public function testCurrentWorkingDirectoryIsRestored(): void
