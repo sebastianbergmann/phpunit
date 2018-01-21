@@ -23,7 +23,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 EE                                                                  2 / 2 (100%)
 
-Time: 47 ms, Memory: 4.00MB
+Time: %s, Memory: %s
 
 There were 2 errors:
 
