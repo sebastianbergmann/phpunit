@@ -139,6 +139,61 @@ class AssertTest extends TestCase
         $this->assertArrayHasKey(1, ['foo']);
     }
 
+    public function testAssertArrayHasKeyValuePairThrowsExceptionForInvalidFirstArgument(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertArrayHasKeyValuePair(null, 'foo', []);
+    }
+
+    public function testAssertArrayHasKeyValuePairThrowsExceptionForInvalidThirdArgument(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertArrayHasKeyValuePair(0, 'foo', null);
+    }
+
+    public function testAssertArrayHasKeyValuePair()
+    {
+        $array = [
+            'a' => 'foo',
+            100 => 'bar',
+            'b' => [1, 2, 3]
+        ];
+
+        $this->assertArrayHasKeyValuePair('a', 'foo', $array);
+        $this->assertArrayHasKeyValuePair(100, 'bar', $array);
+        $this->assertArrayHasKeyValuePair('100', 'bar', $array);
+        $this->assertArrayHasKeyValuePair('b', [1, 2, 3], $array);
+    }
+
+    public function testAssertArrayHasKeyValuePairWithWrongKey()
+    {
+        $array = [123 => 'foo'];
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasKeyValuePair('wrong key', 'foo', $array);
+    }
+
+    public function testAssertArrayHasKeyValuePairWithWrongValue()
+    {
+        $array = ['a' => 'foo'];
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasKeyValuePair('a', 'wrong value', $array);
+    }
+
+    public function testAssertArrayHasKeyValuePairIsNotRecursive()
+    {
+        $array = ['a' => ['foo' => 'bar']];
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasKeyValuePair('foo', 'bar', $array);
+    }
+
     public function testAssertArraySubset(): void
     {
         $array = [
