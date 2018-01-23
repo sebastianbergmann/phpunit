@@ -48,9 +48,9 @@ class ArrayHasKeyValuePair extends Constraint
     public function toString(): string
     {
         return \sprintf(
-          'has the %s => %s key value pair',
-          $this->exporter->export($this->key),
-          $this->exporter->export($this->value)
+            'has the %s => %s key value pair',
+            $this->exporter->export($this->key),
+            $this->exporter->export($this->value)
         );
     }
 
