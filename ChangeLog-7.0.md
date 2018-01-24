@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 7.0 release series are documented in this fil
 
 ## [7.0.0] - 2018-02-02
 
+### Added
+
+* Implemented [#2967](https://github.com/sebastianbergmann/phpunit/pull/2967): Added support for PHP configuration settings to `@requires` annotation
+
 ### Changed
 
 * Implemented [#2566](https://github.com/sebastianbergmann/phpunit/issues/2566): Use `Throwable` instead of `Exception` in `PHPUnit\Framework\TestListener` method signatures
