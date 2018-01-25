@@ -322,7 +322,7 @@ final class Test
 
         if (!empty($required['setting'])) {
             foreach ($required['setting'] as $setting => $value) {
-                if (ini_get($setting) != $value) {
+                if (\ini_get($setting) != $value) {
                     $missing[] = \sprintf('Setting "%s" must be "%s".', $setting, $value);
                 }
             }

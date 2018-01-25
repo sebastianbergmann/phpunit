@@ -598,17 +598,17 @@ class TestCaseTest extends TestCase
         $test   = new \RequirementsTest('testSettingDisplayErrorsOn');
 
         // Get this so we can return it to whatever it was before the test.
-        $displayErrorsVal = ini_get('display_errors');
+        $displayErrorsVal = \ini_get('display_errors');
 
-        ini_set('display_errors', 'On');
+        \ini_set('display_errors', 'On');
         $result = $test->run();
         $this->assertEquals(0, $result->skippedCount());
 
-        ini_set('display_errors', 'Off');
+        \ini_set('display_errors', 'Off');
         $result = $test->run();
         $this->assertEquals(1, $result->skippedCount());
 
-        ini_set('display_errors', $displayErrorsVal);
+        \ini_set('display_errors', $displayErrorsVal);
     }
 
     public function testCurrentWorkingDirectoryIsRestored(): void
