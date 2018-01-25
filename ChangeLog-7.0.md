@@ -12,6 +12,8 @@ All notable changes of the PHPUnit 7.0 release series are documented in this fil
 
 * Implemented [#2566](https://github.com/sebastianbergmann/phpunit/issues/2566): Use `Throwable` instead of `Exception` in `PHPUnit\Framework\TestListener` method signatures
 * Implemented [#2920](https://github.com/sebastianbergmann/phpunit/pull/2920): Replace CLI TestDox printer with `rpkamp/fancy-testdox-printer`
+* Scalar Type Declarations and Return Type Declarations are now used where possible (as a result, the API of `PHPUnit\Framework\TestListener`, for instance, has changed)
+* Some classes are now `final`
 
 ### Removed
 
