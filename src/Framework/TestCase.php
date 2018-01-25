@@ -291,22 +291,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * Sets up the fixture, for example, open a network connection.
-     * This method is called before a test is executed.
-     */
-    protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
-    {
-    }
-
-    /**
-     * Tears down the fixture, for example, close a network connection.
-     * This method is called after a test is executed.
-     */
-    protected function tearDown()/* The :void return type declaration that should be here would cause a BC issue */
-    {
-    }
-
-    /**
      * Returns a string representation of the test case.
      *
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1607,33 +1591,43 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * Performs assertions shared by all tests of a test case.
-     *
-     * This method is called before the execution of a test starts
-     * and after setUp() is called.
+     * This method is called before each test.
      */
-    protected function assertPreConditions()
+    protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    {
+    }
+
+    /**
+     * This method is called after each test.
+     */
+    protected function tearDown()/* The :void return type declaration that should be here would cause a BC issue */
     {
     }
 
     /**
      * Performs assertions shared by all tests of a test case.
      *
-     * This method is called after the execution of a test ends
-     * and before tearDown() is called.
+     * This method is called between setUp() and test.
      */
-    protected function assertPostConditions()
+    protected function assertPreConditions()/* The :void return type declaration that should be here would cause a BC issue */
+    {
+    }
+
+    /**
+     * Performs assertions shared by all tests of a test case.
+     *
+     * This method is called between test and tearDown().
+     */
+    protected function assertPostConditions()/* The :void return type declaration that should be here would cause a BC issue */
     {
     }
 
     /**
      * This method is called when a test method did not execute successfully.
      *
-     * @param Throwable $t
-     *
      * @throws Throwable
      */
-    protected function onNotSuccessfulTest(Throwable $t)
+    protected function onNotSuccessfulTest(Throwable $t)/* The :void return type declaration that should be here would cause a BC issue */
     {
         throw $t;
     }
