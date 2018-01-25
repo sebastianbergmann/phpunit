@@ -330,7 +330,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return 1;
     }
 
-    public function getGroups()
+    public function getGroups(): array
     {
         return $this->groups;
     }
