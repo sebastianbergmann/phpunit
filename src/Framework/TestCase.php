@@ -422,7 +422,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     public function hasOutput(): bool
     {
-        if ('' === $this->output) {
+        if ($this->output === '') {
             return false;
         }
 
@@ -438,32 +438,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $this->doesNotPerformAssertions;
     }
 
-    /**
-     * @throws Exception
-     */
     public function expectOutputRegex(string $expectedRegex): void
     {
-        if ($this->outputExpectedString !== null) {
-            throw new Exception;
-        }
-
-        if (\is_string($expectedRegex) || null === $expectedRegex) {
-            $this->outputExpectedRegex = $expectedRegex;
-        }
+        $this->outputExpectedRegex = $expectedRegex;
     }
 
-    /**
-     * @throws Exception
-     */
     public function expectOutputString(string $expectedString): void
     {
-        if ($this->outputExpectedRegex !== null) {
-            throw new Exception;
-        }
-
-        if (\is_string($expectedString) || null === $expectedString) {
-            $this->outputExpectedString = $expectedString;
-        }
+        $this->outputExpectedString = $expectedString;
     }
 
     public function hasExpectationOnOutput(): bool
@@ -893,9 +875,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    /**
-     * @throws Exception
-     */
     public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess): void
     {
         if ($this->runTestInSeparateProcess === null) {
@@ -903,9 +882,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    /**
-     * @throws Exception
-     */
     public function setRunClassInSeparateProcess(bool $runClassInSeparateProcess): void
     {
         if ($this->runClassInSeparateProcess === null) {
@@ -913,17 +889,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    /**
-     * @throws Exception
-     */
     public function setPreserveGlobalState(bool $preserveGlobalState): void
     {
         $this->preserveGlobalState = $preserveGlobalState;
     }
 
-    /**
-     * @throws Exception
-     */
     public function setInIsolation(bool $inIsolation): void
     {
         $this->inIsolation = $inIsolation;
@@ -950,9 +920,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->testResult = $result;
     }
 
-    /**
-     * @throws Exception
-     */
     public function setOutputCallback(callable $callback): void
     {
         $this->outputCallback = $callback;
@@ -1138,10 +1105,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->customComparators[] = $comparator;
     }
 
-    /**
-     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
-     */
     public function getDataSetAsString(bool $includeData = true): string
     {
         $buffer = '';
@@ -1874,7 +1837,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     private function getMockObjectGenerator(): MockGenerator
     {
-        if (null === $this->mockObjectGenerator) {
+        if ($this->mockObjectGenerator === null) {
             $this->mockObjectGenerator = new MockGenerator;
         }
 
@@ -1926,6 +1889,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->snapshot = $this->createGlobalStateSnapshot($this->backupGlobals === true);
     }
 
+    /**
+     * @throws RiskyTestError
+     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \Exception
+     * @throws \InvalidArgumentException
+     */
     private function restoreGlobalState(): void
     {
         if (!$this->snapshot instanceof Snapshot) {
@@ -2036,9 +2005,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @throws RiskyTestError
-     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
-     * @throws \InvalidArgumentException
      */
     private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {
@@ -2068,9 +2034,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @throws SebastianBergmann\ObjectEnumerator\InvalidArgumentException
-     * @throws SebastianBergmann\ObjectReflector\InvalidArgumentException
-     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     private function shouldInvocationMockerBeReset(MockObject $mock): bool
     {
