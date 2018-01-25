@@ -279,14 +279,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * This method is called before the first test of this test class is run.
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass()/* The :void return type declaration that should be here would cause a BC issue */
     {
     }
 
     /**
      * This method is called after the last test of this test class is run.
      */
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass()/* The :void return type declaration that should be here would cause a BC issue */
     {
     }
 
@@ -294,7 +294,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
     {
     }
 
@@ -302,7 +302,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Tears down the fixture, for example, close a network connection.
      * This method is called after a test is executed.
      */
-    protected function tearDown()
+    protected function tearDown()/* The :void return type declaration that should be here would cause a BC issue */
     {
     }
 
