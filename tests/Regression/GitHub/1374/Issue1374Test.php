@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
  */
 class Issue1374Test extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         print __FUNCTION__;
     }
@@ -16,7 +16,7 @@ class Issue1374Test extends TestCase
         $this->fail('This should not be reached');
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         print __FUNCTION__;
     }

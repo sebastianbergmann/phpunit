@@ -16,7 +16,7 @@ class BankAccountWithCustomExtensionTest extends TestCase
 {
     protected $ba;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->ba = new BankAccount;
     }

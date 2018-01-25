@@ -5,7 +5,7 @@ class ClonedDependencyTest extends TestCase
 {
     private static $dependency;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$dependency = new stdClass;
     }

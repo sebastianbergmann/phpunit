@@ -10,7 +10,7 @@ class BeforeClassWithOnlyDataProviderTest extends \PHPUnit\Framework\TestCase
         self::$beforeClassWasCalled      = false;
     }
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         self::$setUpBeforeClassWasCalled = true;
     }

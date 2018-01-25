@@ -9,7 +9,7 @@ class ExceptionInAssertPostConditionsTest extends TestCase
     public $tearDown             = false;
     public $testSomething        = false;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->setUp = true;
     }
@@ -30,7 +30,7 @@ class ExceptionInAssertPostConditionsTest extends TestCase
         throw new Exception;
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->tearDown = true;
     }
