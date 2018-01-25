@@ -16,7 +16,7 @@ abstract class Composite extends Constraint
     /**
      * @var Constraint
      */
-    protected $innerConstraint;
+    private $innerConstraint;
 
     /**
      * @param Constraint $innerConstraint
@@ -24,6 +24,7 @@ abstract class Composite extends Constraint
     public function __construct(Constraint $innerConstraint)
     {
         parent::__construct();
+
         $this->innerConstraint = $innerConstraint;
     }
 
@@ -68,5 +69,10 @@ abstract class Composite extends Constraint
     public function count(): int
     {
         return \count($this->innerConstraint);
+    }
+
+    protected function innerConstraint(): Constraint
+    {
+        return $this->innerConstraint;
     }
 }

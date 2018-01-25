@@ -18,7 +18,7 @@ class StringStartsWith extends Constraint
     /**
      * @var string
      */
-    protected $prefix;
+    private $prefix;
 
     /**
      * @param string $prefix

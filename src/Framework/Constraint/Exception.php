@@ -17,7 +17,7 @@ class Exception extends Constraint
     /**
      * @var string
      */
-    protected $className;
+    private $className;
 
     /**
      * @param string $className
@@ -25,6 +25,7 @@ class Exception extends Constraint
     public function __construct($className)
     {
         parent::__construct();
+
         $this->className = $className;
     }
 

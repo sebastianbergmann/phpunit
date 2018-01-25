@@ -31,6 +31,6 @@ class ObjectHasAttribute extends ClassHasAttribute
     {
         $object = new ReflectionObject($other);
 
-        return $object->hasProperty($this->attributeName);
+        return $object->hasProperty($this->attributeName());
     }
 }

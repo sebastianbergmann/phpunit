@@ -24,7 +24,7 @@ class ArrayHasKey extends Constraint
     /**
      * @var int|string
      */
-    protected $key;
+    private $key;
 
     /**
      * @param int|string $key

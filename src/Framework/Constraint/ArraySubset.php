@@ -23,12 +23,12 @@ class ArraySubset extends Constraint
     /**
      * @var array|\Traversable
      */
-    protected $subset;
+    private $subset;
 
     /**
      * @var bool
      */
-    protected $strict;
+    private $strict;
 
     /**
      * @param array|\Traversable $subset

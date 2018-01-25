@@ -2131,6 +2131,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->locale = [];
     }
 
+    /**
+     * @throws ReflectionException
+     */
     private function checkExceptionExpectations(Throwable $throwable): bool
     {
         $result = false;

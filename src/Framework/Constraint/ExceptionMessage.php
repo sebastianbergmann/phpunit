@@ -14,7 +14,7 @@ class ExceptionMessage extends Constraint
     /**
      * @var string
      */
-    protected $expectedMessage;
+    private $expectedMessage;
 
     /**
      * @param string $expected

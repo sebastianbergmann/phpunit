@@ -23,12 +23,12 @@ class StringContains extends Constraint
     /**
      * @var string
      */
-    protected $string;
+    private $string;
 
     /**
      * @var bool
      */
-    protected $ignoreCase;
+    private $ignoreCase;
 
     /**
      * @param string $string

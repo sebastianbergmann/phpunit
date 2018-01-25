@@ -33,7 +33,7 @@ class IsIdentical extends Constraint
     /**
      * @var mixed
      */
-    protected $value;
+    private $value;
 
     /**
      * @param mixed $value
@@ -41,6 +41,7 @@ class IsIdentical extends Constraint
     public function __construct($value)
     {
         parent::__construct();
+
         $this->value = $value;
     }
 

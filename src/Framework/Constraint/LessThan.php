@@ -18,7 +18,7 @@ class LessThan extends Constraint
     /**
      * @var float|int
      */
-    protected $value;
+    private $value;
 
     /**
      * @param float|int $value

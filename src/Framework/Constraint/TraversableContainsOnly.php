@@ -20,18 +20,17 @@ class TraversableContainsOnly extends Constraint
     /**
      * @var Constraint
      */
-    protected $constraint;
+    private $constraint;
 
     /**
      * @var string
      */
-    protected $type;
+    private $type;
 
     /**
-     * @param string $type
-     * @param bool   $isNativeType
+     * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($type, $isNativeType = true)
+    public function __construct(string $type, bool $isNativeType = true)
     {
         parent::__construct();
 

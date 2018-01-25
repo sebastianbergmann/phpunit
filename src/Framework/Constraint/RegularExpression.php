@@ -23,7 +23,7 @@ class RegularExpression extends Constraint
     /**
      * @var string
      */
-    protected $pattern;
+    private $pattern;
 
     /**
      * @param string $pattern
@@ -31,6 +31,7 @@ class RegularExpression extends Constraint
     public function __construct($pattern)
     {
         parent::__construct();
+
         $this->pattern = $pattern;
     }
 

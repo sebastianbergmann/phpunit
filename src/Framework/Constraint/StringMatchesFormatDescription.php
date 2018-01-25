@@ -20,17 +20,17 @@ class StringMatchesFormatDescription extends RegularExpression
     /**
      * @var string
      */
-    protected $string;
+    private $string;
 
     /**
      * @param string $string
      */
     public function __construct($string)
     {
-        parent::__construct($string);
-
-        $this->pattern = $this->createPatternFromFormat(
-            \preg_replace('/\r\n/', "\n", $string)
+        parent::__construct(
+            $this->createPatternFromFormat(
+                \preg_replace('/\r\n/', "\n", $string)
+            )
         );
 
         $this->string = $string;
@@ -64,7 +64,7 @@ class StringMatchesFormatDescription extends RegularExpression
         return $differ->diff($this->string, $other);
     }
 
-    protected function createPatternFromFormat(string $string): string
+    private function createPatternFromFormat(string $string): string
     {
         $string = \preg_replace(
             [

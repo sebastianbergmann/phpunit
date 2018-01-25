@@ -18,7 +18,7 @@ class GreaterThan extends Constraint
     /**
      * @var float|int
      */
-    protected $value;
+    private $value;
 
     /**
      * @param float|int $value

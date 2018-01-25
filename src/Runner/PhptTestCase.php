@@ -221,7 +221,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return array
      */
-    protected function parseIniSection($content, $ini = []): array
+    private function parseIniSection($content, $ini = []): array
     {
         if (\is_string($content)) {
             $content = \explode("\n", \trim($content));
@@ -257,7 +257,7 @@ class PhptTestCase implements Test, SelfDescribing
      *
      * @return array<string, string>
      */
-    protected function parseEnvSection($content): array
+    private function parseEnvSection($content): array
     {
         $env = [];
 

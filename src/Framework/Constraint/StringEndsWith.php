@@ -18,7 +18,7 @@ class StringEndsWith extends Constraint
     /**
      * @var string
      */
-    protected $suffix;
+    private $suffix;
 
     /**
      * @param string $suffix

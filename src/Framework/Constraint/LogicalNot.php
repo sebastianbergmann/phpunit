@@ -19,7 +19,7 @@ class LogicalNot extends Constraint
     /**
      * @var Constraint
      */
-    protected $constraint;
+    private $constraint;
 
     /**
      * @param Constraint $constraint

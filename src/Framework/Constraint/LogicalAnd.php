@@ -19,12 +19,7 @@ class LogicalAnd extends Constraint
     /**
      * @var Constraint[]
      */
-    protected $constraints = [];
-
-    /**
-     * @var Constraint
-     */
-    protected $lastConstraint;
+    private $constraints = [];
 
     public static function fromConstraints(Constraint ...$constraints): self
     {

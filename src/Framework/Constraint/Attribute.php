@@ -17,7 +17,7 @@ class Attribute extends Composite
     /**
      * @var string
      */
-    protected $attributeName;
+    private $attributeName;
 
     /**
      * @param Constraint $constraint
@@ -70,8 +70,7 @@ class Attribute extends Composite
      */
     public function toString(): string
     {
-        return 'attribute "' . $this->attributeName . '" ' .
-            $this->innerConstraint->toString();
+        return 'attribute "' . $this->attributeName . '" ' . $this->innerConstraint()->toString();
     }
 
     /**

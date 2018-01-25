@@ -23,7 +23,7 @@ class IsInstanceOf extends Constraint
     /**
      * @var string
      */
-    protected $className;
+    private $className;
 
     /**
      * @param string $className
@@ -31,6 +31,7 @@ class IsInstanceOf extends Constraint
     public function __construct($className)
     {
         parent::__construct();
+
         $this->className = $className;
     }
 

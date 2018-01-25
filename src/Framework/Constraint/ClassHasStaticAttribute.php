@@ -28,7 +28,7 @@ class ClassHasStaticAttribute extends ClassHasAttribute
     {
         return \sprintf(
             'has static attribute "%s"',
-            $this->attributeName
+            $this->attributeName()
         );
     }
 
@@ -44,8 +44,8 @@ class ClassHasStaticAttribute extends ClassHasAttribute
     {
         $class = new ReflectionClass($other);
 
-        if ($class->hasProperty($this->attributeName)) {
-            $attribute = $class->getProperty($this->attributeName);
+        if ($class->hasProperty($this->attributeName())) {
+            $attribute = $class->getProperty($this->attributeName());
 
             return $attribute->isStatic();
         }

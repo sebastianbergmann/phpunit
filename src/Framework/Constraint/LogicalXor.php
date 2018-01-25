@@ -19,7 +19,7 @@ class LogicalXor extends Constraint
     /**
      * @var Constraint[]
      */
-    protected $constraints = [];
+    private $constraints = [];
 
     public static function fromConstraints(Constraint ...$constraints): self
     {

@@ -20,17 +20,17 @@ class TraversableContains extends Constraint
     /**
      * @var bool
      */
-    protected $checkForObjectIdentity;
+    private $checkForObjectIdentity;
 
     /**
      * @var bool
      */
-    protected $checkForNonObjectIdentity;
+    private $checkForNonObjectIdentity;
 
     /**
      * @var mixed
      */
-    protected $value;
+    private $value;
 
     /**
      * @param mixed $value

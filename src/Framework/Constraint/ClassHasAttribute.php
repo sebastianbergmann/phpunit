@@ -22,7 +22,7 @@ class ClassHasAttribute extends Constraint
     /**
      * @var string
      */
-    protected $attributeName;
+    private $attributeName;
 
     public function __construct(string $attributeName)
     {
@@ -77,5 +77,10 @@ class ClassHasAttribute extends Constraint
             \is_object($other) ? \get_class($other) : $other,
             $this->toString()
         );
+    }
+
+    protected function attributeName(): string
+    {
+        return $this->attributeName;
     }
 }

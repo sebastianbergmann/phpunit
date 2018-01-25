@@ -32,7 +32,7 @@ class IsType extends Constraint
     /**
      * @var array
      */
-    protected $types = [
+    private $types = [
         'array'    => true,
         'boolean'  => true,
         'bool'     => true,
@@ -53,7 +53,7 @@ class IsType extends Constraint
     /**
      * @var string
      */
-    protected $type;
+    private $type;
 
     /**
      * @param string $type

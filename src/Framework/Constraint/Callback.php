@@ -14,6 +14,9 @@ namespace PHPUnit\Framework\Constraint;
  */
 class Callback extends Constraint
 {
+    /**
+     * @var callable
+     */
     private $callback;
 
     public function __construct(callable $callback)

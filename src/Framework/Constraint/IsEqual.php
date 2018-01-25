@@ -26,32 +26,32 @@ class IsEqual extends Constraint
     /**
      * @var mixed
      */
-    protected $value;
+    private $value;
 
     /**
      * @var float
      */
-    protected $delta = 0.0;
+    private $delta = 0.0;
 
     /**
      * @var int
      */
-    protected $maxDepth = 10;
+    private $maxDepth = 10;
 
     /**
      * @var bool
      */
-    protected $canonicalize = false;
+    private $canonicalize = false;
 
     /**
      * @var bool
      */
-    protected $ignoreCase = false;
+    private $ignoreCase = false;
 
     /**
      * @var SebastianBergmann\Comparator\ComparisonFailure
      */
-    protected $lastFailure;
+    private $lastFailure;
 
     /**
      * @param mixed $value

@@ -14,7 +14,7 @@ class ExceptionCode extends Constraint
     /**
      * @var int
      */
-    protected $expectedCode;
+    private $expectedCode;
 
     /**
      * @param int $expected
@@ -44,7 +44,7 @@ class ExceptionCode extends Constraint
      */
     protected function matches($other): bool
     {
-        return (string) $other->getCode() == (string) $this->expectedCode;
+        return (string) $other->getCode() === (string) $this->expectedCode;
     }
 
     /**

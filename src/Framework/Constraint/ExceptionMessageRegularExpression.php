@@ -16,7 +16,7 @@ class ExceptionMessageRegularExpression extends Constraint
     /**
      * @var string
      */
-    protected $expectedMessageRegExp;
+    private $expectedMessageRegExp;
 
     /**
      * @param string $expected
@@ -24,6 +24,7 @@ class ExceptionMessageRegularExpression extends Constraint
     public function __construct($expected)
     {
         parent::__construct();
+
         $this->expectedMessageRegExp = $expected;
     }
 
@@ -50,13 +51,13 @@ class ExceptionMessageRegularExpression extends Constraint
     {
         $match = RegularExpressionUtil::safeMatch($this->expectedMessageRegExp, $other->getMessage());
 
-        if (false === $match) {
+        if ($match === false) {
             throw new \PHPUnit\Framework\Exception(
                 "Invalid expected exception message regex given: '{$this->expectedMessageRegExp}'"
             );
         }
 
-        return 1 === $match;
+        return $match === 1;
     }
 
     /**
