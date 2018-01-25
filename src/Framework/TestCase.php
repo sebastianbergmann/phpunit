@@ -291,6 +291,20 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * This method is called before each test.
+     */
+    protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    {
+    }
+
+    /**
+     * This method is called after each test.
+     */
+    protected function tearDown()/* The :void return type declaration that should be here would cause a BC issue */
+    {
+    }
+
+    /**
      * Returns a string representation of the test case.
      *
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1589,20 +1603,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * This method is called before each test.
-     */
-    protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
-    {
-    }
-
-    /**
-     * This method is called after each test.
-     */
-    protected function tearDown()/* The :void return type declaration that should be here would cause a BC issue */
-    {
-    }
-
-    /**
      * Performs assertions shared by all tests of a test case.
      *
      * This method is called between setUp() and test.
@@ -1835,9 +1835,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->outputBufferingLevel  = \ob_get_level();
     }
 
+    /**
+     * @throws RiskyTestError
+     */
     private function stopOutputBuffering(): void
     {
-        if (\ob_get_level() != $this->outputBufferingLevel) {
+        if (\ob_get_level() !== $this->outputBufferingLevel) {
             while (\ob_get_level() >= $this->outputBufferingLevel) {
                 \ob_end_clean();
             }
@@ -1847,12 +1850,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             );
         }
 
-        $output = \ob_get_contents();
+        $this->output = \ob_get_contents();
 
-        if ($this->outputCallback === false) {
-            $this->output = $output;
-        } else {
-            $this->output = \call_user_func($this->outputCallback, $output);
+        if ($this->outputCallback !== false) {
+            $this->output = \call_user_func($this->outputCallback, $this->output);
         }
 
         \ob_end_clean();
@@ -1863,8 +1864,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     private function snapshotGlobalState(): void
     {
-        if ($this->runTestInSeparateProcess ||
-            $this->inIsolation ||
+        if ($this->runTestInSeparateProcess || $this->inIsolation ||
             (!$this->backupGlobals === true && !$this->backupStaticAttributes)) {
             return;
         }
