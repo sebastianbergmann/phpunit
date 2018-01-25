@@ -667,8 +667,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 $var
             );
 
-            $this->prepareTemplate($template);
-
             $php = AbstractPhpProcess::factory();
             $php->runTestJob($template->render(), $this, $result);
         } else {
@@ -1630,15 +1628,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function onNotSuccessfulTest(Throwable $t)/* The :void return type declaration that should be here would cause a BC issue */
     {
         throw $t;
-    }
-
-    /**
-     * Performs custom preparations on the process isolation template.
-     *
-     * @param Text_Template $template
-     */
-    protected function prepareTemplate(Text_Template $template): void
-    {
     }
 
     private function setExpectedExceptionFromAnnotation(): void
