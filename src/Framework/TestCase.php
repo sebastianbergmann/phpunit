@@ -1163,62 +1163,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $buffer;
     }
 
-    protected function setExpectedExceptionFromAnnotation(): void
-    {
-        try {
-            $expectedException = \PHPUnit\Util\Test::getExpectedException(
-                \get_class($this),
-                $this->name
-            );
-
-            if ($expectedException !== false) {
-                $this->expectException($expectedException['class']);
-
-                if ($expectedException['code'] !== null) {
-                    $this->expectExceptionCode($expectedException['code']);
-                }
-
-                if ($expectedException['message'] !== '') {
-                    $this->expectExceptionMessage($expectedException['message']);
-                } elseif ($expectedException['message_regex'] !== '') {
-                    $this->expectExceptionMessageRegExp($expectedException['message_regex']);
-                }
-            }
-        } catch (ReflectionException $e) {
-        }
-    }
-
-    protected function setUseErrorHandlerFromAnnotation(): void
-    {
-        try {
-            $useErrorHandler = \PHPUnit\Util\Test::getErrorHandlerSettings(
-                \get_class($this),
-                $this->name
-            );
-
-            if ($useErrorHandler !== null) {
-                $this->setUseErrorHandler($useErrorHandler);
-            }
-        } catch (ReflectionException $e) {
-        }
-    }
-
-    protected function checkRequirements(): void
-    {
-        if (!$this->name || !\method_exists($this, $this->name)) {
-            return;
-        }
-
-        $missingRequirements = \PHPUnit\Util\Test::getMissingRequirements(
-            \get_class($this),
-            $this->name
-        );
-
-        if (!empty($missingRequirements)) {
-            $this->markTestSkipped(\implode(PHP_EOL, $missingRequirements));
-        }
-    }
-
     /**
      * Override to run the test and assert its state.
      *
@@ -1336,40 +1280,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         return $testResult;
-    }
-
-    protected function verifyMockObjects(): void
-    {
-        foreach ($this->mockObjects as $mockObject) {
-            if ($mockObject->__phpunit_hasMatchers()) {
-                $this->numAssertions++;
-            }
-
-            $mockObject->__phpunit_verify(
-                $this->shouldInvocationMockerBeReset($mockObject)
-            );
-        }
-
-        if ($this->prophet !== null) {
-            try {
-                $this->prophet->checkPredictions();
-            } catch (Throwable $t) {
-                /* Intentionally left empty */
-            }
-
-            foreach ($this->prophet->getProphecies() as $objectProphecy) {
-                foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
-                    /** @var MethodProphecy[] $methodProphecies */
-                    foreach ($methodProphecies as $methodProphecy) {
-                        $this->numAssertions += \count($methodProphecy->getCheckedPredictions());
-                    }
-                }
-            }
-
-            if (isset($t)) {
-                throw $t;
-            }
-        }
     }
 
     /**
@@ -1733,7 +1643,138 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return new TestResult;
     }
 
-    protected function handleDependencies(): bool
+    /**
+     * Performs assertions shared by all tests of a test case.
+     *
+     * This method is called before the execution of a test starts
+     * and after setUp() is called.
+     */
+    protected function assertPreConditions()
+    {
+    }
+
+    /**
+     * Performs assertions shared by all tests of a test case.
+     *
+     * This method is called after the execution of a test ends
+     * and before tearDown() is called.
+     */
+    protected function assertPostConditions()
+    {
+    }
+
+    /**
+     * This method is called when a test method did not execute successfully.
+     *
+     * @param Throwable $t
+     *
+     * @throws Throwable
+     */
+    protected function onNotSuccessfulTest(Throwable $t)
+    {
+        throw $t;
+    }
+
+    /**
+     * Performs custom preparations on the process isolation template.
+     *
+     * @param Text_Template $template
+     */
+    protected function prepareTemplate(Text_Template $template): void
+    {
+    }
+
+    private function setExpectedExceptionFromAnnotation(): void
+    {
+        try {
+            $expectedException = \PHPUnit\Util\Test::getExpectedException(
+                \get_class($this),
+                $this->name
+            );
+
+            if ($expectedException !== false) {
+                $this->expectException($expectedException['class']);
+
+                if ($expectedException['code'] !== null) {
+                    $this->expectExceptionCode($expectedException['code']);
+                }
+
+                if ($expectedException['message'] !== '') {
+                    $this->expectExceptionMessage($expectedException['message']);
+                } elseif ($expectedException['message_regex'] !== '') {
+                    $this->expectExceptionMessageRegExp($expectedException['message_regex']);
+                }
+            }
+        } catch (ReflectionException $e) {
+        }
+    }
+
+    private function setUseErrorHandlerFromAnnotation(): void
+    {
+        try {
+            $useErrorHandler = \PHPUnit\Util\Test::getErrorHandlerSettings(
+                \get_class($this),
+                $this->name
+            );
+
+            if ($useErrorHandler !== null) {
+                $this->setUseErrorHandler($useErrorHandler);
+            }
+        } catch (ReflectionException $e) {
+        }
+    }
+
+    private function checkRequirements(): void
+    {
+        if (!$this->name || !\method_exists($this, $this->name)) {
+            return;
+        }
+
+        $missingRequirements = \PHPUnit\Util\Test::getMissingRequirements(
+            \get_class($this),
+            $this->name
+        );
+
+        if (!empty($missingRequirements)) {
+            $this->markTestSkipped(\implode(PHP_EOL, $missingRequirements));
+        }
+    }
+
+    private function verifyMockObjects(): void
+    {
+        foreach ($this->mockObjects as $mockObject) {
+            if ($mockObject->__phpunit_hasMatchers()) {
+                $this->numAssertions++;
+            }
+
+            $mockObject->__phpunit_verify(
+                $this->shouldInvocationMockerBeReset($mockObject)
+            );
+        }
+
+        if ($this->prophet !== null) {
+            try {
+                $this->prophet->checkPredictions();
+            } catch (Throwable $t) {
+                /* Intentionally left empty */
+            }
+
+            foreach ($this->prophet->getProphecies() as $objectProphecy) {
+                foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
+                    /** @var MethodProphecy[] $methodProphecies */
+                    foreach ($methodProphecies as $methodProphecy) {
+                        $this->numAssertions += \count($methodProphecy->getCheckedPredictions());
+                    }
+                }
+            }
+
+            if (isset($t)) {
+                throw $t;
+            }
+        }
+    }
+
+    private function handleDependencies(): bool
     {
         if (!empty($this->dependencies) && !$this->inIsolation) {
             $className  = \get_class($this);
@@ -1824,47 +1865,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         return true;
-    }
-
-    /**
-     * Performs assertions shared by all tests of a test case.
-     *
-     * This method is called before the execution of a test starts
-     * and after setUp() is called.
-     */
-    protected function assertPreConditions()
-    {
-    }
-
-    /**
-     * Performs assertions shared by all tests of a test case.
-     *
-     * This method is called after the execution of a test ends
-     * and before tearDown() is called.
-     */
-    protected function assertPostConditions()
-    {
-    }
-
-    /**
-     * This method is called when a test method did not execute successfully.
-     *
-     * @param Throwable $t
-     *
-     * @throws Throwable
-     */
-    protected function onNotSuccessfulTest(Throwable $t)
-    {
-        throw $t;
-    }
-
-    /**
-     * Performs custom preparations on the process isolation template.
-     *
-     * @param Text_Template $template
-     */
-    protected function prepareTemplate(Text_Template $template): void
-    {
     }
 
     /**
