@@ -286,7 +286,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 }
             }
 
-            if (!$suiteMethod && !$testClass->isAbstract()) {
+            if (!$suiteMethod && !$testClass->isAbstract() && $testClass->isSubclassOf(PHPUnit_Framework_TestCase::class)) {
                 $this->addTest(new self($testClass));
             }
         } else {
