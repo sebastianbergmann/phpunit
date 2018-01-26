@@ -277,7 +277,7 @@ class PHPUnit_Framework_TestSuite implements PHPUnit_Framework_Test, PHPUnit_Fra
                 }
             }
 
-            if (!$suiteMethod && !$testClass->isAbstract() && $testClass->isSubclassOf(TestCase::class)) {
+            if (!$suiteMethod && !$testClass->isAbstract() && $testClass->isSubclassOf(PHPUnit_Framework_TestCase::class)) {
                 $this->addTest(new self($testClass));
             }
         } else {

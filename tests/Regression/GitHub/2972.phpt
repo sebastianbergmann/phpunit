@@ -6,7 +6,7 @@ $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = __DIR__ . '/2972/';
 
 require __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit_TextUI_Command::main();
 ?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
