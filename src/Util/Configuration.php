@@ -346,7 +346,7 @@ final class Configuration
                     continue;
                 }
 
-                if (!$node->tagName === 'arguments') {
+                if ($node->tagName !== 'arguments') {
                     continue;
                 }
 
