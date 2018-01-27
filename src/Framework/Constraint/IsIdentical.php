@@ -92,6 +92,16 @@ class IsIdentical extends Constraint
                 );
             }
 
+            // if both values are array, make sure a diff is generated
+            if (\is_array($this->value) && \is_array($other)) {
+                $f = new SebastianBergmann\Comparator\ComparisonFailure(
+                    $this->value,
+                    $other,
+                    $this->exporter->export($this->value),
+                    $this->exporter->export($other)
+                );
+            }
+
             $this->fail($other, $description, $f);
         }
     }
@@ -135,6 +145,10 @@ class IsIdentical extends Constraint
 
         if (\is_string($this->value) && \is_string($other)) {
             return 'two strings are identical';
+        }
+
+        if (\is_array($this->value) && \is_array($other)) {
+            return 'two arrays are identical';
         }
 
         return parent::failureDescription($other);
