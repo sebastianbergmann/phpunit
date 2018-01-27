@@ -98,4 +98,94 @@ EOF
 
         $this->fail();
     }
+
+    public function testConstraintIsIdenticalArrayDiff(): void
+    {
+        $expected = [1, 2, 3, 4, 5, 6];
+        $actual   = [1, 2, 33, 4, 5, 6];
+
+        $constraint = new IsIdentical($expected);
+
+        try {
+            $constraint->evaluate($actual, 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertSame(
+                <<<EOF
+custom message
+Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+ Array &0 (
+     0 => 1
+     1 => 2
+-    2 => 3
++    2 => 33
+
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintIsIdenticalNestedArrayDiff(): void
+    {
+        $expected = [
+            ['A' => 'B'],
+            [
+                'C' => [
+                    'D',
+                    'E',
+                ],
+            ],
+        ];
+        $actual = [
+            ['A' => 'C'],
+            [
+                'C' => [
+                    'C',
+                    'E',
+                    'F'
+                ],
+            ],
+        ];
+        $constraint = new IsIdentical($expected);
+
+        try {
+            $constraint->evaluate($actual, 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+custom message
+Failed asserting that two arrays are identical.
+--- Expected
++++ Actual
+@@ @@
+ Array &0 (
+     0 => Array &1 (
+-        'A' => 'B'
++        'A' => 'C'
+     )
+     1 => Array &2 (
+         'C' => Array &3 (
+-            0 => 'D'
++            0 => 'C'
+             1 => 'E'
++            2 => 'F'
+
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
 }
