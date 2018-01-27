@@ -34,7 +34,7 @@ class TestTest extends TestCase
         );
 
         $this->assertArraySubset(
-            ['class' => \Foo\Bar\Baz::class, 'code' => null, 'message' => ''],
+            ['class' => 'Foo\Bar\Baz', 'code' => null, 'message' => ''],
             Test::getExpectedException(\ExceptionTest::class, 'testThree')
         );
 
