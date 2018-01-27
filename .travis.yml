@@ -49,3 +49,14 @@ after_success:
 notifications:
   email: false
 
+jobs:
+  include:
+    - stage: Code Quality
+      php: 7.2
+      env: PHPStan
+      install: travis_retry composer update --prefer-dist --prefer-stable
+      before_script:
+        - travis_retry composer require --dev --prefer-dist --prefer-stable phpstan/phpstan:^0.9
+      script:
+        - vendor/bin/phpstan analyse --level=0 -c phpstan.neon src
+        - vendor/bin/phpstan analyse --level=0 -c phpstan-tests.neon tests

@@ -1,0 +1,10 @@
+parameters:
+    ignoreErrors:
+        # parent calls are intentionally omitted
+        - '#Issue244Exception::__construct\(\) does not call parent constructor from Exception.#'
+        - '#Issue244ExceptionIntCode::__construct\(\) does not call parent constructor from Exception.#'
+
+    excludes_analyse:
+        # duplicated classname OneTest
+        - tests/_files/phpunit-example-extension/tests/OneTest.php
+        - tests/Regression/Trac/783/OneTest.php

@@ -1,0 +1,6 @@
+parameters:
+    ignoreErrors:
+        # phpunit/php-invoker is an optional dependency
+        - '#Class SebastianBergmann\\Invoker\\Invoker not found.#'
+        - '#Instantiated class SebastianBergmann\\Invoker\\Invoker not found.#'
+        - '#Caught class SebastianBergmann\\Invoker\\TimeoutException not found.#'
