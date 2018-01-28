@@ -53,4 +53,4 @@ jobs:
       install: travis_retry composer update --prefer-dist --prefer-stable
       before_script:
         - travis_retry composer require --dev --prefer-dist --prefer-stable phpstan/phpstan:^0.9
-      script: vendor/bin/phpstan analyse -l 1 src -c phpstan.neon
+      script: vendor/bin/phpstan analyse -l 0 src -c phpstan.neon
