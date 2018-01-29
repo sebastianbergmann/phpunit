@@ -14,6 +14,12 @@ php:
   - 7.2
   - master
 
+matrix:
+  allow_failures:
+    - php: 7.2
+    - php: master
+  fast_finish: true
+
 env:
   matrix:
     - DEPENDENCIES="high"
