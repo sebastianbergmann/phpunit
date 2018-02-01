@@ -19,7 +19,6 @@
         "issues": "https://github.com/sebastianbergmann/phpunit-mock-objects/issues"
     },
     "prefer-stable": true,
-    "minimum-stability": "dev",
     "require": {
         "php": "^7.1",
         "phpunit/php-text-template": "^1.2.1",
