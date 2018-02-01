@@ -15,6 +15,7 @@ use Countable;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\ArrayHasKeyValuePair;
 use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
@@ -105,6 +106,40 @@ abstract class Assert
         $constraint = new ArrayHasKey($key);
 
         static::assertThat($array, $constraint, $message);
+    }
+
+    /**
+     * Asserts that an array has a specified key value pair.
+     *
+     * @param int|string        $key
+     * @param mixed             $value
+     * @param array|ArrayAccess $array
+     * @param string            $message
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     * @throws \Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public static function assertArrayHasKeyValuePair($key, $value, $array, string $message = ''): void
+    {
+        if (!(\is_int($key) || \is_string($key))) {
+            throw InvalidArgumentHelper::factory(
+                1,
+                'integer or string'
+            );
+        }
+
+        if (!(\is_array($array) || $array instanceof ArrayAccess)) {
+            throw InvalidArgumentHelper::factory(
+                3,
+                'array or ArrayAccess'
+            );
+        }
+
+        $constraint = new ArrayHasKeyValuePair($key, $value);
+
+        self::assertThat($array, $constraint, $message);
     }
 
     /**
