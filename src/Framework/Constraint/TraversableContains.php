@@ -33,18 +33,24 @@ class TraversableContains extends Constraint
     private $value;
 
     /**
+     * @var bool
+     */
+    protected $ignoreCase;
+
+    /**
      * @param mixed $value
      * @param bool  $checkForObjectIdentity
      * @param bool  $checkForNonObjectIdentity
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false)
+    public function __construct($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false, $ignoreCase = false)
     {
         parent::__construct();
 
         $this->checkForObjectIdentity    = $checkForObjectIdentity;
         $this->checkForNonObjectIdentity = $checkForNonObjectIdentity;
+        $this->ignoreCase = $ignoreCase;
         $this->value                     = $value;
     }
 
@@ -81,6 +87,10 @@ class TraversableContains extends Constraint
 
         if (\is_object($this->value)) {
             foreach ($other as $element) {
+                if (\is_string($this->value) && \is_string($element)) {
+                    return $this->matchesString($element);
+                }
+
                 if ($this->checkForObjectIdentity && $element === $this->value) {
                     return true;
                 }
@@ -91,6 +101,10 @@ class TraversableContains extends Constraint
             }
         } else {
             foreach ($other as $element) {
+                if (\is_string($this->value) && \is_string($element)) {
+                    return $this->matchesString($element);
+                }
+
                 if ($this->checkForNonObjectIdentity && $element === $this->value) {
                     return true;
                 }
@@ -102,6 +116,27 @@ class TraversableContains extends Constraint
         }
 
         return false;
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other when both $other and
+     * $this->needle are strings. Returns true if the constraint is met, false
+     * otherwise.
+     *
+     * @param $other
+     * @return bool
+     */
+    protected function matchesString($other)
+    {
+        if ('' === $this->value) {
+            return true;
+        }
+
+        if ($this->ignoreCase) {
+            return \mb_stripos($other, $this->value) !== false;
+        }
+
+        return \mb_strpos($other, $this->value) !== false;
     }
 
     /**

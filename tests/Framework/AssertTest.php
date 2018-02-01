@@ -70,6 +70,29 @@ class AssertTest extends TestCase
         $this->assertContains('foo', ['bar']);
     }
 
+    public function testAssertArrayContainsNonCaseSensitiveStringInString(): void
+    {
+        $this->assertContains('Foo', ['foo'], '', true);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertContains('Foo', ['foo'], '', false);
+    }
+
+    public function testAssertArrayContainsPartialStringInString(): void
+    {
+        $this->assertContains('bar', ['foo bar']);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertContains('cake', ['foo bar']);
+    }
+
+    public function testAssertArrayContainsEmptyStringInString(): void
+    {
+        $this->assertContains('', ['foo', 'bar']);
+    }
+
     public function testAssertArrayContainsNonObject(): void
     {
         $this->assertContains('foo', [true]);
