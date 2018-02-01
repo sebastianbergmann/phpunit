@@ -39,8 +39,7 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
      */
     public static function negate($string)
     {
-        return str_replace(
-            [
+        $positives = [
             'contains ',
             'exists',
             'has ',
@@ -51,8 +50,9 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             'ends with ',
             'reference ',
             'not not '
-            ],
-            [
+        ];
+        
+        $negatives = [
             'does not contain ',
             'does not exist',
             'does not have ',
@@ -63,9 +63,31 @@ class PHPUnit_Framework_Constraint_Not extends PHPUnit_Framework_Constraint
             'ends not with ',
             'don\'t reference ',
             'not '
-            ],
-            $string
-        );
+        ];
+        
+        \preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
+        
+        if (count($matches) > 0) {
+            $nonInput = $matches[2];
+            
+            $negatedString = \str_replace(
+                $nonInput,
+                \str_replace(
+                    $positives,
+                    $negatives,
+                    $nonInput
+                ),
+                $string
+            );
+        } else {
+            $negatedString = \str_replace(
+                $positives,
+                $negatives,
+                $string
+            );
+        }
+        
+        return $negatedString;
     }
 
     /**
