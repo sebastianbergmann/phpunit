@@ -121,6 +121,10 @@ Failed asserting that two arrays are identical.
      1 => 2
 -    2 => 3
 +    2 => 33
+     3 => 4
+     4 => 5
+     5 => 6
+ )
 
 EOF
                 ,
@@ -177,6 +181,9 @@ Failed asserting that two arrays are identical.
 +            0 => 'C'
              1 => 'E'
 +            2 => 'F'
+         )
+     )
+ )
 
 EOF
                 ,

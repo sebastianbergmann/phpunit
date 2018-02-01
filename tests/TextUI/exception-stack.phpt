@@ -27,6 +27,7 @@ Failed asserting that two arrays are equal.
  Array (
 -    0 => 1
 +    0 => 2
+ )
 
 
 %s:%i
@@ -40,6 +41,7 @@ Failed asserting that two arrays are equal.
  Array (
 -    0 => 1
 +    0 => 2
+ )
 
 %s:%i
 

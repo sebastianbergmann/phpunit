@@ -26,6 +26,7 @@ Failed asserting that two arrays are equal.
  Array (
 -    0 => 1
 +    0 => 2
+ )
 
 %s:%i
 
@@ -44,6 +45,7 @@ Failed asserting that two objects are equal.
  stdClass Object (
 -    'foo' => 'bar'
 +    'bar' => 'foo'
+ )
 
 %s:%i
 
@@ -73,6 +75,7 @@ Failed asserting that two strings are equal.
  'foo\n
 -bar\n
 +baz\n
+ '
 
 %s:%i
 
