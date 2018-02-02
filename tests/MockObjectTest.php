@@ -733,7 +733,8 @@ class MockObjectTest extends TestCase
                 ' Array (' . PHP_EOL .
                 '-    0 => \'first\'' . PHP_EOL .
                 '-    1 => \'second\'' . PHP_EOL .
-                '+    0 => \'second\'' . PHP_EOL,
+                '+    0 => \'second\'' . PHP_EOL .
+                ' )' . PHP_EOL,
                 $e->getMessage()
             );
         }
