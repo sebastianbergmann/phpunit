@@ -207,4 +207,13 @@ class GeneratorTest extends TestCase
 
         $this->assertNull($mock->someMethod());
     }
+
+    public function testMockingOfThrowable()
+    {
+        $stub = $this->generator->getMock(ExceptionWithThrowable::class);
+
+        $this->assertInstanceOf(ExceptionWithThrowable::class, $stub);
+        $this->assertInstanceOf(Exception::class, $stub);
+        $this->assertInstanceOf(MockObject::class, $stub);
+    }
 }
