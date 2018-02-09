@@ -38,7 +38,7 @@ class XmlTest extends TestCase
         }
 
         $this->assertNull($e, \sprintf(
-            'PHPUnit_Util_XML::prepareString("\x%02x") should not crash DomDocument',
+            '\PHPUnit\Util\Xml::prepareString("\x%02x") should not crash DomDocument',
             \ord($char)
         ));
     }

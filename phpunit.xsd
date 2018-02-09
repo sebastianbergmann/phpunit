@@ -210,7 +210,7 @@
     <xs:attribute name="convertNoticesToExceptions" type="xs:boolean" default="true"/>
     <xs:attribute name="convertWarningsToExceptions" type="xs:boolean" default="true"/>
     <xs:attribute name="forceCoversAnnotation" type="xs:boolean" default="false"/>
-    <xs:attribute name="printerClass" type="xs:string" default="PHPUnit_TextUI_ResultPrinter"/>
+    <xs:attribute name="printerClass" type="xs:string" default="PHPUnit\TextUI\ResultPrinter"/>
     <xs:attribute name="printerFile" type="xs:anyURI"/>
     <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
     <xs:attribute name="stopOnError" type="xs:boolean" default="false"/>
@@ -232,7 +232,7 @@
     <xs:attribute name="timeoutForSmallTests" type="xs:integer" default="1"/>
     <xs:attribute name="timeoutForMediumTests" type="xs:integer" default="10"/>
     <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>
-    <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit_Runner_StandardTestSuiteLoader"/>
+    <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit\Runner\StandardTestSuiteLoader"/>
     <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>
     <xs:attribute name="defaultTestSuite" type="xs:string" default=""/>
     <xs:attribute name="verbose" type="xs:boolean" default="false"/>
