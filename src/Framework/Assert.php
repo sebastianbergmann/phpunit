@@ -37,6 +37,7 @@ use PHPUnit\Framework\Constraint\IsJson;
 use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
+use PHPUnit\Framework\Constraint\IsResourceNotOfType;
 use PHPUnit\Framework\Constraint\IsResourceOfType;
 use PHPUnit\Framework\Constraint\IsTrue;
 use PHPUnit\Framework\Constraint\IsType;
@@ -2388,6 +2389,20 @@ abstract class Assert
     public static function assertResourceOfType(string $expectedType, $actual, string $message = '')
     {
         static::assertThat($actual, new IsResourceOfType($expectedType), $message);
+    }
+
+    /**
+     * Asserts that given value is resource not of specified type
+     *
+     * @param string $expectedType
+     * @param resource $actual
+     * @param string $message
+     *
+     * @throws \Exception
+     */
+    public static function assertResourceNotOfType(string $expectedType, $actual, string $message = '')
+    {
+        static::assertThat($actual, new IsResourceNotOfType($expectedType), $message);
     }
 
     /**
