@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.0.1] - 2018-MM-DD
+
+### Fixed
+
+* Fixed [#3000](https://github.com/sebastianbergmann/phpunit/issues/3000): Directories are not created recursively
+
 ## [7.0.0] - 2018-02-02
 
 ### Added
@@ -30,5 +36,6 @@ All notable changes of the PHPUnit 7.0 release series are documented in this fil
 * Fixed [#2907](https://github.com/sebastianbergmann/phpunit/issues/2907): `StringMatchesFormatDescription` constraint does not handle escaped `%` correctly
 * Fixed [#2919](https://github.com/sebastianbergmann/phpunit/issues/2919): `assertJsonStringEqualsJsonString()` matches empty object as empty array
 
+[7.0.1]: https://github.com/sebastianbergmann/phpunit/compare/7.0.0...7.0.1
 [7.0.0]: https://github.com/sebastianbergmann/phpunit/compare/6.5...7.0.0
 
