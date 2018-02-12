@@ -2570,30 +2570,30 @@ XML;
 
     public function testAssertException(): void
     {
-        $this->assertException(\NewException::class, function(){
+        $this->assertException(\NewException::class, function () {
             throw new \NewException();
         });
 
-        $this->assertException(\Exception::class, function(){
+        $this->assertException(\Exception::class, function () {
             throw new \NewException();
         });
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertException(\NewException::class, function(){
+        $this->assertException(\NewException::class, function () {
             throw new \DummyException();
         });
     }
 
     public function testAssertNotException(): void
     {
-        $this->assertNotException(\NewException::class, function(){
+        $this->assertNotException(\NewException::class, function () {
             throw new \DummyException();
         });
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNotException(\NewException::class, function(){
+        $this->assertNotException(\NewException::class, function () {
             throw new \NewException();
         });
     }

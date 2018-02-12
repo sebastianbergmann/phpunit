@@ -2538,10 +2538,10 @@ abstract class Assert
      */
     public static function assertException(string $expectedException, callable $evaluation, string $message = ''): void
     {
-        try{
+        try {
             call_user_func($evaluation);
             throw new AssertionFailedError($message);
-        }catch(\Exception $actualException){
+        } catch (\Exception $actualException) {
             static::assertInstanceOf($expectedException, $actualException, $message);
         }
     }
@@ -2560,10 +2560,10 @@ abstract class Assert
      */
     public static function assertNotException(string $notExpectedException, callable $evaluation, string $message = ''): void
     {
-        try{
+        try {
             call_user_func($evaluation);
             throw new AssertionFailedError($message);
-        }catch(\Exception $actualException){
+        } catch (\Exception $actualException) {
             static::assertNotInstanceOf($notExpectedException, $actualException, $message);
         }
     }
