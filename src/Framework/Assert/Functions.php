@@ -1724,6 +1724,38 @@ function assertJsonFileNotEqualsJsonFile(string $expectedFile, string $actualFil
     Assert::assertJsonFileNotEqualsJsonFile(...\func_get_args());
 }
 
+/**
+ * Asserts that a given exception is thrown by a callable function
+ *
+ * @param string $expectedException
+ * @param callable $evaluation
+ * @param string $message
+ *
+ * @throws Exception
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ */
+function assertException(string $expectedException, callable $evaluation, string $message = ''): void
+{
+    Assert::assertException(...\func_get_args());
+}
+
+/**
+ * Asserts that a given exception is thrown by a callable function
+ *
+ * @param string $notExpectedException
+ * @param callable $evaluation
+ * @param string $message
+ *
+ * @throws Exception
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ */
+function assertNotException(string $notExpectedException, callable $evaluation, string $message = ''): void
+{
+    Assert::assertNotException(...\func_get_args());
+}
+
 function logicalAnd(): LogicalAnd
 {
     return Assert::logicalAnd(...\func_get_args());

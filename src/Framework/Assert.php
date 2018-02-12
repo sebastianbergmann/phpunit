@@ -2525,6 +2525,50 @@ abstract class Assert
     }
 
     /**
+     * Asserts that a given exception is thrown by a callable function
+     *
+     * @param string $expectedException
+     * @param callable $evaluation
+     * @param string $message
+     *
+     * @throws AssertionFailedError
+     * @throws Exception
+     * @throws \Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public static function assertException(string $expectedException, callable $evaluation, string $message = ''): void
+    {
+        try {
+            call_user_func($evaluation);
+            throw new AssertionFailedError($message);
+        } catch (\Exception $actualException) {
+            static::assertInstanceOf($expectedException, $actualException, $message);
+        }
+    }
+
+    /**
+     * Asserts that a callable functions do not throws an exception
+     *
+     * @param string $notExpectedException
+     * @param callable $evaluation
+     * @param string $message
+     *
+     * @throws AssertionFailedError
+     * @throws Exception
+     * @throws \Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public static function assertNotException(string $notExpectedException, callable $evaluation, string $message = ''): void
+    {
+        try {
+            call_user_func($evaluation);
+            throw new AssertionFailedError($message);
+        } catch (\Exception $actualException) {
+            static::assertNotInstanceOf($notExpectedException, $actualException, $message);
+        }
+    }
+
+    /**
      * @throws Exception
      */
     public static function logicalAnd(): LogicalAnd

@@ -2568,6 +2568,36 @@ XML;
         $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "FOO\n");
     }
 
+    public function testAssertException(): void
+    {
+        $this->assertException(\NewException::class, function () {
+            throw new \NewException();
+        });
+
+        $this->assertException(\Exception::class, function () {
+            throw new \NewException();
+        });
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertException(\NewException::class, function () {
+            throw new \DummyException();
+        });
+    }
+
+    public function testAssertNotException(): void
+    {
+        $this->assertNotException(\NewException::class, function () {
+            throw new \DummyException();
+        });
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertNotException(\NewException::class, function () {
+            throw new \NewException();
+        });
+    }
+
     /**
      * @return array<string, string[]>
      */
