@@ -5,9 +5,9 @@
          verbose="true">
     <testsuites>
         <testsuite name="small">
-            <directory suffix="Test.php">tests/Framework</directory>
-            <directory suffix="Test.php">tests/Runner</directory>
-            <directory suffix="Test.php">tests/Util</directory>
+            <directory>tests/Framework</directory>
+            <directory>tests/Runner</directory>
+            <directory>tests/Util</directory>
         </testsuite>
 
         <testsuite name="large">
