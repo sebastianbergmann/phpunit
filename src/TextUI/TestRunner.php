@@ -27,6 +27,7 @@ use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Configuration;
+use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\Printer;
@@ -632,6 +633,14 @@ class TestRunner extends BaseTestRunner
                     );
                 }
             }
+        }
+
+        if ($stack = ErrorHandler::getErrorStack()) {
+            $result->addError(
+                new TestSuite(),
+                new Exception('Some PHP errors were converted to exceptions'),
+                microtime(true)
+            );
         }
 
         if ($exit) {
