@@ -20,7 +20,6 @@ class XmlTest extends TestCase
      *
      * @param mixed $char
      *
-     * @throws \Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */

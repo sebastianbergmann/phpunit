@@ -18,7 +18,6 @@ class IsJsonTest extends ConstraintTestCase
      * @param mixed $expected
      * @param mixed $jsonOther
      *
-     * @throws \Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
