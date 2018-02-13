@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 7.0 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3000](https://github.com/sebastianbergmann/phpunit/issues/3000): Directories are not created recursively
+* Removed superfluous `@throws \Exception` annotations from assertion methods
 
 ## [7.0.0] - 2018-02-02
 
