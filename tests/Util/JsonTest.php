@@ -21,7 +21,6 @@ class JsonTest extends TestCase
      * @param mixed $expected
      * @param mixed $expectError
      *
-     * @throws \Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
@@ -52,7 +51,6 @@ class JsonTest extends TestCase
      * @param mixed $actual
      * @param mixed $expected
      *
-     * @throws \Exception
      * @throws \PHPUnit\Framework\Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException

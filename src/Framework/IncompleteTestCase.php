@@ -66,7 +66,6 @@ class IncompleteTestCase extends TestCase
     /**
      * Returns a string representation of the test case.
      *
-     * @throws \Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return string
