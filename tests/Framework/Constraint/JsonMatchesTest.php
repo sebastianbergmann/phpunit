@@ -23,7 +23,6 @@ class JsonMatchesTest extends ConstraintTestCase
      * @param mixed $jsonValue
      *
      * @throws ExpectationFailedException
-     * @throws \Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testEvaluate($expected, $jsonOther, $jsonValue): void
@@ -40,7 +39,6 @@ class JsonMatchesTest extends ConstraintTestCase
      * @param mixed $jsonValue
      *
      * @throws ExpectationFailedException
-     * @throws \Exception
      * @throws \PHPUnit\Framework\AssertionFailedError
      * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException

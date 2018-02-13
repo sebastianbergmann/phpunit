@@ -58,7 +58,6 @@ class ArraySubset extends Constraint
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      *
      * @return mixed
      */
@@ -96,7 +95,6 @@ class ArraySubset extends Constraint
     /**
      * Returns a string representation of the constraint.
      *
-     * @throws \Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return string
@@ -114,7 +112,6 @@ class ArraySubset extends Constraint
      *
      * @param mixed $other evaluated value or object
      *
-     * @throws \Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return string

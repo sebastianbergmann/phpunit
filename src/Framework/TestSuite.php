@@ -678,7 +678,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * Runs the tests and collects their result in a TestResult.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     public function run(TestResult $result = null): TestResult
     {
