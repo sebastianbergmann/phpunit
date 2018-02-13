@@ -442,7 +442,6 @@ class ConfigurationTest extends TestCase
      * @param Configuration $actualConfiguration
      *
      * @throws Exception
-     * @throws \Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */

@@ -308,7 +308,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns a string representation of the test case.
      *
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     public function toString(): string
     {
@@ -348,7 +347,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     public function getName(bool $withDataSet = true): ?string
     {
@@ -363,7 +361,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns the size of the test.
      *
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     public function getSize(): int
     {
@@ -375,7 +372,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     public function hasSize(): bool
     {
@@ -384,7 +380,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     public function isSmall(): bool
     {
@@ -393,7 +388,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     public function isMedium(): bool
     {
@@ -402,7 +396,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     public function isLarge(): bool
     {
@@ -553,7 +546,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws SebastianBergmann\CodeCoverage\RuntimeException
      * @throws SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     public function run(TestResult $result = null): TestResult
     {
@@ -1875,7 +1867,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @throws RiskyTestError
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      * @throws \InvalidArgumentException
      */
     private function restoreGlobalState(): void
@@ -1956,7 +1947,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @throws RiskyTestError
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      * @throws \InvalidArgumentException
      */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
@@ -2045,7 +2035,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws SebastianBergmann\ObjectEnumerator\InvalidArgumentException
      * @throws SebastianBergmann\ObjectReflector\InvalidArgumentException
      * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      */
     private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = []): void
     {

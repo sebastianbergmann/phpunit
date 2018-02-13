@@ -21,7 +21,6 @@ class ArraySubsetTest extends ConstraintTestCase
      * @param bool               $strict
      *
      * @throws ExpectationFailedException
-     * @throws \Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @dataProvider evaluateDataProvider
      */

@@ -67,7 +67,6 @@ class LogicalAnd extends Constraint
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \Exception
      *
      * @return mixed
      */

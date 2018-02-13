@@ -38,7 +38,6 @@ class ArrayHasKey extends Constraint
     /**
      * Returns a string representation of the constraint.
      *
-     * @throws \Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return string
@@ -77,7 +76,6 @@ class ArrayHasKey extends Constraint
      *
      * @param mixed $other evaluated value or object
      *
-     * @throws \Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return string

@@ -70,7 +70,6 @@ class IsInstanceOf extends Constraint
      *
      * @param mixed $other evaluated value or object
      *
-     * @throws \Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return string
