@@ -1138,23 +1138,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->registerMockObjectsFromTestArguments($testArguments);
 
         try {
-            // only use reflection to invoke the method if we have to
-            if ($testArguments) {
-                try {
-                    $class  = new ReflectionClass($this);
-                    $method = $class->getMethod($this->name);
-                } catch (ReflectionException $e) {
-                    $this->fail($e->getMessage());
-                }
-
-                $testResult = $method->invokeArgs($this, $testArguments);
-            } else {
-                if (!method_exists($this, $this->name)) {
-                    $this->fail(sprintf('Method %s does not exist', $this->name));
-                }
-
-                $testResult =  $this->{$this->name}();
-            }
+            $testResult = $this->{$this->name}(...array_values($testArguments));
         } catch (Throwable $t) {
             $exception = $t;
         }

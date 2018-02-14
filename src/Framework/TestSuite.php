@@ -183,12 +183,11 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
 
         foreach ($theClass->getMethods() as $method) {
-            // how can we handle this better? In our code base we have a base class we extend with lots of convenience methods that would not be skipped here and eventually get passed to addTestMethod
-            if ($method->getDeclaringClass()->getName() === TestCase::class) {
+            if ($method->getDeclaringClass()->getName() === Assert::class) {
                 continue;
             }
 
-            if ($method->getDeclaringClass()->getName() === Assert::class) {
+            if ($method->getDeclaringClass()->getName() === TestCase::class) {
                 continue;
             }
 
