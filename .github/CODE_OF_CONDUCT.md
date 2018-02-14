@@ -22,7 +22,7 @@ This Code of Conduct applies both within project spaces and in public spaces whe
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project maintainer at sebastian@phpunit.de. All complaints will be reviewed and investigated and will result in a response that is deemed necessary and appropriate to the circumstances. Maintainers are obligated to maintain confidentiality with regard to the reporter of an incident.
 
-This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.3.0, available at [http://contributor-covenant.org/version/1/3/0/][version]
+This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.3.0, available at [https://contributor-covenant.org/version/1/3/0/][version]
 
-[homepage]: http://contributor-covenant.org
-[version]: http://contributor-covenant.org/version/1/3/0/
+[homepage]: https://contributor-covenant.org
+[version]: https://contributor-covenant.org/version/1/3/0/

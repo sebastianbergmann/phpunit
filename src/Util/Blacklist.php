@@ -120,7 +120,7 @@ final class Blacklist
             // Hide process isolation workaround on Windows.
             if (DIRECTORY_SEPARATOR === '\\') {
                 // tempnam() prefix is limited to first 3 chars.
-                // @see http://php.net/manual/en/function.tempnam.php
+                // @see https://php.net/manual/en/function.tempnam.php
                 self::$directories[] = \sys_get_temp_dir() . '\\PHP';
             }
         }
