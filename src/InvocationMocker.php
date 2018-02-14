@@ -10,10 +10,13 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMocker;
 use PHPUnit\Framework\MockObject\Builder\Match;
 use PHPUnit\Framework\MockObject\Builder\NamespaceMatch;
+use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
+use PHPUnit\Framework\MockObject\Matcher\StatelessInvocation;
 use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
 
 /**
@@ -41,11 +44,18 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     private $configurableMethods = [];
 
     /**
-     * @param array $configurableMethods
+     * @var bool
      */
-    public function __construct(array $configurableMethods)
+    private $returnValueGeneration;
+
+    /**
+     * @param array $configurableMethods
+     * @param bool  $returnValueGeneration
+     */
+    public function __construct(array $configurableMethods, $returnValueGeneration)
     {
         $this->configurableMethods = $configurableMethods;
+        $this->returnValueGeneration = $returnValueGeneration;
     }
 
     /**
@@ -146,6 +156,54 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
 
         if ($hasReturnValue) {
             return $returnValue;
+        }
+
+        if ($this->returnValueGeneration === false) {
+            $exception = new ExpectationFailedException(
+                sprintf(
+                    "Return value inference disabled and no expectation set up for %s::%s()",
+                    $invocation->getClassName(),
+                    $invocation->getMethodName()
+                )
+            );
+
+            if (\strtolower($invocation->getMethodName()) === '__tostring') {
+                $this->addMatcher(
+                    new class($exception) extends StatelessInvocation
+                    {
+                        private $exception;
+
+                        public function __construct(\Throwable $exception)
+                        {
+                            $this->exception = $exception;
+                        }
+
+                        public function matches(BaseInvocation $invocation)
+                        {
+                            return false;
+                        }
+
+                        public function hasMatchers(): bool
+                        {
+                            return false;
+                        }
+
+                        public function toString(): string
+                        {
+                            return '';
+                        }
+
+                        public function verify()
+                        {
+                            throw $this->exception;
+                        }
+                    }
+                );
+
+                return '';
+            }
+
+            throw $exception;
         }
 
         return $invocation->generateReturnValue();
