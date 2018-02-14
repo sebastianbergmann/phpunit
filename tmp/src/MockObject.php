@@ -45,6 +45,8 @@ interface PHPUnit_Framework_MockObject_MockObject /*extends Verifiable*/
      */
     public function __phpunit_hasMatchers();
 
+    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration);
+
     /**
      * Registers a new expectation in the mock object and returns the match
      * object which can be infused with further details.

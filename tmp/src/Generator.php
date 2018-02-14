@@ -67,6 +67,7 @@ class Generator
      * @param bool            $callOriginalMethods
      * @param object          $proxyTarget
      * @param bool            $allowMockingUnknownTypes
+     * @param bool            $returnValueGeneration
      *
      * @throws Exception
      * @throws RuntimeException
@@ -75,7 +76,7 @@ class Generator
      *
      * @return MockObject
      */
-    public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true)
+    public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true, $returnValueGeneration = true)
     {
         if (!\is_array($type) && !\is_string($type)) {
             throw InvalidArgumentHelper::factory(1, 'array or string');
@@ -197,7 +198,8 @@ class Generator
             $callAutoload,
             $arguments,
             $callOriginalMethods,
-            $proxyTarget
+            $proxyTarget,
+            $returnValueGeneration
         );
     }
 
@@ -549,13 +551,14 @@ class Generator
      * @param array        $arguments
      * @param bool         $callOriginalMethods
      * @param object       $proxyTarget
+     * @param bool         $returnValueGeneration
      *
      * @throws \ReflectionException
      * @throws RuntimeException
      *
      * @return MockObject
      */
-    private function getObject($code, $className, $type = '', $callOriginalConstructor = false, $callAutoload = false, array $arguments = [], $callOriginalMethods = false, $proxyTarget = null)
+    private function getObject($code, $className, $type = '', $callOriginalConstructor = false, $callAutoload = false, array $arguments = [], $callOriginalMethods = false, $proxyTarget = null, $returnValueGeneration = true)
     {
         $this->evalClass($code, $className);
 
@@ -589,6 +592,8 @@ class Generator
 
             $object->__phpunit_setOriginalObject($proxyTarget);
         }
+
+        $object->__phpunit_setReturnValueGeneration($returnValueGeneration);
 
         return $object;
     }
