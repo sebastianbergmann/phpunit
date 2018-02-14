@@ -1153,7 +1153,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     $this->fail(sprintf('Method %s does not exist', $this->name));
                 }
 
-                $testResult =  $this->{$this->name}();
+                $testResult = $this->{$this->name}();
             }
         } catch (Throwable $t) {
             $exception = $t;
