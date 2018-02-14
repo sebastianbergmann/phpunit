@@ -33,6 +33,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use Prophecy;
@@ -1144,11 +1145,15 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         $this->registerMockObjectsFromTestArguments($testArguments);
 
+        $stackBefore = ErrorHandler::getErrorStack();
+
         try {
             $testResult = $method->invokeArgs($this, $testArguments);
         } catch (Throwable $t) {
             $exception = $t;
         }
+
+        $stackAfter = ErrorHandler::getErrorStack();
 
         if (isset($exception)) {
             if ($this->checkExceptionExpectations($exception)) {
@@ -1227,6 +1232,20 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     'Failed asserting that exception with code "%s" is thrown',
                     $this->expectedExceptionCode
                 )
+            );
+        }
+
+        if (\count($stackAfter) > \count($stackBefore)) {
+            $exception = \end($stackAfter);
+
+            throw new Exception(
+                \sprintf(
+                    '%s in %s; line %d',
+                    $exception[1],
+                    $exception[2],
+                    $exception[3]
+                ),
+                $exception[0]
             );
         }
 
