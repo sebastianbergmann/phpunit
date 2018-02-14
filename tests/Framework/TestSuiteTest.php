@@ -35,7 +35,6 @@ class TestSuiteTest extends TestCase
         $suite->addTest(new self('testInheritedTests'));
         $suite->addTest(new self('testNoTestCases'));
         $suite->addTest(new self('testNoTestCaseClass'));
-        $suite->addTest(new self('testNotExistingTestCase'));
         $suite->addTest(new self('testNotPublicTestCase'));
         $suite->addTest(new self('testNotVoidTestCase'));
         $suite->addTest(new self('testOneTestCase'));
@@ -89,17 +88,6 @@ class TestSuiteTest extends TestCase
         $this->expectException(Exception::class);
 
         new TestSuite(\NoTestCaseClass::class);
-    }
-
-    public function testNotExistingTestCase(): void
-    {
-        $suite = new self('notExistingMethod');
-
-        $suite->run($this->result);
-
-        $this->assertEquals(0, $this->result->errorCount());
-        $this->assertEquals(1, $this->result->failureCount());
-        $this->assertCount(1, $this->result);
     }
 
     public function testNotPublicTestCase(): void

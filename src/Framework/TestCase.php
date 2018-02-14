@@ -1149,10 +1149,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
                 $testResult = $method->invokeArgs($this, $testArguments);
             } else {
-                if (!method_exists($this, $this->name)) {
-                    $this->fail(sprintf('Method %s does not exist', $this->name));
-                }
-
                 $testResult = $this->{$this->name}();
             }
         } catch (Throwable $t) {
