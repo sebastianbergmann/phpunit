@@ -979,6 +979,8 @@ class Generator
      * @param bool|string $deprecation
      * @param bool        $allowsReturnNull
      *
+     * @throws \ReflectionException
+     * @throws \PHPUnit\Framework\MockObject\RuntimeException
      * @throws \InvalidArgumentException
      *
      * @return string
@@ -1001,11 +1003,29 @@ class Generator
             }
         }
 
-        // Mocked interfaces returning 'self' must explicitly declare the
-        // interface name as the return type. See
-        // https://bugs.php.net/bug.php?id=70722
+        // @see https://bugs.php.net/bug.php?id=70722
         if ($returnType === 'self') {
             $returnType = $className;
+        }
+
+        // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/406
+        if ($returnType === 'parent') {
+            $reflector = new ReflectionClass($className);
+
+            $parentClass = $reflector->getParentClass();
+
+            if ($parentClass === null) {
+                throw new RuntimeException(
+                    \sprintf(
+                        'Cannot mock %s::%s because "parent" return type declaration is used but %s does not have a parent class',
+                        $className,
+                        $methodName,
+                        $className
+                    )
+                );
+            }
+
+            $returnType = $parentClass->getName();
         }
 
         if (false !== $deprecation) {

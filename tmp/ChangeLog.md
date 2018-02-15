@@ -1,0 +1,13 @@
+# ChangeLog
+
+All notable changes are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
+
+## [6.0.1] - 2018-02-15
+
+### Fixed
+
+* Fixed [#406](https://github.com/sebastianbergmann/phpunit-mock-objects/issues/406): `parent` return type declaration is not handled correctly
+
+## [6.0.0] - 2018-02-01
+
+[6.0.0]: https://github.com/sebastianbergmann/phpunit-mock-objects/compare/5.0...6.0.0
