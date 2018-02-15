@@ -83,6 +83,10 @@ class StaticInvocation implements Invocation, SelfDescribing
         $this->methodName = $methodName;
         $this->parameters = $parameters;
 
+        if (\strtolower($methodName) === '__tostring') {
+            $returnType = 'string';
+        }
+
         if (\strpos($returnType, '?') === 0) {
             $returnType                 = \substr($returnType, 1);
             $this->isReturnTypeNullable = true;

@@ -148,10 +148,6 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
             return $returnValue;
         }
 
-        if (\strtolower($invocation->getMethodName()) === '__tostring') {
-            return '';
-        }
-
         return $invocation->generateReturnValue();
     }
 
