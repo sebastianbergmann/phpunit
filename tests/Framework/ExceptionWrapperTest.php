@@ -26,6 +26,17 @@ class ExceptionWrapperTest extends TestCase
     /**
      * @runInSeparateProcess
      */
+    public function testGetOriginalExceptionWithPrevious(): void
+    {
+        $e = new \BadFunctionCallException('custom class exception', 0, new \Exception('previous'));
+        $wrapper = new ExceptionWrapper($e);
+
+        $this->assertInstanceOf(\BadFunctionCallException::class, $wrapper->getOriginalException());
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
     public function testNoOriginalExceptionInStacktrace(): void
     {
         $e = new \BadFunctionCallException('custom class exception');
