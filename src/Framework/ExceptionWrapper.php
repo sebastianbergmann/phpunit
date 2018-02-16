@@ -108,9 +108,9 @@ class ExceptionWrapper extends Exception
     }
 
     /**
-     * @return Throwable
+     * @return null|Throwable
      */
-    public function getOriginalException(): Throwable
+    public function getOriginalException(): ?Throwable
     {
         return $this->originalException();
     }
@@ -120,16 +120,16 @@ class ExceptionWrapper extends Exception
      * which can be quite big, from being garbage-collected, thus blocking memory until shutdown.
      * Approach works both for var_dump() and var_export() and print_r()
      *
-     * @param null|Throwable $e
-     * @return Throwable
+     * @param null|Throwable $exceptionToStore
+     * @return null|Throwable
      */
-    private function originalException(Throwable $e = null): Throwable
+    private function originalException(Throwable $exceptionToStore = null): ?Throwable
     {
-        /** @var Throwable $originalException */
-        static $originalException;
-        if ($e) {
-            $originalException = $e;
+        static $originalExceptions;
+        $instanceId = spl_object_hash($this);
+        if ($exceptionToStore) {
+            $originalExceptions[$instanceId] = $exceptionToStore;
         }
-        return $originalException;
+        return $originalExceptions[$instanceId] ?? null;
     }
 }
