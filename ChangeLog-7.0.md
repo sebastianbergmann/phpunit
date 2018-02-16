@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 7.0 release series are documented in this fil
 ### Fixed
 
 * Fixed [#2974](https://github.com/sebastianbergmann/phpunit/issues/2974): JUnit XML logfile contains invalid characters when test output contains binary data
+* Removed more superfluous `@throws \Exception` annotations
 
 ## [7.0.1] - 2018-02-13
 
