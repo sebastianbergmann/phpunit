@@ -80,6 +80,14 @@ class ExceptionWrapper extends Exception
         return $this->previous;
     }
 
+    /**
+     * @param string $className
+     */
+    public function setClassName(string $className)
+    {
+        $this->className = $className;
+    }
+
     public function setOriginalException(\Throwable $t)
     {
         $this->originalException($t);
@@ -110,7 +118,7 @@ class ExceptionWrapper extends Exception
     /**
      * Method to contain static originalException to exclude it from stacktrace to prevent the stacktrace contents,
      * which can be quite big, from being garbage-collected, thus blocking memory until shutdown.
-     * Approach works both for var_dump() and var_export().
+     * Approach works both for var_dump() and var_export() and print_r()
      *
      * @param null|Throwable $e
      * @return Throwable

@@ -31,8 +31,15 @@ class ExceptionWrapperTest extends TestCase
         $e = new \BadFunctionCallException('custom class exception');
         $wrapper = new ExceptionWrapper($e);
 
-        $data = var_export($wrapper, 1);
+        // Replace the only mention of "BadFunctionCallException" in wrapper
+        $wrapper->setClassName('MyException');
 
-        $this->assertNotContains('BadFunctionCallException::__set_state', $data);
+        $data = \print_r($wrapper, 1);
+
+        $this->assertNotContains(
+            'BadFunctionCallException',
+            $data,
+            'Assert there is s no other BadFunctionCallException mention in stacktrace'
+        );
     }
 }
