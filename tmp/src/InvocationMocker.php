@@ -51,7 +51,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
      * @param array $configurableMethods
      * @param bool  $returnValueGeneration
      */
-    public function __construct(array $configurableMethods, $returnValueGeneration)
+    public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {
         $this->configurableMethods = $configurableMethods;
         $this->returnValueGeneration = $returnValueGeneration;
