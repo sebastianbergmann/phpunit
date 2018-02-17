@@ -22,7 +22,7 @@ class DeferredError extends StatelessInvocation
         $this->exception = $exception;
     }
 
-    public function verify()
+    public function verify(): void
     {
         throw $this->exception;
     }
@@ -32,7 +32,7 @@ class DeferredError extends StatelessInvocation
         return '';
     }
 
-    public function matches(BaseInvocation $invocation)
+    public function matches(BaseInvocation $invocation): bool
     {
         return true;
     }
