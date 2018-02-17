@@ -14,9 +14,8 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMocker;
 use PHPUnit\Framework\MockObject\Builder\Match;
 use PHPUnit\Framework\MockObject\Builder\NamespaceMatch;
-use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
+use PHPUnit\Framework\MockObject\Matcher\DeferredError;
 use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
-use PHPUnit\Framework\MockObject\Matcher\StatelessInvocation;
 use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
 
 /**
@@ -168,37 +167,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
             );
 
             if (\strtolower($invocation->getMethodName()) === '__tostring') {
-                $this->addMatcher(
-                    new class($exception) extends StatelessInvocation
-                    {
-                        private $exception;
-
-                        public function __construct(\Throwable $exception)
-                        {
-                            $this->exception = $exception;
-                        }
-
-                        public function matches(BaseInvocation $invocation)
-                        {
-                            return false;
-                        }
-
-                        public function hasMatchers(): bool
-                        {
-                            return false;
-                        }
-
-                        public function toString(): string
-                        {
-                            return '';
-                        }
-
-                        public function verify()
-                        {
-                            throw $this->exception;
-                        }
-                    }
-                );
+                $this->addMatcher(new DeferredError($exception));
 
                 return '';
             }
