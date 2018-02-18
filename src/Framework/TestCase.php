@@ -1133,19 +1133,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             );
         }
 
-        try {
-            $class  = new ReflectionClass($this);
-            $method = $class->getMethod($this->name);
-        } catch (ReflectionException $e) {
-            $this->fail($e->getMessage());
-        }
-
         $testArguments = \array_merge($this->data, $this->dependencyInput);
 
         $this->registerMockObjectsFromTestArguments($testArguments);
 
         try {
-            $testResult = $method->invokeArgs($this, $testArguments);
+            $testResult = $this->{$this->name}(...array_values($testArguments));
         } catch (Throwable $t) {
             $exception = $t;
         }
