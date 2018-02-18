@@ -1845,7 +1845,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->output = \ob_get_contents();
 
         if ($this->outputCallback !== false) {
-            $this->output = \call_user_func($this->outputCallback, $this->output);
+            $this->output = (string) \call_user_func($this->outputCallback, $this->output);
         }
 
         \ob_end_clean();
