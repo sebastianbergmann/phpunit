@@ -53,7 +53,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
      */
     public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {
-        $this->configurableMethods = $configurableMethods;
+        $this->configurableMethods   = $configurableMethods;
         $this->returnValueGeneration = $returnValueGeneration;
     }
 
@@ -159,8 +159,8 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
 
         if ($this->returnValueGeneration === false) {
             $exception = new ExpectationFailedException(
-                sprintf(
-                    "Return value inference disabled and no expectation set up for %s::%s()",
+                \sprintf(
+                    'Return value inference disabled and no expectation set up for %s::%s()',
                     $invocation->getClassName(),
                     $invocation->getMethodName()
                 )
