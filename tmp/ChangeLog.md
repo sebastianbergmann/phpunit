@@ -4,6 +4,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [6.1.0] - 2018-MM-DD
 
+### Added
+
+* Implemented [#405](https://github.com/sebastianbergmann/phpunit-mock-objects/pull/405): Add option for disabling return value generation for stubbed methods
+
 ## [6.0.1] - 2018-02-15
 
 ### Fixed
