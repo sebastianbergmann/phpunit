@@ -1,5 +1,8 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generateClassFromWsdl('GoogleSearch.wsdl', 'GoogleSearch')
+--SKIPIF--
+<?php
+if (!extension_loaded('soap')) echo 'skip: SOAP extension is required';
 --FILE--
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
