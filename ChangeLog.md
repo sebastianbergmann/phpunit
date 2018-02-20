@@ -2,6 +2,8 @@
 
 All notable changes are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [6.1.0] - 2018-MM-DD
+
 ## [6.0.1] - 2018-02-15
 
 ### Fixed
@@ -10,5 +12,7 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 ## [6.0.0] - 2018-02-01
 
+[6.1.0]: https://github.com/sebastianbergmann/phpunit-mock-objects/compare/6.0...6.1.0
 [6.0.1]: https://github.com/sebastianbergmann/phpunit-mock-objects/compare/6.0.0...6.0.1
 [6.0.0]: https://github.com/sebastianbergmann/phpunit-mock-objects/compare/5.0...6.0.0
+
