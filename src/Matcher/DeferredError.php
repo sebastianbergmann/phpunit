@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 namespace PHPUnit\Framework\MockObject\Matcher;
+
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 class DeferredError extends StatelessInvocation
