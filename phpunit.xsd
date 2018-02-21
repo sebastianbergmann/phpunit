@@ -50,6 +50,11 @@
       <xs:element name="group" type="xs:string" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
+  <xs:complexType name="extensionsType">
+    <xs:sequence>
+      <xs:element name="extension" type="objectType" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="listenersType">
     <xs:sequence>
       <xs:element name="listener" type="objectType" maxOccurs="unbounded"/>
@@ -248,6 +253,7 @@
       <xs:element name="testdoxGroups" type="groupsType" minOccurs="0"/>
       <xs:element name="filter" type="filtersType" minOccurs="0"/>
       <xs:element name="logging" type="loggersType" minOccurs="0"/>
+      <xs:element name="extensions" type="extensionsType" minOccurs="0"/>
       <xs:element name="listeners" type="listenersType" minOccurs="0"/>
       <xs:element name="php" type="phpType" minOccurs="0"/>
     </xs:all>

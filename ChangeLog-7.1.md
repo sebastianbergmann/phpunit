@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 7.1 release series are documented in this fil
 
 ## [7.1.0] - 2018-04-06
 
+### Added
+
+* Implemented [#3002](https://github.com/sebastianbergmann/phpunit/issues/3002): Support for test runner extensions
+
 ### Changed
 
 * `PHPUnit\Framework\Assert` is no longer searched for test methods

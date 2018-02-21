@@ -231,6 +231,31 @@ final class Configuration
         return $this->filename;
     }
 
+    public function getExtensionConfiguration(): array
+    {
+        $result = [];
+
+        foreach ($this->xpath->query('extensions/extension') as $extension) {
+            /** @var DOMElement $extension */
+            $class = (string) $extension->getAttribute('class');
+            $file  = '';
+
+            if ($extension->getAttribute('file')) {
+                $file = $this->toAbsolutePath(
+                    (string) $extension->getAttribute('file'),
+                    true
+                );
+            }
+
+            $result[] = [
+                'class' => $class,
+                'file'  => $file
+            ];
+        }
+
+        return $result;
+    }
+
     /**
      * Returns the configuration for SUT filtering.
      *
