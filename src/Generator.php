@@ -699,15 +699,18 @@ class Generator
             $cloneTemplate = $this->getTemplate('mocked_clone.tpl');
         } else {
             $class = new ReflectionClass($mockClassName['fullClassName']);
-            //https://github.com/sebastianbergmann/phpunit/issues/2995
+
+            // @see https://github.com/sebastianbergmann/phpunit/issues/2995
             if ($isInterface && $class->implementsInterface(\Throwable::class)) {
                 $additionalInterfaces[] = $class->getName();
-                $isInterface = false;
+                $isInterface            = false;
+
                 $mockClassName = $this->generateClassName(
                     \Exception::class,
                     '',
                     'Mock_'
                 );
+
                 $class = new ReflectionClass($mockClassName['fullClassName']);
             }
 
