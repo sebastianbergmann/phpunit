@@ -4,5 +4,10 @@ All notable changes of the PHPUnit 7.1 release series are documented in this fil
 
 ## [7.1.0] - 2018-04-06
 
+### Changed
+
+* `PHPUnit\Framework\Assert` is no longer searched for test methods
+* `ReflectionMethod::invokeArgs()` is no longer used to invoke test methods
+
 [7.1.0]: https://github.com/sebastianbergmann/phpunit/compare/7.0...7.1.0
 
