@@ -1138,7 +1138,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->registerMockObjectsFromTestArguments($testArguments);
 
         try {
-            $testResult = $this->{$this->name}(...array_values($testArguments));
+            $testResult = $this->{$this->name}(...\array_values($testArguments));
         } catch (Throwable $t) {
             $exception = $t;
         }
