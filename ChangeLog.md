@@ -8,6 +8,10 @@ All notable changes are documented in this file using the [Keep a CHANGELOG](htt
 
 * Implemented [#405](https://github.com/sebastianbergmann/phpunit-mock-objects/pull/405): Add option for disabling return value generation for stubbed methods
 
+### Fixed
+
+* Fixed [#402](https://github.com/sebastianbergmann/phpunit-mock-objects/pull/402): Interfaces that extend `Throwable` cannot be stubbed
+
 ## [6.0.1] - 2018-02-15
 
 ### Fixed
