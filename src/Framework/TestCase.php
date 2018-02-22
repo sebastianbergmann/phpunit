@@ -699,8 +699,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         $hookMethods = \PHPUnit\Util\Test::getHookMethods(\get_class($this));
 
+        $hasMetRequirements = false;
+
         try {
-            $hasMetRequirements = false;
             $this->checkRequirements();
             $hasMetRequirements = true;
 
