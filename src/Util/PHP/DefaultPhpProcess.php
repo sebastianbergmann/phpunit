@@ -99,9 +99,8 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
         \fclose($pipes[0]);
 
+        $stderr = $stdout = '';
         if ($this->timeout) {
-            $stderr = $stdout = '';
-
             unset($pipes[0]);
 
             while (true) {
