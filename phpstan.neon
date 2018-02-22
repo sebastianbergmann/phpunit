@@ -1,0 +1,11 @@
+parameters:
+    ignoreErrors:
+        # defined() check does not work yet https://github.com/phpstan/phpstan/issues/557
+        - '#Constant PHPUNIT_COMPOSER_INSTALL not found.#'
+        - '#Constant __PHPUNIT_PHAR__ not found.#'
+        - '#Constant __PHPUNIT_PHAR_ROOT__ not found.#'
+
+        # PHPStan issue https://github.com/phpstan/phpstan/issues/821
+        # src\Util\TestDox\CliTestDoxPrinter.php
+        - '#Variable \$className might not be defined.#'
+        - '#Variable \$testMethod might not be defined.#'
