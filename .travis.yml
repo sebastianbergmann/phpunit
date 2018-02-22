@@ -64,7 +64,6 @@ jobs:
       php: 7.2
       env: php-cs-fixer
       install:
-        - wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O php-cs-fixer
         - phpenv config-rm xdebug.ini
       script:
-        - php php-cs-fixer --diff --dry-run -v fix
+        - ./build/tools/php-cs-fixer --diff --dry-run -v fix
