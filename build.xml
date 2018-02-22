@@ -376,7 +376,7 @@
         <exec executable="${basedir}/build/version.php" outputproperty="version" />
     </target>
 
-    <target name="generate-project-documentation" depends="-phploc,-phpcs,-phpmd,-phpunit">
+    <target name="generate-project-documentation" depends="-phploc,-checkstyle,-phpmd,-phpunit">
         <exec executable="${basedir}/build/tools/phpdox" dir="${basedir}/build" taskname="phpdox"/>
     </target>
 
@@ -390,21 +390,12 @@
         </exec>
     </target>
 
-    <target name="phpcs">
-        <exec executable="${basedir}/build/tools/phpcs" taskname="phpcs">
-            <arg value="--standard=${basedir}/build/phpcs.xml"/>
-            <arg value="--extensions=php"/>
-            <arg value="--cache"/>
-        </exec>
-    </target>
-
-    <target name="-phpcs" depends="prepare">
-        <exec executable="${basedir}/build/tools/phpcs" output="/dev/null" taskname="phpcs">
-            <arg value="--standard=${basedir}/build/phpcs.xml"/>
-            <arg value="--extensions=php"/>
-            <arg value="--cache"/>
-            <arg value="--report=checkstyle"/>
-            <arg value="--report-file=${basedir}/build/logfiles/checkstyle.xml"/>
+    <target name="-checkstyle" depends="prepare">
+        <exec executable="${basedir}/build/tools/php-cs-fixer" output="${basedir}/build/logfiles/checkstyle.xml" error="/dev/null" taskname="php-cs-fixer">
+            <arg value="--diff"/>
+            <arg value="--dry-run"/>
+            <arg value="fix"/>
+            <arg value="--format=checkstyle"/>
         </exec>
     </target>
 
