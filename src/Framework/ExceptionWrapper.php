@@ -121,15 +121,17 @@ class ExceptionWrapper extends Exception
      * Approach works both for var_dump() and var_export() and print_r()
      *
      * @param null|Throwable $exceptionToStore
+     *
      * @return null|Throwable
      */
     private function originalException(Throwable $exceptionToStore = null): ?Throwable
     {
         static $originalExceptions;
-        $instanceId = spl_object_hash($this);
+        $instanceId = \spl_object_hash($this);
         if ($exceptionToStore) {
             $originalExceptions[$instanceId] = $exceptionToStore;
         }
+
         return $originalExceptions[$instanceId] ?? null;
     }
 }
