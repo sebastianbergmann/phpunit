@@ -183,11 +183,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
 
         foreach ($theClass->getMethods() as $method) {
-            if ($method->getDeclaringClass()->getName() === Assert::class) {
-                continue;
-            }
-
-            if ($method->getDeclaringClass()->getName() === TestCase::class) {
+            if (in_array($method->getDeclaringClass()->getName(), [Assert::class, TestCase::class])) {
                 continue;
             }
 
