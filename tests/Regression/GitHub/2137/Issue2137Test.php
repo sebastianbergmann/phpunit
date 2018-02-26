@@ -4,8 +4,8 @@ class Issue2137Test extends PHPUnit\Framework\TestCase
     /**
      * @dataProvider provideBrandService
      *
-     * @param $provided
-     * @param $expected
+     * @param mixed $provided
+     * @param mixed $expected
      *
      * @throws Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
@@ -29,8 +29,8 @@ class Issue2137Test extends PHPUnit\Framework\TestCase
     /**
      * @dataProvider provideBrandService
      *
-     * @param $provided
-     * @param $expected
+     * @param mixed $provided
+     * @param mixed $expected
      *
      * @throws Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
