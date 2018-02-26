@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 7.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [7.0.2] - 2018-MM-DD
+## [7.0.2] - 2018-02-26
 
 ### Fixed
 
