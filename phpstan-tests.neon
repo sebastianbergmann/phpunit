@@ -13,6 +13,9 @@ parameters:
         - '#Constant TEST_FILES_PATH not found.#'
         - '#Constant GITHUB_ISSUE not found.#'
 
+        # This access to undefined property is legit
+        - '#Access to an undefined property SplObjectStorage::\$foo#'
+
     excludes_analyse:
         # duplicated classname OneTest
         - tests/_files/phpunit-example-extension/tests/OneTest.php
