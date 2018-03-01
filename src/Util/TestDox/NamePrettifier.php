@@ -35,14 +35,10 @@ final class NamePrettifier
             $title = \substr($title, 0, \strripos($title, 'Test'));
         }
 
-        if (\strpos($name, 'Test') === 0) {
+        if (\strpos($name, 'Tests') === 0) {
+            $title = \substr($title, \strlen('Tests'));
+        } elseif (\strpos($name, 'Test') === 0) {
             $title = \substr($title, \strlen('Test'));
-        }
-
-        # When a class name starts with Tests\\ we should strip off the
-        # remaining s\\, since Test is removed above
-        if (\substr($name, 0, \strlen('Tests')) === 'Tests') {
-            $title = \substr($title, \strlen('s\\'));
         }
 
         if ($title[0] === '\\') {
