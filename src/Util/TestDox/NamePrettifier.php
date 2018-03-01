@@ -35,7 +35,9 @@ final class NamePrettifier
             $title = \substr($title, 0, \strripos($title, 'Test'));
         }
 
-        if (\strpos($name, 'Test') === 0) {
+        if (\strpos($name, 'Tests') === 0) {
+            $title = \substr($title, \strlen('Tests'));
+        } elseif (\strpos($name, 'Test') === 0) {
             $title = \substr($title, \strlen('Test'));
         }
 
