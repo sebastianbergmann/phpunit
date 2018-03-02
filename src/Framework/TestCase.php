@@ -867,7 +867,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $this->status        = BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
         } catch (Throwable $_e) {
-            $e = $_e;
+            $e                   = $_e;
+            $this->status        = BaseTestRunner::STATUS_ERROR;
+            $this->statusMessage = $_e->getMessage();
         }
 
         $this->mockObjects = [];
