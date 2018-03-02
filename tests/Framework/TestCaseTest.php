@@ -177,6 +177,14 @@ class TestCaseTest extends TestCase
         $this->assertTrue($test->tearDown);
         $this->assertEquals(BaseTestRunner::STATUS_ERROR, $test->getStatus());
     }
+    
+    public function testExceptionInTestIsDetectedInTeardown(): void
+    {
+        $test   = new \ExceptionInTestDetectedInTeardown('testSomething');
+        $test->run();
+
+        $this->assertTrue($test->exceptionDetected);
+    }
 
     public function testNoArgTestCasePasses(): void
     {
