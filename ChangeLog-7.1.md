@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 7.1 release series are documented in this fil
 ### Added
 
 * Implemented [#3002](https://github.com/sebastianbergmann/phpunit/issues/3002): Support for test runner extensions
+* Implemented [#3035](https://github.com/sebastianbergmann/phpunit/pull/3035): Add support for `iterable` in `assertInternalType()`
 
 ### Changed
 
