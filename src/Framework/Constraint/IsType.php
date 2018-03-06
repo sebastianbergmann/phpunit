@@ -47,7 +47,8 @@ class IsType extends Constraint
         'resource' => true,
         'string'   => true,
         'scalar'   => true,
-        'callable' => true
+        'callable' => true,
+        'iterable' => true,
     ];
 
     /**
@@ -137,6 +138,9 @@ class IsType extends Constraint
 
             case 'callable':
                 return \is_callable($other);
+
+            case 'iterable':
+                return \is_iterable($other);
         }
     }
 }
