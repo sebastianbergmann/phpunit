@@ -99,6 +99,7 @@ EOF
         $this->assertTrue($constraint->evaluate([], '', true));
         $this->assertEquals('is of type "iterable"', $constraint->toString());
     }
+
     /**
      * Removes spaces in front of newlines
      *

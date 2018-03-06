@@ -48,7 +48,7 @@ class IsType extends Constraint
         'string'   => true,
         'scalar'   => true,
         'callable' => true,
-        'iterable' => true,
+        'iterable' => true
     ];
 
     /**
