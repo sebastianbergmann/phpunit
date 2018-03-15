@@ -54,9 +54,9 @@ jobs:
     - stage: Quality
       php: 7.2
       env: PHPStan
+      before_install:
+        - travis_retry composer require --dev --no-update friendsofphp/php-cs-fixer:^2.10 phpstan/phpstan:^0.9
       install: travis_retry composer update --prefer-dist --prefer-stable
-      before_script:
-        - travis_retry composer require --dev --prefer-dist --prefer-stable friendsofphp/php-cs-fixer:^2.10 phpstan/phpstan:^0.9
       script:
         - PHP_CS_FIXER_FUTURE_MODE=1 vendor/bin/php-cs-fixer --diff --dry-run -v fix
         - vendor/bin/phpstan analyse --level=0 -c phpstan.neon src
