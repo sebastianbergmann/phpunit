@@ -272,8 +272,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $this->setName($name);
         }
 
-	$this->data     = $data;
-	
+        $this->data     = $data;
+
         $this->dataName = $dataName;
     }
 
@@ -1132,14 +1132,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 'PHPUnit\Framework\TestCase::$name must not be null.'
             );
         }
-	
-	$testArguments = \array_merge($this->data, $this->dependencyInput);
-	
-	if (is_null($testArguments)) {
-		$testArguments = [];
-	}
-	
-	$this->registerMockObjectsFromTestArguments($testArguments);
+
+        $testArguments = \array_merge($this->data, $this->dependencyInput);
+
+        if (\is_null($testArguments)) {
+            $testArguments = [];
+        }
+
+        $this->registerMockObjectsFromTestArguments($testArguments);
 
         try {
             $testResult = $this->{$this->name}(...\array_values($testArguments));
