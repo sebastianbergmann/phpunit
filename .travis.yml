@@ -56,8 +56,9 @@ jobs:
       env: PHPStan
       install: travis_retry composer update --prefer-dist --prefer-stable
       before_script:
-        - travis_retry composer require --dev --prefer-dist --prefer-stable phpstan/phpstan:^0.9
+        - travis_retry composer require --dev --prefer-dist --prefer-stable friendsofphp/php-cs-fixer:^2.10 phpstan/phpstan:^0.9
       script:
+        - vendor/bin/php-cs-fixer --diff --dry-run -v fix
         - vendor/bin/phpstan analyse --level=0 -c phpstan.neon src
         - vendor/bin/phpstan analyse --level=1 -c phpstan-tests.neon tests
     - stage: Style
