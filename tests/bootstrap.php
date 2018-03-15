@@ -54,3 +54,4 @@ require_once TEST_FILES_PATH . 'Mockable.php';
 require_once TEST_FILES_PATH . 'CoverageNamespacedFunctionTest.php';
 
 require_once TEST_FILES_PATH . 'NamespaceCoveredFunction.php';
+require_once TEST_FILES_PATH . 'DoNoAssertionTestCase.php';
