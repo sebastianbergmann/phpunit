@@ -53,7 +53,7 @@ class Printer
 
                     $this->out = \fsockopen($out[0], $out[1]);
                 } else {
-                    if (\strpos($out, 'php://') === false && !@\mkdir(\dirname($out), 0777, true) && !\is_dir(\dirname($out))) {
+                    if (\strpos($out, 'php://') === false && !\is_dir(\dirname($out)) && !@\mkdir(\dirname($out), 0777, true)) {
                         throw new \RuntimeException(\sprintf('Directory "%s" was not created', \dirname($out)));
                     }
 
