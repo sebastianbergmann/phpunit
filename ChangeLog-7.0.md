@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 7.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [7.0.3] - 2018-MM-DD
+## [7.0.3] - 2018-03-26
 
 * Fixed [#3028](https://github.com/sebastianbergmann/phpunit/pull/3028): TestDox name prettifier does not handle test case classes correctly that are in a `Tests\*` namespace
 
