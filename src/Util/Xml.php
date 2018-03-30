@@ -261,11 +261,7 @@ final class Xml
     private static function convertToUtf8(string $string): string
     {
         if (!self::isUtf8($string)) {
-            if (\function_exists('mb_convert_encoding')) {
-                return \mb_convert_encoding($string, 'UTF-8');
-            }
-
-            return \utf8_encode($string);
+            $string = \mb_convert_encoding($string, 'UTF-8');
         }
 
         return $string;
