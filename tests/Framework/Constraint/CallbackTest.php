@@ -14,12 +14,12 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 class CallbackTest extends ConstraintTestCase
 {
-    public function callbackReturningTrue()
+    public static function staticCallbackReturningTrue()
     {
         return true;
     }
 
-    public static function staticCallbackReturningTrue()
+    public function callbackReturningTrue()
     {
         return true;
     }

@@ -56,6 +56,18 @@ abstract class AbstractPhpProcess
     protected $timeout = 0;
 
     /**
+     * @return AbstractPhpProcess
+     */
+    public static function factory(): self
+    {
+        if (DIRECTORY_SEPARATOR === '\\') {
+            return new WindowsPhpProcess;
+        }
+
+        return new DefaultPhpProcess;
+    }
+
+    /**
      * Creates internal Runtime instance.
      */
     public function __construct()
@@ -164,18 +176,6 @@ abstract class AbstractPhpProcess
     public function getTimeout(): int
     {
         return $this->timeout;
-    }
-
-    /**
-     * @return AbstractPhpProcess
-     */
-    public static function factory(): self
-    {
-        if (DIRECTORY_SEPARATOR === '\\') {
-            return new WindowsPhpProcess;
-        }
-
-        return new DefaultPhpProcess;
     }
 
     /**

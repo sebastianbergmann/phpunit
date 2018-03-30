@@ -15,9 +15,8 @@ use PHPUnit\Runner\BaseTestRunner;
 
 class TestCaseTest extends TestCase
 {
+    protected static $testStatic      = 0;
     protected $backupGlobalsBlacklist = ['i', 'singleton'];
-
-    protected static $testStatic = 0;
 
     public static function setUpBeforeClass(): void
     {

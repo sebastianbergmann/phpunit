@@ -17,16 +17,6 @@ class TestSuiteTest extends TestCase
      */
     private $result;
 
-    protected function setUp(): void
-    {
-        $this->result = new TestResult;
-    }
-
-    protected function tearDown(): void
-    {
-        $this->result = null;
-    }
-
     public static function suite()
     {
         $suite = new TestSuite;
@@ -51,6 +41,16 @@ class TestSuiteTest extends TestCase
         $suite->addTest(new self('testDoNotSkipInheritedClass'));
 
         return $suite;
+    }
+
+    protected function setUp(): void
+    {
+        $this->result = new TestResult;
+    }
+
+    protected function tearDown(): void
+    {
+        $this->result = null;
     }
 
     public function testAddTestSuite(): void

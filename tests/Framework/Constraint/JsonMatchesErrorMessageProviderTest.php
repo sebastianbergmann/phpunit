@@ -14,44 +14,6 @@ use PHPUnit\Framework\TestCase;
 
 class JsonMatchesErrorMessageProviderTest extends TestCase
 {
-    /**
-     * @dataProvider translateTypeToPrefixDataprovider
-     *
-     * @param mixed $expected
-     * @param mixed $type
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testTranslateTypeToPrefix($expected, $type): void
-    {
-        $this->assertEquals(
-            $expected,
-            JsonMatchesErrorMessageProvider::translateTypeToPrefix($type)
-        );
-    }
-
-    /**
-     * @dataProvider determineJsonErrorDataprovider
-     *
-     * @param mixed $expected
-     * @param mixed $error
-     * @param mixed $prefix
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testDetermineJsonError($expected, $error, $prefix): void
-    {
-        $this->assertEquals(
-            $expected,
-            JsonMatchesErrorMessageProvider::determineJsonError(
-                $error,
-                $prefix
-            )
-        );
-    }
-
     public static function determineJsonErrorDataprovider()
     {
         return [
@@ -91,5 +53,43 @@ class JsonMatchesErrorMessageProviderTest extends TestCase
             'actual'   => ['Actual value JSON decode error - ', 'actual'],
             'default'  => ['', ''],
         ];
+    }
+
+    /**
+     * @dataProvider translateTypeToPrefixDataprovider
+     *
+     * @param mixed $expected
+     * @param mixed $type
+     *
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public function testTranslateTypeToPrefix($expected, $type): void
+    {
+        $this->assertEquals(
+            $expected,
+            JsonMatchesErrorMessageProvider::translateTypeToPrefix($type)
+        );
+    }
+
+    /**
+     * @dataProvider determineJsonErrorDataprovider
+     *
+     * @param mixed $expected
+     * @param mixed $error
+     * @param mixed $prefix
+     *
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public function testDetermineJsonError($expected, $error, $prefix): void
+    {
+        $this->assertEquals(
+            $expected,
+            JsonMatchesErrorMessageProvider::determineJsonError(
+                $error,
+                $prefix
+            )
+        );
     }
 }
