@@ -62,6 +62,11 @@ class TestRunner extends BaseTestRunner
     public const EXCEPTION_EXIT = 2;
 
     /**
+     * @var bool
+     */
+    protected static $versionStringPrinted = false;
+
+    /**
      * @var CodeCoverageFilter
      */
     protected $codeCoverageFilter;
@@ -77,11 +82,6 @@ class TestRunner extends BaseTestRunner
     protected $printer;
 
     /**
-     * @var bool
-     */
-    protected static $versionStringPrinted = false;
-
-    /**
      * @var Runtime
      */
     private $runtime;
@@ -95,21 +95,6 @@ class TestRunner extends BaseTestRunner
      * @var Hook[]
      */
     private $extensions = [];
-
-    /**
-     * @param TestSuiteLoader    $loader
-     * @param CodeCoverageFilter $filter
-     */
-    public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
-    {
-        if ($filter === null) {
-            $filter = new CodeCoverageFilter;
-        }
-
-        $this->codeCoverageFilter = $filter;
-        $this->loader             = $loader;
-        $this->runtime            = new Runtime;
-    }
 
     /**
      * @param ReflectionClass|Test $test
@@ -140,6 +125,21 @@ class TestRunner extends BaseTestRunner
         }
 
         throw new Exception('No test case or test suite found.');
+    }
+
+    /**
+     * @param TestSuiteLoader    $loader
+     * @param CodeCoverageFilter $filter
+     */
+    public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
+    {
+        if ($filter === null) {
+            $filter = new CodeCoverageFilter;
+        }
+
+        $this->codeCoverageFilter = $filter;
+        $this->loader             = $loader;
+        $this->runtime            = new Runtime;
     }
 
     /**

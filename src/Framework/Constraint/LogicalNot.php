@@ -22,20 +22,6 @@ class LogicalNot extends Constraint
     private $constraint;
 
     /**
-     * @param Constraint $constraint
-     */
-    public function __construct($constraint)
-    {
-        parent::__construct();
-
-        if (!($constraint instanceof Constraint)) {
-            $constraint = new IsEqual($constraint);
-        }
-
-        $this->constraint = $constraint;
-    }
-
-    /**
      * @param string $string
      *
      * @return string
@@ -91,6 +77,20 @@ class LogicalNot extends Constraint
         }
 
         return $negatedString;
+    }
+
+    /**
+     * @param Constraint $constraint
+     */
+    public function __construct($constraint)
+    {
+        parent::__construct();
+
+        if (!($constraint instanceof Constraint)) {
+            $constraint = new IsEqual($constraint);
+        }
+
+        $this->constraint = $constraint;
     }
 
     /**

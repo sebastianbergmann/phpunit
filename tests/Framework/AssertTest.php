@@ -19,6 +19,17 @@ class AssertTest extends TestCase
      */
     private $filesDirectory;
 
+    /**
+     * @return array<string, string[]>
+     */
+    public static function validInvalidJsonDataprovider()
+    {
+        return [
+            'error syntax in expected JSON' => ['{"Mascott"::}', '{"Mascott" : "Tux"}'],
+            'error UTF-8 in actual JSON'    => ['{"Mascott" : "Tux"}', '{"Mascott" : :}'],
+        ];
+    }
+
     protected function setUp(): void
     {
         $this->filesDirectory = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
@@ -2555,17 +2566,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "FOO\n");
-    }
-
-    /**
-     * @return array<string, string[]>
-     */
-    public static function validInvalidJsonDataprovider()
-    {
-        return [
-            'error syntax in expected JSON' => ['{"Mascott"::}', '{"Mascott" : "Tux"}'],
-            'error UTF-8 in actual JSON'    => ['{"Mascott" : "Tux"}', '{"Mascott" : :}'],
-        ];
     }
 
     protected function sameValues()

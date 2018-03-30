@@ -32,6 +32,42 @@ class TestFailure
     private $testName;
 
     /**
+     * Returns a description for an exception.
+     *
+     * @param Throwable $e
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return string
+     */
+    public static function exceptionToString(Throwable $e): string
+    {
+        if ($e instanceof SelfDescribing) {
+            $buffer = $e->toString();
+
+            if ($e instanceof ExpectationFailedException && $e->getComparisonFailure()) {
+                $buffer .= $e->getComparisonFailure()->getDiff();
+            }
+
+            if (!empty($buffer)) {
+                $buffer = \trim($buffer) . "\n";
+            }
+
+            return $buffer;
+        }
+
+        if ($e instanceof Error) {
+            return $e->getMessage() . "\n";
+        }
+
+        if ($e instanceof ExceptionWrapper) {
+            return $e->getClassName() . ': ' . $e->getMessage() . "\n";
+        }
+
+        return \get_class($e) . ': ' . $e->getMessage() . "\n";
+    }
+
+    /**
      * Constructs a TestFailure with the given test and exception.
      *
      * @param Test      $failedTest
@@ -76,42 +112,6 @@ class TestFailure
     public function getExceptionAsString(): string
     {
         return self::exceptionToString($this->thrownException);
-    }
-
-    /**
-     * Returns a description for an exception.
-     *
-     * @param Throwable $e
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return string
-     */
-    public static function exceptionToString(Throwable $e): string
-    {
-        if ($e instanceof SelfDescribing) {
-            $buffer = $e->toString();
-
-            if ($e instanceof ExpectationFailedException && $e->getComparisonFailure()) {
-                $buffer .= $e->getComparisonFailure()->getDiff();
-            }
-
-            if (!empty($buffer)) {
-                $buffer = \trim($buffer) . "\n";
-            }
-
-            return $buffer;
-        }
-
-        if ($e instanceof Error) {
-            return $e->getMessage() . "\n";
-        }
-
-        if ($e instanceof ExceptionWrapper) {
-            return $e->getClassName() . ': ' . $e->getMessage() . "\n";
-        }
-
-        return \get_class($e) . ': ' . $e->getMessage() . "\n";
     }
 
     /**

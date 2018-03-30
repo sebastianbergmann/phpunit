@@ -150,6 +150,10 @@ use PHPUnit\TextUI\ResultPrinter;
 final class Configuration
 {
     /**
+     * @var self[]
+     */
+    private static $instances = [];
+    /**
      * @var \DOMDocument
      */
     private $document;
@@ -163,32 +167,6 @@ final class Configuration
      * @var string
      */
     private $filename;
-
-    /**
-     * @var self[]
-     */
-    private static $instances = [];
-
-    /**
-     * Loads a PHPUnit configuration file.
-     *
-     * @param string $filename
-     *
-     * @throws Exception
-     */
-    private function __construct(string $filename)
-    {
-        $this->filename = $filename;
-        $this->document = Xml::loadFile($filename, false, true, true);
-        $this->xpath    = new DOMXPath($this->document);
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    private function __clone()
-    {
-    }
 
     /**
      * Returns a PHPUnit configuration object.
@@ -218,6 +196,27 @@ final class Configuration
         }
 
         return self::$instances[$realPath];
+    }
+
+    /**
+     * Loads a PHPUnit configuration file.
+     *
+     * @param string $filename
+     *
+     * @throws Exception
+     */
+    private function __construct(string $filename)
+    {
+        $this->filename = $filename;
+        $this->document = Xml::loadFile($filename, false, true, true);
+        $this->xpath    = new DOMXPath($this->document);
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    private function __clone()
+    {
     }
 
     /**
