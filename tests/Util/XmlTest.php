@@ -17,11 +17,6 @@ class XmlTest extends TestCase
 {
     /**
      * @dataProvider charProvider
-     *
-     * @param mixed $char
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function testPrepareString($char): void
     {
