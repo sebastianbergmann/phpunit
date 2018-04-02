@@ -18,7 +18,7 @@ class XmlTest extends TestCase
     /**
      * @dataProvider charProvider
      */
-    public function testPrepareString($char): void
+    public function testPrepareString(string $char): void
     {
         $e = null;
 
@@ -40,7 +40,7 @@ class XmlTest extends TestCase
         );
     }
 
-    public function charProvider()
+    public function charProvider(): array
     {
         $data = [];
 
