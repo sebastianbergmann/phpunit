@@ -127,7 +127,9 @@ class ExceptionWrapper extends Exception
     private function originalException(Throwable $exceptionToStore = null): ?Throwable
     {
         static $originalExceptions;
+
         $instanceId = \spl_object_hash($this);
+
         if ($exceptionToStore) {
             $originalExceptions[$instanceId] = $exceptionToStore;
         }
