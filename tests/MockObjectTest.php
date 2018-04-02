@@ -1087,9 +1087,6 @@ class MockObjectTest extends TestCase
         $this->resetMockObjects();
     }
 
-    /**
-     * @requires PHP 7.1
-     */
     public function testVoidReturnTypeIsMockedCorrectly()
     {
         /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
