@@ -49,7 +49,7 @@ class Count extends Constraint
     }
 
     /**
-     * @param array|\Countable|\Traversable $other
+     * @param iterable $other
      */
     protected function getCountOf($other): ?int
     {

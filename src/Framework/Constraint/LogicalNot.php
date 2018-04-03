@@ -75,7 +75,7 @@ class LogicalNot extends Constraint
     }
 
     /**
-     * @param Constraint $constraint
+     * @param Constraint|mixed $constraint
      */
     public function __construct($constraint)
     {
