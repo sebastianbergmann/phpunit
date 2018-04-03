@@ -28,6 +28,7 @@ class IsType extends Constraint
     public const TYPE_STRING   = 'string';
     public const TYPE_SCALAR   = 'scalar';
     public const TYPE_CALLABLE = 'callable';
+    public const TYPE_ITERABLE = 'iterable';
 
     /**
      * @var array
