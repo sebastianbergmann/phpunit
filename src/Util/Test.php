@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use Iterator;
 use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
