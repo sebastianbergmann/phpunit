@@ -44,15 +44,11 @@ class SkippedTestCase extends TestCase
      */
     protected $useOutputBuffering = false;
 
-    /**
-     * @param string $message
-     * @param mixed  $className
-     * @param mixed  $methodName
-     */
-    public function __construct($className, $methodName, $message = '')
+    public function __construct(string $className, string $methodName, string $message = '')
     {
-        $this->message = $message;
         parent::__construct($className . '::' . $methodName);
+
+        $this->message = $message;
     }
 
     public function getMessage(): string

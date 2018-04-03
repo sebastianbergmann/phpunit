@@ -18,10 +18,7 @@ class ExceptionMessageRegularExpression extends Constraint
      */
     private $expectedMessageRegExp;
 
-    /**
-     * @param string $expected
-     */
-    public function __construct($expected)
+    public function __construct(string $expected)
     {
         parent::__construct();
 

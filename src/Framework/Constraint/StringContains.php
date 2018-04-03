@@ -30,11 +30,7 @@ class StringContains extends Constraint
      */
     private $ignoreCase;
 
-    /**
-     * @param string $string
-     * @param bool   $ignoreCase
-     */
-    public function __construct($string, $ignoreCase = false)
+    public function __construct(string $string, bool $ignoreCase = false)
     {
         parent::__construct();
 

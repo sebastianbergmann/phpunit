@@ -16,10 +16,7 @@ class ExceptionMessage extends Constraint
      */
     private $expectedMessage;
 
-    /**
-     * @param string $expected
-     */
-    public function __construct($expected)
+    public function __construct(string $expected)
     {
         parent::__construct();
 

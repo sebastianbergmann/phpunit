@@ -17,11 +17,8 @@ class JsonMatchesErrorMessageProvider
 {
     /**
      * Translates JSON error to a human readable string.
-     *
-     * @param string $error
-     * @param string $prefix
      */
-    public static function determineJsonError($error, $prefix = ''): ?string
+    public static function determineJsonError(string $error, string $prefix = ''): ?string
     {
         switch ($error) {
             case JSON_ERROR_NONE:
@@ -43,10 +40,8 @@ class JsonMatchesErrorMessageProvider
 
     /**
      * Translates a given type to a human readable message prefix.
-     *
-     * @param string $type
      */
-    public static function translateTypeToPrefix($type): string
+    public static function translateTypeToPrefix(string $type): string
     {
         switch (\strtolower($type)) {
             case 'expected':

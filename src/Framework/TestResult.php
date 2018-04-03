@@ -219,12 +219,8 @@ class TestResult implements Countable
 
     /**
      * Adds an error to the list of errors.
-     *
-     * @param Test      $test
-     * @param Throwable $t
-     * @param float     $time
      */
-    public function addError(Test $test, Throwable $t, $time): void
+    public function addError(Test $test, Throwable $t, float $time): void
     {
         if ($t instanceof RiskyTest) {
             $this->risky[] = new TestFailure($test, $t);
@@ -276,12 +272,8 @@ class TestResult implements Countable
     /**
      * Adds a warning to the list of warnings.
      * The passed in exception caused the warning.
-     *
-     * @param Test    $test
-     * @param Warning $e
-     * @param float   $time
      */
-    public function addWarning(Test $test, Warning $e, $time): void
+    public function addWarning(Test $test, Warning $e, float $time): void
     {
         if ($this->stopOnWarning) {
             $this->stop();
@@ -299,12 +291,8 @@ class TestResult implements Countable
     /**
      * Adds a failure to the list of failures.
      * The passed in exception caused the failure.
-     *
-     * @param Test                 $test
-     * @param AssertionFailedError $e
-     * @param float                $time
      */
-    public function addFailure(Test $test, AssertionFailedError $e, $time): void
+    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         if ($e instanceof RiskyTest || $e instanceof OutputError) {
             $this->risky[] = new TestFailure($test, $e);
@@ -388,12 +376,9 @@ class TestResult implements Countable
     /**
      * Informs the result that a test was completed.
      *
-     * @param Test  $test
-     * @param float $time
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function endTest(Test $test, $time): void
+    public function endTest(Test $test, float $time): void
     {
         foreach ($this->listeners as $listener) {
             $listener->endTest($test, $time);

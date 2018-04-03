@@ -20,10 +20,7 @@ class StringEndsWith extends Constraint
      */
     private $suffix;
 
-    /**
-     * @param string $suffix
-     */
-    public function __construct($suffix)
+    public function __construct(string $suffix)
     {
         parent::__construct();
         $this->suffix = $suffix;

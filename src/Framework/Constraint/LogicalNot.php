@@ -21,10 +21,7 @@ class LogicalNot extends Constraint
      */
     private $constraint;
 
-    /**
-     * @param string $string
-     */
-    public static function negate($string): string
+    public static function negate(string $string): string
     {
         $positives = [
             'contains ',

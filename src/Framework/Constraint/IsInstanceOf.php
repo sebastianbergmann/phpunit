@@ -25,10 +25,7 @@ class IsInstanceOf extends Constraint
      */
     private $className;
 
-    /**
-     * @param string $className
-     */
-    public function __construct($className)
+    public function __construct(string $className)
     {
         parent::__construct();
 

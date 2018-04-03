@@ -23,12 +23,7 @@ class JsonMatches extends Constraint
      */
     private $value;
 
-    /**
-     * Creates a new constraint.
-     *
-     * @param string $value
-     */
-    public function __construct($value)
+    public function __construct(string $value)
     {
         parent::__construct();
 

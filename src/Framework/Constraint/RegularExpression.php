@@ -25,10 +25,7 @@ class RegularExpression extends Constraint
      */
     private $pattern;
 
-    /**
-     * @param string $pattern
-     */
-    public function __construct($pattern)
+    public function __construct(string $pattern)
     {
         parent::__construct();
 

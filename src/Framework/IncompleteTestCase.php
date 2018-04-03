@@ -44,15 +44,11 @@ class IncompleteTestCase extends TestCase
      */
     protected $useOutputBuffering = false;
 
-    /**
-     * @param string $className
-     * @param string $methodName
-     * @param string $message
-     */
-    public function __construct($className, $methodName, $message = '')
+    public function __construct(string $className, string $methodName, string $message = '')
     {
-        $this->message = $message;
         parent::__construct($className . '::' . $methodName);
+
+        $this->message = $message;
     }
 
     public function getMessage(): string

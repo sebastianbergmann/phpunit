@@ -19,11 +19,7 @@ class Attribute extends Composite
      */
     private $attributeName;
 
-    /**
-     * @param Constraint $constraint
-     * @param string     $attributeName
-     */
-    public function __construct(Constraint $constraint, $attributeName)
+    public function __construct(Constraint $constraint, string $attributeName)
     {
         parent::__construct($constraint);
 

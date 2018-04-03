@@ -58,11 +58,9 @@ class IsType extends Constraint
     private $type;
 
     /**
-     * @param string $type
-     *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($type)
+    public function __construct(string $type)
     {
         parent::__construct();
 
