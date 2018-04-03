@@ -22,10 +22,7 @@ class StringMatchesFormatDescription extends RegularExpression
      */
     private $string;
 
-    /**
-     * @param string $string
-     */
-    public function __construct($string)
+    public function __construct(string $string)
     {
         parent::__construct(
             $this->createPatternFromFormat(
