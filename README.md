@@ -42,5 +42,10 @@ Thanks to everyone who has contributed to PHPUnit! You can find a detailed list 
 
 A very special thanks to everyone who has contributed to the documentation and helps maintain the translations:
 
-* [PHPUnit Documentation](https://github.com/sebastianbergmann/phpunit-documentation/graphs/contributors)
+* [English](https://github.com/sebastianbergmann/phpunit-documentation-english/graphs/contributors)
+* [Spanish](https://github.com/sebastianbergmann/phpunit-documentation-spanish/graphs/contributors)
+* [French](https://github.com/sebastianbergmann/phpunit-documentation-french/graphs/contributors)
+* [Japanese](https://github.com/sebastianbergmann/phpunit-documentation-japanese/graphs/contributors)
+* [Brazilian Portuguese](https://github.com/sebastianbergmann/phpunit-documentation-brazilian-portuguese/graphs/contributors)
+* [Simplified Chinese](https://github.com/sebastianbergmann/phpunit-documentation-chinese/graphs/contributors)
 
