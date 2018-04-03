@@ -20,9 +20,6 @@ class StringStartsWith extends Constraint
      */
     private $prefix;
 
-    /**
-     * @param string $prefix
-     */
     public function __construct(string $prefix)
     {
         parent::__construct();

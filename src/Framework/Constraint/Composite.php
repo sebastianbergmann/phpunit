@@ -18,9 +18,6 @@ abstract class Composite extends Constraint
      */
     private $innerConstraint;
 
-    /**
-     * @param Constraint $innerConstraint
-     */
     public function __construct(Constraint $innerConstraint)
     {
         parent::__construct();

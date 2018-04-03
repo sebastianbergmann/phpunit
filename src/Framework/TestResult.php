@@ -187,8 +187,6 @@ class TestResult implements Countable
 
     /**
      * Registers a TestListener.
-     *
-     * @param TestListener $listener
      */
     public function addListener(TestListener $listener): void
     {
@@ -197,8 +195,6 @@ class TestResult implements Countable
 
     /**
      * Unregisters a TestListener.
-     *
-     * @param TestListener $listener
      */
     public function removeListener(TestListener $listener): void
     {
@@ -354,8 +350,6 @@ class TestResult implements Countable
 
     /**
      * Informs the result that a test suite will be started.
-     *
-     * @param TestSuite $suite
      */
     public function startTestSuite(TestSuite $suite): void
     {
@@ -370,8 +364,6 @@ class TestResult implements Countable
 
     /**
      * Informs the result that a test suite was completed.
-     *
-     * @param TestSuite $suite
      */
     public function endTestSuite(TestSuite $suite): void
     {
@@ -382,8 +374,6 @@ class TestResult implements Countable
 
     /**
      * Informs the result that a test will be started.
-     *
-     * @param Test $test
      */
     public function startTest(Test $test): void
     {
@@ -571,8 +561,6 @@ class TestResult implements Countable
 
     /**
      * Runs a TestCase.
-     *
-     * @param Test $test
      *
      * @throws CodeCoverageException
      * @throws OriginalCoveredCodeNotExecutedException
@@ -903,8 +891,6 @@ class TestResult implements Countable
 
     /**
      * Sets the code coverage object.
-     *
-     * @param CodeCoverage $codeCoverage
      */
     public function setCodeCoverage(CodeCoverage $codeCoverage): void
     {
@@ -913,8 +899,6 @@ class TestResult implements Countable
 
     /**
      * Enables or disables the error-to-exception conversion.
-     *
-     * @param bool $flag
      */
     public function convertErrorsToExceptions(bool $flag): void
     {
@@ -931,8 +915,6 @@ class TestResult implements Countable
 
     /**
      * Enables or disables the stopping when an error occurs.
-     *
-     * @param bool $flag
      */
     public function stopOnError(bool $flag): void
     {
@@ -941,8 +923,6 @@ class TestResult implements Countable
 
     /**
      * Enables or disables the stopping when a failure occurs.
-     *
-     * @param bool $flag
      */
     public function stopOnFailure(bool $flag): void
     {
@@ -951,17 +931,12 @@ class TestResult implements Countable
 
     /**
      * Enables or disables the stopping when a warning occurs.
-     *
-     * @param bool $flag
      */
     public function stopOnWarning(bool $flag): void
     {
         $this->stopOnWarning = $flag;
     }
 
-    /**
-     * @param bool $flag
-     */
     public function beStrictAboutTestsThatDoNotTestAnything(bool $flag): void
     {
         $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
@@ -972,9 +947,6 @@ class TestResult implements Countable
         return $this->beStrictAboutTestsThatDoNotTestAnything;
     }
 
-    /**
-     * @param bool $flag
-     */
     public function beStrictAboutOutputDuringTests(bool $flag): void
     {
         $this->beStrictAboutOutputDuringTests = $flag;
@@ -985,9 +957,6 @@ class TestResult implements Countable
         return $this->beStrictAboutOutputDuringTests;
     }
 
-    /**
-     * @param bool $flag
-     */
     public function beStrictAboutResourceUsageDuringSmallTests(bool $flag): void
     {
         $this->beStrictAboutResourceUsageDuringSmallTests = $flag;
@@ -998,9 +967,6 @@ class TestResult implements Countable
         return $this->beStrictAboutResourceUsageDuringSmallTests;
     }
 
-    /**
-     * @param bool $flag
-     */
     public function enforceTimeLimit(bool $flag): void
     {
         $this->enforceTimeLimit = $flag;
@@ -1011,9 +977,6 @@ class TestResult implements Countable
         return $this->enforceTimeLimit;
     }
 
-    /**
-     * @param bool $flag
-     */
     public function beStrictAboutTodoAnnotatedTests(bool $flag): void
     {
         $this->beStrictAboutTodoAnnotatedTests = $flag;
@@ -1026,8 +989,6 @@ class TestResult implements Countable
 
     /**
      * Enables or disables the stopping for risky tests.
-     *
-     * @param bool $flag
      */
     public function stopOnRisky(bool $flag): void
     {
@@ -1036,8 +997,6 @@ class TestResult implements Countable
 
     /**
      * Enables or disables the stopping for incomplete tests.
-     *
-     * @param bool $flag
      */
     public function stopOnIncomplete(bool $flag): void
     {
@@ -1046,8 +1005,6 @@ class TestResult implements Countable
 
     /**
      * Enables or disables the stopping for skipped tests.
-     *
-     * @param bool $flag
      */
     public function stopOnSkipped(bool $flag): void
     {
@@ -1072,8 +1029,6 @@ class TestResult implements Countable
 
     /**
      * Sets the timeout for small tests.
-     *
-     * @param int $timeout
      */
     public function setTimeoutForSmallTests(int $timeout): void
     {
@@ -1082,8 +1037,6 @@ class TestResult implements Countable
 
     /**
      * Sets the timeout for medium tests.
-     *
-     * @param int $timeout
      */
     public function setTimeoutForMediumTests(int $timeout): void
     {
@@ -1092,8 +1045,6 @@ class TestResult implements Countable
 
     /**
      * Sets the timeout for large tests.
-     *
-     * @param int $timeout
      */
     public function setTimeoutForLargeTests(int $timeout): void
     {
@@ -1108,9 +1059,6 @@ class TestResult implements Countable
         return $this->timeoutForLargeTests;
     }
 
-    /**
-     * @param bool $flag
-     */
     public function setRegisterMockObjectsFromTestArgumentsRecursively(bool $flag): void
     {
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
