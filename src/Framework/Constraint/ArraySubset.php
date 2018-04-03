@@ -21,7 +21,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 class ArraySubset extends Constraint
 {
     /**
-     * @var array|\Traversable
+     * @var iterable
      */
     private $subset;
 
@@ -30,11 +30,7 @@ class ArraySubset extends Constraint
      */
     private $strict;
 
-    /**
-     * @param array|\Traversable $subset
-     * @param bool               $strict Check for object identity
-     */
-    public function __construct($subset, $strict = false)
+    public function __construct(iterable $subset, bool $strict = false)
     {
         parent::__construct();
 
@@ -117,10 +113,7 @@ class ArraySubset extends Constraint
         return 'an array ' . $this->toString();
     }
 
-    /**
-     * @param array|\Traversable $other
-     */
-    private function toArray($other): array
+    private function toArray(iterable $other): array
     {
         if (\is_array($other)) {
             return $other;
