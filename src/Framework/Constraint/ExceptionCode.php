@@ -12,12 +12,12 @@ namespace PHPUnit\Framework\Constraint;
 class ExceptionCode extends Constraint
 {
     /**
-     * @var int
+     * @var int|string
      */
     private $expectedCode;
 
     /**
-     * @param int $expected
+     * @param int|string $expected
      */
     public function __construct($expected)
     {
