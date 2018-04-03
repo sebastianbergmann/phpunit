@@ -75,7 +75,7 @@ class IsInstanceOf extends Constraint
         );
     }
 
-    private function getType()
+    private function getType(): string
     {
         try {
             $reflection = new ReflectionClass($this->className);
