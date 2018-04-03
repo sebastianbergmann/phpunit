@@ -79,6 +79,7 @@ class IsInstanceOf extends Constraint
     {
         try {
             $reflection = new ReflectionClass($this->className);
+
             if ($reflection->isInterface()) {
                 return 'interface';
             }
