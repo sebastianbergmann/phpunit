@@ -64,8 +64,6 @@ class Attribute extends Composite
 
     /**
      * Returns a string representation of the constraint.
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -79,8 +77,6 @@ class Attribute extends Composite
      * cases. This method should return the second part of that sentence.
      *
      * @param mixed $other evaluated value or object
-     *
-     * @return string
      */
     protected function failureDescription($other): string
     {

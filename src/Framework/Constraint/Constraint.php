@@ -66,8 +66,6 @@ abstract class Constraint implements Countable, SelfDescribing
 
     /**
      * Counts the number of constraint elements.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -81,8 +79,6 @@ abstract class Constraint implements Countable, SelfDescribing
      * This method can be overridden to implement the evaluation algorithm.
      *
      * @param mixed $other value or object to evaluate
-     *
-     * @return bool
      */
     protected function matches($other): bool
     {
@@ -129,8 +125,6 @@ abstract class Constraint implements Countable, SelfDescribing
      * information like a diff
      *
      * @param mixed $other evaluated value or object
-     *
-     * @return string
      */
     protected function additionalFailureDescription($other): string
     {
@@ -149,8 +143,6 @@ abstract class Constraint implements Countable, SelfDescribing
      * @param mixed $other evaluated value or object
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return string
      */
     protected function failureDescription($other): string
     {

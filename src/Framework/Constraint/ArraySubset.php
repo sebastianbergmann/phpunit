@@ -96,8 +96,6 @@ class ArraySubset extends Constraint
      * Returns a string representation of the constraint.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -113,8 +111,6 @@ class ArraySubset extends Constraint
      * @param mixed $other evaluated value or object
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return string
      */
     protected function failureDescription($other): string
     {
@@ -123,8 +119,6 @@ class ArraySubset extends Constraint
 
     /**
      * @param array|\Traversable $other
-     *
-     * @return array
      */
     private function toArray($other): array
     {

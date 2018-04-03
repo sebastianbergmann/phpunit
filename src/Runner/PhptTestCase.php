@@ -84,8 +84,6 @@ class PhptTestCase implements Test, SelfDescribing
 
     /**
      * Counts the number of test cases executed by run(TestResult result).
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -105,8 +103,6 @@ class PhptTestCase implements Test, SelfDescribing
      * @throws \SebastianBergmann\CodeCoverage\RuntimeException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return TestResult
      */
     public function run(TestResult $result = null): TestResult
     {
@@ -193,8 +189,6 @@ class PhptTestCase implements Test, SelfDescribing
 
     /**
      * Returns the name of the test case.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -203,8 +197,6 @@ class PhptTestCase implements Test, SelfDescribing
 
     /**
      * Returns a string representation of the test case.
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -217,8 +209,6 @@ class PhptTestCase implements Test, SelfDescribing
      * @param array|string
      * @param mixed $content
      * @param mixed $ini
-     *
-     * @return array
      */
     private function parseIniSection($content, $ini = []): array
     {
@@ -253,8 +243,6 @@ class PhptTestCase implements Test, SelfDescribing
 
     /**
      * @param string $content
-     *
-     * @return array<string, string>
      */
     private function parseEnvSection($content): array
     {
@@ -314,8 +302,6 @@ class PhptTestCase implements Test, SelfDescribing
      * @param array      $settings
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return bool
      */
     private function runSkip(&$sections, TestResult $result, $settings): bool
     {
@@ -358,8 +344,6 @@ class PhptTestCase implements Test, SelfDescribing
 
     /**
      * @throws Exception
-     *
-     * @return array
      */
     private function parse(): array
     {
@@ -458,8 +442,6 @@ class PhptTestCase implements Test, SelfDescribing
 
     /**
      * @param array<string, string> $sections
-     *
-     * @return bool
      */
     private function validate(&$sections): bool
     {
@@ -501,8 +483,6 @@ class PhptTestCase implements Test, SelfDescribing
 
     /**
      * @param string $code
-     *
-     * @return string
      */
     private function render($code): string
     {
@@ -519,9 +499,6 @@ class PhptTestCase implements Test, SelfDescribing
         );
     }
 
-    /**
-     * @return array<string, string>
-     */
     private function getCoverageFiles(): array
     {
         $baseDir          = \dirname($this->filename) . DIRECTORY_SEPARATOR;
@@ -578,9 +555,6 @@ class PhptTestCase implements Test, SelfDescribing
         $settings['auto_prepend_file'] = $files['job'];
     }
 
-    /**
-     * @return array
-     */
     private function cleanupForCoverage(): array
     {
         $files    = $this->getCoverageFiles();
@@ -595,8 +569,6 @@ class PhptTestCase implements Test, SelfDescribing
 
     /**
      * @param array $ini
-     *
-     * @return array
      */
     private function stringifyIni($ini): array
     {

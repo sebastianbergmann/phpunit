@@ -17,8 +17,6 @@ interface SelfDescribing
 {
     /**
      * Returns a string representation of the object.
-     *
-     * @return string
      */
     public function toString(): string;
 }

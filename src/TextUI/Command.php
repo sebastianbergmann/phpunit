@@ -161,8 +161,6 @@ class Command
      * @throws \ReflectionException
      * @throws \InvalidArgumentException
      * @throws Exception
-     *
-     * @return int
      */
     public function run(array $argv, $exit = true): int
     {
@@ -224,8 +222,6 @@ class Command
 
     /**
      * Create a TestRunner, override in subclasses.
-     *
-     * @return TestRunner
      */
     protected function createRunner(): TestRunner
     {
@@ -879,8 +875,6 @@ class Command
      *
      * @param string $loaderClass
      * @param string $loaderFile
-     *
-     * @return null|TestSuiteLoader
      */
     protected function handleLoader($loaderClass, $loaderFile = ''): ?TestSuiteLoader
     {

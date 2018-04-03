@@ -427,8 +427,6 @@ class TestResult implements Countable
 
     /**
      * Returns true if no risky test occurred.
-     *
-     * @return bool
      */
     public function allHarmless(): bool
     {
@@ -437,8 +435,6 @@ class TestResult implements Countable
 
     /**
      * Gets the number of risky tests.
-     *
-     * @return int
      */
     public function riskyCount(): int
     {
@@ -447,8 +443,6 @@ class TestResult implements Countable
 
     /**
      * Returns true if no incomplete test occurred.
-     *
-     * @return bool
      */
     public function allCompletelyImplemented(): bool
     {
@@ -457,8 +451,6 @@ class TestResult implements Countable
 
     /**
      * Gets the number of incomplete tests.
-     *
-     * @return int
      */
     public function notImplementedCount(): int
     {
@@ -467,8 +459,6 @@ class TestResult implements Countable
 
     /**
      * Returns an Enumeration for the risky tests.
-     *
-     * @return array
      */
     public function risky(): array
     {
@@ -477,8 +467,6 @@ class TestResult implements Countable
 
     /**
      * Returns an Enumeration for the incomplete tests.
-     *
-     * @return array
      */
     public function notImplemented(): array
     {
@@ -487,8 +475,6 @@ class TestResult implements Countable
 
     /**
      * Returns true if no test has been skipped.
-     *
-     * @return bool
      */
     public function noneSkipped(): bool
     {
@@ -497,8 +483,6 @@ class TestResult implements Countable
 
     /**
      * Gets the number of skipped tests.
-     *
-     * @return int
      */
     public function skippedCount(): int
     {
@@ -507,8 +491,6 @@ class TestResult implements Countable
 
     /**
      * Returns an Enumeration for the skipped tests.
-     *
-     * @return array
      */
     public function skipped(): array
     {
@@ -517,8 +499,6 @@ class TestResult implements Countable
 
     /**
      * Gets the number of detected errors.
-     *
-     * @return int
      */
     public function errorCount(): int
     {
@@ -527,8 +507,6 @@ class TestResult implements Countable
 
     /**
      * Returns an Enumeration for the errors.
-     *
-     * @return array
      */
     public function errors(): array
     {
@@ -537,8 +515,6 @@ class TestResult implements Countable
 
     /**
      * Gets the number of detected failures.
-     *
-     * @return int
      */
     public function failureCount(): int
     {
@@ -547,8 +523,6 @@ class TestResult implements Countable
 
     /**
      * Returns an Enumeration for the failures.
-     *
-     * @return array
      */
     public function failures(): array
     {
@@ -557,8 +531,6 @@ class TestResult implements Countable
 
     /**
      * Gets the number of detected warnings.
-     *
-     * @return int
      */
     public function warningCount(): int
     {
@@ -567,8 +539,6 @@ class TestResult implements Countable
 
     /**
      * Returns an Enumeration for the warnings.
-     *
-     * @return array
      */
     public function warnings(): array
     {
@@ -577,8 +547,6 @@ class TestResult implements Countable
 
     /**
      * Returns the names of the tests that have passed.
-     *
-     * @return array
      */
     public function passed(): array
     {
@@ -587,8 +555,6 @@ class TestResult implements Countable
 
     /**
      * Returns the (top) test suite.
-     *
-     * @return TestSuite
      */
     public function topTestSuite(): TestSuite
     {
@@ -597,8 +563,6 @@ class TestResult implements Countable
 
     /**
      * Returns whether code coverage information should be collected.
-     *
-     * @return bool If code coverage should be collected
      */
     public function getCollectCodeCoverageInformation(): bool
     {
@@ -907,8 +871,6 @@ class TestResult implements Countable
 
     /**
      * Gets the number of run tests.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -917,8 +879,6 @@ class TestResult implements Countable
 
     /**
      * Checks whether the test run should stop.
-     *
-     * @return bool
      */
     public function shouldStop(): bool
     {
@@ -935,8 +895,6 @@ class TestResult implements Countable
 
     /**
      * Returns the code coverage object.
-     *
-     * @return CodeCoverage
      */
     public function getCodeCoverage(): ?CodeCoverage
     {
@@ -1009,9 +967,6 @@ class TestResult implements Countable
         $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
     }
 
-    /**
-     * @return bool
-     */
     public function isStrictAboutTestsThatDoNotTestAnything(): bool
     {
         return $this->beStrictAboutTestsThatDoNotTestAnything;
@@ -1025,9 +980,6 @@ class TestResult implements Countable
         $this->beStrictAboutOutputDuringTests = $flag;
     }
 
-    /**
-     * @return bool
-     */
     public function isStrictAboutOutputDuringTests(): bool
     {
         return $this->beStrictAboutOutputDuringTests;
@@ -1041,9 +993,6 @@ class TestResult implements Countable
         $this->beStrictAboutResourceUsageDuringSmallTests = $flag;
     }
 
-    /**
-     * @return bool
-     */
     public function isStrictAboutResourceUsageDuringSmallTests(): bool
     {
         return $this->beStrictAboutResourceUsageDuringSmallTests;
@@ -1057,9 +1006,6 @@ class TestResult implements Countable
         $this->enforceTimeLimit = $flag;
     }
 
-    /**
-     * @return bool
-     */
     public function enforcesTimeLimit(): bool
     {
         return $this->enforceTimeLimit;
@@ -1073,9 +1019,6 @@ class TestResult implements Countable
         $this->beStrictAboutTodoAnnotatedTests = $flag;
     }
 
-    /**
-     * @return bool
-     */
     public function isStrictAboutTodoAnnotatedTests(): bool
     {
         return $this->beStrictAboutTodoAnnotatedTests;
@@ -1113,8 +1056,6 @@ class TestResult implements Countable
 
     /**
      * Returns the time spent running the tests.
-     *
-     * @return float
      */
     public function time(): float
     {
@@ -1123,8 +1064,6 @@ class TestResult implements Countable
 
     /**
      * Returns whether the entire test was successful or not.
-     *
-     * @return bool
      */
     public function wasSuccessful(): bool
     {
@@ -1163,8 +1102,6 @@ class TestResult implements Countable
 
     /**
      * Returns the set timeout for large tests.
-     *
-     * @return int
      */
     public function getTimeoutForLargeTests(): int
     {

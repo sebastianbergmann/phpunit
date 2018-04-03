@@ -32,8 +32,6 @@ abstract class BaseTestRunner
 
     /**
      * Returns the loader to be used.
-     *
-     * @return TestSuiteLoader
      */
     public function getLoader(): TestSuiteLoader
     {
@@ -50,8 +48,6 @@ abstract class BaseTestRunner
      * @param mixed  $suffixes
      *
      * @throws Exception
-     *
-     * @return null|Test
      */
     public function getTest($suiteClassName, $suiteClassFile = '', $suffixes = ''): ?Test
     {
@@ -122,8 +118,6 @@ abstract class BaseTestRunner
      *
      * @param string $suiteClassName
      * @param string $suiteClassFile
-     *
-     * @return ReflectionClass
      */
     protected function loadSuiteClass($suiteClassName, $suiteClassFile = ''): ReflectionClass
     {

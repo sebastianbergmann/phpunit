@@ -55,9 +55,6 @@ class IncompleteTestCase extends TestCase
         parent::__construct($className . '::' . $methodName);
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return $this->message;
@@ -67,8 +64,6 @@ class IncompleteTestCase extends TestCase
      * Returns a string representation of the test case.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return string
      */
     public function toString(): string
     {

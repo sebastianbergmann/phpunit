@@ -29,9 +29,6 @@ class Count extends Constraint
         $this->expectedCount = $expected;
     }
 
-    /**
-     * @return string
-     */
     public function toString(): string
     {
         return \sprintf(
@@ -45,8 +42,6 @@ class Count extends Constraint
      * constraint is met, false otherwise.
      *
      * @param mixed $other
-     *
-     * @return bool
      */
     protected function matches($other): bool
     {

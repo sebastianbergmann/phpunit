@@ -26,9 +26,6 @@ class ExceptionMessage extends Constraint
         $this->expectedMessage = $expected;
     }
 
-    /**
-     * @return string
-     */
     public function toString(): string
     {
         if ($this->expectedMessage === '') {
@@ -43,8 +40,6 @@ class ExceptionMessage extends Constraint
      * constraint is met, false otherwise.
      *
      * @param \Throwable $other
-     *
-     * @return bool
      */
     protected function matches($other): bool
     {
@@ -62,8 +57,6 @@ class ExceptionMessage extends Constraint
      * cases. This method should return the second part of that sentence.
      *
      * @param mixed $other evaluated value or object
-     *
-     * @return string
      */
     protected function failureDescription($other): string
     {

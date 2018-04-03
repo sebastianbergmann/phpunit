@@ -46,8 +46,6 @@ class ExceptionWrapper extends Exception
 
     /**
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -64,17 +62,11 @@ class ExceptionWrapper extends Exception
         return $string;
     }
 
-    /**
-     * @return string
-     */
     public function getClassName(): string
     {
         return $this->className;
     }
 
-    /**
-     * @return ExceptionWrapper
-     */
     public function getPreviousWrapped(): ?self
     {
         return $this->previous;
@@ -107,9 +99,6 @@ class ExceptionWrapper extends Exception
         }
     }
 
-    /**
-     * @return null|Throwable
-     */
     public function getOriginalException(): ?Throwable
     {
         return $this->originalException();
@@ -121,8 +110,6 @@ class ExceptionWrapper extends Exception
      * Approach works both for var_dump() and var_export() and print_r()
      *
      * @param null|Throwable $exceptionToStore
-     *
-     * @return null|Throwable
      */
     private function originalException(Throwable $exceptionToStore = null): ?Throwable
     {

@@ -22,8 +22,6 @@ final class Getopt
      * @param null|array $long_options
      *
      * @throws Exception
-     *
-     * @return array
      */
     public static function getopt(array $args, string $short_options, array $long_options = null): array
     {

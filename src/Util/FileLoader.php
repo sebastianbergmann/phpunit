@@ -27,8 +27,6 @@ final class FileLoader
      * @param string $filename
      *
      * @throws Exception
-     *
-     * @return string
      */
     public static function checkAndLoad(string $filename): string
     {

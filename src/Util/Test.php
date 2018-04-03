@@ -151,8 +151,6 @@ final class Test
      * @param string $methodName
      *
      * @throws CodeCoverageException
-     *
-     * @return array
      */
     public static function getLinesToBeUsed(string $className, string $methodName): array
     {
@@ -166,8 +164,6 @@ final class Test
      * @param string $methodName
      *
      * @throws Warning
-     *
-     * @return array
      */
     public static function getRequirements(string $className, string $methodName): array
     {
@@ -423,9 +419,6 @@ final class Test
      * @param string $methodName
      *
      * @throws Exception
-     *
-     * @return array When a data provider is specified and exists
-     *               null  When no data provider is specified
      */
     public static function getProvidedData(string $className, string $methodName): ?array
     {
@@ -462,9 +455,6 @@ final class Test
      * @param string $docComment full docComment string
      *
      * @throws Exception when @testWith annotation is defined but cannot be parsed
-     *
-     * @return null|array array when @testWith annotation is defined,
-     *                    null when @testWith annotation is omitted
      */
     public static function getDataFromTestWithAnnotation(string $docComment): ?array
     {
@@ -545,8 +535,6 @@ final class Test
     /**
      * @param string $className
      * @param string $methodName
-     *
-     * @return array
      */
     public static function getInlineAnnotations(string $className, string $methodName): array
     {
@@ -574,8 +562,6 @@ final class Test
 
     /**
      * @param string $docBlock
-     *
-     * @return array
      */
     public static function parseAnnotations(string $docBlock): array
     {
@@ -599,8 +585,6 @@ final class Test
      *
      * @param string $className
      * @param string $methodName
-     *
-     * @return array<string, null|bool>
      */
     public static function getBackupSettings(string $className, string $methodName): array
     {
@@ -623,8 +607,6 @@ final class Test
      *
      * @param string $className
      * @param string $methodName
-     *
-     * @return array
      */
     public static function getDependencies(string $className, string $methodName): array
     {
@@ -654,8 +636,6 @@ final class Test
      *
      * @param string $className
      * @param string $methodName
-     *
-     * @return ?bool
      */
     public static function getErrorHandlerSettings(string $className, ?string $methodName): ?bool
     {
@@ -671,8 +651,6 @@ final class Test
      *
      * @param string $className
      * @param string $methodName
-     *
-     * @return array
      */
     public static function getGroups(string $className, ?string $methodName = ''): array
     {
@@ -723,8 +701,6 @@ final class Test
      *
      * @param string $className
      * @param string $methodName
-     *
-     * @return int
      */
     public static function getSize(string $className, ?string $methodName): int
     {
@@ -750,8 +726,6 @@ final class Test
      *
      * @param string $className
      * @param string $methodName
-     *
-     * @return bool
      */
     public static function getProcessIsolationSettings(string $className, string $methodName): bool
     {
@@ -778,8 +752,6 @@ final class Test
      *
      * @param string $className
      * @param string $methodName
-     *
-     * @return ?bool
      */
     public static function getPreserveGlobalStateSettings(string $className, string $methodName): ?bool
     {
@@ -792,8 +764,6 @@ final class Test
 
     /**
      * @param string $className
-     *
-     * @return array
      */
     public static function getHookMethods(string $className): array
     {
@@ -843,8 +813,6 @@ final class Test
      * @param string $mode
      *
      * @throws CodeCoverageException
-     *
-     * @return array
      */
     private static function getLinesToBeCoveredOrUsed(string $className, string $methodName, string $mode): array
     {
@@ -907,8 +875,6 @@ final class Test
      * If the constant is not found the string is used as is to ensure maximum BC.
      *
      * @param string $message
-     *
-     * @return string
      */
     private static function parseAnnotationContent(string $message): string
     {
@@ -925,9 +891,6 @@ final class Test
      * @param string $docComment
      * @param string $className
      * @param string $methodName
-     *
-     * @return array|Iterator when a data provider is specified and exists
-     *                        null           when no data provider is specified
      */
     private static function getDataFromDataProviderAnnotation(string $docComment, string $className, string $methodName): ?iterable
     {
@@ -1047,8 +1010,6 @@ final class Test
      * @param string $element
      *
      * @throws InvalidCoversTargetException
-     *
-     * @return array
      */
     private static function resolveElementToReflectionObjects(string $element): array
     {
@@ -1161,8 +1122,6 @@ final class Test
 
     /**
      * @param array $reflectors
-     *
-     * @return array
      */
     private static function resolveReflectionObjectsToLines(array $reflectors): array
     {

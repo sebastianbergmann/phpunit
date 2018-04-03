@@ -344,8 +344,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * @param \Throwable $t
-     *
-     * @return string
      */
     private static function getMessage(\Throwable $t): string
     {
@@ -368,8 +366,6 @@ class TeamCity extends ResultPrinter
      * @param \Throwable $t
      *
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     private static function getDetails(\Throwable $t): string
     {
@@ -390,8 +386,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * @param mixed $value
-     *
-     * @return string
      */
     private static function getPrimitiveValueAsString($value): ?string
     {
@@ -412,8 +406,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * @param string $text
-     *
-     * @return string
      */
     private static function escapeValue(string $text): string
     {
@@ -428,8 +420,6 @@ class TeamCity extends ResultPrinter
      * @param string $className
      *
      * @throws \ReflectionException
-     *
-     * @return string
      */
     private static function getFileName($className): string
     {

@@ -24,8 +24,6 @@ class ObjectHasAttribute extends ClassHasAttribute
      * constraint is met, false otherwise.
      *
      * @param mixed $other value or object to evaluate
-     *
-     * @return bool
      */
     protected function matches($other): bool
     {

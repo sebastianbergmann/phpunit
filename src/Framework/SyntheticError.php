@@ -54,25 +54,16 @@ class SyntheticError extends AssertionFailedError
         $this->syntheticTrace = $trace;
     }
 
-    /**
-     * @return string
-     */
     public function getSyntheticFile(): string
     {
         return $this->syntheticFile;
     }
 
-    /**
-     * @return int
-     */
     public function getSyntheticLine(): int
     {
         return $this->syntheticLine;
     }
 
-    /**
-     * @return array
-     */
     public function getSyntheticTrace(): array
     {
         return $this->syntheticTrace;

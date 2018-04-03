@@ -609,8 +609,6 @@ class ResultPrinter extends Printer implements TestListener
      *
      * @param string $color
      * @param string $buffer
-     *
-     * @return string
      */
     protected function formatWithColor($color, $buffer): string
     {

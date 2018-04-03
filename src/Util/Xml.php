@@ -40,8 +40,6 @@ final class Xml
      * @param bool               $strict
      *
      * @throws Exception
-     *
-     * @return DOMDocument
      */
     public static function load($actual, bool $isHtml = false, string $filename = '', bool $xinclude = false, bool $strict = false): DOMDocument
     {
@@ -126,8 +124,6 @@ final class Xml
      * @param bool   $strict
      *
      * @throws Exception
-     *
-     * @return DOMDocument
      */
     public static function loadFile(string $filename, bool $isHtml = false, bool $xinclude = false, bool $strict = false): DOMDocument
     {
@@ -168,8 +164,6 @@ final class Xml
      * @see https://www.w3.org/TR/xml/#charsets
      *
      * @param string $string
-     *
-     * @return string
      */
     public static function prepareString(string $string): string
     {

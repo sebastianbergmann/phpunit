@@ -23,8 +23,6 @@ class LogicalNot extends Constraint
 
     /**
      * @param string $string
-     *
-     * @return string
      */
     public static function negate($string): string
     {
@@ -127,8 +125,6 @@ class LogicalNot extends Constraint
 
     /**
      * Returns a string representation of the constraint.
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -147,8 +143,6 @@ class LogicalNot extends Constraint
 
     /**
      * Counts the number of constraint elements.
-     *
-     * @return int
      */
     public function count(): int
     {
@@ -164,8 +158,6 @@ class LogicalNot extends Constraint
      * @param mixed $other evaluated value or object
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return string
      */
     protected function failureDescription($other): string
     {

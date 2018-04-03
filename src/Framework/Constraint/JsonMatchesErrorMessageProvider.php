@@ -20,8 +20,6 @@ class JsonMatchesErrorMessageProvider
      *
      * @param string $error
      * @param string $prefix
-     *
-     * @return string
      */
     public static function determineJsonError($error, $prefix = ''): ?string
     {
@@ -47,8 +45,6 @@ class JsonMatchesErrorMessageProvider
      * Translates a given type to a human readable message prefix.
      *
      * @param string $type
-     *
-     * @return string
      */
     public static function translateTypeToPrefix($type): string
     {

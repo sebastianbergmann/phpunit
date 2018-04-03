@@ -385,8 +385,6 @@ class JUnit extends Printer implements TestListener
 
     /**
      * Returns the XML as a string.
-     *
-     * @return string
      */
     public function getXML(): string
     {
@@ -401,8 +399,6 @@ class JUnit extends Printer implements TestListener
      * PHPUnit with Phing.
      *
      * @param mixed $flag
-     *
-     * @return string
      */
     public function setWriteDocument($flag): ?string
     {

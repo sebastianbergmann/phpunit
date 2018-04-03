@@ -13,8 +13,6 @@ class IncludeGroupFilterIterator extends GroupFilterIterator
 {
     /**
      * @param string $hash
-     *
-     * @return bool
      */
     protected function doAccept($hash): bool
     {

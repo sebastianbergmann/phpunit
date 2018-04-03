@@ -1452,8 +1452,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws Exception
      * @throws ReflectionException
      * @throws \InvalidArgumentException
-     *
-     * @return MockObject
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = []): MockObject
     {
@@ -1504,8 +1502,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws Exception
      * @throws ReflectionException
      * @throws \InvalidArgumentException
-     *
-     * @return MockObject
      */
     protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
@@ -1541,7 +1537,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @return object
      */
-    protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)
+    protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)/*: object*/
     {
         return $this->getMockObjectGenerator()->getObjectForTrait(
             $traitName,
@@ -1559,8 +1555,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws Prophecy\Exception\Doubler\ClassNotFoundException
      * @throws Prophecy\Exception\Doubler\DoubleException
      * @throws Prophecy\Exception\Doubler\InterfaceNotFoundException
-     *
-     * @return \Prophecy\Prophecy\ObjectProphecy
      */
     protected function prophesize($classOrInterface = null): \Prophecy\Prophecy\ObjectProphecy
     {
@@ -1569,8 +1563,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * Gets the data set of a TestCase.
-     *
-     * @return array
      */
     protected function getProvidedData(): array
     {
@@ -1579,8 +1571,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * Creates a default TestResult object.
-     *
-     * @return TestResult
      */
     protected function createResult(): TestResult
     {
@@ -1800,8 +1790,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * Get the mock object generator, creating it if it doesn't exist.
-     *
-     * @return MockGenerator
      */
     private function getMockObjectGenerator(): MockGenerator
     {

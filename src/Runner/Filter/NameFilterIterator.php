@@ -44,9 +44,6 @@ class NameFilterIterator extends RecursiveFilterIterator
         $this->setFilter($filter);
     }
 
-    /**
-     * @return bool
-     */
     public function accept(): bool
     {
         $test = $this->getInnerIterator()->current();

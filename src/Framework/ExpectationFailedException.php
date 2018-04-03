@@ -34,9 +34,6 @@ class ExpectationFailedException extends AssertionFailedError
         parent::__construct($message, 0, $previous);
     }
 
-    /**
-     * @return null|ComparisonFailure
-     */
     public function getComparisonFailure(): ?ComparisonFailure
     {
         return $this->comparisonFailure;

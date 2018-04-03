@@ -51,8 +51,6 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
 
     /**
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
     public function __toString(): string
     {
@@ -72,8 +70,6 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
 
     /**
      * Returns the serializable trace (without 'args').
-     *
-     * @return array
      */
     public function getSerializableTrace(): array
     {

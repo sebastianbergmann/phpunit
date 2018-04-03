@@ -62,8 +62,6 @@ abstract class Composite extends Constraint
 
     /**
      * Counts the number of constraint elements.
-     *
-     * @return int
      */
     public function count(): int
     {

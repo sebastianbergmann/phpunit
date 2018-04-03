@@ -108,8 +108,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param string          $name
      *
      * @throws Exception
-     *
-     * @return Test
      */
     public static function createTest(ReflectionClass $theClass, $name): Test
     {
@@ -301,8 +299,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * @param ReflectionMethod $method
-     *
-     * @return bool
      */
     public static function isTestMethod(ReflectionMethod $method): bool
     {
@@ -438,8 +434,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * Returns a string representation of the test suite.
-     *
-     * @return string
      */
     public function toString(): string
     {
@@ -639,8 +633,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * Counts the number of test cases that will be run by this test.
      *
      * @param bool $preferCache indicates if cache is preferred
-     *
-     * @return int
      */
     public function count($preferCache = false): int
     {
@@ -661,8 +653,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * Returns the name of the suite.
-     *
-     * @return string
      */
     public function getName(): string
     {
@@ -671,8 +661,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * Returns the test groups of the suite.
-     *
-     * @return array
      */
     public function getGroups(): array
     {
@@ -819,8 +807,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * Returns the tests as an enumeration.
-     *
-     * @return array
      */
     public function tests(): array
     {
@@ -881,8 +867,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * Returns an iterator for this test suite.
-     *
-     * @return TestSuiteIterator
      */
     public function getIterator(): Iterator
     {
@@ -908,8 +892,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * Creates a default TestResult object.
-     *
-     * @return TestResult
      */
     protected function createResult(): TestResult
     {
@@ -960,8 +942,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * @param string $message
-     *
-     * @return WarningTestCase
      */
     protected static function warning($message): WarningTestCase
     {
@@ -972,8 +952,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param string $class
      * @param string $methodName
      * @param string $message
-     *
-     * @return SkippedTestCase
      */
     protected static function skipTest($class, $methodName, $message): SkippedTestCase
     {
@@ -984,8 +962,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @param string $class
      * @param string $methodName
      * @param string $message
-     *
-     * @return IncompleteTestCase
      */
     protected static function incompleteTest($class, $methodName, $message): IncompleteTestCase
     {

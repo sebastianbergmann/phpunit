@@ -174,8 +174,6 @@ final class Configuration
      * @param string $filename
      *
      * @throws Exception
-     *
-     * @return Configuration
      */
     public static function getInstance(string $filename): self
     {
@@ -221,8 +219,6 @@ final class Configuration
 
     /**
      * Returns the real path to the configuration file.
-     *
-     * @return string
      */
     public function getFilename(): string
     {
@@ -256,8 +252,6 @@ final class Configuration
 
     /**
      * Returns the configuration for SUT filtering.
-     *
-     * @return array
      */
     public function getFilterConfiguration(): array
     {
@@ -324,8 +318,6 @@ final class Configuration
 
     /**
      * Returns the configuration for groups.
-     *
-     * @return array
      */
     public function getGroupConfiguration(): array
     {
@@ -334,8 +326,6 @@ final class Configuration
 
     /**
      * Returns the configuration for testdox groups.
-     *
-     * @return array
      */
     public function getTestdoxGroupConfiguration(): array
     {
@@ -344,8 +334,6 @@ final class Configuration
 
     /**
      * Returns the configuration for listeners.
-     *
-     * @return array
      */
     public function getListenerConfiguration(): array
     {
@@ -398,8 +386,6 @@ final class Configuration
 
     /**
      * Returns the logging configuration.
-     *
-     * @return array
      */
     public function getLoggingConfiguration(): array
     {
@@ -460,8 +446,6 @@ final class Configuration
 
     /**
      * Returns the PHP configuration.
-     *
-     * @return array
      */
     public function getPHPConfiguration(): array
     {
@@ -611,8 +595,6 @@ final class Configuration
 
     /**
      * Returns the PHPUnit configuration.
-     *
-     * @return array
      */
     public function getPHPUnitConfiguration(): array
     {
@@ -926,8 +908,6 @@ final class Configuration
      * @param string $testSuiteFilter
      *
      * @throws Exception
-     *
-     * @return TestSuite
      */
     public function getTestSuiteConfiguration(string $testSuiteFilter = ''): TestSuite
     {
@@ -954,8 +934,6 @@ final class Configuration
 
     /**
      * Returns the test suite names from the configuration.
-     *
-     * @return array
      */
     public function getTestSuiteNames(): array
     {
@@ -974,8 +952,6 @@ final class Configuration
      * @param string     $testSuiteFilter
      *
      * @throws \PHPUnit\Framework\Exception
-     *
-     * @return TestSuite
      */
     private function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
     {
@@ -1114,8 +1090,6 @@ final class Configuration
     /**
      * @param string $value
      * @param int    $default
-     *
-     * @return int
      */
     private function getInteger(string $value, $default): int
     {
@@ -1128,8 +1102,6 @@ final class Configuration
 
     /**
      * @param string $query
-     *
-     * @return array
      */
     private function readFilterDirectories(string $query): array
     {

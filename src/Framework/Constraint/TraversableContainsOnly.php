@@ -87,8 +87,6 @@ class TraversableContainsOnly extends Constraint
 
     /**
      * Returns a string representation of the constraint.
-     *
-     * @return string
      */
     public function toString(): string
     {

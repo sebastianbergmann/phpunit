@@ -1932,8 +1932,6 @@ function countOf(int $count): Count
 /**
  * Returns a matcher that matches when the method is executed
  * zero or more times.
- *
- * @return AnyInvokedCountMatcher
  */
 function any(): AnyInvokedCountMatcher
 {
@@ -1942,8 +1940,6 @@ function any(): AnyInvokedCountMatcher
 
 /**
  * Returns a matcher that matches when the method is never executed.
- *
- * @return InvokedCountMatcher
  */
 function never(): InvokedCountMatcher
 {
@@ -1955,8 +1951,6 @@ function never(): InvokedCountMatcher
  * at least N times.
  *
  * @param int $requiredInvocations
- *
- * @return InvokedAtLeastCountMatcher
  */
 function atLeast($requiredInvocations): InvokedAtLeastCountMatcher
 {
@@ -1967,8 +1961,6 @@ function atLeast($requiredInvocations): InvokedAtLeastCountMatcher
 
 /**
  * Returns a matcher that matches when the method is executed at least once.
- *
- * @return InvokedAtLeastOnceMatcher
  */
 function atLeastOnce(): InvokedAtLeastOnceMatcher
 {
@@ -1977,8 +1969,6 @@ function atLeastOnce(): InvokedAtLeastOnceMatcher
 
 /**
  * Returns a matcher that matches when the method is executed exactly once.
- *
- * @return InvokedCountMatcher
  */
 function once(): InvokedCountMatcher
 {
@@ -1990,8 +1980,6 @@ function once(): InvokedCountMatcher
  * exactly $count times.
  *
  * @param int $count
- *
- * @return InvokedCountMatcher
  */
 function exactly($count): InvokedCountMatcher
 {
@@ -2003,8 +1991,6 @@ function exactly($count): InvokedCountMatcher
  * at most N times.
  *
  * @param int $allowedInvocations
- *
- * @return InvokedAtMostCountMatcher
  */
 function atMost($allowedInvocations): InvokedAtMostCountMatcher
 {
@@ -2016,8 +2002,6 @@ function atMost($allowedInvocations): InvokedAtMostCountMatcher
  * at the given index.
  *
  * @param int $index
- *
- * @return InvokedAtIndexMatcher
  */
 function at($index): InvokedAtIndexMatcher
 {
@@ -2026,8 +2010,6 @@ function at($index): InvokedAtIndexMatcher
 
 /**
  * @param mixed $value
- *
- * @return ReturnStub
  */
 function returnValue($value): ReturnStub
 {
@@ -2036,8 +2018,6 @@ function returnValue($value): ReturnStub
 
 /**
  * @param array $valueMap
- *
- * @return ReturnValueMapStub
  */
 function returnValueMap(array $valueMap): ReturnValueMapStub
 {
@@ -2046,8 +2026,6 @@ function returnValueMap(array $valueMap): ReturnValueMapStub
 
 /**
  * @param int $argumentIndex
- *
- * @return ReturnArgumentStub
  */
 function returnArgument($argumentIndex): ReturnArgumentStub
 {
@@ -2056,8 +2034,6 @@ function returnArgument($argumentIndex): ReturnArgumentStub
 
 /**
  * @param mixed $callback
- *
- * @return ReturnCallbackStub
  */
 function returnCallback($callback): ReturnCallbackStub
 {
@@ -2068,8 +2044,6 @@ function returnCallback($callback): ReturnCallbackStub
  * Returns the current object.
  *
  * This method is useful when mocking a fluent interface.
- *
- * @return ReturnSelfStub
  */
 function returnSelf(): ReturnSelfStub
 {
@@ -2078,8 +2052,6 @@ function returnSelf(): ReturnSelfStub
 
 /**
  * @param Throwable $exception
- *
- * @return ExceptionStub
  */
 function throwException(Throwable $exception): ExceptionStub
 {
@@ -2088,8 +2060,6 @@ function throwException(Throwable $exception): ExceptionStub
 
 /**
  * @param mixed $value , ...
- *
- * @return ConsecutiveCallsStub
  */
 function onConsecutiveCalls(): ConsecutiveCallsStub
 {

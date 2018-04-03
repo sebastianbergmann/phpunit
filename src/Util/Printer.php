@@ -119,8 +119,6 @@ class Printer
 
     /**
      * Check auto-flush mode.
-     *
-     * @return bool
      */
     public function getAutoFlush(): bool
     {

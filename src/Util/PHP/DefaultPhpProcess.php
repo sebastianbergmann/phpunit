@@ -28,8 +28,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
      * @param array  $settings
      *
      * @throws Exception
-     *
-     * @return array<string, string>
      */
     public function runJob($job, array $settings = []): array
     {
@@ -49,8 +47,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
 
     /**
      * Returns an array of file handles to be used in place of pipes
-     *
-     * @return array
      */
     protected function getHandles(): array
     {
@@ -64,8 +60,6 @@ class DefaultPhpProcess extends AbstractPhpProcess
      * @param array  $settings
      *
      * @throws Exception
-     *
-     * @return array<string, string>
      */
     protected function runProcess($job, $settings): array
     {

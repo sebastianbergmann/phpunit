@@ -25,8 +25,6 @@ class StandardTestSuiteLoader implements TestSuiteLoader
      *
      * @throws Exception
      * @throws \PHPUnit\Framework\Exception
-     *
-     * @return ReflectionClass
      */
     public function load($suiteClassName, $suiteClassFile = ''): ReflectionClass
     {
@@ -111,8 +109,6 @@ class StandardTestSuiteLoader implements TestSuiteLoader
 
     /**
      * @param ReflectionClass $aClass
-     *
-     * @return ReflectionClass
      */
     public function reload(ReflectionClass $aClass): ReflectionClass
     {

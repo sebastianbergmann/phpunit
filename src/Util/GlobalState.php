@@ -33,8 +33,6 @@ final class GlobalState
 
     /**
      * @param string[] $files
-     *
-     * @return string
      */
     public static function processIncludedFilesAsString(array $files): string
     {
@@ -155,8 +153,6 @@ final class GlobalState
 
     /**
      * @param array $array
-     *
-     * @return bool
      */
     private static function arrayOnlyContainsScalars(array $array): bool
     {

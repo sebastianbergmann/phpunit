@@ -21,8 +21,6 @@ final class Filesystem
      *   - Namespace: Foo\Bar\Baz -> Foo/Bar/Baz.php
      *
      * @param string $className
-     *
-     * @return string
      */
     public static function classNameToFilename(string $className): string
     {

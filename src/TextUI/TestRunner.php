@@ -105,8 +105,6 @@ class TestRunner extends BaseTestRunner
      * @throws \InvalidArgumentException
      * @throws Exception
      * @throws \ReflectionException
-     *
-     * @return TestResult
      */
     public static function run($test, array $arguments = [], $exit = true): TestResult
     {
@@ -151,8 +149,6 @@ class TestRunner extends BaseTestRunner
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws \ReflectionException
-     *
-     * @return TestResult
      */
     public function doRun(Test $suite, array $arguments = [], $exit = true): TestResult
     {
@@ -708,8 +704,6 @@ class TestRunner extends BaseTestRunner
 
     /**
      * Returns the loader to be used.
-     *
-     * @return TestSuiteLoader
      */
     public function getLoader(): TestSuiteLoader
     {
@@ -720,9 +714,6 @@ class TestRunner extends BaseTestRunner
         return $this->loader;
     }
 
-    /**
-     * @return TestResult
-     */
     protected function createTestResult(): TestResult
     {
         return new TestResult;
