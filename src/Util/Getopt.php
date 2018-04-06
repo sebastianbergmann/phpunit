@@ -60,6 +60,7 @@ final class Getopt
 
                 continue;
             }
+
             if (\strlen($arg) > 1 && $arg[1] === '-') {
                 self::parseLongOption(
                     \substr($arg, 2),

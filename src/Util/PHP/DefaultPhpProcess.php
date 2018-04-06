@@ -114,6 +114,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
                 if ($n === false) {
                     break;
                 }
+
                 if ($n === 0) {
                     \proc_terminate($process, 9);
 
@@ -124,6 +125,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
                         )
                     );
                 }
+
                 if ($n > 0) {
                     foreach ($r as $pipe) {
                         $pipeOffset = 0;

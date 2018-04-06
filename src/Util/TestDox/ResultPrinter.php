@@ -304,6 +304,8 @@ abstract class ResultPrinter extends Printer implements TestListener
 
     /**
      * Handler for 'on test' event.
+     *
+     * @param mixed $name
      */
     protected function onTest($name, bool $success = true): void
     {

@@ -342,6 +342,7 @@ abstract class AbstractPhpProcess
 
         if ($exception instanceof __PHP_Incomplete_Class) {
             $exceptionArray = [];
+
             foreach ((array) $exception as $key => $value) {
                 $key                  = \substr($key, \strrpos($key, "\0") + 1);
                 $exceptionArray[$key] = $value;
