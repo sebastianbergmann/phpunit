@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -14,17 +13,18 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class IsInstanceOfTest extends ConstraintTestCase
+final class IsInstanceOfTest extends ConstraintTestCase
 {
     public function testConstraintInstanceOf(): void
     {
-        $constraint = new IsInstanceOf('stdClass');
-        self::assertTrue($constraint->evaluate((object) [], '', true));
+        $constraint = new IsInstanceOf(\stdClass::class);
+
+        self::assertTrue($constraint->evaluate(new \stdClass, '', true));
     }
 
     public function testConstraintFailsOnString(): void
     {
-        $constraint = new IsInstanceOf('stdClass');
+        $constraint = new IsInstanceOf(\stdClass::class);
 
         try {
             $constraint->evaluate('stdClass');
