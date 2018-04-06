@@ -29,11 +29,26 @@ class StringMatchesFormatDescription extends RegularExpression
     {
         parent::__construct(
             $this->createPatternFromFormat(
-                \preg_replace('/\r\n/', "\n", $string)
+                $this->convertNewlines($string)
             )
         );
 
         $this->string = $string;
+    }
+
+    /**
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
+     *
+     * @param mixed $other Value or object to evaluate.
+     *
+     * @return bool
+     */
+    protected function matches($other): bool
+    {
+        return parent::matches(
+            $this->convertNewlines($other)
+        );
     }
 
     protected function failureDescription($other): string
@@ -43,8 +58,8 @@ class StringMatchesFormatDescription extends RegularExpression
 
     protected function additionalFailureDescription($other): string
     {
-        $from = \preg_split('(\r\n|\r|\n)', $this->string);
-        $to   = \preg_split('(\r\n|\r|\n)', $other);
+        $from = \explode("\n", $this->string);
+        $to   = \explode("\n", $this->convertNewlines($other));
 
         foreach ($from as $index => $line) {
             if (isset($to[$index]) && $line !== $to[$index]) {
@@ -99,5 +114,10 @@ class StringMatchesFormatDescription extends RegularExpression
         $string = \str_replace('%%', '%', $string);
 
         return '/^' . $string . '$/s';
+    }
+
+    private function convertNewlines($text): string
+    {
+        return \preg_replace('/\r\n/', "\n", $text);
     }
 }
