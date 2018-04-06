@@ -166,10 +166,6 @@ class JUnit extends Printer implements TestListener
 
     /**
      * Incomplete test.
-     *
-     * @param Test       $test
-     * @param \Throwable $t
-     * @param float      $time
      */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
