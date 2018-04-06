@@ -162,7 +162,7 @@ class CliTestDoxPrinter extends ResultPrinter
         );
     }
 
-    public function writeProgress($progress): void
+    public function writeProgress(string $progress): void
     {
     }
 

@@ -282,10 +282,7 @@ class TeamCity extends ResultPrinter
         );
     }
 
-    /**
-     * @param string $progress
-     */
-    protected function writeProgress($progress): void
+    protected function writeProgress(string $progress): void
     {
     }
 
