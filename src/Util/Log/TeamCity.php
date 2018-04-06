@@ -45,9 +45,6 @@ class TeamCity extends ResultPrinter
      */
     private $flowId;
 
-    /**
-     * @param TestResult $result
-     */
     public function printResult(TestResult $result): void
     {
         $this->printHeader();
@@ -56,10 +53,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * An error occurred.
-     *
-     * @param Test       $test
-     * @param \Throwable $t
-     * @param float      $time
      *
      * @throws \InvalidArgumentException
      */
@@ -78,10 +71,6 @@ class TeamCity extends ResultPrinter
     /**
      * A warning occurred.
      *
-     * @param Test    $test
-     * @param Warning $e
-     * @param float   $time
-     *
      * @throws \InvalidArgumentException
      */
     public function addWarning(Test $test, Warning $e, float $time): void
@@ -98,10 +87,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * A failure occurred.
-     *
-     * @param Test                 $test
-     * @param AssertionFailedError $e
-     * @param float                $time
      *
      * @throws \InvalidArgumentException
      */
@@ -142,10 +127,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * Incomplete test.
-     *
-     * @param Test       $test
-     * @param \Throwable $t
-     * @param float      $time
      */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
@@ -154,10 +135,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * Risky test.
-     *
-     * @param Test       $test
-     * @param \Throwable $t
-     * @param float      $time
      *
      * @throws \InvalidArgumentException
      */
@@ -168,10 +145,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * Skipped test.
-     *
-     * @param Test       $test
-     * @param \Throwable $t
-     * @param float      $time
      *
      * @throws \ReflectionException
      */
@@ -202,8 +175,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * A testsuite started.
-     *
-     * @param TestSuite $suite
      *
      * @throws \ReflectionException
      */
@@ -250,8 +221,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * A testsuite ended.
-     *
-     * @param TestSuite $suite
      */
     public function endTestSuite(TestSuite $suite): void
     {
@@ -276,8 +245,6 @@ class TeamCity extends ResultPrinter
 
     /**
      * A test started.
-     *
-     * @param Test $test
      *
      * @throws \ReflectionException
      */

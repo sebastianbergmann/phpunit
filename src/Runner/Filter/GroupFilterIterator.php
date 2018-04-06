@@ -20,11 +20,6 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
      */
     protected $groupTests = [];
 
-    /**
-     * @param RecursiveIterator $iterator
-     * @param array             $groups
-     * @param TestSuite         $suite
-     */
     public function __construct(RecursiveIterator $iterator, array $groups, TestSuite $suite)
     {
         parent::__construct($iterator);

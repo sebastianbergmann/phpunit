@@ -271,8 +271,6 @@ class Command
      * }
      * </code>
      *
-     * @param array $argv
-     *
      * @throws Exception
      */
     protected function handleArguments(array $argv): void

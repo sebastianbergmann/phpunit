@@ -76,9 +76,6 @@ abstract class AbstractPhpProcess
      * Defines if should use STDERR redirection or not.
      *
      * Then $stderrRedirection is TRUE, STDERR is redirected to STDOUT.
-     *
-     *
-     * @param bool $stderrRedirection
      */
     public function setUseStderrRedirection(bool $stderrRedirection): void
     {
@@ -230,9 +227,6 @@ abstract class AbstractPhpProcess
      */
     abstract public function runJob($job, array $settings = []): array;
 
-    /**
-     * @param array $settings
-     */
     protected function settingsToParameters(array $settings): string
     {
         $buffer = '';
@@ -363,8 +357,6 @@ abstract class AbstractPhpProcess
 
     /**
      * Gets the thrown exception from a PHPUnit\Framework\TestFailure.
-     *
-     * @param TestFailure $error
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/74
      */

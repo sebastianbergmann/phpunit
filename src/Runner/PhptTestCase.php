@@ -93,8 +93,6 @@ class PhptTestCase implements Test, SelfDescribing
     /**
      * Runs a test and collects its result in a TestResult instance.
      *
-     * @param TestResult $result
-     *
      * @throws Exception
      * @throws \ReflectionException
      * @throws \SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException

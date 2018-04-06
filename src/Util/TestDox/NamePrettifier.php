@@ -22,8 +22,6 @@ final class NamePrettifier
 
     /**
      * Prettifies the name of a test class.
-     *
-     * @param string $name
      */
     public function prettifyTestClass(string $name): string
     {
@@ -48,8 +46,6 @@ final class NamePrettifier
 
     /**
      * Prettifies the name of a test method.
-     *
-     * @param string $name
      */
     public function prettifyTestMethod(string $name): string
     {

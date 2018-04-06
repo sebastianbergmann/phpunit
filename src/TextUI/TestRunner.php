@@ -125,10 +125,6 @@ class TestRunner extends BaseTestRunner
         throw new Exception('No test case or test suite found.');
     }
 
-    /**
-     * @param TestSuiteLoader    $loader
-     * @param CodeCoverageFilter $filter
-     */
     public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
     {
         if ($filter === null) {
@@ -694,9 +690,6 @@ class TestRunner extends BaseTestRunner
         return $result;
     }
 
-    /**
-     * @param ResultPrinter $resultPrinter
-     */
     public function setPrinter(ResultPrinter $resultPrinter): void
     {
         $this->printer = $resultPrinter;
@@ -748,8 +741,6 @@ class TestRunner extends BaseTestRunner
     }
 
     /**
-     * @param array $arguments
-     *
      * @throws Exception
      */
     protected function handleConfiguration(array &$arguments): void
@@ -1121,9 +1112,6 @@ class TestRunner extends BaseTestRunner
     }
 
     /**
-     * @param TestSuite $suite
-     * @param array     $arguments
-     *
      * @throws \ReflectionException
      * @throws \InvalidArgumentException
      */

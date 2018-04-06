@@ -171,8 +171,6 @@ final class Configuration
     /**
      * Returns a PHPUnit configuration object.
      *
-     * @param string $filename
-     *
      * @throws Exception
      */
     public static function getInstance(string $filename): self
@@ -198,8 +196,6 @@ final class Configuration
 
     /**
      * Loads a PHPUnit configuration file.
-     *
-     * @param string $filename
      *
      * @throws Exception
      */
@@ -905,8 +901,6 @@ final class Configuration
     /**
      * Returns the test suite configuration.
      *
-     * @param string $testSuiteFilter
-     *
      * @throws Exception
      */
     public function getTestSuiteConfiguration(string $testSuiteFilter = ''): TestSuite
@@ -948,9 +942,6 @@ final class Configuration
     }
 
     /**
-     * @param DOMElement $testSuiteNode
-     * @param string     $testSuiteFilter
-     *
      * @throws \PHPUnit\Framework\Exception
      */
     private function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
@@ -1100,9 +1091,6 @@ final class Configuration
         return $default;
     }
 
-    /**
-     * @param string $query
-     */
     private function readFilterDirectories(string $query): array
     {
         $directories = [];
@@ -1143,8 +1131,6 @@ final class Configuration
     }
 
     /**
-     * @param string $query
-     *
      * @return string[]
      */
     private function readFilterFiles(string $query): array

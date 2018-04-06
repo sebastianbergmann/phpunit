@@ -73,10 +73,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * An error occurred.
-     *
-     * @param Test       $test
-     * @param \Throwable $t
-     * @param float      $time
      */
     public function addError(Test $test, \Throwable $t, float $time): void
     {
@@ -85,10 +81,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * A warning occurred.
-     *
-     * @param Test    $test
-     * @param Warning $e
-     * @param float   $time
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
@@ -96,10 +88,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * A failure occurred.
-     *
-     * @param Test                 $test
-     * @param AssertionFailedError $e
-     * @param float                $time
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
@@ -108,10 +96,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * Incomplete test.
-     *
-     * @param Test       $test
-     * @param \Throwable $t
-     * @param float      $time
      */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
@@ -119,10 +103,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * Risky test.
-     *
-     * @param Test       $test
-     * @param \Throwable $t
-     * @param float      $time
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
@@ -130,10 +110,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * Skipped test.
-     *
-     * @param Test       $test
-     * @param \Throwable $t
-     * @param float      $time
      */
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
@@ -141,8 +117,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * A test suite started.
-     *
-     * @param TestSuite $suite
      */
     public function startTestSuite(TestSuite $suite): void
     {
@@ -150,8 +124,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * A test suite ended.
-     *
-     * @param TestSuite $suite
      */
     public function endTestSuite(TestSuite $suite): void
     {
@@ -159,8 +131,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * A test started.
-     *
-     * @param Test $test
      */
     public function startTest(Test $test): void
     {
@@ -169,9 +139,6 @@ class XmlResultPrinter extends Printer implements TestListener
 
     /**
      * A test ended.
-     *
-     * @param Test  $test
-     * @param float $time
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */

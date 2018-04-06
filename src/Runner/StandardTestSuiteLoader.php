@@ -107,9 +107,6 @@ class StandardTestSuiteLoader implements TestSuiteLoader
         );
     }
 
-    /**
-     * @param ReflectionClass $aClass
-     */
     public function reload(ReflectionClass $aClass): ReflectionClass
     {
         return $aClass;

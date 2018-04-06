@@ -151,9 +151,6 @@ final class GlobalState
         return 'unserialize(' . \var_export(\serialize($variable), true) . ')';
     }
 
-    /**
-     * @param array $array
-     */
     private static function arrayOnlyContainsScalars(array $array): bool
     {
         $result = true;

@@ -23,8 +23,5 @@ interface TestSuiteLoader
      */
     public function load($suiteClassName, $suiteClassFile = ''): ReflectionClass;
 
-    /**
-     * @param ReflectionClass $aClass
-     */
     public function reload(ReflectionClass $aClass): ReflectionClass;
 }

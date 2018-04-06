@@ -17,8 +17,6 @@ class TextResultPrinter extends ResultPrinter
 {
     /**
      * Handler for 'start class' event.
-     *
-     * @param string $name
      */
     protected function startClass(string $name): void
     {
@@ -27,9 +25,6 @@ class TextResultPrinter extends ResultPrinter
 
     /**
      * Handler for 'on test' event.
-     *
-     * @param string $name
-     * @param bool   $success
      */
     protected function onTest($name, bool $success = true): void
     {
@@ -44,8 +39,6 @@ class TextResultPrinter extends ResultPrinter
 
     /**
      * Handler for 'end class' event.
-     *
-     * @param string $name
      */
     protected function endClass(string $name): void
     {
