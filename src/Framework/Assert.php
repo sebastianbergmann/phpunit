@@ -869,7 +869,6 @@ abstract class Assert
         static::assertFileExists($expected, $message);
         static::assertFileExists($actual, $message);
 
-        /** @noinspection PhpUnitTestsInspection */
         static::assertEquals(
             \file_get_contents($expected),
             \file_get_contents($actual),
