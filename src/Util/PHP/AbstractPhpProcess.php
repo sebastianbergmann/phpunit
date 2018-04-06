@@ -64,9 +64,6 @@ abstract class AbstractPhpProcess
         return new DefaultPhpProcess;
     }
 
-    /**
-     * Creates internal Runtime instance.
-     */
     public function __construct()
     {
         $this->runtime = new Runtime;
