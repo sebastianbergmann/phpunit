@@ -229,6 +229,7 @@ final class Configuration
     public function getValidationErrors(): array
     {
         $result = [];
+
         foreach ($this->errors as $error) {
             if (!isset($result[$error->line])) {
                 $result[$error->line] = [];
