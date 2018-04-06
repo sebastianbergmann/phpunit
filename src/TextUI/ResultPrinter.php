@@ -192,11 +192,6 @@ class ResultPrinter extends Printer implements TestListener
         $this->printFooter($result);
     }
 
-    public function printWaitPrompt(): void
-    {
-        $this->write("\n<RETURN> to continue\n");
-    }
-
     /**
      * An error occurred.
      */
