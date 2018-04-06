@@ -36,6 +36,8 @@ class Printer
     /**
      * Constructor.
      *
+     * @param null|mixed $out
+     *
      * @throws Exception
      */
     public function __construct($out = null)

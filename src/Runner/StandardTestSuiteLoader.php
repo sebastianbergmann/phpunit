@@ -48,6 +48,7 @@ class StandardTestSuiteLoader implements TestSuiteLoader
 
             foreach ($loadedClasses as $loadedClass) {
                 $class = new ReflectionClass($loadedClass);
+
                 if (\substr($loadedClass, $offset) === $suiteClassName &&
                     $class->getFileName() == $filename) {
                     $suiteClassName = $loadedClass;

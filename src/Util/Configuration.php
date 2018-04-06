@@ -427,6 +427,7 @@ final class Configuration
                         false
                     );
                 }
+
                 if ($log->hasAttribute('showOnlySummary')) {
                     $result['coverageTextShowOnlySummary'] = $this->getBoolean(
                         (string) $log->getAttribute('showOnlySummary'),
@@ -959,6 +960,7 @@ final class Configuration
 
         foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
             $excludeFile = (string) $excludeNode->textContent;
+
             if ($excludeFile) {
                 $exclude[] = $this->toAbsolutePath($excludeFile);
             }

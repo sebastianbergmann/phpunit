@@ -337,6 +337,7 @@ class TestTest extends TestCase
     public function testGetRequirementsWithVersionConstraints($test, array $result): void
     {
         $requirements = Test::getRequirements(\RequirementsTest::class, $test);
+
         foreach ($result as $type => $expected_requirement) {
             $this->assertArrayHasKey(
                 "{$type}_constraint",
