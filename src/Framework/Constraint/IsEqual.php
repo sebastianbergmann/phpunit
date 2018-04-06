@@ -49,11 +49,6 @@ class IsEqual extends Constraint
     private $ignoreCase = false;
 
     /**
-     * @var SebastianBergmann\Comparator\ComparisonFailure
-     */
-    private $lastFailure;
-
-    /**
      * @param mixed $value
      * @param float $delta
      * @param int   $maxDepth
