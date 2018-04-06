@@ -814,6 +814,17 @@ class TestResult implements Countable
                 ),
                 $time
             );
+        } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
+            $test->doesNotPerformAssertions() &&
+            $test->getNumAssertions() > 0) {
+            $this->addFailure(
+                $test,
+                new RiskyTestError(\sprintf(
+                    'This test is annotated with "@doesNotPerformAssertions" but performed %d assertions',
+                    $test->getNumAssertions()
+                )),
+                $time
+            );
         } elseif ($this->beStrictAboutOutputDuringTests && $test->hasOutput()) {
             $this->addFailure(
                 $test,
