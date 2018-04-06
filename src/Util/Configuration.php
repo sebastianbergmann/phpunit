@@ -153,6 +153,7 @@ final class Configuration
      * @var self[]
      */
     private static $instances = [];
+
     /**
      * @var \DOMDocument
      */

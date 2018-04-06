@@ -69,7 +69,7 @@ abstract class AbstractPhpProcess
      */
     public function __construct()
     {
-        $this->runtime = new Runtime();
+        $this->runtime = new Runtime;
     }
 
     /**

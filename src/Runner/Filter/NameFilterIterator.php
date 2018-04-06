@@ -38,6 +38,7 @@ class NameFilterIterator extends RecursiveFilterIterator
     public function __construct(RecursiveIterator $iterator, string $filter)
     {
         parent::__construct($iterator);
+
         $this->setFilter($filter);
     }
 

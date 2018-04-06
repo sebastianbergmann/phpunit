@@ -715,6 +715,7 @@ class TestRunner extends BaseTestRunner
     protected function runFailed(string $message): void
     {
         $this->write($message . PHP_EOL);
+
         exit(self::FAILURE_EXIT);
     }
 
