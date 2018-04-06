@@ -169,6 +169,11 @@ final class Configuration
     private $filename;
 
     /**
+     * @var \LibXMLError[]
+     */
+    private $errors = [];
+
+    /**
      * Returns a PHPUnit configuration object.
      *
      * @param string $filename
@@ -208,6 +213,8 @@ final class Configuration
         $this->filename = $filename;
         $this->document = Xml::loadFile($filename, false, true, true);
         $this->xpath    = new DOMXPath($this->document);
+
+        $this->validateConfigurationAgainstSchema();
     }
 
     /**
@@ -215,6 +222,24 @@ final class Configuration
      */
     private function __clone()
     {
+    }
+
+    public function hasValidationErrors(): bool
+    {
+        return \count($this->errors) > 0;
+    }
+
+    public function getValidationErrors(): array
+    {
+        $result = [];
+        foreach ($this->errors as $error) {
+            if (!isset($result[$error->line])) {
+                $result[$error->line] = [];
+            }
+            $result[$error->line][] = \trim($error->message);
+        }
+
+        return $result;
     }
 
     /**
@@ -945,6 +970,20 @@ final class Configuration
         }
 
         return $names;
+    }
+
+    private function validateConfigurationAgainstSchema()
+    {
+        $original    = \libxml_use_internal_errors(true);
+        $xsdFilename = __DIR__ . '/../../phpunit.xsd';
+
+        if (\defined('__PHPUNIT_PHAR_ROOT__')) {
+            $xsdFilename =  __PHPUNIT_PHAR_ROOT__ . '/phpunit.xsd';
+        }
+
+        $this->document->schemaValidate($xsdFilename);
+        $this->errors = \libxml_get_errors();
+        \libxml_use_internal_errors($original);
     }
 
     /**

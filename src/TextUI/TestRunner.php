@@ -320,6 +320,19 @@ class TestRunner extends BaseTestRunner
             $this->writeMessage('Warning', 'opcache.save_comments=0 set; annotations will not work');
         }
 
+        if ($arguments['configuration']->hasValidationErrors()) {
+            $this->write(
+                "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
+            );
+            foreach ($arguments['configuration']->getValidationErrors() as $line => $errors) {
+                $this->write(\sprintf("\n  Line %d:\n", $line));
+                foreach ($errors as $msg) {
+                    $this->write(\sprintf("  - %s\n", $msg));
+                }
+            }
+            $this->write("\n  Test results may not be as expected.\n\n");
+        }
+
         foreach ($arguments['listeners'] as $listener) {
             $result->addListener($listener);
         }
