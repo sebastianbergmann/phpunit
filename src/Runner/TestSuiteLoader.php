@@ -17,11 +17,7 @@ use ReflectionClass;
  */
 interface TestSuiteLoader
 {
-    /**
-     * @param string $suiteClassName
-     * @param string $suiteClassFile
-     */
-    public function load($suiteClassName, $suiteClassFile = ''): ReflectionClass;
+    public function load(string $suiteClassName, string $suiteClassFile = ''): ReflectionClass;
 
     public function reload(ReflectionClass $aClass): ReflectionClass;
 }

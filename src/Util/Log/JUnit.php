@@ -381,14 +381,9 @@ class JUnit extends Printer implements TestListener
     /**
      * Method which generalizes addError() and addFailure()
      *
-     * @param Test       $test
-     * @param \Throwable $t
-     * @param float      $time
-     * @param string     $type
-     *
      * @throws \InvalidArgumentException
      */
-    private function doAddFault(Test $test, \Throwable $t, $time, $type): void
+    private function doAddFault(Test $test, \Throwable $t, float $time, $type): void
     {
         if ($this->currentTestCase === null) {
             return;

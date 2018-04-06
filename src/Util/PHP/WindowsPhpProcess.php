@@ -21,7 +21,7 @@ use PHPUnit\Framework\Exception;
  */
 class WindowsPhpProcess extends DefaultPhpProcess
 {
-    public function getCommand(array $settings, $file = null): string
+    public function getCommand(array $settings, string $file = null): string
     {
         return '"' . parent::getCommand($settings, $file) . '"';
     }

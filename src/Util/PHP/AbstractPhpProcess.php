@@ -92,12 +92,10 @@ abstract class AbstractPhpProcess
 
     /**
      * Sets the input string to be sent via STDIN
-     *
-     * @param string $stdin
      */
-    public function setStdin($stdin): void
+    public function setStdin(string $stdin): void
     {
-        $this->stdin = (string) $stdin;
+        $this->stdin = $stdin;
     }
 
     /**
@@ -110,12 +108,10 @@ abstract class AbstractPhpProcess
 
     /**
      * Sets the string of arguments to pass to the php job
-     *
-     * @param string $args
      */
-    public function setArgs($args): void
+    public function setArgs(string $args): void
     {
-        $this->args = (string) $args;
+        $this->args = $args;
     }
 
     /**
@@ -146,12 +142,10 @@ abstract class AbstractPhpProcess
 
     /**
      * Sets the amount of seconds to wait before timing out
-     *
-     * @param int $timeout
      */
-    public function setTimeout($timeout): void
+    public function setTimeout(int $timeout): void
     {
-        $this->timeout = (int) $timeout;
+        $this->timeout = $timeout;
     }
 
     /**
@@ -165,13 +159,9 @@ abstract class AbstractPhpProcess
     /**
      * Runs a single test in a separate PHP process.
      *
-     * @param string     $job
-     * @param Test       $test
-     * @param TestResult $result
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function runTestJob($job, Test $test, TestResult $result): void
+    public function runTestJob(string $job, Test $test, TestResult $result): void
     {
         $result->startTest($test);
 
@@ -187,11 +177,8 @@ abstract class AbstractPhpProcess
 
     /**
      * Returns the command based into the configurations.
-     *
-     * @param array       $settings
-     * @param null|string $file
      */
-    public function getCommand(array $settings, $file = null): string
+    public function getCommand(array $settings, string $file = null): string
     {
         $command = $this->runtime->getBinary();
         $command .= $this->settingsToParameters($settings);
@@ -221,11 +208,8 @@ abstract class AbstractPhpProcess
 
     /**
      * Runs a single job (PHP code) using a separate PHP process.
-     *
-     * @param string $job
-     * @param array  $settings
      */
-    abstract public function runJob($job, array $settings = []): array;
+    abstract public function runJob(string $job, array $settings = []): array;
 
     protected function settingsToParameters(array $settings): string
     {
@@ -241,14 +225,9 @@ abstract class AbstractPhpProcess
     /**
      * Processes the TestResult object from an isolated process.
      *
-     * @param Test       $test
-     * @param TestResult $result
-     * @param string     $stdout
-     * @param string     $stderr
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    private function processChildResult(Test $test, TestResult $result, $stdout, $stderr): void
+    private function processChildResult(Test $test, TestResult $result, string $stdout, string $stderr): void
     {
         $time = 0;
 

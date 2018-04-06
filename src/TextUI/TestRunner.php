@@ -137,16 +137,12 @@ class TestRunner extends BaseTestRunner
     }
 
     /**
-     * @param Test  $suite
-     * @param array $arguments
-     * @param bool  $exit
-     *
      * @throws Exception
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
      * @throws \ReflectionException
      */
-    public function doRun(Test $suite, array $arguments = [], $exit = true): TestResult
+    public function doRun(Test $suite, array $arguments = [], bool $exit = true): TestResult
     {
         if (isset($arguments['configuration'])) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
@@ -715,19 +711,14 @@ class TestRunner extends BaseTestRunner
     /**
      * Override to define how to handle a failed loading of
      * a test suite.
-     *
-     * @param string $message
      */
-    protected function runFailed($message): void
+    protected function runFailed(string $message): void
     {
         $this->write($message . PHP_EOL);
         exit(self::FAILURE_EXIT);
     }
 
-    /**
-     * @param string $buffer
-     */
-    protected function write($buffer): void
+    protected function write(string $buffer): void
     {
         if (PHP_SAPI != 'cli' && PHP_SAPI != 'phpdbg') {
             $buffer = \htmlspecialchars($buffer);
@@ -1149,11 +1140,7 @@ class TestRunner extends BaseTestRunner
         $suite->injectFilter($filterFactory);
     }
 
-    /**
-     * @param string $type
-     * @param string $message
-     */
-    private function writeMessage($type, $message): void
+    private function writeMessage(string $type, string $message): void
     {
         if (!$this->messagePrinted) {
             $this->write("\n");

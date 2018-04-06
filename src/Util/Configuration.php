@@ -1078,11 +1078,7 @@ final class Configuration
         return $default;
     }
 
-    /**
-     * @param string $value
-     * @param int    $default
-     */
-    private function getInteger(string $value, $default): int
+    private function getInteger(string $value, int $default): int
     {
         if (\is_numeric($value)) {
             return (int) $value;

@@ -33,12 +33,9 @@ class NameFilterIterator extends RecursiveFilterIterator
     protected $filterMax;
 
     /**
-     * @param RecursiveIterator $iterator
-     * @param string            $filter
-     *
      * @throws \Exception
      */
-    public function __construct(RecursiveIterator $iterator, $filter)
+    public function __construct(RecursiveIterator $iterator, string $filter)
     {
         parent::__construct($iterator);
         $this->setFilter($filter);
@@ -75,11 +72,9 @@ class NameFilterIterator extends RecursiveFilterIterator
     }
 
     /**
-     * @param string $filter
-     *
      * @throws \Exception
      */
-    protected function setFilter($filter): void
+    protected function setFilter(string $filter): void
     {
         if (RegularExpression::safeMatch($filter, '') === false) {
             // Handles:

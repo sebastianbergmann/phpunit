@@ -20,13 +20,10 @@ use ReflectionClass;
 class StandardTestSuiteLoader implements TestSuiteLoader
 {
     /**
-     * @param string $suiteClassName
-     * @param string $suiteClassFile
-     *
      * @throws Exception
      * @throws \PHPUnit\Framework\Exception
      */
-    public function load($suiteClassName, $suiteClassFile = ''): ReflectionClass
+    public function load(string $suiteClassName, string $suiteClassFile = ''): ReflectionClass
     {
         $suiteClassName = \str_replace('.php', '', $suiteClassName);
 

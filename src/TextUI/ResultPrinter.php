@@ -318,11 +318,7 @@ class ResultPrinter extends Printer implements TestListener
         }
     }
 
-    /**
-     * @param array  $defects
-     * @param string $type
-     */
-    protected function printDefects(array $defects, $type): void
+    protected function printDefects(array $defects, string $type): void
     {
         $count = \count($defects);
 
@@ -357,21 +353,13 @@ class ResultPrinter extends Printer implements TestListener
         $this->defectListPrinted = true;
     }
 
-    /**
-     * @param TestFailure $defect
-     * @param int         $count
-     */
-    protected function printDefect(TestFailure $defect, $count): void
+    protected function printDefect(TestFailure $defect, int $count): void
     {
         $this->printDefectHeader($defect, $count);
         $this->printDefectTrace($defect);
     }
 
-    /**
-     * @param TestFailure $defect
-     * @param int         $count
-     */
-    protected function printDefectHeader(TestFailure $defect, $count): void
+    protected function printDefectHeader(TestFailure $defect, int $count): void
     {
         $this->write(
             \sprintf(
@@ -503,10 +491,7 @@ class ResultPrinter extends Printer implements TestListener
         }
     }
 
-    /**
-     * @param string $progress
-     */
-    protected function writeProgress($progress): void
+    protected function writeProgress(string $progress): void
     {
         if ($this->debug) {
             return;
@@ -546,11 +531,8 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * Formats a buffer with a specified ANSI color sequence if colors are
      * enabled.
-     *
-     * @param string $color
-     * @param string $buffer
      */
-    protected function formatWithColor($color, $buffer): string
+    protected function formatWithColor(string $color, string $buffer): string
     {
         if (!$this->colors) {
             return $buffer;
@@ -578,12 +560,8 @@ class ResultPrinter extends Printer implements TestListener
 
     /**
      * Writes a buffer out with a color sequence if colors are enabled.
-     *
-     * @param string $color
-     * @param string $buffer
-     * @param bool   $lf
      */
-    protected function writeWithColor($color, $buffer, $lf = true): void
+    protected function writeWithColor(string $color, string $buffer, bool $lf = true): void
     {
         $this->write($this->formatWithColor($color, $buffer));
 
@@ -594,23 +572,14 @@ class ResultPrinter extends Printer implements TestListener
 
     /**
      * Writes progress with a color sequence if colors are enabled.
-     *
-     * @param string $color
-     * @param string $buffer
      */
-    protected function writeProgressWithColor($color, $buffer): void
+    protected function writeProgressWithColor(string $color, string $buffer): void
     {
         $buffer = $this->formatWithColor($color, $buffer);
         $this->writeProgress($buffer);
     }
 
-    /**
-     * @param int    $count
-     * @param string $name
-     * @param string $color
-     * @param bool   $always
-     */
-    private function writeCountString($count, $name, $color, $always = false): void
+    private function writeCountString(int $count, string $name, string $color, bool $always = false): void
     {
         static $first = true;
 
