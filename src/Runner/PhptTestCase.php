@@ -166,6 +166,7 @@ class PhptTestCase implements Test, SelfDescribing
             $this->assertPhptExpectation($sections, $jobResult['stdout']);
         } catch (AssertionFailedError $e) {
             $failure = $e;
+
             if ($xfail !== false) {
                 $failure = new IncompleteTestError($xfail, 0, $e);
             }
@@ -302,6 +303,7 @@ class PhptTestCase implements Test, SelfDescribing
 
         if (!\strncasecmp('skip', \ltrim($jobResult['stdout']), 4)) {
             $message = '';
+
             if (\preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $skipMatch)) {
                 $message = \substr($skipMatch[1], 2);
             }
@@ -359,6 +361,7 @@ class PhptTestCase implements Test, SelfDescribing
 
                 continue;
             }
+
             if (empty($section)) {
                 throw new Exception('Invalid PHPT file');
             }
@@ -496,16 +499,19 @@ class PhptTestCase implements Test, SelfDescribing
         );
 
         $composerAutoload = '\'\'';
+
         if (\defined('PHPUNIT_COMPOSER_INSTALL') && !\defined('PHPUNIT_TESTSUITE')) {
             $composerAutoload = \var_export(PHPUNIT_COMPOSER_INSTALL, true);
         }
 
         $phar = '\'\'';
+
         if (\defined('__PHPUNIT_PHAR__')) {
             $phar = \var_export(__PHPUNIT_PHAR__, true);
         }
 
         $globals = '';
+
         if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
             $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . \var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
         }
