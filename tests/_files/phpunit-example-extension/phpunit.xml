@@ -3,7 +3,7 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/5.7/phpunit.xsd"
          verbose="true"
          extensionsDirectory="tools/phpunit.d">
-    <testsuite>
+    <testsuite name="default">
         <directory suffix="Test.php">tests</directory>
     </testsuite>
 </phpunit>
