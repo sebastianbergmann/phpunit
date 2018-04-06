@@ -122,9 +122,6 @@ final class Test
     }
 
     /**
-     * @param string $className
-     * @param string $methodName
-     *
      * @throws CodeCoverageException
      *
      * @return array|bool
