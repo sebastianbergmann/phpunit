@@ -18,6 +18,7 @@ final class Type
             case 'numeric':
             case 'integer':
             case 'int':
+            case 'iterable':
             case 'float':
             case 'string':
             case 'boolean':
