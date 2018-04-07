@@ -14,17 +14,22 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-E..                                                                 3 / 3 (100%)
+E.E                                                                 3 / 3 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 error:
+There were 2 errors:
 
 1) Issue2591_SeparateClassPreserveTest::testOriginalGlobalString
 Undefined index: globalString
 
 %sSeparateClassPreserveTest.php:%d
 
+2) Issue2591_SeparateClassPreserveTest::testGlobalString
+Undefined index: globalString
+
+%sSeparateClassPreserveTest.php:%s
+
 ERRORS!
-Tests: 3, Assertions: 2, Errors: 1.
+Tests: 3, Assertions: 1, Errors: 2.
 

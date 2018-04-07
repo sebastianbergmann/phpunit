@@ -12,7 +12,6 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 ..                                                                  2 / 2 (100%)
-@afterClass output - PID difference should be zero: 0
 
 Time: %s, Memory: %s
 
