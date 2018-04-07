@@ -47,7 +47,7 @@ function __phpunit_run_isolated_test()
     $result->beStrictAboutTodoAnnotatedTests({isStrictAboutTodoAnnotatedTests});
     $result->beStrictAboutResourceUsageDuringSmallTests({isStrictAboutResourceUsageDuringSmallTests});
 
-    $test = new {className}(null, unserialize('{data}'), '{dataName}');
+    $test = new {className}('{name}', unserialize('{data}'), '{dataName}');
     $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(TRUE);
 
