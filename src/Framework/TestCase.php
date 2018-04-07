@@ -875,7 +875,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 'isStrictAboutTodoAnnotatedTests'            => $isStrictAboutTodoAnnotatedTests,
                 'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
                 'codeCoverageFilter'                         => $codeCoverageFilter,
-                'configurationFilePath'                      => $configurationFilePath
+                'configurationFilePath'                      => $configurationFilePath,
+                'name'                                       => $this->getName(false),
             ];
 
             if (!$runEntireClass) {
