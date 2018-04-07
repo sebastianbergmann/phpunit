@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.1.2] - 2018-MM-DD
+
+### Fixed
+
+* Fixed [#2830](https://github.com/sebastianbergmann/phpunit/issues/2830): `@runClassInSeparateProcess` does not work for tests that use `@dataProvider`
+
 ## [7.1.1] - 2018-04-06
 
 ### Fixed
@@ -20,6 +26,7 @@ All notable changes of the PHPUnit 7.1 release series are documented in this fil
 * `PHPUnit\Framework\Assert` is no longer searched for test methods
 * `ReflectionMethod::invokeArgs()` is no longer used to invoke test methods
 
+[7.1.2]: https://github.com/sebastianbergmann/phpunit/compare/7.1.1...7.1.2
 [7.1.1]: https://github.com/sebastianbergmann/phpunit/compare/7.1.0...7.1.1
 [7.1.0]: https://github.com/sebastianbergmann/phpunit/compare/7.0...7.1.0
 
