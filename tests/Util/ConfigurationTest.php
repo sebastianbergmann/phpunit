@@ -180,6 +180,7 @@ class ConfigurationTest extends TestCase
                                 5 => new \stdClass,
                                 6 => \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
                                 7 => \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
+                                8 => true,
                             ],
                     ],
                 [
@@ -192,7 +193,8 @@ class ConfigurationTest extends TestCase
                     'file'      => '/CompactArgumentsListener.php',
                     'arguments' =>
                         [
-                            0 => 42
+                            0 => 42,
+                            1 => false,
                         ],
                 ],
             ],

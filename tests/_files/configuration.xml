@@ -86,12 +86,14 @@
                 <object class="stdClass"/>
                 <file>MyTestFile.php</file>
                 <directory>MyRelativePath</directory>
+                <boolean>true</boolean>
             </arguments>
         </listener>
         <listener class="IncludePathListener" file="ConfigurationTest.php"/>
         <listener class="CompactArgumentsListener" file="/CompactArgumentsListener.php">
             <arguments>
                 <integer>42</integer>
+                <boolean>false</boolean>
             </arguments>
         </listener>
     </listeners>

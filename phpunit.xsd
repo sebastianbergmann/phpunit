@@ -90,6 +90,7 @@
       <xs:element name="object" type="objectType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="file" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="directory" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="boolean" type="xs:boolean" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:group>
   <xs:group name="argumentChoice">
@@ -102,6 +103,7 @@
       <xs:element name="object" type="objectType" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="file" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
       <xs:element name="directory" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="boolean" type="xs:boolean" minOccurs="0" maxOccurs="unbounded"/>
     </xs:choice>
   </xs:group>
   <xs:simpleType name="columnsType">
