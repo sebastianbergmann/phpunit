@@ -945,7 +945,13 @@ class TestRunner extends BaseTestRunner
                     );
                 }
 
-                $this->extensions[] = $extensionClass->newInstance();
+                if (\count($extension['arguments']) == 0) {
+                    $this->extensions[] = $extensionClass->newInstance();
+                } else {
+                    $this->extensions[] = $extensionClass->newInstanceArgs(
+                        $extension['arguments']
+                    );
+                }
             }
 
             foreach ($arguments['configuration']->getListenerConfiguration() as $listener) {

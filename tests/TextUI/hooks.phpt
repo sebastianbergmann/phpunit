@@ -12,6 +12,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+PHPUnit\Test\Extension::tellAmountOfInjectedArguments: %d
 PHPUnit\Test\Extension::executeBeforeFirstTest
 PHPUnit\Test\Extension::executeBeforeTest: PHPUnit\Test\HookTest::testSuccess
 PHPUnit\Test\Extension::executeAfterSuccessfulTest: PHPUnit\Test\HookTest::testSuccess

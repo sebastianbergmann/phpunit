@@ -14,8 +14,21 @@ use PHPUnit\Runner\BeforeFirstTestHook;
 
 final class Extension implements BeforeFirstTestHook, BeforeTestHook, AfterSuccessfulTestHook, AfterSkippedTestHook, AfterRiskyTestHook, AfterIncompleteTestHook, AfterTestErrorHook, AfterTestWarningHook, AfterTestFailureHook, AfterLastTestHook
 {
+    private $amountOfInjectedArguments = 0;
+
+    public function __construct()
+    {
+        $this->amountOfInjectedArguments = count(func_get_args());
+    }
+
+    public function tellAmountOfInjectedArguments(): void
+    {
+        print __METHOD__ . ': ' . $this->amountOfInjectedArguments . PHP_EOL;
+    }
+
     public function executeBeforeFirstTest(): void
     {
+        $this->tellAmountOfInjectedArguments();
         print __METHOD__ . PHP_EOL;
     }
 

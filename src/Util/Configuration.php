@@ -254,8 +254,9 @@ final class Configuration
 
         foreach ($this->xpath->query('extensions/extension') as $extension) {
             /** @var DOMElement $extension */
-            $class = (string) $extension->getAttribute('class');
-            $file  = '';
+            $class     = (string) $extension->getAttribute('class');
+            $file      = '';
+            $arguments = $this->getConfigurationArguments($extension->childNodes);
 
             if ($extension->getAttribute('file')) {
                 $file = $this->toAbsolutePath(
@@ -263,10 +264,10 @@ final class Configuration
                     true
                 );
             }
-
             $result[] = [
-                'class' => $class,
-                'file'  => $file
+                'class'     => $class,
+                'file'      => $file,
+                'arguments' => $arguments
             ];
         }
 
@@ -366,35 +367,13 @@ final class Configuration
             /** @var DOMElement $listener */
             $class     = (string) $listener->getAttribute('class');
             $file      = '';
-            $arguments = [];
+            $arguments = $this->getConfigurationArguments($listener->childNodes);
 
             if ($listener->getAttribute('file')) {
                 $file = $this->toAbsolutePath(
                     (string) $listener->getAttribute('file'),
                     true
                 );
-            }
-
-            foreach ($listener->childNodes as $node) {
-                if (!$node instanceof DOMElement) {
-                    continue;
-                }
-
-                if ($node->tagName !== 'arguments') {
-                    continue;
-                }
-
-                foreach ($node->childNodes as $argument) {
-                    if (!$argument instanceof DOMElement) {
-                        continue;
-                    }
-
-                    if ($argument->tagName === 'file' || $argument->tagName === 'directory') {
-                        $arguments[] = $this->toAbsolutePath((string) $argument->textContent);
-                    } else {
-                        $arguments[] = Xml::xmlToVariable($argument);
-                    }
-                }
             }
 
             $result[] = [
@@ -981,6 +960,47 @@ final class Configuration
         $this->document->schemaValidate($xsdFilename);
         $this->errors = \libxml_get_errors();
         \libxml_use_internal_errors($original);
+    }
+
+    /**
+     * Collects and returns the configuration arguments from the PHPUnit
+     * XML configuration
+     *
+     * @param \DOMNodeList $nodes
+     *
+     * @return array
+     */
+    private function getConfigurationArguments(\DOMNodeList $nodes)
+    {
+        $arguments = [];
+
+        if ($nodes->length === 0) {
+            return $arguments;
+        }
+
+        foreach ($nodes as $node) {
+            if (!$node instanceof DOMElement) {
+                continue;
+            }
+
+            if ($node->tagName !== 'arguments') {
+                continue;
+            }
+
+            foreach ($node->childNodes as $argument) {
+                if (!$argument instanceof DOMElement) {
+                    continue;
+                }
+
+                if ($argument->tagName === 'file' || $argument->tagName === 'directory') {
+                    $arguments[] = $this->toAbsolutePath((string) $argument->textContent);
+                } else {
+                    $arguments[] = Xml::xmlToVariable($argument);
+                }
+            }
+        }
+
+        return $arguments;
     }
 
     /**
