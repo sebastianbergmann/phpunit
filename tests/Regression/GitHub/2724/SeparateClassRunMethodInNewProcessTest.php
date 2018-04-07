@@ -32,7 +32,7 @@ class SeparateClassRunMethodInNewProcessTest extends PHPUnit\Framework\TestCase
 
     public function testMethodShouldGetDifferentPidThanMaster()
     {
-        static::$pid1 = posix_getpid();
+        static::$pid1 = getmypid();
 
         $this->assertNotEquals(self::INITIAL_PID1, static::$pid1);
         $this->assertNotEquals(self::INITIAL_MASTER_PID, static::$masterPid);
