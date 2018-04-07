@@ -390,6 +390,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         $this->data     = $data;
+
         $this->dataName = $dataName;
     }
 
@@ -744,7 +745,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             } else {
                 $codeCoverageFilter = null;
             }
-
             $data               = \var_export(\serialize($this->data), true);
             $dataName           = \var_export($this->dataName, true);
             $dependencyInput    = \var_export(\serialize($this->dependencyInput), true);
@@ -1136,6 +1136,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         $testArguments = \array_merge($this->data, $this->dependencyInput);
+
+        if (\is_null($testArguments)) {
+            $testArguments = [];
+        }
 
         $this->registerMockObjectsFromTestArguments($testArguments);
 
