@@ -21,12 +21,10 @@ Due to time constraints, we are not always able to respond as quickly as we woul
 
 ## Coding Guidelines
 
-This project comes with a configuration file for [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (`.php_cs`) that you can use to (re)format your sourcecode for compliance with this project's coding guidelines:
+This project comes with a configuration file and an executable for [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (`.php_cs`) that you can use to (re)format your sourcecode for compliance with this project's coding guidelines:
 
 ```bash
-$ wget http://cs.sensiolabs.org/download/php-cs-fixer-v2.phar -O php-cs-fixer.phar
-
-$ php php-cs-fixer.phar fix
+$ ./build/tools/php-cs-fixer fix
 ```
 
 ## Using PHPUnit from a Git checkout
