@@ -202,6 +202,54 @@ class ConfigurationTest extends TestCase
         \ini_set('include_path', $includePath);
     }
 
+    public function testExtensionConfigurationIsReadCorrectly(): void
+    {
+        $dir         = __DIR__;
+        $includePath = \ini_get('include_path');
+
+        \ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
+
+        $this->assertEquals(
+            [
+                0 =>
+                    [
+                        'class'     => 'MyExtension',
+                        'file'      => '/optional/path/to/MyExtension.php',
+                        'arguments' =>
+                            [
+                                0 =>
+                                    [
+                                        0 => 'Sebastian',
+                                    ],
+                                1 => 22,
+                                2 => 'April',
+                                3 => 19.78,
+                                4 => null,
+                                5 => new \stdClass,
+                                6 => \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyTestFile.php',
+                                7 => \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'MyRelativePath',
+                            ],
+                    ],
+                [
+                    'class'     => 'IncludePathExtension',
+                    'file'      => __FILE__,
+                    'arguments' => []
+                ],
+                [
+                    'class'     => 'CompactArgumentsExtension',
+                    'file'      => '/CompactArgumentsExtension.php',
+                    'arguments' =>
+                        [
+                            0 => 42
+                        ],
+                ],
+            ],
+            $this->configuration->getExtensionConfiguration()
+        );
+
+        \ini_set('include_path', $includePath);
+    }
+
     public function testLoggingConfigurationIsReadCorrectly(): void
     {
         $this->assertEquals(
