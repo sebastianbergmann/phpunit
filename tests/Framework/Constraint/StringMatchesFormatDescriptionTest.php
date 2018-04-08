@@ -88,13 +88,10 @@ class StringMatchesFormatDescriptionTest extends ConstraintTestCase
     {
         $constraint = new StringMatchesFormatDescription("%c\nfoo\n%c");
 
-        try
-        {
+        try {
             $constraint->evaluate("*\nbar\n*");
             $this->fail('Expected ExpectationFailedException, but it was not thrown.');
-        }
-        catch (ExpectationFailedException $e)
-        {
+        } catch (ExpectationFailedException $e) {
             $expected = <<<EOD
 Failed asserting that string matches format description.
 --- Expected
