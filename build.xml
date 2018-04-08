@@ -125,6 +125,8 @@
     <target name="-phar-prepare" depends="clean,install-dependencies">
         <mkdir dir="${basedir}/build/phar"/>
 
+        <copy file="${basedir}/phpunit.xsd" tofile="${basedir}/build/phar/phpunit.xsd"/>
+
         <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt"/>
 
         <copy file="${basedir}/vendor/phpunit/php-code-coverage/LICENSE" tofile="${basedir}/build/phar/php-code-coverage/LICENSE"/>
