@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 7.1 release series are documented in this fil
 
 * Fixed [#2830](https://github.com/sebastianbergmann/phpunit/issues/2830): `@runClassInSeparateProcess` does not work for tests that use `@dataProvider`
 * Fixed [#3059](https://github.com/sebastianbergmann/phpunit/pull/3059): `StringMatchesFormatDescription` constraint fails when matching multiline with `\r\n`
+* Fixed [#3083](https://github.com/sebastianbergmann/phpunit/pull/3083): `@runClassInSeparateProcess` and `@dataProvider` cannot be used together
 
 ## [7.1.1] - 2018-04-06
 
