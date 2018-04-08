@@ -283,6 +283,14 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 }
             }
 
+            if ($runClassInSeparateProcess) {
+                $test->setRunClassInSeparateProcess(true);
+
+                if ($preserveGlobalState !== null) {
+                    $test->setPreserveGlobalState($preserveGlobalState);
+                }
+            }
+
             if ($backupSettings['backupGlobals'] !== null) {
                 $test->setBackupGlobals($backupSettings['backupGlobals']);
             }
