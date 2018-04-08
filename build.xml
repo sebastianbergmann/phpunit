@@ -331,6 +331,20 @@
             <arg value="${type}"/>
         </exec>
 
+        <exec executable="${basedir}/build/tools/php-scoper.phar" taskname="php-scoper">
+            <arg value="add-prefix" />
+            <arg value="--no-ansi" />
+            <arg value="--config" />
+            <arg path="${basedir}/build/scoper.inc.php" />
+            <arg value="--no-interaction" />
+            <arg value="--stop-on-failure" />
+            <arg value="--output-dir" />
+            <arg path="${basedir}/build/phar-prefixed" />
+            <arg value="--prefix" />
+            <arg value="PHPUnit" />
+            <arg path="${basedir}/build/phar" />
+        </exec>
+
         <exec executable="${basedir}/build/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
             <arg value="--static" />
@@ -359,12 +373,13 @@
             <arg path="${basedir}/build/phpunit-${_version}.phar" />
             <arg value="--template" />
             <arg path="${basedir}/build/binary-phar-autoload.php" />
-            <arg path="${basedir}/build/phar" />
+            <arg path="${basedir}/build/phar-prefixed" />
         </exec>
 
         <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
 
         <delete dir="${basedir}/build/phar"/>
+        <delete dir="${basedir}/build/phar-prefixed"/>
         <delete file="${basedir}/build/binary-phar-autoload.php"/>
     </target>
 
