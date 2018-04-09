@@ -1032,7 +1032,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->outputCallback = $callback;
     }
 
-    public function getTestResultObject(): TestResult
+    public function getTestResultObject(): ?TestResult
     {
         return $this->result;
     }
