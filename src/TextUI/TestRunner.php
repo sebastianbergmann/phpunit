@@ -152,6 +152,10 @@ class TestRunner extends BaseTestRunner
 
         $this->processSuiteFilters($suite, $arguments);
 
+        if (isset($arguments['randomOrderSeed'])) {
+            srand($arguments['randomOrderSeed']);
+        }
+
         if (isset($arguments['bootstrap'])) {
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
         }
@@ -166,6 +170,14 @@ class TestRunner extends BaseTestRunner
 
         if ($arguments['beStrictAboutChangesToGlobalState'] === true) {
             $suite->setBeStrictAboutChangesToGlobalState(true);
+        }
+
+        if (isset($arguments['order'])) {
+            $suite->setTestRunningOrder($arguments['order']);
+        }
+
+        if (isset($arguments['reorderDependencies'])) {
+            $suite->setDependencyResolutionStrategy($arguments['reorderDependencies']);
         }
 
         if (\is_int($arguments['repeat']) && $arguments['repeat'] > 0) {
@@ -533,6 +545,8 @@ class TestRunner extends BaseTestRunner
 
         if ($suite instanceof TestSuite) {
             $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
+            $suite->setTestRunningOrder($arguments['order']);
+            $suite->setDependencyResolutionStrategy($arguments['reorderDependencies']);
         }
 
         foreach ($this->extensions as $extension) {
@@ -1109,6 +1123,8 @@ class TestRunner extends BaseTestRunner
         $arguments['reportLowUpperBound']                             = $arguments['reportLowUpperBound'] ?? 50;
         $arguments['reportUselessTests']                              = $arguments['reportUselessTests'] ?? true;
         $arguments['reverseList']                                     = $arguments['reverseList'] ?? false;
+        $arguments['order']                                           = $arguments['order'] ?? 'normal';
+        $arguments['reorderDependencies']                             = $arguments['reorderDependencies'] ?? 'ignore';
         $arguments['stopOnError']                                     = $arguments['stopOnError'] ?? false;
         $arguments['stopOnFailure']                                   = $arguments['stopOnFailure'] ?? false;
         $arguments['stopOnIncomplete']                                = $arguments['stopOnIncomplete'] ?? false;

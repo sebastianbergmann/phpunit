@@ -954,6 +954,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->dependencies = $dependencies;
     }
 
+    public function getDependencies(): array
+    {
+        return $this->dependencies;
+    }
+
     public function hasDependencies(): bool
     {
         return \count($this->dependencies) > 0;
@@ -1000,6 +1005,45 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function setPreserveGlobalState(bool $preserveGlobalState): void
     {
         $this->preserveGlobalState = $preserveGlobalState;
+    }
+
+    /**
+     * @param string $order
+     */
+    public function setTestRunningOrder($order): void {
+        switch ($order) {
+            case 'reverse':
+            case 'random':
+                $this->testRunningOrder = $order;
+                break;
+
+            default:
+                $this->testRunningOrder = 'normal';
+        }
+    }
+
+    public function getTestRunningOrder(): string {
+        return $this->testRunningOrder;
+    }
+
+    /**
+     * @param string $strategy
+     */
+    public function setDependencyResolutionStrategy($strategy): void
+    {
+        switch ($strategy) {
+            case 'reorder':
+                $this->dependencyResolutionStrategy = $strategy;
+                break;
+
+            default:
+                $this->dependencyResolutionStrategy = 'ignore';
+        }
+    }
+
+    public function getDependencyResolutionStrategy(): string
+    {
+        return $this->dependencyResolutionStrategy;
     }
 
     public function setInIsolation(bool $inIsolation): void

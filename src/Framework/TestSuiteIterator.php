@@ -32,6 +32,36 @@ class TestSuiteIterator implements RecursiveIterator
     public function __construct(TestSuite $testSuite)
     {
         $this->tests = $testSuite->tests();
+
+        switch ($testSuite->getTestRunningOrder())
+        {
+            case 'reverse':
+                $this->tests = array_reverse($this->tests);
+                break;
+
+            case 'random':
+                shuffle($this->tests);
+                break;
+
+            case 'normal':
+            default:
+                // do nothing, leave order of tests as is
+                break;
+        }
+
+        if(!empty($this->tests) && ($this->tests[0] instanceof TestCase)) {
+            switch ($testSuite->getDependencyResolutionStrategy()) {
+                case 'reorder':
+                    // Reorder dependencies
+                    $this->reorderTestsByDependencies();
+                    break;
+
+                case 'ignore':
+                default:
+                    // do nothing; let the runner skip dependant tests
+                    break;
+            }
+        }
     }
 
     /**
@@ -90,5 +120,76 @@ class TestSuiteIterator implements RecursiveIterator
     public function hasChildren(): bool
     {
         return $this->tests[$this->position] instanceof TestSuite;
+    }
+
+    private function reorderTestsByDependencies()
+    {
+        if (empty($this->tests)) {
+            return;
+        }
+
+        $todo = [];
+        $newTestOrder = [];
+        foreach ($this->tests as $test) {
+            if ($test->hasDependencies()) {
+                $todo[] = $test;
+            } else {
+                $newTestOrder[] = $test;
+            }
+        }
+
+        if(empty($todo)) {
+            return;
+        }
+
+        // Keep starting from the top of the list of tests as long as it gets shorter
+        $i = 0;
+        do {
+            $todoNames = array_map(function($t) { return $t->getName(); }, $todo);
+            if (empty(array_intersect($todo[$i]->getDependencies(), $todoNames))) {
+                $newTestOrder += array_splice($todo, $i, 1);
+                $i = 0;
+            } else {
+                $i++;
+            }
+        } while (!empty($todo) && ($i < count($todo)));
+
+        // Add leftover tests to the end
+        $newTestOrder += $todo;
+
+        $this->tests = $newTestOrder;
+    }
+
+    private function reorderTestsByDependencies_named()
+    {
+        $reorderedTests = [];
+        $testsByName = [];
+        $hasDependencies = false;
+        foreach ($this->tests as $test) {
+            $testsByName[$test->getName()] = $test;
+            $hasDependencies = $hasDependencies || $test->hasDependencies();
+        }
+
+        if(!$hasDependencies || empty($testsByName)) {
+            return;
+        }
+
+        $todo = array_keys($testsByName);     // keep a seperate to-do list to keep original order
+
+        // Keep starting from the top of the list of tests as long as it gets shorter
+        $todoIterator = 0;
+        do {
+            $testName = $todo[$todoIterator];
+            if (empty($testsByName[$testName]->getDependencies()) ||
+                empty(array_intersect($testsByName[$testName]->getDependencies(), $todo))) {
+                $solvedTestName = array_splice($todo, $todoIterator, 1)[0];
+                $reorderedTests[] = $testsByName[$solvedTestName];
+                $todoIterator = 0;
+            } else {
+                $todoIterator++;
+            }
+        } while (!empty($todo) && ($todoIterator < \count($todo)));
+
+        $this->tests = $reorderedTests;
     }
 }

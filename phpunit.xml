@@ -29,4 +29,10 @@
     <php>
         <const name="PHPUNIT_TESTSUITE" value="true"/>
     </php>
+
+    <listeners>
+        <listener class="BreakfastListener"
+                  file="src/Framework/BreakfastListener.php"
+                  />
+    </listeners>
 </phpunit>
