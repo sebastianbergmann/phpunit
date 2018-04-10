@@ -888,11 +888,13 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * @param string $order
      */
-    public function setTestRunningOrder($order): void {
+    public function setTestRunningOrder($order): void
+    {
         switch ($order) {
             case 'reverse':
             case 'random':
                 $this->testRunningOrder = $order;
+
                 break;
 
             default:
@@ -900,7 +902,8 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
     }
 
-    public function getTestRunningOrder(): string {
+    public function getTestRunningOrder(): string
+    {
         return $this->testRunningOrder;
     }
 
@@ -912,6 +915,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         switch ($strategy) {
             case 'reorder':
                 $this->dependencyResolutionStrategy = $strategy;
+
                 break;
 
             default:
