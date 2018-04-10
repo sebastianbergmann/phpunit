@@ -33,14 +33,15 @@ class TestSuiteIterator implements RecursiveIterator
     {
         $this->tests = $testSuite->tests();
 
-        switch ($testSuite->getTestRunningOrder())
-        {
+        switch ($testSuite->getTestRunningOrder()) {
             case 'reverse':
-                $this->tests = array_reverse($this->tests);
+                $this->tests = \array_reverse($this->tests);
+
                 break;
 
             case 'random':
-                shuffle($this->tests);
+                \shuffle($this->tests);
+
                 break;
 
             case 'normal':
@@ -49,11 +50,12 @@ class TestSuiteIterator implements RecursiveIterator
                 break;
         }
 
-        if(!empty($this->tests) && ($this->tests[0] instanceof TestCase)) {
+        if (!empty($this->tests) && ($this->tests[0] instanceof TestCase)) {
             switch ($testSuite->getDependencyResolutionStrategy()) {
                 case 'reorder':
                     // Reorder dependencies
                     $this->reorderTestsByDependencies();
+
                     break;
 
                 case 'ignore':
@@ -128,7 +130,7 @@ class TestSuiteIterator implements RecursiveIterator
             return;
         }
 
-        $todo = [];
+        $todo         = [];
         $newTestOrder = [];
         foreach ($this->tests as $test) {
             if ($test->hasDependencies()) {
@@ -138,21 +140,23 @@ class TestSuiteIterator implements RecursiveIterator
             }
         }
 
-        if(empty($todo)) {
+        if (empty($todo)) {
             return;
         }
 
         // Keep starting from the top of the list of tests as long as it gets shorter
         $i = 0;
         do {
-            $todoNames = array_map(function($t) { return $t->getName(); }, $todo);
-            if (empty(array_intersect($todo[$i]->getDependencies(), $todoNames))) {
-                $newTestOrder += array_splice($todo, $i, 1);
+            $todoNames = \array_map(function ($t) {
+                return $t->getName();
+            }, $todo);
+            if (empty(\array_intersect($todo[$i]->getDependencies(), $todoNames))) {
+                $newTestOrder += \array_splice($todo, $i, 1);
                 $i = 0;
             } else {
                 $i++;
             }
-        } while (!empty($todo) && ($i < count($todo)));
+        } while (!empty($todo) && ($i < \count($todo)));
 
         // Add leftover tests to the end
         $newTestOrder += $todo;
@@ -162,29 +166,29 @@ class TestSuiteIterator implements RecursiveIterator
 
     private function reorderTestsByDependencies_named()
     {
-        $reorderedTests = [];
-        $testsByName = [];
+        $reorderedTests  = [];
+        $testsByName     = [];
         $hasDependencies = false;
         foreach ($this->tests as $test) {
             $testsByName[$test->getName()] = $test;
-            $hasDependencies = $hasDependencies || $test->hasDependencies();
+            $hasDependencies               = $hasDependencies || $test->hasDependencies();
         }
 
-        if(!$hasDependencies || empty($testsByName)) {
+        if (!$hasDependencies || empty($testsByName)) {
             return;
         }
 
-        $todo = array_keys($testsByName);     // keep a seperate to-do list to keep original order
+        $todo = \array_keys($testsByName);     // keep a seperate to-do list to keep original order
 
         // Keep starting from the top of the list of tests as long as it gets shorter
         $todoIterator = 0;
         do {
             $testName = $todo[$todoIterator];
             if (empty($testsByName[$testName]->getDependencies()) ||
-                empty(array_intersect($testsByName[$testName]->getDependencies(), $todo))) {
-                $solvedTestName = array_splice($todo, $todoIterator, 1)[0];
+                empty(\array_intersect($testsByName[$testName]->getDependencies(), $todo))) {
+                $solvedTestName   = \array_splice($todo, $todoIterator, 1)[0];
                 $reorderedTests[] = $testsByName[$solvedTestName];
-                $todoIterator = 0;
+                $todoIterator     = 0;
             } else {
                 $todoIterator++;
             }
