@@ -22,4 +22,25 @@ class DataProviderTestSuite extends TestSuite
             $test->setDependencies($dependencies);
         }
     }
+
+    public function getDependencies(): array
+    {
+        $deps = array_map(
+                function ($test) {
+                    return $test->getDependencies();
+                }, $this->tests
+            );
+        $deps = array_filter(
+            $deps,
+            function ($d) {
+                return !empty($d);
+            }
+        );
+        return $deps;
+    }
+
+    public function hasDependencies(): bool
+    {
+        return \count($this->getDependencies()) > 0;
+    }
 }
