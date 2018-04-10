@@ -329,7 +329,7 @@ class ConfigurationTest extends TestCase
      */
     public function testHandlePHPConfigurationDoesNotOverwrittenExistingEnvArrayVariables(): void
     {
-        $fooValue = uniqid();
+        $fooValue    = \uniqid();
         $_ENV['foo'] = $fooValue;
         $this->configuration->handlePHPConfiguration();
 

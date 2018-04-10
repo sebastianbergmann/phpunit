@@ -153,7 +153,7 @@ class TestRunner extends BaseTestRunner
         $this->processSuiteFilters($suite, $arguments);
 
         if (isset($arguments['randomOrderSeed'])) {
-            srand($arguments['randomOrderSeed']);
+            \srand($arguments['randomOrderSeed']);
         }
 
         if (isset($arguments['bootstrap'])) {
