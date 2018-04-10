@@ -104,6 +104,16 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     private $declaredClasses;
 
     /**
+     * @var string[]
+     */
+    private $testRunningOrder = 'normal';
+
+    /**
+     * @var string[]
+     */
+    private $dependencyResolutionStrategy = 'ignore';
+
+    /**
      * @param ReflectionClass $theClass
      * @param string          $name
      *
@@ -771,6 +781,8 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
+                $test->setTestRunningOrder($this->getTestRunningOrder());
+                $test->setDependencyResolutionStrategy($this->getDependencyResolutionStrategy());
             }
 
             $test->run($result);
@@ -871,6 +883,45 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         if (null === $this->backupStaticAttributes && \is_bool($backupStaticAttributes)) {
             $this->backupStaticAttributes = $backupStaticAttributes;
         }
+    }
+
+    /**
+     * @param string $order
+     */
+    public function setTestRunningOrder($order): void {
+        switch ($order) {
+            case 'reverse':
+            case 'random':
+                $this->testRunningOrder = $order;
+                break;
+
+            default:
+                $this->testRunningOrder = 'normal';
+        }
+    }
+
+    public function getTestRunningOrder(): string {
+        return $this->testRunningOrder;
+    }
+
+    /**
+     * @param string $strategy
+     */
+    public function setDependencyResolutionStrategy($strategy): void
+    {
+        switch ($strategy) {
+            case 'reorder':
+                $this->dependencyResolutionStrategy = $strategy;
+                break;
+
+            default:
+                $this->dependencyResolutionStrategy = 'ignore';
+        }
+    }
+
+    public function getDependencyResolutionStrategy(): string
+    {
+        return $this->dependencyResolutionStrategy;
     }
 
     /**

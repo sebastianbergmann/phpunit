@@ -105,6 +105,9 @@ class Command
         'process-isolation'         => null,
         'repeat='                   => null,
         'dont-report-useless-tests' => null,
+        'random-order'              => null,
+        'random-order-seed='        => null,
+        'reverse-order'             => null,
         'reverse-list'              => null,
         'static-backup'             => null,
         'stderr'                    => null,
@@ -118,6 +121,7 @@ class Command
         'fail-on-risky'             => null,
         'strict-coverage'           => null,
         'disable-coverage-ignore'   => null,
+        'reorder-dependencies'      => null,
         'strict-global-state'       => null,
         'teamcity'                  => null,
         'testdox'                   => null,
@@ -690,6 +694,26 @@ class Command
 
                     break;
 
+                case '--random-order':
+                    $this->arguments['order'] = 'random';
+
+                    break;
+
+                case '--random-order-seed':
+                    $this->arguments['randomOrderSeed'] = (int) $option[1];
+
+                    break;
+
+                case '--reorder-dependencies':
+                    $this->arguments['reorderDependencies'] = 'reorder';
+
+                    break;
+
+                case '--reverse-order':
+                    $this->arguments['order'] = 'reverse';
+
+                    break;
+
                 default:
                     $optionName = \str_replace('--', '', $option[0]);
 
@@ -1052,6 +1076,10 @@ Test Selection Options:
   --list-tests-xml <file>     List available tests in XML format.
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
+  --reverse-order             Run tests last-to-first
+  --random-order              Run tests in random order
+  --random-order-seed=<n>     Pin the 'random' order to a specific seed number <n>
+  --reorder-dependencies      Adjust order of tests to satisfy dependencies
 
 Test Execution Options:
 
