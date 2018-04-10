@@ -1010,11 +1010,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @param string $order
      */
-    public function setTestRunningOrder($order): void {
+    public function setTestRunningOrder($order): void
+    {
         switch ($order) {
             case 'reverse':
             case 'random':
                 $this->testRunningOrder = $order;
+
                 break;
 
             default:
@@ -1022,7 +1024,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
-    public function getTestRunningOrder(): string {
+    public function getTestRunningOrder(): string
+    {
         return $this->testRunningOrder;
     }
 
@@ -1034,6 +1037,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         switch ($strategy) {
             case 'reorder':
                 $this->dependencyResolutionStrategy = $strategy;
+
                 break;
 
             default:
