@@ -721,6 +721,12 @@ class TestCaseTest extends TestCase
         $this->assertSame($data, $test->myTestData);
     }
 
+    public function testGettingNullTestResultObject()
+    {
+        $test = new \Success();
+        $this->assertNull($test->getTestResultObject());
+    }
+
     /**
      * @return array<string, array>
      */
