@@ -1105,4 +1105,11 @@ class MockObjectTest extends TestCase
 
         $this->assertInstanceOf(stdClass::class, $stub->methodWithObjectReturnTypeDeclaration());
     }
+
+    public function testGetObjectForTrait()
+    {
+        $object = $this->getObjectForTrait(ExampleTrait::class);
+
+        $this->assertSame('ohHai', $object->ohHai());
+    }
 }
