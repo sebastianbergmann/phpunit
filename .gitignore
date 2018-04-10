@@ -17,4 +17,4 @@
 /tests/TextUI/*.out
 /tests/TextUI/*.php
 /vendor
-
+.DS_Store
