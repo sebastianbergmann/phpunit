@@ -150,6 +150,7 @@ class TestSuiteIterator implements RecursiveIterator
 
         $todo         = [];
         $newTestOrder = [];
+
         foreach ($this->tests as $test) {
             if ($test->hasDependencies()) {
                 $todo[] = $test;
@@ -164,20 +165,22 @@ class TestSuiteIterator implements RecursiveIterator
 
         // Keep starting from the top of the list of tests as long as it gets shorter
         $i = 0;
+
         do {
             $todoNames = \array_map(function ($t) {
                 return $t->getName();
             }, $todo);
+
             if (empty(\array_intersect($todo[$i]->getDependencies(), $todoNames))) {
-                $newTestOrder += \array_splice($todo, $i, 1);
-                $i = 0;
+                $newTestOrder = \array_merge($newTestOrder, \array_splice($todo, $i, 1));
+                $i            = 0;
             } else {
                 $i++;
             }
         } while (!empty($todo) && ($i < \count($todo)));
 
         // Add leftover tests to the end
-        $newTestOrder += $todo;
+        $newTestOrder = \array_merge($newTestOrder, $todo);
 
         $this->tests = $newTestOrder;
     }
