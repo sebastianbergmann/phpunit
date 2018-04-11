@@ -1,13 +1,16 @@
 <?php
-/*
+/**
  * This file is part of PHPUnit.
  *
- * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ * @author Ewout Pieter den Ouden <epdouden@gmail.com>
+ * @group breakfast
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class TestReorderDependencies extends PHPUnit\Framework\TestCase
+namespace PHPUnit\Framework;
+
+class TestReorderDependenciesTest extends TestCase
 {
     /**
      * @test
@@ -20,7 +23,7 @@ class TestReorderDependencies extends PHPUnit\Framework\TestCase
 
     /**
      * @test
-     * @depends test1
+     * @depends test3
      * @group breakfast
      */
     public function test2()
@@ -30,9 +33,7 @@ class TestReorderDependencies extends PHPUnit\Framework\TestCase
 
     /**
      * @test
-     * @depends test2
      * @group breakfast
-     * @group incompletebreakfast
      */
     public function test3()
     {
@@ -42,7 +43,6 @@ class TestReorderDependencies extends PHPUnit\Framework\TestCase
     /**
      * @test
      * @group breakfast
-     * @group incompletebreakfast
      */
     public function test_no_dependency()
     {
@@ -51,13 +51,11 @@ class TestReorderDependencies extends PHPUnit\Framework\TestCase
 
     /**
      * @test
-     * @depends test3
+     * @depends test1
      * @group breakfast
-     * @group incompletebreakfast
      */
     public function test4()
     {
-        $this->markTestSkipped();
         $this->assertTrue(true);
     }
 }
