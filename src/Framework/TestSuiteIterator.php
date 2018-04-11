@@ -167,10 +167,17 @@ class TestSuiteIterator implements RecursiveIterator
         $i = 0;
 
         do {
-            $todoNames = \array_map(function ($t) {
-                return $t->getName();
-            }, $todo);
+            // Make a combined list of short and long test names
+            $todoNames = \array_merge(
+                \array_map(function ($t) {
+                    return $t->getName();
+                }, $todo),
+                \array_map(function ($t) {
+                    return \get_class($t) . '::' . $t->getName();
+                }, $todo)
+            );
 
+            // Check if the next test has any dependencies left to run before it
             if (empty(\array_intersect($todo[$i]->getDependencies(), $todoNames))) {
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($todo, $i, 1));
                 $i            = 0;
