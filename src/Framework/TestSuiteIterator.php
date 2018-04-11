@@ -163,37 +163,4 @@ class TestSuiteIterator implements RecursiveIterator
 
         $this->tests = $newTestOrder;
     }
-
-    private function reorderTestsByDependencies_named()
-    {
-        $reorderedTests  = [];
-        $testsByName     = [];
-        $hasDependencies = false;
-        foreach ($this->tests as $test) {
-            $testsByName[$test->getName()] = $test;
-            $hasDependencies               = $hasDependencies || $test->hasDependencies();
-        }
-
-        if (!$hasDependencies || empty($testsByName)) {
-            return;
-        }
-
-        $todo = \array_keys($testsByName);     // keep a seperate to-do list to keep original order
-
-        // Keep starting from the top of the list of tests as long as it gets shorter
-        $todoIterator = 0;
-        do {
-            $testName = $todo[$todoIterator];
-            if (empty($testsByName[$testName]->getDependencies()) ||
-                empty(\array_intersect($testsByName[$testName]->getDependencies(), $todo))) {
-                $solvedTestName   = \array_splice($todo, $todoIterator, 1)[0];
-                $reorderedTests[] = $testsByName[$solvedTestName];
-                $todoIterator     = 0;
-            } else {
-                $todoIterator++;
-            }
-        } while (!empty($todo) && ($todoIterator < \count($todo)));
-
-        $this->tests = $reorderedTests;
-    }
 }
