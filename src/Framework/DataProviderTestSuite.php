@@ -25,20 +25,17 @@ class DataProviderTestSuite extends TestSuite
 
     public function getDependencies(): array
     {
-        $deps = \array_map(
-                function ($test) {
+        return \array_filter(
+            \array_map(
+                function (TestCase $test) {
                     return $test->getDependencies();
                 },
-            $this->tests
-            );
-        $deps = \array_filter(
-            $deps,
-            function ($d) {
-                return !empty($d);
+                $this->tests
+            ),
+            function (string $dependency) {
+                return !empty($dependency);
             }
         );
-
-        return $deps;
     }
 
     public function hasDependencies(): bool
