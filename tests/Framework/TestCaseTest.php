@@ -368,7 +368,6 @@ class TestCaseTest extends TestCase
     }
 
     /**
-     * @test
      * @depends testGlobalsBackupPre
      */
     public function testGlobalsBackupPost(): void
