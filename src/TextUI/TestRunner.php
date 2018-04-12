@@ -152,10 +152,6 @@ class TestRunner extends BaseTestRunner
 
         $this->processSuiteFilters($suite, $arguments);
 
-        if (isset($arguments['randomOrderSeed'])) {
-            \srand($arguments['randomOrderSeed']);
-        }
-
         if (isset($arguments['bootstrap'])) {
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
         }
@@ -174,6 +170,10 @@ class TestRunner extends BaseTestRunner
 
         if (isset($arguments['order'])) {
             $suite->setTestRunningOrder($arguments['order']);
+
+            if ($arguments['order'] == 'random') {
+                \srand($arguments['randomOrderSeed']);
+            }
         }
 
         if (isset($arguments['reorderDependencies'])) {
@@ -297,6 +297,13 @@ class TestRunner extends BaseTestRunner
             }
 
             $this->writeMessage('Runtime', $runtime);
+
+            if ($arguments['order'] == 'random') {
+                $this->writeMessage(
+                    'Random seed',
+                    $arguments['randomOrderSeed']
+                );
+            }
 
             if (isset($arguments['configuration'])) {
                 $this->writeMessage(
@@ -1117,6 +1124,7 @@ class TestRunner extends BaseTestRunner
         $arguments['groups']                                          = $arguments['groups'] ?? [];
         $arguments['processIsolation']                                = $arguments['processIsolation'] ?? false;
         $arguments['processUncoveredFilesFromWhitelist']              = $arguments['processUncoveredFilesFromWhitelist'] ?? false;
+        $arguments['randomOrderSeed']                                 = $arguments['randomOrderSeed'] ?? \time();
         $arguments['registerMockObjectsFromTestArgumentsRecursively'] = $arguments['registerMockObjectsFromTestArgumentsRecursively'] ?? false;
         $arguments['repeat']                                          = $arguments['repeat'] ?? false;
         $arguments['reportHighLowerBound']                            = $arguments['reportHighLowerBound'] ?? 90;
