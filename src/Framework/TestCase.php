@@ -262,6 +262,16 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $customComparators = [];
 
     /**
+     * @var string[]
+     */
+    private $testRunningOrder = 'normal';
+
+    /**
+     * @var string[]
+     */
+    private $dependencyResolutionStrategy = 'ignore';
+
+    /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
      */
