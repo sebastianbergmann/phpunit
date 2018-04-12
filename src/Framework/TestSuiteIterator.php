@@ -26,9 +26,6 @@ class TestSuiteIterator implements RecursiveIterator
      */
     protected $tests;
 
-    /**
-     * @param TestSuite $testSuite
-     */
     public function __construct(TestSuite $testSuite)
     {
         $this->tests = $testSuite->tests();
@@ -46,23 +43,11 @@ class TestSuiteIterator implements RecursiveIterator
 
             case 'normal':
             default:
-                // do nothing, leave order of tests as is
                 break;
         }
 
-        if (!empty($this->tests) && ($this->tests[0] instanceof TestCase)) {
-            switch ($testSuite->getDependencyResolutionStrategy()) {
-                case 'reorder':
-                    // Reorder dependencies
-                    $this->reorderTestsByDependencies();
-
-                    break;
-
-                case 'ignore':
-                default:
-                    // do nothing; let the runner skip dependant tests
-                    break;
-            }
+        if (!empty($this->tests) && ($this->tests[0] instanceof TestCase) && $testSuite->getDependencyResolutionStrategy() === 'reorder') {
+            $this->reorderTestsByDependencies();
         }
     }
 
@@ -127,7 +112,7 @@ class TestSuiteIterator implements RecursiveIterator
     /**
      * Reorder Tests within a TestCase in such a way as to resolve as many dependencies as possible.
      * The algorithm will leave the tests in original running order when it can.
-     * For more details see the documentation for the @depends annotation
+     * For more details see the documentation for test dependencies.
      *
      * The final running order will be:
      * 1. tests without dependencies
@@ -163,21 +148,18 @@ class TestSuiteIterator implements RecursiveIterator
             return;
         }
 
-        // Keep starting from the top of the list of tests as long as it gets shorter
         $i = 0;
 
         do {
-            // Make a combined list of short and long test names
             $todoNames = \array_merge(
-                \array_map(function ($t) {
+                \array_map(function (TestCase $t) {
                     return $t->getName();
                 }, $todo),
-                \array_map(function ($t) {
+                \array_map(function (TestCase $t) {
                     return \get_class($t) . '::' . $t->getName();
                 }, $todo)
             );
 
-            // Check if the next test has any dependencies left to run before it
             if (empty(\array_intersect($todo[$i]->getDependencies(), $todoNames))) {
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($todo, $i, 1));
                 $i            = 0;
@@ -186,9 +168,7 @@ class TestSuiteIterator implements RecursiveIterator
             }
         } while (!empty($todo) && ($i < \count($todo)));
 
-        // Add leftover tests to the end
         $newTestOrder = \array_merge($newTestOrder, $todo);
-
-        $this->tests = $newTestOrder;
+        $this->tests  = $newTestOrder;
     }
 }

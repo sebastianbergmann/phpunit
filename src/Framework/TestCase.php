@@ -1017,10 +1017,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->preserveGlobalState = $preserveGlobalState;
     }
 
-    /**
-     * @param string $order
-     */
-    public function setTestRunningOrder($order): void
+    public function setTestRunningOrder(string $order): void
     {
         switch ($order) {
             case 'reverse':
@@ -1039,19 +1036,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $this->testRunningOrder;
     }
 
-    /**
-     * @param string $strategy
-     */
-    public function setDependencyResolutionStrategy($strategy): void
+    public function setDependencyResolutionStrategy(string $strategy): void
     {
-        switch ($strategy) {
-            case 'reorder':
-                $this->dependencyResolutionStrategy = $strategy;
-
-                break;
-
-            default:
-                $this->dependencyResolutionStrategy = 'ignore';
+        if ($strategy === 'reorder') {
+            $this->dependencyResolutionStrategy = $strategy;
+        } else {
+            $this->dependencyResolutionStrategy = 'ignore';
         }
     }
 
