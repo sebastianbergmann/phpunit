@@ -1017,10 +1017,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->preserveGlobalState = $preserveGlobalState;
     }
 
-    /**
-     * @param string $order
-     */
-    public function setTestRunningOrder($order): void
+    public function setTestRunningOrder(string $order): void
     {
         switch ($order) {
             case 'reverse':
