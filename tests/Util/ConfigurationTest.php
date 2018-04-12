@@ -314,6 +314,7 @@ class ConfigurationTest extends TestCase
         $this->assertTrue(\BAR);
         $this->assertFalse($GLOBALS['foo']);
         $this->assertTrue($_ENV['foo']);
+        $this->assertEquals(1, \getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
         $this->assertEquals('bar', $_COOKIE['foo']);
@@ -329,12 +330,11 @@ class ConfigurationTest extends TestCase
      */
     public function testHandlePHPConfigurationDoesNotOverwrittenExistingEnvArrayVariables(): void
     {
-        $fooValue    = \uniqid();
-        $_ENV['foo'] = $fooValue;
+        $_ENV['foo'] = false;
         $this->configuration->handlePHPConfiguration();
 
-        $this->assertEquals($fooValue, $_ENV['foo']);
-//        $this->assertEquals(false, \getenv('foo'));
+        $this->assertFalse($_ENV['foo']);
+        $this->assertEquals(1, \getenv('foo'));
     }
 
     /**
