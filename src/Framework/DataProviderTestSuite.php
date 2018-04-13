@@ -32,8 +32,8 @@ class DataProviderTestSuite extends TestSuite
                 },
                 $this->tests
             ),
-            function (string $dependency) {
-                return !empty($dependency);
+            function (array $dependencies) {
+                return !empty($dependencies);
             }
         );
     }
