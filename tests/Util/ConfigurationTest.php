@@ -314,7 +314,7 @@ class ConfigurationTest extends TestCase
         $this->assertTrue(\BAR);
         $this->assertFalse($GLOBALS['foo']);
         $this->assertTrue($_ENV['foo']);
-        $this->assertEquals(1, \getenv('foo'));
+        $this->assertEquals('forced', \getenv('foo_force'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
         $this->assertEquals('bar', $_COOKIE['foo']);
@@ -334,7 +334,7 @@ class ConfigurationTest extends TestCase
         $this->configuration->handlePHPConfiguration();
 
         $this->assertFalse($_ENV['foo']);
-        $this->assertEquals(1, \getenv('foo'));
+        $this->assertEquals('forced', \getenv('foo_force'));
     }
 
     /**
