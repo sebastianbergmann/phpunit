@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:annotation>
     <xs:documentation source="https://phpunit.de/documentation.html">
-      This Schema file defines the rules by which the XML configuration file of PHPUnit 7.0 may be structured.
+      This Schema file defines the rules by which the XML configuration file of PHPUnit 7.1 may be structured.
     </xs:documentation>
     <xs:appinfo source="https://phpunit.de/documentation.html"/>
   </xs:annotation>
