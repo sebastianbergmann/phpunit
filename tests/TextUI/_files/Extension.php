@@ -26,7 +26,7 @@ final class Extension implements BeforeFirstTestHook, BeforeTestHook, AfterSucce
 
     public function __construct()
     {
-        $this->amountOfInjectedArguments = count(func_get_args());
+        $this->amountOfInjectedArguments = \count(\func_get_args());
     }
 
     public function tellAmountOfInjectedArguments(): void
