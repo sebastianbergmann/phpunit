@@ -16,7 +16,7 @@ class Issue1021Test extends TestCase
      *
      * @param mixed $data
      */
-    public function testSomething($data)
+    public function testSomething($data): void
     {
         $this->assertTrue($data);
     }
@@ -24,7 +24,7 @@ class Issue1021Test extends TestCase
     /**
      * @depends testSomething
      */
-    public function testSomethingElse()
+    public function testSomethingElse(): void
     {
         $this->assertTrue(true);
     }

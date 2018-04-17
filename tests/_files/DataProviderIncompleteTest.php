@@ -26,7 +26,7 @@ class DataProviderIncompleteTest extends TestCase
      * @param mixed $b
      * @param mixed $c
      */
-    public function testIncomplete($a, $b, $c)
+    public function testIncomplete($a, $b, $c): void
     {
         $this->assertTrue(true);
     }
@@ -38,7 +38,7 @@ class DataProviderIncompleteTest extends TestCase
      * @param mixed $b
      * @param mixed $c
      */
-    public function testAdd($a, $b, $c)
+    public function testAdd($a, $b, $c): void
     {
         $this->assertEquals($c, $a + $b);
     }

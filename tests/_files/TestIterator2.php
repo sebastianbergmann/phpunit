@@ -21,7 +21,7 @@ class TestIterator2 implements Iterator
         return \current($this->data);
     }
 
-    public function next()
+    public function next(): void
     {
         \next($this->data);
     }
@@ -36,7 +36,7 @@ class TestIterator2 implements Iterator
         return \key($this->data) !== null;
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         \reset($this->data);
     }

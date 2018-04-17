@@ -15,7 +15,7 @@ class SecondTest extends TestCase
 {
     const DUMMY = 'dummy';
 
-    public function testSecond()
+    public function testSecond(): void
     {
         $this->assertTrue(true);
     }

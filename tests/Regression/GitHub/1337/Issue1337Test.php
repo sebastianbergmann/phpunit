@@ -16,7 +16,7 @@ class Issue1337Test extends TestCase
      *
      * @param mixed $a
      */
-    public function testProvider($a)
+    public function testProvider($a): void
     {
         $this->assertTrue($a);
     }

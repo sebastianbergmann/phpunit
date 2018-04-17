@@ -14,7 +14,7 @@ class Issue2158Test extends TestCase
     /**
      * Set constant in main process
      */
-    public function testSomething()
+    public function testSomething(): void
     {
         include __DIR__ . '/constant.inc';
         $this->assertTrue(true);
@@ -26,7 +26,7 @@ class Issue2158Test extends TestCase
      *
      * @runInSeparateProcess
      */
-    public function testSomethingElse()
+    public function testSomethingElse(): void
     {
         $this->assertTrue(\defined('TEST_CONSTANT'));
     }

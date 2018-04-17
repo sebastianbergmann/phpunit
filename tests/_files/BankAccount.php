@@ -69,7 +69,7 @@ class BankAccount
      *
      * @throws BankAccountException
      */
-    protected function setBalance($balance)
+    protected function setBalance($balance): void
     {
         if ($balance >= 0) {
             $this->balance = $balance;

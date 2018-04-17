@@ -14,11 +14,11 @@ class Issue2145Test extends PHPUnit\Framework\TestCase
         throw new Exception;
     }
 
-    public function testOne()
+    public function testOne(): void
     {
     }
 
-    public function testTwo()
+    public function testTwo(): void
     {
     }
 }

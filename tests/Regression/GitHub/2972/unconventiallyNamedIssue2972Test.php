@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class Issue2972Test extends TestCase
 {
-    public function testHello()
+    public function testHello(): void
     {
         $this->assertNotEmpty('Hello world!');
     }

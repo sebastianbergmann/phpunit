@@ -9,7 +9,7 @@
  */
 class DataProviderDependencyTest extends PHPUnit\Framework\TestCase
 {
-    public function testReference()
+    public function testReference(): void
     {
         $this->markTestSkipped('This test should be skipped.');
         $this->assertTrue(true);
@@ -22,7 +22,7 @@ class DataProviderDependencyTest extends PHPUnit\Framework\TestCase
      *
      * @param mixed $param
      */
-    public function testDependency($param)
+    public function testDependency($param): void
     {
     }
 

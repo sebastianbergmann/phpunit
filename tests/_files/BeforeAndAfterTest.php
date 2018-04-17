@@ -14,7 +14,7 @@ class BeforeAndAfterTest extends TestCase
     public static $beforeWasRun;
     public static $afterWasRun;
 
-    public static function resetProperties()
+    public static function resetProperties(): void
     {
         self::$beforeWasRun = 0;
         self::$afterWasRun  = 0;
@@ -23,7 +23,7 @@ class BeforeAndAfterTest extends TestCase
     /**
      * @before
      */
-    public function initialSetup()
+    public function initialSetup(): void
     {
         self::$beforeWasRun++;
     }
@@ -31,16 +31,16 @@ class BeforeAndAfterTest extends TestCase
     /**
      * @after
      */
-    public function finalTeardown()
+    public function finalTeardown(): void
     {
         self::$afterWasRun++;
     }
 
-    public function test1()
+    public function test1(): void
     {
     }
 
-    public function test2()
+    public function test2(): void
     {
     }
 }

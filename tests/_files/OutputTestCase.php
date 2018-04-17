@@ -11,25 +11,25 @@ use PHPUnit\Framework\TestCase;
 
 class OutputTestCase extends TestCase
 {
-    public function testExpectOutputStringFooActualFoo()
+    public function testExpectOutputStringFooActualFoo(): void
     {
         $this->expectOutputString('foo');
         print 'foo';
     }
 
-    public function testExpectOutputStringFooActualBar()
+    public function testExpectOutputStringFooActualBar(): void
     {
         $this->expectOutputString('foo');
         print 'bar';
     }
 
-    public function testExpectOutputRegexFooActualFoo()
+    public function testExpectOutputRegexFooActualFoo(): void
     {
         $this->expectOutputRegex('/foo/');
         print 'foo';
     }
 
-    public function testExpectOutputRegexFooActualBar()
+    public function testExpectOutputRegexFooActualBar(): void
     {
         $this->expectOutputRegex('/foo/');
         print 'bar';

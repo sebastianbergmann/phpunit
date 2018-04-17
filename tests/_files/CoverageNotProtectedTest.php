@@ -14,7 +14,7 @@ class CoverageNotProtectedTest extends TestCase
     /**
      * @covers CoveredClass::<!protected>
      */
-    public function testSomething()
+    public function testSomething(): void
     {
         $o = new CoveredClass;
         $o->publicMethod();

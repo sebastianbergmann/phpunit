@@ -16,13 +16,13 @@ class Issue1351Test extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testFailurePre()
+    public function testFailurePre(): void
     {
         $this->instance = new ChildProcessClass1351();
         $this->assertFalse(true, 'Expected failure.');
     }
 
-    public function testFailurePost()
+    public function testFailurePost(): void
     {
         $this->assertNull($this->instance);
         $this->assertFalse(\class_exists(ChildProcessClass1351::class, false), 'ChildProcessClass1351 is not loaded.');
@@ -31,7 +31,7 @@ class Issue1351Test extends TestCase
     /**
      * @runInSeparateProcess
      */
-    public function testExceptionPre()
+    public function testExceptionPre(): void
     {
         $this->instance = new ChildProcessClass1351();
 
@@ -42,13 +42,13 @@ class Issue1351Test extends TestCase
         }
     }
 
-    public function testExceptionPost()
+    public function testExceptionPost(): void
     {
         $this->assertNull($this->instance);
         $this->assertFalse(\class_exists(ChildProcessClass1351::class, false), 'ChildProcessClass1351 is not loaded.');
     }
 
-    public function testPhpCoreLanguageException()
+    public function testPhpCoreLanguageException(): void
     {
         // User-space code cannot instantiate a PDOException with a string code,
         // so trigger a real one.

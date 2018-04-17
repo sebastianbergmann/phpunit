@@ -51,7 +51,7 @@ class DataProviderDebugTest extends TestCase
     /**
      * @dataProvider provider
      */
-    public function testProvider()
+    public function testProvider(): void
     {
         $this->assertTrue(true);
     }

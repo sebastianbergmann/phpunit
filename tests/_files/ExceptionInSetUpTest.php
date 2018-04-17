@@ -29,17 +29,17 @@ class ExceptionInSetUpTest extends TestCase
         $this->tearDown = true;
     }
 
-    public function testSomething()
+    public function testSomething(): void
     {
         $this->testSomething = true;
     }
 
-    protected function assertPreConditions()
+    protected function assertPreConditions(): void
     {
         $this->assertPreConditions = true;
     }
 
-    protected function assertPostConditions()
+    protected function assertPostConditions(): void
     {
         $this->assertPostConditions = true;
     }

@@ -21,7 +21,7 @@ class BeforeAfterClassPidTest extends TestCase
     /**
      * @beforeClass
      */
-    public static function showPidBefore()
+    public static function showPidBefore(): void
     {
         $GLOBALS[static::PID_VARIABLE] = \getmypid();
     }
@@ -29,7 +29,7 @@ class BeforeAfterClassPidTest extends TestCase
     /**
      * @afterClass
      */
-    public static function showPidAfter()
+    public static function showPidAfter(): void
     {
         if ($GLOBALS[static::PID_VARIABLE] - \getmypid() !== 0) {
             print "\n@afterClass output - PID difference should be zero!";
@@ -38,12 +38,12 @@ class BeforeAfterClassPidTest extends TestCase
         unset($GLOBALS[static::PID_VARIABLE]);
     }
 
-    public function testMethod1WithItsBeforeAndAfter()
+    public function testMethod1WithItsBeforeAndAfter(): void
     {
         $this->assertEquals($GLOBALS[static::PID_VARIABLE], \getmypid());
     }
 
-    public function testMethod2WithItsBeforeAndAfter()
+    public function testMethod2WithItsBeforeAndAfter(): void
     {
         $this->assertEquals($GLOBALS[static::PID_VARIABLE], \getmypid());
     }

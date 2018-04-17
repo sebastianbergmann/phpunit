@@ -9,7 +9,7 @@
  */
 class AssertionExample
 {
-    public function doSomething()
+    public function doSomething(): void
     {
         \assert(false);
     }

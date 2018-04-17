@@ -15,7 +15,7 @@ class DataProviderTestDoxTest extends TestCase
      * @dataProvider provider
      * @testdox Does something with
      */
-    public function testOne()
+    public function testOne(): void
     {
         $this->assertTrue(true);
     }
@@ -23,7 +23,7 @@ class DataProviderTestDoxTest extends TestCase
     /**
      * @dataProvider provider
      */
-    public function testDoesSomethingElseWith()
+    public function testDoesSomethingElseWith(): void
     {
         $this->assertTrue(true);
     }

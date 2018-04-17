@@ -11,8 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 class Issue2366
 {
-    public function foo()
+    public function foo(): bool
     {
+        return false;
     }
 }
 
@@ -23,7 +24,7 @@ class Issue2366Test extends TestCase
      *
      * @param mixed $o
      */
-    public function testOne($o)
+    public function testOne($o): void
     {
         $this->assertEquals(1, $o->foo());
     }

@@ -24,7 +24,7 @@ class Issue1374Test extends TestCase
         print __FUNCTION__;
     }
 
-    public function testSomething()
+    public function testSomething(): void
     {
         $this->fail('This should not be reached');
     }

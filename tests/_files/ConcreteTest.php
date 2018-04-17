@@ -9,7 +9,7 @@
  */
 class ConcreteTest extends AbstractTest
 {
-    public function testTwo()
+    public function testTwo(): void
     {
         $this->assertTrue(true);
     }

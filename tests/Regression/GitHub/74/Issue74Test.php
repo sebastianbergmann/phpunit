@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class Issue74Test extends TestCase
 {
-    public function testCreateAndThrowNewExceptionInProcessIsolation()
+    public function testCreateAndThrowNewExceptionInProcessIsolation(): void
     {
         require_once __DIR__ . '/NewException.php';
 

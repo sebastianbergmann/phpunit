@@ -16,7 +16,7 @@ class Issue2382Test extends TestCase
      *
      * @param mixed $test
      */
-    public function testOne($test)
+    public function testOne($test): void
     {
         $this->assertInstanceOf(\Exception::class, $test);
     }

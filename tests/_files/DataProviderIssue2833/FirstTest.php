@@ -18,7 +18,7 @@ class FirstTest extends TestCase
      *
      * @param mixed $x
      */
-    public function testFirst($x)
+    public function testFirst($x): void
     {
         $this->assertTrue(true);
     }

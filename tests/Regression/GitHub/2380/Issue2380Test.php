@@ -16,7 +16,7 @@ class Issue2380Test extends TestCase
      *
      * @param mixed $data
      */
-    public function testGeneratorProvider($data)
+    public function testGeneratorProvider($data): void
     {
         $this->assertNotEmpty($data);
     }

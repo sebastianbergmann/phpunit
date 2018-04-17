@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class Issue1472Test extends TestCase
 {
-    public function testAssertEqualXMLStructure()
+    public function testAssertEqualXMLStructure(): void
     {
         $doc = new DOMDocument;
         $doc->loadXML('<root><label>text content</label></root>');

@@ -14,7 +14,7 @@ class NamespaceCoverageProtectedTest extends TestCase
     /**
      * @covers Foo\CoveredClass::<protected>
      */
-    public function testSomething()
+    public function testSomething(): void
     {
         $o = new Foo\CoveredClass;
         $o->publicMethod();

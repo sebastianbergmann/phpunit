@@ -30,7 +30,7 @@ class ClonedDependencyTest extends TestCase
      *
      * @param mixed $dependency
      */
-    public function testTwo($dependency)
+    public function testTwo($dependency): void
     {
         $this->assertSame(self::$dependency, $dependency);
     }
@@ -40,7 +40,7 @@ class ClonedDependencyTest extends TestCase
      *
      * @param mixed $dependency
      */
-    public function testThree($dependency)
+    public function testThree($dependency): void
     {
         $this->assertSame(self::$dependency, $dependency);
     }
@@ -50,7 +50,7 @@ class ClonedDependencyTest extends TestCase
      *
      * @param mixed $dependency
      */
-    public function testFour($dependency)
+    public function testFour($dependency): void
     {
         $this->assertNotSame(self::$dependency, $dependency);
     }
@@ -60,7 +60,7 @@ class ClonedDependencyTest extends TestCase
      *
      * @param mixed $dependency
      */
-    public function testFive($dependency)
+    public function testFive($dependency): void
     {
         $this->assertSame(self::$dependency, $dependency);
     }
@@ -70,7 +70,7 @@ class ClonedDependencyTest extends TestCase
      *
      * @param mixed $dependency
      */
-    public function testSix($dependency)
+    public function testSix($dependency): void
     {
         $this->assertNotSame(self::$dependency, $dependency);
     }

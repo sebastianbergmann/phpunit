@@ -9,7 +9,7 @@
  */
 class Test extends PHPUnit\Framework\TestCase
 {
-    public function testOne()
+    public function testOne(): void
     {
         $this->assertTrue(true);
     }

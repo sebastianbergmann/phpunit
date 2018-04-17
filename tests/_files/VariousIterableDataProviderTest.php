@@ -41,7 +41,7 @@ class VariousIterableDataProviderTest
      * @dataProvider asIteratorProvider
      * @dataProvider asTraversableProvider
      */
-    public function test()
+    public function test(): void
     {
     }
 }

@@ -12,7 +12,7 @@ class BeforeClassWithOnlyDataProviderTest extends \PHPUnit\Framework\TestCase
     public static $setUpBeforeClassWasCalled;
     public static $beforeClassWasCalled;
 
-    public static function resetProperties()
+    public static function resetProperties(): void
     {
         self::$setUpBeforeClassWasCalled = false;
         self::$beforeClassWasCalled      = false;
@@ -21,7 +21,7 @@ class BeforeClassWithOnlyDataProviderTest extends \PHPUnit\Framework\TestCase
     /**
      * @beforeClass
      */
-    public static function someAnnotatedSetupMethod()
+    public static function someAnnotatedSetupMethod(): void
     {
         self::$beforeClassWasCalled = true;
     }
@@ -40,7 +40,7 @@ class BeforeClassWithOnlyDataProviderTest extends \PHPUnit\Framework\TestCase
      * @dataProvider dummyProvider
      * delete annotation to fail test case
      */
-    public function testDummy()
+    public function testDummy(): void
     {
         $this->assertFalse(false);
     }

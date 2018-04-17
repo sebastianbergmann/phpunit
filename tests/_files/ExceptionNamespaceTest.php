@@ -30,7 +30,7 @@ class ExceptionNamespaceTest extends \PHPUnit\Framework\TestCase
      * @expectedExceptionMessage My\Space\ExceptionNamespaceTest::ERROR_MESSAGE
      * @expectedExceptionCode My\Space\ExceptionNamespaceTest::ERROR_CODE
      */
-    public function testConstants()
+    public function testConstants(): void
     {
     }
 
@@ -39,7 +39,7 @@ class ExceptionNamespaceTest extends \PHPUnit\Framework\TestCase
      * @expectedExceptionCode My\Space\ExceptionNamespaceTest::UNKNOWN_CODE_CONSTANT
      * @expectedExceptionMessage My\Space\ExceptionNamespaceTest::UNKNOWN_MESSAGE_CONSTANT
      */
-    public function testUnknownConstants()
+    public function testUnknownConstants(): void
     {
     }
 }

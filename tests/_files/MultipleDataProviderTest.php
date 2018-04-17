@@ -74,7 +74,7 @@ class MultipleDataProviderTest extends TestCase
      * @dataProvider providerB
      * @dataProvider providerC
      */
-    public function testOne()
+    public function testOne(): void
     {
     }
 
@@ -83,7 +83,7 @@ class MultipleDataProviderTest extends TestCase
      * @dataProvider providerE
      * @dataProvider providerF
      */
-    public function testTwo()
+    public function testTwo(): void
     {
     }
 }

@@ -28,7 +28,7 @@ class DataProviderTest extends TestCase
      * @param mixed $b
      * @param mixed $c
      */
-    public function testAdd($a, $b, $c)
+    public function testAdd($a, $b, $c): void
     {
         $this->assertEquals($c, $a + $b);
     }
