@@ -16,7 +16,7 @@ if (!\defined('TEST_FILES_PATH')) {
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-// TODO: Figure out why (some of) these are required (the classes should be autoloaded instead)
+// TODO: Figure out why these are required (the classes should be autoloaded instead)
 require_once TEST_FILES_PATH . 'BeforeAndAfterTest.php';
 
 require_once TEST_FILES_PATH . 'BeforeClassAndAfterClassTest.php';
@@ -48,9 +48,3 @@ require_once TEST_FILES_PATH . 'RequirementsClassBeforeClassHookTest.php';
 require_once TEST_FILES_PATH . 'NoArgTestCaseTest.php';
 
 require_once TEST_FILES_PATH . 'Singleton.php';
-
-require_once TEST_FILES_PATH . 'Mockable.php';
-
-require_once TEST_FILES_PATH . 'CoverageNamespacedFunctionTest.php';
-
-require_once TEST_FILES_PATH . 'NamespaceCoveredFunction.php';
