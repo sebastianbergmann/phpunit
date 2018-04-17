@@ -14,7 +14,7 @@ class CoverageNamespacedFunctionTest extends TestCase
     /**
      * @covers foo\func()
      */
-    public function testFunc()
+    public function testFunc(): void
     {
         foo\func();
     }

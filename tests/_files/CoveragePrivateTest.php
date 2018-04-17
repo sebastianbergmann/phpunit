@@ -14,7 +14,7 @@ class CoveragePrivateTest extends TestCase
     /**
      * @covers CoveredClass::<private>
      */
-    public function testSomething()
+    public function testSomething(): void
     {
         $o = new CoveredClass;
         $o->publicMethod();

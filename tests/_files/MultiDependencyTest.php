@@ -32,7 +32,7 @@ class MultiDependencyTest extends TestCase
      * @param mixed $a
      * @param mixed $b
      */
-    public function testThree($a, $b)
+    public function testThree($a, $b): void
     {
         $this->assertEquals('foo', $a);
         $this->assertEquals('bar', $b);

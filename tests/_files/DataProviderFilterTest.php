@@ -36,7 +36,7 @@ class DataProviderFilterTest extends TestCase
      *
      * @param mixed $truth
      */
-    public function testTrue($truth)
+    public function testTrue($truth): void
     {
         $this->assertTrue($truth);
     }
@@ -46,7 +46,7 @@ class DataProviderFilterTest extends TestCase
      *
      * @param mixed $false
      */
-    public function testFalse($false)
+    public function testFalse($false): void
     {
         $this->assertFalse($false);
     }

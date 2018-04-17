@@ -14,21 +14,21 @@ class NotExistingCoveredElementTest extends TestCase
     /**
      * @covers NotExistingClass
      */
-    public function testOne()
+    public function testOne(): void
     {
     }
 
     /**
      * @covers NotExistingClass::notExistingMethod
      */
-    public function testTwo()
+    public function testTwo(): void
     {
     }
 
     /**
      * @covers NotExistingClass::<public>
      */
-    public function testThree()
+    public function testThree(): void
     {
     }
 }

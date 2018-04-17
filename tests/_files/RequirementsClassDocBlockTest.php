@@ -24,7 +24,7 @@ class RequirementsClassDocBlockTest
      * @requires function testFuncMethod
      * @requires extension testExtMethod
      */
-    public function testMethod()
+    public function testMethod(): void
     {
     }
 }

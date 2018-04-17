@@ -14,7 +14,7 @@ class Issue322Test extends TestCase
     /**
      * @group one
      */
-    public function testOne()
+    public function testOne(): void
     {
         $this->assertTrue(true);
     }
@@ -22,7 +22,7 @@ class Issue322Test extends TestCase
     /**
      * @group two
      */
-    public function testTwo()
+    public function testTwo(): void
     {
         $this->assertTrue(true);
     }

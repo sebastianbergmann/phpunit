@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class FatalTest extends TestCase
 {
-    public function testFatalError()
+    public function testFatalError(): void
     {
         if (\extension_loaded('xdebug')) {
             \xdebug_disable();

@@ -14,7 +14,7 @@ class DoesNotPerformAssertionsButPerformingAssertionsTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testFalseAndTrueAreStillFine()
+    public function testFalseAndTrueAreStillFine(): void
     {
         $this->assertFalse(false);
         $this->assertTrue(true);

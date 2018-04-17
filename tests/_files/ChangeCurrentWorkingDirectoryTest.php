@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class ChangeCurrentWorkingDirectoryTest extends TestCase
 {
-    public function testSomethingThatChangesTheCwd()
+    public function testSomethingThatChangesTheCwd(): void
     {
         \chdir('../');
         $this->assertTrue(true);

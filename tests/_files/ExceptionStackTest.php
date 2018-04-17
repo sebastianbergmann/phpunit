@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class ExceptionStackTest extends TestCase
 {
-    public function testPrintingChildException()
+    public function testPrintingChildException(): void
     {
         try {
             $this->assertEquals([1], [2], 'message');
@@ -23,7 +23,7 @@ class ExceptionStackTest extends TestCase
         }
     }
 
-    public function testNestedExceptions()
+    public function testNestedExceptions(): void
     {
         $exceptionThree = new Exception('Three');
         $exceptionTwo   = new InvalidArgumentException('Two', 0, $exceptionThree);

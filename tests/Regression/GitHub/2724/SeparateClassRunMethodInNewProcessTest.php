@@ -20,7 +20,7 @@ class SeparateClassRunMethodInNewProcessTest extends PHPUnit\Framework\TestCase
     public static $masterPid = self::INITIAL_MASTER_PID;
     public static $pid1      = self::INITIAL_PID1;
 
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -29,7 +29,7 @@ class SeparateClassRunMethodInNewProcessTest extends PHPUnit\Framework\TestCase
         }
     }
 
-    public static function tearDownAfterClass()
+    public static function tearDownAfterClass(): void
     {
         parent::tearDownAfterClass();
 
@@ -38,7 +38,7 @@ class SeparateClassRunMethodInNewProcessTest extends PHPUnit\Framework\TestCase
         }
     }
 
-    public function testMethodShouldGetDifferentPidThanMaster()
+    public function testMethodShouldGetDifferentPidThanMaster(): void
     {
         static::$pid1 = \getmypid();
 

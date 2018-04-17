@@ -26,7 +26,7 @@ class DataProviderSkippedTest extends TestCase
      * @param mixed $b
      * @param mixed $c
      */
-    public function testSkipped($a, $b, $c)
+    public function testSkipped($a, $b, $c): void
     {
         $this->assertTrue(true);
     }
@@ -38,7 +38,7 @@ class DataProviderSkippedTest extends TestCase
      * @param mixed $b
      * @param mixed $c
      */
-    public function testAdd($a, $b, $c)
+    public function testAdd($a, $b, $c): void
     {
         $this->assertEquals($c, $a + $b);
     }

@@ -17,7 +17,7 @@ class TestIterator implements Iterator
         $this->array = $array;
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -37,7 +37,7 @@ class TestIterator implements Iterator
         return $this->array[$this->position];
     }
 
-    public function next()
+    public function next(): void
     {
         $this->position++;
     }

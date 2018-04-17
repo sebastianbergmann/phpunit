@@ -26,7 +26,7 @@ class ArrayAccessible implements ArrayAccess, IteratorAggregate
         return $this->array[$offset];
     }
 
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (null === $offset) {
             $this->array[] = $value;
@@ -35,7 +35,7 @@ class ArrayAccessible implements ArrayAccess, IteratorAggregate
         }
     }
 
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->array[$offset]);
     }

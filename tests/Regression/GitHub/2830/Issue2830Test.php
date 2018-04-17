@@ -13,7 +13,7 @@ class Issue2830Test extends PHPUnit\Framework\TestCase
     /**
      * @dataProvider simpleDataProvider
      */
-    public function testMethodUsesDataProvider()
+    public function testMethodUsesDataProvider(): void
     {
         $this->assertTrue(true);
     }

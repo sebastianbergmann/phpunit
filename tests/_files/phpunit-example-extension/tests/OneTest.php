@@ -14,7 +14,7 @@ class OneTest extends TestCase
 {
     use TestCaseTrait;
 
-    public function testOne()
+    public function testOne(): void
     {
         $this->assertTrue(true);
     }

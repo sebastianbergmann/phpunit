@@ -22,7 +22,7 @@ class ExceptionInTestDetectedInTeardown extends TestCase
         }
     }
 
-    public function testSomething()
+    public function testSomething(): void
     {
         throw new Exception;
     }

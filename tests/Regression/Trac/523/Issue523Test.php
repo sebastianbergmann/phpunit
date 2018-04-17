@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class Issue523Test extends TestCase
 {
-    public function testAttributeEquals()
+    public function testAttributeEquals(): void
     {
         $this->assertAttributeEquals('foo', 'field', new Issue523());
     }

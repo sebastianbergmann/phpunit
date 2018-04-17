@@ -330,7 +330,7 @@ class TestCaseTest extends TestCase
         $this->assertCount(1, $result);
     }
 
-    public function testDoesNotPerformAssertions()
+    public function testDoesNotPerformAssertions(): void
     {
         $test = new \DoNoAssertionTestCase('testNothing');
         $test->expectNotToPerformAssertions();
@@ -740,7 +740,7 @@ class TestCaseTest extends TestCase
         $this->assertSame($data, $test->myTestData);
     }
 
-    public function testGettingNullTestResultObject()
+    public function testGettingNullTestResultObject(): void
     {
         $test = new \Success();
         $this->assertNull($test->getTestResultObject());

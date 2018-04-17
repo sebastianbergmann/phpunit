@@ -13,7 +13,7 @@ class WasRun extends TestCase
 {
     public $wasRun = false;
 
-    protected function runTest()
+    protected function runTest(): void
     {
         $this->wasRun = true;
     }

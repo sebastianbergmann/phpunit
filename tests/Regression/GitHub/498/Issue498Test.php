@@ -18,7 +18,7 @@ class Issue498Test extends TestCase
      *
      * @param mixed $testData
      */
-    public function shouldBeTrue($testData)
+    public function shouldBeTrue($testData): void
     {
         $this->assertTrue(true);
     }
@@ -30,7 +30,7 @@ class Issue498Test extends TestCase
      *
      * @param mixed $testData
      */
-    public function shouldBeFalse($testData)
+    public function shouldBeFalse($testData): void
     {
         $this->assertFalse(false);
     }

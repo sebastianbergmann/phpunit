@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class DoNoAssertionTestCase extends TestCase
 {
-    public function testNothing()
+    public function testNothing(): void
     {
     }
 }

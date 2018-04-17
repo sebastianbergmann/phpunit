@@ -14,7 +14,7 @@ class CoverageFunctionParenthesesWhitespaceTest extends TestCase
     /**
      * @covers ::globalFunction ( )
      */
-    public function testSomething()
+    public function testSomething(): void
     {
         globalFunction();
     }

@@ -19,7 +19,7 @@ class Issue2137Test extends PHPUnit\Framework\TestCase
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testBrandService($provided, $expected)
+    public function testBrandService($provided, $expected): void
     {
         $this->assertSame($provided, $expected);
     }
@@ -42,7 +42,7 @@ class Issue2137Test extends PHPUnit\Framework\TestCase
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testSomethingElseInvalid($provided, $expected)
+    public function testSomethingElseInvalid($provided, $expected): void
     {
         $this->assertSame($provided, $expected);
     }

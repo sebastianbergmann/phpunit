@@ -14,7 +14,7 @@ class Issue1468Test extends TestCase
     /**
      * @todo Implement this test
      */
-    public function testFailure()
+    public function testFailure(): void
     {
         $this->markTestIncomplete();
     }

@@ -9,7 +9,7 @@
  */
 class NonStatic
 {
-    public function suite()
+    public function suite(): void
     {
     }
 }

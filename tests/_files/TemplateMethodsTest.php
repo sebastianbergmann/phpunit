@@ -31,29 +31,29 @@ class TemplateMethodsTest extends TestCase
         print __METHOD__ . "\n";
     }
 
-    public function testOne()
+    public function testOne(): void
     {
         print __METHOD__ . "\n";
         $this->assertTrue(true);
     }
 
-    public function testTwo()
+    public function testTwo(): void
     {
         print __METHOD__ . "\n";
         $this->assertTrue(false);
     }
 
-    protected function assertPreConditions()
+    protected function assertPreConditions(): void
     {
         print __METHOD__ . "\n";
     }
 
-    protected function assertPostConditions()
+    protected function assertPostConditions(): void
     {
         print __METHOD__ . "\n";
     }
 
-    protected function onNotSuccessfulTest(Throwable $t)
+    protected function onNotSuccessfulTest(Throwable $t): void
     {
         print __METHOD__ . "\n";
 

@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class Issue765Test extends TestCase
 {
-    public function testDependee()
+    public function testDependee(): void
     {
         $this->assertTrue(true);
     }
@@ -22,12 +22,12 @@ class Issue765Test extends TestCase
      *
      * @param mixed $a
      */
-    public function testDependent($a)
+    public function testDependent($a): void
     {
         $this->assertTrue(true);
     }
 
-    public function dependentProvider()
+    public function dependentProvider(): void
     {
         throw new Exception;
     }

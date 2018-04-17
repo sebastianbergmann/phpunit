@@ -14,7 +14,7 @@ class CoverageMethodParenthesesWhitespaceTest extends TestCase
     /**
      * @covers CoveredClass::publicMethod ( )
      */
-    public function testSomething()
+    public function testSomething(): void
     {
         $o = new CoveredClass;
         $o->publicMethod();
