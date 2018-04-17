@@ -417,6 +417,7 @@ class RequirementsTest extends TestCase
     public function testVersionConstraintTildeOrCaret()
     {
     }
+
     /**
      * @requires PHP ^5.6 || ~7.0.17
      * @requires PHPUnit ^5.6 || ~7.0.17
@@ -439,12 +440,14 @@ class RequirementsTest extends TestCase
     public function testVersionConstraintInvalidPhpConstraint()
     {
     }
+
     /**
      * @requires   PHPUnit ~^12345
      */
     public function testVersionConstraintInvalidPhpUnitConstraint()
     {
     }
+
     /**
      * @requires setting display_errors On
      */

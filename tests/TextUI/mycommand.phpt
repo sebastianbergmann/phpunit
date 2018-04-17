@@ -9,6 +9,7 @@ $_SERVER['argv'][4] = 'BankAccountTest';
 $_SERVER['argv'][5] = __DIR__ . '/../_files/BankAccountTest.php';
 
 require __DIR__ . '/../bootstrap.php';
+
 require __DIR__ . '/../_files/MyCommand.php';
 MyCommand::main();
 ?>

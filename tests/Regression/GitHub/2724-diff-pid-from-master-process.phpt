@@ -8,7 +8,7 @@ $_SERVER['argv'][3] = __DIR__ . '/2724/SeparateClassRunMethodInNewProcessTest.ph
 
 require __DIR__ . '/../../bootstrap.php';
 
-file_put_contents(__DIR__ . '/2724/parent_process_id.txt', getmypid());
+\file_put_contents(__DIR__ . '/2724/parent_process_id.txt', \getmypid());
 
 PHPUnit\TextUI\Command::main();
 ?>
