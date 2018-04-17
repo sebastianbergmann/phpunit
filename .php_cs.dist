@@ -165,6 +165,5 @@ return PhpCsFixer\Config::create()
         ->in(__DIR__ . '/build')
         ->in(__DIR__ . '/src')
         ->in(__DIR__ . '/tests')
-        ->name('*.php')
         ->notName('*.phpt')
     );
