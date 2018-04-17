@@ -9,23 +9,21 @@
  */
 use PHPUnit\Framework\TestCase;
 
-/**
- * @requires extension I_DO_NOT_EXIST
- */
-class Issue1374Test extends TestCase
+use PHPUnit\Runner\BaseTestRunner;
+
+class ExceptionInTestDetectedInTeardown extends TestCase
 {
-    protected function setUp(): void
-    {
-        print __FUNCTION__;
-    }
+    public $exceptionDetected = false;
 
     protected function tearDown(): void
     {
-        print __FUNCTION__;
+        if (BaseTestRunner::STATUS_ERROR == $this->getStatus()) {
+            $this->exceptionDetected = true;
+        }
     }
 
     public function testSomething()
     {
-        $this->fail('This should not be reached');
+        throw new Exception;
     }
 }

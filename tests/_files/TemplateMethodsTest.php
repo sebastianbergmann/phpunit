@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 use PHPUnit\Framework\TestCase;
 
 class TemplateMethodsTest extends TestCase
@@ -8,12 +16,17 @@ class TemplateMethodsTest extends TestCase
         print __METHOD__ . "\n";
     }
 
+    public static function tearDownAfterClass(): void
+    {
+        print __METHOD__ . "\n";
+    }
+
     protected function setUp(): void
     {
         print __METHOD__ . "\n";
     }
 
-    protected function assertPreConditions()
+    protected function tearDown(): void
     {
         print __METHOD__ . "\n";
     }
@@ -30,17 +43,12 @@ class TemplateMethodsTest extends TestCase
         $this->assertTrue(false);
     }
 
+    protected function assertPreConditions()
+    {
+        print __METHOD__ . "\n";
+    }
+
     protected function assertPostConditions()
-    {
-        print __METHOD__ . "\n";
-    }
-
-    protected function tearDown(): void
-    {
-        print __METHOD__ . "\n";
-    }
-
-    public static function tearDownAfterClass(): void
     {
         print __METHOD__ . "\n";
     }
@@ -48,6 +56,7 @@ class TemplateMethodsTest extends TestCase
     protected function onNotSuccessfulTest(Throwable $t)
     {
         print __METHOD__ . "\n";
+
         throw $t;
     }
 }
