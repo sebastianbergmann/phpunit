@@ -1131,8 +1131,8 @@ class TestRunner extends BaseTestRunner
         $arguments['reportLowUpperBound']                             = $arguments['reportLowUpperBound'] ?? 50;
         $arguments['reportUselessTests']                              = $arguments['reportUselessTests'] ?? true;
         $arguments['reverseList']                                     = $arguments['reverseList'] ?? false;
-        $arguments['order']                                           = $arguments['order'] ?? 'normal';
-        $arguments['reorderDependencies']                             = $arguments['reorderDependencies'] ?? 'ignore';
+        $arguments['order']                                           = $arguments['order'] ?? TestSuite::DEFAULT_ORDER;
+        $arguments['reorderDependencies']                             = $arguments['reorderDependencies'] ?? TestSuite::RESOLVE_DEPENDENCIES;
         $arguments['stopOnError']                                     = $arguments['stopOnError'] ?? false;
         $arguments['stopOnFailure']                                   = $arguments['stopOnFailure'] ?? false;
         $arguments['stopOnIncomplete']                                = $arguments['stopOnIncomplete'] ?? false;

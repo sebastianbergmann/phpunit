@@ -89,6 +89,7 @@ class Command
         'globals-backup'            => null,
         'group='                    => null,
         'help'                      => null,
+        'ignore-dependencies'       => null,
         'include-path='             => null,
         'list-groups'               => null,
         'list-suites'               => null,
@@ -121,7 +122,6 @@ class Command
         'fail-on-risky'             => null,
         'strict-coverage'           => null,
         'disable-coverage-ignore'   => null,
-        'reorder-dependencies'      => null,
         'strict-global-state'       => null,
         'teamcity'                  => null,
         'testdox'                   => null,
@@ -695,7 +695,7 @@ class Command
                     break;
 
                 case '--random-order':
-                    $this->arguments['order'] = 'random';
+                    $this->arguments['order'] = TestSuite::RANDOM_ORDER;
 
                     break;
 
@@ -704,13 +704,13 @@ class Command
 
                     break;
 
-                case '--reorder-dependencies':
-                    $this->arguments['reorderDependencies'] = 'reorder';
+                case '--ignore-dependencies':
+                    $this->arguments['reorderDependencies'] = TestSuite::IGNORE_DEPENDENCIES;
 
                     break;
 
                 case '--reverse-order':
-                    $this->arguments['order'] = 'reverse';
+                    $this->arguments['order'] = TestSuite::REVERSE_ORDER;
 
                     break;
 
@@ -1079,7 +1079,7 @@ Test Selection Options:
   --reverse-order             Run tests last-to-first
   --random-order              Run tests in random order
   --random-order-seed=<n>     Pin the 'random' order to a specific seed number <n>
-  --reorder-dependencies      Adjust order of tests to satisfy dependencies
+  --ignore-dependencies       Disable the builtin dependency annotation resolver
 
 Test Execution Options:
 

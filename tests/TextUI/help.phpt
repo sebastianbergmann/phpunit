@@ -48,7 +48,7 @@ Test Selection Options:
   --reverse-order             Run tests last-to-first
   --random-order              Run tests in random order
   --random-order-seed=<n>     Pin the 'random' order to a specific seed number <n>
-  --reorder-dependencies      Adjust order of tests to satisfy dependencies
+  --ignore-dependencies       Disable the builtin dependency annotation resolver
 
 Test Execution Options:
 
