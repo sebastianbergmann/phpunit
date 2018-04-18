@@ -12,16 +12,16 @@ namespace PHPUnit\Framework;
 
 class TestSuiteSorter
 {
-    public static function reverse(array $tests): array
+    public static function reverse(array &$tests): void
     {
-        return \array_reverse($tests);
+        $tests = \array_reverse($tests);
     }
 
-    public static function randomize(array $tests): array
+    public static function randomize(array &$tests): void
     {
         \shuffle($tests);
 
-        return $tests;
+//        return $tests;
     }
 
     /**
@@ -71,13 +71,18 @@ class TestSuiteSorter
 
         do {
             $todoNames = \array_merge(
-                \array_map(function (TestCase $t) {
+                \array_map(function ($t) {
                     return $t->getName();
                 }, $todo),
-                \array_map(function (TestCase $t) {
+                \array_map(function ($t) {
                     return \get_class($t) . '::' . $t->getName();
                 }, $todo)
             );
+
+            //print_r($todoNames);
+            if (\is_array($todo[$i]->getDependencies()[0])) {
+                \print_r([$todo[$i]->getName(), $todo[$i]->getDependencies()]);
+            }
 
             if (empty(\array_intersect($todo[$i]->getDependencies(), $todoNames))) {
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($todo, $i, 1));
