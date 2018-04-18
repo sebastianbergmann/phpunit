@@ -79,11 +79,6 @@ class TestSuiteSorter
                 }, $todo)
             );
 
-            //print_r($todoNames);
-            if (\is_array($todo[$i]->getDependencies()[0])) {
-                \print_r([$todo[$i]->getName(), $todo[$i]->getDependencies()]);
-            }
-
             if (empty(\array_intersect($todo[$i]->getDependencies(), $todoNames))) {
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($todo, $i, 1));
                 $i            = 0;
