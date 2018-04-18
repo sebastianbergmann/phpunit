@@ -30,6 +30,10 @@ class TestSuiteIterator implements RecursiveIterator
     {
         $this->tests = $testSuite->tests();
 
+        if (empty($this->tests)) {
+            return;
+        }
+
         switch ($testSuite->getTestRunningOrder()) {
             case 'reverse':
                 $this->tests = \array_reverse($this->tests);
