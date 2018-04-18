@@ -26,7 +26,7 @@ class BankAccountTest extends TestCase
      * @group balanceIsInitiallyZero
      * @group specification
      */
-    public function testBalanceIsInitiallyZero()
+    public function testBalanceIsInitiallyZero(): void
     {
         /* @Given a fresh bank account */
         $ba = new BankAccount;
@@ -43,7 +43,7 @@ class BankAccountTest extends TestCase
      * @group balanceCannotBecomeNegative
      * @group specification
      */
-    public function testBalanceCannotBecomeNegative()
+    public function testBalanceCannotBecomeNegative(): void
     {
         try {
             $this->ba->withdrawMoney(1);
@@ -61,7 +61,7 @@ class BankAccountTest extends TestCase
      * @group balanceCannotBecomeNegative
      * @group specification
      */
-    public function testBalanceCannotBecomeNegative2()
+    public function testBalanceCannotBecomeNegative2(): void
     {
         try {
             $this->ba->depositMoney(-1);

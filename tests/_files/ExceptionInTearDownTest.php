@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 use PHPUnit\Framework\TestCase;
 
 class ExceptionInTearDownTest extends TestCase
@@ -14,24 +22,25 @@ class ExceptionInTearDownTest extends TestCase
         $this->setUp = true;
     }
 
-    protected function assertPreConditions()
+    protected function tearDown(): void
     {
-        $this->assertPreConditions = true;
+        $this->tearDown = true;
+
+        throw new Exception;
     }
 
-    public function testSomething()
+    public function testSomething(): void
     {
         $this->testSomething = true;
     }
 
-    protected function assertPostConditions()
+    protected function assertPreConditions(): void
     {
-        $this->assertPostConditions = true;
+        $this->assertPreConditions = true;
     }
 
-    protected function tearDown(): void
+    protected function assertPostConditions(): void
     {
-        $this->tearDown = true;
-        throw new Exception;
+        $this->assertPostConditions = true;
     }
 }

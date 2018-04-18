@@ -1,4 +1,12 @@
 <?php
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 use PHPUnit\Framework\TestCase;
 
 class Issue244Test extends TestCase
@@ -7,7 +15,7 @@ class Issue244Test extends TestCase
      * @expectedException Issue244Exception
      * @expectedExceptionCode 123StringCode
      */
-    public function testWorks()
+    public function testWorks(): void
     {
         throw new Issue244Exception;
     }
@@ -16,7 +24,7 @@ class Issue244Test extends TestCase
      * @expectedException Issue244Exception
      * @expectedExceptionCode OtherString
      */
-    public function testFails()
+    public function testFails(): void
     {
         throw new Issue244Exception;
     }
@@ -25,7 +33,7 @@ class Issue244Test extends TestCase
      * @expectedException Issue244Exception
      * @expectedExceptionCode 123
      */
-    public function testFailsTooIfExpectationIsANumber()
+    public function testFailsTooIfExpectationIsANumber(): void
     {
         throw new Issue244Exception;
     }
@@ -34,7 +42,7 @@ class Issue244Test extends TestCase
      * @expectedException Issue244ExceptionIntCode
      * @expectedExceptionCode 123String
      */
-    public function testFailsTooIfExceptionCodeIsANumber()
+    public function testFailsTooIfExceptionCodeIsANumber(): void
     {
         throw new Issue244ExceptionIntCode;
     }

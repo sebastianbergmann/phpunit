@@ -177,6 +177,14 @@ class TestCaseTest extends TestCase
         $this->assertEquals(BaseTestRunner::STATUS_ERROR, $test->getStatus());
     }
 
+    public function testExceptionInTestIsDetectedInTeardown(): void
+    {
+        $test   = new \ExceptionInTestDetectedInTeardown('testSomething');
+        $test->run();
+
+        $this->assertTrue($test->exceptionDetected);
+    }
+
     public function testNoArgTestCasePasses(): void
     {
         $result = new TestResult;
@@ -319,6 +327,17 @@ class TestCaseTest extends TestCase
         $result = $test->run();
 
         $this->assertEquals(1, $result->failureCount());
+        $this->assertCount(1, $result);
+    }
+
+    public function testDoesNotPerformAssertions(): void
+    {
+        $test = new \DoNoAssertionTestCase('testNothing');
+        $test->expectNotToPerformAssertions();
+
+        $result = $test->run();
+
+        $this->assertEquals(0, $result->riskyCount());
         $this->assertCount(1, $result);
     }
 
@@ -724,7 +743,7 @@ class TestCaseTest extends TestCase
         $this->assertSame($data, $test->myTestData);
     }
 
-    public function testGettingNullTestResultObject()
+    public function testGettingNullTestResultObject(): void
     {
         $test = new \Success();
         $this->assertNull($test->getTestResultObject());

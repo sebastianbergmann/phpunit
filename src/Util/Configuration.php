@@ -948,7 +948,7 @@ final class Configuration
         return $names;
     }
 
-    private function validateConfigurationAgainstSchema()
+    private function validateConfigurationAgainstSchema(): void
     {
         $original    = \libxml_use_internal_errors(true);
         $xsdFilename = __DIR__ . '/../../phpunit.xsd';

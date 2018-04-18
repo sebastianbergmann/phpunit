@@ -9,10 +9,9 @@
  */
 use PHPUnit\Framework\TestCase;
 
-class TestSkipped extends TestCase
+class DoNoAssertionTestCase extends TestCase
 {
-    protected function runTest(): void
+    public function testNothing(): void
     {
-        $this->markTestSkipped('Skipped test');
     }
 }

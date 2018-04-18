@@ -872,7 +872,7 @@ class TestTest extends TestCase
     public function testFunctionParenthesesAreAllowed(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredFunction.php' => \range(2, 4)],
+            [TEST_FILES_PATH . 'CoveredFunction.php' => \range(10, 12)],
             Test::getLinesToBeCovered(
                 'CoverageFunctionParenthesesTest',
                 'testSomething'
@@ -883,7 +883,7 @@ class TestTest extends TestCase
     public function testFunctionParenthesesAreAllowedWithWhitespace(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredFunction.php' => \range(2, 4)],
+            [TEST_FILES_PATH . 'CoveredFunction.php' => \range(10, 12)],
             Test::getLinesToBeCovered(
                 'CoverageFunctionParenthesesWhitespaceTest',
                 'testSomething'
@@ -894,7 +894,7 @@ class TestTest extends TestCase
     public function testMethodParenthesesAreAllowed(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => \range(31, 35)],
+            [TEST_FILES_PATH . 'CoveredClass.php' => \range(29, 33)],
             Test::getLinesToBeCovered(
                 'CoverageMethodParenthesesTest',
                 'testSomething'
@@ -905,7 +905,7 @@ class TestTest extends TestCase
     public function testMethodParenthesesAreAllowedWithWhitespace(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => \range(31, 35)],
+            [TEST_FILES_PATH . 'CoveredClass.php' => \range(29, 33)],
             Test::getLinesToBeCovered(
                 'CoverageMethodParenthesesWhitespaceTest',
                 'testSomething'
@@ -917,7 +917,7 @@ class TestTest extends TestCase
     {
         $this->assertEquals(
             [
-                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => \range(4, 7)
+                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => \range(12, 15)
             ],
             Test::getLinesToBeCovered(
                 \CoverageNamespacedFunctionTest::class,
@@ -935,91 +935,91 @@ class TestTest extends TestCase
           ],
           [
             'CoverageClassExtendedTest',
-            \array_merge(\range(19, 36), \range(2, 17))
+            \array_merge(\range(27, 44), \range(10, 25))
           ],
           [
             'CoverageClassTest',
-            \range(19, 36)
+            \range(27, 44)
           ],
           [
             'CoverageMethodTest',
-            \range(31, 35)
+            \range(29, 33)
           ],
           [
             'CoverageMethodOneLineAnnotationTest',
-            \range(31, 35)
+            \range(29, 33)
           ],
           [
             'CoverageNotPrivateTest',
-            \array_merge(\range(25, 29), \range(31, 35))
+            \array_merge(\range(29, 33), \range(35, 39))
           ],
           [
             'CoverageNotProtectedTest',
-            \array_merge(\range(21, 23), \range(31, 35))
+            \array_merge(\range(29, 33), \range(41, 43))
           ],
           [
             'CoverageNotPublicTest',
-            \array_merge(\range(21, 23), \range(25, 29))
+            \array_merge(\range(35, 39), \range(41, 43))
           ],
           [
             'CoveragePrivateTest',
-            \range(21, 23)
+            \range(41, 43)
           ],
           [
             'CoverageProtectedTest',
-            \range(25, 29)
+            \range(35, 39)
           ],
           [
             'CoveragePublicTest',
-            \range(31, 35)
+            \range(29, 33)
           ],
           [
             'CoverageFunctionTest',
-            \range(2, 4)
+            \range(10, 12)
           ],
           [
             'NamespaceCoverageClassExtendedTest',
-            \array_merge(\range(21, 38), \range(4, 19))
+            \array_merge(\range(29, 46), \range(12, 27))
           ],
           [
             'NamespaceCoverageClassTest',
-            \range(21, 38)
+            \range(29, 46)
           ],
           [
             'NamespaceCoverageMethodTest',
-            \range(33, 37)
+            \range(31, 35)
           ],
           [
             'NamespaceCoverageNotPrivateTest',
-            \array_merge(\range(27, 31), \range(33, 37))
+            \array_merge(\range(31, 35), \range(37, 41))
           ],
           [
             'NamespaceCoverageNotProtectedTest',
-            \array_merge(\range(23, 25), \range(33, 37))
+            \array_merge(\range(31, 35), \range(43, 45))
           ],
           [
             'NamespaceCoverageNotPublicTest',
-            \array_merge(\range(23, 25), \range(27, 31))
+            \array_merge(\range(37, 41), \range(43, 45))
           ],
           [
             'NamespaceCoveragePrivateTest',
-            \range(23, 25)
+            \range(43, 45)
           ],
           [
             'NamespaceCoverageProtectedTest',
-            \range(27, 31)
+            \range(37, 41)
           ],
           [
             'NamespaceCoveragePublicTest',
-            \range(33, 37)
+            \range(31, 35)
           ],
           [
             'NamespaceCoverageCoversClassTest',
-            \array_merge(\range(23, 25), \range(27, 31), \range(33, 37), \range(6, 8), \range(10, 13), \range(15, 18))
+            \array_merge(\range(43, 45), \range(37, 41), \range(31, 35), \range(24, 26), \range(19, 22), \range(14, 17))
           ],
           [
             'NamespaceCoverageCoversClassPublicTest',
-            \range(33, 37)
+            \range(31, 35)
           ],
           [
             'CoverageNothingTest',

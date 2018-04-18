@@ -1,5 +1,12 @@
 <?php
-
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 use PHPUnit\Framework\TestCase;
 
 class Issue498Test extends TestCase
@@ -8,8 +15,10 @@ class Issue498Test extends TestCase
      * @test
      * @dataProvider shouldBeTrueDataProvider
      * @group falseOnly
+     *
+     * @param mixed $testData
      */
-    public function shouldBeTrue($testData)
+    public function shouldBeTrue($testData): void
     {
         $this->assertTrue(true);
     }
@@ -18,8 +27,10 @@ class Issue498Test extends TestCase
      * @test
      * @dataProvider shouldBeFalseDataProvider
      * @group trueOnly
+     *
+     * @param mixed $testData
      */
-    public function shouldBeFalse($testData)
+    public function shouldBeFalse($testData): void
     {
         $this->assertFalse(false);
     }

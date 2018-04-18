@@ -35,22 +35,6 @@ class BankAccount
     }
 
     /**
-     * Sets the bank account's balance.
-     *
-     * @param float $balance
-     *
-     * @throws BankAccountException
-     */
-    protected function setBalance($balance)
-    {
-        if ($balance >= 0) {
-            $this->balance = $balance;
-        } else {
-            throw new BankAccountException;
-        }
-    }
-
-    /**
      * Deposits an amount of money to the bank account.
      *
      * @param float $balance
@@ -76,5 +60,21 @@ class BankAccount
         $this->setBalance($this->getBalance() - $balance);
 
         return $this->getBalance();
+    }
+
+    /**
+     * Sets the bank account's balance.
+     *
+     * @param float $balance
+     *
+     * @throws BankAccountException
+     */
+    protected function setBalance($balance): void
+    {
+        if ($balance >= 0) {
+            $this->balance = $balance;
+        } else {
+            throw new BankAccountException;
+        }
     }
 }

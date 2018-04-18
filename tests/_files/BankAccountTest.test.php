@@ -26,7 +26,7 @@ class BankAccountWithCustomExtensionTest extends TestCase
      * @group balanceIsInitiallyZero
      * @group specification
      */
-    public function testBalanceIsInitiallyZero()
+    public function testBalanceIsInitiallyZero(): void
     {
         $this->assertEquals(0, $this->ba->getBalance());
     }
@@ -36,7 +36,7 @@ class BankAccountWithCustomExtensionTest extends TestCase
      * @group balanceCannotBecomeNegative
      * @group specification
      */
-    public function testBalanceCannotBecomeNegative()
+    public function testBalanceCannotBecomeNegative(): void
     {
         try {
             $this->ba->withdrawMoney(1);
@@ -54,7 +54,7 @@ class BankAccountWithCustomExtensionTest extends TestCase
      * @group balanceCannotBecomeNegative
      * @group specification
      */
-    public function testBalanceCannotBecomeNegative2()
+    public function testBalanceCannotBecomeNegative2(): void
     {
         try {
             $this->ba->depositMoney(-1);
