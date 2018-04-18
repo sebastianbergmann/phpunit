@@ -12,34 +12,25 @@ namespace PHPUnit\Framework;
 class DataProviderTestSuite extends TestSuite
 {
     /**
-     * Sets the dependencies of a TestCase.
-     *
+     * @var string[]
+     */
+    private $dependencies = [];
+
+    /**
      * @param string[] $dependencies
      */
     public function setDependencies(array $dependencies): void
     {
-        foreach ($this->tests as $test) {
-            $test->setDependencies($dependencies);
-        }
+        $this->dependencies = $dependencies;
     }
 
     public function getDependencies(): array
     {
-        return \array_filter(
-            \array_map(
-                function (TestCase $test) {
-                    return $test->getDependencies();
-                },
-                $this->tests
-            ),
-            function (array $dependencies) {
-                return !empty($dependencies);
-            }
-        );
+        return $this->dependencies;
     }
 
     public function hasDependencies(): bool
     {
-        return \count($this->getDependencies()) > 0;
+        return \count($this->dependencies) > 0;
     }
 }
