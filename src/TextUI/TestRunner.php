@@ -172,7 +172,7 @@ class TestRunner extends BaseTestRunner
             $suite->setTestRunningOrder($arguments['order']);
 
             if ($arguments['order'] == 'random') {
-                \srand($arguments['randomOrderSeed']);
+                \mt_srand($arguments['randomOrderSeed']);
             }
         }
 
