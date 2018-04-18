@@ -35,23 +35,23 @@ class TestSuiteIterator implements RecursiveIterator
         }
 
         switch ($testSuite->getTestRunningOrder()) {
-            case 'reverse':
-                $this->tests = TestSuiteSorter::reverse($this->tests);
+            case TestSuite::REVERSE_ORDER:
+                TestSuiteSorter::reverse($this->tests);
 
                 break;
 
-            case 'random':
-                $this->tests = TestSuiteSorter::randomize($this->tests);
+            case TestSuite::RANDOM_ORDER:
+                TestSuiteSorter::randomize($this->tests);
 
                 break;
 
-            case 'normal':
+            case TestSuite::DEFAULT_ORDER:
             default:
 
                 break;
         }
 
-        if (($this->tests[0] instanceof TestCase) && $testSuite->getDependencyResolutionStrategy() === 'reorder') {
+        if (($this->tests[0] instanceof TestCase) && $testSuite->getDependencyResolutionStrategy() === TestSuite::RESOLVE_DEPENDENCIES) {
             $this->tests = TestSuiteSorter::performDependencyResolution($this->tests);
         }
     }
