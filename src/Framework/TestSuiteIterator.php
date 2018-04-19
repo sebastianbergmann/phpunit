@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Runner\TestSuiteSorter;
 use RecursiveIterator;
 
+/**
+ * Iterator for test suites.
+ */
 final class TestSuiteIterator implements RecursiveIterator
 {
     /**
@@ -27,22 +29,6 @@ final class TestSuiteIterator implements RecursiveIterator
     public function __construct(TestSuite $testSuite)
     {
         $this->tests = $testSuite->tests();
-
-        if (empty($this->tests)) {
-            return;
-        }
-
-        $sorter = new TestSuiteSorter;
-
-        if ($testSuite->getTestRunningOrder() === TestSuite::REVERSE_ORDER) {
-            $sorter->reverse($this->tests);
-        } elseif ($testSuite->getTestRunningOrder() === TestSuite::RANDOM_ORDER) {
-            $sorter->randomize($this->tests);
-        }
-
-        if (($this->tests[0] instanceof TestCase) && $testSuite->getDependencyResolutionStrategy() === TestSuite::RESOLVE_DEPENDENCIES) {
-            $this->tests = $sorter->resolveDependencies($this->tests);
-        }
     }
 
     /**

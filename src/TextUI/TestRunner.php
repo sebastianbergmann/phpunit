@@ -30,6 +30,7 @@ use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestHook;
 use PHPUnit\Runner\TestListenerAdapter;
 use PHPUnit\Runner\TestSuiteLoader;
+use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Configuration;
 use PHPUnit\Util\Log\JUnit;
@@ -168,17 +169,10 @@ class TestRunner extends BaseTestRunner
             $suite->setBeStrictAboutChangesToGlobalState(true);
         }
 
-        if (isset($arguments['order'])) {
-            $suite->setTestRunningOrder($arguments['order']);
-
-            if ($arguments['order'] == 'random') {
-                \mt_srand($arguments['randomOrderSeed']);
-            }
+        if ($arguments['order'] == TestSuiteSorter::RANDOM_ORDER) {
+            \mt_srand($arguments['randomOrderSeed']);
         }
-
-        if (isset($arguments['reorderDependencies'])) {
-            $suite->setDependencyResolutionStrategy($arguments['reorderDependencies']);
-        }
+        $this->reorderTests($suite, $arguments);
 
         if (\is_int($arguments['repeat']) && $arguments['repeat'] > 0) {
             $_suite = new TestSuite;
@@ -552,8 +546,6 @@ class TestRunner extends BaseTestRunner
 
         if ($suite instanceof TestSuite) {
             $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
-            $suite->setTestRunningOrder($arguments['order']);
-            $suite->setDependencyResolutionStrategy($arguments['reorderDependencies']);
         }
 
         foreach ($this->extensions as $extension) {
@@ -1131,8 +1123,8 @@ class TestRunner extends BaseTestRunner
         $arguments['reportLowUpperBound']                             = $arguments['reportLowUpperBound'] ?? 50;
         $arguments['reportUselessTests']                              = $arguments['reportUselessTests'] ?? true;
         $arguments['reverseList']                                     = $arguments['reverseList'] ?? false;
-        $arguments['order']                                           = $arguments['order'] ?? TestSuite::DEFAULT_ORDER;
-        $arguments['reorderDependencies']                             = $arguments['reorderDependencies'] ?? TestSuite::RESOLVE_DEPENDENCIES;
+        $arguments['order']                                           = $arguments['order'] ?? TestSuiteSorter::DEFAULT_ORDER;
+        $arguments['reorderDependencies']                             = $arguments['reorderDependencies'] ?? TestSuiteSorter::RESOLVE_DEPENDENCIES;
         $arguments['stopOnError']                                     = $arguments['stopOnError'] ?? false;
         $arguments['stopOnFailure']                                   = $arguments['stopOnFailure'] ?? false;
         $arguments['stopOnIncomplete']                                = $arguments['stopOnIncomplete'] ?? false;
@@ -1184,6 +1176,18 @@ class TestRunner extends BaseTestRunner
         }
 
         $suite->injectFilter($filterFactory);
+    }
+
+    private function reorderTests(Test $suite, array $arguments): void
+    {
+        if ($suite instanceof \PHPUnit\Framework\TestSuite && !empty($suite->tests())) {
+            $sorter = new TestSuiteSorter($arguments);
+            $sorter->sort($suite);
+
+            foreach ($suite as $s) {
+                $this->reorderTests($s, $arguments);
+            }
+        }
     }
 
     private function writeMessage(string $type, string $message): void

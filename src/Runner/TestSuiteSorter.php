@@ -11,17 +11,79 @@
 namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSuite;
 
 final class TestSuiteSorter
 {
-    public function reverse(array &$tests): void
+    /**
+     * @var string
+     */
+    public const DEFAULT_ORDER = 'default';
+
+    /**
+     * @var string
+     */
+    public const REVERSE_ORDER = 'reverse';
+
+    /**
+     * @var string
+     */
+    public const RANDOM_ORDER = 'random';
+
+    /**
+     * @var string
+     */
+    public const IGNORE_DEPENDENCIES = 'ignore';
+
+    /**
+     * @var string
+     */
+    public const RESOLVE_DEPENDENCIES = 'resolve';
+
+    /**
+     * @var string
+     */
+    private $testRunningOrder = self::DEFAULT_ORDER;
+
+    /**
+     * @var string
+     */
+    private $dependencyResolutionStrategy = self::RESOLVE_DEPENDENCIES;
+
+    public function __construct(array $arguments)
     {
-        $tests = \array_reverse($tests);
+        $this->testRunningOrder               = $arguments['order'];
+        $this->dependencyResolutionStrategy   = $arguments['reorderDependencies'];
     }
 
-    public function randomize(array &$tests): void
+    public function sort(TestSuite $suite): void
+    {
+        if (empty($suite->tests())) {
+            return;
+        }
+
+        if ($this->testRunningOrder === self::REVERSE_ORDER) {
+            $suite->setTests($this->reverse($suite->tests()));
+        } elseif ($this->testRunningOrder === self::RANDOM_ORDER) {
+            $suite->setTests($this->randomize($suite->tests()));
+        }
+
+        if (($suite->tests()[0] instanceof TestCase) && $this->dependencyResolutionStrategy === self::RESOLVE_DEPENDENCIES) {
+            $suite->setTests($this->resolveDependencies($suite->tests()));
+        }
+    }
+
+    private function reverse(array $tests): array
+    {
+        return \array_reverse($tests);
+    }
+
+    private function randomize(array $tests): array
     {
         \shuffle($tests);
+
+        return $tests;
     }
 
     /**
@@ -46,7 +108,7 @@ final class TestSuiteSorter
      *
      * @return Test[]
      */
-    public function resolveDependencies(array $tests): array
+    private function resolveDependencies(array $tests): array
     {
         if (empty($tests)) {
             return $tests;
@@ -71,10 +133,10 @@ final class TestSuiteSorter
 
         do {
             $todoNames = \array_merge(
-                \array_map(function ($t) {
+                \array_map(function (Test $t) {
                     return $t->getName();
                 }, $todo),
-                \array_map(function ($t) {
+                \array_map(function (Test $t) {
                     return \get_class($t) . '::' . $t->getName();
                 }, $todo)
             );

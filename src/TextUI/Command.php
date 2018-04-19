@@ -22,6 +22,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
+use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Configuration;
 use PHPUnit\Util\ConfigurationGenerator;
@@ -695,7 +696,7 @@ class Command
                     break;
 
                 case '--random-order':
-                    $this->arguments['order'] = TestSuite::RANDOM_ORDER;
+                    $this->arguments['order'] = TestSuiteSorter::RANDOM_ORDER;
 
                     break;
 
@@ -705,12 +706,12 @@ class Command
                     break;
 
                 case '--ignore-dependencies':
-                    $this->arguments['reorderDependencies'] = TestSuite::IGNORE_DEPENDENCIES;
+                    $this->arguments['reorderDependencies'] = TestSuiteSorter::IGNORE_DEPENDENCIES;
 
                     break;
 
                 case '--reverse-order':
-                    $this->arguments['order'] = TestSuite::REVERSE_ORDER;
+                    $this->arguments['order'] = TestSuiteSorter::REVERSE_ORDER;
 
                     break;
 
