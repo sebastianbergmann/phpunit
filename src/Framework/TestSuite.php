@@ -26,30 +26,6 @@ use Throwable;
 class TestSuite implements Test, SelfDescribing, IteratorAggregate
 {
     /**
-     * @var string
-     */
-    public const DEFAULT_ORDER = 'default';
-
-    /**
-     * @var string
-     */
-    public const REVERSE_ORDER = 'reverse';
-
-    /**
-     * @var string
-     */
-    public const RANDOM_ORDER = 'random';
-
-    /**
-     * @var string
-     */
-    public const IGNORE_DEPENDENCIES = 'ignore';
-
-    /**
-     * @var string
-     */
-    public const RESOLVE_DEPENDENCIES = 'resolve';
-    /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
      * @var bool
@@ -126,16 +102,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @var string[]
      */
     private $declaredClasses;
-
-    /**
-     * @var string
-     */
-    private $testRunningOrder = self::DEFAULT_ORDER;
-
-    /**
-     * @var string
-     */
-    private $dependencyResolutionStrategy = self::RESOLVE_DEPENDENCIES;
 
     /**
      * @param ReflectionClass $theClass
@@ -805,8 +771,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
-                $test->setTestRunningOrder($this->getTestRunningOrder());
-                $test->setDependencyResolutionStrategy($this->getDependencyResolutionStrategy());
             }
 
             $test->run($result);
@@ -907,39 +871,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         if (null === $this->backupStaticAttributes && \is_bool($backupStaticAttributes)) {
             $this->backupStaticAttributes = $backupStaticAttributes;
         }
-    }
-
-    public function setTestRunningOrder(string $order): void
-    {
-        switch ($order) {
-            case self::REVERSE_ORDER:
-            case self::RANDOM_ORDER:
-                $this->testRunningOrder = $order;
-
-                break;
-
-            default:
-                $this->testRunningOrder = self::DEFAULT_ORDER;
-        }
-    }
-
-    public function getTestRunningOrder(): string
-    {
-        return $this->testRunningOrder;
-    }
-
-    public function setDependencyResolutionStrategy(string $strategy): void
-    {
-        if ($strategy === self::RESOLVE_DEPENDENCIES) {
-            $this->dependencyResolutionStrategy = $strategy;
-        } else {
-            $this->dependencyResolutionStrategy = self::IGNORE_DEPENDENCIES;
-        }
-    }
-
-    public function getDependencyResolutionStrategy(): string
-    {
-        return $this->dependencyResolutionStrategy;
     }
 
     /**
