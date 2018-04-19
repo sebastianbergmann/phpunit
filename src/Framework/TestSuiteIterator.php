@@ -9,22 +9,20 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Runner\TestSuiteSorter;
 use RecursiveIterator;
 
-/**
- * Iterator for test suites.
- */
-class TestSuiteIterator implements RecursiveIterator
+final class TestSuiteIterator implements RecursiveIterator
 {
     /**
      * @var int
      */
-    protected $position;
+    private $position;
 
     /**
      * @var Test[]
      */
-    protected $tests;
+    private $tests;
 
     public function __construct(TestSuite $testSuite)
     {
@@ -34,25 +32,16 @@ class TestSuiteIterator implements RecursiveIterator
             return;
         }
 
-        switch ($testSuite->getTestRunningOrder()) {
-            case TestSuite::REVERSE_ORDER:
-                TestSuiteSorter::reverse($this->tests);
+        $sorter = new TestSuiteSorter;
 
-                break;
-
-            case TestSuite::RANDOM_ORDER:
-                TestSuiteSorter::randomize($this->tests);
-
-                break;
-
-            case TestSuite::DEFAULT_ORDER:
-            default:
-
-                break;
+        if ($testSuite->getTestRunningOrder() === TestSuite::REVERSE_ORDER) {
+            $sorter->reverse($this->tests);
+        } elseif ($testSuite->getTestRunningOrder() === TestSuite::RANDOM_ORDER) {
+            $sorter->randomize($this->tests);
         }
 
         if (($this->tests[0] instanceof TestCase) && $testSuite->getDependencyResolutionStrategy() === TestSuite::RESOLVE_DEPENDENCIES) {
-            $this->tests = TestSuiteSorter::performDependencyResolution($this->tests);
+            $this->tests = $sorter->resolveDependencies($this->tests);
         }
     }
 
