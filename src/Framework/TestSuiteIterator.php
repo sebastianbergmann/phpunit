@@ -12,20 +12,17 @@ namespace PHPUnit\Framework;
 use PHPUnit\Runner\TestSuiteSorter;
 use RecursiveIterator;
 
-/**
- * Iterator for test suites.
- */
-class TestSuiteIterator implements RecursiveIterator
+final class TestSuiteIterator implements RecursiveIterator
 {
     /**
      * @var int
      */
-    protected $position;
+    private $position;
 
     /**
      * @var Test[]
      */
-    protected $tests;
+    private $tests;
 
     public function __construct(TestSuite $testSuite)
     {
