@@ -8,20 +8,20 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\Framework;
+namespace PHPUnit\Runner;
 
-class TestSuiteSorter
+use PHPUnit\Framework\Test;
+
+final class TestSuiteSorter
 {
-    public static function reverse(array &$tests): void
+    public function reverse(array &$tests): void
     {
         $tests = \array_reverse($tests);
     }
 
-    public static function randomize(array &$tests): void
+    public function randomize(array &$tests): void
     {
         \shuffle($tests);
-
-//        return $tests;
     }
 
     /**
@@ -46,7 +46,7 @@ class TestSuiteSorter
      *
      * @return Test[]
      */
-    public static function performDependencyResolution(array $tests): array
+    public function resolveDependencies(array $tests): array
     {
         if (empty($tests)) {
             return $tests;
