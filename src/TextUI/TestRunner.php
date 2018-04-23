@@ -169,10 +169,15 @@ class TestRunner extends BaseTestRunner
             $suite->setBeStrictAboutChangesToGlobalState(true);
         }
 
-        if ($arguments['order'] == TestSuiteSorter::RANDOM_ORDER) {
+        if ($arguments['order'] === TestSuiteSorter::RANDOM_ORDER) {
             \mt_srand($arguments['randomOrderSeed']);
         }
-        $this->reorderTests($suite, $arguments);
+
+        if ($arguments['order'] !== TestSuiteSorter::DEFAULT_ORDER || $arguments['reorderDependencies'] !== TestSuiteSorter::IGNORE_DEPENDENCIES) {
+            $sorter = new TestSuiteSorter($arguments);
+            $this->reorderTestsInSuite($suite, $sorter);
+            unset($sorter);
+        }
 
         if (\is_int($arguments['repeat']) && $arguments['repeat'] > 0) {
             $_suite = new TestSuite;
@@ -1178,14 +1183,13 @@ class TestRunner extends BaseTestRunner
         $suite->injectFilter($filterFactory);
     }
 
-    private function reorderTests(Test $suite, array $arguments): void
+    private function reorderTestsInSuite(Test $suite, TestSuiteSorter $sorter): void
     {
-        if ($suite instanceof \PHPUnit\Framework\TestSuite && !empty($suite->tests())) {
-            $sorter = new TestSuiteSorter($arguments);
+        if ($suite instanceof TestSuite && !empty($suite->tests())) {
             $sorter->sort($suite);
 
-            foreach ($suite as $s) {
-                $this->reorderTests($s, $arguments);
+            foreach ($suite as $_suite) {
+                $this->reorderTestsInSuite($_suite, $sorter);
             }
         }
     }
