@@ -38,46 +38,46 @@ class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 
     public function bar(Foo $foo)
     {
-        $arguments = [$foo];
-        $count     = func_num_args();
+        $__phpunit_arguments = [$foo];
+        $__phpunit_count     = func_num_args();
 
-        if ($count > 1) {
-            $_arguments = func_get_args();
+        if ($__phpunit_count > 1) {
+            $__phpunit_arguments_tmp = func_get_args();
 
-            for ($i = 1; $i < $count; $i++) {
-                $arguments[] = $_arguments[$i];
+            for ($__phpunit_i = 1; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
+                $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }
 
         $this->__phpunit_getInvocationMocker()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
-                'Foo', 'bar', $arguments, '', $this, true
+                'Foo', 'bar', $__phpunit_arguments, '', $this, true
             )
         );
 
-        return call_user_func_array(array($this->__phpunit_originalObject, "bar"), $arguments);
+        return call_user_func_array(array($this->__phpunit_originalObject, "bar"), $__phpunit_arguments);
     }
 
     public function baz(Foo $foo)
     {
-        $arguments = [$foo];
-        $count     = func_num_args();
+        $__phpunit_arguments = [$foo];
+        $__phpunit_count     = func_num_args();
 
-        if ($count > 1) {
-            $_arguments = func_get_args();
+        if ($__phpunit_count > 1) {
+            $__phpunit_arguments_tmp = func_get_args();
 
-            for ($i = 1; $i < $count; $i++) {
-                $arguments[] = $_arguments[$i];
+            for ($__phpunit_i = 1; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
+                $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }
 
         $this->__phpunit_getInvocationMocker()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
-                'Foo', 'baz', $arguments, '', $this, true
+                'Foo', 'baz', $__phpunit_arguments, '', $this, true
             )
         );
 
-        return call_user_func_array(array($this->__phpunit_originalObject, "baz"), $arguments);
+        return call_user_func_array(array($this->__phpunit_originalObject, "baz"), $__phpunit_arguments);
     }
 
     public function expects(\PHPUnit\Framework\MockObject\Matcher\Invocation $matcher)
