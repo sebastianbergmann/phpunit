@@ -36,20 +36,20 @@ class MockFoo implements PHPUnit\Framework\MockObject\MockObject, Foo
 
     public function bar(string $baz): void
     {
-        $arguments = [$baz];
-        $count     = func_num_args();
+        $__phpunit_arguments = [$baz];
+        $__phpunit_count     = func_num_args();
 
-        if ($count > 1) {
-            $_arguments = func_get_args();
+        if ($__phpunit_count > 1) {
+            $__phpunit_arguments_tmp = func_get_args();
 
-            for ($i = 1; $i < $count; $i++) {
-                $arguments[] = $_arguments[$i];
+            for ($__phpunit_i = 1; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
+                $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }
 
         $this->__phpunit_getInvocationMocker()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
-                'Foo', 'bar', $arguments, 'void', $this, true
+                'Foo', 'bar', $__phpunit_arguments, 'void', $this, true
             )
         );
     }

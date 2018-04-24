@@ -1,22 +1,22 @@
 
     {modifier} function {reference}{method_name}({arguments_decl}){return_delim}{return_type}
     {{deprecation}
-        $arguments = [{arguments_call}];
-        $count     = func_num_args();
+        $__phpunit_arguments = [{arguments_call}];
+        $__phpunit_count     = func_num_args();
 
-        if ($count > {arguments_count}) {
-            $_arguments = func_get_args();
+        if ($__phpunit_count > {arguments_count}) {
+            $__phpunit_arguments_tmp = func_get_args();
 
-            for ($i = {arguments_count}; $i < $count; $i++) {
-                $arguments[] = $_arguments[$i];
+            for ($__phpunit_i = {arguments_count}; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
+                $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }
 
-        $result = $this->__phpunit_getInvocationMocker()->invoke(
+        $__phpunit_result = $this->__phpunit_getInvocationMocker()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
-                '{class_name}', '{method_name}', $arguments, '{return_type}', $this, {clone_arguments}
+                '{class_name}', '{method_name}', $__phpunit_arguments, '{return_type}', $this, {clone_arguments}
             )
         );
 
-        return $result;
+        return $__phpunit_result;
     }

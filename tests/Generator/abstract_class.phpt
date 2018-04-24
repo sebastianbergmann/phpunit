@@ -42,68 +42,68 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 
     public function one()
     {
-        $arguments = [];
-        $count     = func_num_args();
+        $__phpunit_arguments = [];
+        $__phpunit_count     = func_num_args();
 
-        if ($count > 0) {
-            $_arguments = func_get_args();
+        if ($__phpunit_count > 0) {
+            $__phpunit_arguments_tmp = func_get_args();
 
-            for ($i = 0; $i < $count; $i++) {
-                $arguments[] = $_arguments[$i];
+            for ($__phpunit_i = 0; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
+                $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }
 
-        $result = $this->__phpunit_getInvocationMocker()->invoke(
+        $__phpunit_result = $this->__phpunit_getInvocationMocker()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
-                'Foo', 'one', $arguments, '', $this, true
+                'Foo', 'one', $__phpunit_arguments, '', $this, true
             )
         );
 
-        return $result;
+        return $__phpunit_result;
     }
 
     public function two()
     {
-        $arguments = [];
-        $count     = func_num_args();
+        $__phpunit_arguments = [];
+        $__phpunit_count     = func_num_args();
 
-        if ($count > 0) {
-            $_arguments = func_get_args();
+        if ($__phpunit_count > 0) {
+            $__phpunit_arguments_tmp = func_get_args();
 
-            for ($i = 0; $i < $count; $i++) {
-                $arguments[] = $_arguments[$i];
+            for ($__phpunit_i = 0; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
+                $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }
 
-        $result = $this->__phpunit_getInvocationMocker()->invoke(
+        $__phpunit_result = $this->__phpunit_getInvocationMocker()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
-                'Foo', 'two', $arguments, '', $this, true
+                'Foo', 'two', $__phpunit_arguments, '', $this, true
             )
         );
 
-        return $result;
+        return $__phpunit_result;
     }
 
     protected function three()
     {
-        $arguments = [];
-        $count     = func_num_args();
+        $__phpunit_arguments = [];
+        $__phpunit_count     = func_num_args();
 
-        if ($count > 0) {
-            $_arguments = func_get_args();
+        if ($__phpunit_count > 0) {
+            $__phpunit_arguments_tmp = func_get_args();
 
-            for ($i = 0; $i < $count; $i++) {
-                $arguments[] = $_arguments[$i];
+            for ($__phpunit_i = 0; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
+                $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }
 
-        $result = $this->__phpunit_getInvocationMocker()->invoke(
+        $__phpunit_result = $this->__phpunit_getInvocationMocker()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
-                'Foo', 'three', $arguments, '', $this, true
+                'Foo', 'three', $__phpunit_arguments, '', $this, true
             )
         );
 
-        return $result;
+        return $__phpunit_result;
     }
 
     public function expects(\PHPUnit\Framework\MockObject\Matcher\Invocation $matcher)
