@@ -1,0 +1,33 @@
+language: php
+
+sudo: false
+
+php:
+  - 7.1
+  - 7.2
+  - master
+
+env:
+  matrix:
+    - DEPENDENCIES="high"
+    - DEPENDENCIES="low"
+  global:
+    - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-ansi --no-progress --no-suggest"
+
+before_install:
+  - composer self-update
+  - composer clear-cache
+
+install:
+  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS; fi
+  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry composer update $DEFAULT_COMPOSER_FLAGS --prefer-lowest; fi
+
+script:
+  - ./vendor/bin/phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email: false
+
