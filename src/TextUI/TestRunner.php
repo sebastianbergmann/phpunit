@@ -175,7 +175,7 @@ class TestRunner extends BaseTestRunner
 
         if ($arguments['order'] !== TestSuiteSorter::DEFAULT_ORDER || $arguments['reorderDependencies'] !== TestSuiteSorter::IGNORE_DEPENDENCIES) {
             $sorter = new TestSuiteSorter($arguments);
-            $this->reorderTestsInSuite($suite, $sorter);
+            $sorter->reorderTestsInSuite($suite, $sorter);
             unset($sorter);
         }
 
@@ -1181,17 +1181,6 @@ class TestRunner extends BaseTestRunner
         }
 
         $suite->injectFilter($filterFactory);
-    }
-
-    private function reorderTestsInSuite(Test $suite, TestSuiteSorter $sorter): void
-    {
-        if ($suite instanceof TestSuite && !empty($suite->tests())) {
-            $sorter->sort($suite);
-
-            foreach ($suite as $_suite) {
-                $this->reorderTestsInSuite($_suite, $sorter);
-            }
-        }
     }
 
     private function writeMessage(string $type, string $message): void
