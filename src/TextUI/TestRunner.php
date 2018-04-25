@@ -175,7 +175,7 @@ class TestRunner extends BaseTestRunner
 
         if ($arguments['order'] !== TestSuiteSorter::DEFAULT_ORDER || $arguments['reorderDependencies'] !== TestSuiteSorter::IGNORE_DEPENDENCIES) {
             $sorter = new TestSuiteSorter($arguments);
-            $sorter->reorderTestsInSuite($suite, $sorter);
+            $sorter->reorderTestsInSuite($suite);
             unset($sorter);
         }
 
