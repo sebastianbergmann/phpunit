@@ -63,7 +63,9 @@ final class NamePrettifier
             $this->strings[] = $string;
         }
 
-        if (\strpos($name, 'test') === 0) {
+        if (\strpos($name, 'test_') === 0) {
+            $name = \substr($name, 5);
+        } elseif (\strpos($name, 'test') === 0) {
             $name = \substr($name, 4);
         }
 
