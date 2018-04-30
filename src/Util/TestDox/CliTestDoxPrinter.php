@@ -16,7 +16,8 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\TextUI\ResultPrinter;
-use PHPUnit\Util\TestDox\TestResult as TestDoxTestResult;
+use PHPUnit\Util\TestDox\RunningTestResult as TestDoxTestResult;
+use PHPUnit\Util\TestDox\TestResult as TestResultInterface;
 use SebastianBergmann\Timer\Timer;
 
 /**
@@ -26,7 +27,7 @@ use SebastianBergmann\Timer\Timer;
 class CliTestDoxPrinter extends ResultPrinter
 {
     /**
-     * @var TestDoxTestResult
+     * @var TestResultInterface
      */
     private $currentTestResult;
 
@@ -50,6 +51,8 @@ class CliTestDoxPrinter extends ResultPrinter
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
         $this->prettifier = new NamePrettifier;
+
+        $this->currentTestResult = new BootstrappingTestResult();
     }
 
     public function startTest(Test $test): void
@@ -94,14 +97,17 @@ class CliTestDoxPrinter extends ResultPrinter
 
     public function endTest(Test $test, float $time): void
     {
-        if (!$test instanceof TestCase && !$test instanceof PhptTestCase) {
+        if (
+            !$test instanceof TestCase &&
+            !$test instanceof PhptTestCase &&
+            !$this->currentTestResult instanceof BootstrappingTestResult
+        ) {
             return;
         }
 
         parent::endTest($test, $time);
 
         $this->currentTestResult->setRuntime($time);
-
         $this->write($this->currentTestResult->toString($this->previousTestResult, $this->verbose));
 
         $this->previousTestResult = $this->currentTestResult;
@@ -115,7 +121,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '✘'),
-            (string) $t
+            $t
         );
     }
 
@@ -123,7 +129,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '✘'),
-            (string) $e
+            $e
         );
     }
 
@@ -131,7 +137,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-red', '✘'),
-            (string) $e
+            $e
         );
     }
 
@@ -139,7 +145,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '∅'),
-            (string) $t,
+            $t,
             true
         );
     }
@@ -148,7 +154,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '☢'),
-            (string) $t,
+            $t,
             true
         );
     }
@@ -157,7 +163,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '→'),
-            (string) $t,
+            $t,
             true
         );
     }
