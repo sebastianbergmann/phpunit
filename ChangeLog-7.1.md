@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.1.6] - 2018-MM-DD
+
+### Fixed
+
+* Fixed [#3107](https://github.com/sebastianbergmann/phpunit/issues/3107): `CliTestDoxPrinter::addError()` cannot handle errors in `setUpBeforeClass()`
+
 ## [7.1.5] - 2018-04-29
 
 ### Fixed
@@ -46,6 +52,7 @@ All notable changes of the PHPUnit 7.1 release series are documented in this fil
 * `PHPUnit\Framework\Assert` is no longer searched for test methods
 * `ReflectionMethod::invokeArgs()` is no longer used to invoke test methods
 
+[7.1.6]: https://github.com/sebastianbergmann/phpunit/compare/7.1.5...7.1.6
 [7.1.5]: https://github.com/sebastianbergmann/phpunit/compare/7.1.4...7.1.5
 [7.1.4]: https://github.com/sebastianbergmann/phpunit/compare/7.1.3...7.1.4
 [7.1.3]: https://github.com/sebastianbergmann/phpunit/compare/7.1.2...7.1.3
