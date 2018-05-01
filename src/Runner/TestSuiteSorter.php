@@ -60,11 +60,11 @@ final class TestSuiteSorter
     public function reorderTestsInSuite(Test $suite): void
     {
         if ($suite instanceof TestSuite && !empty($suite->tests())) {
-            $this->sort($suite);
-
             foreach ($suite as $_suite) {
                 $this->reorderTestsInSuite($_suite);
             }
+
+            $this->sort($suite);
         }
     }
 
