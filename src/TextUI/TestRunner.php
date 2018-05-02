@@ -297,7 +297,7 @@ class TestRunner extends BaseTestRunner
 
             $this->writeMessage('Runtime', $runtime);
 
-            if ($arguments['order'] == 'random') {
+            if ($arguments['order'] === TestSuiteSorter::RANDOM_ORDER) {
                 $this->writeMessage(
                     'Random seed',
                     $arguments['randomOrderSeed']
