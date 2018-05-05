@@ -14,6 +14,7 @@
  * @requires OS Linux
  * @requires function testFuncClass
  * @requires extension testExtClass
+ * @requires env TEST_ENV dev|ci
  */
 class RequirementsClassDocBlockTest
 {

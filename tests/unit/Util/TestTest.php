@@ -316,6 +316,16 @@ class TestTest extends TestCase
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']],
                 ],
             ],
+            ['testEnvironmentVariableRegEx',
+                [
+                    'env' => ['TEST_ENV' => 'dev|ci'],
+                ],
+            ],
+            ['testEnvironmentMultiple',
+                [
+                    'env' => ['TEST_ENV' => 'dev|ci', 'OTHER_ENV' => '.*'],
+                ],
+            ],
         ];
     }
 
@@ -489,6 +499,9 @@ class TestTest extends TestCase
                 'testExtClass',
                 'testExtMethod',
             ],
+            'env' => [
+                'TEST_ENV' => 'dev|ci',
+            ],
         ];
 
         $this->assertEquals(
@@ -560,6 +573,13 @@ class TestTest extends TestCase
             ['testVersionConstraintCaretMajor', [
                 'PHP version does not match the required constraint ^1.0.',
                 'PHPUnit version does not match the required constraint ^2.0.',
+            ]],
+            ['testEnvironmentVariableRegEx', [
+                'Environment variable TEST_ENV matching /dev|ci/i is required',
+            ]],
+            ['testEnvironmentMultiple', [
+                'Environment variable TEST_ENV matching /dev|ci/i is required',
+                'Environment variable OTHER_ENV matching /.*/i is required',
             ]],
         ];
     }

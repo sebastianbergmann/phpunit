@@ -88,6 +88,11 @@ final class Test
     /**
      * @var string
      */
+    private const REGEX_REQUIRES_ENV = '/@requires\s+(?P<name>env)\s+(?P<var>([^ ]+)){1}\s*(?P<value>([^ ]+?))[ \t]*\r?$/m';
+
+    /**
+     * @var string
+     */
     private const REGEX_REQUIRES = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
 
     /**
@@ -226,6 +231,14 @@ final class Test
             }
         }
 
+        if ($count = \preg_match_all(self::REGEX_REQUIRES_ENV, $docComment, $matches)) {
+            $requires['env'] = [];
+
+            foreach (\range(0, $count - 1) as $i) {
+                $requires['env'][$matches['var'][$i]] = $matches['value'][$i];
+            }
+        }
+
         return $requires;
     }
 
@@ -333,6 +346,17 @@ final class Test
 
                 if ($actualVersion === false || !\version_compare($actualVersion, $required['version'], $operator)) {
                     $missing[] = \sprintf('Extension %s %s %s is required.', $extension, $operator, $required['version']);
+                }
+            }
+        }
+
+        if (!empty($required['env'])) {
+            foreach ($required['env'] as $name => $value) {
+                $requiredEnvValuePattern = \sprintf('/%s/i', \addcslashes($value, '/'));
+                $envValue                = \getenv($name, true) ?: \getenv($name);
+
+                if ($envValue === false || !\preg_match($requiredEnvValuePattern, $envValue)) {
+                    $missing[] = \sprintf('Environment variable %s matching %s is required', $name, $requiredEnvValuePattern);
                 }
             }
         }

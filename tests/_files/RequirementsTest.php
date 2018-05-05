@@ -454,4 +454,19 @@ class RequirementsTest extends TestCase
     public function testSettingDisplayErrorsOn(): void
     {
     }
+
+    /**
+     * @requires env TEST_ENV dev|ci
+     */
+    public function testEnvironmentVariableRegEx(): void
+    {
+    }
+
+    /**
+     * @requires env TEST_ENV dev|ci
+     * @requires env OTHER_ENV .*
+     */
+    public function testEnvironmentMultiple(): void
+    {
+    }
 }
