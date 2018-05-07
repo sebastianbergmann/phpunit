@@ -133,7 +133,7 @@ final class Test
             $methodName
         );
 
-        if (self::shouldLinesBeCoveredForAnnotations($annotations) === false) {
+        if (self::shouldCoversAnnotationBeUsed($annotations) === false) {
             return false;
         }
 
@@ -1095,7 +1095,7 @@ final class Test
         );
     }
 
-    private static function shouldLinesBeCoveredForAnnotations(array $annotations): bool
+    private static function shouldCoversAnnotationBeUsed(array $annotations): bool
     {
         if (isset($annotations['method']['coversNothing'])) {
             return false;
