@@ -134,6 +134,7 @@ final class Test
         );
 
         $linesShouldBeCovered = self::shouldLinesBeCoveredForAnnotions($annotations);
+
         if ($linesShouldBeCovered === false) {
             return false;
         }
@@ -1098,7 +1099,9 @@ final class Test
 
     /**
      * Should any coverage be generated.
+     *
      * @param $annotations
+     *
      * @return bool
      */
     private static function shouldLinesBeCoveredForAnnotions($annotations)
