@@ -1097,14 +1097,7 @@ final class Test
         );
     }
 
-    /**
-     * Should any coverage be generated.
-     *
-     * @param $annotations
-     *
-     * @return bool
-     */
-    private static function shouldLinesBeCoveredForAnnotations($annotations)
+    private static function shouldLinesBeCoveredForAnnotations(array $annotations): bool
     {
         if (isset($annotations['method']['coversNothing'])) {
             return false;
