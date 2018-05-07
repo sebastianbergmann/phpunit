@@ -797,6 +797,8 @@ class TestTest extends TestCase
             $expected = [
               TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines
             ];
+        } elseif ($test === 'CoverageCoversOverridesCoversNothingTest') {
+            $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
         } elseif ($test === 'CoverageNoneTest') {
             $expected = [];
         } elseif ($test === 'CoverageNothingTest') {
@@ -1024,7 +1026,11 @@ class TestTest extends TestCase
           [
             'CoverageNothingTest',
             false
-          ]
+          ],
+          [
+            'CoverageCoversOverridesCoversNothingTest',
+            \range(29, 33)
+          ],
         ];
     }
 
