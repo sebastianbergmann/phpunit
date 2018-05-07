@@ -133,9 +133,7 @@ final class Test
             $methodName
         );
 
-        $linesShouldBeCovered = self::shouldLinesBeCoveredForAnnotations($annotations);
-
-        if ($linesShouldBeCovered === false) {
+        if (self::shouldLinesBeCoveredForAnnotations($annotations) === false) {
             return false;
         }
 
