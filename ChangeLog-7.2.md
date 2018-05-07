@@ -12,6 +12,10 @@ All notable changes of the PHPUnit 7.2 release series are documented in this fil
 * Implemented [#3076](https://github.com/sebastianbergmann/phpunit/issues/3076): Extensions can be configured via PHPUnit's XML configuration
 * Implemented [#3080](https://github.com/sebastianbergmann/phpunit/issues/3080): The XML configuration arguments can have boolean elements
 
+### Changed
+
+* Implemented [#3115](https://github.com/sebastianbergmann/phpunit/pull/3115): Method-level `@covers` annotation overrides class-level `@coversNothing` annotation
+
 ### Removed
 
 * Fixed [#3069](https://github.com/sebastianbergmann/phpunit/issues/3069): Method `ResultPrinter::printWaitPrompt()` seems to be unused
