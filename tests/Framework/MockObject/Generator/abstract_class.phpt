@@ -13,7 +13,7 @@ abstract class Foo
     abstract protected function three();
 }
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../../../vendor/autoload.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 

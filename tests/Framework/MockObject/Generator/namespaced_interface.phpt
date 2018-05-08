@@ -9,7 +9,7 @@ interface Foo
     public function bar(Foo $foo);
 }
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../../../vendor/autoload.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 

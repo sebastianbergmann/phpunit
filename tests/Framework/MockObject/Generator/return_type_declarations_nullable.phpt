@@ -7,7 +7,7 @@ interface Foo
     public function bar(string $baz): ?string;
 }
 
-require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../../../vendor/autoload.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
