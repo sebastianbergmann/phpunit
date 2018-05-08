@@ -1,0 +1,2 @@
+<phpunit testSuiteLoaderClass="PHPUnit\Runner\StandardTestSuiteLoader">
+</phpunit>

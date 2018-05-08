@@ -1,0 +1,69 @@
+language: php
+
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - libxml2-utils
+
+php:
+  - 7.1
+  - 7.2
+  - master
+
+matrix:
+  allow_failures:
+    - php: master
+  fast_finish: true
+
+env:
+  matrix:
+    - DEPENDENCIES="high"
+    - DEPENDENCIES="low"
+  global:
+    - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-ansi --no-progress --no-suggest"
+
+before_install:
+  - ./build/tools/composer clear-cache
+
+install:
+  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry ./build/tools/composer update $DEFAULT_COMPOSER_FLAGS; fi
+  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry ./build/tools/composer update $DEFAULT_COMPOSER_FLAGS --prefer-lowest; fi
+
+before_script:
+  - echo 'zend.assertions=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo 'assert.exception=On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
+script:
+  - ./phpunit --coverage-clover=coverage.xml
+  - ./phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
+  - xmllint --noout --schema phpunit.xsd phpunit.xml
+  - xmllint --noout --schema phpunit.xsd tests/_files/configuration.xml
+  - xmllint --noout --schema phpunit.xsd tests/_files/configuration_empty.xml
+  - xmllint --noout --schema phpunit.xsd tests/_files/configuration_xinclude.xml -xinclude
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email: false
+
+jobs:
+  include:
+    - stage: Static Code Analysis
+      php: 7.2
+      env: PHPStan
+      before_install:
+        - travis_retry composer require --dev --no-update phpstan/phpstan:^0.9
+      install: travis_retry composer update --prefer-dist --prefer-stable
+      script:
+        - vendor/bin/phpstan analyse --level=0 -c phpstan.neon src
+        - vendor/bin/phpstan analyse --level=2 -c phpstan-tests.neon tests
+    - stage: Static Code Analysis
+      php: 7.2
+      env: php-cs-fixer
+      install:
+        - phpenv config-rm xdebug.ini
+      script:
+        - ./build/tools/php-cs-fixer fix --dry-run -v --show-progress=dots --diff-format=udiff

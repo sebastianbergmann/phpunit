@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="PHP_CodeSniffer">
+    <description>The coding standard for PHPUnit</description>
+
+    <file>../src</file>
+    <file>../tests</file>
+
+    <exclude-pattern>*/Regression/*</exclude-pattern>
+    <exclude-pattern>*/_files/*</exclude-pattern>
+    <exclude-pattern>../tests/bootstrap.php</exclude-pattern>
+
+    <rule ref="PSR2">
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>
+</ruleset>

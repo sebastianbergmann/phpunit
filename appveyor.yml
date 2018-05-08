@@ -1,0 +1,59 @@
+build: false
+clone_folder: c:\phpunit
+max_jobs: 3
+platform: x86
+pull_requests:
+  do_not_increment_build_number: true
+version: '{build}.{branch}'
+
+environment:
+  COMPOSER_ROOT_VERSION: '7.0-dev'
+
+  matrix:
+    - PHP_VERSION: '7.2.0-Win32-VC15'
+      DEPENDENCIES: '--prefer-lowest'
+    - PHP_VERSION: '7.2.0-Win32-VC15'
+      DEPENDENCIES: ''
+    - PHP_VERSION: '7.1.12-Win32-VC14'
+      DEPENDENCIES: '--prefer-lowest'
+    - PHP_VERSION: '7.1.12-Win32-VC14'
+      DEPENDENCIES: ''
+
+matrix:
+  fast_finish: true
+
+cache:
+  - c:\php -> appveyor.yml
+  - '%LOCALAPPDATA%\Composer\files'
+
+init:
+  - SET PATH=c:\php\%PHP_VERSION%;%PATH%
+
+install:
+  - IF NOT EXIST c:\php mkdir c:\php
+  - IF NOT EXIST c:\php\%PHP_VERSION% mkdir c:\php\%PHP_VERSION%
+  - cd c:\php\%PHP_VERSION%
+  - IF NOT EXIST php-installed.txt appveyor DownloadFile http://windows.php.net/downloads/releases/archives/php-%PHP_VERSION%-x86.zip
+  - IF NOT EXIST php-installed.txt 7z x php-%PHP_VERSION%-x86.zip -y >nul
+  - IF NOT EXIST php-installed.txt del /Q *.zip
+  - IF NOT EXIST php-installed.txt copy /Y php.ini-development php.ini
+  - IF NOT EXIST php-installed.txt echo max_execution_time=1200 >> php.ini
+  - IF NOT EXIST php-installed.txt echo date.timezone="UTC" >> php.ini
+  - IF NOT EXIST php-installed.txt echo extension_dir=ext >> php.ini
+  - IF NOT EXIST php-installed.txt echo extension=php_curl.dll >> php.ini
+  - IF NOT EXIST php-installed.txt echo extension=php_openssl.dll >> php.ini
+  - IF NOT EXIST php-installed.txt echo extension=php_mbstring.dll >> php.ini
+  - IF NOT EXIST php-installed.txt echo extension=php_fileinfo.dll >> php.ini
+  - IF NOT EXIST php-installed.txt echo extension=php_mysqli.dll >> php.ini
+  - IF NOT EXIST php-installed.txt echo extension=php_pdo_sqlite.dll >> php.ini
+  - IF NOT EXIST php-installed.txt echo zend.assertions=1 >> php.ini
+  - IF NOT EXIST php-installed.txt echo assert.exception=On >> php.ini
+  - IF NOT EXIST php-installed.txt appveyor DownloadFile https://getcomposer.org/composer.phar
+  - IF NOT EXIST php-installed.txt echo @php %%~dp0composer.phar %%* > composer.bat
+  - IF NOT EXIST php-installed.txt type nul >> php-installed.txt
+  - cd c:\phpunit
+  - composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable %DEPENDENCIES%
+
+test_script:
+  - cd c:\phpunit
+  - php phpunit
