@@ -55,10 +55,18 @@ class AbstractPhpProcessTest extends TestCase
             'display_errors=1',
         ];
 
-        $expectedCommandFormat  = '%s -d %callow_url_fopen=1%c -d %cauto_append_file=%c -d %cdisplay_errors=1%c%S';
+        $expectedCommandFormat  = '%s -d %cSETTING_0%S -d %cSETTING_1%S -d %cSETTING_2%S';
         $actualCommand          = $this->phpProcess->getCommand($settings);
 
-        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
+        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand['command']);
+        $this->assertEquals(
+            [
+                'SETTING_0' => 'allow_url_fopen=1',
+                'SETTING_1' => 'auto_append_file=',
+                'SETTING_2' => 'display_errors=1',
+            ],
+            $actualCommand['parameters']
+        );
     }
 
     public function testShouldRedirectStderrToStdoutWhenDefined(): void
@@ -68,25 +76,27 @@ class AbstractPhpProcessTest extends TestCase
         $expectedCommandFormat  = '%s 2>&1';
         $actualCommand          = $this->phpProcess->getCommand([]);
 
-        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
+        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand['command']);
     }
 
     public function testShouldUseArgsToCreateCommand(): void
     {
         $this->phpProcess->setArgs('foo=bar');
 
-        $expectedCommandFormat  = '%s foo=bar';
+        $expectedCommandFormat  = '%s -- %cARGS%S';
         $actualCommand          = $this->phpProcess->getCommand([]);
 
-        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
+        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand['command']);
+        $this->assertEquals('foo=bar', $actualCommand['parameters']['ARGS']);
     }
 
     public function testShouldHaveFileToCreateCommand(): void
     {
-        $expectedCommandFormat     = '%s %cfile.php%c';
+        $expectedCommandFormat     = '%s %cFILE%S';
         $actualCommand             = $this->phpProcess->getCommand([], 'file.php');
 
-        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
+        $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand['command']);
+        $this->assertEquals('file.php', $actualCommand['parameters']['FILE']);
     }
 
     public function testStdinGetterAndSetter(): void
