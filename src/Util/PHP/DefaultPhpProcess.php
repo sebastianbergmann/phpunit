@@ -10,6 +10,8 @@
 namespace PHPUnit\Util\PHP;
 
 use PHPUnit\Framework\Exception;
+use Symfony\Component\Process\Exception\RuntimeException;
+use Symfony\Component\Process\Process;
 
 /**
  * Default utility for PHP sub-processes.
@@ -43,22 +45,12 @@ class DefaultPhpProcess extends AbstractPhpProcess
     }
 
     /**
-     * Returns an array of file handles to be used in place of pipes
-     */
-    protected function getHandles(): array
-    {
-        return [];
-    }
-
-    /**
      * Handles creating the child process and returning the STDOUT and STDERR
      *
      * @throws Exception
      */
     protected function runProcess(string $job, array $settings): array
     {
-        $handles = $this->getHandles();
-
         $env = null;
 
         if ($this->env) {
@@ -73,130 +65,29 @@ class DefaultPhpProcess extends AbstractPhpProcess
             }
         }
 
-        $pipeSpec = [
-            0 => $handles[0] ?? ['pipe', 'r'],
-            1 => $handles[1] ?? ['pipe', 'w'],
-            2 => $handles[2] ?? ['pipe', 'w'],
-        ];
+        ['command' => $command, 'parameters' => $parameters] = $this->getCommand($settings, $this->tempFile);
 
-        $process = \proc_open(
-            $this->getCommand($settings, $this->tempFile),
-            $pipeSpec,
-            $pipes,
-            null,
-            $env
+        $process = new Process(
+            $command,
+            \getcwd(),
+            $env,
+            $job,
+            $this->timeout === 0 ? null : $this->timeout
         );
 
-        if (!\is_resource($process)) {
+        try {
+            $process->start(null, $parameters);
+        } catch (RuntimeException $e) {
             throw new Exception(
                 'Unable to spawn worker process'
             );
         }
 
-        if ($job) {
-            $this->process($pipes[0], $job);
-        }
-
-        \fclose($pipes[0]);
-
-        $stderr = $stdout = '';
-
-        if ($this->timeout) {
-            unset($pipes[0]);
-
-            while (true) {
-                $r = $pipes;
-                $w = null;
-                $e = null;
-
-                $n = @\stream_select($r, $w, $e, $this->timeout);
-
-                if ($n === false) {
-                    break;
-                }
-
-                if ($n === 0) {
-                    \proc_terminate($process, 9);
-
-                    throw new Exception(
-                        \sprintf(
-                            'Job execution aborted after %d seconds',
-                            $this->timeout
-                        )
-                    );
-                }
-
-                if ($n > 0) {
-                    foreach ($r as $pipe) {
-                        $pipeOffset = 0;
-
-                        foreach ($pipes as $i => $origPipe) {
-                            if ($pipe === $origPipe) {
-                                $pipeOffset = $i;
-
-                                break;
-                            }
-                        }
-
-                        if (!$pipeOffset) {
-                            break;
-                        }
-
-                        $line = \fread($pipe, 8192);
-
-                        if ($line === '') {
-                            \fclose($pipes[$pipeOffset]);
-
-                            unset($pipes[$pipeOffset]);
-                        } else {
-                            if ($pipeOffset === 1) {
-                                $stdout .= $line;
-                            } else {
-                                $stderr .= $line;
-                            }
-                        }
-                    }
-
-                    if (empty($pipes)) {
-                        break;
-                    }
-                }
-            }
-        } else {
-            if (isset($pipes[1])) {
-                $stdout = \stream_get_contents($pipes[1]);
-
-                \fclose($pipes[1]);
-            }
-
-            if (isset($pipes[2])) {
-                $stderr = \stream_get_contents($pipes[2]);
-
-                \fclose($pipes[2]);
-            }
-        }
-
-        if (isset($handles[1])) {
-            \rewind($handles[1]);
-
-            $stdout = \stream_get_contents($handles[1]);
-
-            \fclose($handles[1]);
-        }
-
-        if (isset($handles[2])) {
-            \rewind($handles[2]);
-
-            $stderr = \stream_get_contents($handles[2]);
-
-            \fclose($handles[2]);
-        }
-
-        \proc_close($process);
+        $process->wait();
 
         $this->cleanup();
 
-        return ['stdout' => $stdout, 'stderr' => $stderr];
+        return ['stdout' => $process->getOutput(), 'stderr' => $process->getErrorOutput()];
     }
 
     protected function process($pipe, string $job): void

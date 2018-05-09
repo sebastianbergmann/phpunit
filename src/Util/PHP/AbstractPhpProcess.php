@@ -174,10 +174,15 @@ abstract class AbstractPhpProcess
     /**
      * Returns the command based into the configurations.
      */
-    public function getCommand(array $settings, string $file = null): string
+    public function getCommand(array $settings, string $file = null): array
     {
-        $command = $this->runtime->getBinary();
-        $command .= $this->settingsToParameters($settings);
+        $command    = $this->runtime->getBinary();
+        $parameters = [];
+
+        foreach ($settings as $i => $setting) {
+            $command .= ' -d ' . $this->buildEnvParameter('SETTING_' . $i);
+            $parameters['SETTING_' . $i] = $setting;
+        }
 
         if (\PHP_SAPI === 'phpdbg') {
             $command .= ' -qrr';
@@ -188,38 +193,41 @@ abstract class AbstractPhpProcess
         }
 
         if ($file) {
-            $command .= ' ' . \escapeshellarg($file);
+            $command .= ' ' . $this->buildEnvParameter('FILE');
+            $parameters['FILE'] = $file;
         }
 
         if ($this->args) {
             if (!$file) {
                 $command .= ' --';
             }
-            $command .= ' ' . $this->args;
+            $command .= ' ' . $this->buildEnvParameter('ARGS');
+            $parameters['ARGS'] = $this->args;
         }
 
         if ($this->stderrRedirection === true) {
             $command .= ' 2>&1';
         }
 
-        return $command;
+        return [
+            'command'    => $command,
+            'parameters' => $parameters,
+        ];
+    }
+
+    public function buildEnvParameter(string $name): string
+    {
+        if (\DIRECTORY_SEPARATOR === '\\') {
+            return '%' . $name . '%';
+        }
+
+        return '$' . $name;
     }
 
     /**
      * Runs a single job (PHP code) using a separate PHP process.
      */
     abstract public function runJob(string $job, array $settings = []): array;
-
-    protected function settingsToParameters(array $settings): string
-    {
-        $buffer = '';
-
-        foreach ($settings as $setting) {
-            $buffer .= ' -d ' . \escapeshellarg($setting);
-        }
-
-        return $buffer;
-    }
 
     /**
      * Processes the TestResult object from an isolated process.
