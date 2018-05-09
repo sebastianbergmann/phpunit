@@ -13,11 +13,11 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\TextUI\ResultPrinter;
-use PHPUnit\Util\TestDox\RunningTestResult as TestDoxTestResult;
-use PHPUnit\Util\TestDox\TestResult as TestResultInterface;
+use PHPUnit\Util\TestDox\TestResult as TestDoxTestResult;
 use SebastianBergmann\Timer\Timer;
 
 /**
@@ -27,7 +27,7 @@ use SebastianBergmann\Timer\Timer;
 class CliTestDoxPrinter extends ResultPrinter
 {
     /**
-     * @var TestResultInterface
+     * @var TestDoxTestResult
      */
     private $currentTestResult;
 
@@ -51,13 +51,14 @@ class CliTestDoxPrinter extends ResultPrinter
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
         $this->prettifier = new NamePrettifier;
-
-        $this->currentTestResult = new BootstrappingTestResult();
     }
 
     public function startTest(Test $test): void
     {
-        if (!$test instanceof TestCase && !$test instanceof PhptTestCase) {
+        if (!$test instanceof TestCase
+            && !$test instanceof PhptTestCase
+            && !$test instanceof TestSuite
+        ) {
             return;
         }
 
@@ -79,6 +80,12 @@ class CliTestDoxPrinter extends ResultPrinter
             }
 
             $testMethod .= \substr($test->getDataSetAsString(false), 5);
+        } elseif ($test instanceof TestSuite) {
+            $className  = $test->getName();
+            $testMethod = sprintf(
+                'Error bootstapping suite (most likely in %s::setUpBeforeClass)',
+                $test->getName()
+            );
         } elseif ($test instanceof PhptTestCase) {
             $className  = $class;
             $testMethod = $test->getName();
@@ -97,10 +104,9 @@ class CliTestDoxPrinter extends ResultPrinter
 
     public function endTest(Test $test, float $time): void
     {
-        if (
-            !$test instanceof TestCase &&
-            !$test instanceof PhptTestCase &&
-            !$this->currentTestResult instanceof BootstrappingTestResult
+        if (!$test instanceof TestCase
+            && !$test instanceof PhptTestCase
+            && !$test instanceof TestSuite
         ) {
             return;
         }
@@ -108,6 +114,7 @@ class CliTestDoxPrinter extends ResultPrinter
         parent::endTest($test, $time);
 
         $this->currentTestResult->setRuntime($time);
+
         $this->write($this->currentTestResult->toString($this->previousTestResult, $this->verbose));
 
         $this->previousTestResult = $this->currentTestResult;
@@ -121,7 +128,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '✘'),
-            $t
+            (string) $t
         );
     }
 
@@ -129,7 +136,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '✘'),
-            $e
+            (string) $e
         );
     }
 
@@ -137,7 +144,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-red', '✘'),
-            $e
+            (string) $e
         );
     }
 
@@ -145,7 +152,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '∅'),
-            $t,
+            (string) $t,
             true
         );
     }
@@ -154,7 +161,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '☢'),
-            $t,
+            (string) $t,
             true
         );
     }
@@ -163,7 +170,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->currentTestResult->fail(
             $this->formatWithColor('fg-yellow', '→'),
-            $t,
+            (string) $t,
             true
         );
     }
