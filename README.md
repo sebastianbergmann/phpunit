@@ -13,17 +13,7 @@ We distribute a [PHP Archive (PHAR)](https://php.net/phar) that has all required
 ```bash
 $ wget https://phar.phpunit.de/phpunit.phar
 
-$ chmod +x phpunit.phar
-
-$ mv phpunit.phar /usr/local/bin/phpunit
-```
-
-You can also immediately use the PHAR after you have downloaded it, of course:
-
-```bash
-$ wget https://phar.phpunit.de/phpunit.phar
-
-$ php phpunit.phar
+$ php phpunit.phar --version
 ```
 
 Alternatively, you may use [Composer](https://getcomposer.org/) to download and install PHPUnit as well as its dependencies. Please refer to the [documentation](https://phpunit.de/documentation.html) for details on how to do this.
