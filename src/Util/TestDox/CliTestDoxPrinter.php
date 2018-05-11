@@ -82,7 +82,7 @@ class CliTestDoxPrinter extends ResultPrinter
             $testMethod .= \substr($test->getDataSetAsString(false), 5);
         } elseif ($test instanceof TestSuite) {
             $className  = $test->getName();
-            $testMethod = sprintf(
+            $testMethod = \sprintf(
                 'Error bootstapping suite (most likely in %s::setUpBeforeClass)',
                 $test->getName()
             );
