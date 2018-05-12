@@ -164,13 +164,6 @@
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/phpunit/phpunit-mock-objects/LICENSE" tofile="${basedir}/build/phar/phpunit-mock-objects/LICENSE"/>
-        <copy todir="${basedir}/build/phar/phpunit-mock-objects">
-            <fileset dir="${basedir}/vendor/phpunit/phpunit-mock-objects/src">
-                <include name="**/*" />
-            </fileset>
-        </copy>
-
         <copy file="${basedir}/vendor/sebastian/code-unit-reverse-lookup/LICENSE" tofile="${basedir}/build/phar/sebastian-code-unit-reverse-lookup/LICENSE"/>
         <copy todir="${basedir}/build/phar/sebastian-code-unit-reverse-lookup">
             <fileset dir="${basedir}/vendor/sebastian/code-unit-reverse-lookup/src">
