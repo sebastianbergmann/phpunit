@@ -76,6 +76,7 @@
             "src/Framework/Assert/Functions.php",
             "tests/_files/CoverageNamespacedFunctionTest.php",
             "tests/_files/CoveredFunction.php",
+            "tests/_files/FunctionCallback.php",
             "tests/_files/NamespaceCoveredFunction.php"
         ]
     },

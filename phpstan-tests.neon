@@ -37,7 +37,6 @@ parameters:
         - '#Call to an undefined method object::ohHai#'
         - '#Call to static method bar\(\) on an unknown class Legacy#'
         - '#Class ACustomClassName not found#'
-        - '#Function functionCallback not found while trying to analyse it - autoloading is probably not configured properly#'
         - '#Result of method ClassWithAllPossibleReturnTypes::methodWithVoidReturnTypeDeclaration\(\) \(void\) is used#'
 
     excludes_analyse:
