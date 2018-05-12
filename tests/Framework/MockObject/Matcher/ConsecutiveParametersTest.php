@@ -1,6 +1,6 @@
 <?php
 /*
- * This file is part of the phpunit-mock-objects package.
+ * This file is part of PHPUnit.
  *
  * (c) Sebastian Bergmann <sebastian@phpunit.de>
  *
@@ -8,8 +8,8 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 
 class ConsecutiveParametersTest extends TestCase
 {
