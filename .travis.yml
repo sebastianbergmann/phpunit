@@ -55,11 +55,11 @@ jobs:
       php: 7.2
       env: PHPStan
       before_install:
-        - travis_retry composer require --dev --no-update phpstan/phpstan:^0.9
+        - travis_retry composer require --no-update phpunit/php-invoker:^2.0
       install: travis_retry composer update --prefer-dist --prefer-stable
       script:
-        - vendor/bin/phpstan analyse --level=0 -c phpstan.neon src
-        - vendor/bin/phpstan analyse --level=2 -c phpstan-tests.neon tests
+        - ./build/tools/phpstan analyse --level=0 src
+        - ./build/tools/phpstan analyse --level=2 -c phpstan-tests.neon tests
     - stage: Static Code Analysis
       php: 7.2
       env: php-cs-fixer
