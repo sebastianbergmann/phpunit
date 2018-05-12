@@ -14,6 +14,7 @@ All notable changes of the PHPUnit 7.2 release series are documented in this fil
 
 ### Changed
 
+* Implemented [#3103](https://github.com/sebastianbergmann/phpunit/issues/3103): Merge `phpunit-mock-objects` back into PHPUnit's Git repository
 * Implemented [#3115](https://github.com/sebastianbergmann/phpunit/pull/3115): Method-level `@covers` annotation overrides class-level `@coversNothing` annotation
 
 ### Removed
