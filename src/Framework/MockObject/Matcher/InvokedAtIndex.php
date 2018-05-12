@@ -65,7 +65,7 @@ class InvokedAtIndex implements Invocation
     /**
      * @param BaseInvocation $invocation
      */
-    public function invoked(BaseInvocation $invocation)
+    public function invoked(BaseInvocation $invocation): void
     {
     }
 
@@ -75,7 +75,7 @@ class InvokedAtIndex implements Invocation
      *
      * @throws ExpectationFailedException
      */
-    public function verify()
+    public function verify(): void
     {
         if ($this->currentIndex < $this->sequenceIndex) {
             throw new ExpectationFailedException(

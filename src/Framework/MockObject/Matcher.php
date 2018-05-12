@@ -82,7 +82,7 @@ class Matcher implements MatcherInvocation
         return $this->methodNameMatcher;
     }
 
-    public function setMethodNameMatcher(MethodName $matcher)
+    public function setMethodNameMatcher(MethodName $matcher): void
     {
         $this->methodNameMatcher = $matcher;
     }
@@ -97,17 +97,17 @@ class Matcher implements MatcherInvocation
         return $this->parametersMatcher;
     }
 
-    public function setParametersMatcher($matcher)
+    public function setParametersMatcher($matcher): void
     {
         $this->parametersMatcher = $matcher;
     }
 
-    public function setStub($stub)
+    public function setStub($stub): void
     {
         $this->stub = $stub;
     }
 
-    public function setAfterMatchBuilderId($id)
+    public function setAfterMatchBuilderId($id): void
     {
         $this->afterMatchBuilderId = $id;
     }
@@ -252,7 +252,7 @@ class Matcher implements MatcherInvocation
      * @throws RuntimeException
      * @throws ExpectationFailedException
      */
-    public function verify()
+    public function verify(): void
     {
         if ($this->invocationMatcher === null) {
             throw new RuntimeException(

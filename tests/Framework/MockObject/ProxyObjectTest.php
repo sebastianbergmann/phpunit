@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class ProxyObjectTest extends TestCase
 {
-    public function testMockedMethodIsProxiedToOriginalMethod()
+    public function testMockedMethodIsProxiedToOriginalMethod(): void
     {
         $proxy = $this->getMockBuilder(Bar::class)
                       ->enableProxyingToOriginalMethods()
@@ -26,7 +26,7 @@ class ProxyObjectTest extends TestCase
         $this->assertEquals('result', $foo->doSomething($proxy));
     }
 
-    public function testMockedMethodWithReferenceIsProxiedToOriginalMethod()
+    public function testMockedMethodWithReferenceIsProxiedToOriginalMethod(): void
     {
         $proxy = $this->getMockBuilder(MethodCallbackByReference::class)
                       ->enableProxyingToOriginalMethods()

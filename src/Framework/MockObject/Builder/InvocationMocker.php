@@ -281,7 +281,7 @@ class InvocationMocker implements MethodNameMatch
      *
      * @throws RuntimeException
      */
-    private function canDefineParameters()
+    private function canDefineParameters(): void
     {
         if (!$this->matcher->hasMethodNameMatcher()) {
             throw new RuntimeException(

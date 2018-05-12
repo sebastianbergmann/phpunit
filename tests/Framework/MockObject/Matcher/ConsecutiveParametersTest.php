@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class ConsecutiveParametersTest extends TestCase
 {
-    public function testIntegration()
+    public function testIntegration(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
                      ->setMethods(['foo'])
@@ -30,7 +30,7 @@ class ConsecutiveParametersTest extends TestCase
         $this->assertNull($mock->foo(21, 42));
     }
 
-    public function testIntegrationWithLessAssertionsThanMethodCalls()
+    public function testIntegrationWithLessAssertionsThanMethodCalls(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
                      ->setMethods(['foo'])
@@ -46,7 +46,7 @@ class ConsecutiveParametersTest extends TestCase
         $this->assertNull($mock->foo(21, 42));
     }
 
-    public function testIntegrationExpectingException()
+    public function testIntegrationExpectingException(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
                      ->setMethods(['foo'])

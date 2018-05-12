@@ -60,7 +60,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     /**
      * @param MatcherInvocation $matcher
      */
-    public function addMatcher(MatcherInvocation $matcher)
+    public function addMatcher(MatcherInvocation $matcher): void
     {
         $this->matchers[] = $matcher;
     }
@@ -96,7 +96,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
      *
      * @throws RuntimeException
      */
-    public function registerId($id, Match $builder)
+    public function registerId($id, Match $builder): void
     {
         if (isset($this->builderMap[$id])) {
             throw new RuntimeException(

@@ -23,7 +23,7 @@ class AnyInvokedCount extends InvokedRecorder
         return 'invoked zero or more times';
     }
 
-    public function verify()
+    public function verify(): void
     {
     }
 }

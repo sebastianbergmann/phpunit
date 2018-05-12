@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class ObjectInvocationTest extends TestCase
 {
-    public function testConstructorRequiresClassAndMethodAndParametersAndObject()
+    public function testConstructorRequiresClassAndMethodAndParametersAndObject(): void
     {
         $this->assertInstanceOf(
             ObjectInvocation::class,
@@ -27,7 +27,7 @@ class ObjectInvocationTest extends TestCase
         );
     }
 
-    public function testAllowToGetClassNameSetInConstructor()
+    public function testAllowToGetClassNameSetInConstructor(): void
     {
         $invocation = new ObjectInvocation(
             'FooClass',
@@ -40,7 +40,7 @@ class ObjectInvocationTest extends TestCase
         $this->assertSame('FooClass', $invocation->getClassName());
     }
 
-    public function testAllowToGetMethodNameSetInConstructor()
+    public function testAllowToGetMethodNameSetInConstructor(): void
     {
         $invocation = new ObjectInvocation(
             'FooClass',
@@ -53,7 +53,7 @@ class ObjectInvocationTest extends TestCase
         $this->assertSame('FooMethod', $invocation->getMethodName());
     }
 
-    public function testAllowToGetObjectSetInConstructor()
+    public function testAllowToGetObjectSetInConstructor(): void
     {
         $expectedObject = new stdClass;
 
@@ -68,7 +68,7 @@ class ObjectInvocationTest extends TestCase
         $this->assertSame($expectedObject, $invocation->getObject());
     }
 
-    public function testAllowToGetMethodParametersSetInConstructor()
+    public function testAllowToGetMethodParametersSetInConstructor(): void
     {
         $expectedParameters = [
           'foo', 5, ['a', 'b'], new stdClass, null, false
@@ -85,7 +85,7 @@ class ObjectInvocationTest extends TestCase
         $this->assertSame($expectedParameters, $invocation->getParameters());
     }
 
-    public function testConstructorAllowToSetFlagCloneObjectsInParameters()
+    public function testConstructorAllowToSetFlagCloneObjectsInParameters(): void
     {
         $parameters   = [new stdClass];
         $cloneObjects = true;
@@ -103,7 +103,7 @@ class ObjectInvocationTest extends TestCase
         $this->assertNotSame($parameters, $invocation->getParameters());
     }
 
-    public function testAllowToGetReturnTypeSetInConstructor()
+    public function testAllowToGetReturnTypeSetInConstructor(): void
     {
         $expectedReturnType = 'string';
 

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class StaticInvocationTest extends TestCase
 {
-    public function testConstructorRequiresClassAndMethodAndParameters()
+    public function testConstructorRequiresClassAndMethodAndParameters(): void
     {
         $this->assertInstanceOf(
             StaticInvocation::class,
@@ -26,7 +26,7 @@ class StaticInvocationTest extends TestCase
         );
     }
 
-    public function testAllowToGetClassNameSetInConstructor()
+    public function testAllowToGetClassNameSetInConstructor(): void
     {
         $invocation = new StaticInvocation(
             'FooClass',
@@ -38,7 +38,7 @@ class StaticInvocationTest extends TestCase
         $this->assertSame('FooClass', $invocation->getClassName());
     }
 
-    public function testAllowToGetMethodNameSetInConstructor()
+    public function testAllowToGetMethodNameSetInConstructor(): void
     {
         $invocation = new StaticInvocation(
             'FooClass',
@@ -50,7 +50,7 @@ class StaticInvocationTest extends TestCase
         $this->assertSame('FooMethod', $invocation->getMethodName());
     }
 
-    public function testAllowToGetMethodParametersSetInConstructor()
+    public function testAllowToGetMethodParametersSetInConstructor(): void
     {
         $expectedParameters = [
           'foo', 5, ['a', 'b'], new stdClass, null, false
@@ -66,7 +66,7 @@ class StaticInvocationTest extends TestCase
         $this->assertSame($expectedParameters, $invocation->getParameters());
     }
 
-    public function testConstructorAllowToSetFlagCloneObjectsInParameters()
+    public function testConstructorAllowToSetFlagCloneObjectsInParameters(): void
     {
         $parameters   = [new stdClass];
         $cloneObjects = true;
@@ -83,7 +83,7 @@ class StaticInvocationTest extends TestCase
         $this->assertNotSame($parameters, $invocation->getParameters());
     }
 
-    public function testAllowToGetReturnTypeSetInConstructor()
+    public function testAllowToGetReturnTypeSetInConstructor(): void
     {
         $expectedReturnType = 'string';
 
@@ -97,7 +97,7 @@ class StaticInvocationTest extends TestCase
         $this->assertSame($expectedReturnType, $invocation->getReturnType());
     }
 
-    public function testToStringWillReturnEmptyString()
+    public function testToStringWillReturnEmptyString(): void
     {
         $expectedReturnType = 'string';
 

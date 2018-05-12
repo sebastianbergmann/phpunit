@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 class InvocationMockerTest extends TestCase
 {
-    public function testWillReturnWithOneValue()
+    public function testWillReturnWithOneValue(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
                      ->setMethods(['foo'])
@@ -25,7 +25,7 @@ class InvocationMockerTest extends TestCase
         $this->assertEquals(1, $mock->foo());
     }
 
-    public function testWillReturnWithMultipleValues()
+    public function testWillReturnWithMultipleValues(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
                      ->setMethods(['foo'])
@@ -40,7 +40,7 @@ class InvocationMockerTest extends TestCase
         $this->assertEquals(3, $mock->foo());
     }
 
-    public function testWillReturnOnConsecutiveCalls()
+    public function testWillReturnOnConsecutiveCalls(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
                      ->setMethods(['foo'])
@@ -55,7 +55,7 @@ class InvocationMockerTest extends TestCase
         $this->assertEquals(3, $mock->foo());
     }
 
-    public function testWillReturnByReference()
+    public function testWillReturnByReference(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
                      ->setMethods(['foo'])

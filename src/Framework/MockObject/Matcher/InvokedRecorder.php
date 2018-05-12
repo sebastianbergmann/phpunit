@@ -51,7 +51,7 @@ abstract class InvokedRecorder implements Invocation
     /**
      * @param BaseInvocation $invocation
      */
-    public function invoked(BaseInvocation $invocation)
+    public function invoked(BaseInvocation $invocation): void
     {
         $this->invocations[] = $invocation;
     }

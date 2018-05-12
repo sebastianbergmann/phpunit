@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class MockObjectTest extends TestCase
 {
-    public function testMockedMethodIsNeverCalled()
+    public function testMockedMethodIsNeverCalled(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -23,7 +23,7 @@ class MockObjectTest extends TestCase
              ->method('doSomething');
     }
 
-    public function testMockedMethodIsNeverCalledWithParameter()
+    public function testMockedMethodIsNeverCalledWithParameter(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->getMock();
@@ -36,7 +36,7 @@ class MockObjectTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testMockedMethodIsNotCalledWhenExpectsAnyWithParameter()
+    public function testMockedMethodIsNotCalledWhenExpectsAnyWithParameter(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->getMock();
@@ -49,7 +49,7 @@ class MockObjectTest extends TestCase
     /**
      * @doesNotPerformAssertions
      */
-    public function testMockedMethodIsNotCalledWhenMethodSpecifiedDirectlyWithParameter()
+    public function testMockedMethodIsNotCalledWhenMethodSpecifiedDirectlyWithParameter(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->getMock();
@@ -58,7 +58,7 @@ class MockObjectTest extends TestCase
              ->with('someArg');
     }
 
-    public function testMockedMethodIsCalledAtLeastOnce()
+    public function testMockedMethodIsCalledAtLeastOnce(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -69,7 +69,7 @@ class MockObjectTest extends TestCase
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledAtLeastOnce2()
+    public function testMockedMethodIsCalledAtLeastOnce2(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -81,7 +81,7 @@ class MockObjectTest extends TestCase
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledAtLeastTwice()
+    public function testMockedMethodIsCalledAtLeastTwice(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -93,7 +93,7 @@ class MockObjectTest extends TestCase
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledAtLeastTwice2()
+    public function testMockedMethodIsCalledAtLeastTwice2(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -106,7 +106,7 @@ class MockObjectTest extends TestCase
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledAtMostTwice()
+    public function testMockedMethodIsCalledAtMostTwice(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -118,7 +118,7 @@ class MockObjectTest extends TestCase
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledAtMosttTwice2()
+    public function testMockedMethodIsCalledAtMosttTwice2(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -129,7 +129,7 @@ class MockObjectTest extends TestCase
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledOnce()
+    public function testMockedMethodIsCalledOnce(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -140,7 +140,7 @@ class MockObjectTest extends TestCase
         $mock->doSomething();
     }
 
-    public function testMockedMethodIsCalledOnceWithParameter()
+    public function testMockedMethodIsCalledOnceWithParameter(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->getMock();
@@ -152,7 +152,7 @@ class MockObjectTest extends TestCase
         $mock->doSomethingElse('something');
     }
 
-    public function testMockedMethodIsCalledExactly()
+    public function testMockedMethodIsCalledExactly(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -164,7 +164,7 @@ class MockObjectTest extends TestCase
         $mock->doSomething();
     }
 
-    public function testStubbedException()
+    public function testStubbedException(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -178,7 +178,7 @@ class MockObjectTest extends TestCase
         $mock->doSomething();
     }
 
-    public function testStubbedWillThrowException()
+    public function testStubbedWillThrowException(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -192,7 +192,7 @@ class MockObjectTest extends TestCase
         $mock->doSomething();
     }
 
-    public function testStubbedReturnValue()
+    public function testStubbedReturnValue(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -213,7 +213,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals('something', $mock->doSomething());
     }
 
-    public function testStubbedReturnValueMap()
+    public function testStubbedReturnValueMap(): void
     {
         $map = [
             ['a', 'b', 'c', 'd'],
@@ -243,7 +243,7 @@ class MockObjectTest extends TestCase
         $this->assertNull($mock->doSomething('foo', 'bar'));
     }
 
-    public function testStubbedReturnArgument()
+    public function testStubbedReturnArgument(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -264,7 +264,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals('b', $mock->doSomething('a', 'b'));
     }
 
-    public function testFunctionCallback()
+    public function testFunctionCallback(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->setMethods(['doSomething'])
@@ -287,7 +287,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }
 
-    public function testStubbedReturnSelf()
+    public function testStubbedReturnSelf(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -308,7 +308,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals($mock, $mock->doSomething());
     }
 
-    public function testStubbedReturnOnConsecutiveCalls()
+    public function testStubbedReturnOnConsecutiveCalls(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -333,7 +333,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals('c', $mock->doSomething());
     }
 
-    public function testStaticMethodCallback()
+    public function testStaticMethodCallback(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->setMethods(['doSomething'])
@@ -346,7 +346,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }
 
-    public function testPublicMethodCallback()
+    public function testPublicMethodCallback(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->setMethods(['doSomething'])
@@ -359,7 +359,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }
 
-    public function testMockClassOnlyGeneratedOnce()
+    public function testMockClassOnlyGeneratedOnce(): void
     {
         $mock1 = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -370,7 +370,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals(\get_class($mock1), \get_class($mock2));
     }
 
-    public function testMockClassDifferentForPartialMocks()
+    public function testMockClassDifferentForPartialMocks(): void
     {
         $mock1 = $this->getMockBuilder(PartialMockTestClass::class)
                       ->getMock();
@@ -401,7 +401,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals(\get_class($mock4), \get_class($mock5));
     }
 
-    public function testMockClassStoreOverrulable()
+    public function testMockClassStoreOverrulable(): void
     {
         $mock1 = $this->getMockBuilder(PartialMockTestClass::class)
                       ->getMock();
@@ -433,14 +433,14 @@ class MockObjectTest extends TestCase
         $this->assertNotEquals(\get_class($mock4), \get_class($mock5));
     }
 
-    public function testGetMockWithFixedClassNameCanProduceTheSameMockTwice()
+    public function testGetMockWithFixedClassNameCanProduceTheSameMockTwice(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)->setMockClassName('FixedName')->getMock();
         $mock = $this->getMockBuilder(stdClass::class)->setMockClassName('FixedName')->getMock();
         $this->assertInstanceOf(stdClass::class, $mock);
     }
 
-    public function testOriginalConstructorSettingConsidered()
+    public function testOriginalConstructorSettingConsidered(): void
     {
         $mock1 = $this->getMockBuilder(PartialMockTestClass::class)
                       ->getMock();
@@ -453,7 +453,7 @@ class MockObjectTest extends TestCase
         $this->assertFalse($mock2->constructorCalled);
     }
 
-    public function testOriginalCloneSettingConsidered()
+    public function testOriginalCloneSettingConsidered(): void
     {
         $mock1 = $this->getMockBuilder(PartialMockTestClass::class)
                       ->getMock();
@@ -465,7 +465,7 @@ class MockObjectTest extends TestCase
         $this->assertNotEquals(\get_class($mock1), \get_class($mock2));
     }
 
-    public function testGetMockForAbstractClass()
+    public function testGetMockForAbstractClass(): void
     {
         $mock = $this->getMockBuilder(AbstractMockTestClass::class)
                      ->getMock();
@@ -479,7 +479,7 @@ class MockObjectTest extends TestCase
      *
      * @param mixed $type
      */
-    public function testGetMockForTraversable($type)
+    public function testGetMockForTraversable($type): void
     {
         $mock = $this->getMockBuilder($type)
                      ->getMock();
@@ -487,7 +487,7 @@ class MockObjectTest extends TestCase
         $this->assertInstanceOf(Traversable::class, $mock);
     }
 
-    public function testMultipleInterfacesCanBeMockedInSingleObject()
+    public function testMultipleInterfacesCanBeMockedInSingleObject(): void
     {
         $mock = $this->getMockBuilder([AnInterface::class, AnotherInterface::class])
                      ->getMock();
@@ -496,7 +496,7 @@ class MockObjectTest extends TestCase
         $this->assertInstanceOf(AnotherInterface::class, $mock);
     }
 
-    public function testGetMockForTrait()
+    public function testGetMockForTrait(): void
     {
         $mock = $this->getMockForTrait(AbstractTrait::class);
 
@@ -509,7 +509,7 @@ class MockObjectTest extends TestCase
         $this->assertContains(AbstractTrait::class, $traits);
     }
 
-    public function testClonedMockObjectShouldStillEqualTheOriginal()
+    public function testClonedMockObjectShouldStillEqualTheOriginal(): void
     {
         $a = $this->getMockBuilder(stdClass::class)
                   ->getMock();
@@ -519,7 +519,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals($a, $b);
     }
 
-    public function testMockObjectsConstructedIndepentantlyShouldBeEqual()
+    public function testMockObjectsConstructedIndepentantlyShouldBeEqual(): void
     {
         $a = $this->getMockBuilder(stdClass::class)
                   ->getMock();
@@ -530,7 +530,7 @@ class MockObjectTest extends TestCase
         $this->assertEquals($a, $b);
     }
 
-    public function testMockObjectsConstructedIndepentantlyShouldNotBeTheSame()
+    public function testMockObjectsConstructedIndepentantlyShouldNotBeTheSame(): void
     {
         $a = $this->getMockBuilder(stdClass::class)
                   ->getMock();
@@ -541,7 +541,7 @@ class MockObjectTest extends TestCase
         $this->assertNotSame($a, $b);
     }
 
-    public function testClonedMockObjectCanBeUsedInPlaceOfOriginalOne()
+    public function testClonedMockObjectCanBeUsedInPlaceOfOriginalOne(): void
     {
         $x = $this->getMockBuilder(stdClass::class)
                   ->getMock();
@@ -559,7 +559,7 @@ class MockObjectTest extends TestCase
         $mock->foo($y);
     }
 
-    public function testClonedMockObjectIsNotIdenticalToOriginalOne()
+    public function testClonedMockObjectIsNotIdenticalToOriginalOne(): void
     {
         $x = $this->getMockBuilder(stdClass::class)
                   ->getMock();
@@ -577,7 +577,7 @@ class MockObjectTest extends TestCase
         $mock->foo($y);
     }
 
-    public function testObjectMethodCallWithArgumentCloningEnabled()
+    public function testObjectMethodCallWithArgumentCloningEnabled(): void
     {
         $expectedObject = new stdClass;
 
@@ -592,7 +592,7 @@ class MockObjectTest extends TestCase
              ->method('doSomethingElse')
              ->will(
                  $this->returnCallback(
-                     function () use (&$actualArguments) {
+                     function () use (&$actualArguments): void {
                          $actualArguments = \func_get_args();
                      }
                  )
@@ -605,7 +605,7 @@ class MockObjectTest extends TestCase
         $this->assertNotSame($expectedObject, $actualArguments[0]);
     }
 
-    public function testObjectMethodCallWithArgumentCloningDisabled()
+    public function testObjectMethodCallWithArgumentCloningDisabled(): void
     {
         $expectedObject = new stdClass;
 
@@ -620,7 +620,7 @@ class MockObjectTest extends TestCase
              ->method('doSomethingElse')
              ->will(
                  $this->returnCallback(
-                     function () use (&$actualArguments) {
+                     function () use (&$actualArguments): void {
                          $actualArguments = \func_get_args();
                      }
                  )
@@ -632,7 +632,7 @@ class MockObjectTest extends TestCase
         $this->assertSame($expectedObject, $actualArguments[0]);
     }
 
-    public function testArgumentCloningOptionGeneratesUniqueMock()
+    public function testArgumentCloningOptionGeneratesUniqueMock(): void
     {
         $mockWithCloning = $this->getMockBuilder('SomeClass')
                                 ->setMethods(['doSomethingElse'])
@@ -647,7 +647,7 @@ class MockObjectTest extends TestCase
         $this->assertNotEquals($mockWithCloning, $mockWithoutCloning);
     }
 
-    public function testVerificationOfMethodNameFailsWithoutParameters()
+    public function testVerificationOfMethodNameFailsWithoutParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->setMethods(['right', 'wrong'])
@@ -672,7 +672,7 @@ class MockObjectTest extends TestCase
         $this->resetMockObjects();
     }
 
-    public function testVerificationOfMethodNameFailsWithParameters()
+    public function testVerificationOfMethodNameFailsWithParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->setMethods(['right', 'wrong'])
@@ -697,7 +697,7 @@ class MockObjectTest extends TestCase
         $this->resetMockObjects();
     }
 
-    public function testVerificationOfMethodNameFailsWithWrongParameters()
+    public function testVerificationOfMethodNameFailsWithWrongParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->setMethods(['right', 'wrong'])
@@ -743,7 +743,7 @@ class MockObjectTest extends TestCase
         $this->resetMockObjects();
     }
 
-    public function testVerificationOfNeverFailsWithEmptyParameters()
+    public function testVerificationOfNeverFailsWithEmptyParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->setMethods(['right', 'wrong'])
@@ -766,7 +766,7 @@ class MockObjectTest extends TestCase
         $this->resetMockObjects();
     }
 
-    public function testVerificationOfNeverFailsWithAnyParameters()
+    public function testVerificationOfNeverFailsWithAnyParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->setMethods(['right', 'wrong'])
@@ -789,7 +789,7 @@ class MockObjectTest extends TestCase
         $this->resetMockObjects();
     }
 
-    public function testWithAnythingInsteadOfWithAnyParameters()
+    public function testWithAnythingInsteadOfWithAnyParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
                      ->setMethods(['right', 'wrong'])
@@ -817,7 +817,7 @@ class MockObjectTest extends TestCase
     /**
      * See https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81
      */
-    public function testMockArgumentsPassedByReference()
+    public function testMockArgumentsPassedByReference(): void
     {
         $foo = $this->getMockBuilder('MethodCallbackByReference')
                     ->setMethods(['bar'])
@@ -839,7 +839,7 @@ class MockObjectTest extends TestCase
     /**
      * See https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81
      */
-    public function testMockArgumentsPassedByReference2()
+    public function testMockArgumentsPassedByReference2(): void
     {
         $foo = $this->getMockBuilder('MethodCallbackByReference')
                     ->disableOriginalConstructor()
@@ -849,7 +849,7 @@ class MockObjectTest extends TestCase
         $foo->expects($this->any())
             ->method('bar')
             ->will($this->returnCallback(
-                function (&$a, &$b, $c) {
+                function (&$a, &$b, $c): void {
                     $b = 1;
                 }
             ));
@@ -864,7 +864,7 @@ class MockObjectTest extends TestCase
     /**
      * @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/116
      */
-    public function testMockArgumentsPassedByReference3()
+    public function testMockArgumentsPassedByReference3(): void
     {
         $foo = $this->getMockBuilder('MethodCallbackByReference')
                     ->setMethods(['bar'])
@@ -886,7 +886,7 @@ class MockObjectTest extends TestCase
     /**
      * @see https://github.com/sebastianbergmann/phpunit/issues/796
      */
-    public function testMockArgumentsPassedByReference4()
+    public function testMockArgumentsPassedByReference4(): void
     {
         $foo = $this->getMockBuilder('MethodCallbackByReference')
                     ->setMethods(['bar'])
@@ -908,7 +908,7 @@ class MockObjectTest extends TestCase
     /**
      * @requires extension soap
      */
-    public function testCreateMockFromWsdl()
+    public function testCreateMockFromWsdl(): void
     {
         $mock = $this->getMockFromWsdl(__DIR__ . '/../../_files/GoogleSearch.wsdl', 'WsdlMock');
 
@@ -921,7 +921,7 @@ class MockObjectTest extends TestCase
     /**
      * @requires extension soap
      */
-    public function testCreateNamespacedMockFromWsdl()
+    public function testCreateNamespacedMockFromWsdl(): void
     {
         $mock = $this->getMockFromWsdl(__DIR__ . '/../../_files/GoogleSearch.wsdl', 'My\\Space\\WsdlMock');
 
@@ -934,7 +934,7 @@ class MockObjectTest extends TestCase
     /**
      * @requires extension soap
      */
-    public function testCreateTwoMocksOfOneWsdlFile()
+    public function testCreateTwoMocksOfOneWsdlFile(): void
     {
         $a = $this->getMockFromWsdl(__DIR__ . '/../../_files/GoogleSearch.wsdl');
         $b = $this->getMockFromWsdl(__DIR__ . '/../../_files/GoogleSearch.wsdl');
@@ -947,7 +947,7 @@ class MockObjectTest extends TestCase
      * @see    https://github.com/sebastianbergmann/phpunit-mock-objects/issues/156
      * @ticket 156
      */
-    public function testInterfaceWithStaticMethodCanBeStubbed()
+    public function testInterfaceWithStaticMethodCanBeStubbed(): void
     {
         $this->assertInstanceOf(
             InterfaceWithStaticMethod::class,
@@ -955,7 +955,7 @@ class MockObjectTest extends TestCase
         );
     }
 
-    public function testInvokingStubbedStaticMethodRaisesException()
+    public function testInvokingStubbedStaticMethodRaisesException(): void
     {
         $mock = $this->getMockBuilder(ClassWithStaticMethod::class)->getMock();
 
@@ -968,7 +968,7 @@ class MockObjectTest extends TestCase
      * @see    https://github.com/sebastianbergmann/phpunit-mock-objects/issues/171
      * @ticket 171
      */
-    public function testStubForClassThatImplementsSerializableCanBeCreatedWithoutInvokingTheConstructor()
+    public function testStubForClassThatImplementsSerializableCanBeCreatedWithoutInvokingTheConstructor(): void
     {
         $this->assertInstanceOf(
             ClassThatImplementsSerializable::class,
@@ -978,7 +978,7 @@ class MockObjectTest extends TestCase
         );
     }
 
-    public function testGetMockForClassWithSelfTypeHint()
+    public function testGetMockForClassWithSelfTypeHint(): void
     {
         $this->assertInstanceOf(
             ClassWithSelfTypeHint::class,
@@ -986,14 +986,14 @@ class MockObjectTest extends TestCase
         );
     }
 
-    public function testStringableClassDoesNotThrow()
+    public function testStringableClassDoesNotThrow(): void
     {
         $mock = $this->getMockBuilder(StringableClass::class)->getMock();
 
         $this->assertInternalType('string', (string) $mock);
     }
 
-    public function testStringableClassCanBeMocked()
+    public function testStringableClassCanBeMocked(): void
     {
         $mock = $this->getMockBuilder(StringableClass::class)->getMock();
 
@@ -1014,7 +1014,7 @@ class MockObjectTest extends TestCase
         ];
     }
 
-    public function testParameterCallbackConstraintOnlyEvaluatedOnce()
+    public function testParameterCallbackConstraintOnlyEvaluatedOnce(): void
     {
         $mock                  = $this->getMockBuilder(Foo::class)->setMethods(['bar'])->getMock();
         $expectedNumberOfCalls = 1;
@@ -1030,7 +1030,7 @@ class MockObjectTest extends TestCase
         }
     }
 
-    public function testReturnTypesAreMockedCorrectly()
+    public function testReturnTypesAreMockedCorrectly(): void
     {
         /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
         $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
@@ -1044,7 +1044,7 @@ class MockObjectTest extends TestCase
         $this->assertInstanceOf(MockObject::class, $stub->methodWithClassReturnTypeDeclaration());
     }
 
-    public function testDisableAutomaticReturnValueGeneration()
+    public function testDisableAutomaticReturnValueGeneration(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
             ->disableAutoReturnValueGeneration()
@@ -1058,7 +1058,7 @@ class MockObjectTest extends TestCase
         $mock->doSomethingElse(1);
     }
 
-    public function testDisableAutomaticReturnValueGenerationWithToString()
+    public function testDisableAutomaticReturnValueGenerationWithToString(): void
     {
         $mock = $this->getMockBuilder(StringableClass::class)
             ->disableAutoReturnValueGeneration()
@@ -1079,7 +1079,7 @@ class MockObjectTest extends TestCase
         $this->resetMockObjects();
     }
 
-    public function testVoidReturnTypeIsMockedCorrectly()
+    public function testVoidReturnTypeIsMockedCorrectly(): void
     {
         /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
         $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
@@ -1090,7 +1090,7 @@ class MockObjectTest extends TestCase
     /**
      * @requires PHP 7.2
      */
-    public function testObjectReturnTypeIsMockedCorrectly()
+    public function testObjectReturnTypeIsMockedCorrectly(): void
     {
         /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
         $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
@@ -1098,14 +1098,14 @@ class MockObjectTest extends TestCase
         $this->assertInstanceOf(stdClass::class, $stub->methodWithObjectReturnTypeDeclaration());
     }
 
-    public function testGetObjectForTrait()
+    public function testGetObjectForTrait(): void
     {
         $object = $this->getObjectForTrait(ExampleTrait::class);
 
         $this->assertSame('ohHai', $object->ohHai());
     }
 
-    private function resetMockObjects()
+    private function resetMockObjects(): void
     {
         $refl = new ReflectionObject($this);
         $refl = $refl->getParentClass();

@@ -168,7 +168,7 @@ class StaticInvocation implements Invocation, SelfDescribing
 
             case 'callable':
             case 'closure':
-                return function () {
+                return function (): void {
                 };
 
             case 'traversable':

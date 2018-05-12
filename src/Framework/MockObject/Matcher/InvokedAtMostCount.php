@@ -44,7 +44,7 @@ class InvokedAtMostCount extends InvokedRecorder
      *
      * @throws ExpectationFailedException
      */
-    public function verify()
+    public function verify(): void
     {
         $count = $this->getInvocationCount();
 

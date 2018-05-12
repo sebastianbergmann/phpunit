@@ -56,7 +56,7 @@ class InvokedCount extends InvokedRecorder
      *
      * @throws ExpectationFailedException
      */
-    public function invoked(BaseInvocation $invocation)
+    public function invoked(BaseInvocation $invocation): void
     {
         parent::invoked($invocation);
 
@@ -93,7 +93,7 @@ class InvokedCount extends InvokedRecorder
      *
      * @throws ExpectationFailedException
      */
-    public function verify()
+    public function verify(): void
     {
         $count = $this->getInvocationCount();
 

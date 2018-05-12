@@ -604,7 +604,7 @@ class Generator
      * @param string $code
      * @param string $className
      */
-    private function evalClass($code, $className)
+    private function evalClass($code, $className): void
     {
         if (!\class_exists($className, false)) {
             eval($code);

@@ -79,7 +79,7 @@ class ConsecutiveParameters extends StatelessInvocation
         return false;
     }
 
-    public function verify()
+    public function verify(): void
     {
         foreach ($this->invocations as $callIndex => $invocation) {
             $this->verifyInvocation($invocation, $callIndex);
@@ -94,7 +94,7 @@ class ConsecutiveParameters extends StatelessInvocation
      *
      * @throws ExpectationFailedException
      */
-    private function verifyInvocation(BaseInvocation $invocation, $callIndex)
+    private function verifyInvocation(BaseInvocation $invocation, $callIndex): void
     {
         if (isset($this->parameterGroups[$callIndex])) {
             $parameters = $this->parameterGroups[$callIndex];

@@ -13,14 +13,14 @@ use PHPUnit\Framework\TestCase;
 
 class MockBuilderTest extends TestCase
 {
-    public function testMockBuilderRequiresClassName()
+    public function testMockBuilderRequiresClassName(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)->getMock();
 
         $this->assertInstanceOf(Mockable::class, $mock);
     }
 
-    public function testByDefaultMocksAllMethods()
+    public function testByDefaultMocksAllMethods(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)->getMock();
 
@@ -28,7 +28,7 @@ class MockBuilderTest extends TestCase
         $this->assertNull($mock->anotherMockableMethod());
     }
 
-    public function testMethodsToMockCanBeSpecified()
+    public function testMethodsToMockCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
                      ->setMethods(['mockableMethod'])
@@ -38,7 +38,7 @@ class MockBuilderTest extends TestCase
         $this->assertTrue($mock->anotherMockableMethod());
     }
 
-    public function testMethodExceptionsToMockCanBeSpecified()
+    public function testMethodExceptionsToMockCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
             ->setMethodsExcept(['mockableMethod'])
@@ -48,7 +48,7 @@ class MockBuilderTest extends TestCase
         $this->assertNull($mock->anotherMockableMethod());
     }
 
-    public function testEmptyMethodExceptionsToMockCanBeSpecified()
+    public function testEmptyMethodExceptionsToMockCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
             ->setMethodsExcept()
@@ -58,14 +58,14 @@ class MockBuilderTest extends TestCase
         $this->assertNull($mock->anotherMockableMethod());
     }
 
-    public function testByDefaultDoesNotPassArgumentsToTheConstructor()
+    public function testByDefaultDoesNotPassArgumentsToTheConstructor(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)->getMock();
 
         $this->assertEquals([null, null], $mock->constructorArgs);
     }
 
-    public function testMockClassNameCanBeSpecified()
+    public function testMockClassNameCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
                      ->setMockClassName('ACustomClassName')
@@ -74,7 +74,7 @@ class MockBuilderTest extends TestCase
         $this->assertInstanceOf(ACustomClassName::class, $mock);
     }
 
-    public function testConstructorArgumentsCanBeSpecified()
+    public function testConstructorArgumentsCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
                      ->setConstructorArgs([23, 42])
@@ -83,7 +83,7 @@ class MockBuilderTest extends TestCase
         $this->assertEquals([23, 42], $mock->constructorArgs);
     }
 
-    public function testOriginalConstructorCanBeDisabled()
+    public function testOriginalConstructorCanBeDisabled(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
                      ->disableOriginalConstructor()
@@ -92,7 +92,7 @@ class MockBuilderTest extends TestCase
         $this->assertNull($mock->constructorArgs);
     }
 
-    public function testByDefaultOriginalCloneIsPreserved()
+    public function testByDefaultOriginalCloneIsPreserved(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
                      ->getMock();
@@ -102,7 +102,7 @@ class MockBuilderTest extends TestCase
         $this->assertTrue($cloned->cloned);
     }
 
-    public function testOriginalCloneCanBeDisabled()
+    public function testOriginalCloneCanBeDisabled(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
                      ->disableOriginalClone()
@@ -114,7 +114,7 @@ class MockBuilderTest extends TestCase
         $this->assertFalse($cloned->cloned);
     }
 
-    public function testProvidesAFluentInterface()
+    public function testProvidesAFluentInterface(): void
     {
         $spec = $this->getMockBuilder(Mockable::class)
                      ->setMethods(['mockableMethod'])
