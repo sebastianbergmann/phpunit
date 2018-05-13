@@ -138,6 +138,7 @@ class TestRunner extends BaseTestRunner
     }
 
     /**
+     * @throws \PHPUnit\Runner\Exception
      * @throws Exception
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
@@ -169,14 +170,14 @@ class TestRunner extends BaseTestRunner
             $suite->setBeStrictAboutChangesToGlobalState(true);
         }
 
-        if ($arguments['order'] === TestSuiteSorter::RANDOM_ORDER) {
+        if ($arguments['order'] === TestSuiteSorter::ORDER_RANDOMIZED) {
             \mt_srand($arguments['randomOrderSeed']);
         }
 
-        if ($arguments['order'] !== TestSuiteSorter::DEFAULT_ORDER || $arguments['reorderDependencies'] !== TestSuiteSorter::IGNORE_DEPENDENCIES) {
-            $sorter = new TestSuiteSorter($arguments);
+        if ($arguments['order'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['resolveDependencies']) {
+            $sorter = new TestSuiteSorter;
 
-            $sorter->reorderTestsInSuite($suite);
+            $sorter->reorderTestsInSuite($suite, $arguments['order'], $arguments['resolveDependencies']);
 
             unset($sorter);
         }
@@ -300,7 +301,7 @@ class TestRunner extends BaseTestRunner
 
             $this->writeMessage('Runtime', $runtime);
 
-            if ($arguments['order'] === TestSuiteSorter::RANDOM_ORDER) {
+            if ($arguments['order'] === TestSuiteSorter::ORDER_RANDOMIZED) {
                 $this->writeMessage(
                     'Random seed',
                     $arguments['randomOrderSeed']
@@ -1131,8 +1132,8 @@ class TestRunner extends BaseTestRunner
         $arguments['reportLowUpperBound']                             = $arguments['reportLowUpperBound'] ?? 50;
         $arguments['reportUselessTests']                              = $arguments['reportUselessTests'] ?? true;
         $arguments['reverseList']                                     = $arguments['reverseList'] ?? false;
-        $arguments['order']                                           = $arguments['order'] ?? TestSuiteSorter::DEFAULT_ORDER;
-        $arguments['reorderDependencies']                             = $arguments['reorderDependencies'] ?? TestSuiteSorter::RESOLVE_DEPENDENCIES;
+        $arguments['order']                                           = $arguments['order'] ?? TestSuiteSorter::ORDER_DEFAULT;
+        $arguments['resolveDependencies']                             = $arguments['resolveDependencies'] ?? true;
         $arguments['stopOnError']                                     = $arguments['stopOnError'] ?? false;
         $arguments['stopOnFailure']                                   = $arguments['stopOnFailure'] ?? false;
         $arguments['stopOnIncomplete']                                = $arguments['stopOnIncomplete'] ?? false;

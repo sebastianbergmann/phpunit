@@ -19,68 +19,51 @@ final class TestSuiteSorter
     /**
      * @var int
      */
-    public const DEFAULT_ORDER = 0;
+    public const ORDER_DEFAULT = 0;
 
     /**
      * @var int
      */
-    public const REVERSE_ORDER = 1;
+    public const ORDER_REVERSED = 1;
 
     /**
      * @var int
      */
-    public const RANDOM_ORDER = 2;
+    public const ORDER_RANDOMIZED = 2;
 
     /**
-     * @var int
+     * @throws Exception
      */
-    public const IGNORE_DEPENDENCIES = 3;
-
-    /**
-     * @var int
-     */
-    public const RESOLVE_DEPENDENCIES = 4;
-
-    /**
-     * @var int
-     */
-    private $testRunningOrder = self::DEFAULT_ORDER;
-
-    /**
-     * @var int
-     */
-    private $dependencyResolutionStrategy = self::RESOLVE_DEPENDENCIES;
-
-    public function __construct(array $arguments)
+    public function reorderTestsInSuite(Test $suite, int $order, bool $resolveDependencies): void
     {
-        $this->testRunningOrder               = $arguments['order'];
-        $this->dependencyResolutionStrategy   = $arguments['reorderDependencies'];
-    }
+        if ($order !== self::ORDER_DEFAULT && $order !== self::ORDER_REVERSED && $order !== self::ORDER_RANDOMIZED) {
+            throw new Exception(
+                '$order must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, or TestSuiteSorter::ORDER_RANDOMIZED'
+            );
+        }
 
-    public function reorderTestsInSuite(Test $suite): void
-    {
         if ($suite instanceof TestSuite && !empty($suite->tests())) {
             foreach ($suite as $_suite) {
-                $this->reorderTestsInSuite($_suite);
+                $this->reorderTestsInSuite($_suite, $order, $resolveDependencies);
             }
 
-            $this->sort($suite);
+            $this->sort($suite, $order, $resolveDependencies);
         }
     }
 
-    private function sort(TestSuite $suite): void
+    private function sort(TestSuite $suite, int $order, bool $resolveDependencies): void
     {
         if (empty($suite->tests())) {
             return;
         }
 
-        if ($this->testRunningOrder === self::REVERSE_ORDER) {
+        if ($order === self::ORDER_REVERSED) {
             $suite->setTests($this->reverse($suite->tests()));
-        } elseif ($this->testRunningOrder === self::RANDOM_ORDER) {
+        } elseif ($order === self::ORDER_RANDOMIZED) {
             $suite->setTests($this->randomize($suite->tests()));
         }
 
-        if (($suite->tests()[0] instanceof TestCase) && $this->dependencyResolutionStrategy === self::RESOLVE_DEPENDENCIES) {
+        if ($resolveDependencies && $suite->tests()[0] instanceof TestCase) {
             $suite->setTests($this->resolveDependencies($suite->tests()));
         }
     }

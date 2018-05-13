@@ -696,7 +696,7 @@ class Command
                     break;
 
                 case '--random-order':
-                    $this->arguments['order'] = TestSuiteSorter::RANDOM_ORDER;
+                    $this->arguments['order'] = TestSuiteSorter::ORDER_RANDOMIZED;
 
                     break;
 
@@ -706,12 +706,12 @@ class Command
                     break;
 
                 case '--ignore-dependencies':
-                    $this->arguments['reorderDependencies'] = TestSuiteSorter::IGNORE_DEPENDENCIES;
+                    $this->arguments['resolveDependencies'] = false;
 
                     break;
 
                 case '--reverse-order':
-                    $this->arguments['order'] = TestSuiteSorter::REVERSE_ORDER;
+                    $this->arguments['order'] = TestSuiteSorter::ORDER_REVERSED;
 
                     break;
 
