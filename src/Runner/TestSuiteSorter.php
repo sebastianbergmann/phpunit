@@ -17,37 +17,37 @@ use PHPUnit\Framework\TestSuite;
 final class TestSuiteSorter
 {
     /**
-     * @var string
+     * @var int
      */
-    public const DEFAULT_ORDER = 'default';
+    public const DEFAULT_ORDER = 0;
 
     /**
-     * @var string
+     * @var int
      */
-    public const REVERSE_ORDER = 'reverse';
+    public const REVERSE_ORDER = 1;
 
     /**
-     * @var string
+     * @var int
      */
-    public const RANDOM_ORDER = 'random';
+    public const RANDOM_ORDER = 2;
 
     /**
-     * @var string
+     * @var int
      */
-    public const IGNORE_DEPENDENCIES = 'ignore';
+    public const IGNORE_DEPENDENCIES = 3;
 
     /**
-     * @var string
+     * @var int
      */
-    public const RESOLVE_DEPENDENCIES = 'resolve';
+    public const RESOLVE_DEPENDENCIES = 4;
 
     /**
-     * @var string
+     * @var int
      */
     private $testRunningOrder = self::DEFAULT_ORDER;
 
     /**
-     * @var string
+     * @var int
      */
     private $dependencyResolutionStrategy = self::RESOLVE_DEPENDENCIES;
 
