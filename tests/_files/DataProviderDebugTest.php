@@ -34,7 +34,7 @@ class DataProviderDebugTest extends TestCase
 
         $storage = new \SplObjectStorage();
         $storage->attach($obj2);
-        $storage->foo = $obj2;
+        $storage->foo = $obj;
 
         return [
             [null, true, 1, 1.0],
