@@ -1077,10 +1077,6 @@ Test Selection Options:
   --list-tests-xml <file>     List available tests in XML format.
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
-  --reverse-order             Run tests last-to-first
-  --random-order              Run tests in random order
-  --random-order-seed=<n>     Pin the 'random' order to a specific seed number <n>
-  --ignore-dependencies       Disable the builtin dependency annotation resolver
 
 Test Execution Options:
 
@@ -1118,6 +1114,11 @@ Test Execution Options:
   --testdox-group             Only include tests from the specified group(s).
   --testdox-exclude-group     Exclude tests from the specified group(s).
   --printer <printer>         TestListener implementation to use.
+
+  --ignore-dependencies       Disable test dependency resolution
+  --random-order              Run tests in random order
+  --random-order-seed=<N>     Use a specific random seed <N> for random order
+  --reverse-order             Run tests last-to-first
 
 Configuration Options:
 
