@@ -90,6 +90,7 @@ class Command
         'globals-backup'            => null,
         'group='                    => null,
         'help'                      => null,
+        'resolve-dependencies'      => null,
         'ignore-dependencies'       => null,
         'include-path='             => null,
         'list-groups'               => null,
@@ -705,6 +706,11 @@ class Command
 
                     break;
 
+                case '--resolve-dependencies':
+                    $this->arguments['resolveDependencies'] = true;
+
+                    break;
+
                 case '--ignore-dependencies':
                     $this->arguments['resolveDependencies'] = false;
 
@@ -1115,7 +1121,7 @@ Test Execution Options:
   --testdox-exclude-group     Exclude tests from the specified group(s)
   --printer <printer>         TestListener implementation to use
 
-  --ignore-dependencies       Disable test dependency resolution
+  --resolve-dependencies      Resolve dependencies between tests
   --random-order              Run tests in random order
   --random-order-seed=<N>     Use a specific random seed <N> for random order
   --reverse-order             Run tests last-to-first

@@ -1,5 +1,5 @@
 --TEST--
-phpunit --verbose --reverse-order ../_files/DependencySuccessTest.php
+phpunit --reverse-order --ignore-dependencies ../_files/MultiDependencyTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
@@ -28,7 +28,7 @@ Test 'MultiDependencyTest::testOne' started
 Test 'MultiDependencyTest::testOne' ended
 
 
-Time: %s %s, Memory: %s
+Time: %s, Memory: %s
 
 There were 2 skipped tests:
 

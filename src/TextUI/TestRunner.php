@@ -1133,7 +1133,7 @@ class TestRunner extends BaseTestRunner
         $arguments['reportUselessTests']                              = $arguments['reportUselessTests'] ?? true;
         $arguments['reverseList']                                     = $arguments['reverseList'] ?? false;
         $arguments['order']                                           = $arguments['order'] ?? TestSuiteSorter::ORDER_DEFAULT;
-        $arguments['resolveDependencies']                             = $arguments['resolveDependencies'] ?? true;
+        $arguments['resolveDependencies']                             = $arguments['resolveDependencies'] ?? false;
         $arguments['stopOnError']                                     = $arguments['stopOnError'] ?? false;
         $arguments['stopOnFailure']                                   = $arguments['stopOnFailure'] ?? false;
         $arguments['stopOnIncomplete']                                = $arguments['stopOnIncomplete'] ?? false;
