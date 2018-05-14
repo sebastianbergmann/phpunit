@@ -65,4 +65,22 @@ class ConsecutiveParametersTest extends TestCase
 
         $mock->foo('invalid');
     }
+
+    public function testMalformedConstraintIntegrationExpectingException(): void
+    {
+        $mock = $this->getMockBuilder(stdClass::class)
+                     ->setMethods(['foo'])
+                     ->getMock();
+
+        $mock->expects($this->any())
+             ->method('foo')
+             ->withConsecutive(
+                 // Note the absence of array
+                 $this->stringContains('bar')
+             );
+
+        $this->expectException(\PHPUnit\Exception::class);
+
+        $mock->foo('invalid');
+    }
 }
