@@ -926,6 +926,14 @@ class TestRunner extends BaseTestRunner
                 $arguments['registerMockObjectsFromTestArgumentsRecursively'] = $phpunitConfiguration['registerMockObjectsFromTestArgumentsRecursively'];
             }
 
+            if (isset($phpunitConfiguration['executionOrder']) && !isset($arguments['executionOrder'])) {
+                $arguments['executionOrder'] = $phpunitConfiguration['executionOrder'];
+            }
+
+            if (isset($phpunitConfiguration['resolveDependencies']) && !isset($arguments['resolveDependencies'])) {
+                $arguments['resolveDependencies'] = $phpunitConfiguration['resolveDependencies'];
+            }
+
             $groupCliArgs = [];
 
             if (!empty($arguments['groups'])) {

@@ -30,7 +30,9 @@
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60"
-         verbose="false">
+         verbose="false"
+         executionOrder="default"
+         resolveDependencies="false">
     <testsuites>
         <testsuite name="My Test Suite">
             <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>

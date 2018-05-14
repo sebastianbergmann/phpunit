@@ -14,6 +14,7 @@ use DOMXPath;
 use File_Iterator_Facade;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
 
 /**
@@ -61,7 +62,9 @@ use PHPUnit\TextUI\ResultPrinter;
  *          timeoutForLargeTests="60"
  *          verbose="false"
  *          reverseDefectList="false"
- *          registerMockObjectsFromTestArgumentsRecursively="false">
+ *          registerMockObjectsFromTestArgumentsRecursively="false"
+ *          executionOrder="default"
+ *          resolveDependencies="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
  *       <directory suffix="Test.php" phpVersion="5.3.0" phpVersionOperator=">=">/path/to/files</directory>
@@ -899,6 +902,31 @@ final class Configuration
                 (string) $root->getAttribute(
                     'extensionsDirectory'
                 )
+            );
+        }
+
+        if ($root->hasAttribute('executionOrder')) {
+            switch ((string) $root->getAttribute('executionOrder')) {
+                case TestSuiteSorter::ORDER_RANDOMIZED:
+                    $result['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
+
+                    break;
+
+                case TestSuiteSorter::ORDER_REVERSED:
+                    $result['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
+
+                    break;
+
+                default:
+                    $result['executionOrder'] = TestSuiteSorter::ORDER_DEFAULT;
+
+            }
+        }
+
+        if ($root->hasAttribute('resolveDependencies')) {
+            $result['resolveDependencies'] = $this->getBoolean(
+                (string) $root->getAttribute('resolveDependencies'),
+                false
             );
         }
 

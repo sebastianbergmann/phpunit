@@ -31,7 +31,9 @@
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60"
-         verbose="false">
+         verbose="false"
+         executionOrder="default"
+         resolveDependencies="false">
          <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
              href="configuration.xml"
              parse="xml"

@@ -414,7 +414,9 @@ class ConfigurationTest extends TestCase
                 'disallowTodoAnnotatedTests'                 => false,
                 'failOnWarning'                              => false,
                 'failOnRisky'                                => false,
-                'ignoreDeprecatedCodeUnitsFromCodeCoverage'  => false
+                'ignoreDeprecatedCodeUnitsFromCodeCoverage'  => false,
+                'executionOrder'                             => 0,
+                'resolveDependencies'                        => false
             ],
             $this->configuration->getPHPUnitConfiguration()
         );
