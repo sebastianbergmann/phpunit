@@ -170,14 +170,14 @@ class TestRunner extends BaseTestRunner
             $suite->setBeStrictAboutChangesToGlobalState(true);
         }
 
-        if ($arguments['order'] === TestSuiteSorter::ORDER_RANDOMIZED) {
+        if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
             \mt_srand($arguments['randomOrderSeed']);
         }
 
-        if ($arguments['order'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['resolveDependencies']) {
+        if ($arguments['executionOrder'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['resolveDependencies']) {
             $sorter = new TestSuiteSorter;
 
-            $sorter->reorderTestsInSuite($suite, $arguments['order'], $arguments['resolveDependencies']);
+            $sorter->reorderTestsInSuite($suite, $arguments['executionOrder'], $arguments['resolveDependencies']);
 
             unset($sorter);
         }
@@ -301,7 +301,7 @@ class TestRunner extends BaseTestRunner
 
             $this->writeMessage('Runtime', $runtime);
 
-            if ($arguments['order'] === TestSuiteSorter::ORDER_RANDOMIZED) {
+            if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
                 $this->writeMessage(
                     'Random seed',
                     $arguments['randomOrderSeed']
@@ -1132,7 +1132,7 @@ class TestRunner extends BaseTestRunner
         $arguments['reportLowUpperBound']                             = $arguments['reportLowUpperBound'] ?? 50;
         $arguments['reportUselessTests']                              = $arguments['reportUselessTests'] ?? true;
         $arguments['reverseList']                                     = $arguments['reverseList'] ?? false;
-        $arguments['order']                                           = $arguments['order'] ?? TestSuiteSorter::ORDER_DEFAULT;
+        $arguments['executionOrder']                                  = $arguments['executionOrder'] ?? TestSuiteSorter::ORDER_DEFAULT;
         $arguments['resolveDependencies']                             = $arguments['resolveDependencies'] ?? false;
         $arguments['stopOnError']                                     = $arguments['stopOnError'] ?? false;
         $arguments['stopOnFailure']                                   = $arguments['stopOnFailure'] ?? false;

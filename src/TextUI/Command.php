@@ -697,7 +697,7 @@ class Command
                     break;
 
                 case '--random-order':
-                    $this->arguments['order'] = TestSuiteSorter::ORDER_RANDOMIZED;
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
 
                     break;
 
@@ -717,7 +717,7 @@ class Command
                     break;
 
                 case '--reverse-order':
-                    $this->arguments['order'] = TestSuiteSorter::ORDER_REVERSED;
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
 
                     break;
 
