@@ -24,12 +24,12 @@ final class TestSuiteSorter
     /**
      * @var int
      */
-    public const ORDER_REVERSED = 1;
+    public const ORDER_RANDOMIZED = 1;
 
     /**
      * @var int
      */
-    public const ORDER_RANDOMIZED = 2;
+    public const ORDER_REVERSED = 2;
 
     /**
      * @throws Exception
