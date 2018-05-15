@@ -42,8 +42,6 @@ class ReturnValueMap implements Stub
                 return $return;
             }
         }
-
-        return;
     }
 
     public function toString(): string

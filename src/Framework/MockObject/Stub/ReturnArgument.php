@@ -32,8 +32,6 @@ class ReturnArgument implements Stub
         if (isset($invocation->getParameters()[$this->argumentIndex])) {
             return $invocation->getParameters()[$this->argumentIndex];
         }
-
-        return;
     }
 
     public function toString(): string
