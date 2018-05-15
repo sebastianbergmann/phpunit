@@ -306,10 +306,8 @@ class ResultPrinter extends Printer implements TestListener
 
         $this->lastTestFailed = false;
 
-        if ($test instanceof TestCase) {
-            if (!$test->hasExpectationOnOutput()) {
-                $this->write($test->getActualOutput());
-            }
+        if ($test instanceof TestCase && !$test->hasExpectationOnOutput()) {
+            $this->write($test->getActualOutput());
         }
     }
 
