@@ -31,22 +31,22 @@ class IsEqual extends Constraint
     /**
      * @var float
      */
-    private $delta = 0.0;
+    private $delta;
 
     /**
      * @var int
      */
-    private $maxDepth = 10;
+    private $maxDepth;
 
     /**
      * @var bool
      */
-    private $canonicalize = false;
+    private $canonicalize;
 
     /**
      * @var bool
      */
-    private $ignoreCase = false;
+    private $ignoreCase;
 
     /**
      * @var SebastianBergmann\Comparator\ComparisonFailure

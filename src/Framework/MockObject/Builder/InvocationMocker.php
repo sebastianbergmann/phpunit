@@ -39,7 +39,7 @@ class InvocationMocker implements MethodNameMatch
     /**
      * @var string[]
      */
-    private $configurableMethods = [];
+    private $configurableMethods;
 
     /**
      * @param MatcherCollection $collection

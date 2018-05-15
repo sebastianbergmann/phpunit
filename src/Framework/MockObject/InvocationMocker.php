@@ -40,7 +40,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     /**
      * @var string[]
      */
-    private $configurableMethods = [];
+    private $configurableMethods;
 
     /**
      * @var bool
