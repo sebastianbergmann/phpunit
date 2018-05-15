@@ -104,10 +104,8 @@ class MockBuilder
 
     /**
      * Creates a mock object using a fluent interface.
-     *
-     * @return MockObject
      */
-    public function getMock()
+    public function getMock(): MockObject
     {
         $object = $this->generator->getMock(
             $this->type,
@@ -131,10 +129,8 @@ class MockBuilder
 
     /**
      * Creates a mock object for an abstract class using a fluent interface.
-     *
-     * @return MockObject
      */
-    public function getMockForAbstractClass()
+    public function getMockForAbstractClass(): MockObject
     {
         $object = $this->generator->getMockForAbstractClass(
             $this->type,
@@ -154,10 +150,8 @@ class MockBuilder
 
     /**
      * Creates a mock object for a trait using a fluent interface.
-     *
-     * @return MockObject
      */
-    public function getMockForTrait()
+    public function getMockForTrait(): MockObject
     {
         $object = $this->generator->getMockForTrait(
             $this->type,
@@ -179,10 +173,8 @@ class MockBuilder
      * Specifies the subset of methods to mock. Default is to mock none of them.
      *
      * @param null|array $methods
-     *
-     * @return MockBuilder
      */
-    public function setMethods(array $methods = null)
+    public function setMethods(array $methods = null): MockBuilder
     {
         $this->methods = $methods;
 
@@ -193,10 +185,8 @@ class MockBuilder
      * Specifies the subset of methods to not mock. Default is to mock all of them.
      *
      * @param array $methods
-     *
-     * @return MockBuilder
      */
-    public function setMethodsExcept(array $methods = [])
+    public function setMethodsExcept(array $methods = []): MockBuilder
     {
         $this->methodsExcept = $methods;
 
@@ -214,10 +204,8 @@ class MockBuilder
      * Specifies the arguments for the constructor.
      *
      * @param array $args
-     *
-     * @return MockBuilder
      */
-    public function setConstructorArgs(array $args)
+    public function setConstructorArgs(array $args): MockBuilder
     {
         $this->constructorArgs = $args;
 
@@ -226,12 +214,8 @@ class MockBuilder
 
     /**
      * Specifies the name for the mock class.
-     *
-     * @param string $name
-     *
-     * @return MockBuilder
      */
-    public function setMockClassName($name)
+    public function setMockClassName(string $name): MockBuilder
     {
         $this->mockClassName = $name;
 
@@ -240,10 +224,8 @@ class MockBuilder
 
     /**
      * Disables the invocation of the original constructor.
-     *
-     * @return MockBuilder
      */
-    public function disableOriginalConstructor()
+    public function disableOriginalConstructor(): MockBuilder
     {
         $this->originalConstructor = false;
 
@@ -252,10 +234,8 @@ class MockBuilder
 
     /**
      * Enables the invocation of the original constructor.
-     *
-     * @return MockBuilder
      */
-    public function enableOriginalConstructor()
+    public function enableOriginalConstructor(): MockBuilder
     {
         $this->originalConstructor = true;
 
@@ -264,10 +244,8 @@ class MockBuilder
 
     /**
      * Disables the invocation of the original clone constructor.
-     *
-     * @return MockBuilder
      */
-    public function disableOriginalClone()
+    public function disableOriginalClone(): MockBuilder
     {
         $this->originalClone = false;
 
@@ -276,10 +254,8 @@ class MockBuilder
 
     /**
      * Enables the invocation of the original clone constructor.
-     *
-     * @return MockBuilder
      */
-    public function enableOriginalClone()
+    public function enableOriginalClone(): MockBuilder
     {
         $this->originalClone = true;
 
@@ -288,10 +264,8 @@ class MockBuilder
 
     /**
      * Disables the use of class autoloading while creating the mock object.
-     *
-     * @return MockBuilder
      */
-    public function disableAutoload()
+    public function disableAutoload(): MockBuilder
     {
         $this->autoload = false;
 
@@ -300,10 +274,8 @@ class MockBuilder
 
     /**
      * Enables the use of class autoloading while creating the mock object.
-     *
-     * @return MockBuilder
      */
-    public function enableAutoload()
+    public function enableAutoload(): MockBuilder
     {
         $this->autoload = true;
 
@@ -312,10 +284,8 @@ class MockBuilder
 
     /**
      * Disables the cloning of arguments passed to mocked methods.
-     *
-     * @return MockBuilder
      */
-    public function disableArgumentCloning()
+    public function disableArgumentCloning(): MockBuilder
     {
         $this->cloneArguments = false;
 
@@ -324,10 +294,8 @@ class MockBuilder
 
     /**
      * Enables the cloning of arguments passed to mocked methods.
-     *
-     * @return MockBuilder
      */
-    public function enableArgumentCloning()
+    public function enableArgumentCloning(): MockBuilder
     {
         $this->cloneArguments = true;
 
@@ -336,10 +304,8 @@ class MockBuilder
 
     /**
      * Enables the invocation of the original methods.
-     *
-     * @return MockBuilder
      */
-    public function enableProxyingToOriginalMethods()
+    public function enableProxyingToOriginalMethods(): MockBuilder
     {
         $this->callOriginalMethods = true;
 
@@ -348,10 +314,8 @@ class MockBuilder
 
     /**
      * Disables the invocation of the original methods.
-     *
-     * @return MockBuilder
      */
-    public function disableProxyingToOriginalMethods()
+    public function disableProxyingToOriginalMethods(): MockBuilder
     {
         $this->callOriginalMethods = false;
         $this->proxyTarget         = null;
@@ -363,50 +327,36 @@ class MockBuilder
      * Sets the proxy target.
      *
      * @param object $object
-     *
-     * @return MockBuilder
      */
-    public function setProxyTarget($object)
+    public function setProxyTarget($object): MockBuilder
     {
         $this->proxyTarget = $object;
 
         return $this;
     }
 
-    /**
-     * @return MockBuilder
-     */
-    public function allowMockingUnknownTypes()
+    public function allowMockingUnknownTypes(): MockBuilder
     {
         $this->allowMockingUnknownTypes = true;
 
         return $this;
     }
 
-    /**
-     * @return MockBuilder
-     */
-    public function disallowMockingUnknownTypes()
+    public function disallowMockingUnknownTypes(): MockBuilder
     {
         $this->allowMockingUnknownTypes = false;
 
         return $this;
     }
 
-    /**
-     * @return MockBuilder
-     */
-    public function enableAutoReturnValueGeneration()
+    public function enableAutoReturnValueGeneration(): MockBuilder
     {
         $this->returnValueGeneration = true;
 
         return $this;
     }
 
-    /**
-     * @return MockBuilder
-     */
-    public function disableAutoReturnValueGeneration()
+    public function disableAutoReturnValueGeneration(): MockBuilder
     {
         $this->returnValueGeneration = false;
 

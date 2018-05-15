@@ -73,10 +73,8 @@ class Generator
      * @throws RuntimeException
      * @throws \PHPUnit\Framework\Exception
      * @throws \ReflectionException
-     *
-     * @return MockObject
      */
-    public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true, $returnValueGeneration = true)
+    public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true, $returnValueGeneration = true): MockObject
     {
         if (!\is_array($type) && !\is_string($type)) {
             throw InvalidArgumentHelper::factory(1, 'array or string');
@@ -220,10 +218,8 @@ class Generator
      * @throws \ReflectionException
      * @throws RuntimeException
      * @throws Exception
-     *
-     * @return MockObject
      */
-    public function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true)
+    public function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true): MockObject
     {
         if (!\is_string($originalClassName)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -282,10 +278,8 @@ class Generator
      * @throws \ReflectionException
      * @throws RuntimeException
      * @throws Exception
-     *
-     * @return MockObject
      */
-    public function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true)
+    public function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true): MockObject
     {
         if (!\is_string($traitName)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -393,10 +387,8 @@ class Generator
      *
      * @throws \ReflectionException
      * @throws \PHPUnit\Framework\MockObject\RuntimeException
-     *
-     * @return array
      */
-    public function generate($type, array $methods = null, $mockClassName = '', $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false)
+    public function generate($type, array $methods = null, $mockClassName = '', $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false): array
     {
         if (\is_array($type)) {
             \sort($type);
@@ -440,10 +432,8 @@ class Generator
      * @param array  $options
      *
      * @throws RuntimeException
-     *
-     * @return string
      */
-    public function generateClassFromWsdl($wsdlFile, $className, array $methods = [], array $options = [])
+    public function generateClassFromWsdl($wsdlFile, $className, array $methods = [], array $options = []): string
     {
         if (!\extension_loaded('soap')) {
             throw new RuntimeException(
@@ -525,10 +515,8 @@ class Generator
      * @param string $className
      *
      * @throws \ReflectionException
-     *
-     * @return array
      */
-    public function getClassMethods($className)
+    public function getClassMethods($className): array
     {
         $class   = new ReflectionClass($className);
         $methods = [];
@@ -555,8 +543,6 @@ class Generator
      *
      * @throws \ReflectionException
      * @throws RuntimeException
-     *
-     * @return MockObject
      */
     private function getObject($code, $className, $type = '', $callOriginalConstructor = false, $callAutoload = false, array $arguments = [], $callOriginalMethods = false, $proxyTarget = null, $returnValueGeneration = true)
     {
@@ -623,10 +609,8 @@ class Generator
      * @throws \InvalidArgumentException
      * @throws \ReflectionException
      * @throws RuntimeException
-     *
-     * @return array
      */
-    private function generateMock($type, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
+    private function generateMock($type, $methods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods): array
     {
         $methodReflections   = [];
         $classTemplate       = $this->getTemplate('mocked_class.tpl');
@@ -847,10 +831,8 @@ class Generator
      * @param array|string $type
      * @param string       $className
      * @param string       $prefix
-     *
-     * @return array
      */
-    private function generateClassName($type, $className, $prefix)
+    private function generateClassName($type, $className, $prefix): array
     {
         if (\is_array($type)) {
             $type = \implode('_', $type);
@@ -890,10 +872,8 @@ class Generator
      * @param array $mockClassName
      * @param bool  $isInterface
      * @param array $additionalInterfaces
-     *
-     * @return string
      */
-    private function generateMockClassDeclaration(array $mockClassName, $isInterface, array $additionalInterfaces = [])
+    private function generateMockClassDeclaration(array $mockClassName, $isInterface, array $additionalInterfaces = []): string
     {
         $buffer = 'class ';
 
@@ -935,10 +915,8 @@ class Generator
      * @param bool             $callOriginalMethods
      *
      * @throws \PHPUnit\Framework\MockObject\RuntimeException
-     *
-     * @return string
      */
-    private function generateMockedMethodDefinitionFromExisting(ReflectionMethod $method, $cloneArguments, $callOriginalMethods)
+    private function generateMockedMethodDefinitionFromExisting(ReflectionMethod $method, $cloneArguments, $callOriginalMethods): string
     {
         if ($method->isPrivate()) {
             $modifier = 'private';
@@ -1003,10 +981,8 @@ class Generator
      * @throws \ReflectionException
      * @throws \PHPUnit\Framework\MockObject\RuntimeException
      * @throws \InvalidArgumentException
-     *
-     * @return string
      */
-    private function generateMockedMethodDefinition($className, $methodName, $cloneArguments = true, $modifier = 'public', $argumentsForDeclaration = '', $argumentsForCall = '', $returnType = '', $reference = '', $callOriginalMethods = false, $static = false, $deprecation = false, $allowsReturnNull = false)
+    private function generateMockedMethodDefinition($className, $methodName, $cloneArguments = true, $modifier = 'public', $argumentsForDeclaration = '', $argumentsForCall = '', $returnType = '', $reference = '', $callOriginalMethods = false, $static = false, $deprecation = false, $allowsReturnNull = false): string
     {
         if ($static) {
             $templateFile = 'mocked_static_method.tpl';
@@ -1087,10 +1063,8 @@ class Generator
      * @param ReflectionMethod $method
      *
      * @throws \ReflectionException
-     *
-     * @return bool
      */
-    private function canMockMethod(ReflectionMethod $method)
+    private function canMockMethod(ReflectionMethod $method): bool
     {
         return !($method->isConstructor() || $method->isFinal() || $method->isPrivate() || $this->isMethodNameBlacklisted($method->getName()));
     }
@@ -1099,10 +1073,8 @@ class Generator
      * Returns whether a method name is blacklisted
      *
      * @param string $name
-     *
-     * @return bool
      */
-    private function isMethodNameBlacklisted($name)
+    private function isMethodNameBlacklisted($name): bool
     {
         return isset($this->blacklistedMethodNames[$name]);
     }
@@ -1114,10 +1086,8 @@ class Generator
      * @param bool             $forCall
      *
      * @throws RuntimeException
-     *
-     * @return string
      */
-    private function getMethodParameters(ReflectionMethod $method, $forCall = false)
+    private function getMethodParameters(ReflectionMethod $method, $forCall = false): string
     {
         $parameters = [];
 
@@ -1200,10 +1170,8 @@ class Generator
      * @param string $template
      *
      * @throws \InvalidArgumentException
-     *
-     * @return Text_Template
      */
-    private function getTemplate($template)
+    private function getTemplate($template): Text_Template
     {
         $filename = __DIR__ . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR . $template;
 

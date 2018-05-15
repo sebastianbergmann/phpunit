@@ -993,12 +993,8 @@ final class Configuration
     /**
      * Collects and returns the configuration arguments from the PHPUnit
      * XML configuration
-     *
-     * @param \DOMNodeList $nodes
-     *
-     * @return array
      */
-    private function getConfigurationArguments(\DOMNodeList $nodes)
+    private function getConfigurationArguments(\DOMNodeList $nodes): array
     {
         $arguments = [];
 

@@ -103,12 +103,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
         $this->builderMap[$id] = $builder;
     }
 
-    /**
-     * @param MatcherInvocation $matcher
-     *
-     * @return BuilderInvocationMocker
-     */
-    public function expects(MatcherInvocation $matcher)
+    public function expects(MatcherInvocation $matcher): BuilderInvocationMocker
     {
         return new BuilderInvocationMocker(
             $this,
