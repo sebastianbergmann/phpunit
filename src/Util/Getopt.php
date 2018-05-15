@@ -155,18 +155,15 @@ final class Getopt
             }
 
             if (\substr($long_opt, -1) === '=') {
-                if (\substr($long_opt, -2) !== '==') {
-                    /* @noinspection StrlenInEmptyStringCheckContextInspection */
-                    if (!\strlen($opt_arg)) {
-                        /* @noinspection ComparisonOperandsOrderInspection */
-                        if (false === $opt_arg = \current($args)) {
-                            throw new Exception(
-                                "option --$opt requires an argument"
-                            );
-                        }
-
-                        \next($args);
+                if (\substr($long_opt, -2) !== '==' && !\strlen($opt_arg)) {
+                    /* @noinspection ComparisonOperandsOrderInspection */
+                    if (false === $opt_arg = \current($args)) {
+                        throw new Exception(
+                            "option --$opt requires an argument"
+                        );
                     }
+
+                    \next($args);
                 }
             } elseif ($opt_arg) {
                 throw new Exception(
