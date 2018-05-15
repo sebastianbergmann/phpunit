@@ -155,6 +155,7 @@ final class Getopt
             }
 
             if (\substr($long_opt, -1) === '=') {
+                /** @noinspection StrlenInEmptyStringCheckContextInspection */
                 if (\substr($long_opt, -2) !== '==' && !\strlen($opt_arg)) {
                     /* @noinspection ComparisonOperandsOrderInspection */
                     if (false === $opt_arg = \current($args)) {
