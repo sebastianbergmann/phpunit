@@ -37,9 +37,9 @@ class PhptTestCase implements Test, SelfDescribing
     private $phpUtil;
 
     /**
-     * @var array
+     * @var string[]
      */
-    private $settings = [
+    private const SETTINGS = [
         'allow_url_fopen=1',
         'auto_append_file=',
         'auto_prepend_file=',
@@ -112,7 +112,7 @@ class PhptTestCase implements Test, SelfDescribing
         }
 
         $xfail    = false;
-        $settings = $this->parseIniSection($this->settings);
+        $settings = $this->parseIniSection(self::SETTINGS);
 
         $result->startTest($this);
 
@@ -325,7 +325,7 @@ class PhptTestCase implements Test, SelfDescribing
         if (isset($sections['CLEAN'])) {
             $cleanCode = $this->render($sections['CLEAN']);
 
-            $this->phpUtil->runJob($cleanCode, $this->settings);
+            $this->phpUtil->runJob($cleanCode, self::SETTINGS);
         }
     }
 
