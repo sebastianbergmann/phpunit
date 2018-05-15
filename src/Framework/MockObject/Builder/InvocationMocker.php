@@ -89,7 +89,7 @@ class InvocationMocker implements MethodNameMatch
      * @param mixed $value
      * @param mixed $nextValues, ...
      */
-    public function willReturn($value, ...$nextValues): InvocationMocker
+    public function willReturn($value, ...$nextValues): self
     {
         if (\count($nextValues) === 0) {
             $stub = new Stub\ReturnStub($value);
@@ -105,14 +105,14 @@ class InvocationMocker implements MethodNameMatch
     /**
      * @param mixed $reference
      */
-    public function willReturnReference(&$reference): InvocationMocker
+    public function willReturnReference(&$reference): self
     {
         $stub = new Stub\ReturnReference($reference);
 
         return $this->will($stub);
     }
 
-    public function willReturnMap(array $valueMap): InvocationMocker
+    public function willReturnMap(array $valueMap): self
     {
         $stub = new Stub\ReturnValueMap($valueMap);
 
@@ -122,21 +122,21 @@ class InvocationMocker implements MethodNameMatch
     /**
      * @param mixed $argumentIndex
      */
-    public function willReturnArgument($argumentIndex): InvocationMocker
+    public function willReturnArgument($argumentIndex): self
     {
         $stub = new Stub\ReturnArgument($argumentIndex);
 
         return $this->will($stub);
     }
 
-    public function willReturnCallback(callable $callback): InvocationMocker
+    public function willReturnCallback(callable $callback): self
     {
         $stub = new Stub\ReturnCallback($callback);
 
         return $this->will($stub);
     }
 
-    public function willReturnSelf(): InvocationMocker
+    public function willReturnSelf(): self
     {
         $stub = new Stub\ReturnSelf;
 
@@ -146,7 +146,7 @@ class InvocationMocker implements MethodNameMatch
     /**
      * @param mixed $values, ...
      */
-    public function willReturnOnConsecutiveCalls(...$values): InvocationMocker
+    public function willReturnOnConsecutiveCalls(...$values): self
     {
         $stub = new Stub\ConsecutiveCalls($values);
 
@@ -156,7 +156,7 @@ class InvocationMocker implements MethodNameMatch
     /**
      * @param \Exception $exception
      */
-    public function willThrowException(\Exception $exception): InvocationMocker
+    public function willThrowException(\Exception $exception): self
     {
         $stub = new Stub\Exception($exception);
 
@@ -196,7 +196,7 @@ class InvocationMocker implements MethodNameMatch
      *
      * @throws RuntimeException
      */
-    public function withConsecutive(...$arguments): InvocationMocker
+    public function withConsecutive(...$arguments): self
     {
         $this->canDefineParameters();
 

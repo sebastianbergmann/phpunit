@@ -1061,7 +1061,6 @@ class Generator
 
     /**
      * @param ReflectionMethod $method
-     *
      */
     private function canMockMethod(ReflectionMethod $method): bool
     {

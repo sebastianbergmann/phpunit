@@ -612,7 +612,7 @@ class TestResult implements Countable
             \function_exists('xdebug_start_function_monitor');
 
         if ($monitorFunctions) {
-            /** @noinspection ForgottenDebugOutputInspection */
+            /* @noinspection ForgottenDebugOutputInspection */
             \xdebug_start_function_monitor(ResourceOperations::getFunctions());
         }
 
@@ -703,7 +703,7 @@ class TestResult implements Countable
             /** @noinspection ForgottenDebugOutputInspection */
             $functions = \xdebug_get_monitored_functions();
 
-            /** @noinspection ForgottenDebugOutputInspection */
+            /* @noinspection ForgottenDebugOutputInspection */
             \xdebug_stop_function_monitor();
 
             foreach ($functions as $function) {
