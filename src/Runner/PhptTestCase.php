@@ -27,16 +27,6 @@ use Throwable;
 class PhptTestCase implements Test, SelfDescribing
 {
     /**
-     * @var string
-     */
-    private $filename;
-
-    /**
-     * @var AbstractPhpProcess
-     */
-    private $phpUtil;
-
-    /**
      * @var string[]
      */
     private const SETTINGS = [
@@ -61,6 +51,15 @@ class PhptTestCase implements Test, SelfDescribing
         'safe_mode=0',
         'xdebug.default_enable=0'
     ];
+    /**
+     * @var string
+     */
+    private $filename;
+
+    /**
+     * @var AbstractPhpProcess
+     */
+    private $phpUtil;
 
     /**
      * Constructs a test case with the given filename.
