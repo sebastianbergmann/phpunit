@@ -636,7 +636,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     public function getStatus(): int
     {
-        return (int) $this->status;
+        return $this->status;
     }
 
     public function markAsRisky(): void
