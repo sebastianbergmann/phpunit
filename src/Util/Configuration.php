@@ -907,12 +907,12 @@ final class Configuration
 
         if ($root->hasAttribute('executionOrder')) {
             switch ((string) $root->getAttribute('executionOrder')) {
-                case TestSuiteSorter::ORDER_RANDOMIZED:
+                case 'random':
                     $result['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
 
                     break;
 
-                case TestSuiteSorter::ORDER_REVERSED:
+                case 'reverse':
                     $result['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
 
                     break;
