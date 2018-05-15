@@ -38,6 +38,7 @@ use PHPUnit\Util\PHP\AbstractPhpProcess;
 use Prophecy;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophecy\MethodProphecy;
+use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
 use ReflectionClass;
 use ReflectionException;
@@ -1571,7 +1572,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws Prophecy\Exception\Doubler\DoubleException
      * @throws Prophecy\Exception\Doubler\InterfaceNotFoundException
      */
-    protected function prophesize($classOrInterface = null): \Prophecy\Prophecy\ObjectProphecy
+    protected function prophesize($classOrInterface = null): ObjectProphecy
     {
         return $this->getProphet()->prophesize($classOrInterface);
     }
