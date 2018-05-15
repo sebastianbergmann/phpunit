@@ -146,7 +146,6 @@ class Command
 
     /**
      * @throws \RuntimeException
-     * @throws \ReflectionException
      * @throws \PHPUnit\Framework\Exception
      * @throws \InvalidArgumentException
      */

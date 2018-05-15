@@ -1317,7 +1317,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string|string[] $originalClassName
      *
      * @throws Exception
-     * @throws ReflectionException
      * @throws \InvalidArgumentException
      */
     protected function createMock($originalClassName): MockObject
@@ -1337,7 +1336,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param array           $configuration
      *
      * @throws Exception
-     * @throws ReflectionException
      * @throws \InvalidArgumentException
      */
     protected function createConfiguredMock($originalClassName, array $configuration): MockObject
@@ -1358,7 +1356,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string[]        $methods
      *
      * @throws Exception
-     * @throws ReflectionException
      * @throws \InvalidArgumentException
      */
     protected function createPartialMock($originalClassName, array $methods): MockObject
@@ -1376,7 +1373,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns a test proxy for the specified class.
      *
      * @throws Exception
-     * @throws ReflectionException
      * @throws \InvalidArgumentException
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
