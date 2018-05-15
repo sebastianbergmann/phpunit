@@ -27,9 +27,7 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
         foreach ($suite->getGroupDetails() as $group => $tests) {
             if (\in_array($group, $groups)) {
                 $testHashes = \array_map(
-                    function ($test) {
-                        return \spl_object_hash($test);
-                    },
+                    'spl_object_hash',
                     $tests
                 );
 
