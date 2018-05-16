@@ -17,7 +17,7 @@ Issue3107\Issue3107Test
    │
    │ Error: Call to undefined function %Sdoes_not_exist()
    │ 
-   │ %s%ephpunit%etests%eRegression%eGitHub%e3107%eIssue3107Test.php:%d
+   │ %s%etests%eRegression%eGitHub%e3107%eIssue3107Test.php:%d
    │ 
 
 Time: %s, Memory: %s
