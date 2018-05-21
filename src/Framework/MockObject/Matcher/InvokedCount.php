@@ -35,7 +35,10 @@ class InvokedCount extends InvokedRecorder
         $this->expectedCount = $expectedCount;
     }
 
-    public function isNever(): bool
+    /**
+     * @return bool
+     */
+    public function isNever()
     {
         return $this->expectedCount === 0;
     }

@@ -78,12 +78,16 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
 
     /**
      * @param mixed $id
+     *
+     * @return null|bool
      */
-    public function lookupId($id): ?Match
+    public function lookupId($id)
     {
         if (isset($this->builderMap[$id])) {
             return $this->builderMap[$id];
         }
+
+        return;
     }
 
     /**
@@ -103,7 +107,12 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
         $this->builderMap[$id] = $builder;
     }
 
-    public function expects(MatcherInvocation $matcher): BuilderInvocationMocker
+    /**
+     * @param MatcherInvocation $matcher
+     *
+     * @return BuilderInvocationMocker
+     */
+    public function expects(MatcherInvocation $matcher)
     {
         return new BuilderInvocationMocker(
             $this,
