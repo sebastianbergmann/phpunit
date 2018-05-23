@@ -49,6 +49,7 @@ use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReport;
 use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
 use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
+use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -442,7 +443,7 @@ class TestRunner extends BaseTestRunner
             );
 
             $codeCoverage->setUnintentionallyCoveredSubclassesWhitelist(
-                [SebastianBergmann\Comparator\Comparator::class]
+                [Comparator::class]
             );
 
             $codeCoverage->setCheckForUnintentionallyCoveredCode(
