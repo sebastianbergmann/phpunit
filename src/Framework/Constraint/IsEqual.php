@@ -49,11 +49,6 @@ class IsEqual extends Constraint
      */
     private $ignoreCase = false;
 
-    /**
-     * @var SebastianBergmann\Comparator\ComparisonFailure
-     */
-    private $lastFailure;
-
     public function __construct($value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false)
     {
         parent::__construct();
