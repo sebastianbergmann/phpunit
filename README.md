@@ -16,7 +16,7 @@ $ wget https://phar.phpunit.de/phpunit-7.1.phar
 $ php phpunit-7.1.phar --version
 ```
 
-Alternatively, you may use [Composer](https://getcomposer.org/) to download and install PHPUnit as well as its dependencies. Please refer to the "[Getting Started](https://phpunit.de/getting-started-with-phpunit.html)" for details on how to install PHPUnit.
+Alternatively, you may use [Composer](https://getcomposer.org/) to download and install PHPUnit as well as its dependencies. Please refer to the "[Getting Started](https://phpunit.de/getting-started-with-phpunit.html)" guide for details on how to install PHPUnit.
 
 ## Contribute
 
