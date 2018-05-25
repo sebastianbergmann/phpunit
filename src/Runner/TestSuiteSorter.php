@@ -85,18 +85,11 @@ final class TestSuiteSorter
      * The algorithm will leave the tests in original running order when it can.
      * For more details see the documentation for test dependencies.
      *
-     * The final running order will be:
-     * 1. tests without dependencies
-     * 2. tests with resolved dependencies
-     * 3. tests for which the dependencies could not be resolved
-     *
      * Short description of algorithm:
-     * 1. Compile two lists of Tests in original order: with and without dependencies.
-     * 2. Independent tests can be run first.
-     * 3a. Pick the next Test from the list of dependants.
-     *  b. When all dependencies run before this Test, move it to the reordered list
-     *  c. Start again from the top of the list of dependants.
-     * 4. When we reach the end add any leftover tests to the end. These will be marked 'skipped'.
+     * 1. Pick the next Test from remaining tests to be checked for dependencies.
+     * 2. If the test has no dependencies: mark done, start again from the top
+     * 3. If the test has dependencies but none left to do: mark done, start again from the top
+     * 4. When we reach the end add any leftover tests to the end. These will be marked 'skipped' during execution.
      *
      * @param Test[] $tests
      *
@@ -108,41 +101,27 @@ final class TestSuiteSorter
             return $tests;
         }
 
-        $todo         = [];
         $newTestOrder = [];
-
-        foreach ($tests as $test) {
-            if ($test->hasDependencies()) {
-                $todo[] = $test;
-            } else {
-                $newTestOrder[] = $test;
-            }
-        }
-
-        if (empty($todo)) {
-            return $tests;
-        }
-
-        $i = 0;
+        $i            = 0;
 
         do {
             $todoNames = \array_merge(
                 \array_map(function (Test $t) {
                     return $t->getName();
-                }, $todo),
+                }, $tests),
                 \array_map(function (Test $t) {
                     return \get_class($t) . '::' . $t->getName();
-                }, $todo)
+                }, $tests)
             );
 
-            if (empty(\array_intersect($todo[$i]->getDependencies(), $todoNames))) {
-                $newTestOrder = \array_merge($newTestOrder, \array_splice($todo, $i, 1));
+            if (!$tests[$i]->hasDependencies() || empty(\array_intersect($tests[$i]->getDependencies(), $todoNames))) {
+                $newTestOrder = \array_merge($newTestOrder, \array_splice($tests, $i, 1));
                 $i            = 0;
             } else {
                 $i++;
             }
-        } while (!empty($todo) && ($i < \count($todo)));
+        } while (!empty($tests) && ($i < \count($tests)));
 
-        return \array_merge($newTestOrder, $todo);
+        return \array_merge($newTestOrder, $tests);
     }
 }
