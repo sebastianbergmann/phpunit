@@ -36,6 +36,24 @@ class TestSuiteSorterTest extends TestCase
         $this->assertEquals($expected, $this->getTestExecutionOrder());
     }
 
+    public function testSuitSorterRandomize()
+    {
+        \mt_srand(54321);
+        $sorter = new TestSuiteSorter();
+        $sorter->reorderTestsInSuite($this->suite, TestSuiteSorter::ORDER_RANDOMIZED, false);
+
+        $this->assertEquals(['testTwo', 'testFour', 'testFive', 'testThree', 'testOne'], $this->getTestExecutionOrder());
+    }
+
+    public function testSuitSorterRandomizeResolve()
+    {
+        \mt_srand(54321);
+        $sorter = new TestSuiteSorter();
+        $sorter->reorderTestsInSuite($this->suite, TestSuiteSorter::ORDER_RANDOMIZED, true);
+
+        $this->assertEquals(['testTwo', 'testFive', 'testOne', 'testThree', 'testFour'], $this->getTestExecutionOrder());
+    }
+
     public function suiteSorterOptionsProvider(): array
     {
         return [
