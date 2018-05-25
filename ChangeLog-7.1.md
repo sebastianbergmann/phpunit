@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 7.1 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3107](https://github.com/sebastianbergmann/phpunit/issues/3107): `CliTestDoxPrinter::addError()` cannot handle errors in `setUpBeforeClass()`
+* Fixed [#3142](https://github.com/sebastianbergmann/phpunit/issues/3142): Method-level annotations (`@backupGlobals`, `@backupStaticAttributes`, `@errorHandler`, `@preserveGlobalState`) do not override class-level annotations
 
 ## [7.1.5] - 2018-04-29
 
