@@ -967,22 +967,22 @@ class Test
             $methodName
         );
 
-        if (isset($annotations['class'][$settingName])) {
-            if ($annotations['class'][$settingName][0] == 'enabled') {
+        if (isset($annotations['method'][$settingName])) {
+            if ($annotations['method'][$settingName][0] === 'enabled') {
                 return true;
             }
 
-            if ($annotations['class'][$settingName][0] == 'disabled') {
+            if ($annotations['method'][$settingName][0] === 'disabled') {
                 return false;
             }
         }
 
-        if (isset($annotations['method'][$settingName])) {
-            if ($annotations['method'][$settingName][0] == 'enabled') {
+        if (isset($annotations['class'][$settingName])) {
+            if ($annotations['class'][$settingName][0] === 'enabled') {
                 return true;
             }
 
-            if ($annotations['method'][$settingName][0] == 'disabled') {
+            if ($annotations['class'][$settingName][0] === 'disabled') {
                 return false;
             }
         }
