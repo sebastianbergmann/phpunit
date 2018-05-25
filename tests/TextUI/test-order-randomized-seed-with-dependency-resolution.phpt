@@ -20,10 +20,12 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime:       %s
 Random seed:   54321
 
-Test 'MultiDependencyTest::testOne' started
-Test 'MultiDependencyTest::testOne' ended
 Test 'MultiDependencyTest::testTwo' started
 Test 'MultiDependencyTest::testTwo' ended
+Test 'MultiDependencyTest::testFive' started
+Test 'MultiDependencyTest::testFive' ended
+Test 'MultiDependencyTest::testOne' started
+Test 'MultiDependencyTest::testOne' ended
 Test 'MultiDependencyTest::testThree' started
 Test 'MultiDependencyTest::testThree' ended
 Test 'MultiDependencyTest::testFour' started
@@ -32,4 +34,4 @@ Test 'MultiDependencyTest::testFour' ended
 
 Time: %s, Memory: %s
 
-OK (4 tests, 5 assertions)
+OK (5 tests, 6 assertions)
