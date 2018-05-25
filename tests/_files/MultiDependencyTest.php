@@ -45,4 +45,9 @@ class MultiDependencyTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+    public function testFive()
+    {
+        $this->assertTrue(true);
+    }
 }

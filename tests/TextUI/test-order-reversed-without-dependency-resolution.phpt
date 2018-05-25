@@ -18,6 +18,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
+Test 'MultiDependencyTest::testFive' started
+Test 'MultiDependencyTest::testFive' ended
 Test 'MultiDependencyTest::testFour' started
 Test 'MultiDependencyTest::testFour' ended
 Test 'MultiDependencyTest::testThree' started
@@ -39,4 +41,4 @@ This test depends on "MultiDependencyTest::testThree" to pass.
 This test depends on "MultiDependencyTest::testOne" to pass.
 
 OK, but incomplete, skipped, or risky tests!
-Tests: 4, Assertions: 2, Skipped: 2.
+Tests: 5, Assertions: 3, Skipped: 2.

@@ -18,6 +18,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
+Test 'MultiDependencyTest::testFive' started
+Test 'MultiDependencyTest::testFive' ended
 Test 'MultiDependencyTest::testTwo' started
 Test 'MultiDependencyTest::testTwo' ended
 Test 'MultiDependencyTest::testOne' started
@@ -30,4 +32,4 @@ Test 'MultiDependencyTest::testFour' ended
 
 Time: %s, Memory: %s
 
-OK (4 tests, 5 assertions)
+OK (5 tests, 6 assertions)
