@@ -262,7 +262,7 @@ class InvocationMocker implements MethodNameMatch
             );
         }
 
-        if (\is_string($constraint) && !\in_array(\strtolower($constraint), $this->configurableMethods)) {
+        if (\is_string($constraint) && !\in_array(\strtolower($constraint), $this->configurableMethods, true)) {
             throw new RuntimeException(
                 \sprintf(
                     'Trying to configure method "%s" which cannot be configured because it does not exist, has not been specified, is final, or is static',

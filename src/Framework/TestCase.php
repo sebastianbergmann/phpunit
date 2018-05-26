@@ -1267,6 +1267,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
+    private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
+
     /**
      * This method is a wrapper for the setlocale() function that automatically
      * resets the locale to its original value after the test is run.
@@ -1281,15 +1283,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         [$category, $locale] = $args;
 
-        $categories = [
-            LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME
-        ];
-
         if (\defined('LC_MESSAGES')) {
             $categories[] = LC_MESSAGES;
         }
 
-        if (!\in_array($category, $categories)) {
+        if (!\in_array($category, self::LOCALE_CATEGORIES, true)) {
             throw new Exception;
         }
 
