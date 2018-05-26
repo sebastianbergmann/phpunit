@@ -2375,20 +2375,16 @@ abstract class Assert
         static::assertThat($actualJson, new LogicalNot($constraintExpected), $message);
     }
 
-    public static function logicalAnd(): LogicalAnd
+    public static function logicalAnd(Constraint ...$constraints): LogicalAnd
     {
-        $constraints = \func_get_args();
-
         $constraint = new LogicalAnd;
         $constraint->setConstraints($constraints);
 
         return $constraint;
     }
 
-    public static function logicalOr(): LogicalOr
+    public static function logicalOr(Constraint ...$constraints): LogicalOr
     {
-        $constraints = \func_get_args();
-
         $constraint = new LogicalOr;
         $constraint->setConstraints($constraints);
 
@@ -2400,10 +2396,8 @@ abstract class Assert
         return new LogicalNot($constraint);
     }
 
-    public static function logicalXor(): LogicalXor
+    public static function logicalXor(Constraint ...$constraints): LogicalXor
     {
-        $constraints = \func_get_args();
-
         $constraint = new LogicalXor;
         $constraint->setConstraints($constraints);
 
