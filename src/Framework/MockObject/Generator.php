@@ -40,7 +40,7 @@ class Generator
     /**
      * @var array
      */
-    private $blacklistedMethodNames = [
+    private const BLACKLISTED_METHOD_NAMES = [
         '__CLASS__'       => true,
         '__DIR__'         => true,
         '__FILE__'        => true,
@@ -239,7 +239,7 @@ class Generator
             $methods   = $mockedMethods;
 
             foreach ($reflector->getMethods() as $method) {
-                if ($method->isAbstract() && !\in_array($method->getName(), $methods)) {
+                if ($method->isAbstract() && !\in_array($method->getName(), $methods, true)) {
                     $methods[] = $method->getName();
                 }
             }
@@ -466,7 +466,7 @@ class Generator
             $nameEnd   = \strpos($method, '(');
             $name      = \substr($method, $nameStart, $nameEnd - $nameStart);
 
-            if (empty($methods) || \in_array($name, $methods)) {
+            if (empty($methods) || \in_array($name, $methods, true)) {
                 $args    = \explode(
                     ',',
                     \substr(
@@ -812,7 +812,7 @@ class Generator
 
         $method = '';
 
-        if (!\in_array('method', $methods) && (!isset($class) || !$class->hasMethod('method'))) {
+        if (!\in_array('method', $methods, true) && (!isset($class) || !$class->hasMethod('method'))) {
             $methodTemplate = $this->getTemplate('mocked_class_method.tpl');
 
             $method = $methodTemplate->render();
@@ -1102,7 +1102,7 @@ class Generator
      */
     private function isMethodNameBlacklisted($name)
     {
-        return isset($this->blacklistedMethodNames[$name]);
+        return isset(self::BLACKLISTED_METHOD_NAMES[$name]);
     }
 
     /**

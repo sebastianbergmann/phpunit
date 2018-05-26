@@ -129,7 +129,7 @@ final class GlobalState
         $blacklist[] = 'GLOBALS';
 
         foreach (\array_keys($GLOBALS) as $key) {
-            if (!$GLOBALS[$key] instanceof Closure && !\in_array($key, $blacklist)) {
+            if (!$GLOBALS[$key] instanceof Closure && !\in_array($key, $blacklist, true)) {
                 $result .= \sprintf(
                     '$GLOBALS[\'%s\'] = %s;' . "\n",
                     $key,

@@ -128,6 +128,8 @@ class ResultPrinter extends Printer implements TestListener
      */
     private $defectListPrinted = false;
 
+    private const AVAILABLE_COLORS = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
+
     /**
      * Constructor.
      *
@@ -144,12 +146,10 @@ class ResultPrinter extends Printer implements TestListener
     {
         parent::__construct($out);
 
-        $availableColors = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
-
-        if (!\in_array($colors, $availableColors)) {
+        if (!\in_array($colors, self::AVAILABLE_COLORS, true)) {
             throw InvalidArgumentHelper::factory(
                 3,
-                \vsprintf('value from "%s", "%s" or "%s"', $availableColors)
+                \vsprintf('value from "%s", "%s" or "%s"', self::AVAILABLE_COLORS)
             );
         }
 
