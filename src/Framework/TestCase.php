@@ -56,6 +56,8 @@ use Throwable;
 
 abstract class TestCase extends Assert implements Test, SelfDescribing
 {
+    private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
+
     /**
      * @var bool
      */
@@ -157,7 +159,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $locale = [];
 
     /**
-     * @var array
+     * @var MockObject[]
      */
     private $mockObjects = [];
 
@@ -1266,8 +1268,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             );
         }
     }
-
-    private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
 
     /**
      * This method is a wrapper for the setlocale() function that automatically
