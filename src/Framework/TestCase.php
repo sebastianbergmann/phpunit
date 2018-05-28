@@ -159,7 +159,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $locale = [];
 
     /**
-     * @var array
+     * @var MockObject[]
      */
     private $mockObjects = [];
 

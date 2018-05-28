@@ -104,10 +104,8 @@ class MockBuilder
 
     /**
      * Creates a mock object using a fluent interface.
-     *
-     * @return MockObject
      */
-    public function getMock()
+    public function getMock(): MockObject
     {
         $object = $this->generator->getMock(
             $this->type,
@@ -131,10 +129,8 @@ class MockBuilder
 
     /**
      * Creates a mock object for an abstract class using a fluent interface.
-     *
-     * @return MockObject
      */
-    public function getMockForAbstractClass()
+    public function getMockForAbstractClass(): MockObject
     {
         $object = $this->generator->getMockForAbstractClass(
             $this->type,
@@ -154,10 +150,8 @@ class MockBuilder
 
     /**
      * Creates a mock object for a trait using a fluent interface.
-     *
-     * @return MockObject
      */
-    public function getMockForTrait()
+    public function getMockForTrait(): MockObject
     {
         $object = $this->generator->getMockForTrait(
             $this->type,

@@ -97,7 +97,7 @@ class Generator
         if (\is_array($type)) {
             $type = \array_unique(
                 \array_map(
-                    function ($type) {
+                    function ($type): string {
                         if ($type === 'Traversable' ||
                             $type === '\\Traversable' ||
                             $type === '\\Iterator') {
