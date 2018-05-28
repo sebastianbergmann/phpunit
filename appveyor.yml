@@ -10,13 +10,13 @@ environment:
   COMPOSER_ROOT_VERSION: '7.0-dev'
 
   matrix:
-    - PHP_VERSION: '7.2.0-Win32-VC15'
+    - PHP_VERSION: '7.2.5-Win32-VC15'
       DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.2.0-Win32-VC15'
+    - PHP_VERSION: '7.2.5-Win32-VC15'
       DEPENDENCIES: ''
-    - PHP_VERSION: '7.1.12-Win32-VC14'
+    - PHP_VERSION: '7.1.17-Win32-VC14'
       DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.1.12-Win32-VC14'
+    - PHP_VERSION: '7.1.17-Win32-VC14'
       DEPENDENCIES: ''
 
 matrix:
