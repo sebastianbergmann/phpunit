@@ -30,16 +30,6 @@ class Generator
     /**
      * @var array
      */
-    private static $cache = [];
-
-    /**
-     * @var Text_Template[]
-     */
-    private static $templates = [];
-
-    /**
-     * @var array
-     */
     private const BLACKLISTED_METHOD_NAMES = [
         '__CLASS__'       => true,
         '__DIR__'         => true,
@@ -52,6 +42,16 @@ class Generator
         '__clone'         => true,
         '__halt_compiler' => true,
     ];
+
+    /**
+     * @var array
+     */
+    private static $cache = [];
+
+    /**
+     * @var Text_Template[]
+     */
+    private static $templates = [];
 
     /**
      * Returns a mock object for the specified class.
