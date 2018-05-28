@@ -11,11 +11,11 @@ namespace PHPUnit\Util;
 
 use DOMElement;
 use DOMXPath;
-use File_Iterator_Facade;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
+use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
  * Wrapper for the PHPUnit XML configuration file.
@@ -1050,7 +1050,7 @@ final class Configuration
             }
         }
 
-        $fileIteratorFacade = new File_Iterator_Facade;
+        $fileIteratorFacade = new FileIteratorFacade;
         $testSuiteFilter    = $testSuiteFilter ? \explode(',', $testSuiteFilter) : [];
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {

@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\Runner;
 
-use File_Iterator_Facade;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
 use ReflectionException;
+use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
  * Base class for all test runners.
@@ -53,7 +53,7 @@ abstract class BaseTestRunner
     {
         if (\is_dir($suiteClassName) &&
             !\is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
-            $facade = new File_Iterator_Facade;
+            $facade = new FileIteratorFacade;
             $files  = $facade->getFilesAsArray(
                 $suiteClassName,
                 $suffixes

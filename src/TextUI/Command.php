@@ -10,7 +10,6 @@
 
 namespace PHPUnit\TextUI;
 
-use File_Iterator_Facade;
 use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\Exception as ManifestException;
 use PharIo\Manifest\ManifestLoader;
@@ -35,6 +34,7 @@ use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
+use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 use Throwable;
 
@@ -1176,7 +1176,7 @@ EOT;
 
     private function handleExtensions(string $directory): void
     {
-        $facade = new File_Iterator_Facade;
+        $facade = new FileIteratorFacade;
 
         foreach ($facade->getFilesAsArray($directory, '.phar') as $file) {
             if (!\file_exists('phar://' . $file . '/manifest.xml')) {
