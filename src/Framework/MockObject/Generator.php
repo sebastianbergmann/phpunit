@@ -1176,8 +1176,13 @@ class Generator
 
                 if (!$parameter->isVariadic()) {
                     if ($parameter->isDefaultValueAvailable()) {
-                        $value   = $parameter->getDefaultValue();
-                        $default = ' = ' . \var_export($value, true);
+                        $value = $parameter->getDefaultValueConstantName();
+
+                        if ($value === null) {
+                            $value = \var_export($parameter->getDefaultValue(), true);
+                        }
+
+                        $default = ' = ' . $value;
                     } elseif ($parameter->isOptional()) {
                         $default = ' = null';
                     }

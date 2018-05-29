@@ -18,6 +18,10 @@ All notable changes of the PHPUnit 7.2 release series are documented in this fil
 * Implemented [#3103](https://github.com/sebastianbergmann/phpunit/issues/3103): Merge `phpunit-mock-objects` back into PHPUnit's Git repository
 * Implemented [#3115](https://github.com/sebastianbergmann/phpunit/pull/3115): Method-level `@covers` annotation overrides class-level `@coversNothing` annotation
 
+### Fixed
+
+* Fixed [phpunit-mock-objects#419](https://github.com/sebastianbergmann/phpunit-mock-objects/issues/419): Constants as default parameter values are not handled correctly
+
 ### Removed
 
 * Fixed [#3069](https://github.com/sebastianbergmann/phpunit/issues/3069): Method `ResultPrinter::printWaitPrompt()` seems to be unused
