@@ -38,7 +38,7 @@ final class FileLoader
 
         if (!$includePathFilename || !$isReadable || $includePathFilename === $localFile) {
             throw new Exception(
-                \sprintf('Cannot open file "%s".' . "\n", $filename)
+                \sprintf('Cannot open file "%s".' . PHP_EOL, $filename)
             );
         }
 

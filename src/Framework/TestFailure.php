@@ -48,21 +48,21 @@ class TestFailure
             }
 
             if (!empty($buffer)) {
-                $buffer = \trim($buffer) . "\n";
+                $buffer = \trim($buffer) . PHP_EOL;
             }
 
             return $buffer;
         }
 
         if ($e instanceof Error) {
-            return $e->getMessage() . "\n";
+            return $e->getMessage() . PHP_EOL;
         }
 
         if ($e instanceof ExceptionWrapper) {
-            return $e->getClassName() . ': ' . $e->getMessage() . "\n";
+            return $e->getClassName() . ': ' . $e->getMessage() . PHP_EOL;
         }
 
-        return \get_class($e) . ': ' . $e->getMessage() . "\n";
+        return \get_class($e) . ': ' . $e->getMessage() . PHP_EOL;
     }
 
     /**

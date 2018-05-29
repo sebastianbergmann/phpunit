@@ -55,8 +55,8 @@ class StringMatchesFormatDescription extends RegularExpression
 
     protected function additionalFailureDescription($other): string
     {
-        $from = \explode("\n", $this->string);
-        $to   = \explode("\n", $this->convertNewlines($other));
+        $from = \explode(PHP_EOL, $this->string);
+        $to   = \explode(PHP_EOL, $this->convertNewlines($other));
 
         foreach ($from as $index => $line) {
             if (isset($to[$index]) && $line !== $to[$index]) {
@@ -68,8 +68,8 @@ class StringMatchesFormatDescription extends RegularExpression
             }
         }
 
-        $this->string = \implode("\n", $from);
-        $other        = \implode("\n", $to);
+        $this->string = \implode(PHP_EOL, $from);
+        $other        = \implode(PHP_EOL, $to);
 
         $differ = new Differ("--- Expected\n+++ Actual\n");
 
@@ -115,6 +115,6 @@ class StringMatchesFormatDescription extends RegularExpression
 
     private function convertNewlines($text): string
     {
-        return \preg_replace('/\r\n/', "\n", $text);
+        return \preg_replace('/\r\n/', PHP_EOL, $text);
     }
 }

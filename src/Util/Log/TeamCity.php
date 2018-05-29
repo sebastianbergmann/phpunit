@@ -338,14 +338,14 @@ class TeamCity extends ResultPrinter
 
         while ($previous) {
             $stackTrace .= "\nCaused by\n" .
-                TestFailure::exceptionToString($previous) . "\n" .
+                TestFailure::exceptionToString($previous) . PHP_EOL .
                 Filter::getFilteredStacktrace($previous);
 
             $previous = $previous instanceof ExceptionWrapper ?
                 $previous->getPreviousWrapped() : $previous->getPrevious();
         }
 
-        return ' ' . \str_replace("\n", "\n ", $stackTrace);
+        return ' ' . \str_replace(PHP_EOL, "\n ", $stackTrace);
     }
 
     /**
@@ -374,7 +374,7 @@ class TeamCity extends ResultPrinter
     private static function escapeValue(string $text): string
     {
         return \str_replace(
-            ['|', "'", "\n", "\r", ']', '['],
+            ['|', "'", PHP_EOL, "\r", ']', '['],
             ['||', "|'", '|n', '|r', '|]', '|['],
             $text
         );

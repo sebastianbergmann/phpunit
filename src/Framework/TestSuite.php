@@ -164,7 +164,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                     $_message = $e->getMessage();
 
                     if (!empty($_message)) {
-                        $message .= "\n" . $_message;
+                        $message .= PHP_EOL . $_message;
                     }
 
                     $data = self::incompleteTest($className, $name, $message);
@@ -178,7 +178,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                     $_message = $e->getMessage();
 
                     if (!empty($_message)) {
-                        $message .= "\n" . $_message;
+                        $message .= PHP_EOL . $_message;
                     }
 
                     $data = self::skipTest($className, $name, $message);
@@ -198,7 +198,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                     $_message = $t->getMessage();
 
                     if (!empty($_message)) {
-                        $message .= "\n" . $_message;
+                        $message .= PHP_EOL . $_message;
                     }
 
                     $data = self::warning($message);

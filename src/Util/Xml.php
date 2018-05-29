@@ -84,7 +84,7 @@ final class Xml
         }
 
         foreach (\libxml_get_errors() as $error) {
-            $message .= "\n" . $error->message;
+            $message .= PHP_EOL . $error->message;
         }
 
         \libxml_use_internal_errors($internal);
@@ -100,7 +100,7 @@ final class Xml
                     \sprintf(
                         'Could not load "%s".%s',
                         $filename,
-                        $message !== '' ? "\n" . $message : ''
+                        $message !== '' ? PHP_EOL . $message : ''
                     )
                 );
             }

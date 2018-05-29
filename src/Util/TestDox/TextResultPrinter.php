@@ -20,7 +20,7 @@ class TextResultPrinter extends ResultPrinter
      */
     protected function startClass(string $name): void
     {
-        $this->write($this->currentTestClassPrettified . "\n");
+        $this->write($this->currentTestClassPrettified . PHP_EOL);
     }
 
     /**
@@ -36,7 +36,7 @@ class TextResultPrinter extends ResultPrinter
             $this->write(' [ ] ');
         }
 
-        $this->write($name . "\n");
+        $this->write($name . PHP_EOL);
     }
 
     /**
@@ -44,6 +44,6 @@ class TextResultPrinter extends ResultPrinter
      */
     protected function endClass(string $name): void
     {
-        $this->write("\n");
+        $this->write(PHP_EOL);
     }
 }

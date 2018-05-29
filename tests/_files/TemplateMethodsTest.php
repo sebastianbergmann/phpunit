@@ -13,49 +13,49 @@ class TemplateMethodsTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-        print __METHOD__ . "\n";
+        print __METHOD__ . PHP_EOL;
     }
 
     public static function tearDownAfterClass(): void
     {
-        print __METHOD__ . "\n";
+        print __METHOD__ . PHP_EOL;
     }
 
     protected function setUp(): void
     {
-        print __METHOD__ . "\n";
+        print __METHOD__ . PHP_EOL;
     }
 
     protected function tearDown(): void
     {
-        print __METHOD__ . "\n";
+        print __METHOD__ . PHP_EOL;
     }
 
     public function testOne(): void
     {
-        print __METHOD__ . "\n";
+        print __METHOD__ . PHP_EOL;
         $this->assertTrue(true);
     }
 
     public function testTwo(): void
     {
-        print __METHOD__ . "\n";
+        print __METHOD__ . PHP_EOL;
         $this->assertTrue(false);
     }
 
     protected function assertPreConditions(): void
     {
-        print __METHOD__ . "\n";
+        print __METHOD__ . PHP_EOL;
     }
 
     protected function assertPostConditions(): void
     {
-        print __METHOD__ . "\n";
+        print __METHOD__ . PHP_EOL;
     }
 
     protected function onNotSuccessfulTest(Throwable $t): void
     {
-        print __METHOD__ . "\n";
+        print __METHOD__ . PHP_EOL;
 
         throw $t;
     }

@@ -108,7 +108,7 @@ class IsEqual extends Constraint
             }
 
             throw new ExpectationFailedException(
-                \trim($description . "\n" . $f->getMessage()),
+                \trim($description . PHP_EOL . $f->getMessage()),
                 $f
             );
         }
@@ -126,7 +126,7 @@ class IsEqual extends Constraint
         $delta = '';
 
         if (\is_string($this->value)) {
-            if (\strpos($this->value, "\n") !== false) {
+            if (\strpos($this->value, PHP_EOL) !== false) {
                 return 'is equal to <text>';
             }
 
