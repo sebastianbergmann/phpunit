@@ -12,7 +12,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Available test(s):
+4 available test(s):
  - DataProviderTest::testAdd#0
  - DataProviderTest::testAdd#1
  - DataProviderTest::testAdd#2
