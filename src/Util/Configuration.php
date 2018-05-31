@@ -35,6 +35,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  *          convertErrorsToExceptions="true"
  *          convertNoticesToExceptions="true"
  *          convertWarningsToExceptions="true"
+ *          disableCodeCoverageIgnore="false"
  *          forceCoversAnnotation="false"
  *          processIsolation="false"
  *          stopOnError="false"
