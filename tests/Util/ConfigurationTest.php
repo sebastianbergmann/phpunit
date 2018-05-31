@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
 
 class ConfigurationTest extends TestCase
@@ -69,6 +70,66 @@ class ConfigurationTest extends TestCase
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
         $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+    }
+
+    public function testInvalidConfigurationGeneratesValidationErrors(): void
+    {
+        $configurationFilename =  \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.colors.invalid.xml';
+        $configurationInstance = Configuration::getInstance($configurationFilename);
+
+        $this->assertTrue($configurationInstance->hasValidationErrors());
+        $this->assertArraySubset([1 => ["Element 'phpunit', attribute 'colors': 'Something else' is not a valid value of the atomic type 'xs:boolean'."]], $configurationInstance->getValidationErrors());
+    }
+
+    public function testNonIntegerValueReturnsDefault(): void
+    {
+        $configurationFilename =  \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . 'configuration.columns.default.xml';
+        $configurationInstance = Configuration::getInstance($configurationFilename);
+        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+
+        $this->assertEquals(80, $configurationValues['columns']);
+    }
+
+    /**
+     * @dataProvider configurationRootOptionsProvider
+     *
+     * @param bool|int|string $expected
+     */
+    public function testConfigurationRootOptions(string $optionName, string $optionValue, $expected): void
+    {
+        $tmpFilename = \sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . \uniqid() . '.xml';
+        $xml         = "<phpunit $optionName='$optionValue'></phpunit>" . PHP_EOL;
+        \file_put_contents($tmpFilename, $xml);
+
+        $configurationInstance = Configuration::getInstance($tmpFilename);
+        $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
+
+        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $this->assertEquals($expected, $configurationValues[$optionName]);
+
+        @\unlink($tmpFilename);
+    }
+
+    public function configurationRootOptionsProvider(): array
+    {
+        return [
+            ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
+            ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
+            ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
+            ['columns', 'max', 'max'],
+            ['stopOnFailure', 'true', true],
+            ['stopOnWarning', 'true', true],
+            ['stopOnIncomplete', 'true', true],
+            ['stopOnRisky', 'true', true],
+            ['stopOnSkipped', 'true', true],
+            ['failOnWarning', 'true', true],
+            ['failOnRisky', 'true', true],
+            ['disableCodeCoverageIgnore', 'true', true],
+            ['processIsolation', 'true', true],
+            ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
+            ['reverseDefectList', 'true', true],
+            ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
+        ];
     }
 
     public function testFilterConfigurationIsReadCorrectly(): void
