@@ -286,7 +286,7 @@ class ConfigurationTest extends TestCase
                         \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.',
                         '/path/to/lib'
                     ],
-                'ini'    => ['foo' => ['value' => 'bar'], 'highlight.keyword' => ['value' => '#123456'], 'highlight.string' => ['value' => 'TEST_CONFIG_INI_CONSTANT']],
+                'ini'    => ['foo' => ['value' => 'bar'], 'highlight.keyword' => ['value' => '#123456'], 'highlight.string' => ['value' => 'TEST_FILES_PATH']],
                 'const'  => ['FOO' => ['value' => false], 'BAR' => ['value' => true]],
                 'var'    => ['foo' => ['value' => false]],
                 'env'    => ['foo' => ['value' => true], 'bar' => ['value' => 'true', 'verbatim' => true], 'foo_force' => ['value' => 'forced', 'force' => true]],
@@ -306,7 +306,6 @@ class ConfigurationTest extends TestCase
      */
     public function testPHPConfigurationIsHandledCorrectly(): void
     {
-        \define('TEST_CONFIG_INI_CONSTANT', '#234567');
         $savedIniHighlightKeyword = \ini_get('highlight.keyword');
         $savedIniHighlightString  = \ini_get('highlight.string');
 
@@ -315,7 +314,7 @@ class ConfigurationTest extends TestCase
         $path = \dirname(__DIR__) . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR . '.' . PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, \ini_get('include_path'));
         $this->assertEquals('#123456', \ini_get('highlight.keyword'));
-        $this->assertEquals(TEST_CONFIG_INI_CONSTANT, \ini_get('highlight.string'));
+        $this->assertEquals(TEST_FILES_PATH, \ini_get('highlight.string'));
         $this->assertFalse(\FOO);
         $this->assertTrue(\BAR);
         $this->assertFalse($GLOBALS['foo']);
