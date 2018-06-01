@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.2.2] - 2018-06-01
+
+### Changed
+
+* Ensure that `phpunit/php-code-coverage` is used in version `^6.0.7`
+
 ## [7.2.1] - 2018-06-01
 
 * Fixed [#3155](https://github.com/sebastianbergmann/phpunit/issues/3155): Calling `getStatus()` on a `TestCase` object before the respective test has been executed results in type error
@@ -26,6 +32,7 @@ All notable changes of the PHPUnit 7.2 release series are documented in this fil
 
 * Fixed [#3069](https://github.com/sebastianbergmann/phpunit/issues/3069): Method `ResultPrinter::printWaitPrompt()` seems to be unused
 
+[7.2.2]: https://github.com/sebastianbergmann/phpunit/compare/7.2.1...7.2.2
 [7.2.1]: https://github.com/sebastianbergmann/phpunit/compare/7.2.0...7.2.1
 [7.2.0]: https://github.com/sebastianbergmann/phpunit/compare/7.1...7.2.0
 
