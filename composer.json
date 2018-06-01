@@ -19,7 +19,6 @@
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit/issues"
     },
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": "^7.1",
