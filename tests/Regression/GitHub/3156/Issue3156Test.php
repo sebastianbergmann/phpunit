@@ -14,7 +14,7 @@ namespace Test;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-class TestTest extends TestCase
+class Issue3156Test extends TestCase
 {
     public function testConstants(): stdClass
     {
