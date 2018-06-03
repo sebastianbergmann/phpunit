@@ -379,6 +379,17 @@
         <exec executable="${basedir}/build/tools/phpdox" dir="${basedir}/build" taskname="phpdox"/>
     </target>
 
+    <target name="update-tools">
+        <exec executable="phive">
+            <arg value="--no-progress"/>
+            <arg value="update"/>
+        </exec>
+
+        <exec executable="${basedir}/build/tools/composer">
+            <arg value="self-update"/>
+        </exec>
+    </target>
+
     <target name="-phploc" depends="prepare">
         <exec executable="${basedir}/build/tools/phploc" output="/dev/null" taskname="phploc">
             <arg value="--count-tests"/>
