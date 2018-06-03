@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phive xmlns="https://phar.io/phive">
+  <phar name="phpab" version="^1.24.1" installed="1.24.1" location="./build/tools/phpab" copy="true"/>
+  <phar name="php-cs-fixer" version="^2.12.0" installed="2.12.0" location="./build/tools/php-cs-fixer" copy="true"/>
+  <phar name="phpdox" version="^0.11.2" installed="0.11.2" location="./build/tools/phpdox" copy="true"/>
+  <phar name="phploc" version="^4.0.1" installed="4.0.1" location="./build/tools/phploc" copy="true"/>
+</phive>
