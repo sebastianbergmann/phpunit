@@ -124,7 +124,6 @@
         <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
 
         <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt"/>
-        <copy todir="${basedir}/build/phar" file="${basedir}/build/ca.pem" />
 
         <copy file="${basedir}/vendor/phpunit/php-code-coverage/LICENSE" tofile="${basedir}/build/phar/php-code-coverage/LICENSE"/>
         <copy todir="${basedir}/build/phar/php-code-coverage">
