@@ -375,7 +375,7 @@
         <exec executable="${basedir}/build/version.php" outputproperty="version" />
     </target>
 
-    <target name="generate-project-documentation" depends="-phploc,-checkstyle,-phpmd,-phpunit">
+    <target name="generate-project-documentation" depends="-phploc,-checkstyle,-phpunit">
         <exec executable="${basedir}/build/tools/phpdox" dir="${basedir}/build" taskname="phpdox"/>
     </target>
 
@@ -395,16 +395,6 @@
             <arg value="--dry-run"/>
             <arg value="fix"/>
             <arg value="--format=checkstyle"/>
-        </exec>
-    </target>
-
-    <target name="-phpmd" depends="prepare">
-        <exec executable="${basedir}/build/tools/phpmd" taskname="phpmd">
-            <arg path="${basedir}/src"/>
-            <arg value="xml"/>
-            <arg path="${basedir}/build/phpmd.xml"/>
-            <arg value="--reportfile"/>
-            <arg path="${basedir}/build/logfiles/pmd.xml"/>
         </exec>
     </target>
 
