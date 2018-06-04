@@ -284,7 +284,7 @@ class TestRunner extends BaseTestRunner
         }
 
         $this->printer->write(
-            Version::getVersionString() . PHP_EOL
+            Version::getVersionString() . "\n"
         );
 
         self::$versionStringPrinted = true;
@@ -534,7 +534,7 @@ class TestRunner extends BaseTestRunner
             }
         }
 
-        $this->printer->write(PHP_EOL);
+        $this->printer->write("\n");
 
         if (isset($codeCoverage)) {
             $result->setCodeCoverage($codeCoverage);
@@ -591,7 +591,7 @@ class TestRunner extends BaseTestRunner
                     unset($writer);
                 } catch (CodeCoverageException $e) {
                     $this->printer->write(
-                        " failed\n" . $e->getMessage() . PHP_EOL
+                        " failed\n" . $e->getMessage() . "\n"
                     );
                 }
             }
@@ -609,7 +609,7 @@ class TestRunner extends BaseTestRunner
                     unset($writer);
                 } catch (CodeCoverageException $e) {
                     $this->printer->write(
-                        " failed\n" . $e->getMessage() . PHP_EOL
+                        " failed\n" . $e->getMessage() . "\n"
                     );
                 }
             }
@@ -635,7 +635,7 @@ class TestRunner extends BaseTestRunner
                     unset($writer);
                 } catch (CodeCoverageException $e) {
                     $this->printer->write(
-                        " failed\n" . $e->getMessage() . PHP_EOL
+                        " failed\n" . $e->getMessage() . "\n"
                     );
                 }
             }
@@ -653,7 +653,7 @@ class TestRunner extends BaseTestRunner
                     unset($writer);
                 } catch (CodeCoverageException $e) {
                     $this->printer->write(
-                        " failed\n" . $e->getMessage() . PHP_EOL
+                        " failed\n" . $e->getMessage() . "\n"
                     );
                 }
             }
@@ -692,7 +692,7 @@ class TestRunner extends BaseTestRunner
                     unset($writer);
                 } catch (CodeCoverageException $e) {
                     $this->printer->write(
-                        " failed\n" . $e->getMessage() . PHP_EOL
+                        " failed\n" . $e->getMessage() . "\n"
                     );
                 }
             }
@@ -1198,7 +1198,7 @@ class TestRunner extends BaseTestRunner
     private function writeMessage(string $type, string $message): void
     {
         if (!$this->messagePrinted) {
-            $this->write(PHP_EOL);
+            $this->write("\n");
         }
 
         $this->write(

@@ -388,12 +388,12 @@ class JUnit extends Printer implements TestListener
         }
 
         if ($test instanceof SelfDescribing) {
-            $buffer = $test->toString() . PHP_EOL;
+            $buffer = $test->toString() . "\n";
         } else {
             $buffer = '';
         }
 
-        $buffer .= TestFailure::exceptionToString($t) . PHP_EOL .
+        $buffer .= TestFailure::exceptionToString($t) . "\n" .
                    Filter::getFilteredStacktrace($t);
 
         $fault = $this->document->createElement(

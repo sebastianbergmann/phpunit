@@ -438,7 +438,7 @@ class ResultPrinter extends Printer implements TestListener
                 $color = 'fg-black, bg-yellow';
 
                 if ($this->verbose || !$result->allHarmless()) {
-                    $this->write(PHP_EOL);
+                    $this->write("\n");
                 }
 
                 $this->writeWithColor(
@@ -446,7 +446,7 @@ class ResultPrinter extends Printer implements TestListener
                     'OK, but incomplete, skipped, or risky tests!'
                 );
             } else {
-                $this->write(PHP_EOL);
+                $this->write("\n");
 
                 if ($result->errorCount()) {
                     $color = 'fg-white, bg-red';
@@ -518,7 +518,7 @@ class ResultPrinter extends Printer implements TestListener
     protected function writeNewLine(): void
     {
         $this->column = 0;
-        $this->write(PHP_EOL);
+        $this->write("\n");
     }
 
     /**
@@ -532,7 +532,7 @@ class ResultPrinter extends Printer implements TestListener
         }
 
         $codes   = \array_map('\trim', \explode(',', $color));
-        $lines   = \explode(PHP_EOL, $buffer);
+        $lines   = \explode("\n", $buffer);
         $padding = \max(\array_map('\strlen', $lines));
         $styles  = [];
 
@@ -548,7 +548,7 @@ class ResultPrinter extends Printer implements TestListener
             $styledLines[] = $style . \str_pad($line, $padding) . "\x1b[0m";
         }
 
-        return \implode(PHP_EOL, $styledLines);
+        return \implode("\n", $styledLines);
     }
 
     /**
@@ -559,7 +559,7 @@ class ResultPrinter extends Printer implements TestListener
         $this->write($this->formatWithColor($color, $buffer));
 
         if ($lf) {
-            $this->write(PHP_EOL);
+            $this->write("\n");
         }
     }
 
