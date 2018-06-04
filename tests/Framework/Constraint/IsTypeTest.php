@@ -109,6 +109,6 @@ EOF
      */
     private function trimnl($string)
     {
-        return \preg_replace('/[ ]*\n/', PHP_EOL, $string);
+        return \preg_replace('/[ ]*\n/', "\n", $string);
     }
 }

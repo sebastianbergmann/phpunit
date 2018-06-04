@@ -194,7 +194,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
     protected function printHeader(): void
     {
-        $this->write(PHP_EOL . Timer::resourceUsage() . "\n\n");
+        $this->write("\n" . Timer::resourceUsage() . "\n\n");
     }
 
     private function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void

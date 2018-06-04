@@ -52,7 +52,7 @@ class ExceptionWrapper extends Exception
         $string = TestFailure::exceptionToString($this);
 
         if ($trace = Filter::getFilteredStacktrace($this)) {
-            $string .= PHP_EOL . $trace;
+            $string .= "\n" . $trace;
         }
 
         if ($this->previous) {

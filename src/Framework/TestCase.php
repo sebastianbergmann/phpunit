@@ -852,7 +852,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             if (!empty($this->warnings)) {
                 throw new Warning(
                     \implode(
-                        PHP_EOL,
+                        "\n",
                         \array_unique($this->warnings)
                     )
                 );

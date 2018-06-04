@@ -57,7 +57,7 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
         $string = TestFailure::exceptionToString($this);
 
         if ($trace = Filter::getFilteredStacktrace($this)) {
-            $string .= PHP_EOL . $trace;
+            $string .= "\n" . $trace;
         }
 
         return $string;

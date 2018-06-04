@@ -105,11 +105,11 @@ abstract class Constraint implements Countable, SelfDescribing
         $additionalFailureDescription = $this->additionalFailureDescription($other);
 
         if ($additionalFailureDescription) {
-            $failureDescription .= PHP_EOL . $additionalFailureDescription;
+            $failureDescription .= "\n" . $additionalFailureDescription;
         }
 
         if (!empty($description)) {
-            $failureDescription = $description . PHP_EOL . $failureDescription;
+            $failureDescription = $description . "\n" . $failureDescription;
         }
 
         throw new ExpectationFailedException(

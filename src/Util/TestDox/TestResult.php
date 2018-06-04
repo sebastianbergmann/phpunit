@@ -83,7 +83,7 @@ final class TestResult
     {
         return \sprintf(
             "%s%s %s %s%s\n%s",
-            $previousTestResult && $previousTestResult->additionalInformationPrintable($verbose) ? PHP_EOL : '',
+            $previousTestResult && $previousTestResult->additionalInformationPrintable($verbose) ? "\n" : '',
             $this->getClassNameHeader($previousTestResult ? $previousTestResult->testClass : null),
             $this->symbol,
             $this->testMethod,
@@ -98,7 +98,7 @@ final class TestResult
 
         if ($this->testClass !== $previousTestClass) {
             if (null !== $previousTestClass) {
-                $className = PHP_EOL;
+                $className = "\n";
             }
 
             $className .= \sprintf("%s\n", $this->testClass);
@@ -129,12 +129,12 @@ final class TestResult
         return \sprintf(
             "   │\n%s\n",
             \implode(
-                PHP_EOL,
+                "\n",
                 \array_map(
                     function (string $text) {
                         return \sprintf('   │ %s', $text);
                     },
-                    \explode(PHP_EOL, $this->additionalInformation)
+                    \explode("\n", $this->additionalInformation)
                 )
             )
         );

@@ -63,7 +63,7 @@ class Exception extends Constraint
 
             if ($other instanceof Throwable) {
                 $message = '. Message was: "' . $other->getMessage() . '" at'
-                    . PHP_EOL . Filter::getFilteredStacktrace($other);
+                    . "\n" . Filter::getFilteredStacktrace($other);
             }
 
             return \sprintf(

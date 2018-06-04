@@ -211,7 +211,7 @@ class PhptTestCase implements Test, SelfDescribing
     private function parseIniSection($content, $ini = []): array
     {
         if (\is_string($content)) {
-            $content = \explode(PHP_EOL, \trim($content));
+            $content = \explode("\n", \trim($content));
         }
 
         foreach ($content as $setting) {
@@ -243,7 +243,7 @@ class PhptTestCase implements Test, SelfDescribing
     {
         $env = [];
 
-        foreach (\explode(PHP_EOL, \trim($content)) as $e) {
+        foreach (\explode("\n", \trim($content)) as $e) {
             $e = \explode('=', \trim($e), 2);
 
             if (!empty($e[0]) && isset($e[1])) {
@@ -265,11 +265,11 @@ class PhptTestCase implements Test, SelfDescribing
             'EXPECTREGEX' => 'assertRegExp',
         ];
 
-        $actual = \preg_replace('/\r\n/', PHP_EOL, \trim($output));
+        $actual = \preg_replace('/\r\n/', "\n", \trim($output));
 
         foreach ($assertions as $sectionName => $sectionAssertion) {
             if (isset($sections[$sectionName])) {
-                $sectionContent = \preg_replace('/\r\n/', PHP_EOL, \trim($sections[$sectionName]));
+                $sectionContent = \preg_replace('/\r\n/', "\n", \trim($sections[$sectionName]));
                 $assertion      = $sectionAssertion;
                 $expected       = $sectionName === 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
 

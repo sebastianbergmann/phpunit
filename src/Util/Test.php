@@ -160,7 +160,7 @@ final class Test
         $reflector  = new ReflectionClass($className);
         $docComment = $reflector->getDocComment();
         $reflector  = new ReflectionMethod($className, $methodName);
-        $docComment .= PHP_EOL . $reflector->getDocComment();
+        $docComment .= "\n" . $reflector->getDocComment();
         $requires = [];
 
         if ($count = \preg_match_all(self::REGEX_REQUIRES_OS, $docComment, $matches)) {
@@ -445,7 +445,7 @@ final class Test
             $annotationContent = \substr($docComment, $offset);
             $data              = [];
 
-            foreach (\explode(PHP_EOL, $annotationContent) as $candidateRow) {
+            foreach (\explode("\n", $annotationContent) as $candidateRow) {
                 $candidateRow = \trim($candidateRow);
 
                 if ($candidateRow[0] !== '[') {
@@ -876,10 +876,10 @@ final class Test
     private static function cleanUpMultiLineAnnotation(string $docComment): string
     {
         //removing initial '   * ' for docComment
-        $docComment = \str_replace("\r\n", PHP_EOL, $docComment);
-        $docComment = \preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', PHP_EOL, $docComment);
+        $docComment = \str_replace("\r\n", "\n", $docComment);
+        $docComment = \preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
         $docComment = \substr($docComment, 0, -1);
-        $docComment = \rtrim($docComment, PHP_EOL);
+        $docComment = \rtrim($docComment, "\n");
 
         return $docComment;
     }
