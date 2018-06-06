@@ -55,18 +55,95 @@ final class ArraySubset extends Constraint
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {
+        // Anonymous function that checks whether the given array is
+        // associative.
+        $is_associative = function (array $array): bool {
+            return \array_reduce(\array_keys($array), function (bool $carry, $key): bool {
+                return $carry || \is_string($key);
+            }, false);
+        };
+
+        // Anonymous function that compares the two given values using either
+        // strict or loose comparisons.
+        $strict  = $this->strict;
+        $compare = function ($first, $second) use ($strict): bool {
+            return $strict ? $first === $second : $first == $second;
+        };
+
+        // Anonymous function that sorts the given multidimensional array.
+        $deep_sort = function (array &$array) use (&$deep_sort, $is_associative): void {
+            foreach ($array as &$value) {
+                if (\is_array($value)) {
+                    $deep_sort($value);
+                }
+            }
+
+            if ($is_associative($array)) {
+                \ksort($array);
+            } else {
+                \sort($array);
+            }
+        };
+
+        $array_intersect_recursive = function (array $array, array $subset) use (&$array_intersect_recursive, $is_associative, $compare): array {
+            $intersect = [];
+
+            if ($is_associative($subset)) {
+                // If the subset is an associative array, get the intersection
+                // while preserving the keys.
+                foreach ($subset as $key => $subset_value) {
+                    if (\array_key_exists($key, $array)) {
+                        $array_value = $array[$key];
+
+                        if (\is_array($subset_value) && \is_array($array_value)) {
+                            $intersect[$key] = $array_intersect_recursive($array_value, $subset_value);
+                        } elseif ($compare($subset_value, $array_value)) {
+                            $intersect[$key] = $array_value;
+                        }
+                    }
+                }
+            } else {
+                // If the subset is an indexed array, loop over all entries in
+                // the haystack and check if they match the ones in the subset.
+                foreach ($array as $array_value) {
+                    if (\is_array($array_value)) {
+                        foreach ($subset as $key => $subset_value) {
+                            if (\is_array($subset_value)) {
+                                $recursed = $array_intersect_recursive($array_value, $subset_value);
+
+                                if (!empty($recursed)) {
+                                    $intersect[$key] = $recursed;
+                                }
+                            }
+                        }
+                    } else {
+                        foreach ($subset as $key => $subset_value) {
+                            if (!\is_array($subset_value) && $compare(
+                                $subset_value,
+                                $array_value
+                            )) {
+                                $intersect[$key] = $array_value;
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return $intersect;
+        };
+
         //type cast $other & $this->subset as an array to allow
         //support in standard array functions.
         $other        = $this->toArray($other);
         $this->subset = $this->toArray($this->subset);
 
-        $patched = \array_replace_recursive($other, $this->subset);
+        $intersect = $array_intersect_recursive($other, $this->subset);
+        $deep_sort($intersect);
+        $deep_sort($this->subset);
 
-        if ($this->strict) {
-            $result = $other === $patched;
-        } else {
-            $result = $other == $patched;
-        }
+        $result = $compare($intersect, $this->subset);
 
         if ($returnResult) {
             return $result;
@@ -74,9 +151,9 @@ final class ArraySubset extends Constraint
 
         if (!$result) {
             $f = new ComparisonFailure(
-                $patched,
+                $this->subset,
                 $other,
-                \var_export($patched, true),
+                \var_export($this->subset, true),
                 \var_export($other, true)
             );
 

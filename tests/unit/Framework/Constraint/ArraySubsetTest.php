@@ -95,7 +95,7 @@ class ArraySubsetTest extends ConstraintTestCase
                     '10',
                 ],
                 'other'    => [
-                    0 => '1',
+                    0   => '1',
                     'a' => [
                       'aa' => '2',
                       'ab' => [5, 4, 3],
@@ -112,7 +112,7 @@ class ArraySubsetTest extends ConstraintTestCase
                     '10',
                 ],
                 'other'    => [
-                    0 => '1',
+                    0   => '1',
                     'a' => [
                         'aa' => '2',
                         'ab' => [5, 4, 3],
@@ -129,7 +129,7 @@ class ArraySubsetTest extends ConstraintTestCase
                     '10',
                 ],
                 'other'    => new \ArrayObject([
-                    0 => '1',
+                    0   => '1',
                     'a' => [
                         'aa' => '2',
                         'ab' => [5, 4, 3],
@@ -146,7 +146,7 @@ class ArraySubsetTest extends ConstraintTestCase
                     '10',
                 ]),
                 'other'    => [
-                    0 => '1',
+                    0   => '1',
                     'a' => [
                         'aa' => '2',
                         'ab' => [5, 4, 3],
