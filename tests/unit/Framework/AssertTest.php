@@ -69,6 +69,147 @@ class AssertTest extends TestCase
         $this->assertArrayHasKey(1, ['foo']);
     }
 
+    public function testAssertArraySubset(): void
+    {
+        $array = [
+            'a' => 'item a',
+            'b' => 'item b',
+            'c' => ['a2' => 'item a2', 'b2' => 'item b2'],
+            'd' => ['a2' => ['a3' => 'item a3', 'b3' => 'item b3']]
+        ];
+
+        $this->assertArraySubset(['a' => 'item a'], $array);
+        $this->assertArraySubset(['a' => 'item a', 'c' => ['a2' => 'item a2']], $array);
+        $this->assertArraySubset(['a' => 'item a', 'd' => ['a2' => ['b3' => 'item b3']]], $array);
+        $this->assertArraySubset(['b' => 'item b', 'd' => ['a2' => ['b3' => 'item b3']]], $array);
+
+        $arrayAccessData = new \ArrayObject($array);
+
+        $this->assertArraySubset(['a' => 'item a'], $arrayAccessData);
+        $this->assertArraySubset(['a' => 'item a', 'c' => ['a2' => 'item a2']], $arrayAccessData);
+        $this->assertArraySubset(['a' => 'item a', 'd' => ['a2' => ['b3' => 'item b3']]], $arrayAccessData);
+        $this->assertArraySubset(['b' => 'item b', 'd' => ['a2' => ['b3' => 'item b3']]], $arrayAccessData);
+
+        try {
+            $this->assertArraySubset(['a' => 'bad value'], $array);
+        } catch (AssertionFailedError $e) {
+        }
+
+        try {
+            $this->assertArraySubset(['d' => ['a2' => ['bad index' => 'item b3']]], $array);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertArraySubsetWithIndexedArrays(): void
+    {
+        $array = [
+            'item a',
+            'item b',
+            ['a2' => 'item a2', 'b2' => 'item b2'],
+            ['a2' => ['a3' => 'item a3', 'b3' => 'item b3']]
+        ];
+
+        $this->assertArraySubset(['item a', ['a2' => 'item a2']], $array);
+        $this->assertArraySubset(['item a', ['a2' => ['b3' => 'item b3']]], $array);
+        $this->assertArraySubset(['item b', ['a2' => ['b3' => 'item b3']]], $array);
+
+        $arrayAccessData = new \ArrayObject($array);
+
+        $this->assertArraySubset(['item a', ['a2' => 'item a2']], $arrayAccessData);
+        $this->assertArraySubset(['item a', ['a2' => ['b3' => 'item b3']]], $arrayAccessData);
+        $this->assertArraySubset(['item b', ['a2' => ['b3' => 'item b3']]], $arrayAccessData);
+
+        try {
+            $this->assertArraySubset(['bad value'], $array);
+        } catch (AssertionFailedError $e) {
+        }
+
+        try {
+            $this->assertArraySubset([['a2' => ['bad index' => 'item b3']]], $array);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testAssertArraySubsetWithDeepNestedArrays(): void
+    {
+        $array = [
+            'path' => [
+                'to' => [
+                    'the' => [
+                        'cake' => 'is a lie'
+                    ]
+                ]
+            ]
+        ];
+
+        $this->assertArraySubset(['path' => []], $array);
+        $this->assertArraySubset(['path' => ['to' => []]], $array);
+        $this->assertArraySubset(['path' => ['to' => ['the' => []]]], $array);
+        $this->assertArraySubset(['path' => ['to' => ['the' => ['cake' => 'is a lie']]]], $array);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArraySubset(['path' => ['to' => ['the' => ['cake' => 'is not a lie']]]], $array);
+    }
+
+    public function testAssertArraySubsetWithNoStrictCheckAndObjects(): void
+    {
+        $obj       = new \stdClass;
+        $reference = &$obj;
+        $array     = ['a' => $obj];
+
+        $this->assertArraySubset(['a' => $reference], $array);
+        $this->assertArraySubset(['a' => new \stdClass], $array);
+    }
+
+    public function testAssertArraySubsetWithStrictCheckAndObjects(): void
+    {
+        $obj       = new \stdClass;
+        $reference = &$obj;
+        $array     = ['a' => $obj];
+
+        $this->assertArraySubset(['a' => $reference], $array, true);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArraySubset(['a' => new \stdClass], $array, true);
+    }
+
+    /**
+     * @dataProvider assertArraySubsetInvalidArgumentProvider
+     *
+     * @param mixed $partial
+     * @param mixed $subject
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public function testAssertArraySubsetRaisesExceptionForInvalidArguments($partial, $subject): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertArraySubset($partial, $subject);
+    }
+
+    /**
+     * @return array
+     */
+    public function assertArraySubsetInvalidArgumentProvider()
+    {
+        return [
+            [false, []],
+            [[], false],
+        ];
+    }
+
     public function testAssertArrayNotHasKeyThrowsExceptionForInvalidFirstArgument(): void
     {
         $this->expectException(Exception::class);
