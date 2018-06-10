@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
@@ -98,9 +97,9 @@ class ArraySubsetTest extends ConstraintTestCase
                 'other'    => [
                     0   => '1',
                     'a' => [
-                      'aa' => '2',
-                      'ab' => [5, 4, 3],
-                      'ac' => 10,
+                        'aa' => '2',
+                        'ab' => [5, 4, 3],
+                        'ac' => 10,
                     ],
                     'b' => '10',
                 ],

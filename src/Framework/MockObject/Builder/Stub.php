@@ -20,8 +20,6 @@ interface Stub extends Identity
      * Stubs the matching method with the stub object $stub. Any invocations of
      * the matched method will now be handled by the stub instead.
      *
-     * @param BaseStub $stub
-     *
      * @return Identity
      */
     public function will(BaseStub $stub);

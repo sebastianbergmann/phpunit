@@ -170,7 +170,7 @@ class XmlResultPrinter extends Printer implements TestListener
 
         $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(\get_class($test), $test->getName());
 
-        if (isset($inlineAnnotations['given']) && isset($inlineAnnotations['when']) && isset($inlineAnnotations['then'])) {
+        if (isset($inlineAnnotations['given'], $inlineAnnotations['when'], $inlineAnnotations['then'])) {
             $node->setAttribute('given', $inlineAnnotations['given']['value']);
             $node->setAttribute('givenStartLine', $inlineAnnotations['given']['line']);
             $node->setAttribute('when', $inlineAnnotations['when']['value']);

@@ -42,17 +42,12 @@ class InvokedAtIndex implements Invocation
         $this->sequenceIndex = $sequenceIndex;
     }
 
-    /**
-     * @return string
-     */
     public function toString(): string
     {
         return 'invoked at sequence index ' . $this->sequenceIndex;
     }
 
     /**
-     * @param BaseInvocation $invocation
-     *
      * @return bool
      */
     public function matches(BaseInvocation $invocation)
@@ -62,9 +57,6 @@ class InvokedAtIndex implements Invocation
         return $this->currentIndex == $this->sequenceIndex;
     }
 
-    /**
-     * @param BaseInvocation $invocation
-     */
     public function invoked(BaseInvocation $invocation): void
     {
     }

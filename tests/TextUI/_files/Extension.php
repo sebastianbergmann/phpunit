@@ -31,57 +31,57 @@ final class Extension implements BeforeFirstTestHook, BeforeTestHook, AfterSucce
 
     public function tellAmountOfInjectedArguments(): void
     {
-        print __METHOD__ . ': ' . $this->amountOfInjectedArguments . PHP_EOL;
+        print __METHOD__ . ': ' . $this->amountOfInjectedArguments . \PHP_EOL;
     }
 
     public function executeBeforeFirstTest(): void
     {
         $this->tellAmountOfInjectedArguments();
-        print __METHOD__ . PHP_EOL;
+        print __METHOD__ . \PHP_EOL;
     }
 
     public function executeBeforeTest(string $test): void
     {
-        print __METHOD__ . ': ' . $test . PHP_EOL;
+        print __METHOD__ . ': ' . $test . \PHP_EOL;
     }
 
     public function executeAfterSuccessfulTest(string $test, float $time): void
     {
-        print __METHOD__ . ': ' . $test . PHP_EOL;
+        print __METHOD__ . ': ' . $test . \PHP_EOL;
     }
 
     public function executeAfterIncompleteTest(string $test, string $message, float $time): void
     {
-        print __METHOD__ . ': ' . $test . ': ' . $message . PHP_EOL;
+        print __METHOD__ . ': ' . $test . ': ' . $message . \PHP_EOL;
     }
 
     public function executeAfterRiskyTest(string $test, string $message, float $time): void
     {
-        print __METHOD__ . ': ' . $test . ': ' . $message . PHP_EOL;
+        print __METHOD__ . ': ' . $test . ': ' . $message . \PHP_EOL;
     }
 
     public function executeAfterSkippedTest(string $test, string $message, float $time): void
     {
-        print __METHOD__ . ': ' . $test . ': ' . $message . PHP_EOL;
+        print __METHOD__ . ': ' . $test . ': ' . $message . \PHP_EOL;
     }
 
     public function executeAfterTestError(string $test, string $message, float $time): void
     {
-        print __METHOD__ . ': ' . $test . ': ' . $message . PHP_EOL;
+        print __METHOD__ . ': ' . $test . ': ' . $message . \PHP_EOL;
     }
 
     public function executeAfterTestFailure(string $test, string $message, float $time): void
     {
-        print __METHOD__ . ': ' . $test . ': ' . $message . PHP_EOL;
+        print __METHOD__ . ': ' . $test . ': ' . $message . \PHP_EOL;
     }
 
     public function executeAfterTestWarning(string $test, string $message, float $time): void
     {
-        print __METHOD__ . ': ' . $test . ': ' . $message . PHP_EOL;
+        print __METHOD__ . ': ' . $test . ': ' . $message . \PHP_EOL;
     }
 
     public function executeAfterLastTest(): void
     {
-        print __METHOD__ . PHP_EOL;
+        print __METHOD__ . \PHP_EOL;
     }
 }

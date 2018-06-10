@@ -92,7 +92,6 @@ class MockBuilder
     private $generator;
 
     /**
-     * @param TestCase     $testCase
      * @param array|string $type
      */
     public function __construct(TestCase $testCase, $type)
@@ -192,8 +191,6 @@ class MockBuilder
     /**
      * Specifies the subset of methods to not mock. Default is to mock all of them.
      *
-     * @param array $methods
-     *
      * @return MockBuilder
      */
     public function setMethodsExcept(array $methods = [])
@@ -212,8 +209,6 @@ class MockBuilder
 
     /**
      * Specifies the arguments for the constructor.
-     *
-     * @param array $args
      *
      * @return MockBuilder
      */

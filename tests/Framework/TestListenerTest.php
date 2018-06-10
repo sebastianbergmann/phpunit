@@ -7,19 +7,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework;
 
 class TestListenerTest extends TestCase implements TestListener
 {
     protected $endCount;
+
     protected $errorCount;
+
     protected $failureCount;
+
     protected $warningCount;
+
     protected $notImplementedCount;
+
     protected $riskyCount;
+
     protected $skippedCount;
+
     protected $result;
+
     protected $startCount;
 
     protected function setUp(): void

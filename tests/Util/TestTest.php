@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Util;
 
 use PharIo\Version\VersionConstraint;
@@ -110,9 +109,6 @@ class TestTest extends TestCase
 
     /**
      * @dataProvider requirementsProvider
-     *
-     * @param mixed $test
-     * @param mixed $result
      *
      * @throws Warning
      * @throws \PHPUnit\Framework\ExpectationFailedException
@@ -326,9 +322,6 @@ class TestTest extends TestCase
     /**
      * @dataProvider requirementsWithVersionConstraintsProvider
      *
-     * @param mixed $test
-     * @param array $result
-     *
      * @throws Exception
      * @throws Warning
      * @throws \PHPUnit\Framework\ExpectationFailedException
@@ -466,8 +459,6 @@ class TestTest extends TestCase
     /**
      * @dataProvider requirementsWithInvalidVersionConstraintsThrowsExceptionProvider
      *
-     * @param mixed $test
-     *
      * @throws Warning
      */
     public function testGetRequirementsWithInvalidVersionConstraintsThrowsException($test): void
@@ -491,12 +482,12 @@ class TestTest extends TestCase
             'PHPUnit'   => ['version' => '3.7', 'operator' => ''],
             'OS'        => 'WINNT',
             'functions' => [
-              'testFuncClass',
-              'testFuncMethod',
+                'testFuncClass',
+                'testFuncMethod',
             ],
             'extensions' => [
-              'testExtClass',
-              'testExtMethod',
+                'testExtClass',
+                'testExtMethod',
             ]
         ];
 
@@ -508,9 +499,6 @@ class TestTest extends TestCase
 
     /**
      * @dataProvider missingRequirementsProvider
-     *
-     * @param mixed $test
-     * @param mixed $result
      *
      * @throws Warning
      * @throws \PHPUnit\Framework\ExpectationFailedException
@@ -534,15 +522,15 @@ class TestTest extends TestCase
             ['testAlwaysSkip2',    ['PHP >= 9999999 is required.']],
             ['testAlwaysSkip3',    ['Operating system matching /DOESNOTEXIST/i is required.']],
             ['testAllPossibleRequirements', [
-              'PHP >= 99-dev is required.',
-              'PHPUnit >= 9-dev is required.',
-              'Operating system matching /DOESNOTEXIST/i is required.',
-              'Function testFuncOne is required.',
-              'Function testFuncTwo is required.',
-              'Setting "not_a_setting" must be "Off".',
-              'Extension testExtOne is required.',
-              'Extension testExtTwo is required.',
-              'Extension testExtThree >= 2.0 is required.',
+                'PHP >= 99-dev is required.',
+                'PHPUnit >= 9-dev is required.',
+                'Operating system matching /DOESNOTEXIST/i is required.',
+                'Function testFuncOne is required.',
+                'Function testFuncTwo is required.',
+                'Setting "not_a_setting" must be "Off".',
+                'Extension testExtOne is required.',
+                'Extension testExtTwo is required.',
+                'Extension testExtThree >= 2.0 is required.',
             ]],
             ['testPHPVersionOperatorLessThan', ['PHP < 5.4 is required.']],
             ['testPHPVersionOperatorLessThanEquals', ['PHP <= 5.4 is required.']],
@@ -784,9 +772,6 @@ class TestTest extends TestCase
     /**
      * @dataProvider getLinesToBeCoveredProvider
      *
-     * @param mixed $test
-     * @param mixed $lines
-     *
      * @throws CodeCoverageException
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -795,7 +780,7 @@ class TestTest extends TestCase
     {
         if (\strpos($test, 'Namespace') === 0) {
             $expected = [
-              TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines
+                TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines
             ];
         } elseif ($test === 'CoverageCoversOverridesCoversNothingTest') {
             $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
@@ -805,7 +790,7 @@ class TestTest extends TestCase
             $expected = false;
         } elseif ($test === 'CoverageFunctionTest') {
             $expected = [
-              TEST_FILES_PATH . 'CoveredFunction.php' => $lines
+                TEST_FILES_PATH . 'CoveredFunction.php' => $lines
             ];
         } else {
             $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
@@ -931,106 +916,106 @@ class TestTest extends TestCase
     public function getLinesToBeCoveredProvider()
     {
         return [
-          [
-            'CoverageNoneTest',
-            []
-          ],
-          [
-            'CoverageClassExtendedTest',
-            \array_merge(\range(27, 44), \range(10, 25))
-          ],
-          [
-            'CoverageClassTest',
-            \range(27, 44)
-          ],
-          [
-            'CoverageMethodTest',
-            \range(29, 33)
-          ],
-          [
-            'CoverageMethodOneLineAnnotationTest',
-            \range(29, 33)
-          ],
-          [
-            'CoverageNotPrivateTest',
-            \array_merge(\range(29, 33), \range(35, 39))
-          ],
-          [
-            'CoverageNotProtectedTest',
-            \array_merge(\range(29, 33), \range(41, 43))
-          ],
-          [
-            'CoverageNotPublicTest',
-            \array_merge(\range(35, 39), \range(41, 43))
-          ],
-          [
-            'CoveragePrivateTest',
-            \range(41, 43)
-          ],
-          [
-            'CoverageProtectedTest',
-            \range(35, 39)
-          ],
-          [
-            'CoveragePublicTest',
-            \range(29, 33)
-          ],
-          [
-            'CoverageFunctionTest',
-            \range(10, 12)
-          ],
-          [
-            'NamespaceCoverageClassExtendedTest',
-            \array_merge(\range(29, 46), \range(12, 27))
-          ],
-          [
-            'NamespaceCoverageClassTest',
-            \range(29, 46)
-          ],
-          [
-            'NamespaceCoverageMethodTest',
-            \range(31, 35)
-          ],
-          [
-            'NamespaceCoverageNotPrivateTest',
-            \array_merge(\range(31, 35), \range(37, 41))
-          ],
-          [
-            'NamespaceCoverageNotProtectedTest',
-            \array_merge(\range(31, 35), \range(43, 45))
-          ],
-          [
-            'NamespaceCoverageNotPublicTest',
-            \array_merge(\range(37, 41), \range(43, 45))
-          ],
-          [
-            'NamespaceCoveragePrivateTest',
-            \range(43, 45)
-          ],
-          [
-            'NamespaceCoverageProtectedTest',
-            \range(37, 41)
-          ],
-          [
-            'NamespaceCoveragePublicTest',
-            \range(31, 35)
-          ],
-          [
-            'NamespaceCoverageCoversClassTest',
-            \array_merge(\range(43, 45), \range(37, 41), \range(31, 35), \range(24, 26), \range(19, 22), \range(14, 17))
-          ],
-          [
-            'NamespaceCoverageCoversClassPublicTest',
-            \range(31, 35)
-          ],
-          [
-            'CoverageNothingTest',
-            false
-          ],
-          [
-            'CoverageCoversOverridesCoversNothingTest',
-            \range(29, 33)
-          ],
+            [
+                'CoverageNoneTest',
+                []
+            ],
+            [
+                'CoverageClassExtendedTest',
+                \array_merge(\range(27, 44), \range(10, 25))
+            ],
+            [
+                'CoverageClassTest',
+                \range(27, 44)
+            ],
+            [
+                'CoverageMethodTest',
+                \range(29, 33)
+            ],
+            [
+                'CoverageMethodOneLineAnnotationTest',
+                \range(29, 33)
+            ],
+            [
+                'CoverageNotPrivateTest',
+                \array_merge(\range(29, 33), \range(35, 39))
+            ],
+            [
+                'CoverageNotProtectedTest',
+                \array_merge(\range(29, 33), \range(41, 43))
+            ],
+            [
+                'CoverageNotPublicTest',
+                \array_merge(\range(35, 39), \range(41, 43))
+            ],
+            [
+                'CoveragePrivateTest',
+                \range(41, 43)
+            ],
+            [
+                'CoverageProtectedTest',
+                \range(35, 39)
+            ],
+            [
+                'CoveragePublicTest',
+                \range(29, 33)
+            ],
+            [
+                'CoverageFunctionTest',
+                \range(10, 12)
+            ],
+            [
+                'NamespaceCoverageClassExtendedTest',
+                \array_merge(\range(29, 46), \range(12, 27))
+            ],
+            [
+                'NamespaceCoverageClassTest',
+                \range(29, 46)
+            ],
+            [
+                'NamespaceCoverageMethodTest',
+                \range(31, 35)
+            ],
+            [
+                'NamespaceCoverageNotPrivateTest',
+                \array_merge(\range(31, 35), \range(37, 41))
+            ],
+            [
+                'NamespaceCoverageNotProtectedTest',
+                \array_merge(\range(31, 35), \range(43, 45))
+            ],
+            [
+                'NamespaceCoverageNotPublicTest',
+                \array_merge(\range(37, 41), \range(43, 45))
+            ],
+            [
+                'NamespaceCoveragePrivateTest',
+                \range(43, 45)
+            ],
+            [
+                'NamespaceCoverageProtectedTest',
+                \range(37, 41)
+            ],
+            [
+                'NamespaceCoveragePublicTest',
+                \range(31, 35)
+            ],
+            [
+                'NamespaceCoverageCoversClassTest',
+                \array_merge(\range(43, 45), \range(37, 41), \range(31, 35), \range(24, 26), \range(19, 22), \range(14, 17))
+            ],
+            [
+                'NamespaceCoverageCoversClassPublicTest',
+                \range(31, 35)
+            ],
+            [
+                'CoverageNothingTest',
+                false
+            ],
+            [
+                'CoverageCoversOverridesCoversNothingTest',
+                \range(29, 33)
+            ],
         ];
     }
 

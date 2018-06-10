@@ -96,8 +96,6 @@ abstract class ResultPrinter extends Printer implements TestListener
 
     /**
      * @param resource $out
-     * @param array    $groups
-     * @param array    $excludeGroups
      *
      * @throws \PHPUnit\Framework\Exception
      */
@@ -304,8 +302,6 @@ abstract class ResultPrinter extends Printer implements TestListener
 
     /**
      * Handler for 'on test' event.
-     *
-     * @param mixed $name
      */
     protected function onTest($name, bool $success = true): void
     {

@@ -14,10 +14,13 @@
 class SeparateClassRunMethodInNewProcessTest extends PHPUnit\Framework\TestCase
 {
     const PROCESS_ID_FILE_PATH = __DIR__ . '/parent_process_id.txt';
+
     const INITIAL_MASTER_PID   = 0;
+
     const INITIAL_PID1         = 1;
 
     public static $masterPid = self::INITIAL_MASTER_PID;
+
     public static $pid1      = self::INITIAL_PID1;
 
     public static function setUpBeforeClass(): void

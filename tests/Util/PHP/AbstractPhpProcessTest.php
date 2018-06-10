@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Util\PHP;
 
 use PHPUnit\Framework\TestCase;
@@ -84,7 +83,7 @@ class AbstractPhpProcessTest extends TestCase
 
     public function testShouldHaveFileToCreateCommand(): void
     {
-        $argumentEscapingCharacter = DIRECTORY_SEPARATOR === '\\' ? '"' : '\'';
+        $argumentEscapingCharacter = \DIRECTORY_SEPARATOR === '\\' ? '"' : '\'';
         $expectedCommandFormat     = \sprintf('%%s -%%c %1$sfile.php%1$s', $argumentEscapingCharacter);
         $actualCommand             = $this->phpProcess->getCommand([], 'file.php');
 

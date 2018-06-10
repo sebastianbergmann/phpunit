@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\TextUI;
 
 use PharIo\Manifest\ApplicationName;
@@ -194,15 +193,13 @@ class Command
             return $this->handleListTestsXml($suite, $this->arguments['listTestsXml'], $exit);
         }
 
-        unset(
-            $this->arguments['test'],
-            $this->arguments['testFile']
+        unset($this->arguments['test'], $this->arguments['testFile']
         );
 
         try {
             $result = $runner->doRun($suite, $this->arguments, $exit);
         } catch (Exception $e) {
-            print $e->getMessage() . PHP_EOL;
+            print $e->getMessage() . \PHP_EOL;
         }
 
         $return = TestRunner::FAILURE_EXIT;
@@ -386,16 +383,16 @@ class Command
                 case '--generate-configuration':
                     $this->printVersionString();
 
-                    print 'Generating phpunit.xml in ' . \getcwd() . PHP_EOL . PHP_EOL;
+                    print 'Generating phpunit.xml in ' . \getcwd() . \PHP_EOL . \PHP_EOL;
 
                     print 'Bootstrap script (relative to path shown above; default: vendor/autoload.php): ';
-                    $bootstrapScript = \trim(\fgets(STDIN));
+                    $bootstrapScript = \trim(\fgets(\STDIN));
 
                     print 'Tests directory (relative to path shown above; default: tests): ';
-                    $testsDirectory = \trim(\fgets(STDIN));
+                    $testsDirectory = \trim(\fgets(\STDIN));
 
                     print 'Source directory (relative to path shown above; default: src): ';
-                    $src = \trim(\fgets(STDIN));
+                    $src = \trim(\fgets(\STDIN));
 
                     if ($bootstrapScript === '') {
                         $bootstrapScript = 'vendor/autoload.php';
@@ -421,7 +418,7 @@ class Command
                         )
                     );
 
-                    print PHP_EOL . 'Generated phpunit.xml in ' . \getcwd() . PHP_EOL;
+                    print \PHP_EOL . 'Generated phpunit.xml in ' . \getcwd() . \PHP_EOL;
 
                     exit(TestRunner::SUCCESS_EXIT);
 
@@ -765,7 +762,7 @@ class Command
         if (isset($includePath)) {
             \ini_set(
                 'include_path',
-                $includePath . PATH_SEPARATOR . \ini_get('include_path')
+                $includePath . \PATH_SEPARATOR . \ini_get('include_path')
             );
         }
 
@@ -803,7 +800,7 @@ class Command
                     $this->arguments['configuration']
                 );
             } catch (Throwable $t) {
-                print $t->getMessage() . PHP_EOL;
+                print $t->getMessage() . \PHP_EOL;
                 exit(TestRunner::FAILURE_EXIT);
             }
 
@@ -1027,12 +1024,12 @@ class Command
 
         if ($isOutdated) {
             \printf(
-                'You are not using the latest version of PHPUnit.' . PHP_EOL .
-                'The latest version is PHPUnit %s.' . PHP_EOL,
+                'You are not using the latest version of PHPUnit.' . \PHP_EOL .
+                'The latest version is PHPUnit %s.' . \PHP_EOL,
                 $latestVersion
             );
         } else {
-            print 'You are using the latest version of PHPUnit.' . PHP_EOL;
+            print 'You are using the latest version of PHPUnit.' . \PHP_EOL;
         }
 
         exit(TestRunner::SUCCESS_EXIT);
@@ -1160,7 +1157,7 @@ EOT;
             return;
         }
 
-        print Version::getVersionString() . PHP_EOL . PHP_EOL;
+        print Version::getVersionString() . \PHP_EOL . \PHP_EOL;
 
         $this->versionStringPrinted = true;
     }
@@ -1169,7 +1166,7 @@ EOT;
     {
         $this->printVersionString();
 
-        print $message . PHP_EOL;
+        print $message . \PHP_EOL;
 
         exit(TestRunner::FAILURE_EXIT);
     }
@@ -1217,14 +1214,14 @@ EOT;
     {
         $this->printVersionString();
 
-        print 'Available test group(s):' . PHP_EOL;
+        print 'Available test group(s):' . \PHP_EOL;
 
         $groups = $suite->getGroups();
         \sort($groups);
 
         foreach ($groups as $group) {
             \printf(
-                ' - %s' . PHP_EOL,
+                ' - %s' . \PHP_EOL,
                 $group
             );
         }
@@ -1240,7 +1237,7 @@ EOT;
     {
         $this->printVersionString();
 
-        print 'Available test suite(s):' . PHP_EOL;
+        print 'Available test suite(s):' . \PHP_EOL;
 
         $configuration = Configuration::getInstance(
             $this->arguments['configuration']
@@ -1250,7 +1247,7 @@ EOT;
 
         foreach ($suiteNames as $suiteName) {
             \printf(
-                ' - %s' . PHP_EOL,
+                ' - %s' . \PHP_EOL,
                 $suiteName
             );
         }

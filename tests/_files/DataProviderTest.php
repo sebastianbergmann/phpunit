@@ -14,19 +14,15 @@ class DataProviderTest extends TestCase
     public static function providerMethod()
     {
         return [
-          [0, 0, 0],
-          [0, 1, 1],
-          [1, 1, 3],
-          [1, 0, 1]
+            [0, 0, 0],
+            [0, 1, 1],
+            [1, 1, 3],
+            [1, 0, 1]
         ];
     }
 
     /**
      * @dataProvider providerMethod
-     *
-     * @param mixed $a
-     * @param mixed $b
-     * @param mixed $c
      */
     public function testAdd($a, $b, $c): void
     {

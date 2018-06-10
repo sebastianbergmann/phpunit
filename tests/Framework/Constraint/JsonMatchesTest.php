@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
@@ -51,10 +50,6 @@ class JsonMatchesTest extends ConstraintTestCase
     /**
      * @dataProvider evaluateDataprovider
      *
-     * @param mixed $expected
-     * @param mixed $jsonOther
-     * @param mixed $jsonValue
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
@@ -67,9 +62,6 @@ class JsonMatchesTest extends ConstraintTestCase
 
     /**
      * @dataProvider evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider
-     *
-     * @param mixed $jsonOther
-     * @param mixed $jsonValue
      *
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\AssertionFailedError

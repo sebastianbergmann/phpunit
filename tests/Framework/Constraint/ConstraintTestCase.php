@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\SelfDescribing;
@@ -43,8 +42,6 @@ abstract class ConstraintTestCase extends TestCase
 
     /**
      * Returns the class name of the constraint.
-     *
-     * @return string
      */
     final protected function className(): string
     {

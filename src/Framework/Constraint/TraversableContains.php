@@ -33,8 +33,6 @@ class TraversableContains extends Constraint
     private $value;
 
     /**
-     * @param mixed $value
-     *
      * @throws \PHPUnit\Framework\Exception
      */
     public function __construct($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false)

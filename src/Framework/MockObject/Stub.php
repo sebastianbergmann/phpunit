@@ -24,8 +24,6 @@ interface Stub extends SelfDescribing
      * specific value.
      *
      * @param Invocation $invocation The invocation which was mocked and matched by the current method and argument matchers
-     *
-     * @return mixed
      */
     public function invoke(Invocation $invocation);
 }

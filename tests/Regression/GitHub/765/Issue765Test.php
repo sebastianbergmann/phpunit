@@ -19,8 +19,6 @@ class Issue765Test extends TestCase
     /**
      * @depends testDependee
      * @dataProvider dependentProvider
-     *
-     * @param mixed $a
      */
     public function testDependent($a): void
     {
