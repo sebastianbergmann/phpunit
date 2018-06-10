@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\Error\Deprecated;
@@ -47,19 +46,19 @@ final class ErrorHandler
             }
         }
 
-        if ($errorNumber === E_NOTICE || $errorNumber === E_USER_NOTICE || $errorNumber === E_STRICT) {
+        if ($errorNumber === \E_NOTICE || $errorNumber === \E_USER_NOTICE || $errorNumber === \E_STRICT) {
             if (Notice::$enabled !== true) {
                 return false;
             }
 
             $exception = Notice::class;
-        } elseif ($errorNumber === E_WARNING || $errorNumber === E_USER_WARNING) {
+        } elseif ($errorNumber === \E_WARNING || $errorNumber === \E_USER_WARNING) {
             if (Warning::$enabled !== true) {
                 return false;
             }
 
             $exception = Warning::class;
-        } elseif ($errorNumber === E_DEPRECATED || $errorNumber === E_USER_DEPRECATED) {
+        } elseif ($errorNumber === \E_DEPRECATED || $errorNumber === \E_USER_DEPRECATED) {
             if (Deprecated::$enabled !== true) {
                 return false;
             }
@@ -80,7 +79,7 @@ final class ErrorHandler
      *
      * @throws \Exception if event of specified severity is emitted
      */
-    public static function handleErrorOnce($severity = E_WARNING): callable
+    public static function handleErrorOnce($severity = \E_WARNING): callable
     {
         $terminator = function () {
             static $expired = false;

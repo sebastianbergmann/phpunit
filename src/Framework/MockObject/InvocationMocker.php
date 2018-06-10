@@ -47,19 +47,12 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
      */
     private $returnValueGeneration;
 
-    /**
-     * @param array $configurableMethods
-     * @param bool  $returnValueGeneration
-     */
     public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {
         $this->configurableMethods   = $configurableMethods;
         $this->returnValueGeneration = $returnValueGeneration;
     }
 
-    /**
-     * @param MatcherInvocation $matcher
-     */
     public function addMatcher(MatcherInvocation $matcher): void
     {
         $this->matchers[] = $matcher;
@@ -77,8 +70,6 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     }
 
     /**
-     * @param mixed $id
-     *
      * @return null|bool
      */
     public function lookupId($id)
@@ -86,14 +77,9 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
         if (isset($this->builderMap[$id])) {
             return $this->builderMap[$id];
         }
-
-        return;
     }
 
     /**
-     * @param mixed $id
-     * @param Match $builder
-     *
      * @throws RuntimeException
      */
     public function registerId($id, Match $builder): void
@@ -108,8 +94,6 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     }
 
     /**
-     * @param MatcherInvocation $matcher
-     *
      * @return BuilderInvocationMocker
      */
     public function expects(MatcherInvocation $matcher)
@@ -122,11 +106,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     }
 
     /**
-     * @param Invocation $invocation
-     *
      * @throws Exception
-     *
-     * @return mixed
      */
     public function invoke(Invocation $invocation)
     {
@@ -179,8 +159,6 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     }
 
     /**
-     * @param Invocation $invocation
-     *
      * @return bool
      */
     public function matches(Invocation $invocation)

@@ -31,8 +31,6 @@ interface Invocation extends SelfDescribing, Verifiable
      * If the matcher is a stub it will also have a return value.
      *
      * @param BaseInvocation $invocation Object containing information on a mocked or stubbed method which was invoked
-     *
-     * @return mixed
      */
     public function invoked(BaseInvocation $invocation);
 

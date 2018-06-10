@@ -30,9 +30,6 @@ class InvokedAtLeastCount extends InvokedRecorder
         $this->requiredInvocations = $requiredInvocations;
     }
 
-    /**
-     * @return string
-     */
     public function toString(): string
     {
         return 'invoked at least ' . $this->requiredInvocations . ' times';

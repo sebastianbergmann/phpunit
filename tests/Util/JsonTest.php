@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
@@ -16,10 +15,6 @@ class JsonTest extends TestCase
 {
     /**
      * @dataProvider canonicalizeProvider
-     *
-     * @param mixed $actual
-     * @param mixed $expected
-     * @param mixed $expectError
      *
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -49,9 +44,6 @@ class JsonTest extends TestCase
     /**
      * @dataProvider prettifyProvider
      *
-     * @param mixed $actual
-     * @param mixed $expected
-     *
      * @throws \PHPUnit\Framework\Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -75,8 +67,6 @@ class JsonTest extends TestCase
      * @dataProvider prettifyExceptionProvider
      * @expectedException \PHPUnit\Framework\Exception
      * @expectedExceptionMessage Cannot prettify invalid json
-     *
-     * @param mixed $json
      */
     public function testPrettifyException($json): void
     {

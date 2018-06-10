@@ -34,10 +34,6 @@ final class Xml
      * DOMDocument, use loadFile() instead.
      *
      * @param DOMDocument|string $actual
-     * @param bool               $isHtml
-     * @param string             $filename
-     * @param bool               $xinclude
-     * @param bool               $strict
      *
      * @throws Exception
      */
@@ -165,15 +161,13 @@ final class Xml
             '',
             \htmlspecialchars(
                 self::convertToUtf8($string),
-                ENT_QUOTES
+                \ENT_QUOTES
             )
         );
     }
 
     /**
      * "Convert" a DOMElement object into a PHP variable.
-     *
-     * @return mixed
      */
     public static function xmlToVariable(DOMElement $element)
     {

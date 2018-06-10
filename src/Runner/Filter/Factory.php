@@ -23,9 +23,6 @@ class Factory
     private $filters = [];
 
     /**
-     * @param ReflectionClass $filter
-     * @param mixed           $args
-     *
      * @throws InvalidArgumentException
      */
     public function addFilter(ReflectionClass $filter, $args): void

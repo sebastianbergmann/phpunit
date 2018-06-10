@@ -73,7 +73,6 @@ class StaticInvocation implements Invocation, SelfDescribing
     /**
      * @param string $className
      * @param string $methodName
-     * @param array  $parameters
      * @param string $returnType
      * @param bool   $cloneObjects
      */

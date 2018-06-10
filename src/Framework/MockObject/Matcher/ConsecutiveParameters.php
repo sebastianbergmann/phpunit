@@ -37,8 +37,6 @@ class ConsecutiveParameters extends StatelessInvocation
     private $invocations = [];
 
     /**
-     * @param array $parameterGroups
-     *
      * @throws \PHPUnit\Framework\Exception
      */
     public function __construct(array $parameterGroups)
@@ -54,17 +52,12 @@ class ConsecutiveParameters extends StatelessInvocation
         }
     }
 
-    /**
-     * @return string
-     */
     public function toString(): string
     {
         return 'with consecutive parameters';
     }
 
     /**
-     * @param BaseInvocation $invocation
-     *
      * @throws \PHPUnit\Framework\ExpectationFailedException
      *
      * @return bool
@@ -89,8 +82,7 @@ class ConsecutiveParameters extends StatelessInvocation
     /**
      * Verify a single invocation
      *
-     * @param BaseInvocation $invocation
-     * @param int            $callIndex
+     * @param int $callIndex
      *
      * @throws ExpectationFailedException
      */

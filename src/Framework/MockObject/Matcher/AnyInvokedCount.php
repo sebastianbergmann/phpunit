@@ -15,9 +15,6 @@ namespace PHPUnit\Framework\MockObject\Matcher;
  */
 class AnyInvokedCount extends InvokedRecorder
 {
-    /**
-     * @return string
-     */
     public function toString(): string
     {
         return 'invoked zero or more times';

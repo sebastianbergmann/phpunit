@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Util\PHP;
 
 use __PHP_Incomplete_Class;
@@ -57,7 +56,7 @@ abstract class AbstractPhpProcess
 
     public static function factory(): self
     {
-        if (DIRECTORY_SEPARATOR === '\\') {
+        if (\DIRECTORY_SEPARATOR === '\\') {
             return new WindowsPhpProcess;
         }
 
@@ -180,7 +179,7 @@ abstract class AbstractPhpProcess
         $command = $this->runtime->getBinary();
         $command .= $this->settingsToParameters($settings);
 
-        if (PHP_SAPI === 'phpdbg') {
+        if (\PHP_SAPI === 'phpdbg') {
             $command .= ' -qrr ';
 
             if ($file) {

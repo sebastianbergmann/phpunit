@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\TextUI;
 
 use PHPUnit\Framework\Error\Deprecated;
@@ -59,7 +58,9 @@ use SebastianBergmann\Environment\Runtime;
 class TestRunner extends BaseTestRunner
 {
     public const SUCCESS_EXIT   = 0;
+
     public const FAILURE_EXIT   = 1;
+
     public const EXCEPTION_EXIT = 2;
 
     /**
@@ -99,7 +100,6 @@ class TestRunner extends BaseTestRunner
 
     /**
      * @param ReflectionClass|Test $test
-     * @param array                $arguments
      * @param bool                 $exit
      *
      * @throws \RuntimeException
@@ -751,14 +751,14 @@ class TestRunner extends BaseTestRunner
      */
     protected function runFailed(string $message): void
     {
-        $this->write($message . PHP_EOL);
+        $this->write($message . \PHP_EOL);
 
         exit(self::FAILURE_EXIT);
     }
 
     protected function write(string $buffer): void
     {
-        if (PHP_SAPI != 'cli' && PHP_SAPI != 'phpdbg') {
+        if (\PHP_SAPI != 'cli' && \PHP_SAPI != 'phpdbg') {
             $buffer = \htmlspecialchars($buffer);
         }
 

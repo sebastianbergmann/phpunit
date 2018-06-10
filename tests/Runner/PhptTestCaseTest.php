@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\TestCase;
@@ -89,7 +88,7 @@ EOF;
     {
         $this->setPhpContent($this->ensureCorrectEndOfLine(self::EXPECT_CONTENT));
 
-        $fileSection = '<?php echo "Hello PHPUnit!"; ?>' . PHP_EOL;
+        $fileSection = '<?php echo "Hello PHPUnit!"; ?>' . \PHP_EOL;
 
         $this->phpProcess
              ->expects($this->once())
@@ -113,7 +112,7 @@ Something
 EOF
         ));
 
-        $renderedCode = "<?php echo '" . $this->dirname . "' . '" . $this->filename . "'; ?>" . PHP_EOL;
+        $renderedCode = "<?php echo '" . $this->dirname . "' . '" . $this->filename . "'; ?>" . \PHP_EOL;
 
         $this->phpProcess
              ->expects($this->once())
@@ -126,13 +125,13 @@ EOF
 
     public function testRenderSkipifSection(): void
     {
-        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
-        $phptContent .= '--SKIPIF--' . PHP_EOL;
-        $phptContent .= "<?php echo 'skip: ' . __FILE__; ?>" . PHP_EOL;
+        $phptContent = self::EXPECT_CONTENT . \PHP_EOL;
+        $phptContent .= '--SKIPIF--' . \PHP_EOL;
+        $phptContent .= "<?php echo 'skip: ' . __FILE__; ?>" . \PHP_EOL;
 
         $this->setPhpContent($phptContent);
 
-        $renderedCode = "<?php echo 'skip: ' . '" . $this->filename . "'; ?>" . PHP_EOL;
+        $renderedCode = "<?php echo 'skip: ' . '" . $this->filename . "'; ?>" . \PHP_EOL;
 
         $this->phpProcess
              ->expects($this->at(0))
@@ -145,10 +144,10 @@ EOF
 
     public function testShouldRunSkipifSectionWhenExists(): void
     {
-        $skipifSection = '<?php /** Nothing **/ ?>' . PHP_EOL;
+        $skipifSection = '<?php /** Nothing **/ ?>' . \PHP_EOL;
 
-        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
-        $phptContent .= '--SKIPIF--' . PHP_EOL;
+        $phptContent = self::EXPECT_CONTENT . \PHP_EOL;
+        $phptContent .= '--SKIPIF--' . \PHP_EOL;
         $phptContent .= $skipifSection;
 
         $this->setPhpContent($phptContent);
@@ -164,10 +163,10 @@ EOF
 
     public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord(): void
     {
-        $skipifSection = '<?php echo "skip: Reason"; ?>' . PHP_EOL;
+        $skipifSection = '<?php echo "skip: Reason"; ?>' . \PHP_EOL;
 
-        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
-        $phptContent .= '--SKIPIF--' . PHP_EOL;
+        $phptContent = self::EXPECT_CONTENT . \PHP_EOL;
+        $phptContent .= '--SKIPIF--' . \PHP_EOL;
         $phptContent .= $skipifSection;
 
         $this->setPhpContent($phptContent);
@@ -183,10 +182,10 @@ EOF
 
     public function testShouldRunCleanSectionWhenDefined(): void
     {
-        $cleanSection = '<?php unlink("/tmp/something"); ?>' . PHP_EOL;
+        $cleanSection = '<?php unlink("/tmp/something"); ?>' . \PHP_EOL;
 
-        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
-        $phptContent .= '--CLEAN--' . PHP_EOL;
+        $phptContent = self::EXPECT_CONTENT . \PHP_EOL;
+        $phptContent .= '--CLEAN--' . \PHP_EOL;
         $phptContent .= $cleanSection;
 
         $this->setPhpContent($phptContent);
@@ -312,9 +311,9 @@ EOF
         return \strtr(
             $content,
             [
-                "\r\n" => PHP_EOL,
-                "\r"   => PHP_EOL,
-                "\n"   => PHP_EOL
+                "\r\n" => \PHP_EOL,
+                "\r"   => \PHP_EOL,
+                "\n"   => \PHP_EOL
             ]
         );
     }

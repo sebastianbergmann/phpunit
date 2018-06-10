@@ -28,14 +28,14 @@ class ArraySubset extends Constraint
     /**
      * @var bool
      */
-    private $strict;
+    private $checkForObjectIdentity;
 
-    public function __construct(iterable $subset, bool $strict = false)
+    public function __construct(iterable $subset, bool $checkForObjectIdentity = false)
     {
         parent::__construct();
 
-        $this->strict = $strict;
-        $this->subset = $subset;
+        $this->checkForObjectIdentity = $checkForObjectIdentity;
+        $this->subset                 = $subset;
     }
 
     /**
@@ -54,8 +54,6 @@ class ArraySubset extends Constraint
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return mixed
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
@@ -66,7 +64,7 @@ class ArraySubset extends Constraint
 
         $patched = \array_replace_recursive($other, $this->subset);
 
-        if ($this->strict) {
+        if ($this->checkForObjectIdentity) {
             $result = $other === $patched;
         } else {
             $result = $other == $patched;

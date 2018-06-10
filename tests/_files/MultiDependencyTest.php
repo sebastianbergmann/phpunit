@@ -28,9 +28,6 @@ class MultiDependencyTest extends TestCase
     /**
      * @depends testOne
      * @depends testTwo
-     *
-     * @param mixed $a
-     * @param mixed $b
      */
     public function testThree($a, $b): void
     {

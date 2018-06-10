@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework\Constraint;
 
 use SebastianBergmann\Diff\Differ;
@@ -38,8 +37,6 @@ class StringMatchesFormatDescription extends RegularExpression
      * constraint is met, false otherwise.
      *
      * @param mixed $other value or object to evaluate
-     *
-     * @return bool
      */
     protected function matches($other): bool
     {
@@ -93,7 +90,7 @@ class StringMatchesFormatDescription extends RegularExpression
                 '/(?<!%)%c/'
             ],
             [
-                \str_replace('\\', '\\\\', '\\' . DIRECTORY_SEPARATOR),
+                \str_replace('\\', '\\\\', '\\' . \DIRECTORY_SEPARATOR),
                 '[^\r\n]+',
                 '[^\r\n]*',
                 '.+',

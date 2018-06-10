@@ -14,10 +14,10 @@ class TestWithTest extends TestCase
     public static function providerMethod()
     {
         return [
-          [0, 0, 0],
-          [0, 1, 1],
-          [1, 1, 3],
-          [1, 0, 1]
+            [0, 0, 0],
+            [0, 1, 1],
+            [1, 1, 3],
+            [1, 0, 1]
         ];
     }
 
@@ -26,10 +26,6 @@ class TestWithTest extends TestCase
      *           [0, 1, 1]
      *           [1, 2, 3]
      *           [20, 22, 42]
-     *
-     * @param mixed $a
-     * @param mixed $b
-     * @param mixed $c
      */
     public function testAdd($a, $b, $c): void
     {

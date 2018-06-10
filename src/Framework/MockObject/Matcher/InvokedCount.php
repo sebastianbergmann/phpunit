@@ -43,17 +43,12 @@ class InvokedCount extends InvokedRecorder
         return $this->expectedCount === 0;
     }
 
-    /**
-     * @return string
-     */
     public function toString(): string
     {
         return 'invoked ' . $this->expectedCount . ' time(s)';
     }
 
     /**
-     * @param BaseInvocation $invocation
-     *
      * @throws ExpectationFailedException
      */
     public function invoked(BaseInvocation $invocation): void

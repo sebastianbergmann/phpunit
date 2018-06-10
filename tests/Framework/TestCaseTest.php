@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\MockObject\MockObject;
@@ -16,6 +15,7 @@ use PHPUnit\Runner\BaseTestRunner;
 class TestCaseTest extends TestCase
 {
     protected static $testStatic      = 0;
+
     protected $backupGlobalsBlacklist = ['i', 'singleton'];
 
     public static function setUpBeforeClass(): void
@@ -573,14 +573,14 @@ class TestCaseTest extends TestCase
         $test->run();
 
         $this->assertEquals(
-            'PHP >= 99-dev is required.' . PHP_EOL .
-            'PHPUnit >= 9-dev is required.' . PHP_EOL .
-            'Operating system matching /DOESNOTEXIST/i is required.' . PHP_EOL .
-            'Function testFuncOne is required.' . PHP_EOL .
-            'Function testFuncTwo is required.' . PHP_EOL .
-            'Setting "not_a_setting" must be "Off".' . PHP_EOL .
-            'Extension testExtOne is required.' . PHP_EOL .
-            'Extension testExtTwo is required.' . PHP_EOL .
+            'PHP >= 99-dev is required.' . \PHP_EOL .
+            'PHPUnit >= 9-dev is required.' . \PHP_EOL .
+            'Operating system matching /DOESNOTEXIST/i is required.' . \PHP_EOL .
+            'Function testFuncOne is required.' . \PHP_EOL .
+            'Function testFuncTwo is required.' . \PHP_EOL .
+            'Setting "not_a_setting" must be "Off".' . \PHP_EOL .
+            'Extension testExtOne is required.' . \PHP_EOL .
+            'Extension testExtTwo is required.' . \PHP_EOL .
             'Extension testExtThree >= 2.0 is required.',
             $test->getStatusMessage()
         );

@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework;
 
 use AssertionError;
@@ -588,7 +587,7 @@ class TestResult implements Countable
         if ($this->convertErrorsToExceptions) {
             $oldErrorHandler = \set_error_handler(
                 [ErrorHandler::class, 'handleError'],
-                E_ALL | E_STRICT
+                \E_ALL | \E_STRICT
             );
 
             if ($oldErrorHandler === null) {
@@ -767,7 +766,7 @@ class TestResult implements Countable
                     $test,
                     new UnintentionallyCoveredCodeError(
                         'This test executed code that is not listed as code to be covered or used:' .
-                        PHP_EOL . $cce->getMessage()
+                        \PHP_EOL . $cce->getMessage()
                     ),
                     $time
                 );
@@ -776,7 +775,7 @@ class TestResult implements Countable
                     $test,
                     new CoveredCodeNotExecutedException(
                         'This test did not execute all the code that is listed as code to be covered:' .
-                        PHP_EOL . $cce->getMessage()
+                        \PHP_EOL . $cce->getMessage()
                     ),
                     $time
                 );

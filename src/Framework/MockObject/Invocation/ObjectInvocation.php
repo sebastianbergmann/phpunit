@@ -22,7 +22,6 @@ class ObjectInvocation extends StaticInvocation
     /**
      * @param string $className
      * @param string $methodName
-     * @param array  $parameters
      * @param string $returnType
      * @param object $object
      * @param bool   $cloneObjects

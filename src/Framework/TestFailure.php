@@ -26,6 +26,7 @@ class TestFailure
      * @var Throwable
      */
     protected $thrownException;
+
     /**
      * @var string
      */
@@ -33,8 +34,6 @@ class TestFailure
 
     /**
      * Returns a description for an exception.
-     *
-     * @param Throwable $e
      *
      * @throws \InvalidArgumentException
      */
@@ -68,7 +67,6 @@ class TestFailure
     /**
      * Constructs a TestFailure with the given test and exception.
      *
-     * @param Test      $failedTest
      * @param Throwable $t
      */
     public function __construct(Test $failedTest, $t)

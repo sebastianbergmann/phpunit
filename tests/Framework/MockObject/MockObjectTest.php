@@ -476,8 +476,6 @@ class MockObjectTest extends TestCase
 
     /**
      * @dataProvider traversableProvider
-     *
-     * @param mixed $type
      */
     public function testGetMockForTraversable($type): void
     {
@@ -1005,12 +1003,12 @@ class MockObjectTest extends TestCase
     public function traversableProvider()
     {
         return [
-          ['Traversable'],
-          ['\Traversable'],
-          ['TraversableMockTestInterface'],
-          [['Traversable']],
-          [['Iterator', 'Traversable']],
-          [['\Iterator', '\Traversable']]
+            ['Traversable'],
+            ['\Traversable'],
+            ['TraversableMockTestInterface'],
+            [['Traversable']],
+            [['Iterator', 'Traversable']],
+            [['\Iterator', '\Traversable']]
         ];
     }
 

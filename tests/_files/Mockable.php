@@ -10,6 +10,7 @@
 class Mockable
 {
     public $constructorArgs;
+
     public $cloned;
 
     public function __construct($arg1 = null, $arg2 = null)

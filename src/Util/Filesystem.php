@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Util;
 
 /**
@@ -24,7 +23,7 @@ final class Filesystem
     {
         return \str_replace(
             ['_', '\\'],
-            DIRECTORY_SEPARATOR,
+            \DIRECTORY_SEPARATOR,
             $className
         ) . '.php';
     }

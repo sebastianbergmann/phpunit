@@ -48,17 +48,12 @@ abstract class InvokedRecorder implements Invocation
         return \count($this->invocations) > 0;
     }
 
-    /**
-     * @param BaseInvocation $invocation
-     */
     public function invoked(BaseInvocation $invocation): void
     {
         $this->invocations[] = $invocation;
     }
 
     /**
-     * @param BaseInvocation $invocation
-     *
      * @return bool
      */
     public function matches(BaseInvocation $invocation)

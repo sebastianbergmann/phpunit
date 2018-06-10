@@ -59,9 +59,6 @@ class Matcher implements MatcherInvocation
      */
     private $stub;
 
-    /**
-     * @param MatcherInvocation $invocationMatcher
-     */
     public function __construct(MatcherInvocation $invocationMatcher)
     {
         $this->invocationMatcher = $invocationMatcher;
@@ -113,13 +110,9 @@ class Matcher implements MatcherInvocation
     }
 
     /**
-     * @param Invocation $invocation
-     *
      * @throws \Exception
      * @throws RuntimeException
      * @throws ExpectationFailedException
-     *
-     * @return mixed
      */
     public function invoked(Invocation $invocation)
     {
@@ -181,8 +174,6 @@ class Matcher implements MatcherInvocation
     }
 
     /**
-     * @param Invocation $invocation
-     *
      * @throws RuntimeException
      * @throws ExpectationFailedException
      *
@@ -289,9 +280,6 @@ class Matcher implements MatcherInvocation
         }
     }
 
-    /**
-     * @return string
-     */
     public function toString(): string
     {
         $list = [];

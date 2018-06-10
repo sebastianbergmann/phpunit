@@ -51,6 +51,7 @@ class PhptTestCase implements Test, SelfDescribing
         'safe_mode=0',
         'xdebug.default_enable=0'
     ];
+
     /**
      * @var string
      */
@@ -205,8 +206,6 @@ class PhptTestCase implements Test, SelfDescribing
      * Parse --INI-- section key value pairs and return as array.
      *
      * @param array|string
-     * @param mixed $content
-     * @param mixed $ini
      */
     private function parseIniSection($content, $ini = []): array
     {
@@ -401,7 +400,7 @@ class PhptTestCase implements Test, SelfDescribing
             'EXPECTF',
             'EXPECTREGEX'
         ];
-        $testDirectory = \dirname($this->filename) . DIRECTORY_SEPARATOR;
+        $testDirectory = \dirname($this->filename) . \DIRECTORY_SEPARATOR;
 
         foreach ($allowSections as $section) {
             if (isset($sections[$section . '_EXTERNAL'])) {
@@ -480,7 +479,7 @@ class PhptTestCase implements Test, SelfDescribing
 
     private function getCoverageFiles(): array
     {
-        $baseDir          = \dirname($this->filename) . DIRECTORY_SEPARATOR;
+        $baseDir          = \dirname($this->filename) . \DIRECTORY_SEPARATOR;
         $basename         = \basename($this->filename, 'phpt');
 
         return [
