@@ -33,7 +33,7 @@
         "phar-io/version": "^1.0",
         "phpspec/prophecy": "^1.7",
         "phpunit/php-code-coverage": "^6.0.7",
-        "phpunit/php-file-iterator": "^2.0",
+        "phpunit/php-file-iterator": "^2.0.1",
         "phpunit/php-text-template": "^1.2.1",
         "phpunit/php-timer": "^2.0",
         "sebastian/comparator": "^3.0",
