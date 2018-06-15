@@ -63,7 +63,7 @@ final class TestSuiteSorter
             $suite->setTests($this->randomize($suite->tests()));
         }
 
-        if ($resolveDependencies && $this->suiteOnlyContainsTests($suite)) {
+        if ($resolveDependencies && !($suite instanceof DataProviderTestSuite) && $this->suiteOnlyContainsTests($suite)) {
             $suite->setTests($this->resolveDependencies($suite->tests()));
         }
     }
