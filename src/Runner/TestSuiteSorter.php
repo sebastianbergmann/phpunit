@@ -150,7 +150,7 @@ final class TestSuiteSorter
             $testClass = \get_class($test);
         }
 
-        $names = \array_map(function ($name) use ($test, $testClass) {
+        $names = \array_map(function ($name) use ($testClass) {
             return \strpos($name, '::') === false
                 ? $testClass . '::' . $name
                 : $name;
