@@ -27,6 +27,10 @@ if ($composerAutoload) {
 
 function __phpunit_run_isolated_test()
 {
+    // If testcase open stdout and close it, the output will be lost.
+    // So we open it manually.
+    $__stdout = fopen('php://stdout', 'w');
+
     if (!class_exists('{className}')) {
         require_once '{filename}';
     }
