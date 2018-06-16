@@ -32,6 +32,10 @@ class BeforeAfterClassPidTest extends TestCase
      */
     public static function showPidAfter()
     {
-        echo "\n@afterClass output - PID difference should be zero: " . ($GLOBALS['PID_BEFORE'] - getmypid());
+        if ($GLOBALS['PID_BEFORE'] != getmypid()) {
+            echo "\n@afterClass output - PID difference should be zero\n";
+            echo "PID_BEFORE: {$GLOBALS['PID_BEFORE']}\n";
+            echo "mypid: " . getmypid() . "\n";
+        }
     }
 }

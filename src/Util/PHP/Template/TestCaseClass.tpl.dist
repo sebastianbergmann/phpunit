@@ -47,6 +47,11 @@ function __phpunit_run_isolated_test()
     $result->beStrictAboutTodoAnnotatedTests({isStrictAboutTodoAnnotatedTests});
     $result->beStrictAboutResourceUsageDuringSmallTests({isStrictAboutResourceUsageDuringSmallTests});
 
+    // If testcase open stdout and close it, the output will be lost.
+    // So we open it manually.
+    $stdout = fopen('php://stdout', 'w');
+
+    /** @var TestCase $test */
     $test = new {className}('{name}', unserialize('{data}'), '{dataName}');
     $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(TRUE);
@@ -59,8 +64,8 @@ function __phpunit_run_isolated_test()
     }
 
     @rewind(STDOUT); /* @ as not every STDOUT target stream is rewindable */
-    if ($stdout = stream_get_contents(STDOUT)) {
-        $output = $stdout . $output;
+    if ($testcaseOutput = stream_get_contents(STDOUT)) {
+        $output = $testcaseOutput . $output;
         $streamMetaData = stream_get_meta_data(STDOUT);
         if (!empty($streamMetaData['stream_type']) && 'STDIO' === $streamMetaData['stream_type']) {
             @ftruncate(STDOUT, 0);
@@ -76,6 +81,7 @@ function __phpunit_run_isolated_test()
         'output'        => $output
       )
     );
+    fclose($stdout);
 }
 
 $configurationFilePath = '{configurationFilePath}';
