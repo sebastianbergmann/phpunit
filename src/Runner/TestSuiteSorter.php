@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -62,9 +63,16 @@ final class TestSuiteSorter
             $suite->setTests($this->randomize($suite->tests()));
         }
 
-        if ($resolveDependencies && $suite->tests()[0] instanceof TestCase) {
+        if ($resolveDependencies && !($suite instanceof DataProviderTestSuite) && $this->suiteOnlyContainsTests($suite)) {
             $suite->setTests($this->resolveDependencies($suite->tests()));
         }
+    }
+
+    private function suiteOnlyContainsTests(TestSuite $suite): bool
+    {
+        return \array_reduce($suite->tests(), function ($carry, $test) {
+            return $carry && ($test instanceof TestCase || $test instanceof DataProviderTestSuite);
+        }, true);
     }
 
     private function reverse(array $tests): array
@@ -90,30 +98,21 @@ final class TestSuiteSorter
      * 3. If the test has dependencies but none left to do: mark done, start again from the top
      * 4. When we reach the end add any leftover tests to the end. These will be marked 'skipped' during execution.
      *
-     * @param Test[] $tests
+     * @param array<DataProviderTestSuite|TestCase> $tests
      *
-     * @return Test[]
+     * @return array<DataProviderTestSuite|TestCase>
      */
     private function resolveDependencies(array $tests): array
     {
-        if (empty($tests)) {
-            return $tests;
-        }
-
         $newTestOrder = [];
         $i            = 0;
 
         do {
-            $todoNames = \array_merge(
-                \array_map(function (Test $t) {
-                    return $t->getName();
-                }, $tests),
-                \array_map(function (Test $t) {
-                    return \get_class($t) . '::' . $t->getName();
-                }, $tests)
-            );
+            $todoNames = \array_map(function ($test) {
+                return $this->getNormalizedTestName($test);
+            }, $tests);
 
-            if (!$tests[$i]->hasDependencies() || empty(\array_intersect($tests[$i]->getDependencies(), $todoNames))) {
+            if (!$tests[$i]->hasDependencies() || empty(\array_intersect($this->getNormalizedDependencyNames($tests[$i]), $todoNames))) {
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($tests, $i, 1));
                 $i            = 0;
             } else {
@@ -122,5 +121,41 @@ final class TestSuiteSorter
         } while (!empty($tests) && ($i < \count($tests)));
 
         return \array_merge($newTestOrder, $tests);
+    }
+
+    /**
+     * @param DataProviderTestSuite|TestCase $test
+     *
+     * @return string Full test name as "TestSuiteClassName::testMethodName"
+     */
+    private function getNormalizedTestName($test): string
+    {
+        if (\strpos($test->getName(), '::') !== false) {
+            return $test->getName();
+        }
+
+        return \get_class($test) . '::' . $test->getName();
+    }
+
+    /**
+     * @param DataProviderTestSuite|TestCase $test
+     *
+     * @return array<string> A list of full test names as "TestSuiteClassName::testMethodName"
+     */
+    private function getNormalizedDependencyNames($test): array
+    {
+        if ($test instanceof DataProviderTestSuite) {
+            $testClass = \substr($test->getName(), 0, \strpos($test->getName(), '::'));
+        } else {
+            $testClass = \get_class($test);
+        }
+
+        $names = \array_map(function ($name) use ($testClass) {
+            return \strpos($name, '::') === false
+                ? $testClass . '::' . $name
+                : $name;
+        }, $test->getDependencies());
+
+        return $names;
     }
 }
