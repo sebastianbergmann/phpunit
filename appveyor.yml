@@ -10,13 +10,11 @@ environment:
   COMPOSER_ROOT_VERSION: '7.0-dev'
 
   matrix:
-    - PHP_VERSION: '7.2.5-Win32-VC15'
+    - PHP_VERSION: '7.1.11'
+      XDEBUG_VERSION: '2.5.5-7.1'
       DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.2.5-Win32-VC15'
-      DEPENDENCIES: ''
-    - PHP_VERSION: '7.1.17-Win32-VC14'
-      DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.1.17-Win32-VC14'
+    - PHP_VERSION: '7.1.11'
+      XDEBUG_VERSION: '2.5.5-7.1'
       DEPENDENCIES: ''
 
 matrix:
@@ -33,8 +31,8 @@ install:
   - IF NOT EXIST c:\php mkdir c:\php
   - IF NOT EXIST c:\php\%PHP_VERSION% mkdir c:\php\%PHP_VERSION%
   - cd c:\php\%PHP_VERSION%
-  - IF NOT EXIST php-installed.txt appveyor-retry curl -fsS -o php.zip https://windows.php.net/downloads/releases/archives/php-%PHP_VERSION%-x86.zip
-  - IF NOT EXIST php-installed.txt 7z x php.zip -y
+  - IF NOT EXIST php-installed.txt curl -fsS -o php-%PHP_VERSION%-Win32-VC14-x86.zip https://windows.php.net/downloads/releases/archives/php-%PHP_VERSION%-Win32-VC14-x86.zip
+  - IF NOT EXIST php-installed.txt 7z x php-%PHP_VERSION%-Win32-VC14-x86.zip -y >nul
   - IF NOT EXIST php-installed.txt del /Q *.zip
   - IF NOT EXIST php-installed.txt copy /Y php.ini-development php.ini
   - IF NOT EXIST php-installed.txt echo max_execution_time=1200 >> php.ini
@@ -45,12 +43,13 @@ install:
   - IF NOT EXIST php-installed.txt echo extension=php_mbstring.dll >> php.ini
   - IF NOT EXIST php-installed.txt echo extension=php_fileinfo.dll >> php.ini
   - IF NOT EXIST php-installed.txt echo extension=php_mysqli.dll >> php.ini
-  - IF NOT EXIST php-installed.txt echo extension=php_soap.dll >> php.ini
   - IF NOT EXIST php-installed.txt echo extension=php_pdo_sqlite.dll >> php.ini
   - IF NOT EXIST php-installed.txt echo zend.assertions=1 >> php.ini
   - IF NOT EXIST php-installed.txt echo assert.exception=On >> php.ini
-  - IF NOT EXIST php-installed.txt appveyor DownloadFile https://getcomposer.org/composer.phar
+  - IF NOT EXIST php-installed.txt curl -fsS -o composer.phar https://getcomposer.org/composer.phar
   - IF NOT EXIST php-installed.txt echo @php %%~dp0composer.phar %%* > composer.bat
+  - IF NOT EXIST php-installed.txt curl -fsS -o c:\php\%PHP_VERSION%\ext\php_xdebug-%XDEBUG_VERSION%-vc14.dll https://xdebug.org/files/php_xdebug-%XDEBUG_VERSION%-vc14.dll
+  - IF NOT EXIST php-installed.txt echo zend_extension=php_xdebug-%XDEBUG_VERSION%-vc14.dll >> php.ini
   - IF NOT EXIST php-installed.txt type nul >> php-installed.txt
   - cd c:\phpunit
   - composer update --no-interaction --no-ansi --no-progress --no-suggest --optimize-autoloader --prefer-stable %DEPENDENCIES%
