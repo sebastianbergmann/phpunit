@@ -37,7 +37,7 @@ install:
   - IF NOT EXIST c:\php mkdir c:\php
   - IF NOT EXIST c:\php\%PHP_VERSION% mkdir c:\php\%PHP_VERSION%
   - cd c:\php\%PHP_VERSION%
-  - IF NOT EXIST php-installed.txt appveyor DownloadFile http://windows.php.net/downloads/releases/archives/php-%PHP_VERSION%-Win32-VC14-x86.zip
+  - IF NOT EXIST php-installed.txt curl -fsS -o php-%PHP_VERSION%-Win32-VC14-x86.zip https://windows.php.net/downloads/releases/archives/php-%PHP_VERSION%-Win32-VC14-x86.zip
   - IF NOT EXIST php-installed.txt 7z x php-%PHP_VERSION%-Win32-VC14-x86.zip -y >nul
   - IF NOT EXIST php-installed.txt del /Q *.zip
   - IF NOT EXIST php-installed.txt copy /Y php.ini-development php.ini
@@ -52,9 +52,9 @@ install:
   - IF NOT EXIST php-installed.txt echo extension=php_pdo_sqlite.dll >> php.ini
   - IF NOT EXIST php-installed.txt echo zend.assertions=1 >> php.ini
   - IF NOT EXIST php-installed.txt echo assert.exception=On >> php.ini
-  - IF NOT EXIST php-installed.txt appveyor DownloadFile https://getcomposer.org/composer.phar
+  - IF NOT EXIST php-installed.txt curl -fsS -o composer.phar https://getcomposer.org/composer.phar
   - IF NOT EXIST php-installed.txt echo @php %%~dp0composer.phar %%* > composer.bat
-  - IF NOT EXIST php-installed.txt appveyor DownloadFile https://xdebug.org/files/php_xdebug-%XDEBUG_VERSION%-vc14.dll -FileName c:\php\%PHP_VERSION%\ext\php_xdebug-%XDEBUG_VERSION%-vc14.dll
+  - IF NOT EXIST php-installed.txt curl -fsS -o c:\php\%PHP_VERSION%\ext\php_xdebug-%XDEBUG_VERSION%-vc14.dll https://xdebug.org/files/php_xdebug-%XDEBUG_VERSION%-vc14.dll
   - IF NOT EXIST php-installed.txt echo zend_extension=php_xdebug-%XDEBUG_VERSION%-vc14.dll >> php.ini
   - IF NOT EXIST php-installed.txt type nul >> php-installed.txt
   - cd c:\phpunit
