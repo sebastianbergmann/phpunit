@@ -568,6 +568,8 @@ class Configuration
                 \putenv("{$name}={$value}");
             }
 
+            $value = \getenv($name);
+
             if (!isset($_ENV[$name])) {
                 $_ENV[$name] = $value;
             }
