@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.2.6] - 2018-MM-DD
+
+### Fixed
+
+* Fixed [#3176](https://github.com/sebastianbergmann/phpunit/issues/3176): PHPUnit 7.2.5 breaks backward compatibility
+
 ## [7.2.5] - 2018-06-21
 
 ### Fixed
@@ -53,6 +59,7 @@ All notable changes of the PHPUnit 7.2 release series are documented in this fil
 
 * Fixed [#3069](https://github.com/sebastianbergmann/phpunit/issues/3069): Method `ResultPrinter::printWaitPrompt()` seems to be unused
 
+[7.2.6]: https://github.com/sebastianbergmann/phpunit/compare/7.2.5...7.2.6
 [7.2.5]: https://github.com/sebastianbergmann/phpunit/compare/7.2.4...7.2.5
 [7.2.4]: https://github.com/sebastianbergmann/phpunit/compare/7.2.3...7.2.4
 [7.2.3]: https://github.com/sebastianbergmann/phpunit/compare/7.2.2...7.2.3
