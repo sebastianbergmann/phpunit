@@ -167,8 +167,13 @@
     <xs:simpleType name="executionOrderType">
         <xs:restriction base="xs:string">
             <xs:enumeration value="default"/>
-            <xs:enumeration value="reverse"/>
+            <xs:enumeration value="defects"/>
+            <xs:enumeration value="depends"/>
+            <xs:enumeration value="depends,defects"/>
             <xs:enumeration value="random"/>
+            <xs:enumeration value="reverse"/>
+            <xs:enumeration value="depends,random"/>
+            <xs:enumeration value="depends,reverse"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="fileFilterType">
@@ -216,6 +221,8 @@
         <xs:attribute name="backupGlobals" type="xs:boolean" default="false"/>
         <xs:attribute name="backupStaticAttributes" type="xs:boolean" default="false"/>
         <xs:attribute name="bootstrap" type="xs:anyURI"/>
+        <xs:attribute name="cacheResult" type="xs:boolean"/>
+        <xs:attribute name="cacheResultFile" type="xs:anyURI"/>
         <xs:attribute name="cacheTokens" type="xs:boolean"/>
         <xs:attribute name="colors" type="xs:boolean" default="false"/>
         <xs:attribute name="columns" type="columnsType" default="80"/>
@@ -228,6 +235,7 @@
         <xs:attribute name="printerClass" type="xs:string" default="PHPUnit\TextUI\ResultPrinter"/>
         <xs:attribute name="printerFile" type="xs:anyURI"/>
         <xs:attribute name="processIsolation" type="xs:boolean" default="false"/>
+        <xs:attribute name="stopOnDefect" type="xs:boolean" default="false"/>
         <xs:attribute name="stopOnError" type="xs:boolean" default="false"/>
         <xs:attribute name="stopOnFailure" type="xs:boolean" default="false"/>
         <xs:attribute name="stopOnWarning" type="xs:boolean" default="false"/>

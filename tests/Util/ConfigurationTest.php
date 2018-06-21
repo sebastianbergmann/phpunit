@@ -37,7 +37,7 @@ class ConfigurationTest extends TestCase
 
     public function testShouldReadColorsWhenTrueInConfigurationFile(): void
     {
-        $configurationFilename =  \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.colors.true.xml';
+        $configurationFilename = \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.colors.true.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
@@ -46,7 +46,7 @@ class ConfigurationTest extends TestCase
 
     public function testShouldReadColorsWhenFalseInConfigurationFile(): void
     {
-        $configurationFilename =  \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.colors.false.xml';
+        $configurationFilename = \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.colors.false.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
@@ -55,7 +55,7 @@ class ConfigurationTest extends TestCase
 
     public function testShouldReadColorsWhenEmptyInConfigurationFile(): void
     {
-        $configurationFilename =  \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.colors.empty.xml';
+        $configurationFilename = \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.colors.empty.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
@@ -64,7 +64,7 @@ class ConfigurationTest extends TestCase
 
     public function testShouldReadColorsWhenInvalidInConfigurationFile(): void
     {
-        $configurationFilename =  \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.colors.invalid.xml';
+        $configurationFilename = \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.colors.invalid.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
@@ -73,16 +73,19 @@ class ConfigurationTest extends TestCase
 
     public function testInvalidConfigurationGeneratesValidationErrors(): void
     {
-        $configurationFilename =  \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.colors.invalid.xml';
+        $configurationFilename = \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.colors.invalid.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
 
         $this->assertTrue($configurationInstance->hasValidationErrors());
-        $this->assertArraySubset([1 => ["Element 'phpunit', attribute 'colors': 'Something else' is not a valid value of the atomic type 'xs:boolean'."]], $configurationInstance->getValidationErrors());
+        $this->assertArraySubset(
+            [1 => ["Element 'phpunit', attribute 'colors': 'Something else' is not a valid value of the atomic type 'xs:boolean'."]],
+            $configurationInstance->getValidationErrors()
+        );
     }
 
-    public function testNonIntegerValueReturnsDefault(): void
+    public function testShouldUseDefaultValuesForInvalidIntegers(): void
     {
-        $configurationFilename =  \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.columns.default.xml';
+        $configurationFilename = \dirname(__DIR__) . \DIRECTORY_SEPARATOR . '_files' . \DIRECTORY_SEPARATOR . 'configuration.columns.default.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
@@ -92,9 +95,11 @@ class ConfigurationTest extends TestCase
     /**
      * @dataProvider configurationRootOptionsProvider
      *
+     * @group test-reorder
+     *
      * @param bool|int|string $expected
      */
-    public function testConfigurationRootOptions(string $optionName, string $optionValue, $expected): void
+    public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, $expected): void
     {
         $tmpFilename = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . \uniqid() . '.xml';
         $xml         = "<phpunit $optionName='$optionValue'></phpunit>" . \PHP_EOL;
@@ -111,24 +116,45 @@ class ConfigurationTest extends TestCase
 
     public function configurationRootOptionsProvider(): array
     {
+        $tmpFilePath = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR;
+
         return [
-            ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
-            ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
-            ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
-            ['columns', 'max', 'max'],
-            ['stopOnFailure', 'true', true],
-            ['stopOnWarning', 'true', true],
-            ['stopOnIncomplete', 'true', true],
-            ['stopOnRisky', 'true', true],
-            ['stopOnSkipped', 'true', true],
-            ['failOnWarning', 'true', true],
-            ['failOnRisky', 'true', true],
-            ['disableCodeCoverageIgnore', 'true', true],
-            ['processIsolation', 'true', true],
-            ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
-            ['reverseDefectList', 'true', true],
-            ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
+            'executionOrder default'                                        => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
+            'executionOrder random'                                         => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
+            'executionOrder reverse'                                        => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
+            'cacheResult false'                                             => ['cacheResult', 'false', false],
+            'cacheResult true'                                              => ['cacheResult', 'true', true],
+            'cacheResultFile absolute path'                                 => ['cacheResultFile', '/path/to/result/cache', '/path/to/result/cache'],
+            'columns'                                                       => ['columns', 'max', 'max'],
+            'stopOnFailure'                                                 => ['stopOnFailure', 'true', true],
+            'stopOnWarning'                                                 => ['stopOnWarning', 'true', true],
+            'stopOnIncomplete'                                              => ['stopOnIncomplete', 'true', true],
+            'stopOnRisky'                                                   => ['stopOnRisky', 'true', true],
+            'stopOnSkipped'                                                 => ['stopOnSkipped', 'true', true],
+            'failOnWarning'                                                 => ['failOnWarning', 'true', true],
+            'failOnRisky'                                                   => ['failOnRisky', 'true', true],
+            'disableCodeCoverageIgnore'                                     => ['disableCodeCoverageIgnore', 'true', true],
+            'processIsolation'                                              => ['processIsolation', 'true', true],
+            'testSuiteLoaderFile absolute path'                             => ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
+            'reverseDefectList'                                             => ['reverseDefectList', 'true', true],
+            'registerMockObjectsFromTestArgumentsRecursively'               => ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
         ];
+    }
+
+    public function testShouldParseXmlConfigurationExecutionOrderCombined(): void
+    {
+        $tmpFilename = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit.' . \uniqid() . '.xml';
+        $xml         = "<phpunit executionOrder='depends,defects'></phpunit>" . \PHP_EOL;
+        \file_put_contents($tmpFilename, $xml);
+
+        $configurationInstance = Configuration::getInstance($tmpFilename);
+        $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
+
+        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $this->assertSame(TestSuiteSorter::ORDER_DEFECTS_FIRST, $configurationValues['executionOrderDefects']);
+        $this->assertSame(true, $configurationValues['resolveDependencies']);
+
+        @\unlink($tmpFilename);
     }
 
     public function testFilterConfigurationIsReadCorrectly(): void
@@ -461,8 +487,9 @@ class ConfigurationTest extends TestCase
                 'failOnWarning'                              => false,
                 'failOnRisky'                                => false,
                 'ignoreDeprecatedCodeUnitsFromCodeCoverage'  => false,
-                'executionOrder'                             => 0,
-                'resolveDependencies'                        => false
+                'executionOrder'                             => TestSuiteSorter::ORDER_DEFAULT,
+                'executionOrderDefects'                      => TestSuiteSorter::ORDER_DEFAULT,
+                'resolveDependencies'                        => false,
             ],
             $this->configuration->getPHPUnitConfiguration()
         );

@@ -177,6 +177,11 @@ class TestResult implements Countable
     /**
      * @var bool
      */
+    protected $stopOnDefect = false;
+
+    /**
+     * @var bool
+     */
     protected $lastTestFailed = false;
 
     /**
@@ -229,7 +234,7 @@ class TestResult implements Countable
                 $test->markAsRisky();
             }
 
-            if ($this->stopOnRisky) {
+            if ($this->stopOnRisky || $this->stopOnDefect) {
                 $this->stop();
             }
         } elseif ($t instanceof IncompleteTest) {
@@ -274,7 +279,7 @@ class TestResult implements Countable
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
-        if ($this->stopOnWarning) {
+        if ($this->stopOnWarning || $this->stopOnDefect) {
             $this->stop();
         }
 
@@ -301,7 +306,7 @@ class TestResult implements Countable
                 $test->markAsRisky();
             }
 
-            if ($this->stopOnRisky) {
+            if ($this->stopOnRisky || $this->stopOnDefect) {
                 $this->stop();
             }
         } elseif ($e instanceof IncompleteTest) {
@@ -322,7 +327,7 @@ class TestResult implements Countable
             $this->failures[] = new TestFailure($test, $e);
             $notifyMethod     = 'addFailure';
 
-            if ($this->stopOnFailure) {
+            if ($this->stopOnFailure || $this->stopOnDefect) {
                 $this->stop();
             }
         }
@@ -1009,6 +1014,14 @@ class TestResult implements Countable
     public function stopOnSkipped(bool $flag): void
     {
         $this->stopOnSkipped = $flag;
+    }
+
+    /**
+     * Enables or disables the stopping for defects: error, failure, warning
+     */
+    public function stopOnDefect(bool $flag): void
+    {
+        $this->stopOnDefect = $flag;
     }
 
     /**
