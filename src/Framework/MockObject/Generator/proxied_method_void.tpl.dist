@@ -8,7 +8,7 @@
             $__phpunit_arguments_tmp = func_get_args();
 
             for ($__phpunit_i = {arguments_count}; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
-                $__phpunit_arguments[] = $__phpunit_arguments_tmp[$i];
+                $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }
 

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 7.2 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3160](https://github.com/sebastianbergmann/phpunit/issues/3160): TeamCity logfile writer broken on Windows
+* Fixed [#3174](https://github.com/sebastianbergmann/phpunit/issues/3174): Code generator for test doubles does not handle proxied methods with variadic parameters correctly
 
 ## [7.2.4] - 2018-06-05
 
