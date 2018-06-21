@@ -1259,10 +1259,6 @@ abstract class Assert
      */
     public static function assertSame($expected, $actual, string $message = ''): void
     {
-        if (\is_bool($expected) && \is_bool($actual)) {
-            static::assertEquals($expected, $actual, $message);
-        }
-
         static::assertThat(
             $actual,
             new IsIdentical($expected),
@@ -1791,14 +1787,14 @@ abstract class Assert
 
         unset($tmp);
 
-        static::assertEquals(
+        static::assertSame(
             $expectedElement->tagName,
             $actualElement->tagName,
             $message
         );
 
         if ($checkAttributes) {
-            static::assertEquals(
+            static::assertSame(
                 $expectedElement->attributes->length,
                 $actualElement->attributes->length,
                 \sprintf(
@@ -1832,7 +1828,7 @@ abstract class Assert
         Xml::removeCharacterDataNodes($expectedElement);
         Xml::removeCharacterDataNodes($actualElement);
 
-        static::assertEquals(
+        static::assertSame(
             $expectedElement->childNodes->length,
             $actualElement->childNodes->length,
             \sprintf(
