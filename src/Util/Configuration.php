@@ -27,6 +27,8 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  * <phpunit backupGlobals="false"
  *          backupStaticAttributes="false"
  *          bootstrap="/path/to/bootstrap.php"
+ *          cacheResult="false"
+ *          cacheResultFile=".phpunit.result.cache"
  *          cacheTokens="false"
  *          columns="80"
  *          colors="false"
@@ -38,6 +40,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  *          disableCodeCoverageIgnore="false"
  *          forceCoversAnnotation="false"
  *          processIsolation="false"
+ *          stopOnDefect="false"
  *          stopOnError="false"
  *          stopOnFailure="false"
  *          stopOnWarning="false"
@@ -65,6 +68,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  *          reverseDefectList="false"
  *          registerMockObjectsFromTestArgumentsRecursively="false"
  *          executionOrder="default"
+ *          executionOrderDefects="default"
  *          resolveDependencies="false">
  *   <testsuites>
  *     <testsuite name="My Test Suite">
@@ -716,6 +720,13 @@ final class Configuration
             );
         }
 
+        if ($root->hasAttribute('stopOnDefect')) {
+            $result['stopOnDefect'] = $this->getBoolean(
+                (string) $root->getAttribute('stopOnDefect'),
+                false
+            );
+        }
+
         if ($root->hasAttribute('stopOnError')) {
             $result['stopOnError'] = $this->getBoolean(
                 (string) $root->getAttribute('stopOnError'),
@@ -908,21 +919,45 @@ final class Configuration
             );
         }
 
+        if ($root->hasAttribute('cacheResult')) {
+            $result['cacheResult'] = $this->getBoolean(
+                (string) $root->getAttribute('cacheResult'),
+                false
+            );
+        }
+
+        if ($root->hasAttribute('cacheResultFile')) {
+            $result['cacheResultFile'] = $this->toAbsolutePath(
+                (string) $root->getAttribute('cacheResultFile')
+            );
+        }
+
         if ($root->hasAttribute('executionOrder')) {
-            switch ((string) $root->getAttribute('executionOrder')) {
-                case 'random':
-                    $result['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
+            foreach (\explode(',', $root->getAttribute('executionOrder')) as $order) {
+                switch ($order) {
+                    case 'default':
+                        $result['executionOrder']        = TestSuiteSorter::ORDER_DEFAULT;
+                        $result['executionOrderDefects'] = TestSuiteSorter::ORDER_DEFAULT;
+                        $result['resolveDependencies']   = false;
 
-                    break;
+                        break;
+                    case 'reverse':
+                        $result['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
 
-                case 'reverse':
-                    $result['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
+                        break;
+                    case 'random':
+                        $result['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
 
-                    break;
+                        break;
+                    case 'defects':
+                        $result['executionOrderDefects'] = TestSuiteSorter::ORDER_DEFECTS_FIRST;
 
-                default:
-                    $result['executionOrder'] = TestSuiteSorter::ORDER_DEFAULT;
+                        break;
+                    case 'depends':
+                        $result['resolveDependencies'] = true;
 
+                        break;
+                }
             }
         }
 

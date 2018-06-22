@@ -64,6 +64,7 @@ Test Execution Options:
   --columns <n>               Number of columns to use for progress output
   --columns max               Use maximum number of columns for progress output
   --stderr                    Write to STDERR instead of STDOUT
+  --stop-on-defect            Stop execution upon first not-passed test
   --stop-on-error             Stop execution upon first error
   --stop-on-failure           Stop execution upon first error or failure
   --stop-on-warning           Stop execution upon first warning
@@ -84,9 +85,9 @@ Test Execution Options:
   --printer <printer>         TestListener implementation to use
 
   --resolve-dependencies      Resolve dependencies between tests
-  --random-order              Run tests in random order
+  --order-by=<order>          Run tests in order: default|reverse|random|defects|depends
   --random-order-seed=<N>     Use a specific random seed <N> for random order
-  --reverse-order             Run tests last-to-first
+  --cache-result              Write run result to cache to enable ordering tests defects-first
 
 Configuration Options:
 
@@ -99,6 +100,7 @@ Configuration Options:
   --include-path <path(s)>    Prepend PHP's include_path with given path(s)
   -d key[=value]              Sets a php.ini value
   --generate-configuration    Generate configuration file with suggested settings
+  --cache-result-file==<FILE> Specify result cache path and filename
 
 Miscellaneous Options:
 
