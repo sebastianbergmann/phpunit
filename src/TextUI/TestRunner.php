@@ -183,6 +183,7 @@ class TestRunner extends BaseTestRunner
             } else {
                 $cache = new TestResultCache;
             }
+
             $this->extensions[] = new ResultCacheExtension($cache);
         }
 
@@ -190,7 +191,9 @@ class TestRunner extends BaseTestRunner
             if (!isset($cache)) {
                 $cache = new NullTestResultCache;
             }
+
             $cache->load();
+
             $sorter = new TestSuiteSorter($cache);
 
             $sorter->reorderTestsInSuite($suite, $arguments['executionOrder'], $arguments['resolveDependencies'], $arguments['executionOrderDefects']);

@@ -89,6 +89,7 @@ final class TestSuiteSorter
             if ($orderDefects === self::ORDER_DEFECTS_FIRST) {
                 $this->addSuiteToDefectSortOrder($suite);
             }
+
             $this->sort($suite, $order, $resolveDependencies, $orderDefects);
         }
     }
@@ -130,9 +131,13 @@ final class TestSuiteSorter
 
     private function suiteOnlyContainsTests(TestSuite $suite): bool
     {
-        return \array_reduce($suite->tests(), function ($carry, $test) {
-            return $carry && ($test instanceof TestCase || $test instanceof DataProviderTestSuite);
-        }, true);
+        return \array_reduce(
+            $suite->tests(),
+            function ($carry, $test) {
+                return $carry && ($test instanceof TestCase || $test instanceof DataProviderTestSuite);
+            },
+            true
+        );
     }
 
     private function reverse(array $tests): array
@@ -149,9 +154,12 @@ final class TestSuiteSorter
 
     private function sortDefectsFirst(array $tests): array
     {
-        \usort($tests, function ($left, $right) {
-            return $this->cmpDefectPriorityAndTime($left, $right);
-        });
+        \usort(
+            $tests,
+            function ($left, $right) {
+                return $this->cmpDefectPriorityAndTime($left, $right);
+            }
+        );
 
         return $tests;
     }
@@ -202,9 +210,12 @@ final class TestSuiteSorter
         $i            = 0;
 
         do {
-            $todoNames = \array_map(function ($test) {
-                return $this->getNormalizedTestName($test);
-            }, $tests);
+            $todoNames = \array_map(
+                function ($test) {
+                    return $this->getNormalizedTestName($test);
+                },
+                $tests
+            );
 
             if (!$tests[$i]->hasDependencies() || empty(\array_intersect($this->getNormalizedDependencyNames($tests[$i]), $todoNames))) {
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($tests, $i, 1));
@@ -244,11 +255,12 @@ final class TestSuiteSorter
             $testClass = \get_class($test);
         }
 
-        $names = \array_map(function ($name) use ($testClass) {
-            return \strpos($name, '::') === false
-                ? $testClass . '::' . $name
-                : $name;
-        }, $test->getDependencies());
+        $names = \array_map(
+            function ($name) use ($testClass) {
+                return \strpos($name, '::') === false ? $testClass . '::' . $name : $name;
+            },
+            $test->getDependencies()
+        );
 
         return $names;
     }

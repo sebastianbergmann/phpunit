@@ -1330,22 +1330,27 @@ EOT;
                     $this->arguments['resolveDependencies']   = false;
 
                     break;
+
                 case 'reverse':
                     $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
 
                     break;
+
                 case 'random':
                     $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
 
                     break;
+
                 case 'defects':
                     $this->arguments['executionOrderDefects'] = TestSuiteSorter::ORDER_DEFECTS_FIRST;
 
                     break;
+
                 case 'depends':
                     $this->arguments['resolveDependencies'] = true;
 
                     break;
+
                 default:
                     $this->exitWithErrorMessage("unrecognized --order-by option: $order");
             }
