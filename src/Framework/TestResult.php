@@ -177,7 +177,7 @@ class TestResult implements Countable
     /**
      * @var bool
      */
-    protected $stopOnDefect = false;
+    private $stopOnDefect = false;
 
     /**
      * @var bool
