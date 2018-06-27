@@ -314,7 +314,7 @@ class ArraySubsetTest extends ConstraintTestCase
                 'expected' => true,
                 'subset'   => new \ArrayObject([
                     [[3, 4], '2'],
-                    '10',
+                    [[3, 4], '2'],
                     '10',
                 ]),
                 'other'    => [
@@ -324,7 +324,11 @@ class ArraySubsetTest extends ConstraintTestCase
                         'ab' => [5, 4, 3],
                         'ac' => 10,
                     ],
-                    'b' => '10',
+                    'b' => [
+                        'ba' => [3, 4, 5],
+                        'bb' => 10,
+                        'bc' => '2',
+                    ],
                 ],
                 'strict'   => true,
             ],
