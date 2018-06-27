@@ -147,7 +147,7 @@ final class ArraySubset extends Constraint
         foreach ($array as &$value) {
             if (\is_array($value)) {
                 $this->deepSort($value);
-            } elseif (!\is_string($value) || empty($value)) {
+            } elseif (\is_scalar($value) && !\is_string($value) || empty($value)) {
                 // In order to ensure consistent sorting results in data sets
                 // that have a mix of strings and integers we need to perform
                 // string comparisons on all scalar values. Typically this is
