@@ -147,6 +147,13 @@ final class ArraySubset extends Constraint
         foreach ($array as &$value) {
             if (\is_array($value)) {
                 $this->deepSort($value);
+            } elseif (!\is_string($value) || empty($value)) {
+                // In order to ensure consistent sorting results in data sets
+                // that have a mix of strings and integers we need to perform
+                // string comparisons on all scalar values. Typically this is
+                // done by passing the SORT_STRING flag to a sorting function
+                // but this doesn't work on multidimensional arrays.
+                $value = (string) (int) $value;
             }
         }
 
@@ -182,7 +189,7 @@ final class ArraySubset extends Constraint
             // haystack and check if they match the ones in the subset.
             foreach ($array as $array_value) {
                 if (\is_array($array_value)) {
-                    foreach ($subset as $key => $subset_value) {
+                    foreach (\array_diff_key($subset, $intersect) as $key => $subset_value) {
                         if (\is_array($subset_value)) {
                             $recursed = $this->arrayIntersectRecursive($array_value, $subset_value);
 
@@ -194,7 +201,7 @@ final class ArraySubset extends Constraint
                         }
                     }
                 } else {
-                    foreach ($subset as $key => $subset_value) {
+                    foreach (\array_diff_key($subset, $intersect) as $key => $subset_value) {
                         if (!\is_array($subset_value) && $this->compare($subset_value, $array_value)) {
                             $intersect[$key] = $array_value;
 
@@ -205,6 +212,7 @@ final class ArraySubset extends Constraint
             }
         }
 
-        return $intersect;
+        // Only return the result if it fully matches the subset.
+        return \count($subset) == \count($intersect) ? $intersect : [];
     }
 }
