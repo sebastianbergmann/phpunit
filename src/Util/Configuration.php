@@ -990,6 +990,7 @@ final class Configuration
 
         $this->document->schemaValidate($xsdFilename);
         $this->errors = \libxml_get_errors();
+        \libxml_clear_errors();
         \libxml_use_internal_errors($original);
     }
 
