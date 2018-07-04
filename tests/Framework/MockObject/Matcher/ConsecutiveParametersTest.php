@@ -93,7 +93,8 @@ class ConsecutiveParametersTest extends TestCase
 
                         return true;
                     })
-                ]);
+                ]
+            );
 
         $mock->bar('call_1');
         $mock->bar('call_2');
