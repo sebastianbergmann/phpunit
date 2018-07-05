@@ -1148,6 +1148,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             if (!$this->checkExceptionExpectations($exception)) {
                 throw $exception;
             }
+
             if ($this->expectedException !== null) {
                 $this->assertThat(
                     $exception,

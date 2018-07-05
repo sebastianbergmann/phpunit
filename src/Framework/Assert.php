@@ -60,7 +60,6 @@ use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionObject;
-use ReflectionProperty;
 use Traversable;
 
 /**
@@ -2352,9 +2351,11 @@ abstract class Assert
 
         try {
             $reflector = new ReflectionObject($object);
+
             do {
                 try {
                     $attribute = $reflector->getProperty($attributeName);
+
                     if (!$attribute || $attribute->isPublic()) {
                         return $object->$attributeName;
                     }
