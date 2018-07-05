@@ -1040,6 +1040,14 @@ final class Test
         $result = [];
 
         foreach ($reflectors as $reflector) {
+            if ($reflector instanceof ReflectionClass) {
+                foreach ($reflector->getTraits() as $trait) {
+                    $reflectors[] = $trait;
+                }
+            }
+        }
+
+        foreach ($reflectors as $reflector) {
             $filename = $reflector->getFileName();
 
             if (!isset($result[$filename])) {

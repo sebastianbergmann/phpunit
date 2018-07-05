@@ -15,6 +15,7 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
   * The `--order-by=depends` CLI option should now be used instead of `--resolve-dependencies`
   * The `--order-by=reverse` CLI option should now be used instead of `--reverse-order`
 * Implemented [#3161](https://github.com/sebastianbergmann/phpunit/pull/3161): Support for indexed arrays in `PHPUnit\Framework\Constraint\ArraySubset`
+* Implemented [#3194](https://github.com/sebastianbergmann/phpunit/issues/3194): `@covers class` (and `@uses class`) should include traits used by class
 
 [7.3.0]: https://github.com/sebastianbergmann/phpunit/compare/7.2...7.3.0
 
