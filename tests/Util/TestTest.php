@@ -1033,7 +1033,7 @@ class TestTest extends TestCase
     {
         $this->assertSame(
             [
-                '/usr/local/src/phpunit/tests/_files/3194.php' => [
+                TEST_FILES_PATH . '3194.php' => [
                     0 => 13,
                     1 => 14,
                     2 => 15,
