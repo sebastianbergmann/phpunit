@@ -1144,52 +1144,47 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         try {
             $testResult = $this->{$this->name}(...\array_values($testArguments));
-        } catch (Throwable $t) {
-            $exception = $t;
-        }
-
-        if (isset($exception)) {
-            if ($this->checkExceptionExpectations($exception)) {
-                if ($this->expectedException !== null) {
-                    $this->assertThat(
-                        $exception,
-                        new ExceptionConstraint(
-                            $this->expectedException
-                        )
-                    );
-                }
-
-                if ($this->expectedExceptionMessage !== null) {
-                    $this->assertThat(
-                        $exception,
-                        new ExceptionMessage(
-                            $this->expectedExceptionMessage
-                        )
-                    );
-                }
-
-                if ($this->expectedExceptionMessageRegExp !== null) {
-                    $this->assertThat(
-                        $exception,
-                        new ExceptionMessageRegularExpression(
-                            $this->expectedExceptionMessageRegExp
-                        )
-                    );
-                }
-
-                if ($this->expectedExceptionCode !== null) {
-                    $this->assertThat(
-                        $exception,
-                        new ExceptionCode(
-                            $this->expectedExceptionCode
-                        )
-                    );
-                }
-
-                return;
+        } catch (Throwable $exception) {
+            if (!$this->checkExceptionExpectations($exception)) {
+                throw $exception;
+            }
+            if ($this->expectedException !== null) {
+                $this->assertThat(
+                    $exception,
+                    new ExceptionConstraint(
+                        $this->expectedException
+                    )
+                );
             }
 
-            throw $exception;
+            if ($this->expectedExceptionMessage !== null) {
+                $this->assertThat(
+                    $exception,
+                    new ExceptionMessage(
+                        $this->expectedExceptionMessage
+                    )
+                );
+            }
+
+            if ($this->expectedExceptionMessageRegExp !== null) {
+                $this->assertThat(
+                    $exception,
+                    new ExceptionMessageRegularExpression(
+                        $this->expectedExceptionMessageRegExp
+                    )
+                );
+            }
+
+            if ($this->expectedExceptionCode !== null) {
+                $this->assertThat(
+                    $exception,
+                    new ExceptionCode(
+                        $this->expectedExceptionCode
+                    )
+                );
+            }
+
+            return;
         }
 
         if ($this->expectedException !== null) {
