@@ -182,13 +182,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                     }
 
                     $data = self::skipTest($className, $name, $message);
-                } catch (Throwable $_t) {
-                    $t = $_t;
-                } catch (Exception $_t) {
-                    $t = $_t;
-                }
-
-                if (isset($t)) {
+                } catch (Throwable $t) {
                     $message = \sprintf(
                         'The data provider specified for %s::%s is invalid.',
                         $className,
