@@ -2351,30 +2351,23 @@ abstract class Assert
         }
 
         try {
-            $attribute = new ReflectionProperty($object, $attributeName);
-        } catch (ReflectionException $e) {
             $reflector = new ReflectionObject($object);
-
-            while ($reflector = $reflector->getParentClass()) {
+            do {
                 try {
                     $attribute = $reflector->getProperty($attributeName);
+                    if (!$attribute || $attribute->isPublic()) {
+                        return $object->$attributeName;
+                    }
 
-                    break;
+                    $attribute->setAccessible(true);
+                    $value = $attribute->getValue($object);
+                    $attribute->setAccessible(false);
+
+                    return $value;
                 } catch (ReflectionException $e) {
                 }
-            }
-        }
-
-        if (isset($attribute)) {
-            if (!$attribute || $attribute->isPublic()) {
-                return $object->$attributeName;
-            }
-
-            $attribute->setAccessible(true);
-            $value = $attribute->getValue($object);
-            $attribute->setAccessible(false);
-
-            return $value;
+            } while ($reflector = $reflector->getParentClass());
+        } catch (ReflectionException $e) {
         }
 
         throw new Exception(
