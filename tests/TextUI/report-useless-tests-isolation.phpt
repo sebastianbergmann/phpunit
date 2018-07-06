@@ -21,5 +21,7 @@ There was 1 risky test:
 1) NothingTest::testNothing
 This test did not perform any assertions
 
+%s:14
+
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Risky: 1.

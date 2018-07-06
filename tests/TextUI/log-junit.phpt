@@ -85,5 +85,7 @@ There was 1 risky test:
 1) vendor\project\StatusTest::testRisky
 This test did not perform any assertions
 
+%s:42
+
 ERRORS!
 Tests: 7, Assertions: 2, Errors: 1, Failures: 1, Warnings: 1, Skipped: 1, Incomplete: 1, Risky: 1.
