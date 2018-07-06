@@ -1033,8 +1033,7 @@ class TestTest extends TestCase
     {
         $this->assertSame(
             [
-                TEST_FILES_PATH . '3194.php' =>
-                    \array_merge(\range(13, 21), \range(5, 11))
+                TEST_FILES_PATH . '3194.php' => \array_merge(\range(13, 21), \range(5, 11))
             ],
             Test::getLinesToBeCovered(
                 \Test3194::class,
