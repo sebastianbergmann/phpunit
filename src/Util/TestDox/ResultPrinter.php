@@ -231,32 +231,15 @@ abstract class ResultPrinter extends Printer implements TestListener
                 $this->doEndClass();
             }
 
-            $classAnnotations = \PHPUnit\Util\Test::parseTestMethodAnnotations($class);
-
-            if (isset($classAnnotations['class']['testdox'][0])) {
-                $this->currentTestClassPrettified = $classAnnotations['class']['testdox'][0];
-            } else {
-                $this->currentTestClassPrettified = $this->prettifier->prettifyTestClass($class);
-            }
+            $this->currentTestClassPrettified = $this->prettifier->prettifyTestClass($class);
+            $this->testClass                  = $class;
+            $this->tests                      = [];
 
             $this->startClass($class);
-
-            $this->testClass = $class;
-            $this->tests     = [];
         }
 
         if ($test instanceof TestCase) {
-            $annotations = $test->getAnnotations();
-
-            if (isset($annotations['method']['testdox'][0])) {
-                $this->currentTestMethodPrettified = $annotations['method']['testdox'][0];
-            } else {
-                $this->currentTestMethodPrettified = $this->prettifier->prettifyTestMethod($test->getName(false));
-            }
-
-            if ($test->usesDataProvider()) {
-                $this->currentTestMethodPrettified .= ' ' . $test->dataDescription();
-            }
+            $this->currentTestMethodPrettified = $this->prettifier->prettifyTestCase($test);
         }
 
         $this->testStatus = BaseTestRunner::STATUS_PASSED;

@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Util\TestDox;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Prettifies class and method names for use in TestDox documentation.
  */
@@ -22,25 +24,51 @@ final class NamePrettifier
     /**
      * Prettifies the name of a test class.
      */
-    public function prettifyTestClass(string $name): string
+    public function prettifyTestClass(string $className): string
     {
-        $title = $name;
+        try {
+            $annotations = \PHPUnit\Util\Test::parseTestMethodAnnotations($className);
 
-        if (\substr($name, -1 * \strlen('Test')) === 'Test') {
-            $title = \substr($title, 0, \strripos($title, 'Test'));
+            if (isset($annotations['class']['testdox'][0])) {
+                return $annotations['class']['testdox'][0];
+            }
+        } catch (\ReflectionException $e) {
         }
 
-        if (\strpos($name, 'Tests') === 0) {
-            $title = \substr($title, \strlen('Tests'));
-        } elseif (\strpos($name, 'Test') === 0) {
-            $title = \substr($title, \strlen('Test'));
+        $result = $className;
+
+        if (\substr($className, -1 * \strlen('Test')) === 'Test') {
+            $result = \substr($result, 0, \strripos($result, 'Test'));
         }
 
-        if ($title[0] === '\\') {
-            $title = \substr($title, 1);
+        if (\strpos($className, 'Tests') === 0) {
+            $result = \substr($result, \strlen('Tests'));
+        } elseif (\strpos($className, 'Test') === 0) {
+            $result = \substr($result, \strlen('Test'));
         }
 
-        return $title;
+        if ($result[0] === '\\') {
+            $result = \substr($result, 1);
+        }
+
+        return $result;
+    }
+
+    public function prettifyTestCase(TestCase $test): string
+    {
+        $annotations = $test->getAnnotations();
+
+        if (isset($annotations['method']['testdox'][0])) {
+            $result = $annotations['method']['testdox'][0];
+        } else {
+            $result = $this->prettifyTestMethod($test->getName(false));
+        }
+
+        if ($test->usesDataProvider()) {
+            $result .= ' data set "' . $test->dataDescription() . '"';
+        }
+
+        return $result;
     }
 
     /**
