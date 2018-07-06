@@ -719,13 +719,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $result->endTestSuite($this);
 
             return $result;
-        } catch (Throwable $_t) {
-            $t = $_t;
-        } catch (Exception $_t) {
-            $t = $_t;
-        }
-
-        if (isset($t)) {
+        } catch (Throwable $t) {
             $numTests = \count($this);
 
             for ($i = 0; $i < $numTests; $i++) {
