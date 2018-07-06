@@ -1122,6 +1122,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * Gets the data set of a TestCase.
+     */
+    public function getProvidedData(): array
+    {
+        return $this->data;
+    }
+
+    /**
      * Override to run the test and assert its state.
      *
      * @throws AssertionFailedError
@@ -1544,14 +1552,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function prophesize($classOrInterface = null): ObjectProphecy
     {
         return $this->getProphet()->prophesize($classOrInterface);
-    }
-
-    /**
-     * Gets the data set of a TestCase.
-     */
-    protected function getProvidedData(): array
-    {
-        return $this->data;
     }
 
     /**
