@@ -55,10 +55,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
     public function startTest(Test $test): void
     {
-        if (!$test instanceof TestCase
-            && !$test instanceof PhptTestCase
-            && !$test instanceof TestSuite
-        ) {
+        if (!$test instanceof TestCase && !$test instanceof PhptTestCase && !$test instanceof TestSuite) {
             return;
         }
 
@@ -104,10 +101,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
     public function endTest(Test $test, float $time): void
     {
-        if (!$test instanceof TestCase
-            && !$test instanceof PhptTestCase
-            && !$test instanceof TestSuite
-        ) {
+        if (!$test instanceof TestCase && !$test instanceof PhptTestCase && !$test instanceof TestSuite) {
             return;
         }
 
