@@ -150,7 +150,7 @@ class PhptTestCase implements Test, SelfDescribing
         }
 
         if ($result->getCollectCodeCoverageInformation()) {
-            $this->renderForCoverage($settings);
+            $this->renderForCoverage($code);
         }
 
         Timer::start();
@@ -488,7 +488,7 @@ class PhptTestCase implements Test, SelfDescribing
         ];
     }
 
-    private function renderForCoverage(array &$settings): void
+    private function renderForCoverage(string &$job): void
     {
         $files = $this->getCoverageFiles();
 
@@ -520,23 +520,22 @@ class PhptTestCase implements Test, SelfDescribing
                 'phar'             => $phar,
                 'globals'          => $globals,
                 'job'              => $files['job'],
-                'coverageFile'     => $files['coverage'],
-                'autoPrependFile'  => \var_export(
-                    !empty($settings['auto_prepend_file']) ? $settings['auto_prepend_file'] : false,
-                    true
-                )
+                'coverageFile'     => $files['coverage']
             ]
         );
 
-        \file_put_contents($files['job'], $template->render());
-
-        $settings['auto_prepend_file'] = $files['job'];
+        \file_put_contents($files['job'], $job);
+        $job = $template->render();
     }
 
     private function cleanupForCoverage(): array
     {
         $files    = $this->getCoverageFiles();
         $coverage = @\unserialize(\file_get_contents($files['coverage']));
+
+        if ($coverage === false) {
+            $coverage = [];
+        }
 
         foreach ($files as $file) {
             @\unlink($file);
