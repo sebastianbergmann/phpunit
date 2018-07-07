@@ -187,12 +187,18 @@ abstract class AbstractPhpProcess
             } else {
                 $command .= \escapeshellarg(__DIR__ . '/eval-stdin.php');
             }
-        } elseif ($file) {
-            $command .= ' -f ' . \escapeshellarg($file);
+        } else {
+            if ($file) {
+                $command .= ' -f ' . \escapeshellarg($file);
+            }
+
+            if ($this->args) {
+                $command .= ' --';
+            }
         }
 
         if ($this->args) {
-            $command .= ' -- ' . $this->args;
+            $command .= ' ' . $this->args;
         }
 
         if ($this->stderrRedirection === true) {

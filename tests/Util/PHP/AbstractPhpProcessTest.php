@@ -55,7 +55,7 @@ class AbstractPhpProcessTest extends TestCase
             'display_errors=1',
         ];
 
-        $expectedCommandFormat  = '%s -d %callow_url_fopen=1%c -d %cauto_append_file=%c -d %cdisplay_errors=1%c';
+        $expectedCommandFormat  = '%s -d %callow_url_fopen=1%c -d %cauto_append_file=%c -d %cdisplay_errors=1%c%S';
         $actualCommand          = $this->phpProcess->getCommand($settings);
 
         $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
@@ -75,7 +75,7 @@ class AbstractPhpProcessTest extends TestCase
     {
         $this->phpProcess->setArgs('foo=bar');
 
-        $expectedCommandFormat  = '%s -- foo=bar';
+        $expectedCommandFormat  = '%s foo=bar';
         $actualCommand          = $this->phpProcess->getCommand([]);
 
         $this->assertStringMatchesFormat($expectedCommandFormat, $actualCommand);
