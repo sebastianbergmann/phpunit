@@ -55,7 +55,7 @@ class TestResultTest extends TestCase
         //Stop
         $result->stopOnIncomplete(true);
         $result->addError($test, $throwable, $time);
-        $this->assertAttributeEquals(2*$time, 'time', $result);
+        $this->assertAttributeEquals(2 * $time, 'time', $result);
         $this->assertAttributeCount(2, 'notImplemented', $result);
         $this->assertAttributeEquals(true, 'stop', $result);
         //Final checks
