@@ -814,24 +814,19 @@ class TestResult implements Countable
         } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
             !$test->doesNotPerformAssertions() &&
             $test->getNumAssertions() == 0) {
-            try {
-                $reflected = new \ReflectionClass($test);
-                $name      = $test->getName(false);
+            $reflected = new \ReflectionClass($test);
+            $name      = $test->getName(false);
 
-                if ($name && $reflected->hasMethod($name)) {
-                    $reflected = $reflected->getMethod($name);
-                }
-                $message = \sprintf(
-                    "This test did not perform any assertions\n\n%s:%d",
-                    $reflected->getFileName(),
-                    $reflected->getStartLine()
-                );
-            } catch (\ReflectionException $exception) {
-                $message = 'This test did not perform any assertions';
+            if ($name && $reflected->hasMethod($name)) {
+                $reflected = $reflected->getMethod($name);
             }
             $this->addFailure(
                 $test,
-                new RiskyTestError($message),
+                new RiskyTestError(\sprintf(
+                    "This test did not perform any assertions\n\n%s:%d",
+                    $reflected->getFileName(),
+                    $reflected->getStartLine()
+                )),
                 $time
             );
         } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
