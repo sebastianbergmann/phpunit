@@ -17,6 +17,7 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
 * Implemented [#3161](https://github.com/sebastianbergmann/phpunit/pull/3161): Support for indexed arrays in `PHPUnit\Framework\Constraint\ArraySubset`
 * Implemented [#3194](https://github.com/sebastianbergmann/phpunit/issues/3194): `@covers class` (and `@uses class`) should include traits used by class
 * Implemented [#3196](https://github.com/sebastianbergmann/phpunit/issues/3196): Support for replacing placeholders in `@testdox` text with data provider values
+* Implemented [#3198](https://github.com/sebastianbergmann/phpunit/pull/3198): Provide source location for useless tests
 
 [7.3.0]: https://github.com/sebastianbergmann/phpunit/compare/7.2...7.3.0
 
