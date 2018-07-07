@@ -16,7 +16,6 @@ require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 ?>
 --EXPECTF--
-
-Fatal error: Uncaught Exception: PHPUnit suppresses exceptions thrown outside of test case function in %s:%i
+%AException: PHPUnit suppresses exceptions thrown outside of test case function in %s:%i
 Stack trace:
 %a

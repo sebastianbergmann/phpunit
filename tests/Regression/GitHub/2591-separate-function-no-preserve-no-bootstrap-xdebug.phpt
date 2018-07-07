@@ -26,14 +26,12 @@ Time: %s, Memory: %s
 There were 2 errors:
 
 1) Issue2591_SeparateFunctionNoPreserveTest::testChangedGlobalString
-PHPUnit\Framework\Exception: PHP Fatal error:  Class 'PHPUnit\Framework\TestCase' not found %s
-PHP Stack trace:
+PHPUnit\Framework\Exception:%sPHP Fatal error:  Class 'PHPUnit\Framework\TestCase' not found %s
+%SPHP Stack trace:%S
 %a
-
 2) Issue2591_SeparateFunctionNoPreserveTest::testGlobalString
-PHPUnit\Framework\Exception: PHP Fatal error:  Class 'PHPUnit\Framework\TestCase' not found %s
-PHP Stack trace:
+PHPUnit\Framework\Exception:%sPHP Fatal error:  Class 'PHPUnit\Framework\TestCase' not found %s
+%SPHP Stack trace:%S
 %a
-
 ERRORS!
 Tests: 2, Assertions: 0, Errors: 2.
