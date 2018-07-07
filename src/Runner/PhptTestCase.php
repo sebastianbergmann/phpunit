@@ -479,7 +479,7 @@ class PhptTestCase implements Test, SelfDescribing
 
     private function getCoverageFiles(): array
     {
-        $baseDir          = \dirname($this->filename) . \DIRECTORY_SEPARATOR;
+        $baseDir          = \dirname(\realpath($this->filename)) . \DIRECTORY_SEPARATOR;
         $basename         = \basename($this->filename, 'phpt');
 
         return [
