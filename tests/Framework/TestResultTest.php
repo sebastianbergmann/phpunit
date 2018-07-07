@@ -13,10 +13,10 @@ class TestResultTest extends TestCase
 {
     public function testRemoveListenerRemovesOnlyExpectedListener(): void
     {
-        $result = new TestResult();
-        $firstListener = $this->getMockBuilder(TestListener::class)->getMock();
+        $result         = new TestResult();
+        $firstListener  = $this->getMockBuilder(TestListener::class)->getMock();
         $secondListener = $this->getMockBuilder(TestListener::class)->getMock();
-        $thirdListener = $this->getMockBuilder(TestListener::class)->getMock();
+        $thirdListener  = $this->getMockBuilder(TestListener::class)->getMock();
         $result->addListener($firstListener);
         $result->addListener($secondListener);
         $result->addListener($thirdListener);
