@@ -188,9 +188,7 @@ class TestRunner extends BaseTestRunner
         }
 
         if ($arguments['executionOrder'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['executionOrderDefects'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['resolveDependencies']) {
-            if (!isset($cache)) {
-                $cache = new NullTestResultCache;
-            }
+            $cache = $cache ?? new NullTestResultCache;
 
             $cache->load();
 

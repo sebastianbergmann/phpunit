@@ -269,22 +269,18 @@ class PhptTestCase implements Test, SelfDescribing
         foreach ($assertions as $sectionName => $sectionAssertion) {
             if (isset($sections[$sectionName])) {
                 $sectionContent = \preg_replace('/\r\n/', "\n", \trim($sections[$sectionName]));
-                $assertion      = $sectionAssertion;
                 $expected       = $sectionName === 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
 
-                break;
+                if ($expected === null) {
+                    throw new Exception('No PHPT expectation found');
+                }
+                Assert::$sectionAssertion($expected, $actual);
+
+                return;
             }
         }
 
-        if (!isset($assertion)) {
-            throw new Exception('No PHPT assertion found');
-        }
-
-        if (!isset($expected)) {
-            throw new Exception('No PHPT expectation found');
-        }
-
-        Assert::$assertion($expected, $actual);
+        throw new Exception('No PHPT assertion found');
     }
 
     /**
