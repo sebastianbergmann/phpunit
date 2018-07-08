@@ -180,24 +180,21 @@ abstract class AbstractPhpProcess
         $command .= $this->settingsToParameters($settings);
 
         if (\PHP_SAPI === 'phpdbg') {
-            $command .= ' -qrr ';
+            $command .= ' -qrr';
 
-            if ($file) {
-                $command .= '-e ' . \escapeshellarg($file);
-            } else {
-                $command .= \escapeshellarg(__DIR__ . '/eval-stdin.php');
-            }
-        } else {
-            if ($file) {
-                $command .= ' -f ' . \escapeshellarg($file);
-            }
-
-            if ($this->args) {
-                $command .= ' --';
+            if (!$file) {
+                $command .= 's=';
             }
         }
 
+        if ($file) {
+            $command .= ' ' . \escapeshellarg($file);
+        }
+
         if ($this->args) {
+            if (!$file) {
+                $command .= ' --';
+            }
             $command .= ' ' . $this->args;
         }
 
