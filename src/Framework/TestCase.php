@@ -894,17 +894,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
             }
         } catch (Throwable $_e) {
-            if (!isset($e)) {
-                $e = $_e;
-            }
+            $e = $e ?? $_e;
         }
 
         try {
             $this->stopOutputBuffering();
         } catch (RiskyTestError $_e) {
-            if (!isset($e)) {
-                $e = $_e;
-            }
+            $e = $e ?? $_e;
         }
 
         if (isset($_e)) {

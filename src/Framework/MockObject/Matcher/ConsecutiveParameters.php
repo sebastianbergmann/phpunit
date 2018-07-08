@@ -88,9 +88,7 @@ class ConsecutiveParameters extends StatelessInvocation
      */
     private function verifyInvocation(BaseInvocation $invocation, $callIndex): void
     {
-        if (isset($this->parameterGroups[$callIndex])) {
-            $parameters = $this->parameterGroups[$callIndex];
-        } else {
+        if (!isset($this->parameterGroups[$callIndex])) {
             // no parameter assertion for this call index
             return;
         }
@@ -100,6 +98,8 @@ class ConsecutiveParameters extends StatelessInvocation
                 'Mocked method does not exist.'
             );
         }
+
+        $parameters = $this->parameterGroups[$callIndex];
 
         if (\count($invocation->getParameters()) < \count($parameters)) {
             throw new ExpectationFailedException(

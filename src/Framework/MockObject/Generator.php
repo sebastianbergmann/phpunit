@@ -398,35 +398,38 @@ class Generator
             \sort($type);
         }
 
-        if ($mockClassName === '') {
-            $key = \md5(
-                \is_array($type) ? \implode('_', $type) : $type .
-                \serialize($methods) .
-                \serialize($callOriginalClone) .
-                \serialize($cloneArguments) .
-                \serialize($callOriginalMethods)
+        if ($mockClassName !== '') {
+            return $this->generateMock(
+                $type,
+                $methods,
+                $mockClassName,
+                $callOriginalClone,
+                $callAutoload,
+                $cloneArguments,
+                $callOriginalMethods
             );
-
-            if (isset(self::$cache[$key])) {
-                return self::$cache[$key];
-            }
         }
-
-        $mock = $this->generateMock(
-            $type,
-            $methods,
-            $mockClassName,
-            $callOriginalClone,
-            $callAutoload,
-            $cloneArguments,
-            $callOriginalMethods
+        $key = \md5(
+            \is_array($type) ? \implode('_', $type) : $type .
+            \serialize($methods) .
+            \serialize($callOriginalClone) .
+            \serialize($cloneArguments) .
+            \serialize($callOriginalMethods)
         );
 
-        if (isset($key)) {
-            self::$cache[$key] = $mock;
+        if (!isset(self::$cache[$key])) {
+            self::$cache[$key] = $this->generateMock(
+                $type,
+                $methods,
+                $mockClassName,
+                $callOriginalClone,
+                $callAutoload,
+                $cloneArguments,
+                $callOriginalMethods
+            );
         }
 
-        return $mock;
+        return self::$cache[$key];
     }
 
     /**
@@ -485,13 +488,13 @@ class Generator
             }
         }
 
-        $optionsBuffer = 'array(';
+        $optionsBuffer = '[';
 
         foreach ($options as $key => $value) {
             $optionsBuffer .= $key . ' => ' . $value;
         }
 
-        $optionsBuffer .= ')';
+        $optionsBuffer .= ']';
 
         $classTemplate = $this->getTemplate('wsdl_class.tpl');
         $namespace     = '';
