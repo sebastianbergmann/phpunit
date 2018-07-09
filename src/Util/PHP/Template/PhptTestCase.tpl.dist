@@ -3,7 +3,6 @@ use SebastianBergmann\CodeCoverage\CodeCoverage;
 
 $composerAutoload = {composerAutoload};
 $phar             = {phar};
-$autoPrependFile  = {autoPrependFile};
 
 ob_start();
 
@@ -28,7 +27,7 @@ if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
     $coverage->start(__FILE__);
 }
 
-register_shutdown_function(function() use ($coverage, $autoPrependFile) {
+register_shutdown_function(function() use ($coverage) {
     $output = null;
     if ($coverage) {
         $output = $coverage->stop();
@@ -38,9 +37,4 @@ register_shutdown_function(function() use ($coverage, $autoPrependFile) {
 
 ob_end_clean();
 
-if ($autoPrependFile) {
-    require $autoPrependFile;
-    $includes = get_included_files();
-    $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'][] = array_pop($includes);
-    unset($includes);
-}
+require '{job}';

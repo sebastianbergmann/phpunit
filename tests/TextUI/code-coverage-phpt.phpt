@@ -34,10 +34,10 @@ Code Coverage Report:%w
 %w
  Summary:%w
   Classes: 100.00% (2/2)%w
-  Methods: 100.00% (6/6)%w
-  Lines:   100.00% (12/12)
+  Methods: 100.00% (%d/%d)%w
+  Lines:   100.00% (%d/%d)
 
 CoveredClass
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% (  7/  7)
+  Methods: 100.00% ( %d/ %d)   Lines: 100.00% (  %d/  %d)
 CoveredParentClass
-  Methods: 100.00% ( 3/ 3)   Lines: 100.00% (  5/  5)
+  Methods: 100.00% ( %d/ %d)   Lines: 100.00% (  %d/  %d)

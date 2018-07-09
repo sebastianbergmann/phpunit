@@ -28,20 +28,10 @@ Time: %s, Memory: %s
 There were 2 errors:
 
 1) Issue2591_SeparateFunctionNoPreserveTest::testChangedGlobalString
-PHPUnit\Framework\Exception: PHP Fatal error:  Uncaught Error: Class 'PHPUnit\Framework\TestCase' not found in %s/SeparateFunctionNoPreserveTest.php:%d
-Stack trace:
-#0 Standard input code(31): require_once()
-#1 Standard input code(110): __phpunit_run_isolated_test()
-#2 {main}
-  thrown in %s on line %d
-
+PHPUnit\Framework\Exception: %sUncaught Error%sin %s
+%a
 2) Issue2591_SeparateFunctionNoPreserveTest::testGlobalString
-PHPUnit\Framework\Exception: PHP Fatal error:  Uncaught Error: Class 'PHPUnit\Framework\TestCase' not found in %s:%d
-Stack trace:
-#0 Standard input code(31): require_once()
-#1 Standard input code(110): __phpunit_run_isolated_test()
-#2 {main}
-  thrown in %s on line %d
-
+PHPUnit\Framework\Exception: %sUncaught Error%sin %s
+%a
 ERRORS!
 Tests: 2, Assertions: 0, Errors: 2.

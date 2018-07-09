@@ -2,7 +2,7 @@
 https://github.com/sebastianbergmann/phpunit/issues/1348
 --SKIPIF--
 <?php
-if (defined('HHVM_VERSION')) {
+if (defined('HHVM_VERSION') || defined('PHPDBG_VERSION')) {
     print 'skip: PHP runtime required';
 }
 ?>
