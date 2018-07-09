@@ -1142,7 +1142,7 @@ EOF
         $this->assertFalse($constraint->evaluate('ORYGINAŁ', '', true));
         $this->assertFalse($constraint->evaluate('oryginał', '', true));
         $this->assertEquals('does not contain "oryginał"', $constraint->toString());
-        $this->assertEquals(1, \count($constraint));
+        $this->assertCount(1, $constraint);
 
         $this->expectException(ExpectationFailedException::class);
 
@@ -1159,7 +1159,7 @@ EOF
         $this->assertTrue($constraint->evaluate('ORYGINAŁ', '', true));
         $this->assertFalse($constraint->evaluate('oryginał', '', true));
         $this->assertEquals('does not contain "oryginał"', $constraint->toString());
-        $this->assertEquals(1, \count($constraint));
+        $this->assertCount(1, $constraint);
 
         $this->expectException(ExpectationFailedException::class);
 
