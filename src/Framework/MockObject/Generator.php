@@ -1167,6 +1167,9 @@ class Generator
 
                         if ($value === null) {
                             $value = \var_export($parameter->getDefaultValue(), true);
+                        } elseif (!\defined($value)) {
+                            $rootValue = \preg_replace('/^.*\\\\/', '', $value);
+                            $value     = \defined($rootValue) ? $rootValue : $value;
                         }
 
                         $default = ' = ' . $value;
