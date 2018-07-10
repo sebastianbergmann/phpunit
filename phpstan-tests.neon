@@ -1,5 +1,8 @@
 parameters:
     ignoreErrors:
+        # https://github.com/phpstan/phpstan/issues/1185
+        - '#Function xdebug_disable not found.#'
+
         # parent calls are intentionally omitted
         - '#Issue244Exception::__construct\(\) does not call parent constructor from Exception.#'
         - '#Issue244ExceptionIntCode::__construct\(\) does not call parent constructor from Exception.#'
