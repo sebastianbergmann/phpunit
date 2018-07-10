@@ -782,6 +782,15 @@ final class Test
             $element = \explode(' ', $element);
             $element = $element[0];
 
+            if ($mode === 'covers' && \interface_exists($element)) {
+                throw new InvalidCoversTargetException(
+                    \sprintf(
+                        'Trying to @cover interface "%s".',
+                        $className
+                    )
+                );
+            }
+
             $codeList = \array_merge(
                 $codeList,
                 self::resolveElementToReflectionObjects($element)
