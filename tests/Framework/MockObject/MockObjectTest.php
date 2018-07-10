@@ -986,6 +986,7 @@ class MockObjectTest extends TestCase
 
     public function testStringableClassDoesNotThrow(): void
     {
+        /** @var StringableClass|PHPUnit\Framework\MockObject\MockObject $mock */
         $mock = $this->getMockBuilder(StringableClass::class)->getMock();
 
         $this->assertInternalType('string', (string) $mock);
@@ -993,6 +994,7 @@ class MockObjectTest extends TestCase
 
     public function testStringableClassCanBeMocked(): void
     {
+        /** @var StringableClass|PHPUnit\Framework\MockObject\MockObject $mock */
         $mock = $this->getMockBuilder(StringableClass::class)->getMock();
 
         $mock->method('__toString')->willReturn('foo');
@@ -1058,6 +1060,7 @@ class MockObjectTest extends TestCase
 
     public function testDisableAutomaticReturnValueGenerationWithToString(): void
     {
+        /** @var StringableClass|PHPUnit\Framework\MockObject\MockObject $mock */
         $mock = $this->getMockBuilder(StringableClass::class)
             ->disableAutoReturnValueGeneration()
             ->getMock();
