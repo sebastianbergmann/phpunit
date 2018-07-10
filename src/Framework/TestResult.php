@@ -573,8 +573,13 @@ class TestResult implements Countable
 
             $annotations = $test->getAnnotations();
 
-            if (isset($annotations['class']['coversNothing']) || isset($annotations['method']['coversNothing'])) {
+            if (isset($annotations['method']['coversNothing'])) {
                 $coversNothing = true;
+            } elseif (isset($annotations['class']['coversNothing'])) {
+                if (!isset($annotations['method']['covers'])) {
+                    // method covers takes priority over class coversNothing
+                    $coversNothing = true;
+                }
             }
         }
 
