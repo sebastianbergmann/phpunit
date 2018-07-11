@@ -19,5 +19,9 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
 * Implemented [#3196](https://github.com/sebastianbergmann/phpunit/issues/3196): Support for replacing placeholders in `@testdox` text with data provider values
 * Implemented [#3198](https://github.com/sebastianbergmann/phpunit/pull/3198): Provide source location for useless tests
 
+### Fixed
+
+* Fixed [#3154](https://github.com/sebastianbergmann/phpunit/issues/3154): Global constants as default parameter values are not handled correctly in namespace
+
 [7.3.0]: https://github.com/sebastianbergmann/phpunit/compare/7.2...7.3.0
 
