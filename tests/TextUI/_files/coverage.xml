@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<phpunit colors="false">
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./Coverage.php</directory>
+        </whitelist>
+    </filter>
+</phpunit>
+

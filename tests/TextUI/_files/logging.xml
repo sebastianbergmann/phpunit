@@ -1,0 +1,8 @@
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.3/phpunit.xsd"
+    backupGlobals="false"
+>
+    <logging>
+        <log type="coverage-html" target="/tmp/coverage" />
+    </logging>
+</phpunit>

@@ -46,7 +46,8 @@
         "sebastian/version": "^2.0.1"
     },
     "require-dev": {
-        "ext-PDO": "*"
+        "ext-PDO": "*",
+        "mikey179/vfsStream": "~1.0"
     },
     "conflict": {
         "phpunit/phpunit-mock-objects": "*"
