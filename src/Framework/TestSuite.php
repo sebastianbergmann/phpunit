@@ -144,11 +144,19 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         if ($constructor === null) {
             throw new Exception('No valid test provided.');
         }
+        $hasData = false;
         // TestCase($name, $data)
         if ($provider = @\PHPUnit\Util\Test::parseTestMethodAnnotations($className, $name)['method']['dataProvider'][0]) {
             $test = new DataProviderTestSuite($provider, $theClass, $name);
             $test->setGroupDetails(\PHPUnit\Util\Test::getGroups($className, $name));
-        } else {
+            $hasData = true;
+        }
+        if (null!== @\PHPUnit\Util\Test::parseTestMethodAnnotations($className, $name)['method']['testWith']) {
+            $test = new WithTestSuite($theClass, $name);
+            $test->setGroupDetails(\PHPUnit\Util\Test::getGroups($className, $name));
+            $hasData = true;
+        }
+        if (!$hasData) {
             $test = new $className($name);
             if ($runTestInSeparateProcess) {
                 $test->setRunTestInSeparateProcess(true);
