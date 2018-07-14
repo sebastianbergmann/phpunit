@@ -14,7 +14,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-.FEISRW                                                             7 / 7 (100%)<?xml version="1.0" encoding="UTF-8"?>
+.FEISRW                                                             7 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="vendor\project\StatusTest" file="%s%eStatusTest.php" tests="7" assertions="2" errors="2" failures="2" skipped="2" time="%s">
     <testcase name="testSuccess" class="vendor\project\StatusTest" classname="vendor.project.StatusTest" file="%s%eStatusTest.php" line="%d" assertions="1" time="%s"/>

@@ -16,7 +16,7 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 DoxGroup
-..                                                                  2 / 2 (100%) [x] One
+..                                                                  2  [x] One
 
 
 

@@ -13,7 +13,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-.FEISRW                                                             7 / 7 (100%)<?xml version="1.0" encoding="UTF-8"?>
+.FEISRW                                                             7 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
   <test className="vendor\project\StatusTest" methodName="testSuccess" prettifiedClassName="vendor\project\Status" prettifiedMethodName="Success" status="0" time="%s" size="-1" groups="default"/>
   <test className="vendor\project\StatusTest" methodName="testFailure" prettifiedClassName="vendor\project\Status" prettifiedMethodName="Failure" status="3" time="%s" size="-1" groups="default" exceptionLine="%d" exceptionMessage="Failed asserting that false is true."/>

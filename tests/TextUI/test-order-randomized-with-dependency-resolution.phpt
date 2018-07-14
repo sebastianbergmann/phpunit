@@ -18,7 +18,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime:       %s
 Random seed:   %d
 
-.....                                                               5 / 5 (100%)
+.....                                                               5 
 
 Time: %s, Memory: %s
 

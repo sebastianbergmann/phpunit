@@ -27,7 +27,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 ##teamcity[testFinished name='testBalanceCannotBecomeNegative' duration='%s' flowId='%d']
 
 ##teamcity[testStarted name='testBalanceCannotBecomeNegative2' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\BankAccountTest::testBalanceCannotBecomeNegative2' flowId='%d']
-.                                                                 3 / 3 (100%)
+.                                                                 3 
 ##teamcity[testFinished name='testBalanceCannotBecomeNegative2' duration='%s' flowId='%d']
 
 ##teamcity[testSuiteFinished name='BankAccountTest' flowId='%d']

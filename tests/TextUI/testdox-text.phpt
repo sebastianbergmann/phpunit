@@ -14,7 +14,7 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 BankAccount
-...                                                                 3 / 3 (100%) [x] Balance is initially zero
+...                                                                 3  [x] Balance is initially zero
  [x] Balance cannot become negative
  [x] Balance cannot become negative
 

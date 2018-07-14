@@ -20,7 +20,7 @@ unlink($target);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-.SS..                                                               5 / 5 (100%)
+.SS..                                                               5 
 
 Time: %s, Memory: %s
 
