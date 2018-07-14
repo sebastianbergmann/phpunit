@@ -16,7 +16,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime:       %s
 Configuration: %sconfiguration.custom-printer.xml
 
-I                                                                   1 
+I
 
 Time: %s, Memory: %s
 

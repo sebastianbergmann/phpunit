@@ -14,7 +14,7 @@ Runtime:       %s
 Configuration: %s%ephpunit-example-extension%ephpunit.xml
 Extension:     phpunit/phpunit-example-extension 3.0.3
 
-.                                                                   1 
+.
 
 Time: %s, Memory: %s
 

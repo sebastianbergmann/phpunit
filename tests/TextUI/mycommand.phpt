@@ -17,7 +17,7 @@ MyCommand::main();
 MyCommand::myHandler 123
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-...                                                                 3 
+...
 
 Time: %s, Memory: %s
 

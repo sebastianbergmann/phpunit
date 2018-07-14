@@ -500,7 +500,7 @@ class ResultPrinter extends Printer implements TestListener
 
             $this->write(
                 \sprintf(
-                    ' %' . $this->numTestsWidth . 'd ',
+                    ' %' . $this->numTestsWidth . 'd',
                     $this->numTestsRun
                 )
             );
