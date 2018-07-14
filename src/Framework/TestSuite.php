@@ -573,14 +573,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     }
 
     /**
-     * @return \Generator|Test[]
-     */
-    protected function yieldFilteredTests(): \Generator
-    {
-        yield from $this->yieldTests();
-    }
-
-    /**
      * Runs the tests and collects their result in a TestResult.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -645,7 +637,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             return $result;
         }
 
-        foreach ($this->yieldFilteredTests() as $test) {
+        foreach ($this->yieldTests() as $test) {
             if ($result->shouldStop()) {
                 break;
             }
@@ -699,10 +691,12 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
     /**
      * Returns the tests as an enumeration.
+     * @deprecated
+     * @todo see how this is used, since it removes the benefits of yielding
      */
     public function tests(): array
     {
-        return $this->tests;
+        return iterator_to_array($this->yieldTests());
     }
 
     /**
