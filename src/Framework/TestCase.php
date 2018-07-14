@@ -1098,7 +1098,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     public function getDataSetAsString(bool $includeData = true): string
     {
-        if (!empty($this->data)) {
+        if (empty($this->data)) {
             return '';
         }
         $buffer = '';
