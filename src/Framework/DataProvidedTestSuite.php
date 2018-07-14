@@ -62,7 +62,11 @@ abstract class DataProvidedTestSuite extends TestSuite
             foreach ($this->yieldData() as $key => $set) {
                 $name = is_int($key) ? "#$key" : $key;
                 if(!is_array($set)) {
-                    yield self::warning("{$this->name} set $name is invalid.");
+                    yield self::incompleteTest(
+                        $this->name,
+                        $this->method,
+                        "{$this->name} set $name is invalid."
+                    );
                     continue;
                 }
 
@@ -75,13 +79,25 @@ abstract class DataProvidedTestSuite extends TestSuite
                     $test->setDependencies($this->dependencies);
                     yield $test;
                 } catch (Throwable $e) {
-                    yield self::warning("Test creation failed for {$this->name} with set $name");
+                    yield new TestFailureTest(
+                        $this->name,
+                        $this->method,
+                        "Test creation failed for {$this->name} with set $name"
+                    );
                 }
             }
         } catch (SkippedTestError $e) {
-            yield self::warning("Test for {$this->name} skipped by data provider.");
+            yield new SkippedTestCase(
+                $this->name,
+                $this->method,
+                "Test for {$this->name} skipped by data provider."
+            );
         } catch (Throwable $e) {
-            yield self::warning("data provider for {$this->name} failed");
+            yield self::incompleteTest(
+                $this->name,
+                $this->method,
+                "data provider for {$this->name} failed"
+            );
         }
     }
 
