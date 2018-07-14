@@ -15,6 +15,6 @@ class WithTestSuite extends DataProvidedTestSuite
     {
         return \PHPUnit\Util\Test::getDataFromTestWithAnnotation(
             $this->theClass->getMethod($this->method)->getDocComment()
-        )[0]??[];
+        )??[];
     }
 }
