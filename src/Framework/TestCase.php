@@ -1098,20 +1098,18 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     public function getDataSetAsString(bool $includeData = true): string
     {
-        $buffer = '';
-
         if (!empty($this->data)) {
-            if (\is_int($this->dataName)) {
-                $buffer .= \sprintf(' with data set #%d', $this->dataName);
-            } else {
-                $buffer .= \sprintf(' with data set "%s"', $this->dataName);
-            }
+            return '';
+        }
+        $buffer = '';
+        if (\is_int($this->dataName)) {
+            $buffer .= \sprintf(' with data set #%d', $this->dataName);
+        } else {
+            $buffer .= \sprintf(' with data set "%s"', $this->dataName);
+        }
 
-            $exporter = new Exporter;
-
-            if ($includeData) {
-                $buffer .= \sprintf(' (%s)', $exporter->shortenedRecursiveExport($this->data));
-            }
+        if ($includeData) {
+            $buffer .= \sprintf(' (%s)', (new Exporter)->shortenedRecursiveExport($this->data));
         }
 
         return $buffer;

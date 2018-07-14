@@ -14,7 +14,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-W                                                                   1 / 1 (100%)
+W
 
 Time: %s, Memory: %s
 

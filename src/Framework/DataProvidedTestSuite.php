@@ -59,8 +59,7 @@ abstract class DataProvidedTestSuite extends TestSuite
     {
         yield from parent::yieldTests();
         try {
-            foreach ($this->yieldData() as $key => $set) {
-                $name = is_int($key) ? "#$key" : $key;
+            foreach ($this->yieldData() as $name => $set) {
                 if(!is_array($set)) {
                     yield self::incompleteTest(
                         $this->name,
