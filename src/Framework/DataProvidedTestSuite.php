@@ -88,14 +88,22 @@ abstract class DataProvidedTestSuite extends TestSuite
                     );
                 }
             }
+        } catch (RiskyTestError $exception) {
+            return new RiskyTestError($exception->getMessage(), 0, $exception);
+        } catch(IncompleteTestError $exception) {
+            return self::incompleteTest(
+                $this->theClass->getName(),
+                $this->method,
+                $exception->getMessage()
+            );
         } catch (SkippedTestError $e) {
-            yield new SkippedTestCase(
+            return new SkippedTestCase(
                 $this->name,
                 $this->method,
                 "Test for {$this->name} skipped by data provider."
             );
         } catch (Throwable $e) {
-            yield self::warning("The data provider specified for {$this->name} is invalid.");
+            return self::warning("The data provider specified for {$this->name} is invalid.");
         }
     }
 

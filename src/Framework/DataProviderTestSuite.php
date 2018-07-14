@@ -31,7 +31,6 @@ class DataProviderTestSuite extends DataProvidedTestSuite
         if ($this->theClass->getMethod($this->provider)->isAbstract()) {
             throw new Exception();
         }
-        $provider = $this->theClass->newInstanceArgs();
-        yield from $provider->{$this->provider}();
+        yield from $this->theClass->newInstanceArgs()->{$this->provider}();
     }
 }
