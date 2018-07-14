@@ -255,8 +255,8 @@ class ResultPrinter extends Printer implements TestListener
     {
         if ($this->numTests == -1) {
             $this->numTests      = \count($suite);
-            $this->numTestsWidth = \strlen((string) $this->numTests);
-            $this->maxColumn     = $this->numberOfColumns - \strlen('  /  (XXX%)') - (2 * $this->numTestsWidth);
+            $this->numTestsWidth = \strlen((string) $this->numTests) * 2 + 3;
+            $this->maxColumn     = $this->numberOfColumns - 2 - $this->numTestsWidth;
         }
     }
 
