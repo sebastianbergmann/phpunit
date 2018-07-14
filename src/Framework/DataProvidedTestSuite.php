@@ -15,6 +15,9 @@ use Throwable;
 
 abstract class DataProvidedTestSuite extends TestSuite
 {
+    /**
+     * @var ReflectionClass
+     */
     protected $theClass;
     protected $method;
     public function __construct(ReflectionClass $theClass, string $method)
@@ -92,11 +95,7 @@ abstract class DataProvidedTestSuite extends TestSuite
                 "Test for {$this->name} skipped by data provider."
             );
         } catch (Throwable $e) {
-            yield self::incompleteTest(
-                $this->name,
-                $this->method,
-                "data provider for {$this->name} failed"
-            );
+            yield self::warning("The data provider specified for {$this->name} is invalid.");
         }
     }
 

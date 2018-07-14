@@ -22,6 +22,15 @@ class DataProviderTestSuite extends DataProvidedTestSuite
 
     protected function yieldData(): iterable
     {
+        if (!$this->theClass->hasMethod($this->provider)) {
+            throw new Exception();
+        }
+        if (!$this->theClass->getMethod($this->provider)->isPublic()) {
+            throw new Exception();
+        }
+        if ($this->theClass->getMethod($this->provider)->isAbstract()) {
+            throw new Exception();
+        }
         $provider = $this->theClass->newInstanceArgs();
         yield from $provider->{$this->provider}();
     }

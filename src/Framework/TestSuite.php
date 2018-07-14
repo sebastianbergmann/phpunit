@@ -573,6 +573,14 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     }
 
     /**
+     * @return \Generator|Test[]
+     */
+    protected function yieldFilteredTests(): \Generator
+    {
+        yield from $this->yieldTests();
+    }
+
+    /**
      * Runs the tests and collects their result in a TestResult.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -637,7 +645,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             return $result;
         }
 
-        foreach ($this->yieldTests() as $test) {
+        foreach ($this->yieldFilteredTests() as $test) {
             if ($result->shouldStop()) {
                 break;
             }
