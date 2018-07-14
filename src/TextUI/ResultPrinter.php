@@ -496,18 +496,12 @@ class ResultPrinter extends Printer implements TestListener
         $this->column++;
         $this->numTestsRun++;
 
-        if ($this->column == $this->maxColumn || $this->numTestsRun == $this->numTests) {
-            if ($this->numTestsRun == $this->numTests) {
-                $this->write(\str_repeat(' ', $this->maxColumn - $this->column));
-            }
+        if ($this->column == $this->maxColumn) {
 
             $this->write(
                 \sprintf(
-                    ' %' . $this->numTestsWidth . 'd / %' .
-                    $this->numTestsWidth . 'd (%3s%%)',
-                    $this->numTestsRun,
-                    $this->numTests,
-                    \floor(($this->numTestsRun / $this->numTests) * 100)
+                    ' %' . $this->numTestsWidth . 'd ',
+                    $this->numTestsRun
                 )
             );
 

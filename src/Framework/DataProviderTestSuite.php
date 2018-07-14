@@ -9,8 +9,21 @@
  */
 namespace PHPUnit\Framework;
 
+use Generator;
+use ReflectionClass;
+
 class DataProviderTestSuite extends TestSuite
 {
+    private $provider;
+    private $theClass;
+    private $method;
+    public function __construct($provider, ReflectionClass $theClass, string $method)
+    {
+        parent::__construct($theClass, $theClass->getName().'::'.$method, true);
+        $this->provider = $provider;
+        $this->theClass = $theClass;
+        $this->method = $method;
+    }
     /**
      * @var string[]
      */
@@ -36,5 +49,40 @@ class DataProviderTestSuite extends TestSuite
     public function hasDependencies(): bool
     {
         return \count($this->dependencies) > 0;
+    }
+
+    /**
+     * @return Generator|Test[]
+     */
+    protected function yieldTests(): Generator
+    {
+        yield from parent::yieldTests();
+        try {
+            $provider = $this->theClass->newInstanceArgs();
+            foreach ($provider->{$this->provider}() as $name => $set) {
+                if(!is_array($set)) {
+                    yield self::warning("set $name is invalid.");
+                    continue;
+                }
+                try {
+                    $test = $this->theClass->newInstanceArgs([
+                        $this->method,
+                        $set,
+                        $name
+                    ]);
+                    $test->setDependencies($this->dependencies);
+                    yield $test;
+                } catch (\Throwable $e) {
+                    yield self::warning("Test creation failed. $e");
+                }
+            }
+        } catch (\Throwable $e) {
+            yield self::warning("data provider failed. $e");
+        }
+    }
+
+    public function count($preferCache = false): int
+    {
+        return 1;
     }
 }
