@@ -72,7 +72,8 @@ EOF
             $this->assertEquals(
                 <<<EOF
 Failed asserting that an array matches the given structure..
-Both arrays do not have the same length.
+Array has more elements than present in the given structure.
+Strict mode is ENABLED.
 
 EOF
                 ,

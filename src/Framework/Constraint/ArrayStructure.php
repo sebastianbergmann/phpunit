@@ -120,7 +120,7 @@ class ArrayStructure extends Constraint
         }
 
         if ($strict && \count($expected) != \count($actual)) {
-            return 'Both arrays do not have the same length.';
+            return "Array has more elements than present in the given structure.\nStrict mode is ENABLED.";
         }
 
         return '';
