@@ -126,6 +126,52 @@ class AssertTest extends TestCase
         $this->assertContains('', 'test');
     }
 
+    public function testAssertArrayStructureThrowsExceptionForInvalidFirstArgument(): void
+    {
+        $this->expectException(Exception::class);
+        $this->assertArrayStructure('string', []);
+    }
+
+    public function testAssertArrayStructureThrowsExceptionForInvalidSecondArgument(): void
+    {
+        $this->expectException(Exception::class);
+        $this->assertArrayStructure([], 'string');
+    }
+
+    public function testAssertArrayStructureFailsBecauseOfMissingElementInActual(): void
+    {
+        $expected = [
+            'a',
+            'b',
+            'c',
+        ];
+
+        $actual = [
+            'a' => 'aval',
+            'b' => 'bval',
+        ];
+
+        $this->expectException(AssertionFailedError::class);
+        $this->assertArrayStructure($expected, $actual);
+    }
+
+    public function testAssertArrayStructureFailsBecauseOfMissingElementInExpectedWhileStrictModeIsOn(): void
+    {
+        $expected = [
+            'a',
+            'b',
+        ];
+
+        $actual = [
+            'a' => 'aval',
+            'b' => 'bval',
+            'c' => 'cval',
+        ];
+
+        $this->expectException(AssertionFailedError::class);
+        $this->assertArrayStructure($expected, $actual, true);
+    }
+
     public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument(): void
     {
         $this->expectException(Exception::class);

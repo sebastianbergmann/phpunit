@@ -90,6 +90,19 @@ function assertArraySubset($subset, $array, bool $strict = false, string $messag
 }
 
 /**
+ * Checks that an array conforms to a given structure.
+ *
+ * @param $expectedStructure
+ * @param $array
+ *
+ * @throws InvalidArgumentHelper
+ */
+function assertArrayStructure($expectedStructure, $array, bool $strict = false, string $message = ''): void
+{
+    Assert::assertArrayStructure(...\func_get_args());
+}
+
+/**
  * Asserts that an array does not have a specified key.
  *
  * @param int|string        $key

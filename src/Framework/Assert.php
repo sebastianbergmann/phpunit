@@ -14,6 +14,7 @@ use Countable;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\ArrayStructure;
 use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\Constraint\Attribute;
 use PHPUnit\Framework\Constraint\Callback;
@@ -128,6 +129,33 @@ abstract class Assert
         }
 
         $constraint = new ArraySubset($subset, $checkForObjectIdentity);
+
+        static::assertThat($array, $constraint, $message);
+    }
+
+    /**
+     * Checks that an array conforms to a given structure.
+     *
+     * @param $expectedStructure
+     * @param $array
+     */
+    public static function assertArrayStructure($expectedStructure, $array, bool $strict = false, string $message = ''): void
+    {
+        if (!(\is_array($expectedStructure))) {
+            throw InvalidArgumentHelper::factory(
+                1,
+                'array'
+            );
+        }
+
+        if (!(\is_array($array))) {
+            throw InvalidArgumentHelper::factory(
+                2,
+                'array'
+            );
+        }
+
+        $constraint = new ArrayStructure($expectedStructure, $strict);
 
         static::assertThat($array, $constraint, $message);
     }
