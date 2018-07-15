@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 7.2 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#3154](https://github.com/sebastianbergmann/phpunit/issues/3154): Global constants as default parameter values are not handled correctly in namespace
 * Fixed [#3189](https://github.com/sebastianbergmann/phpunit/issues/3189): PHPUnit 7.2 potentially leaves a messy libxmlerror state
 * Fixed [#3199](https://github.com/sebastianbergmann/phpunit/pull/3199): Code Coverage for PHPT tests does not work when PHPDBG is used
 
