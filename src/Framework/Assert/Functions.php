@@ -91,12 +91,10 @@ function assertArraySubset($subset, $array, bool $strict = false, string $messag
 
 /**
  * Checks that an array conforms to a given structure.
- * 
+ *
  * @param $expectedStructure
  * @param $array
- * @param bool $strict
- * @param string $message
- * 
+ *
  * @throws InvalidArgumentHelper
  */
 function assertArrayStructure($expectedStructure, $array, bool $strict = false, string $message = ''): void

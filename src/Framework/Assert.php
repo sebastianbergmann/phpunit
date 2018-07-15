@@ -159,7 +159,7 @@ abstract class Assert
 
         static::assertThat($array, $constraint, $message);
     }
-    
+
     /**
      * Asserts that an array does not have a specified key.
      *
