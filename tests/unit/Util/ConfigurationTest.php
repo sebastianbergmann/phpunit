@@ -471,6 +471,7 @@ class ConfigurationTest extends TestCase
                 'reportUselessTests'                         => false,
                 'strictCoverage'                             => false,
                 'disallowTestOutput'                         => false,
+                'defaultTimeLimit'                           => 123,
                 'enforceTimeLimit'                           => false,
                 'extensionsDirectory'                        => '/tmp',
                 'printerClass'                               => 'PHPUnit\TextUI\ResultPrinter',

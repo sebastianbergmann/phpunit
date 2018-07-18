@@ -84,6 +84,7 @@ class Command
         'disallow-test-output'      => null,
         'disallow-resource-usage'   => null,
         'disallow-todo-tests'       => null,
+        'default-time-limit='       => null,
         'enforce-time-limit'        => null,
         'exclude-group='            => null,
         'filter='                   => null,
@@ -689,6 +690,11 @@ class Command
 
                 case '--disallow-resource-usage':
                     $this->arguments['beStrictAboutResourceUsageDuringSmallTests'] = true;
+
+                    break;
+
+                case '--default-time-limit':
+                    $this->arguments['defaultTimeLimit'] = (int) $option[1];
 
                     break;
 

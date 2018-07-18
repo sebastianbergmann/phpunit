@@ -59,6 +59,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  *          beStrictAboutResourceUsageDuringSmallTests="false"
  *          beStrictAboutTestsThatDoNotTestAnything="false"
  *          beStrictAboutTodoAnnotatedTests="false"
+ *          defaultTimeLimit="1"
  *          enforceTimeLimit="false"
  *          ignoreDeprecatedCodeUnitsFromCodeCoverage="false"
  *          timeoutForSmallTests="1"
@@ -852,6 +853,13 @@ final class Configuration
             $result['strictCoverage'] = $this->getBoolean(
                 (string) $root->getAttribute('beStrictAboutCoversAnnotation'),
                 false
+            );
+        }
+
+        if ($root->hasAttribute('defaultTimeLimit')) {
+            $result['defaultTimeLimit'] = $this->getInteger(
+                (string) $root->getAttribute('defaultTimeLimit'),
+                1
             );
         }
 

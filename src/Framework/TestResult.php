@@ -140,6 +140,11 @@ class TestResult implements Countable
     protected $beStrictAboutResourceUsageDuringSmallTests = false;
 
     /**
+     * @var int
+     */
+    protected $defaultTimeLimit = 1;
+
+    /**
      * @var bool
      */
     protected $enforceTimeLimit = false;
@@ -1062,6 +1067,14 @@ class TestResult implements Countable
     }
 
     /**
+     * Sets the default timeout for tests
+     */
+    public function setDefaultTimeLimit(int $timeout): void
+    {
+        $this->defaultTimeLimit = $timeout;
+    }
+
+    /**
      * Sets the timeout for small tests.
      */
     public function setTimeoutForSmallTests(int $timeout): void
@@ -1083,6 +1096,14 @@ class TestResult implements Countable
     public function setTimeoutForLargeTests(int $timeout): void
     {
         $this->timeoutForLargeTests = $timeout;
+    }
+
+    /**
+     * Returns the set timeout for large tests.
+     */
+    public function getDefaultTimeoutTests(): int
+    {
+        return $this->defaultTimeLimit;
     }
 
     /**
