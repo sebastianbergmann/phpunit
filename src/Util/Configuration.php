@@ -59,7 +59,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  *          beStrictAboutResourceUsageDuringSmallTests="false"
  *          beStrictAboutTestsThatDoNotTestAnything="false"
  *          beStrictAboutTodoAnnotatedTests="false"
- *          defaultTimeLimit="1"
+ *          defaultTimeLimit="0"
  *          enforceTimeLimit="false"
  *          ignoreDeprecatedCodeUnitsFromCodeCoverage="false"
  *          timeoutForSmallTests="1"
