@@ -258,6 +258,7 @@
         <xs:attribute name="beStrictAboutTestsThatDoNotTestAnything" type="xs:boolean" default="true"/>
         <xs:attribute name="beStrictAboutTodoAnnotatedTests" type="xs:boolean" default="false"/>
         <xs:attribute name="beStrictAboutCoversAnnotation" type="xs:boolean" default="false"/>
+        <xs:attribute name="defaultTimeLimit" type="xs:integer" default="1"/>
         <xs:attribute name="enforceTimeLimit" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreDeprecatedCodeUnitsFromCodeCoverage" type="xs:boolean" default="false"/>
         <xs:attribute name="timeoutForSmallTests" type="xs:integer" default="1"/>
