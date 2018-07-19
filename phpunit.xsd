@@ -152,6 +152,7 @@
   <xs:complexType name="directoryFilterType">
     <xs:simpleContent>
       <xs:extension base="xs:anyURI">
+        <xs:attribute type="xs:string" name="prefix" default=""/>
         <xs:attribute type="xs:string" name="suffix" default="Test.php"/>
         <xs:attributeGroup ref="phpVersionGroup"/>
       </xs:extension>

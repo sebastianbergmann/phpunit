@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 6.5 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3209](https://github.com/sebastianbergmann/phpunit/issues/3209): `Test::run()` and `TestCase::run()` interface contradiction
+* Fixed [#3218](https://github.com/sebastianbergmann/phpunit/issues/3218): `prefix` attribute for `directory` node missing from `phpunit.xml` XSD
 
 ## [6.5.9] - 2018-07-03
 
