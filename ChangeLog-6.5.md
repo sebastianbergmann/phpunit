@@ -2,6 +2,13 @@
 
 All notable changes of the PHPUnit 6.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.5.10] - 2018-MM-DD
+
+### Fixed
+
+* Fixed [#3209](https://github.com/sebastianbergmann/phpunit/issues/3209): `Test::run()` and `TestCase::run()` interface contradiction
+* Fixed [#3218](https://github.com/sebastianbergmann/phpunit/issues/3218): `prefix` attribute for `directory` node missing from `phpunit.xml` XSD
+
 ## [6.5.9] - 2018-07-03
 
 ### Fixed
@@ -68,6 +75,7 @@ All notable changes of the PHPUnit 6.5 release series are documented in this fil
 * Fixed [#2654](https://github.com/sebastianbergmann/phpunit/issues/2654): Problems with `assertJsonStringEqualsJsonString()`
 * Fixed [#2810](https://github.com/sebastianbergmann/phpunit/pull/2810): Code Coverage for PHPT tests does not work
 
+[6.5.10]: https://github.com/sebastianbergmann/phpunit/compare/6.5.9...6.5.10
 [6.5.9]: https://github.com/sebastianbergmann/phpunit/compare/6.5.8...6.5.9
 [6.5.8]: https://github.com/sebastianbergmann/phpunit/compare/6.5.7...6.5.8
 [6.5.7]: https://github.com/sebastianbergmann/phpunit/compare/6.5.6...6.5.7
