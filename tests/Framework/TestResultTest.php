@@ -78,9 +78,9 @@ class TestResultTest extends TestCase
      */
     public function testCanSkipCoverage($testCase, $expectedCanSkip)
     {
-        require_once __DIR__ . "/../_files/" . $testCase . ".php";
+        require_once __DIR__ . '/../_files/' . $testCase . '.php';
 
-        $test = new $testCase();
+        $test            = new $testCase();
         $canSkipCoverage = TestResult::isAnyCoverageRequired($test);
         $this->assertEquals($expectedCanSkip, $canSkipCoverage);
     }

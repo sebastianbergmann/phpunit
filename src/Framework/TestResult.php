@@ -189,6 +189,25 @@ class TestResult implements Countable
      */
     private $registerMockObjectsFromTestArgumentsRecursively = false;
 
+    public static function isAnyCoverageRequired(TestCase $test)
+    {
+        $annotations = $test->getAnnotations();
+
+        // If any methods have covers, coverage must me generated
+        if (isset($annotations['method']['covers'])) {
+            return true;
+        }
+
+        // If there are no explicit covers, and the test class is
+        // marked as covers nothing, all coverage can be skipped
+        if (isset($annotations['class']['coversNothing'])) {
+            return false;
+        }
+
+        // Otherwise each test method can generate coverage
+        return true;
+    }
+
     /**
      * Registers a TestListener.
      */
@@ -546,25 +565,6 @@ class TestResult implements Countable
     public function getCollectCodeCoverageInformation(): bool
     {
         return $this->codeCoverage !== null;
-    }
-
-    public static function isAnyCoverageRequired(TestCase $test)
-    {
-        $annotations = $test->getAnnotations();
-
-        // If any methods have covers, coverage must me generated
-        if (isset($annotations['method']['covers'])) {
-            return true;
-        }
-
-        // If there are no explicit covers, and the test class is
-        // marked as covers nothing, all coverage can be skipped
-        if (isset($annotations['class']['coversNothing'])) {
-            return false;
-        }
-
-        // Otherwise each test method can generate coverage
-        return true;
     }
 
     /**
