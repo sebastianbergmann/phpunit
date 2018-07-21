@@ -21,7 +21,6 @@ class TestResultTest extends TestCase
     }
 
     /**
-     * @group foo
      * @dataProvider canSkipCoverageProvider
      */
     public function testCanSkipCoverage($testCase, $expectedCanSkip)
