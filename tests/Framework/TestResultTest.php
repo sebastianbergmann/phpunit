@@ -62,4 +62,26 @@ class TestResultTest extends TestCase
         $this->assertAttributeEquals(true, 'lastTestFailed', $result);
         $this->assertAttributeContainsOnly(TestFailure::class, 'notImplemented', $result);
     }
+
+    public function canSkipCoverageProvider()
+    {
+        return [
+            ['CoverageClassTest', true],
+            ['CoverageNothingTest', true],
+            ['CoverageCoversOverridesCoversNothingTest', false],
+        ];
+    }
+
+    /**
+     * @group foo
+     * @dataProvider canSkipCoverageProvider
+     */
+    public function testCanSkipCoverage($testCase, $expectedCanSkip)
+    {
+        require_once __DIR__ . '/../_files/' . $testCase . '.php';
+
+        $test            = new $testCase();
+        $canSkipCoverage = TestResult::isAnyCoverageRequired($test);
+        $this->assertEquals($expectedCanSkip, $canSkipCoverage);
+    }
 }
