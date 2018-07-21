@@ -543,6 +543,25 @@ class TestResult implements Countable
         return $this->codeCoverage !== null;
     }
 
+    public static function isAnyCoverageRequired(TestCase $test)
+    {
+        $annotations = $test->getAnnotations();
+
+        // If any methods have covers, coverage must me generated
+        if (isset($annotations['method']['covers'])) {
+            return true;
+        }
+
+        // If there are no explicit covers, and the test class is
+        // marked as covers nothing, all coverage can be skipped
+        if (isset($annotations['class']['coversNothing'])) {
+            return false;
+        }
+
+        // Otherwise each test method can generate coverage
+        return true;
+    }
+
     /**
      * Runs a TestCase.
      *
@@ -566,16 +585,7 @@ class TestResult implements Countable
                 $this->registerMockObjectsFromTestArgumentsRecursively
             );
 
-            $annotations = $test->getAnnotations();
-
-            if (isset($annotations['method']['coversNothing'])) {
-                $coversNothing = true;
-            } elseif (isset($annotations['class']['coversNothing'])) {
-                if (!isset($annotations['method']['covers'])) {
-                    // method covers takes priority over class coversNothing
-                    $coversNothing = true;
-                }
-            }
+            $isAnyCoverageRequired = self::isAnyCoverageRequired($test);
         }
 
         $error      = false;
@@ -604,7 +614,7 @@ class TestResult implements Countable
 
         $collectCodeCoverage = $this->codeCoverage !== null &&
                                !$test instanceof WarningTestCase &&
-                               !$coversNothing;
+                               $isAnyCoverageRequired;
 
         if ($collectCodeCoverage) {
             $this->codeCoverage->start($test);
