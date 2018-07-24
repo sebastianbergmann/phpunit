@@ -606,8 +606,7 @@ class TestResult implements Countable
 
         if ($this->convertErrorsToExceptions) {
             $oldErrorHandler = \set_error_handler(
-                [ErrorHandler::class, 'handleError'],
-                \E_ALL | \E_STRICT
+                [ErrorHandler::class, 'handleError']
             );
 
             if ($oldErrorHandler === null) {
