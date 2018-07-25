@@ -54,6 +54,7 @@ use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Environment\Runtime;
+use SebastianBergmann\Invoker\Invoker;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)
@@ -579,6 +580,16 @@ class TestRunner extends BaseTestRunner
         $result->beStrictAboutOutputDuringTests($arguments['disallowTestOutput']);
         $result->beStrictAboutTodoAnnotatedTests($arguments['disallowTodoAnnotatedTests']);
         $result->beStrictAboutResourceUsageDuringSmallTests($arguments['beStrictAboutResourceUsageDuringSmallTests']);
+
+        if ($arguments['enforceTimeLimit'] === true) {
+            if (!\class_exists(Invoker::class)) {
+                $this->writeMessage('Error', 'Package phpunit/php-invoker is required for enforcing time limits');
+            }
+
+            if (!\extension_loaded('pcntl') || \strpos(\ini_get('disable_functions'), 'pcntl') !== false) {
+                $this->writeMessage('Error', 'PHP extension pcntl is required for enforcing time limits');
+            }
+        }
         $result->enforceTimeLimit($arguments['enforceTimeLimit']);
         $result->setDefaultTimeLimit($arguments['defaultTimeLimit']);
         $result->setTimeoutForSmallTests($arguments['timeoutForSmallTests']);
