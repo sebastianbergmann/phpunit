@@ -364,7 +364,8 @@ class JUnit extends Printer implements TestListener
      * This is a "hack" needed for the integration of
      * PHPUnit with Phing.
      * 
-     * @param bool $flag
+     * @param bool $flag Enables or disables the writing of the document.
+     *                   default: `true`
      */
     public function setWriteDocument(bool $flag): void
     {
