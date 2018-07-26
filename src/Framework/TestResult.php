@@ -1106,14 +1106,6 @@ class TestResult implements Countable
     /**
      * Returns the set timeout for large tests.
      */
-    public function getDefaultTimeoutTests(): int
-    {
-        return $this->defaultTimeLimit;
-    }
-
-    /**
-     * Returns the set timeout for large tests.
-     */
     public function getTimeoutForLargeTests(): int
     {
         return $this->timeoutForLargeTests;
