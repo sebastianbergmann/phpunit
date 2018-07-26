@@ -155,6 +155,22 @@ class ConfigurationTest extends TestCase
         @\unlink($tmpFilename);
     }
 
+    public function testShouldParseXmlConfigurationToEnforceTimeLimitAndDefaultTimeout(): void
+    {
+        $tmpFilename = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit.' . \uniqid() . '.xml';
+        $xml         = "<phpunit enforceTimeLimit='true' defaultTimeLimit='432'></phpunit>" . \PHP_EOL;
+        \file_put_contents($tmpFilename, $xml);
+
+        $configurationInstance = Configuration::getInstance($tmpFilename);
+        $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
+
+        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $this->assertSame(true, $configurationValues['enforceTimeLimit']);
+        $this->assertSame(432, $configurationValues['defaultTimeLimit']);
+
+        @\unlink($tmpFilename);
+    }
+
     public function testFilterConfigurationIsReadCorrectly(): void
     {
         $this->assertEquals(
