@@ -2,8 +2,12 @@
 https://github.com/sebastianbergmann/phpunit/issues/2085
 --SKIPIF--
 <?php
-if (false || !\class_exists(Invoker::class)) {
-    print "Package phpunit/php-invoker is required for enforcing time limits");
+if (!\class_exists(Invoker::class)) {
+    print "Skip: package phpunit/php-invoker is required for enforcing time limits" . PHP_EOL;
+}
+
+if (!\extension_loaded('pcntl') || \strpos(\ini_get('disable_functions'), 'pcntl') !== false) {
+    print "Skip: extension pcntl is required for enforcing time limits" . PHP_EOL;
 }
 --FILE--
 <?php
