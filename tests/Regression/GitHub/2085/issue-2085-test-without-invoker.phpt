@@ -1,5 +1,5 @@
 --TEST--
-Test CLI flags --enforce-time-limit --default-time-limit when missing php-invoker, has pcntl
+Test CLI flags --enforce-time-limit --default-time-limit without php-invoker, with pcntl
 --DESCRIPTION--
 https://github.com/sebastianbergmann/phpunit/issues/2085
 --SKIPIF--
