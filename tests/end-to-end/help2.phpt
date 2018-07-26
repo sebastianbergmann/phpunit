@@ -57,7 +57,7 @@ Test Execution Options:
   --disallow-test-output      Be strict about output during tests
   --disallow-resource-usage   Be strict about resource usage during small tests
   --enforce-time-limit        Enforce time limit based on test size
-  --default-time-limit=<sec>  Maximum running time in seconds for unsized tests
+  --default-time-limit=<sec>  Timeout in seconds for tests without @small, @medium or @large
   --disallow-todo-tests       Disallow @todo-annotated tests
 
   --process-isolation         Run each test in a separate PHP process
