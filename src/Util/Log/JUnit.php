@@ -367,9 +367,11 @@ class JUnit extends Printer implements TestListener
      * @param bool $flag Enables or disables the writing of the document.
      *                   default: `true`
      */
-    public function setWriteDocument(bool $flag): void
+    public function setWriteDocument($flag): void
     {
-        $this->writeDocument = $flag;
+        if (\is_bool($flag)) {
+            $this->writeDocument = $flag;
+        }
     }
 
     /**
