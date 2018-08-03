@@ -4,16 +4,16 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/phpunit/phpunit.svg?style=flat-square)](https://packagist.org/packages/phpunit/phpunit)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%207.1-8892BF.svg?style=flat-square)](https://php.net/)
-[![Build Status](https://img.shields.io/travis/sebastianbergmann/7.2/master.svg?style=flat-square)](https://phpunit.de/build-status.html)
+[![Build Status](https://img.shields.io/travis/sebastianbergmann/phpunit/7.3.svg?style=flat-square)](https://phpunit.de/build-status.html)
 
 ## Installation
 
 We distribute a [PHP Archive (PHAR)](https://php.net/phar) that has all required (as well as some optional) dependencies of PHPUnit 7.3 bundled in a single file:
 
 ```bash
-$ wget https://phar.phpunit.de/phpunit-7.2.phar
+$ wget https://phar.phpunit.de/phpunit-7.3.phar
 
-$ php phpunit-7.2.phar --version
+$ php phpunit-7.3.phar --version
 ```
 
 Alternatively, you may use [Composer](https://getcomposer.org/) to download and install PHPUnit as well as its dependencies. Please refer to the "[Getting Started](https://phpunit.de/getting-started-with-phpunit.html)" guide for details on how to install PHPUnit.
