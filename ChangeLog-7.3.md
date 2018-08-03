@@ -22,6 +22,8 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3154](https://github.com/sebastianbergmann/phpunit/issues/3154): Global constants as default parameter values are not handled correctly in namespace
+* Fixed [#3218](https://github.com/sebastianbergmann/phpunit/issues/3218): `prefix` attribute for `directory` node missing from `phpunit.xml` XSD
+* Fixed [#3222](https://github.com/sebastianbergmann/phpunit/pull/3222): Priority of `@covers` and `@coversNothing` is wrong
 * Fixed [#3225](https://github.com/sebastianbergmann/phpunit/issues/3225): `coverage-php` missing from `phpunit.xsd`
 
 [7.3.0]: https://github.com/sebastianbergmann/phpunit/compare/7.2...7.3.0

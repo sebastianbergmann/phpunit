@@ -2,13 +2,6 @@
 
 All notable changes of the PHPUnit 7.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [7.2.8] - 2018-MM-DD
-
-### Fixed
-
-* Fixed [#3218](https://github.com/sebastianbergmann/phpunit/issues/3218): `prefix` attribute for `directory` node missing from `phpunit.xml` XSD
-* Fixed [#3222](https://github.com/sebastianbergmann/phpunit/pull/3222): Priority of `@covers` and `@coversNothing` is wrong
-
 ## [7.2.7] - 2018-07-15
 
 ### Fixed
@@ -74,7 +67,6 @@ All notable changes of the PHPUnit 7.2 release series are documented in this fil
 
 * Fixed [#3069](https://github.com/sebastianbergmann/phpunit/issues/3069): Method `ResultPrinter::printWaitPrompt()` seems to be unused
 
-[7.2.8]: https://github.com/sebastianbergmann/phpunit/compare/7.2.7...7.2.8
 [7.2.7]: https://github.com/sebastianbergmann/phpunit/compare/7.2.6...7.2.7
 [7.2.6]: https://github.com/sebastianbergmann/phpunit/compare/7.2.5...7.2.6
 [7.2.5]: https://github.com/sebastianbergmann/phpunit/compare/7.2.4...7.2.5
