@@ -54,7 +54,9 @@ class Printer
                     $this->out = \fsockopen($out[0], $out[1]);
                 } else {
                     if (\strpos($out, 'php://') === false && !\is_dir(\dirname($out))) {
-                        \mkdir(\dirname($out), 0777, true);
+                        if (!@\mkdir(\dirname($out), 0777, true) && !\is_dir(\dirname($out))) {
+                            throw new Exception('Failed to create directory '.\dirname($out));
+                        }
                     }
 
                     $this->out = \fopen($out, 'wt');
