@@ -223,7 +223,7 @@
         <xs:attribute name="backupGlobals" type="xs:boolean" default="false"/>
         <xs:attribute name="backupStaticAttributes" type="xs:boolean" default="false"/>
         <xs:attribute name="bootstrap" type="xs:anyURI"/>
-        <xs:attribute name="cacheResult" type="xs:boolean"/>
+        <xs:attribute name="cacheResult" type="xs:boolean" default="false"/>
         <xs:attribute name="cacheResultFile" type="xs:anyURI"/>
         <xs:attribute name="cacheTokens" type="xs:boolean"/>
         <xs:attribute name="colors" type="xs:boolean" default="false"/>
