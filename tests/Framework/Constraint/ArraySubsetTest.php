@@ -156,6 +156,202 @@ class ArraySubsetTest extends ConstraintTestCase
                 ],
                 'strict'   => true
             ],
+            'loose indexed array subset with duplicates and array other' => [
+                'expected' => true,
+                'subset'   => [0, 0],
+                'other'    => ['', '0'],
+                'strict'   => false,
+            ],
+            'strict indexed array subset with duplicates and array other' => [
+                'expected' => false,
+                'subset'   => [0, 0],
+                'other'    => ['', '0'],
+                'strict'   => true,
+            ],
+            'loose indexed array subset with duplicates and ArrayObject other' => [
+                'expected' => true,
+                'subset'   => [0, 0],
+                'other'    => new \ArrayObject(['', '0']),
+                'strict'   => false,
+            ],
+            'strict indexed ArrayObject subset with duplicates and array other' => [
+                'expected' => false,
+                'subset'   => new \ArrayObject([0, 0]),
+                'other'    => [0],
+                'strict'   => true,
+            ],
+            'loose unordered indexed array subset with duplicates and array other (positive)' => [
+                'expected' => true,
+                'subset'   => [0, '1', 1],
+                'other'    => ['1', '2', '0', '1'],
+                'strict'   => false,
+            ],
+            'loose unordered indexed array subset with duplicates and array other (negative)' => [
+                'expected' => false,
+                'subset'   => [0, '1', 1],
+                'other'    => ['1', '2', '0'],
+                'strict'   => false,
+            ],
+            'strict unordered indexed array subset with duplicates and array other' => [
+                'expected' => false,
+                'subset'   => [0, '1', 1],
+                'other'    => ['1', '2', '0', '1'],
+                'strict'   => true,
+            ],
+            'loose unordered indexed array subset with duplicates and ArrayObject other' => [
+                'expected' => true,
+                'subset'   => [0, '1', 1],
+                'other'    => new \ArrayObject(['1', '2', '0', '1']),
+                'strict'   => false,
+            ],
+            'strict unordered indexed ArrayObject subset with duplicates and array other' => [
+                'expected' => false,
+                'subset'   => new \ArrayObject([0, '1', '1']),
+                'other'    => ['1', '2', 0],
+                'strict'   => true,
+            ],
+            'loose unordered multidimensional indexed array subset with duplicates and array other (positive)' => [
+                'expected' => true,
+                'subset'   => [
+                    ['a', 0, 0],
+                    ['a', false, 0],
+                    ['a', 1, 0],
+                ],
+                'other'    => [
+                    0   => ['a', '0', '0'],
+                    'b' => ['a', '1', '0'],
+                    'c' => ['a', '0', '0'],
+                    3   => ['a', '1', '0'],
+                ],
+                'strict'   => false,
+            ],
+            'loose unordered multidimensional indexed array subset with duplicates and array other (negative)' => [
+                'expected' => false,
+                'subset'   => [
+                    ['a', 0, 0],
+                    ['a', 0, 0],
+                    ['a', 1, 0],
+                ],
+                'other'    => [
+                    0   => ['a', '0', '0'],
+                    'b' => ['a', '1', '0'],
+                    3   => ['a', '1', '0'],
+                ],
+                'strict'   => false,
+            ],
+            'strict unordered multidimensional indexed array subset with duplicates and array other (positive)' => [
+                'expected' => true,
+                'subset'   => [
+                    [[3, 4], '2'],
+                    '10',
+                    '10',
+                ],
+                'other'    => [
+                    0   => '10',
+                    'a' => [
+                        'aa' => '2',
+                        'ab' => [5, 4, 3],
+                        'ac' => 10,
+                    ],
+                    'b' => '10',
+                ],
+                'strict'   => true,
+            ],
+            'strict unordered multidimensional indexed array subset with duplicates and array other (negative, missing value)' => [
+                'expected' => false,
+                'subset'   => [
+                    [[3, 4], 2],
+                    '10',
+                    '10',
+                ],
+                'other'    => [
+                    'a' => [
+                        'aa' => '2',
+                        'ab' => [5, 4, 3],
+                        'ac' => 10,
+                    ],
+                    'b' => '10',
+                ],
+                'strict'   => true,
+            ],
+            'strict unordered multidimensional indexed array subset with duplicates and array other (negative, wrong type)' => [
+                'expected' => false,
+                'subset'   => [
+                    [[3, 4], 2],
+                    '10',
+                    '10',
+                ],
+                'other'    => [
+                    0   => 10,
+                    'a' => [
+                        'aa' => '2',
+                        'ab' => [5, 4, 3],
+                        'ac' => 10,
+                    ],
+                    'b' => '10',
+                ],
+                'strict'   => true,
+            ],
+            'loose unordered multidimensional indexed array subset with duplicates and ArrayObject other' => [
+                'expected' => true,
+                'subset'   => [
+                    [[3, 4], 2],
+                    '10',
+                    '10',
+                ],
+                'other'    => new \ArrayObject([
+                    0   => 10,
+                    'a' => [
+                        'aa' => '2',
+                        'ab' => [5, 4, 3],
+                        'ac' => 10,
+                    ],
+                    'b' => '10',
+                ]),
+                'strict'   => false,
+            ],
+            'strict unordered multidimensional indexed ArrayObject subset with duplicates and array other' => [
+                'expected' => true,
+                'subset'   => new \ArrayObject([
+                    [[3, 4], '2'],
+                    [[3, 4], '2'],
+                    '10',
+                ]),
+                'other'    => [
+                    0   => '10',
+                    'a' => [
+                        'aa' => '2',
+                        'ab' => [5, 4, 3],
+                        'ac' => 10,
+                    ],
+                    'b' => [
+                        'ba' => [3, 4, 5],
+                        'bb' => 10,
+                        'bc' => '2',
+                    ],
+                ],
+                'strict'   => true,
+            ],
+            'regression test for issue 3240' => [
+                'expected' => true,
+                'subset'   => [
+                    [
+                        'name'     => 'amount',
+                        'required' => true,
+                    ],
+                ],
+                'other' => [
+                    [
+                        'name'     => 'amount',
+                        'required' => true,
+                    ],
+                    [
+                        'name'     => 'accountNumber',
+                        'required' => true,
+                    ],
+                ],
+                'strict' => true,
+            ],
         ];
     }
 
