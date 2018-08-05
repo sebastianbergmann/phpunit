@@ -829,7 +829,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
             if ($this->inIsolation) {
                 foreach ($hookMethods['beforeClass'] as $method) {
-                    $this->$method();
+                    $methodName = $method['name'];
+                    $this->$methodName();
                 }
             }
 
@@ -837,7 +838,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $this->setDoesNotPerformAssertionsFromAnnotation();
 
             foreach ($hookMethods['before'] as $method) {
-                $this->$method();
+                $methodName = $method['name'];
+                $this->$methodName();
             }
 
             $this->assertPreConditions();
@@ -884,12 +886,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         try {
             if ($hasMetRequirements) {
                 foreach ($hookMethods['after'] as $method) {
-                    $this->$method();
+                    $methodName = $method['name'];
+                    $this->$methodName();
                 }
 
                 if ($this->inIsolation) {
                     foreach ($hookMethods['afterClass'] as $method) {
-                        $this->$method();
+                        $methodName = $method['name'];
+                        $this->$methodName();
                     }
                 }
             }

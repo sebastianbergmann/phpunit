@@ -693,6 +693,8 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $this->setUp();
 
             foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
+                $beforeClassMethod = $beforeClassMethod['name'];
+
                 if ($this->testCase === true &&
                     \class_exists($this->name, false) &&
                     \method_exists($this->name, $beforeClassMethod)) {
@@ -751,6 +753,8 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
 
         foreach ($hookMethods['afterClass'] as $afterClassMethod) {
+            $afterClassMethod = $afterClassMethod['name'];
+
             if ($this->testCase === true && \class_exists($this->name, false) && \method_exists($this->name, $afterClassMethod)) {
                 \call_user_func([$this->name, $afterClassMethod]);
             }
