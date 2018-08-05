@@ -31,7 +31,7 @@ final class ErrorHandler
 
     public static function handleError(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
-        if (!($errorNumber & \error_reporting())) {
+        if (\error_reporting() === 0) {
             return false;
         }
 
