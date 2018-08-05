@@ -89,6 +89,8 @@ final class Test
      */
     private const REGEX_REQUIRES = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^ ]+?))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
 
+    private const KEY_ORDER = 'order';
+
     /**
      * @var array
      */
@@ -707,32 +709,69 @@ final class Test
 
                 foreach ($class->getMethods() as $method) {
                     if (self::isBeforeClassMethod($method)) {
-                        \array_unshift(
-                            self::$hookMethods[$className]['beforeClass'],
-                            $method->getName()
-                        );
+                        self::$hookMethods[$className]['beforeClass'][] = [
+                            'name'          => $method->getName(),
+                            self::KEY_ORDER => self::getMethodOrder('beforeClass', $method)
+                        ];
                     }
 
                     if (self::isBeforeMethod($method)) {
-                        \array_unshift(
-                            self::$hookMethods[$className]['before'],
-                            $method->getName()
-                        );
+                        self::$hookMethods[$className]['before'][] = [
+                            'name'          => $method->getName(),
+                            self::KEY_ORDER => self::getMethodOrder('before', $method)
+                        ];
                     }
 
                     if (self::isAfterMethod($method)) {
-                        self::$hookMethods[$className]['after'][] = $method->getName();
+                        self::$hookMethods[$className]['after'][] = [
+                            'name'          => $method->getName(),
+                            self::KEY_ORDER => self::getMethodOrder('after', $method)
+                        ];
                     }
 
                     if (self::isAfterClassMethod($method)) {
-                        self::$hookMethods[$className]['afterClass'][] = $method->getName();
+                        self::$hookMethods[$className]['afterClass'][] = [
+                            'name'          => $method->getName(),
+                            self::KEY_ORDER => self::getMethodOrder('afterClass', $method)
+                        ];
                     }
                 }
             } catch (ReflectionException $e) {
             }
+
+            self::$hookMethods[$className]['beforeClass'] = self::sortHookMethods(self::$hookMethods[$className]['beforeClass']);
+            self::$hookMethods[$className]['before']      = self::sortHookMethods(self::$hookMethods[$className]['before']);
+            self::$hookMethods[$className]['after']       = self::sortHookMethods(self::$hookMethods[$className]['after']);
+            self::$hookMethods[$className]['afterClass']  = self::sortHookMethods(self::$hookMethods[$className]['afterClass']);
         }
 
         return self::$hookMethods[$className];
+    }
+
+    /**
+     * @param (string|int|null)[] $hookMethods
+     */
+    private static function sortHookMethods(array $hookMethods): array
+    {
+        \usort(
+            $hookMethods,
+            function (array $hookMethodA, array $hookMethodB): int {
+                $orderA = $hookMethodB[self::KEY_ORDER];
+                $orderB = $hookMethodA[self::KEY_ORDER];
+
+                if ($orderA === null && $orderB !== null) {
+                    return -1;
+                }
+
+                if ($orderB === null && $orderA !== null) {
+                    return 1;
+                }
+
+                return $orderB <=> $orderA;
+            }
+        );
+
+        return $hookMethods;
     }
 
     /**
@@ -895,10 +934,10 @@ final class Test
     private static function emptyHookMethodsArray(): array
     {
         return [
-            'beforeClass' => ['setUpBeforeClass'],
-            'before'      => ['setUp'],
-            'after'       => ['tearDown'],
-            'afterClass'  => ['tearDownAfterClass']
+            'beforeClass' => [['name' => 'setUpBeforeClass', self::KEY_ORDER => null]],
+            'before'      => [['name' => 'setUp', self::KEY_ORDER => null]],
+            'after'       => [['name' => 'tearDown', self::KEY_ORDER => null]],
+            'afterClass'  => [['name' => 'tearDownAfterClass', self::KEY_ORDER => null]]
         ];
     }
 
@@ -1074,6 +1113,17 @@ final class Test
         }
 
         return $result;
+    }
+
+    private static function getMethodOrder(string $type, ReflectionMethod $method): ?int
+    {
+        $pattern = \sprintf('~@%sOrder (\d+)~', $type);
+
+        if (\preg_match($pattern, $method->getDocComment(), $matches) === 1) {
+            return (int) $matches[1];
+        }
+
+        return null;
     }
 
     private static function isBeforeClassMethod(ReflectionMethod $method): bool
