@@ -332,6 +332,26 @@ class ArraySubsetTest extends ConstraintTestCase
                 ],
                 'strict'   => true,
             ],
+            'regression test for issue 3240' => [
+                'expected' => true,
+                'subset'   => [
+                    [
+                        'name'     => 'amount',
+                        'required' => true,
+                    ],
+                ],
+                'other' => [
+                    [
+                        'name'     => 'amount',
+                        'required' => true,
+                    ],
+                    [
+                        'name'     => 'accountNumber',
+                        'required' => true,
+                    ],
+                ],
+                'strict' => true,
+            ],
         ];
     }
 
