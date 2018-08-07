@@ -16,144 +16,28 @@ class ArraySubsetTest extends ConstraintTestCase
     public static function evaluateDataProvider()
     {
         return [
-            'loose associative array subset and array other' => [
+            'loose array subset and array other' => [
                 'expected' => true,
                 'subset'   => ['bar' => 0],
                 'other'    => ['foo' => '', 'bar' => '0'],
                 'strict'   => false
             ],
-            'strict associative array subset and array other' => [
+            'strict array subset and array other' => [
                 'expected' => false,
                 'subset'   => ['bar' => 0],
                 'other'    => ['foo' => '', 'bar' => '0'],
                 'strict'   => true
             ],
-            'loose associative array subset and ArrayObject other' => [
+            'loose array subset and ArrayObject other' => [
                 'expected' => true,
                 'subset'   => ['bar' => 0],
                 'other'    => new \ArrayObject(['foo' => '', 'bar' => '0']),
                 'strict'   => false
             ],
-            'strict associative ArrayObject subset and array other' => [
+            'strict ArrayObject subset and array other' => [
                 'expected' => true,
                 'subset'   => new \ArrayObject(['bar' => 0]),
                 'other'    => ['foo' => '', 'bar' => 0],
-                'strict'   => true
-            ],
-            'loose indexed array subset and array other' => [
-                'expected' => true,
-                'subset'   => [0],
-                'other'    => ['', '0'],
-                'strict'   => false
-            ],
-            'strict indexed array subset and array other' => [
-                'expected' => false,
-                'subset'   => [0],
-                'other'    => ['', '0'],
-                'strict'   => true
-            ],
-            'loose indexed array subset and ArrayObject other' => [
-                'expected' => true,
-                'subset'   => [0],
-                'other'    => new \ArrayObject(['', '0']),
-                'strict'   => false
-            ],
-            'strict indexed ArrayObject subset and array other' => [
-                'expected' => true,
-                'subset'   => new \ArrayObject([0]),
-                'other'    => ['', 0],
-                'strict'   => true
-            ],
-            'loose unordered indexed array subset and array other' => [
-                'expected' => true,
-                'subset'   => [0, '1'],
-                'other'    => ['1', '2', '0'],
-                'strict'   => false
-            ],
-            'strict unordered indexed array subset and array other' => [
-                'expected' => false,
-                'subset'   => [0, '1'],
-                'other'    => ['1', '2', '0'],
-                'strict'   => true
-            ],
-            'loose unordered indexed array subset and ArrayObject other' => [
-                'expected' => true,
-                'subset'   => [0, '1'],
-                'other'    => new \ArrayObject(['1', '2', '0']),
-                'strict'   => false
-            ],
-            'strict unordered indexed ArrayObject subset and array other' => [
-                'expected' => true,
-                'subset'   => new \ArrayObject([0, '1']),
-                'other'    => ['1', '2', 0],
-                'strict'   => true
-            ],
-            'loose unordered multidimensional indexed array subset and array other' => [
-                'expected' => true,
-                'subset'   => [
-                    [[3, 4], 2],
-                    '10',
-                ],
-                'other'    => [
-                    0   => '1',
-                    'a' => [
-                        'aa' => '2',
-                        'ab' => [5, 4, 3],
-                        'ac' => 10,
-                    ],
-                    'b' => '10',
-                ],
-                'strict'   => false
-            ],
-            'strict unordered multidimensional indexed array subset and array other' => [
-                'expected' => false,
-                'subset'   => [
-                    [[3, 4], 2],
-                    '10',
-                ],
-                'other'    => [
-                    0   => '1',
-                    'a' => [
-                        'aa' => '2',
-                        'ab' => [5, 4, 3],
-                        'ac' => 10,
-                    ],
-                    'b' => '10',
-                ],
-                'strict'   => true
-            ],
-            'loose unordered multidimensional indexed array subset and ArrayObject other' => [
-                'expected' => true,
-                'subset'   => [
-                    [[3, 4], 2],
-                    '10',
-                ],
-                'other'    => new \ArrayObject([
-                    0   => '1',
-                    'a' => [
-                        'aa' => '2',
-                        'ab' => [5, 4, 3],
-                        'ac' => 10,
-                    ],
-                    'b' => '10',
-                ]),
-                'strict'   => false
-            ],
-            'strict unordered multidimensional indexed ArrayObject subset and array other' => [
-                'expected' => true,
-                'subset'   => new \ArrayObject([
-                    [[3, 4], '2'],
-                    '10',
-                ]),
-                'other'    => [
-                    0   => '1',
-                    'a' => [
-                        'aa' => '2',
-                        'ab' => [5, 4, 3],
-                        'ac' => 10,
-                    ],
-                    'b' => '10',
-                ],
                 'strict'   => true
             ],
         ];
@@ -200,3 +84,4 @@ class ArraySubsetTest extends ConstraintTestCase
         }
     }
 }
+
