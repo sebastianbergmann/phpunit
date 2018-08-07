@@ -158,17 +158,13 @@ class AssertTest extends TestCase
             'd' => ['a2' => ['a3' => 'item a3', 'b3' => 'item b3']]
         ];
 
-        $this->assertArraySubset(['a' => 'item a'], $array);
         $this->assertArraySubset(['a' => 'item a', 'c' => ['a2' => 'item a2']], $array);
         $this->assertArraySubset(['a' => 'item a', 'd' => ['a2' => ['b3' => 'item b3']]], $array);
-        $this->assertArraySubset(['b' => 'item b', 'd' => ['a2' => ['b3' => 'item b3']]], $array);
 
         $arrayAccessData = new \ArrayObject($array);
 
-        $this->assertArraySubset(['a' => 'item a'], $arrayAccessData);
         $this->assertArraySubset(['a' => 'item a', 'c' => ['a2' => 'item a2']], $arrayAccessData);
         $this->assertArraySubset(['a' => 'item a', 'd' => ['a2' => ['b3' => 'item b3']]], $arrayAccessData);
-        $this->assertArraySubset(['b' => 'item b', 'd' => ['a2' => ['b3' => 'item b3']]], $arrayAccessData);
 
         try {
             $this->assertArraySubset(['a' => 'bad value'], $array);
@@ -177,39 +173,6 @@ class AssertTest extends TestCase
 
         try {
             $this->assertArraySubset(['d' => ['a2' => ['bad index' => 'item b3']]], $array);
-        } catch (AssertionFailedError $e) {
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testAssertArraySubsetWithIndexedArrays(): void
-    {
-        $array = [
-            'item a',
-            'item b',
-            ['a2' => 'item a2', 'b2' => 'item b2'],
-            ['a2' => ['a3' => 'item a3', 'b3' => 'item b3']]
-        ];
-
-        $this->assertArraySubset(['item a', ['a2' => 'item a2']], $array);
-        $this->assertArraySubset(['item a', ['a2' => ['b3' => 'item b3']]], $array);
-        $this->assertArraySubset(['item b', ['a2' => ['b3' => 'item b3']]], $array);
-
-        $arrayAccessData = new \ArrayObject($array);
-
-        $this->assertArraySubset(['item a', ['a2' => 'item a2']], $arrayAccessData);
-        $this->assertArraySubset(['item a', ['a2' => ['b3' => 'item b3']]], $arrayAccessData);
-        $this->assertArraySubset(['item b', ['a2' => ['b3' => 'item b3']]], $arrayAccessData);
-
-        try {
-            $this->assertArraySubset(['bad value'], $array);
-        } catch (AssertionFailedError $e) {
-        }
-
-        try {
-            $this->assertArraySubset([['a2' => ['bad index' => 'item b3']]], $array);
         } catch (AssertionFailedError $e) {
             return;
         }
