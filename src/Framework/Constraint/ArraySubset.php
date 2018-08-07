@@ -63,7 +63,6 @@ class ArraySubset extends Constraint
         $this->subset = $this->toArray($this->subset);
 
         $intersect = $this->arrayIntersectRecursive($other, $this->subset);
-
         $this->deepSort($intersect);
         $this->deepSort($this->subset);
 
@@ -130,13 +129,9 @@ class ArraySubset extends Constraint
 
     private function isAssociative(array $array): bool
     {
-        return \array_reduce(
-            \array_keys($array),
-            function (bool $carry, $key): bool {
-                return $carry || \is_string($key);
-            },
-            false
-        );
+        return \array_reduce(\array_keys($array), function (bool $carry, $key): bool {
+            return $carry || \is_string($key);
+        }, false);
     }
 
     private function compare($first, $second): bool
@@ -151,8 +146,6 @@ class ArraySubset extends Constraint
                 $this->deepSort($value);
             }
         }
-
-        unset($value);
 
         if ($this->isAssociative($array)) {
             \ksort($array);
@@ -197,7 +190,10 @@ class ArraySubset extends Constraint
                     }
                 } else {
                     foreach ($subset as $key => $subset_value) {
-                        if (!\is_array($subset_value) && $this->compare($subset_value, $array_value)) {
+                        if (!\is_array($subset_value) && $this->compare(
+                            $subset_value,
+                            $array_value
+                          )) {
                             $intersect[$key] = $array_value;
 
                             break;
