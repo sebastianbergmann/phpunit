@@ -4,9 +4,14 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
 
 ## [7.3.1] - 2018-MM-DD
 
+### Changed
+
+* Reverted [#3161](https://github.com/sebastianbergmann/phpunit/pull/3161) (because of [#3240](https://github.com/sebastianbergmann/phpunit/issues/3240)): Support for indexed arrays in `PHPUnit\Framework\Constraint\ArraySubset`
+
 ### Fixed
 
 * Fixed [#3237](https://github.com/sebastianbergmann/phpunit/issues/3237): Result caching enabled by default
+* Fixed [#3240](https://github.com/sebastianbergmann/phpunit/issues/3240): `assertArraySubset()` does not work as expected
 
 ## [7.3.0] - 2018-08-03
 
