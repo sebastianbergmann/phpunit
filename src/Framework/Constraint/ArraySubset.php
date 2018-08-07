@@ -115,8 +115,6 @@ class ArraySubset extends Constraint
 
                                 if (!empty($recursed)) {
                                     $intersect[$key] = $recursed;
-
-                                    break;
                                 }
                             }
                         }
