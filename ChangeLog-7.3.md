@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
 
 ### Fixed
 
-* Fixed [#3219](https://github.com/sebastianbergmann/phpunit/issues/3219): `getMockFromWsdl()` generates invalid PHP code when WSDL contains special characters
+* Fixed [#3219](https://github.com/sebastianbergmann/phpunit/issues/3219): `getMockFromWsdl()` generates invalid PHP code when WSDL filename contains special characters
 
 ## [7.3.1] - 2018-08-07
 
