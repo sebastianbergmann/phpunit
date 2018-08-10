@@ -2522,6 +2522,64 @@ XML;
         $this->assertStringNotMatchesFormatFile($this->filesDirectory . 'expectedFileFormat.txt', "FOO\n");
     }
 
+    public function testAssertResourceOfTypeForMemoryStream()
+    {
+        $resource = fopen("php://memory", 'rb');
+
+        $this->assertResourceOfType('stream', $resource);
+
+        fclose($resource);
+    }
+
+    public function testAssertResourceOfTypeThrowForNotAResource()
+    {
+        $notAResource = 'test';
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertResourceOfType('stream', $notAResource);
+    }
+
+    public function testAssertResourceOfTypeThrowWhenExpectingOtherType()
+    {
+        $resource = fopen("php://memory", 'rb');
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertResourceOfType('foo', $resource);
+
+        fclose($resource);
+    }
+
+    public function testAssertResourceNotOfTypeForMemoryStreamAndXml()
+    {
+        $resource = fopen("php://memory", 'rb');
+
+        $this->assertResourceNotOfType('xml', $resource);
+
+        fclose($resource);
+    }
+
+    public function testAssertResourceNotOfTypeThrowForNotAResource()
+    {
+        $notAResource = 'test';
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertResourceNotOfType('stream', $notAResource);
+    }
+
+    public function testAssertResourceNotOfTypeThrowWhenExpectingGivenType()
+    {
+        $resource = fopen("php://memory", 'rb');
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertResourceNotOfType('stream', $resource);
+
+        fclose($resource);
+    }
+
     protected function sameValues()
     {
         $object = new \SampleClass(4, 8, 15);
