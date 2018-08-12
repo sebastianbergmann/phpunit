@@ -18,12 +18,14 @@
     </xs:complexType>
     <xs:complexType name="filterType">
         <xs:sequence>
-            <xs:group ref="pathGroup"/>
-            <xs:element name="exclude" maxOccurs="unbounded" minOccurs="0">
-                <xs:complexType>
-                    <xs:group ref="pathGroup"/>
-                </xs:complexType>
-            </xs:element>
+            <xs:choice maxOccurs="unbounded" minOccurs="0">
+                <xs:group ref="pathGroup"/>
+                <xs:element name="exclude">
+                    <xs:complexType>
+                        <xs:group ref="pathGroup"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="whiteListType">
@@ -146,8 +148,10 @@
     </xs:complexType>
     <xs:group name="pathGroup">
         <xs:sequence>
-            <xs:element name="directory" type="directoryFilterType" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="file" type="fileFilterType" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="directory" type="directoryFilterType"/>
+                <xs:element name="file" type="fileFilterType"/>
+            </xs:choice>
         </xs:sequence>
     </xs:group>
     <xs:complexType name="directoryFilterType">
