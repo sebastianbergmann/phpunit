@@ -156,6 +156,13 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
      * @var int|string
      */
     private $expectedExceptionCode = null;
+    
+    /**
+     * The callable that tests the expected Exception.
+     *
+     * @var callable
+     */
+    private $expectedExceptionCallable = null;
 
     /**
      * The name of the test case.
@@ -621,6 +628,26 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
         }
 
         $this->expectedExceptionMessageRegExp = $messageRegExp;
+    }
+
+    /**
+     * The callable method will be called with the Exception as parameter
+     *
+     * @param callable $callable
+     *
+     * @throws PHPUnit_Framework_Exception
+     */
+    public function expectExceptionCustom(callable $callable)
+    {
+        if (!$this->expectedException) {
+            $this->expectedException = \Exception::class;
+        }
+
+        if (!is_callable($callable)) {
+            throw PHPUnit_Util_InvalidArgumentHelper::factory(1, 'callable');
+        }
+
+        $this->expectedExceptionCallable = $callable;
     }
 
     /**
@@ -1120,6 +1147,10 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
                     );
                 }
 
+                if ($this->expectedExceptionCallable !== null) {
+                    call_user_func_array($this->expectedExceptionCallable, [$e]);
+                }
+                
                 return;
             } else {
                 throw $e;
