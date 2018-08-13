@@ -5,6 +5,7 @@ All notable changes of the PHPUnit 6.5 release series are documented in this fil
 ## [6.5.12] - 2018-MM-DD
 
 * Fixed [#3248](https://github.com/sebastianbergmann/phpunit/issues/3248): `phpunit.xsd` dictates element order where it should not
+* Fixed [#3251](https://github.com/sebastianbergmann/phpunit/issues/3251): TeamCity result logger is missing test duration information
 
 ## [6.5.11] - 2018-08-07
 
