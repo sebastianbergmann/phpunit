@@ -60,9 +60,9 @@ class TeamCity extends ResultPrinter
         $this->printEvent(
             'testFailed',
             [
-                'name'    => $test->getName(),
-                'message' => self::getMessage($t),
-                'details' => self::getDetails($t),
+                'name'     => $test->getName(),
+                'message'  => self::getMessage($t),
+                'details'  => self::getDetails($t),
                 'duration' => self::toMilliseconds($time),
             ]
         );
@@ -78,9 +78,9 @@ class TeamCity extends ResultPrinter
         $this->printEvent(
             'testFailed',
             [
-                'name'    => $test->getName(),
-                'message' => self::getMessage($e),
-                'details' => self::getDetails($e),
+                'name'     => $test->getName(),
+                'message'  => self::getMessage($e),
+                'details'  => self::getDetails($e),
                 'duration' => self::toMilliseconds($time),
             ]
         );
@@ -94,9 +94,9 @@ class TeamCity extends ResultPrinter
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         $parameters = [
-            'name'    => $test->getName(),
-            'message' => self::getMessage($e),
-            'details' => self::getDetails($e),
+            'name'     => $test->getName(),
+            'message'  => self::getMessage($e),
+            'details'  => self::getDetails($e),
             'duration' => self::toMilliseconds($time),
         ];
 
@@ -168,9 +168,9 @@ class TeamCity extends ResultPrinter
         $this->printEvent(
             'testIgnored',
             [
-                'name'    => $testName,
-                'message' => self::getMessage($t),
-                'details' => self::getDetails($t),
+                'name'     => $testName,
+                'message'  => self::getMessage($t),
+                'details'  => self::getDetails($t),
                 'duration' => self::toMilliseconds($time),
             ]
         );
@@ -384,7 +384,8 @@ class TeamCity extends ResultPrinter
     /**
      * @param float $time microseconds
      */
-    private static function toMilliseconds(float $time): int {
-        return round($time * 1000);
+    private static function toMilliseconds(float $time): int
+    {
+        return \round($time * 1000);
     }
 }
