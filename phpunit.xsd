@@ -79,14 +79,17 @@
     </xs:complexType>
     <xs:group name="argumentsGroup">
         <xs:sequence>
-            <xs:element name="array" type="arrayType" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="integer" type="xs:integer" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="string" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="double" type="xs:double" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="null" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="object" type="objectType" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="file" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
-            <xs:element name="directory" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="array" type="arrayType" />
+                <xs:element name="integer" type="xs:integer" />
+                <xs:element name="string" type="xs:string" />
+                <xs:element name="double" type="xs:double" />
+                <xs:element name="null" />
+                <xs:element name="object" type="objectType" />
+                <xs:element name="file" type="xs:anyURI" />
+                <xs:element name="directory" type="xs:anyURI" />
+                <xs:element name="boolean" type="xs:boolean" />
+            </xs:choice>
         </xs:sequence>
     </xs:group>
     <xs:group name="argumentChoice">
