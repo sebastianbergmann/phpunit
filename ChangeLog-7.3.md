@@ -7,7 +7,7 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3219](https://github.com/sebastianbergmann/phpunit/issues/3219): `getMockFromWsdl()` generates invalid PHP code when WSDL filename contains special characters
-* Fixed [#3248](https://github.com/sebastianbergmann/phpunit/issues/3248): `phpunit.xsd` dictates element order where it should not
+* Fixed [#3248](https://github.com/sebastianbergmann/phpunit/issues/3248) and [#3233](https://github.com/sebastianbergmann/phpunit/issues/3233): `phpunit.xsd` dictates element order where it should not
 * Fixed [#3251](https://github.com/sebastianbergmann/phpunit/issues/3251): TeamCity result logger is missing test duration information
 
 ## [7.3.1] - 2018-08-07
