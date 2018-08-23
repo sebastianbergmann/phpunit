@@ -177,8 +177,6 @@ class MockBuilder
     /**
      * Specifies the subset of methods to mock. Default is to mock none of them.
      *
-     * @param null|array $methods
-     *
      * @return MockBuilder
      */
     public function setMethods(array $methods = null)

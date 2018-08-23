@@ -69,9 +69,9 @@ final class NamePrettifier
                 $annotation   = $annotations['method']['testdox'][0];
                 $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
 
-                $result = trim(
-                    str_replace(
-                        array_keys($providedData),
+                $result = \trim(
+                    \str_replace(
+                        \array_keys($providedData),
                         $providedData,
                         $annotation
                     )
