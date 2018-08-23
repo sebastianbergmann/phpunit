@@ -54,6 +54,9 @@ final class NamePrettifier
         return $result;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function prettifyTestCase(TestCase $test): string
     {
         $annotations                = $test->getAnnotations();
@@ -151,6 +154,9 @@ final class NamePrettifier
         return $buffer;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
     {
         $reflector          = new \ReflectionMethod(\get_class($test), $test->getName(false));
