@@ -54,6 +54,9 @@ final class NamePrettifier
         return $result;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function prettifyTestCase(TestCase $test): string
     {
         $annotations                = $test->getAnnotations();
@@ -63,20 +66,16 @@ final class NamePrettifier
             $result = $annotations['method']['testdox'][0];
 
             if (\strpos($result, '$') !== false) {
-                $annotation = $annotations['method']['testdox'][0];
-                $result     = '';
-
+                $annotation   = $annotations['method']['testdox'][0];
                 $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
 
-                foreach (\explode(' ', $annotation) as $word) {
-                    if (\strpos($word, '$') === 0) {
-                        $result .= $providedData[$word] . ' ';
-                    } else {
-                        $result .= $word . ' ';
-                    }
-                }
-
-                $result = \trim($result);
+                $result = trim(
+                    str_replace(
+                        array_keys($providedData),
+                        $providedData,
+                        $annotation
+                    )
+                );
 
                 $annotationWithPlaceholders = true;
             }
@@ -151,6 +150,9 @@ final class NamePrettifier
         return $buffer;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
     {
         $reflector          = new \ReflectionMethod(\get_class($test), $test->getName(false));
