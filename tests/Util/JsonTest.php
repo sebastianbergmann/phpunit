@@ -60,6 +60,7 @@ class JsonTest extends TestCase
     {
         return [
             ['{"name":"John","age": "5"}', "{\n    \"name\": \"John\",\n    \"age\": \"5\"\n}"],
+            ['{"url":"https://www.example.com/"}', "{\n    \"url\": \"https://www.example.com/\"\n}"],
         ];
     }
 
