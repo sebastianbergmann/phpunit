@@ -13,13 +13,13 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 class StringMatchesFormatDescriptionTest extends ConstraintTestCase
 {
-    public function testConstraintStringMatchesCharacter(): void
+    public function testConstraintStringMatchesDirectorySeparator(): void
     {
-        $constraint = new StringMatchesFormatDescription('*%c*');
+        $constraint = new StringMatchesFormatDescription('*%e*');
 
         $this->assertFalse($constraint->evaluate('**', '', true));
-        $this->assertTrue($constraint->evaluate('***', '', true));
-        $this->assertEquals('matches PCRE pattern "/^\*.\*$/s"', $constraint->toString());
+        $this->assertTrue($constraint->evaluate('*' . \DIRECTORY_SEPARATOR . '*', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*\\' . \DIRECTORY_SEPARATOR . '\*$/s"', $constraint->toString());
         $this->assertCount(1, $constraint);
     }
 
@@ -30,6 +30,46 @@ class StringMatchesFormatDescriptionTest extends ConstraintTestCase
         $this->assertFalse($constraint->evaluate('**', '', true));
         $this->assertTrue($constraint->evaluate('***', '', true));
         $this->assertEquals('matches PCRE pattern "/^\*[^\r\n]+\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringMatchesOptionalString(): void
+    {
+        $constraint = new StringMatchesFormatDescription('*%S*');
+
+        $this->assertFalse($constraint->evaluate('*', '', true));
+        $this->assertTrue($constraint->evaluate('***', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*[^\r\n]*\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringMatchesAnything(): void
+    {
+        $constraint = new StringMatchesFormatDescription('*%a*');
+
+        $this->assertFalse($constraint->evaluate('**', '', true));
+        $this->assertTrue($constraint->evaluate('***', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*.+\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringMatchesOptionalAnything(): void
+    {
+        $constraint = new StringMatchesFormatDescription('*%A*');
+
+        $this->assertFalse($constraint->evaluate('*', '', true));
+        $this->assertTrue($constraint->evaluate('***', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*.*\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringMatchesWhitespace(): void
+    {
+        $constraint = new StringMatchesFormatDescription('*%w*');
+
+        $this->assertFalse($constraint->evaluate('*', '', true));
+        $this->assertTrue($constraint->evaluate('* *', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*\s*\*$/s"', $constraint->toString());
         $this->assertCount(1, $constraint);
     }
 
@@ -70,6 +110,16 @@ class StringMatchesFormatDescriptionTest extends ConstraintTestCase
         $this->assertFalse($constraint->evaluate('**', '', true));
         $this->assertTrue($constraint->evaluate('*1.0*', '', true));
         $this->assertEquals('matches PCRE pattern "/^\*[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?\*$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+    }
+
+    public function testConstraintStringMatchesCharacter(): void
+    {
+        $constraint = new StringMatchesFormatDescription('*%c*');
+
+        $this->assertFalse($constraint->evaluate('**', '', true));
+        $this->assertTrue($constraint->evaluate('***', '', true));
+        $this->assertEquals('matches PCRE pattern "/^\*.\*$/s"', $constraint->toString());
         $this->assertCount(1, $constraint);
     }
 
