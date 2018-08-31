@@ -203,6 +203,16 @@ class StringMatchesFormatDescriptionTest extends ConstraintTestCase
         $this->assertCount(1, $constraint);
     }
 
+    public function testConstraintStringMatchesEscapedPercentThenPlaceholder(): void
+    {
+        $constraint = new StringMatchesFormatDescription('%%%e,%%%s,%%%S,%%%a,%%%A,%%%w,%%%i,%%%d,%%%x,%%%f,%%%c');
+
+        $this->assertFalse($constraint->evaluate('%%e,%%s,%%S,%%a,%%A,%%w,%%i,%%d,%%x,%%f,%%c', '', true));
+        $this->assertTrue($constraint->evaluate('%' . \DIRECTORY_SEPARATOR . ',%*,%*,%*,%*,% ,%0,%0,%0f0f0f,%1.0,%*', '', true));
+        $this->assertEquals('matches PCRE pattern "/^%\\' . \DIRECTORY_SEPARATOR . ',%[^\r\n]+,%[^\r\n]*,%.+,%.*,%\s*,%[+-]?\d+,%\d+,%[0-9a-fA-F]+,%[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?,%.$/s"', $constraint->toString());
+        $this->assertCount(1, $constraint);
+    }
+
     public function testConstraintStringMatchesSlash(): void
     {
         $constraint = new StringMatchesFormatDescription('/');
