@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
 
 ### Fixed
 
-* Fixed [#3267](https://github.com/sebastianbergmann/phpunit/issues/3267): `%` not escaped correctly for `StringMatchesFormat` constraint
+* Fixed [#3267](https://github.com/sebastianbergmann/phpunit/pull/3267): `%` not escaped correctly for `StringMatchesFormat` constraint
 
 ## [7.3.2] - 2018-08-22
 
