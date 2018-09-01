@@ -2,6 +2,13 @@
 
 All notable changes of the PHPUnit 7.3 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.3.3] - 2018-09-01
+
+### Fixed
+
+* Fixed [#3265](https://github.com/sebastianbergmann/phpunit/pull/3265): Slashes are unnecessarily escaped in prettified JSON
+* Fixed [#3267](https://github.com/sebastianbergmann/phpunit/pull/3267): `%` not escaped correctly for `StringMatchesFormat` constraint
+
 ## [7.3.2] - 2018-08-22
 
 ### Fixed
@@ -45,6 +52,7 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
 * Fixed [#3222](https://github.com/sebastianbergmann/phpunit/pull/3222): Priority of `@covers` and `@coversNothing` is wrong
 * Fixed [#3225](https://github.com/sebastianbergmann/phpunit/issues/3225): `coverage-php` missing from `phpunit.xsd`
 
+[7.3.3]: https://github.com/sebastianbergmann/phpunit/compare/7.3.2...7.3.3
 [7.3.2]: https://github.com/sebastianbergmann/phpunit/compare/7.3.1...7.3.2
 [7.3.1]: https://github.com/sebastianbergmann/phpunit/compare/7.3.0...7.3.1
 [7.3.0]: https://github.com/sebastianbergmann/phpunit/compare/7.2...7.3.0
