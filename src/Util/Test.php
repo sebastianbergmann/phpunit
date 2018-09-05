@@ -786,7 +786,7 @@ final class Test
                 throw new InvalidCoversTargetException(
                     \sprintf(
                         'Trying to @cover interface "%s".',
-                        $className
+                        $element
                     )
                 );
             }
