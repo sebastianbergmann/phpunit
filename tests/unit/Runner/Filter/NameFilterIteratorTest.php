@@ -15,14 +15,14 @@ class NameFilterIteratorTest extends TestCase
 {
     public function testCaseSensitiveMatch()
     {
-        $iterator = $this->getTestSuiteItteratorMock();
+        $iterator = $this->getTestSuiteIteratorMock();
         $filter   = new NameFilterIterator($iterator, 'Success');
         $this->assertTrue((bool) $filter->accept());
     }
 
     public function testCaseInsensitiveMatch()
     {
-        $iterator = $this->getTestSuiteItteratorMock();
+        $iterator = $this->getTestSuiteIteratorMock();
         $filter   = new NameFilterIterator($iterator, 'success');
         $this->assertTrue((bool) $filter->accept());
     }
@@ -30,7 +30,7 @@ class NameFilterIteratorTest extends TestCase
     /**
      * @return \PHPUnit\Framework\TestSuiteIterator
      */
-    private function getTestSuiteItteratorMock()
+    private function getTestSuiteIteratorMock()
     {
         $success   = new \Success();
         $iterator = $this->createMock(\PHPUnit\Framework\TestSuiteIterator::class);
