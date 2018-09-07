@@ -5,16 +5,12 @@
          cacheResult="true"
          verbose="true">
     <testsuites>
-        <testsuite name="small">
-            <directory>tests/Framework</directory>
-            <directory>tests/Runner</directory>
-            <directory>tests/Util</directory>
+        <testsuite name="unit">
+            <directory suffix="Test.php">tests/unit</directory>
         </testsuite>
 
-        <testsuite name="large">
-            <directory suffix=".phpt">tests/Framework/MockObject/Generator</directory>
-            <directory suffix=".phpt">tests/TextUI</directory>
-            <directory suffix=".phpt">tests/Regression</directory>
+        <testsuite name="end-to-end">
+            <directory suffix=".phpt">tests/end-to-end</directory>
         </testsuite>
     </testsuites>
 
