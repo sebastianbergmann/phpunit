@@ -18,6 +18,7 @@ class NameFilterIteratorTest extends TestCase
     {
         $iterator = $this->getTestSuiteIteratorMock();
         $filter   = new NameFilterIterator($iterator, 'Success');
+
         $this->assertTrue((bool) $filter->accept());
     }
 
@@ -25,6 +26,7 @@ class NameFilterIteratorTest extends TestCase
     {
         $iterator = $this->getTestSuiteIteratorMock();
         $filter   = new NameFilterIterator($iterator, 'success');
+
         $this->assertTrue((bool) $filter->accept());
     }
 
