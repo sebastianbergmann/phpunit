@@ -1,7 +1,7 @@
 <phpunit>
     <testsuites>
         <testsuite name="One File Suite">
-            <file>../../tests/TextUI/debug.phpt</file>
+            <file>../../tests/end-to-end/debug.phpt</file>
         </testsuite>
     </testsuites>
 </phpunit>

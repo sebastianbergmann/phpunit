@@ -4,15 +4,12 @@
          bootstrap="tests/bootstrap.php"
          verbose="true">
     <testsuites>
-        <testsuite name="small">
-            <directory suffix="Test.php">tests/Framework</directory>
-            <directory suffix="Test.php">tests/Runner</directory>
-            <directory suffix="Test.php">tests/Util</directory>
+        <testsuite name="unit">
+            <directory suffix="Test.php">tests/unit</directory>
         </testsuite>
 
-        <testsuite name="large">
-            <directory suffix=".phpt">tests/TextUI</directory>
-            <directory suffix=".phpt">tests/Regression</directory>
+        <testsuite name="end-to-end">
+            <directory suffix=".phpt">tests/end-to-end</directory>
         </testsuite>
     </testsuites>
 

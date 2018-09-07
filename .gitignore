@@ -12,10 +12,10 @@
 /build/binary-phar-autoload.php
 /cache.properties
 /composer.lock
-/tests/TextUI/*.diff
-/tests/TextUI/*.exp
-/tests/TextUI/*.log
-/tests/TextUI/*.out
-/tests/TextUI/*.php
+/tests/end-to-end/*.diff
+/tests/end-to-end/*.exp
+/tests/end-to-end/*.log
+/tests/end-to-end/*.out
+/tests/end-to-end/*.php
 /vendor
 
