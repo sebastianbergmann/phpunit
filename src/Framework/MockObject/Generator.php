@@ -752,12 +752,6 @@ class Generator
         $mockedMethods = '';
         $configurable  = [];
 
-        foreach ($methods as $methodName) {
-            if ($methodName !== '__construct' && $methodName !== '__clone') {
-                $configurable[] = \strtolower($methodName);
-            }
-        }
-
         if (isset($class)) {
             // https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
             if ($isInterface && $class->implementsInterface(Traversable::class) &&
@@ -777,6 +771,7 @@ class Generator
                             $cloneArguments,
                             $callOriginalMethods
                         );
+                        $configurable[] = \strtolower($methodName);
                     }
                 } catch (ReflectionException $e) {
                     $mockedMethods .= $this->generateMockedMethodDefinition(
@@ -784,6 +779,7 @@ class Generator
                         $methodName,
                         $cloneArguments
                     );
+                    $configurable[] = \strtolower($methodName);
                 }
             }
         } elseif ($isMultipleInterfaces) {
@@ -794,6 +790,7 @@ class Generator
                         $cloneArguments,
                         $callOriginalMethods
                     );
+                    $configurable[] = \strtolower($methodName);
                 }
             }
         } else {
@@ -803,6 +800,7 @@ class Generator
                     $methodName,
                     $cloneArguments
                 );
+                $configurable[] = \strtolower($methodName);
             }
         }
 
