@@ -771,6 +771,7 @@ class Generator
                             $cloneArguments,
                             $callOriginalMethods
                         );
+
                         $configurable[] = \strtolower($methodName);
                     }
                 } catch (ReflectionException $e) {
@@ -779,6 +780,7 @@ class Generator
                         $methodName,
                         $cloneArguments
                     );
+
                     $configurable[] = \strtolower($methodName);
                 }
             }
@@ -790,6 +792,7 @@ class Generator
                         $cloneArguments,
                         $callOriginalMethods
                     );
+
                     $configurable[] = \strtolower($methodName);
                 }
             }
@@ -800,6 +803,7 @@ class Generator
                     $methodName,
                     $cloneArguments
                 );
+
                 $configurable[] = \strtolower($methodName);
             }
         }
@@ -825,9 +829,15 @@ class Generator
                 'mock_class_name'   => $mockClassName['className'],
                 'mocked_methods'    => $mockedMethods,
                 'method'            => $method,
-                'configurable'      => '[' . \implode(', ', \array_map(function ($m) {
-                    return '\'' . $m . '\'';
-                }, $configurable)) . ']'
+                'configurable'      => '[' . \implode(
+                    ', ',
+                    \array_map(
+                        function ($m) {
+                            return '\'' . $m . '\'';
+                        },
+                        $configurable
+                    )
+                ) . ']'
             ]
         );
 
