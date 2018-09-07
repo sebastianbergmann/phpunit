@@ -1104,20 +1104,10 @@ final class Configuration
                 continue;
             }
 
-            $phpVersion         = \PHP_VERSION;
-            $phpVersionOperator = '>=';
-            $prefix             = '';
-            $suffix             = 'Test.php';
+            $prefix = '';
+            $suffix = 'Test.php';
 
-            if ($directoryNode->hasAttribute('phpVersion')) {
-                $phpVersion = (string) $directoryNode->getAttribute('phpVersion');
-            }
-
-            if ($directoryNode->hasAttribute('phpVersionOperator')) {
-                $phpVersionOperator = (string) $directoryNode->getAttribute('phpVersionOperator');
-            }
-
-            if (!\version_compare(\PHP_VERSION, $phpVersion, $phpVersionOperator)) {
+            if (!$this->satisfiesPhpVersion($directoryNode)) {
                 continue;
             }
 
@@ -1159,19 +1149,9 @@ final class Configuration
                 continue;
             }
 
-            $file               = $file[0];
-            $phpVersion         = \PHP_VERSION;
-            $phpVersionOperator = '>=';
+            $file = $file[0];
 
-            if ($fileNode->hasAttribute('phpVersion')) {
-                $phpVersion = (string) $fileNode->getAttribute('phpVersion');
-            }
-
-            if ($fileNode->hasAttribute('phpVersionOperator')) {
-                $phpVersionOperator = (string) $fileNode->getAttribute('phpVersionOperator');
-            }
-
-            if (!\version_compare(\PHP_VERSION, $phpVersion, $phpVersionOperator)) {
+            if (!$this->satisfiesPhpVersion($fileNode)) {
                 continue;
             }
 
@@ -1179,6 +1159,22 @@ final class Configuration
         }
 
         return $suite;
+    }
+
+    private function satisfiesPhpVersion(DOMElement $node): bool
+    {
+        $phpVersion         = \PHP_VERSION;
+        $phpVersionOperator = '>=';
+
+        if ($node->hasAttribute('phpVersion')) {
+            $phpVersion = (string) $node->getAttribute('phpVersion');
+        }
+
+        if ($node->hasAttribute('phpVersionOperator')) {
+            $phpVersionOperator = (string) $node->getAttribute('phpVersionOperator');
+        }
+
+        return \version_compare(\PHP_VERSION, $phpVersion, $phpVersionOperator);
     }
 
     /**
