@@ -155,8 +155,6 @@ class TestRunner extends BaseTestRunner
 
         $this->handleConfiguration($arguments);
 
-        $this->processSuiteFilters($suite, $arguments);
-
         if (isset($arguments['bootstrap'])) {
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
         }
@@ -575,6 +573,7 @@ class TestRunner extends BaseTestRunner
         $result->setTimeoutForLargeTests($arguments['timeoutForLargeTests']);
 
         if ($suite instanceof TestSuite) {
+            $this->processSuiteFilters($suite, $arguments);
             $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
         }
 

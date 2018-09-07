@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 6.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [6.5.13] - 2018-MM-DD
+
+* Fixed [#3254](https://github.com/sebastianbergmann/phpunit/issues/3254): TextUI test runner cannot run a `Test` instance that is not a `TestSuite`
+
 ## [6.5.12] - 2018-08-22
 
 * Fixed [#3248](https://github.com/sebastianbergmann/phpunit/issues/3248) and [#3233](https://github.com/sebastianbergmann/phpunit/issues/3233): `phpunit.xsd` dictates element order where it should not
@@ -85,6 +89,7 @@ All notable changes of the PHPUnit 6.5 release series are documented in this fil
 * Fixed [#2654](https://github.com/sebastianbergmann/phpunit/issues/2654): Problems with `assertJsonStringEqualsJsonString()`
 * Fixed [#2810](https://github.com/sebastianbergmann/phpunit/pull/2810): Code Coverage for PHPT tests does not work
 
+[6.5.13]: https://github.com/sebastianbergmann/phpunit/compare/6.5.12...6.5.13
 [6.5.12]: https://github.com/sebastianbergmann/phpunit/compare/6.5.11...6.5.12
 [6.5.11]: https://github.com/sebastianbergmann/phpunit/compare/6.5.10...6.5.11
 [6.5.10]: https://github.com/sebastianbergmann/phpunit/compare/6.5.9...6.5.10
