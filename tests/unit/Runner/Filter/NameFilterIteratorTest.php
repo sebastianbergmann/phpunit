@@ -10,34 +10,28 @@
 namespace PHPUnit\Runner\Filter;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestSuiteIterator;
+use PHPUnit\Framework\TestSuite;
 
 class NameFilterIteratorTest extends TestCase
 {
     public function testCaseSensitiveMatch()
     {
-        $iterator = $this->getTestSuiteIteratorMock();
-        $filter   = new NameFilterIterator($iterator, 'Success');
-
-        $this->assertTrue((bool) $filter->accept());
+        $this->assertTrue((bool) $this->createFilter('BankAccountTest')->accept());
     }
 
     public function testCaseInsensitiveMatch()
     {
-        $iterator = $this->getTestSuiteIteratorMock();
-        $filter   = new NameFilterIterator($iterator, 'success');
-
-        $this->assertTrue((bool) $filter->accept());
+        $this->assertTrue((bool) $this->createFilter('bankaccounttest')->accept());
     }
 
-    /**
-     * @return TestSuiteIterator
-     */
-    private function getTestSuiteIteratorMock()
+    private function createFilter(string $filter): NameFilterIterator
     {
-        $success   = new \Success();
-        $iterator = $this->createMock(TestSuiteIterator::class);
-        $iterator->expects($this->once())->method('current')->willReturn($success);
+        $suite = new TestSuite;
+        $suite->addTest(new \BankAccountTest('testBalanceIsInitiallyZero'));
+
+        $iterator = new NameFilterIterator($suite->getIterator(), $filter);
+
+        $iterator->rewind();
 
         return $iterator;
     }
