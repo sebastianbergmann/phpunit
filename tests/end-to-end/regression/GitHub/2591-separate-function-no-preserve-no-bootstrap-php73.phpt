@@ -16,7 +16,7 @@ $_SERVER['argv'][2] = '--bootstrap';
 $_SERVER['argv'][3] = __DIR__ . '/2591/bootstrapNoBootstrap.php';
 $_SERVER['argv'][4] = __DIR__ . '/2591/SeparateFunctionNoPreserveTest.php';
 
-require __DIR__ . '/../../bootstrap.php';
+require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
