@@ -45,6 +45,6 @@ parameters:
 
     excludes_analyse:
         - tests/_files/phpunit-example-extension/tests/OneTest.php
-        - tests/Regression/Trac/783/OneTest.php
+        - tests/end-to-end/regression/Trac/783/OneTest.php
         - tests/_files/3194.php
         - tests/_files/RouterTest.php
