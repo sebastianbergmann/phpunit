@@ -1036,6 +1036,7 @@ Code Coverage Options:
   --coverage-xml <dir>        Generate code coverage report in PHPUnit XML format.
   --whitelist <dir>           Whitelist <dir> for code coverage analysis.
   --disable-coverage-ignore   Disable annotations for ignoring code coverage.
+  --no-coverage               Ignore code coverage configuration.
 
 Logging Options:
 
@@ -1101,7 +1102,6 @@ Configuration Options:
   --bootstrap <file>          A "bootstrap" PHP file that is run before the tests.
   -c|--configuration <file>   Read configuration from XML file.
   --no-configuration          Ignore default configuration file (phpunit.xml).
-  --no-coverage               Ignore code coverage configuration.
   --no-logging                Ignore logging configuration.
   --no-extensions             Do not load PHPUnit extensions.
   --include-path <path(s)>    Prepend PHP's include_path with given path(s).
