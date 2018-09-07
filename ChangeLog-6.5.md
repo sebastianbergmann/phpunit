@@ -5,6 +5,7 @@ All notable changes of the PHPUnit 6.5 release series are documented in this fil
 ## [6.5.13] - 2018-MM-DD
 
 * Fixed [#3254](https://github.com/sebastianbergmann/phpunit/issues/3254): TextUI test runner cannot run a `Test` instance that is not a `TestSuite`
+* Fixed [#3181](https://github.com/sebastianbergmann/phpunit/issues/3181): Make --filter case insensitive
 
 ## [6.5.12] - 2018-08-22
 
