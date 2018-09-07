@@ -51,12 +51,12 @@ class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        $tmp = Test::describe($test);
+        $tmp = \PHPUnit\Util\Test::describe($test, false);
 
         if ($test instanceof WarningTestCase) {
             $name = $test->getMessage();
         } else {
-            if ($tmp[0] != '') {
+            if ($tmp[0] !== '') {
                 $name = \implode('::', $tmp);
             } else {
                 $name = $tmp[1];
@@ -70,7 +70,7 @@ class NameFilterIterator extends RecursiveFilterIterator
             $accepted = $set >= $this->filterMin && $set <= $this->filterMax;
         }
 
-        return $accepted;
+        return (bool) $accepted;
     }
 
     /**
