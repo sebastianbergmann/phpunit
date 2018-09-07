@@ -50,7 +50,7 @@ class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        $tmp = \PHPUnit\Util\Test::describe($test, false);
+        $tmp = \PHPUnit\Util\Test::describe($test);
 
         if ($test instanceof WarningTestCase) {
             $name = $test->getMessage();
