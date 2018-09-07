@@ -2514,7 +2514,7 @@ XML;
 
     protected function sameValues()
     {
-        $object = new \SampleClass(4, 8, 15);
+        $object   = new \SampleClass(4, 8, 15);
         $file     = TEST_FILES_PATH . 'foo.xml';
         $resource = \fopen($file, 'r');
 
