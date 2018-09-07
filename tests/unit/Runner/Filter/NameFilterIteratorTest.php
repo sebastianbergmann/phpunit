@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner\Filter;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSuiteIterator;
 
 class NameFilterIteratorTest extends TestCase
 {
@@ -28,12 +29,12 @@ class NameFilterIteratorTest extends TestCase
     }
 
     /**
-     * @return \PHPUnit\Framework\TestSuiteIterator
+     * @return TestSuiteIterator
      */
     private function getTestSuiteIteratorMock()
     {
         $success   = new \Success();
-        $iterator = $this->createMock(\PHPUnit\Framework\TestSuiteIterator::class);
+        $iterator = $this->createMock(TestSuiteIterator::class);
         $iterator->expects($this->once())->method('current')->willReturn($success);
 
         return $iterator;
