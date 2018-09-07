@@ -12,7 +12,6 @@ namespace PHPUnit\Runner\Filter;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Util\RegularExpression;
-use PHPUnit\Util\Test;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
