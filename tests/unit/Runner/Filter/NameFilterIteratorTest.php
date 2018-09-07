@@ -16,12 +16,12 @@ class NameFilterIteratorTest extends TestCase
 {
     public function testCaseSensitiveMatch()
     {
-        $this->assertTrue((bool) $this->createFilter('BankAccountTest')->accept());
+        $this->assertTrue($this->createFilter('BankAccountTest')->accept());
     }
 
     public function testCaseInsensitiveMatch()
     {
-        $this->assertTrue((bool) $this->createFilter('bankaccounttest')->accept());
+        $this->assertTrue($this->createFilter('bankaccounttest')->accept());
     }
 
     private function createFilter(string $filter): NameFilterIterator

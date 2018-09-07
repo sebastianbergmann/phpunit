@@ -89,10 +89,7 @@ class NameFilterIterator extends RecursiveFilterIterator
         $this->filter = $filter;
     }
 
-    /**
-     * @return bool
-     */
-    public function accept()
+    public function accept(): bool
     {
         $test = $this->getInnerIterator()->current();
 
@@ -105,7 +102,7 @@ class NameFilterIterator extends RecursiveFilterIterator
         if ($test instanceof WarningTestCase) {
             $name = $test->getMessage();
         } else {
-            if ($tmp[0] != '') {
+            if ($tmp[0] !== '') {
                 $name = \implode('::', $tmp);
             } else {
                 $name = $tmp[1];
@@ -119,6 +116,6 @@ class NameFilterIterator extends RecursiveFilterIterator
             $accepted = $set >= $this->filterMin && $set <= $this->filterMax;
         }
 
-        return $accepted;
+        return (bool) $accepted;
     }
 }
