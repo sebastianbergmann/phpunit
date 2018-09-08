@@ -140,6 +140,7 @@ class Command
         'verbose'                   => null,
         'version'                   => null,
         'whitelist='                => null,
+        'dump-xdebug-filter='       => null,
     ];
 
     /**
@@ -740,6 +741,11 @@ class Command
 
                     break;
 
+                case '--dump-xdebug-filter':
+                    $this->arguments['xdebugFilterFile'] = $option[1];
+
+                    break;
+
                 default:
                     $optionName = \str_replace('--', '', $option[0]);
 
@@ -1081,6 +1087,7 @@ Code Coverage Options:
   --whitelist <dir>           Whitelist <dir> for code coverage analysis
   --disable-coverage-ignore   Disable annotations for ignoring code coverage
   --no-coverage               Ignore code coverage configuration
+  --dump-xdebug-filter <file> Generate script to set Xdebug code coverage filter
 
 Logging Options:
 
