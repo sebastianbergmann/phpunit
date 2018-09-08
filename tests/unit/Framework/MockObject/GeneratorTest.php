@@ -233,21 +233,13 @@ class GeneratorTest extends TestCase
     public function testVariadicArgumentsArePassedToMockedMethod()
     {
         /** @var ClassWithVariadicArgumentMethod|MockObject $mock */
-        $mock = $this->generator->getMock(
-            ClassWithVariadicArgumentMethod::class,
-            [],
-            [],
-            '',
-            true,
-            false,
-            true,
-            false,
-            false
-        );
+        $mock = $this->createMock(ClassWithVariadicArgumentMethod::class);
 
         $arguments = [1, 'foo', false];
         $mock->expects($this->once())
             ->method('foo')
             ->with(...$arguments);
+
+        $mock->foo(...$arguments);
     }
 }
