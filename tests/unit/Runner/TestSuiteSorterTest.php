@@ -287,8 +287,8 @@ class TestSuiteSorterTest extends TestCase
             // Activating dependency resolution should have no effect under normal circumstances
             'resolve default' => [
                 TestSuiteSorter::ORDER_DEFAULT,
-                self::IGNORE_DEPENDENCIES,
-                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive'], ],
+                self::RESOLVE_DEPENDENCIES,
+                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive']],
 
             // Reversing without checks should give a simple reverse order
             'reverse' => [
