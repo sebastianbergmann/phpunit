@@ -11,9 +11,9 @@ namespace PHPUnit\Util;
 
 class XDebugFilterScriptGenerator
 {
-    public function generate(array $filterData, array $whitelistedFiles): string
+    public function generate(array $filterData): string
     {
-        $items = $this->getItems($filterData, $whitelistedFiles);
+        $items = $this->getWhitelistItems($filterData);
 
         $files = \array_map(function ($item) {
             return \sprintf("        '%s'", $item);
@@ -37,16 +37,7 @@ $files
 EOF;
     }
 
-    private function getItems(array $filterData, array $whitelistedFiles): array
-    {
-        if ($this->canUseRawFilterData($filterData)) {
-            return $this->getItemsFromRawFilterData($filterData);
-        }
-
-        return $whitelistedFiles;
-    }
-
-    private function getItemsFromRawFilterData(array $filterData): array
+    private function getWhitelistItems(array $filterData): array
     {
         $files = [];
 
@@ -63,20 +54,5 @@ EOF;
         }
 
         return $files;
-    }
-
-    private function canUseRawFilterData(array $filterData): bool
-    {
-        if (\count($filterData['exclude']['directory']) > 0 || \count($filterData['exclude']['file'])) {
-            return false;
-        }
-
-        foreach ($filterData['include']['directory'] as $directory) {
-            if (($directory['suffix'] !== '' && $directory['suffix'] !== '.php') || $directory['prefix'] !== '') {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
