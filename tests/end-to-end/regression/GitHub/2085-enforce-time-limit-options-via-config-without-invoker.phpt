@@ -14,8 +14,8 @@ https://github.com/sebastianbergmann/phpunit/issues/2085
 --FILE--
 <?php
 $_SERVER['argv'][1] = '-c';
-$_SERVER['argv'][2] = __DIR__ . '/configuration_enforce_time_limit_options.xml';
-$_SERVER['argv'][3] = __DIR__ . '/Issue2085Test.php';
+$_SERVER['argv'][2] = __DIR__ . '/2085/configuration_enforce_time_limit_options.xml';
+$_SERVER['argv'][3] = __DIR__ . '/2085/Issue2085Test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
