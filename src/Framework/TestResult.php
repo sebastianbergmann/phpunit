@@ -140,11 +140,6 @@ class TestResult implements Countable
     protected $beStrictAboutResourceUsageDuringSmallTests = false;
 
     /**
-     * @var int
-     */
-    private $defaultTimeLimit = 0;
-
-    /**
      * @var bool
      */
     protected $enforceTimeLimit = false;
@@ -183,6 +178,11 @@ class TestResult implements Countable
      * @var bool
      */
     protected $lastTestFailed = false;
+
+    /**
+     * @var int
+     */
+    private $defaultTimeLimit = 0;
 
     /**
      * @var bool
