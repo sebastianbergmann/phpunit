@@ -15,16 +15,20 @@ if (version_compare('7.1.0', PHP_VERSION, '>')) {
     die(1);
 }
 
-if (__FILE__ == realpath($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
+if (__FILE__ === realpath($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
     $execute = true;
 } else {
     $execute = false;
 }
 
-$options = getopt('', array('prepend-file:'));
+$options = getopt('', array('prepend-file:', 'manifest'));
 
 if (isset($options['prepend-file'])) {
     require $options['prepend-file'];
+}
+
+if (isset($options['manifest'])) {
+    $printManifest = true;
 }
 
 unset($options);
@@ -36,13 +40,18 @@ Phar::mapPhar('___PHAR___');
 
 ___FILELIST___
 
-if ($execute) {
-    if (isset($_SERVER['argv'][1]) && $_SERVER['argv'][1] == '--manifest') {
-        print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
-        exit;
-    }
-
-    PHPUnit\TextUI\Command::main();
+if (!$execute) {
+    exit;
 }
+
+if (isset($printManifest)) {
+    print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
+
+    exit;
+}
+
+unset($execute);
+
+PHPUnit\TextUI\Command::main();
 
 __HALT_COMPILER();
