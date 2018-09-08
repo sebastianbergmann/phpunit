@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 6.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [6.5.13] - 2018-MM-DD
+## [6.5.13] - 2018-09-08
 
 * Fixed [#3181](https://github.com/sebastianbergmann/phpunit/issues/3181): `--filter` should be case-insensitive
 * Fixed [#3234](https://github.com/sebastianbergmann/phpunit/issues/3234): `assertArraySubset()` with `$strict=true` does not display differences properly
