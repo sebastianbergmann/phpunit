@@ -48,10 +48,10 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
     die(1);
 }
 
-$options = getopt('', array('prepend-file:'));
+$options = getopt('', array('prepend:'));
 
-if (isset($options['prepend-file'])) {
-    require $options['prepend-file'];
+if (isset($options['prepend'])) {
+    require $options['prepend'];
 }
 
 unset($options);

@@ -21,10 +21,10 @@ if (__FILE__ === realpath($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
     $execute = false;
 }
 
-$options = getopt('', array('prepend-file:', 'manifest'));
+$options = getopt('', array('prepend:', 'manifest'));
 
-if (isset($options['prepend-file'])) {
-    require $options['prepend-file'];
+if (isset($options['prepend'])) {
+    require $options['prepend'];
 }
 
 if (isset($options['manifest'])) {

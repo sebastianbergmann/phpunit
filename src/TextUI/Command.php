@@ -67,6 +67,7 @@ class Command
      */
     protected $longOptions = [
         'atleast-version='          => null,
+        'prepend='                  => null,
         'bootstrap='                => null,
         'cache-result'              => null,
         'cache-result-file='        => null,
@@ -142,7 +143,6 @@ class Command
         'version'                   => null,
         'whitelist='                => null,
         'dump-xdebug-filter='       => null,
-        'prepend-file='             => null,
     ];
 
     /**
@@ -1164,7 +1164,8 @@ Test Execution Options:
 
 Configuration Options:
 
-  --bootstrap <file>          A "bootstrap" PHP file that is run before the tests
+  --prepend <file>            A PHP script that is included as early as possible
+  --bootstrap <file>          A PHP script that is included before the tests run
   -c|--configuration <file>   Read configuration from XML file
   --no-configuration          Ignore default configuration file (phpunit.xml)
   --no-logging                Ignore logging configuration
