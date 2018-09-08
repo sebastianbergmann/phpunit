@@ -41,7 +41,7 @@ class DataProviderTestDoxTest extends TestCase
     {
         return [
             'one' => [1],
-            'two' => [2]
+            'two' => [2],
         ];
     }
 
@@ -61,7 +61,7 @@ class DataProviderTestDoxTest extends TestCase
                 }
             }],
             'resource'         => [\fopen(__FILE__, 'rb')],
-            'null'             => [null]
+            'null'             => [null],
         ];
     }
 }

@@ -416,7 +416,7 @@ class TestResult implements Countable
                 'size'   => \PHPUnit\Util\Test::getSize(
                     $class,
                     $test->getName(false)
-                )
+                ),
             ];
 
             $this->time += $time;

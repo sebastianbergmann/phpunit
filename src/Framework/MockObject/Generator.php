@@ -313,7 +313,7 @@ class Generator
             [
                 'prologue'   => 'abstract ',
                 'class_name' => $className['className'],
-                'trait_name' => $traitName
+                'trait_name' => $traitName,
             ]
         );
 
@@ -371,7 +371,7 @@ class Generator
             [
                 'prologue'   => '',
                 'class_name' => $className['className'],
-                'trait_name' => $traitName
+                'trait_name' => $traitName,
             ]
         );
 
@@ -480,7 +480,7 @@ class Generator
                 $methodTemplate->setVar(
                     [
                         'method_name' => $name,
-                        'arguments'   => \implode(', ', $args)
+                        'arguments'   => \implode(', ', $args),
                     ]
                 );
 
@@ -511,7 +511,7 @@ class Generator
                 'class_name' => $className,
                 'wsdl'       => $wsdlFile,
                 'options'    => $optionsBuffer,
-                'methods'    => $methodsBuffer
+                'methods'    => $methodsBuffer,
             ]
         );
 
@@ -752,12 +752,6 @@ class Generator
         $mockedMethods = '';
         $configurable  = [];
 
-        foreach ($methods as $methodName) {
-            if ($methodName !== '__construct' && $methodName !== '__clone') {
-                $configurable[] = \strtolower($methodName);
-            }
-        }
-
         if (isset($class)) {
             // https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
             if ($isInterface && $class->implementsInterface(Traversable::class) &&
@@ -777,6 +771,8 @@ class Generator
                             $cloneArguments,
                             $callOriginalMethods
                         );
+
+                        $configurable[] = \strtolower($methodName);
                     }
                 } catch (ReflectionException $e) {
                     $mockedMethods .= $this->generateMockedMethodDefinition(
@@ -784,6 +780,8 @@ class Generator
                         $methodName,
                         $cloneArguments
                     );
+
+                    $configurable[] = \strtolower($methodName);
                 }
             }
         } elseif ($isMultipleInterfaces) {
@@ -794,6 +792,8 @@ class Generator
                         $cloneArguments,
                         $callOriginalMethods
                     );
+
+                    $configurable[] = \strtolower($methodName);
                 }
             }
         } else {
@@ -803,6 +803,8 @@ class Generator
                     $methodName,
                     $cloneArguments
                 );
+
+                $configurable[] = \strtolower($methodName);
             }
         }
 
@@ -827,15 +829,21 @@ class Generator
                 'mock_class_name'   => $mockClassName['className'],
                 'mocked_methods'    => $mockedMethods,
                 'method'            => $method,
-                'configurable'      => '[' . \implode(', ', \array_map(function ($m) {
-                    return '\'' . $m . '\'';
-                }, $configurable)) . ']'
+                'configurable'      => '[' . \implode(
+                    ', ',
+                    \array_map(
+                        function ($m) {
+                            return '\'' . $m . '\'';
+                        },
+                        $configurable
+                    )
+                ) . ']',
             ]
         );
 
         return [
             'code'          => $classTemplate->render(),
-            'mockClassName' => $mockClassName['className']
+            'mockClassName' => $mockClassName['className'],
         ];
     }
 
@@ -878,7 +886,7 @@ class Generator
             'className'         => $className,
             'originalClassName' => $type,
             'fullClassName'     => $fullClassName,
-            'namespaceName'     => $namespaceName
+            'namespaceName'     => $namespaceName,
         ];
     }
 
@@ -1069,7 +1077,7 @@ class Generator
                 'modifier'        => $modifier,
                 'reference'       => $reference,
                 'clone_arguments' => $cloneArguments ? 'true' : 'false',
-                'deprecation'     => $deprecation
+                'deprecation'     => $deprecation,
             ]
         );
 
