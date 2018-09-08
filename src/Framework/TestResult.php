@@ -142,7 +142,7 @@ class TestResult implements Countable
     /**
      * @var int
      */
-    protected $defaultTimeLimit = 0;
+    private $defaultTimeLimit = 0;
 
     /**
      * @var bool
