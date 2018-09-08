@@ -10,7 +10,7 @@ if (!extension_loaded('xdebug')) {
 $_SERVER['argv'][1] = '-c';
 $_SERVER['argv'][2] = __DIR__ . '/../_files/configuration_whitelist.xml';
 $_SERVER['argv'][3] = '--dump-xdebug-filter';
-$_SERVER['argv'][4] = 'php://stdout';
+$_SERVER['argv'][4] = 'php://stderr';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
@@ -28,3 +28,5 @@ if (!\function_exists('xdebug_set_filter')) {
         %s
     ]
 );
+
+Wrote Xdebug filter script to php://stderr
