@@ -49,7 +49,7 @@ class PhptTestCase implements Test, SelfDescribing
         'report_memleaks=0',
         'report_zend_debug=0',
         'safe_mode=0',
-        'xdebug.default_enable=0'
+        'xdebug.default_enable=0',
     ];
 
     /**
@@ -345,7 +345,7 @@ class PhptTestCase implements Test, SelfDescribing
             'CGI',
             'EXPECTHEADERS',
             'EXTENSIONS',
-            'PHPDBG'
+            'PHPDBG',
         ];
 
         foreach (\file($this->filename) as $line) {
@@ -394,7 +394,7 @@ class PhptTestCase implements Test, SelfDescribing
             'FILE',
             'EXPECT',
             'EXPECTF',
-            'EXPECTREGEX'
+            'EXPECTREGEX',
         ];
         $testDirectory = \dirname($this->filename) . \DIRECTORY_SEPARATOR;
 
@@ -427,8 +427,8 @@ class PhptTestCase implements Test, SelfDescribing
             [
                 'EXPECT',
                 'EXPECTF',
-                'EXPECTREGEX'
-            ]
+                'EXPECTREGEX',
+            ],
         ];
 
         foreach ($requiredSections as $section) {
@@ -463,11 +463,11 @@ class PhptTestCase implements Test, SelfDescribing
         return \str_replace(
             [
                 '__DIR__',
-                '__FILE__'
+                '__FILE__',
             ],
             [
                 "'" . \dirname($this->filename) . "'",
-                "'" . $this->filename . "'"
+                "'" . $this->filename . "'",
             ],
             $code
         );
@@ -480,7 +480,7 @@ class PhptTestCase implements Test, SelfDescribing
 
         return [
             'coverage' => $baseDir . $basename . 'coverage',
-            'job'      => $baseDir . $basename . 'php'
+            'job'      => $baseDir . $basename . 'php',
         ];
     }
 
@@ -516,7 +516,7 @@ class PhptTestCase implements Test, SelfDescribing
                 'phar'             => $phar,
                 'globals'          => $globals,
                 'job'              => $files['job'],
-                'coverageFile'     => $files['coverage']
+                'coverageFile'     => $files['coverage'],
             ]
         );
 

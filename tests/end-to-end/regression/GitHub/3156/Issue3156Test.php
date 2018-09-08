@@ -26,7 +26,7 @@ class Issue3156Test extends TestCase
     {
         return [
             ['1'],
-            ['2']
+            ['2'],
         ];
     }
 

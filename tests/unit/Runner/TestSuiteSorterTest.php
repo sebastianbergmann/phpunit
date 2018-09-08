@@ -134,25 +134,25 @@ class TestSuiteSorterTest extends TestCase
             'default' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::IGNORE_DEPENDENCIES,
-                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive']],
+                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive'], ],
 
             // Activating dependency resolution should have no effect under normal circumstances
             'resolve default' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::IGNORE_DEPENDENCIES,
-                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive']],
+                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive'], ],
 
             // Reversing without checks should give a simple reverse order
             'reverse' => [
                 TestSuiteSorter::ORDER_REVERSED,
                 self::IGNORE_DEPENDENCIES,
-                ['testFive', 'testFour', 'testThree', 'testTwo', 'testOne']],
+                ['testFive', 'testFour', 'testThree', 'testTwo', 'testOne'], ],
 
             // Reversing with resolution still allows testFive to move to front, testTwo before testOne
             'resolve reverse' => [
                 TestSuiteSorter::ORDER_REVERSED,
                 self::RESOLVE_DEPENDENCIES,
-                ['testFive', 'testTwo', 'testOne', 'testThree', 'testFour']],
+                ['testFive', 'testTwo', 'testOne', 'testThree', 'testFour'], ],
         ];
     }
 
@@ -178,7 +178,7 @@ class TestSuiteSorterTest extends TestCase
                     'testFour'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                     'testFive'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                 ],
-                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive']],
+                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive'], ],
 
             // Running with an empty cache should not spook the TestSuiteSorter
             'default, empty result cache' => [
@@ -187,7 +187,7 @@ class TestSuiteSorterTest extends TestCase
                 [
                     // empty result cache
                 ],
-                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive']],
+                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive'], ],
 
             // testFive is independent and can be moved to the front
             'default, testFive skipped' => [
@@ -200,7 +200,7 @@ class TestSuiteSorterTest extends TestCase
                     'testFour'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                     'testFive'  => ['state' => BaseTestRunner::STATUS_SKIPPED, 'time' => 1],
                 ],
-                ['testFive', 'testOne', 'testTwo', 'testThree', 'testFour']],
+                ['testFive', 'testOne', 'testTwo', 'testThree', 'testFour'], ],
 
             // Defects in testFive and testTwo, but the faster testFive should be run first
             'default, testTwo testFive skipped' => [
@@ -213,7 +213,7 @@ class TestSuiteSorterTest extends TestCase
                     'testFour'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                     'testFive'  => ['state' => BaseTestRunner::STATUS_SKIPPED, 'time' => 0],
                 ],
-                ['testFive', 'testTwo', 'testOne', 'testThree', 'testFour']],
+                ['testFive', 'testTwo', 'testOne', 'testThree', 'testFour'], ],
 
             // Skipping testThree will move it to the front when ignoring dependencies
             'default, testThree skipped' => [
@@ -226,7 +226,7 @@ class TestSuiteSorterTest extends TestCase
                     'testFour'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                     'testFive'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                 ],
-                ['testThree', 'testOne', 'testTwo', 'testFour', 'testFive']],
+                ['testThree', 'testOne', 'testTwo', 'testFour', 'testFive'], ],
 
             // Skipping testThree will move it to the front but behind its dependencies
             'default resolve, testThree skipped' => [
@@ -239,7 +239,7 @@ class TestSuiteSorterTest extends TestCase
                     'testFour'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                     'testFive'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                 ],
-                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive']],
+                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive'], ],
 
             // Skipping testThree will move it to the front and keep the others reversed
             'reverse, testThree skipped' => [
@@ -252,7 +252,7 @@ class TestSuiteSorterTest extends TestCase
                     'testFour'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                     'testFive'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                 ],
-                ['testThree', 'testFive', 'testFour', 'testTwo', 'testOne']],
+                ['testThree', 'testFive', 'testFour', 'testTwo', 'testOne'], ],
 
             // Demonstrate a limit of the dependency resolver: after sorting defects to the front,
             // the resolver will mark testFive done before testThree because of dependencies
@@ -266,7 +266,7 @@ class TestSuiteSorterTest extends TestCase
                     'testFour'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                     'testFive'  => ['state' => BaseTestRunner::STATUS_SKIPPED, 'time' => 1],
                 ],
-                ['testFive', 'testOne', 'testTwo', 'testThree', 'testFour']],
+                ['testFive', 'testOne', 'testTwo', 'testThree', 'testFour'], ],
 
             // Torture test
             // - incomplete TestResultCache
@@ -281,7 +281,7 @@ class TestSuiteSorterTest extends TestCase
                     'testTwo'   => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                     'testThree' => ['state' => BaseTestRunner::STATUS_SKIPPED, 'time' => 1],
                 ],
-                ['testFive', 'testTwo', 'testOne', 'testThree', 'testFour']],
+                ['testFive', 'testTwo', 'testOne', 'testThree', 'testFour'], ],
 
             // Make sure the dependency resolver is not confused by failing tests.
             // Scenario: Four has a @depends on Three and fails. Result: Three is still run first
@@ -296,7 +296,7 @@ class TestSuiteSorterTest extends TestCase
                     'testFour'  => ['state' => BaseTestRunner::STATUS_FAILURE, 'time' => 1],
                     'testFive'  => ['state' => BaseTestRunner::STATUS_FAILURE, 'time' => 1],
                 ],
-                ['testFive', 'testOne', 'testTwo', 'testThree', 'testFour']],
+                ['testFive', 'testOne', 'testTwo', 'testThree', 'testFour'], ],
         ];
     }
 

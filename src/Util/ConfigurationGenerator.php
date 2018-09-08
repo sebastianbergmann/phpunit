@@ -46,13 +46,13 @@ EOT;
                 '{phpunit_version}',
                 '{bootstrap_script}',
                 '{tests_directory}',
-                '{src_directory}'
+                '{src_directory}',
             ],
             [
                 $phpunitVersion,
                 $bootstrapScript,
                 $testsDirectory,
-                $srcDirectory
+                $srcDirectory,
             ],
             self::TEMPLATE
         );

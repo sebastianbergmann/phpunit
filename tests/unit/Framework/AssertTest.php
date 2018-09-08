@@ -145,7 +145,7 @@ class AssertTest extends TestCase
             'a' => 'item a',
             'b' => 'item b',
             'c' => ['a2' => 'item a2', 'b2' => 'item b2'],
-            'd' => ['a2' => ['a3' => 'item a3', 'b3' => 'item b3']]
+            'd' => ['a2' => ['a3' => 'item a3', 'b3' => 'item b3']],
         ];
 
         $this->assertArraySubset(['a' => 'item a', 'c' => ['a2' => 'item a2']], $array);
@@ -176,10 +176,10 @@ class AssertTest extends TestCase
             'path' => [
                 'to' => [
                     'the' => [
-                        'cake' => 'is a lie'
-                    ]
-                ]
-            ]
+                        'cake' => 'is a lie',
+                    ],
+                ],
+            ],
         ];
 
         $this->assertArraySubset(['path' => []], $array);
@@ -2627,12 +2627,12 @@ XML;
             [
                 new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
                 new \DateTime('2013-03-29 03:13:35', new \DateTimeZone('America/New_York')),
-                3500
+                3500,
             ],
             [
                 new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
                 new \DateTime('2013-03-29 05:13:35', new \DateTimeZone('America/New_York')),
-                3500
+                3500,
             ],
             [
                 new \DateTime('2013-03-29', new \DateTimeZone('America/New_York')),
@@ -2641,7 +2641,7 @@ XML;
             [
                 new \DateTime('2013-03-29', new \DateTimeZone('America/New_York')),
                 new \DateTime('2013-03-30', new \DateTimeZone('America/New_York')),
-                43200
+                43200,
             ],
             [
                 new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
@@ -2650,7 +2650,7 @@ XML;
             [
                 new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
                 new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/Chicago')),
-                3500
+                3500,
             ],
             [
                 new \DateTime('2013-03-30', new \DateTimeZone('America/New_York')),
@@ -2678,7 +2678,7 @@ XML;
             [0, 'Foobar'],
             ['Foobar', 0],
             [3, \acos(8)],
-            [\acos(8), 3]
+            [\acos(8), 3],
         ];
     }
 
@@ -2743,12 +2743,12 @@ XML;
             [
                 new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
                 new \DateTime('2013-03-29 04:13:25', new \DateTimeZone('America/New_York')),
-                10
+                10,
             ],
             [
                 new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
                 new \DateTime('2013-03-29 04:14:40', new \DateTimeZone('America/New_York')),
-                65
+                65,
             ],
             [
                 new \DateTime('2013-03-29', new \DateTimeZone('America/New_York')),
@@ -2761,7 +2761,7 @@ XML;
             [
                 new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
                 new \DateTime('2013-03-29 03:13:49', new \DateTimeZone('America/Chicago')),
-                15
+                15,
             ],
             [
                 new \DateTime('2013-03-30', new \DateTimeZone('America/New_York')),
@@ -2770,7 +2770,7 @@ XML;
             [
                 new \DateTime('2013-03-30', new \DateTimeZone('America/New_York')),
                 new \DateTime('2013-03-29 23:01:30', new \DateTimeZone('America/Chicago')),
-                100
+                100,
             ],
             [
                 new \DateTime('@1364616000'),

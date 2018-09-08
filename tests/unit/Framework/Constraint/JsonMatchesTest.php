@@ -31,7 +31,7 @@ class JsonMatchesTest extends ConstraintTestCase
             'single boolean valid json'               => [true, 'true', 'true'],
             'single number valid json'                => [true, '5.3', '5.3'],
             'single null valid json'                  => [true, 'null', 'null'],
-            'objects are not arrays'                  => [false, '{}', '[]']
+            'objects are not arrays'                  => [false, '{}', '[]'],
         ];
     }
 
@@ -43,7 +43,7 @@ class JsonMatchesTest extends ConstraintTestCase
             'string type not equals boolean'          => ['{"age": "true"}', '{"age": true}'],
             'string type not equals null'             => ['{"age": "null"}', '{"age": null}'],
             'null field different from missing field' => ['{"present": true, "missing": null}', '{"present": true}'],
-            'array elements are ordered'              => ['["first", "second"]', '["second", "first"]']
+            'array elements are ordered'              => ['["first", "second"]', '["second", "first"]'],
         ];
     }
 

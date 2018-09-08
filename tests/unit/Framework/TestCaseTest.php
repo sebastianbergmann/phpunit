@@ -710,7 +710,7 @@ class TestCaseTest extends TestCase
         $mock = $this->createConfiguredMock(
             \Mockable::class,
             [
-                'mockableMethod' => false
+                'mockableMethod' => false,
             ]
         );
 
@@ -759,8 +759,8 @@ class TestCaseTest extends TestCase
 
         return [
             'RECURSION' => [
-                'data' => $recursionData
-            ]
+                'data' => $recursionData,
+            ],
         ];
     }
 }

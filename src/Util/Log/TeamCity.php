@@ -277,7 +277,7 @@ class TeamCity extends ResultPrinter
             'testFinished',
             [
                 'name'     => $test->getName(),
-                'duration' => self::toMilliseconds($time)
+                'duration' => self::toMilliseconds($time),
             ]
         );
     }

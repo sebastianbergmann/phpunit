@@ -22,7 +22,7 @@ class GlobalStateTest extends TestCase
             $dir . '/GlobalStateTest.php',
             'vfs://' . $dir . '/RegexTest.php',
             'phpvfs53e46260465c7://' . $dir . '/TestTest.php',
-            'file://' . $dir . '/XmlTest.php'
+            'file://' . $dir . '/XmlTest.php',
         ];
 
         $this->assertEquals(

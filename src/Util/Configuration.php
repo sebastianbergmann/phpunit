@@ -275,7 +275,7 @@ final class Configuration
             $result[] = [
                 'class'     => $class,
                 'file'      => $file,
-                'arguments' => $arguments
+                'arguments' => $arguments,
             ];
         }
 
@@ -338,13 +338,13 @@ final class Configuration
                 'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
                 'include'                            => [
                     'directory' => $includeDirectory,
-                    'file'      => $includeFile
+                    'file'      => $includeFile,
                 ],
                 'exclude' => [
                     'directory' => $excludeDirectory,
-                    'file'      => $excludeFile
-                ]
-            ]
+                    'file'      => $excludeFile,
+                ],
+            ],
         ];
     }
 
@@ -387,7 +387,7 @@ final class Configuration
             $result[] = [
                 'class'     => $class,
                 'file'      => $file,
-                'arguments' => $arguments
+                'arguments' => $arguments,
             ];
         }
 
@@ -471,7 +471,7 @@ final class Configuration
             'cookie'       => [],
             'server'       => [],
             'files'        => [],
-            'request'      => []
+            'request'      => [],
         ];
 
         foreach ($this->xpath->query('php/includePath') as $includePath) {
@@ -1240,7 +1240,7 @@ final class Configuration
                 'path'   => $this->toAbsolutePath($directoryPath),
                 'prefix' => $prefix,
                 'suffix' => $suffix,
-                'group'  => $group
+                'group'  => $group,
             ];
         }
 
@@ -1307,7 +1307,7 @@ final class Configuration
     {
         $groups = [
             'include' => [],
-            'exclude' => []
+            'exclude' => [],
         ];
 
         foreach ($this->xpath->query($root . '/include/group') as $group) {

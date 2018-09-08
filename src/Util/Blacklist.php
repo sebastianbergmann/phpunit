@@ -61,7 +61,7 @@ final class Blacklist
         Instantiator::class           => 1,
         DocBlock::class               => 1,
         Prophet::class                => 1,
-        DeepCopy::class               => 1
+        DeepCopy::class               => 1,
     ];
 
     /**

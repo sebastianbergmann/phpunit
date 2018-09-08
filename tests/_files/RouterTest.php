@@ -28,7 +28,7 @@ final class RouterTest extends TestCase
                 '/foo/bar',
                 FooBarHandler::class,
                 // ...
-            ]
+            ],
         ];
     }
 }

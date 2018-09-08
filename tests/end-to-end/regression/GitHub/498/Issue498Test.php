@@ -37,7 +37,7 @@ class Issue498Test extends TestCase
         //throw new Exception("Can't create the data");
         return [
             [true],
-            [false]
+            [false],
         ];
     }
 
@@ -47,7 +47,7 @@ class Issue498Test extends TestCase
 
         return [
             [true],
-            [false]
+            [false],
         ];
     }
 }

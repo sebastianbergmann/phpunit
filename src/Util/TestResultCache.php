@@ -27,7 +27,7 @@ class TestResultCache implements \Serializable, TestResultCacheInterface
         BaseTestRunner::STATUS_FAILURE,
         BaseTestRunner::STATUS_ERROR,
         BaseTestRunner::STATUS_RISKY,
-        BaseTestRunner::STATUS_WARNING
+        BaseTestRunner::STATUS_WARNING,
     ];
 
     /**
@@ -154,7 +154,7 @@ class TestResultCache implements \Serializable, TestResultCacheInterface
     {
         return \serialize([
             'defects' => $this->defects,
-            'times'   => $this->times
+            'times'   => $this->times,
         ]);
     }
 
