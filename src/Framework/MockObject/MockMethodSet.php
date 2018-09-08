@@ -10,18 +10,21 @@ declare(strict_types=1);
  */
 namespace PHPUnit\Framework\MockObject;
 
-class MockMethodSet
+final class MockMethodSet
 {
+    /**
+     * @var MockMethod[]
+     */
     private $methods = [];
 
-    public function addMethods(MockMethod...$methods): void
+    public function addMethods(MockMethod ...$methods): void
     {
         foreach ($methods as $method) {
             $this->methods[\strtolower($method->getName())] = $method;
         }
     }
 
-    public function getMethods(): array
+    public function asArray(): array
     {
         return \array_values($this->methods);
     }

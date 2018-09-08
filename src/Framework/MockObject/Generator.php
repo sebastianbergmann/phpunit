@@ -649,7 +649,7 @@ class Generator
         $isClass              = false;
         $isInterface          = false;
         $class                = null;
-        $mockMethods          = new MockMethodSet();
+        $mockMethods          = new MockMethodSet;
 
         if (\is_array($type)) {
             $interfaceMethods = [];
@@ -676,16 +676,19 @@ class Generator
                             )
                         );
                     }
+
                     $methodReflection = $typeClass->getMethod($method);
 
                     if ($this->canMockMethod($methodReflection)) {
                         $mockMethods->addMethods(
                             MockMethod::fromReflection($methodReflection, $callOriginalMethods, $cloneArguments)
                         );
+
                         $interfaceMethods[] = $method;
                     }
                 }
             }
+
             unset($interfaceMethods);
         }
 
@@ -744,6 +747,7 @@ class Generator
                 !$class->implementsInterface(Iterator::class) &&
                 !$class->implementsInterface(IteratorAggregate::class)) {
                 $additionalInterfaces[] = Iterator::class;
+
                 $mockMethods->addMethods(
                     ...$this->mockClassMethods(Iterator::class, $callOriginalMethods, $cloneArguments)
                 );
@@ -801,7 +805,7 @@ class Generator
         $configurable  = [];
 
         /** @var MockMethod $mockMethod */
-        foreach ($mockMethods->getMethods() as $mockMethod) {
+        foreach ($mockMethods->asArray() as $mockMethod) {
             $mockedMethods .= $mockMethod->generateCode();
             $configurable[] = \strtolower($mockMethod->getName());
         }

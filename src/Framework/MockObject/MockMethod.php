@@ -151,20 +151,8 @@ final class MockMethod
         );
     }
 
-    public function __construct(
-        string $className,
-        string $methodName,
-        bool $cloneArguments,
-        string $modifier,
-        string $argumentsForDeclaration,
-        string $argumentsForCall,
-        string $returnType,
-        string $reference,
-        bool $callOriginalMethod,
-        bool $static,
-        ?string $deprecation,
-        bool $allowsReturnNull
-    ) {
+    public function __construct(string $className, string $methodName, bool $cloneArguments, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, string $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation, bool $allowsReturnNull)
+    {
         $this->className               = $className;
         $this->methodName              = $methodName;
         $this->cloneArguments          = $cloneArguments;
