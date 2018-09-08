@@ -451,8 +451,8 @@ class ConfigurationTest extends TestCase
         );
 
         $this->assertEquals(
-            $expectedConfiguration->getTestSuiteConfiguration(),
-            $actualConfiguration->getTestSuiteConfiguration()
+            $expectedConfiguration->getTestSuiteConfiguration()->tests(),
+            $actualConfiguration->getTestSuiteConfiguration()->tests()
         );
     }
 
