@@ -14,7 +14,7 @@ use PHPUnit\Util\Json;
 
 class JsonMatchesTest extends ConstraintTestCase
 {
-    public static function evaluateDataprovider()
+    public static function evaluateDataprovider(): array
     {
         return [
             'valid JSON'                              => [true, \json_encode(['Mascott'                           => 'Tux']), \json_encode(['Mascott'                           => 'Tux'])],
@@ -35,7 +35,7 @@ class JsonMatchesTest extends ConstraintTestCase
         ];
     }
 
-    public static function evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider()
+    public static function evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider(): array
     {
         return [
             'error UTF-8'                             => [\json_encode('\xB1\x31'), \json_encode(['Mascott' => 'Tux'])],

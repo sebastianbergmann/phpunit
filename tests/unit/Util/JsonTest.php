@@ -29,10 +29,7 @@ class JsonTest extends TestCase
         }
     }
 
-    /**
-     * @return array
-     */
-    public function canonicalizeProvider()
+    public function canonicalizeProvider(): array
     {
         return [
             ['{"name":"John","age":"35"}', '{"age":"35","name":"John"}', false],
@@ -53,10 +50,7 @@ class JsonTest extends TestCase
         $this->assertEquals($expected, Json::prettify($actual));
     }
 
-    /**
-     * @return array
-     */
-    public function prettifyProvider()
+    public function prettifyProvider(): array
     {
         return [
             ['{"name":"John","age": "5"}', "{\n    \"name\": \"John\",\n    \"age\": \"5\"\n}"],
@@ -74,10 +68,7 @@ class JsonTest extends TestCase
         Json::prettify($json);
     }
 
-    /**
-     * @return array
-     */
-    public function prettifyExceptionProvider()
+    public function prettifyExceptionProvider(): array
     {
         return [
             ['"name":"John","age": "5"}'],

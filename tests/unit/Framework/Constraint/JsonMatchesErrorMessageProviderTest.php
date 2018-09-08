@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class JsonMatchesErrorMessageProviderTest extends TestCase
 {
-    public static function determineJsonErrorDataprovider()
+    public static function determineJsonErrorDataprovider(): array
     {
         return [
             'JSON_ERROR_NONE'  => [
@@ -45,7 +45,7 @@ class JsonMatchesErrorMessageProviderTest extends TestCase
         ];
     }
 
-    public static function translateTypeToPrefixDataprovider()
+    public static function translateTypeToPrefixDataprovider(): array
     {
         return [
             'expected' => ['Expected value JSON decode error - ', 'expected'],

@@ -126,7 +126,7 @@ class GeneratorTest extends TestCase
         $this->generator->getMockForAbstractClass('Tux');
     }
 
-    public function getMockForAbstractClassExpectsInvalidArgumentExceptionDataprovider()
+    public function getMockForAbstractClassExpectsInvalidArgumentExceptionDataprovider(): array
     {
         return [
             'className not a string'     => [[], ''],

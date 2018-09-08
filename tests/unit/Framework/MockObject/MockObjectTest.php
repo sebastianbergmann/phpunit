@@ -1013,7 +1013,7 @@ class MockObjectTest extends TestCase
         $this->assertSame('foo', (string) $mock);
     }
 
-    public function traversableProvider()
+    public function traversableProvider(): array
     {
         return [
             ['Traversable'],
