@@ -13,10 +13,7 @@ use PHPUnit\Util\Xml;
 
 class AssertTest extends TestCase
 {
-    /**
-     * @return array<string, string[]>
-     */
-    public static function validInvalidJsonDataprovider()
+    public static function validInvalidJsonDataprovider(): array
     {
         return [
             'error syntax in expected JSON' => ['{"Mascott"::}', '{"Mascott" : "Tux"}'],
@@ -229,10 +226,7 @@ class AssertTest extends TestCase
         $this->assertArraySubset($partial, $subject);
     }
 
-    /**
-     * @return array
-     */
-    public function assertArraySubsetInvalidArgumentProvider()
+    public function assertArraySubsetInvalidArgumentProvider(): array
     {
         return [
             [false, []],
@@ -502,7 +496,7 @@ class AssertTest extends TestCase
         $this->assertNotContainsOnly('StdClass', [new \stdClass]);
     }
 
-    public function equalProvider()
+    public function equalProvider(): array
     {
         // same |= equal
         return \array_merge($this->equalValues(), $this->sameValues());
@@ -513,12 +507,12 @@ class AssertTest extends TestCase
         return $this->notEqualValues();
     }
 
-    public function sameProvider()
+    public function sameProvider(): array
     {
         return $this->sameValues();
     }
 
-    public function notSameProvider()
+    public function notSameProvider(): array
     {
         // not equal |= not same
         // equal, ¬same |= not same
@@ -2512,7 +2506,7 @@ XML;
         $this->assertStringNotMatchesFormatFile(TEST_FILES_PATH . 'expectedFileFormat.txt', "FOO\n");
     }
 
-    protected function sameValues()
+    protected function sameValues(): array
     {
         $object   = new \SampleClass(4, 8, 15);
         $file     = TEST_FILES_PATH . 'foo.xml';
@@ -2541,7 +2535,7 @@ XML;
         ];
     }
 
-    protected function notEqualValues()
+    protected function notEqualValues(): array
     {
         // cyclic dependencies
         $book1                  = new \Book;
@@ -2682,7 +2676,7 @@ XML;
         ];
     }
 
-    protected function equalValues()
+    protected function equalValues(): array
     {
         // cyclic dependencies
         $book1                  = new \Book;

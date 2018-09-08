@@ -122,7 +122,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function requirementsProvider()
+    public function requirementsProvider(): array
     {
         return [
             ['testOne',    []],
@@ -351,7 +351,7 @@ class TestTest extends TestCase
         }
     }
 
-    public function requirementsWithVersionConstraintsProvider()
+    public function requirementsWithVersionConstraintsProvider(): array
     {
         return [
             [
@@ -467,7 +467,7 @@ class TestTest extends TestCase
         Test::getRequirements(\RequirementsTest::class, $test);
     }
 
-    public function requirementsWithInvalidVersionConstraintsThrowsExceptionProvider()
+    public function requirementsWithInvalidVersionConstraintsThrowsExceptionProvider(): array
     {
         return [
             ['testVersionConstraintInvalidPhpConstraint'],
@@ -512,7 +512,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function missingRequirementsProvider()
+    public function missingRequirementsProvider(): array
     {
         return [
             ['testOne',            []],
@@ -913,7 +913,7 @@ class TestTest extends TestCase
         );
     }
 
-    public function getLinesToBeCoveredProvider()
+    public function getLinesToBeCoveredProvider(): array
     {
         return [
             [

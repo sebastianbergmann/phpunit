@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 class IsJsonTest extends ConstraintTestCase
 {
-    public static function evaluateDataprovider()
+    public static function evaluateDataprovider(): array
     {
         return [
             'valid JSON'                                     => [true, '{}'],

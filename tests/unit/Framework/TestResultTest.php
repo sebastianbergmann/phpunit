@@ -63,7 +63,7 @@ class TestResultTest extends TestCase
         $this->assertAttributeContainsOnly(TestFailure::class, 'notImplemented', $result);
     }
 
-    public function canSkipCoverageProvider()
+    public function canSkipCoverageProvider(): array
     {
         return [
             ['CoverageClassTest', true],

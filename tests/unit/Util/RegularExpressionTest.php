@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class RegularExpressionTest extends TestCase
 {
-    public function validRegexpProvider()
+    public function validRegexpProvider(): array
     {
         return [
             ['#valid regexp#', 'valid regexp', 1],
@@ -23,7 +23,7 @@ class RegularExpressionTest extends TestCase
         ];
     }
 
-    public function invalidRegexpProvider()
+    public function invalidRegexpProvider(): array
     {
         return [
             ['valid regexp', 'valid regexp'],

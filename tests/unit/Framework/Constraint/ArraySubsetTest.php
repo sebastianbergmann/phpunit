@@ -13,7 +13,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 class ArraySubsetTest extends ConstraintTestCase
 {
-    public static function evaluateDataProvider()
+    public static function evaluateDataProvider(): array
     {
         return [
             'loose array subset and array other' => [

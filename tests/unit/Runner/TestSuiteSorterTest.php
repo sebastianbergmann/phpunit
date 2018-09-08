@@ -316,7 +316,7 @@ class TestSuiteSorterTest extends TestCase
         $this->assertSame('No tests found in class "EmptyTestCaseTest".', $suite->tests()[0]->tests()[0]->getMessage());
     }
 
-    public function suiteSorterOptionPermutationsProvider()
+    public function suiteSorterOptionPermutationsProvider(): array
     {
         $orderValues        = [TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, TestSuiteSorter::ORDER_RANDOMIZED];
         $resolveValues      = [false, true];

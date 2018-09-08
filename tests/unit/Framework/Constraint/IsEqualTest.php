@@ -62,7 +62,7 @@ EOF
         $this->fail();
     }
 
-    public function isEqualProvider()
+    public function isEqualProvider(): array
     {
         $a      = new \stdClass;
         $a->foo = 'bar';
