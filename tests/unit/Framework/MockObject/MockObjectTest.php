@@ -436,7 +436,6 @@ class MockObjectTest extends TestCase
     public function testGetMockWithFixedClassNameCanProduceTheSameMockTwice(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)->setMockClassName('FixedName')->getMock();
-        $mock = $this->getMockBuilder(stdClass::class)->setMockClassName('FixedName')->getMock();
         $this->assertInstanceOf(stdClass::class, $mock);
     }
 

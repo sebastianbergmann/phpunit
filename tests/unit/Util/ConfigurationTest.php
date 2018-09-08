@@ -116,8 +116,6 @@ class ConfigurationTest extends TestCase
 
     public function configurationRootOptionsProvider(): array
     {
-        $tmpFilePath = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR;
-
         return [
             'executionOrder default'                                        => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
             'executionOrder random'                                         => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
