@@ -549,6 +549,9 @@ class TestRunner extends BaseTestRunner
                 );
                 \file_put_contents($arguments['xdebugFilterFile'], $script);
 
+                $this->write("\n");
+                $this->write(\sprintf('Wrote Xdebug filter script to %s ' . \PHP_EOL, $arguments['xdebugFilterFile']));
+
                 exit(self::SUCCESS_EXIT);
             }
 
