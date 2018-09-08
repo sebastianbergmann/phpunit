@@ -69,13 +69,24 @@ final class TestSuiteSorter
      */
     public function reorderTestsInSuite(Test $suite, int $order, bool $resolveDependencies, int $orderDefects): void
     {
-        if ($order !== self::ORDER_DEFAULT && $order !== self::ORDER_REVERSED && $order !== self::ORDER_RANDOMIZED) {
+        $allowedOrders = [
+            self::ORDER_DEFAULT,
+            self::ORDER_REVERSED,
+            self::ORDER_RANDOMIZED,
+        ];
+
+        if (!\in_array($order, $allowedOrders, true)) {
             throw new Exception(
                 '$order must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, or TestSuiteSorter::ORDER_RANDOMIZED'
             );
         }
 
-        if ($orderDefects !== self::ORDER_DEFAULT && $orderDefects !== self::ORDER_DEFECTS_FIRST) {
+        $allowedOrderDefects = [
+            self::ORDER_DEFAULT,
+            self::ORDER_DEFECTS_FIRST,
+        ];
+
+        if (!\in_array($orderDefects, $allowedOrderDefects, true)) {
             throw new Exception(
                 '$orderDefects must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST'
             );
