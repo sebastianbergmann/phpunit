@@ -37,6 +37,11 @@ final class TestSuiteSorter
     public const ORDER_DEFECTS_FIRST = 3;
 
     /**
+     * @var int
+     */
+    public const ORDER_DURATION = 4;
+
+    /**
      * List of sorting weights for all test result codes. A higher number gives higher priority.
      */
     private const DEFECT_SORT_WEIGHT = [
@@ -73,11 +78,12 @@ final class TestSuiteSorter
             self::ORDER_DEFAULT,
             self::ORDER_REVERSED,
             self::ORDER_RANDOMIZED,
+            self::ORDER_DURATION,
         ];
 
         if (!\in_array($order, $allowedOrders, true)) {
             throw new Exception(
-                '$order must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, or TestSuiteSorter::ORDER_RANDOMIZED'
+                '$order must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, or TestSuiteSorter::ORDER_RANDOMIZED, or TestSuiteSorter::ORDER_DURATION'
             );
         }
 
@@ -115,6 +121,8 @@ final class TestSuiteSorter
             $suite->setTests($this->reverse($suite->tests()));
         } elseif ($order === self::ORDER_RANDOMIZED) {
             $suite->setTests($this->randomize($suite->tests()));
+        } elseif ($order === self::ORDER_DURATION && $this->cache !== null) {
+            $suite->setTests($this->sortByDuration($suite->tests()));
         }
 
         if ($orderDefects === self::ORDER_DEFECTS_FIRST && $this->cache !== null) {
@@ -175,6 +183,18 @@ final class TestSuiteSorter
         return $tests;
     }
 
+    private function sortByDuration(array $tests): array
+    {
+        \usort(
+            $tests,
+            function ($left, $right) {
+                return $this->cmpDuration($left, $right);
+            }
+        );
+
+        return $tests;
+    }
+
     /**
      * Comparator callback function to sort tests for "reach failure as fast as possible":
      * 1. sort tests by defect weight defined in self::DEFECT_SORT_WEIGHT
@@ -192,12 +212,19 @@ final class TestSuiteSorter
         }
 
         if ($priorityA || $priorityB) {
-            // Sort test duration ascending
-            return $this->cache->getTime($a->getName()) <=> $this->cache->getTime($b->getName());
+            return $this->cmpDuration($a, $b);
         }
 
         // do not change execution order
         return 0;
+    }
+
+    /**
+     * Compares test duration for sorting tests by duration ascending.
+     */
+    private function cmpDuration(Test $a, Test $b): int
+    {
+        return $this->cache->getTime($a->getName()) <=> $this->cache->getTime($b->getName());
     }
 
     /**
