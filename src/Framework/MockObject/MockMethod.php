@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -15,7 +14,7 @@ use ReflectionException;
 use ReflectionMethod;
 use Text_Template;
 
-class MockMethod
+final class MockMethod
 {
     /**
      * @var Text_Template[]
