@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<phpunit>
+
+  <filter>
+    <whitelist>
+      <file>AbstractTest.php</file>
+    </whitelist>
+  </filter>
+
+</phpunit>
+

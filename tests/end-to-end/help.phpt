@@ -24,6 +24,7 @@ Code Coverage Options:
   --whitelist <dir>           Whitelist <dir> for code coverage analysis
   --disable-coverage-ignore   Disable annotations for ignoring code coverage
   --no-coverage               Ignore code coverage configuration
+  --dump-xdebug-filter <file> Generate script to set Xdebug code coverage filter
 
 Logging Options:
 

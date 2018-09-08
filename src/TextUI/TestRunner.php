@@ -41,6 +41,7 @@ use PHPUnit\Util\Printer;
 use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
+use PHPUnit\Util\XDebugFilterScriptGenerator;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -455,7 +456,7 @@ class TestRunner extends BaseTestRunner
             $codeCoverageReports = 0;
         }
 
-        if ($codeCoverageReports > 0) {
+        if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile'])) {
             $codeCoverage = new CodeCoverage(
                 null,
                 $this->codeCoverageFilter
@@ -538,6 +539,17 @@ class TestRunner extends BaseTestRunner
                         $this->codeCoverageFilter->removeFileFromWhitelist($file);
                     }
                 }
+            }
+
+            if (isset($arguments['xdebugFilterFile'], $filterConfiguration)) {
+                $filterScriptGenerator = new XDebugFilterScriptGenerator();
+                $script                = $filterScriptGenerator->generate(
+                    $filterConfiguration['whitelist'],
+                    $this->codeCoverageFilter->getWhitelist()
+                );
+                \file_put_contents($arguments['xdebugFilterFile'], $script);
+
+                exit(self::SUCCESS_EXIT);
             }
 
             if (!$this->codeCoverageFilter->hasWhitelist()) {
