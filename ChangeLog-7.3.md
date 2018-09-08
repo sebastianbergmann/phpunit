@@ -6,8 +6,9 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
 
 ### Fixed
 
-* Fixed [#3254](https://github.com/sebastianbergmann/phpunit/issues/3254): TextUI test runner cannot run a `Test` instance that is not a `TestSuite`
 * Fixed [#3181](https://github.com/sebastianbergmann/phpunit/issues/3181): `--filter` should be case-insensitive
+* Fixed [#3234](https://github.com/sebastianbergmann/phpunit/issues/3234): `assertArraySubset()` with `$strict=true` does not display differences properly
+* Fixed [#3254](https://github.com/sebastianbergmann/phpunit/issues/3254): TextUI test runner cannot run a `Test` instance that is not a `TestSuite`
 
 ## [7.3.4] - 2018-09-05
 
