@@ -4,8 +4,9 @@ All notable changes of the PHPUnit 6.5 release series are documented in this fil
 
 ## [6.5.13] - 2018-MM-DD
 
-* Fixed [#3254](https://github.com/sebastianbergmann/phpunit/issues/3254): TextUI test runner cannot run a `Test` instance that is not a `TestSuite`
 * Fixed [#3181](https://github.com/sebastianbergmann/phpunit/issues/3181): `--filter` should be case-insensitive
+* Fixed [#3234](https://github.com/sebastianbergmann/phpunit/issues/3234): `assertArraySubset()` with `$strict=true` does not display differences properly
+* Fixed [#3254](https://github.com/sebastianbergmann/phpunit/issues/3254): TextUI test runner cannot run a `Test` instance that is not a `TestSuite`
 
 ## [6.5.12] - 2018-08-22
 
