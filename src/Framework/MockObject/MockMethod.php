@@ -22,9 +22,9 @@ final class MockMethod
     private static $templates = [];
 
     /**
-     * @var string
+     * @var TypeName
      */
-    private $className;
+    private $originalTypeName;
 
     /**
      * @var string
@@ -118,7 +118,7 @@ final class MockMethod
         }
 
         return new self(
-            $method->getDeclaringClass()->getName(),
+            TypeName::fromReflection($method->getDeclaringClass()),
             $method->getName(),
             $cloneArguments,
             $modifier,
@@ -133,10 +133,10 @@ final class MockMethod
         );
     }
 
-    public static function fromName(string $fullClassName, string $methodName, bool $cloneArguments): self
+    public static function fromName(TypeName $originalTypeName, string $methodName, bool $cloneArguments): self
     {
         return new self(
-            $fullClassName,
+            $originalTypeName,
             $methodName,
             $cloneArguments,
             'public',
@@ -151,9 +151,9 @@ final class MockMethod
         );
     }
 
-    public function __construct(string $className, string $methodName, bool $cloneArguments, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, string $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation, bool $allowsReturnNull)
+    public function __construct(TypeName $originalTypeName, string $methodName, bool $cloneArguments, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, string $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation, bool $allowsReturnNull)
     {
-        $this->className               = $className;
+        $this->originalTypeName        = $originalTypeName;
         $this->methodName              = $methodName;
         $this->cloneArguments          = $cloneArguments;
         $this->modifier                = $modifier;
@@ -196,12 +196,12 @@ final class MockMethod
         $returnType = $this->returnType;
         // @see https://bugs.php.net/bug.php?id=70722
         if ($returnType === 'self') {
-            $returnType = $this->className;
+            $returnType = $this->originalTypeName->getQualifiedName();
         }
 
         // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/406
         if ($returnType === 'parent') {
-            $reflector = new ReflectionClass($this->className);
+            $reflector = new ReflectionClass($this->originalTypeName->getQualifiedName());
 
             $parentClass = $reflector->getParentClass();
 
@@ -209,9 +209,9 @@ final class MockMethod
                 throw new RuntimeException(
                     \sprintf(
                         'Cannot mock %s::%s because "parent" return type declaration is used but %s does not have a parent class',
-                        $this->className,
+                        $this->originalTypeName->getQualifiedName(),
                         $this->methodName,
-                        $this->className
+                        $this->originalTypeName->getQualifiedName()
                     )
                 );
             }
@@ -222,7 +222,12 @@ final class MockMethod
         $deprecation = $this->deprecation;
 
         if (null !== $this->deprecation) {
-            $deprecation         = "The $this->className::$this->methodName method is deprecated ($this->deprecation).";
+            $deprecation         = \sprintf(
+                'The %s::%s method is deprecated (%s).',
+                $this->originalTypeName->getQualifiedName(),
+                $this->methodName,
+                $this->deprecation
+            );
             $deprecationTemplate = $this->getTemplate('deprecation.tpl');
 
             $deprecationTemplate->setVar([
@@ -241,7 +246,7 @@ final class MockMethod
                 'return_delim'    => $returnType ? ': ' : '',
                 'return_type'     => $this->allowsReturnNull ? '?' . $returnType : $returnType,
                 'arguments_count' => !empty($this->argumentsForCall) ? \substr_count($this->argumentsForCall, ',') + 1 : 0,
-                'class_name'      => $this->className,
+                'class_name'      => $this->originalTypeName->getQualifiedName(),
                 'method_name'     => $this->methodName,
                 'modifier'        => $this->modifier,
                 'reference'       => $this->reference,

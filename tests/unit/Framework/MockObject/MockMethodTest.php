@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -14,10 +13,10 @@ use PHPUnit\Framework\TestCase;
 
 class MockMethodTest extends TestCase
 {
-    public function testGetNameReturnsMethodName()
+    public function testGetNameReturnsMethodName(): void
     {
         $method = new MockMethod(
-            'ClassName',
+            new TypeName('', 'ClassName'),
             'methodName',
             false,
             '',
@@ -33,10 +32,10 @@ class MockMethodTest extends TestCase
         $this->assertEquals('methodName', $method->getName());
     }
 
-    public function testFailWhenReturnTypeIsParentButThereIsNoParentClass()
+    public function testFailWhenReturnTypeIsParentButThereIsNoParentClass(): void
     {
         $method = new MockMethod(
-            \stdClass::class,
+            new TypeName('', \stdClass::class),
             'methodName',
             false,
             '',
