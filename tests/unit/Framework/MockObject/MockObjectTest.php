@@ -217,7 +217,7 @@ class MockObjectTest extends TestCase
     {
         $map = [
             ['a', 'b', 'c', 'd'],
-            ['e', 'f', 'g', 'h']
+            ['e', 'f', 'g', 'h'],
         ];
 
         $mock = $this->getMockBuilder(AnInterface::class)
@@ -1022,7 +1022,7 @@ class MockObjectTest extends TestCase
             ['TraversableMockTestInterface'],
             [['Traversable']],
             [['Iterator', 'Traversable']],
-            [['\Iterator', '\Traversable']]
+            [['\Iterator', '\Traversable']],
         ];
     }
 

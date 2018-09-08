@@ -35,7 +35,7 @@ class Issue2366Test extends TestCase
 
         return [
             [$o],
-            [$o]
+            [$o],
         ];
     }
 }

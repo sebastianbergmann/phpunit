@@ -35,7 +35,7 @@ class WindowsPhpProcess extends DefaultPhpProcess
         }
 
         return [
-            1 => $stdout_handle
+            1 => $stdout_handle,
         ];
     }
 

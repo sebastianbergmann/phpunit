@@ -44,7 +44,7 @@ class DataProviderDebugTest extends TestCase
             ["this\nis\na\nvery\nvery\nvery\nvery\nvery\nvery\rlong\n\rtext"],
             [new \stdClass(), $obj, [], $storage, $obj3],
             [\chr(0) . \chr(1) . \chr(2) . \chr(3) . \chr(4) . \chr(5), \implode('', \array_map('chr', \range(0x0e, 0x1f)))],
-            [\chr(0x00) . \chr(0x09)]
+            [\chr(0x00) . \chr(0x09)],
         ];
     }
 

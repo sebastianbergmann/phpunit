@@ -54,7 +54,7 @@ class Command
         'loader'                  => null,
         'useDefaultConfiguration' => true,
         'loadedExtensions'        => [],
-        'notLoadedExtensions'     => []
+        'notLoadedExtensions'     => [],
     ];
 
     /**
@@ -139,7 +139,7 @@ class Command
         'testsuite='                => null,
         'verbose'                   => null,
         'version'                   => null,
-        'whitelist='                => null
+        'whitelist='                => null,
     ];
 
     /**

@@ -89,7 +89,7 @@ class StringMatchesFormatDescription extends RegularExpression
                 '%d' => '\d+',
                 '%x' => '[0-9a-fA-F]+',
                 '%f' => '[+-]?\.?\d+\.?\d*(?:[Ee][+-]?\d+)?',
-                '%c' => '.'
+                '%c' => '.',
             ]
         );
 

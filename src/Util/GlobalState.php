@@ -23,7 +23,7 @@ final class GlobalState
         '_COOKIE',
         '_SERVER',
         '_FILES',
-        '_REQUEST'
+        '_REQUEST',
     ];
 
     public static function getIncludedFilesAsString(): string

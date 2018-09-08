@@ -23,8 +23,8 @@ class Issue2382Test extends TestCase
     {
         return [
             [
-                $this->getMockBuilder(\Exception::class)->getMock()
-            ]
+                $this->getMockBuilder(\Exception::class)->getMock(),
+            ],
         ];
     }
 }

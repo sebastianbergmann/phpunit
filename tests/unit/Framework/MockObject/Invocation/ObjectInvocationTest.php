@@ -71,7 +71,7 @@ class ObjectInvocationTest extends TestCase
     public function testAllowToGetMethodParametersSetInConstructor(): void
     {
         $expectedParameters = [
-            'foo', 5, ['a', 'b'], new stdClass, null, false
+            'foo', 5, ['a', 'b'], new stdClass, null, false,
         ];
 
         $invocation = new ObjectInvocation(

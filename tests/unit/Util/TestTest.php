@@ -160,7 +160,7 @@ class TestTest extends TestCase
                         'testFuncTwo',
                     ],
                     'setting'   => [
-                        'not_a_setting' => 'Off'
+                        'not_a_setting' => 'Off',
                     ],
                     'extensions' => [
                         'testExtOne',
@@ -175,147 +175,147 @@ class TestTest extends TestCase
             ['testSpecificExtensionVersion',
                 [
                     'extension_versions' => ['testExt' => ['version' => '1.8.0', 'operator' => '']],
-                    'extensions'         => ['testExt']
-                ]
+                    'extensions'         => ['testExt'],
+                ],
             ],
             ['testPHPVersionOperatorLessThan',
                 [
-                    'PHP' => ['version' => '5.4', 'operator' => '<']
-                ]
+                    'PHP' => ['version' => '5.4', 'operator' => '<'],
+                ],
             ],
             ['testPHPVersionOperatorLessThanEquals',
                 [
-                    'PHP' => ['version' => '5.4', 'operator' => '<=']
-                ]
+                    'PHP' => ['version' => '5.4', 'operator' => '<='],
+                ],
             ],
             ['testPHPVersionOperatorGreaterThan',
                 [
-                    'PHP' => ['version' => '99', 'operator' => '>']
-                ]
+                    'PHP' => ['version' => '99', 'operator' => '>'],
+                ],
             ],
             ['testPHPVersionOperatorGreaterThanEquals',
                 [
-                    'PHP' => ['version' => '99', 'operator' => '>=']
-                ]
+                    'PHP' => ['version' => '99', 'operator' => '>='],
+                ],
             ],
             ['testPHPVersionOperatorEquals',
                 [
-                    'PHP' => ['version' => '5.4', 'operator' => '=']
-                ]
+                    'PHP' => ['version' => '5.4', 'operator' => '='],
+                ],
             ],
             ['testPHPVersionOperatorDoubleEquals',
                 [
-                    'PHP' => ['version' => '5.4', 'operator' => '==']
-                ]
+                    'PHP' => ['version' => '5.4', 'operator' => '=='],
+                ],
             ],
             ['testPHPVersionOperatorBangEquals',
                 [
-                    'PHP' => ['version' => '99', 'operator' => '!=']
-                ]
+                    'PHP' => ['version' => '99', 'operator' => '!='],
+                ],
             ],
             ['testPHPVersionOperatorNotEquals',
                 [
-                    'PHP' => ['version' => '99', 'operator' => '<>']
-                ]
+                    'PHP' => ['version' => '99', 'operator' => '<>'],
+                ],
             ],
             ['testPHPVersionOperatorNoSpace',
                 [
-                    'PHP' => ['version' => '99', 'operator' => '>=']
-                ]
+                    'PHP' => ['version' => '99', 'operator' => '>='],
+                ],
             ],
             ['testPHPUnitVersionOperatorLessThan',
                 [
-                    'PHPUnit' => ['version' => '1.0', 'operator' => '<']
-                ]
+                    'PHPUnit' => ['version' => '1.0', 'operator' => '<'],
+                ],
             ],
             ['testPHPUnitVersionOperatorLessThanEquals',
                 [
-                    'PHPUnit' => ['version' => '1.0', 'operator' => '<=']
-                ]
+                    'PHPUnit' => ['version' => '1.0', 'operator' => '<='],
+                ],
             ],
             ['testPHPUnitVersionOperatorGreaterThan',
                 [
-                    'PHPUnit' => ['version' => '99', 'operator' => '>']
-                ]
+                    'PHPUnit' => ['version' => '99', 'operator' => '>'],
+                ],
             ],
             ['testPHPUnitVersionOperatorGreaterThanEquals',
                 [
-                    'PHPUnit' => ['version' => '99', 'operator' => '>=']
-                ]
+                    'PHPUnit' => ['version' => '99', 'operator' => '>='],
+                ],
             ],
             ['testPHPUnitVersionOperatorEquals',
                 [
-                    'PHPUnit' => ['version' => '1.0', 'operator' => '=']
-                ]
+                    'PHPUnit' => ['version' => '1.0', 'operator' => '='],
+                ],
             ],
             ['testPHPUnitVersionOperatorDoubleEquals',
                 [
-                    'PHPUnit' => ['version' => '1.0', 'operator' => '==']
-                ]
+                    'PHPUnit' => ['version' => '1.0', 'operator' => '=='],
+                ],
             ],
             ['testPHPUnitVersionOperatorBangEquals',
                 [
-                    'PHPUnit' => ['version' => '99', 'operator' => '!=']
-                ]
+                    'PHPUnit' => ['version' => '99', 'operator' => '!='],
+                ],
             ],
             ['testPHPUnitVersionOperatorNotEquals',
                 [
-                    'PHPUnit' => ['version' => '99', 'operator' => '<>']
-                ]
+                    'PHPUnit' => ['version' => '99', 'operator' => '<>'],
+                ],
             ],
             ['testPHPUnitVersionOperatorNoSpace',
                 [
-                    'PHPUnit' => ['version' => '99', 'operator' => '>=']
-                ]
+                    'PHPUnit' => ['version' => '99', 'operator' => '>='],
+                ],
             ],
             ['testExtensionVersionOperatorLessThanEquals',
                 [
                     'extensions'         => ['testExtOne'],
-                    'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '<=']]
-                ]
+                    'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '<=']],
+                ],
             ],
             ['testExtensionVersionOperatorGreaterThan',
                 [
                     'extensions'         => ['testExtOne'],
-                    'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>']]
-                ]
+                    'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>']],
+                ],
             ],
             ['testExtensionVersionOperatorGreaterThanEquals',
                 [
                     'extensions'         => ['testExtOne'],
-                    'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']]
-                ]
+                    'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']],
+                ],
             ],
             ['testExtensionVersionOperatorEquals',
                 [
                     'extensions'         => ['testExtOne'],
-                    'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '=']]
-                ]
+                    'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '=']],
+                ],
             ],
             ['testExtensionVersionOperatorDoubleEquals',
                 [
                     'extensions'         => ['testExtOne'],
-                    'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '==']]
-                ]
+                    'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '==']],
+                ],
             ],
             ['testExtensionVersionOperatorBangEquals',
                 [
                     'extensions'         => ['testExtOne'],
-                    'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '!=']]
-                ]
+                    'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '!=']],
+                ],
             ],
             ['testExtensionVersionOperatorNotEquals',
                 [
                     'extensions'         => ['testExtOne'],
-                    'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '<>']]
-                ]
+                    'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '<>']],
+                ],
             ],
             ['testExtensionVersionOperatorNoSpace',
                 [
                     'extensions'         => ['testExtOne'],
-                    'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']]
-                ]
-            ]
+                    'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']],
+                ],
+            ],
         ];
     }
 
@@ -358,101 +358,101 @@ class TestTest extends TestCase
                 'testVersionConstraintTildeMajor',
                 [
                     'PHP' => [
-                        'constraint' => '~1.0'
+                        'constraint' => '~1.0',
                     ],
                     'PHPUnit' => [
-                        'constraint' => '~2.0'
-                    ]
-                ]
+                        'constraint' => '~2.0',
+                    ],
+                ],
             ],
             [
                 'testVersionConstraintCaretMajor',
                 [
                     'PHP' => [
-                        'constraint' => '^1.0'
+                        'constraint' => '^1.0',
                     ],
                     'PHPUnit' => [
-                        'constraint' => '^2.0'
-                    ]
-                ]
+                        'constraint' => '^2.0',
+                    ],
+                ],
             ],
             [
                 'testVersionConstraintTildeMinor',
                 [
                     'PHP' => [
-                        'constraint' => '~3.4.7'
+                        'constraint' => '~3.4.7',
                     ],
                     'PHPUnit' => [
-                        'constraint' => '~4.7.1'
-                    ]
-                ]
+                        'constraint' => '~4.7.1',
+                    ],
+                ],
             ],
             [
                 'testVersionConstraintCaretMinor',
                 [
                     'PHP' => [
-                        'constraint' => '^7.0.17'
+                        'constraint' => '^7.0.17',
                     ],
                     'PHPUnit' => [
-                        'constraint' => '^4.7.1'
-                    ]
-                ]
+                        'constraint' => '^4.7.1',
+                    ],
+                ],
             ],
             [
                 'testVersionConstraintCaretOr',
                 [
                     'PHP' => [
-                        'constraint' => '^5.6 || ^7.0'
+                        'constraint' => '^5.6 || ^7.0',
                     ],
                     'PHPUnit' => [
-                        'constraint' => '^5.0 || ^6.0'
-                    ]
-                ]
+                        'constraint' => '^5.0 || ^6.0',
+                    ],
+                ],
             ],
             [
                 'testVersionConstraintTildeOr',
                 [
                     'PHP' => [
-                        'constraint' => '~5.6.22 || ~7.0.17'
+                        'constraint' => '~5.6.22 || ~7.0.17',
                     ],
                     'PHPUnit' => [
-                        'constraint' => '^5.0.5 || ^6.0.6'
-                    ]
-                ]
+                        'constraint' => '^5.0.5 || ^6.0.6',
+                    ],
+                ],
             ],
             [
                 'testVersionConstraintTildeOrCaret',
                 [
                     'PHP' => [
-                        'constraint' => '~5.6.22 || ^7.0'
+                        'constraint' => '~5.6.22 || ^7.0',
                     ],
                     'PHPUnit' => [
-                        'constraint' => '~5.6.22 || ^7.0'
-                    ]
-                ]
+                        'constraint' => '~5.6.22 || ^7.0',
+                    ],
+                ],
             ],
             [
                 'testVersionConstraintCaretOrTilde',
                 [
                     'PHP' => [
-                        'constraint' => '^5.6 || ~7.0.17'
+                        'constraint' => '^5.6 || ~7.0.17',
                     ],
                     'PHPUnit' => [
-                        'constraint' => '^5.6 || ~7.0.17'
-                    ]
-                ]
+                        'constraint' => '^5.6 || ~7.0.17',
+                    ],
+                ],
             ],
             [
                 'testVersionConstraintRegexpIgnoresWhitespace',
                 [
                     'PHP' => [
-                        'constraint' => '~5.6.22 || ~7.0.17'
+                        'constraint' => '~5.6.22 || ~7.0.17',
                     ],
                     'PHPUnit' => [
-                        'constraint' => '~5.6.22 || ~7.0.17'
-                    ]
-                ]
-            ]
+                        'constraint' => '~5.6.22 || ~7.0.17',
+                    ],
+                ],
+            ],
         ];
     }
 
@@ -471,7 +471,7 @@ class TestTest extends TestCase
     {
         return [
             ['testVersionConstraintInvalidPhpConstraint'],
-            ['testVersionConstraintInvalidPhpUnitConstraint']
+            ['testVersionConstraintInvalidPhpUnitConstraint'],
         ];
     }
 
@@ -488,7 +488,7 @@ class TestTest extends TestCase
             'extensions' => [
                 'testExtClass',
                 'testExtMethod',
-            ]
+            ],
         ];
 
         $this->assertEquals(
@@ -555,12 +555,12 @@ class TestTest extends TestCase
             ['testExtensionVersionOperatorNoSpace', ['Extension testExtOne >= 99 is required.']],
             ['testVersionConstraintTildeMajor', [
                 'PHP version does not match the required constraint ~1.0.',
-                'PHPUnit version does not match the required constraint ~2.0.'
+                'PHPUnit version does not match the required constraint ~2.0.',
             ]],
             ['testVersionConstraintCaretMajor', [
                 'PHP version does not match the required constraint ^1.0.',
-                'PHPUnit version does not match the required constraint ^2.0.'
-            ]]
+                'PHPUnit version does not match the required constraint ^2.0.',
+            ]],
         ];
     }
 
@@ -780,7 +780,7 @@ class TestTest extends TestCase
     {
         if (\strpos($test, 'Namespace') === 0) {
             $expected = [
-                TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines
+                TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines,
             ];
         } elseif ($test === 'CoverageCoversOverridesCoversNothingTest') {
             $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
@@ -790,7 +790,7 @@ class TestTest extends TestCase
             $expected = false;
         } elseif ($test === 'CoverageFunctionTest') {
             $expected = [
-                TEST_FILES_PATH . 'CoveredFunction.php' => $lines
+                TEST_FILES_PATH . 'CoveredFunction.php' => $lines,
             ];
         } else {
             $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
@@ -904,7 +904,7 @@ class TestTest extends TestCase
     {
         $this->assertEquals(
             [
-                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => \range(12, 15)
+                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => \range(12, 15),
             ],
             Test::getLinesToBeCovered(
                 \CoverageNamespacedFunctionTest::class,
@@ -918,103 +918,103 @@ class TestTest extends TestCase
         return [
             [
                 'CoverageNoneTest',
-                []
+                [],
             ],
             [
                 'CoverageClassExtendedTest',
-                \array_merge(\range(27, 44), \range(10, 25))
+                \array_merge(\range(27, 44), \range(10, 25)),
             ],
             [
                 'CoverageClassTest',
-                \range(27, 44)
+                \range(27, 44),
             ],
             [
                 'CoverageMethodTest',
-                \range(29, 33)
+                \range(29, 33),
             ],
             [
                 'CoverageMethodOneLineAnnotationTest',
-                \range(29, 33)
+                \range(29, 33),
             ],
             [
                 'CoverageNotPrivateTest',
-                \array_merge(\range(29, 33), \range(35, 39))
+                \array_merge(\range(29, 33), \range(35, 39)),
             ],
             [
                 'CoverageNotProtectedTest',
-                \array_merge(\range(29, 33), \range(41, 43))
+                \array_merge(\range(29, 33), \range(41, 43)),
             ],
             [
                 'CoverageNotPublicTest',
-                \array_merge(\range(35, 39), \range(41, 43))
+                \array_merge(\range(35, 39), \range(41, 43)),
             ],
             [
                 'CoveragePrivateTest',
-                \range(41, 43)
+                \range(41, 43),
             ],
             [
                 'CoverageProtectedTest',
-                \range(35, 39)
+                \range(35, 39),
             ],
             [
                 'CoveragePublicTest',
-                \range(29, 33)
+                \range(29, 33),
             ],
             [
                 'CoverageFunctionTest',
-                \range(10, 12)
+                \range(10, 12),
             ],
             [
                 'NamespaceCoverageClassExtendedTest',
-                \array_merge(\range(29, 46), \range(12, 27))
+                \array_merge(\range(29, 46), \range(12, 27)),
             ],
             [
                 'NamespaceCoverageClassTest',
-                \range(29, 46)
+                \range(29, 46),
             ],
             [
                 'NamespaceCoverageMethodTest',
-                \range(31, 35)
+                \range(31, 35),
             ],
             [
                 'NamespaceCoverageNotPrivateTest',
-                \array_merge(\range(31, 35), \range(37, 41))
+                \array_merge(\range(31, 35), \range(37, 41)),
             ],
             [
                 'NamespaceCoverageNotProtectedTest',
-                \array_merge(\range(31, 35), \range(43, 45))
+                \array_merge(\range(31, 35), \range(43, 45)),
             ],
             [
                 'NamespaceCoverageNotPublicTest',
-                \array_merge(\range(37, 41), \range(43, 45))
+                \array_merge(\range(37, 41), \range(43, 45)),
             ],
             [
                 'NamespaceCoveragePrivateTest',
-                \range(43, 45)
+                \range(43, 45),
             ],
             [
                 'NamespaceCoverageProtectedTest',
-                \range(37, 41)
+                \range(37, 41),
             ],
             [
                 'NamespaceCoveragePublicTest',
-                \range(31, 35)
+                \range(31, 35),
             ],
             [
                 'NamespaceCoverageCoversClassTest',
-                \array_merge(\range(43, 45), \range(37, 41), \range(31, 35), \range(24, 26), \range(19, 22), \range(14, 17))
+                \array_merge(\range(43, 45), \range(37, 41), \range(31, 35), \range(24, 26), \range(19, 22), \range(14, 17)),
             ],
             [
                 'NamespaceCoverageCoversClassPublicTest',
-                \range(31, 35)
+                \range(31, 35),
             ],
             [
                 'CoverageNothingTest',
-                false
+                false,
             ],
             [
                 'CoverageCoversOverridesCoversNothingTest',
-                \range(29, 33)
+                \range(29, 33),
             ],
         ];
     }
@@ -1033,7 +1033,7 @@ class TestTest extends TestCase
     {
         $this->assertSame(
             [
-                TEST_FILES_PATH . '3194.php' => \array_merge(\range(21, 29), \range(13, 19))
+                TEST_FILES_PATH . '3194.php' => \array_merge(\range(21, 29), \range(13, 19)),
             ],
             Test::getLinesToBeCovered(
                 \Test3194::class,

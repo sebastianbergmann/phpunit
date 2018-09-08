@@ -67,7 +67,7 @@ class ResultPrinter extends Printer implements TestListener
         'bg-blue'    => 44,
         'bg-magenta' => 45,
         'bg-cyan'    => 46,
-        'bg-white'   => 47
+        'bg-white'   => 47,
     ];
 
     /**

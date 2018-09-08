@@ -62,13 +62,13 @@ class ResultCacheExtensionTest extends TestCase
         return [
             'ClassName::testMethod' => [
                 TestCaseTest::class . '::testSomething',
-                'testSomething'],
+                'testSomething', ],
             'ClassName::testMethod and data set number and vardump' => [
                 TestCaseTest::class . '::testMethod with data set #123 (\'a\', "A", 0, false)',
-                'testMethod with data set #123'],
+                'testMethod with data set #123', ],
             'ClassName::testMethod and data set name and vardump' => [
                 TestCaseTest::class . '::testMethod with data set "data name" (\'a\', "A\", 0, false)',
-                'testMethod with data set "data name"'],
+                'testMethod with data set "data name"', ],
         ];
     }
 

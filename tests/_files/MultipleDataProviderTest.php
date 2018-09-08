@@ -16,7 +16,7 @@ class MultipleDataProviderTest extends TestCase
         return [
             ['ok', null, null],
             ['ok', null, null],
-            ['ok', null, null]
+            ['ok', null, null],
         ];
     }
 
@@ -25,7 +25,7 @@ class MultipleDataProviderTest extends TestCase
         return [
             [null, 'ok', null],
             [null, 'ok', null],
-            [null, 'ok', null]
+            [null, 'ok', null],
         ];
     }
 
@@ -34,7 +34,7 @@ class MultipleDataProviderTest extends TestCase
         return [
             [null, null, 'ok'],
             [null, null, 'ok'],
-            [null, null, 'ok']
+            [null, null, 'ok'],
         ];
     }
 
@@ -62,7 +62,7 @@ class MultipleDataProviderTest extends TestCase
             [
                 [null, null, 'ok'],
                 [null, null, 'ok'],
-                [null, null, 'ok']
+                [null, null, 'ok'],
             ]
         );
 

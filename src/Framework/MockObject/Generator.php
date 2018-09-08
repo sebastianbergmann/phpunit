@@ -313,7 +313,7 @@ class Generator
             [
                 'prologue'   => 'abstract ',
                 'class_name' => $className['className'],
-                'trait_name' => $traitName
+                'trait_name' => $traitName,
             ]
         );
 
@@ -371,7 +371,7 @@ class Generator
             [
                 'prologue'   => '',
                 'class_name' => $className['className'],
-                'trait_name' => $traitName
+                'trait_name' => $traitName,
             ]
         );
 
@@ -480,7 +480,7 @@ class Generator
                 $methodTemplate->setVar(
                     [
                         'method_name' => $name,
-                        'arguments'   => \implode(', ', $args)
+                        'arguments'   => \implode(', ', $args),
                     ]
                 );
 
@@ -511,7 +511,7 @@ class Generator
                 'class_name' => $className,
                 'wsdl'       => $wsdlFile,
                 'options'    => $optionsBuffer,
-                'methods'    => $methodsBuffer
+                'methods'    => $methodsBuffer,
             ]
         );
 
@@ -837,13 +837,13 @@ class Generator
                         },
                         $configurable
                     )
-                ) . ']'
+                ) . ']',
             ]
         );
 
         return [
             'code'          => $classTemplate->render(),
-            'mockClassName' => $mockClassName['className']
+            'mockClassName' => $mockClassName['className'],
         ];
     }
 
@@ -886,7 +886,7 @@ class Generator
             'className'         => $className,
             'originalClassName' => $type,
             'fullClassName'     => $fullClassName,
-            'namespaceName'     => $namespaceName
+            'namespaceName'     => $namespaceName,
         ];
     }
 
@@ -1077,7 +1077,7 @@ class Generator
                 'modifier'        => $modifier,
                 'reference'       => $reference,
                 'clone_arguments' => $cloneArguments ? 'true' : 'false',
-                'deprecation'     => $deprecation
+                'deprecation'     => $deprecation,
             ]
         );
 
