@@ -24,7 +24,7 @@ class TestSuiteSorterTest extends TestCase
 
     private const RESOLVE_DEPENDENCIES = true;
 
-    public function testThrowsExceptionWhenUsingInvalidOrderOption()
+    public function testThrowsExceptionWhenUsingInvalidOrderOption(): void
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
@@ -35,7 +35,7 @@ class TestSuiteSorterTest extends TestCase
         $sorter->reorderTestsInSuite($suite, -1, false, TestSuiteSorter::ORDER_DEFAULT);
     }
 
-    public function testThrowsExceptionWhenUsingInvalidOrderDefectsOption()
+    public function testThrowsExceptionWhenUsingInvalidOrderDefectsOption(): void
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
@@ -49,7 +49,7 @@ class TestSuiteSorterTest extends TestCase
     /**
      * @dataProvider suiteSorterOptionPermutationsProvider
      */
-    public function testShouldNotAffectEmptyTestSuite(int $order, bool $resolveDependencies, int $orderDefects)
+    public function testShouldNotAffectEmptyTestSuite(int $order, bool $resolveDependencies, int $orderDefects): void
     {
         $sorter = new TestSuiteSorter;
         $suite  = new TestSuite;
@@ -64,7 +64,7 @@ class TestSuiteSorterTest extends TestCase
     /**
      * @dataProvider commonSorterOptionsProvider
      */
-    public function testBasicExecutionOrderOptions(int $order, bool $resolveDependencies, array $expected)
+    public function testBasicExecutionOrderOptions(int $order, bool $resolveDependencies, array $expected): void
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
@@ -75,7 +75,7 @@ class TestSuiteSorterTest extends TestCase
         $this->assertSame($expected, $this->getTestExecutionOrder($suite));
     }
 
-    public function testCanSetRandomizationWithASeed()
+    public function testCanSetRandomizationWithASeed(): void
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
@@ -87,7 +87,7 @@ class TestSuiteSorterTest extends TestCase
         $this->assertSame(['testTwo', 'testFour', 'testFive', 'testThree', 'testOne'], $this->getTestExecutionOrder($suite));
     }
 
-    public function testCanSetRandomizationWithASeedAndResolveDependencies()
+    public function testCanSetRandomizationWithASeedAndResolveDependencies(): void
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
@@ -102,7 +102,7 @@ class TestSuiteSorterTest extends TestCase
     /**
      * @dataProvider defectsSorterOptionsProvider
      */
-    public function testSuiteSorterDefectsOptions(int $order, bool $resolveDependencies, array $runState, array $expected)
+    public function testSuiteSorterDefectsOptions(int $order, bool $resolveDependencies, array $runState, array $expected): void
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
@@ -303,7 +303,7 @@ class TestSuiteSorterTest extends TestCase
     /**
      * @see https://github.com/lstrojny/phpunit-clever-and-smart/issues/38
      */
-    public function testCanHandleSuiteWithEmptyTestCase()
+    public function testCanHandleSuiteWithEmptyTestCase(): void
     {
         $suite = new TestSuite;
         $suite->addTestSuite(\EmptyTestCaseTest::class);

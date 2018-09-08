@@ -14,12 +14,12 @@ use PHPUnit\Framework\TestSuite;
 
 class NameFilterIteratorTest extends TestCase
 {
-    public function testCaseSensitiveMatch()
+    public function testCaseSensitiveMatch(): void
     {
         $this->assertTrue($this->createFilter('BankAccountTest')->accept());
     }
 
-    public function testCaseInsensitiveMatch()
+    public function testCaseInsensitiveMatch(): void
     {
         $this->assertTrue($this->createFilter('bankaccounttest')->accept());
     }

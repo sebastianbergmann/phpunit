@@ -73,7 +73,7 @@ class InvocationMockerTest extends TestCase
         $this->assertSame('bar', $mock->foo());
     }
 
-    public function testWillFailWhenTryingToPerformExpectationUnconfigurableMethod()
+    public function testWillFailWhenTryingToPerformExpectationUnconfigurableMethod(): void
     {
         /** @var MatcherCollection|\PHPUnit\Framework\MockObject\MockObject $matcherCollection */
         $matcherCollection = $this->createMock(MatcherCollection::class);

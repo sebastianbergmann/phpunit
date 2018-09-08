@@ -945,7 +945,7 @@ class MockObjectTest extends TestCase
      * @ticket   2573
      * @requires extension soap
      */
-    public function testCreateMockOfWsdlFileWithSpecialChars()
+    public function testCreateMockOfWsdlFileWithSpecialChars(): void
     {
         $mock = $this->getMockFromWsdl(__DIR__ . '/_fixture/Go ogle-Sea.rch.wsdl');
 
