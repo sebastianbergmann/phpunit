@@ -2,7 +2,9 @@
 Test XML config enforceTimeLimit, defaultTimeLimit without php-invoker, with pcntl
 --SKIPIF--
 <?php
-if (\class_exists(Invoker::class)) {
+require __DIR__ . '/../../../bootstrap.php';
+
+if (\class_exists(SebastianBergmann\Invoker\Invoker::class)) {
     print "Skip: package phpunit/php-invoker is installed" . PHP_EOL;
 }
 
