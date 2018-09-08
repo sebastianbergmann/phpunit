@@ -4,7 +4,9 @@ Test CLI flags --enforce-time-limit --default-time-limit without php-invoker, wi
 https://github.com/sebastianbergmann/phpunit/issues/2085
 --SKIPIF--
 <?php
-if (\class_exists(Invoker::class)) {
+require __DIR__ . '/../../../bootstrap.php';
+
+if (\class_exists(SebastianBergmann\Invoker\Invoker::class)) {
     print "Skip: package phpunit/php-invoker is installed" . PHP_EOL;
 }
 
@@ -16,7 +18,7 @@ if (!\extension_loaded('pcntl') || \strpos(\ini_get('disable_functions'), 'pcntl
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--enforce-time-limit';
 $_SERVER['argv'][3] = '--default-time-limit=10';
-$_SERVER['argv'][4] = __DIR__ . '/Issue2085Test.php';
+$_SERVER['argv'][4] = __DIR__ . '/2085/Issue2085Test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
