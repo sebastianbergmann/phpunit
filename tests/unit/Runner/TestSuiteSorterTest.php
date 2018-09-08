@@ -31,7 +31,7 @@ class TestSuiteSorterTest extends TestCase
         $sorter = new TestSuiteSorter();
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('$order must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, or TestSuiteSorter::ORDER_RANDOMIZED');
+        $this->expectExceptionMessage('$order must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, or TestSuiteSorter::ORDER_RANDOMIZED, or TestSuiteSorter::ORDER_DURATION');
         $sorter->reorderTestsInSuite($suite, -1, false, TestSuiteSorter::ORDER_DEFAULT);
     }
 
@@ -97,6 +97,154 @@ class TestSuiteSorterTest extends TestCase
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, true, TestSuiteSorter::ORDER_DEFAULT);
 
         $this->assertSame(['testTwo', 'testFive', 'testOne', 'testThree', 'testFour'], $this->getTestExecutionOrder($suite));
+    }
+
+    /**
+     * @dataProvider orderDurationWithoutCacheProvider
+     */
+    public function testOrderDurationWithoutCache(bool $resolveDependencies, array $expected): void
+    {
+        $suite = new TestSuite;
+
+        $suite->addTestSuite(\MultiDependencyTest::class);
+
+        $sorter = new TestSuiteSorter();
+
+        $sorter->reorderTestsInSuite(
+            $suite,
+            TestSuiteSorter::ORDER_DURATION,
+            $resolveDependencies,
+            TestSuiteSorter::ORDER_DEFAULT
+        );
+
+        $this->assertSame($expected, $this->getTestExecutionOrder($suite));
+    }
+
+    public function orderDurationWithoutCacheProvider(): array
+    {
+        return [
+            'dependency-ignore' => [
+                self::IGNORE_DEPENDENCIES,
+                [
+                    'testOne',
+                    'testTwo',
+                    'testThree',
+                    'testFour',
+                    'testFive',
+                ],
+            ],
+            'dependency-resolve' => [
+                self::RESOLVE_DEPENDENCIES,
+                [
+                    'testOne',
+                    'testTwo',
+                    'testThree',
+                    'testFour',
+                    'testFive',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider orderDurationWithCacheProvider
+     */
+    public function testOrderDurationWithCache(bool $resolveDependencies, array $testTimes, array $expected): void
+    {
+        $suite = new TestSuite;
+
+        $suite->addTestSuite(\MultiDependencyTest::class);
+
+        $cache = new TestResultCache();
+
+        foreach ($testTimes as $testName => $time) {
+            $cache->setTime($testName, $time);
+        }
+
+        $sorter = new TestSuiteSorter($cache);
+
+        $sorter->reorderTestsInSuite(
+            $suite,
+            TestSuiteSorter::ORDER_DURATION,
+            $resolveDependencies,
+            TestSuiteSorter::ORDER_DEFAULT
+        );
+
+        $this->assertSame($expected, $this->getTestExecutionOrder($suite));
+    }
+
+    public function orderDurationWithCacheProvider(): array
+    {
+        return [
+            'duration-same-dependency-ignore' => [
+                self::IGNORE_DEPENDENCIES,
+                [
+                    'testOne'   => 1,
+                    'testTwo'   => 1,
+                    'testThree' => 1,
+                    'testFour'  => 1,
+                    'testFive'  => 1,
+                ],
+                [
+                    'testOne',
+                    'testTwo',
+                    'testThree',
+                    'testFour',
+                    'testFive',
+                ],
+            ],
+            'duration-same-dependency-resolve' => [
+                self::RESOLVE_DEPENDENCIES,
+                [
+                    'testOne'   => 1,
+                    'testTwo'   => 1,
+                    'testThree' => 1,
+                    'testFour'  => 1,
+                    'testFive'  => 1,
+                ],
+                [
+                    'testOne',
+                    'testTwo',
+                    'testThree',
+                    'testFour',
+                    'testFive',
+                ],
+            ],
+            'duration-different-dependency-ignore' => [
+                self::IGNORE_DEPENDENCIES,
+                [
+                    'testOne'   => 5,
+                    'testTwo'   => 3,
+                    'testThree' => 4,
+                    'testFour'  => 1,
+                    'testFive'  => 2,
+                ],
+                [
+                    'testFour',
+                    'testFive',
+                    'testTwo',
+                    'testThree',
+                    'testOne',
+                ],
+            ],
+            'duration-different-dependency-resolve' => [
+                self::RESOLVE_DEPENDENCIES,
+                [
+                    'testOne'   => 5,
+                    'testTwo'   => 3,
+                    'testThree' => 4,
+                    'testFour'  => 1,
+                    'testFive'  => 2,
+                ],
+                [
+                    'testFive',
+                    'testTwo',
+                    'testOne',
+                    'testThree',
+                    'testFour',
+                ],
+            ],
+        ];
     }
 
     /**
