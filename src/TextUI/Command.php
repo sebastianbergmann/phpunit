@@ -141,6 +141,7 @@ class Command
         'version'                   => null,
         'whitelist='                => null,
         'dump-xdebug-filter='       => null,
+        'prepend-file='             => null,
     ];
 
     /**

@@ -48,6 +48,14 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
     die(1);
 }
 
+$options = getopt('', array('prepend-file:'));
+
+if (isset($options['prepend-file'])) {
+    require $options['prepend-file'];
+}
+
+unset($options);
+
 require PHPUNIT_COMPOSER_INSTALL;
 
 PHPUnit\TextUI\Command::main();

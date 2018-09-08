@@ -21,6 +21,14 @@ if (__FILE__ == realpath($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
     $execute = false;
 }
 
+$options = getopt('', array('prepend-file:'));
+
+if (isset($options['prepend-file'])) {
+    require $options['prepend-file'];
+}
+
+unset($options);
+
 define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', __FILE__));
 define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
