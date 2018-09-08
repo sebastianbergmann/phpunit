@@ -5,6 +5,9 @@
   <filter>
     <whitelist>
       <file>AbstractTest.php</file>
+      <exclude>
+        <file>Foo.php</file>
+      </exclude>
     </whitelist>
   </filter>
 

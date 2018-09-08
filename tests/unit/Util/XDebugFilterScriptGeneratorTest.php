@@ -15,61 +15,32 @@ class XDebugFilterScriptGeneratorTest extends TestCase
 {
     /**
      * @covers \PHPUnit\Util\XDebugFilterScriptGenerator::generate
-     *
-     * @dataProvider scriptGeneratorTestDataProvider
      */
-    public function testReturnsExpectedScript(array $filterConfiguration, array $resolvedWhitelist): void
+    public function testReturnsExpectedScript(): void
     {
-        $writer = new XDebugFilterScriptGenerator();
-        $actual = $writer->generate($filterConfiguration, $resolvedWhitelist);
-
-        $this->assertStringEqualsFile(__DIR__ . '/_files/expectedXDebugFilterScript.txt', $actual);
-    }
-
-    public function scriptGeneratorTestDataProvider(): array
-    {
-        return [
-            [
-                [
-                    'include' => [
-                        'directory' => [
-                            [
-                                'path'   => 'src/somePath',
-                                'suffix' => '.php',
-                                'prefix' => '',
-                            ],
-                        ],
-                        'file' => [
-                            'src/foo.php',
-                            'src/bar.php',
-                        ],
-                    ],
-                    'exclude' => [
-                        'directory' => [],
-                        'file'      => [],
+        $filterConfiguration = [
+            'include' => [
+                'directory' => [
+                    [
+                        'path'   => 'src/somePath',
+                        'suffix' => '.php',
+                        'prefix' => '',
                     ],
                 ],
-                [],
-                __DIR__ . '/_files/expectedXDebugFilterScript.php',
-            ],
-            [
-                [
-                    'include' => [
-                        'directory' => ['src/'],
-                        'file'      => ['src/foo.php'],
-                    ],
-                    'exclude' => [
-                        'directory' => [],
-                        'file'      => ['src/baz.php'],
-                    ],
-                ],
-                [
-                    'src/somePath',
+                'file' => [
                     'src/foo.php',
                     'src/bar.php',
                 ],
-                __DIR__ . '/_files/expectedXDebugFilterScript.php',
+            ],
+            'exclude' => [
+                'directory' => [],
+                'file'      => [],
             ],
         ];
+
+        $writer = new XDebugFilterScriptGenerator();
+        $actual = $writer->generate($filterConfiguration);
+
+        $this->assertStringEqualsFile(__DIR__ . '/_files/expectedXDebugFilterScript.txt', $actual);
     }
 }
