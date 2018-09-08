@@ -210,4 +210,44 @@ class GeneratorTest extends TestCase
         $this->assertInstanceOf(Exception::class, $stub);
         $this->assertInstanceOf(MockObject::class, $stub);
     }
+
+    public function testVariadicArgumentsArePassedToOriginalMethod()
+    {
+        /** @var ClassWithVariadicArgumentMethod|MockObject $mock */
+        $mock = $this->generator->getMock(
+            ClassWithVariadicArgumentMethod::class,
+            [],
+            [],
+            '',
+            true,
+            false,
+            true,
+            false,
+            true
+        );
+
+        $arguments = [1, 'foo', false];
+        $this->assertSame($arguments, $mock->foo(...$arguments));
+    }
+
+    public function testVariadicArgumentsArePassedToMockedMethod()
+    {
+        /** @var ClassWithVariadicArgumentMethod|MockObject $mock */
+        $mock = $this->generator->getMock(
+            ClassWithVariadicArgumentMethod::class,
+            [],
+            [],
+            '',
+            true,
+            false,
+            true,
+            false,
+            false
+        );
+
+        $arguments = [1, 'foo', false];
+        $mock->expects($this->once())
+            ->method('foo')
+            ->with(...$arguments);
+    }
 }
