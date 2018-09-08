@@ -13,14 +13,14 @@ use PHPUnit\Framework\TestCase;
 
 class TestRunnerTest extends TestCase
 {
-    public function testTestIsRunnable()
+    public function testTestIsRunnable(): void
     {
         $runner = new TestRunner();
         $runner->setPrinter($this->getResultPrinterMock());
         $runner->doRun(new \Success(), ['filter' => 'foo'], false);
     }
 
-    public function testSuiteIsRunnable()
+    public function testSuiteIsRunnable(): void
     {
         $runner = new TestRunner();
         $runner->setPrinter($this->getResultPrinterMock());

@@ -18,7 +18,7 @@ class XDebugFilterScriptGeneratorTest extends TestCase
      *
      * @dataProvider scriptGeneratorTestDataProvider
      */
-    public function testReturnsExpectedScript(array $filterConfiguration, array $resolvedWhitelist)
+    public function testReturnsExpectedScript(array $filterConfiguration, array $resolvedWhitelist): void
     {
         $writer = new XDebugFilterScriptGenerator();
         $actual = $writer->generate($filterConfiguration, $resolvedWhitelist);
