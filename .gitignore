@@ -6,6 +6,7 @@
 /build/documentation
 /build/logfiles
 /build/phar
+/build/phar-scoped
 /build/phpdox
 /build/*.phar
 /build/*.phar.asc
