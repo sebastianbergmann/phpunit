@@ -26,10 +26,9 @@
         <property name="prepare.done" value="true"/>
     </target>
 
-    <target name="validate-composer-json" unless="validate-composer-json.done" description="Validate composer.json">
+    <target name="validate-composer-json" depends="clean" unless="validate-composer-json.done" description="Validate composer.json">
         <exec executable="${basedir}/build/tools/composer" failonerror="true" taskname="composer">
             <arg value="validate"/>
-            <arg value="--no-check-lock"/>
             <arg value="--strict"/>
             <arg value="${basedir}/composer.json"/>
         </exec>
