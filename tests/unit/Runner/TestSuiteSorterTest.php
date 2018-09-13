@@ -282,25 +282,29 @@ class TestSuiteSorterTest extends TestCase
             'default' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::IGNORE_DEPENDENCIES,
-                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive'], ],
+                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive'],
+            ],
 
             // Activating dependency resolution should have no effect under normal circumstances
             'resolve default' => [
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::RESOLVE_DEPENDENCIES,
-                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive']],
+                ['testOne', 'testTwo', 'testThree', 'testFour', 'testFive'],
+            ],
 
             // Reversing without checks should give a simple reverse order
             'reverse' => [
                 TestSuiteSorter::ORDER_REVERSED,
                 self::IGNORE_DEPENDENCIES,
-                ['testFive', 'testFour', 'testThree', 'testTwo', 'testOne'], ],
+                ['testFive', 'testFour', 'testThree', 'testTwo', 'testOne'],
+            ],
 
             // Reversing with resolution still allows testFive to move to front, testTwo before testOne
             'resolve reverse' => [
                 TestSuiteSorter::ORDER_REVERSED,
                 self::RESOLVE_DEPENDENCIES,
-                ['testFive', 'testTwo', 'testOne', 'testThree', 'testFour'], ],
+                ['testFive', 'testTwo', 'testOne', 'testThree', 'testFour'],
+            ],
         ];
     }
 
