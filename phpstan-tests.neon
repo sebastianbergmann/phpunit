@@ -1,3 +1,6 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+
 parameters:
     ignoreErrors:
         # https://github.com/phpstan/phpstan/issues/1185
@@ -23,24 +26,21 @@ parameters:
         - '#Function does_not_exist not found#'
 
         # https://github.com/sebastianbergmann/phpunit/issues/3129
-        - '#Access to an undefined property PHPUnit\\Framework\\MockObject\\MockObject::\$constructorArgs#'
-        - '#Access to an undefined property PHPUnit\\Framework\\MockObject\\MockObject::\$constructorCalled#'
-        - '#Access to an undefined property PHPUnit\\Framework\\MockObject\\MockObject::\$cloned#'
-        - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::foo()#'
+        - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject&stdClass::foo()#'
+        - '#Call to an undefined method Foo&PHPUnit\\Framework\\MockObject\\MockObject::bar()#'
         - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::bar()#'
         - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::doSomething()#'
-        - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::wrong()#'
-        - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::right()#'
-        - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::staticMethod()#'
+        - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject&SomeClass::wrong()#'
+        - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject&SomeClass::right()#'
         - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::returnAnything()#'
         - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::mockableMethod()#'
         - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::anotherMockableMethod()#'
         - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::someMethod()#'
-        - '#Call to an undefined method PHPUnit\\Framework\\MockObject\\MockObject::callback()#'
+        - '#Method AnInterface::doSomething\(\) invoked with 2 parameters, 0 required#'
+        - '#Method AnInterface::doSomething\(\) invoked with 3 parameters, 0 required#'
         - '#Call to an undefined method object::ohHai#'
         - '#Call to static method bar\(\) on an unknown class Legacy#'
         - '#Class ACustomClassName not found#'
-        - '#Function functionCallback not found while trying to analyse it - autoloading is probably not configured properly#'
         - '#Result of method ClassWithAllPossibleReturnTypes::methodWithVoidReturnTypeDeclaration\(\) \(void\) is used#'
 
     excludes_analyse:

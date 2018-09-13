@@ -56,6 +56,7 @@ jobs:
       env: PHPStan
       before_install:
         - travis_retry ./build/tools/composer require --no-update phpunit/php-invoker:^2.0
+        - travis_retry ./build/tools/composer require --no-update phpstan/phpstan-phpunit:0.9.4
       install: travis_retry ./build/tools/composer update --prefer-dist --prefer-stable
       script:
         - ./build/tools/phpstan analyse --level=0 -c phpstan.neon src
