@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.3 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.3.6] - 2018-MM-DD
+
+### Fixed
+
+* Fixed [#3310](https://github.com/sebastianbergmann/phpunit/issues/3310): Inconsistent `@throws` annotations in `Assert/Functions.php`
+
 ## [7.3.5] - 2018-09-08
 
 ### Fixed
@@ -66,6 +72,7 @@ All notable changes of the PHPUnit 7.3 release series are documented in this fil
 * Fixed [#3222](https://github.com/sebastianbergmann/phpunit/pull/3222): Priority of `@covers` and `@coversNothing` is wrong
 * Fixed [#3225](https://github.com/sebastianbergmann/phpunit/issues/3225): `coverage-php` missing from `phpunit.xsd`
 
+[7.3.6]: https://github.com/sebastianbergmann/phpunit/compare/7.3.5...7.3.6
 [7.3.5]: https://github.com/sebastianbergmann/phpunit/compare/7.3.4...7.3.5
 [7.3.4]: https://github.com/sebastianbergmann/phpunit/compare/7.3.3...7.3.4
 [7.3.3]: https://github.com/sebastianbergmann/phpunit/compare/7.3.2...7.3.3
