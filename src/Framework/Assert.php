@@ -414,6 +414,7 @@ abstract class Assert
      * Asserts the number of elements of an array, Countable or Traversable
      * that is stored in an attribute.
      *
+     * @param integer       $expectedCount 
      * @param object|string $haystackClassOrObject
      *
      * @throws ExpectationFailedException
@@ -431,6 +432,7 @@ abstract class Assert
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
+     * @param integer            $expectedCount      
      * @param Countable|iterable $haystack
      *
      * @throws ExpectationFailedException
@@ -453,6 +455,7 @@ abstract class Assert
      * Asserts the number of elements of an array, Countable or Traversable
      * that is stored in an attribute.
      *
+     * @param integer       $expectedCount      
      * @param object|string $haystackClassOrObject
      *
      * @throws ExpectationFailedException
