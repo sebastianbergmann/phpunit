@@ -1358,12 +1358,12 @@ function logicalXor(): LogicalXor
 
 function anything(): IsAnything
 {
-    return Assert::anything(...\func_get_args());
+    return Assert::anything();
 }
 
 function isTrue(): IsTrue
 {
-    return Assert::isTrue(...\func_get_args());
+    return Assert::isTrue();
 }
 
 function callback(callable $callback): Callback
@@ -1373,32 +1373,32 @@ function callback(callable $callback): Callback
 
 function isFalse(): IsFalse
 {
-    return Assert::isFalse(...\func_get_args());
+    return Assert::isFalse();
 }
 
 function isJson(): IsJson
 {
-    return Assert::isJson(...\func_get_args());
+    return Assert::isJson();
 }
 
 function isNull(): IsNull
 {
-    return Assert::isNull(...\func_get_args());
+    return Assert::isNull();
 }
 
 function isFinite(): IsFinite
 {
-    return Assert::isFinite(...\func_get_args());
+    return Assert::isFinite();
 }
 
 function isInfinite(): IsInfinite
 {
-    return Assert::isInfinite(...\func_get_args());
+    return Assert::isInfinite();
 }
 
 function isNan(): IsNan
 {
-    return Assert::isNan(...\func_get_args());
+    return Assert::isNan();
 }
 
 function attribute(Constraint $constraint, string $attributeName): Attribute
@@ -1438,27 +1438,27 @@ function attributeEqualTo(string $attributeName, $value, float $delta = 0.0, int
 
 function isEmpty(): IsEmpty
 {
-    return Assert::isEmpty(...\func_get_args());
+    return Assert::isEmpty();
 }
 
 function isWritable(): IsWritable
 {
-    return Assert::isWritable(...\func_get_args());
+    return Assert::isWritable();
 }
 
 function isReadable(): IsReadable
 {
-    return Assert::isReadable(...\func_get_args());
+    return Assert::isReadable();
 }
 
 function directoryExists(): DirectoryExists
 {
-    return Assert::directoryExists(...\func_get_args());
+    return Assert::directoryExists();
 }
 
 function fileExists(): FileExists
 {
-    return Assert::fileExists(...\func_get_args());
+    return Assert::fileExists();
 }
 
 function greaterThan($value): GreaterThan
