@@ -41,7 +41,7 @@ use PHPUnit\Util\Printer;
 use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
-use PHPUnit\Util\XDebugFilterScriptGenerator;
+use PHPUnit\Util\XdebugFilterScriptGenerator;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -543,7 +543,7 @@ class TestRunner extends BaseTestRunner
             }
 
             if (isset($arguments['xdebugFilterFile'], $filterConfiguration)) {
-                $filterScriptGenerator = new XDebugFilterScriptGenerator();
+                $filterScriptGenerator = new XdebugFilterScriptGenerator;
                 $script                = $filterScriptGenerator->generate($filterConfiguration['whitelist']);
                 \file_put_contents($arguments['xdebugFilterFile'], $script);
 

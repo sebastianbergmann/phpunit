@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class XDebugFilterScriptGeneratorTest extends TestCase
 {
     /**
-     * @covers \PHPUnit\Util\XDebugFilterScriptGenerator::generate
+     * @covers \PHPUnit\Util\XdebugFilterScriptGenerator::generate
      */
     public function testReturnsExpectedScript(): void
     {
@@ -38,7 +38,7 @@ class XDebugFilterScriptGeneratorTest extends TestCase
             ],
         ];
 
-        $writer = new XDebugFilterScriptGenerator();
+        $writer = new XdebugFilterScriptGenerator;
         $actual = $writer->generate($filterConfiguration);
 
         $this->assertStringEqualsFile(__DIR__ . '/_files/expectedXDebugFilterScript.txt', $actual);

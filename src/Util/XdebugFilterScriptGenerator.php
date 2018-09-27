@@ -9,15 +9,22 @@
  */
 namespace PHPUnit\Util;
 
-class XDebugFilterScriptGenerator
+final class XdebugFilterScriptGenerator
 {
     public function generate(array $filterData): string
     {
         $items = $this->getWhitelistItems($filterData);
 
-        $files = \array_map(function ($item) {
-            return \sprintf("        '%s'", $item);
-        }, $items);
+        $files = \array_map(
+            function ($item) {
+                return \sprintf(
+                    "        '%s'",
+                    $item
+                );
+            },
+            $items
+        );
+
         $files = \implode(",\n", $files);
 
         return <<<EOF
