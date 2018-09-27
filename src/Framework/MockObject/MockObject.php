@@ -36,7 +36,7 @@ interface PHPUnit_Framework_MockObject_MockObject /*extends Verifiable*/
      *
      * @throws ExpectationFailedException
      */
-    public function __phpunit_verify();
+    public function __phpunit_verify(bool $unsetInvocationMocker = true);
 
     /**
      * @return bool
