@@ -122,7 +122,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
         return $this->__phpunit_getInvocationMocker()->hasMatchers();
     }
 
-    public function __phpunit_verify($unsetInvocationMocker = true)
+    public function __phpunit_verify(bool $unsetInvocationMocker = true)
     {
         $this->__phpunit_getInvocationMocker()->verify();
 

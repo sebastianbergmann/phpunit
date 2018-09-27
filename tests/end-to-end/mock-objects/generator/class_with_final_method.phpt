@@ -73,7 +73,7 @@ class MockFoo extends ClassWithFinalMethod implements PHPUnit\Framework\MockObje
         return $this->__phpunit_getInvocationMocker()->hasMatchers();
     }
 
-    public function __phpunit_verify($unsetInvocationMocker = true)
+    public function __phpunit_verify(bool $unsetInvocationMocker = true)
     {
         $this->__phpunit_getInvocationMocker()->verify();
 
