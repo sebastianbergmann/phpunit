@@ -287,24 +287,27 @@ class JUnit extends Printer implements TestListener
      * A test started.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ReflectionException
      */
     public function startTest(Test $test): void
     {
+        if (!$test instanceof TestCase) {
+            return;
+        }
+
         $testCase = $this->document->createElement('testcase');
         $testCase->setAttribute('name', $test->getName());
 
-        if ($test instanceof TestCase) {
-            $class      = new ReflectionClass($test);
-            $methodName = $test->getName(!$test->usesDataProvider());
+        $class      = new ReflectionClass($test);
+        $methodName = $test->getName(!$test->usesDataProvider());
 
-            if ($class->hasMethod($methodName)) {
-                $method = $class->getMethod($methodName);
+        if ($class->hasMethod($methodName)) {
+            $method = $class->getMethod($methodName);
 
-                $testCase->setAttribute('class', $class->getName());
-                $testCase->setAttribute('classname', \str_replace('\\', '.', $class->getName()));
-                $testCase->setAttribute('file', $class->getFileName());
-                $testCase->setAttribute('line', $method->getStartLine());
-            }
+            $testCase->setAttribute('class', $class->getName());
+            $testCase->setAttribute('classname', \str_replace('\\', '.', $class->getName()));
+            $testCase->setAttribute('file', $class->getFileName());
+            $testCase->setAttribute('line', $method->getStartLine());
         }
 
         $this->currentTestCase = $testCase;
@@ -315,15 +318,17 @@ class JUnit extends Printer implements TestListener
      */
     public function endTest(Test $test, float $time): void
     {
-        if ($test instanceof TestCase) {
-            $numAssertions = $test->getNumAssertions();
-            $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
-
-            $this->currentTestCase->setAttribute(
-                'assertions',
-                $numAssertions
-            );
+        if (!$test instanceof TestCase) {
+            return;
         }
+
+        $numAssertions = $test->getNumAssertions();
+        $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
+
+        $this->currentTestCase->setAttribute(
+            'assertions',
+            $numAssertions
+        );
 
         $this->currentTestCase->setAttribute(
             'time',
@@ -337,7 +342,7 @@ class JUnit extends Printer implements TestListener
         $this->testSuiteTests[$this->testSuiteLevel]++;
         $this->testSuiteTimes[$this->testSuiteLevel] += $time;
 
-        if (\method_exists($test, 'hasOutput') && $test->hasOutput()) {
+        if ($test->hasOutput()) {
             $systemOut = $this->document->createElement(
                 'system-out',
                 Xml::prepareString($test->getActualOutput())

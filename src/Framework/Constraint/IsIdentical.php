@@ -57,7 +57,7 @@ class IsIdentical extends Constraint
      * @param bool   $returnResult Whether to return a result or throw an exception
      *
      * @throws ExpectationFailedException
-     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
@@ -103,7 +103,7 @@ class IsIdentical extends Constraint
     /**
      * Returns a string representation of the constraint.
      *
-     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function toString(): string
     {
@@ -123,7 +123,7 @@ class IsIdentical extends Constraint
      *
      * @param mixed $other evaluated value or object
      *
-     * @throws SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function failureDescription($other): string
     {

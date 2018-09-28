@@ -203,6 +203,10 @@ final class TestSuiteSorter
      */
     private function cmpDefectPriorityAndTime(Test $a, Test $b): int
     {
+        if (!$a instanceof TestCase || !$b instanceof TestCase) {
+            return 0;
+        }
+
         $priorityA = $this->defectSortOrder[$a->getName()] ?? 0;
         $priorityB = $this->defectSortOrder[$b->getName()] ?? 0;
 
@@ -224,6 +228,10 @@ final class TestSuiteSorter
      */
     private function cmpDuration(Test $a, Test $b): int
     {
+        if (!$a instanceof TestCase || !$b instanceof TestCase) {
+            return 0;
+        }
+
         return $this->cache->getTime($a->getName()) <=> $this->cache->getTime($b->getName());
     }
 

@@ -14,6 +14,7 @@ use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
@@ -161,16 +162,18 @@ class TestRunner extends BaseTestRunner
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
         }
 
-        if ($arguments['backupGlobals'] === true) {
-            $suite->setBackupGlobals(true);
-        }
+        if ($suite instanceof TestCase || $suite instanceof TestSuite) {
+            if ($arguments['backupGlobals'] === true) {
+                $suite->setBackupGlobals(true);
+            }
 
-        if ($arguments['backupStaticAttributes'] === true) {
-            $suite->setBackupStaticAttributes(true);
-        }
+            if ($arguments['backupStaticAttributes'] === true) {
+                $suite->setBackupStaticAttributes(true);
+            }
 
-        if ($arguments['beStrictAboutChangesToGlobalState'] === true) {
-            $suite->setBeStrictAboutChangesToGlobalState(true);
+            if ($arguments['beStrictAboutChangesToGlobalState'] === true) {
+                $suite->setBeStrictAboutChangesToGlobalState(true);
+            }
         }
 
         if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {

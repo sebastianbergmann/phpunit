@@ -57,6 +57,10 @@ class TeamCity extends ResultPrinter
      */
     public function addError(Test $test, \Throwable $t, float $time): void
     {
+        if (!$test instanceof TestCase) {
+            return;
+        }
+
         $this->printEvent(
             'testFailed',
             [
@@ -75,6 +79,10 @@ class TeamCity extends ResultPrinter
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
+        if (!$test instanceof TestCase) {
+            return;
+        }
+
         $this->printEvent(
             'testFailed',
             [
@@ -93,6 +101,10 @@ class TeamCity extends ResultPrinter
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
+        if (!$test instanceof TestCase) {
+            return;
+        }
+
         $parameters = [
             'name'     => $test->getName(),
             'message'  => self::getMessage($e),
@@ -132,6 +144,10 @@ class TeamCity extends ResultPrinter
      */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
+        if (!$test instanceof TestCase) {
+            return;
+        }
+
         $this->printIgnoredTest($test->getName(), $t, $time);
     }
 
@@ -142,6 +158,10 @@ class TeamCity extends ResultPrinter
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
+        if (!$test instanceof TestCase) {
+            return;
+        }
+
         $this->addError($test, $t, $time);
     }
 
@@ -152,6 +172,10 @@ class TeamCity extends ResultPrinter
      */
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
+        if (!$test instanceof TestCase) {
+            return;
+        }
+
         $testName = $test->getName();
 
         if ($this->startedTestName !== $testName) {
@@ -253,6 +277,10 @@ class TeamCity extends ResultPrinter
      */
     public function startTest(Test $test): void
     {
+        if (!$test instanceof TestCase) {
+            return;
+        }
+
         $testName              = $test->getName();
         $this->startedTestName = $testName;
         $params                = ['name' => $testName];
@@ -271,6 +299,10 @@ class TeamCity extends ResultPrinter
      */
     public function endTest(Test $test, float $time): void
     {
+        if (!$test instanceof TestCase) {
+            return;
+        }
+
         parent::endTest($test, $time);
 
         $this->printEvent(
