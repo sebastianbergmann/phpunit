@@ -1774,13 +1774,8 @@ abstract class Assert
      */
     public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, bool $checkAttributes = false, string $message = ''): void
     {
-        $tmp             = new DOMDocument;
-        $expectedElement = $tmp->importNode($expectedElement, true);
-
-        $tmp           = new DOMDocument;
-        $actualElement = $tmp->importNode($actualElement, true);
-
-        unset($tmp);
+        $expectedElement = Xml::import($expectedElement);
+        $actualElement   = Xml::import($actualElement);
 
         static::assertSame(
             $expectedElement->tagName,
@@ -1801,8 +1796,11 @@ abstract class Assert
             );
 
             for ($i = 0; $i < $expectedElement->attributes->length; $i++) {
+                /** @var \DOMAttr $expectedAttribute */
                 $expectedAttribute = $expectedElement->attributes->item($i);
-                $actualAttribute   = $actualElement->attributes->getNamedItem(
+
+                /** @var \DOMAttr $actualAttribute */
+                $actualAttribute = $actualElement->attributes->getNamedItem(
                     $expectedAttribute->name
                 );
 

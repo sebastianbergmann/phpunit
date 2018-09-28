@@ -19,6 +19,13 @@ use ReflectionClass;
 
 final class Xml
 {
+    public static function import(DOMElement $element): DOMElement
+    {
+        $document = new DOMDocument;
+
+        return $document->importNode($element, true);
+    }
+
     /**
      * Load an $actual document into a DOMDocument.  This is called
      * from the selector assertions.
