@@ -22,6 +22,11 @@ class Count extends Constraint
      */
     private $expectedCount;
 
+    /**
+     * @var null|int
+     */
+    private $countOfGenerator;
+
     public function __construct(int $expected)
     {
         parent::__construct();
@@ -93,11 +98,13 @@ class Count extends Constraint
      */
     protected function getCountOfGenerator(Generator $generator): int
     {
-        for ($count = 0; $generator->valid(); $generator->next()) {
-            ++$count;
+        if ($this->countOfGenerator === null) {
+            for ($this->countOfGenerator = 0; $generator->valid(); $generator->next()) {
+                ++$this->countOfGenerator;
+            }
         }
 
-        return $count;
+        return $this->countOfGenerator;
     }
 
     /**
