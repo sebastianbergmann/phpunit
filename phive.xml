@@ -4,5 +4,4 @@
   <phar name="php-cs-fixer" version="^2.12.0" installed="2.13.0" location="./build/tools/php-cs-fixer" copy="true"/>
   <phar name="phpdox" version="^0.11.2" installed="0.11.2" location="./build/tools/phpdox" copy="true"/>
   <phar name="phploc" version="^4.0.1" installed="4.0.1" location="./build/tools/phploc" copy="true"/>
-  <phar name="phpstan" version="^0.10.1" installed="0.10.1" location="./build/tools/phpstan" copy="true"/>
 </phive>

@@ -1,7 +1,0 @@
-parameters:
-    ignoreErrors:
-        # https://github.com/phpstan/phpstan/issues/1185
-        - '#Function xdebug_start_function_monitor not found.#'
-        - '#Function xdebug_get_monitored_functions not found.#'
-        - '#Function xdebug_stop_function_monitor not found.#'
-
