@@ -89,15 +89,20 @@ class Count extends Constraint
             $traversable = $traversable->getIterator();
         }
 
-        if ($traversable instanceof Generator) {
+        if ($traversable instanceof Iterator) {
+            if ($this->iteratorIsRewindable($traversable)) {
+                return $this->getCountOfRewindableIterator($traversable);
+            }
+
             return $this->getCountOfNonRewindableIterator($traversable);
         }
 
-        if ($traversable instanceof Iterator) {
-            return $this->getCountOfRewindableIterator($traversable);
-        }
-
         return \iterator_count($traversable);
+    }
+
+    private function iteratorIsRewindable(Iterator $iterator): bool
+    {
+        return !($iterator instanceof Generator) && !($iterator instanceof \NoRewindIterator);
     }
 
     /**

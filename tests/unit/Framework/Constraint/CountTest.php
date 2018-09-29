@@ -190,6 +190,15 @@ class CountTest extends ConstraintTestCase
         );
     }
 
+    public function testFailureMessageIsCorrectForNonRewindableIterators()
+    {
+        $this->assertEvaluateFailsWithMessage(
+            new Count(1),
+            new \NoRewindIterator(new \ArrayIterator([1, 2, 3])),
+            'actual size 3 matches expected size 1'
+        );
+    }
+
     private function assertEvaluateFailsWithMessage(Count $count, iterable $iterable, string $message)
     {
         try {
