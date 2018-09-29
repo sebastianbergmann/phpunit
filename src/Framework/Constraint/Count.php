@@ -23,15 +23,16 @@ class Count extends Constraint
     private $expectedCount;
 
     /**
-     * @var null|int
+     * @var \SplObjectStorage
      */
-    private $countOfGenerator;
+    private $traversableCounts;
 
     public function __construct(int $expected)
     {
         parent::__construct();
 
         $this->expectedCount = $expected;
+        $this->traversableCounts = new \SplObjectStorage();
     }
 
     public function toString(): string
@@ -98,13 +99,15 @@ class Count extends Constraint
      */
     protected function getCountOfGenerator(Generator $generator): int
     {
-        if ($this->countOfGenerator === null) {
-            for ($this->countOfGenerator = 0; $generator->valid(); $generator->next()) {
-                ++$this->countOfGenerator;
+        if (!$this->traversableCounts->contains($generator)) {
+            for ($countOfGenerator = 0; $generator->valid(); $generator->next()) {
+                ++$countOfGenerator;
             }
+
+			$this->traversableCounts->attach($generator, $countOfGenerator);
         }
 
-        return $this->countOfGenerator;
+        return $this->traversableCounts[$generator];
     }
 
     /**

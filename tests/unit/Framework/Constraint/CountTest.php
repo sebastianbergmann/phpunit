@@ -168,4 +168,16 @@ class CountTest extends ConstraintTestCase
 	{
 		$this->assertTrue($count->evaluate($iterable, '', true));
 	}
+
+	public function testCountingDifferentGeneratorsSequentiallyWorks(): void
+	{
+		$count = new Count(2);
+
+		$generatorMaker = new \TestGeneratorMaker();
+		$generatorWithThreeElements = $generatorMaker->create(['a', 'b', 'c']);
+		$generatorWithTwoElements = $generatorMaker->create(['a', 'b']);
+
+		$this->assertCountFails($count, $generatorWithThreeElements);
+		$this->assertCountSucceeds($count, $generatorWithTwoElements);
+	}
 }
