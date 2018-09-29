@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestFailure;
+
 class CountTest extends ConstraintTestCase
 {
     public function testCount(): void
@@ -176,5 +179,29 @@ class CountTest extends ConstraintTestCase
 
         $this->assertCountFails($count, $generatorWithThreeElements);
         $this->assertCountSucceeds($count, $generatorWithTwoElements);
+    }
+
+    public function testFailureMessageIsCorrectForGenerators()
+    {
+        $this->assertEvaluateFailsWithMessage(
+            new Count(1),
+            (new \TestGeneratorMaker())->create(['a', 'b']),
+            'actual size 2 matches expected size 1'
+        );
+    }
+
+    private function assertEvaluateFailsWithMessage(Count $count, iterable $iterable, string $message)
+    {
+        try {
+            $count->evaluate($iterable);
+        } catch (ExpectationFailedException $e) {
+            $this->assertContains(
+                $message,
+                TestFailure::exceptionToString($e)
+            );
+            return;
+        }
+
+        $this->assertFalse(true, 'An exception should have been thrown');
     }
 }
