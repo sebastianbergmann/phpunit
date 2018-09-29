@@ -142,4 +142,20 @@ class CountTest extends ConstraintTestCase
         $this->assertNotInstanceOf(\IteratorAggregate::class, $datePeriod);
         $this->assertTrue($countConstraint->evaluate($datePeriod, '', true));
     }
+
+	public function testCountingNonRewindableIteratorWithDifferentCount(): void
+	{
+		$countConstraint = new Count(2);
+		$iterator = new \NoRewindIterator(new \ArrayIterator([1, 2, 3]));
+
+		$this->assertFalse($countConstraint->evaluate($iterator, '', true));
+	}
+
+	public function testCountingNonRewindableIteratorWithSameCount(): void
+	{
+		$countConstraint = new Count(2);
+		$iterator = new \NoRewindIterator(new \ArrayIterator([1, 2]));
+
+		$this->assertTrue($countConstraint->evaluate($iterator, '', true));
+	}
 }
