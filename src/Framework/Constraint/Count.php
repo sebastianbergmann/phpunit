@@ -104,7 +104,7 @@ class Count extends Constraint
                 ++$countOfGenerator;
             }
 
-			$this->traversableCounts->attach($generator, $countOfGenerator);
+            $this->traversableCounts->attach($generator, $countOfGenerator);
         }
 
         return $this->traversableCounts[$generator];

@@ -96,36 +96,33 @@ class CountTest extends ConstraintTestCase
         $this->assertFalse($it->valid());
     }
 
-    public function testCountGeneratorsDoNotRewind(): void
+    public function testDoesNotRewindGeneratorAtStartingPosition(): void
     {
-        $generatorMaker = new \TestGeneratorMaker;
-
         $countConstraint = new Count(3);
+        $generator = (new \TestGeneratorMaker())->create([1, 2, 3]);
 
-        $generator = $generatorMaker->create([1, 2, 3]);
-        $this->assertEquals(1, $generator->current());
-        $countConstraint->evaluate($generator, '', true);
-        $this->assertEquals(null, $generator->current());
+        $this->assertCountSucceeds($countConstraint, $generator);
+        $this->assertNull($generator->current());
+    }
 
+    public function testOnlyCountRemainingGeneratorElements(): void
+    {
         $countConstraint = new Count(2);
-
-        $generator = $generatorMaker->create([1, 2, 3]);
-        $this->assertEquals(1, $generator->current());
+        $generator = (new \TestGeneratorMaker())->create([1, 2, 3]);
         $generator->next();
-        $this->assertEquals(2, $generator->current());
-        $countConstraint->evaluate($generator, '', true);
-        $this->assertEquals(null, $generator->current());
 
-        $countConstraint = new Count(1);
+        $this->assertCountSucceeds($countConstraint, $generator);
+        $this->assertNull($generator->current());
+    }
 
-        $generator = $generatorMaker->create([1, 2, 3]);
-        $this->assertEquals(1, $generator->current());
+    public function testCountsExhaustedIteratorsAsZero(): void
+    {
+        $countConstraint = new Count(0);
+        $generator = (new \TestGeneratorMaker())->create([1]);
         $generator->next();
-        $this->assertEquals(2, $generator->current());
-        $generator->next();
-        $this->assertEquals(3, $generator->current());
-        $countConstraint->evaluate($generator, '', true);
-        $this->assertEquals(null, $generator->current());
+
+        $this->assertCountSucceeds($countConstraint, $generator);
+        $this->assertNull($generator->current());
     }
 
     public function testCountTraversable(): void
@@ -143,41 +140,41 @@ class CountTest extends ConstraintTestCase
         $this->assertTrue($countConstraint->evaluate($datePeriod, '', true));
     }
 
-	public function testCountingNonRewindableIteratorWithDifferentCount(): void
-	{
-		$this->assertCountFails(
-			new Count(2),
-			new \NoRewindIterator(new \ArrayIterator([1, 2, 3]))
-		);
-	}
+    public function testCountingNonRewindableIteratorWithDifferentCount(): void
+    {
+        $this->assertCountFails(
+            new Count(2),
+            new \NoRewindIterator(new \ArrayIterator([1, 2, 3]))
+        );
+    }
 
-	public function testCountingNonRewindableIteratorWithSameCount(): void
-	{
-		$this->assertCountSucceeds(
-			new Count(2),
-			new \NoRewindIterator(new \ArrayIterator([1, 2]))
-		);
-	}
+    public function testCountingNonRewindableIteratorWithSameCount(): void
+    {
+        $this->assertCountSucceeds(
+            new Count(2),
+            new \NoRewindIterator(new \ArrayIterator([1, 2]))
+        );
+    }
 
-	public function assertCountFails(Count $count, iterable $iterable): void
-	{
-		$this->assertFalse($count->evaluate($iterable, '', true));
-	}
+    public function assertCountFails(Count $count, iterable $iterable): void
+    {
+        $this->assertFalse($count->evaluate($iterable, '', true));
+    }
 
-	public function assertCountSucceeds(Count $count, iterable $iterable): void
-	{
-		$this->assertTrue($count->evaluate($iterable, '', true));
-	}
+    public function assertCountSucceeds(Count $count, iterable $iterable): void
+    {
+        $this->assertTrue($count->evaluate($iterable, '', true));
+    }
 
-	public function testCountingDifferentGeneratorsSequentiallyWorks(): void
-	{
-		$count = new Count(2);
+    public function testCountingDifferentGeneratorsSequentiallyWorks(): void
+    {
+        $count = new Count(2);
 
-		$generatorMaker = new \TestGeneratorMaker();
-		$generatorWithThreeElements = $generatorMaker->create(['a', 'b', 'c']);
-		$generatorWithTwoElements = $generatorMaker->create(['a', 'b']);
+        $generatorMaker = new \TestGeneratorMaker();
+        $generatorWithThreeElements = $generatorMaker->create(['a', 'b', 'c']);
+        $generatorWithTwoElements = $generatorMaker->create(['a', 'b']);
 
-		$this->assertCountFails($count, $generatorWithThreeElements);
-		$this->assertCountSucceeds($count, $generatorWithTwoElements);
-	}
+        $this->assertCountFails($count, $generatorWithThreeElements);
+        $this->assertCountSucceeds($count, $generatorWithTwoElements);
+    }
 }
