@@ -76,20 +76,7 @@ class Count extends Constraint
                 return \iterator_count($iterator);
             }
 
-            $key   = $iterator->key();
-            $count = \iterator_count($iterator);
-
-            // Manually rewind $iterator to previous key, since iterator_count
-            // moves pointer.
-            if ($key !== null) {
-                $iterator->rewind();
-
-                while ($iterator->valid() && $key !== $iterator->key()) {
-                    $iterator->next();
-                }
-            }
-
-            return $count;
+            return $this->getCountOfRewindableIterator($iterator);
         }
     }
 
@@ -108,6 +95,24 @@ class Count extends Constraint
         }
 
         return $this->traversableCounts[$generator];
+    }
+
+    private function getCountOfRewindableIterator(Iterator $iterator): int
+    {
+        $key   = $iterator->key();
+        $count = \iterator_count($iterator);
+
+        // Manually rewind $iterator to previous key, since iterator_count
+        // moves pointer.
+        if ($key !== null) {
+            $iterator->rewind();
+
+            while ($iterator->valid() && $key !== $iterator->key()) {
+                $iterator->next();
+            }
+        }
+
+        return $count;
     }
 
     /**
