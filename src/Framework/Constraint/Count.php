@@ -66,40 +66,6 @@ class Count extends Constraint
         }
     }
 
-    /**
-     * Returns the total number of iterations from a generator.
-     * This will fully exhaust the generator.
-     */
-    protected function getCountOfGenerator(Generator $generator): int
-    {
-        if (!$this->traversableCounts->contains($generator)) {
-            for ($countOfGenerator = 0; $generator->valid(); $generator->next()) {
-                ++$countOfGenerator;
-            }
-
-            $this->traversableCounts->attach($generator, $countOfGenerator);
-        }
-
-        return $this->traversableCounts[$generator];
-    }
-
-    /**
-     * Returns the description of the failure.
-     *
-     * The beginning of failure messages is "Failed asserting that" in most
-     * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other evaluated value or object
-     */
-    protected function failureDescription($other): string
-    {
-        return \sprintf(
-            'actual size %d matches expected size %d',
-            $this->getCountOf($other),
-            $this->expectedCount
-        );
-    }
-
     private function getCountOfTraversable(Traversable $traversable): int
     {
         while ($traversable instanceof IteratorAggregate) {
@@ -115,6 +81,23 @@ class Count extends Constraint
         }
 
         return \iterator_count($traversable);
+    }
+
+    /**
+     * Returns the total number of iterations from a generator.
+     * This will fully exhaust the generator.
+     */
+    protected function getCountOfGenerator(Generator $generator): int
+    {
+        if (!$this->traversableCounts->contains($generator)) {
+            for ($countOfGenerator = 0; $generator->valid(); $generator->next()) {
+                ++$countOfGenerator;
+            }
+
+            $this->traversableCounts->attach($generator, $countOfGenerator);
+        }
+
+        return $this->traversableCounts[$generator];
     }
 
     private function getCountOfRewindableIterator(Iterator $iterator): int
@@ -133,5 +116,22 @@ class Count extends Constraint
         }
 
         return $count;
+    }
+
+    /**
+     * Returns the description of the failure.
+     *
+     * The beginning of failure messages is "Failed asserting that" in most
+     * cases. This method should return the second part of that sentence.
+     *
+     * @param mixed $other evaluated value or object
+     */
+    protected function failureDescription($other): string
+    {
+        return \sprintf(
+            'actual size %d matches expected size %d',
+            $this->getCountOf($other),
+            $this->expectedCount
+        );
     }
 }
