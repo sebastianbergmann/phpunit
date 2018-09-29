@@ -62,22 +62,25 @@ class Count extends Constraint
         }
 
         if ($other instanceof Traversable) {
-            while ($other instanceof IteratorAggregate) {
-                $other = $other->getIterator();
-            }
-
-            $iterator = $other;
-
-            if ($iterator instanceof Generator) {
-                return $this->getCountOfGenerator($iterator);
-            }
-
-            if (!$iterator instanceof Iterator) {
-                return \iterator_count($iterator);
-            }
-
-            return $this->getCountOfRewindableIterator($iterator);
+            return $this->getCountOfTraversable($other);
         }
+    }
+
+    private function getCountOfTraversable(Traversable $traversable): int
+    {
+        while ($traversable instanceof IteratorAggregate) {
+            $traversable = $traversable->getIterator();
+        }
+
+        if ($traversable instanceof Generator) {
+            return $this->getCountOfGenerator($traversable);
+        }
+
+        if ($traversable instanceof Iterator) {
+            return $this->getCountOfRewindableIterator($traversable);
+        }
+
+        return \iterator_count($traversable);
     }
 
     /**
