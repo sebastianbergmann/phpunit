@@ -25,14 +25,14 @@ class Count extends Constraint
     /**
      * @var \SplObjectStorage
      */
-    private $traversableCounts;
+    private $iteratorCounts;
 
     public function __construct(int $expected)
     {
         parent::__construct();
 
         $this->expectedCount     = $expected;
-        $this->traversableCounts = new \SplObjectStorage();
+        $this->iteratorCounts    = new \SplObjectStorage();
     }
 
     public function toString(): string
@@ -73,7 +73,7 @@ class Count extends Constraint
         }
 
         if ($traversable instanceof Generator) {
-            return $this->getCountOfGenerator($traversable);
+            return $this->getCountOfNonRewindableIterator($traversable);
         }
 
         if ($traversable instanceof Iterator) {
@@ -84,20 +84,20 @@ class Count extends Constraint
     }
 
     /**
-     * Returns the total number of iterations from a generator.
+     * Returns the total number of iterations from a iterator.
      * This will fully exhaust the generator.
      */
-    protected function getCountOfGenerator(Generator $generator): int
+    protected function getCountOfNonRewindableIterator(Iterator $iterator): int
     {
-        if (!$this->traversableCounts->contains($generator)) {
-            for ($countOfGenerator = 0; $generator->valid(); $generator->next()) {
+        if (!$this->iteratorCounts->contains($iterator)) {
+            for ( $countOfGenerator = 0; $iterator->valid(); $iterator->next()) {
                 ++$countOfGenerator;
             }
 
-            $this->traversableCounts->attach($generator, $countOfGenerator);
+            $this->iteratorCounts->attach($iterator, $countOfGenerator);
         }
 
-        return $this->traversableCounts[$generator];
+        return $this->iteratorCounts[$iterator];
     }
 
     private function getCountOfRewindableIterator(Iterator $iterator): int
