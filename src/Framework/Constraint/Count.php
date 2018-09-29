@@ -67,23 +67,6 @@ class Count extends Constraint
     }
 
     /**
-     * Returns the total number of iterations from a iterator.
-     * This will fully exhaust the generator.
-     */
-    protected function getCountOfNonRewindableIterator(Iterator $iterator): int
-    {
-        if (!$this->iteratorCounts->contains($iterator)) {
-            for ($countOfGenerator = 0; $iterator->valid(); $iterator->next()) {
-                ++$countOfGenerator;
-            }
-
-            $this->iteratorCounts->attach($iterator, $countOfGenerator);
-        }
-
-        return $this->iteratorCounts[$iterator];
-    }
-
-    /**
      * Returns the description of the failure.
      *
      * The beginning of failure messages is "Failed asserting that" in most
@@ -115,6 +98,23 @@ class Count extends Constraint
         }
 
         return \iterator_count($traversable);
+    }
+
+    /**
+     * Returns the total number of iterations from a iterator.
+     * This will fully exhaust the generator.
+     */
+    private function getCountOfNonRewindableIterator(Iterator $iterator): int
+    {
+        if (!$this->iteratorCounts->contains($iterator)) {
+            for ($countOfGenerator = 0; $iterator->valid(); $iterator->next()) {
+                ++$countOfGenerator;
+            }
+
+            $this->iteratorCounts->attach($iterator, $countOfGenerator);
+        }
+
+        return $this->iteratorCounts[$iterator];
     }
 
     private function getCountOfRewindableIterator(Iterator $iterator): int
