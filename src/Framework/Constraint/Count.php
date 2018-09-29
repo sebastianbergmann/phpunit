@@ -85,16 +85,24 @@ class Count extends Constraint
 
     private function getCountOfTraversable(Traversable $traversable): int
     {
+        if ($this->iteratorCounts === null) {
+            $this->iteratorCounts = new \SplObjectStorage();
+        }
+
         while ($traversable instanceof IteratorAggregate) {
             $traversable = $traversable->getIterator();
         }
 
         if ($traversable instanceof Iterator) {
+            $key   = $traversable->key();
+            $count = $this->getCountOfIterator($traversable);
+
             if ($this->iteratorIsRewindable($traversable)) {
-                return $this->getCountOfRewindableIterator($traversable);
+                $this->iteratorCounts->detach($traversable);
+                $this->rewindIterator($traversable, $key);
             }
 
-            return $this->getCountOfNonRewindableIterator($traversable);
+            return $count;
         }
 
         return \iterator_count($traversable);
@@ -102,14 +110,20 @@ class Count extends Constraint
 
     private function iteratorIsRewindable(Iterator $iterator): bool
     {
-        return !($iterator instanceof Generator) && !($iterator instanceof \NoRewindIterator);
+        try {
+            $iterator->rewind();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return !($iterator instanceof \NoRewindIterator);
     }
 
     /**
      * Returns the total number of iterations from a iterator.
      * This will fully exhaust the generator.
      */
-    private function getCountOfNonRewindableIterator(Iterator $iterator): int
+    private function getCountOfIterator(Iterator $iterator): int
     {
         if (!$this->iteratorCounts->contains($iterator)) {
             for ($countOfGenerator = 0; $iterator->valid(); $iterator->next()) {
@@ -122,21 +136,12 @@ class Count extends Constraint
         return $this->iteratorCounts[$iterator];
     }
 
-    private function getCountOfRewindableIterator(Iterator $iterator): int
+    private function rewindIterator(Iterator $iterator, $key): void
     {
-        $key   = $iterator->key();
-        $count = \iterator_count($iterator);
+        $iterator->rewind();
 
-        // Manually rewind $iterator to previous key, since iterator_count
-        // moves pointer.
-        if ($key !== null) {
-            $iterator->rewind();
-
-            while ($iterator->valid() && $key !== $iterator->key()) {
-                $iterator->next();
-            }
+        while ($iterator->valid() && $key !== $iterator->key()) {
+            $iterator->next();
         }
-
-        return $count;
     }
 }
