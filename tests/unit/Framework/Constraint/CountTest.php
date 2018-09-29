@@ -199,6 +199,7 @@ class CountTest extends ConstraintTestCase
                 $message,
                 TestFailure::exceptionToString($e)
             );
+
             return;
         }
 
