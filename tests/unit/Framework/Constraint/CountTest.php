@@ -99,7 +99,7 @@ class CountTest extends ConstraintTestCase
     public function testDoesNotRewindGeneratorAtStartingPosition(): void
     {
         $countConstraint = new Count(3);
-        $generator = (new \TestGeneratorMaker())->create([1, 2, 3]);
+        $generator       = (new \TestGeneratorMaker())->create([1, 2, 3]);
 
         $this->assertCountSucceeds($countConstraint, $generator);
         $this->assertNull($generator->current());
@@ -108,7 +108,7 @@ class CountTest extends ConstraintTestCase
     public function testOnlyCountRemainingGeneratorElements(): void
     {
         $countConstraint = new Count(2);
-        $generator = (new \TestGeneratorMaker())->create([1, 2, 3]);
+        $generator       = (new \TestGeneratorMaker())->create([1, 2, 3]);
         $generator->next();
 
         $this->assertCountSucceeds($countConstraint, $generator);
@@ -118,7 +118,7 @@ class CountTest extends ConstraintTestCase
     public function testCountsExhaustedIteratorsAsZero(): void
     {
         $countConstraint = new Count(0);
-        $generator = (new \TestGeneratorMaker())->create([1]);
+        $generator       = (new \TestGeneratorMaker())->create([1]);
         $generator->next();
 
         $this->assertCountSucceeds($countConstraint, $generator);
@@ -170,9 +170,9 @@ class CountTest extends ConstraintTestCase
     {
         $count = new Count(2);
 
-        $generatorMaker = new \TestGeneratorMaker();
+        $generatorMaker             = new \TestGeneratorMaker();
         $generatorWithThreeElements = $generatorMaker->create(['a', 'b', 'c']);
-        $generatorWithTwoElements = $generatorMaker->create(['a', 'b']);
+        $generatorWithTwoElements   = $generatorMaker->create(['a', 'b']);
 
         $this->assertCountFails($count, $generatorWithThreeElements);
         $this->assertCountSucceeds($count, $generatorWithTwoElements);
