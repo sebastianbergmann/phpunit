@@ -145,17 +145,27 @@ class CountTest extends ConstraintTestCase
 
 	public function testCountingNonRewindableIteratorWithDifferentCount(): void
 	{
-		$countConstraint = new Count(2);
-		$iterator = new \NoRewindIterator(new \ArrayIterator([1, 2, 3]));
-
-		$this->assertFalse($countConstraint->evaluate($iterator, '', true));
+		$this->assertCountFails(
+			new Count(2),
+			new \NoRewindIterator(new \ArrayIterator([1, 2, 3]))
+		);
 	}
 
 	public function testCountingNonRewindableIteratorWithSameCount(): void
 	{
-		$countConstraint = new Count(2);
-		$iterator = new \NoRewindIterator(new \ArrayIterator([1, 2]));
+		$this->assertCountSucceeds(
+			new Count(2),
+			new \NoRewindIterator(new \ArrayIterator([1, 2]))
+		);
+	}
 
-		$this->assertTrue($countConstraint->evaluate($iterator, '', true));
+	public function assertCountFails(Count $count, iterable $iterable): void
+	{
+		$this->assertFalse($count->evaluate($iterable, '', true));
+	}
+
+	public function assertCountSucceeds(Count $count, iterable $iterable): void
+	{
+		$this->assertTrue($count->evaluate($iterable, '', true));
 	}
 }
