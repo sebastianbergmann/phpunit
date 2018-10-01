@@ -212,6 +212,6 @@ class CountTest extends ConstraintTestCase
             return;
         }
 
-        $this->assertFalse(true, 'An exception should have been thrown');
+        $this->fail('An exception should have been thrown');
     }
 }
