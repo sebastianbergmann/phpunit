@@ -181,7 +181,7 @@ class CountTest extends ConstraintTestCase
         $this->assertCountSucceeds($count, $generatorWithTwoElements);
     }
 
-    public function testFailureMessageIsCorrectForGenerators()
+    public function testFailureMessageIsCorrectForGenerators(): void
     {
         $this->assertEvaluateFailsWithMessage(
             new Count(1),
@@ -190,7 +190,7 @@ class CountTest extends ConstraintTestCase
         );
     }
 
-    public function testFailureMessageIsCorrectForNonRewindableIterators()
+    public function testFailureMessageIsCorrectForNonRewindableIterators(): void
     {
         $this->assertEvaluateFailsWithMessage(
             new Count(1),
@@ -199,7 +199,16 @@ class CountTest extends ConstraintTestCase
         );
     }
 
-    private function assertEvaluateFailsWithMessage(Count $count, iterable $iterable, string $message)
+    public function testFailureMessageIsCorrectForTraversablesThatAreNotIteratorsOrIteratorAggregates(): void
+    {
+        $this->assertEvaluateFailsWithMessage(
+            new Count(1),
+            $this->newPdoStatementWithThreeValues(),
+            'actual size 3 matches expected size 1'
+        );
+    }
+
+    private function assertEvaluateFailsWithMessage(Count $count, iterable $iterable, string $message): void
     {
         try {
             $count->evaluate($iterable);
@@ -213,5 +222,18 @@ class CountTest extends ConstraintTestCase
         }
 
         $this->fail('An exception should have been thrown');
+    }
+
+    private function newPdoStatementWithThreeValues(): \Traversable
+    {
+        if (!\class_exists('\PDO')) {
+            $this->markTestSkipped('derp');
+        }
+
+        $conn = new \PDO('sqlite::memory:');
+        $conn->exec('CREATE TABLE foo (id INT NOT NULL PRIMARY KEY)');
+        $conn->exec('INSERT INTO foo VALUES (1), (2), (3)');
+
+        return $conn->query('SELECT * FROM foo');
     }
 }

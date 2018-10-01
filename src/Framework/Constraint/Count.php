@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use Countable;
-use Generator;
 use Iterator;
 use IteratorAggregate;
 use Traversable;
@@ -31,7 +30,7 @@ class Count extends Constraint
     {
         parent::__construct();
 
-        $this->expectedCount  = $expected;
+        $this->expectedCount     = $expected;
         $this->traversableCounts = new \SplObjectStorage();
     }
 
@@ -93,53 +92,54 @@ class Count extends Constraint
             $traversable = $traversable->getIterator();
         }
 
-		if ($this->traversableCounts->contains($traversable)) {
-			return $this->traversableCounts[$traversable];
-		}
-
-        if ($traversable instanceof Iterator) {
-			return $this->countIteratorWithoutChangingPositionIfPossible($traversable);
+        if ($this->traversableCounts->contains($traversable)) {
+            return $this->traversableCounts[$traversable];
         }
 
-        return \iterator_count($traversable);
+        if ($traversable instanceof Iterator) {
+            return $this->countIteratorWithoutChangingPositionIfPossible($traversable);
+        }
+
+        return $this->getCountOfTraversableThatIsNotIteratorOrIteratorAggregate($traversable);
     }
 
-	private function countIteratorWithoutChangingPositionIfPossible(Iterator $iterator) {
-		$key   = $iterator->key();
-		$count = $this->getCountOfIterator($iterator);
+    private function countIteratorWithoutChangingPositionIfPossible(Iterator $iterator): int
+    {
+        $key   = $iterator->key();
+        $count = $this->getCountOfIterator($iterator);
 
-		$this->traversableCounts->attach($iterator, $count);
+        $this->traversableCounts->attach($iterator, $count);
 
-		if ($this->iteratorIsRewindable($iterator)) {
-			$this->traversableCounts->detach($iterator);
-			$this->rewindIterator($iterator, $key);
-		}
+        if ($this->iteratorIsRewindable($iterator)) {
+            $this->traversableCounts->detach($iterator);
+            $this->rewindIterator($iterator, $key);
+        }
 
-		return $count;
+        return $count;
     }
 
-	private function iteratorIsRewindable(Iterator $iterator): bool
-	{
-		try {
-			$iterator->rewind();
-		} catch (\Exception $e) {
-			return false;
-		}
+    private function iteratorIsRewindable(Iterator $iterator): bool
+    {
+        try {
+            $iterator->rewind();
+        } catch (\Exception $e) {
+            return false;
+        }
 
-		return !($iterator instanceof \NoRewindIterator);
-	}
+        return !($iterator instanceof \NoRewindIterator);
+    }
 
-	/**
+    /**
      * Returns the total number of iterations from a iterator.
      * This will fully exhaust the iterator.
      */
     private function getCountOfIterator(Iterator $iterator): int
     {
-		for ($countOfGenerator = 0; $iterator->valid(); $iterator->next()) {
-			++$countOfGenerator;
-		}
+        for ($countOfGenerator = 0; $iterator->valid(); $iterator->next()) {
+            ++$countOfGenerator;
+        }
 
-		return $countOfGenerator;
+        return $countOfGenerator;
     }
 
     private function rewindIterator(Iterator $iterator, $key): void
@@ -149,5 +149,14 @@ class Count extends Constraint
         while ($iterator->valid() && $key !== $iterator->key()) {
             $iterator->next();
         }
+    }
+
+    private function getCountOfTraversableThatIsNotIteratorOrIteratorAggregate(Traversable $traversable): int
+    {
+        $count = \iterator_count($traversable);
+
+        $this->traversableCounts->attach($traversable, $count);
+
+        return $count;
     }
 }
