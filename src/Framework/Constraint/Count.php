@@ -31,8 +31,8 @@ class Count extends Constraint
     {
         parent::__construct();
 
-        $this->expectedCount     = $expected;
-        $this->iteratorCounts    = new \SplObjectStorage();
+        $this->expectedCount  = $expected;
+        $this->iteratorCounts = new \SplObjectStorage();
     }
 
     public function toString(): string
