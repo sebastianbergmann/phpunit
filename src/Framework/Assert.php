@@ -174,6 +174,9 @@ abstract class Assert
     {
         if (\is_array($haystack) ||
             (\is_object($haystack) && $haystack instanceof Traversable)) {
+            if ($ignoreCase) {
+                throw new Exception('ignoreCase is not allowed on Assert::assertContains when argument 2 is not a string.');
+            }
             $constraint = new TraversableContains(
                 $needle,
                 $checkForObjectIdentity,

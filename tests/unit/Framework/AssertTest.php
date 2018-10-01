@@ -76,6 +76,13 @@ class AssertTest extends TestCase
         $this->assertContains('foo', [true], '', false, true, true);
     }
 
+    public function testAssertContainsThrowsExceptionWhenArrayAndIgnoreCase(): void
+    {
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('ignoreCase is not allowed on Assert::assertContains when argument 2 is not a string.');
+        $this->assertContains('ABC', ['abc'], '', true);
+    }
+
     public function testAssertContainsOnlyInstancesOf(): void
     {
         $test = [new \Book, new \Book];
