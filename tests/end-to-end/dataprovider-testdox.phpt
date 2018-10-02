@@ -17,6 +17,8 @@ DataProviderTestDox
  ✔ Does something with data set "two"
  ✔ Does something else with data set "one"
  ✔ Does something else with data set "two"
+ ✔ With provider with indexed array with data set #0
+ ✔ With provider with indexed array with data set #1
  ✔ ... true ...
  ✔ ... 1 ...
  ✔ ... 1.0 ...
@@ -29,4 +31,4 @@ DataProviderTestDox
 
 Time: %s, Memory: %s
 
-OK (13 tests, 13 assertions)
+OK (15 tests, 15 assertions)

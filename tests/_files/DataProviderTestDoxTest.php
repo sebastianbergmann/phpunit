@@ -29,6 +29,14 @@ class DataProviderTestDoxTest extends TestCase
     }
 
     /**
+     * @dataProvider providerWithIndexedArray
+     */
+    public function testWithProviderWithIndexedArrayWith($value): void
+    {
+        $this->assertTrue(true);
+    }
+
+    /**
      * @dataProvider placeHolderprovider
      * @testdox ... $value ...
      */
@@ -42,6 +50,14 @@ class DataProviderTestDoxTest extends TestCase
         return [
             'one' => [1],
             'two' => [2],
+        ];
+    }
+
+    public function providerWithIndexedArray()
+    {
+        return [
+            ['first'],
+            ['second'],
         ];
     }
 
