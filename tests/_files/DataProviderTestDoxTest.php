@@ -13,7 +13,7 @@ class DataProviderTestDoxTest extends TestCase
 {
     /**
      * @dataProvider provider
-     * @testdox Does something with
+     * @testdox Does something
      */
     public function testOne(): void
     {
@@ -23,7 +23,7 @@ class DataProviderTestDoxTest extends TestCase
     /**
      * @dataProvider provider
      */
-    public function testDoesSomethingElseWith(): void
+    public function testDoesSomethingElse(): void
     {
         $this->assertTrue(true);
     }
@@ -31,7 +31,7 @@ class DataProviderTestDoxTest extends TestCase
     /**
      * @dataProvider providerWithIndexedArray
      */
-    public function testWithProviderWithIndexedArrayWith($value): void
+    public function testWithProviderWithIndexedArray($value): void
     {
         $this->assertTrue(true);
     }
