@@ -11,7 +11,7 @@ namespace Test;
 
 use PHPUnit\Framework\TestCase;
 
-class GeneratorTest extends TestCase
+class FailingGeneratorCountTest extends TestCase
 {
     public function testGenerator()
     {

@@ -1,9 +1,9 @@
 --TEST--
-phpunit BankAccountTest ../../_files/GeneratorTest.php
+phpunit BankAccountTest ../../_files/FailingGeneratorCountTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][3] = __DIR__ . '/../_files/GeneratorTest.php';
+$_SERVER['argv'][3] = __DIR__ . '/../_files/FailingGeneratorCountTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
@@ -17,10 +17,10 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) Test\GeneratorTest::testGenerator
+1) Test\FailingGeneratorCountTest::testGenerator
 Failed asserting that actual size 3 matches expected size 4.
 
-%sGeneratorTest.php:%i
+%sFailingGeneratorCountTest.php:%i
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.

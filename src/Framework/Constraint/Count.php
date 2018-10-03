@@ -30,7 +30,7 @@ class Count extends Constraint
     {
         parent::__construct();
 
-        $this->expectedCount     = $expected;
+        $this->expectedCount = $expected;
     }
 
     public function toString(): string

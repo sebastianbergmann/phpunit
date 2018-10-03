@@ -226,8 +226,8 @@ class CountTest extends ConstraintTestCase
 
     private function newPdoStatementWithThreeValues(): \Traversable
     {
-        if (!\class_exists('\PDO')) {
-            $this->markTestSkipped('derp');
+        if (!\extension_loaded('pdo') || !\in_array('sqlite', \PDO::getAvailableDrivers())) {
+            $this->markTestSkipped('PDO_SQLITE is required');
         }
 
         $conn = new \PDO('sqlite::memory:');
