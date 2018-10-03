@@ -123,11 +123,11 @@ class Count extends Constraint
      */
     private function getCountOfIterator(Iterator $iterator): int
     {
-        for ($countOfGenerator = 0; $iterator->valid(); $iterator->next()) {
-            ++$countOfGenerator;
+        for ($count = 0; $iterator->valid(); $iterator->next()) {
+            ++$count;
         }
 
-        return $countOfGenerator;
+        return $count;
     }
 
     private function iteratorIsRewindable(Iterator $iterator): bool
