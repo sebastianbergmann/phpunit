@@ -22,7 +22,7 @@ class Count extends Constraint
     private $expectedCount;
 
     /**
-     * @var \SplObjectStorage|null
+     * @var null|\SplObjectStorage
      */
     private $traversableCounts;
 
@@ -117,17 +117,6 @@ class Count extends Constraint
         return $count;
     }
 
-    private function iteratorIsRewindable(Iterator $iterator): bool
-    {
-        try {
-            $iterator->rewind();
-        } catch (\Exception $e) {
-            return false;
-        }
-
-        return !($iterator instanceof \NoRewindIterator);
-    }
-
     /**
      * Returns the total number of iterations from a iterator.
      * This will fully exhaust the iterator.
@@ -139,6 +128,17 @@ class Count extends Constraint
         }
 
         return $countOfGenerator;
+    }
+
+    private function iteratorIsRewindable(Iterator $iterator): bool
+    {
+        try {
+            $iterator->rewind();
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return !($iterator instanceof \NoRewindIterator);
     }
 
     private function rewindIterator(Iterator $iterator, $key): void
