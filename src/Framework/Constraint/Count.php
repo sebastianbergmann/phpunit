@@ -22,7 +22,7 @@ class Count extends Constraint
     private $expectedCount;
 
     /**
-     * @var \SplObjectStorage
+     * @var \SplObjectStorage|null
      */
     private $traversableCounts;
 
@@ -31,7 +31,6 @@ class Count extends Constraint
         parent::__construct();
 
         $this->expectedCount     = $expected;
-        $this->traversableCounts = new \SplObjectStorage();
     }
 
     public function toString(): string
