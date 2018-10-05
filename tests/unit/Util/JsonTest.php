@@ -60,11 +60,11 @@ class JsonTest extends TestCase
 
     /**
      * @dataProvider prettifyExceptionProvider
-     * @expectedException \PHPUnit\Framework\Exception
-     * @expectedExceptionMessage Cannot prettify invalid json
      */
     public function testPrettifyException($json): void
     {
+        $this->expectException('PHPUnit\Framework\Exception');
+        $this->expectExceptionMessage('Cannot prettify invalid json');
         Json::prettify($json);
     }
 
