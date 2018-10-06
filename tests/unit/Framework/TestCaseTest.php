@@ -261,7 +261,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->failureCount());
         $this->assertCount(1, $result);
         $this->assertEquals(
-            "Failed asserting that exception message 'A runtime error occurred' contains 'A logic error occurred'.",
+            "Failed asserting that exception message 'A runtime error occurred' equals 'A logic error occurred'.",
             $test->getStatusMessage()
         );
     }
