@@ -18,7 +18,7 @@ use Traversable;
 class Count extends Constraint
 {
     /**
-     * @var int
+     * @var integer
      */
     private $expectedCount;
 

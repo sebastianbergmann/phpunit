@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\Stub;
 class ReturnArgument implements Stub
 {
     /**
-     * @var int
+     * @var integer
      */
     private $argumentIndex;
 

@@ -66,15 +66,15 @@ class StaticInvocation implements Invocation, SelfDescribing
     private $returnType;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $isReturnTypeNullable = false;
 
     /**
-     * @param string $className
-     * @param string $methodName
-     * @param string $returnType
-     * @param bool   $cloneObjects
+     * @param string  $className
+     * @param string  $methodName
+     * @param string  $returnType
+     * @param boolean $cloneObjects
      */
     public function __construct($className, $methodName, array $parameters, $returnType, $cloneObjects = false)
     {

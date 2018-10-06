@@ -43,7 +43,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     private $configurableMethods;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $returnValueGeneration;
 
@@ -70,7 +70,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     }
 
     /**
-     * @return null|bool
+     * @return null|boolean
      */
     public function lookupId($id)
     {
@@ -159,7 +159,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function matches(Invocation $invocation)
     {
@@ -175,7 +175,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     /**
      * @throws \PHPUnit\Framework\ExpectationFailedException
      *
-     * @return bool
+     * @return boolean
      */
     public function verify()
     {

@@ -20,11 +20,11 @@ class ObjectInvocation extends StaticInvocation
     private $object;
 
     /**
-     * @param string $className
-     * @param string $methodName
-     * @param string $returnType
-     * @param object $object
-     * @param bool   $cloneObjects
+     * @param string  $className
+     * @param string  $methodName
+     * @param string  $returnType
+     * @param object  $object
+     * @param boolean $cloneObjects
      */
     public function __construct($className, $methodName, array $parameters, $returnType, $object, $cloneObjects = false)
     {

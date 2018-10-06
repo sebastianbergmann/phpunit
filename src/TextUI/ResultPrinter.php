@@ -71,76 +71,76 @@ class ResultPrinter extends Printer implements TestListener
     ];
 
     /**
-     * @var int
+     * @var integer
      */
     protected $column = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $maxColumn;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $lastTestFailed = false;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $numAssertions = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $numTests = -1;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $numTestsRun = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $numTestsWidth;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $colors = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $debug = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $verbose = false;
 
     /**
-     * @var int
+     * @var integer
      */
     private $numberOfColumns;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $reverse;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $defectListPrinted = false;
 
     /**
      * Constructor.
      *
-     * @param string     $colors
-     * @param int|string $numberOfColumns
-     * @param null|mixed $out
+     * @param string         $colors
+     * @param integer|string $numberOfColumns
+     * @param null|mixed     $out
      *
      * @throws Exception
      */

@@ -17,7 +17,7 @@ use RecursiveIterator;
 final class TestSuiteIterator implements RecursiveIterator
 {
     /**
-     * @var int
+     * @var integer
      */
     private $position;
 

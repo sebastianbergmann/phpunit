@@ -18,12 +18,12 @@ use SplObjectStorage;
 class TraversableContains extends Constraint
 {
     /**
-     * @var bool
+     * @var boolean
      */
     private $checkForObjectIdentity;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $checkForNonObjectIdentity;
 

@@ -18,12 +18,12 @@ use PHPUnit\Framework\ExpectationFailedException;
 class InvokedAtMostCount extends InvokedRecorder
 {
     /**
-     * @var int
+     * @var integer
      */
     private $allowedInvocations;
 
     /**
-     * @param int $allowedInvocations
+     * @param integer $allowedInvocations
      */
     public function __construct($allowedInvocations)
     {

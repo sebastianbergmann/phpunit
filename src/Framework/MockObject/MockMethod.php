@@ -32,7 +32,7 @@ final class MockMethod
     private $methodName;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $cloneArguments;
 
@@ -62,12 +62,12 @@ final class MockMethod
     private $reference;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $callOriginalMethod;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $static;
 
@@ -77,7 +77,7 @@ final class MockMethod
     private $deprecation;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $allowsReturnNull;
 

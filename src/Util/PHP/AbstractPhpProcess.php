@@ -30,7 +30,7 @@ abstract class AbstractPhpProcess
     protected $runtime;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $stderrRedirection = false;
 
@@ -50,7 +50,7 @@ abstract class AbstractPhpProcess
     protected $env = [];
 
     /**
-     * @var int
+     * @var integer
      */
     protected $timeout = 0;
 

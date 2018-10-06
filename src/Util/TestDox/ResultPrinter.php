@@ -35,7 +35,7 @@ abstract class ResultPrinter extends Printer implements TestListener
     protected $testClass = '';
 
     /**
-     * @var int
+     * @var integer
      */
     protected $testStatus;
 
@@ -45,32 +45,32 @@ abstract class ResultPrinter extends Printer implements TestListener
     protected $tests = [];
 
     /**
-     * @var int
+     * @var integer
      */
     protected $successful = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $warned = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $failed = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $risky = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $skipped = 0;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $incomplete = 0;
 

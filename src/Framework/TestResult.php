@@ -73,7 +73,7 @@ class TestResult implements Countable
     protected $listeners = [];
 
     /**
-     * @var int
+     * @var integer
      */
     protected $runTests = 0;
 
@@ -95,102 +95,102 @@ class TestResult implements Countable
     protected $codeCoverage;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $convertErrorsToExceptions = true;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $stop = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $stopOnError = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $stopOnFailure = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $stopOnWarning = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $beStrictAboutTestsThatDoNotTestAnything = true;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $beStrictAboutOutputDuringTests = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $beStrictAboutTodoAnnotatedTests = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $beStrictAboutResourceUsageDuringSmallTests = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $enforceTimeLimit = false;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $timeoutForSmallTests = 1;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $timeoutForMediumTests = 10;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $timeoutForLargeTests = 60;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $stopOnRisky = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $stopOnIncomplete = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $stopOnSkipped = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $lastTestFailed = false;
 
     /**
-     * @var int
+     * @var integer
      */
     private $defaultTimeLimit = 0;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $stopOnDefect = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $registerMockObjectsFromTestArgumentsRecursively = false;
 

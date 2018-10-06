@@ -30,7 +30,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 class TeamCity extends ResultPrinter
 {
     /**
-     * @var bool
+     * @var boolean
      */
     private $isSummaryTestCountPrinted = false;
 

@@ -70,7 +70,7 @@ class TestRunner extends BaseTestRunner
     public const EXCEPTION_EXIT = 2;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected static $versionStringPrinted = false;
 
@@ -95,7 +95,7 @@ class TestRunner extends BaseTestRunner
     private $runtime;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $messagePrinted = false;
 
@@ -106,7 +106,7 @@ class TestRunner extends BaseTestRunner
 
     /**
      * @param ReflectionClass|Test $test
-     * @param bool                 $exit
+     * @param boolean              $exit
      *
      * @throws \RuntimeException
      * @throws \InvalidArgumentException

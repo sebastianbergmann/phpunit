@@ -65,7 +65,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 /**
  * Asserts that an array has a specified key.
  *
- * @param int|string        $key
+ * @param integer|string    $key
  * @param array|ArrayAccess $array
  *
  * @throws ExpectationFailedException
@@ -93,7 +93,7 @@ function assertArraySubset($subset, $array, bool $checkForObjectIdentity = false
 /**
  * Asserts that an array does not have a specified key.
  *
- * @param int|string        $key
+ * @param integer|string    $key
  * @param array|ArrayAccess $array
  *
  * @throws ExpectationFailedException
@@ -181,7 +181,7 @@ function assertContainsOnlyInstancesOf(string $className, iterable $haystack, st
  * or an attribute of an object contains only values of a given type.
  *
  * @param object|string $haystackClassOrObject
- * @param bool          $isNativeType
+ * @param boolean       $isNativeType
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -208,7 +208,7 @@ function assertNotContainsOnly(string $type, iterable $haystack, ?bool $isNative
  * type.
  *
  * @param object|string $haystackClassOrObject
- * @param bool          $isNativeType
+ * @param boolean       $isNativeType
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -299,10 +299,10 @@ function assertAttributeEquals($expected, string $actualAttributeName, $actualCl
 /**
  * Asserts that two variables are not equal.
  *
- * @param float $delta
- * @param int   $maxDepth
- * @param bool  $canonicalize
- * @param bool  $ignoreCase
+ * @param float   $delta
+ * @param integer $maxDepth
+ * @param boolean $canonicalize
+ * @param boolean $ignoreCase
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1562,7 +1562,7 @@ function never(): InvokedCountMatcher
  * Returns a matcher that matches when the method is executed
  * at least N times.
  *
- * @param int $requiredInvocations
+ * @param integer $requiredInvocations
  */
 function atLeast($requiredInvocations): InvokedAtLeastCountMatcher
 {
@@ -1591,7 +1591,7 @@ function once(): InvokedCountMatcher
  * Returns a matcher that matches when the method is executed
  * exactly $count times.
  *
- * @param int $count
+ * @param integer $count
  */
 function exactly($count): InvokedCountMatcher
 {
@@ -1602,7 +1602,7 @@ function exactly($count): InvokedCountMatcher
  * Returns a matcher that matches when the method is executed
  * at most N times.
  *
- * @param int $allowedInvocations
+ * @param integer $allowedInvocations
  */
 function atMost($allowedInvocations): InvokedAtMostCountMatcher
 {
@@ -1613,7 +1613,7 @@ function atMost($allowedInvocations): InvokedAtMostCountMatcher
  * Returns a matcher that matches when the method is executed
  * at the given index.
  *
- * @param int $index
+ * @param integer $index
  */
 function at($index): InvokedAtIndexMatcher
 {
@@ -1631,7 +1631,7 @@ function returnValueMap(array $valueMap): ReturnValueMapStub
 }
 
 /**
- * @param int $argumentIndex
+ * @param integer $argumentIndex
  */
 function returnArgument($argumentIndex): ReturnArgumentStub
 {

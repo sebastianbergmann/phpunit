@@ -40,7 +40,7 @@ class Matcher implements MatcherInvocation
     private $afterMatchBuilderId;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $afterMatchBuilderIsInvoked = false;
 
@@ -177,7 +177,7 @@ class Matcher implements MatcherInvocation
      * @throws RuntimeException
      * @throws ExpectationFailedException
      *
-     * @return bool
+     * @return boolean
      */
     public function matches(Invocation $invocation)
     {

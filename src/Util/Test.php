@@ -124,7 +124,7 @@ final class Test
     /**
      * @throws CodeCoverageException
      *
-     * @return array|bool
+     * @return array|boolean
      */
     public static function getLinesToBeCovered(string $className, string $methodName)
     {

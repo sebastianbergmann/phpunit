@@ -41,7 +41,7 @@ interface Invocation extends SelfDescribing, Verifiable
      *
      * @param BaseInvocation $invocation Object containing information on a mocked or stubbed method which was invoked
      *
-     * @return bool
+     * @return boolean
      */
     public function matches(BaseInvocation $invocation);
 }

@@ -39,7 +39,7 @@ interface PHPUnit_Framework_MockObject_MockObject /*extends Verifiable*/
     public function __phpunit_verify(bool $unsetInvocationMocker = true);
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function __phpunit_hasMatchers();
 

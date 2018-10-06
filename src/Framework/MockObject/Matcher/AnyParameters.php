@@ -22,7 +22,7 @@ class AnyParameters extends StatelessInvocation
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function matches(BaseInvocation $invocation)
     {
