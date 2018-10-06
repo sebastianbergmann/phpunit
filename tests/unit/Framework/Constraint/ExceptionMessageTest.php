@@ -21,31 +21,4 @@ class ExceptionMessageTest extends TestCase
     {
         throw new \Exception('A literal exception message');
     }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A partial
-     */
-    public function testPartialMessageBegin(): void
-    {
-        throw new \Exception('A partial exception message');
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage partial exception
-     */
-    public function testPartialMessageMiddle(): void
-    {
-        throw new \Exception('A partial exception message');
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage exception message
-     */
-    public function testPartialMessageEnd(): void
-    {
-        throw new \Exception('A partial exception message');
-    }
 }
