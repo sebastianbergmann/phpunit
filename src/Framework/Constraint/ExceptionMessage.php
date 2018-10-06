@@ -59,7 +59,7 @@ class ExceptionMessage extends Constraint
         }
 
         return \sprintf(
-            "exception message '%s' contains '%s'",
+            "exception message '%s' equals '%s'",
             $other->getMessage(),
             $this->expectedMessage
         );
@@ -74,6 +74,6 @@ class ExceptionMessage extends Constraint
             return 'exception message is empty';
         }
 
-        return 'exception message contains ';
+        return 'exception message equals ';
     }
 }
