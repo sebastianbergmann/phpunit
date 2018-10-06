@@ -58,7 +58,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private const LOCALE_CATEGORIES = [\LC_ALL, \LC_COLLATE, \LC_CTYPE, \LC_MONETARY, \LC_NUMERIC, \LC_TIME];
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $backupGlobals;
 
@@ -68,7 +68,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected $backupGlobalsBlacklist = [];
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $backupStaticAttributes;
 
@@ -78,22 +78,22 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected $backupStaticAttributesBlacklist = [];
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $runTestInSeparateProcess;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $preserveGlobalState = true;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $runClassInSeparateProcess;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $inIsolation = false;
 
@@ -108,7 +108,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $dataName;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $useErrorHandler;
 
@@ -168,7 +168,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $mockObjectGenerator;
 
     /**
-     * @var int
+     * @var integer
      */
     private $status = BaseTestRunner::STATUS_UNKNOWN;
 
@@ -178,7 +178,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $statusMessage = '';
 
     /**
-     * @var int
+     * @var integer
      */
     private $numAssertions = 0;
 
@@ -213,12 +213,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $outputCallback = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $outputBufferingActive = false;
 
     /**
-     * @var int
+     * @var integer
      */
     private $outputBufferingLevel;
 
@@ -233,12 +233,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $prophet;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $beStrictAboutChangesToGlobalState = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $registerMockObjectsFromTestArgumentsRecursively = false;
 
@@ -253,7 +253,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $groups = [];
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $doesNotPerformAssertions = false;
 
@@ -562,7 +562,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @return null|int|string
+     * @return null|integer|string
      */
     public function getExpectedExceptionCode()
     {
@@ -585,7 +585,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @param int|string $code
+     * @param integer|string $code
      */
     public function expectExceptionCode($code): void
     {
@@ -1082,7 +1082,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @return int|string
+     * @return integer|string
      */
     public function dataName()
     {
@@ -1368,13 +1368,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Mocks the specified class and returns the name of the mocked class.
      *
-     * @param string $originalClassName
-     * @param array  $methods
-     * @param string $mockClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
-     * @param bool   $cloneArguments
+     * @param string  $originalClassName
+     * @param array   $methods
+     * @param string  $mockClassName
+     * @param boolean $callOriginalConstructor
+     * @param boolean $callOriginalClone
+     * @param boolean $callAutoload
+     * @param boolean $cloneArguments
      *
      * @throws Exception
      * @throws ReflectionException
@@ -1401,13 +1401,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * methods of the class mocked. Concrete methods are not mocked by default.
      * To mock concrete methods, use the 7th parameter ($mockedMethods).
      *
-     * @param string $originalClassName
-     * @param string $mockClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
-     * @param array  $mockedMethods
-     * @param bool   $cloneArguments
+     * @param string  $originalClassName
+     * @param string  $mockClassName
+     * @param boolean $callOriginalConstructor
+     * @param boolean $callOriginalClone
+     * @param boolean $callAutoload
+     * @param array   $mockedMethods
+     * @param boolean $cloneArguments
      *
      * @throws Exception
      * @throws ReflectionException
@@ -1434,11 +1434,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a mock object based on the given WSDL file.
      *
-     * @param string $wsdlFile
-     * @param string $originalClassName
-     * @param string $mockClassName
-     * @param bool   $callOriginalConstructor
-     * @param array  $options                 An array of options passed to SOAPClient::_construct
+     * @param string  $wsdlFile
+     * @param string  $originalClassName
+     * @param string  $mockClassName
+     * @param boolean $callOriginalConstructor
+     * @param array   $options                 An array of options passed to SOAPClient::_construct
      *
      * @throws Exception
      * @throws ReflectionException
@@ -1482,13 +1482,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * of the trait mocked. Concrete methods to mock can be specified with the
      * `$mockedMethods` parameter.
      *
-     * @param string $traitName
-     * @param string $mockClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
-     * @param array  $mockedMethods
-     * @param bool   $cloneArguments
+     * @param string  $traitName
+     * @param string  $mockClassName
+     * @param boolean $callOriginalConstructor
+     * @param boolean $callOriginalClone
+     * @param boolean $callAutoload
+     * @param array   $mockedMethods
+     * @param boolean $cloneArguments
      *
      * @throws Exception
      * @throws ReflectionException
@@ -1515,11 +1515,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns an object for the specified trait.
      *
-     * @param string $traitName
-     * @param string $traitClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
+     * @param string  $traitName
+     * @param string  $traitClassName
+     * @param boolean $callOriginalConstructor
+     * @param boolean $callOriginalClone
+     * @param boolean $callAutoload
      *
      * @throws Exception
      * @throws ReflectionException

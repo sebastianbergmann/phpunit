@@ -68,14 +68,14 @@ use Traversable;
 abstract class Assert
 {
     /**
-     * @var int
+     * @var integer
      */
     private static $count = 0;
 
     /**
      * Asserts that an array has a specified key.
      *
-     * @param int|string        $key
+     * @param integer|string    $key
      * @param array|ArrayAccess $array
      *
      * @throws ExpectationFailedException
@@ -135,7 +135,7 @@ abstract class Assert
     /**
      * Asserts that an array does not have a specified key.
      *
-     * @param int|string        $key
+     * @param integer|string    $key
      * @param array|ArrayAccess $array
      *
      * @throws ExpectationFailedException
@@ -329,7 +329,7 @@ abstract class Assert
      * or an attribute of an object contains only values of a given type.
      *
      * @param object|string $haystackClassOrObject
-     * @param bool          $isNativeType
+     * @param boolean       $isNativeType
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -374,7 +374,7 @@ abstract class Assert
      * type.
      *
      * @param object|string $haystackClassOrObject
-     * @param bool          $isNativeType
+     * @param boolean       $isNativeType
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -510,10 +510,10 @@ abstract class Assert
     /**
      * Asserts that two variables are not equal.
      *
-     * @param float $delta
-     * @param int   $maxDepth
-     * @param bool  $canonicalize
-     * @param bool  $ignoreCase
+     * @param float   $delta
+     * @param integer $maxDepth
+     * @param boolean $canonicalize
+     * @param boolean $ignoreCase
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -2098,7 +2098,7 @@ abstract class Assert
     }
 
     /**
-     * @param int|string $key
+     * @param integer|string $key
      */
     public static function arrayHasKey($key): ArrayHasKey
     {

@@ -20,22 +20,22 @@ class WarningTestCase extends TestCase
     protected $message = '';
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $backupGlobals = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $backupStaticAttributes = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $runTestInSeparateProcess = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $useErrorHandler = false;
 

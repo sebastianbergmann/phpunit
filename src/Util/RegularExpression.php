@@ -14,7 +14,7 @@ final class RegularExpression
     /**
      * @throws \Exception
      *
-     * @return false|int
+     * @return false|integer
      */
     public static function safeMatch(string $pattern, string $subject, ?array $matches = null, int $flags = 0, int $offset = 0)
     {

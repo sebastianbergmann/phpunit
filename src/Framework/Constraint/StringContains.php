@@ -26,7 +26,7 @@ class StringContains extends Constraint
     private $string;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $ignoreCase;
 

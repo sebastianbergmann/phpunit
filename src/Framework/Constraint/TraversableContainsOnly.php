@@ -55,9 +55,9 @@ class TraversableContainsOnly extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param mixed  $other        value or object to evaluate
-     * @param string $description  Additional information about the test
-     * @param bool   $returnResult Whether to return a result or throw an exception
+     * @param mixed   $other        value or object to evaluate
+     * @param string  $description  Additional information about the test
+     * @param boolean $returnResult Whether to return a result or throw an exception
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException

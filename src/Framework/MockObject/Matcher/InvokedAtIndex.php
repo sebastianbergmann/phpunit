@@ -25,17 +25,17 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 class InvokedAtIndex implements Invocation
 {
     /**
-     * @var int
+     * @var integer
      */
     private $sequenceIndex;
 
     /**
-     * @var int
+     * @var integer
      */
     private $currentIndex = -1;
 
     /**
-     * @param int $sequenceIndex
+     * @param integer $sequenceIndex
      */
     public function __construct($sequenceIndex)
     {
@@ -48,7 +48,7 @@ class InvokedAtIndex implements Invocation
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function matches(BaseInvocation $invocation)
     {

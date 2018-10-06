@@ -27,7 +27,7 @@ class ArrayHasKey extends Constraint
     private $key;
 
     /**
-     * @param int|string $key
+     * @param integer|string $key
      */
     public function __construct($key)
     {

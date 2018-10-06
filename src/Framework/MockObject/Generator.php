@@ -58,14 +58,14 @@ class Generator
      * @param string|string[] $type
      * @param array           $methods
      * @param string          $mockClassName
-     * @param bool            $callOriginalConstructor
-     * @param bool            $callOriginalClone
-     * @param bool            $callAutoload
-     * @param bool            $cloneArguments
-     * @param bool            $callOriginalMethods
+     * @param boolean         $callOriginalConstructor
+     * @param boolean         $callOriginalClone
+     * @param boolean         $callAutoload
+     * @param boolean         $cloneArguments
+     * @param boolean         $callOriginalMethods
      * @param object          $proxyTarget
-     * @param bool            $allowMockingUnknownTypes
-     * @param bool            $returnValueGeneration
+     * @param boolean         $allowMockingUnknownTypes
+     * @param boolean         $returnValueGeneration
      *
      * @throws Exception
      * @throws RuntimeException
@@ -206,13 +206,13 @@ class Generator
      * methods of the class mocked. Concrete methods to mock can be specified with
      * the last parameter
      *
-     * @param string $originalClassName
-     * @param string $mockClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
-     * @param array  $mockedMethods
-     * @param bool   $cloneArguments
+     * @param string  $originalClassName
+     * @param string  $mockClassName
+     * @param boolean $callOriginalConstructor
+     * @param boolean $callOriginalClone
+     * @param boolean $callAutoload
+     * @param array   $mockedMethods
+     * @param boolean $cloneArguments
      *
      * @throws \ReflectionException
      * @throws RuntimeException
@@ -267,13 +267,13 @@ class Generator
      * of the trait mocked. Concrete methods to mock can be specified with the
      * `$mockedMethods` parameter.
      *
-     * @param string $traitName
-     * @param string $mockClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
-     * @param array  $mockedMethods
-     * @param bool   $cloneArguments
+     * @param string  $traitName
+     * @param string  $mockClassName
+     * @param boolean $callOriginalConstructor
+     * @param boolean $callOriginalClone
+     * @param boolean $callAutoload
+     * @param array   $mockedMethods
+     * @param boolean $cloneArguments
      *
      * @throws \ReflectionException
      * @throws RuntimeException
@@ -327,11 +327,11 @@ class Generator
     /**
      * Returns an object for the specified trait.
      *
-     * @param string $traitName
-     * @param string $traitClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
+     * @param string  $traitName
+     * @param string  $traitClassName
+     * @param boolean $callOriginalConstructor
+     * @param boolean $callOriginalClone
+     * @param boolean $callAutoload
      *
      * @throws \ReflectionException
      * @throws RuntimeException
@@ -381,10 +381,10 @@ class Generator
      * @param array|string $type
      * @param array        $methods
      * @param string       $mockClassName
-     * @param bool         $callOriginalClone
-     * @param bool         $callAutoload
-     * @param bool         $cloneArguments
-     * @param bool         $callOriginalMethods
+     * @param boolean      $callOriginalClone
+     * @param boolean      $callAutoload
+     * @param boolean      $cloneArguments
+     * @param boolean      $callOriginalMethods
      *
      * @throws \ReflectionException
      * @throws \PHPUnit\Framework\MockObject\RuntimeException
@@ -561,11 +561,11 @@ class Generator
      * @param string       $code
      * @param string       $className
      * @param array|string $type
-     * @param bool         $callOriginalConstructor
-     * @param bool         $callAutoload
-     * @param bool         $callOriginalMethods
+     * @param boolean      $callOriginalConstructor
+     * @param boolean      $callAutoload
+     * @param boolean      $callOriginalMethods
      * @param object       $proxyTarget
-     * @param bool         $returnValueGeneration
+     * @param boolean      $returnValueGeneration
      *
      * @throws \ReflectionException
      * @throws RuntimeException
@@ -629,10 +629,10 @@ class Generator
      * @param array|string $type
      * @param null|array   $explicitMethods
      * @param string       $mockClassName
-     * @param bool         $callOriginalClone
-     * @param bool         $callAutoload
-     * @param bool         $cloneArguments
-     * @param bool         $callOriginalMethods
+     * @param boolean      $callOriginalClone
+     * @param boolean      $callAutoload
+     * @param boolean      $cloneArguments
+     * @param boolean      $callOriginalMethods
      *
      * @throws \InvalidArgumentException
      * @throws \ReflectionException
@@ -893,7 +893,7 @@ class Generator
     }
 
     /**
-     * @param bool $isInterface
+     * @param boolean $isInterface
      *
      * @return string
      */
@@ -934,7 +934,7 @@ class Generator
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     private function canMockMethod(ReflectionMethod $method)
     {
@@ -946,7 +946,7 @@ class Generator
      *
      * @param string $name
      *
-     * @return bool
+     * @return boolean
      */
     private function isMethodNameBlacklisted($name)
     {

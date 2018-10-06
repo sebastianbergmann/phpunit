@@ -146,7 +146,7 @@ class Command
     ];
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $versionStringPrinted = false;
 

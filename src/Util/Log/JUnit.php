@@ -44,12 +44,12 @@ class JUnit extends Printer implements TestListener
     protected $root;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $reportUselessTests = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $writeDocument = true;
 
@@ -89,7 +89,7 @@ class JUnit extends Printer implements TestListener
     protected $testSuiteTimes = [0];
 
     /**
-     * @var int
+     * @var integer
      */
     protected $testSuiteLevel = 0;
 

@@ -21,7 +21,7 @@ class LessThan extends Constraint
     private $value;
 
     /**
-     * @param float|int $value
+     * @param float|integer $value
      */
     public function __construct($value)
     {

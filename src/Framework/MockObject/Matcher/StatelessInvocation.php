@@ -42,7 +42,7 @@ abstract class StatelessInvocation implements Invocation
      * the matcher will get the invoked() method called which should check if an
      * expectation is met.
      *
-     * @return bool
+     * @return boolean
      */
     public function verify()
     {

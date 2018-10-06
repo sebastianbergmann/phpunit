@@ -25,7 +25,7 @@ abstract class InvokedRecorder implements Invocation
     private $invocations = [];
 
     /**
-     * @return int
+     * @return integer
      */
     public function getInvocationCount()
     {
@@ -41,7 +41,7 @@ abstract class InvokedRecorder implements Invocation
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function hasBeenInvoked()
     {
@@ -54,7 +54,7 @@ abstract class InvokedRecorder implements Invocation
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function matches(BaseInvocation $invocation)
     {

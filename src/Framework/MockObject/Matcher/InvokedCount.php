@@ -23,12 +23,12 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 class InvokedCount extends InvokedRecorder
 {
     /**
-     * @var int
+     * @var integer
      */
     private $expectedCount;
 
     /**
-     * @param int $expectedCount
+     * @param integer $expectedCount
      */
     public function __construct($expectedCount)
     {
@@ -36,7 +36,7 @@ class InvokedCount extends InvokedRecorder
     }
 
     /**
-     * @return bool
+     * @return boolean
      */
     public function isNever()
     {

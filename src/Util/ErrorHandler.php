@@ -75,7 +75,7 @@ final class ErrorHandler
      * Registers an error handler and returns a function that will restore
      * the previous handler when invoked
      *
-     * @param int $severity PHP predefined error constant
+     * @param integer $severity PHP predefined error constant
      *
      * @throws \Exception if event of specified severity is emitted
      */

@@ -23,12 +23,12 @@ class NameFilterIterator extends RecursiveFilterIterator
     protected $filter;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $filterMin;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $filterMax;
 

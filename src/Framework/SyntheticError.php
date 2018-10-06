@@ -24,7 +24,7 @@ class SyntheticError extends AssertionFailedError
     /**
      * The synthetic line number.
      *
-     * @var int
+     * @var integer
      */
     protected $syntheticLine = 0;
 

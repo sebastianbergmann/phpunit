@@ -47,27 +47,27 @@ class MockBuilder
     private $constructorArgs = [];
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $originalConstructor = true;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $originalClone = true;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $autoload = true;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $cloneArguments = false;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $callOriginalMethods = false;
 
@@ -77,12 +77,12 @@ class MockBuilder
     private $proxyTarget;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $allowMockingUnknownTypes = true;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $returnValueGeneration = true;
 

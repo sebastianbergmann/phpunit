@@ -27,7 +27,7 @@ final class TestResult
     private $testMethod;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $testSuccesful;
 
@@ -42,7 +42,7 @@ final class TestResult
     private $additionalInformation;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $additionalInformationVerbose;
 

@@ -1190,9 +1190,9 @@ final class Configuration
      * Otherwise, returns $default, which may be a string in rare cases.
      * See PHPUnit\Util\ConfigurationTest::testPHPConfigurationIsReadCorrectly
      *
-     * @param bool|string $default
+     * @param boolean|string $default
      *
-     * @return bool|string
+     * @return boolean|string
      */
     private function getBoolean(string $value, $default)
     {

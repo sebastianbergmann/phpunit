@@ -19,7 +19,7 @@ class Printer
     /**
      * If true, flush output after every write.
      *
-     * @var bool
+     * @var boolean
      */
     protected $autoFlush = false;
 

@@ -28,19 +28,19 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      *
-     * @var bool
+     * @var boolean
      */
     protected $backupGlobals;
 
     /**
      * Enable or disable the backup and restoration of static attributes.
      *
-     * @var bool
+     * @var boolean
      */
     protected $backupStaticAttributes;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $runTestInSeparateProcess = false;
 
@@ -68,12 +68,12 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * The number of tests in the test suite.
      *
-     * @var int
+     * @var integer
      */
     protected $numTests = -1;
 
     /**
-     * @var bool
+     * @var boolean
      */
     protected $testCase = false;
 
@@ -90,7 +90,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     private $cachedNumTests;
 
     /**
-     * @var bool
+     * @var boolean
      */
     private $beStrictAboutChangesToGlobalState;
 
@@ -622,7 +622,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * Counts the number of test cases that will be run by this test.
      *
-     * @param bool $preferCache indicates if cache is preferred
+     * @param boolean $preferCache indicates if cache is preferred
      */
     public function count($preferCache = false): int
     {
@@ -816,7 +816,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     }
 
     /**
-     * @param bool $beStrictAboutChangesToGlobalState
+     * @param boolean $beStrictAboutChangesToGlobalState
      */
     public function setBeStrictAboutChangesToGlobalState($beStrictAboutChangesToGlobalState): void
     {
@@ -826,7 +826,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     }
 
     /**
-     * @param bool $backupGlobals
+     * @param boolean $backupGlobals
      */
     public function setBackupGlobals($backupGlobals): void
     {
@@ -836,7 +836,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     }
 
     /**
-     * @param bool $backupStaticAttributes
+     * @param boolean $backupStaticAttributes
      */
     public function setBackupStaticAttributes($backupStaticAttributes): void
     {

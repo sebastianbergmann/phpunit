@@ -17,7 +17,7 @@ class ExceptionCode extends Constraint
     private $expectedCode;
 
     /**
-     * @param int|string $expected
+     * @param integer|string $expected
      */
     public function __construct($expected)
     {
