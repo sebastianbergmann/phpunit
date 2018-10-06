@@ -1323,7 +1323,7 @@ function attributeEqualTo($attributeName, $value, $delta = 0.0, $maxDepth = 10, 
  *
  * @param callable $callback
  *
- * @return Callback
+ * @return callback
  */
 function callback($callback)
 {

@@ -2337,7 +2337,7 @@ abstract class Assert
     /**
      * @param callable $callback
      *
-     * @return Callback
+     * @return callback
      */
     public static function callback($callback)
     {
