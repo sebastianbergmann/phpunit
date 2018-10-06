@@ -62,7 +62,7 @@ final class Test
     /**
      * @var string
      */
-    private const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
+    private const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)\s*$)m';
 
     /**
      * @var string
@@ -361,9 +361,7 @@ final class Test
             $message       = '';
             $messageRegExp = '';
 
-            if (isset($matches[2])) {
-                $message = \trim($matches[2]);
-            } elseif (isset($annotations['method']['expectedExceptionMessage'])) {
+            if (isset($annotations['method']['expectedExceptionMessage'])) {
                 $message = self::parseAnnotationContent(
                     $annotations['method']['expectedExceptionMessage'][0]
                 );
@@ -375,9 +373,7 @@ final class Test
                 );
             }
 
-            if (isset($matches[3])) {
-                $code = $matches[3];
-            } elseif (isset($annotations['method']['expectedExceptionCode'])) {
+            if (isset($annotations['method']['expectedExceptionCode'])) {
                 $code = self::parseAnnotationContent(
                     $annotations['method']['expectedExceptionCode'][0]
                 );
