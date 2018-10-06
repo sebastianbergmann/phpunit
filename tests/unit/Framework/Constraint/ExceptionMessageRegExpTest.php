@@ -45,7 +45,8 @@ class ExceptionMessageRegExpTest extends TestCase
     }
 
     /**
-     * @expectedException \Exception variadic
+     * @expectedException \Exception
+     * @expectedExceptionMessage A variadic exception message
      * @expectedExceptionMessageRegExp /^A variadic \w+ message/
      */
     public function testSimultaneousLiteralAndRegExpExceptionMessage(): void
