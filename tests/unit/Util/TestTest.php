@@ -45,11 +45,6 @@ class TestTest extends TestCase
 
         $this->assertArraySubset(
             ['class' => 'Class', 'code' => 1234, 'message' => 'Message'],
-            Test::getExpectedException(\ExceptionTest::class, 'testFive')
-        );
-
-        $this->assertArraySubset(
-            ['class' => 'Class', 'code' => 1234, 'message' => 'Message'],
             Test::getExpectedException(\ExceptionTest::class, 'testSix')
         );
 

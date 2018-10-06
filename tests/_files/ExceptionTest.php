@@ -53,13 +53,6 @@ class ExceptionTest extends TestCase
     }
 
     /**
-     * @expectedException Class Message 1234
-     */
-    public function testFive()
-    {
-    }
-
-    /**
      * @expectedException Class
      * @expectedExceptionMessage Message
      * @expectedExceptionCode 1234
