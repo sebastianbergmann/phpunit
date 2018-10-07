@@ -128,6 +128,17 @@ class CountTest extends ConstraintTestCase
         $this->assertNull($generator->current());
     }
 
+    public function testFullyCountsIteratorsNotAtTheirStartingPosition(): void
+    {
+        $iterator = new \TestIterator([1, 2, 3]);
+        $iterator->next();
+
+        $this->assertCountSucceeds(
+            new Count(3),
+            $iterator
+        );
+    }
+
     public function testCountTraversable(): void
     {
         $countConstraint = new Count(5);

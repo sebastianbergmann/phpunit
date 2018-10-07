@@ -104,14 +104,14 @@ class Count extends Constraint
 
     private function countIteratorWithoutChangingPositionIfPossible(Iterator $iterator): int
     {
-        $key   = $iterator->key();
-        $count = $this->getCountOfIterator($iterator);
+        $key          = $iterator->key();
+        $isRewindable = $this->attemptIteratorRewind($iterator);
+        $count        = $this->getCountOfIterator($iterator);
 
-        $this->traversableCounts->attach($iterator, $count);
-
-        if ($this->iteratorIsRewindable($iterator)) {
-            $this->traversableCounts->detach($iterator);
-            $this->rewindIterator($iterator, $key);
+        if ($isRewindable) {
+            $this->moveIteratorToPosition($iterator, $key);
+        } else {
+            $this->traversableCounts->attach($iterator, $count);
         }
 
         return $count;
@@ -130,18 +130,22 @@ class Count extends Constraint
         return $count;
     }
 
-    private function iteratorIsRewindable(Iterator $iterator): bool
+    private function attemptIteratorRewind(Iterator $iterator): bool
     {
+        if ($iterator instanceof \Generator || $iterator instanceof \NoRewindIterator) {
+            return false;
+        }
+
         try {
             $iterator->rewind();
         } catch (\Exception $e) {
             return false;
         }
 
-        return !($iterator instanceof \NoRewindIterator);
+        return true;
     }
 
-    private function rewindIterator(Iterator $iterator, $key): void
+    private function moveIteratorToPosition(Iterator $iterator, $key): void
     {
         $iterator->rewind();
 
