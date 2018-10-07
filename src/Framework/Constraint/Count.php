@@ -95,11 +95,20 @@ class Count extends Constraint
             return $this->traversableCounts[$traversable];
         }
 
+        $count = $this->countNonIteratorAggregateTraversable($traversable);
+
+        $this->traversableCounts->attach($traversable, $count);
+
+        return $count;
+    }
+
+    private function countNonIteratorAggregateTraversable(Traversable $traversable): int
+    {
         if ($traversable instanceof Iterator) {
             return $this->countIteratorWithoutChangingPositionIfPossible($traversable);
         }
 
-        return $this->getCountOfTraversableThatIsNotIteratorOrIteratorAggregate($traversable);
+        return \iterator_count($traversable);
     }
 
     private function countIteratorWithoutChangingPositionIfPossible(Iterator $iterator): int
@@ -110,8 +119,6 @@ class Count extends Constraint
 
         if ($isRewindable) {
             $this->moveIteratorToPosition($iterator, $key);
-        } else {
-            $this->traversableCounts->attach($iterator, $count);
         }
 
         return $count;
@@ -147,19 +154,12 @@ class Count extends Constraint
 
     private function moveIteratorToPosition(Iterator $iterator, $key): void
     {
-        $iterator->rewind();
+        if ($key !== null) {
+            $iterator->rewind();
 
-        while ($iterator->valid() && $key !== $iterator->key()) {
-            $iterator->next();
+            while ($iterator->valid() && $key !== $iterator->key()) {
+                $iterator->next();
+            }
         }
-    }
-
-    private function getCountOfTraversableThatIsNotIteratorOrIteratorAggregate(Traversable $traversable): int
-    {
-        $count = \iterator_count($traversable);
-
-        $this->traversableCounts->attach($traversable, $count);
-
-        return $count;
     }
 }
