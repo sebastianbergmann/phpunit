@@ -118,7 +118,7 @@ class CountTest extends ConstraintTestCase
         $this->assertNull($generator->current());
     }
 
-    public function testCountsExhaustedIteratorsAsZero(): void
+    public function testCountsExhaustedGeneratorsAsZero(): void
     {
         $countConstraint = new Count(0);
         $generator       = (new \TestGeneratorMaker())->create([1]);
