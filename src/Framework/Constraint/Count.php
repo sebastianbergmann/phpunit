@@ -115,7 +115,7 @@ class Count extends Constraint
     {
         $key          = $iterator->key();
         $isRewindable = $this->attemptIteratorRewind($iterator);
-        $count        = $this->getCountOfIterator($iterator);
+        $count        = $this->getRemainingCountOfIterator($iterator);
 
         if ($isRewindable) {
             $this->moveIteratorToPosition($iterator, $key);
@@ -125,10 +125,9 @@ class Count extends Constraint
     }
 
     /**
-     * Returns the total number of iterations from a iterator.
      * This will fully exhaust the iterator.
      */
-    private function getCountOfIterator(Iterator $iterator): int
+    private function getRemainingCountOfIterator(Iterator $iterator): int
     {
         for ($count = 0; $iterator->valid(); $iterator->next()) {
             ++$count;
