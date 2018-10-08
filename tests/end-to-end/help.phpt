@@ -52,6 +52,7 @@ Test Execution Options:
 
   --dont-report-useless-tests Do not report tests that do not test anything
   --strict-coverage           Be strict about @covers annotation usage
+  --check-for-missing-covers  Warn about missing @covers annotation's
   --strict-global-state       Be strict about changes to global state
   --disallow-test-output      Be strict about output during tests
   --disallow-resource-usage   Be strict about resource usage during small tests

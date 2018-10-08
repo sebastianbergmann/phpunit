@@ -470,6 +470,7 @@ class ConfigurationTest extends TestCase
                 'stopOnWarning'                              => false,
                 'reportUselessTests'                         => false,
                 'strictCoverage'                             => false,
+                'checkForMissingCovers'                      => false,
                 'disallowTestOutput'                         => false,
                 'defaultTimeLimit'                           => 123,
                 'enforceTimeLimit'                           => false,

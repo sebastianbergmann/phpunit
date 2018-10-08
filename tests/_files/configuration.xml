@@ -25,6 +25,7 @@
          beStrictAboutTestsThatDoNotTestAnything="false"
          beStrictAboutTodoAnnotatedTests="false"
          beStrictAboutCoversAnnotation="false"
+         checkForMissingCovers="false"
          defaultTimeLimit="123"
          enforceTimeLimit="false"
          ignoreDeprecatedCodeUnitsFromCodeCoverage="false"

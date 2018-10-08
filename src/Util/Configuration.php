@@ -856,6 +856,13 @@ final class Configuration
             );
         }
 
+        if ($root->hasAttribute('checkForMissingCovers')) {
+            $result['checkForMissingCovers'] = $this->getBoolean(
+                (string) $root->getAttribute('checkForMissingCovers'),
+                false
+            );
+        }
+
         if ($root->hasAttribute('defaultTimeLimit')) {
             $result['defaultTimeLimit'] = $this->getInteger(
                 (string) $root->getAttribute('defaultTimeLimit'),

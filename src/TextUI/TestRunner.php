@@ -475,7 +475,7 @@ class TestRunner extends BaseTestRunner
             );
 
             $codeCoverage->setCheckForMissingCoversAnnotation(
-                $arguments['strictCoverage']
+                $arguments['strictCoverage'] || $arguments['checkForMissingCovers']
             );
 
             if (isset($arguments['forceCoversAnnotation'])) {
@@ -949,6 +949,10 @@ class TestRunner extends BaseTestRunner
                 $arguments['strictCoverage'] = $phpunitConfiguration['strictCoverage'];
             }
 
+            if (isset($phpunitConfiguration['checkForMissingCovers']) && !isset($arguments['checkForMissingCovers'])) {
+                $arguments['checkForMissingCovers'] = $phpunitConfiguration['checkForMissingCovers'];
+            }
+
             if (isset($phpunitConfiguration['ignoreDeprecatedCodeUnitsFromCodeCoverage']) && !isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
                 $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'] = $phpunitConfiguration['ignoreDeprecatedCodeUnitsFromCodeCoverage'];
             }
@@ -1224,6 +1228,7 @@ class TestRunner extends BaseTestRunner
         $arguments['stopOnWarning']                                   = $arguments['stopOnWarning'] ?? false;
         $arguments['stopOnDefect']                                    = $arguments['stopOnDefect'] ?? false;
         $arguments['strictCoverage']                                  = $arguments['strictCoverage'] ?? false;
+        $arguments['checkForMissingCovers']                           = $arguments['checkForMissingCovers'] ?? false;
         $arguments['testdoxExcludeGroups']                            = $arguments['testdoxExcludeGroups'] ?? [];
         $arguments['testdoxGroups']                                   = $arguments['testdoxGroups'] ?? [];
         $arguments['timeoutForLargeTests']                            = $arguments['timeoutForLargeTests'] ?? 60;
