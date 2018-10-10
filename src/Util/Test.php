@@ -124,7 +124,7 @@ final class Test
     /**
      * @throws CodeCoverageException
      *
-     * @return array|bool
+     * @return array|false
      */
     public static function getLinesToBeCovered(string $className, string $methodName)
     {
@@ -819,7 +819,7 @@ final class Test
     /**
      * Returns the provided data for a method.
      */
-    private static function getDataFromDataProviderAnnotation(string $docComment, string $className, string $methodName): ?iterable
+    private static function getDataFromDataProviderAnnotation(string $docComment, string $className, string $methodName): ?array
     {
         if (\preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             $result = [];

@@ -85,7 +85,7 @@ class TestRunner extends BaseTestRunner
     protected $loader;
 
     /**
-     * @var ResultPrinter
+     * @var null|Printer
      */
     protected $printer;
 
@@ -296,6 +296,7 @@ class TestRunner extends BaseTestRunner
                     }
                 }
 
+                /* @var ResultPrinter $this->printer */
                 $this->printer = new $printerClass(
                     (isset($arguments['stderr']) && $arguments['stderr'] === true) ? 'php://stderr' : null,
                     $arguments['verbose'],

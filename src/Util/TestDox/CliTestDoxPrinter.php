@@ -70,7 +70,7 @@ class CliTestDoxPrinter extends ResultPrinter
                 'Error bootstapping suite (most likely in %s::setUpBeforeClass)',
                 $test->getName()
             );
-        } elseif ($test instanceof PhptTestCase) {
+        } else {
             $className  = $class;
             $testMethod = $test->getName();
         }

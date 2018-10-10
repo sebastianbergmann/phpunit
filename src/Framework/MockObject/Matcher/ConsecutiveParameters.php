@@ -32,7 +32,7 @@ class ConsecutiveParameters extends StatelessInvocation
     private $parameterGroups = [];
 
     /**
-     * @var array
+     * @var BaseInvocation[]
      */
     private $invocations = [];
 
@@ -91,12 +91,6 @@ class ConsecutiveParameters extends StatelessInvocation
         if (!isset($this->parameterGroups[$callIndex])) {
             // no parameter assertion for this call index
             return;
-        }
-
-        if ($invocation === null) {
-            throw new ExpectationFailedException(
-                'Mocked method does not exist.'
-            );
         }
 
         $parameters = $this->parameterGroups[$callIndex];

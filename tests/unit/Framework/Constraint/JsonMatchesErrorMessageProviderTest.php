@@ -17,7 +17,7 @@ class JsonMatchesErrorMessageProviderTest extends TestCase
     {
         return [
             'JSON_ERROR_NONE'  => [
-                null, 'json_error_none', '',
+                null, 0, '',
             ],
             'JSON_ERROR_DEPTH' => [
                 'Maximum stack depth exceeded', \JSON_ERROR_DEPTH, '',

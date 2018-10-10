@@ -17,7 +17,7 @@ class JsonMatchesErrorMessageProvider
     /**
      * Translates JSON error to a human readable string.
      */
-    public static function determineJsonError(string $error, string $prefix = ''): ?string
+    public static function determineJsonError(int $error, string $prefix = ''): ?string
     {
         switch ($error) {
             case \JSON_ERROR_NONE:

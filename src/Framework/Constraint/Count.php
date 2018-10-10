@@ -13,7 +13,6 @@ use Countable;
 use Generator;
 use Iterator;
 use IteratorAggregate;
-use Traversable;
 
 class Count extends Constraint
 {
@@ -55,36 +54,34 @@ class Count extends Constraint
             return \count($other);
         }
 
-        if ($other instanceof Traversable) {
-            while ($other instanceof IteratorAggregate) {
-                $other = $other->getIterator();
-            }
-
-            $iterator = $other;
-
-            if ($iterator instanceof Generator) {
-                return $this->getCountOfGenerator($iterator);
-            }
-
-            if (!$iterator instanceof Iterator) {
-                return \iterator_count($iterator);
-            }
-
-            $key   = $iterator->key();
-            $count = \iterator_count($iterator);
-
-            // Manually rewind $iterator to previous key, since iterator_count
-            // moves pointer.
-            if ($key !== null) {
-                $iterator->rewind();
-
-                while ($iterator->valid() && $key !== $iterator->key()) {
-                    $iterator->next();
-                }
-            }
-
-            return $count;
+        while ($other instanceof IteratorAggregate) {
+            $other = $other->getIterator();
         }
+
+        $iterator = $other;
+
+        if ($iterator instanceof Generator) {
+            return $this->getCountOfGenerator($iterator);
+        }
+
+        if (!$iterator instanceof Iterator) {
+            return \iterator_count($iterator);
+        }
+
+        $key   = $iterator->key();
+        $count = \iterator_count($iterator);
+
+        // Manually rewind $iterator to previous key, since iterator_count
+        // moves pointer.
+        if ($key !== null) {
+            $iterator->rewind();
+
+            while ($iterator->valid() && $key !== $iterator->key()) {
+                $iterator->next();
+            }
+        }
+
+        return $count;
     }
 
     /**

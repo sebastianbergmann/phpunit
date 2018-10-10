@@ -588,7 +588,8 @@ class TestResult implements Countable
     {
         Assert::resetCount();
 
-        $coversNothing = false;
+        $coversNothing         = false;
+        $isAnyCoverageRequired = false;
 
         if ($test instanceof TestCase) {
             $test->setRegisterMockObjectsFromTestArgumentsRecursively(
@@ -632,6 +633,7 @@ class TestResult implements Countable
 
         $monitorFunctions = $this->beStrictAboutResourceUsageDuringSmallTests &&
             !$test instanceof WarningTestCase &&
+            $test instanceof TestCase &&
             $test->getSize() == \PHPUnit\Util\Test::SMALL &&
             \function_exists('xdebug_start_function_monitor');
 
@@ -641,6 +643,10 @@ class TestResult implements Countable
         }
 
         Timer::start();
+
+        $_timeout = null;
+
+        $e = null;
 
         try {
             if (!$test instanceof WarningTestCase &&

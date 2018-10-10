@@ -121,11 +121,6 @@ class ArraySubset extends Constraint
             return $other->getArrayCopy();
         }
 
-        if ($other instanceof \Traversable) {
-            return \iterator_to_array($other);
-        }
-
-        // Keep BC even if we know that array would not be the expected one
-        return (array) $other;
+        return \iterator_to_array($other);
     }
 }

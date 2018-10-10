@@ -285,11 +285,9 @@ class TeamCity extends ResultPrinter
         $this->startedTestName = $testName;
         $params                = ['name' => $testName];
 
-        if ($test instanceof TestCase) {
-            $className              = \get_class($test);
-            $fileName               = self::getFileName($className);
-            $params['locationHint'] = "php_qn://$fileName::\\$className::$testName";
-        }
+        $className              = \get_class($test);
+        $fileName               = self::getFileName($className);
+        $params['locationHint'] = "php_qn://$fileName::\\$className::$testName";
 
         $this->printEvent('testStarted', $params);
     }
@@ -418,6 +416,6 @@ class TeamCity extends ResultPrinter
      */
     private static function toMilliseconds(float $time): int
     {
-        return \round($time * 1000);
+        return (int) \round($time * 1000);
     }
 }

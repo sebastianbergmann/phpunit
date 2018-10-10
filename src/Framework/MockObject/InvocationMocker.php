@@ -28,7 +28,7 @@ use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
 class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
 {
     /**
-     * @var MatcherInvocation[]
+     * @var Matcher[]
      */
     private $matchers = [];
 
@@ -58,7 +58,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
         $this->matchers[] = $matcher;
     }
 
-    public function hasMatchers()
+    public function hasMatchers(): bool
     {
         foreach ($this->matchers as $matcher) {
             if ($matcher->hasMatchers()) {
@@ -69,14 +69,13 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
         return false;
     }
 
-    /**
-     * @return null|bool
-     */
-    public function lookupId($id)
+    public function lookupId($id): ?Match
     {
         if (isset($this->builderMap[$id])) {
             return $this->builderMap[$id];
         }
+
+        return null;
     }
 
     /**
@@ -175,7 +174,7 @@ class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
     /**
      * @throws \PHPUnit\Framework\ExpectationFailedException
      *
-     * @return bool
+     * @return ?bool
      */
     public function verify()
     {

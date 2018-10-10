@@ -163,9 +163,9 @@ class XmlResultPrinter extends Printer implements TestListener
         $node->setAttribute('methodName', $test->getName());
         $node->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(\get_class($test)));
         $node->setAttribute('prettifiedMethodName', $this->prettifier->prettifyTestCase($test));
-        $node->setAttribute('status', $test->getStatus());
-        $node->setAttribute('time', $time);
-        $node->setAttribute('size', $test->getSize());
+        $node->setAttribute('status', (string) $test->getStatus());
+        $node->setAttribute('time', (string) $time);
+        $node->setAttribute('size', (string) $test->getSize());
         $node->setAttribute('groups', \implode(',', $groups));
 
         $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(\get_class($test), $test->getName());

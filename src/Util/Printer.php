@@ -51,7 +51,7 @@ class Printer
                         throw new Exception;
                     }
 
-                    $this->out = \fsockopen($out[0], $out[1]);
+                    $this->out = \fsockopen($out[0], (int) $out[1]);
                 } else {
                     if (\strpos($out, 'php://') === false && !$this->createDirectory(\dirname($out))) {
                         throw new Exception(\sprintf('Directory "%s" was not created', \dirname($out)));

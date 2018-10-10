@@ -1269,10 +1269,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         [$category, $locale] = $args;
 
-        if (\defined('LC_MESSAGES')) {
-            $categories[] = \LC_MESSAGES;
-        }
-
         if (!\in_array($category, self::LOCALE_CATEGORIES, true)) {
             throw new Exception;
         }
@@ -1281,7 +1277,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             throw new Exception;
         }
 
-        $this->locale[$category] = \setlocale($category, 0);
+        $this->locale[$category] = \setlocale($category, '0');
 
         $result = \setlocale(...$args);
 

@@ -368,7 +368,7 @@ class Command
                         if (isset($ini[1])) {
                             \ini_set($ini[0], $ini[1]);
                         } else {
-                            \ini_set($ini[0], true);
+                            \ini_set($ini[0], '1');
                         }
                     }
 
@@ -901,9 +901,7 @@ class Command
             if (!isset($this->arguments['test'])) {
                 $testSuite = $configuration->getTestSuiteConfiguration($this->arguments['testsuite'] ?? '');
 
-                if ($testSuite !== null) {
-                    $this->arguments['test'] = $testSuite;
-                }
+                $this->arguments['test'] = $testSuite;
             }
         } elseif (isset($this->arguments['bootstrap'])) {
             $this->handleBootstrap($this->arguments['bootstrap']);

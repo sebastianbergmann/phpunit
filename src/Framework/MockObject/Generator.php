@@ -595,7 +595,7 @@ class Generator
         }
 
         if ($callOriginalMethods) {
-            if (!\is_object($proxyTarget)) {
+            if (!\is_object($proxyTarget) && \is_string($type)) {
                 if (\count($arguments) === 0) {
                     $proxyTarget = new $type;
                 } else {
@@ -880,7 +880,7 @@ class Generator
         if ($className === '') {
             do {
                 $className = $prefix . $type . '_' .
-                             \substr(\md5(\mt_rand()), 0, 8);
+                             \substr(\md5((string) \mt_rand()), 0, 8);
             } while (\class_exists($className, false));
         }
 
