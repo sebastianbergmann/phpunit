@@ -36,7 +36,11 @@ class ExceptionMessage extends Constraint
      */
     protected function matches($other)
     {
-        return $other->getMessage() === $this->expectedMessage;
+        if ($this->expectedMessage === '') {
+            return $other->getMessage() === '';
+        }
+
+        return \strpos($other->getMessage(), $this->expectedMessage) !== false;
     }
 
     /**
