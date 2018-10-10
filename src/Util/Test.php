@@ -33,7 +33,7 @@ class Test
 {
     const REGEX_DATA_PROVIDER               = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
     const REGEX_TEST_WITH                   = '/@testWith\s+/';
-    const REGEX_EXPECTED_EXCEPTION          = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)\s*$)m';
+    const REGEX_EXPECTED_EXCEPTION          = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
     const REGEX_REQUIRES_VERSION            = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
     const REGEX_REQUIRES_VERSION_CONSTRAINT = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<constraint>[\d\t -.|~^]+)[ \t]*\r?$/m';
     const REGEX_REQUIRES_OS                 = '/@requires\s+(?P<name>OS(?:FAMILY)?)\s+(?P<value>.+?)[ \t]*\r?$/m';
@@ -374,7 +374,9 @@ class Test
             $message       = '';
             $messageRegExp = '';
 
-            if (isset($annotations['method']['expectedExceptionMessage'])) {
+            if (isset($matches[2])) {
+                $message = \trim($matches[2]);
+            } elseif (isset($annotations['method']['expectedExceptionMessage'])) {
                 $message = self::parseAnnotationContent(
                     $annotations['method']['expectedExceptionMessage'][0]
                 );
@@ -386,7 +388,9 @@ class Test
                 );
             }
 
-            if (isset($annotations['method']['expectedExceptionCode'])) {
+            if (isset($matches[3])) {
+                $code = $matches[3];
+            } elseif (isset($annotations['method']['expectedExceptionCode'])) {
                 $code = self::parseAnnotationContent(
                     $annotations['method']['expectedExceptionCode'][0]
                 );
