@@ -54,7 +54,7 @@ class GeneratorTest extends TestCase
     public function testGetMockGeneratorFails(): void
     {
         $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
-        $this->expectExceptionMessage('duplicates: "foo, bar, foo" (duplicate: "foo")');
+        $this->expectExceptionMessageRegExp('/duplicates: "foo, bar, foo" \(duplicate: "foo"\)/');
 
         $this->generator->getMock(stdClass::class, ['foo', 'bar', 'foo']);
     }
