@@ -2527,4 +2527,15 @@ abstract class Assert
     {
         return \preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName);
     }
+
+    private static function createWarning(string $warning): void
+    {
+        foreach (\debug_backtrace() as $step) {
+            if (isset($step['object']) && $step['object'] instanceof TestCase) {
+                $step['object']->addWarning($warning);
+
+                break;
+            }
+        }
+    }
 }

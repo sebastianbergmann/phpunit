@@ -1125,6 +1125,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $this->data;
     }
 
+    public function addWarning(string $warning): void
+    {
+        $this->warnings[] = $warning;
+    }
+
     /**
      * Override to run the test and assert its state.
      *
