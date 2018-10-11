@@ -475,6 +475,22 @@ abstract class Assert
      */
     public static function assertEquals($expected, $actual, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): void
     {
+        if ($delta !== 0.0) {
+            self::createWarning('The optional $delta parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsWithDelta() instead.');
+        }
+
+        if ($maxDepth !== 10) {
+            self::createWarning('The optional $maxDepth parameter of assertEquals() is deprecated and will be removed in PHPUnit 9.');
+        }
+
+        if ($canonicalize !== false) {
+            self::createWarning('The optional $canonicalize parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsCanonicalizing() instead.');
+        }
+
+        if ($ignoreCase !== false) {
+            self::createWarning('The optional $ignoreCase parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsIgnoringCase() instead.');
+        }
+
         $constraint = new IsEqual(
             $expected,
             $delta,
@@ -574,6 +590,22 @@ abstract class Assert
      */
     public static function assertNotEquals($expected, $actual, string $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false): void
     {
+        if ($delta !== 0.0) {
+            self::createWarning('The optional $delta parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsWithDelta() instead.');
+        }
+
+        if ($maxDepth !== 10) {
+            self::createWarning('The optional $maxDepth parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9.');
+        }
+
+        if ($canonicalize !== false) {
+            self::createWarning('The optional $canonicalize parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsCanonicalizing() instead.');
+        }
+
+        if ($ignoreCase !== false) {
+            self::createWarning('The optional $ignoreCase parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsIgnoringCase() instead.');
+        }
+
         $constraint = new LogicalNot(
             new IsEqual(
                 $expected,
