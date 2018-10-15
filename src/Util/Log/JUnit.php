@@ -396,6 +396,14 @@ class JUnit extends Printer implements TestListener
         $buffer .= TestFailure::exceptionToString($t) . "\n" .
                    Filter::getFilteredStacktrace($t);
 
+        $previous = $e instanceof PHPUnit\Framework\ExceptionWrapper ? $e->getPreviousWrapped() : $e->getPrevious();
+        while ($previous) {
+            $buffer   .= "\nCaused by\n" .
+                         PHPUnit\Framework\TestFailure::exceptionToString($previous) . "\n" .
+                         PHPUnit\Util\Filter::getFilteredStacktrace($previous);
+            $previous = $previous instanceof PHPUnit\Framework\ExceptionWrapper ? $previous->getPreviousWrapped() : $previous->getPrevious();
+        }
+
         $fault = $this->document->createElement(
             $type,
             Xml::prepareString($buffer)
