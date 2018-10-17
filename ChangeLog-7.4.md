@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 7.4 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3321](https://github.com/sebastianbergmann/phpunit/pull/3321): Incorrect TestDox output for data provider with indexed array
+* Fixed [#3353](https://github.com/sebastianbergmann/phpunit/issues/3353): Requesting less than 16 columns of output results in an error
 
 ## [7.4.0] - 2018-10-05
 
