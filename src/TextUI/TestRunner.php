@@ -158,6 +158,11 @@ class TestRunner extends BaseTestRunner
 
         $this->handleConfiguration($arguments);
 
+        if ($arguments['columns'] < 16) {
+            $arguments['columns'] = 16;
+            $tooFewColumnsRequested = true;
+        }
+
         if (isset($arguments['bootstrap'])) {
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
         }
@@ -352,6 +357,10 @@ class TestRunner extends BaseTestRunner
                     $extension
                 );
             }
+        }
+
+        if (isset($tooFewColumnsRequested)) {
+            $this->writeMessage('Error', 'Less than 16 columns requested, number of columns set to 16');
         }
 
         if ($this->runtime->discardsComments()) {
