@@ -159,7 +159,7 @@ class TestRunner extends BaseTestRunner
         $this->handleConfiguration($arguments);
 
         if ($arguments['columns'] < 16) {
-            $arguments['columns'] = 16;
+            $arguments['columns']   = 16;
             $tooFewColumnsRequested = true;
         }
 
