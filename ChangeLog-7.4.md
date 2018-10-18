@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 7.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [7.4.1] - 2018-MM-DD
+## [7.4.1] - 2018-10-18
 
 ### Fixed
 
@@ -19,5 +19,6 @@ All notable changes of the PHPUnit 7.4 release series are documented in this fil
 * Implemented [#3284](https://github.com/sebastianbergmann/phpunit/issues/3284): Ability to reorder tests based on execution time
 * Implemented [#3290](https://github.com/sebastianbergmann/phpunit/issues/3290): Ability to load a PHP script before any code of PHPUnit itself is loaded
 
+[7.4.1]: https://github.com/sebastianbergmann/phpunit/compare/7.4.0...7.4.1
 [7.4.0]: https://github.com/sebastianbergmann/phpunit/compare/7.3...7.4.0
 
