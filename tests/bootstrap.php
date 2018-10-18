@@ -39,6 +39,8 @@ require_once TEST_FILES_PATH . 'NoTestCases.php';
 
 require_once TEST_FILES_PATH . 'NotPublicTestCase.php';
 
+require_once TEST_FILES_PATH . 'NotSelfDescribingTest.php';
+
 require_once TEST_FILES_PATH . 'NotVoidTestCase.php';
 
 require_once TEST_FILES_PATH . 'OverrideTestCase.php';
