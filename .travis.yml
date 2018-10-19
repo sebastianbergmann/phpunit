@@ -20,8 +20,9 @@ matrix:
 
 env:
   matrix:
-    - DEPENDENCIES="high"
-    - DEPENDENCIES="low"
+    - DEPENDENCIES="high" USE_ZEND_ALLOC=1
+    - DEPENDENCIES="high" USE_ZEND_ALLOC=0
+    - DEPENDENCIES="low" USE_ZEND_ALLOC=1
   global:
     - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-ansi --no-progress --no-suggest"
 
