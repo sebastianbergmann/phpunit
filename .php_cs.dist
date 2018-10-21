@@ -66,7 +66,7 @@ return PhpCsFixer\Config::create()
             'phpdoc_separation' => true,
             'phpdoc_to_comment' => true,
             'phpdoc_trim' => true,
-            'phpdoc_types' => true,
+            'phpdoc_types' => ['groups' => ['simple', 'meta']],
             'phpdoc_var_without_name' => true,
             'self_accessor' => true,
             'simplified_null_return' => true,
