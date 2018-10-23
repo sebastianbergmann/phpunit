@@ -156,7 +156,7 @@ return PhpCsFixer\Config::create()
             'phpdoc_to_comment' => true,
             'phpdoc_trim' => true,
             'phpdoc_trim_consecutive_blank_line_separation' => true,
-            'phpdoc_types' => true,
+            'phpdoc_types' => ['groups' => ['simple', 'meta']],
             'phpdoc_types_order' => true,
             'phpdoc_var_without_name' => true,
             'pow_to_exponentiation' => true,
