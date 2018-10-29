@@ -1000,7 +1000,7 @@ class MockObjectTest extends TestCase
         /** @var PHPUnit\Framework\MockObject\MockObject|StringableClass $mock */
         $mock = $this->getMockBuilder(StringableClass::class)->getMock();
 
-        $this->assertInternalType('string', (string) $mock);
+        $this->assertIsString((string) $mock);
     }
 
     public function testStringableClassCanBeMocked(): void

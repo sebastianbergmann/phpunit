@@ -723,7 +723,7 @@ class TestCaseTest extends TestCase
         $test = new \TestAutoreferenced('testJsonEncodeException', $this->getAutoreferencedArray());
         $test->runBare();
 
-        $this->assertInternalType('array', $test->myTestData);
+        $this->assertIsArray($test->myTestData);
         $this->assertArrayHasKey('data', $test->myTestData);
         $this->assertEquals($test->myTestData['data'][0], $test->myTestData['data']);
     }
@@ -739,7 +739,7 @@ class TestCaseTest extends TestCase
         $test = new \TestAutoreferenced('testJsonEncodeException', [$data]);
         $test->runBare();
 
-        $this->assertInternalType('array', $test->myTestData);
+        $this->assertIsArray($test->myTestData);
         $this->assertSame($data, $test->myTestData);
     }
 
