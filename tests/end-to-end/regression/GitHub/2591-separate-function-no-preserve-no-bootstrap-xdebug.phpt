@@ -5,6 +5,8 @@ Expected result is to have an error, because of no classes loaded.
 <?php
 if (!extension_loaded('xdebug')) {
     print 'skip: xdebug not loaded';
+} elseif (version_compare(PHP_VERSION, '7.3.0-dev', '>=')) {
+     print 'skip: PHP < 7.3 required';
 }
 --FILE--
 <?php
