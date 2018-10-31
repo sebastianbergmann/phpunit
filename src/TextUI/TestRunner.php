@@ -482,6 +482,9 @@ class TestRunner extends BaseTestRunner
                 $codeCoverage->setForceCoversAnnotation(
                     $arguments['forceCoversAnnotation']
                 );
+                if ($arguments['forceCoversAnnotation']) {
+                    $codeCoverage->setCheckForMissingCoversAnnotation(true);
+                }
             }
 
             if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
