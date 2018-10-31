@@ -10,6 +10,8 @@
 namespace PHPUnit\TextUI;
 
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\CodeCoverage\Filter;
+use SebastianBergmann\CodeCoverage\MissingCoversAnnotationException;
 
 class TestRunnerTest extends TestCase
 {
@@ -25,6 +27,30 @@ class TestRunnerTest extends TestCase
         $runner = new TestRunner();
         $runner->setPrinter($this->getResultPrinterMock());
         $runner->doRun($this->getSuiteMock(), ['filter' => 'foo'], false);
+    }
+
+    public function testCheckForMissingCoversIfCoversAnnotationsAreForced(): void
+    {
+        if (!\extension_loaded('xdebug')) {
+            $this->markTestSkipped('skip: xdebug not loaded');
+        }
+        $coverageFilter = new Filter();
+        $coverageFilter->addFileToWhitelist('foo');
+        $runner = new TestRunner(null, $coverageFilter);
+        $runner->setPrinter($this->getResultPrinterMock());
+
+        $arguments = [
+            'filter'                         => 'foo',
+            'coverageText'                   => true,
+            'forceCoversAnnotation'          => true,
+            'coverageTextShowUncoveredFiles' => false,
+            'coverageTextShowOnlySummary'    => true,
+        ];
+        $result       = $runner->doRun($this->getSuiteMock(), $arguments, false);
+        $codeCoverage = $result->getCodeCoverage();
+
+        $this->expectException(MissingCoversAnnotationException::class);
+        $codeCoverage->append([], 'foo');
     }
 
     /**
