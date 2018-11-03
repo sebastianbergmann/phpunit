@@ -16,7 +16,7 @@ class DirectoryExistsTest extends ConstraintTestCase
 {
     public function testDefaults(): void
     {
-        $constraint = new DirectoryExists();
+        $constraint = new DirectoryExists;
 
         $this->assertCount(1, $constraint);
         $this->assertSame('directory exists', $constraint->toString());
@@ -26,7 +26,7 @@ class DirectoryExistsTest extends ConstraintTestCase
     {
         $directory = __DIR__ . '/NonExistentDirectory';
 
-        $constraint = new DirectoryExists();
+        $constraint = new DirectoryExists;
 
         $this->assertFalse($constraint->evaluate($directory, '', true));
     }
@@ -35,7 +35,7 @@ class DirectoryExistsTest extends ConstraintTestCase
     {
         $directory = __DIR__;
 
-        $constraint = new DirectoryExists();
+        $constraint = new DirectoryExists;
 
         $this->assertTrue($constraint->evaluate($directory, '', true));
     }
@@ -44,7 +44,7 @@ class DirectoryExistsTest extends ConstraintTestCase
     {
         $directory = __DIR__ . '/NonExistentDirectory';
 
-        $constraint = new DirectoryExists();
+        $constraint = new DirectoryExists;
 
         try {
             $constraint->evaluate($directory);

@@ -171,7 +171,7 @@ class MockObjectTest extends TestCase
 
         $mock->expects($this->any())
              ->method('doSomething')
-             ->will($this->throwException(new \Exception()));
+             ->will($this->throwException(new \Exception));
 
         $this->expectException(\Exception::class);
 
@@ -185,7 +185,7 @@ class MockObjectTest extends TestCase
 
         $mock->expects($this->any())
              ->method('doSomething')
-             ->willThrowException(new \Exception());
+             ->willThrowException(new \Exception);
 
         $this->expectException(\Exception::class);
 

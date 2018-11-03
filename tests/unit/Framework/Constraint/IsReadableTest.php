@@ -16,7 +16,7 @@ class IsReadableTest extends ConstraintTestCase
 {
     public function testConstraintIsReadable(): void
     {
-        $constraint = new IsReadable();
+        $constraint = new IsReadable;
 
         $this->assertFalse($constraint->evaluate('foo', '', true));
         $this->assertEquals('is readable', $constraint->toString());

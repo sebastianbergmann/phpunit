@@ -25,7 +25,7 @@ class Issue2137Test extends PHPUnit\Framework\TestCase
     {
         return [
             //[true, true]
-            new stdClass(), // not valid
+            new stdClass, // not valid
         ];
     }
 

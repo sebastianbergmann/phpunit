@@ -16,7 +16,7 @@ class IsEmptyTest extends ConstraintTestCase
 {
     public function testConstraintIsEmpty(): void
     {
-        $constraint = new IsEmpty();
+        $constraint = new IsEmpty;
 
         $this->assertFalse($constraint->evaluate(['foo'], '', true));
         $this->assertTrue($constraint->evaluate([], '', true));
@@ -45,7 +45,7 @@ EOF
 
     public function testConstraintIsEmpty2(): void
     {
-        $constraint = new IsEmpty();
+        $constraint = new IsEmpty;
 
         try {
             $constraint->evaluate(['foo'], 'custom message');

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -7,25 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Foo\DataProviderIssue2922;
+namespace Test;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group foo
- */
-class FirstTest extends TestCase
+class Issue3379Test extends TestCase
 {
-    /**
-     * @dataProvider provide
-     */
-    public function testFirst($x): void
+    public function testOne(): void
     {
-        $this->assertTrue(true);
+        $this->markTestSkipped();
     }
 
-    public function provide(): void
+    /**
+     * @depends testOne
+     */
+    public function testTwo(): void
     {
-        throw new \Exception;
+        $this->assertTrue(true);
     }
 }

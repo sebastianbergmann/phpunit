@@ -1725,7 +1725,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (!isset($passedKeys[$dependency])) {
+                    $this->status = BaseTestRunner::STATUS_SKIPPED;
+
                     $this->result->startTest($this);
+
                     $this->result->addError(
                         $this,
                         new SkippedTestError(
@@ -1736,6 +1739,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                         ),
                         0
                     );
+
                     $this->result->endTest($this, 0);
 
                     return false;

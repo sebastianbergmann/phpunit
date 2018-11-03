@@ -15,14 +15,14 @@ class TestRunnerTest extends TestCase
 {
     public function testTestIsRunnable(): void
     {
-        $runner = new TestRunner();
+        $runner = new TestRunner;
         $runner->setPrinter($this->getResultPrinterMock());
-        $runner->doRun(new \Success(), ['filter' => 'foo'], false);
+        $runner->doRun(new \Success, ['filter' => 'foo'], false);
     }
 
     public function testSuiteIsRunnable(): void
     {
-        $runner = new TestRunner();
+        $runner = new TestRunner;
         $runner->setPrinter($this->getResultPrinterMock());
         $runner->doRun($this->getSuiteMock(), ['filter' => 'foo'], false);
     }

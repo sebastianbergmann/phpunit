@@ -16,7 +16,7 @@ class IsWritableTest extends ConstraintTestCase
 {
     public function testConstraintIsWritable(): void
     {
-        $constraint = new IsWritable();
+        $constraint = new IsWritable;
 
         $this->assertFalse($constraint->evaluate('foo', '', true));
         $this->assertEquals('is writable', $constraint->toString());
