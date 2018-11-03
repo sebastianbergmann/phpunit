@@ -95,7 +95,7 @@ class XmlTest extends TestCase
     public function testXmlToVariableCanHandleMultipleOfTheSameArgumentType(): void
     {
         $xml = '<object class="SampleClass"><arguments><string>a</string><string>b</string><string>c</string></arguments></object>';
-        $dom = new \DOMDocument();
+        $dom = new \DOMDocument;
         $dom->loadXML($xml);
 
         $expected = ['a' => 'a', 'b' => 'b', 'c' => 'c'];
@@ -108,7 +108,7 @@ class XmlTest extends TestCase
     public function testXmlToVariableCanConstructObjectsWithConstructorArgumentsRecursively(): void
     {
         $xml = '<object class="Exception"><arguments><string>one</string><integer>0</integer><object class="Exception"><arguments><string>two</string></arguments></object></arguments></object>';
-        $dom = new \DOMDocument();
+        $dom = new \DOMDocument;
         $dom->loadXML($xml);
 
         $actual = Xml::xmlToVariable($dom->documentElement);

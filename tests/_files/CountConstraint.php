@@ -18,7 +18,7 @@ final class CountConstraint extends Constraint
 
     public static function fromCount(int $count): self
     {
-        $instance = new self();
+        $instance = new self;
 
         $instance->count = $count;
 

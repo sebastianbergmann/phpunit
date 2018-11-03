@@ -81,7 +81,7 @@ class AssertTest extends TestCase
         $test = [new \Book, new \Book];
 
         $this->assertContainsOnlyInstancesOf(\Book::class, $test);
-        $this->assertContainsOnlyInstancesOf(\stdClass::class, [new \stdClass()]);
+        $this->assertContainsOnlyInstancesOf(\stdClass::class, [new \stdClass]);
 
         $test2 = [new \Author('Test')];
 

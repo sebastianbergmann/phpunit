@@ -73,7 +73,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testPrintsCrossForTestWithError(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addError($this, new Exception(), 0);
+        $this->printer->addError($this, new Exception, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertContains('✘', $this->printer->getBuffer());
@@ -82,7 +82,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testPrintsAdditionalInformationForTestWithError(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addError($this, new Exception(), 0);
+        $this->printer->addError($this, new Exception, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertContains('│', $this->printer->getBuffer());
@@ -91,7 +91,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testPrintsCrossForTestWithWarning(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addWarning($this, new Warning(), 0);
+        $this->printer->addWarning($this, new Warning, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertContains('✘', $this->printer->getBuffer());
@@ -100,7 +100,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testPrintsAdditionalInformationForTestWithWarning(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addWarning($this, new Warning(), 0);
+        $this->printer->addWarning($this, new Warning, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertContains('│', $this->printer->getBuffer());
@@ -109,7 +109,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testPrintsCrossForTestWithFailure(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addFailure($this, new AssertionFailedError(), 0);
+        $this->printer->addFailure($this, new AssertionFailedError, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertContains('✘', $this->printer->getBuffer());
@@ -118,7 +118,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testPrintsAdditionalInformationForTestWithFailure(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addFailure($this, new AssertionFailedError(), 0);
+        $this->printer->addFailure($this, new AssertionFailedError, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertContains('│', $this->printer->getBuffer());
@@ -127,7 +127,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testPrintsEmptySetSymbolForTestWithFailure(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addIncompleteTest($this, new Exception(), 0);
+        $this->printer->addIncompleteTest($this, new Exception, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertContains('∅', $this->printer->getBuffer());
@@ -136,7 +136,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testDoesNotPrintAdditionalInformationForIncompleteTestByDefault(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addIncompleteTest($this, new Exception(), 0);
+        $this->printer->addIncompleteTest($this, new Exception, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertNotContains('│', $this->printer->getBuffer());
@@ -155,7 +155,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testPrintsRadioactiveSymbolForRiskyTest(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addRiskyTest($this, new Exception(), 0);
+        $this->printer->addRiskyTest($this, new Exception, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertContains('☢', $this->printer->getBuffer());
@@ -164,7 +164,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testDoesNotPrintAdditionalInformationForRiskyTestByDefault(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addRiskyTest($this, new Exception(), 0);
+        $this->printer->addRiskyTest($this, new Exception, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertNotContains('│', $this->printer->getBuffer());
@@ -173,7 +173,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testPrintsAdditionalInformationForRiskyTestInVerboseMode(): void
     {
         $this->verbosePrinter->startTest($this);
-        $this->verbosePrinter->addRiskyTest($this, new Exception(), 0);
+        $this->verbosePrinter->addRiskyTest($this, new Exception, 0);
         $this->verbosePrinter->endTest($this, 0.001);
 
         $this->assertContains('│', $this->verbosePrinter->getBuffer());
@@ -182,7 +182,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testPrintsArrowForSkippedTest(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addSkippedTest($this, new Exception(), 0);
+        $this->printer->addSkippedTest($this, new Exception, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertContains('→', $this->printer->getBuffer());
@@ -191,7 +191,7 @@ final class CliTestDoxPrinterTest extends TestCase
     public function testDoesNotPrintAdditionalInformationForSkippedTestByDefault(): void
     {
         $this->printer->startTest($this);
-        $this->printer->addSkippedTest($this, new Exception(), 0);
+        $this->printer->addSkippedTest($this, new Exception, 0);
         $this->printer->endTest($this, 0.001);
 
         $this->assertNotContains('│', $this->printer->getBuffer());

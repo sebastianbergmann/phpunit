@@ -18,7 +18,7 @@ final class NamedConstraint extends Constraint
 
     public static function fromName(string $name): self
     {
-        $instance = new self();
+        $instance = new self;
 
         $instance->name = $name;
 

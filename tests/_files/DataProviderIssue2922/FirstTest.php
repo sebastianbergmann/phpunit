@@ -26,6 +26,6 @@ class FirstTest extends TestCase
 
     public function provide(): void
     {
-        throw new \Exception();
+        throw new \Exception;
     }
 }

@@ -18,7 +18,7 @@ class Issue1351Test extends TestCase
      */
     public function testFailurePre(): void
     {
-        $this->instance = new ChildProcessClass1351();
+        $this->instance = new ChildProcessClass1351;
         $this->assertFalse(true, 'Expected failure.');
     }
 
@@ -33,7 +33,7 @@ class Issue1351Test extends TestCase
      */
     public function testExceptionPre(): void
     {
-        $this->instance = new ChildProcessClass1351();
+        $this->instance = new ChildProcessClass1351;
 
         try {
             throw new LogicException('Expected exception.');

@@ -16,7 +16,7 @@ class FileExistsTest extends ConstraintTestCase
 {
     public function testConstraintFileExists(): void
     {
-        $constraint = new FileExists();
+        $constraint = new FileExists;
 
         $this->assertFalse($constraint->evaluate('foo', '', true));
         $this->assertEquals('file exists', $constraint->toString());
@@ -42,7 +42,7 @@ EOF
 
     public function testConstraintFileExists2(): void
     {
-        $constraint = new FileExists();
+        $constraint = new FileExists;
 
         try {
             $constraint->evaluate('foo', 'custom message');

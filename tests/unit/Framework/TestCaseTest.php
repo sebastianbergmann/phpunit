@@ -745,7 +745,7 @@ class TestCaseTest extends TestCase
 
     public function testGettingNullTestResultObject(): void
     {
-        $test = new \Success();
+        $test = new \Success;
         $this->assertNull($test->getTestResultObject());
     }
 

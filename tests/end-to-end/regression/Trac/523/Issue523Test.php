@@ -13,7 +13,7 @@ class Issue523Test extends TestCase
 {
     public function testAttributeEquals(): void
     {
-        $this->assertAttributeEquals('foo', 'field', new Issue523());
+        $this->assertAttributeEquals('foo', 'field', new Issue523);
     }
 }
 
