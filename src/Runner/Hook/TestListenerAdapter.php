@@ -11,12 +11,13 @@ namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestListener;
+use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestRunAwareTestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Util\Test as TestUtil;
 
-final class TestListenerAdapter implements TestListener
+final class TestListenerAdapter implements TestRunAwareTestListener
 {
     /**
      * @var TestHook[]
@@ -129,5 +130,29 @@ final class TestListenerAdapter implements TestListener
 
     public function endTestSuite(TestSuite $suite): void
     {
+    }
+
+    /**
+     * A test run started.
+     */
+    public function startTestRun(TestSuite $suite): void
+    {
+        foreach ($this->hooks as $hook) {
+            if ($hook instanceof BeforeFirstTestHook) {
+                $hook->executeBeforeFirstTest();
+            }
+        }
+    }
+
+    /**
+     * A test run ended.
+     */
+    public function endTestRun(TestSuite $suite, TestResult $result): void
+    {
+        foreach ($this->hooks as $hook) {
+            if ($hook instanceof AfterLastTestHook) {
+                $hook->executeAfterLastTest();
+            }
+        }
     }
 }

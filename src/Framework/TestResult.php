@@ -364,15 +364,33 @@ class TestResult implements Countable
         $this->time += $time;
     }
 
+    public function startTestRun(TestSuite $suite): void
+    {
+        $this->topTestSuite = $suite;
+
+        foreach ($this->listeners as $listener) {
+            if ($listener instanceof TestRunAwareTestListener) {
+                $listener->startTestRun($this->topTestSuite);
+            }
+        }
+    }
+
+    public function endTestRun(): void
+    {
+        $this->flushListeners();
+
+        foreach ($this->listeners as $listener) {
+            if ($listener instanceof TestRunAwareTestListener) {
+                $listener->endTestRun($this->topTestSuite, $this);
+            }
+        }
+    }
+
     /**
      * Informs the result that a test suite will be started.
      */
     public function startTestSuite(TestSuite $suite): void
     {
-        if ($this->topTestSuite === null) {
-            $this->topTestSuite = $suite;
-        }
-
         foreach ($this->listeners as $listener) {
             $listener->startTestSuite($suite);
         }

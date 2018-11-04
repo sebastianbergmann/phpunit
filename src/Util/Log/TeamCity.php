@@ -30,11 +30,6 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 class TeamCity extends ResultPrinter
 {
     /**
-     * @var bool
-     */
-    private $isSummaryTestCountPrinted = false;
-
-    /**
      * @var string
      */
     private $startedTestName;
@@ -201,6 +196,23 @@ class TeamCity extends ResultPrinter
     }
 
     /**
+     * A test run started.
+     */
+    public function startTestRun(TestSuite $suite): void
+    {
+        if (\stripos(\ini_get('disable_functions'), 'getmypid') === false) {
+            $this->flowId = \getmypid();
+        } else {
+            $this->flowId = false;
+        }
+
+        $this->printEvent(
+            'testCount',
+            ['count' => \count($suite)]
+        );
+    }
+
+    /**
      * A testsuite started.
      *
      * @throws \ReflectionException
@@ -211,15 +223,6 @@ class TeamCity extends ResultPrinter
             $this->flowId = \getmypid();
         } else {
             $this->flowId = false;
-        }
-
-        if (!$this->isSummaryTestCountPrinted) {
-            $this->isSummaryTestCountPrinted = true;
-
-            $this->printEvent(
-                'testCount',
-                ['count' => \count($suite)]
-            );
         }
 
         $suiteName = $suite->getName();

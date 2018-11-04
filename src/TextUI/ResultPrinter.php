@@ -14,8 +14,8 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
-use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestRunAwareTestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
@@ -27,7 +27,7 @@ use SebastianBergmann\Timer\Timer;
 /**
  * Prints the result of a TextUI TestRunner run.
  */
-class ResultPrinter extends Printer implements TestListener
+class ResultPrinter extends Printer implements TestRunAwareTestListener
 {
     public const EVENT_TEST_START      = 0;
 
@@ -249,15 +249,28 @@ class ResultPrinter extends Printer implements TestListener
     }
 
     /**
+     * A test run started.
+     */
+    public function startTestRun(TestSuite $suite): void
+    {
+        $this->numTests      = \count($suite);
+        $this->numTestsWidth = \strlen((string) $this->numTests);
+        $this->maxColumn     = $this->numberOfColumns - \strlen('  /  (XXX%)') - (2 * $this->numTestsWidth);
+    }
+
+    /**
+     * A test run ended.
+     */
+    public function endTestRun(TestSuite $suite, TestResult $result): void
+    {
+        $this->printResult($result);
+    }
+
+    /**
      * A testsuite started.
      */
     public function startTestSuite(TestSuite $suite): void
     {
-        if ($this->numTests == -1) {
-            $this->numTests      = \count($suite);
-            $this->numTestsWidth = \strlen((string) $this->numTests);
-            $this->maxColumn     = $this->numberOfColumns - \strlen('  /  (XXX%)') - (2 * $this->numTestsWidth);
-        }
     }
 
     /**

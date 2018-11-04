@@ -220,7 +220,7 @@ class TestRunner extends BaseTestRunner
         $listenerNeeded = false;
 
         foreach ($this->extensions as $extension) {
-            if ($extension instanceof TestHook) {
+            if ($extension instanceof TestHook || $extension instanceof BeforeFirstTestHook || $extension instanceof AfterLastTestHook) {
                 $listener->add($extension);
 
                 $listenerNeeded = true;
@@ -602,26 +602,13 @@ class TestRunner extends BaseTestRunner
         if ($suite instanceof TestSuite) {
             $this->processSuiteFilters($suite, $arguments);
             $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
-        }
-
-        foreach ($this->extensions as $extension) {
-            if ($extension instanceof BeforeFirstTestHook) {
-                $extension->executeBeforeFirstTest();
-            }
+            $result->startTestRun($suite);
         }
 
         $suite->run($result);
 
-        foreach ($this->extensions as $extension) {
-            if ($extension instanceof AfterLastTestHook) {
-                $extension->executeAfterLastTest();
-            }
-        }
-
-        $result->flushListeners();
-
-        if ($this->printer instanceof ResultPrinter) {
-            $this->printer->printResult($result);
+        if ($suite instanceof TestSuite) {
+            $result->endTestRun();
         }
 
         if (isset($codeCoverage)) {
