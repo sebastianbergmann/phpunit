@@ -413,7 +413,7 @@ final class Test
             $data = self::getDataFromTestWithAnnotation($docComment);
         }
 
-        if (\is_array($data) && empty($data)) {
+        if ($data === []) {
             throw new SkippedTestError;
         }
 
