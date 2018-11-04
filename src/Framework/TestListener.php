@@ -11,6 +11,9 @@ namespace PHPUnit\Framework;
 
 /**
  * A Listener for test progress.
+ *
+ * @deprecated - Extensions should be used instead.
+ * See https://phpunit.readthedocs.io/en/7.4/extending-phpunit.html#extending-the-testrunner.
  */
 interface TestListener
 {
