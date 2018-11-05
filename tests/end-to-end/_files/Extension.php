@@ -16,11 +16,12 @@ use PHPUnit\Runner\AfterSkippedTestHook;
 use PHPUnit\Runner\AfterSuccessfulTestHook;
 use PHPUnit\Runner\AfterTestErrorHook;
 use PHPUnit\Runner\AfterTestFailureHook;
+use PHPUnit\Runner\AfterTestHook;
 use PHPUnit\Runner\AfterTestWarningHook;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\BeforeTestHook;
 
-final class Extension implements BeforeFirstTestHook, BeforeTestHook, AfterSuccessfulTestHook, AfterSkippedTestHook, AfterRiskyTestHook, AfterIncompleteTestHook, AfterTestErrorHook, AfterTestWarningHook, AfterTestFailureHook, AfterLastTestHook
+final class Extension implements BeforeFirstTestHook, BeforeTestHook, AfterTestHook, AfterSuccessfulTestHook, AfterSkippedTestHook, AfterRiskyTestHook, AfterIncompleteTestHook, AfterTestErrorHook, AfterTestWarningHook, AfterTestFailureHook, AfterLastTestHook
 {
     private $amountOfInjectedArguments = 0;
 
@@ -41,6 +42,11 @@ final class Extension implements BeforeFirstTestHook, BeforeTestHook, AfterSucce
     }
 
     public function executeBeforeTest(string $test): void
+    {
+        print __METHOD__ . ': ' . $test . \PHP_EOL;
+    }
+
+    public function executeAfterTest(string $test, float $time): void
     {
         print __METHOD__ . ': ' . $test . \PHP_EOL;
     }
