@@ -42,6 +42,7 @@ class Printer
      */
     public function __construct($out = null)
     {
+        if (!$out) $out = 'php://stderr'; 
         if ($out !== null) {
             if (\is_string($out)) {
                 if (\strpos($out, 'socket://') === 0) {
