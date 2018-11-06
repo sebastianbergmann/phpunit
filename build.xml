@@ -60,6 +60,17 @@
         <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
     </target>
 
+    <target name="check-dependencies" description="Performs check for outdated dependencies">
+        <exec executable="${basedir}/build/tools/composer" taskname="composer">
+            <arg value="show"/>
+            <arg value="--minor-only"/>
+            <arg value="--latest"/>
+            <arg value="--direct"/>
+            <arg value="--outdated"/>
+            <arg value="--strict"/>
+        </exec>
+    </target>
+
     <target name="php-syntax-check" unless="php-syntax-check.done" description="Perform syntax check on PHP files">
         <apply executable="php" failonerror="true" taskname="lint">
             <arg value="-l"/>
