@@ -40,18 +40,16 @@ Phar::mapPhar('___PHAR___');
 
 ___FILELIST___
 
-if (!$execute) {
-    exit;
+if ($execute) {
+    if (isset($printManifest)) {
+        print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
+
+        exit;
+    }
+
+    unset($execute);
+
+    PHPUnit\TextUI\Command::main();
 }
-
-if (isset($printManifest)) {
-    print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
-
-    exit;
-}
-
-unset($execute);
-
-PHPUnit\TextUI\Command::main();
 
 __HALT_COMPILER();
