@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use PharIo\Version\VersionConstraintParser;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidCoversTargetException;
@@ -706,6 +707,14 @@ final class Test
                 $class = new ReflectionClass($className);
 
                 foreach ($class->getMethods() as $method) {
+                    if ($method->getDeclaringClass()->getName() === Assert::class) {
+                        continue;
+                    }
+
+                    if ($method->getDeclaringClass()->getName() === TestCase::class) {
+                        continue;
+                    }
+
                     if (self::isBeforeClassMethod($method)) {
                         \array_unshift(
                             self::$hookMethods[$className]['beforeClass'],
