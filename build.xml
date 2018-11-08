@@ -120,7 +120,7 @@
         </exec>
     </target>
 
-    <target name="phar" depends="-phar-determine-version,-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies">
+    <target name="phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of PHPUnit and all its dependencies">
         <antcall target="-phar-build">
             <param name="type" value="release"/>
         </antcall>

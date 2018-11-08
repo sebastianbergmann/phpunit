@@ -686,11 +686,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             return $result;
         }
 
-        $runEntireClass =  $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
+        if ($this->runInSeparateProcess()) {
+            $runEntireClass = $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
 
-        if (($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
-            $this->inIsolation !== true &&
-            !$this instanceof PhptTestCase) {
             $class = new ReflectionClass($this);
 
             if ($runEntireClass) {
@@ -2112,5 +2110,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         return $result;
+    }
+
+    private function runInSeparateProcess(): bool
+    {
+        return ($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
+               $this->inIsolation !== true && !$this instanceof PhptTestCase;
     }
 }

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 7.4 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3379](https://github.com/sebastianbergmann/phpunit/issues/3379): Dependent test of skipped test has status `-1`
+* Fixed [#3394](https://github.com/sebastianbergmann/phpunit/issues/3394): Process Isolation does not work when PHPUnit is used as PHAR
 
 ## [7.4.3] - 2018-10-23
 
