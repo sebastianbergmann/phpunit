@@ -157,7 +157,7 @@ class IsEqual extends Constraint
             }
 
             return \sprintf(
-                'is equal to "%s"',
+                "is equal to '%s'",
                 $this->value
             );
         }
