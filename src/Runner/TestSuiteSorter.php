@@ -281,6 +281,10 @@ final class TestSuiteSorter
      */
     private function getNormalizedTestName($test): string
     {
+        if ($test instanceof PhptTestCase) {
+            return $test->getName();
+        }
+
         if (\strpos($test->getName(), '::') !== false) {
             return $test->getName();
         }
