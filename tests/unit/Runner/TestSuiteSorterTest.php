@@ -258,8 +258,8 @@ class TestSuiteSorterTest extends TestCase
         $cache = new TestResultCache;
 
         foreach ($runState as $testName => $data) {
-            $cache->setState($testName, $data['state']);
-            $cache->setTime($testName, $data['time']);
+            $cache->setState(\MultiDependencyTest::class . '::' . $testName, $data['state']);
+            $cache->setTime(\MultiDependencyTest::class . '::' . $testName, $data['time']);
         }
 
         $sorter  = new TestSuiteSorter($cache);
