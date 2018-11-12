@@ -61,14 +61,14 @@ class ResultCacheExtensionTest extends TestCase
     {
         return [
             'ClassName::testMethod' => [
-                TestCaseTest::class . '::testSomething',
-                'testSomething', ],
+                'testSomething',
+                TestCaseTest::class . '::testSomething', ],
             'ClassName::testMethod and data set number and vardump' => [
-                TestCaseTest::class . '::testMethod with data set #123 (\'a\', "A", 0, false)',
-                'testMethod with data set #123', ],
+                'testMethod with data set #123 (\'a\', "A", 0, false)',
+                TestCaseTest::class . '::testMethod with data set #123', ],
             'ClassName::testMethod and data set name and vardump' => [
-                TestCaseTest::class . '::testMethod with data set "data name" (\'a\', "A\", 0, false)',
-                'testMethod with data set "data name"', ],
+                'testMethod with data set "data name" (\'a\', "A\", 0, false)',
+                TestCaseTest::class . '::testMethod with data set "data name"', ],
         ];
     }
 
@@ -77,7 +77,7 @@ class ResultCacheExtensionTest extends TestCase
         $test = new \TestError('test_name');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_ERROR, $this->cache->getState('test_name'));
+        $this->assertSame(BaseTestRunner::STATUS_ERROR, $this->cache->getState(\TestError::class . '::test_name'));
     }
 
     public function testFailure(): void
@@ -85,7 +85,7 @@ class ResultCacheExtensionTest extends TestCase
         $test = new \Failure('test_name');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_FAILURE, $this->cache->getState('test_name'));
+        $this->assertSame(BaseTestRunner::STATUS_FAILURE, $this->cache->getState(\Failure::class . '::test_name'));
     }
 
     public function testSkipped(): void
@@ -93,7 +93,7 @@ class ResultCacheExtensionTest extends TestCase
         $test = new \TestSkipped('test_name');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $this->cache->getState('test_name'));
+        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $this->cache->getState(\TestSkipped::class . '::test_name'));
     }
 
     public function testIncomplete(): void
@@ -101,7 +101,7 @@ class ResultCacheExtensionTest extends TestCase
         $test = new \TestIncomplete('test_name');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_INCOMPLETE, $this->cache->getState('test_name'));
+        $this->assertSame(BaseTestRunner::STATUS_INCOMPLETE, $this->cache->getState(\TestIncomplete::class . '::test_name'));
     }
 
     public function testPassedTestsOnlyCacheTime(): void
@@ -109,7 +109,7 @@ class ResultCacheExtensionTest extends TestCase
         $test = new \Success('test_name');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $this->cache->getState('test_name'));
+        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $this->cache->getState(\Success::class . '::test_name'));
     }
 
     public function testWarning(): void
@@ -117,7 +117,7 @@ class ResultCacheExtensionTest extends TestCase
         $test = new \TestWarning('test_name');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_WARNING, $this->cache->getState('test_name'));
+        $this->assertSame(BaseTestRunner::STATUS_WARNING, $this->cache->getState(\TestWarning::class . '::test_name'));
     }
 
     public function testRisky(): void
@@ -125,7 +125,7 @@ class ResultCacheExtensionTest extends TestCase
         $test = new \TestRisky('test_name');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_RISKY, $this->cache->getState('test_name'));
+        $this->assertSame(BaseTestRunner::STATUS_RISKY, $this->cache->getState(\TestRisky::class . '::test_name'));
     }
 
     public function testEmptySuite(): void
