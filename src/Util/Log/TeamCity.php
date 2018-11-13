@@ -81,49 +81,6 @@ class TeamCity extends ResultPrinter
     }
 
     /**
-     * Print a failed test
-     */
-    protected function printFailedTest(Test $test, \Throwable $e, float $time): void
-    {
-        if (!$test instanceof TestCase && !$test instanceof TestSuite) {
-            return;
-        }
-
-        $parameters = [
-            'name'     => $test->getName(),
-            'message'  => self::getMessage($e),
-            'details'  => self::getDetails($e),
-            'duration' => self::toMilliseconds($time),
-        ];
-
-        if ($e instanceof ExpectationFailedException) {
-            $comparisonFailure = $e->getComparisonFailure();
-
-            if ($comparisonFailure instanceof ComparisonFailure) {
-                $expectedString = $comparisonFailure->getExpectedAsString();
-
-                if ($expectedString === null || empty($expectedString)) {
-                    $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
-                }
-
-                $actualString = $comparisonFailure->getActualAsString();
-
-                if ($actualString === null || empty($actualString)) {
-                    $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
-                }
-
-                if ($actualString !== null && $expectedString !== null) {
-                    $parameters['type']     = 'comparisonFailure';
-                    $parameters['actual']   = $actualString;
-                    $parameters['expected'] = $expectedString;
-                }
-            }
-        }
-
-        $this->printEvent('testFailed', $parameters);
-    }
-
-    /**
      * Incomplete test.
      */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
@@ -169,19 +126,6 @@ class TeamCity extends ResultPrinter
         } else {
             $this->printIgnoredTest($testName, $t, $time);
         }
-    }
-
-    protected function printIgnoredTest($testName, \Throwable $t, float $time): void
-    {
-        $this->printEvent(
-            'testIgnored',
-            [
-                'name'     => $testName,
-                'message'  => self::getMessage($t),
-                'details'  => self::getDetails($t),
-                'duration' => self::toMilliseconds($time),
-            ]
-        );
     }
 
     /**
@@ -293,6 +237,62 @@ class TeamCity extends ResultPrinter
             'testFinished',
             [
                 'name'     => $test->getName(),
+                'duration' => self::toMilliseconds($time),
+            ]
+        );
+    }
+
+    /**
+     * Print a failed test
+     */
+    protected function printFailedTest(Test $test, \Throwable $e, float $time): void
+    {
+        if (!$test instanceof TestCase && !$test instanceof TestSuite) {
+            return;
+        }
+
+        $parameters = [
+            'name'     => $test->getName(),
+            'message'  => self::getMessage($e),
+            'details'  => self::getDetails($e),
+            'duration' => self::toMilliseconds($time),
+        ];
+
+        if ($e instanceof ExpectationFailedException) {
+            $comparisonFailure = $e->getComparisonFailure();
+
+            if ($comparisonFailure instanceof ComparisonFailure) {
+                $expectedString = $comparisonFailure->getExpectedAsString();
+
+                if ($expectedString === null || empty($expectedString)) {
+                    $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
+                }
+
+                $actualString = $comparisonFailure->getActualAsString();
+
+                if ($actualString === null || empty($actualString)) {
+                    $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
+                }
+
+                if ($actualString !== null && $expectedString !== null) {
+                    $parameters['type']     = 'comparisonFailure';
+                    $parameters['actual']   = $actualString;
+                    $parameters['expected'] = $expectedString;
+                }
+            }
+        }
+
+        $this->printEvent('testFailed', $parameters);
+    }
+
+    protected function printIgnoredTest($testName, \Throwable $t, float $time): void
+    {
+        $this->printEvent(
+            'testIgnored',
+            [
+                'name'     => $testName,
+                'message'  => self::getMessage($t),
+                'details'  => self::getDetails($t),
                 'duration' => self::toMilliseconds($time),
             ]
         );
