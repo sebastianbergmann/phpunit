@@ -428,11 +428,19 @@ class ConfigurationTest extends TestCase
      */
     public function testHandlePHPConfigurationDoesNotOverriteVariablesFromPutEnv(): void
     {
+        $backupFoo = \getenv('foo');
+
         \putenv('foo=putenv');
         $this->configuration->handlePHPConfiguration();
 
         $this->assertEquals('putenv', $_ENV['foo']);
         $this->assertEquals('putenv', \getenv('foo'));
+
+        if ($backupFoo === false) {
+            \putenv('foo');     // delete variable from environment
+        } else {
+            \putenv("foo=$backupFoo");
+        }
     }
 
     /**
