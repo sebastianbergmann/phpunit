@@ -947,7 +947,7 @@ class MockObjectTest extends TestCase
      */
     public function testCreateMockOfWsdlFileWithSpecialChars(): void
     {
-        $mock = $this->getMockFromWsdl(__DIR__ . '/_fixture/Go ogle-Sea.rch.wsdl');
+        $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'Go ogle-Sea.rch.wsdl');
 
         $this->assertStringStartsWith('Mock_GoogleSearch_', \get_class($mock));
     }
