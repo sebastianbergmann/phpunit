@@ -9,7 +9,7 @@
  */
 use PHPUnit\Framework\TestCase;
 
-class MultiDependencyExecutionOrderTest extends TestCase
+class DataproviderExecutionOrderTest extends TestCase
 {
     public function testFirstTestThatAlwaysWorks()
     {

@@ -7,5 +7,5 @@ indent_style = space
 indent_size = 4
 charset = utf-8
 
-[tests/_files/MultiDependencyTest_result_cache.txt]
+[tests/_files/*_result_cache.txt]
 insert_final_newline = false
