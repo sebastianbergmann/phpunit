@@ -21,7 +21,6 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\TextUI\ResultPrinter;
 use PHPUnit\Util\Filter;
 use ReflectionClass;
-use SAML2\Exception\Throwable;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
