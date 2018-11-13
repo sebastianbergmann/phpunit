@@ -140,8 +140,9 @@ final class TestSuiteSorter
 
         foreach ($suite->tests() as $test) {
             $testname = $this->getNormalizedTestName($test);
+
             if (!isset($this->defectSortOrder[$testname])) {
-                $this->defectSortOrder[$testname] = self::DEFECT_SORT_WEIGHT[$this->cache->getState($testname)];
+                $this->defectSortOrder[$testname]        = self::DEFECT_SORT_WEIGHT[$this->cache->getState($testname)];
                 $max                                     = \max($max, $this->defectSortOrder[$testname]);
             }
         }
