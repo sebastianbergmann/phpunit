@@ -21,6 +21,7 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\TextUI\ResultPrinter;
 use PHPUnit\Util\Filter;
 use ReflectionClass;
+use SAML2\Exception\Throwable;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -55,21 +56,9 @@ class TeamCity extends ResultPrinter
      *
      * @throws \InvalidArgumentException
      */
-    public function addError(Test $test, \Throwable $t, float $time): void
+    public function addError(Test $test, \Throwable $e, float $time): void
     {
-        if (!$test instanceof TestCase) {
-            return;
-        }
-
-        $this->printEvent(
-            'testFailed',
-            [
-                'name'     => $test->getName(),
-                'message'  => self::getMessage($t),
-                'details'  => self::getDetails($t),
-                'duration' => self::toMilliseconds($time),
-            ]
-        );
+        $this->printFailedTest($test, $e, $time);
     }
 
     /**
@@ -79,19 +68,7 @@ class TeamCity extends ResultPrinter
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
-        if (!$test instanceof TestCase) {
-            return;
-        }
-
-        $this->printEvent(
-            'testFailed',
-            [
-                'name'     => $test->getName(),
-                'message'  => self::getMessage($e),
-                'details'  => self::getDetails($e),
-                'duration' => self::toMilliseconds($time),
-            ]
-        );
+        $this->printFailedTest($test, $e, $time);
     }
 
     /**
@@ -101,7 +78,15 @@ class TeamCity extends ResultPrinter
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
-        if (!$test instanceof TestCase) {
+        $this->printFailedTest($test, $e, $time);
+    }
+
+    /**
+     * Print a failed test
+     */
+    protected function printFailedTest(Test $test, \Throwable $e, float $time): void
+    {
+        if (!$test instanceof TestCase && !$test instanceof TestSuite) {
             return;
         }
 
@@ -144,7 +129,7 @@ class TeamCity extends ResultPrinter
      */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
-        if (!$test instanceof TestCase) {
+        if (!$test instanceof TestCase && !$test instanceof TestSuite) {
             return;
         }
 
@@ -158,7 +143,7 @@ class TeamCity extends ResultPrinter
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
-        if (!$test instanceof TestCase) {
+        if (!$test instanceof TestCase && !$test instanceof TestSuite) {
             return;
         }
 
@@ -172,7 +157,7 @@ class TeamCity extends ResultPrinter
      */
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
-        if (!$test instanceof TestCase) {
+        if (!$test instanceof TestCase && !$test instanceof TestSuite) {
             return;
         }
 
@@ -187,7 +172,7 @@ class TeamCity extends ResultPrinter
         }
     }
 
-    public function printIgnoredTest($testName, \Throwable $t, float $time): void
+    protected function printIgnoredTest($testName, \Throwable $t, float $time): void
     {
         $this->printEvent(
             'testIgnored',
