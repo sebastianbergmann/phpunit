@@ -20,7 +20,7 @@ DataproviderExecutionOrder
    │
    │ Failed asserting that 2 is identical to 3.
    │%w
-   │ %s/tests/_files/DataproviderExecutionOrderTest.php:24
+   │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:24
    │%w
 
  ✔ Test in the middle that always works
@@ -30,7 +30,7 @@ DataproviderExecutionOrder
    │
    │ Failed asserting that 2 is identical to 3.
    │%w
-   │ %s/tests/_files/DataproviderExecutionOrderTest.php:37
+   │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:37
    │%w
 %A
 Time: %s, Memory: %s
