@@ -158,11 +158,15 @@ final class NamePrettifier
     {
         $reflector          = new \ReflectionMethod(\get_class($test), $test->getName(false));
         $providedData       = [];
-        $providedDataValues = $test->getProvidedData();
+        $providedDataValues = \array_values($test->getProvidedData());
         $i                  = 0;
 
         foreach ($reflector->getParameters() as $parameter) {
-            $value = $providedDataValues[$i++];
+            if (!\array_key_exists($i, $providedDataValues) && $parameter->isDefaultValueAvailable()) {
+                $providedDataValues[$i] = $parameter->getDefaultValue();
+            }
+
+            $value = $providedDataValues[$i++] ?? null;
 
             if (\is_object($value)) {
                 $reflector = new \ReflectionObject($value);

@@ -57,4 +57,58 @@ class NamePrettifierTest extends TestCase
         $this->assertEquals('Sets redirect header on 301', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn301'));
         $this->assertEquals('Sets redirect header on 302', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn302'));
     }
+
+    public function testPhpDoxIgnoreDataKeys(): void
+    {
+        $test = new class extends TestCase {
+            public function __construct()
+            {
+                parent::__construct('testAddition', [
+                    'augend' => 1,
+                    'addend' => 2,
+                    'result' => 3,
+                ]);
+            }
+
+            public function testAddition(int $augend, int $addend, int $result): void
+            {
+            }
+
+            public function getAnnotations(): array
+            {
+                return [
+                    'method' => [
+                        'testdox' => ['$augend + $addend = $result'],
+                    ],
+                ];
+            }
+        };
+
+        $this->assertEquals('1 + 2 = 3', $this->namePrettifier->prettifyTestCase($test));
+    }
+
+    public function testPhpDoxUsesDefaultValue(): void
+    {
+        $test = new class extends TestCase {
+            public function __construct()
+            {
+                parent::__construct('testAddition', []);
+            }
+
+            public function testAddition(int $augend = 1, int $addend = 2, int $result = 3): void
+            {
+            }
+
+            public function getAnnotations(): array
+            {
+                return [
+                    'method' => [
+                        'testdox' => ['$augend + $addend = $result'],
+                    ],
+                ];
+            }
+        };
+
+        $this->assertEquals('1 + 2 = 3', $this->namePrettifier->prettifyTestCase($test));
+    }
 }
