@@ -26,4 +26,4 @@ Time: %s, Memory: %s
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 5, Assertions: 3, Skipped: 2.
-C:30:"PHPUnit\Runner\TestResultCache":%d:{a:2:{s:7:"defects";a:2:{s:8:"testFour";i:1;s:9:"testThree";i:1;}s:5:"times";a:5:{s:8:"testFive";d:%f;s:8:"testFour";d:%f;s:9:"testThree";d:%f;s:7:"testTwo";d:%f;s:7:"testOne";d:%f;}}}
+C:30:"PHPUnit\Runner\TestResultCache":%d:{a:2:{s:7:"defects";a:2:{s:29:"MultiDependencyTest::testFour";i:1;s:30:"MultiDependencyTest::testThree";i:1;}s:5:"times";a:5:{s:29:"MultiDependencyTest::testFive";d:%f;s:29:"MultiDependencyTest::testFour";d:%f;s:30:"MultiDependencyTest::testThree";d:%f;s:28:"MultiDependencyTest::testTwo";d:%f;s:28:"MultiDependencyTest::testOne";d:%f;}}}

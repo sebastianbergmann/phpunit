@@ -95,8 +95,8 @@ final class ResultCacheExtension implements AfterSuccessfulTestHook, AfterSkippe
     {
         $matches = [];
 
-        if (\preg_match('/^(?:\S+::)?(?<name>\S+)(?:(?<data> with data set (?:#\d+|"[^"]+"))\s\()?/', $test, $matches)) {
-            $test = $matches['name'] . ($matches['data'] ?? '');
+        if (\preg_match('/^(?<name>\S+::\S+)(?:(?<dataname> with data set (?:#\d+|"[^"]+"))\s\()?/', $test, $matches)) {
+            $test = $matches['name'] . ($matches['dataname'] ?? '');
         }
 
         return $test;

@@ -139,9 +139,11 @@ final class TestSuiteSorter
         $max = 0;
 
         foreach ($suite->tests() as $test) {
-            if (!isset($this->defectSortOrder[$test->getName()])) {
-                $this->defectSortOrder[$test->getName()] = self::DEFECT_SORT_WEIGHT[$this->cache->getState($test->getName())];
-                $max                                     = \max($max, $this->defectSortOrder[$test->getName()]);
+            $testname = $this->getNormalizedTestName($test);
+
+            if (!isset($this->defectSortOrder[$testname])) {
+                $this->defectSortOrder[$testname]        = self::DEFECT_SORT_WEIGHT[$this->cache->getState($testname)];
+                $max                                     = \max($max, $this->defectSortOrder[$testname]);
             }
         }
 
@@ -203,12 +205,8 @@ final class TestSuiteSorter
      */
     private function cmpDefectPriorityAndTime(Test $a, Test $b): int
     {
-        if (!$a instanceof TestCase || !$b instanceof TestCase) {
-            return 0;
-        }
-
-        $priorityA = $this->defectSortOrder[$a->getName()] ?? 0;
-        $priorityB = $this->defectSortOrder[$b->getName()] ?? 0;
+        $priorityA = $this->defectSortOrder[$this->getNormalizedTestName($a)] ?? 0;
+        $priorityB = $this->defectSortOrder[$this->getNormalizedTestName($b)] ?? 0;
 
         if ($priorityB <=> $priorityA) {
             // Sort defect weight descending
@@ -228,11 +226,7 @@ final class TestSuiteSorter
      */
     private function cmpDuration(Test $a, Test $b): int
     {
-        if (!$a instanceof TestCase || !$b instanceof TestCase) {
-            return 0;
-        }
-
-        return $this->cache->getTime($a->getName()) <=> $this->cache->getTime($b->getName());
+        return $this->cache->getTime($this->getNormalizedTestName($a)) <=> $this->cache->getTime($this->getNormalizedTestName($b));
     }
 
     /**
@@ -281,11 +275,15 @@ final class TestSuiteSorter
      */
     private function getNormalizedTestName($test): string
     {
-        if (\strpos($test->getName(), '::') !== false) {
+        if ($test instanceof PhptTestCase) {
             return $test->getName();
         }
 
-        return \get_class($test) . '::' . $test->getName();
+        if (\strpos($test->getName(), '::') !== false) {
+            return $test->getName(true);
+        }
+
+        return \get_class($test) . '::' . $test->getName(true);
     }
 
     /**

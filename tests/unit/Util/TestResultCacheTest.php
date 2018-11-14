@@ -22,8 +22,8 @@ class TestResultCacheTest extends TestCase
         $cache     = new TestResultCache($cacheFile);
         $cache->load();
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState('testOne'));
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $cache->getState('testFive'));
+        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState(\MultiDependencyTest::class . '::testOne'));
+        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $cache->getState(\MultiDependencyTest::class . '::testFive'));
     }
 
     public function testDoesClearCacheBeforeLoad(): void
@@ -32,12 +32,12 @@ class TestResultCacheTest extends TestCase
         $cache     = new TestResultCache($cacheFile);
         $cache->setState('someTest', BaseTestRunner::STATUS_FAILURE);
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState('testFive'));
+        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState(\MultiDependencyTest::class . '::testFive'));
 
         $cache->load();
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState('someTest'));
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $cache->getState('testFive'));
+        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState(\MultiDependencyTest::class . '::someTest'));
+        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $cache->getState(\MultiDependencyTest::class . '::testFive'));
     }
 
     public function testShouldNotSerializePassedTestsAsDefectButTimeIsStored(): void
