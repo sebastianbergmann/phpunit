@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 7.4 release series are documented in this fil
 * Fixed [#3379](https://github.com/sebastianbergmann/phpunit/issues/3379): Dependent test of skipped test has status `-1`
 * Fixed [#3394](https://github.com/sebastianbergmann/phpunit/issues/3394): Process Isolation does not work when PHPUnit is used as PHAR
 * Fixed [#3401](https://github.com/sebastianbergmann/phpunit/pull/3401): Test re-ordering edge cases
+* Fixed [#3402](https://github.com/sebastianbergmann/phpunit/pull/3402): Listening to the tests in reverse revealed evil hidden messages
 
 ## [7.4.3] - 2018-10-23
 
