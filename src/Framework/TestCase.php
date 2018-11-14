@@ -562,6 +562,21 @@ abstract class PHPUnit_Framework_TestCase extends PHPUnit_Framework_Assert imple
     }
 
     /**
+     * Sets up an expectation for an exception to be raised by the code under test.
+     * Information for expected exception class, expected exception message, and
+     * expected exception code are retrieved from a given Exception object.
+     *
+     * @param \Exception $exception
+     * @return void
+     */
+    public function expectExceptionObject(\Exception $exception)
+    {
+        $this->expectException(\get_class($exception));
+        $this->expectExceptionMessage($exception->getMessage());
+        $this->expectExceptionCode($exception->getCode());
+    }
+
+    /**
      * @param string $exception
      */
     public function expectException($exception)
