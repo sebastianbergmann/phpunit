@@ -275,6 +275,10 @@ final class TestSuiteSorter
      */
     private function getNormalizedTestName($test): string
     {
+        if ($test instanceof TestSuite && !($test instanceof DataProviderTestSuite)) {
+            return $test->getName();
+        }
+
         if ($test instanceof PhptTestCase) {
             return $test->getName();
         }
