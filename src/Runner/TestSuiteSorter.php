@@ -64,6 +64,16 @@ final class TestSuiteSorter
      */
     private $cache;
 
+    /**
+     * @var array array<string> A list of normalized names of tests before reordering
+     */
+    private $originalExecutionOrder = [];
+
+    /**
+     * @var array array<string> A list of normalized names of tests affected by reordering
+     */
+    private $executionOrder = [];
+
     public function __construct(?TestResultCacheInterface $cache = null)
     {
         $this->cache = $cache ?? new NullTestResultCache;
@@ -72,7 +82,7 @@ final class TestSuiteSorter
     /**
      * @throws Exception
      */
-    public function reorderTestsInSuite(Test $suite, int $order, bool $resolveDependencies, int $orderDefects): void
+    public function reorderTestsInSuite(Test $suite, int $order, bool $resolveDependencies, int $orderDefects, bool $isRootTestSuite = true): void
     {
         $allowedOrders = [
             self::ORDER_DEFAULT,
@@ -98,9 +108,13 @@ final class TestSuiteSorter
             );
         }
 
+        if ($isRootTestSuite) {
+            $this->originalExecutionOrder = $this->calculateTestExecutionOrder($suite);
+        }
+
         if ($suite instanceof TestSuite) {
             foreach ($suite as $_suite) {
-                $this->reorderTestsInSuite($_suite, $order, $resolveDependencies, $orderDefects);
+                $this->reorderTestsInSuite($_suite, $order, $resolveDependencies, $orderDefects, false);
             }
 
             if ($orderDefects === self::ORDER_DEFECTS_FIRST) {
@@ -109,6 +123,20 @@ final class TestSuiteSorter
 
             $this->sort($suite, $order, $resolveDependencies, $orderDefects);
         }
+
+        if ($isRootTestSuite) {
+            $this->executionOrder = $this->calculateTestExecutionOrder($suite);
+        }
+    }
+
+    public function getOriginalExecutionOrder(): array
+    {
+        return $this->originalExecutionOrder;
+    }
+
+    public function getExecutionOrder(): array
+    {
+        return $this->executionOrder;
     }
 
     private function sort(TestSuite $suite, int $order, bool $resolveDependencies, int $orderDefects): void
@@ -311,5 +339,24 @@ final class TestSuiteSorter
         );
 
         return $names;
+    }
+
+    private function calculateTestExecutionOrder(Test $suite): array
+    {
+        $tests = [];
+
+        if ($suite instanceof TestSuite) {
+            foreach ($suite->tests() as $test) {
+                if (!($test instanceof TestSuite)) {
+                    $tests[] = $this->getNormalizedTestName($test);
+                }
+            }
+
+            foreach ($suite as $_suite) {
+                $tests = \array_merge($tests, $this->calculateTestExecutionOrder($_suite));
+            }
+        }
+
+        return $tests;
     }
 }
