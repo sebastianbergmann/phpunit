@@ -349,11 +349,9 @@ final class TestSuiteSorter
             foreach ($suite->tests() as $test) {
                 if (!($test instanceof TestSuite)) {
                     $tests[] = $this->getNormalizedTestName($test);
+                } else {
+                    $tests = \array_merge($tests, $this->calculateTestExecutionOrder($test));
                 }
-            }
-
-            foreach ($suite as $_suite) {
-                $tests = \array_merge($tests, $this->calculateTestExecutionOrder($_suite));
             }
         }
 
