@@ -46,11 +46,42 @@ class CliTestDoxPrinter extends ResultPrinter
      */
     private $prettifier;
 
+    /**
+     * @var int The number of test results received from the TestRunner
+     */
+    private $testCount = 0;
+
+    /**
+     * @var int The number of test results already sent to the output
+     */
+    private $testFlushCount = 0;
+
+    /**
+     * @var array Buffer for write()
+     */
+    private $outputBuffer = [];
+
+    /**
+     * @var bool
+     */
+    private $bufferExecutionOrder = false;
+
+    /**
+     * @var array array<string>
+     */
+    private $originalExecutionOrder = [];
+
     public function __construct($out = null, bool $verbose = false, $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
         $this->prettifier = new NamePrettifier;
+    }
+
+    public function setOriginalExecutionOrder(array $order): void
+    {
+        $this->originalExecutionOrder = $order;
+        $this->bufferExecutionOrder   = !empty($order);
     }
 
     public function startTest(Test $test): void
@@ -96,7 +127,20 @@ class CliTestDoxPrinter extends ResultPrinter
 
         $this->currentTestResult->setRuntime($time);
 
-        $this->write($this->currentTestResult->toString($this->previousTestResult, $this->verbose));
+        $testName = '';
+        if ($test instanceof PhptTestCase) {
+            $testName = $test->getName();
+            $this->testCount++;
+        } elseif ($test instanceof TestCase) {
+            $testName = $test->getName(true);
+
+            if (\strpos($testName, '::') === false) {
+                $testName = \get_class($test) . '::' . $testName;
+            }
+            $this->testCount++;
+        }
+
+        $this->writeOriginalExecutionOrder($testName, $this->currentTestResult->toString($this->previousTestResult, $this->verbose));
 
         $this->previousTestResult = $this->currentTestResult;
 
@@ -154,6 +198,35 @@ class CliTestDoxPrinter extends ResultPrinter
             (string) $t,
             true
         );
+    }
+
+    public function writeOriginalExecutionOrder(string $testname, string $msg): void
+    {
+        if (!$this->bufferExecutionOrder) {
+            $this->write($msg);
+
+            return;
+        }
+
+        if ($testname == $this->originalExecutionOrder[$this->testFlushCount]) {
+            $this->write($msg);
+            $this->testFlushCount++;
+
+            while (isset($this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount]])) {
+//                $this->write("** flushing {$this->originalExecutionOrder[$this->testFlushCount]}\n");
+                foreach($this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount++]] as $line) {
+                    $this->write($line);
+                }
+            }
+        } else {
+//            parent::write("** buffering $testname\n");
+            $this->outputBuffer[$testname][] = $msg;
+        }
+    }
+
+    public function write(string $msg): void
+    {
+        parent::write($msg);
     }
 
     public function writeProgress(string $progress): void

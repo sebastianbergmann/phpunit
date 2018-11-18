@@ -39,6 +39,7 @@ use PHPUnit\Util\Configuration;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\Printer;
+use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
@@ -203,6 +204,7 @@ class TestRunner extends BaseTestRunner
             $sorter = new TestSuiteSorter($cache);
 
             $sorter->reorderTestsInSuite($suite, $arguments['executionOrder'], $arguments['resolveDependencies'], $arguments['executionOrderDefects']);
+            $originalExecutionOrder = $sorter->getOriginalExecutionOrder();
 
             unset($sorter);
         }
@@ -309,6 +311,11 @@ class TestRunner extends BaseTestRunner
                     $arguments['columns'],
                     $arguments['reverseList']
                 );
+
+                if (isset($originalExecutionOrder) && ($this->printer instanceof CliTestDoxPrinter)) {
+                    /* @var CliTestDoxPrinter */
+                    $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
+                }
             }
         }
 
