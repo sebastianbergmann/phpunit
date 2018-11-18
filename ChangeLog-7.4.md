@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 7.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.4.5] - 2018-MM-DD
+
+* Fixed [#3410](https://github.com/sebastianbergmann/phpunit/issues/3410): Parent directory of `cacheResultFile` is not created when it does not exist
+
 ## [7.4.4] - 2018-11-14
 
 ### Fixed
@@ -41,6 +45,7 @@ All notable changes of the PHPUnit 7.4 release series are documented in this fil
 * Implemented [#3284](https://github.com/sebastianbergmann/phpunit/issues/3284): Ability to reorder tests based on execution time
 * Implemented [#3290](https://github.com/sebastianbergmann/phpunit/issues/3290): Ability to load a PHP script before any code of PHPUnit itself is loaded
 
+[7.4.5]: https://github.com/sebastianbergmann/phpunit/compare/7.4.4...7.4.5
 [7.4.4]: https://github.com/sebastianbergmann/phpunit/compare/7.4.3...7.4.4
 [7.4.3]: https://github.com/sebastianbergmann/phpunit/compare/7.4.2...7.4.3
 [7.4.2]: https://github.com/sebastianbergmann/phpunit/compare/7.4.1...7.4.2
