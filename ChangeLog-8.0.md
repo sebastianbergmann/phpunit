@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 ### Changed
 
 * Implemented [#3288](https://github.com/sebastianbergmann/phpunit/issues/3288): The `void_return` fixer of php-cs-fixer is now in effect
+* Implemented [#3341](https://github.com/sebastianbergmann/phpunit/issues/3341): Deprecate optional parameters of `assertEquals()` and `assertNotEquals()`
 
 ### Removed
 

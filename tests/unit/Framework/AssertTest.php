@@ -525,9 +525,9 @@ class AssertTest extends TestCase
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testAssertEqualsSucceeds($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false): void
+    public function testAssertEqualsSucceeds($a, $b): void
     {
-        $this->assertEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
+        $this->assertEquals($a, $b);
     }
 
     /**
@@ -536,11 +536,11 @@ class AssertTest extends TestCase
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testAssertEqualsFails($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false): void
+    public function testAssertEqualsFails($a, $b): void
     {
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
+        $this->assertEquals($a, $b);
     }
 
     /**
@@ -549,9 +549,9 @@ class AssertTest extends TestCase
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testAssertNotEqualsSucceeds($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false): void
+    public function testAssertNotEqualsSucceeds($a, $b): void
     {
-        $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
+        $this->assertNotEquals($a, $b);
     }
 
     /**
@@ -560,11 +560,11 @@ class AssertTest extends TestCase
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testAssertNotEqualsFails($a, $b, $delta = 0.0, $canonicalize = false, $ignoreCase = false): void
+    public function testAssertNotEqualsFails($a, $b): void
     {
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNotEquals($a, $b, '', $delta, 10, $canonicalize, $ignoreCase);
+        $this->assertNotEquals($a, $b);
     }
 
     /**
@@ -3017,20 +3017,9 @@ XML;
         $storage2->attach($object1);
 
         return [
-            // strings
-            ['a', 'A', 0, false, true], // ignore case
             // arrays
             [['a' => 1, 'b' => 2], ['b' => 2, 'a' => 1]],
             [[1], ['1']],
-            [[3, 2, 1], [2, 3, 1], 0, true], // canonicalized comparison
-            // floats
-            [2.3, 2.5, 0.5],
-            [[2.3], [2.5], 0.5],
-            [[[2.3]], [[2.5]], 0.5],
-            [new \Struct(2.3), new \Struct(2.5), 0.5],
-            [[new \Struct(2.3)], [new \Struct(2.5)], 0.5],
-            // numeric with delta
-            [1, 2, 1],
             // objects
             [$object1, $object2],
             [$book1, $book2],
@@ -3058,16 +3047,6 @@ XML;
                 new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
             ],
             [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 04:13:25', new \DateTimeZone('America/New_York')),
-                10,
-            ],
-            [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 04:14:40', new \DateTimeZone('America/New_York')),
-                65,
-            ],
-            [
                 new \DateTime('2013-03-29', new \DateTimeZone('America/New_York')),
                 new \DateTime('2013-03-29', new \DateTimeZone('America/New_York')),
             ],
@@ -3076,18 +3055,8 @@ XML;
                 new \DateTime('2013-03-29 03:13:35', new \DateTimeZone('America/Chicago')),
             ],
             [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 03:13:49', new \DateTimeZone('America/Chicago')),
-                15,
-            ],
-            [
                 new \DateTime('2013-03-30', new \DateTimeZone('America/New_York')),
                 new \DateTime('2013-03-29 23:00:00', new \DateTimeZone('America/Chicago')),
-            ],
-            [
-                new \DateTime('2013-03-30', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 23:01:30', new \DateTimeZone('America/Chicago')),
-                100,
             ],
             [
                 new \DateTime('@1364616000'),
