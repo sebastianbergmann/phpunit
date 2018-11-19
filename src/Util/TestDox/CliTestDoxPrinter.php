@@ -212,7 +212,7 @@ class CliTestDoxPrinter extends ResultPrinter
             $this->write($msg);
             $this->testFlushCount++;
 
-            while (isset($this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount]])) {
+            while ($this->testFlushCount < $this->testCount && isset($this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount]])) {
 //                $this->write("** flushing {$this->originalExecutionOrder[$this->testFlushCount]}\n");
                 foreach($this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount++]] as $line) {
                     $this->write($line);
