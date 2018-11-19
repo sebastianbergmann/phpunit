@@ -39,10 +39,25 @@ DataproviderExecutionOrder
    │%w
    │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:37
    │%w
-%A
+
 Time: %s, Memory: %s
 
 Summary of non-successful tests:
+
+DataproviderExecutionOrder
+ ✘ Add numbers with a dataprovider with data set "1+1=3"
+   │
+   │ Failed asserting that 2 is identical to 3.
+   │
 %A
+   │
+
+ ✘ Add more numbers with a dataprovider with data set "1+1=3"
+   │
+   │ Failed asserting that 2 is identical to 3.
+   │
+%A
+   │
+
 FAILURES!
 Tests: 8, Assertions: 8, Failures: 2.
