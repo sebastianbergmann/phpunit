@@ -38,12 +38,12 @@ class MultiDependencyTest extends TestCase
     /**
      * @depends MultiDependencyTest::testThree
      */
-    public function testFour()
+    public function testFour(): void
     {
         $this->assertTrue(true);
     }
 
-    public function testFive()
+    public function testFive(): void
     {
         $this->assertTrue(true);
     }

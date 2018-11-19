@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class DataproviderExecutionOrderTest extends TestCase
 {
-    public function testFirstTestThatAlwaysWorks()
+    public function testFirstTestThatAlwaysWorks(): void
     {
         $this->assertTrue(true);
     }
@@ -19,12 +19,12 @@ class DataproviderExecutionOrderTest extends TestCase
     /**
      * @dataProvider dataproviderAdditions
      */
-    public function testAddNumbersWithADataprovider(int $a, int $b, int $sum)
+    public function testAddNumbersWithADataprovider(int $a, int $b, int $sum): void
     {
         $this->assertSame($sum, $a + $b);
     }
 
-    public function testTestInTheMiddleThatAlwaysWorks()
+    public function testTestInTheMiddleThatAlwaysWorks(): void
     {
         $this->assertTrue(true);
     }
@@ -32,7 +32,7 @@ class DataproviderExecutionOrderTest extends TestCase
     /**
      * @dataProvider dataproviderAdditions
      */
-    public function testAddMoreNumbersWithADataprovider(int $a, int $b, int $sum)
+    public function testAddMoreNumbersWithADataprovider(int $a, int $b, int $sum): void
     {
         $this->assertSame($sum, $a + $b);
     }

@@ -9,7 +9,7 @@
  */
 class StaticMockTestClass
 {
-    public static function doSomething()
+    public static function doSomething(): void
     {
     }
 

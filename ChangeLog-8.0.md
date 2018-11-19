@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 
 ## [8.0.0] - 2019-02-01
 
+### Changed
+
+* Implemented [#3288](https://github.com/sebastianbergmann/phpunit/issues/3288): The `void_return` fixer of php-cs-fixer is now in effect
+
 ### Removed
 
 * Implemented [#2762](https://github.com/sebastianbergmann/phpunit/issues/2762): Drop support for PHP 7.1

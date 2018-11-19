@@ -16,11 +16,11 @@ class PartialMockTestClass
         $this->constructorCalled = true;
     }
 
-    public function doSomething()
+    public function doSomething(): void
     {
     }
 
-    public function doAnotherThing()
+    public function doAnotherThing(): void
     {
     }
 }

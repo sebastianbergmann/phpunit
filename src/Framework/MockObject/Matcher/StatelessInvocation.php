@@ -33,7 +33,7 @@ abstract class StatelessInvocation implements Invocation
      *
      * @param BaseInvocation $invocation Object containing information on a mocked or stubbed method which was invoked
      */
-    public function invoked(BaseInvocation $invocation)
+    public function invoked(BaseInvocation $invocation): void
     {
     }
 

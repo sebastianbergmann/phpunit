@@ -9,12 +9,12 @@
  */
 class MethodCallbackByReference
 {
-    public function bar(&$a, &$b, $c)
+    public function bar(&$a, &$b, $c): void
     {
         Legacy::bar($a, $b, $c);
     }
 
-    public function callback(&$a, &$b, $c)
+    public function callback(&$a, &$b, $c): void
     {
         $b = 1;
     }

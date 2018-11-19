@@ -23,7 +23,7 @@ class Issue3093Test extends \PHPUnit\Framework\TestCase
      * @depends testFirstWithoutDependencies
      * @dataProvider someDataProvider
      */
-    public function testSecondThatDependsOnFirstAndDataprovider($value)
+    public function testSecondThatDependsOnFirstAndDataprovider($value): void
     {
         self::assertTrue(true);
     }

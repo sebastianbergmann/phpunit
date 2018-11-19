@@ -9,7 +9,7 @@
  */
 class ClassWithSelfTypeHint
 {
-    public function foo(self $foo)
+    public function foo(self $foo): void
     {
     }
 }

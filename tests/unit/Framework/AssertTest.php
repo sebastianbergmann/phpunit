@@ -2660,7 +2660,7 @@ XML;
 
     public function testCallableTypeCanBeAsserted(): void
     {
-        $this->assertIsCallable(function () {
+        $this->assertIsCallable(function (): void {
         });
 
         try {
@@ -2807,7 +2807,7 @@ XML;
         $this->assertIsNotCallable(null);
 
         try {
-            $this->assertIsNotCallable(function () {
+            $this->assertIsNotCallable(function (): void {
             });
         } catch (AssertionFailedError $e) {
             return;

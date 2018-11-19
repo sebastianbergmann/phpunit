@@ -9,7 +9,7 @@
  */
 class SingletonClass
 {
-    public static function getInstance()
+    public static function getInstance(): void
     {
     }
 
@@ -17,11 +17,11 @@ class SingletonClass
     {
     }
 
-    private function __sleep()
+    private function __sleep(): void
     {
     }
 
-    private function __wakeup()
+    private function __wakeup(): void
     {
     }
 
@@ -29,7 +29,7 @@ class SingletonClass
     {
     }
 
-    public function doSomething()
+    public function doSomething(): void
     {
     }
 }

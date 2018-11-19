@@ -390,28 +390,28 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * This method is called before the first test of this test class is run.
      */
-    public static function setUpBeforeClass()/* The :void return type declaration that should be here would cause a BC issue */
+    public static function setUpBeforeClass(): void
     {
     }
 
     /**
      * This method is called after the last test of this test class is run.
      */
-    public static function tearDownAfterClass()/* The :void return type declaration that should be here would cause a BC issue */
+    public static function tearDownAfterClass(): void
     {
     }
 
     /**
      * This method is called before each test.
      */
-    protected function setUp()/* The :void return type declaration that should be here would cause a BC issue */
+    protected function setUp(): void
     {
     }
 
     /**
      * This method is called after each test.
      */
-    protected function tearDown()/* The :void return type declaration that should be here would cause a BC issue */
+    protected function tearDown(): void
     {
     }
 
@@ -614,7 +614,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->expectExceptionCode($exception->getCode());
     }
 
-    public function expectNotToPerformAssertions()
+    public function expectNotToPerformAssertions(): void
     {
         $this->doesNotPerformAssertions = true;
     }
@@ -1567,7 +1567,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * This method is called between setUp() and test.
      */
-    protected function assertPreConditions()/* The :void return type declaration that should be here would cause a BC issue */
+    protected function assertPreConditions(): void
     {
     }
 
@@ -1576,7 +1576,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * This method is called between test and tearDown().
      */
-    protected function assertPostConditions()/* The :void return type declaration that should be here would cause a BC issue */
+    protected function assertPostConditions(): void
     {
     }
 
@@ -1585,7 +1585,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Throwable
      */
-    protected function onNotSuccessfulTest(Throwable $t)/* The :void return type declaration that should be here would cause a BC issue */
+    protected function onNotSuccessfulTest(Throwable $t): void
     {
         throw $t;
     }
