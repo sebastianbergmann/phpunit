@@ -2431,39 +2431,12 @@ XML;
         $this->assertAttributeNotInstanceOf(\Exception::class, 'a', $o);
     }
 
-    public function testAssertInternalType(): void
-    {
-        $this->assertInternalType('integer', 1);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertInternalType('string', 1);
-    }
-
-    public function testAssertInternalTypeDouble(): void
-    {
-        $this->assertInternalType('double', 1.0);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertInternalType('double', 1);
-    }
-
     public function testAssertAttributeInternalType(): void
     {
         $o    = new \stdClass;
         $o->a = 1;
 
         $this->assertAttributeInternalType('integer', 'a', $o);
-    }
-
-    public function testAssertNotInternalType(): void
-    {
-        $this->assertNotInternalType('string', 1);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertNotInternalType('integer', 1);
     }
 
     public function testAssertAttributeNotInternalType(): void

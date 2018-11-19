@@ -1581,6 +1581,8 @@ abstract class Assert
      */
     public static function assertInternalType(string $expected, $actual, string $message = ''): void
     {
+        self::createWarning('assertInternalType() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertIsArray(), assertIsBool(), assertIsFloat(), assertIsInt(), assertIsNumeric(), assertIsObject(), assertIsResource(), assertIsString(), assertIsScalar(), assertIsCallable(), or assertIsIterable() instead.');
+
         static::assertThat(
             $actual,
             new IsType($expected),
@@ -1749,6 +1751,8 @@ abstract class Assert
      */
     public static function assertNotInternalType(string $expected, $actual, string $message = ''): void
     {
+        self::createWarning('assertNotInternalType() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertIsNotArray(), assertIsNotBool(), assertIsNotFloat(), assertIsNotInt(), assertIsNotNumeric(), assertIsNotObject(), assertIsNotResource(), assertIsNotString(), assertIsNotScalar(), assertIsNotCallable(), or assertIsNotIterable() instead.');
+
         static::assertThat(
             $actual,
             new LogicalNot(
