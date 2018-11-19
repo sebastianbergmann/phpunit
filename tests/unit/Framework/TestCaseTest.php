@@ -644,10 +644,11 @@ class TestCaseTest extends TestCase
 
     /**
      * @requires PHP 7
-     * @expectedException \TypeError
      */
     public function testTypeErrorCanBeExpected(): void
     {
+        $this->expectException(\TypeError::class);
+
         $o = new \ClassWithScalarTypeDeclarations;
         $o->foo(null, null);
     }

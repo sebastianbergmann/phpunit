@@ -344,6 +344,9 @@ final class Test
      * Returns the expected exception for a test.
      *
      * @return array|false
+     *
+     * @deprecated
+     * @codeCoverageIgnore
      */
     public static function getExpectedException(string $className, ?string $methodName)
     {

@@ -13,39 +13,35 @@ use PHPUnit\Framework\TestCase;
 
 class ExceptionMessageTest extends TestCase
 {
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A literal exception message
-     */
     public function testLiteralMessage(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('A literal exception message');
+
         throw new \Exception('A literal exception message');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A partial
-     */
     public function testPartialMessageBegin(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('A partial');
+
         throw new \Exception('A partial exception message');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage partial exception
-     */
     public function testPartialMessageMiddle(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('partial exception');
+
         throw new \Exception('A partial exception message');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage exception message
-     */
     public function testPartialMessageEnd(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('exception message');
+
         throw new \Exception('A partial exception message');
     }
 }

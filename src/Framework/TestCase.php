@@ -1599,6 +1599,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             );
 
             if ($expectedException !== false) {
+                $this->addWarning('The @expectedException, @expectedExceptionCode, @expectedExceptionMessage, and @expectedExceptionMessageRegExp annotations are deprecated. They will be removed in PHPUnit 9. Refactor your test to use expectException(), expectExceptionCode(), expectExceptionMessage(), or expectExceptionMessageRegExp() instead.');
+
                 $this->expectException($expectedException['class']);
 
                 if ($expectedException['code'] !== null) {
