@@ -70,6 +70,7 @@ class Command
         'prepend='                  => null,
         'bootstrap='                => null,
         'cache-result'              => null,
+        'do-not-cache-result'       => null,
         'cache-result-file='        => null,
         'check-version'             => null,
         'colors=='                  => null,
@@ -302,6 +303,11 @@ class Command
 
                 case '--cache-result':
                     $this->arguments['cacheResult'] = true;
+
+                    break;
+
+                case '--do-not-cache-result':
+                    $this->arguments['cacheResult'] = false;
 
                     break;
 
@@ -1160,7 +1166,8 @@ Test Execution Options:
   --resolve-dependencies      Resolve dependencies between tests
   --order-by=<order>          Run tests in order: default|reverse|random|defects|depends
   --random-order-seed=<N>     Use a specific random seed <N> for random order
-  --cache-result              Write run result to cache to enable ordering tests defects-first
+  --cache-result              Write test results to cache file
+  --do-not-cache-result       Do not write test results to cache file
 
 Configuration Options:
 

@@ -27,7 +27,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  * <phpunit backupGlobals="false"
  *          backupStaticAttributes="false"
  *          bootstrap="/path/to/bootstrap.php"
- *          cacheResult="false"
+ *          cacheResult="true"
  *          cacheResultFile=".phpunit.result.cache"
  *          cacheTokens="false"
  *          columns="80"
@@ -930,7 +930,7 @@ final class Configuration
         if ($root->hasAttribute('cacheResult')) {
             $result['cacheResult'] = $this->getBoolean(
                 (string) $root->getAttribute('cacheResult'),
-                false
+                true
             );
         }
 

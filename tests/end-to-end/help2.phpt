@@ -91,7 +91,8 @@ Test Execution Options:
   --resolve-dependencies      Resolve dependencies between tests
   --order-by=<order>          Run tests in order: default|reverse|random|defects|depends
   --random-order-seed=<N>     Use a specific random seed <N> for random order
-  --cache-result              Write run result to cache to enable ordering tests defects-first
+  --cache-result              Write test results to cache file
+  --do-not-cache-result       Do not write test results to cache file
 
 Configuration Options:
 
