@@ -214,6 +214,8 @@ abstract class Assert
      */
     public static function assertAttributeContains($needle, string $haystackAttributeName, $haystackClassOrObject, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
     {
+        self::createWarning('assertAttributeContains() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertContains(
             $needle,
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
@@ -278,6 +280,8 @@ abstract class Assert
      */
     public static function assertAttributeNotContains($needle, string $haystackAttributeName, $haystackClassOrObject, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
     {
+        self::createWarning('assertAttributeNotContains() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertNotContains(
             $needle,
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
@@ -342,6 +346,8 @@ abstract class Assert
      */
     public static function assertAttributeContainsOnly(string $type, string $haystackAttributeName, $haystackClassOrObject, ?bool $isNativeType = null, string $message = ''): void
     {
+        self::createWarning('assertAttributeContainsOnly() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertContainsOnly(
             $type,
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
@@ -389,6 +395,8 @@ abstract class Assert
      */
     public static function assertAttributeNotContainsOnly(string $type, string $haystackAttributeName, $haystackClassOrObject, ?bool $isNativeType = null, string $message = ''): void
     {
+        self::createWarning('assertAttributeNotContainsOnly() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertNotContainsOnly(
             $type,
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
@@ -431,6 +439,8 @@ abstract class Assert
      */
     public static function assertAttributeCount(int $expectedCount, string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeCount() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertCount(
             $expectedCount,
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
@@ -472,6 +482,8 @@ abstract class Assert
      */
     public static function assertAttributeNotCount(int $expectedCount, string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeNotCount() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertNotCount(
             $expectedCount,
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
@@ -580,6 +592,8 @@ abstract class Assert
      */
     public static function assertAttributeEquals($expected, string $actualAttributeName, $actualClassOrObject, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): void
     {
+        self::createWarning('assertAttributeEquals() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertEquals(
             $expected,
             static::readAttribute($actualClassOrObject, $actualAttributeName),
@@ -705,6 +719,8 @@ abstract class Assert
      */
     public static function assertAttributeNotEquals($expected, string $actualAttributeName, $actualClassOrObject, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): void
     {
+        self::createWarning('assertAttributeNotEquals() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertNotEquals(
             $expected,
             static::readAttribute($actualClassOrObject, $actualAttributeName),
@@ -740,6 +756,8 @@ abstract class Assert
      */
     public static function assertAttributeEmpty(string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeEmpty() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertEmpty(
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
             $message
@@ -770,6 +788,8 @@ abstract class Assert
      */
     public static function assertAttributeNotEmpty(string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeNotEmpty() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertNotEmpty(
             static::readAttribute($haystackClassOrObject, $haystackAttributeName),
             $message
@@ -799,6 +819,8 @@ abstract class Assert
      */
     public static function assertAttributeGreaterThan($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeGreaterThan() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertGreaterThan(
             $expected,
             static::readAttribute($actualClassOrObject, $actualAttributeName),
@@ -833,6 +855,8 @@ abstract class Assert
      */
     public static function assertAttributeGreaterThanOrEqual($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeGreaterThanOrEqual() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertGreaterThanOrEqual(
             $expected,
             static::readAttribute($actualClassOrObject, $actualAttributeName),
@@ -863,6 +887,8 @@ abstract class Assert
      */
     public static function assertAttributeLessThan($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeLessThan() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertLessThan(
             $expected,
             static::readAttribute($actualClassOrObject, $actualAttributeName),
@@ -893,6 +919,8 @@ abstract class Assert
      */
     public static function assertAttributeLessThanOrEqual($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeLessThanOrEqual() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertLessThanOrEqual(
             $expected,
             static::readAttribute($actualClassOrObject, $actualAttributeName),
@@ -1443,6 +1471,8 @@ abstract class Assert
      */
     public static function assertAttributeSame($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeSame() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertSame(
             $expected,
             static::readAttribute($actualClassOrObject, $actualAttributeName),
@@ -1486,6 +1516,8 @@ abstract class Assert
      */
     public static function assertAttributeNotSame($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeNotSame() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertNotSame(
             $expected,
             static::readAttribute($actualClassOrObject, $actualAttributeName),
@@ -1524,6 +1556,8 @@ abstract class Assert
      */
     public static function assertAttributeInstanceOf(string $expected, string $attributeName, $classOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeInstanceOf() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertInstanceOf(
             $expected,
             static::readAttribute($classOrObject, $attributeName),
@@ -1564,6 +1598,8 @@ abstract class Assert
      */
     public static function assertAttributeNotInstanceOf(string $expected, string $attributeName, $classOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeNotInstanceOf() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertNotInstanceOf(
             $expected,
             static::readAttribute($classOrObject, $attributeName),
@@ -1602,6 +1638,8 @@ abstract class Assert
      */
     public static function assertAttributeInternalType(string $expected, string $attributeName, $classOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeInternalType() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertInternalType(
             $expected,
             static::readAttribute($classOrObject, $attributeName),
@@ -1906,6 +1944,8 @@ abstract class Assert
      */
     public static function assertAttributeNotInternalType(string $expected, string $attributeName, $classOrObject, string $message = ''): void
     {
+        self::createWarning('assertAttributeNotInternalType() is deprecated and will be removed in PHPUnit 9.');
+
         static::assertNotInternalType(
             $expected,
             static::readAttribute($classOrObject, $attributeName),
@@ -2535,6 +2575,8 @@ abstract class Assert
      */
     public static function attribute(Constraint $constraint, string $attributeName): Attribute
     {
+        self::createWarning('attribute() is deprecated and will be removed in PHPUnit 9.');
+
         return new Attribute($constraint, $attributeName);
     }
 
@@ -2571,6 +2613,8 @@ abstract class Assert
      */
     public static function attributeEqualTo(string $attributeName, $value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): Attribute
     {
+        self::createWarning('attributeEqualTo() is deprecated and will be removed in PHPUnit 9.');
+
         return static::attribute(
             static::equalTo(
                 $value,
@@ -2718,6 +2762,8 @@ abstract class Assert
      */
     public static function readAttribute($classOrObject, string $attributeName)
     {
+        self::createWarning('readAttribute() is deprecated and will be removed in PHPUnit 9.');
+
         if (!self::isValidAttributeName($attributeName)) {
             throw InvalidArgumentHelper::factory(2, 'valid attribute name');
         }
@@ -2760,6 +2806,8 @@ abstract class Assert
      */
     public static function getStaticAttribute(string $className, string $attributeName)
     {
+        self::createWarning('getStaticAttribute() is deprecated and will be removed in PHPUnit 9.');
+
         if (!\class_exists($className)) {
             throw InvalidArgumentHelper::factory(1, 'class name');
         }
@@ -2800,6 +2848,8 @@ abstract class Assert
      */
     public static function getObjectAttribute($object, string $attributeName)
     {
+        self::createWarning('getObjectAttribute() is deprecated and will be removed in PHPUnit 9.');
+
         if (!\is_object($object)) {
             throw InvalidArgumentHelper::factory(1, 'object');
         }

@@ -1299,66 +1299,6 @@ EOF
         $this->fail();
     }
 
-    public function testAttributeNotEqualTo(): void
-    {
-        $object     = new \ClassWithNonPublicAttributes;
-        $constraint = Assert::logicalNot(
-            Assert::attributeEqualTo('foo', 2)
-        );
-
-        $this->assertTrue($constraint->evaluate($object, '', true));
-        $this->assertEquals('attribute "foo" is not equal to 2', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        $constraint = Assert::logicalNot(
-            Assert::attributeEqualTo('foo', 1)
-        );
-
-        $this->assertFalse($constraint->evaluate($object, '', true));
-
-        try {
-            $constraint->evaluate($object);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-Failed asserting that attribute "foo" is not equal to 1.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testAttributeNotEqualTo2(): void
-    {
-        $object     = new \ClassWithNonPublicAttributes;
-        $constraint = Assert::logicalNot(
-            Assert::attributeEqualTo('foo', 1)
-        );
-
-        try {
-            $constraint->evaluate($object, 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<EOF
-custom message\nFailed asserting that attribute "foo" is not equal to 1.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintCountWithAnArray(): void
     {
         $constraint = new Count(5);
