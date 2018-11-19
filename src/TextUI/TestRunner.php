@@ -192,7 +192,7 @@ class TestRunner extends BaseTestRunner
                 $cache = new TestResultCache;
             }
 
-            $this->extensions[] = new ResultCacheExtension($cache);
+            $this->addExtension(new ResultCacheExtension($cache));
         }
 
         if ($arguments['executionOrder'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['executionOrderDefects'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['resolveDependencies']) {
@@ -796,6 +796,11 @@ class TestRunner extends BaseTestRunner
         return $this->loader;
     }
 
+    public function addExtension(TestHook $extension): void
+    {
+        $this->extensions[] = $extension;
+    }
+
     protected function createTestResult(): TestResult
     {
         return new TestResult;
@@ -1056,12 +1061,16 @@ class TestRunner extends BaseTestRunner
                 }
 
                 if (\count($extension['arguments']) == 0) {
-                    $this->extensions[] = $extensionClass->newInstance();
+                    $extensionObject = $extensionClass->newInstance();
                 } else {
-                    $this->extensions[] = $extensionClass->newInstanceArgs(
+                    $extensionObject = $extensionClass->newInstanceArgs(
                         $extension['arguments']
                     );
                 }
+
+                \assert($extensionObject instanceof TestHook);
+
+                $this->addExtension($extensionObject);
             }
 
             foreach ($arguments['configuration']->getListenerConfiguration() as $listener) {
