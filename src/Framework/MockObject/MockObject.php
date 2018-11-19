@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
@@ -17,10 +18,8 @@ use PHPUnit\Framework\MockObject\Matcher\Invocation;
  * MockBuilder.
  *
  * @method InvocationMocker method($constraint)
- *
- * @deprecated Use PHPUnit\Framework\MockObject\MockObject instead
  */
-interface PHPUnit_Framework_MockObject_MockObject /*extends Verifiable*/
+interface MockObject /*extends Verifiable*/
 {
     /**
      * @return InvocationMocker

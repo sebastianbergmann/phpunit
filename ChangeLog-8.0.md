@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 ### Removed
 
 * Implemented [#2762](https://github.com/sebastianbergmann/phpunit/issues/2762): Drop support for PHP 7.1
+* Implemented [#3123](https://github.com/sebastianbergmann/phpunit/issues/3123): Remove `PHPUnit_Framework_MockObject_MockObject`
 
 [8.0.0]: https://github.com/sebastianbergmann/phpunit/compare/7.5...8.0.0
 
