@@ -113,6 +113,20 @@ class AssertTest extends TestCase
         $this->assertContains('', 'test');
     }
 
+    public function testAssertStringContainsNonString(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertContains(null, '');
+    }
+
+    public function testAssertStringNotContainsNonString(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertNotContains(null, '');
+    }
+
     public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument(): void
     {
         $this->expectException(Exception::class);
