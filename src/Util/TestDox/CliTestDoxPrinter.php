@@ -27,16 +27,6 @@ use SebastianBergmann\Timer\Timer;
 class CliTestDoxPrinter extends ResultPrinter
 {
     /**
-     * @var TestDoxTestResult
-     */
-    private $currentTestResult;
-
-    /**
-     * @var TestDoxTestResult
-     */
-    private $previousTestResult;
-
-    /**
      * @var TestDoxTestResult[]
      */
     private $nonSuccessfulTestResults = [];
@@ -71,9 +61,18 @@ class CliTestDoxPrinter extends ResultPrinter
      */
     private $originalExecutionOrder = [];
 
+    private $className;
+
+    private $lastClassName;
+
+    private $testMethod;
+
+    private $msg;
+
     public function __construct($out = null, bool $verbose = false, $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
+        //print "** class->verbose=" . $this->verbose . "\n";
 
         $this->prettifier = new NamePrettifier;
     }
@@ -90,10 +89,12 @@ class CliTestDoxPrinter extends ResultPrinter
             return;
         }
 
-        $class = \get_class($test);
+        $this->lastTestFailed = false;
+        $this->lastClassName  = $this->className;
+        $this->msg            = '';
 
         if ($test instanceof TestCase) {
-            $className  = $this->prettifier->prettifyTestClass($class);
+            $className  = $this->prettifier->prettifyTestClass(\get_class($test));
             $testMethod = $this->prettifier->prettifyTestCase($test);
         } elseif ($test instanceof TestSuite) {
             $className  = $test->getName();
@@ -102,17 +103,12 @@ class CliTestDoxPrinter extends ResultPrinter
                 $test->getName()
             );
         } elseif ($test instanceof PhptTestCase) {
-            $className  = $class;
+            $className  = \get_class($test);
             $testMethod = $test->getName();
         }
 
-        $this->currentTestResult = new TestDoxTestResult(
-            function (string $color, string $buffer) {
-                return $this->formatWithColor($color, $buffer);
-            },
-            $className,
-            $testMethod
-        );
+        $this->className      = $className;
+        $this->testMethod     = $testMethod;
 
         parent::startTest($test);
     }
@@ -123,109 +119,107 @@ class CliTestDoxPrinter extends ResultPrinter
             return;
         }
 
+        if ($test instanceof TestCase || $test instanceof PhptTestCase) {
+            $this->testCount++;
+        }
+
+        if ($this->lastTestFailed) {
+            $msg                              = $this->msg;
+            $this->nonSuccessfulTestResults[] = [
+                'className' => $this->className,
+                'message'   => $this->msg,
+            ];
+        } else {
+            $msg = $this->formatTestResultMessage($this->formatWithColor('fg-green', '✔'), '', $time, $this->verbose);
+        }
+
+        $this->writeBufferedTestResult($test, $msg);
+
+//        print "** endTest({$this->lastTestFailed})\n";
         parent::endTest($test, $time);
+    }
 
-        $this->currentTestResult->setRuntime($time);
+    public function addError(Test $test, \Throwable $t, float $time): void
+    {
+        $this->lastTestFailed       = true;
+        $this->msg                  = $this->formatTestResultMessage($this->formatWithColor('fg-yellow', '✘'), (string) $t, $time);
+    }
 
+    public function addWarning(Test $test, Warning $e, float $time): void
+    {
+        $this->lastTestFailed       = true;
+        $this->msg                  = $this->formatTestResultMessage($this->formatWithColor('fg-yellow', '✘'), (string) $e, $time);
+    }
+
+    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
+    {
+        $this->lastTestFailed       = true;
+        $this->msg                  = $this->formatTestResultMessage($this->formatWithColor('fg-red', '✘'), (string) $e, $time);
+    }
+
+    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
+    {
+        $this->lastTestFailed       = true;
+        $this->msg                  = $this->formatTestResultMessage($this->formatWithColor('fg-yellow', '∅'), (string) $t, $time, true);
+    }
+
+    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
+    {
+        $this->lastTestFailed       = true;
+        $this->msg                  = $this->formatTestResultMessage($this->formatWithColor('fg-yellow', '☢'), (string) $t, $time, true);
+    }
+
+    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
+    {
+        $this->lastTestFailed       = true;
+        $this->msg                  = $this->formatTestResultMessage($this->formatWithColor('fg-yellow', '→'), (string) $t, $time);
+    }
+
+    public function writeBufferedTestResult(Test $test, string $msg): void
+    {
+        if (!$this->bufferExecutionOrder) {
+            $this->writeTestResult($msg);
+
+            return;
+        }
         $testName = '';
+
         if ($test instanceof PhptTestCase) {
             $testName = $test->getName();
-            $this->testCount++;
         } elseif ($test instanceof TestCase) {
             $testName = $test->getName(true);
 
             if (\strpos($testName, '::') === false) {
                 $testName = \get_class($test) . '::' . $testName;
             }
-            $this->testCount++;
         }
 
-        $this->writeOriginalExecutionOrder($testName, $this->currentTestResult->toString($this->previousTestResult, $this->verbose));
-
-        $this->previousTestResult = $this->currentTestResult;
-
-        if (!$this->currentTestResult->isTestSuccessful()) {
-            $this->nonSuccessfulTestResults[] = $this->currentTestResult;
-        }
-    }
-
-    public function addError(Test $test, \Throwable $t, float $time): void
-    {
-        $this->currentTestResult->fail(
-            $this->formatWithColor('fg-yellow', '✘'),
-            (string) $t
-        );
-    }
-
-    public function addWarning(Test $test, Warning $e, float $time): void
-    {
-        $this->currentTestResult->fail(
-            $this->formatWithColor('fg-yellow', '✘'),
-            (string) $e
-        );
-    }
-
-    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
-    {
-        $this->currentTestResult->fail(
-            $this->formatWithColor('fg-red', '✘'),
-            (string) $e
-        );
-    }
-
-    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
-    {
-        $this->currentTestResult->fail(
-            $this->formatWithColor('fg-yellow', '∅'),
-            (string) $t,
-            true
-        );
-    }
-
-    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
-    {
-        $this->currentTestResult->fail(
-            $this->formatWithColor('fg-yellow', '☢'),
-            (string) $t,
-            true
-        );
-    }
-
-    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
-    {
-        $this->currentTestResult->fail(
-            $this->formatWithColor('fg-yellow', '→'),
-            (string) $t,
-            true
-        );
-    }
-
-    public function writeOriginalExecutionOrder(string $testname, string $msg): void
-    {
-        if (!$this->bufferExecutionOrder) {
-            $this->write($msg);
-
-            return;
-        }
-
-        if ($testname == $this->originalExecutionOrder[$this->testFlushCount]) {
+        if ($testName == $this->originalExecutionOrder[$this->testFlushCount]) {
+            $prevClassName = $this->lastFlushedClassName();
+            $msg           = $this->formatTestSuiteHeader($prevClassName, $this->className, $msg);
             $this->write($msg);
             $this->testFlushCount++;
 
+            $prevClassName = $this->className;
+
             while ($this->testFlushCount < $this->testCount && isset($this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount]])) {
-//                $this->write("** flushing {$this->originalExecutionOrder[$this->testFlushCount]}\n");
-                foreach($this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount++]] as $line) {
-                    $this->write($line);
-                }
+                $result = $this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount++]];
+//                print "** flush $prevClassName {$result['className']}\n";
+                $msg = $this->formatTestSuiteHeader($prevClassName, $result['className'], $result['message']);
+                $this->write($msg);
+                $prevClassName = $result['className'];
             }
         } else {
-//            parent::write("** buffering $testname\n");
-            $this->outputBuffer[$testname][] = $msg;
+            $this->outputBuffer[$testName] = [
+                'className' => $this->className,
+                'message'   => $msg,
+            ];
         }
     }
 
-    public function write(string $msg): void
+    public function writeTestResult(string $msg): void
     {
+        $msg = $this->formatTestSuiteHeader($this->lastClassName, $this->className, $msg);
         parent::write($msg);
     }
 
@@ -239,6 +233,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
     public function printResult(TestResult $result): void
     {
+        // gets all its information from TestRunner result and runtime env
         $this->printHeader();
 
         $this->printNonSuccessfulTestsSummary($result->count());
@@ -251,26 +246,91 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->write("\n" . Timer::resourceUsage() . "\n\n");
     }
 
+    private function lastFlushedClassName(): string
+    {
+        if ($this->testFlushCount === 0) {
+            return '_';
+        }
+
+        return $this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount - 1]]['className'] ?? '';
+    }
+
+    private function formatTestSuiteHeader(?string $lastClassName, string $className, string $msg): string
+    {
+        if ($lastClassName === null || $className !== $lastClassName) {
+            return \sprintf(
+                "%s%s\n%s",
+                ($this->testFlushCount > 0) ? "\n" : '',
+                $className,
+                $msg
+            );
+        }
+
+        return $msg;
+    }
+
+    private function formatTestResultMessage(string $symbol, string $resultMessage, float $time, bool $verbose = false): string
+    {
+        return \sprintf(
+            " %s %s%s\n%s",
+            $symbol,
+            $this->testMethod,
+            $verbose ? ' ' . $this->getFormattedRuntime($time) : '',
+            $this->verbose ? $this->getFormattedAdditionalInformation($resultMessage) : ''
+        );
+    }
+
+    private function getFormattedRuntime(float $time): string
+    {
+        if ($time > 5) {
+            return ($this->colorize)('fg-red', \sprintf('[%.2f ms]', $time * 1000));
+        }
+
+        if ($time > 1) {
+            return ($this->colorize)('fg-yellow', \sprintf('[%.2f ms]', $time * 1000));
+        }
+
+        return \sprintf('[%.2f ms]', $time * 1000);
+    }
+
+    private function getFormattedAdditionalInformation(string $resultMessage): string
+    {
+        if ($resultMessage === '') {
+            return '';
+        }
+
+        return \sprintf(
+            "   │\n%s\n",
+            \implode(
+                "\n",
+                \array_map(
+                    function (string $text) {
+                        return \sprintf('   │ %s', $text);
+                    },
+                    \explode("\n", $resultMessage)
+                )
+            )
+        );
+    }
+
     private function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void
     {
-        $numberOfNonSuccessfulTests = \count($this->nonSuccessfulTestResults);
-
-        if ($numberOfNonSuccessfulTests === 0) {
+        if (empty($this->nonSuccessfulTestResults)) {
             return;
         }
 
-        if (($numberOfNonSuccessfulTests / $numberOfExecutedTests) >= 0.7) {
+        if ((\count($this->nonSuccessfulTestResults) / $numberOfExecutedTests) >= 0.7) {
             return;
         }
 
-        $this->write("Summary of non-successful tests:\n\n");
+        $this->write("Summary of non-successful tests:\n");
 
-        $previousTestResult = null;
+        $prevClassName = '';
 
-        foreach ($this->nonSuccessfulTestResults as $testResult) {
-            $this->write($testResult->toString($previousTestResult, $this->verbose));
-
-            $previousTestResult = $testResult;
+        foreach ($this->nonSuccessfulTestResults as $result) {
+            $msg = $this->formatTestSuiteHeader($prevClassName, $result['className'], $result['message']);
+            $this->write($msg);
+            $prevClassName = $result['className'];
         }
     }
 }
