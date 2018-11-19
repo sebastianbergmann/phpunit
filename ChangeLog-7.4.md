@@ -50,5 +50,5 @@ All notable changes of the PHPUnit 7.4 release series are documented in this fil
 [7.4.3]: https://github.com/sebastianbergmann/phpunit/compare/7.4.2...7.4.3
 [7.4.2]: https://github.com/sebastianbergmann/phpunit/compare/7.4.1...7.4.2
 [7.4.1]: https://github.com/sebastianbergmann/phpunit/compare/7.4.0...7.4.1
-[7.4.0]: https://github.com/sebastianbergmann/phpunit/compare/7.3...7.4.0
+[7.4.0]: https://github.com/sebastianbergmann/phpunit/compare/7.3.5...7.4.0
 
