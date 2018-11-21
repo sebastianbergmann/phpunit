@@ -48,9 +48,6 @@
     "require-dev": {
         "ext-PDO": "*"
     },
-    "conflict": {
-        "phpunit/phpunit-mock-objects": "*"
-    },
     "config": {
         "platform": {
             "php": "7.2.0"
