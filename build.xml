@@ -345,6 +345,7 @@
         <exec executable="${basedir}/build/tools/php-scoper" taskname="php-scoper">
             <arg value="add-prefix" />
             <arg value="--no-ansi" />
+            <arg value="--force" />
             <arg value="--config" />
             <arg path="${basedir}/build/scoper.inc.php" />
             <arg value="--no-interaction" />
