@@ -167,7 +167,7 @@ final class TestSuiteSorter
         $max = 0;
 
         foreach ($suite->tests() as $test) {
-            $testname = $this->getNormalizedTestName($test);
+            $testname = TestResultCache::getTestSorterUID($test);
 
             if (!isset($this->defectSortOrder[$testname])) {
                 $this->defectSortOrder[$testname]        = self::DEFECT_SORT_WEIGHT[$this->cache->getState($testname)];
@@ -233,8 +233,8 @@ final class TestSuiteSorter
      */
     private function cmpDefectPriorityAndTime(Test $a, Test $b): int
     {
-        $priorityA = $this->defectSortOrder[$this->getNormalizedTestName($a)] ?? 0;
-        $priorityB = $this->defectSortOrder[$this->getNormalizedTestName($b)] ?? 0;
+        $priorityA = $this->defectSortOrder[TestResultCache::getTestSorterUID($a)] ?? 0;
+        $priorityB = $this->defectSortOrder[TestResultCache::getTestSorterUID($b)] ?? 0;
 
         if ($priorityB <=> $priorityA) {
             // Sort defect weight descending
@@ -254,7 +254,7 @@ final class TestSuiteSorter
      */
     private function cmpDuration(Test $a, Test $b): int
     {
-        return $this->cache->getTime($this->getNormalizedTestName($a)) <=> $this->cache->getTime($this->getNormalizedTestName($b));
+        return $this->cache->getTime(TestResultCache::getTestSorterUID($a)) <=> $this->cache->getTime(TestResultCache::getTestSorterUID($b));
     }
 
     /**
@@ -280,7 +280,7 @@ final class TestSuiteSorter
         do {
             $todoNames = \array_map(
                 function ($test) {
-                    return $this->getNormalizedTestName($test);
+                    return TestResultCache::getTestSorterUID($test);
                 },
                 $tests
             );
@@ -294,28 +294,6 @@ final class TestSuiteSorter
         } while (!empty($tests) && ($i < \count($tests)));
 
         return \array_merge($newTestOrder, $tests);
-    }
-
-    /**
-     * @param DataProviderTestSuite|TestCase $test
-     *
-     * @return string Full test name as "TestSuiteClassName::testMethodName"
-     */
-    private function getNormalizedTestName($test): string
-    {
-        if ($test instanceof TestSuite && !($test instanceof DataProviderTestSuite)) {
-            return $test->getName();
-        }
-
-        if ($test instanceof PhptTestCase) {
-            return $test->getName();
-        }
-
-        if (\strpos($test->getName(), '::') !== false) {
-            return $test->getName(true);
-        }
-
-        return \get_class($test) . '::' . $test->getName(true);
     }
 
     /**
@@ -348,7 +326,7 @@ final class TestSuiteSorter
         if ($suite instanceof TestSuite) {
             foreach ($suite->tests() as $test) {
                 if (!($test instanceof TestSuite)) {
-                    $tests[] = $this->getNormalizedTestName($test);
+                    $tests[] = TestResultCache::getTestSorterUID($test);
                 } else {
                     $tests = \array_merge($tests, $this->calculateTestExecutionOrder($test));
                 }
