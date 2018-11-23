@@ -69,10 +69,11 @@ class CliTestDoxPrinter extends ResultPrinter
 
     private $msg;
 
+    private $lastTestWasVerbose = false;
+
     public function __construct($out = null, bool $verbose = false, $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
-        //print "** class->verbose=" . $this->verbose . "\n";
 
         $this->prettifier = new NamePrettifier;
     }
@@ -135,7 +136,6 @@ class CliTestDoxPrinter extends ResultPrinter
 
         $this->writeBufferedTestResult($test, $msg);
 
-//        print "** endTest({$this->lastTestFailed})\n";
         parent::endTest($test, $time);
     }
 
@@ -271,13 +271,18 @@ class CliTestDoxPrinter extends ResultPrinter
 
     private function formatTestResultMessage(string $symbol, string $resultMessage, float $time, bool $verbose = false): string
     {
-        return \sprintf(
-            " %s %s%s\n%s",
+        $additionalInformation = $this->getFormattedAdditionalInformation($resultMessage, $verbose);
+        $msg = \sprintf(
+            "%s %s %s%s\n%s",
+            $this->lastTestWasVerbose ? "\n" : '',
             $symbol,
             $this->testMethod,
             $verbose ? ' ' . $this->getFormattedRuntime($time) : '',
-            $this->verbose ? $this->getFormattedAdditionalInformation($resultMessage) : ''
+            $additionalInformation
         );
+
+        $this->lastTestWasVerbose = !empty($additionalInformation);
+        return $msg;
     }
 
     private function getFormattedRuntime(float $time): string
@@ -293,9 +298,13 @@ class CliTestDoxPrinter extends ResultPrinter
         return \sprintf('[%.2f ms]', $time * 1000);
     }
 
-    private function getFormattedAdditionalInformation(string $resultMessage): string
+    private function getFormattedAdditionalInformation(string $resultMessage, bool $verbose): string
     {
         if ($resultMessage === '') {
+            return '';
+        }
+
+        if ($this->verbose && !$verbose) {
             return '';
         }
 
@@ -329,6 +338,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
         foreach ($this->nonSuccessfulTestResults as $result) {
             $msg = $this->formatTestSuiteHeader($prevClassName, $result['className'], $result['message']);
+            $msg = strpos($msg, "\n") === 0 ? $msg : "\n$msg";
             $this->write($msg);
             $prevClassName = $result['className'];
         }

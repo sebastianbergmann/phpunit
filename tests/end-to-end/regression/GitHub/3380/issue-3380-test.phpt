@@ -27,7 +27,7 @@ DataproviderExecutionOrder
    │
    │ Failed asserting that 2 is identical to 3.
    │%w
-   │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:24
+   │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:%d
    │%w
 
  ✔ Test in the middle that always works
@@ -37,7 +37,7 @@ DataproviderExecutionOrder
    │
    │ Failed asserting that 2 is identical to 3.
    │%w
-   │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:37
+   │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:%d
    │%w
 
 Time: %s, Memory: %s
@@ -48,16 +48,16 @@ DataproviderExecutionOrder
  ✘ Add numbers with a dataprovider with data set "1+1=3"
    │
    │ Failed asserting that 2 is identical to 3.
-   │
-%A
-   │
+   │%w
+   │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:%d
+   │%w
 
  ✘ Add more numbers with a dataprovider with data set "1+1=3"
    │
    │ Failed asserting that 2 is identical to 3.
-   │
-%A
-   │
+   │%w
+   │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:%d
+   │%w
 
 FAILURES!
 Tests: 8, Assertions: 8, Failures: 2.
