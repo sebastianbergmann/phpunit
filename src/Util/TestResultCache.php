@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
+
 class TestResultCache implements \Serializable, TestResultCacheInterface
 {
     /**
@@ -189,5 +192,23 @@ class TestResultCache implements \Serializable, TestResultCacheInterface
     private function createDirectory(string $directory): bool
     {
         return !(!\is_dir($directory) && !@\mkdir($directory, 0777, true) && !\is_dir($directory));
+    }
+
+    public static function getTestSorterUID(Test $test): string
+    {
+        if ($test instanceof PhptTestCase) {
+            return $test->getName();
+        }
+
+        if ($test instanceof TestCase) {
+            $testName = $test->getName(true);
+
+            if (\strpos($testName, '::') === false) {
+                $testName = \get_class($test) . '::' . $testName;
+            }
+            return $testName;
+        }
+
+        return $test->getName();
     }
 }
