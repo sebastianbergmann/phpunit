@@ -64,6 +64,25 @@ class TestResultCache implements \Serializable, TestResultCacheInterface
      */
     private $times = [];
 
+    public static function getTestSorterUID(Test $test): string
+    {
+        if ($test instanceof PhptTestCase) {
+            return $test->getName();
+        }
+
+        if ($test instanceof TestCase) {
+            $testName = $test->getName(true);
+
+            if (\strpos($testName, '::') === false) {
+                $testName = \get_class($test) . '::' . $testName;
+            }
+
+            return $testName;
+        }
+
+        return $test->getName();
+    }
+
     public function __construct($filename = null)
     {
         $this->cacheFilename = $filename ?? $_ENV['PHPUNIT_RESULT_CACHE'] ?? self::DEFAULT_RESULT_CACHE_FILENAME;
@@ -192,23 +211,5 @@ class TestResultCache implements \Serializable, TestResultCacheInterface
     private function createDirectory(string $directory): bool
     {
         return !(!\is_dir($directory) && !@\mkdir($directory, 0777, true) && !\is_dir($directory));
-    }
-
-    public static function getTestSorterUID(Test $test): string
-    {
-        if ($test instanceof PhptTestCase) {
-            return $test->getName();
-        }
-
-        if ($test instanceof TestCase) {
-            $testName = $test->getName(true);
-
-            if (\strpos($testName, '::') === false) {
-                $testName = \get_class($test) . '::' . $testName;
-            }
-            return $testName;
-        }
-
-        return $test->getName();
     }
 }
