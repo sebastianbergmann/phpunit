@@ -16,6 +16,7 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\TestResultCache;
 use PHPUnit\TextUI\ResultPrinter;
 use PHPUnit\Util\TestDox\TestResult as TestDoxTestResult;
 use SebastianBergmann\Timer\Timer;
@@ -69,7 +70,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
     private $msg;
 
-    private $lastTestWasVerbose = false;
+    private $lastFlushedTestWasVerbose = false;
 
     public function __construct($out = null, bool $verbose = false, $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
     {
@@ -134,7 +135,11 @@ class CliTestDoxPrinter extends ResultPrinter
             $msg = $this->formatTestResultMessage($this->formatWithColor('fg-green', '✔'), '', $time, $this->verbose);
         }
 
-        $this->writeBufferedTestResult($test, $msg);
+        if ($this->bufferExecutionOrder) {
+            $this->bufferTestResult($test, $msg);
+        } else {
+            $this->writeTestResult($msg);
+        }
 
         parent::endTest($test, $time);
     }
@@ -175,24 +180,9 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->msg                  = $this->formatTestResultMessage($this->formatWithColor('fg-yellow', '→'), (string) $t, $time);
     }
 
-    public function writeBufferedTestResult(Test $test, string $msg): void
+    public function bufferTestResult(Test $test, string $msg): void
     {
-        if (!$this->bufferExecutionOrder) {
-            $this->writeTestResult($msg);
-
-            return;
-        }
-        $testName = '';
-
-        if ($test instanceof PhptTestCase) {
-            $testName = $test->getName();
-        } elseif ($test instanceof TestCase) {
-            $testName = $test->getName(true);
-
-            if (\strpos($testName, '::') === false) {
-                $testName = \get_class($test) . '::' . $testName;
-            }
-        }
+        $testName = TestResultCache::getTestSorterUID($test);
 
         if ($testName == $this->originalExecutionOrder[$this->testFlushCount]) {
             $prevClassName = $this->lastFlushedClassName();
@@ -272,16 +262,16 @@ class CliTestDoxPrinter extends ResultPrinter
     private function formatTestResultMessage(string $symbol, string $resultMessage, float $time, bool $verbose = false): string
     {
         $additionalInformation = $this->getFormattedAdditionalInformation($resultMessage, $verbose);
-        $msg = \sprintf(
-            "%s %s %s%s\n%s",
-            $this->lastTestWasVerbose ? "\n" : '',
+        $msg                   = \sprintf(
+            " %s %s%s\n%s",
             $symbol,
             $this->testMethod,
             $verbose ? ' ' . $this->getFormattedRuntime($time) : '',
             $additionalInformation
         );
 
-        $this->lastTestWasVerbose = !empty($additionalInformation);
+        $this->lastFlushedTestWasVerbose = !empty($additionalInformation);
+
         return $msg;
     }
 
@@ -338,7 +328,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
         foreach ($this->nonSuccessfulTestResults as $result) {
             $msg = $this->formatTestSuiteHeader($prevClassName, $result['className'], $result['message']);
-            $msg = strpos($msg, "\n") === 0 ? $msg : "\n$msg";
+            $msg = \strpos($msg, "\n") === 0 ? $msg : "\n$msg";
             $this->write($msg);
             $prevClassName = $result['className'];
         }
