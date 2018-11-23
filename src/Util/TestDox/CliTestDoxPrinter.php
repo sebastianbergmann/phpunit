@@ -18,7 +18,6 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestResultCache;
 use PHPUnit\TextUI\ResultPrinter;
-use PHPUnit\Util\TestDox\TestResult as TestDoxTestResult;
 use SebastianBergmann\Timer\Timer;
 
 /**
@@ -28,7 +27,7 @@ use SebastianBergmann\Timer\Timer;
 class CliTestDoxPrinter extends ResultPrinter
 {
     /**
-     * @var TestDoxTestResult[]
+     * @var int[]
      */
     private $nonSuccessfulTestResults = [];
 
@@ -40,12 +39,12 @@ class CliTestDoxPrinter extends ResultPrinter
     /**
      * @var int The number of test results received from the TestRunner
      */
-    private $testCount = 0;
+    private $testIndex = 0;
 
     /**
      * @var int The number of test results already sent to the output
      */
-    private $testFlushCount = 0;
+    private $testFlushIndex = 0;
 
     /**
      * @var array Buffer for write()
@@ -122,23 +121,25 @@ class CliTestDoxPrinter extends ResultPrinter
         }
 
         if ($test instanceof TestCase || $test instanceof PhptTestCase) {
-            $this->testCount++;
+            $this->testIndex++;
         }
 
         if ($this->lastTestFailed) {
             $msg                              = $this->msg;
-            $this->nonSuccessfulTestResults[] = [
-                'className' => $this->className,
-                'message'   => $this->msg,
-            ];
+            $this->nonSuccessfulTestResults[] = $this->testIndex;
         } else {
             $msg = $this->formatTestResultMessage($this->formatWithColor('fg-green', '✔'), '', $time, $this->verbose);
         }
 
         if ($this->bufferExecutionOrder) {
             $this->bufferTestResult($test, $msg);
+            $this->flushOutputBuffer();
         } else {
             $this->writeTestResult($msg);
+
+            if ($this->lastTestFailed) {
+                $this->bufferTestResult($test, $msg);
+            }
         }
 
         parent::endTest($test, $time);
@@ -182,35 +183,19 @@ class CliTestDoxPrinter extends ResultPrinter
 
     public function bufferTestResult(Test $test, string $msg): void
     {
-        $testName = TestResultCache::getTestSorterUID($test);
-
-        if ($testName == $this->originalExecutionOrder[$this->testFlushCount]) {
-            $prevClassName = $this->lastFlushedClassName();
-            $msg           = $this->formatTestSuiteHeader($prevClassName, $this->className, $msg);
-            $this->write($msg);
-            $this->testFlushCount++;
-
-            $prevClassName = $this->className;
-
-            while ($this->testFlushCount < $this->testCount && isset($this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount]])) {
-                $result = $this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount++]];
-//                print "** flush $prevClassName {$result['className']}\n";
-                $msg = $this->formatTestSuiteHeader($prevClassName, $result['className'], $result['message']);
-                $this->write($msg);
-                $prevClassName = $result['className'];
-            }
-        } else {
-            $this->outputBuffer[$testName] = [
-                'className' => $this->className,
-                'message'   => $msg,
-            ];
-        }
+        $this->outputBuffer[$this->testIndex] = [
+            'className' => $this->className,
+            'testName'  => TestResultCache::getTestSorterUID($test),
+            'message'   => $msg,
+            'failed'    => $this->lastTestFailed,
+            'verbose'   => $this->lastFlushedTestWasVerbose,
+        ];
     }
 
     public function writeTestResult(string $msg): void
     {
         $msg = $this->formatTestSuiteHeader($this->lastClassName, $this->className, $msg);
-        parent::write($msg);
+        $this->write($msg);
     }
 
     public function writeProgress(string $progress): void
@@ -236,13 +221,54 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->write("\n" . Timer::resourceUsage() . "\n\n");
     }
 
-    private function lastFlushedClassName(): string
+    private function flushOutputBuffer(): void
     {
-        if ($this->testFlushCount === 0) {
-            return '_';
+        if ($this->testFlushIndex === $this->testIndex) {
+            return;
+        }
+//        print "## flush fi={$this->testFlushIndex} / i={$this->testIndex}\n";
+
+        if ($this->testFlushIndex > 0) {
+            $prevResult = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex - 1]);
+        } else {
+            $prevResult = $this->getEmptyTestResult();
         }
 
-        return $this->outputBuffer[$this->originalExecutionOrder[$this->testFlushCount - 1]]['className'] ?? '';
+        do {
+            $flushed = false;
+//            print "#  next: {$this->originalExecutionOrder[$this->testFlushIndex]}\n";
+            $result = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
+
+            if (!empty($result)) {
+                // Write spacer line for new suite headers and after verbose messages
+                if ($prevResult['testName'] !== '' &&
+                    ($prevResult['verbose'] === true || $prevResult['className'] !== $result['className'])) {
+                    $this->write("\n");
+                }
+
+                // Write suite header
+                if ($prevResult['className'] !== $result['className']) {
+                    $this->write($result['className'] . "\n");
+                }
+
+                // Write the test result itself
+                $this->write($result['message']);
+                $this->testFlushIndex++;
+                $prevResult = $result;
+                $flushed    = true;
+            }
+        } while ($flushed && $this->testFlushIndex < $this->testIndex);
+    }
+
+    private function getTestResultByName(string $testName): array
+    {
+        foreach ($this->outputBuffer as $result) {
+            if ($result['testName'] === $testName) {
+                return $result;
+            }
+        }
+
+        return [];
     }
 
     private function formatTestSuiteHeader(?string $lastClassName, string $className, string $msg): string
@@ -250,7 +276,7 @@ class CliTestDoxPrinter extends ResultPrinter
         if ($lastClassName === null || $className !== $lastClassName) {
             return \sprintf(
                 "%s%s\n%s",
-                ($this->testFlushCount > 0) ? "\n" : '',
+                ($this->testFlushIndex > 0) ? "\n" : '',
                 $className,
                 $msg
             );
@@ -326,11 +352,24 @@ class CliTestDoxPrinter extends ResultPrinter
 
         $prevClassName = '';
 
-        foreach ($this->nonSuccessfulTestResults as $result) {
+        foreach ($this->nonSuccessfulTestResults as $testIndex) {
+            $result = $this->outputBuffer[$testIndex];
+
             $msg = $this->formatTestSuiteHeader($prevClassName, $result['className'], $result['message']);
             $msg = \strpos($msg, "\n") === 0 ? $msg : "\n$msg";
             $this->write($msg);
             $prevClassName = $result['className'];
         }
+    }
+
+    private function getEmptyTestResult(): array
+    {
+        return [
+            'className' => '',
+            'testName'  => '',
+            'message'   => '',
+            'failed'    => '',
+            'verbose'   => '',
+        ];
     }
 }
