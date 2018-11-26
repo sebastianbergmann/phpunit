@@ -10,7 +10,6 @@
 namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
 
 class TestResultCache implements \Serializable, TestResultCacheInterface
 {
@@ -63,25 +62,6 @@ class TestResultCache implements \Serializable, TestResultCacheInterface
      * @var array<string, float>
      */
     private $times = [];
-
-    public static function getTestSorterUID(Test $test): string
-    {
-        if ($test instanceof PhptTestCase) {
-            return $test->getName();
-        }
-
-        if ($test instanceof TestCase) {
-            $testName = $test->getName(true);
-
-            if (\strpos($testName, '::') === false) {
-                $testName = \get_class($test) . '::' . $testName;
-            }
-
-            return $testName;
-        }
-
-        return $test->getName();
-    }
 
     public function __construct($filename = null)
     {
