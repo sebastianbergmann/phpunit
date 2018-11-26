@@ -63,7 +63,7 @@ final class NamePrettifier
         $annotations                = $test->getAnnotations();
         $annotationWithPlaceholders = false;
 
-        $callback = static function (string $variable) : string {
+        $callback = static function (string $variable): string {
             return \sprintf('/%s(?=\b)/', \preg_quote($variable, '/'));
         };
 

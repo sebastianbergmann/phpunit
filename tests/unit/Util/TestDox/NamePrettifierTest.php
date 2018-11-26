@@ -118,13 +118,13 @@ class NamePrettifierTest extends TestCase
             public function __construct()
             {
                 parent::__construct('testExport', [
-                    'int' => 1234,
-                    'strInt' => '1234',
-                    'float' => 2.123,
+                    'int'      => 1234,
+                    'strInt'   => '1234',
+                    'float'    => 2.123,
                     'strFloat' => '2.123',
-                    'string' => 'foo',
-                    'bool' => true,
-                    'null' => null,
+                    'string'   => 'foo',
+                    'bool'     => true,
+                    'null'     => null,
                 ]);
             }
 
