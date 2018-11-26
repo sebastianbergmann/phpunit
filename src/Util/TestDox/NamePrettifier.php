@@ -160,9 +160,7 @@ final class NamePrettifier
         $providedDataValues = \array_values($test->getProvidedData());
         $i                  = 0;
 
-        $parameters = $reflector->getParameters();
-
-        foreach ($parameters as $parameter) {
+        foreach ($reflector->getParameters() as $parameter) {
             if (!\array_key_exists($i, $providedDataValues) && $parameter->isDefaultValueAvailable()) {
                 $providedDataValues[$i] = $parameter->getDefaultValue();
             }
