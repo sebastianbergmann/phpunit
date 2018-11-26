@@ -11,15 +11,20 @@ declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
 
-class Issue3364Test extends TestCase
+class Issue3364SetupBeforeClassTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-        throw new \RuntimeException('Something\'s not quite right!');
+        throw new \RuntimeException('throw exception in setUpBeforeClass');
     }
 
-    public function testSomething(): void
+    public function testOne(): void
     {
-        $this->fail('This cannot work!');
+        $this->fail();
+    }
+
+    public function testTwo(): void
+    {
+        $this->fail();
     }
 }
