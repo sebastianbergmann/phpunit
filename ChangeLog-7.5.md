@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 * Implemented [#3340](https://github.com/sebastianbergmann/phpunit/issues/3340): Added `assertEqualsCanonicalizing()`, `assertEqualsIgnoringCase()`, `assertEqualsWithDelta()`, `assertNotEqualsCanonicalizing()`, `assertNotEqualsIgnoringCase()`, and `assertNotEqualsWithDelta()` as alternatives to using `assertEquals()` and `assertNotEquals()` with the `$delta`, `$canonicalize`, or `$ignoreCase` parameters
 * Implemented [#3368](https://github.com/sebastianbergmann/phpunit/issues/3368): Added `assertIsArray()`, `assertIsBool()`, `assertIsFloat()`, `assertIsInt()`, `assertIsNumeric()`, `assertIsObject()`, `assertIsResource()`, `assertIsString()`, `assertIsScalar()`, `assertIsCallable()`, `assertIsIterable()`, `assertIsNotArray()`, `assertIsNotBool()`, `assertIsNotFloat()`, `assertIsNotInt()`, `assertIsNotNumeric()`, `assertIsNotObject()`, `assertIsNotResource()`, `assertIsNotString()`, `assertIsNotScalar()`, `assertIsNotCallable()`, `assertIsNotIterable()` as alternatives to `assertInternalType()` and `assertNotInternalType()`
 * Implemented [#3391](https://github.com/sebastianbergmann/phpunit/issues/3391): Added a `TestHook` that fires after each test, regardless of result
+* Implemented [#3417](https://github.com/sebastianbergmann/phpunit/pull/3417): Refinements related to test suite sorting and TestDox result printer
 
 ### Deprecated
 
