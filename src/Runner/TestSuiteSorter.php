@@ -74,6 +74,25 @@ final class TestSuiteSorter
      */
     private $executionOrder = [];
 
+    public static function getTestSorterUID(Test $test): string
+    {
+        if ($test instanceof PhptTestCase) {
+            return $test->getName();
+        }
+
+        if ($test instanceof TestCase) {
+            $testName = $test->getName(true);
+
+            if (\strpos($testName, '::') === false) {
+                $testName = \get_class($test) . '::' . $testName;
+            }
+
+            return $testName;
+        }
+
+        return $test->getName();
+    }
+
     public function __construct(?TestResultCacheInterface $cache = null)
     {
         $this->cache = $cache ?? new NullTestResultCache;
@@ -167,7 +186,7 @@ final class TestSuiteSorter
         $max = 0;
 
         foreach ($suite->tests() as $test) {
-            $testname = TestResultCache::getTestSorterUID($test);
+            $testname = self::getTestSorterUID($test);
 
             if (!isset($this->defectSortOrder[$testname])) {
                 $this->defectSortOrder[$testname]        = self::DEFECT_SORT_WEIGHT[$this->cache->getState($testname)];
@@ -233,8 +252,8 @@ final class TestSuiteSorter
      */
     private function cmpDefectPriorityAndTime(Test $a, Test $b): int
     {
-        $priorityA = $this->defectSortOrder[TestResultCache::getTestSorterUID($a)] ?? 0;
-        $priorityB = $this->defectSortOrder[TestResultCache::getTestSorterUID($b)] ?? 0;
+        $priorityA = $this->defectSortOrder[self::getTestSorterUID($a)] ?? 0;
+        $priorityB = $this->defectSortOrder[self::getTestSorterUID($b)] ?? 0;
 
         if ($priorityB <=> $priorityA) {
             // Sort defect weight descending
@@ -254,7 +273,7 @@ final class TestSuiteSorter
      */
     private function cmpDuration(Test $a, Test $b): int
     {
-        return $this->cache->getTime(TestResultCache::getTestSorterUID($a)) <=> $this->cache->getTime(TestResultCache::getTestSorterUID($b));
+        return $this->cache->getTime(self::getTestSorterUID($a)) <=> $this->cache->getTime(self::getTestSorterUID($b));
     }
 
     /**
@@ -280,7 +299,7 @@ final class TestSuiteSorter
         do {
             $todoNames = \array_map(
                 function ($test) {
-                    return TestResultCache::getTestSorterUID($test);
+                    return self::getTestSorterUID($test);
                 },
                 $tests
             );
@@ -326,7 +345,7 @@ final class TestSuiteSorter
         if ($suite instanceof TestSuite) {
             foreach ($suite->tests() as $test) {
                 if (!($test instanceof TestSuite)) {
-                    $tests[] = TestResultCache::getTestSorterUID($test);
+                    $tests[] = self::getTestSorterUID($test);
                 } else {
                     $tests = \array_merge($tests, $this->calculateTestExecutionOrder($test));
                 }

@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\Runner\TestResultCache;
+use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
 use SebastianBergmann\Timer\Timer;
 
@@ -241,7 +241,7 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->outputBuffer[$this->testIndex] = [
             'className'  => $this->className,
-            'testName'   => TestResultCache::getTestSorterUID($test),
+            'testName'   => TestSuiteSorter::getTestSorterUID($test),
             'testMethod' => $this->testMethod,
             'message'    => $msg,
             'failed'     => $this->lastTestFailed,
