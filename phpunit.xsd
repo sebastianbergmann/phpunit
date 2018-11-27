@@ -184,6 +184,11 @@
             <xs:enumeration value="depends,random"/>
             <xs:enumeration value="depends,reverse"/>
             <xs:enumeration value="depends,duration"/>
+            <xs:enumeration value="no-depends"/>
+            <xs:enumeration value="no-depends,defects"/>
+            <xs:enumeration value="no-depends,random"/>
+            <xs:enumeration value="no-depends,reverse"/>
+            <xs:enumeration value="no-depends,duration"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="fileFilterType">
