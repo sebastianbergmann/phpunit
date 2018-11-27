@@ -63,20 +63,19 @@ final class NamePrettifier
         $annotations                = $test->getAnnotations();
         $annotationWithPlaceholders = false;
 
+        $callback = static function (string $variable): string {
+            return \sprintf('/%s(?=\b)/', \preg_quote($variable, '/'));
+        };
+
         if (isset($annotations['method']['testdox'][0])) {
             $result = $annotations['method']['testdox'][0];
 
             if (\strpos($result, '$') !== false) {
                 $annotation   = $annotations['method']['testdox'][0];
                 $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
+                $variables    = \array_map($callback, \array_keys($providedData));
 
-                $result = \trim(
-                    \str_replace(
-                        \array_keys($providedData),
-                        $providedData,
-                        $annotation
-                    )
-                );
+                $result = \trim(\preg_replace($variables, $providedData, $annotation));
 
                 $annotationWithPlaceholders = true;
             }
@@ -180,7 +179,7 @@ final class NamePrettifier
                 $value = \gettype($value);
             }
 
-            if (\is_bool($value) || \is_numeric($value)) {
+            if (\is_bool($value) || \is_int($value) || \is_float($value)) {
                 $exporter = new Exporter;
 
                 $value = $exporter->export($value);
