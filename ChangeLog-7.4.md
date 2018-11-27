@@ -5,6 +5,7 @@ All notable changes of the PHPUnit 7.4 release series are documented in this fil
 ## [7.4.5] - 2018-MM-DD
 
 * Fixed [#3410](https://github.com/sebastianbergmann/phpunit/issues/3410): Parent directory of `cacheResultFile` is not created when it does not exist
+* Fixed [#3418](https://github.com/sebastianbergmann/phpunit/pull/3418): Conflicting placeholder replacement and argument exporting inconsistencies in `@testdox`
 
 ## [7.4.4] - 2018-11-14
 
