@@ -5,7 +5,7 @@ phpunit --order-by=no-depends,reverse --cache-result --cache-result-file MultiDe
 $target = tempnam(sys_get_temp_dir(), __FILE__);
 
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--ignore-dependencies'   // keep coverage for legacy CLI option
+$_SERVER['argv'][2] = '--ignore-dependencies';   // keep coverage for legacy CLI option
 $_SERVER['argv'][3] = '--order-by=reverse';
 $_SERVER['argv'][4] = '--cache-result';
 $_SERVER['argv'][5] = '--cache-result-file=' . $target;
