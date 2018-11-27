@@ -1348,7 +1348,7 @@ EOT;
                 case 'default':
                     $this->arguments['executionOrder']        = TestSuiteSorter::ORDER_DEFAULT;
                     $this->arguments['executionOrderDefects'] = TestSuiteSorter::ORDER_DEFAULT;
-                    $this->arguments['resolveDependencies']   = false;
+                    $this->arguments['resolveDependencies']   = true;
 
                     break;
 
