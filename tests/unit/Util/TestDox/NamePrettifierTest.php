@@ -111,4 +111,62 @@ class NamePrettifierTest extends TestCase
 
         $this->assertEquals('1 + 2 = 3', $this->namePrettifier->prettifyTestCase($test));
     }
+
+    public function testPhpDoxArgumentExporting(): void
+    {
+        $test = new class extends TestCase {
+            public function __construct()
+            {
+                parent::__construct('testExport', [
+                    'int'      => 1234,
+                    'strInt'   => '1234',
+                    'float'    => 2.123,
+                    'strFloat' => '2.123',
+                    'string'   => 'foo',
+                    'bool'     => true,
+                    'null'     => null,
+                ]);
+            }
+
+            public function testExport($int, $strInt, $float, $strFloat, $string, $bool, $null): void
+            {
+            }
+
+            public function getAnnotations(): array
+            {
+                return [
+                    'method' => [
+                        'testdox' => ['$int, $strInt, $float, $strFloat, $string, $bool, $null'],
+                    ],
+                ];
+            }
+        };
+
+        $this->assertEquals('1234, 1234, 2.123, 2.123, foo, true, NULL', $this->namePrettifier->prettifyTestCase($test));
+    }
+
+    public function testPhpDoxReplacesLongerVariablesFirst(): void
+    {
+        $test = new class extends TestCase {
+            public function __construct()
+            {
+                parent::__construct('testFoo', []);
+            }
+
+            public function testFoo(int $a = 1, int $ab = 2, int $abc = 3): void
+            {
+            }
+
+            public function getAnnotations(): array
+            {
+                return [
+                    'method' => [
+                        'testdox' => ['$a, "$a", $a$ab, $abc, $abcd, $ab'],
+                    ],
+                ];
+            }
+        };
+
+        $this->assertEquals('1, "1", 12, 3, $abcd, 2', $this->namePrettifier->prettifyTestCase($test));
+    }
 }
