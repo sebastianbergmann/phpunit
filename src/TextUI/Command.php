@@ -94,6 +94,7 @@ class Command
         'globals-backup'            => null,
         'group='                    => null,
         'help'                      => null,
+        'resolve-dependencies'      => null,
         'ignore-dependencies'       => null,
         'include-path='             => null,
         'list-groups'               => null,
