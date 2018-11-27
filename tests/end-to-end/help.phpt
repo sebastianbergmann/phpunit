@@ -87,8 +87,7 @@ Test Execution Options:
   --testdox-exclude-group     Exclude tests from the specified group(s)
   --printer <printer>         TestListener implementation to use
 
-  --resolve-dependencies      Resolve dependencies between tests
-  --order-by=<order>          Run tests in order: default|reverse|random|defects|depends
+  --order-by=<order>          Run tests in order: default|reverse|random|defects|depends|no-depends
   --random-order-seed=<N>     Use a specific random seed <N> for random order
   --cache-result              Write test results to cache file
   --do-not-cache-result       Do not write test results to cache file

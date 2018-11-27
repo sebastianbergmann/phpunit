@@ -5,10 +5,9 @@ phpunit --verbose --order-by=reverse ../_files/DependencySuccessTest.php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--debug';
 $_SERVER['argv'][3] = '--verbose';
-$_SERVER['argv'][4] = '--order-by=reverse';
-$_SERVER['argv'][5] = '--resolve-dependencies';
-$_SERVER['argv'][6] = 'MultiDependencyTest';
-$_SERVER['argv'][7] = __DIR__ . '/../_files/MultiDependencyTest.php';
+$_SERVER['argv'][4] = '--order-by=depends,reverse';
+$_SERVER['argv'][5] = 'MultiDependencyTest';
+$_SERVER['argv'][6] = __DIR__ . '/../_files/MultiDependencyTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

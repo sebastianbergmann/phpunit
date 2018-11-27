@@ -3,9 +3,8 @@ https://github.com/sebastianbergmann/phpunit/issues/3093
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--reverse-order';
-$_SERVER['argv'][3] = '--resolve-dependencies';
-$_SERVER['argv'][4] = __DIR__ . '/Issue3093Test.php';
+$_SERVER['argv'][2] = '--order-by=reverse';
+$_SERVER['argv'][3] = __DIR__ . '/Issue3093Test.php';
 
 require __DIR__ . '/../../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
