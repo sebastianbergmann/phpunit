@@ -965,6 +965,10 @@ final class Configuration
                         $result['resolveDependencies'] = true;
 
                         break;
+                    case 'no-depends':
+                        $result['resolveDependencies'] = false;
+
+                        break;
                 }
             }
         }
