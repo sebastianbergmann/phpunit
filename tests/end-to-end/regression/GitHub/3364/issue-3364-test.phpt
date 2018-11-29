@@ -18,9 +18,9 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ##teamcity[testSuiteStarted name='Issue3364SetupBeforeClassTest' locationHint='php_qn://%s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupBeforeClassTest.php::\Issue3364SetupBeforeClassTest' flowId='%d']
 
-##teamcity[testFailed name='Issue3364SetupBeforeClassTest' message='throw exception in setUpBeforeClass' details=' %s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupBeforeClassTest.php:18|n ' duration='0' flowId='%d']
+##teamcity[testFailed name='Issue3364SetupBeforeClassTest' message='throw exception in setUpBeforeClass' details=' %s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupBeforeClassTest.php:18|n ' duration='%d' flowId='%d']
 
-##teamcity[testFailed name='Issue3364SetupBeforeClassTest' message='throw exception in setUpBeforeClass' details=' %s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupBeforeClassTest.php:18|n ' duration='0' flowId='%d']
+##teamcity[testFailed name='Issue3364SetupBeforeClassTest' message='throw exception in setUpBeforeClass' details=' %s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupBeforeClassTest.php:18|n ' duration='%d' flowId='%d']
 
 ##teamcity[testSuiteFinished name='Issue3364SetupBeforeClassTest' flowId='%d']
 
@@ -34,9 +34,9 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ##teamcity[testStarted name='testTwoWithSetupException' locationHint='php_qn://%s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupTest.php::\Issue3364Test::testTwoWithSetupException' flowId='%d']
 
-##teamcity[testFailed name='testTwoWithSetupException' message='RuntimeException : throw exception in setUp' details=' %s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupTest.php:18|n ' duration='0' flowId='%d']
+##teamcity[testFailed name='testTwoWithSetupException' message='RuntimeException : throw exception in setUp' details=' %s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupTest.php:18|n ' duration='%d' flowId='%d']
 
-##teamcity[testFinished name='testTwoWithSetupException' duration='0' flowId='%d']
+##teamcity[testFinished name='testTwoWithSetupException' duration='%d' flowId='%d']
 
 ##teamcity[testSuiteFinished name='Issue3364Test' flowId='%d']
 
