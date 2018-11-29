@@ -46,7 +46,7 @@ class ExceptionWrapperTest extends TestCase
 
         $data = \print_r($wrapper, 1);
 
-        $this->assertNotContains(
+        $this->assertStringNotContainsString(
             'BadFunctionCallException',
             $data,
             'Assert there is s no other BadFunctionCallException mention in stacktrace'

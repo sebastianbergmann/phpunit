@@ -227,9 +227,12 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3422
+     * @codeCoverageIgnore
      */
     public static function assertContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
     {
+        self::createWarning('assertContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringContainsString(), assertStringContainsStringIgnoringCase(), assertIterableContains(), or assertIterableContainsSame() instead.');
+
         if (\is_array($haystack) ||
             (\is_object($haystack) && $haystack instanceof Traversable)) {
             $constraint = new TraversableContains(
@@ -292,9 +295,12 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3422
+     * @codeCoverageIgnore
      */
     public static function assertNotContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
     {
+        self::createWarning('assertNotContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringNotContainsString(), assertStringNotContainsStringIgnoringCase(), assertIterableNotContains(), or assertIterableNotContainsSame() instead.');
+
         if (\is_array($haystack) ||
             (\is_object($haystack) && $haystack instanceof Traversable)) {
             $constraint = new LogicalNot(
