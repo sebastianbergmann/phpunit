@@ -2406,6 +2406,150 @@ XML;
         );
     }
 
+    public function testStringContainsStringCanBeAsserted(): void
+    {
+        $this->assertStringContainsString('bar', 'foobarbaz');
+
+        try {
+            $this->assertStringContainsString('barbara', 'foobarbaz');
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testStringNotContainsStringCanBeAsserted(): void
+    {
+        $this->assertStringNotContainsString('barbara', 'foobarbaz');
+
+        try {
+            $this->assertStringNotContainsString('bar', 'foobarbaz');
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testStringContainsStringCanBeAssertedIgnoringCase(): void
+    {
+        $this->assertStringContainsStringIgnoringCase('BAR', 'foobarbaz');
+
+        try {
+            $this->assertStringContainsStringIgnoringCase('BARBARA', 'foobarbaz');
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testStringNotContainsStringCanBeAssertedIgnoringCase(): void
+    {
+        $this->assertStringNotContainsStringIgnoringCase('BARBARA', 'foobarbaz');
+
+        try {
+            $this->assertStringNotContainsStringIgnoringCase('BAR', 'foobarbaz');
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testIterableContainsObjectCanBeAsserted(): void
+    {
+        $object   = new \stdClass;
+        $iterable = [$object];
+
+        $this->assertIterableContains(new \stdClass, $iterable);
+
+        try {
+            $this->assertIterableContains(new class {
+            }, $iterable);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testIterableNotContainsObjectCanBeAsserted(): void
+    {
+        $object   = new \stdClass;
+        $iterable = [$object];
+
+        $this->assertIterableNotContains(new class {
+        }, $iterable);
+
+        try {
+            $this->assertIterableNotContains(new \stdClass, $iterable);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testIterableContainsSameObjectCanBeAsserted(): void
+    {
+        $object   = new \stdClass;
+        $iterable = [$object];
+
+        $this->assertIterableContainsSame($object, $iterable);
+
+        try {
+            $this->assertIterableContainsSame(new \stdClass, $iterable);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testIterableNotContainsSameObjectCanBeAsserted(): void
+    {
+        $object   = new \stdClass;
+        $iterable = [$object];
+
+        $this->assertIterableNotContainsSame(new \stdClass, $iterable);
+
+        try {
+            $this->assertIterableNotContainsSame($object, $iterable);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testIterableContainsSameNonObjectCanBeAsserted(): void
+    {
+        $this->assertIterableContainsSame(1, [1]);
+
+        try {
+            $this->assertIterableContainsSame('1', [1]);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testIterableNotContainsSameNonObjectCanBeAsserted(): void
+    {
+        $this->assertIterableNotContainsSame('1', [1]);
+
+        try {
+            $this->assertIterableNotContainsSame(1, [1]);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     protected function sameValues(): array
     {
         $object   = new \SampleClass(4, 8, 15);
