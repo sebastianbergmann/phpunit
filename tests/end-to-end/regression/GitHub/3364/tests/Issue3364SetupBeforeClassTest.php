@@ -18,12 +18,12 @@ class Issue3364SetupBeforeClassTest extends TestCase
         throw new \RuntimeException('throw exception in setUpBeforeClass');
     }
 
-    public function testOne(): void
+    public function testOneWithClassSetupException(): void
     {
         $this->fail();
     }
 
-    public function testTwo(): void
+    public function testTwoWithClassSetupException(): void
     {
         $this->fail();
     }
