@@ -18,13 +18,13 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ##teamcity[testSuiteStarted name='Issue3364SetupBeforeClassTest' locationHint='php_qn://%s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupBeforeClassTest.php::\Issue3364SetupBeforeClassTest' flowId='%d']
 
-##teamcity[testStarted name='testOneWithClassSetupException' locationHint='php_qn:///Users/ewout/proj/phpunit-new-order/tests/end-to-end/regression/GitHub/3364/tests/Issue3364SetupBeforeClassTest.php::\Issue3364SetupBeforeClassTest::testOneWithClassSetupException' flowId='%d']
+##teamcity[testStarted name='testOneWithClassSetupException' locationHint='php_qn://%s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupBeforeClassTest.php::\Issue3364SetupBeforeClassTest::testOneWithClassSetupException' flowId='%d']
 
 ##teamcity[testFailed name='testOneWithClassSetupException' message='throw exception in setUpBeforeClass' details=' %s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupBeforeClassTest.php:18|n ' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testOneWithClassSetupException' duration='%d' flowId='%d']
 
-##teamcity[testStarted name='testTwoWithClassSetupException' locationHint='php_qn:///Users/ewout/proj/phpunit-new-order/tests/end-to-end/regression/GitHub/3364/tests/Issue3364SetupBeforeClassTest.php::\Issue3364SetupBeforeClassTest::testTwoWithClassSetupException' flowId='%d']
+##teamcity[testStarted name='testTwoWithClassSetupException' locationHint='php_qn://%s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupBeforeClassTest.php::\Issue3364SetupBeforeClassTest::testTwoWithClassSetupException' flowId='%d']
 
 ##teamcity[testFailed name='testTwoWithClassSetupException' message='throw exception in setUpBeforeClass' details=' %s%etests%eend-to-end%eregression%eGitHub%e3364%etests%eIssue3364SetupBeforeClassTest.php:18|n ' duration='%d' flowId='%d']
 
