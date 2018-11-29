@@ -4,7 +4,7 @@ https://github.com/sebastianbergmann/phpunit/issues/3364
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--teamcity';
-$_SERVER['argv'][3] = __DIR__ . '/tests';
+$_SERVER['argv'][3] = __DIR__ . DIRECTORY_SEPARATOR . 'tests';
 
 require __DIR__ . '/../../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
