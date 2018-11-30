@@ -20,5 +20,9 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 * The optional parameters `$delta`, `$maxDepth`, `$canonicalize`, and `$ignoreCase` of `assertEquals()`, and `assertNotEquals` are now deprecated. There is no behavioral change in this version of PHPUnit. Using these parameters will trigger a deprecation warning in PHPUnit 8 and in PHPUnit 9 these parameters will be removed.
 * The annotations `@expectedException`, `@expectedExceptionCode`, `@expectedExceptionMessage`, and `@expectedExceptionMessageRegExp` are now deprecated. There is no behavioral change in this version of PHPUnit. Using these annotations will trigger a deprecation warning in PHPUnit 8 and in PHPUnit 9 these annotations will be removed.
 
+### Fixed
+
+* Implemented [#3428](https://github.com/sebastianbergmann/phpunit/pull/3428): `TestSuite` setup failures are not logged correctly
+
 [7.5.0]: https://github.com/sebastianbergmann/phpunit/compare/7.4...7.5.0
 
