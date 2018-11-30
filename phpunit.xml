@@ -3,6 +3,7 @@
          xsi:noNamespaceSchemaLocation="phpunit.xsd"
          bootstrap="tests/bootstrap.php"
          executionOrder="depends"
+         colors="true"
          verbose="true">
     <testsuites>
         <testsuite name="unit">
