@@ -118,12 +118,6 @@ class CliTestDoxPrinter extends ResultPrinter
         if ($test instanceof TestCase) {
             $className  = $this->prettifier->prettifyTestClass(\get_class($test));
             $testMethod = $this->prettifier->prettifyTestCase($test);
-        } elseif ($test instanceof TestSuite) {
-            $className  = $test->getName();
-            $testMethod = \sprintf(
-                'Error bootstapping suite (most likely in %s::setUpBeforeClass)',
-                $test->getName()
-            );
         } elseif ($test instanceof PhptTestCase) {
             $className  = \get_class($test);
             $testMethod = $test->getName();
