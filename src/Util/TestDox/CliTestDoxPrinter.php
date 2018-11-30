@@ -374,7 +374,7 @@ class CliTestDoxPrinter extends ResultPrinter
             return $this->formatWithColor('fg-yellow', \sprintf('[%.2f ms]', $time * 1000));
         }
 
-        return \sprintf('[%.2f ms]', $time * 1000);
+        return $this->formatWithColor('dim', \sprintf('[%.2f ms]', $time * 1000));
     }
 
     private function getFormattedAdditionalInformation(string $resultMessage, bool $verbose): string
