@@ -192,41 +192,11 @@ abstract class Assert
         static::assertThat($haystack, $constraint, $message);
     }
 
-    public static function assertIterableContains($needle, iterable $haystack, string $message = ''): void
-    {
-        $constraint = new TraversableContains($needle, false, false);
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertIterableContainsSame($needle, iterable $haystack, string $message = ''): void
-    {
-        $constraint = new TraversableContains($needle, true, true);
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertIterableNotContains($needle, iterable $haystack, string $message = ''): void
-    {
-        $constraint = new LogicalNot(new TraversableContains($needle, false, false));
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertIterableNotContainsSame($needle, iterable $haystack, string $message = ''): void
-    {
-        $constraint = new LogicalNot(new TraversableContains($needle, true, true));
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
     /**
      * Asserts that a haystack contains a needle.
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3422
      */
     public static function assertContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
     {
@@ -287,8 +257,6 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3422
      */
     public static function assertNotContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
     {
