@@ -164,34 +164,6 @@ abstract class Assert
         static::assertThat($array, $constraint, $message);
     }
 
-    public static function assertStringContainsString(string $needle, string $haystack, string $message = ''): void
-    {
-        $constraint = new StringContains($needle, false);
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertStringContainsStringIgnoringCase(string $needle, string $haystack, string $message = ''): void
-    {
-        $constraint = new StringContains($needle, true);
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertStringNotContainsString(string $needle, string $haystack, string $message = ''): void
-    {
-        $constraint = new LogicalNot(new StringContains($needle));
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertStringNotContainsStringIgnoringCase(string $needle, string $haystack, string $message = ''): void
-    {
-        $constraint = new LogicalNot(new StringContains($needle, true));
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
     /**
      * Asserts that a haystack contains a needle.
      *
@@ -2091,6 +2063,34 @@ abstract class Assert
             ),
             $message
         );
+    }
+
+    public static function assertStringContainsString(string $needle, string $haystack, string $message = ''): void
+    {
+        $constraint = new StringContains($needle, false);
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    public static function assertStringContainsStringIgnoringCase(string $needle, string $haystack, string $message = ''): void
+    {
+        $constraint = new StringContains($needle, true);
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    public static function assertStringNotContainsString(string $needle, string $haystack, string $message = ''): void
+    {
+        $constraint = new LogicalNot(new StringContains($needle));
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    public static function assertStringNotContainsStringIgnoringCase(string $needle, string $haystack, string $message = ''): void
+    {
+        $constraint = new LogicalNot(new StringContains($needle, true));
+
+        static::assertThat($haystack, $constraint, $message);
     }
 
     /**
