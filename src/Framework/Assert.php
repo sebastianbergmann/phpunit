@@ -164,74 +164,31 @@ abstract class Assert
         static::assertThat($array, $constraint, $message);
     }
 
-    public static function assertStringContainsString(string $needle, string $haystack, string $message = ''): void
-    {
-        $constraint = new StringContains($needle, false);
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertStringContainsStringIgnoringCase(string $needle, string $haystack, string $message = ''): void
-    {
-        $constraint = new StringContains($needle, true);
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertStringNotContainsString(string $needle, string $haystack, string $message = ''): void
-    {
-        $constraint = new LogicalNot(new StringContains($needle));
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertStringNotContainsStringIgnoringCase(string $needle, string $haystack, string $message = ''): void
-    {
-        $constraint = new LogicalNot(new StringContains($needle, true));
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertIterableContains($needle, iterable $haystack, string $message = ''): void
-    {
-        $constraint = new TraversableContains($needle, false, false);
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertIterableContainsSame($needle, iterable $haystack, string $message = ''): void
-    {
-        $constraint = new TraversableContains($needle, true, true);
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertIterableNotContains($needle, iterable $haystack, string $message = ''): void
-    {
-        $constraint = new LogicalNot(new TraversableContains($needle, false, false));
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    public static function assertIterableNotContainsSame($needle, iterable $haystack, string $message = ''): void
-    {
-        $constraint = new LogicalNot(new TraversableContains($needle, true, true));
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
     /**
      * Asserts that a haystack contains a needle.
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3422
-     * @codeCoverageIgnore
      */
     public static function assertContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
     {
-        self::createWarning('assertContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringContainsString(), assertStringContainsStringIgnoringCase(), assertIterableContains(), or assertIterableContainsSame() instead.');
+        // @codeCoverageIgnoreStart
+        if (is_string($haystack)) {
+            self::createWarning('Using assertContains() with string haystacks is deprecated and will not be supported in PHPUnit 9. Refactor your test to use assertStringContainsString() or assertStringContainsStringIgnoringCase() instead.');
+        }
+
+        if ($checkForObjectIdentity !== true) {
+            self::createWarning('The optional $checkForObjectIdentity parameter of assertContains() is deprecated and will be removed in PHPUnit 9.');
+        }
+
+        if ($checkForNonObjectIdentity !== false) {
+            self::createWarning('The optional $checkForNonObjectIdentity parameter of assertContains() is deprecated and will be removed in PHPUnit 9.');
+        }
+
+        if ($ignoreCase !== false) {
+            self::createWarning('The optional $ignoreCase parameter of assertContains() is deprecated and will be removed in PHPUnit 9.');
+        }
+        // @codeCoverageIgnoreEnd
 
         if (\is_array($haystack) ||
             (\is_object($haystack) && $haystack instanceof Traversable)) {
@@ -293,13 +250,26 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3422
-     * @codeCoverageIgnore
      */
     public static function assertNotContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
     {
-        self::createWarning('assertNotContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringNotContainsString(), assertStringNotContainsStringIgnoringCase(), assertIterableNotContains(), or assertIterableNotContainsSame() instead.');
+        // @codeCoverageIgnoreStart
+        if (is_string($haystack)) {
+            self::createWarning('Using assertNotContains() with string haystacks is deprecated and will not be supported in PHPUnit 9. Refactor your test to use assertStringNotContainsString() or assertStringNotContainsStringIgnoringCase() instead.');
+        }
+
+        if ($checkForObjectIdentity !== true) {
+            self::createWarning('The optional $checkForObjectIdentity parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9.');
+        }
+
+        if ($checkForNonObjectIdentity !== false) {
+            self::createWarning('The optional $checkForNonObjectIdentity parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9.');
+        }
+
+        if ($ignoreCase !== false) {
+            self::createWarning('The optional $ignoreCase parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9.');
+        }
+        // @codeCoverageIgnoreEnd
 
         if (\is_array($haystack) ||
             (\is_object($haystack) && $haystack instanceof Traversable)) {
@@ -2226,6 +2196,34 @@ abstract class Assert
             ),
             $message
         );
+    }
+
+    public static function assertStringContainsString(string $needle, string $haystack, string $message = ''): void
+    {
+        $constraint = new StringContains($needle, false);
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    public static function assertStringContainsStringIgnoringCase(string $needle, string $haystack, string $message = ''): void
+    {
+        $constraint = new StringContains($needle, true);
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    public static function assertStringNotContainsString(string $needle, string $haystack, string $message = ''): void
+    {
+        $constraint = new LogicalNot(new StringContains($needle));
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    public static function assertStringNotContainsStringIgnoringCase(string $needle, string $haystack, string $message = ''): void
+    {
+        $constraint = new LogicalNot(new StringContains($needle, true));
+
+        static::assertThat($haystack, $constraint, $message);
     }
 
     /**

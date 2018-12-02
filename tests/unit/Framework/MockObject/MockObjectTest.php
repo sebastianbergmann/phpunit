@@ -503,7 +503,7 @@ class MockObjectTest extends TestCase
         $parent = \get_parent_class($mock);
         $traits = \class_uses($parent, false);
 
-        $this->assertIterableContains(AbstractTrait::class, $traits);
+        $this->assertContains(AbstractTrait::class, $traits);
     }
 
     public function testClonedMockObjectShouldStillEqualTheOriginal(): void
