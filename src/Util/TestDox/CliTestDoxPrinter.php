@@ -172,7 +172,7 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->testResultMessage = $this->formatTestResultMessage(
             'fg-yellow',
             '✘',
-            (string) $t,
+            $this->formatThrowable($t),
             $time,
             true
         );
@@ -184,7 +184,7 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->testResultMessage = $this->formatTestResultMessage(
             'fg-yellow',
             '✘',
-            (string) $e,
+            $this->formatThrowable($e),
             $time,
             true
         );
@@ -196,7 +196,7 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->testResultMessage = $this->formatTestResultMessage(
             'fg-red',
             '✘',
-            (string) $e,
+            $this->formatThrowable($e),
             $time,
             true
         );
@@ -208,7 +208,7 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->testResultMessage = $this->formatTestResultMessage(
             'fg-yellow',
             '∅',
-            (string) $t,
+            $this->formatThrowable($t),
             $time,
             false
         );
@@ -220,7 +220,7 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->testResultMessage = $this->formatTestResultMessage(
             'fg-yellow',
             '☢',
-            (string) $t,
+            $this->formatThrowable($t),
             $time,
             false
         );
@@ -232,7 +232,7 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->testResultMessage = $this->formatTestResultMessage(
             'fg-yellow',
             '→',
-            (string) $t,
+            $this->formatThrowable($t),
             $time,
             false
         );
@@ -429,5 +429,59 @@ class CliTestDoxPrinter extends ResultPrinter
             'failed'    => '',
             'verbose'   => '',
         ];
+    }
+
+    private function formatThrowable(\Throwable $t): string
+    {
+        return \sprintf(
+            "%s\n\n%s",
+            $t->getMessage(),
+            $this->colorizeStacktrace($t)
+            );
+    }
+
+    private function colorizeStacktrace(\Throwable $t): string
+    {
+        $trace = \PHPUnit\Util\Filter::getFilteredStacktrace($t);
+
+        if (!$this->colors) {
+            return $trace;
+        }
+
+        $lines    = [];
+        $prevPath = '';
+
+        foreach (\explode("\n", $trace) as $line) {
+            if (\preg_match('/^(.*):(\d+)$/', $line, $matches)) {
+                $lines[] =  $this->colorizePath($matches[1], $prevPath) .
+                            $this->formatWithColor('dim', ':') .
+                            $this->formatWithColor('fg-blue', $matches[2]) .
+                            "\n";
+                $prevPath = $matches[1];
+            } else {
+                $lines[]  = $line;
+                $prevPath = '';
+            }
+        }
+
+        return \implode('', $lines);
+    }
+
+    private function colorizePath(string $path, ?string $prevPath): string
+    {
+        if ($prevPath === null) {
+            $prevPath = '';
+        }
+
+        $path     = \explode(\DIRECTORY_SEPARATOR, $path);
+        $prevPath = \explode(\DIRECTORY_SEPARATOR, $prevPath);
+
+        for ($i = 0; $i < \min(\count($path), \count($prevPath)); $i++) {
+            if ($path[$i] == $prevPath[$i]) {
+                $path[$i] = $this->formatWithColor('dim', $path[$i]);
+            }
+        }
+
+        return \implode($this->formatWithColor('dim', \DIRECTORY_SEPARATOR), $path);
     }
 }
