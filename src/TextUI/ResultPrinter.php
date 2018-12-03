@@ -53,6 +53,7 @@ class ResultPrinter extends Printer implements TestListener
     private static $ansiCodes = [
         'bold'              => '1',
         'dim'               => '2',
+        'underlined'        => '4',
         'fg-black'          => '30',
         'fg-red'            => '31',
         'fg-green'          => '32',

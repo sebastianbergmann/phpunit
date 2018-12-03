@@ -313,7 +313,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
         // Write suite header
         if ($prevResult['className'] !== $result['className']) {
-            $this->write($result['className'] . "\n");
+            $this->write($this->formatWithColor('underlined', $result['className']) . "\n");
         }
 
         // Write the test result itself
@@ -337,7 +337,7 @@ class CliTestDoxPrinter extends ResultPrinter
             return \sprintf(
                 "%s%s\n%s",
                 ($this->lastClassName !== '') ? "\n" : '',
-                $className,
+                $this->formatWithColor('underlined', $className),
                 $msg
             );
         }
