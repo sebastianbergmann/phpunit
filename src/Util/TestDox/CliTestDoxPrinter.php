@@ -144,7 +144,8 @@ class CliTestDoxPrinter extends ResultPrinter
             $this->nonSuccessfulTestResults[] = $this->testIndex;
         } else {
             $resultMessage = $this->formatTestResultMessage(
-                $this->formatWithColor('fg-green', '✔'),
+                'fg-green',
+                '✔',
                 '',
                 $time,
                 $this->verbose
@@ -169,7 +170,8 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->lastTestFailed    = true;
         $this->testResultMessage = $this->formatTestResultMessage(
-            $this->formatWithColor('fg-yellow', '✘'),
+            'fg-yellow',
+            '✘',
             (string) $t,
             $time,
             true
@@ -180,7 +182,8 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->lastTestFailed    = true;
         $this->testResultMessage = $this->formatTestResultMessage(
-            $this->formatWithColor('fg-yellow', '✘'),
+            'fg-yellow',
+            '✘',
             (string) $e,
             $time,
             true
@@ -191,7 +194,8 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->lastTestFailed    = true;
         $this->testResultMessage = $this->formatTestResultMessage(
-            $this->formatWithColor('fg-red', '✘'),
+            'fg-red',
+            '✘',
             (string) $e,
             $time,
             true
@@ -202,7 +206,8 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->lastTestFailed    = true;
         $this->testResultMessage = $this->formatTestResultMessage(
-            $this->formatWithColor('fg-yellow', '∅'),
+            'fg-yellow',
+            '∅',
             (string) $t,
             $time,
             false
@@ -213,7 +218,8 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->lastTestFailed    = true;
         $this->testResultMessage = $this->formatTestResultMessage(
-            $this->formatWithColor('fg-yellow', '☢'),
+            'fg-yellow',
+            '☢',
             (string) $t,
             $time,
             false
@@ -224,7 +230,8 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $this->lastTestFailed    = true;
         $this->testResultMessage = $this->formatTestResultMessage(
-            $this->formatWithColor('fg-yellow', '→'),
+            'fg-yellow',
+            '→',
             (string) $t,
             $time,
             false
@@ -339,6 +346,7 @@ class CliTestDoxPrinter extends ResultPrinter
     }
 
     private function formatTestResultMessage(
+        string $color,
         string $symbol,
         string $resultMessage,
         float $time,
@@ -347,9 +355,9 @@ class CliTestDoxPrinter extends ResultPrinter
         $additionalInformation = $this->getFormattedAdditionalInformation($resultMessage, $alwaysVerbose);
         $msg                   = \sprintf(
             " %s %s%s\n%s",
-            $symbol,
+            $this->formatWithColor($color, $symbol),
             $this->testMethod,
-            $this->verbose ? ' ' . $this->getFormattedRuntime($time) : '',
+            $this->verbose ? ' ' . $this->getFormattedRuntime($time, $color) : '',
             $additionalInformation
         );
 
@@ -358,17 +366,13 @@ class CliTestDoxPrinter extends ResultPrinter
         return $msg;
     }
 
-    private function getFormattedRuntime(float $time): string
+    private function getFormattedRuntime(float $time, string $color = ''): string
     {
-        if ($time > 5) {
-            return $this->formatWithColor('fg-red', \sprintf('[%.2f ms]', $time * 1000));
-        }
-
         if ($time > 1) {
-            return $this->formatWithColor('fg-yellow', \sprintf('[%.2f ms]', $time * 1000));
+            return $this->formatWithColor('fg-magenta', \sprintf('[%.2f ms]', $time * 1000));
         }
 
-        return $this->formatWithColor('dim', \sprintf('[%.2f ms]', $time * 1000));
+        return $this->formatWithColor($color, \sprintf('[%.2f ms]', $time * 1000));
     }
 
     private function getFormattedAdditionalInformation(string $resultMessage, bool $verbose): string
