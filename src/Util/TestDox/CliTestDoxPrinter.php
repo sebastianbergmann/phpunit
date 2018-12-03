@@ -434,8 +434,8 @@ class CliTestDoxPrinter extends ResultPrinter
     private function formatThrowable(\Throwable $t): string
     {
         return \sprintf(
-            "%s\n\n%s",
-            $t->getMessage(),
+            "%s\n%s",
+            \PHPUnit\Framework\TestFailure::exceptionToString($t),
             $this->colorizeStacktrace($t)
             );
     }
