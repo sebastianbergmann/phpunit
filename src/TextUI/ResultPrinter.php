@@ -540,7 +540,7 @@ class ResultPrinter extends Printer implements TestListener
         $styles  = [];
 
         foreach ($codes as $code) {
-            $styles[] = self::$ansiCodes[$code];
+            $styles[] = self::$ansiCodes[$code] ?? '';
         }
 
         $style = \sprintf("\x1b[%sm", \implode(';', $styles));
