@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
+use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
@@ -47,14 +48,19 @@ class CliTestDoxPrinter extends ResultPrinter
     private $testFlushIndex = 0;
 
     /**
-     * @var array Buffer for write()
+     * @var array<int, array> Buffer for test results
      */
-    private $outputBuffer = [];
+    private $testResults = [];
+
+    /**
+     * @var array<string, int> Lookup table for testname to testResults[index]
+     */
+    private $testNameResultIndex = [];
 
     /**
      * @var bool
      */
-    private $bufferExecutionOrder = false;
+    private $enableOutputBuffer = false;
 
     /**
      * @var array array<string>
@@ -76,10 +82,36 @@ class CliTestDoxPrinter extends ResultPrinter
      */
     private $testMethod;
 
-    /**
-     * @var string Test result message of current test
-     */
-    private $testResultMessage;
+    private $statusStyles = [
+        BaseTestRunner::STATUS_PASSED => [
+            'symbol' => '✔',
+            'color'  => 'fg-green',
+        ],
+        BaseTestRunner::STATUS_ERROR => [
+            'symbol' => '✘',
+            'color'  => 'fg-yellow',
+        ],
+        BaseTestRunner::STATUS_FAILURE => [
+            'symbol' => '✘',
+            'color'  => 'fg-red',
+        ],
+        BaseTestRunner::STATUS_SKIPPED => [
+            'symbol' => '→',
+            'color'  => 'fg-yellow',
+        ],
+        BaseTestRunner::STATUS_RISKY => [
+            'symbol' => '☢',
+            'color'  => 'fg-yellow',
+        ],
+        BaseTestRunner::STATUS_INCOMPLETE => [
+            'symbol' => '∅',
+            'color'  => 'fg-yellow',
+        ],
+        BaseTestRunner::STATUS_WARNING => [
+            'symbol' => '✘',
+            'color'  => 'fg-yellow',
+        ],
+    ];
 
     /**
      * @var bool Test result message of current test contains a verbose dump
@@ -102,7 +134,7 @@ class CliTestDoxPrinter extends ResultPrinter
     public function setOriginalExecutionOrder(array $order): void
     {
         $this->originalExecutionOrder = $order;
-        $this->bufferExecutionOrder   = !empty($order);
+        $this->enableOutputBuffer     = !empty($order);
     }
 
     public function startTest(Test $test): void
@@ -111,9 +143,7 @@ class CliTestDoxPrinter extends ResultPrinter
             return;
         }
 
-        $this->lastTestFailed    = false;
         $this->lastClassName     = $this->className;
-        $this->testResultMessage = '';
 
         if ($test instanceof TestCase) {
             $className  = $this->prettifier->prettifyTestClass(\get_class($test));
@@ -135,32 +165,18 @@ class CliTestDoxPrinter extends ResultPrinter
             return;
         }
 
-        if ($test instanceof TestCase || $test instanceof PhptTestCase) {
-            $this->testIndex++;
-        }
-
-        if ($this->lastTestFailed) {
-            $resultMessage                    = $this->testResultMessage;
-            $this->nonSuccessfulTestResults[] = $this->testIndex;
-        } else {
+        if ($this->testHasPassed()) {
             $resultMessage = $this->formatTestResultMessage(
-                'fg-green',
-                '✔',
                 '',
-                $time,
                 $this->verbose
             );
+            $this->registerTestResult($test, BaseTestRunner::STATUS_PASSED, $time, $resultMessage);
         }
 
-        if ($this->bufferExecutionOrder) {
-            $this->bufferTestResult($test, $resultMessage);
-            $this->flushOutputBuffer();
-        } else {
-            $this->writeTestResult($resultMessage);
+        $this->flushOutputBuffer();
 
-            if ($this->lastTestFailed) {
-                $this->bufferTestResult($test, $resultMessage);
-            }
+        if ($test instanceof TestCase || $test instanceof PhptTestCase) {
+            $this->testIndex++;
         }
 
         parent::endTest($test, $time);
@@ -168,94 +184,84 @@ class CliTestDoxPrinter extends ResultPrinter
 
     public function addError(Test $test, \Throwable $t, float $time): void
     {
-        $this->lastTestFailed    = true;
-        $this->testResultMessage = $this->formatTestResultMessage(
-            'fg-yellow',
-            '✘',
+        $resultMessage = $this->formatTestResultMessage(
             $this->formatThrowable($t),
-            $time,
             true
         );
+        $this->registerTestResult($test, BaseTestRunner::STATUS_ERROR, $time, $resultMessage);
     }
 
     public function addWarning(Test $test, Warning $e, float $time): void
     {
-        $this->lastTestFailed    = true;
-        $this->testResultMessage = $this->formatTestResultMessage(
-            'fg-yellow',
-            '✘',
+        $resultMessage = $this->formatTestResultMessage(
             $this->formatThrowable($e),
-            $time,
             true
         );
+        $this->registerTestResult($test, BaseTestRunner::STATUS_WARNING, $time, $resultMessage);
     }
 
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
-        $this->lastTestFailed    = true;
-        $this->testResultMessage = $this->formatTestResultMessage(
-            'fg-red',
-            '✘',
+        $resultMessage = $this->formatTestResultMessage(
             $this->formatThrowable($e),
-            $time,
             true
         );
+        $this->registerTestResult($test, BaseTestRunner::STATUS_FAILURE, $time, $resultMessage);
     }
 
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
-        $this->lastTestFailed    = true;
-        $this->testResultMessage = $this->formatTestResultMessage(
-            'fg-yellow',
-            '∅',
+        $resultMessage = $this->formatTestResultMessage(
             $this->formatThrowable($t),
-            $time,
             false
         );
+        $this->registerTestResult($test, BaseTestRunner::STATUS_INCOMPLETE, $time, $resultMessage);
     }
 
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
-        $this->lastTestFailed    = true;
-        $this->testResultMessage = $this->formatTestResultMessage(
-            'fg-yellow',
-            '☢',
+        $resultMessage = $this->formatTestResultMessage(
             $this->formatThrowable($t),
-            $time,
             false
         );
+        $this->registerTestResult($test, BaseTestRunner::STATUS_RISKY, $time, $resultMessage);
     }
 
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
-        $this->lastTestFailed    = true;
-        $this->testResultMessage = $this->formatTestResultMessage(
-            'fg-yellow',
-            '→',
+        $resultMessage = $this->formatTestResultMessage(
             $this->formatThrowable($t),
-            $time,
             false
         );
+        $this->registerTestResult($test, BaseTestRunner::STATUS_SKIPPED, $time, $resultMessage);
     }
 
-    public function bufferTestResult(Test $test, string $msg): void
+    public function registerTestResult(Test $test, int $status, float $time, string $msg): void
     {
-        $this->outputBuffer[$this->testIndex] = [
+        $testName                            = TestSuiteSorter::getTestSorterUID($test);
+        $this->testResults[$this->testIndex] = [
             'className'  => $this->className,
-            'testName'   => TestSuiteSorter::getTestSorterUID($test),
+            'testName'   => $testName,
             'testMethod' => $this->testMethod,
             'message'    => $msg,
-            'failed'     => $this->lastTestFailed,
+            'status'     => $status,
             'verbose'    => $this->lastFlushedTestWasVerbose,
+            'time'       => $time,
         ];
+
+        $this->testNameResultIndex[$testName] = $this->testIndex;
+
+        if ($status !== BaseTestRunner::STATUS_PASSED) {
+            $this->nonSuccessfulTestResults[] = $this->testIndex;
+        }
     }
 
-    public function writeTestResult(string $msg): void
-    {
-        $msg = $this->formatTestSuiteHeader($this->lastClassName, $this->className, $msg);
-        $this->write($msg);
-    }
-
+//    public function writeTestResult(string $msg): void
+//    {
+//        $msg = $this->formatTestSuiteHeader($this->lastClassName, $this->className, $msg);
+//        $this->write($msg);
+//    }
+//
     public function writeProgress(string $progress): void
     {
     }
@@ -278,32 +284,49 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->write("\n" . Timer::resourceUsage() . "\n\n");
     }
 
+    private function testHasPassed(): bool
+    {
+        if (!isset($this->testResults[$this->testIndex]['status'])) {
+            return true;
+        }
+
+        if ($this->testResults[$this->testIndex]['status'] === BaseTestRunner::STATUS_PASSED) {
+            return true;
+        }
+
+        return false;
+    }
+
     private function flushOutputBuffer(): void
     {
-        if ($this->testFlushIndex === $this->testIndex) {
+        if ($this->enableOutputBuffer && ($this->testFlushIndex === $this->testIndex)) {
             return;
         }
 
         if ($this->testFlushIndex > 0) {
-            $prevResult = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex - 1]);
+            $prevResult = $this->testResults[$this->testFlushIndex - 1];
         } else {
             $prevResult = $this->getEmptyTestResult();
         }
 
-        do {
-            $flushed = false;
-            $result  = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
+        if (!$this->enableOutputBuffer) {
+            $this->writeTestResult($prevResult, $this->testResults[$this->testFlushIndex++]);
+        } else {
+            do {
+                $flushed = false;
+                $result  = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
 
-            if (!empty($result)) {
-                $this->writeBufferTestResult($prevResult, $result);
-                $this->testFlushIndex++;
-                $prevResult = $result;
-                $flushed    = true;
-            }
-        } while ($flushed && $this->testFlushIndex < $this->testIndex);
+                if (!empty($result)) {
+                    $this->writeTestResult($prevResult, $result);
+                    $this->testFlushIndex++;
+                    $prevResult = $result;
+                    $flushed    = true;
+                }
+            } while ($flushed && $this->testFlushIndex <= $this->testIndex);
+        }
     }
 
-    private function writeBufferTestResult(array $prevResult, array $result): void
+    private function writeTestResult(array $prevResult, array $result): void
     {
         // Write spacer line for new suite headers and after verbose messages
         if ($prevResult['testName'] !== '' &&
@@ -316,50 +339,37 @@ class CliTestDoxPrinter extends ResultPrinter
             $this->write($this->formatWithColor('underlined', $result['className']) . "\n");
         }
 
-        // Write the test result itself
+        // Write the test result line and additional information when verbose
+        if ($result['className'] == PhptTestCase::class) {
+            $testName = $this->colorizePath($result['testName'], $prevResult['testName']);
+        } else {
+            $testName = $result['testMethod'];
+        }
+        $style = $this->statusStyles[$result['status']];
+        $line  = \sprintf(
+            " %s %s%s\n",
+            $this->formatWithColor($style['color'], $style['symbol']),
+            $testName,
+            $this->verbose ? ' ' . $this->getFormattedRuntime($result['time'], $style['color']) : ''
+            );
+        $this->write($line);
         $this->write($result['message']);
     }
 
     private function getTestResultByName(string $testName): array
     {
-        foreach ($this->outputBuffer as $result) {
-            if ($result['testName'] === $testName) {
-                return $result;
-            }
+        if (isset($this->testNameResultIndex[$testName])) {
+            return $this->testResults[$this->testNameResultIndex[$testName]];
         }
 
         return [];
     }
 
-    private function formatTestSuiteHeader(?string $lastClassName, string $className, string $msg): string
-    {
-        if ($lastClassName === null || $className !== $lastClassName) {
-            return \sprintf(
-                "%s%s\n%s",
-                ($this->lastClassName !== '') ? "\n" : '',
-                $this->formatWithColor('underlined', $className),
-                $msg
-            );
-        }
-
-        return $msg;
-    }
-
     private function formatTestResultMessage(
-        string $color,
-        string $symbol,
         string $resultMessage,
-        float $time,
         bool $alwaysVerbose = false
     ): string {
-        $additionalInformation = $this->getFormattedAdditionalInformation($resultMessage, $alwaysVerbose);
-        $msg                   = \sprintf(
-            " %s %s%s\n%s",
-            $this->formatWithColor($color, $symbol),
-            $this->testMethod,
-            $this->verbose ? ' ' . $this->getFormattedRuntime($time, $color) : '',
-            $additionalInformation
-        );
+        $msg = $this->getFormattedAdditionalInformation($resultMessage, $alwaysVerbose);
 
         $this->lastFlushedTestWasVerbose = !empty($additionalInformation);
 
@@ -414,8 +424,8 @@ class CliTestDoxPrinter extends ResultPrinter
         $prevResult = $this->getEmptyTestResult();
 
         foreach ($this->nonSuccessfulTestResults as $testIndex) {
-            $result = $this->outputBuffer[$testIndex];
-            $this->writeBufferTestResult($prevResult, $result);
+            $result = $this->testResults[$testIndex];
+            $this->writeTestResult($prevResult, $result);
             $prevResult = $result;
         }
     }
