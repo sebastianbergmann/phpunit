@@ -291,10 +291,6 @@ class JUnit extends Printer implements TestListener
      */
     public function startTest(Test $test): void
     {
-        if (!$test instanceof TestCase) {
-            return;
-        }
-
         $testCase = $this->document->createElement('testcase');
         $testCase->setAttribute('name', $test->getName());
 
@@ -318,10 +314,6 @@ class JUnit extends Printer implements TestListener
      */
     public function endTest(Test $test, float $time): void
     {
-        if (!$test instanceof TestCase) {
-            return;
-        }
-
         $numAssertions = $test->getNumAssertions();
         $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
 
