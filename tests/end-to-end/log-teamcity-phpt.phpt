@@ -5,7 +5,7 @@ phpunit --log-teamcity php://stdout ../end-to-end/phpt-stderr.phpt
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--log-teamcity';
 $_SERVER['argv'][3] = 'php://stdout';
-$_SERVER['argv'][4] = __DIR__ . '/../end-to-end/phpt-stderr.phpt';
+$_SERVER['argv'][4] = \realpath(__DIR__ . '/../end-to-end/phpt-stderr.phpt');
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
