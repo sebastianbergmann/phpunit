@@ -84,11 +84,13 @@ EOF;
         $this->testCase   = null;
     }
 
-    public function testAlwaysReportsNumberOfAssertionsIsOne(): void {
+    public function testAlwaysReportsNumberOfAssertionsIsOne(): void
+    {
         $this->assertSame(1, $this->testCase->getNumAssertions());
     }
 
-    public function testAlwaysReportsItDoesNotUseADataprovider(): void {
+    public function testAlwaysReportsItDoesNotUseADataprovider(): void
+    {
         $this->assertSame(false, $this->testCase->usesDataProvider());
     }
 
