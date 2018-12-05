@@ -223,6 +223,11 @@ class PhptTestCase implements Test, SelfDescribing
         return $this->output;
     }
 
+    public function hasOutput(): bool
+    {
+        return !empty($this->output);
+    }
+
     /**
      * Parse --INI-- section key value pairs and return as array.
      *
@@ -581,10 +586,5 @@ class PhptTestCase implements Test, SelfDescribing
         }
 
         return $settings;
-    }
-
-    public function hasOutput(): bool
-    {
-        return !empty($this->output);
     }
 }
