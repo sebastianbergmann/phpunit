@@ -94,10 +94,27 @@ final class NamePrettifier
         }
 
         if ($test->usesDataProvider() && !$annotationWithPlaceholders) {
-            $result .= $test->getDataSetAsString(false);
+            $result .= $this->prettifyDataSet($test);
         }
 
         return $result;
+    }
+
+    public function prettifyDataSet(TestCase $test): string
+    {
+        $data = $test->getDataSetAsString(false);
+
+        if (!$this->useColor) {
+            return $data;
+        }
+
+        return \preg_replace_callback(
+            '/(with data set )(.*)/',
+            function ($matches) {
+                return Color::colorize('dim', $matches[1] . Color::colorize('fg-cyan', $matches[2]));
+            },
+            $data
+        );
     }
 
     /**

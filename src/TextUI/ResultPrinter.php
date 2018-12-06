@@ -21,6 +21,7 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
+use PHPUnit\Util\TestDox\Color;
 use SebastianBergmann\Environment\Console;
 use SebastianBergmann\Timer\Timer;
 
@@ -46,31 +47,6 @@ class ResultPrinter extends Printer implements TestListener
     public const COLOR_DEFAULT = self::COLOR_NEVER;
 
     private const AVAILABLE_COLORS = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
-
-    /**
-     * @var array
-     */
-    private static $ansiCodes = [
-        'bold'              => '1',
-        'dim'               => '2',
-        'underlined'        => '4',
-        'fg-black'          => '30',
-        'fg-red'            => '31',
-        'fg-green'          => '32',
-        'fg-yellow'         => '33',
-        'fg-blue'           => '34',
-        'fg-magenta'        => '35',
-        'fg-cyan'           => '36',
-        'fg-white'          => '37',
-        'bg-black'          => '40',
-        'bg-red'            => '41',
-        'bg-green'          => '42',
-        'bg-yellow'         => '43',
-        'bg-blue'           => '44',
-        'bg-magenta'        => '45',
-        'bg-cyan'           => '46',
-        'bg-white'          => '47',
-    ];
 
     /**
      * @var int
@@ -535,21 +511,14 @@ class ResultPrinter extends Printer implements TestListener
             return $buffer;
         }
 
-        $codes   = \array_map('\trim', \explode(',', $color));
         $lines   = \explode("\n", $buffer);
         $padding = \max(\array_map('\strlen', $lines));
         $styles  = [];
 
-        foreach ($codes as $code) {
-            $styles[] = self::$ansiCodes[$code] ?? '';
-        }
-
-        $style = \sprintf("\x1b[%sm", \implode(';', $styles));
-
         $styledLines = [];
 
         foreach ($lines as $line) {
-            $styledLines[] = $style . \str_pad($line, $padding) . "\x1b[0m";
+            $styledLines[] = Color::colorize($color, \str_pad($line, $padding));
         }
 
         return \implode("\n", $styledLines);

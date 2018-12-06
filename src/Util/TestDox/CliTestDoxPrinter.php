@@ -108,7 +108,7 @@ class CliTestDoxPrinter extends ResultPrinter
     ) {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
-        $this->prettifier = new NamePrettifier($colors);
+        $this->prettifier = new NamePrettifier($this->colors);
     }
 
     public function setOriginalExecutionOrder(array $order): void
