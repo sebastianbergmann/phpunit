@@ -67,16 +67,6 @@ class CliTestDoxPrinter extends ResultPrinter
      */
     private $originalExecutionOrder = [];
 
-    /**
-     * @var string Classname of the current test
-     */
-    private $className = '';
-
-    /**
-     * @var string Prettified test name of current test
-     */
-    private $testMethod;
-
     private $statusStyles = [
         BaseTestRunner::STATUS_PASSED => [
             'symbol' => '✔',
@@ -108,11 +98,6 @@ class CliTestDoxPrinter extends ResultPrinter
         ],
     ];
 
-    /**
-     * @var bool Test result message of current test contains a verbose dump
-     */
-    private $lastFlushedTestWasVerbose = false;
-
     public function __construct(
         $out = null,
         bool $verbose = false,
@@ -123,30 +108,13 @@ class CliTestDoxPrinter extends ResultPrinter
     ) {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
-        $this->prettifier = new NamePrettifier;
+        $this->prettifier = new NamePrettifier($colors);
     }
 
     public function setOriginalExecutionOrder(array $order): void
     {
         $this->originalExecutionOrder = $order;
         $this->enableOutputBuffer     = !empty($order);
-    }
-
-    public function startTest(Test $test): void
-    {
-        if (!$test instanceof TestCase && !$test instanceof PhptTestCase && !$test instanceof TestSuite) {
-            return;
-        }
-
-        if ($test instanceof TestCase) {
-            $this->className  = $this->prettifier->prettifyTestClass(\get_class($test));
-            $this->testMethod = $this->prettifier->prettifyTestCase($test);
-        } elseif ($test instanceof PhptTestCase) {
-            $this->className  = \get_class($test);
-            $this->testMethod = $test->getName();
-        }
-
-        parent::startTest($test);
     }
 
     public function endTest(Test $test, float $time): void
@@ -156,11 +124,7 @@ class CliTestDoxPrinter extends ResultPrinter
         }
 
         if ($this->testHasPassed()) {
-            $resultMessage = $this->formatTestResultMessage(
-                '',
-                $this->verbose
-            );
-            $this->registerTestResult($test, BaseTestRunner::STATUS_PASSED, $time, $resultMessage);
+            $this->registerTestResult($test, BaseTestRunner::STATUS_PASSED, $time, '');
         }
 
         $this->flushOutputBuffer();
@@ -230,12 +194,11 @@ class CliTestDoxPrinter extends ResultPrinter
     {
         $testName                            = TestSuiteSorter::getTestSorterUID($test);
         $this->testResults[$this->testIndex] = [
-            'className'  => $this->className,
+            'className'  => $this->getPrettyClassName($test),
             'testName'   => $testName,
-            'testMethod' => $this->testMethod,
+            'testMethod' => $this->getPrettyTestName($test),
             'message'    => $msg,
             'status'     => $status,
-            'verbose'    => $this->lastFlushedTestWasVerbose,
             'time'       => $time,
         ];
 
@@ -268,6 +231,24 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->write("\n" . Timer::resourceUsage() . "\n\n");
     }
 
+    private function getPrettyClassName(Test $test): string
+    {
+        if ($test instanceof TestCase) {
+            return $this->prettifier->prettifyTestClass(\get_class($test));
+        }
+
+        return \get_class($test);
+    }
+
+    private function getPrettyTestName(Test $test): string
+    {
+        if ($test instanceof TestCase) {
+            return $this->prettifier->prettifyTestCase($test);
+        }
+
+        return $test->getName();
+    }
+
     private function testHasPassed(): bool
     {
         if (!isset($this->testResults[$this->testIndex]['status'])) {
@@ -288,7 +269,11 @@ class CliTestDoxPrinter extends ResultPrinter
         }
 
         if ($this->testFlushIndex > 0) {
-            $prevResult = $this->testResults[$this->testFlushIndex - 1];
+            if ($this->enableOutputBuffer) {
+                $prevResult = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex - 1]);
+            } else {
+                $prevResult = $this->testResults[$this->testFlushIndex - 1];
+            }
         } else {
             $prevResult = $this->getEmptyTestResult();
         }
@@ -312,18 +297,18 @@ class CliTestDoxPrinter extends ResultPrinter
 
     private function writeTestResult(array $prevResult, array $result): void
     {
-        // Write spacer line for new suite headers and after verbose messages
+        // spacer line for new suite headers and after verbose messages
         if ($prevResult['testName'] !== '' &&
-            ($prevResult['verbose'] === true || $prevResult['className'] !== $result['className'])) {
+            (!empty($prevResult['message']) || $prevResult['className'] !== $result['className'])) {
             $this->write("\n");
         }
 
-        // Write suite header
+        // suite header
         if ($prevResult['className'] !== $result['className']) {
             $this->write($this->formatWithColor('underlined', $result['className']) . "\n");
         }
 
-        // Write the test result line and additional information when verbose
+        // test result line
         if ($result['className'] == PhptTestCase::class) {
             $testName = $this->colorizePath($result['testName'], $prevResult['testName']);
         } else {
@@ -337,6 +322,8 @@ class CliTestDoxPrinter extends ResultPrinter
             $this->verbose ? ' ' . $this->getFormattedRuntime($result['time'], $style['color']) : ''
             );
         $this->write($line);
+
+        // additional information when verbose
         $this->write($result['message']);
     }
 
@@ -349,17 +336,6 @@ class CliTestDoxPrinter extends ResultPrinter
         return [];
     }
 
-    private function formatTestResultMessage(
-        string $resultMessage,
-        bool $alwaysVerbose = false
-    ): string {
-        $msg = $this->getFormattedAdditionalInformation($resultMessage, $alwaysVerbose);
-
-        $this->lastFlushedTestWasVerbose = !empty($additionalInformation);
-
-        return $msg;
-    }
-
     private function getFormattedRuntime(float $time, string $color = ''): string
     {
         if ($time > 1) {
@@ -369,7 +345,7 @@ class CliTestDoxPrinter extends ResultPrinter
         return $this->formatWithColor($color, \sprintf('[%.2f ms]', $time * 1000));
     }
 
-    private function getFormattedAdditionalInformation(string $resultMessage, bool $verbose): string
+    private function formatTestResultMessage(string $resultMessage, bool $verbose): string
     {
         if ($resultMessage === '') {
             return '';

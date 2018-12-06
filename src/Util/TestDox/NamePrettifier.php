@@ -23,6 +23,16 @@ final class NamePrettifier
     private $strings = [];
 
     /**
+     * @var bool
+     */
+    private $useColor;
+
+    public function __construct($useColor = false)
+    {
+        $this->useColor = $useColor;
+    }
+
+    /**
      * Prettifies the name of a test class.
      */
     public function prettifyTestClass(string $className): string
