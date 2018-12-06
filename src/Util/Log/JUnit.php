@@ -313,7 +313,12 @@ class JUnit extends Printer implements TestListener
      */
     public function endTest(Test $test, float $time): void
     {
-        $numAssertions = $test->getNumAssertions();
+        if (\method_exists($test, 'getNumAssertions')) {
+            $numAssertions = $test->getNumAssertions();
+        } else {
+            $numAssertions = 0;
+        }
+
         $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
 
         $this->currentTestCase->setAttribute(
@@ -333,10 +338,16 @@ class JUnit extends Printer implements TestListener
         $this->testSuiteTests[$this->testSuiteLevel]++;
         $this->testSuiteTimes[$this->testSuiteLevel] += $time;
 
-        if ($test->hasOutput()) {
+        if (\method_exists($test, 'hasOutput') && \method_exists($test, 'getActualOutput')) {
+            $testOutput = $test->hasOutput() ? $test->getActualOutput() : '';
+        } else {
+            $testOutput = '';
+        }
+
+        if (!empty($testOutput)) {
             $systemOut = $this->document->createElement(
                 'system-out',
-                Xml::prepareString($test->getActualOutput())
+                Xml::prepareString($testOutput)
             );
 
             $this->currentTestCase->appendChild($systemOut);
