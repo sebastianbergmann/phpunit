@@ -73,11 +73,6 @@ class CliTestDoxPrinter extends ResultPrinter
     private $className = '';
 
     /**
-     * @var string Classname of the previous test; empty for first test
-     */
-    private $lastClassName = '';
-
-    /**
      * @var string Prettified test name of current test
      */
     private $testMethod;
@@ -142,8 +137,6 @@ class CliTestDoxPrinter extends ResultPrinter
         if (!$test instanceof TestCase && !$test instanceof PhptTestCase && !$test instanceof TestSuite) {
             return;
         }
-
-        $this->lastClassName     = $this->className;
 
         if ($test instanceof TestCase) {
             $className  = $this->prettifier->prettifyTestClass(\get_class($test));
@@ -256,12 +249,6 @@ class CliTestDoxPrinter extends ResultPrinter
         }
     }
 
-//    public function writeTestResult(string $msg): void
-//    {
-//        $msg = $this->formatTestSuiteHeader($this->lastClassName, $this->className, $msg);
-//        $this->write($msg);
-//    }
-//
     public function writeProgress(string $progress): void
     {
     }
