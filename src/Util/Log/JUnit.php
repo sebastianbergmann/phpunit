@@ -313,10 +313,10 @@ class JUnit extends Printer implements TestListener
      */
     public function endTest(Test $test, float $time): void
     {
+        $numAssertions = 0;
+
         if (\method_exists($test, 'getNumAssertions')) {
             $numAssertions = $test->getNumAssertions();
-        } else {
-            $numAssertions = 0;
         }
 
         $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
@@ -338,10 +338,10 @@ class JUnit extends Printer implements TestListener
         $this->testSuiteTests[$this->testSuiteLevel]++;
         $this->testSuiteTimes[$this->testSuiteLevel] += $time;
 
+        $testOutput = '';
+
         if (\method_exists($test, 'hasOutput') && \method_exists($test, 'getActualOutput')) {
             $testOutput = $test->hasOutput() ? $test->getActualOutput() : '';
-        } else {
-            $testOutput = '';
         }
 
         if (!empty($testOutput)) {
