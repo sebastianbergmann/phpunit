@@ -139,15 +139,12 @@ class CliTestDoxPrinter extends ResultPrinter
         }
 
         if ($test instanceof TestCase) {
-            $className  = $this->prettifier->prettifyTestClass(\get_class($test));
-            $testMethod = $this->prettifier->prettifyTestCase($test);
+            $this->className  = $this->prettifier->prettifyTestClass(\get_class($test));
+            $this->testMethod = $this->prettifier->prettifyTestCase($test);
         } elseif ($test instanceof PhptTestCase) {
-            $className  = \get_class($test);
-            $testMethod = $test->getName();
+            $this->className  = \get_class($test);
+            $this->testMethod = $test->getName();
         }
-
-        $this->className  = $className;
-        $this->testMethod = $testMethod;
 
         parent::startTest($test);
     }
