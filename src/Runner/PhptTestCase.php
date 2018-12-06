@@ -63,6 +63,11 @@ class PhptTestCase implements Test, SelfDescribing
     private $phpUtil;
 
     /**
+     * @var string
+     */
+    private $output = '';
+
+    /**
      * Constructs a test case with the given filename.
      *
      * @throws Exception
@@ -155,8 +160,9 @@ class PhptTestCase implements Test, SelfDescribing
 
         Timer::start();
 
-        $jobResult = $this->phpUtil->runJob($code, $this->stringifyIni($settings));
-        $time      = Timer::stop();
+        $jobResult    = $this->phpUtil->runJob($code, $this->stringifyIni($settings));
+        $time         = Timer::stop();
+        $this->output = $jobResult['stdout'] ?? '';
 
         if ($result->getCollectCodeCoverageInformation() && ($coverage = $this->cleanupForCoverage())) {
             $result->getCodeCoverage()->append($coverage, $this, true, [], [], true);
@@ -200,6 +206,26 @@ class PhptTestCase implements Test, SelfDescribing
     public function toString(): string
     {
         return $this->filename;
+    }
+
+    public function usesDataProvider(): bool
+    {
+        return false;
+    }
+
+    public function getNumAssertions(): int
+    {
+        return 1;
+    }
+
+    public function getActualOutput(): string
+    {
+        return $this->output;
+    }
+
+    public function hasOutput(): bool
+    {
+        return !empty($this->output);
     }
 
     /**
@@ -475,8 +501,8 @@ class PhptTestCase implements Test, SelfDescribing
 
     private function getCoverageFiles(): array
     {
-        $baseDir          = \dirname(\realpath($this->filename)) . \DIRECTORY_SEPARATOR;
-        $basename         = \basename($this->filename, 'phpt');
+        $baseDir  = \dirname(\realpath($this->filename)) . \DIRECTORY_SEPARATOR;
+        $basename = \basename($this->filename, 'phpt');
 
         return [
             'coverage' => $baseDir . $basename . 'coverage',
@@ -507,7 +533,10 @@ class PhptTestCase implements Test, SelfDescribing
         $globals = '';
 
         if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
-            $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . \var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
+            $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . \var_export(
+                $GLOBALS['__PHPUNIT_BOOTSTRAP'],
+                    true
+            ) . ";\n";
         }
 
         $template->setVar(

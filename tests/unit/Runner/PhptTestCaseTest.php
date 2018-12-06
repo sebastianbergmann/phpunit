@@ -84,6 +84,16 @@ EOF;
         $this->testCase   = null;
     }
 
+    public function testAlwaysReportsNumberOfAssertionsIsOne(): void
+    {
+        $this->assertSame(1, $this->testCase->getNumAssertions());
+    }
+
+    public function testAlwaysReportsItDoesNotUseADataprovider(): void
+    {
+        $this->assertSame(false, $this->testCase->usesDataProvider());
+    }
+
     public function testShouldRunFileSectionAsTest(): void
     {
         $this->setPhpContent($this->ensureCorrectEndOfLine(self::EXPECT_CONTENT));
