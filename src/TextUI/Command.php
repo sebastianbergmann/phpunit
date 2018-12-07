@@ -144,7 +144,7 @@ class Command
         'version'                   => null,
         'whitelist='                => null,
         'dump-xdebug-filter='       => null,
-        'filter-xml'                => null,
+        'xml-filter'                => null,
     ];
 
     /**
@@ -289,7 +289,7 @@ class Command
         } catch (Exception $t) {
             $this->exitWithErrorMessage($t->getMessage());
         }
-
+        var_dump($this->options[0]);
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
                 case '--colors':
@@ -760,7 +760,7 @@ class Command
 
                     break;
 
-                case '--filter-xml':
+                case '--xml-filter':
                     $this->arguments['xmlFileToFilter'] = $this->options[1][0];
                     $this->handleFilterXml($this->arguments['xmlFileToFilter']);
 
@@ -1130,7 +1130,7 @@ Test Selection Options:
   --list-tests-xml <file>     List available tests in XML format
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
-  --filter-xml                Filter which tests to run based on xml file
+  --xml-filter <file>         Filter which tests to run based on xml file
 
 Test Execution Options:
 
