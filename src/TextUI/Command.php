@@ -766,7 +766,6 @@ class Command
 
                 case '--from-xml':
                     $this->arguments['xmlFileToFilter'] = $this->options[1][0];
-                    $this->handleFromXml($this->arguments['xmlFileToFilter']);
 
                     break;
 
@@ -943,7 +942,9 @@ class Command
             $this->arguments['test'] = new TestSuite;
             $this->arguments['test']->addTest($test);
         }
-
+        if (isset($this->arguments['xmlFileToFilter'])){
+            $this->handleFromXml($this->arguments['xmlFileToFilter']);
+        }
         if (!isset($this->arguments['test'])) {
             $this->showHelp();
             exit(TestRunner::EXCEPTION_EXIT);
