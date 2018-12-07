@@ -338,11 +338,15 @@ class CliTestDoxPrinter extends ResultPrinter
 
     private function getFormattedRuntime(float $time, string $color = ''): string
     {
-        if ($time > 1) {
-            return $this->formatWithColor('fg-magenta', \sprintf('[%.2f ms]', $time * 1000));
+        if (!$this->colors) {
+            return \sprintf('[%.2f ms]', $time * 1000);
         }
 
-        return $this->formatWithColor($color, \sprintf('[%.2f ms]', $time * 1000));
+        if ($time > 1) {
+            $color = 'fg-magenta';
+        }
+
+        return Color::colorize($color, \sprintf(' %.2f ms', $time * 1000));
     }
 
     private function formatTestResultMessage(string $resultMessage, bool $verbose): string
