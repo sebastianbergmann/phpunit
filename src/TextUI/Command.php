@@ -290,7 +290,6 @@ class Command
         } catch (Exception $t) {
             $this->exitWithErrorMessage($t->getMessage());
         }
-        var_dump($this->options[0]);
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
                 case '--colors':
