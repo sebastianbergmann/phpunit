@@ -942,9 +942,11 @@ class Command
             $this->arguments['test'] = new TestSuite;
             $this->arguments['test']->addTest($test);
         }
-        if (isset($this->arguments['xmlFileToFilter'])){
+
+        if (isset($this->arguments['xmlFileToFilter'])) {
             $this->handleFromXml($this->arguments['xmlFileToFilter']);
         }
+
         if (!isset($this->arguments['test'])) {
             $this->showHelp();
             exit(TestRunner::EXCEPTION_EXIT);
@@ -1141,7 +1143,7 @@ Test Selection Options:
   --list-tests-xml <file>     List available tests in XML format
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
-  --xml-split <file>          Split xml file to smaller files 
+  --xml-split <file>          Split xml file to smaller chunks
   --from-xml <file>           Run test list from XML file
 
 Test Execution Options:
@@ -1429,7 +1431,7 @@ EOT;
                             $filterFactory = new Factory();
                             $filterFactory->addFilter(
                                 new ReflectionClass(NameFilterIterator::class),
-                                $testMethodNode->getAttribute('dataSet')
+                                \htmlspecialchars_decode($testMethodNode->getAttribute('dataSet'))
                             );
 
                             /* @var TestSuite $test */
@@ -1450,6 +1452,7 @@ EOT;
         }
 
         $phptNodes = $xml->getElementsByTagName('phptFile');
+
         foreach ($phptNodes as $phptNode) {
             $this->arguments['test']->addTestFile(
                 $phptNode->getAttribute('path')
@@ -1459,38 +1462,43 @@ EOT;
 
     private function handleXmlSplit(string $target): void
     {
-        $xml = Xml::loadFile($target, false, true, true);
+        $xml         = Xml::loadFile($target, false, true, true);
         $testClasses = $xml->getElementsByTagName('testCaseClass');
-        foreach ($testClasses as $testClass){
-            if($testClass->hasChildNodes()){
-                foreach ($testClass->childNodes as $testCase){
-                    $testCase->setAttribute ('testCaseClass' , $testClass->getAttribute('name'));
+
+        foreach ($testClasses as $testClass) {
+            if ($testClass->hasChildNodes()) {
+                foreach ($testClass->childNodes as $testCase) {
+                    $testCase->setAttribute('testCaseClass', $testClass->getAttribute('name'));
                     $testCasesArray[] = $testCase;
                 }
             }
         }
-        $testCasesArraySplited = array_chunk($testCasesArray, 100);
-        $LastCaseClass = $testCasesArraySplited[0][0]->getAttribute('testCaseClass');
+        $testCasesArraySplited = \array_chunk($testCasesArray, 100);
+        $LastCaseClass         = $testCasesArraySplited[0][0]->getAttribute('testCaseClass');
 
         $folder_name = 'splitedXML';
-        if (!file_exists($folder_name)) {
-            mkdir($folder_name, 0777, true);
+
+        if (!\file_exists($folder_name)) {
+            \mkdir($folder_name, 0777, true);
         }
-        $files = glob($folder_name.'/*');
-        foreach($files as $file){
-            if(is_file($file))
-                unlink($file);
+        $files = \glob($folder_name . '/*');
+
+        foreach ($files as $file) {
+            if (\is_file($file)) {
+                \unlink($file);
+            }
         }
+
         foreach ($testCasesArraySplited as $key=>$value) {
             $writer = new \XMLWriter;
-            $writer->openURI('splitedXML/splited'.$key.'.xml');
+            $writer->openURI('splitedXML/splited' . $key . '.xml');
             $writer->setIndent(true);
             $writer->startDocument();
             $writer->startElement('tests');
             $writer->startElement('testCaseClass');
 
             foreach ($value as $testCase) {
-                if ($testCase->getAttribute('testCaseClass') != $LastCaseClass  )  {
+                if ($testCase->getAttribute('testCaseClass') != $LastCaseClass) {
                     $writer->endElement();
                     $writer->startElement('testCaseClass');
                 }
@@ -1506,7 +1514,6 @@ EOT;
             $writer->endElement();
             $writer->endDocument();
             $writer->flush();
-
         }
         exit(0);
     }

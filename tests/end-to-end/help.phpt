@@ -47,6 +47,7 @@ Test Selection Options:
   --list-tests-xml <file>     List available tests in XML format
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
+  --xml-split <file>          Split xml file to smaller chunks
   --from-xml <file>           Run test list from XML file
 
 Test Execution Options:
