@@ -1439,5 +1439,12 @@ EOT;
                 $this->exitWithErrorMessage($reflectionException->getMessage());
             }
         }
+
+        $phptNodes = $xml->getElementsByTagName('phptFile');
+        foreach ($phptNodes as $phptNode) {
+            $this->arguments['test']->addTestFile(
+                $phptNode->getAttribute('path')
+            );
+        }
     }
 }
