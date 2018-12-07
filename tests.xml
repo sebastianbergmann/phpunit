@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<tests>
+  <testCaseClass name="PHPUnit\Framework\Constraint\ArrayHasKeyTest">
+  <testCaseMethod name="testConstraintArrayHasKey" groups="default"/>
+  <testCaseMethod name="testConstraintArrayHasKey2" groups="default"/>
+  <testCaseMethod name="testIsCountable" groups="default"/>
+  <testCaseMethod name="testIsSelfDescribing" groups="default"/>
+ </testCaseClass>
+ <testCaseClass name="PHPUnit\Framework\Constraint\ArraySubsetTest">
+  <testCaseMethod name="testIsCountable" groups="default"/>
+ </testCaseClass>
+</tests>

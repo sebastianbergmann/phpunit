@@ -1394,13 +1394,17 @@ EOT;
     private function handleFilterXml(string $target): void
     {
         $xml = Xml::loadFile($target, false, true, true);
-        $this->arguments['test'] = new TestSuite;
         $files = [];
         $testClasses = $xml->getElementsByTagName('testCaseClass');
+        $this->arguments['test'] = new TestSuite('','');
         foreach ($testClasses as $testClass) {
             $reflector = new \ReflectionClass($testClass->getAttribute('name'));
             $files[] = $reflector->getFileName();
+            if ($testClass->hasChildNodes()) {
+                foreach ($testClass->childNodes as $testCase) {
+                    $this->arguments['test']->addTestMethod($reflector,new \ReflectionMethod($reflector->getName(), $testCase->getAttribute('name')));
+                }
+            }
         }
-        $this->arguments['test']->addTestFiles($files);
     }
 }
