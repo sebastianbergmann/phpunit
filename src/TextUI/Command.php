@@ -17,6 +17,8 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\Filter\Factory;
+use PHPUnit\Runner\Filter\NameFilterIterator;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -145,7 +147,7 @@ class Command
         'version'                   => null,
         'whitelist='                => null,
         'dump-xdebug-filter='       => null,
-        'xml-filter'                => null,
+        'from-xml'                  => null,
         'xml-split'                 => null,
     ];
 
@@ -291,6 +293,7 @@ class Command
         } catch (Exception $t) {
             $this->exitWithErrorMessage($t->getMessage());
         }
+
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
                 case '--colors':
@@ -761,9 +764,9 @@ class Command
 
                     break;
 
-                case '--xml-filter':
+                case '--from-xml':
                     $this->arguments['xmlFileToFilter'] = $this->options[1][0];
-                    $this->handleFilterXml($this->arguments['xmlFileToFilter']);
+                    $this->handleFromXml($this->arguments['xmlFileToFilter']);
 
                     break;
 
@@ -1137,8 +1140,8 @@ Test Selection Options:
   --list-tests-xml <file>     List available tests in XML format
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
-  --xml-filter <file>         Filter which tests to run based on xml file 
   --xml-split <file>          Split xml file to smaller files 
+  --from-xml <file>           Run test list from XML file
 
 Test Execution Options:
 
@@ -1399,18 +1402,51 @@ EOT;
         }
     }
 
-    private function handleFilterXml(string $target): void
+    private function handleFromXml(string $target): void
     {
         $xml = Xml::loadFile($target, false, true, true);
 
-        $this->arguments['test'] = new TestSuite;
-        $files = [];
-        $testClasses = $xml->getElementsByTagName('testCaseClass');
-        foreach ($testClasses as $testClass) {
-            $reflector = new \ReflectionClass($testClass->getAttribute('name'));
-            $files[] = $reflector->getFileName();
+        $testCaseNodes = $xml->getElementsByTagName('testCaseClass');
+
+        if (!$testCaseNodes) {
+            return;
         }
-        $this->arguments['test']->addTestFiles($files);
+
+        $this->arguments['test'] = new TestSuite('', '');
+        /* @var \DOMElement $testCaseNode */
+        foreach ($testCaseNodes as $testCaseNode) {
+            try {
+                $testCaseClass = new ReflectionClass($testCaseNode->getAttribute('name'));
+
+                if ($testCaseNode->hasChildNodes()) {
+                    /* @var \DOMElement $testMethodNode */
+                    foreach ($testCaseNode->childNodes as $testMethodNode) {
+                        $test = TestSuite::createTest($testCaseClass, $testMethodNode->getAttribute('name'));
+
+                        /* @var \DOMElement $testMethodNode */
+                        if ($testMethodNode->getAttribute('dataSet')) {
+                            $filterFactory = new Factory();
+                            $filterFactory->addFilter(
+                                new ReflectionClass(NameFilterIterator::class),
+                                $testMethodNode->getAttribute('dataSet')
+                            );
+
+                            /* @var TestSuite $test */
+                            $test->injectFilter($filterFactory);
+                        }
+
+                        $this->arguments['test']->addTest(
+                            $test,
+                            \PHPUnit\Util\Test::getGroups($testCaseClass->getName(), $testMethodNode->getAttribute('name'))
+                        );
+                    }
+                } else {
+                    $this->arguments['test']->addTestFile($testCaseClass->getFileName());
+                }
+            } catch (\ReflectionException $reflectionException) {
+                $this->exitWithErrorMessage($reflectionException->getMessage());
+            }
+        }
     }
 
     private function handleXmlSplit(string $target): void
@@ -1462,4 +1498,3 @@ EOT;
         exit(0);
     }
 }
-
