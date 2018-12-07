@@ -49,4 +49,23 @@ class Color
 
         return $style . $buffer . "\x1b[0m";
     }
+
+    public static function colorizePath(string $path, ?string $prevPath): string
+    {
+        if ($prevPath === null) {
+            $prevPath = '';
+        }
+
+        $path     = \explode(\DIRECTORY_SEPARATOR, $path);
+        $prevPath = \explode(\DIRECTORY_SEPARATOR, $prevPath);
+
+        for ($i = 0; $i < \min(\count($path), \count($prevPath)); $i++) {
+            if ($path[$i] == $prevPath[$i]) {
+                $path[$i] = Color::colorize('dim', $path[$i]);
+            }
+        }
+
+        return \implode(Color::colorize('dim', \DIRECTORY_SEPARATOR), $path);
+    }
+
 }

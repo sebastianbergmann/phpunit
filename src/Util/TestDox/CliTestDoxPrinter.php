@@ -310,7 +310,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
         // test result line
         if ($result['className'] == PhptTestCase::class) {
-            $testName = $this->colorizePath($result['testName'], $prevResult['testName']);
+            $testName = Color::colorizePath($result['testName'], $prevResult['testName']);
         } else {
             $testName = $result['testMethod'];
         }
@@ -423,9 +423,9 @@ class CliTestDoxPrinter extends ResultPrinter
 
         foreach (\explode("\n", $trace) as $line) {
             if (\preg_match('/^(.*):(\d+)$/', $line, $matches)) {
-                $lines[] =  $this->colorizePath($matches[1], $prevPath) .
-                            $this->formatWithColor('dim', ':') .
-                            $this->formatWithColor('fg-blue', $matches[2]) .
+                $lines[] =  Color::colorizePath($matches[1], $prevPath) .
+                            Color::colorize('dim', ':') .
+                            Color::colorize('fg-blue', $matches[2]) .
                             "\n";
                 $prevPath = $matches[1];
             } else {
@@ -435,23 +435,5 @@ class CliTestDoxPrinter extends ResultPrinter
         }
 
         return \implode('', $lines);
-    }
-
-    private function colorizePath(string $path, ?string $prevPath): string
-    {
-        if ($prevPath === null) {
-            $prevPath = '';
-        }
-
-        $path     = \explode(\DIRECTORY_SEPARATOR, $path);
-        $prevPath = \explode(\DIRECTORY_SEPARATOR, $prevPath);
-
-        for ($i = 0; $i < \min(\count($path), \count($prevPath)); $i++) {
-            if ($path[$i] == $prevPath[$i]) {
-                $path[$i] = $this->formatWithColor('dim', $path[$i]);
-            }
-        }
-
-        return \implode($this->formatWithColor('dim', \DIRECTORY_SEPARATOR), $path);
     }
 }

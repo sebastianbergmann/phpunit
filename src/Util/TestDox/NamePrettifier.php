@@ -102,19 +102,18 @@ final class NamePrettifier
 
     public function prettifyDataSet(TestCase $test): string
     {
-        $data = $test->getDataSetAsString(false);
-
         if (!$this->useColor) {
-            return $data;
+            return $test->getDataSetAsString(false);
         }
 
-        return \preg_replace_callback(
-            '/(with data set )(.*)/',
-            function ($matches) {
-                return Color::colorize('dim', $matches[1] . Color::colorize('fg-cyan', $matches[2]));
-            },
-            $data
-        );
+        $data = Color::colorize('dim', ' with data set ');
+        if (\is_int($test->dataName())) {
+            $data .= Color::colorize('fg-cyan', '#' . $test->dataName());
+        } else {
+            $data .= Color::colorize('fg-cyan', $test->dataName());
+        }
+
+        return $data;
     }
 
     /**
@@ -210,6 +209,10 @@ final class NamePrettifier
                 $exporter = new Exporter;
 
                 $value = $exporter->export($value);
+            }
+
+            if ($this->useColor) {
+                $value = Color::colorize('bg-yellow', $value);
             }
 
             $providedData['$' . $parameter->getName()] = $value;
