@@ -187,6 +187,8 @@ final class NamePrettifier
         $providedDataValues = \array_values($test->getProvidedData());
         $i                  = 0;
 
+        $providedData['$_dataName'] = $test->dataName();
+
         foreach ($reflector->getParameters() as $parameter) {
             if (!\array_key_exists($i, $providedDataValues) && $parameter->isDefaultValueAvailable()) {
                 $providedDataValues[$i] = $parameter->getDefaultValue();
@@ -212,11 +214,13 @@ final class NamePrettifier
                 $value = $exporter->export($value);
             }
 
-            if ($this->useColor) {
-                $value = Color::colorize('fg-cyan', $value);
-            }
-
             $providedData['$' . $parameter->getName()] = $value;
+        }
+
+        if ($this->useColor) {
+            $providedData = \array_map(function ($value) {
+                return Color::colorize('fg-cyan', $value);
+            }, $providedData);
         }
 
         return $providedData;
