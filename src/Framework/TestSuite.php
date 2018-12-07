@@ -867,14 +867,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     }
 
     /**
-     * Creates a default TestResult object.
-     */
-    protected function createResult(): TestResult
-    {
-        return new TestResult;
-    }
-
-    /**
      * @throws Exception
      */
     public function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
@@ -911,6 +903,14 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $test,
             \PHPUnit\Util\Test::getGroups($class->getName(), $name)
         );
+    }
+
+    /**
+     * Creates a default TestResult object.
+     */
+    protected function createResult(): TestResult
+    {
+        return new TestResult;
     }
 
     /**

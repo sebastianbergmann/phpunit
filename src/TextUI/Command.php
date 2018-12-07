@@ -292,6 +292,7 @@ class Command
         } catch (Exception $t) {
             $this->exitWithErrorMessage($t->getMessage());
         }
+
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
                 case '--colors':
@@ -1398,15 +1399,16 @@ EOT;
         $xml = Xml::loadFile($target, false, true, true);
 
         $testCaseNodes = $xml->getElementsByTagName('testCaseClass');
-        if (!$testCaseNodes)
+
+        if (!$testCaseNodes) {
             return;
+        }
 
         $this->arguments['test'] = new TestSuite('', '');
         /* @var \DOMElement $testCaseNode */
         foreach ($testCaseNodes as $testCaseNode) {
-
             try {
-                $testCaseClass = new \ReflectionClass($testCaseNode->getAttribute('name'));
+                $testCaseClass = new ReflectionClass($testCaseNode->getAttribute('name'));
 
                 if ($testCaseNode->hasChildNodes()) {
                     /* @var \DOMElement $testMethodNode */
@@ -1417,7 +1419,7 @@ EOT;
                         if ($testMethodNode->getAttribute('dataSet')) {
                             $filterFactory = new Factory();
                             $filterFactory->addFilter(
-                                new \ReflectionClass(NameFilterIterator::class),
+                                new ReflectionClass(NameFilterIterator::class),
                                 $testMethodNode->getAttribute('dataSet')
                             );
 
