@@ -1402,30 +1402,39 @@ EOT;
             return;
 
         $this->arguments['test'] = new TestSuite('', '');
+        /* @var \DOMElement $testCaseNode */
         foreach ($testCaseNodes as $testCaseNode) {
-            $testCaseClass = new \ReflectionClass($testCaseNode->getAttribute('name'));
 
-            if ($testCaseNode->hasChildNodes()) {
-                foreach ($testCaseNode->childNodes as $testMethodNode) {
-                    $test = TestSuite::createTest($testCaseClass, $testMethodNode->getAttribute('name'));
+            try {
+                $testCaseClass = new \ReflectionClass($testCaseNode->getAttribute('name'));
 
-                    if ($testMethodNode->getAttribute('dataSet')) {
-                        $filterFactory = new Factory();
-                        $filterFactory->addFilter(
-                            new ReflectionClass(NameFilterIterator::class),
-                            $testMethodNode->getAttribute('dataSet')
+                if ($testCaseNode->hasChildNodes()) {
+                    /* @var \DOMElement $testMethodNode */
+                    foreach ($testCaseNode->childNodes as $testMethodNode) {
+                        $test = TestSuite::createTest($testCaseClass, $testMethodNode->getAttribute('name'));
+
+                        /* @var \DOMElement $testMethodNode */
+                        if ($testMethodNode->getAttribute('dataSet')) {
+                            $filterFactory = new Factory();
+                            $filterFactory->addFilter(
+                                new \ReflectionClass(NameFilterIterator::class),
+                                $testMethodNode->getAttribute('dataSet')
+                            );
+
+                            /* @var TestSuite $test */
+                            $test->injectFilter($filterFactory);
+                        }
+
+                        $this->arguments['test']->addTest(
+                            $test,
+                            \PHPUnit\Util\Test::getGroups($testCaseClass->getName(), $testMethodNode->getAttribute('name'))
                         );
-
-                        $test->injectFilter($filterFactory);
                     }
-
-                    $this->arguments['test']->addTest(
-                        $test,
-                        \PHPUnit\Util\Test::getGroups($testCaseClass->getName(), $testMethodNode->getAttribute('name'))
-                    );
+                } else {
+                    $this->arguments['test']->addTestFile($testCaseClass->getFileName());
                 }
-            } else {
-                $this->arguments['test']->addTestFile($testCaseClass->getFileName());
+            } catch (\ReflectionException $reflectionException) {
+                $this->exitWithErrorMessage($reflectionException->getMessage());
             }
         }
     }
