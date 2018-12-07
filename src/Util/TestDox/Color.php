@@ -39,15 +39,25 @@ class Color
 
     public static function colorize(string $color, string $buffer): string
     {
-        $codes   = \array_map('\trim', \explode(',', $color));
-
-        foreach ($codes as $code) {
-            $styles[] = self::$ansiCodes[$code] ?? '';
+        if (\trim($buffer) === '') {
+            return $buffer;
         }
 
-        $style = \sprintf("\x1b[%sm", \implode(';', $styles));
+        $codes   = \array_map('\trim', \explode(',', $color));
 
-        return $style . $buffer . "\x1b[0m";
+        $styles = [];
+
+        foreach ($codes as $code) {
+            if (isset(self::$ansiCodes[$code])) {
+                $styles[] = self::$ansiCodes[$code] ?? '';
+            }
+        }
+
+        if (empty($styles)) {
+            return $buffer;
+        }
+
+        return \sprintf("\x1b[%sm", \implode(';', $styles)) . $buffer . "\x1b[0m";
     }
 
     public static function colorizePath(string $path, ?string $prevPath): string

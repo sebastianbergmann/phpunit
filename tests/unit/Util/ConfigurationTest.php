@@ -93,6 +93,7 @@ class ConfigurationTest extends TestCase
     }
 
     /**
+     * @testdox Parse XML configuration root attribute $optionName = $optionValue
      * @dataProvider configurationRootOptionsProvider
      *
      * @group test-reorder
@@ -117,25 +118,25 @@ class ConfigurationTest extends TestCase
     public function configurationRootOptionsProvider(): array
     {
         return [
-            'executionOrder default'                                        => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
-            'executionOrder random'                                         => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
-            'executionOrder reverse'                                        => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
-            'cacheResult false'                                             => ['cacheResult', 'false', false],
-            'cacheResult true'                                              => ['cacheResult', 'true', true],
-            'cacheResultFile absolute path'                                 => ['cacheResultFile', '/path/to/result/cache', '/path/to/result/cache'],
-            'columns'                                                       => ['columns', 'max', 'max'],
-            'stopOnFailure'                                                 => ['stopOnFailure', 'true', true],
-            'stopOnWarning'                                                 => ['stopOnWarning', 'true', true],
-            'stopOnIncomplete'                                              => ['stopOnIncomplete', 'true', true],
-            'stopOnRisky'                                                   => ['stopOnRisky', 'true', true],
-            'stopOnSkipped'                                                 => ['stopOnSkipped', 'true', true],
-            'failOnWarning'                                                 => ['failOnWarning', 'true', true],
-            'failOnRisky'                                                   => ['failOnRisky', 'true', true],
-            'disableCodeCoverageIgnore'                                     => ['disableCodeCoverageIgnore', 'true', true],
-            'processIsolation'                                              => ['processIsolation', 'true', true],
-            'testSuiteLoaderFile absolute path'                             => ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
-            'reverseDefectList'                                             => ['reverseDefectList', 'true', true],
-            'registerMockObjectsFromTestArgumentsRecursively'               => ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
+            'executionOrder default'                         => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
+            'executionOrder random'                          => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
+            'executionOrder reverse'                         => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
+            'cacheResult=false'                              => ['cacheResult', 'false', false],
+            'cacheResult=true'                               => ['cacheResult', 'true', true],
+            'cacheResultFile absolute path'                  => ['cacheResultFile', '/path/to/result/cache', '/path/to/result/cache'],
+            'columns'                                        => ['columns', 'max', 'max'],
+            'stopOnFailure'                                  => ['stopOnFailure', 'true', true],
+            'stopOnWarning'                                  => ['stopOnWarning', 'true', true],
+            'stopOnIncomplete'                               => ['stopOnIncomplete', 'true', true],
+            'stopOnRisky'                                    => ['stopOnRisky', 'true', true],
+            'stopOnSkipped'                                  => ['stopOnSkipped', 'true', true],
+            'failOnWarning'                                  => ['failOnWarning', 'true', true],
+            'failOnRisky'                                    => ['failOnRisky', 'true', true],
+            'disableCodeCoverageIgnore'                      => ['disableCodeCoverageIgnore', 'true', true],
+            'processIsolation'                               => ['processIsolation', 'true', true],
+            'testSuiteLoaderFile absolute path'              => ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
+            'reverseDefectList'                              => ['reverseDefectList', 'true', true],
+            'registerMockObjectsFromTestArgumentsRecursively'=> ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
         ];
     }
 
