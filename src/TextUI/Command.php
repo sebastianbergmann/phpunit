@@ -144,6 +144,7 @@ class Command
         'version'                   => null,
         'whitelist='                => null,
         'dump-xdebug-filter='       => null,
+        'filter-xml'                => null,
     ];
 
     /**
@@ -759,6 +760,12 @@ class Command
 
                     break;
 
+                case '--filter-xml':
+                    $this->arguments['xmlFileToFilter'] = $this->options[1][0];
+                    $this->handleFilterXml($this->arguments['xmlFileToFilter']);
+
+                    break;
+
                 default:
                     $optionName = \str_replace('--', '', $option[0]);
 
@@ -1123,6 +1130,7 @@ Test Selection Options:
   --list-tests-xml <file>     List available tests in XML format
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
+  --filter-xml                Filter which tests to run based on xml file
 
 Test Execution Options:
 
@@ -1381,5 +1389,11 @@ EOT;
                     $this->exitWithErrorMessage("unrecognized --order-by option: $order");
             }
         }
+    }
+
+    private function handleFilterXml(string $target): void
+    {
+        echo $target . PHP_EOL;
+        exit(0);
     }
 }
