@@ -1461,10 +1461,17 @@ EOT;
                 }
             }
         }
-        $testCasesArraySplited =  array_chunk($testCasesArray, 100);
+        $testCasesArraySplited = array_chunk($testCasesArray, 100);
         $LastCaseClass = $testCasesArraySplited[0][0]->getAttribute('testCaseClass');
-        if (!file_exists('splitedXML')) {
-            mkdir('splitedXML', 0777, true);
+
+        $folder_name = 'splitedXML';
+        if (!file_exists($folder_name)) {
+            mkdir($folder_name, 0777, true);
+        }
+        $files = glob($folder_name.'/*'); //get all file names
+        foreach($files as $file){
+            if(is_file($file))
+                unlink($file); //delete file
         }
         foreach ($testCasesArraySplited as $key=>$value) {
             $writer = new \XMLWriter;
@@ -1479,7 +1486,7 @@ EOT;
                     $writer->endElement();
                     $writer->startElement('testCaseClass');
                 }
-                $writer->writeAttribute('testCaseClass', $testCase->getAttribute('testCaseClass'));
+                $writer->writeAttribute('name', $testCase->getAttribute('testCaseClass'));
                 $writer->startElement('testCaseMethod');
                 $writer->writeAttribute('name', $testCase->getAttribute('name'));
                 $writer->writeAttribute('groups', $testCase->getAttribute('groups'));
