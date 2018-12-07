@@ -147,7 +147,7 @@ class Command
         'version'                   => null,
         'whitelist='                => null,
         'dump-xdebug-filter='       => null,
-        'xml-filter'                => null,
+        'from-xml'                  => null,
     ];
 
     /**
@@ -762,9 +762,9 @@ class Command
 
                     break;
 
-                case '--xml-filter':
+                case '--from-xml':
                     $this->arguments['xmlFileToFilter'] = $this->options[1][0];
-                    $this->handleFilterXml($this->arguments['xmlFileToFilter']);
+                    $this->handleFromXml($this->arguments['xmlFileToFilter']);
 
                     break;
 
@@ -1132,7 +1132,7 @@ Test Selection Options:
   --list-tests-xml <file>     List available tests in XML format
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
-  --xml-filter <file>         Filter which tests to run based on xml file
+  --from-xml <file>           Run test list from XML file
 
 Test Execution Options:
 
@@ -1393,7 +1393,7 @@ EOT;
         }
     }
 
-    private function handleFilterXml(string $target): void
+    private function handleFromXml(string $target): void
     {
         $xml = Xml::loadFile($target, false, true, true);
 
