@@ -1476,10 +1476,10 @@ EOT;
         if (!file_exists($folder_name)) {
             mkdir($folder_name, 0777, true);
         }
-        $files = glob($folder_name.'/*'); //get all file names
+        $files = glob($folder_name.'/*');
         foreach($files as $file){
             if(is_file($file))
-                unlink($file); //delete file
+                unlink($file);
         }
         foreach ($testCasesArraySplited as $key=>$value) {
             $writer = new \XMLWriter;
@@ -1498,9 +1498,7 @@ EOT;
                 $writer->startElement('testCaseMethod');
                 $writer->writeAttribute('name', $testCase->getAttribute('name'));
                 $writer->writeAttribute('groups', $testCase->getAttribute('groups'));
-                if ($testCase->getAttribute('dataSet')) {
-                    $writer->writeAttribute('dataSet', $testCase->getAttribute('dataSet'));
-                }
+                $testCase->getAttribute('dataSet') ? $writer->writeAttribute('dataSet', $testCase->getAttribute('dataSet')):'';
                 $writer->endElement();
                 $LastCaseClass = $testCase->getAttribute('testCaseClass');
             }
