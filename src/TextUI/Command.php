@@ -31,6 +31,7 @@ use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\TextTestListRenderer;
+use PHPUnit\Util\Xml;
 use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
@@ -1394,6 +1395,16 @@ EOT;
     private function handleFilterXml(string $target): void
     {
         echo $target . PHP_EOL;
+        $xml = Xml::loadFile($target, false, true, true);
+        $testClasses = $xml->getElementsByTagName('testCaseClass');
+        foreach ($testClasses as $testClass){
+            if($testClass->hasChildNodes()){
+                foreach ($testClass->childNodes as $testCase){
+                    echo $testCase->getAttribute('name').PHP_EOL;
+                }
+            }
+            echo $testClass->getAttribute('name').PHP_EOL;
+        }
         exit(0);
     }
 }
