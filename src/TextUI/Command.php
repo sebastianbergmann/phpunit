@@ -148,6 +148,7 @@ class Command
         'whitelist='                => null,
         'dump-xdebug-filter='       => null,
         'from-xml'                  => null,
+        'xml-split'                 => null,
     ];
 
     /**
@@ -769,6 +770,12 @@ class Command
 
                     break;
 
+                case '--xml-split':
+                    $this->arguments['xmlFileSplit'] = $this->options[1][0];
+                    $this->handleXmlSplit($this->arguments['xmlFileSplit']);
+
+                    break;
+
                 default:
                     $optionName = \str_replace('--', '', $option[0]);
 
@@ -1133,6 +1140,7 @@ Test Selection Options:
   --list-tests-xml <file>     List available tests in XML format
   --test-suffix ...           Only search for test in files with specified
                               suffix(es). Default: Test.php,.phpt
+  --xml-split <file>          Split xml file to smaller files 
   --from-xml <file>           Run test list from XML file
 
 Test Execution Options:
@@ -1446,5 +1454,54 @@ EOT;
                 $phptNode->getAttribute('path')
             );
         }
+    }
+
+    private function handleXmlSplit(string $target): void
+    {
+        $xml = Xml::loadFile($target, false, true, true);
+        $testClasses = $xml->getElementsByTagName('testCaseClass');
+        foreach ($testClasses as $testClass){
+            if($testClass->hasChildNodes()){
+                foreach ($testClass->childNodes as $testCase){
+                    $testCase->setAttribute ('testCaseClass' , $testClass->getAttribute('name'));
+                    $testCasesArray[] = $testCase;
+                }
+            }
+        }
+        $testCasesArraySplited =  array_chunk($testCasesArray, 100);
+        $LastCaseClass = $testCasesArraySplited[0][0]->getAttribute('testCaseClass');
+        if (!file_exists('splitedXML')) {
+            mkdir('splitedXML', 0777, true);
+        }
+        foreach ($testCasesArraySplited as $key=>$value) {
+            $writer = new \XMLWriter;
+            $writer->openURI('splitedXML/splited'.$key.'.xml');
+            $writer->setIndent(true);
+            $writer->startDocument();
+            $writer->startElement('tests');
+            $writer->startElement('testCaseClass');
+
+            foreach ($value as $testCase) {
+                if ($testCase->getAttribute('testCaseClass') != $LastCaseClass  )  {
+                    $writer->endElement();
+                    $writer->startElement('testCaseClass');
+                }
+                $writer->writeAttribute('testCaseClass', $testCase->getAttribute('testCaseClass'));
+                $writer->startElement('testCaseMethod');
+                $writer->writeAttribute('name', $testCase->getAttribute('name'));
+                $writer->writeAttribute('groups', $testCase->getAttribute('groups'));
+                if ($testCase->getAttribute('dataSet')) {
+                    $writer->writeAttribute('dataSet', $testCase->getAttribute('dataSet'));
+                }
+                $writer->endElement();
+                $LastCaseClass = $testCase->getAttribute('testCaseClass');
+            }
+            $writer->endElement();
+            $writer->endElement();
+            $writer->endDocument();
+            $writer->flush();
+
+        }
+        exit(0);
     }
 }
