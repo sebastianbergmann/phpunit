@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 class JsonTest extends TestCase
 {
     /**
+     * @testdox Canonicalize $actual
      * @dataProvider canonicalizeProvider
      *
      * @throws \PHPUnit\Framework\ExpectationFailedException
