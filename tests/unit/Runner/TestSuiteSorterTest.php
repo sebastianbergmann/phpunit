@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 
 /**
+ * @testdox Reordering test execution
  * @group test-reorder
  */
 class TestSuiteSorterTest extends TestCase

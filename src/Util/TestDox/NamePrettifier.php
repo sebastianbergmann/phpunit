@@ -107,6 +107,7 @@ final class NamePrettifier
         }
 
         $data = Color::colorize('dim', ' with data set ');
+
         if (\is_int($test->dataName())) {
             $data .= Color::colorize('fg-cyan', '#' . $test->dataName());
         } else {
@@ -212,7 +213,7 @@ final class NamePrettifier
             }
 
             if ($this->useColor) {
-                $value = Color::colorize('bg-yellow', $value);
+                $value = Color::colorize('fg-cyan', $value);
             }
 
             $providedData['$' . $parameter->getName()] = $value;

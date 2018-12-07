@@ -33,6 +33,7 @@ class RegularExpressionTest extends TestCase
     }
 
     /**
+     * @testdox Valid regex $pattern on $subject returns $return
      * @dataProvider validRegexpProvider
      *
      * @throws \Exception
@@ -44,6 +45,7 @@ class RegularExpressionTest extends TestCase
     }
 
     /**
+     * @testdox Invalid regex $pattern on $subject
      * @dataProvider invalidRegexpProvider
      *
      * @throws \Exception
