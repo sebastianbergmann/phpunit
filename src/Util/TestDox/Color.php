@@ -61,11 +61,10 @@ class Color
 
         for ($i = 0; $i < \min(\count($path), \count($prevPath)); $i++) {
             if ($path[$i] == $prevPath[$i]) {
-                $path[$i] = Color::colorize('dim', $path[$i]);
+                $path[$i] = self::colorize('dim', $path[$i]);
             }
         }
 
-        return \implode(Color::colorize('dim', \DIRECTORY_SEPARATOR), $path);
+        return \implode(self::colorize('dim', \DIRECTORY_SEPARATOR), $path);
     }
-
 }
