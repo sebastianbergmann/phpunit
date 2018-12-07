@@ -17,6 +17,8 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\Filter\Factory;
+use PHPUnit\Runner\Filter\NameFilterIterator;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -1394,16 +1396,36 @@ EOT;
     private function handleFilterXml(string $target): void
     {
         $xml = Xml::loadFile($target, false, true, true);
-        $files = [];
-        $testClasses = $xml->getElementsByTagName('testCaseClass');
-        $this->arguments['test'] = new TestSuite('','');
-        foreach ($testClasses as $testClass) {
-            $reflector = new \ReflectionClass($testClass->getAttribute('name'));
-            $files[] = $reflector->getFileName();
-            if ($testClass->hasChildNodes()) {
-                foreach ($testClass->childNodes as $testCase) {
-                    $this->arguments['test']->addTestMethod($reflector,new \ReflectionMethod($reflector->getName(), $testCase->getAttribute('name')));
+
+        $testCaseNodes = $xml->getElementsByTagName('testCaseClass');
+        if (!$testCaseNodes)
+            return;
+
+        $this->arguments['test'] = new TestSuite('', '');
+        foreach ($testCaseNodes as $testCaseNode) {
+            $testCaseClass = new \ReflectionClass($testCaseNode->getAttribute('name'));
+
+            if ($testCaseNode->hasChildNodes()) {
+                foreach ($testCaseNode->childNodes as $testMethodNode) {
+                    $test = TestSuite::createTest($testCaseClass, $testMethodNode->getAttribute('name'));
+
+                    if ($testMethodNode->getAttribute('dataSet')) {
+                        $filterFactory = new Factory();
+                        $filterFactory->addFilter(
+                            new ReflectionClass(NameFilterIterator::class),
+                            $testMethodNode->getAttribute('dataSet')
+                        );
+
+                        $test->injectFilter($filterFactory);
+                    }
+
+                    $this->arguments['test']->addTest(
+                        $test,
+                        \PHPUnit\Util\Test::getGroups($testCaseClass->getName(), $testMethodNode->getAttribute('name'))
+                    );
                 }
+            } else {
+                $this->arguments['test']->addTestFile($testCaseClass->getFileName());
             }
         }
     }
