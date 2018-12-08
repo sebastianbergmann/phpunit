@@ -19,8 +19,8 @@ $phar             = {phar};
 ob_start();
 
 if ($composerAutoload) {
-    require_once $composerAutoload;
     define('PHPUNIT_COMPOSER_INSTALL', $composerAutoload);
+    require_once $composerAutoload;
 } else if ($phar) {
     require $phar;
 }
