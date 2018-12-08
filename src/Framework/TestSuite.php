@@ -869,7 +869,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * @throws Exception
      */
-    public function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
+    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
     {
         if (!$this->isTestMethod($method)) {
             return;
