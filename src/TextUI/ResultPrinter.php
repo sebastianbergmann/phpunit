@@ -513,7 +513,6 @@ class ResultPrinter extends Printer implements TestListener
 
         $lines   = \explode("\n", $buffer);
         $padding = \max(\array_map('\strlen', $lines));
-        $styles  = [];
 
         $styledLines = [];
 
