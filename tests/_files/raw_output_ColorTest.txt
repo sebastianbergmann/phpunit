@@ -1,0 +1,19 @@
+PHPUnit %s by Sebastian Bergmann and contributors.
+
+Runtime:       %s
+
+[4mBasic ANSI color highlighting support[0m
+ [32m✔[0m Colorize with [36mno[2m·[22mcolor[0m [32m %f ms[0m
+ [32m✔[0m Colorize with [36mone[2m·[22mcolor[0m [32m %f ms[0m
+ [32m✔[0m Colorize with [36mmultiple[2m·[22mcolors[0m [32m %f ms[0m
+ [32m✔[0m Colorize path [36m/php/unit/test.phpt[0m after [36m[4mempty[0m[0m [32m %f ms[0m
+ [32m✔[0m Colorize path [36m/php/unit/test.phpt[0m after [36m/[0m [32m %f ms[0m
+ [32m✔[0m Colorize path [36m/php/unit/test.phpt[0m after [36m/php/[0m [32m %f ms[0m
+ [32m✔[0m dim($m) and colorize('dim',$m) return different ANSI codes [32m %f ms[0m
+ [32m✔[0m Visiualize whitespace characters in [36mno-spaces[0m [32m %f ms[0m
+ [32m✔[0m Visiualize whitespace characters in [36m[2m·[22mspace[2m···[22minvaders[2m·[22m[0m [32m %s ms[0m
+ [32m✔[0m Visiualize whitespace characters in [36m[2m⇥[22mindent,[2m·[22mspace[2m·[22mand[2m·[22mLF[2m↵[22m[0m [32m %s ms[0m
+
+Time: %s, Memory: %s
+
+[30;42mOK (10 tests, 10 assertions)[0m
