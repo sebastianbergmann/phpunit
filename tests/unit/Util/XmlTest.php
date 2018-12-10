@@ -74,6 +74,9 @@ class XmlTest extends TestCase
         Xml::load(false);
     }
 
+    /**
+     * @testdox Nested xmlToVariable()
+     */
     public function testNestedXmlToVariable(): void
     {
         $xml = '<array><element key="a"><array><element key="b"><string>foo</string></element></array></element><element key="c"><string>bar</string></element></array>';
@@ -92,6 +95,9 @@ class XmlTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
+    /**
+     * @testdox xmlToVariable() can handle multiple of the same argument type
+     */
     public function testXmlToVariableCanHandleMultipleOfTheSameArgumentType(): void
     {
         $xml = '<object class="SampleClass"><arguments><string>a</string><string>b</string><string>c</string></arguments></object>';
@@ -105,6 +111,9 @@ class XmlTest extends TestCase
         $this->assertSame($expected, (array) $actual);
     }
 
+    /**
+     * @testdox xmlToVariable() can construct objects with constructor arguments recursively
+     */
     public function testXmlToVariableCanConstructObjectsWithConstructorArgumentsRecursively(): void
     {
         $xml = '<object class="Exception"><arguments><string>one</string><integer>0</integer><object class="Exception"><arguments><string>two</string></arguments></object></arguments></object>';
