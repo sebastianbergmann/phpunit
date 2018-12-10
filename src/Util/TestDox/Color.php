@@ -69,7 +69,7 @@ class Color
         return \sprintf("\x1b[%sm", \implode(';', $styles)) . $buffer . "\x1b[0m";
     }
 
-    public static function colorizePath(string $path, ?string $prevPath): string
+    public static function colorizePath(string $path, ?string $prevPath = null): string
     {
         if ($prevPath === null) {
             $prevPath = '';

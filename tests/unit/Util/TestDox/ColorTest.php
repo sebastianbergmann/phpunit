@@ -29,7 +29,7 @@ class ColorTest extends TestCase
      * @testdox Colorize path $path after $prevPath
      * @dataProvider colorizePathProvider
      */
-    public function testColorizePath(string $prevPath, string $path, string $expected): void
+    public function testColorizePath(?string $prevPath, string $path, string $expected): void
     {
         $this->assertSame($expected, Color::colorizePath($path, $prevPath));
     }
@@ -52,6 +52,31 @@ class ColorTest extends TestCase
         $this->assertSame($expected, Color::visiualizeWhitespace($actual));
     }
 
+    /**
+     * @dataProvider unnamedDataSetProvider
+     */
+    public function testPrettifyUnnamedDataprovider(int $value): void
+    {
+        $this->assertSame($value, $value);
+    }
+
+    /**
+     * @dataProvider namedDataSetProvider
+     */
+    public function testPrettifyNamedDataprovider(int $value): void
+    {
+        $this->assertSame($value, $value);
+    }
+
+    /**
+     * @testdox TestDox shows name of data set $_dataName with value $value
+     * @dataProvider namedDataSetProvider
+     */
+    public function testTestdoxDatanameAsParameter(int $value): void
+    {
+        $this->assertSame($value, $value);
+    }
+
     public function colorizeProvider(): array
     {
         return [
@@ -67,7 +92,12 @@ class ColorTest extends TestCase
         $sepDim = Color::dim($sep);
 
         return [
-            'no previous path' => [
+            'null previous path' => [
+                null,
+                $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
+                $sepDim . 'php' . $sepDim . 'unit' . $sepDim . 'test.phpt',
+            ],
+            'empty previous path' => [
                 '',
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
                 $sepDim . 'php' . $sepDim . 'unit' . $sepDim . 'test.phpt',
@@ -91,6 +121,22 @@ class ColorTest extends TestCase
             ['no-spaces', 'no-spaces'],
             [' space   invaders ', "\x1b[2m·\x1b[22mspace\e[2m···\e[22minvaders\e[2m·\e[22m"],
             ["\tindent, space and LF\n", "\e[2m⇥\e[22mindent,\e[2m·\e[22mspace\e[2m·\e[22mand\e[2m·\e[22mLF\e[2m↵\e[22m"],
+        ];
+    }
+
+    public function unnamedDataSetProvider(): array
+    {
+        return [
+            [1],
+            [2],
+        ];
+    }
+
+    public function namedDataSetProvider(): array
+    {
+        return [
+            'one' => [1],
+            'two' => [2],
         ];
     }
 }
