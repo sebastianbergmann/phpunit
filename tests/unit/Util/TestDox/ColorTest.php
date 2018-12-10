@@ -12,7 +12,7 @@ namespace PHPUnit\Util\TestDox;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @testdox Basic ANSI color support
+ * @testdox Basic ANSI color highlighting support
  */
 class ColorTest extends TestCase
 {
@@ -34,6 +34,24 @@ class ColorTest extends TestCase
         $this->assertSame($expected, Color::colorizePath($path, $prevPath));
     }
 
+    /**
+     * @testdox dim($m) and colorize('dim',$m) return different ANSI codes
+     */
+    public function testDimAndColorizeDimAreDifferent(): void
+    {
+        $buffer = 'some string';
+        $this->assertNotSame(Color::dim($buffer), Color::colorize('dim', $buffer));
+    }
+
+    /**
+     * @testdox Visiualize whitespace characters in $actual
+     * @dataProvider whitespacedStringProvider
+     */
+    public function testVisibleWhitespace(string $actual, string $expected): void
+    {
+        $this->assertSame($expected, Color::visiualizeWhitespace($actual));
+    }
+
     public function colorizeProvider(): array
     {
         return [
@@ -46,7 +64,7 @@ class ColorTest extends TestCase
     public function colorizePathProvider(): array
     {
         $sep    = \DIRECTORY_SEPARATOR;
-        $sepDim = Color::colorize('dim', $sep);
+        $sepDim = Color::dim($sep);
 
         return [
             'no previous path' => [
@@ -57,8 +75,17 @@ class ColorTest extends TestCase
             'partial part' => [
                 $sep . 'php' . $sep,
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
-                $sepDim . Color::colorize('dim', 'php') . $sepDim . 'unit' . $sepDim . 'test.phpt',
+                $sepDim . Color::dim('php') . $sepDim . 'unit' . $sepDim . 'test.phpt',
             ],
+        ];
+    }
+
+    public function whitespacedStringProvider(): array
+    {
+        return [
+            ["no-spaces", "no-spaces"],
+            [" space   invaders ", "\x1b[2m·\x1b[22mspace\e[2m···\e[22minvaders\e[2m·\e[22m"],
+            ["\tindent, space and LF\n", "\e[2m⇥\e[22mindent,\e[2m·\e[22mspace\e[2m·\e[22mand\e[2m·\e[22mLF\e[2m↵\e[22m"]
         ];
     }
 }

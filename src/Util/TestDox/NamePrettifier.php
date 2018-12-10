@@ -111,7 +111,7 @@ final class NamePrettifier
         if (\is_int($test->dataName())) {
             $data .= Color::colorize('fg-cyan', '#' . $test->dataName());
         } else {
-            $data .= Color::colorize('fg-cyan', $test->dataName());
+            $data .= Color::colorize('fg-cyan', Color::visiualizeWhitespace($test->dataName()));
         }
 
         return $data;
@@ -219,7 +219,7 @@ final class NamePrettifier
 
         if ($this->useColor) {
             $providedData = \array_map(function ($value) {
-                return Color::colorize('fg-cyan', $value);
+                return Color::colorize('fg-cyan', Color::visiualizeWhitespace($value));
             }, $providedData);
         }
 

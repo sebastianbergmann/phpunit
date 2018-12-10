@@ -18,6 +18,7 @@ class Color
         'reset'             => '0',
         'bold'              => '1',
         'dim'               => '2',
+        'dim-reset'         => '22',
         'underlined'        => '4',
         'fg-black'          => '30',
         'fg-red'            => '31',
@@ -35,6 +36,12 @@ class Color
         'bg-magenta'        => '45',
         'bg-cyan'           => '46',
         'bg-white'          => '47',
+    ];
+
+    private const WHITESPACE_MAP = [
+        " " => "·",
+        "\t" => "⇥",
+        "\n" => "↵",
     ];
 
     public static function colorize(string $color, string $buffer): string
@@ -71,10 +78,26 @@ class Color
 
         for ($i = 0; $i < \min(\count($path), \count($prevPath)); $i++) {
             if ($path[$i] == $prevPath[$i]) {
-                $path[$i] = self::colorize('dim', $path[$i]);
+                $path[$i] = self::dim($path[$i]);
             }
         }
 
-        return \implode(self::colorize('dim', \DIRECTORY_SEPARATOR), $path);
+        return \implode(self::dim(\DIRECTORY_SEPARATOR), $path);
+    }
+
+    public static function dim(string $buffer): string
+    {
+        if (\trim($buffer) === '') {
+            return $buffer;
+        }
+
+        return "\x1b[2m$buffer\x1b[22m";
+    }
+
+    public static function visiualizeWhitespace(string $buffer): string
+    {
+        return \preg_replace_callback('/\s+/', function ($matches) {
+            return self::dim(\strtr($matches[0], self::WHITESPACE_MAP));
+        }, $buffer);
     }
 }
