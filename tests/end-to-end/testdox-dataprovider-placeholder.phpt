@@ -1,20 +1,14 @@
 --TEST--
-phpunit --testdox RouterTest ../_files/RouterTest.php
+phpunit --testdox --colors=always --verbose RouterTest ../unit/Util/TestDox/ColorTest.php
 --FILE--
 <?php
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--testdox';
-$_SERVER['argv'][3] = 'RouterTest';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/RouterTest.php';
+$_SERVER['argv'][3] = '--colors=always';
+$_SERVER['argv'][4] = '--verbose';
+$_SERVER['argv'][5] = __DIR__ . '/../unit/Util/TestDox/ColorTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
---EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
-
-Router
- ✔ Routes /foo/bar to FooBarHandler
-
-Time: %s, Memory: %s
-
-OK (1 test, 1 assertion)
+--EXPECTF_EXTERNAL--
+/../_files/raw_output_ColorTest.txt
