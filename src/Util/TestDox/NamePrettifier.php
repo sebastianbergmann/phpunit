@@ -216,6 +216,10 @@ final class NamePrettifier
                 $value = $exporter->export($value);
             }
 
+            if (\is_string($value) && $value === '') {
+                $value = Color::colorize('underlined', 'empty');
+            }
+
             $providedData['$' . $parameter->getName()] = $value;
         }
 
