@@ -11,9 +11,9 @@ Runtime:       %s
  [32m✔[0m Colorize path [36m%ephp%eunit%etest.phpt[0m after [36m%e[0m [32m %f ms[0m
  [32m✔[0m Colorize path [36m%ephp%eunit%etest.phpt[0m after [36m%ephp%e[0m [32m %f ms[0m
  [32m✔[0m dim($m) and colorize('dim',$m) return different ANSI codes [32m %f ms[0m
- [32m✔[0m Visiualize whitespace characters in [36mno-spaces[0m [32m %f ms[0m
- [32m✔[0m Visiualize whitespace characters in [36m[2m·[22mspace[2m···[22minvaders[2m·[22m[0m [32m %s ms[0m
- [32m✔[0m Visiualize whitespace characters in [36m[2m⇥[22mindent,[2m·[22mspace[2m·[22mand[2m·[22mLF[2m↵[22m[0m [32m %s ms[0m
+ [32m✔[0m Visualize whitespace characters in [36mno-spaces[0m [32m %f ms[0m
+ [32m✔[0m Visualize whitespace characters in [36m[2m·[22mspace[2m···[22minvaders[2m·[22m[0m [32m %s ms[0m
+ [32m✔[0m Visualize whitespace characters in [36m[2m⇥[22mindent,[2m·[22mspace[2m·[22mand[2m·[22mLF[2m↵[22m[0m [32m %s ms[0m
  [32m✔[0m Prettify unnamed dataprovider[2m with data set [22m[36m0[0m [32m %f ms[0m
  [32m✔[0m Prettify unnamed dataprovider[2m with data set [22m[36m1[0m [32m %f ms[0m
  [32m✔[0m Prettify named dataprovider[2m with [22m[36mone[0m [32m %f ms[0m
