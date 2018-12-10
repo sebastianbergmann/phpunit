@@ -309,7 +309,7 @@ class CliTestDoxPrinter extends ResultPrinter
         }
 
         // test result line
-        if ($result['className'] == PhptTestCase::class) {
+        if ($this->colors && $result['className'] == PhptTestCase::class) {
             $testName = Color::colorizePath($result['testName'], $prevResult['testName']);
         } else {
             $testName = $result['testMethod'];
