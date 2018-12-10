@@ -14,6 +14,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidCoversTargetException;
+use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\TestCase;
@@ -881,6 +882,14 @@ final class Test
                     foreach ($origData as $key => $value) {
                         if (\is_int($key)) {
                             $data[] = $value;
+                        } elseif (\array_key_exists($key, $data)) {
+                            throw new InvalidDataProviderException(
+                                \sprintf(
+                                    'The key "%s" as already been defined in the dataprovider "%s".',
+                                    $key,
+                                    $match
+                                )
+                            );
                         } else {
                             $data[$key] = $value;
                         }
