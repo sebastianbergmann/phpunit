@@ -96,7 +96,7 @@ class Color
         return "\x1b[2m$buffer\x1b[22m";
     }
 
-    public static function visiualizeWhitespace(string $buffer): string
+    public static function visualizeWhitespace(string $buffer): string
     {
         return \preg_replace_callback('/\s+/', function ($matches) {
             return self::dim(\strtr($matches[0], self::WHITESPACE_MAP));

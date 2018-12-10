@@ -44,12 +44,12 @@ class ColorTest extends TestCase
     }
 
     /**
-     * @testdox Visiualize whitespace characters in $actual
+     * @testdox Visualize whitespace characters in $actual
      * @dataProvider whitespacedStringProvider
      */
     public function testVisibleWhitespace(string $actual, string $expected): void
     {
-        $this->assertSame($expected, Color::visiualizeWhitespace($actual));
+        $this->assertSame($expected, Color::visualizeWhitespace($actual));
     }
 
     /**
