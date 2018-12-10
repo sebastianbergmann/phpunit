@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 
@@ -560,6 +561,14 @@ class TestTest extends TestCase
             ['H'],
             ['I'],
         ], $dataSets);
+    }
+
+    public function testWithDuplicateKeyDataProviders(): void
+    {
+        $this->expectException(InvalidDataProviderException::class);
+        $this->expectExceptionMessage('The key "foo" as already been defined in the dataprovider "dataProvider".');
+
+        Test::getProvidedData(\DuplicateKeyDataProviderTest::class, 'test');
     }
 
     public function testTestWithEmptyAnnotation(): void
