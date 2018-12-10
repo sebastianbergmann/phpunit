@@ -73,40 +73,40 @@ class CliTestDoxPrinter extends ResultPrinter
             'color'  => 'fg-green',
         ],
         BaseTestRunner::STATUS_ERROR => [
-            'symbol' => '✘',
-            'color'  => 'fg-yellow',
-            'message' => 'bg-yellow,fg-black'
+            'symbol'  => '✘',
+            'color'   => 'fg-yellow',
+            'message' => 'bg-yellow,fg-black',
         ],
         BaseTestRunner::STATUS_FAILURE => [
-            'symbol' => '✘',
-            'color'  => 'fg-red',
-            'message' => 'bg-red,fg-white'
+            'symbol'  => '✘',
+            'color'   => 'fg-red',
+            'message' => 'bg-red,fg-white',
         ],
         BaseTestRunner::STATUS_SKIPPED => [
-            'symbol' => '→',
-            'color'  => 'fg-yellow',
-            'message' => 'fg-yellow'
+            'symbol'  => '→',
+            'color'   => 'fg-yellow',
+            'message' => 'fg-yellow',
         ],
         BaseTestRunner::STATUS_RISKY => [
-            'symbol' => '☢',
-            'color'  => 'fg-yellow',
-            'message' => 'fg-yellow'
+            'symbol'  => '☢',
+            'color'   => 'fg-yellow',
+            'message' => 'fg-yellow',
         ],
         BaseTestRunner::STATUS_INCOMPLETE => [
-            'symbol' => '∅',
-            'color'  => 'fg-yellow',
-            'message' => 'fg-yellow'
+            'symbol'  => '∅',
+            'color'   => 'fg-yellow',
+            'message' => 'fg-yellow',
         ],
         BaseTestRunner::STATUS_WARNING => [
-            'symbol' => '✘',
-            'color'  => 'fg-yellow',
-            'message' => 'fg-yellow'
+            'symbol'  => '✘',
+            'color'   => 'fg-yellow',
+            'message' => 'fg-yellow',
         ],
         BaseTestRunner::STATUS_UNKNOWN => [
-            'symbol' => '?',
-            'color' => 'fg-blue',
-            'message' => 'fg-white,bg-blue'
-        ]
+            'symbol'  => '?',
+            'color'   => 'fg-blue',
+            'message' => 'fg-white,bg-blue',
+        ],
     ];
 
     public function __construct(
@@ -421,8 +421,8 @@ class CliTestDoxPrinter extends ResultPrinter
         $message = \PHPUnit\Framework\TestFailure::exceptionToString($t);
 
         if ($this->colors) {
-            $status = $status ?? BaseTestRunner::STATUS_UNKNOWN;
-            $style = $this->statusStyles[$status]['message'] ?? '';
+            $status  = $status ?? BaseTestRunner::STATUS_UNKNOWN;
+            $style   = $this->statusStyles[$status]['message'] ?? '';
             $message = $this->formatWithColor($style, $message);
         }
 
