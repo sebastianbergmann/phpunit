@@ -106,7 +106,7 @@ final class NamePrettifier
             return $test->getDataSetAsString(false);
         }
 
-        $data = Color::colorize('dim', ' with data set ');
+        $data = Color::dim( ' with ');
 
         if (\is_int($test->dataName())) {
             $data .= Color::colorize('fg-cyan', '#' . $test->dataName());
@@ -201,6 +201,8 @@ final class NamePrettifier
 
                 if ($reflector->hasMethod('__toString')) {
                     $value = (string) $value;
+                } else {
+                    $value = \get_class($value);
                 }
             }
 
