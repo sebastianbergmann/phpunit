@@ -68,6 +68,11 @@ class ColorTest extends TestCase
 
         return [
             'no previous path' => [
+                '',
+                $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
+                $sepDim . 'php' . $sepDim . 'unit' . $sepDim . 'test.phpt',
+            ],
+            'from root' => [
                 $sep,
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
                 $sepDim . 'php' . $sepDim . 'unit' . $sepDim . 'test.phpt',
