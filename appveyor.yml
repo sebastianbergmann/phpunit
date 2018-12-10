@@ -10,10 +10,10 @@ environment:
   COMPOSER_ROOT_VERSION: '7.0-dev'
 
   matrix:
-    - PHP_VERSION: '7.2.12'
+    - PHP_VERSION: '7.2.13'
       XDEBUG_VERSION: '2.6.1-7.2'
       DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.2.12'
+    - PHP_VERSION: '7.2.13'
       XDEBUG_VERSION: '2.6.1-7.2'
       DEPENDENCIES: ''
 
