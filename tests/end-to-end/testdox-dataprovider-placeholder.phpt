@@ -11,4 +11,4 @@ $_SERVER['argv'][5] = __DIR__ . '/../unit/Util/TestDox/ColorTest.php';
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF_EXTERNAL--
-/../_files/raw_output_ColorTest.txt
+../_files/raw_output_ColorTest.txt
