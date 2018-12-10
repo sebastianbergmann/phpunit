@@ -146,6 +146,7 @@ class AssertTest extends TestCase
     }
 
     /**
+     * @testdox assertArraySubset($_dataName) raises exception
      * @dataProvider assertArraySubsetInvalidArgumentProvider
      *
      * @throws Exception
@@ -162,8 +163,8 @@ class AssertTest extends TestCase
     public function assertArraySubsetInvalidArgumentProvider(): array
     {
         return [
-            [false, []],
-            [[], false],
+            'false, []' => [false, []],
+            '[], false' => [[], false],
         ];
     }
 
@@ -357,6 +358,7 @@ class AssertTest extends TestCase
     }
 
     /**
+     * @testdox assertNotEquals($a, $b) with delta $delta, canoicalize $canonicalize, ignoreCase $ignoreCase
      * @dataProvider equalProvider
      *
      * @throws ExpectationFailedException
@@ -370,6 +372,7 @@ class AssertTest extends TestCase
     }
 
     /**
+     * @testdox assertNotSame($a, $b) fails
      * @dataProvider sameProvider
      *
      * @throws ExpectationFailedException
@@ -381,6 +384,7 @@ class AssertTest extends TestCase
     }
 
     /**
+     * @testdox assertNotSame($a, $b)
      * @dataProvider notSameProvider
      *
      * @throws ExpectationFailedException
@@ -394,6 +398,7 @@ class AssertTest extends TestCase
     }
 
     /**
+     * @testdox assertSame($a, $b) fails
      * @dataProvider notSameProvider
      *
      * @throws ExpectationFailedException
@@ -405,6 +410,7 @@ class AssertTest extends TestCase
     }
 
     /**
+     * @testdox assertSame($a, $b)
      * @dataProvider sameProvider
      *
      * @throws ExpectationFailedException
@@ -1640,11 +1646,17 @@ XML;
         $this->assertNotSameSize([], '');
     }
 
+    /**
+     * @testdox Assert JSON
+     */
     public function testAssertJson(): void
     {
         $this->assertJson('{}');
     }
 
+    /**
+     * @testdox Assert JSON string equals JSON string
+     */
     public function testAssertJsonStringEqualsJsonString(): void
     {
         $expected = '{"Mascott" : "Tux"}';
@@ -1677,6 +1689,7 @@ XML;
     }
 
     /**
+     * @testdox Assert JSON string equals equals JSON string raised $_dataName
      * @dataProvider validInvalidJsonDataprovider
      *
      * @throws ExpectationFailedException
