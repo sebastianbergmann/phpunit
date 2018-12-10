@@ -83,9 +83,9 @@ class ColorTest extends TestCase
     public function whitespacedStringProvider(): array
     {
         return [
-            ["no-spaces", "no-spaces"],
-            [" space   invaders ", "\x1b[2m·\x1b[22mspace\e[2m···\e[22minvaders\e[2m·\e[22m"],
-            ["\tindent, space and LF\n", "\e[2m⇥\e[22mindent,\e[2m·\e[22mspace\e[2m·\e[22mand\e[2m·\e[22mLF\e[2m↵\e[22m"]
+            ['no-spaces', 'no-spaces'],
+            [' space   invaders ', "\x1b[2m·\x1b[22mspace\e[2m···\e[22minvaders\e[2m·\e[22m"],
+            ["\tindent, space and LF\n", "\e[2m⇥\e[22mindent,\e[2m·\e[22mspace\e[2m·\e[22mand\e[2m·\e[22mLF\e[2m↵\e[22m"],
         ];
     }
 }

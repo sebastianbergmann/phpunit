@@ -341,6 +341,9 @@ class ConfigurationTest extends TestCase
         );
     }
 
+    /**
+     * @testdox PHP configuration is read correctly
+     */
     public function testPHPConfigurationIsReadCorrectly(): void
     {
         $this->assertEquals(
@@ -365,6 +368,7 @@ class ConfigurationTest extends TestCase
     }
 
     /**
+     * @testdox PHP configuration is handled correctly
      * @backupGlobals enabled
      */
     public function testPHPConfigurationIsHandledCorrectly(): void
@@ -395,11 +399,12 @@ class ConfigurationTest extends TestCase
     }
 
     /**
+     * @testdox handlePHPConfiguration() does not overwrite existing $ENV[] variables
      * @backupGlobals enabled
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/1181
      */
-    public function testHandlePHPConfigurationDoesNotOverwrittenExistingEnvArrayVariables(): void
+    public function testHandlePHPConfigurationDoesNotOverwriteExistingEnvArrayVariables(): void
     {
         $_ENV['foo'] = false;
         $this->configuration->handlePHPConfiguration();
@@ -409,6 +414,7 @@ class ConfigurationTest extends TestCase
     }
 
     /**
+     * @testdox handlePHPConfiguration() does force overwritten existing $ENV[] variables
      * @backupGlobals enabled
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/2353
@@ -423,11 +429,12 @@ class ConfigurationTest extends TestCase
     }
 
     /**
+     * @testdox handlePHPConfiguration() does not overwrite variables from putenv()
      * @backupGlobals enabled
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/1181
      */
-    public function testHandlePHPConfigurationDoesNotOverriteVariablesFromPutEnv(): void
+    public function testHandlePHPConfigurationDoesNotOverwriteVariablesFromPutEnv(): void
     {
         $backupFoo = \getenv('foo');
 
@@ -445,6 +452,7 @@ class ConfigurationTest extends TestCase
     }
 
     /**
+     * @testdox handlePHPConfiguration() does overwrite variables from putenv() when forced
      * @backupGlobals enabled
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/1181
@@ -458,6 +466,9 @@ class ConfigurationTest extends TestCase
         $this->assertEquals('forced', \getenv('foo_force'));
     }
 
+    /**
+     * @testdox PHPUnit configuration is read correctly
+     */
     public function testPHPUnitConfigurationIsReadCorrectly(): void
     {
         $this->assertEquals(

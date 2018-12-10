@@ -11,6 +11,12 @@ namespace PHPUnit\Util\TestDox;
 
 class Color
 {
+    private const WHITESPACE_MAP = [
+        ' '  => '·',
+        "\t" => '⇥',
+        "\n" => '↵',
+    ];
+
     /**
      * @var array
      */
@@ -36,12 +42,6 @@ class Color
         'bg-magenta'        => '45',
         'bg-cyan'           => '46',
         'bg-white'          => '47',
-    ];
-
-    private const WHITESPACE_MAP = [
-        " " => "·",
-        "\t" => "⇥",
-        "\n" => "↵",
     ];
 
     public static function colorize(string $color, string $buffer): string

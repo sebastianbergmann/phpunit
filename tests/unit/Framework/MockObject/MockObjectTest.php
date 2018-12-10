@@ -464,6 +464,9 @@ class MockObjectTest extends TestCase
         $this->assertNotEquals(\get_class($mock1), \get_class($mock2));
     }
 
+    /**
+     * @testdox getMock() for abstract class
+     */
     public function testGetMockForAbstractClass(): void
     {
         $mock = $this->getMockBuilder(AbstractMockTestClass::class)
@@ -474,6 +477,7 @@ class MockObjectTest extends TestCase
     }
 
     /**
+     * @testdox getMock() for Traversable $_dataName
      * @dataProvider traversableProvider
      */
     public function testGetMockForTraversable($type): void
@@ -493,6 +497,9 @@ class MockObjectTest extends TestCase
         $this->assertInstanceOf(AnotherInterface::class, $mock);
     }
 
+    /**
+     * @testdox getMockForTrait()
+     */
     public function testGetMockForTrait(): void
     {
         $mock = $this->getMockForTrait(AbstractTrait::class);
@@ -1016,12 +1023,12 @@ class MockObjectTest extends TestCase
     public function traversableProvider(): array
     {
         return [
-            ['Traversable'],
-            ['\Traversable'],
-            ['TraversableMockTestInterface'],
-            [['Traversable']],
-            [['Iterator', 'Traversable']],
-            [['\Iterator', '\Traversable']],
+            'Traversable'                   => ['Traversable'],
+            '\Traversable'                  => ['\Traversable'],
+            'TraversableMockTestInterface'  => ['TraversableMockTestInterface'],
+            "['Traversable']"               => [['Traversable']],
+            "['Iterator', 'Traversable']"   => [['Iterator', 'Traversable']],
+            "['\Iterator', '\Traversable']" => [['\Iterator', '\Traversable']],
         ];
     }
 
