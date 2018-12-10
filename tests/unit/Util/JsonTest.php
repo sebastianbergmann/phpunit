@@ -41,7 +41,7 @@ class JsonTest extends TestCase
     }
 
     /**
-     * @testdox Prettify $actual
+     * @testdox Prettify $actual to $expected
      * @dataProvider prettifyProvider
      *
      * @throws \PHPUnit\Framework\Exception

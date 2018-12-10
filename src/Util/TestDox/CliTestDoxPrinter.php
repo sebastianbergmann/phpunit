@@ -275,7 +275,7 @@ class CliTestDoxPrinter extends ResultPrinter
 
     private function flushOutputBuffer(): void
     {
-        if ($this->enableOutputBuffer && ($this->testFlushIndex === $this->testIndex)) {
+        if ($this->enableOutputBuffer && ($this->testFlushIndex > $this->testIndex)) {
             return;
         }
 
