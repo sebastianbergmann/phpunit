@@ -75,27 +75,38 @@ class CliTestDoxPrinter extends ResultPrinter
         BaseTestRunner::STATUS_ERROR => [
             'symbol' => '✘',
             'color'  => 'fg-yellow',
+            'message' => 'bg-yellow,fg-black'
         ],
         BaseTestRunner::STATUS_FAILURE => [
             'symbol' => '✘',
             'color'  => 'fg-red',
+            'message' => 'bg-red,fg-white'
         ],
         BaseTestRunner::STATUS_SKIPPED => [
             'symbol' => '→',
             'color'  => 'fg-yellow',
+            'message' => 'fg-yellow'
         ],
         BaseTestRunner::STATUS_RISKY => [
             'symbol' => '☢',
             'color'  => 'fg-yellow',
+            'message' => 'fg-yellow'
         ],
         BaseTestRunner::STATUS_INCOMPLETE => [
             'symbol' => '∅',
             'color'  => 'fg-yellow',
+            'message' => 'fg-yellow'
         ],
         BaseTestRunner::STATUS_WARNING => [
             'symbol' => '✘',
             'color'  => 'fg-yellow',
+            'message' => 'fg-yellow'
         ],
+        BaseTestRunner::STATUS_UNKNOWN => [
+            'symbol' => '?',
+            'color' => 'fg-blue',
+            'message' => 'fg-white,bg-blue'
+        ]
     ];
 
     public function __construct(
@@ -139,7 +150,7 @@ class CliTestDoxPrinter extends ResultPrinter
     public function addError(Test $test, \Throwable $t, float $time): void
     {
         $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($t),
+            $this->formatThrowable($t, BaseTestRunner::STATUS_ERROR),
             true
         );
         $this->registerTestResult($test, BaseTestRunner::STATUS_ERROR, $time, $resultMessage);
@@ -148,7 +159,7 @@ class CliTestDoxPrinter extends ResultPrinter
     public function addWarning(Test $test, Warning $e, float $time): void
     {
         $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($e),
+            $this->formatThrowable($e, BaseTestRunner::STATUS_WARNING),
             true
         );
         $this->registerTestResult($test, BaseTestRunner::STATUS_WARNING, $time, $resultMessage);
@@ -157,7 +168,7 @@ class CliTestDoxPrinter extends ResultPrinter
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($e),
+            $this->formatThrowable($e, BaseTestRunner::STATUS_FAILURE),
             true
         );
         $this->registerTestResult($test, BaseTestRunner::STATUS_FAILURE, $time, $resultMessage);
@@ -166,7 +177,7 @@ class CliTestDoxPrinter extends ResultPrinter
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
         $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($t),
+            $this->formatThrowable($t, BaseTestRunner::STATUS_INCOMPLETE),
             false
         );
         $this->registerTestResult($test, BaseTestRunner::STATUS_INCOMPLETE, $time, $resultMessage);
@@ -175,7 +186,7 @@ class CliTestDoxPrinter extends ResultPrinter
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
         $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($t),
+            $this->formatThrowable($t, BaseTestRunner::STATUS_RISKY),
             false
         );
         $this->registerTestResult($test, BaseTestRunner::STATUS_RISKY, $time, $resultMessage);
@@ -184,7 +195,7 @@ class CliTestDoxPrinter extends ResultPrinter
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
         $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($t),
+            $this->formatThrowable($t, BaseTestRunner::STATUS_SKIPPED),
             false
         );
         $this->registerTestResult($test, BaseTestRunner::STATUS_SKIPPED, $time, $resultMessage);
@@ -405,11 +416,19 @@ class CliTestDoxPrinter extends ResultPrinter
         ];
     }
 
-    private function formatThrowable(\Throwable $t): string
+    private function formatThrowable(\Throwable $t, ?int $status = null): string
     {
+        $message = \PHPUnit\Framework\TestFailure::exceptionToString($t);
+
+        if ($this->colors) {
+            $status = $status ?? BaseTestRunner::STATUS_UNKNOWN;
+            $style = $this->statusStyles[$status]['message'] ?? '';
+            $message = $this->formatWithColor($style, $message);
+        }
+
         return \sprintf(
             "%s\n%s",
-            \PHPUnit\Framework\TestFailure::exceptionToString($t),
+            $message,
             $this->colorizeStacktrace($t)
             );
     }
@@ -428,7 +447,7 @@ class CliTestDoxPrinter extends ResultPrinter
         foreach (\explode("\n", $trace) as $line) {
             if (\preg_match('/^(.*):(\d+)$/', $line, $matches)) {
                 $lines[] =  Color::colorizePath($matches[1], $prevPath) .
-                            Color::colorize('dim', ':') .
+                            Color::dim(':') .
                             Color::colorize('fg-blue', $matches[2]) .
                             "\n";
                 $prevPath = $matches[1];
