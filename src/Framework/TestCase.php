@@ -1787,10 +1787,19 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     }
                 }
 
-                if (isset($passed[$dependency])) {
-                    if ($passed[$dependency]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
+                $dependencyName = false;
+                if (isset($passed[$dependency]))
+                {
+                    $dependencyName = $dependency;
+                } else if (isset($passed[$dependency.$this->getDataSetAsString(false)]))
+                {
+                    $dependencyName = $dependency.$this->getDataSetAsString(false);
+                }
+
+                if ($dependencyName) {
+                    if ($passed[$dependencyName]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
                         $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
-                        $passed[$dependency]['size'] > $this->getSize()) {
+                        $passed[$dependencyName]['size'] > $this->getSize()) {
                         $this->result->addError(
                             $this,
                             new SkippedTestError(
@@ -1806,11 +1815,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                         $deepCopy = new DeepCopy;
                         $deepCopy->skipUncloneable(false);
 
-                        $this->dependencyInput[$dependency] = $deepCopy->copy($passed[$dependency]['result']);
+                        $this->dependencyInput[$dependency] = $deepCopy->copy($passed[$dependencyName]['result']);
                     } elseif ($shallowClone) {
-                        $this->dependencyInput[$dependency] = clone $passed[$dependency]['result'];
+                        $this->dependencyInput[$dependency] = clone $passed[$dependencyName]['result'];
                     } else {
-                        $this->dependencyInput[$dependency] = $passed[$dependency]['result'];
+                        $this->dependencyInput[$dependency] = $passed[$dependencyName]['result'];
                     }
                 } else {
                     $this->dependencyInput[$dependency] = null;
