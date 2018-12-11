@@ -1709,15 +1709,15 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     private function processPassed(array $passedKeys): array
     {
-        foreach (\array_keys($passedKeys) as $i => $iValue) {
-            $pos = \strpos($iValue, ' with data set');
+        foreach (\array_keys($passedKeys) as $key) {
+            $pos = \strpos($key, ' with data set');
 
             if ($pos !== false) {
-                $passedKeys[$i] = \substr($iValue, 0, $pos);
+                $newPassedKeys[] = \substr($key, 0, $pos);
             }
         }
 
-        return \array_flip(\array_unique($passedKeys));
+        return \array_merge(\array_flip(\array_unique($newPassedKeys ?? [])), $passedKeys);
     }
 
     private function processSkipped(array $skipped): array
