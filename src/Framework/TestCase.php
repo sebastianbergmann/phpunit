@@ -1788,12 +1788,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 $dependencyName = false;
-                if (isset($passed[$dependency]))
-                {
+
+                if (isset($passed[$dependency])) {
                     $dependencyName = $dependency;
-                } else if (isset($passed[$dependency.$this->getDataSetAsString(false)]))
-                {
-                    $dependencyName = $dependency.$this->getDataSetAsString(false);
+                } elseif (isset($passed[$dependency . $this->getDataSetAsString(false)])) {
+                    $dependencyName = $dependency . $this->getDataSetAsString(false);
                 }
 
                 if ($dependencyName) {
