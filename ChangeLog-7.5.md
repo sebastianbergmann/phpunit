@@ -23,9 +23,9 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 
 ### Fixed
 
-* Implemented [#3428](https://github.com/sebastianbergmann/phpunit/pull/3428): `TestSuite` setup failures are not logged correctly
-* Implemented [#3429](https://github.com/sebastianbergmann/phpunit/pull/3429): Inefficient loop in `getHookMethods()` 
-* Implemented [#3437](https://github.com/sebastianbergmann/phpunit/pull/3437): JUnit logger skips PHPT tests
+* Fixed [#3428](https://github.com/sebastianbergmann/phpunit/pull/3428): `TestSuite` setup failures are not logged correctly
+* Fixed [#3429](https://github.com/sebastianbergmann/phpunit/pull/3429): Inefficient loop in `getHookMethods()`
+* Fixed [#3437](https://github.com/sebastianbergmann/phpunit/pull/3437): JUnit logger skips PHPT tests
 
 [7.5.0]: https://github.com/sebastianbergmann/phpunit/compare/7.4.5...7.5.0
 
