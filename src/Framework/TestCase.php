@@ -56,6 +56,10 @@ use Throwable;
 abstract class TestCase extends Assert implements Test, SelfDescribing
 {
     private const LOCALE_CATEGORIES = [\LC_ALL, \LC_COLLATE, \LC_CTYPE, \LC_MONETARY, \LC_NUMERIC, \LC_TIME];
+    private const DEPENDENCY_PREFIX = 'Dependency_';
+
+    /** @var TestResult \PHPUnit\Framework\TestResult */
+    private static $DEPENDENCY_TASK_RESULTS;
 
     /**
      * @var bool
@@ -381,6 +385,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     {
         if ($name !== null) {
             $this->setName($name);
+        }
+
+        if (!isset(self::$DEPENDENCY_TASK_RESULTS))
+        {
+            self::$DEPENDENCY_TASK_RESULTS = new TestResult;
         }
 
         $this->data     = $data;
@@ -1308,11 +1317,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function createMock($originalClassName): MockObject
     {
         return $this->getMockBuilder($originalClassName)
-                    ->disableOriginalConstructor()
-                    ->disableOriginalClone()
-                    ->disableArgumentCloning()
-                    ->disallowMockingUnknownTypes()
-                    ->getMock();
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->getMock();
     }
 
     /**
@@ -1346,12 +1355,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function createPartialMock($originalClassName, array $methods): MockObject
     {
         return $this->getMockBuilder($originalClassName)
-                    ->disableOriginalConstructor()
-                    ->disableOriginalClone()
-                    ->disableArgumentCloning()
-                    ->disallowMockingUnknownTypes()
-                    ->setMethods(empty($methods) ? null : $methods)
-                    ->getMock();
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->disableArgumentCloning()
+            ->disallowMockingUnknownTypes()
+            ->setMethods(empty($methods) ? null : $methods)
+            ->getMock();
     }
 
     /**
@@ -1363,9 +1372,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
         return $this->getMockBuilder($originalClassName)
-                    ->setConstructorArgs($constructorArguments)
-                    ->enableProxyingToOriginalMethods()
-                    ->getMock();
+            ->setConstructorArgs($constructorArguments)
+            ->enableProxyingToOriginalMethods()
+            ->getMock();
     }
 
     /**
@@ -1456,12 +1465,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         if (!\class_exists($originalClassName)) {
             eval(
-                $this->getMockObjectGenerator()->generateClassFromWsdl(
-                    $wsdlFile,
-                    $originalClassName,
-                    $methods,
-                    $options
-                )
+            $this->getMockObjectGenerator()->generateClassFromWsdl(
+                $wsdlFile,
+                $originalClassName,
+                $methods,
+                $options
+            )
             );
         }
 
@@ -1682,51 +1691,83 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
+    private function processFailed(array $failed): array
+    {
+        /** @var TestFailure $failure */
+        foreach ($failed as $failure) {
+            $pos = \strpos($failure->getTestName(), ' with data set');
+
+            if ($pos !== false) {
+                $failedKeys[] = \substr($failure->getTestName(), 0, $pos);
+            } else {
+                $failedKeys[] = $failure->getTestName();
+            }
+        }
+
+        return \array_flip(\array_unique($failedKeys ?? []));
+    }
+
+    private function processPassed(array $passedKeys): array
+    {
+        foreach (\array_keys($passedKeys) as $i => $iValue) {
+            $pos = \strpos($iValue, ' with data set');
+
+            if ($pos !== false) {
+                $passedKeys[$i] = \substr($iValue, 0, $pos);
+            }
+        }
+
+        return \array_flip(\array_unique($passedKeys));
+    }
+
+    private function processSkipped(array $skipped): array
+    {
+        /** @var TestFailure $skip */
+        foreach ($skipped as $skip) {
+            $pos = \strpos($skip->getTestName(), ' with data set');
+
+            if ($pos !== false) {
+                $skippedKeys[] = \substr($skip->getTestName(), 0, $pos);
+            } else {
+                $skippedKeys[] = $skip->getTestName();
+            }
+        }
+
+        return \array_flip(\array_unique($skippedKeys ?? []));
+    }
+
+    private function getSkippedFailedPassedKeys(&$skipped, &$failed, &$passedKeys, &$passed): void
+    {
+        $skipped    = \array_merge($this->processSkipped($this->result->skipped()), $this->processSkipped(self::$DEPENDENCY_TASK_RESULTS->skipped()));
+        $failed     = \array_merge($this->processFailed($this->result->failures()), $this->processFailed(self::$DEPENDENCY_TASK_RESULTS->failures()));
+        $passed     = \array_merge($this->result->passed(), self::$DEPENDENCY_TASK_RESULTS->passed());
+        $passedKeys = $this->processPassed($passed);
+    }
+
+    private function setSkippedDependsOn(string $dependsOn): void
+    {
+        $this->status = BaseTestRunner::STATUS_SKIPPED;
+
+        $this->result->startTest($this);
+
+        $this->result->addError(
+            $this,
+            new SkippedTestError(
+                \sprintf(
+                    'This test depends on "%s" to pass.',
+                    $dependsOn
+                )
+            ),
+            0
+        );
+        $this->result->endTest($this, 0);
+    }
+
     private function handleDependencies(): bool
     {
         if (!empty($this->dependencies) && !$this->inIsolation) {
-            $className      = \get_class($this);
-            $passed         = $this->result->passed();
-            $failed         = $this->result->failures();
-            $skipped        = $this->result->skipped();
-            $passedKeys     = \array_keys($passed);
-            $numKeys        = \count($passedKeys);
-
-            for ($i = 0; $i < $numKeys; $i++) {
-                $pos = \strpos($passedKeys[$i], ' with data set');
-
-                if ($pos !== false) {
-                    $passedKeys[$i] = \substr($passedKeys[$i], 0, $pos);
-                }
-            }
-
-            $failedKeys = [];
-
-            foreach ($failed as $failure) {
-                $pos = \strpos($failure->getTestName(), ' with data set');
-
-                if ($pos !== false) {
-                    $failedKeys[] = \substr($failure->getTestName(), 0, $pos);
-                } else {
-                    $failedKeys[] = $failure->getTestName();
-                }
-            }
-
-            $skippedKeys = [];
-
-            foreach ($skipped as $skip) {
-                $pos = \strpos($skip->getTestName(), ' with data set');
-
-                if ($pos !== false) {
-                    $skippedKeys[] = \substr($skip->getTestName(), 0, $pos);
-                } else {
-                    $skippedKeys[] = $skip->getTestName();
-                }
-            }
-
-            $passedKeys  = \array_flip(\array_unique($passedKeys));
-            $failedKeys  = \array_flip(\array_unique($failedKeys));
-            $skippedKeys = \array_flip(\array_unique($skippedKeys));
+            $className = \get_class($this);
+            $this->getSkippedFailedPassedKeys($skippedKeys, $failedKeys, $passedKeys, $passed);
 
             foreach ($this->dependencies as $dependency) {
                 $deepClone    = false;
@@ -1764,29 +1805,23 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                         && $className !== \explode('::', $dependency, 2)[0]
                     ) {
                         $dependencyClass = \explode('::', $dependency, 2)[0];
-                        (new TestSuite($dependencyClass, 'Dependency_' . \ucfirst($dependencyClass)))
-                            ->run($this->result);
+                        $dependencyKey = self::DEPENDENCY_PREFIX . \ucfirst($dependencyClass);
+                        $oldErrorsCount = self::$DEPENDENCY_TASK_RESULTS->errorCount();
+                        (new TestSuite($dependencyClass, $dependencyKey))->run(self::$DEPENDENCY_TASK_RESULTS);
+                        if ($oldErrorsCount < self::$DEPENDENCY_TASK_RESULTS->errorCount())
+                        {
+                            $this->setSkippedDependsOn($dependency);
+
+                            return false;
+                        }
                     } else {
-                        $this->status = BaseTestRunner::STATUS_SKIPPED;
-
-                        $this->result->startTest($this);
-
-                        $this->result->addError(
-                            $this,
-                            new SkippedTestError(
-                                \sprintf(
-                                    'This test depends on "%s" to pass.',
-                                    $dependency
-                                )
-                            ),
-                            0
-                        );
-                        $this->result->endTest($this, 0);
+                        $this->setSkippedDependsOn($dependency);
 
                         return false;
                     }
                 }
 
+                $this->getSkippedFailedPassedKeys($skippedKeys, $failedKeys, $passedKeys, $passed);
                 $dependencyName = false;
 
                 if (isset($passed[$dependency])) {
@@ -2167,6 +2202,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private function runInSeparateProcess(): bool
     {
         return ($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
-               $this->inIsolation !== true && !$this instanceof PhptTestCase;
+            $this->inIsolation !== true && !$this instanceof PhptTestCase;
     }
 }
