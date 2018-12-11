@@ -56,6 +56,7 @@ use Throwable;
 abstract class TestCase extends Assert implements Test, SelfDescribing
 {
     private const LOCALE_CATEGORIES = [\LC_ALL, \LC_COLLATE, \LC_CTYPE, \LC_MONETARY, \LC_NUMERIC, \LC_TIME];
+
     private const DEPENDENCY_PREFIX = 'Dependency_';
 
     /** @var TestResult \PHPUnit\Framework\TestResult */
@@ -387,8 +388,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $this->setName($name);
         }
 
-        if (!isset(self::$DEPENDENCY_TASK_RESULTS))
-        {
+        if (!isset(self::$DEPENDENCY_TASK_RESULTS)) {
             self::$DEPENDENCY_TASK_RESULTS = new TestResult;
         }
 
@@ -1805,11 +1805,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                         && $className !== \explode('::', $dependency, 2)[0]
                     ) {
                         $dependencyClass = \explode('::', $dependency, 2)[0];
-                        $dependencyKey = self::DEPENDENCY_PREFIX . \ucfirst($dependencyClass);
-                        $oldErrorsCount = self::$DEPENDENCY_TASK_RESULTS->errorCount();
+                        $dependencyKey   = self::DEPENDENCY_PREFIX . \ucfirst($dependencyClass);
+                        $oldErrorsCount  = self::$DEPENDENCY_TASK_RESULTS->errorCount();
                         (new TestSuite($dependencyClass, $dependencyKey))->run(self::$DEPENDENCY_TASK_RESULTS);
-                        if ($oldErrorsCount < self::$DEPENDENCY_TASK_RESULTS->errorCount())
-                        {
+
+                        if ($oldErrorsCount < self::$DEPENDENCY_TASK_RESULTS->errorCount()) {
                             $this->setSkippedDependsOn($dependency);
 
                             return false;
