@@ -1685,10 +1685,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private function handleDependencies(): bool
     {
         if (!empty($this->dependencies) && !$this->inIsolation) {
-            $className  = \get_class($this);
-            $passed     = $this->result->passed();
-            $passedKeys = \array_keys($passed);
-            $numKeys    = \count($passedKeys);
+            $className      = \get_class($this);
+            $passed         = $this->result->passed();
+            $failed         = $this->result->failures();
+            $skipped        = $this->result->skipped();
+            $passedKeys     = \array_keys($passed);
+            $numKeys        = \count($passedKeys);
 
             for ($i = 0; $i < $numKeys; $i++) {
                 $pos = \strpos($passedKeys[$i], ' with data set');
@@ -1698,7 +1700,33 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
             }
 
-            $passedKeys = \array_flip(\array_unique($passedKeys));
+            $failedKeys = [];
+
+            foreach ($failed as $failure) {
+                $pos = \strpos($failure->getTestName(), ' with data set');
+
+                if ($pos !== false) {
+                    $failedKeys[] = \substr($failure->getTestName(), 0, $pos);
+                } else {
+                    $failedKeys[] = $failure->getTestName();
+                }
+            }
+
+            $skippedKeys = [];
+
+            foreach ($skipped as $skip) {
+                $pos = \strpos($skip->getTestName(), ' with data set');
+
+                if ($pos !== false) {
+                    $skippedKeys[] = \substr($skip->getTestName(), 0, $pos);
+                } else {
+                    $skippedKeys[] = $skip->getTestName();
+                }
+            }
+
+            $passedKeys  = \array_flip(\array_unique($passedKeys));
+            $failedKeys  = \array_flip(\array_unique($failedKeys));
+            $skippedKeys = \array_flip(\array_unique($skippedKeys));
 
             foreach ($this->dependencies as $dependency) {
                 $deepClone    = false;
@@ -1724,25 +1752,39 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     $dependency = $className . '::' . $dependency;
                 }
 
+                if (\strpos($dependency, '\\') === 0) {
+                    $dependency = \substr($dependency, 1);
+                }
+
                 if (!isset($passedKeys[$dependency])) {
-                    $this->status = BaseTestRunner::STATUS_SKIPPED;
+                    if (
+                        !isset($skippedKeys[$dependency])
+                        && !isset($failedKeys[$dependency])
+                        && \strpos($dependency, '::') > 0
+                        && $className !== \explode('::', $dependency, 2)[0]
+                    ) {
+                        $dependencyClass = \explode('::', $dependency, 2)[0];
+                        (new TestSuite($dependencyClass, 'Dependency_' . \ucfirst($dependencyClass)))
+                            ->run($this->result);
+                    } else {
+                        $this->status = BaseTestRunner::STATUS_SKIPPED;
 
-                    $this->result->startTest($this);
+                        $this->result->startTest($this);
 
-                    $this->result->addError(
-                        $this,
-                        new SkippedTestError(
-                            \sprintf(
-                                'This test depends on "%s" to pass.',
-                                $dependency
-                            )
-                        ),
-                        0
-                    );
+                        $this->result->addError(
+                            $this,
+                            new SkippedTestError(
+                                \sprintf(
+                                    'This test depends on "%s" to pass.',
+                                    $dependency
+                                )
+                            ),
+                            0
+                        );
+                        $this->result->endTest($this, 0);
 
-                    $this->result->endTest($this, 0);
-
-                    return false;
+                        return false;
+                    }
                 }
 
                 if (isset($passed[$dependency])) {
