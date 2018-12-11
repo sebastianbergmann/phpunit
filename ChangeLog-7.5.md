@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.5.1] - 2018-MM-DD
+
+### Fixed
+
+* Fixed [#3441](https://github.com/sebastianbergmann/phpunit/issues/3441): Call to undefined method `DataProviderTestSuite::usesDataProvider()`
+
 ## [7.5.0] - 2018-12-07
 
 ### Added
@@ -23,9 +29,10 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 
 ### Fixed
 
-* Implemented [#3428](https://github.com/sebastianbergmann/phpunit/pull/3428): `TestSuite` setup failures are not logged correctly
-* Implemented [#3429](https://github.com/sebastianbergmann/phpunit/pull/3429): Inefficient loop in `getHookMethods()` 
-* Implemented [#3437](https://github.com/sebastianbergmann/phpunit/pull/3437): JUnit logger skips PHPT tests
+* Fixed [#3428](https://github.com/sebastianbergmann/phpunit/pull/3428): `TestSuite` setup failures are not logged correctly
+* Fixed [#3429](https://github.com/sebastianbergmann/phpunit/pull/3429): Inefficient loop in `getHookMethods()`
+* Fixed [#3437](https://github.com/sebastianbergmann/phpunit/pull/3437): JUnit logger skips PHPT tests
 
+[7.5.1]: https://github.com/sebastianbergmann/phpunit/compare/7.5.0...7.5.1
 [7.5.0]: https://github.com/sebastianbergmann/phpunit/compare/7.4.5...7.5.0
 
