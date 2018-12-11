@@ -135,7 +135,7 @@ class CliTestDoxPrinter extends ResultPrinter
         }
 
         if ($this->testHasPassed()) {
-            $this->registerTestResult($test, BaseTestRunner::STATUS_PASSED, $time, '');
+            $this->registerTestResult($test, null, BaseTestRunner::STATUS_PASSED, $time, false);
         }
 
         $this->flushOutputBuffer();
@@ -149,66 +149,54 @@ class CliTestDoxPrinter extends ResultPrinter
 
     public function addError(Test $test, \Throwable $t, float $time): void
     {
-        $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($t, BaseTestRunner::STATUS_ERROR),
-            true
-        );
-        $this->registerTestResult($test, BaseTestRunner::STATUS_ERROR, $time, $resultMessage);
+        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_ERROR, $time, true);
     }
 
     public function addWarning(Test $test, Warning $e, float $time): void
     {
-        $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($e, BaseTestRunner::STATUS_WARNING),
-            true
-        );
-        $this->registerTestResult($test, BaseTestRunner::STATUS_WARNING, $time, $resultMessage);
+        $this->registerTestResult($test, $e, BaseTestRunner::STATUS_WARNING, $time, true);
     }
 
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
-        $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($e, BaseTestRunner::STATUS_FAILURE),
-            true
-        );
-        $this->registerTestResult($test, BaseTestRunner::STATUS_FAILURE, $time, $resultMessage);
+        $this->registerTestResult($test, $e, BaseTestRunner::STATUS_FAILURE, $time, true);
     }
 
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
-        $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($t, BaseTestRunner::STATUS_INCOMPLETE),
-            false
-        );
-        $this->registerTestResult($test, BaseTestRunner::STATUS_INCOMPLETE, $time, $resultMessage);
+        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_INCOMPLETE, $time, false);
     }
 
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
-        $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($t, BaseTestRunner::STATUS_RISKY),
-            false
-        );
-        $this->registerTestResult($test, BaseTestRunner::STATUS_RISKY, $time, $resultMessage);
+        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_RISKY, $time, false);
     }
 
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
-        $resultMessage = $this->formatTestResultMessage(
-            $this->formatThrowable($t, BaseTestRunner::STATUS_SKIPPED),
-            false
-        );
-        $this->registerTestResult($test, BaseTestRunner::STATUS_SKIPPED, $time, $resultMessage);
+        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_SKIPPED, $time, false);
     }
 
-    public function registerTestResult(Test $test, int $status, float $time, string $msg): void
+    public function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
     {
-        $testName                            = TestSuiteSorter::getTestSorterUID($test);
+        $testName = TestSuiteSorter::getTestSorterUID($test);
+        $status   = $status ?? BaseTestRunner::STATUS_UNKNOWN;
+
+        if ($t === null) {
+            $resultMessage = '';
+        } else {
+            $resultMessage = $this->formatTestResultMessage(
+                $this->formatThrowable($t, $status),
+                $verbose,
+                $this->statusStyles[$status]['color']
+            );
+        }
+
         $this->testResults[$this->testIndex] = [
             'className'  => $this->getPrettyClassName($test),
             'testName'   => $testName,
             'testMethod' => $this->getPrettyTestName($test),
-            'message'    => $msg,
+            'message'    => $resultMessage,
             'status'     => $status,
             'time'       => $time,
         ];
@@ -360,7 +348,7 @@ class CliTestDoxPrinter extends ResultPrinter
         return Color::colorize($color, \sprintf(' %.2f ms', $time * 1000));
     }
 
-    private function formatTestResultMessage(string $resultMessage, bool $verbose): string
+    private function formatTestResultMessage(string $resultMessage, bool $verbose, ?string $prefixColor = null): string
     {
         if ($resultMessage === '') {
             return '';
@@ -370,13 +358,20 @@ class CliTestDoxPrinter extends ResultPrinter
             return '';
         }
 
+        $prefix = '│';
+
+        if ($this->colors && $prefixColor !== null) {
+            $prefix = Color::colorize($prefixColor, $prefix);
+        }
+
         return \sprintf(
-            "   │\n%s\n",
+            "   %s\n%s\n",
+            $prefix,
             \implode(
                 "\n",
                 \array_map(
-                    function (string $text) {
-                        return \sprintf('   │ %s', $text);
+                    function (string $text) use ($prefix) {
+                        return \sprintf('   %s %s', $prefix, $text);
                     },
                     \explode("\n", $resultMessage)
                 )
@@ -421,7 +416,6 @@ class CliTestDoxPrinter extends ResultPrinter
         $message = \PHPUnit\Framework\TestFailure::exceptionToString($t);
 
         if ($this->colors) {
-            $status  = $status ?? BaseTestRunner::STATUS_UNKNOWN;
             $style   = $this->statusStyles[$status]['message'] ?? '';
             $message = $this->formatWithColor($style, $message);
         }
