@@ -34,6 +34,8 @@ Test 'Test\PR3349\Tests::testExternalClassDependencyFailed' started
 Test 'Test\PR3349\Tests::testExternalClassDependencyFailed' ended
 Test 'Test\PR3349\Tests::testExternalClassDependencySkipped' started
 Test 'Test\PR3349\Tests::testExternalClassDependencySkipped' ended
+Test 'Test\PR3349\Tests::testExternalClassChainedMultipleDependenciesFailureInChain' started
+Test 'Test\PR3349\Tests::testExternalClassChainedMultipleDependenciesFailureInChain' ended
 
 
 Time: %s, Memory: %s
