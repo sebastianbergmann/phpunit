@@ -100,6 +100,15 @@ final class Tests extends TestCase
     {
         $this->addToAssertionCount(1);
     }
+
+    /**
+     * @depends \Test\PR3349\Test_ChainOne::testExternalClassDependencyChainFunctionOneWithFailureInChain
+     * @group PR3349_Group8
+     */
+    public function testExternalClassChainedMultipleDependenciesFailureInChain(int $int): void
+    {
+        $this->assertEquals(100, $int);
+    }
 }
 
 final class Test_Dependencies extends TestCase
@@ -179,6 +188,19 @@ final class Test_ChainOne extends TestCase
 
         return $int;
     }
+
+    /**
+     * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependenciesFailureInChain
+     * @group PR3349_Group8
+     * @depends \Test\PR3349\Test_ChainTwo::testExternalClassDependencyChainFunctionTwo
+     */
+    public function testExternalClassDependencyChainFunctionOneWithFailureInChain(int $int): int
+    {
+        $int += 40;
+        $this->assertEquals(100, $int);
+
+        return $int;
+    }
 }
 
 final class Test_ChainTwo extends TestCase
@@ -195,13 +217,29 @@ final class Test_ChainTwo extends TestCase
 
         return $int;
     }
+
+    /**
+     * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependenciesFailureInChain
+     * @group PR3349_Group8
+     * @depends \Test\PR3349\Test_ChainThree::testExternalClassDependencyChainFunctionThree
+     */
+    public function testExternalClassDependencyChainFunctionTwoFailure(int $int): int
+    {
+        $int += 30;
+        $this->assertEquals(60, $int);
+        $this->fail('This failure is by purpose.');
+
+        return $int;
+    }
 }
 
 final class Test_ChainThree extends TestCase
 {
     /**
      * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependencies
+     * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependenciesFailureInChain
      * @group PR3349_Group5
+     * @group PR3349_Group8
      * @depends \Test\PR3349\Test_ChainFour::testExternalClassDependencyChainFunctionFour
      */
     public function testExternalClassDependencyChainFunctionThree(int $int): int
@@ -217,7 +255,9 @@ final class Test_ChainFour extends TestCase
 {
     /**
      * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependencies
+     * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependenciesFailureInChain
      * @group PR3349_Group5
+     * @group PR3349_Group8
      */
     public function testExternalClassDependencyChainFunctionFour(): int
     {
