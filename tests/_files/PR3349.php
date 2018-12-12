@@ -1,13 +1,20 @@
 <?php
 
 declare(strict_types=1);
-
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace Test\PR3349;
+
 use PHPUnit\Framework\TestCase;
 
 final class Tests extends TestCase
 {
-
     /**
      * @see \Test\PR3349\Tests::testSameClassDependencyCorrectOrder
      * @group PR3349_Group1
@@ -15,6 +22,7 @@ final class Tests extends TestCase
     public function testSameClassDependencyCorrectOrderDependency(): int
     {
         $this->addToAssertionCount(1);
+
         return 100;
     }
 
@@ -44,6 +52,7 @@ final class Tests extends TestCase
     public function testSameClassDependencyReversedOrderDependency(): int
     {
         $this->addToAssertionCount(1);
+
         return 100;
     }
 
@@ -102,6 +111,7 @@ final class Test_Dependencies extends TestCase
     public function testExternalClassDependencySuccessReturn100(): int
     {
         $this->addToAssertionCount(1);
+
         return 100;
     }
 
@@ -112,6 +122,7 @@ final class Test_Dependencies extends TestCase
     public function testExternalClassDependencyFailure(): int
     {
         $this->fail('Something Went Wrong With Purpose.');
+
         return 100;
     }
 
@@ -122,6 +133,7 @@ final class Test_Dependencies extends TestCase
     public function testExternalClassDependencySkipped(): int
     {
         $this->fail('Test Skipped With Purpose.');
+
         return 100;
     }
 }
@@ -131,11 +143,13 @@ final class Test_FailingSetUp extends TestCase
     /**
      * @throws \Exception
      * @group PR3349_Group4
+     *
      * @see \Test\PR3349\Tests::testExternalClassDependencyFailingSetUp
      */
     public function setUp(): void
     {
         parent::setUp();
+
         throw new \Exception('This is failing with purpose.');
     }
 
@@ -146,12 +160,13 @@ final class Test_FailingSetUp extends TestCase
     public function testExternalClassDependencySuccessReturn100WithFailingSetUp(): int
     {
         $this->addToAssertionCount(1);
+
         return 100;
     }
 }
 
-final class Test_ChainOne extends TestCase{
-
+final class Test_ChainOne extends TestCase
+{
     /**
      * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependencies
      * @group PR3349_Group5
@@ -161,12 +176,13 @@ final class Test_ChainOne extends TestCase{
     {
         $int += 40;
         $this->assertEquals(100, $int);
+
         return $int;
     }
 }
 
-final class Test_ChainTwo extends TestCase{
-
+final class Test_ChainTwo extends TestCase
+{
     /**
      * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependencies
      * @group PR3349_Group5
@@ -176,12 +192,13 @@ final class Test_ChainTwo extends TestCase{
     {
         $int += 30;
         $this->assertEquals(60, $int);
+
         return $int;
     }
 }
 
-final class Test_ChainThree extends TestCase{
-
+final class Test_ChainThree extends TestCase
+{
     /**
      * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependencies
      * @group PR3349_Group5
@@ -191,12 +208,13 @@ final class Test_ChainThree extends TestCase{
     {
         $int += 20;
         $this->assertEquals(30, $int);
+
         return $int;
     }
 }
 
-final class Test_ChainFour extends TestCase{
-
+final class Test_ChainFour extends TestCase
+{
     /**
      * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependencies
      * @group PR3349_Group5
@@ -204,6 +222,7 @@ final class Test_ChainFour extends TestCase{
     public function testExternalClassDependencyChainFunctionFour(): int
     {
         $this->addToAssertionCount(1);
+
         return 10;
     }
 }
