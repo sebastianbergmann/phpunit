@@ -192,7 +192,7 @@ final class Test_ChainOne extends TestCase
     /**
      * @see \Test\PR3349\Tests::testExternalClassChainedMultipleDependenciesFailureInChain
      * @group PR3349_Group8
-     * @depends \Test\PR3349\Test_ChainTwo::testExternalClassDependencyChainFunctionTwo
+     * @depends \Test\PR3349\Test_ChainTwo::testExternalClassDependencyChainFunctionTwoFailure
      */
     public function testExternalClassDependencyChainFunctionOneWithFailureInChain(int $int): int
     {

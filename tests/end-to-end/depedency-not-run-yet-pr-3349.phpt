@@ -38,7 +38,7 @@ Test 'Test\PR3349\Tests::testExternalClassDependencySkipped' ended
 
 Time: %s, Memory: %s
 
-There were 4 skipped tests:
+There were 5 skipped tests:
 
 1) Test\PR3349\Tests::testSameClassDependencyReversedOrder
 Reordering same class dependency function is not implemented. Please reorder "testSameClassDependencyReversedOrderDependency" before "testSameClassDependencyReversedOrder".
@@ -52,5 +52,8 @@ This test depends on "Test\PR3349\Test_Dependencies::testExternalClassDependency
 4) Test\PR3349\Tests::testExternalClassDependencySkipped
 This test depends on "Test\PR3349\Test_Dependencies::testExternalClassDependencySkipped" to pass.
 
+5) Test\PR3349\Tests::testExternalClassChainedMultipleDependenciesFailureInChain
+This test depends on "Test\PR3349\Test_ChainOne::testExternalClassDependencyChainFunctionOneWithFailureInChain" to pass.
+
 OK, but incomplete, skipped, or risky tests!
-Tests: 9, Assertions: 5, Skipped: 4.
+Tests: 10, Assertions: 5, Skipped: 5.
