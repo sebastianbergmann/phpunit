@@ -1802,15 +1802,36 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                         !isset($skippedKeys[$dependency])
                         && !isset($failedKeys[$dependency])
                         && \strpos($dependency, '::') > 0
-                        && $className !== \explode('::', $dependency, 2)[0]
                     ) {
-                        $dependencyClass = \explode('::', $dependency, 2)[0];
-                        $dependencyKey   = self::DEPENDENCY_PREFIX . \ucfirst($dependencyClass);
-                        $oldErrorsCount  = self::$DEPENDENCY_TASK_RESULTS->errorCount();
-                        (new TestSuite($dependencyClass, $dependencyKey))->run(self::$DEPENDENCY_TASK_RESULTS);
+                        if ($className !== \explode('::', $dependency, 2)[0]) {
+                            $dependencyClass = \explode('::', $dependency, 2)[0];
+                            $dependencyKey   = self::DEPENDENCY_PREFIX . \ucfirst($dependencyClass);
+                            $oldErrorsCount  = self::$DEPENDENCY_TASK_RESULTS->errorCount();
+                            (new TestSuite($dependencyClass, $dependencyKey))->run(self::$DEPENDENCY_TASK_RESULTS);
 
-                        if ($oldErrorsCount < self::$DEPENDENCY_TASK_RESULTS->errorCount()) {
-                            $this->setSkippedDependsOn($dependency);
+                            if ($oldErrorsCount < self::$DEPENDENCY_TASK_RESULTS->errorCount()) {
+                                $this->setSkippedDependsOn($dependency);
+
+                                return false;
+                            }
+                        } else {
+                            $this->status = BaseTestRunner::STATUS_SKIPPED;
+
+                            $this->result->startTest($this);
+
+                            $this->result->addError(
+                                $this,
+                                new SkippedTestError(
+                                    \sprintf(
+                                        'Reordering same class dependency function is not implemented.' .
+                                        ' Please reorder "%s" before "%s".',
+                                        \explode('::', $dependency, 2)[1],
+                                        $this->getName(false)
+                                    )
+                                ),
+                                0
+                            );
+                            $this->result->endTest($this, 0);
 
                             return false;
                         }
