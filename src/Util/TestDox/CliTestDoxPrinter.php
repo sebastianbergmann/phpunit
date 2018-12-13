@@ -9,63 +9,23 @@
  */
 namespace PHPUnit\Util\TestDox;
 
-use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\Runner\TestSuiteSorter;
-use PHPUnit\TextUI\ResultPrinter;
 use SebastianBergmann\Timer\Timer;
 
 /**
  * This printer is for CLI output only. For the classes that output to file, html and xml,
  * please refer to the PHPUnit\Util\TestDox namespace
  */
-class CliTestDoxPrinter extends ResultPrinter
+class CliTestDoxPrinter extends TestDoxPrinter
 {
     /**
      * @var int[]
      */
     private $nonSuccessfulTestResults = [];
-
-    /**
-     * @var NamePrettifier
-     */
-    private $prettifier;
-
-    /**
-     * @var int The number of test results received from the TestRunner
-     */
-    private $testIndex = 0;
-
-    /**
-     * @var int The number of test results already sent to the output
-     */
-    private $testFlushIndex = 0;
-
-    /**
-     * @var array<int, array> Buffer for test results
-     */
-    private $testResults = [];
-
-    /**
-     * @var array<string, int> Lookup table for testname to testResults[index]
-     */
-    private $testNameResultIndex = [];
-
-    /**
-     * @var bool
-     */
-    private $enableOutputBuffer = false;
-
-    /**
-     * @var array array<string>
-     */
-    private $originalExecutionOrder = [];
 
     private $statusStyles = [
         BaseTestRunner::STATUS_PASSED => [
@@ -109,113 +69,6 @@ class CliTestDoxPrinter extends ResultPrinter
         ],
     ];
 
-    public function __construct(
-        $out = null,
-        bool $verbose = false,
-        $colors = self::COLOR_DEFAULT,
-        bool $debug = false,
-        $numberOfColumns = 80,
-        bool $reverse = false
-    ) {
-        parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
-
-        $this->prettifier = new NamePrettifier($this->colors);
-    }
-
-    public function setOriginalExecutionOrder(array $order): void
-    {
-        $this->originalExecutionOrder = $order;
-        $this->enableOutputBuffer     = !empty($order);
-    }
-
-    public function endTest(Test $test, float $time): void
-    {
-        if (!$test instanceof TestCase && !$test instanceof PhptTestCase && !$test instanceof TestSuite) {
-            return;
-        }
-
-        if ($this->testHasPassed()) {
-            $this->registerTestResult($test, null, BaseTestRunner::STATUS_PASSED, $time, false);
-        }
-
-        $this->flushOutputBuffer();
-
-        if ($test instanceof TestCase || $test instanceof PhptTestCase) {
-            $this->testIndex++;
-        }
-
-        parent::endTest($test, $time);
-    }
-
-    public function addError(Test $test, \Throwable $t, float $time): void
-    {
-        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_ERROR, $time, true);
-    }
-
-    public function addWarning(Test $test, Warning $e, float $time): void
-    {
-        $this->registerTestResult($test, $e, BaseTestRunner::STATUS_WARNING, $time, true);
-    }
-
-    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
-    {
-        $this->registerTestResult($test, $e, BaseTestRunner::STATUS_FAILURE, $time, true);
-    }
-
-    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
-    {
-        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_INCOMPLETE, $time, false);
-    }
-
-    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
-    {
-        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_RISKY, $time, false);
-    }
-
-    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
-    {
-        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_SKIPPED, $time, false);
-    }
-
-    public function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
-    {
-        $testName = TestSuiteSorter::getTestSorterUID($test);
-        $status   = $status ?? BaseTestRunner::STATUS_UNKNOWN;
-
-        if ($t === null) {
-            $resultMessage = '';
-        } else {
-            $resultMessage = $this->formatTestResultMessage(
-                $this->formatThrowable($t, $status),
-                $verbose,
-                $this->statusStyles[$status]['color']
-            );
-        }
-
-        $this->testResults[$this->testIndex] = [
-            'className'  => $this->getPrettyClassName($test),
-            'testName'   => $testName,
-            'testMethod' => $this->getPrettyTestName($test),
-            'message'    => $resultMessage,
-            'status'     => $status,
-            'time'       => $time,
-        ];
-
-        $this->testNameResultIndex[$testName] = $this->testIndex;
-
-        if ($status !== BaseTestRunner::STATUS_PASSED) {
-            $this->nonSuccessfulTestResults[] = $this->testIndex;
-        }
-    }
-
-    public function writeProgress(string $progress): void
-    {
-    }
-
-    public function flush(): void
-    {
-    }
-
     public function printResult(TestResult $result): void
     {
         $this->printHeader();
@@ -230,7 +83,7 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->write("\n" . Timer::resourceUsage() . "\n\n");
     }
 
-    private function getPrettyClassName(Test $test): string
+    protected function formatClassName(Test $test): string
     {
         if ($test instanceof TestCase) {
             return $this->prettifier->prettifyTestClass(\get_class($test));
@@ -239,62 +92,25 @@ class CliTestDoxPrinter extends ResultPrinter
         return \get_class($test);
     }
 
-    private function getPrettyTestName(Test $test): string
+    protected function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
+    {
+        if ($status !== BaseTestRunner::STATUS_PASSED) {
+            $this->nonSuccessfulTestResults[] = $this->testIndex;
+        }
+
+        parent::registerTestResult($test, $t, $status, $time, $verbose);
+    }
+
+    protected function formatTestName(Test $test): string
     {
         if ($test instanceof TestCase) {
             return $this->prettifier->prettifyTestCase($test);
         }
 
-        return $test->getName();
+        return parent::formatTestName($test);
     }
 
-    private function testHasPassed(): bool
-    {
-        if (!isset($this->testResults[$this->testIndex]['status'])) {
-            return true;
-        }
-
-        if ($this->testResults[$this->testIndex]['status'] === BaseTestRunner::STATUS_PASSED) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private function flushOutputBuffer(): void
-    {
-        if ($this->enableOutputBuffer && ($this->testFlushIndex > $this->testIndex)) {
-            return;
-        }
-
-        if ($this->testFlushIndex > 0) {
-            if ($this->enableOutputBuffer) {
-                $prevResult = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex - 1]);
-            } else {
-                $prevResult = $this->testResults[$this->testFlushIndex - 1];
-            }
-        } else {
-            $prevResult = $this->getEmptyTestResult();
-        }
-
-        if (!$this->enableOutputBuffer) {
-            $this->writeTestResult($prevResult, $this->testResults[$this->testFlushIndex++]);
-        } else {
-            do {
-                $flushed = false;
-                $result  = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
-
-                if (!empty($result)) {
-                    $this->writeTestResult($prevResult, $result);
-                    $this->testFlushIndex++;
-                    $prevResult = $result;
-                    $flushed    = true;
-                }
-            } while ($flushed && $this->testFlushIndex <= $this->testIndex);
-        }
-    }
-
-    private function writeTestResult(array $prevResult, array $result): void
+    protected function writeTestResult(array $prevResult, array $result): void
     {
         // spacer line for new suite headers and after verbose messages
         if ($prevResult['testName'] !== '' &&
@@ -318,7 +134,7 @@ class CliTestDoxPrinter extends ResultPrinter
             " %s %s%s\n",
             $this->formatWithColor($style['color'], $style['symbol']),
             $testName,
-            $this->verbose ? ' ' . $this->getFormattedRuntime($result['time'], $style['color']) : ''
+            $this->verbose ? ' ' . $this->formatRuntime($result['time'], $style['color']) : ''
             );
         $this->write($line);
 
@@ -326,92 +142,7 @@ class CliTestDoxPrinter extends ResultPrinter
         $this->write($result['message']);
     }
 
-    private function getTestResultByName(string $testName): array
-    {
-        if (isset($this->testNameResultIndex[$testName])) {
-            return $this->testResults[$this->testNameResultIndex[$testName]];
-        }
-
-        return [];
-    }
-
-    private function getFormattedRuntime(float $time, string $color = ''): string
-    {
-        if (!$this->colors) {
-            return \sprintf('[%.2f ms]', $time * 1000);
-        }
-
-        if ($time > 1) {
-            $color = 'fg-magenta';
-        }
-
-        return Color::colorize($color, \sprintf(' %.2f ms', $time * 1000));
-    }
-
-    private function formatTestResultMessage(string $resultMessage, bool $verbose, ?string $prefixColor = null): string
-    {
-        if ($resultMessage === '') {
-            return '';
-        }
-
-        if (!($this->verbose || $verbose)) {
-            return '';
-        }
-
-        $prefix = '│';
-
-        if ($this->colors && $prefixColor !== null) {
-            $prefix = Color::colorize($prefixColor, $prefix);
-        }
-
-        return \sprintf(
-            "   %s\n%s\n",
-            $prefix,
-            \implode(
-                "\n",
-                \array_map(
-                    function (string $text) use ($prefix) {
-                        return \sprintf('   %s %s', $prefix, $text);
-                    },
-                    \explode("\n", $resultMessage)
-                )
-            )
-        );
-    }
-
-    private function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void
-    {
-        if (empty($this->nonSuccessfulTestResults)) {
-            return;
-        }
-
-        if ((\count($this->nonSuccessfulTestResults) / $numberOfExecutedTests) >= 0.7) {
-            return;
-        }
-
-        $this->write("Summary of non-successful tests:\n\n");
-
-        $prevResult = $this->getEmptyTestResult();
-
-        foreach ($this->nonSuccessfulTestResults as $testIndex) {
-            $result = $this->testResults[$testIndex];
-            $this->writeTestResult($prevResult, $result);
-            $prevResult = $result;
-        }
-    }
-
-    private function getEmptyTestResult(): array
-    {
-        return [
-            'className' => '',
-            'testName'  => '',
-            'message'   => '',
-            'failed'    => '',
-            'verbose'   => '',
-        ];
-    }
-
-    private function formatThrowable(\Throwable $t, ?int $status = null): string
+    protected function formatThrowable(\Throwable $t, ?int $status = null): string
     {
         $message = \PHPUnit\Framework\TestFailure::exceptionToString($t);
 
@@ -423,11 +154,11 @@ class CliTestDoxPrinter extends ResultPrinter
         return \sprintf(
             "%s\n%s",
             $message,
-            $this->colorizeStacktrace($t)
+            $this->formatStacktrace($t)
             );
     }
 
-    private function colorizeStacktrace(\Throwable $t): string
+    protected function formatStacktrace(\Throwable $t): string
     {
         $trace = \PHPUnit\Util\Filter::getFilteredStacktrace($t);
 
@@ -452,5 +183,60 @@ class CliTestDoxPrinter extends ResultPrinter
         }
 
         return \implode('', $lines);
+    }
+
+    protected function formatTestResultMessage(string $message, int $status, bool $verbose, ?string $prefix = null): string
+    {
+        if ($message === '') {
+            return '';
+        }
+
+        if (!($this->verbose || $verbose)) {
+            return '';
+        }
+
+        if ($prefix === null) {
+            $prefix = '│';
+        }
+
+        if ($this->colors) {
+            $prefix = Color::colorize($this->statusStyles[$status]['color'] ?? '', $prefix);
+        }
+
+        return parent::formatTestResultMessage($message, $status, $verbose, $prefix);
+    }
+
+    private function formatRuntime(float $time, string $color = ''): string
+    {
+        if (!$this->colors) {
+            return \sprintf('[%.2f ms]', $time * 1000);
+        }
+
+        if ($time > 1) {
+            $color = 'fg-magenta';
+        }
+
+        return Color::colorize($color, \sprintf(' %.2f ms', $time * 1000));
+    }
+
+    private function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void
+    {
+        if (empty($this->nonSuccessfulTestResults)) {
+            return;
+        }
+
+        if ((\count($this->nonSuccessfulTestResults) / $numberOfExecutedTests) >= 0.7) {
+            return;
+        }
+
+        $this->write("Summary of non-successful tests:\n\n");
+
+        $prevResult = $this->getEmptyTestResult();
+
+        foreach ($this->nonSuccessfulTestResults as $testIndex) {
+            $result = $this->testResults[$testIndex];
+            $this->writeTestResult($prevResult, $result);
+            $prevResult = $result;
+        }
     }
 }
