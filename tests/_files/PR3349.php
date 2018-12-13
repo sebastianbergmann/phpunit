@@ -114,8 +114,8 @@ final class Tests extends TestCase
     }
 
     /**
-     * @return array
      * @group PR3349_Group9
+     *
      * @see \Test\PR3349\Tests::testSameClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromDependency
      * @see \Test\PR3349\Tests::testSameClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromString
      * @testWith    ["45348fed-cc85-4bdf-9c6b-3d132c951bd2", "45348fed-cc85-4bdf-9c6b-3d132c951bd2-TEST"]
@@ -126,6 +126,7 @@ final class Tests extends TestCase
     public function testSameClassDependencyUsingDataSet_Dependency(string $foo, string $bar): array
     {
         $this->addToAssertionCount(1);
+
         return [$foo => $bar];
     }
 
@@ -135,7 +136,7 @@ final class Tests extends TestCase
      */
     public function testSameClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromDependency(array $array): void
     {
-        $this->assertEquals(\reset($array), \key($array).'-TEST');
+        $this->assertEquals(\reset($array), \key($array) . '-TEST');
     }
 
     /**
@@ -148,7 +149,7 @@ final class Tests extends TestCase
      */
     public function testSameClassDependencyUsingDataSetWithUsingDatasetInTestExpectValueFromDependency(string $expect, array $array): void
     {
-        $this->assertEquals($expect, \key($array).'-TEST');
+        $this->assertEquals($expect, \key($array) . '-TEST');
     }
 
     /**
@@ -166,7 +167,7 @@ final class Tests extends TestCase
      */
     public function testExternalClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromDependency(array $array): void
     {
-        $this->assertEquals(\reset($array), \key($array).'-TEST');
+        $this->assertEquals(\reset($array), \key($array) . '-TEST');
     }
 
     /**
@@ -188,7 +189,7 @@ final class Tests extends TestCase
      */
     public function testExternalClassDependencyUsingDataSetWithUsingDatasetInTestExpectValueFromDependency(string $expect, array $array): void
     {
-        $this->assertEquals($expect, \key($array).'-TEST');
+        $this->assertEquals($expect, \key($array) . '-TEST');
     }
 }
 
@@ -228,8 +229,8 @@ final class Test_Dependencies extends TestCase
     }
 
     /**
-     * @return array
      * @group PR3349_Group10
+     *
      *      * @see \Test\PR3349\Tests::testExternalClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromDependency
      * @see \Test\PR3349\Tests::testExternalClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromString
      * @testWith    ["45348fed-cc85-4bdf-9c6b-3d132c951bd3", "45348fed-cc85-4bdf-9c6b-3d132c951bd3-TEST"]
@@ -240,6 +241,7 @@ final class Test_Dependencies extends TestCase
     public function testExternalClassDependencyUsingDataSet_Dependency(string $foo, string $bar): array
     {
         $this->addToAssertionCount(1);
+
         return [$foo => $bar];
     }
 }
