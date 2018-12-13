@@ -1,4 +1,7 @@
 <?php
+/** @noinspection ThrowRawExceptionInspection */
+/** @noinspection PhpUnusedParameterInspection */
+/** @noinspection PhpDocSignatureInspection */
 
 declare(strict_types=1);
 /*
@@ -109,6 +112,84 @@ final class Tests extends TestCase
     {
         $this->assertEquals(100, $int);
     }
+
+    /**
+     * @return array
+     * @group PR3349_Group9
+     * @see \Test\PR3349\Tests::testSameClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromDependency
+     * @see \Test\PR3349\Tests::testSameClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromString
+     * @testWith    ["45348fed-cc85-4bdf-9c6b-3d132c951bd2", "45348fed-cc85-4bdf-9c6b-3d132c951bd2-TEST"]
+     *              ["bf62e6b7-1518-4a5b-9dbb-d803b52acf0a", "bf62e6b7-1518-4a5b-9dbb-d803b52acf0a-TEST"]
+     *              ["f1b7df75-d148-458a-9bce-278e6d9b2766", "f1b7df75-d148-458a-9bce-278e6d9b2766-TEST"]
+     *              ["c514d010-1cfc-49c4-9fc0-032fc6f5c6a0", "c514d010-1cfc-49c4-9fc0-032fc6f5c6a0-TEST"]
+     */
+    public function testSameClassDependencyUsingDataSet_Dependency(string $foo, string $bar): array
+    {
+        $this->addToAssertionCount(1);
+        return [$foo => $bar];
+    }
+
+    /**
+     * @group PR3349_Group9
+     * @depends \Test\PR3349\Tests::testSameClassDependencyUsingDataSet_Dependency
+     */
+    public function testSameClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromDependency(array $array): void
+    {
+        $this->assertEquals(\reset($array), \key($array).'-TEST');
+    }
+
+    /**
+     * @group PR3349_Group9
+     * @depends \Test\PR3349\Tests::testSameClassDependencyUsingDataSet_Dependency
+     * @testWith    ["45348fed-cc85-4bdf-9c6b-3d132c951bd2-TEST"]
+     *              ["bf62e6b7-1518-4a5b-9dbb-d803b52acf0a-TEST"]
+     *              ["f1b7df75-d148-458a-9bce-278e6d9b2766-TEST"]
+     *              ["c514d010-1cfc-49c4-9fc0-032fc6f5c6a0-TEST"]
+     */
+    public function testSameClassDependencyUsingDataSetWithUsingDatasetInTestExpectValueFromDependency(string $expect, array $array): void
+    {
+        $this->assertEquals($expect, \key($array).'-TEST');
+    }
+
+    /**
+     * @group PR3349_Group9
+     * @depends \Test\PR3349\Tests::testSameClassDependencyUsingDataSet_Dependency
+     */
+    public function testSameClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromString(array $array): void
+    {
+        $this->assertEquals(\reset($array), '45348fed-cc85-4bdf-9c6b-3d132c951bd2-TEST');
+    }
+
+    /**
+     * @group PR3349_Group10
+     * @depends \Test\PR3349\Test_Dependencies::testExternalClassDependencyUsingDataSet_Dependency
+     */
+    public function testExternalClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromDependency(array $array): void
+    {
+        $this->assertEquals(\reset($array), \key($array).'-TEST');
+    }
+
+    /**
+     * @group PR3349_Group10
+     * @depends \Test\PR3349\Test_Dependencies::testExternalClassDependencyUsingDataSet_Dependency
+     */
+    public function testExternalClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromString(array $array): void
+    {
+        $this->assertEquals(\reset($array), '45348fed-cc85-4bdf-9c6b-3d132c951bd3-TEST');
+    }
+
+    /**
+     * @group PR3349_Group10
+     * @depends \Test\PR3349\Test_Dependencies::testExternalClassDependencyUsingDataSet_Dependency
+     * @testWith    ["45348fed-cc85-4bdf-9c6b-3d132c951bd3-TEST"]
+     *              ["bf62e6b7-1518-4a5b-9dbb-d803b52acf0b-TEST"]
+     *              ["f1b7df75-d148-458a-9bce-278e6d9b2767-TEST"]
+     *              ["c514d010-1cfc-49c4-9fc0-032fc6f5c6a2-TEST"]
+     */
+    public function testExternalClassDependencyUsingDataSetWithUsingDatasetInTestExpectValueFromDependency(string $expect, array $array): void
+    {
+        $this->assertEquals($expect, \key($array).'-TEST');
+    }
 }
 
 final class Test_Dependencies extends TestCase
@@ -144,6 +225,22 @@ final class Test_Dependencies extends TestCase
         $this->fail('Test Skipped With Purpose.');
 
         return 100;
+    }
+
+    /**
+     * @return array
+     * @group PR3349_Group10
+     *      * @see \Test\PR3349\Tests::testExternalClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromDependency
+     * @see \Test\PR3349\Tests::testExternalClassDependencyUsingDataSetWithoutUsingDatasetInTestExpectValueFromString
+     * @testWith    ["45348fed-cc85-4bdf-9c6b-3d132c951bd3", "45348fed-cc85-4bdf-9c6b-3d132c951bd3-TEST"]
+     *              ["bf62e6b7-1518-4a5b-9dbb-d803b52acf0b", "bf62e6b7-1518-4a5b-9dbb-d803b52acf0b-TEST"]
+     *              ["f1b7df75-d148-458a-9bce-278e6d9b2767", "f1b7df75-d148-458a-9bce-278e6d9b2767-TEST"]
+     *              ["c514d010-1cfc-49c4-9fc0-032fc6f5c6a2", "c514d010-1cfc-49c4-9fc0-032fc6f5c6a2-TEST"]
+     */
+    public function testExternalClassDependencyUsingDataSet_Dependency(string $foo, string $bar): array
+    {
+        $this->addToAssertionCount(1);
+        return [$foo => $bar];
     }
 }
 

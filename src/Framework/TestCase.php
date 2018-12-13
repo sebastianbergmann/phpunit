@@ -1707,7 +1707,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return \array_flip(\array_unique($failedKeys ?? []));
     }
 
-    private function processPassed(array $passedKeys): array
+    private function processPassedKeys(array $passedKeys): array
     {
         foreach (\array_keys($passedKeys) as $key) {
             $pos = \strpos($key, ' with data set');
@@ -1718,6 +1718,19 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         return \array_merge(\array_flip(\array_unique($newPassedKeys ?? [])), $passedKeys);
+    }
+
+    private function processPassed(array $passed): array
+    {
+        foreach (\array_reverse($passed) as $key => $val) {
+            $pos = \strpos($key, ' with data set');
+
+            if ($pos !== false) {
+                $newPassed[\substr($key, 0, $pos)] = $val;
+            }
+        }
+
+        return \array_merge($passed, $newPassed ?? []);
     }
 
     private function processSkipped(array $skipped): array
@@ -1741,7 +1754,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $skipped    = \array_merge($this->processSkipped($this->result->skipped()), $this->processSkipped(self::$DEPENDENCY_TASK_RESULTS->skipped()));
         $failed     = \array_merge($this->processFailed($this->result->failures()), $this->processFailed(self::$DEPENDENCY_TASK_RESULTS->failures()));
         $passed     = \array_merge($this->result->passed(), self::$DEPENDENCY_TASK_RESULTS->passed());
-        $passedKeys = $this->processPassed($passed);
+        $passedKeys = $this->processPassedKeys($passed);
+        $passed     = $this->processPassed($passed);
     }
 
     private function setSkippedDependsOn(string $dependsOn): void
@@ -1845,10 +1859,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 $this->getSkippedFailedPassedKeys($skippedKeys, $failedKeys, $passedKeys, $passed);
                 $dependencyName = false;
 
-                if (isset($passed[$dependency])) {
-                    $dependencyName = $dependency;
-                } elseif (isset($passed[$dependency . $this->getDataSetAsString(false)])) {
+                if (isset($passed[$dependency . $this->getDataSetAsString(false)])) {
                     $dependencyName = $dependency . $this->getDataSetAsString(false);
+                } else if (isset($passed[$dependency])) {
+                    $dependencyName = $dependency;
                 }
 
                 if ($dependencyName) {
