@@ -96,7 +96,7 @@ class Color
             }, $path[$last]);
         }
 
-        return \implode(self::dim(\DIRECTORY_SEPARATOR), $path);
+        return self::optimizeColor(\implode(self::dim(\DIRECTORY_SEPARATOR), $path));
     }
 
     public static function dim(string $buffer): string
@@ -105,7 +105,7 @@ class Color
             return $buffer;
         }
 
-        return "\x1b[2m$buffer\x1b[22m";
+        return "\e[2m$buffer\e[22m";
     }
 
     public static function visualizeWhitespace(string $buffer, bool $visualizeEOL = false): string
@@ -115,5 +115,10 @@ class Color
         return \preg_replace_callback('/\s+/', function ($matches) use ($replaceMap) {
             return self::dim(\strtr($matches[0], $replaceMap));
         }, $buffer);
+    }
+
+    private static function optimizeColor(string $buffer): string
+    {
+        return \str_replace("\e[22m\e[2m", '', $buffer);
     }
 }
