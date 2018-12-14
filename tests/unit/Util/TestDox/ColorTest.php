@@ -29,9 +29,9 @@ class ColorTest extends TestCase
      * @testdox Colorize path $path after $prevPath
      * @dataProvider colorizePathProvider
      */
-    public function testColorizePath(?string $prevPath, string $path, string $expected): void
+    public function testColorizePath(?string $prevPath, string $path, bool $colorizeFilename, string $expected): void
     {
-        $this->assertSame($expected, Color::colorizePath($path, $prevPath));
+        $this->assertSame($expected, Color::colorizePath($path, $prevPath, $colorizeFilename));
     }
 
     /**
@@ -104,22 +104,32 @@ class ColorTest extends TestCase
             'null previous path' => [
                 null,
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
+                false,
                 $sepDim . 'php' . $sepDim . 'unit' . $sepDim . 'test.phpt',
             ],
             'empty previous path' => [
                 '',
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
+                false,
                 $sepDim . 'php' . $sepDim . 'unit' . $sepDim . 'test.phpt',
             ],
             'from root' => [
                 $sep,
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
+                false,
                 $sepDim . 'php' . $sepDim . 'unit' . $sepDim . 'test.phpt',
             ],
             'partial part' => [
                 $sep . 'php' . $sep,
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
+                false,
                 $sepDim . Color::dim('php') . $sepDim . 'unit' . $sepDim . 'test.phpt',
+            ],
+            'colorize filename' => [
+                '',
+                $sep . '_d-i.r' . $sep . 't-e_s.t.phpt',
+                true,
+                $sepDim . '_d-i.r' . $sepDim . 't' . Color::dim('-') . 'e'. Color::dim('_') . 's' . Color::dim('.') . 't' . Color::dim('.') . Color::dim('phpt'),
             ],
         ];
     }

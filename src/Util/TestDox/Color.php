@@ -74,7 +74,7 @@ class Color
         return \sprintf("\x1b[%sm", \implode(';', $styles)) . $buffer . "\x1b[0m";
     }
 
-    public static function colorizePath(string $path, ?string $prevPath = null): string
+    public static function colorizePath(string $path, ?string $prevPath = null, bool $colorizeFilename = false): string
     {
         if ($prevPath === null) {
             $prevPath = '';
@@ -87,6 +87,13 @@ class Color
             if ($path[$i] == $prevPath[$i]) {
                 $path[$i] = self::dim($path[$i]);
             }
+        }
+
+        if ($colorizeFilename) {
+            $last        = \count($path) - 1;
+            $path[$last] = \preg_replace_callback('/([\-_\.]+|phpt$)/', function ($matches) {
+                return self::dim($matches[0]);
+            }, $path[$last]);
         }
 
         return \implode(self::dim(\DIRECTORY_SEPARATOR), $path);
