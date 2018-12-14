@@ -144,18 +144,20 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     protected function formatThrowable(\Throwable $t, ?int $status = null): string
     {
-        $message = \PHPUnit\Framework\TestFailure::exceptionToString($t);
+        $message = trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
 
-        if ($this->colors) {
-            $style   = $this->statusStyles[$status]['message'] ?? '';
-            $message = $this->formatWithColor($style, $message);
+        if ($message) {
+            if ($this->colors) {
+                $style   = $this->statusStyles[$status]['message'] ?? '';
+                $message = $this->formatWithColor($style, $message);
+            }
+
+            $message .= "\n\n" . $this->formatStacktrace($t);
+        } else {
+            $message = $this->formatStacktrace($t);
         }
 
-        return \sprintf(
-            "%s\n%s",
-            $message,
-            $this->formatStacktrace($t)
-            );
+        return $message;
     }
 
     protected function formatStacktrace(\Throwable $t): string
