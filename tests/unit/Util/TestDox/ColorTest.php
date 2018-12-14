@@ -129,7 +129,7 @@ class ColorTest extends TestCase
                 '',
                 $sep . '_d-i.r' . $sep . 't-e_s.t.phpt',
                 true,
-                $sepDim . '_d-i.r' . $sepDim . 't' . Color::dim('-') . 'e'. Color::dim('_') . 's' . Color::dim('.') . 't' . Color::dim('.') . Color::dim('phpt'),
+                $sepDim . '_d-i.r' . $sepDim . 't' . Color::dim('-') . 'e' . Color::dim('_') . 's' . Color::dim('.') . 't' . Color::dim('.') . Color::dim('phpt'),
             ],
         ];
     }
