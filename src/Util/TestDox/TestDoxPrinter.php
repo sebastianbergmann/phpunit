@@ -246,13 +246,15 @@ class TestDoxPrinter extends ResultPrinter
 
     protected function formatThrowable(\Throwable $t, ?int $status = null): string
     {
-        $message = \PHPUnit\Framework\TestFailure::exceptionToString($t);
+        $message = trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
 
-        return \sprintf(
-            "%s\n%s",
-            $message,
-            $this->formatStacktrace($t)
-        );
+        if ($message) {
+            $message .= "\n\n" . $this->formatStacktrace($t);
+        } else {
+            $message = $this->formatStacktrace($t);
+        }
+
+        return $message;
     }
 
     protected function formatStacktrace(\Throwable $t): string
