@@ -7,10 +7,10 @@ Runtime:       %s
  [32m✔[0m Colorize with [36mone[2m·[22mcolor[0m [32m %f ms[0m
  [32m✔[0m Colorize with [36mmultiple[2m·[22mcolors[0m [32m %f ms[0m
  [32m✔[0m Colorize path [36m%ephp%eunit%etest.phpt[0m after [36mNULL[0m [32m %f ms[0m
- [32m✔[0m Colorize path [36m%ephp%eunit%etest.phpt[0m after [36m[4mempty[0m[0m [32m %f ms[0m
+ [32m✔[0m Colorize path [36m%ephp%eunit%etest.phpt[0m after [36m[2;4mempty[0m[0m [32m %f ms[0m
  [32m✔[0m Colorize path [36m%ephp%eunit%etest.phpt[0m after [36m%e[0m [32m %f ms[0m
  [32m✔[0m Colorize path [36m%ephp%eunit%etest.phpt[0m after [36m%ephp%e[0m [32m %f ms[0m
- [32m✔[0m Colorize path [36m%e_d-i.r%et-e_s.t.phpt[0m after [36m[4mempty[0m[0m [32m %f ms[0m
+ [32m✔[0m Colorize path [36m%e_d-i.r%et-e_s.t.phpt[0m after [36m[2;4mempty[0m[0m [32m %f ms[0m
  [32m✔[0m dim($m) and colorize('dim',$m) return different ANSI codes [32m %f ms[0m
  [32m✔[0m Visualize all whitespace characters in [36mno-spaces[0m [32m %f ms[0m
  [32m✔[0m Visualize all whitespace characters in [36m[2m·[22mspace[2m···[22minvaders[2m·[22m[0m [32m %s ms[0m
