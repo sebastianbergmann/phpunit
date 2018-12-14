@@ -14,7 +14,7 @@ Runtime:       %s
  [32m✔[0m dim($m) and colorize('dim',$m) return different ANSI codes [32m %f ms[0m
  [32m✔[0m Visualize all whitespace characters in [36mno-spaces[0m [32m %f ms[0m
  [32m✔[0m Visualize all whitespace characters in [36m[2m·[22mspace[2m···[22minvaders[2m·[22m[0m [32m %s ms[0m
- [32m✔[0m Visualize all whitespace characters in [36m[2m⇥[22mindent,[2m·[22mspace[2m·[22mand[2m·[22mLF[2m↵[22m[0m [32m %s ms[0m
+ [32m✔[0m Visualize all whitespace characters in [36m[2m⇥[22mindent,[2m·[22mspace[2m·[22mand[2m·[22m\n[2m↵[22m\r[2m⟵[22m[0m [32m %s ms[0m
  [32m✔[0m Visualize whitespace but ignore EOL [32m %f ms[0m
  [32m✔[0m Prettify unnamed dataprovider[2m with data set [22m[36m0[0m [32m %f ms[0m
  [32m✔[0m Prettify unnamed dataprovider[2m with data set [22m[36m1[0m [32m %f ms[0m
