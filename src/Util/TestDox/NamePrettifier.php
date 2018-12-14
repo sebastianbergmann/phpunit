@@ -215,7 +215,11 @@ final class NamePrettifier
             }
 
             if (\is_string($value) && $value === '') {
-                $value = Color::colorize('underlined', 'empty');
+                if ($this->useColor) {
+                    $value = Color::colorize('dim,underlined', 'empty');
+                } else {
+                    $value = "''";
+                }
             }
 
             $providedData['$' . $parameter->getName()] = $value;
