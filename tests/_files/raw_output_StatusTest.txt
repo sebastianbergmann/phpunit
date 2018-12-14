@@ -30,8 +30,8 @@ Runtime:       %s
 
  [33m☢[0m Risky [33m %f ms[0m
    [33m│[0m
-   [33m│[0m [33mThis test did not perform any assertions[0m
-   [33m│[0m 
+   [33m│[0m [33mThis test did not perform any assertions%w[0m
+   [33m│[0m%w 
    [33m│[0m [33m%stests%e_files%eStatusTest.php:42[0m
    [33m│[0m 
    [33m│[0m 

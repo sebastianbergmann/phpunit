@@ -144,7 +144,8 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     protected function formatThrowable(\Throwable $t, ?int $status = null): string
     {
-        $message = trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
+        $message = \trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
+        $message = \implode(\PHP_EOL, \array_map('\trim', \explode(\PHP_EOL, $message)));
 
         if ($message) {
             if ($this->colors) {
