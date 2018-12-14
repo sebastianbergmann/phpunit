@@ -223,7 +223,7 @@ final class NamePrettifier
 
         if ($this->useColor) {
             $providedData = \array_map(function ($value) {
-                return Color::colorize('fg-cyan', Color::visualizeWhitespace($value));
+                return Color::colorize('fg-cyan', Color::visualizeWhitespace($value, true));
             }, $providedData);
         }
 

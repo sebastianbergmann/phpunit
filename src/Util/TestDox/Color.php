@@ -14,6 +14,11 @@ class Color
     private const WHITESPACE_MAP = [
         ' '  => '·',
         "\t" => '⇥',
+    ];
+
+    private const WHITESPACE_EOL_MAP = [
+        ' '  => '·',
+        "\t" => '⇥',
         "\n" => '↵',
     ];
 
@@ -96,10 +101,12 @@ class Color
         return "\x1b[2m$buffer\x1b[22m";
     }
 
-    public static function visualizeWhitespace(string $buffer): string
+    public static function visualizeWhitespace(string $buffer, bool $visualizeEOL = false): string
     {
-        return \preg_replace_callback('/\s+/', function ($matches) {
-            return self::dim(\strtr($matches[0], self::WHITESPACE_MAP));
+        $replaceMap = $visualizeEOL ? self::WHITESPACE_EOL_MAP : self::WHITESPACE_MAP;
+
+        return \preg_replace_callback('/\s+/', function ($matches) use ($replaceMap) {
+            return self::dim(\strtr($matches[0], $replaceMap));
         }, $buffer);
     }
 }
