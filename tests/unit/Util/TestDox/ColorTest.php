@@ -44,12 +44,21 @@ class ColorTest extends TestCase
     }
 
     /**
-     * @testdox Visualize whitespace characters in $actual
+     * @testdox Visualize all whitespace characters in $actual
      * @dataProvider whitespacedStringProvider
      */
     public function testVisibleWhitespace(string $actual, string $expected): void
     {
-        $this->assertSame($expected, Color::visualizeWhitespace($actual));
+        $this->assertSame($expected, Color::visualizeWhitespace($actual, true));
+    }
+
+    /**
+     * @testdox Visualize whitespace but ignore EOL
+     */
+    public function testVisibleWhitespaceWithoutEOL(): void
+    {
+        $string = "line1\nline2\n";
+        $this->assertSame($string, Color::visualizeWhitespace($string, false));
     }
 
     /**
