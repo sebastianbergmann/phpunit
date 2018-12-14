@@ -123,13 +123,13 @@ class ColorTest extends TestCase
                 $sep . 'php' . $sep,
                 $sep . 'php' . $sep . 'unit' . $sep . 'test.phpt',
                 false,
-                $sepDim . Color::dim('php') . $sepDim . 'unit' . $sepDim . 'test.phpt',
+                Color::dim($sep . 'php' . $sep) . 'unit' . $sepDim . 'test.phpt',
             ],
             'colorize filename' => [
                 '',
                 $sep . '_d-i.r' . $sep . 't-e_s.t.phpt',
                 true,
-                $sepDim . '_d-i.r' . $sepDim . 't' . Color::dim('-') . 'e' . Color::dim('_') . 's' . Color::dim('.') . 't' . Color::dim('.') . Color::dim('phpt'),
+                $sepDim . '_d-i.r' . $sepDim . 't' . Color::dim('-') . 'e' . Color::dim('_') . 's' . Color::dim('.') . 't' . Color::dim('.phpt'),
             ],
         ];
     }
