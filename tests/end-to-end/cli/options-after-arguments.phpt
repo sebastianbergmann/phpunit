@@ -2,11 +2,14 @@
 phpunit BankAccountTest ../../_files/BankAccountTest.php --colors
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = __DIR__ . '/../_files/BankAccountTest.php';
-$_SERVER['argv'][3] = '--colors=always';
+$arguments = [
+    '--no-configuration',
+    \realpath(__DIR__ . '/../../_files/BankAccountTest.php'),
+    '--colors=always',
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

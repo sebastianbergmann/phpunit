@@ -2,13 +2,16 @@
 phpunit --repeat 3 BankAccountTest ../../_files/BankAccountTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--repeat';
-$_SERVER['argv'][3] = '3';
-$_SERVER['argv'][4] = 'BankAccountTest';
-$_SERVER['argv'][5] = __DIR__ . '/../_files/BankAccountTest.php';
+$arguments = [
+    '--no-configuration',
+    '--repeat',
+    '3',
+    'BankAccountTest',
+    \realpath(__DIR__ . '/../../_files/BankAccountTest.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

@@ -7,4 +7,4 @@ phpunit
 require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF_EXTERNAL--
-output-cli-usage.txt
+_files/output-cli-usage.txt
