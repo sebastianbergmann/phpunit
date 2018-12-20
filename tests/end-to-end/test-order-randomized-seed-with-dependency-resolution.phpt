@@ -8,7 +8,7 @@ $_SERVER['argv'][3] = '--verbose';
 $_SERVER['argv'][4] = '--order-by=depends,random';
 $_SERVER['argv'][5] = '--random-order-seed=54321';
 $_SERVER['argv'][6] = 'MultiDependencyTest';
-$_SERVER['argv'][7] = __DIR__ . '/../_files/MultiDependencyTest.php';
+$_SERVER['argv'][7] = __DIR__ . '/loggers/_files/MultiDependencyTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

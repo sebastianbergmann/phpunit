@@ -2,12 +2,15 @@
 phpunit --teamcity ExceptionStackTest ../../_files/ExceptionStackTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--teamcity';
-$_SERVER['argv'][3] = 'ExceptionStackTest';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/ExceptionStackTest.php';
+$arguments = [
+    '--no-configuration',
+    '--teamcity',
+    'ExceptionStackTest',
+    \realpath(__DIR__ . '/../../_files/ExceptionStackTest.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

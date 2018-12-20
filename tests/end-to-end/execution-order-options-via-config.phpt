@@ -6,7 +6,7 @@ $_SERVER['argv'][1] = '--debug';
 $_SERVER['argv'][2] = '-c';
 $_SERVER['argv'][3] = __DIR__ . '/../_files/configuration_execution_order_options.xml';
 $_SERVER['argv'][4] = 'MultiDependencyTest';
-$_SERVER['argv'][5] = __DIR__ . '/../_files/MultiDependencyTest.php';
+$_SERVER['argv'][5] = __DIR__ . '/loggers/_files/MultiDependencyTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

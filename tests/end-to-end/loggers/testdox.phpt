@@ -2,12 +2,15 @@
 phpunit --testdox php://stdout BankAccountTest ../../_files/BankAccountTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--testdox';
-$_SERVER['argv'][3] = '--colors=never';
-$_SERVER['argv'][4] = realpath(__DIR__ . '/../unit/Util/TestDox/ColorTest.php');
+$arguments = [
+    '--no-configuration',
+    '--testdox',
+    '--colors=never',
+    realpath(__DIR__ . '/../../unit/Util/TestDox/ColorTest.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
