@@ -2,12 +2,15 @@
 phpunit --debug BankAccountTest ../../_files/BankAccountTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--debug';
-$_SERVER['argv'][3] = 'BankAccountTest';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/BankAccountTest.php';
+$arguments = [
+    '--no-configuration',
+    '--debug',
+    'BankAccountTest',
+    \realpath(__DIR__ . '/../../_files/BankAccountTest.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

@@ -2,12 +2,15 @@
 phpunit --configuration _files/hooks.xml HookTest _files/HookTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--configuration';
-$_SERVER['argv'][2] = __DIR__ . '/_files/hooks.xml';
-$_SERVER['argv'][3] = 'HookTest';
-$_SERVER['argv'][4] = __DIR__ . '/_files/HookTest.php';
+$arguments = [
+    '--configuration',
+    \realpath(__DIR__ . '/_files/hooks.xml'),
+    'HookTest',
+    \realpath(__DIR__ . '/_files/HookTest.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
