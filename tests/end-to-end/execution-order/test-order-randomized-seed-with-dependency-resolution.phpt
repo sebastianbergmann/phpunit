@@ -2,15 +2,18 @@
 phpunit --order-by=depends,random --random-order-seed=54321 ../_files/MultiDependencyTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--debug';
-$_SERVER['argv'][3] = '--verbose';
-$_SERVER['argv'][4] = '--order-by=depends,random';
-$_SERVER['argv'][5] = '--random-order-seed=54321';
-$_SERVER['argv'][6] = 'MultiDependencyTest';
-$_SERVER['argv'][7] = __DIR__ . '/loggers/_files/MultiDependencyTest.php';
+$arguments = [
+    '--no-configuration',
+    '--debug',
+    '--verbose',
+    '--order-by=depends,random',
+    '--random-order-seed=54321',
+    'MultiDependencyTest',
+    \realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 ?>
 --EXPECTF--
