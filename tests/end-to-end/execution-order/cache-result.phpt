@@ -11,11 +11,11 @@ $arguments = [
     '--cache-result',
     '--cache-result-file=' . $target,
     'MultiDependencyTest',
-    realpath(__DIR__ . '/loggers/_files/MultiDependencyTest.php'),
+    realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main(false);
 
 print file_get_contents($target);

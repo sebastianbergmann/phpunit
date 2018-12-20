@@ -1,17 +1,24 @@
 --TEST--
-phpunit -c ../_files/configuration_stop_on_defect.xml MultiDependencyTest ./tests/_files/MultiDependencyTest.php
+phpunit --order-by=no-depends,reverse ../_files/MultiDependencyTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--debug';
-$_SERVER['argv'][2] = '-c';
-$_SERVER['argv'][3] = __DIR__ . '/../_files/configuration_execution_order_options.xml';
-$_SERVER['argv'][4] = 'MultiDependencyTest';
-$_SERVER['argv'][5] = __DIR__ . '/loggers/_files/MultiDependencyTest.php';
+$arguments = [
+    '--no-configuration',
+    '--debug',
+    '--verbose',
+    '--order-by=no-depends,reverse',
+    'MultiDependencyTest',
+    \realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
+?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
+
+Runtime:       %s
 
 Test 'MultiDependencyTest::testFive' started
 Test 'MultiDependencyTest::testFive' ended
@@ -26,6 +33,14 @@ Test 'MultiDependencyTest::testOne' ended
 
 
 Time: %s, Memory: %s
+
+There were 2 skipped tests:
+
+1) MultiDependencyTest::testFour
+This test depends on "MultiDependencyTest::testThree" to pass.
+
+2) MultiDependencyTest::testThree
+This test depends on "MultiDependencyTest::testOne" to pass.
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 5, Assertions: 3, Skipped: 2.

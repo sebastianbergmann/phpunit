@@ -18,7 +18,7 @@ class TestResultCacheTest extends TestCase
 {
     public function testReadsCacheFromProvidedFilename(): void
     {
-        $cacheFile = TEST_FILES_PATH . '../end-to-end/loggers/_files/MultiDependencyTest_result_cache.txt';
+        $cacheFile = TEST_FILES_PATH . '../end-to-end/execution-order/_files/MultiDependencyTest_result_cache.txt';
         $cache     = new TestResultCache($cacheFile);
         $cache->load();
 
@@ -28,7 +28,7 @@ class TestResultCacheTest extends TestCase
 
     public function testDoesClearCacheBeforeLoad(): void
     {
-        $cacheFile = TEST_FILES_PATH . '../end-to-end/loggers/_files/MultiDependencyTest_result_cache.txt';
+        $cacheFile = TEST_FILES_PATH . '../end-to-end/execution-order/_files/MultiDependencyTest_result_cache.txt';
         $cache     = new TestResultCache($cacheFile);
         $cache->setState('someTest', BaseTestRunner::STATUS_FAILURE);
 
