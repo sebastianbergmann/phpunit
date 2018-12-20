@@ -7,7 +7,7 @@ $_SERVER['argv'][2] = '--debug';
 $_SERVER['argv'][3] = '--verbose';
 $_SERVER['argv'][4] = '--order-by=no-depends,reverse';
 $_SERVER['argv'][5] = 'MultiDependencyTest';
-$_SERVER['argv'][6] = __DIR__ . '/../_files/MultiDependencyTest.php';
+$_SERVER['argv'][6] = __DIR__ . '/loggers/_files/MultiDependencyTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

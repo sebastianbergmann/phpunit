@@ -4,13 +4,16 @@ phpunit --order-by=no-depends,reverse --cache-result --cache-result-file MultiDe
 <?php
 $target = tempnam(sys_get_temp_dir(), __FILE__);
 
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--ignore-dependencies';   // keep coverage for legacy CLI option
-$_SERVER['argv'][3] = '--order-by=reverse';
-$_SERVER['argv'][4] = '--cache-result';
-$_SERVER['argv'][5] = '--cache-result-file=' . $target;
-$_SERVER['argv'][6] = 'MultiDependencyTest';
-$_SERVER['argv'][7] = __DIR__ . '/../_files/MultiDependencyTest.php';
+$arguments = [
+    '--no-configuration',
+    '--ignore-dependencies',   // keep coverage for legacy CLI option
+    '--order-by=reverse',
+    '--cache-result',
+    '--cache-result-file=' . $target,
+    'MultiDependencyTest',
+    realpath(__DIR__ . '/loggers/_files/MultiDependencyTest.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main(false);

@@ -2,13 +2,16 @@
 phpunit --process-isolation --verbose DependencyTestSuite ../../_files/DependencyTestSuite.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--process-isolation';
-$_SERVER['argv'][3] = '--verbose';
-$_SERVER['argv'][4] = 'DependencyTestSuite';
-$_SERVER['argv'][5] = __DIR__ . '/../_files/DependencyTestSuite.php';
+$arguments = [
+    '--no-configuration',
+    '--process-isolation',
+    '--verbose',
+    'DependencyTestSuite',
+    \realpath(__DIR__ . '/_files/DependencyTestSuite.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

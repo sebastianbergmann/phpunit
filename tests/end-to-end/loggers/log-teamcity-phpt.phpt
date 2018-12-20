@@ -2,12 +2,15 @@
 phpunit --log-teamcity php://stdout ../end-to-end/phpt-stderr.phpt
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--log-teamcity';
-$_SERVER['argv'][3] = 'php://stdout';
-$_SERVER['argv'][4] = \realpath(__DIR__ . '/../end-to-end/phpt-stderr.phpt');
+$arguments = [
+    '--no-configuration',
+    '--log-teamcity',
+    'php://stdout',
+    \realpath(__DIR__ . '/../phpt-stderr.phpt'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

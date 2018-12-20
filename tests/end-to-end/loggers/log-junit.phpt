@@ -1,14 +1,17 @@
 --TEST--
-phpunit --log-junit php://stdout StatusTest ../../_files/StatusTest.php
+phpunit --log-junit php://stdout StatusTest _files/StatusTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--log-junit';
-$_SERVER['argv'][3] = 'php://stdout';
-$_SERVER['argv'][4] = 'StatusTest';
-$_SERVER['argv'][5] = __DIR__ . '/../_files/StatusTest.php';
+$arguments = [
+    '--no-configuration',
+    '--log-junit',
+    'php://stdout',
+    'StatusTest',
+    \realpath(__DIR__ . '/_files/StatusTest.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 ?>
 --EXPECTF--
