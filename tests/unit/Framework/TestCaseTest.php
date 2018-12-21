@@ -14,7 +14,7 @@ use PHPUnit\Runner\BaseTestRunner;
 
 class TestCaseTest extends TestCase
 {
-    protected static $testStatic      = 0;
+    protected static $testStatic      = 456;
 
     protected $backupGlobalsBlacklist = ['i', 'singleton'];
 
@@ -418,6 +418,9 @@ class TestCaseTest extends TestCase
     public function testStaticAttributesBackupPre(): void
     {
         $GLOBALS['singleton'] = \Singleton::getInstance();
+        $GLOBALS['i']         = 'not reset by backup';
+
+        $GLOBALS['j']         = 'reset by backup';
         self::$testStatic     = 123;
     }
 
@@ -426,8 +429,15 @@ class TestCaseTest extends TestCase
      */
     public function testStaticAttributesBackupPost(): void
     {
-        $this->assertNotSame($GLOBALS['singleton'], \Singleton::getInstance());
-        $this->assertSame(0, self::$testStatic);
+        // Snapshots made by @backupGlobals
+        $this->assertSame(\Singleton::getInstance(), $GLOBALS['singleton']);
+        $this->assertSame('not reset by backup', $GLOBALS['i']);
+
+        // Reset global
+        $this->assertArrayNotHasKey('j', $GLOBALS);
+
+        // Static reset to original state by @backupStaticAttributes
+        $this->assertSame(456, self::$testStatic);
     }
 
     public function testIsInIsolationReturnsFalse(): void
