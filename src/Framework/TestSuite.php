@@ -339,7 +339,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $argumentsValid = true;
         } elseif (\is_string($theClass) &&
             $theClass !== '' &&
-            \class_exists($theClass, false)) {
+            \class_exists($theClass, true)) {
             $argumentsValid = true;
 
             if ($name == '') {
