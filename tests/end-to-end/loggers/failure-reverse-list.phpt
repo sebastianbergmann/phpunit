@@ -2,12 +2,15 @@
 phpunit --reverse-list FailureTest ../../_files/FailureTest.php
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--reverse-list';
-$_SERVER['argv'][3] = 'FailureTest';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/FailureTest.php';
+$arguments = [
+    '--no-configuration',
+    '--reverse-list',
+    'FailureTest',
+    \realpath(__DIR__ . '/../../_files/FailureTest.php'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
