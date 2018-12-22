@@ -29,9 +29,9 @@ class TestSuiteTest extends TestCase
     /**
      * @testdox TestSuite can be created with name of existing non-TestCase class
      */
-    public function testSuiteNameCanBeSameAsExistingNonTestClassName()
+    public function testSuiteNameCanBeSameAsExistingNonTestClassName(): void
     {
-        $suite = new TestSuite("stdClass");
+        $suite = new TestSuite('stdClass');
         $suite->addTestSuite(\OneTestCase::class);
         $suite->run($this->result);
 
