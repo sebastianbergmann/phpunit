@@ -358,9 +358,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
 
         if (!$theClass->isSubclassOf(TestCase::class)) {
-            throw new Exception(
-                'Class "' . $theClass->name . '" does not extend PHPUnit\Framework\TestCase.'
-            );
+            $this->setName($theClass);
+
+            return;
         }
 
         if ($name != '') {
