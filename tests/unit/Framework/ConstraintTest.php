@@ -995,6 +995,9 @@ EOF
         $this->fail();
     }
 
+    /**
+     * @testdox Constraint PCRE not match
+     */
     public function testConstraintPCRENotMatch(): void
     {
         $constraint = Assert::logicalNot(
@@ -1024,6 +1027,9 @@ EOF
         $this->fail();
     }
 
+    /**
+     * @testdox Constraint PCRE not match with custom message
+     */
     public function testConstraintPCRENotMatch2(): void
     {
         $constraint = Assert::logicalNot(
