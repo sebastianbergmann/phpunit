@@ -14,6 +14,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 * Implemented [#3341](https://github.com/sebastianbergmann/phpunit/issues/3341): Deprecate optional parameters of `assertEquals()` and `assertNotEquals()`
 * Implemented [#3369](https://github.com/sebastianbergmann/phpunit/issues/3369): Deprecate `assertInternalType()` and `assertNotInternalType()`
 * Implemented [#3425](https://github.com/sebastianbergmann/phpunit/issues/3425): Deprecate optional parameters of `assertContains()` and `assertNotContains()` as well as using these methods with `string` haystacks
+* Implemented [#3439](https://github.com/sebastianbergmann/phpunit/pull/3439): Improve colorization of TestDox output
 
 ### Removed
 
