@@ -566,7 +566,7 @@ class TestTest extends TestCase
     public function testWithDuplicateKeyDataProviders(): void
     {
         $this->expectException(InvalidDataProviderException::class);
-        $this->expectExceptionMessage('The key "foo" as already been defined in the dataprovider "dataProvider".');
+        $this->expectExceptionMessage('The key "foo" has already been defined in the data provider "dataProvider".');
 
         Test::getProvidedData(\DuplicateKeyDataProviderTest::class, 'test');
     }

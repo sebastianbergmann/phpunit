@@ -885,7 +885,7 @@ final class Test
                         } elseif (\array_key_exists($key, $data)) {
                             throw new InvalidDataProviderException(
                                 \sprintf(
-                                    'The key "%s" as already been defined in the dataprovider "%s".',
+                                    'The key "%s" has already been defined in the data provider "%s".',
                                     $key,
                                     $match
                                 )
