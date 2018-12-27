@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-class InvalidDataProviderException extends Exception
+final class InvalidDataProviderException extends Exception
 {
 }
