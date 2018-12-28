@@ -1,9 +1,10 @@
 --TEST--
-phpunit --testdox --colors=always --verbose RouterTest ../_files/StatusTest.php
+phpunit --testdox --colors=always --verbose -c tests/basic/configuration.basic.xml
 --FILE--
 <?php
 $arguments = [
-    '--no-configuration',
+    '-c',
+    realpath(__DIR__ . '/../../basic/configuration.basic.xml'),
     '--testdox',
     '--colors=always',
     '--verbose',

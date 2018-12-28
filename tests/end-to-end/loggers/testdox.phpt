@@ -1,9 +1,10 @@
 --TEST--
-phpunit --testdox php://stdout BankAccountTest ../../_files/BankAccountTest.php
+phpunit --testdox -c tests/basic/configuration.basic.xml
 --FILE--
 <?php
 $arguments = [
-    '--no-configuration',
+    '-c',
+    realpath(__DIR__ . '/../../basic/configuration.basic.xml'),
     '--testdox',
     '--colors=never',
     realpath(__DIR__ . '/../../unit/Util/TestDox/ColorTest.php'),

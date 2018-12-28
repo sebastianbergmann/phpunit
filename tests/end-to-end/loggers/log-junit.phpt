@@ -7,7 +7,7 @@ $arguments = [
     '--log-junit',
     'php://stdout',
     'StatusTest',
-    \realpath(__DIR__ . '/_files/StatusTest.php'),
+    \realpath(__DIR__ . '/../../basic/unit/StatusTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
