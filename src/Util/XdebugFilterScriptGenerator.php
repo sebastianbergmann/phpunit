@@ -50,7 +50,9 @@ EOF;
 
         if (isset($filterData['include']['directory'])) {
             foreach ($filterData['include']['directory'] as $directory) {
-                $files[] = $directory['path'];
+                if (\is_string($path = \realpath($directory['path']))) {
+                    $files[] = \sprintf('%s/', $path);
+                }
             }
         }
 
