@@ -339,7 +339,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $argumentsValid = true;
         } elseif (\is_string($theClass) &&
             $theClass !== '' &&
-            \class_exists($theClass, false)) {
+            \class_exists($theClass, true)) {
             $argumentsValid = true;
 
             if ($name == '') {
@@ -358,9 +358,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
 
         if (!$theClass->isSubclassOf(TestCase::class)) {
-            throw new Exception(
-                'Class "' . $theClass->name . '" does not extend PHPUnit\Framework\TestCase.'
-            );
+            $this->setName($theClass);
+
+            return;
         }
 
         if ($name != '') {

@@ -26,6 +26,18 @@ class TestSuiteTest extends TestCase
         $this->result = null;
     }
 
+    /**
+     * @testdox TestSuite can be created with name of existing non-TestCase class
+     */
+    public function testSuiteNameCanBeSameAsExistingNonTestClassName(): void
+    {
+        $suite = new TestSuite('stdClass');
+        $suite->addTestSuite(\OneTestCase::class);
+        $suite->run($this->result);
+
+        $this->assertCount(1, $this->result);
+    }
+
     public function testAddTestSuite(): void
     {
         $suite = new TestSuite(\OneTestCase::class);
@@ -55,13 +67,6 @@ class TestSuiteTest extends TestCase
         $this->assertEquals(0, $this->result->failureCount());
         $this->assertEquals(1, $this->result->warningCount());
         $this->assertCount(1, $this->result);
-    }
-
-    public function testNoTestCaseClass(): void
-    {
-        $this->expectException(Exception::class);
-
-        new TestSuite(\NoTestCaseClass::class);
     }
 
     public function testNotPublicTestCase(): void
