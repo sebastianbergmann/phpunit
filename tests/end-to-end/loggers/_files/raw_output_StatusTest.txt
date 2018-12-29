@@ -41,8 +41,53 @@ Runtime:       %s
    [33m│[0m %stests[2m%e[22mend-to-end[2m%e[22mloggers[2m%e[22m_files[2m%e[22mStatusTest.php[2m:[22m[34m48[0m
    [33m│[0m 
 
+ [32m✔[0m Success with message [32m %f ms[0m
+ [31m✘[0m Failure with message [31m %f ms[0m
+   [31m│[0m
+   [31m│[0m [41;37mfailure with custom message%w[0m
+   [31m│[0m [41;37mFailed asserting that false is true.[0m
+   [31m│[0m 
+   [31m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m58[0m
+   [31m│[0m 
+
+ [33m✘[0m Error with message [33m %f ms[0m
+   [33m│[0m
+   [33m│[0m [43;30mRuntimeException: error with custom message[0m
+   [33m│[0m 
+   [33m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m63[0m
+   [33m│[0m 
+
+ [33m∅[0m Incomplete with message [33m %f ms[0m
+   [33m│[0m
+   [33m│[0m [33mincomplete with custom message[0m
+   [33m│[0m 
+   [33m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m68[0m
+   [33m│[0m 
+
+ [33m→[0m Skipped with message [33m %f ms[0m
+   [33m│[0m
+   [33m│[0m [33mskipped with custom message[0m
+   [33m│[0m 
+   [33m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m73[0m
+   [33m│[0m 
+
+ [33m☢[0m Risky with message [33m %f ms[0m
+   [33m│[0m
+   [33m│[0m [33mThis test did not perform any assertions%w[0m
+   [33m│[0m%w 
+   [33m│[0m [33m%stests%ebasic%eunit%eStatusTest.php:76[0m%w
+   [33m│[0m%w
+   [33m│[0m 
+
+ [33m✘[0m Warning with message [33m %f ms[0m
+   [33m│[0m
+   [33m│[0m [33mwarning with custom message[0m
+   [33m│[0m 
+   [33m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m83[0m
+   [33m│[0m 
+
 Time: %s, Memory: %s
 
 
 [37;41mERRORS![0m
-[37;41mTests: 7[0m[37;41m, Assertions: 2[0m[37;41m, Errors: 1[0m[37;41m, Failures: 1[0m[37;41m, Warnings: 1[0m[37;41m, Skipped: 1[0m[37;41m, Incomplete: 1[0m[37;41m, Risky: 1[0m[37;41m.[0m
+[37;41mTests: 14[0m[37;41m, Assertions: 4[0m[37;41m, Errors: 2[0m[37;41m, Failures: 2[0m[37;41m, Warnings: 2[0m[37;41m, Skipped: 2[0m[37;41m, Incomplete: 2[0m[37;41m, Risky: 2[0m[37;41m.[0m

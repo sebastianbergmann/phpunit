@@ -47,4 +47,39 @@ class StatusTest extends TestCase
     {
         throw new Warning;
     }
+
+    public function testSuccessWithMessage(): void
+    {
+        $this->assertTrue(true, '"success with custom message"');
+    }
+
+    public function testFailureWithMessage(): void
+    {
+        $this->assertTrue(false, 'failure with custom message');
+    }
+
+    public function testErrorWithMessage(): void
+    {
+        throw new \RuntimeException('error with custom message');
+    }
+
+    public function testIncompleteWithMessage(): void
+    {
+        $this->markTestIncomplete('incomplete with custom message');
+    }
+
+    public function testSkippedWithMessage(): void
+    {
+        $this->markTestSkipped('skipped with custom message');
+    }
+
+    public function testRiskyWithMessage(): void
+    {
+        $this->markAsRisky('risky with custom message');
+    }
+
+    public function testWarningWithMessage(): void
+    {
+        throw new Warning('warning with custom message');
+    }
 }
