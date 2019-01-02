@@ -74,6 +74,7 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires function testFunc2
+     *
      * @see https://github.com/sebastianbergmann/phpunit/issues/3459
      */
     public function testRequiresFunctionWithDigit(): void
