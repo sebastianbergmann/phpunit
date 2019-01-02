@@ -76,7 +76,7 @@ class RequirementsTest extends TestCase
      * @requires function testFunc2
      * @see https://github.com/sebastianbergmann/phpunit/issues/3459
      */
-    public function testRequireFunctionWithDigit(): void
+    public function testRequiresFunctionWithDigit(): void
     {
     }
 
@@ -102,7 +102,7 @@ class RequirementsTest extends TestCase
      * @requires function testFuncOne
      * @requires function testFunc2
      * @requires extension testExtOne
-     * @requires extension testExtTwo
+     * @requires extension testExt2
      * @requires extension testExtThree 2.0
      * @requires setting not_a_setting Off
      */
