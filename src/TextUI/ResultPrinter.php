@@ -505,7 +505,7 @@ class ResultPrinter extends Printer implements TestListener
      * Formats a buffer with a specified ANSI color sequence if colors are
      * enabled.
      */
-    protected function formatWithColor(string $color, string $buffer): string
+    protected function colorizeTextBox(string $color, string $buffer): string
     {
         if (!$this->colors) {
             return $buffer;
@@ -528,7 +528,7 @@ class ResultPrinter extends Printer implements TestListener
      */
     protected function writeWithColor(string $color, string $buffer, bool $lf = true): void
     {
-        $this->write($this->formatWithColor($color, $buffer));
+        $this->write($this->colorizeTextBox($color, $buffer));
 
         if ($lf) {
             $this->write("\n");
@@ -540,7 +540,7 @@ class ResultPrinter extends Printer implements TestListener
      */
     protected function writeProgressWithColor(string $color, string $buffer): void
     {
-        $buffer = $this->formatWithColor($color, $buffer);
+        $buffer = $this->colorizeTextBox($color, $buffer);
         $this->writeProgress($buffer);
     }
 
