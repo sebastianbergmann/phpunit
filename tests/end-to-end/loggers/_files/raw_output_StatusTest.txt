@@ -23,10 +23,10 @@ Runtime:       %s
    [33m│[0m %stests[2m%e[22mend-to-end[2m%e[22mloggers[2m%e[22m_files[2m%e[22mStatusTest.php[2m:[22m[34m34[0m
    [33m│[0m 
 
- [33m→[0m Skipped [33m %f ms[0m
-   [33m│[0m
-   [33m│[0m %stests[2m%e[22mend-to-end[2m%e[22mloggers[2m%e[22m_files[2m%e[22mStatusTest.php[2m:[22m[34m39[0m
-   [33m│[0m 
+ [36m↩[0m Skipped [36m %f ms[0m
+   [36m│[0m
+   [36m│[0m %stests[2m%e[22mend-to-end[2m%e[22mloggers[2m%e[22m_files[2m%e[22mStatusTest.php[2m:[22m[34m39[0m
+   [36m│[0m 
 
  [33m☢[0m Risky [33m %f ms[0m
    [33m│[0m
@@ -36,7 +36,7 @@ Runtime:       %s
    [33m│[0m%w
    [33m│[0m 
 
- [33m✘[0m Warning [33m %f ms[0m
+ [33m⚠[0m Warning [33m %f ms[0m
    [33m│[0m
    [33m│[0m %stests[2m%e[22mend-to-end[2m%e[22mloggers[2m%e[22m_files[2m%e[22mStatusTest.php[2m:[22m[34m48[0m
    [33m│[0m 

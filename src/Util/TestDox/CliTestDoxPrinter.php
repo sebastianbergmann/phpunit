@@ -43,9 +43,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
             'message' => 'bg-red,fg-white',
         ],
         BaseTestRunner::STATUS_SKIPPED => [
-            'symbol'  => '→',
-            'color'   => 'fg-yellow',
-            'message' => 'fg-yellow',
+            'symbol'  => '↩',
+            'color'   => 'fg-cyan',
+            'message' => 'fg-cyan',
         ],
         BaseTestRunner::STATUS_RISKY => [
             'symbol'  => '☢',
@@ -58,7 +58,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
             'message' => 'fg-yellow',
         ],
         BaseTestRunner::STATUS_WARNING => [
-            'symbol'  => '✘',
+            'symbol'  => '⚠',
             'color'   => 'fg-yellow',
             'message' => 'fg-yellow',
         ],
@@ -120,7 +120,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
         // suite header
         if ($prevResult['className'] !== $result['className']) {
-            $this->write($this->formatWithColor('underlined', $result['className']) . "\n");
+            $this->write($this->colorizeTextBox('underlined', $result['className']) . "\n");
         }
 
         // test result line
@@ -132,7 +132,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         $style = $this->statusStyles[$result['status']];
         $line  = \sprintf(
             " %s %s%s\n",
-            $this->formatWithColor($style['color'], $style['symbol']),
+            $this->colorizeTextBox($style['color'], $style['symbol']),
             $testName,
             $this->verbose ? ' ' . $this->formatRuntime($result['time'], $style['color']) : ''
             );
@@ -145,17 +145,56 @@ class CliTestDoxPrinter extends TestDoxPrinter
     protected function formatThrowable(\Throwable $t, ?int $status = null): string
     {
         $message = \trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
-        $message = \implode(\PHP_EOL, \array_map('\trim', \explode(\PHP_EOL, $message)));
 
         if ($message) {
             if ($this->colors) {
                 $style   = $this->statusStyles[$status]['message'] ?? '';
-                $message = $this->formatWithColor($style, $message);
+                $message = $this->colorizeMessageAndDiff($style, $message);
             }
 
             $message .= "\n\n" . $this->formatStacktrace($t);
         } else {
             $message = $this->formatStacktrace($t);
+        }
+
+        return $message;
+    }
+
+    protected function colorizeMessageAndDiff(string $style, string $message): string
+    {
+        $lines   = $message ?\array_map('\rtrim', \explode(\PHP_EOL, $message)) : [];
+        $throwable  = [];
+        $diff       = [];
+        $insideDiff = false;
+
+        foreach ($lines as $line) {
+            if ($line === '--- Expected') {
+                $insideDiff = true;
+            }
+
+            if (!$insideDiff) {
+                $throwable[] = $line;
+            } else {
+                if (\substr($line, 0, 1) === '-') {
+                    $line = Color::colorize('fg-red', $line);
+                } elseif (\substr($line, 0, 1) === '+') {
+                    $line = Color::colorize('fg-green', $line);
+                } elseif ($line === '@@ @@') {
+                    $line = Color::colorize('fg-cyan', $line);
+                }
+                $diff[] = $line;
+            }
+        }
+
+        if (!empty($throwable)) {
+            $message = $this->colorizeTextBox($style, \implode(\PHP_EOL, $throwable));
+        }
+
+        if (!empty($diff)) {
+            if ($message) {
+                $message .= \PHP_EOL;
+            }
+            $message .= \implode(\PHP_EOL, $diff);
         }
 
         return $message;

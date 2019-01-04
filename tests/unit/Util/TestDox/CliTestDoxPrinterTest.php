@@ -88,13 +88,13 @@ final class CliTestDoxPrinterTest extends TestCase
         $this->assertStringContainsString('│', $this->printer->getBuffer());
     }
 
-    public function testPrintsCrossForTestWithWarning(): void
+    public function testPrintsWarningTriangleForTestWithWarning(): void
     {
         $this->printer->startTest($this);
         $this->printer->addWarning($this, new Warning, 0);
         $this->printer->endTest($this, 0.001);
 
-        $this->assertStringContainsString('✘', $this->printer->getBuffer());
+        $this->assertStringContainsString('⚠', $this->printer->getBuffer());
     }
 
     public function testPrintsAdditionalInformationForTestWithWarning(): void
@@ -185,7 +185,7 @@ final class CliTestDoxPrinterTest extends TestCase
         $this->printer->addSkippedTest($this, new Exception, 0);
         $this->printer->endTest($this, 0.001);
 
-        $this->assertStringContainsString('→', $this->printer->getBuffer());
+        $this->assertStringContainsString('↩', $this->printer->getBuffer());
     }
 
     public function testDoesNotPrintAdditionalInformationForSkippedTestByDefault(): void
