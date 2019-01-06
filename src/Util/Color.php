@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-class Color
+final class Color
 {
     private const WHITESPACE_MAP = [
         ' '  => '·',
@@ -58,8 +58,7 @@ class Color
             return $buffer;
         }
 
-        $codes   = \array_map('\trim', \explode(',', $color));
-
+        $codes  = \array_map('\trim', \explode(',', $color));
         $styles = [];
 
         foreach ($codes as $code) {
@@ -92,9 +91,14 @@ class Color
 
         if ($colorizeFilename) {
             $last        = \count($path) - 1;
-            $path[$last] = \preg_replace_callback('/([\-_\.]+|phpt$)/', function ($matches) {
-                return self::dim($matches[0]);
-            }, $path[$last]);
+            $path[$last] = \preg_replace_callback(
+                '/([\-_\.]+|phpt$)/',
+                function ($matches)
+                {
+                    return self::dim($matches[0]);
+                },
+                $path[$last]
+            );
         }
 
         return self::optimizeColor(\implode(self::dim(\DIRECTORY_SEPARATOR), $path));
