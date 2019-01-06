@@ -19,9 +19,9 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Util\Color;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Printer;
-use PHPUnit\Util\TestDox\Color;
 use SebastianBergmann\Environment\Console;
 use SebastianBergmann\Timer\Timer;
 

@@ -14,6 +14,9 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 
+/**
+ * @group testdox
+ */
 final class CliTestDoxPrinterTest extends TestCase
 {
     /**

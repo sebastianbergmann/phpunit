@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Util\Color;
 use SebastianBergmann\Timer\Timer;
 
 /**
@@ -162,7 +163,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     protected function colorizeMessageAndDiff(string $style, string $message): string
     {
-        $lines   = $message ?\array_map('\rtrim', \explode(\PHP_EOL, $message)) : [];
+        $lines      = $message ?\array_map('\rtrim', \explode(\PHP_EOL, $message)) : [];
         $throwable  = [];
         $diff       = [];
         $insideDiff = false;

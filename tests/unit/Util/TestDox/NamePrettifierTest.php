@@ -11,6 +11,9 @@ namespace PHPUnit\Util\TestDox;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @group testdox
+ */
 class NamePrettifierTest extends TestCase
 {
     /**
