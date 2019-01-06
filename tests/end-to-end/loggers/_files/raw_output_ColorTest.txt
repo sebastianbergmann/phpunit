@@ -6,6 +6,8 @@ Runtime:       %s
  [32m✔[0m Colorize with [36mno[2m·[22mcolor[0m [32m %f ms[0m
  [32m✔[0m Colorize with [36mone[2m·[22mcolor[0m [32m %f ms[0m
  [32m✔[0m Colorize with [36mmultiple[2m·[22mcolors[0m [32m %f ms[0m
+ [32m✔[0m Colorize with [36minvalid[2m·[22mcolor[0m [32m %f ms[0m
+ [32m✔[0m Colorize with [36mvalid[2m·[22mand[2m·[22minvalid[2m·[22mcolors[0m [32m %f ms[0m
  [32m✔[0m Colorize path [36m%ephp%eunit%etest.phpt[0m after [36mNULL[0m [32m %f ms[0m
  [32m✔[0m Colorize path [36m%ephp%eunit%etest.phpt[0m after [36m[2;4mempty[0m[0m [32m %f ms[0m
  [32m✔[0m Colorize path [36m%ephp%eunit%etest.phpt[0m after [36m%e[0m [32m %f ms[0m
@@ -25,4 +27,4 @@ Runtime:       %s
 
 Time: %s, Memory: %s
 
-[30;42mOK (19 tests, 19 assertions)[0m
+[30;42mOK (21 tests, 21 assertions)[0m

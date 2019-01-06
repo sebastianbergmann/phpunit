@@ -19,6 +19,8 @@ Basic ANSI color highlighting support
  ✔ Colorize with no color
  ✔ Colorize with one color
  ✔ Colorize with multiple colors
+ ✔ Colorize with invalid color
+ ✔ Colorize with valid and invalid colors
  ✔ Colorize path %ephp%eunit%etest.phpt after NULL
  ✔ Colorize path %ephp%eunit%etest.phpt after ''
  ✔ Colorize path %ephp%eunit%etest.phpt after %e
@@ -39,4 +41,4 @@ Basic ANSI color highlighting support
 
 Time: %s, Memory: %s
 
-OK (19 tests, 19 assertions)
+OK (21 tests, 21 assertions)

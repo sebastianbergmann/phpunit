@@ -10,6 +10,7 @@
 namespace PHPUnit\Util\TestDox;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Color;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
