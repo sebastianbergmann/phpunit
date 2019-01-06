@@ -35,7 +35,7 @@ final class CliTestDoxPrinterColorTest extends TestCase
 
     public function testColorizesDiffInFailureMessage(): void
     {
-        $raw = "some message\n--- Expected\n+++ Actual\n@@ @@\n";
+        $raw     = \implode(\PHP_EOL, ['some message', '--- Expected', '+++ Actual', '@@ @@']);
         $failure = new AssertionFailedError($raw);
 
         $this->printer->startTest($this);
