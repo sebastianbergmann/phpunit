@@ -5,7 +5,7 @@ PHPT skip condition results in correct code location hint
 $arguments = [
     '--no-configuration',
     '--verbose',
-    \realpath(__DIR__ . '/../_files/phpt-file-section-location-hint-example.phpt'),
+    \realpath(__DIR__ . '/../_files/phpt-expect-location-hint-example.phpt'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
@@ -22,10 +22,10 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) %stests%eend-to-end%e_files%ephpt-file-section-location-hint-example.phpt
+1) %stests%eend-to-end%e_files%ephpt-expect-location-hint-example.phpt
 Failed asserting that two strings are equal.
 
-/Users/ewout/proj/phpunit/tests/end-to-end/_files/phpt-file-section-location-hint-example.phpt:10
+/Users/ewout/proj/phpunit/tests/end-to-end/_files/phpt-expect-location-hint-example.phpt:10
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.
