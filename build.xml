@@ -398,10 +398,6 @@
         <exec executable="${basedir}/build/tools/composer">
             <arg value="self-update"/>
         </exec>
-
-        <exec executable="${basedir}/build/tools/php-cs-fixer" taskname="php-cs-fixer" failonerror="true">
-            <arg value="selfupdate"/>
-        </exec>
     </target>
 
     <target name="-phploc" depends="prepare">
