@@ -11,9 +11,11 @@ namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
+use PHPUnit\Framework\PHPTAssertionFailedError;
+use PHPUnit\Framework\PHPTSkippedError;
 use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Framework\SkippedPHPTError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -175,7 +177,18 @@ class PhptTestCase implements Test, SelfDescribing
 
             if ($xfail !== false) {
                 $failure = new IncompleteTestError($xfail, 0, $e);
+            } else {
+                if ($e instanceof ExpectationFailedException) {
+                    /** @var ExpectationFailedException $e */
+                    if ($e->getComparisonFailure()) {
+                        $hint  = $this->getLocationHintFromDiff($e->getComparisonFailure()->getDiff(), $sections);
+                        $trace = \debug_backtrace();
+                        \array_unshift($trace, $hint);
+                        $failure = new PHPTAssertionFailedError($e->getMessage(), 0, $trace[0]['file'], $trace[0]['line'], $trace);
+                    }
+                }
             }
+
             $result->addFailure($this, $failure, $time);
         } catch (Throwable $t) {
             $result->addError($this, $t, $time);
@@ -328,14 +341,10 @@ class PhptTestCase implements Test, SelfDescribing
                 $message = \substr($skipMatch[1], 2);
             }
 
+            $hint  = $this->getLocationHint($message, $sections, 'SKIPIF');
             $trace = \debug_backtrace();
-            \array_unshift($trace, [
-                'file'     => "{$this->filename}",
-                'line'     => $this->findOffsetForLineInSection($message, 'SKIPIF', $sections),
-                'function' => 'PHPT_SKIPIF',
-                'args'     => [],
-            ]);
-            $result->addFailure($this, new SkippedPHPTError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace), 0);
+            \array_unshift($trace, $hint);
+            $result->addFailure($this, new PHPTSkippedError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace), 0);
             $result->endTest($this, 0);
 
             return true;
@@ -600,25 +609,84 @@ class PhptTestCase implements Test, SelfDescribing
         return $settings;
     }
 
-    private function findOffsetForLineInSection(string $needle, string $sectionName, array $sections): int
+    private function getLocationHintFromDiff(string $message, array $sections): array
+    {
+        $needle = '';
+
+        if (\preg_match("/--- Expected[^']+^-'([^']*)'/m", $message, $matches)) {
+            $needle = $matches[1];
+        }
+
+        return $this->getLocationHint($needle, $sections);
+    }
+
+    private function getLocationHint(string $needle, array $sections, ?string $sectionName = null): array
     {
         $needle = \trim($needle);
 
-        if (empty($needle) || !isset($sections[$sectionName])) {
-            return 0;
+        if (empty($needle)) {
+            return [
+                'file'     => $this->filename,
+                'line'     => 0,
+                'external' => false,
+            ];
         }
 
-        $sectionOffset = $sections[$sectionName . '_offset'] ?? 0;
-        $offset        = $sectionOffset;
+        if ($sectionName) {
+            $search = [$sectionName];
+        } else {
+            $search = [
+                // 'FILE',
+                'EXPECT',
+                'EXPECTF',
+                'EXPECTREGEX',
+            ];
+        }
 
-        foreach (\explode(\PHP_EOL, $sections[$sectionName]) as $line) {
-            if (\strpos($line, $needle) !== false) {
-                return $offset;
+        foreach ($search as $section) {
+            if (!isset($sections[$section])) {
+                continue;
             }
-            $offset++;
+
+            if (isset($sections[$section . '_EXTERNAL'])) {
+                return [
+                    'file'     => $sections[$section],
+                    'line'     => 0,
+                    'external' => true,
+                ];
+            }
+
+            $sectionOffset = $sections[$section . '_offset'] ?? 0;
+            $offset        = $sectionOffset + 1;
+
+            $lines = \explode(\PHP_EOL, $sections[$section]);
+
+            foreach ($lines as $line) {
+                if (\strpos($line, $needle) !== false) {
+                    return [
+                        'file'     => $this->filename,
+                        'line'     => $offset,
+                        'external' => false,
+                    ];
+                }
+                $offset++;
+            }
         }
 
-        // String not found, show user the start of the named section
-        return $sectionOffset;
+        if ($sectionName) {
+            // String not found in specified section, show user the start of the named section
+            return [
+                'file'     => $this->filename,
+                'line'     => $sectionOffset,
+                'external' => false,
+            ];
+        }
+
+        // No section specified, show user start of code
+        return [
+            'file'     => $this->filename,
+            'line'     => 0,
+            'external' => false,
+        ];
     }
 }
