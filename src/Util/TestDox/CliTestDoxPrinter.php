@@ -177,9 +177,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
                 $throwable[] = $line;
             } else {
                 if (\substr($line, 0, 1) === '-') {
-                    $line = Color::colorize('fg-red', $line);
+                    $line = Color::colorize('fg-red', Color::visualizeWhitespace($line, true));
                 } elseif (\substr($line, 0, 1) === '+') {
-                    $line = Color::colorize('fg-green', $line);
+                    $line = Color::colorize('fg-green', Color::visualizeWhitespace($line, true));
                 } elseif ($line === '@@ @@') {
                     $line = Color::colorize('fg-cyan', $line);
                 }

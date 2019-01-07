@@ -43,8 +43,8 @@ final class CliTestDoxPrinterColorTest extends TestCase
         $this->printer->endTest($this, 0.001);
 
         $this->assertStringContainsString(Color::colorize('bg-red,fg-white', 'some message'), $this->printer->getBuffer());
-        $this->assertStringContainsString(Color::colorize('fg-red', '--- Expected'), $this->printer->getBuffer());
-        $this->assertStringContainsString(Color::colorize('fg-green', '+++ Actual'), $this->printer->getBuffer());
+        $this->assertStringContainsString(Color::colorize('fg-red', '---' . Color::dim('·') . 'Expected'), $this->printer->getBuffer());
+        $this->assertStringContainsString(Color::colorize('fg-green', '+++' . Color::dim('·') . 'Actual'), $this->printer->getBuffer());
         $this->assertStringContainsString(Color::colorize('fg-cyan', '@@ @@'), $this->printer->getBuffer());
     }
 }
