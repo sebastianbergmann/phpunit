@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-class SkippedPHPTError extends SyntheticError implements SkippedTest
+class PHPTAssertionFailedError extends SyntheticError
 {
 }

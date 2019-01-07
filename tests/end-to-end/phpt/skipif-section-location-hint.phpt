@@ -5,7 +5,7 @@ PHPT skip condition results in correct code location hint
 $arguments = [
     '--no-configuration',
     '--verbose',
-    \realpath(__DIR__ . '/../_files/phpt-skip-location-hint-example.phpt'),
+    \realpath(__DIR__ . '/../_files/phpt-skipif-section-location-hint-example.phpt'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
@@ -22,10 +22,10 @@ Time: %s, Memory: %s
 
 There was 1 skipped test:
 
-1) %stests%eend-to-end%e_files%ephpt-skip-location-hint-example.phpt
+1) %stests%eend-to-end%e_files%ephpt-skipif-section-location-hint-example.phpt
 something terrible happened
 
-%stests%eend-to-end%e_files%ephpt-skip-location-hint-example.phpt:8
+%stests%eend-to-end%e_files%ephpt-skipif-section-location-hint-example.phpt:9
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 1, Skipped: 1.
