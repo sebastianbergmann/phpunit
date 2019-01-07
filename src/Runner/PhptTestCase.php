@@ -178,14 +178,12 @@ class PhptTestCase implements Test, SelfDescribing
             if ($xfail !== false) {
                 $failure = new IncompleteTestError($xfail, 0, $e);
             } else {
-                if ($e instanceof ExpectationFailedException) {
+                if ($e instanceof ExpectationFailedException && $e->getComparisonFailure()) {
                     /** @var ExpectationFailedException $e */
-                    if ($e->getComparisonFailure()) {
-                        $hint  = $this->getLocationHintFromDiff($e->getComparisonFailure()->getDiff(), $sections);
-                        $trace = \debug_backtrace();
-                        \array_unshift($trace, $hint);
-                        $failure = new PHPTAssertionFailedError($e->getMessage(), 0, $trace[0]['file'], $trace[0]['line'], $trace);
-                    }
+                    $hint  = $this->getLocationHintFromDiff($e->getComparisonFailure()->getDiff(), $sections);
+                    $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
+                    \array_unshift($trace, $hint);
+                    $failure = new PHPTAssertionFailedError($e->getMessage(), 0, $trace[0]['file'], $trace[0]['line'], $trace);
                 }
             }
 
@@ -342,7 +340,7 @@ class PhptTestCase implements Test, SelfDescribing
             }
 
             $hint  = $this->getLocationHint($message, $sections, 'SKIPIF');
-            $trace = \debug_backtrace();
+            $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
             \array_unshift($trace, $hint);
             $result->addFailure($this, new PHPTSkippedError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace), 0);
             $result->endTest($this, 0);
@@ -461,8 +459,6 @@ class PhptTestCase implements Test, SelfDescribing
                 }
 
                 $sections[$section] = \file_get_contents($testDirectory . $externalFilename);
-
-                unset($sections[$section . '_EXTERNAL']);
             }
         }
     }
@@ -626,9 +622,8 @@ class PhptTestCase implements Test, SelfDescribing
 
         if (empty($needle)) {
             return [
-                'file'     => $this->filename,
+                'file'     => \realpath($this->filename),
                 'line'     => 0,
-                'external' => false,
             ];
         }
 
@@ -649,10 +644,11 @@ class PhptTestCase implements Test, SelfDescribing
             }
 
             if (isset($sections[$section . '_EXTERNAL'])) {
+                $file = \trim($sections[$section . '_EXTERNAL']);
+
                 return [
-                    'file'     => $sections[$section],
-                    'line'     => 0,
-                    'external' => true,
+                    'file'     => \realpath(\dirname($this->filename) . \DIRECTORY_SEPARATOR . $file),
+                    'line'     => 1,
                 ];
             }
 
@@ -664,9 +660,8 @@ class PhptTestCase implements Test, SelfDescribing
             foreach ($lines as $line) {
                 if (\strpos($line, $needle) !== false) {
                     return [
-                        'file'     => $this->filename,
+                        'file'     => \realpath($this->filename),
                         'line'     => $offset,
-                        'external' => false,
                     ];
                 }
                 $offset++;
@@ -676,17 +671,15 @@ class PhptTestCase implements Test, SelfDescribing
         if ($sectionName) {
             // String not found in specified section, show user the start of the named section
             return [
-                'file'     => $this->filename,
+                'file'     => \realpath($this->filename),
                 'line'     => $sectionOffset,
-                'external' => false,
             ];
         }
 
         // No section specified, show user start of code
         return [
-            'file'     => $this->filename,
+            'file'     => \realpath($this->filename),
             'line'     => 0,
-            'external' => false,
         ];
     }
 }
