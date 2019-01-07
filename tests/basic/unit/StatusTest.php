@@ -12,6 +12,9 @@ namespace vendor\project;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 
+/**
+ * @testdox Test result status with and without message
+ */
 class StatusTest extends TestCase
 {
     public function testSuccess(): void
@@ -75,7 +78,7 @@ class StatusTest extends TestCase
 
     public function testRiskyWithMessage(): void
     {
-        $this->markAsRisky('risky with custom message');
+        // Custom messages not implemented for risky status
     }
 
     public function testWarningWithMessage(): void
