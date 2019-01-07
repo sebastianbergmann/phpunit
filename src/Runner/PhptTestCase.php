@@ -13,7 +13,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Framework\SkippedPHPTError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -328,7 +328,14 @@ class PhptTestCase implements Test, SelfDescribing
                 $message = \substr($skipMatch[1], 2);
             }
 
-            $result->addFailure($this, new SkippedTestError($message), 0);
+            $trace = \debug_backtrace();
+            \array_unshift($trace, [
+                'file'     => "{$this->filename}",
+                'line'     => $this->findOffsetForLineInSection($message, 'SKIPIF', $sections),
+                'function' => 'PHPT_SKIPIF',
+                'args'     => [],
+            ]);
+            $result->addFailure($this, new SkippedPHPTError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace), 0);
             $result->endTest($this, 0);
 
             return true;
@@ -374,10 +381,15 @@ class PhptTestCase implements Test, SelfDescribing
             'PHPDBG',
         ];
 
+        $lineNr = 0;
+
         foreach (\file($this->filename) as $line) {
+            $lineNr++;
+
             if (\preg_match('/^--([_A-Z]+)--/', $line, $result)) {
-                $section            = $result[1];
-                $sections[$section] = '';
+                $section                        = $result[1];
+                $sections[$section]             = '';
+                $sections[$section . '_offset'] = $lineNr;
 
                 continue;
             }
@@ -586,5 +598,27 @@ class PhptTestCase implements Test, SelfDescribing
         }
 
         return $settings;
+    }
+
+    private function findOffsetForLineInSection(string $needle, string $sectionName, array $sections): int
+    {
+        $needle = \trim($needle);
+
+        if (empty($needle) || !isset($sections[$sectionName])) {
+            return 0;
+        }
+
+        $sectionOffset = $sections[$sectionName . '_offset'] ?? 0;
+        $offset        = $sectionOffset;
+
+        foreach (\explode(\PHP_EOL, $sections[$sectionName]) as $line) {
+            if (\strpos($line, $needle) !== false) {
+                return $offset;
+            }
+            $offset++;
+        }
+
+        // String not found, show user the start of the named section
+        return $sectionOffset;
     }
 }
