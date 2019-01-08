@@ -14,8 +14,8 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\PHPTAssertionFailedError;
-use PHPUnit\Framework\PHPTSkippedError;
 use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -342,7 +342,7 @@ class PhptTestCase implements Test, SelfDescribing
             $hint  = $this->getLocationHint($message, $sections, 'SKIPIF');
             $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
             \array_unshift($trace, $hint);
-            $result->addFailure($this, new PHPTSkippedError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace), 0);
+            $result->addFailure($this, new SyntheticSkippedError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace), 0);
             $result->endTest($this, 0);
 
             return true;
