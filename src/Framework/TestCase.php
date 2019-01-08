@@ -1644,8 +1644,33 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         );
 
         if (!empty($missingRequirements)) {
-            $this->markTestSkipped(\implode(\PHP_EOL, $missingRequirements));
+            $this->markTestSkippedWithLocationHint($missingRequirements);
         }
+    }
+
+    private function markTestSkippedWithLocationHint(array $required): void
+    {
+        $file = null;
+        $line = null;
+
+        while (\strpos($required[0], '__OFFSET') !== false) {
+            $offset = \explode('=', \array_shift($required));
+
+            if ($offset[0] === '__OFFSET_FILE') {
+                $file = $offset[1];
+            }
+
+            if ($offset[0] === '__OFFSET_LINE') {
+                $line = $offset[1];
+            }
+        }
+
+        if ($file && $line) {
+            $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
+
+            throw new SyntheticSkippedError(\implode(\PHP_EOL, $required), 0, $file, $line, $trace);
+        }
+        $this->markTestSkipped(\implode(\PHP_EOL, $required));
     }
 
     private function verifyMockObjects(): void
