@@ -194,6 +194,8 @@ final class Test
 
             if (\preg_match(self::REGEX_REQUIRES_VERSION_CONSTRAINT, $line, $matches)) {
                 if (!empty($requires[$matches['name']])) {
+                    $offset++;
+
                     continue;
                 }
 
