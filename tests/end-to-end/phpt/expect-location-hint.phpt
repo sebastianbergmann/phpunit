@@ -25,7 +25,7 @@ There was 1 failure:
 1) %stests%eend-to-end%e_files%ephpt-expect-location-hint-example.phpt
 Failed asserting that two strings are equal.
 
-/Users/ewout/proj/phpunit/tests/end-to-end/_files/phpt-expect-location-hint-example.phpt:10
+%stests%eend-to-end%e_files%ephpt-expect-location-hint-example.phpt:10
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.
