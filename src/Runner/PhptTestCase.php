@@ -655,7 +655,7 @@ class PhptTestCase implements Test, SelfDescribing
             $sectionOffset = $sections[$section . '_offset'] ?? 0;
             $offset        = $sectionOffset + 1;
 
-            $lines = \explode(\PHP_EOL, $sections[$section]);
+            $lines = \preg_split('/\r\n|\r|\n/', $sections[$section]);
 
             foreach ($lines as $line) {
                 if (\strpos($line, $needle) !== false) {
