@@ -19,6 +19,12 @@ use PHPUnit\Framework\Warning;
 class TestTest extends TestCase
 {
     /**
+     * @var string
+     */
+    private $fileRequirementsTest;
+
+    /**
+     * @testdox Test::getRequirements() for $test
      * @dataProvider requirementsProvider
      *
      * @throws Warning
@@ -36,33 +42,155 @@ class TestTest extends TestCase
     public function requirementsProvider(): array
     {
         return [
-            ['testOne',    []],
-            ['testTwo',    ['PHPUnit'    => ['version' => '1.0', 'operator' => '']]],
-            ['testThree',  ['PHP'        => ['version' => '2.0', 'operator' => '']]],
-            ['testFour',   [
-                'PHPUnit'    => ['version' => '2.0', 'operator' => ''],
-                'PHP'        => ['version' => '1.0', 'operator' => ''],
-            ]],
-            ['testFive',   ['PHP'        => ['version' => '5.4.0RC6', 'operator' => '']]],
-            ['testSix',    ['PHP'        => ['version' => '5.4.0-alpha1', 'operator' => '']]],
-            ['testSeven',  ['PHP'        => ['version' => '5.4.0beta2', 'operator' => '']]],
-            ['testEight',  ['PHP'        => ['version' => '5.4-dev', 'operator' => '']]],
-            ['testNine',   ['functions'  => ['testFunc']]],
-            ['testTen',    ['extensions' => ['testExt']]],
-            ['testEleven', [
-                'OS'         => 'SunOS',
-                'OSFAMILY'   => 'Solaris',
-            ]],
+            [
+                'testOne',
+                ['__OFFSET' => [
+                    '__FILE' => $this->getRequirementsTestClassFile(),
+                ]],
+            ],
+
+            [
+                'testTwo',
+                [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 19,
+                    ],
+                    'PHPUnit' => ['version' => '1.0', 'operator' => ''],
+                ],
+            ],
+
+            [
+                'testThree',
+                [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 26,
+                    ],
+                    'PHP'        => ['version' => '2.0', 'operator' => ''],
+                ],
+            ],
+
+            [
+                'testFour',
+                [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 33,
+                        'PHP'     => 34,
+                    ],
+                    'PHPUnit'    => ['version' => '2.0', 'operator' => ''],
+                    'PHP'        => ['version' => '1.0', 'operator' => ''],
+                ],
+            ],
+
+            [
+                'testFive',
+                [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 41,
+                    ],
+                    'PHP'        => ['version' => '5.4.0RC6', 'operator' => ''],
+                ],
+            ],
+
+            [
+                'testSix',
+                [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 48,
+                    ],
+                    'PHP'        => ['version' => '5.4.0-alpha1', 'operator' => ''],
+                ],
+            ],
+
+            [
+                'testSeven',
+                [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 55,
+                    ],
+                    'PHP'        => ['version' => '5.4.0beta2', 'operator' => ''],
+                ],
+            ],
+
+            [
+                'testEight',
+                [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 62,
+                    ],
+                    'PHP'        => ['version' => '5.4-dev', 'operator' => ''],
+                ],
+            ],
+
+            [
+                'testNine',
+                [
+                    '__OFFSET' => [
+                        '__FILE'            => $this->getRequirementsTestClassFile(),
+                        'function_testFunc' => 69,
+                    ],
+                    'functions'  => ['testFunc'],
+                ],
+            ],
+
+            [
+                'testTen',
+                [
+                    '__OFFSET' => [
+                        '__FILE'            => $this->getRequirementsTestClassFile(),
+                        'extension_testExt' => 85,
+                    ],
+                    'extensions' => ['testExt'],
+                ],
+            ],
+
+            [
+                'testEleven',
+                [
+                    '__OFFSET' => [
+                        '__FILE'   => $this->getRequirementsTestClassFile(),
+                        'OS'       => 92,
+                        'OSFAMILY' => 93,
+                    ],
+                    'OS'         => 'SunOS',
+                    'OSFAMILY'   => 'Solaris',
+                ],
+            ],
+
             [
                 'testSpace',
                 [
+                    '__OFFSET' => [
+                        '__FILE'        => $this->getRequirementsTestClassFile(),
+                        'extension_spl' => 171,
+                        'OS'            => 172,
+                    ],
                     'extensions' => ['spl'],
                     'OS'         => '.*',
                 ],
             ],
+
             [
                 'testAllPossibleRequirements',
                 [
+                    '__OFFSET' => [
+                        '__FILE'                  => $this->getRequirementsTestClassFile(),
+                        'PHP'                     => 100,
+                        'PHPUnit'                 => 101,
+                        'OS'                      => 102,
+                        'function_testFuncOne'    => 103,
+                        'function_testFunc2'      => 104,
+                        'extension_testExtOne'    => 105,
+                        'extension_testExt2'      => 106,
+                        'extension_testExtThree'  => 107,
+                        '__SETTING_not_a_setting' => 108,
+                    ],
                     'PHP'       => ['version' => '99-dev', 'operator' => ''],
                     'PHPUnit'   => ['version' => '9-dev', 'operator' => ''],
                     'OS'        => 'DOESNOTEXIST',
@@ -83,146 +211,255 @@ class TestTest extends TestCase
                     ],
                 ],
             ],
+
             ['testSpecificExtensionVersion',
                 [
+                    '__OFFSET' => [
+                        '__FILE'            => $this->getRequirementsTestClassFile(),
+                        'extension_testExt' => 179,
+                    ],
                     'extension_versions' => ['testExt' => ['version' => '1.8.0', 'operator' => '']],
                     'extensions'         => ['testExt'],
                 ],
             ],
             ['testPHPVersionOperatorLessThan',
                 [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 187,
+                    ],
                     'PHP' => ['version' => '5.4', 'operator' => '<'],
                 ],
             ],
             ['testPHPVersionOperatorLessThanEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 195,
+                    ],
                     'PHP' => ['version' => '5.4', 'operator' => '<='],
                 ],
             ],
             ['testPHPVersionOperatorGreaterThan',
                 [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 203,
+                    ],
                     'PHP' => ['version' => '99', 'operator' => '>'],
                 ],
             ],
             ['testPHPVersionOperatorGreaterThanEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 211,
+                    ],
                     'PHP' => ['version' => '99', 'operator' => '>='],
                 ],
             ],
             ['testPHPVersionOperatorEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 219,
+                    ],
                     'PHP' => ['version' => '5.4', 'operator' => '='],
                 ],
             ],
             ['testPHPVersionOperatorDoubleEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 227,
+                    ],
                     'PHP' => ['version' => '5.4', 'operator' => '=='],
                 ],
             ],
             ['testPHPVersionOperatorBangEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 235,
+                    ],
                     'PHP' => ['version' => '99', 'operator' => '!='],
                 ],
             ],
             ['testPHPVersionOperatorNotEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 243,
+                    ],
                     'PHP' => ['version' => '99', 'operator' => '<>'],
                 ],
             ],
             ['testPHPVersionOperatorNoSpace',
                 [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                        'PHP'    => 251,
+                    ],
                     'PHP' => ['version' => '99', 'operator' => '>='],
                 ],
             ],
             ['testPHPUnitVersionOperatorLessThan',
                 [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 259,
+                    ],
                     'PHPUnit' => ['version' => '1.0', 'operator' => '<'],
                 ],
             ],
             ['testPHPUnitVersionOperatorLessThanEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 267,
+                    ],
                     'PHPUnit' => ['version' => '1.0', 'operator' => '<='],
                 ],
             ],
             ['testPHPUnitVersionOperatorGreaterThan',
                 [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 275,
+                    ],
                     'PHPUnit' => ['version' => '99', 'operator' => '>'],
                 ],
             ],
             ['testPHPUnitVersionOperatorGreaterThanEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 283,
+                    ],
                     'PHPUnit' => ['version' => '99', 'operator' => '>='],
                 ],
             ],
             ['testPHPUnitVersionOperatorEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 291,
+                    ],
                     'PHPUnit' => ['version' => '1.0', 'operator' => '='],
                 ],
             ],
             ['testPHPUnitVersionOperatorDoubleEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 299,
+                    ],
                     'PHPUnit' => ['version' => '1.0', 'operator' => '=='],
                 ],
             ],
             ['testPHPUnitVersionOperatorBangEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 307,
+                    ],
                     'PHPUnit' => ['version' => '99', 'operator' => '!='],
                 ],
             ],
             ['testPHPUnitVersionOperatorNotEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 315,
+                    ],
                     'PHPUnit' => ['version' => '99', 'operator' => '<>'],
                 ],
             ],
             ['testPHPUnitVersionOperatorNoSpace',
                 [
+                    '__OFFSET' => [
+                        '__FILE'  => $this->getRequirementsTestClassFile(),
+                        'PHPUnit' => 323,
+                    ],
                     'PHPUnit' => ['version' => '99', 'operator' => '>='],
                 ],
             ],
             ['testExtensionVersionOperatorLessThanEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'               => $this->getRequirementsTestClassFile(),
+                        'extension_testExtOne' => 337,
+                    ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '<=']],
                 ],
             ],
             ['testExtensionVersionOperatorGreaterThan',
                 [
+                    '__OFFSET' => [
+                        '__FILE'               => $this->getRequirementsTestClassFile(),
+                        'extension_testExtOne' => 344,
+                    ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>']],
                 ],
             ],
             ['testExtensionVersionOperatorGreaterThanEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'               => $this->getRequirementsTestClassFile(),
+                        'extension_testExtOne' => 351,
+                    ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']],
                 ],
             ],
             ['testExtensionVersionOperatorEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'               => $this->getRequirementsTestClassFile(),
+                        'extension_testExtOne' => 358,
+                    ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '=']],
                 ],
             ],
             ['testExtensionVersionOperatorDoubleEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'               => $this->getRequirementsTestClassFile(),
+                        'extension_testExtOne' => 365,
+                    ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '==']],
                 ],
             ],
             ['testExtensionVersionOperatorBangEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'               => $this->getRequirementsTestClassFile(),
+                        'extension_testExtOne' => 372,
+                    ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '!=']],
                 ],
             ],
             ['testExtensionVersionOperatorNotEquals',
                 [
+                    '__OFFSET' => [
+                        '__FILE'               => $this->getRequirementsTestClassFile(),
+                        'extension_testExtOne' => 379,
+                    ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '<>']],
                 ],
             ],
             ['testExtensionVersionOperatorNoSpace',
                 [
+                    '__OFFSET' => [
+                        '__FILE'               => $this->fileRequirementsTest,
+                        'extension_testExtOne' => 386,
+                    ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']],
                 ],
@@ -231,6 +468,7 @@ class TestTest extends TestCase
     }
 
     /**
+     * @testdox Test::getRequirements() with constraints for $test
      * @dataProvider requirementsWithVersionConstraintsProvider
      *
      * @throws Exception
@@ -388,7 +626,20 @@ class TestTest extends TestCase
 
     public function testGetRequirementsMergesClassAndMethodDocBlocks(): void
     {
+        $reflector = new \ReflectionClass(\RequirementsClassDocBlockTest::class);
+        $file      = $reflector->getFileName();
+
         $expectedAnnotations = [
+            '__OFFSET' => [
+                '__FILE'                  => $file,
+                'PHP'                     => 21,
+                'PHPUnit'                 => 22,
+                'OS'                      => 23,
+                'function_testFuncClass'  => 15,
+                'extension_testExtClass'  => 16,
+                'function_testFuncMethod' => 24,
+                'extension_testExtMethod' => 25,
+            ],
             'PHP'       => ['version' => '5.4', 'operator' => ''],
             'PHPUnit'   => ['version' => '3.7', 'operator' => ''],
             'OS'        => 'WINNT',
@@ -409,6 +660,7 @@ class TestTest extends TestCase
     }
 
     /**
+     * @testdox Test::getMissingRequirements() for $test
      * @dataProvider missingRequirementsProvider
      *
      * @throws Warning
@@ -427,12 +679,34 @@ class TestTest extends TestCase
     {
         return [
             ['testOne',            []],
-            ['testNine',           ['Function testFunc is required.']],
-            ['testTen',            ['Extension testExt is required.']],
-            ['testAlwaysSkip',     ['PHPUnit >= 1111111 is required.']],
-            ['testAlwaysSkip2',    ['PHP >= 9999999 is required.']],
-            ['testAlwaysSkip3',    ['Operating system matching /DOESNOTEXIST/i is required.']],
+            ['testNine',           [
+                '__OFFSET_LINE=69',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'Function testFunc is required.',
+            ]],
+            ['testTen',            [
+                '__OFFSET_LINE=85',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'Extension testExt is required.',
+            ]],
+            ['testAlwaysSkip',     [
+                '__OFFSET_LINE=143',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHPUnit >= 1111111 is required.',
+            ]],
+            ['testAlwaysSkip2',    [
+                '__OFFSET_LINE=150',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHP >= 9999999 is required.',
+            ]],
+            ['testAlwaysSkip3',    [
+                '__OFFSET_LINE=157',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'Operating system matching /DOESNOTEXIST/i is required.',
+            ]],
             ['testAllPossibleRequirements', [
+                '__OFFSET_LINE=100',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP >= 99-dev is required.',
                 'PHPUnit >= 9-dev is required.',
                 'Operating system matching /DOESNOTEXIST/i is required.',
@@ -443,32 +717,120 @@ class TestTest extends TestCase
                 'Extension testExt2 is required.',
                 'Extension testExtThree >= 2.0 is required.',
             ]],
-            ['testPHPVersionOperatorLessThan', ['PHP < 5.4 is required.']],
-            ['testPHPVersionOperatorLessThanEquals', ['PHP <= 5.4 is required.']],
-            ['testPHPVersionOperatorGreaterThan', ['PHP > 99 is required.']],
-            ['testPHPVersionOperatorGreaterThanEquals', ['PHP >= 99 is required.']],
-            ['testPHPVersionOperatorNoSpace', ['PHP >= 99 is required.']],
-            ['testPHPVersionOperatorEquals', ['PHP = 5.4 is required.']],
-            ['testPHPVersionOperatorDoubleEquals', ['PHP == 5.4 is required.']],
-            ['testPHPUnitVersionOperatorLessThan', ['PHPUnit < 1.0 is required.']],
-            ['testPHPUnitVersionOperatorLessThanEquals', ['PHPUnit <= 1.0 is required.']],
-            ['testPHPUnitVersionOperatorGreaterThan', ['PHPUnit > 99 is required.']],
-            ['testPHPUnitVersionOperatorGreaterThanEquals', ['PHPUnit >= 99 is required.']],
-            ['testPHPUnitVersionOperatorEquals', ['PHPUnit = 1.0 is required.']],
-            ['testPHPUnitVersionOperatorDoubleEquals', ['PHPUnit == 1.0 is required.']],
-            ['testPHPUnitVersionOperatorNoSpace', ['PHPUnit >= 99 is required.']],
-            ['testExtensionVersionOperatorLessThan', ['Extension testExtOne < 1.0 is required.']],
-            ['testExtensionVersionOperatorLessThanEquals', ['Extension testExtOne <= 1.0 is required.']],
-            ['testExtensionVersionOperatorGreaterThan', ['Extension testExtOne > 99 is required.']],
-            ['testExtensionVersionOperatorGreaterThanEquals', ['Extension testExtOne >= 99 is required.']],
-            ['testExtensionVersionOperatorEquals', ['Extension testExtOne = 1.0 is required.']],
-            ['testExtensionVersionOperatorDoubleEquals', ['Extension testExtOne == 1.0 is required.']],
-            ['testExtensionVersionOperatorNoSpace', ['Extension testExtOne >= 99 is required.']],
+            ['testPHPVersionOperatorLessThan', [
+                '__OFFSET_LINE=187',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHP < 5.4 is required.',
+            ]],
+            ['testPHPVersionOperatorLessThanEquals', [
+                '__OFFSET_LINE=195',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHP <= 5.4 is required.',
+            ]],
+            ['testPHPVersionOperatorGreaterThan', [
+                '__OFFSET_LINE=203',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHP > 99 is required.',
+            ]],
+            ['testPHPVersionOperatorGreaterThanEquals', [
+                '__OFFSET_LINE=211',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHP >= 99 is required.',
+            ]],
+            ['testPHPVersionOperatorNoSpace', [
+                '__OFFSET_LINE=251',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHP >= 99 is required.',
+            ]],
+            ['testPHPVersionOperatorEquals', [
+                '__OFFSET_LINE=219',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHP = 5.4 is required.',
+            ]],
+            ['testPHPVersionOperatorDoubleEquals', [
+                '__OFFSET_LINE=227',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHP == 5.4 is required.',
+            ]],
+            ['testPHPUnitVersionOperatorLessThan', [
+                '__OFFSET_LINE=259',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHPUnit < 1.0 is required.',
+            ]],
+            ['testPHPUnitVersionOperatorLessThanEquals', [
+                '__OFFSET_LINE=267',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHPUnit <= 1.0 is required.',
+            ]],
+            ['testPHPUnitVersionOperatorGreaterThan', [
+                '__OFFSET_LINE=275',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHPUnit > 99 is required.',
+            ]],
+            ['testPHPUnitVersionOperatorGreaterThanEquals', [
+                '__OFFSET_LINE=283',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHPUnit >= 99 is required.',
+            ]],
+            ['testPHPUnitVersionOperatorEquals', [
+                '__OFFSET_LINE=291',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHPUnit = 1.0 is required.',
+            ]],
+            ['testPHPUnitVersionOperatorDoubleEquals', [
+                '__OFFSET_LINE=299',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHPUnit == 1.0 is required.',
+            ]],
+            ['testPHPUnitVersionOperatorNoSpace', [
+                '__OFFSET_LINE=323',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'PHPUnit >= 99 is required.',
+            ]],
+            ['testExtensionVersionOperatorLessThan', [
+                '__OFFSET_LINE=330',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'Extension testExtOne < 1.0 is required.',
+            ]],
+            ['testExtensionVersionOperatorLessThanEquals', [
+                '__OFFSET_LINE=337',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'Extension testExtOne <= 1.0 is required.',
+            ]],
+            ['testExtensionVersionOperatorGreaterThan', [
+                '__OFFSET_LINE=344',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'Extension testExtOne > 99 is required.',
+            ]],
+            ['testExtensionVersionOperatorGreaterThanEquals', [
+                '__OFFSET_LINE=351',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'Extension testExtOne >= 99 is required.',
+            ]],
+            ['testExtensionVersionOperatorEquals', [
+                '__OFFSET_LINE=358',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'Extension testExtOne = 1.0 is required.',
+            ]],
+            ['testExtensionVersionOperatorDoubleEquals', [
+                '__OFFSET_LINE=365',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'Extension testExtOne == 1.0 is required.',
+            ]],
+            ['testExtensionVersionOperatorNoSpace', [
+                '__OFFSET_LINE=386',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
+                'Extension testExtOne >= 99 is required.',
+            ]],
             ['testVersionConstraintTildeMajor', [
+                '__OFFSET_LINE=393',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP version does not match the required constraint ~1.0.',
                 'PHPUnit version does not match the required constraint ~2.0.',
             ]],
             ['testVersionConstraintCaretMajor', [
+                '__OFFSET_LINE=401',
+                '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP version does not match the required constraint ^1.0.',
                 'PHPUnit version does not match the required constraint ^2.0.',
             ]],
@@ -959,5 +1321,15 @@ class TestTest extends TestCase
                 'testOne'
             )
         );
+    }
+
+    private function getRequirementsTestClassFile(): string
+    {
+        if (!$this->fileRequirementsTest) {
+            $reflector                  = new \ReflectionClass(\RequirementsTest::class);
+            $this->fileRequirementsTest = \realpath($reflector->getFileName());
+        }
+
+        return $this->fileRequirementsTest;
     }
 }
