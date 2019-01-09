@@ -18,11 +18,50 @@ class XDebugFilterScriptGeneratorTest extends TestCase
      */
     public function testReturnsExpectedScript(): void
     {
+        $expectedDirectory = \sprintf('%s/', __DIR__);
+        $expected          = <<<EOF
+<?php declare(strict_types=1);
+if (!\\function_exists('xdebug_set_filter')) {
+    return;
+}
+
+\\xdebug_set_filter(
+    \\XDEBUG_FILTER_CODE_COVERAGE,
+    \\XDEBUG_PATH_WHITELIST,
+    [
+        '$expectedDirectory',
+        '$expectedDirectory',
+        '$expectedDirectory',
+        'src/foo.php',
+        'src/bar.php'
+    ]
+);
+
+EOF;
+
+        $directoryPathThatDoesNotExist = \sprintf('%s/path/that/does/not/exist', __DIR__);
+        $this->assertDirectoryNotExists($directoryPathThatDoesNotExist);
+
         $filterConfiguration = [
             'include' => [
                 'directory' => [
                     [
-                        'path'   => 'src/somePath',
+                        'path'   => __DIR__,
+                        'suffix' => '.php',
+                        'prefix' => '',
+                    ],
+                    [
+                        'path'   => \sprintf('%s/', __DIR__),
+                        'suffix' => '.php',
+                        'prefix' => '',
+                    ],
+                    [
+                        'path'   => \sprintf('%s/./%s', \dirname(__DIR__), \basename(__DIR__)),
+                        'suffix' => '.php',
+                        'prefix' => '',
+                    ],
+                    [
+                        'path'   => $directoryPathThatDoesNotExist,
                         'suffix' => '.php',
                         'prefix' => '',
                     ],
@@ -41,6 +80,6 @@ class XDebugFilterScriptGeneratorTest extends TestCase
         $writer = new XdebugFilterScriptGenerator;
         $actual = $writer->generate($filterConfiguration);
 
-        $this->assertStringEqualsFile(__DIR__ . '/_files/expectedXDebugFilterScript.txt', $actual);
+        $this->assertSame($expected, $actual);
     }
 }
