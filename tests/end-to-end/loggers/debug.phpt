@@ -1,5 +1,5 @@
 --TEST--
-phpunit --debug BankAccountTest ../../_files/BankAccountTest.php
+phpunit --debug -c tests/basic/configuration.basic.xml
 --FILE--
 <?php
 require_once(__DIR__ . '/../../bootstrap.php');
