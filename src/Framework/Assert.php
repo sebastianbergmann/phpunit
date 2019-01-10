@@ -3000,6 +3000,12 @@ abstract class Assert
      */
     public static function markTestSkipped(string $message = ''): void
     {
+        if ($hint = self::detectLocationHint($message)) {
+            $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
+
+            throw new SyntheticSkippedError($hint['message'], 0, $hint['file'], $hint['line'], $trace);
+        }
+
         throw new SkippedTestError($message);
     }
 
@@ -3017,6 +3023,30 @@ abstract class Assert
     public static function resetCount(): void
     {
         self::$count = 0;
+    }
+
+    private static function detectLocationHint(string $message): ?array
+    {
+        $hint  = null;
+        $lines = \preg_split('/\r\n|\r|\n/', $message);
+
+        while (\strpos($lines[0], '__OFFSET') !== false) {
+            $offset = \explode('=', \array_shift($lines));
+
+            if ($offset[0] === '__OFFSET_FILE') {
+                $hint['file'] = $offset[1];
+            }
+
+            if ($offset[0] === '__OFFSET_LINE') {
+                $hint['line'] = $offset[1];
+            }
+        }
+
+        if ($hint) {
+            $hint['message'] = \implode(\PHP_EOL, $lines);
+        }
+
+        return $hint;
     }
 
     private static function isValidAttributeName(string $attributeName): bool
