@@ -647,8 +647,8 @@ class PhptTestCase implements Test, SelfDescribing
                 $file = \trim($sections[$section . '_EXTERNAL']);
 
                 return [
-                    'file'     => \realpath(\dirname($this->filename) . \DIRECTORY_SEPARATOR . $file),
-                    'line'     => 1,
+                    'file' => \realpath(\dirname($this->filename) . \DIRECTORY_SEPARATOR . $file),
+                    'line' => 1,
                 ];
             }
 
@@ -660,8 +660,8 @@ class PhptTestCase implements Test, SelfDescribing
             foreach ($lines as $line) {
                 if (\strpos($line, $needle) !== false) {
                     return [
-                        'file'     => \realpath($this->filename),
-                        'line'     => $offset,
+                        'file' => \realpath($this->filename),
+                        'line' => $offset,
                     ];
                 }
                 $offset++;
