@@ -666,7 +666,7 @@ class PhptTestCase implements Test, SelfDescribing
         if (empty($needle)) {
             return [
                 'file'     => \realpath($this->filename),
-                'line'     => 'empty_needle',
+                'line'     => 1234,
             ];
         }
 
@@ -722,7 +722,7 @@ class PhptTestCase implements Test, SelfDescribing
         // No section specified, show user start of code
         return [
             'file'     => \realpath($this->filename),
-            'line'     => 'no_section',
+            'line'     => 2345,
         ];
     }
 }
