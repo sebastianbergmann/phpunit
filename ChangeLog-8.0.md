@@ -16,6 +16,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 * Implemented [#3425](https://github.com/sebastianbergmann/phpunit/issues/3425): Deprecate optional parameters of `assertContains()` and `assertNotContains()` as well as using these methods with `string` haystacks
 * Implemented [#3439](https://github.com/sebastianbergmann/phpunit/pull/3439): Improve colorization of TestDox output
 * Implemented [#3444](https://github.com/sebastianbergmann/phpunit/pull/3444): Consider data provider that provides data with duplicate keys to be invalid
+* Implemented [#3467](https://github.com/sebastianbergmann/phpunit/pull/3467): Code location hints for `@requires` annotations as well as `--SKIPIF--`, `--EXPECT--`, `--EXPECTF--`, `--EXPECTREGEX--`, and `--{SECTION}_EXTERNAL--` sections of PHPT tests
 
 ### Removed
 
