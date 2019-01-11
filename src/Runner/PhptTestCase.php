@@ -617,7 +617,7 @@ class PhptTestCase implements Test, SelfDescribing
         $previousLine = '';
         $block        = 'message';
 
-        foreach (\explode(\PHP_EOL, $message) as $line) {
+        foreach (\preg_split('/\r\n|\r|\n/', $message) as $line) {
             $line = \trim($line);
 
             if ($block === 'message' && $line === '--- Expected') {
