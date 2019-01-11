@@ -3002,6 +3002,7 @@ abstract class Assert
     {
         if ($hint = self::detectLocationHint($message)) {
             $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
+            \array_unshift($trace, $hint);
 
             throw new SyntheticSkippedError($hint['message'], 0, $hint['file'], $hint['line'], $trace);
         }

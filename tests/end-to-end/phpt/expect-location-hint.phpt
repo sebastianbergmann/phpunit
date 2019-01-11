@@ -1,5 +1,5 @@
 --TEST--
-PHPT skip condition results in correct code location hint
+PHPT EXPECT comparison returns correct code location hint
 --FILE--
 <?php
 $arguments = [
