@@ -613,25 +613,31 @@ class PhptTestCase implements Test, SelfDescribing
 
     private function getLocationHintFromDiff(string $message, array $sections): array
     {
-        $needle = '';
+        $needle       = '';
         $previousLine = '';
-        $block = 'message';
+        $block        = 'message';
 
-        foreach (explode(\PHP_EOL, $message) as $line) {
+        foreach (\explode(\PHP_EOL, $message) as $line) {
             $line = \trim($line);
+
             if ($block === 'message' && $line === '--- Expected') {
                 $block = 'expected';
             }
+
             if ($block === 'expected' && $line === '@@ @@') {
                 $block = 'diff';
             }
 
             if ($block === 'diff') {
-                if (substr($line, 0, 1) === '+') {
+                if (\substr($line, 0, 1) === '+') {
                     $needle = $this->getCleanDiffLine($previousLine);
+
                     break;
-                } elseif (substr($line, 0, 1) === '-') {
+                }
+
+                if (\substr($line, 0, 1) === '-') {
                     $needle = $this->getCleanDiffLine($line);
+
                     break;
                 }
             }
@@ -640,6 +646,7 @@ class PhptTestCase implements Test, SelfDescribing
                 $previousLine = $line;
             }
         }
+
         return $this->getLocationHint($needle, $sections);
     }
 
