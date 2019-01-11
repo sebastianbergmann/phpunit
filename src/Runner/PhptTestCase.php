@@ -178,9 +178,15 @@ class PhptTestCase implements Test, SelfDescribing
             if ($xfail !== false) {
                 $failure = new IncompleteTestError($xfail, 0, $e);
             } else {
-                if ($e instanceof ExpectationFailedException && $e->getComparisonFailure()) {
+                if ($e instanceof ExpectationFailedException) {
                     /** @var ExpectationFailedException $e */
-                    $hint  = $this->getLocationHintFromDiff($e->getComparisonFailure()->getDiff(), $sections);
+                    if ($e->getComparisonFailure()) {
+                        $diff = $e->getComparisonFailure()->getDiff();
+                    } else {
+                        $diff = $e->getMessage();
+                    }
+
+                    $hint  = $this->getLocationHintFromDiff($diff, $sections);
                     $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
                     \array_unshift($trace, $hint);
                     $failure = new PHPTAssertionFailedError($e->getMessage(), 0, $trace[0]['file'], $trace[0]['line'], $trace);
@@ -608,12 +614,42 @@ class PhptTestCase implements Test, SelfDescribing
     private function getLocationHintFromDiff(string $message, array $sections): array
     {
         $needle = '';
+        $previousLine = '';
+        $block = 'message';
 
-        if (\preg_match("/--- Expected[^']+^-'([^']*)'/m", $message, $matches)) {
-            $needle = $matches[1];
+        foreach (explode(\PHP_EOL, $message) as $line) {
+            $line = \trim($line);
+            if ($block === 'message' && $line === '--- Expected') {
+                $block = 'expected';
+            }
+            if ($block === 'expected' && $line === '@@ @@') {
+                $block = 'diff';
+            }
+
+            if ($block === 'diff') {
+                if (substr($line, 0, 1) === '+') {
+                    $needle = $this->getCleanDiffLine($previousLine);
+                    break;
+                } elseif (substr($line, 0, 1) === '-') {
+                    $needle = $this->getCleanDiffLine($line);
+                    break;
+                }
+            }
+
+            if (!empty($line)) {
+                $previousLine = $line;
+            }
+        }
+        return $this->getLocationHint($needle, $sections);
+    }
+
+    private function getCleanDiffLine(string $line): string
+    {
+        if (\preg_match('/^[\-+]([\'\"]?)(.*)\1$/', $line, $matches)) {
+            $line = $matches[2];
         }
 
-        return $this->getLocationHint($needle, $sections);
+        return $line;
     }
 
     private function getLocationHint(string $needle, array $sections, ?string $sectionName = null): array
