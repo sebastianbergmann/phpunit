@@ -186,8 +186,8 @@ class PhptTestCase implements Test, SelfDescribing
                         $diff = $e->getMessage();
                     }
 
-                    $hint  = $this->getLocationHintFromDiff($diff, $sections);
-                    $trace = \array_merge($hint, \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
+                    $hint    = $this->getLocationHintFromDiff($diff, $sections);
+                    $trace   = \array_merge($hint, \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
                     $failure = new PHPTAssertionFailedError(
                         $e->getMessage(),
                         0,

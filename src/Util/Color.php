@@ -71,7 +71,7 @@ final class Color
             return $buffer;
         }
 
-        return \sprintf("\x1b[%sm", \implode(';', $styles)) . $buffer . "\x1b[0m";
+        return self::optimizeColor(\sprintf("\x1b[%sm", \implode(';', $styles)) . $buffer . "\x1b[0m");
     }
 
     public static function colorizePath(string $path, ?string $prevPath = null, bool $colorizeFilename = false): string
@@ -123,6 +123,12 @@ final class Color
 
     private static function optimizeColor(string $buffer): string
     {
-        return \str_replace("\e[22m\e[2m", '', $buffer);
+        $patterns = [
+            "/\e\\[22m\e\\[2m/"                   => '',
+            "/\e\\[([^m]*)m\e\\[([1-9][0-9;]*)m/" => "\e[$1;$2m",
+            "/(\e\\[[^m]*m)+(\e\\[0m)/"           => '$2',
+        ];
+
+        return \preg_replace(\array_keys($patterns), \array_values($patterns), $buffer);
     }
 }
