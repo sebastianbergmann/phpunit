@@ -187,9 +187,14 @@ class PhptTestCase implements Test, SelfDescribing
                     }
 
                     $hint  = $this->getLocationHintFromDiff($diff, $sections);
-                    $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
-                    \array_unshift($trace, $hint);
-                    $failure = new PHPTAssertionFailedError($e->getMessage(), 0, $trace[0]['file'], $trace[0]['line'], $trace);
+                    $trace = \array_merge($hint, \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
+                    $failure = new PHPTAssertionFailedError(
+                        $e->getMessage(),
+                        0,
+                        $trace[0]['file'],
+                        $trace[0]['line'],
+                        $trace
+                    );
                 }
             }
 
@@ -346,9 +351,12 @@ class PhptTestCase implements Test, SelfDescribing
             }
 
             $hint  = $this->getLocationHint($message, $sections, 'SKIPIF');
-            $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
-            \array_unshift($trace, $hint);
-            $result->addFailure($this, new SyntheticSkippedError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace), 0);
+            $trace = \array_merge($hint, \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
+            $result->addFailure(
+                $this,
+                new SyntheticSkippedError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace),
+                0
+            );
             $result->endTest($this, 0);
 
             return true;
@@ -557,9 +565,9 @@ class PhptTestCase implements Test, SelfDescribing
 
         if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
             $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . \var_export(
-                $GLOBALS['__PHPUNIT_BOOTSTRAP'],
+                    $GLOBALS['__PHPUNIT_BOOTSTRAP'],
                     true
-            ) . ";\n";
+                ) . ";\n";
         }
 
         $template->setVar(
@@ -664,10 +672,10 @@ class PhptTestCase implements Test, SelfDescribing
         $needle = \trim($needle);
 
         if (empty($needle)) {
-            return [
-                'file'     => \realpath($this->filename),
-                'line'     => 1,
-            ];
+            return [[
+                'file' => \realpath($this->filename),
+                'line' => 1,
+            ]];
         }
 
         if ($sectionName) {
@@ -687,11 +695,17 @@ class PhptTestCase implements Test, SelfDescribing
             }
 
             if (isset($sections[$section . '_EXTERNAL'])) {
-                $file = \trim($sections[$section . '_EXTERNAL']);
+                $externalFile = \trim($sections[$section . '_EXTERNAL']);
 
                 return [
-                    'file' => \realpath(\dirname($this->filename) . \DIRECTORY_SEPARATOR . $file),
-                    'line' => 1,
+                    [
+                        'file' => \realpath(\dirname($this->filename) . \DIRECTORY_SEPARATOR . $externalFile),
+                        'line' => 1,
+                    ],
+                    [
+                        'file' => \realpath($this->filename),
+                        'line' => ($sections[$section . '_EXTERNAL_offset'] ?? 0) + 1,
+                    ],
                 ];
             }
 
@@ -702,10 +716,10 @@ class PhptTestCase implements Test, SelfDescribing
 
             foreach ($lines as $line) {
                 if (\strpos($line, $needle) !== false) {
-                    return [
+                    return [[
                         'file' => \realpath($this->filename),
                         'line' => $offset,
-                    ];
+                    ]];
                 }
                 $offset++;
             }
@@ -713,16 +727,16 @@ class PhptTestCase implements Test, SelfDescribing
 
         if ($sectionName) {
             // String not found in specified section, show user the start of the named section
-            return [
-                'file'     => \realpath($this->filename),
-                'line'     => $sectionOffset,
-            ];
+            return [[
+                'file' => \realpath($this->filename),
+                'line' => $sectionOffset,
+            ]];
         }
 
         // No section specified, show user start of code
-        return [
-            'file'     => \realpath($this->filename),
-            'line'     => 1,
-        ];
+        return [[
+            'file' => \realpath($this->filename),
+            'line' => 1,
+        ]];
     }
 }
