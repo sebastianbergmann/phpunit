@@ -259,7 +259,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
             $color = 'fg-magenta';
         }
 
-        return Color::colorize($color, \sprintf(' %d ms', \ceil($time * 1000)));
+        return Color::colorize($color, ' ' . (int) \ceil($time * 1000) . ' ' . Color::dim('ms'));
     }
 
     private function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void
