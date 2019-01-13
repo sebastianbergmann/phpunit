@@ -579,8 +579,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Get exception constraint list
      *
      * Return the list of constraints attached to an expected exception.
-     *
-     * @return array
      */
     public function getExceptionConstraints(): array
     {
@@ -619,6 +617,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param Constraint $constraint The new constraint to attach
      *
      * @return $this
+     *
      * @example <pre>
      *      $this->addExpectedExceptionConstraint(
      *          new PHPUnit\Framework\Constraint\IsEqual(
@@ -629,7 +628,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function addExpectedExceptionConstraint(Constraint $constraint)
     {
-        array_push($this->exceptionConstraints, $constraint);
+        \array_push($this->exceptionConstraints, $constraint);
 
         return $this;
     }
@@ -643,10 +642,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * of the assertion.
      *
      * @param Constraint[] $constraintList The list of constraint to attach to an expected exception
-     * @param string|null  $message        The message to override the default one
+     * @param null|string  $message        The message to override the default one
      *
-     * @return  $this
+     * @return $this
+     *
      * @see     TestCase::setSelfDefinedConstraintMessage for more informations about $message parameter
+     *
      * @example <pre>
      *      $this->expectedExceptionConstraint(
      *          [
@@ -665,6 +666,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function expectedExceptionConstraint(array $constraintList, string $message = null)
     {
         $this->resetExceptionConstraints();
+
         foreach ($constraintList as $constraint) {
             $this->addExpectedExceptionConstraint($constraint);
         }
@@ -1226,6 +1228,23 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
+     * Set self defined constraint message
+     *
+     * Override the default message sent in case of self defined exception constraint are avoided from the test,
+     * more specifically if the expected exception is not thrown by the test.
+     *
+     * @param string $message The message to override the default one
+     *
+     * @return $this
+     */
+    public function setSelfDefinedConstraintMessage(string $message)
+    {
+        $this->selfDefinedConstraintMessage = $message;
+
+        return $this;
+    }
+
+    /**
      * Override to run the test and assert its state.
      *
      * @throws AssertionFailedError
@@ -1693,23 +1712,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function onNotSuccessfulTest(Throwable $t): void
     {
         throw $t;
-    }
-
-    /**
-     * Set self defined constraint message
-     *
-     * Override the default message sent in case of self defined exception constraint are avoided from the test,
-     * more specifically if the expected exception is not thrown by the test.
-     *
-     * @param string $message The message to override the default one
-     *
-     * @return $this
-     */
-    public function setSelfDefinedConstraintMessage(string $message)
-    {
-        $this->selfDefinedConstraintMessage = $message;
-
-        return $this;
     }
 
     private function setExpectedExceptionFromAnnotation(): void
@@ -2262,10 +2264,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Execute an assertion on each existing constraint in the internal expected exception constraint list.
      *
      * @param Throwable $exception The original exception to test
-     *
-     * @return void
      */
-    private function processExceptionConstraints(\Throwable $exception)
+    private function processExceptionConstraints(\Throwable $exception): void
     {
         foreach ($this->exceptionConstraints as $exceptionConstraint) {
             $this->assertThat(

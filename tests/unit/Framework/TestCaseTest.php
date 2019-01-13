@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
-use PHPUnit\Framework\Constraint\IsEqualTest;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Runner\BaseTestRunner;
@@ -769,15 +768,14 @@ class TestCaseTest extends TestCase
      *
      * Validate that processExceptionConstraints method is private, in order to avoid self definition issues.
      *
-     * @return void
      * @throws \ReflectionException
      * @group  ExceptionConstraints
      */
-    public function testProcessExceptionConstraintIsPrivate()
+    public function testProcessExceptionConstraintIsPrivate(): void
     {
         $this->assertTrue(
-            method_exists(TestCase::class, 'processExceptionConstraints'),
-            sprintf(
+            \method_exists(TestCase::class, 'processExceptionConstraints'),
+            \sprintf(
                 'processExceptionConstraints method have to exist into the "%s" class in order to support self' .
                 ' defined expected constraint feature',
                 \TestClass::class
@@ -797,12 +795,12 @@ class TestCaseTest extends TestCase
      * Validate that processExceptionConstraints method expect a \Throwable instance, in order to offer this parameter
      * to the processed constraints.
      *
-     * @return  void
      * @depends testProcessExceptionConstraintIsPrivate
-     * @throws  \ReflectionException
+     *
+     * @throws \ReflectionException
      * @group   ExceptionConstraints
      */
-    public function testProcessExceptionConstraintExpectThrowable()
+    public function testProcessExceptionConstraintExpectThrowable(): void
     {
         $reflection = new \ReflectionMethod(TestCase::class, 'processExceptionConstraints');
         $parameters = $reflection->getParameters();
@@ -825,14 +823,13 @@ class TestCaseTest extends TestCase
      *
      * Validate that ProcessExceptionConstraints method execute the whole set of constraints without dependencies
      *
-     * @return void
      * @throws \ReflectionException
      * @group  ExceptionConstraints
      */
-    public function testProcessExceptionConstraintsExecuteConstraints()
+    public function testProcessExceptionConstraintsExecuteConstraints(): void
     {
-        $exception = $this->createMock(\Throwable::class);
-        $callback = $this->createPartialMock(Callback::class, ['matches']);
+        $exception  = $this->createMock(\Throwable::class);
+        $callback   = $this->createPartialMock(Callback::class, ['matches']);
         $instanceOf = $this->createPartialMock(IsInstanceOf::class, ['matches']);
 
         $callback->expects($this->once())
@@ -846,7 +843,7 @@ class TestCaseTest extends TestCase
             ->willReturn(true);
 
         $reflection = new \ReflectionClass(\ThrowExceptionTestCase::class);
-        $instance = $reflection->newInstanceWithoutConstructor();
+        $instance   = $reflection->newInstanceWithoutConstructor();
 
         $storeProperty = new \ReflectionProperty(TestCase::class, 'exceptionConstraints');
         $storeProperty->setAccessible(true);
@@ -854,7 +851,7 @@ class TestCaseTest extends TestCase
             $instance,
             [
                 $callback,
-                $instanceOf
+                $instanceOf,
             ]
         );
 
@@ -873,16 +870,15 @@ class TestCaseTest extends TestCase
      * Validate the TestCase::resetExceptionConstraints method and more specifically its capability to reset the
      * exceptionConstraints property as an empty array.
      *
-     * @return void
      * @throws \ReflectionException
      * @group  ExceptionConstraints
      */
-    public function testExceptionConstraintsIsReset()
+    public function testExceptionConstraintsIsReset(): void
     {
         $reflection = new \ReflectionClass(\ThrowExceptionTestCase::class);
         $this->assertTrue(
             $reflection->hasMethod('resetExceptionConstraints'),
-            sprintf(
+            \sprintf(
                 'resetExceptionConstraints is expected to be defined in the "%s" class',
                 TestCase::class
             )
@@ -910,7 +906,7 @@ class TestCaseTest extends TestCase
 
         $value = $storeProperty->getValue($instance);
         $this->assertTrue(
-            is_array($value),
+            \is_array($value),
             'resetExceptionConstraints is expected to reset the exceptionConstraints to an array'
         );
         $this->assertEmpty(
@@ -925,16 +921,15 @@ class TestCaseTest extends TestCase
      * Validate that the setSelfDefinedConstraintMessage method is able to override the default
      * selfDefinedConstraintMessage value
      *
-     * @return void
      * @throws \ReflectionException
      * @group  ExceptionConstraints
      */
-    public function testConstraintMessageIsOverrideable()
+    public function testConstraintMessageIsOverrideable(): void
     {
         $reflection = new \ReflectionClass(\ThrowExceptionTestCase::class);
         $this->assertTrue(
             $reflection->hasMethod('setSelfDefinedConstraintMessage'),
-            sprintf(
+            \sprintf(
                 'setSelfDefinedConstraintMessage is expected to be defined in the "%s" class',
                 TestCase::class
             )
@@ -954,7 +949,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(
             $defaultMessage,
             $storeProperty->getValue($instance),
-            sprintf(
+            \sprintf(
                 'selfDefinedConstraintMessage is expected to be defined with a specific default message ("%s")',
                 $defaultMessage
             )
@@ -973,16 +968,15 @@ class TestCaseTest extends TestCase
      *
      * Validate the getExceptionConstraints method offer access to the internal exception constraint store
      *
-     * @return void
      * @throws \ReflectionException
      * @group  ExceptionConstraints
      */
-    public function testExceptionConstraintsIsGettable()
+    public function testExceptionConstraintsIsGettable(): void
     {
         $reflection = new \ReflectionClass(\ThrowExceptionTestCase::class);
         $this->assertTrue(
             $reflection->hasMethod('getExceptionConstraints'),
-            sprintf(
+            \sprintf(
                 'getExceptionConstraints is expected to be defined in the "%s" class',
                 TestCase::class
             )
@@ -1012,16 +1006,15 @@ class TestCaseTest extends TestCase
      *
      * Validate the addExpectedExceptionConstraint method offer injection to the internal exception constraint store
      *
-     * @return void
      * @throws \ReflectionException
      * @group  ExceptionConstraints
      */
-    public function testExceptionConstraintIsInjectable()
+    public function testExceptionConstraintIsInjectable(): void
     {
         $reflection = new \ReflectionClass(\ThrowExceptionTestCase::class);
         $this->assertTrue(
             $reflection->hasMethod('addExpectedExceptionConstraint'),
-            sprintf(
+            \sprintf(
                 'addExpectedExceptionConstraint is expected to be defined in the "%s" class',
                 TestCase::class
             )
@@ -1035,6 +1028,7 @@ class TestCaseTest extends TestCase
         );
 
         $parameterValidated = false;
+
         foreach ($processMethod->getParameters() as $parameter) {
             if ($parameter->getName() == 'constraint') {
                 $this->assertEquals(
@@ -1075,13 +1069,13 @@ class TestCaseTest extends TestCase
      *
      * Validate the expectedExceptionConstraint method will set the internal store of constraints
      *
-     * @return  void
      * @depends testExceptionConstraintIsInjectable
      * @depends testExceptionConstraintsIsReset
      * @group   ExceptionConstraints
-     * @throws  \ReflectionException
+     *
+     * @throws \ReflectionException
      */
-    public function testExceptionConstraintIsSettable()
+    public function testExceptionConstraintIsSettable(): void
     {
         $instance = $this->createPartialMock(
             \ThrowExceptionTestCase::class,
@@ -1096,7 +1090,7 @@ class TestCaseTest extends TestCase
         $storeProperty->setAccessible(true);
         $storeProperty->setValue($instance, [$uncalled]);
 
-        $callable = $this->createMock(Callback::class);
+        $callable   = $this->createMock(Callback::class);
         $instanceOf = $this->createMock(IsInstanceOf::class);
 
         $instance->expects($this->exactly(2))
@@ -1114,12 +1108,11 @@ class TestCaseTest extends TestCase
      *
      * Validate the expectedExceptionConstraint method with a message in case of avoided constraint execution
      *
-     * @return  void
      * @depends testExceptionConstraintIsSettable
      * @depends testConstraintMessageIsOverrideable
      * @group   ExceptionConstraints
      */
-    public function testSetExceptionConstraintWithMessage()
+    public function testSetExceptionConstraintWithMessage(): void
     {
         $instance = $this->createPartialMock(
             \ThrowExceptionTestCase::class,
@@ -1140,16 +1133,16 @@ class TestCaseTest extends TestCase
      *
      * Validate the self defined exception constraint feature support during test execution
      *
-     * @return void
      * @group  ExceptionConstraints
+     *
      * @throws \ReflectionException
      */
-    public function testExceptionConstraint()
+    public function testExceptionConstraint(): void
     {
         $test = new \ThrowExceptionTestCase('test');
         $test->expectedExceptionConstraint(
             [
-                $this->isInstanceOf(\RuntimeException::class)
+                $this->isInstanceOf(\RuntimeException::class),
             ]
         );
 
@@ -1166,16 +1159,16 @@ class TestCaseTest extends TestCase
      * Validate the self defined exception constraint feature comportment when the constraints are not validated during
      * the test execution
      *
-     * @return void
      * @group  ExceptionConstraints
+     *
      * @throws \ReflectionException
      */
-    public function testExceptionConstraintFailOnUnvalidated()
+    public function testExceptionConstraintFailOnUnvalidated(): void
     {
         $test = new \ThrowExceptionTestCase('test');
         $test->expectedExceptionConstraint(
             [
-                $this->isInstanceOf(\LogicException::class)
+                $this->isInstanceOf(\LogicException::class),
             ]
         );
 
@@ -1192,16 +1185,18 @@ class TestCaseTest extends TestCase
      * Validate the self defined exception constraint feature comportment when the constraints are not processed during
      * the test execution
      *
-     * @return void
      * @group  ExceptionConstraints
+     *
      * @throws \ReflectionException
      */
-    public function testExceptionConstraintFailOnAvoided()
+    public function testExceptionConstraintFailOnAvoided(): void
     {
         $test = new \ConcreteTest('testTwo');
         $test->expectedExceptionConstraint(
             [
-                new Callback(function (){return true;})
+                new Callback(function () {
+                    return true;
+                }),
             ]
         );
 
