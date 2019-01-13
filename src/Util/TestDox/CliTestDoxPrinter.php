@@ -24,31 +24,55 @@ use SebastianBergmann\Timer\Timer;
 class CliTestDoxPrinter extends TestDoxPrinter
 {
     /**
+     * The default Testdox left margin for messages is a vertical line
+     */
+    private const PREFIX_SIMPLE = [
+        'default' => '│',
+        'start'   => '│',
+        'message' => '│',
+        'diff'    => '│',
+        'trace'   => '│',
+        'last'    => '│',
+    ];
+
+    /**
+     * Colored Testdox use box-drawing for a more textured map of the message
+     */
+    private const PREFIX_DECORATED = [
+        'default' => '│',
+        'start'   => '┐',
+        'message' => '├',
+        'diff'    => '┊',
+        'trace'   => '╵',
+        'last'    => '┴',
+    ];
+
+    /**
      * @var int[]
      */
     private $nonSuccessfulTestResults = [];
 
     private $statusStyles = [
-        BaseTestRunner::STATUS_PASSED => [
+        BaseTestRunner::STATUS_PASSED     => [
             'symbol' => '✔',
             'color'  => 'fg-green',
         ],
-        BaseTestRunner::STATUS_ERROR => [
+        BaseTestRunner::STATUS_ERROR      => [
             'symbol'  => '✘',
             'color'   => 'fg-yellow',
             'message' => 'bg-yellow,fg-black',
         ],
-        BaseTestRunner::STATUS_FAILURE => [
+        BaseTestRunner::STATUS_FAILURE    => [
             'symbol'  => '✘',
             'color'   => 'fg-red',
             'message' => 'bg-red,fg-white',
         ],
-        BaseTestRunner::STATUS_SKIPPED => [
+        BaseTestRunner::STATUS_SKIPPED    => [
             'symbol'  => '↩',
             'color'   => 'fg-cyan',
             'message' => 'fg-cyan',
         ],
-        BaseTestRunner::STATUS_RISKY => [
+        BaseTestRunner::STATUS_RISKY      => [
             'symbol'  => '☢',
             'color'   => 'fg-yellow',
             'message' => 'fg-yellow',
@@ -58,12 +82,12 @@ class CliTestDoxPrinter extends TestDoxPrinter
             'color'   => 'fg-yellow',
             'message' => 'fg-yellow',
         ],
-        BaseTestRunner::STATUS_WARNING => [
+        BaseTestRunner::STATUS_WARNING    => [
             'symbol'  => '⚠',
             'color'   => 'fg-yellow',
             'message' => 'fg-yellow',
         ],
-        BaseTestRunner::STATUS_UNKNOWN => [
+        BaseTestRunner::STATUS_UNKNOWN    => [
             'symbol'  => '?',
             'color'   => 'fg-blue',
             'message' => 'fg-white,bg-blue',
@@ -136,7 +160,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
             $this->colorizeTextBox($style['color'], $style['symbol']),
             $testName,
             $this->verbose ? ' ' . $this->formatRuntime($result['time'], $style['color']) : ''
-            );
+        );
         $this->write($line);
 
         // additional information when verbose
@@ -145,26 +169,13 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     protected function formatThrowable(\Throwable $t, ?int $status = null): string
     {
-        $message = \trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
-
-        if ($message) {
-            if ($this->colors) {
-                $style   = $this->statusStyles[$status]['message'] ?? '';
-                $message = $this->colorizeMessageAndDiff($style, $message);
-            }
-
-            $message .= "\n\n" . $this->formatStacktrace($t);
-        } else {
-            $message = $this->formatStacktrace($t);
-        }
-
-        return $message;
+        return \trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
     }
 
-    protected function colorizeMessageAndDiff(string $style, string $message): string
+    protected function colorizeMessageAndDiff(string $style, string $buffer): array
     {
-        $lines      = $message ?\array_map('\rtrim', \explode(\PHP_EOL, $message)) : [];
-        $throwable  = [];
+        $lines      = $buffer ? \array_map('\rtrim', \explode(\PHP_EOL, $buffer)) : [];
+        $message    = [];
         $diff       = [];
         $insideDiff = false;
 
@@ -174,7 +185,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
             }
 
             if (!$insideDiff) {
-                $throwable[] = $line;
+                $message[] = $line;
             } else {
                 if (\substr($line, 0, 1) === '-') {
                     $line = Color::colorize('fg-red', Color::visualizeWhitespace($line, true));
@@ -186,19 +197,13 @@ class CliTestDoxPrinter extends TestDoxPrinter
                 $diff[] = $line;
             }
         }
+        $diff = \implode(\PHP_EOL, $diff);
 
-        if (!empty($throwable)) {
-            $message = $this->colorizeTextBox($style, \implode(\PHP_EOL, $throwable));
+        if (!empty($message)) {
+            $message = $this->colorizeTextBox($style, \implode(\PHP_EOL, $message));
         }
 
-        if (!empty($diff)) {
-            if ($message) {
-                $message .= \PHP_EOL;
-            }
-            $message .= \implode(\PHP_EOL, $diff);
-        }
-
-        return $message;
+        return [$message, $diff];
     }
 
     protected function formatStacktrace(\Throwable $t): string
@@ -212,12 +217,12 @@ class CliTestDoxPrinter extends TestDoxPrinter
         $lines    = [];
         $prevPath = '';
 
-        foreach (\explode("\n", $trace) as $line) {
+        foreach (\explode(\PHP_EOL, $trace) as $line) {
             if (\preg_match('/^(.*):(\d+)$/', $line, $matches)) {
-                $lines[] =  Color::colorizePath($matches[1], $prevPath) .
-                            Color::dim(':') .
-                            Color::colorize('fg-blue', $matches[2]) .
-                            "\n";
+                $lines[] = Color::colorizePath($matches[1], $prevPath) .
+                    Color::dim(':') .
+                    Color::colorize('fg-blue', $matches[2]) .
+                    "\n";
                 $prevPath = $matches[1];
             } else {
                 $lines[]  = $line;
@@ -228,25 +233,53 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return \implode('', $lines);
     }
 
-    protected function formatTestResultMessage(string $message, int $status, bool $verbose, ?string $prefix = null): string
+    protected function formatTestResultMessage(\Throwable $t, array $result, ?string $prefix = null): string
     {
-        if ($message === '') {
+        $message = $this->formatThrowable($t, $result['status']);
+        $diff    = '';
+
+        if ($message) {
+            if ($this->colors) {
+                $style            = $this->statusStyles[$result['status']]['message'] ?? '';
+                [$message, $diff] = $this->colorizeMessageAndDiff($style, $message);
+            }
+        }
+
+        if (!($this->verbose || $result['verbose'])) {
             return '';
         }
 
-        if (!($this->verbose || $verbose)) {
-            return '';
-        }
-
-        if ($prefix === null) {
-            $prefix = '│';
+        if ($prefix === null || !$this->colors) {
+            $prefix = self::PREFIX_SIMPLE;
         }
 
         if ($this->colors) {
-            $prefix = Color::colorize($this->statusStyles[$status]['color'] ?? '', $prefix);
+            $color  = $this->statusStyles[$result['status']]['color'] ?? '';
+            $prefix = \array_map(function ($p) use ($color) {
+                return Color::colorize($color, $p);
+            }, self::PREFIX_DECORATED);
         }
 
-        return parent::formatTestResultMessage($message, $status, $verbose, $prefix);
+        $trace = $this->formatStacktrace($t);
+        $out   = $this->prefixLines($prefix['start'], \PHP_EOL) . \PHP_EOL;
+
+        if ($message) {
+            $out .= $this->prefixLines($prefix['message'], $message . \PHP_EOL) . \PHP_EOL;
+        }
+
+        if ($diff) {
+            $out .= $this->prefixLines($prefix['diff'], $diff . \PHP_EOL) . \PHP_EOL;
+        }
+
+        if ($trace) {
+            if ($message || $diff) {
+                $out .= $this->prefixLines($prefix['default'], \PHP_EOL) . \PHP_EOL;
+            }
+            $out .= $this->prefixLines($prefix['trace'], $trace . \PHP_EOL) . \PHP_EOL;
+        }
+        $out .= $this->prefixLines($prefix['last'], \PHP_EOL) . \PHP_EOL;
+
+        return $out;
     }
 
     private function formatRuntime(float $time, string $color = ''): string
