@@ -6,86 +6,84 @@ Configuration: %stests%ebasic%econfiguration.basic.xml
 [4mTest result status with and without message[0m
  [32m✔[0m Success [32m %f [2mms[0m
  [31m✘[0m Failure [31m %f [2mms[0m
+   [31m┐[0m
+   [31m├[0m [41;37mFailed asserting that false is true.[0m
    [31m│[0m
-   [31m│[0m [41;37mFailed asserting that false is true.[0m
-   [31m│[0m 
-   [31m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
-   [31m│[0m 
+   [31m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [31m┴[0m
 
  [33m✘[0m Error [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mRuntimeException:[0m
    [33m│[0m
-   [33m│[0m [43;30mRuntimeException:[0m
-   [33m│[0m 
-   [33m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
-   [33m│[0m 
+   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
 
  [33m∅[0m Incomplete [33m %f [2mms[0m
-   [33m│[0m
-   [33m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
-   [33m│[0m 
+   [33m┐[0m
+   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
 
  [36m↩[0m Skipped [36m %f [2mms[0m
-   [36m│[0m
-   [36m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
-   [36m│[0m 
+   [36m┐[0m
+   [36m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [36m┴[0m
 
  [33m☢[0m Risky [33m %f [2mms[0m
-   [33m│[0m
-   [33m│[0m [33mThis test did not perform any assertions%w[0m
-   [33m│[0m%w 
-   [33m│[0m [33m%stests%ebasic%eunit%eStatusTest.php:%d[0m%w
-   [33m│[0m%w
-   [33m│[0m 
+   [33m┐[0m
+   [33m├[0m [33mThis test did not perform any assertions%w[0m
+   [33m├[0m%w
+   [33m├[0m [33m%stests%ebasic%eunit%eStatusTest.php:%d[0m%w
+   [33m┴[0m
 
  [33m⚠[0m Warning [33m %f [2mms[0m
-   [33m│[0m
-   [33m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
-   [33m│[0m 
+   [33m┐[0m
+   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
 
  [32m✔[0m Success with message [32m %f [2mms[0m
  [31m✘[0m Failure with message [31m %f [2mms[0m
+   [31m┐[0m
+   [31m├[0m [41;37mfailure with custom message%w[0m
+   [31m├[0m [41;37mFailed asserting that false is true.[0m
    [31m│[0m
-   [31m│[0m [41;37mfailure with custom message%w[0m
-   [31m│[0m [41;37mFailed asserting that false is true.[0m
-   [31m│[0m 
-   [31m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
-   [31m│[0m 
+   [31m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [31m┴[0m
 
  [33m✘[0m Error with message [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mRuntimeException: error with custom message[0m
    [33m│[0m
-   [33m│[0m [43;30mRuntimeException: error with custom message[0m
-   [33m│[0m 
-   [33m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
-   [33m│[0m 
+   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
 
  [33m∅[0m Incomplete with message [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [33mincomplete with custom message[0m
    [33m│[0m
-   [33m│[0m [33mincomplete with custom message[0m
-   [33m│[0m 
-   [33m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
-   [33m│[0m 
+   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
 
  [36m↩[0m Skipped with message [36m %f [2mms[0m
+   [36m┐[0m
+   [36m├[0m [36mskipped with custom message[0m
    [36m│[0m
-   [36m│[0m [36mskipped with custom message[0m
-   [36m│[0m 
-   [36m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
-   [36m│[0m 
+   [36m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [36m┴[0m
 
  [33m☢[0m Risky with message [33m %f [2mms[0m
-   [33m│[0m
-   [33m│[0m [33mThis test did not perform any assertions%w[0m
-   [33m│[0m%w 
-   [33m│[0m [33m%stests%ebasic%eunit%eStatusTest.php:%d[0m%w
-   [33m│[0m%w
-   [33m│[0m 
+   [33m┐[0m
+   [33m├[0m [33mThis test did not perform any assertions%w[0m
+   [33m├[0m%w
+   [33m├[0m [33m%stests%ebasic%eunit%eStatusTest.php:%d[0m%w
+   [33m┴[0m
 
  [33m⚠[0m Warning with message [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [33mwarning with custom message[0m
    [33m│[0m
-   [33m│[0m [33mwarning with custom message[0m
-   [33m│[0m 
-   [33m│[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
-   [33m│[0m 
+   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
 
 Time: %s, Memory: %s
 

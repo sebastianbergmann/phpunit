@@ -142,25 +142,21 @@ class TestDoxPrinter extends ResultPrinter
         $testName = TestSuiteSorter::getTestSorterUID($test);
         $status   = $status ?? BaseTestRunner::STATUS_UNKNOWN;
 
-        if ($t === null) {
-            $resultMessage = '';
-        } else {
-            $resultMessage = $this->formatTestResultMessage(
-                $this->formatThrowable($t, $status),
-                $status,
-                $verbose
-            );
-        }
-
-        $this->testResults[$this->testIndex] = [
+        $result = [
             'className'  => $this->formatClassName($test),
             'testName'   => $testName,
             'testMethod' => $this->formatTestName($test),
-            'message'    => $resultMessage,
+            'message'    => '',
             'status'     => $status,
             'time'       => $time,
+            'verbose'    => $verbose,
         ];
 
+        if ($t !== null) {
+            $result['message'] = $this->formatTestResultMessage($t, $result);
+        }
+
+        $this->testResults[$this->testIndex]  = $result;
         $this->testNameResultIndex[$testName] = $this->testIndex;
     }
 
@@ -262,27 +258,32 @@ class TestDoxPrinter extends ResultPrinter
         return \PHPUnit\Util\Filter::getFilteredStacktrace($t);
     }
 
-    protected function formatTestResultMessage(string $message, int $status, bool $verbose, string $prefix = '│'): string
+    protected function formatTestResultMessage(\Throwable $t, array $result, string $prefix = '│'): string
     {
+        $message = $this->formatThrowable($t, $result['status']);
+
         if ($message === '') {
             return '';
         }
 
-        if (!($this->verbose || $verbose)) {
+        if (!($this->verbose || $result['verbose'])) {
             return '';
         }
 
-        return \sprintf(
-            "   %s\n%s\n",
-            $prefix,
-            \implode(
-                "\n",
-                \array_map(
-                    function (string $text) use ($prefix) {
-                        return \sprintf('   %s %s', $prefix, $text);
-                    },
-                    \explode("\n", $message)
-                )
+        return $this->prefixLines($prefix, $message);
+    }
+
+    protected function prefixLines(string $prefix, string $message): string
+    {
+        $message = \trim($message);
+
+        return \implode(
+            \PHP_EOL,
+            \array_map(
+                function (string $text) use ($prefix) {
+                    return '   ' . $prefix . ($text ? ' ' . $text : '');
+                },
+                \explode(\PHP_EOL, $message)
             )
         );
     }
