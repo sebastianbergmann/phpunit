@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use DeepCopy\DeepCopy;
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
@@ -111,6 +112,24 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @var bool
      */
     private $useErrorHandler;
+
+    /**
+     * Exception constraint list
+     *
+     * This property store the constraints attached to an expected exception
+     *
+     * @var array
+     */
+    private $exceptionConstraints = [];
+
+    /**
+     * Self defined constraint message
+     *
+     * This property store the error message in case of exception constraint validation are avoided.
+     *
+     * @var string
+     */
+    private $selfDefinedConstraintMessage = 'Failed asserting that exception with user defined constraint is thrown';
 
     /**
      * @var null|string
@@ -556,6 +575,18 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return \is_string($this->outputExpectedString) || \is_string($this->outputExpectedRegex);
     }
 
+    /**
+     * Get exception constraint list
+     *
+     * Return the list of constraints attached to an expected exception.
+     *
+     * @return array
+     */
+    public function getExceptionConstraints(): array
+    {
+        return $this->exceptionConstraints;
+    }
+
     public function getExpectedException(): ?string
     {
         return $this->expectedException;
@@ -577,6 +608,72 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function getExpectedExceptionMessageRegExp(): string
     {
         return $this->expectedExceptionMessageRegExp;
+    }
+
+    /**
+     * Add expected exception constraint to internal store
+     *
+     * Attach a new constraint to the TestCase exception constraint in order to process additional check on the test
+     * thrown exception.
+     *
+     * @param Constraint $constraint The new constraint to attach
+     *
+     * @return $this
+     * @example <pre>
+     *      $this->addExpectedExceptionConstraint(
+     *          new PHPUnit\Framework\Constraint\IsEqual(
+     *              new \Exception('Exception message', 3.14, $previousException)
+     *          )
+     *      );
+     * <pre>
+     */
+    public function addExpectedExceptionConstraint(Constraint $constraint)
+    {
+        array_push($this->exceptionConstraints, $constraint);
+
+        return $this;
+    }
+
+    /**
+     * Expected exception constraint setter
+     *
+     * Reset the internal store then attach the new constraints in it from the given array. Each constraint from the
+     * list have to be a Constraint instance.
+     * Note that a PHPUnit\Framework\Constraint\Callback have to return true in order to reflect a successful state
+     * of the assertion.
+     *
+     * @param Constraint[] $constraintList The list of constraint to attach to an expected exception
+     * @param string|null  $message        The message to override the default one
+     *
+     * @return  $this
+     * @see     TestCase::setSelfDefinedConstraintMessage for more informations about $message parameter
+     * @example <pre>
+     *      $this->expectedExceptionConstraint(
+     *          [
+     *              new PHPUnit\Framework\Constraint\IsEqual(
+     *                  new \Exception('Exception message', 3.14, $previousException)
+     *              ),
+     *              new PHPUnit\Framework\Constraint\Callback(
+     *                  function(\Exception $exception) {
+     *                      return $exception->getPrevious() instanceof \LogicException;
+     *                  }
+     *              )
+     *          ]
+     *      );
+     * <pre>
+     */
+    public function expectedExceptionConstraint(array $constraintList, string $message = null)
+    {
+        $this->resetExceptionConstraints();
+        foreach ($constraintList as $constraint) {
+            $this->addExpectedExceptionConstraint($constraint);
+        }
+
+        if ($message) {
+            $this->setSelfDefinedConstraintMessage($message);
+        }
+
+        return $this;
     }
 
     public function expectException(string $exception): void
@@ -1192,6 +1289,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 );
             }
 
+            if (!empty($this->exceptionConstraints)) {
+                $this->processExceptionConstraints($exception);
+            }
+
             return;
         }
 
@@ -1229,6 +1330,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     $this->expectedExceptionCode
                 )
             );
+        } elseif (!empty($this->exceptionConstraints)) {
+            $this->numAssertions++;
+
+            throw new AssertionFailedError($this->selfDefinedConstraintMessage);
         }
 
         return $testResult;
@@ -1588,6 +1693,23 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected function onNotSuccessfulTest(Throwable $t): void
     {
         throw $t;
+    }
+
+    /**
+     * Set self defined constraint message
+     *
+     * Override the default message sent in case of self defined exception constraint are avoided from the test,
+     * more specifically if the expected exception is not thrown by the test.
+     *
+     * @param string $message The message to override the default one
+     *
+     * @return $this
+     */
+    public function setSelfDefinedConstraintMessage(string $message)
+    {
+        $this->selfDefinedConstraintMessage = $message;
+
+        return $this;
     }
 
     private function setExpectedExceptionFromAnnotation(): void
@@ -2093,7 +2215,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     {
         $result = false;
 
-        if ($this->expectedException !== null || $this->expectedExceptionCode !== null || $this->expectedExceptionMessage !== null || $this->expectedExceptionMessageRegExp !== null) {
+        if ($this->expectedException !== null || $this->expectedExceptionCode !== null || $this->expectedExceptionMessage !== null || $this->expectedExceptionMessageRegExp !== null || !empty($this->exceptionConstraints)) {
             $result = true;
         }
 
@@ -2118,5 +2240,38 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     {
         return ($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
                $this->inIsolation !== true && !$this instanceof PhptTestCase;
+    }
+
+    /**
+     * Reset internal exception constraint store
+     *
+     * Reset internal exception constraint store to an empty array in order to be reused.
+     *
+     * @return $this
+     */
+    private function resetExceptionConstraints()
+    {
+        $this->exceptionConstraints = [];
+
+        return $this;
+    }
+
+    /**
+     * Process exception constraint list
+     *
+     * Execute an assertion on each existing constraint in the internal expected exception constraint list.
+     *
+     * @param Throwable $exception The original exception to test
+     *
+     * @return void
+     */
+    private function processExceptionConstraints(\Throwable $exception)
+    {
+        foreach ($this->exceptionConstraints as $exceptionConstraint) {
+            $this->assertThat(
+                $exception,
+                $exceptionConstraint
+            );
+        }
     }
 }
