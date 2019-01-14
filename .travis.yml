@@ -1,5 +1,5 @@
 language: php
-
+dist: xenial
 sudo: false
 
 addons:
