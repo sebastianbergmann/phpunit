@@ -160,11 +160,9 @@ class Help
         }
 
         if ($width === null) {
-            $this->maxDescLength = $console->getNumberOfColumns() - $this->maxArgLength - 4;
-        } else {
-            // The 76 is based on the width=80 used elsewhere in the code minus the margins=4
-            $this->maxDescLength = 76 - $this->maxArgLength;
+            $width = $console->getNumberOfColumns();
         }
+        $this->maxDescLength = $width - $this->maxArgLength - 4;
     }
 
     /**

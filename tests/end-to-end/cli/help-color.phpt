@@ -5,7 +5,7 @@ phpunit --help
 --FILE--
 <?php
 require __DIR__ . '/../../bootstrap.php';
-$help = new \Help(200, true);
+$help = new \Help(72, true);
 $help->writeToConsole();
 --EXPECTF_EXTERNAL--
 _files/output-cli-help-color.txt
