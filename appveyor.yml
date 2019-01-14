@@ -10,10 +10,10 @@ environment:
   COMPOSER_ROOT_VERSION: '7.0-dev'
 
   matrix:
-    - PHP_VERSION: '7.2.14'
+    - PHP_VERSION: '7.3'
       XDEBUG_VERSION: '2.6.1-7.2'
       DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.2.14'
+    - PHP_VERSION: '7.3'
       XDEBUG_VERSION: '2.6.1-7.2'
       DEPENDENCIES: ''
 
@@ -31,8 +31,8 @@ install:
   - IF NOT EXIST c:\php mkdir c:\php
   - IF NOT EXIST c:\php\%PHP_VERSION% mkdir c:\php\%PHP_VERSION%
   - cd c:\php\%PHP_VERSION%
-  - IF NOT EXIST php-installed.txt curl -fsS -o php-%PHP_VERSION%-Win32-VC15-x86.zip https://windows.php.net/downloads/releases/php-%PHP_VERSION%-Win32-VC15-x86.zip
-  - IF NOT EXIST php-installed.txt 7z x php-%PHP_VERSION%-Win32-VC15-x86.zip -y >nul
+  - IF NOT EXIST php-installed.txt curl -fsS -o php-%PHP_VERSION%-Win32-VC15-x86-latest.zip https://windows.php.net/downloads/releases/php-%PHP_VERSION%-Win32-VC15-x86-latest.zip
+  - IF NOT EXIST php-installed.txt 7z x php-%PHP_VERSION%-Win32-VC15-x86-latest.zip -y >nul
   - IF NOT EXIST php-installed.txt del /Q *.zip
   - IF NOT EXIST php-installed.txt copy /Y php.ini-development php.ini
   - IF NOT EXIST php-installed.txt echo max_execution_time=1200 >> php.ini
