@@ -139,10 +139,17 @@ class Help
      */
     private $hasColor = false;
 
-    public function __construct()
+    public function __construct(?int $width = null, ?bool $withColor = null)
     {
-        $console        = new Console();
-        $this->hasColor = $console->hasColorSupport();
+        if ($width === null || $withColor === null) {
+            $console = new Console();
+        }
+
+        if ($withColor === null) {
+            $this->hasColor = $console->hasColorSupport();
+        } else {
+            $this->hasColor = $withColor;
+        }
 
         foreach (self::HELP_TEXT as $section => $options) {
             foreach ($options as $option) {
@@ -152,7 +159,12 @@ class Help
             }
         }
 
-        $this->maxDescLength = $console->getNumberOfColumns() - $this->maxArgLength - 4;
+        if ($width === null) {
+            $this->maxDescLength = $console->getNumberOfColumns() - $this->maxArgLength - 4;
+        } else {
+            // The 76 is based on the width=80 used elsewhere in the code minus the margins=4
+            $this->maxDescLength = 76 - $this->maxArgLength;
+        }
     }
 
     /**
