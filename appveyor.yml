@@ -32,7 +32,6 @@ install:
   - IF NOT EXIST c:\php\%PHP_VERSION% mkdir c:\php\%PHP_VERSION%
   - cd c:\php\%PHP_VERSION%
   - IF NOT EXIST php-installed.txt curl --fail --location --silent --show-error -o php-%PHP_VERSION%-Win32-VC15-x86-latest.zip https://windows.php.net/downloads/releases/php-%PHP_VERSION%-Win32-VC15-x86-latest.zip
-  - IF NOT EXIST php-installed.txt dir *.zip
   - IF NOT EXIST php-installed.txt 7z x php-%PHP_VERSION%*-Win32-VC15-x86-latest.zip -y >nul
   - IF NOT EXIST php-installed.txt del /Q *.zip
   - IF NOT EXIST php-installed.txt copy /Y php.ini-development php.ini
