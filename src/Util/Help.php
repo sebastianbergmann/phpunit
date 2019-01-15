@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /*
  * This file is part of PHPUnit.
  *
@@ -11,7 +12,7 @@
 use PHPUnit\Util\Color;
 use SebastianBergmann\Environment\Console;
 
-class Help
+final class Help
 {
     private const LEFT_MARGIN = '  ';
 
