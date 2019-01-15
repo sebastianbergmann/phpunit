@@ -10,10 +10,10 @@ environment:
   COMPOSER_ROOT_VERSION: '7.0-dev'
 
   matrix:
-    - PHP_VERSION: '7.1.11'
+    - PHP_VERSION: '7.1'
       XDEBUG_VERSION: '2.5.5-7.1'
       DEPENDENCIES: '--prefer-lowest'
-    - PHP_VERSION: '7.1.11'
+    - PHP_VERSION: '7.1'
       XDEBUG_VERSION: '2.5.5-7.1'
       DEPENDENCIES: ''
 
@@ -31,7 +31,7 @@ install:
   - IF NOT EXIST c:\php mkdir c:\php
   - IF NOT EXIST c:\php\%PHP_VERSION% mkdir c:\php\%PHP_VERSION%
   - cd c:\php\%PHP_VERSION%
-  - IF NOT EXIST php-installed.txt curl -fsS -o php-%PHP_VERSION%-Win32-VC14-x86.zip https://windows.php.net/downloads/releases/archives/php-%PHP_VERSION%-Win32-VC14-x86.zip
+  - IF NOT EXIST php-installed.txt curl -fsS -o php-%PHP_VERSION%-Win32-VC14-x86.zip https://windows.php.net/downloads/releases/latest/php-%PHP_VERSION%-Win32-VC14-x86-latest.zip
   - IF NOT EXIST php-installed.txt 7z x php-%PHP_VERSION%-Win32-VC14-x86.zip -y >nul
   - IF NOT EXIST php-installed.txt del /Q *.zip
   - IF NOT EXIST php-installed.txt copy /Y php.ini-development php.ini
