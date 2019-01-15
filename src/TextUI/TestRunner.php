@@ -562,8 +562,8 @@ class TestRunner extends BaseTestRunner
             }
 
             if (isset($arguments['xdebugFilterFile'], $filterConfiguration)) {
-                $filterScriptGenerator = new XdebugFilterScriptGenerator;
-                $script                = $filterScriptGenerator->generate($filterConfiguration['whitelist']);
+                $script = (new XdebugFilterScriptGenerator)->generate($filterConfiguration['whitelist']);
+
                 \file_put_contents($arguments['xdebugFilterFile'], $script);
 
                 $this->write("\n");
