@@ -36,6 +36,7 @@ use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Configuration;
+use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\Printer;
@@ -562,11 +563,18 @@ class TestRunner extends BaseTestRunner
             }
 
             if (isset($arguments['xdebugFilterFile'], $filterConfiguration)) {
+                $this->write("\n");
+
                 $script = (new XdebugFilterScriptGenerator)->generate($filterConfiguration['whitelist']);
+
+                if (!Filesystem::createDirectory(\dirname($arguments['xdebugFilterFile']))) {
+                    $this->write(\sprintf('Cannot write Xdebug filter script to %s ' . \PHP_EOL, $arguments['xdebugFilterFile']));
+
+                    exit(self::EXCEPTION_EXIT);
+                }
 
                 \file_put_contents($arguments['xdebugFilterFile'], $script);
 
-                $this->write("\n");
                 $this->write(\sprintf('Wrote Xdebug filter script to %s ' . \PHP_EOL, $arguments['xdebugFilterFile']));
 
                 exit(self::SUCCESS_EXIT);
