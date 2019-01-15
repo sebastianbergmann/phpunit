@@ -16,6 +16,7 @@ require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
+
 <?php declare(strict_types=1);
 if (!\function_exists('xdebug_set_filter')) {
     return;
