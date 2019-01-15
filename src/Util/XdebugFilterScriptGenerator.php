@@ -19,7 +19,7 @@ final class XdebugFilterScriptGenerator
             function ($item) {
                 return \sprintf(
                     "        '%s'",
-                    $item
+                    \realpath($item) ?: $item
                 );
             },
             $items
