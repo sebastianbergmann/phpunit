@@ -478,6 +478,51 @@ class TestRunner extends BaseTestRunner
         }
 
         if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile'])) {
+            $whitelistFromConfigurationFile = false;
+            $whitelistFromOption            = false;
+
+            if (isset($arguments['whitelist'])) {
+                $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
+
+                $whitelistFromOption = true;
+            }
+
+            if (isset($arguments['configuration'])) {
+                $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
+
+                if (!empty($filterConfiguration['whitelist'])) {
+                    $whitelistFromConfigurationFile = true;
+                }
+
+                if (!empty($filterConfiguration['whitelist'])) {
+                    foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
+                        $this->codeCoverageFilter->addDirectoryToWhitelist(
+                            $dir['path'],
+                            $dir['suffix'],
+                            $dir['prefix']
+                        );
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
+                        $this->codeCoverageFilter->addFileToWhitelist($file);
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
+                        $this->codeCoverageFilter->removeDirectoryFromWhitelist(
+                            $dir['path'],
+                            $dir['suffix'],
+                            $dir['prefix']
+                        );
+                    }
+
+                    foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
+                        $this->codeCoverageFilter->removeFileFromWhitelist($file);
+                    }
+                }
+            }
+        }
+
+        if ($codeCoverageReports > 0) {
             $codeCoverage = new CodeCoverage(
                 null,
                 $this->codeCoverageFilter
@@ -511,73 +556,14 @@ class TestRunner extends BaseTestRunner
                 $codeCoverage->setDisableIgnoredLines(true);
             }
 
-            $whitelistFromConfigurationFile = false;
-            $whitelistFromOption            = false;
+            if (!empty($filterConfiguration['whitelist'])) {
+                $codeCoverage->setAddUncoveredFilesFromWhitelist(
+                    $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
+                );
 
-            if (isset($arguments['whitelist'])) {
-                $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
-
-                $whitelistFromOption = true;
-            }
-
-            if (isset($arguments['configuration'])) {
-                $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
-
-                if (!empty($filterConfiguration['whitelist'])) {
-                    $whitelistFromConfigurationFile = true;
-                }
-
-                if (!empty($filterConfiguration['whitelist'])) {
-                    $codeCoverage->setAddUncoveredFilesFromWhitelist(
-                        $filterConfiguration['whitelist']['addUncoveredFilesFromWhitelist']
-                    );
-
-                    $codeCoverage->setProcessUncoveredFilesFromWhitelist(
-                        $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist']
-                    );
-
-                    foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                        $this->codeCoverageFilter->addDirectoryToWhitelist(
-                            $dir['path'],
-                            $dir['suffix'],
-                            $dir['prefix']
-                        );
-                    }
-
-                    foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                        $this->codeCoverageFilter->addFileToWhitelist($file);
-                    }
-
-                    foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
-                        $this->codeCoverageFilter->removeDirectoryFromWhitelist(
-                            $dir['path'],
-                            $dir['suffix'],
-                            $dir['prefix']
-                        );
-                    }
-
-                    foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
-                        $this->codeCoverageFilter->removeFileFromWhitelist($file);
-                    }
-                }
-            }
-
-            if (isset($arguments['xdebugFilterFile'], $filterConfiguration)) {
-                $this->write("\n");
-
-                $script = (new XdebugFilterScriptGenerator)->generate($filterConfiguration['whitelist']);
-
-                if (!Filesystem::createDirectory(\dirname($arguments['xdebugFilterFile']))) {
-                    $this->write(\sprintf('Cannot write Xdebug filter script to %s ' . \PHP_EOL, $arguments['xdebugFilterFile']));
-
-                    exit(self::EXCEPTION_EXIT);
-                }
-
-                \file_put_contents($arguments['xdebugFilterFile'], $script);
-
-                $this->write(\sprintf('Wrote Xdebug filter script to %s ' . \PHP_EOL, $arguments['xdebugFilterFile']));
-
-                exit(self::SUCCESS_EXIT);
+                $codeCoverage->setProcessUncoveredFilesFromWhitelist(
+                    $filterConfiguration['whitelist']['processUncoveredFilesFromWhitelist']
+                );
             }
 
             if (!$this->codeCoverageFilter->hasWhitelist()) {
@@ -591,6 +577,24 @@ class TestRunner extends BaseTestRunner
 
                 unset($codeCoverage);
             }
+        }
+
+        if (isset($arguments['xdebugFilterFile'], $filterConfiguration)) {
+            $this->write("\n");
+
+            $script = (new XdebugFilterScriptGenerator)->generate($filterConfiguration['whitelist']);
+
+            if (!Filesystem::createDirectory(\dirname($arguments['xdebugFilterFile']))) {
+                $this->write(\sprintf('Cannot write Xdebug filter script to %s ' . \PHP_EOL, $arguments['xdebugFilterFile']));
+
+                exit(self::EXCEPTION_EXIT);
+            }
+
+            \file_put_contents($arguments['xdebugFilterFile'], $script);
+
+            $this->write(\sprintf('Wrote Xdebug filter script to %s ' . \PHP_EOL, $arguments['xdebugFilterFile']));
+
+            exit(self::SUCCESS_EXIT);
         }
 
         $this->printer->write("\n");
