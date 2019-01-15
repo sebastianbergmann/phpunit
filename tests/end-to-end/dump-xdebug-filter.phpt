@@ -29,5 +29,4 @@ if (!\function_exists('xdebug_set_filter')) {
         %s
     ]
 );
-
 Wrote Xdebug filter script to php://stderr
