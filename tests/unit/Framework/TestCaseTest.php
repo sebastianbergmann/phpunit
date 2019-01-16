@@ -556,9 +556,9 @@ class TestCaseTest extends TestCase
             'PHPUnit >= 9-dev is required.' . PHP_EOL .
             'Operating system matching /DOESNOTEXIST/i is required.' . PHP_EOL .
             'Function testFuncOne is required.' . PHP_EOL .
-            'Function testFuncTwo is required.' . PHP_EOL .
+            'Function testFunc2 is required.' . PHP_EOL .
             'Extension testExtOne is required.' . PHP_EOL .
-            'Extension testExtTwo is required.' . PHP_EOL .
+            'Extension testExt2 is required.' . PHP_EOL .
             'Extension testExtThree >= 2.0 is required.',
             $test->getStatusMessage()
         );
