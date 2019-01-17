@@ -3,6 +3,21 @@ PHPUnit %s Sebastian Bergmann and contributors.
 Runtime:       %s
 Configuration: %stests%ebasic%econfiguration.basic.xml
 
+[4mPHPUnit\SelfTest\Basic\SetUpBeforeClass[0m
+ [33m✘[0m One [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mException: forcing an Exception in setUpBeforeClass()[0m
+   [33m│[0m
+   [33m╵[0m [2m/[22mUsers[2m/[22mewout[2m/[22mproj[2m/[22mphpunit[2m/[22mtests[2m/[22mbasic[2m/[22munit[2m/[22mSetUpBeforeClassTest.php[2m:[22m[34m18[0m
+   [33m┴[0m
+
+ [33m✘[0m Two [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mException: forcing an Exception in setUpBeforeClass()[0m
+   [33m│[0m
+   [33m╵[0m [2m/[22mUsers[2m/[22mewout[2m/[22mproj[2m/[22mphpunit[2m/[22mtests[2m/[22mbasic[2m/[22munit[2m/[22mSetUpBeforeClassTest.php[2m:[22m[34m18[0m
+   [33m┴[0m
+
 [4mTest result status with and without message[0m
  [32m✔[0m Success [32m %f [2mms[0m
  [31m✘[0m Failure [31m %f [2mms[0m
@@ -89,4 +104,4 @@ Time: %s, Memory: %s
 
 
 [37;41mERRORS![0m
-[37;41mTests: 14[0m[37;41m, Assertions: 4[0m[37;41m, Errors: 2[0m[37;41m, Failures: 2[0m[37;41m, Warnings: 2[0m[37;41m, Skipped: 2[0m[37;41m, Incomplete: 2[0m[37;41m, Risky: 2[0m[37;41m.[0m
+[37;41mTests: 16[0m[37;41m, Assertions: 4[0m[37;41m, Errors: 4[0m[37;41m, Failures: 2[0m[37;41m, Warnings: 2[0m[37;41m, Skipped: 2[0m[37;41m, Incomplete: 2[0m[37;41m, Risky: 2[0m[37;41m.[0m
