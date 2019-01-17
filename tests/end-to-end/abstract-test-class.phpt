@@ -1,7 +1,7 @@
 --TEST--
 phpunit AbstractTest ../../_files/AbstractTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'AbstractTest';
 $_SERVER['argv'][3] = __DIR__ . '/../_files/AbstractTest.php';

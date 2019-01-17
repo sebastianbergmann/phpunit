@@ -1,7 +1,7 @@
 --TEST--
 phpunit --teamcity BankAccountTest ../../_files/BankAccountTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--teamcity',

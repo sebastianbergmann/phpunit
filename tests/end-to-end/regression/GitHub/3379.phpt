@@ -1,7 +1,7 @@
 --TEST--
 GH-3379: Dependent test of skipped test has status -1
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--configuration';
 $_SERVER['argv'][2] = __DIR__ . '/3379/';
 

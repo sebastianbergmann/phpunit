@@ -1,7 +1,7 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('Bar', [], 'MockBar', true, true)
 --FILE--
-<?php
+<?php declare(strict_types=1);
 abstract class Foo
 {
     abstract public function baz();

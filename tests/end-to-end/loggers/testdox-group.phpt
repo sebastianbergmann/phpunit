@@ -1,7 +1,7 @@
 --TEST--
 phpunit --testdox-text php://stdout --testdox-group one TestDoxGroupTest ../../_files/TestDoxGroupTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--testdox-text',

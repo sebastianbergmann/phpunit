@@ -1,7 +1,7 @@
 --TEST--
 phpunit --test-suffix .test.php,.my.php ../../_files/
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--test-suffix';
 $_SERVER['argv'][3] = '.test.php,.my.php';

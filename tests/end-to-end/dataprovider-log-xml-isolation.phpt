@@ -1,7 +1,7 @@
 --TEST--
 phpunit --process-isolation --log-junit php://stdout DataProviderTest ../../_files/DataProviderTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = '--log-junit';

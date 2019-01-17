@@ -1,7 +1,7 @@
 --TEST--
 phpunit --process-isolation --verbose DependencyTestSuite ../../_files/DependencyTestSuite.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--process-isolation',

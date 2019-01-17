@@ -14,7 +14,7 @@ if (!\extension_loaded('pcntl') || \strpos(\ini_get('disable_functions'), 'pcntl
 --DESCRIPTION--
 https://github.com/sebastianbergmann/phpunit/issues/2085
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '-c';
 $_SERVER['argv'][2] = __DIR__ . '/2085/configuration_enforce_time_limit_options.xml';
 $_SERVER['argv'][3] = __DIR__ . '/2085/Issue2085Test.php';

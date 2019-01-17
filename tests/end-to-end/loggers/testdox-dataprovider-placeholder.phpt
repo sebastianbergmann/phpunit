@@ -1,7 +1,7 @@
 --TEST--
 phpunit --testdox --colors=always --verbose RouterTest ../unit/Util/TestDox/ColorTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--testdox',

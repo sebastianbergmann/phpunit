@@ -7,7 +7,7 @@ if (!extension_loaded('pdo') || !in_array('sqlite', PDO::getAvailableDrivers()))
 }
 ?>
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = 'Issue1351Test';

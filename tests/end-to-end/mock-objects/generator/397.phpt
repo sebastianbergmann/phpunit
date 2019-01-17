@@ -1,7 +1,7 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit-mock-objects/issues/397
 --FILE--
-<?php
+<?php declare(strict_types=1);
 class C
 {
     public function m(?self $other): self

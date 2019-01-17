@@ -1,7 +1,7 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('ClassWithDeprecatedMethod', [], 'MockFoo', TRUE, TRUE)
 --FILE--
-<?php
+<?php declare(strict_types=1);
 class ClassWithDeprecatedMethod
 {
     /**

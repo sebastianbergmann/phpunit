@@ -1,7 +1,7 @@
 --TEST--
 #2366: Using a test double from a data provider only works once
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'Issue2366Test';
 $_SERVER['argv'][3] = __DIR__ . '/2366/Issue2366Test.php';

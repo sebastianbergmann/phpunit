@@ -1,7 +1,7 @@
 --TEST--
 phpunit StackTest _files/StackTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     'StackTest',

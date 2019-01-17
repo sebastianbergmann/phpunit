@@ -1,7 +1,7 @@
 --TEST--
 phpunit BankAccountTest ../../_files/BankAccountTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--my-option=123',

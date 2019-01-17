@@ -1,7 +1,7 @@
 --TEST--
 Mock method and call original method with variadic argument
 --FILE--
-<?php
+<?php declare(strict_types=1);
 class Foo
 {
     private function bar(...$args){}

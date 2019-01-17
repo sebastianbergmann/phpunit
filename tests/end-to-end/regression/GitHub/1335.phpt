@@ -1,7 +1,7 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/1335
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--bootstrap';
 $_SERVER['argv'][3] = __DIR__ . '/1335/bootstrap1335.php';

@@ -1,7 +1,7 @@
 --TEST--
 phpunit --no-configuration RequirementsTest ../_files/RequirementsTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 require_once(__DIR__ . '/../bootstrap.php');
 
 $arguments = [

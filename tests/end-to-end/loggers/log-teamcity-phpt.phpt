@@ -1,7 +1,7 @@
 --TEST--
 phpunit --log-teamcity php://stdout ../end-to-end/phpt-stderr.phpt
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--log-teamcity',

@@ -1,7 +1,7 @@
 --TEST--
 phpunit --testdox -c tests/basic/configuration.basic.xml
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '-c',
     realpath(__DIR__ . '/../../basic/configuration.basic.xml'),

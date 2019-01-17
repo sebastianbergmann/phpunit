@@ -1,7 +1,7 @@
 --TEST--
 GH-2724: Missing initialization of setRunClassInSeparateProcess() for tests without data providers
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'SeparateClassRunMethodInNewProcessTest';
 $_SERVER['argv'][3] = __DIR__ . '/2724/SeparateClassRunMethodInNewProcessTest.php';

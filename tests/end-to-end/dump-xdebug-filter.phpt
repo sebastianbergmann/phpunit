@@ -6,7 +6,7 @@ if (!extension_loaded('xdebug')) {
     print 'skip: xdebug not loaded';
 }
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '-c';
 $_SERVER['argv'][2] = __DIR__ . '/../_files/configuration_whitelist.xml';
 $_SERVER['argv'][3] = '--dump-xdebug-filter';

@@ -1,7 +1,7 @@
 --TEST--
 phpunit --repeat 3 BankAccountTest ../../_files/BankAccountTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--repeat',

@@ -1,7 +1,7 @@
 --TEST--
 #2137: Error message for invalid dataprovider
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'Issue2137Test';
 $_SERVER['argv'][3] = __DIR__ . '/2137/Issue2137Test.php';

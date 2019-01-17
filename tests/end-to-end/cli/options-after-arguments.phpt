@@ -1,7 +1,7 @@
 --TEST--
 phpunit BankAccountTest ../../_files/BankAccountTest.php --colors
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     \realpath(__DIR__ . '/../../_files/BankAccountTest.php'),

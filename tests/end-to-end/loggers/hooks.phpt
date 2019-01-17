@@ -1,7 +1,7 @@
 --TEST--
 phpunit --configuration _files/hooks.xml HookTest _files/HookTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--configuration',
     \realpath(__DIR__ . '/_files/hooks.xml'),

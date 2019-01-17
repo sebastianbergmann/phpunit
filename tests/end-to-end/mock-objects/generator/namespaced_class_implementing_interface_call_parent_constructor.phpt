@@ -1,7 +1,7 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('NS\Foo', [], 'MockFoo', true)
 --FILE--
-<?php
+<?php declare(strict_types=1);
 namespace NS;
 
 interface IFoo

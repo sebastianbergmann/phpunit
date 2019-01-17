@@ -1,7 +1,7 @@
 --TEST--
 phpunit --log-junit php://stdout StatusTest _files/StatusTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--log-junit',

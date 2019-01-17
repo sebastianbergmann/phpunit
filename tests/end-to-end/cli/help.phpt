@@ -3,7 +3,7 @@ phpunit
 --ARGS--
 --no-configuration
 --FILE--
-<?php
+<?php declare(strict_types=1);
 require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF_EXTERNAL--

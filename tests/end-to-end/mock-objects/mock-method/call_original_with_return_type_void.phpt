@@ -1,7 +1,7 @@
 --TEST--
 Mock method and call original method that has a return type of void
 --FILE--
-<?php
+<?php declare(strict_types=1);
 class Foo
 {
     public function bar():void{}

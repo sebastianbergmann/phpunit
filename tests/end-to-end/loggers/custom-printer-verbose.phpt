@@ -1,7 +1,7 @@
 --TEST--
 phpunit -c _files/configuration.custom-printer.xml --verbose IncompleteTest ../../_files/IncompleteTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '-c',
     \realpath(__DIR__ . '/_files/configuration.custom-printer.xml'),

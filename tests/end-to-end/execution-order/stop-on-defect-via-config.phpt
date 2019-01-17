@@ -1,7 +1,7 @@
 --TEST--
 phpunit -c ../_files/configuration_stop_on_defect.xml StopOnWarningTestSuite ./tests/_files/StopOnWarningTestSuite.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '-c',
     \realpath(__DIR__ . '/../../_files/configuration_stop_on_defect.xml'),

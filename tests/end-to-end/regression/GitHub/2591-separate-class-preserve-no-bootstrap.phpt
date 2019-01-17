@@ -2,8 +2,7 @@
 GH-2591: Test class process isolation with preserving global state and with loaded bootstrap, without global string.
 Expected result is to have an error in first test, and then have variable set in second test to be visible in third.
 --FILE--
-<?php
-
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--bootstrap';
 $_SERVER['argv'][3] = __DIR__ . '/2591/bootstrapWithBootstrapNoGlobal.php';

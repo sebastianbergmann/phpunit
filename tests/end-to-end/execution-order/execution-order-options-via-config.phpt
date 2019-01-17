@@ -1,7 +1,7 @@
 --TEST--
 phpunit -c ../_files/configuration_stop_on_defect.xml MultiDependencyTest ./tests/_files/MultiDependencyTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--debug',
     '-c',

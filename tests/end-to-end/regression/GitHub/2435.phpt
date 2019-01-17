@@ -1,8 +1,7 @@
 --TEST--
 GH-2435: Test empty @group annotation
 --FILE--
-<?php
-
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'Issue2435Test';
 $_SERVER['argv'][3] = __DIR__ . '/2435/Issue2435Test.php';

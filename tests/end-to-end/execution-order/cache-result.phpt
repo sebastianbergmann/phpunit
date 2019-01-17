@@ -1,7 +1,7 @@
 --TEST--
 phpunit --order-by=no-depends,reverse --cache-result --cache-result-file MultiDependencyTest ./tests/_files/MultiDependencyTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $target = tempnam(sys_get_temp_dir(), __FILE__);
 
 $arguments = [

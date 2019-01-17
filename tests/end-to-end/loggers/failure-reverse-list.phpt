@@ -1,7 +1,7 @@
 --TEST--
 phpunit --reverse-list FailureTest ../../_files/FailureTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--reverse-list',

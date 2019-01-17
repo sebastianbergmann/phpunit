@@ -14,7 +14,7 @@ if (ini_get('assert.exception') != 1) {
     print 'skip: assert.exception=1 is required' . PHP_EOL;
 }
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'AssertionExampleTest';
 $_SERVER['argv'][3] = __DIR__ . '/../_files/AssertionExampleTest.php';

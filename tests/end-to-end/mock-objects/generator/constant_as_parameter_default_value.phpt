@@ -1,7 +1,7 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true)
 --FILE--
-<?php
+<?php declare(strict_types=1);
 class Foo
 {
     public function bar(int $baz = PHP_INT_MIN)

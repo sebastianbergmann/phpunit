@@ -4,7 +4,7 @@
 <?php
 if (!extension_loaded('soap')) echo 'skip: SOAP extension is required';
 --FILE--
-<?php
+<?php declare(strict_types=1);
 require __DIR__ . '/../../../../vendor/autoload.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;

@@ -1,7 +1,7 @@
 --TEST--
 phpunit MultiDependencyTest _files/MultiDependencyTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     'MultiDependencyTest',

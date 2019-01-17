@@ -1,7 +1,7 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true)
 --FILE--
-<?php
+<?php declare(strict_types=1);
 interface IFoo
 {
     public function __construct($bar);

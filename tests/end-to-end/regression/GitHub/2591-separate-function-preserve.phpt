@@ -1,8 +1,7 @@
 --TEST--
 GH-2591: Test method process isolation with preserving global state and with loaded bootstrap.
 --FILE--
-<?php
-
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--bootstrap';
 $_SERVER['argv'][3] = __DIR__ . '/2591/bootstrapWithBootstrap.php';

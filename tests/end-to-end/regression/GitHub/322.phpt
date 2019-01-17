@@ -1,8 +1,7 @@
 --TEST--
 GH-322: group commandline option should override group/exclude setting in phpunit.xml
 --FILE--
-<?php
-
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--configuration';
 $_SERVER['argv'][2] = __DIR__ . '/322/phpunit322.xml';
 $_SERVER['argv'][3] = '--debug';

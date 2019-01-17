@@ -1,7 +1,7 @@
 --TEST--
 Mock static method
 --FILE--
-<?php
+<?php declare(strict_types=1);
 class Foo
 {
     public static function bar(){}

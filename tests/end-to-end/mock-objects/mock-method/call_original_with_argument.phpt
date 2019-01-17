@@ -1,7 +1,7 @@
 --TEST--
 Mock method and call original method with argument
 --FILE--
-<?php
+<?php declare(strict_types=1);
 class Foo
 {
     private function bar($arg){}

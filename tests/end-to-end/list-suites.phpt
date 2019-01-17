@@ -1,7 +1,7 @@
 --TEST--
 phpunit --list-suites --configuration=__DIR__.'/../_files/configuration.suites.xml'
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--list-suites';
 $_SERVER['argv'][2] = '--configuration';
 $_SERVER['argv'][3] = __DIR__.'/../_files/configuration.suites.xml';

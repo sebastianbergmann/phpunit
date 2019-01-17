@@ -1,7 +1,7 @@
 --TEST--
 phpunit --stop-on-defect StopOnWarningTestSuite ./tests/_files/StopOnWarningTestSuite.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--stop-on-defect',

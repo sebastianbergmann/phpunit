@@ -1,7 +1,7 @@
 --TEST--
 phpunit --order-by=depends,random ../_files/MultiDependencyTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--verbose',

@@ -1,7 +1,7 @@
 --TEST--
 phpunit --verbose --order-by=reverse ../_files/DependencySuccessTest.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--debug',

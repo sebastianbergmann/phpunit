@@ -1,7 +1,7 @@
 --TEST--
 phpunit --order-by=default,foobar
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--debug',

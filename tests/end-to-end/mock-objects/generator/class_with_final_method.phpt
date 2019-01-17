@@ -1,7 +1,7 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('ClassWithFinalMethod', [], 'MockFoo', true, true)
 --FILE--
-<?php
+<?php declare(strict_types=1);
 class ClassWithFinalMethod
 {
     final public function finalMethod()

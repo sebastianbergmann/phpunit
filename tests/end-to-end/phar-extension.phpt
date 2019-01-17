@@ -1,7 +1,7 @@
 --TEST--
 phpunit --configuration tests/_files/phpunit-example-extension
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--configuration';
 $_SERVER['argv'][2] = __DIR__ . '/../_files/phpunit-example-extension';
 

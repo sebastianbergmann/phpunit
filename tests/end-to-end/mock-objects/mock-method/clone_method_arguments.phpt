@@ -1,7 +1,7 @@
 --TEST--
 Mock method and clone method arguments
 --FILE--
-<?php
+<?php declare(strict_types=1);
 class Foo
 {
     public function bar(){}

@@ -1,8 +1,7 @@
 --TEST--
 --stop-on-failure fails to stop on PHP 7
 --FILE--
-<?php
-
+<?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = 'Issue2145Test';
 $_SERVER['argv'][3] = '--stop-on-error';
