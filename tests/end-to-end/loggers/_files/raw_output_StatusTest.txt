@@ -115,8 +115,16 @@ Configuration: %stests%ebasic%econfiguration.basic.xml
    [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
    [33m┴[0m
 
+[4mPHPUnit\SelfTest\Basic\TearDownAfterClass[0m
+ [32m✔[0m One [32m %f [2mms[0m
+ [32m✔[0m Two [32m %f [2mms[0m
+
+Warning: Exception: forcing an Exception in tearDownAfterClass() in %stests%ebasic%eunit%eTearDownAfterClassTest.php:26
+Stack trace:
+%A
+
 Time: %s, Memory: %s
 
 
 [37;41mERRORS![0m
-[37;41mTests: 18[0m[37;41m, Assertions: 4[0m[37;41m, Errors: 6[0m[37;41m, Failures: 2[0m[37;41m, Warnings: 2[0m[37;41m, Skipped: 2[0m[37;41m, Incomplete: 2[0m[37;41m, Risky: 2[0m[37;41m.[0m
+[37;41mTests: 20[0m[37;41m, Assertions: 6[0m[37;41m, Errors: 6[0m[37;41m, Failures: 2[0m[37;41m, Warnings: 2[0m[37;41m, Skipped: 2[0m[37;41m, Incomplete: 2[0m[37;41m, Risky: 2[0m[37;41m.[0m
