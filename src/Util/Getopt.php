@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -156,7 +156,7 @@ final class Getopt
 
             if (\substr($long_opt, -1) === '=') {
                 /* @noinspection StrlenInEmptyStringCheckContextInspection */
-                if (\substr($long_opt, -2) !== '==' && !\strlen($opt_arg)) {
+                if (\substr($long_opt, -2) !== '==' && !\strlen((string) $opt_arg)) {
                     /* @noinspection ComparisonOperandsOrderInspection */
                     if (false === $opt_arg = \current($args)) {
                         throw new Exception(
