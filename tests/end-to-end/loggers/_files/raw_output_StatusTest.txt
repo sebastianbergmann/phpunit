@@ -8,14 +8,29 @@ Configuration: %stests%ebasic%econfiguration.basic.xml
    [33m┐[0m
    [33m├[0m [43;30mException: forcing an Exception in setUpBeforeClass()[0m
    [33m│[0m
-   [33m╵[0m [2m/[22mUsers[2m/[22mewout[2m/[22mproj[2m/[22mphpunit[2m/[22mtests[2m/[22mbasic[2m/[22munit[2m/[22mSetUpBeforeClassTest.php[2m:[22m[34m18[0m
+   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mSetUpBeforeClassTest.php[2m:[22m[34m31[0m
    [33m┴[0m
 
  [33m✘[0m Two [33m %f [2mms[0m
    [33m┐[0m
    [33m├[0m [43;30mException: forcing an Exception in setUpBeforeClass()[0m
    [33m│[0m
-   [33m╵[0m [2m/[22mUsers[2m/[22mewout[2m/[22mproj[2m/[22mphpunit[2m/[22mtests[2m/[22mbasic[2m/[22munit[2m/[22mSetUpBeforeClassTest.php[2m:[22m[34m18[0m
+   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mSetUpBeforeClassTest.php[2m:[22m[34m31[0m
+   [33m┴[0m
+
+[4mPHPUnit\SelfTest\Basic\SetUp[0m
+ [33m✘[0m One with set up exception [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mRuntimeException: throw exception in setUp[0m
+   [33m│[0m
+   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mSetUpTest.php[2m:[22m[34m29[0m
+   [33m┴[0m
+
+ [33m✘[0m Two with set up exception [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mRuntimeException: throw exception in setUp[0m
+   [33m│[0m
+   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mSetUpTest.php[2m:[22m[34m29[0m
    [33m┴[0m
 
 [4mTest result status with and without message[0m
@@ -104,4 +119,4 @@ Time: %s, Memory: %s
 
 
 [37;41mERRORS![0m
-[37;41mTests: 16[0m[37;41m, Assertions: 4[0m[37;41m, Errors: 4[0m[37;41m, Failures: 2[0m[37;41m, Warnings: 2[0m[37;41m, Skipped: 2[0m[37;41m, Incomplete: 2[0m[37;41m, Risky: 2[0m[37;41m.[0m
+[37;41mTests: 18[0m[37;41m, Assertions: 4[0m[37;41m, Errors: 6[0m[37;41m, Failures: 2[0m[37;41m, Warnings: 2[0m[37;41m, Skipped: 2[0m[37;41m, Incomplete: 2[0m[37;41m, Risky: 2[0m[37;41m.[0m

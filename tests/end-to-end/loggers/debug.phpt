@@ -19,6 +19,10 @@ Test 'PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testOne' started
 Test 'PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testOne' ended
 Test 'PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testTwo' started
 Test 'PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testTwo' ended
+Test 'PHPUnit\SelfTest\Basic\SetUpTest::testOneWithSetUpException' started
+Test 'PHPUnit\SelfTest\Basic\SetUpTest::testOneWithSetUpException' ended
+Test 'PHPUnit\SelfTest\Basic\SetUpTest::testTwoWithSetUpException' started
+Test 'PHPUnit\SelfTest\Basic\SetUpTest::testTwoWithSetUpException' ended
 Test 'PHPUnit\SelfTest\Basic\StatusTest::testSuccess' started
 Test 'PHPUnit\SelfTest\Basic\StatusTest::testSuccess' ended
 Test 'PHPUnit\SelfTest\Basic\StatusTest::testFailure' started
@@ -51,34 +55,44 @@ Test 'PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage' ended
 
 Time: %s, Memory: %s
 
-There were 4 errors:
+There were 6 errors:
 
 1) PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testOne
-Exception: forcing an Exception in setUpBeforeClass() in /Users/ewout/proj/phpunit/tests/basic/unit/SetUpBeforeClassTest.php:18
+Exception: forcing an Exception in setUpBeforeClass() in %stests%ebasic%eunit%eSetUpBeforeClassTest.php:%d
 Stack trace:
-#0 /Users/ewout/proj/phpunit/src/Framework/TestSuite.php(703): PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::setUpBeforeClass()
-#1 /Users/ewout/proj/phpunit/src/Framework/TestSuite.php(746): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
-#2 /Users/ewout/proj/phpunit/src/TextUI/TestRunner.php(642): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
-#3 /Users/ewout/proj/phpunit/src/TextUI/Command.php(207): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
-#4 /Users/ewout/proj/phpunit/src/TextUI/Command.php(163): PHPUnit\TextUI\Command->run(Array, true)
-#5 Standard input code(11): PHPUnit\TextUI\Command::main()
-#6 {main}
+#0 %s
+#1 %s
+#2 %s
+#3 %s
+#4 %s
+#5 %s
+#6 %s
 2) PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testTwo
-Exception: forcing an Exception in setUpBeforeClass() in /Users/ewout/proj/phpunit/tests/basic/unit/SetUpBeforeClassTest.php:18
+Exception: forcing an Exception in setUpBeforeClass() in %stests%ebasic%eunit%eSetUpBeforeClassTest.php:%d
 Stack trace:
-#0 /Users/ewout/proj/phpunit/src/Framework/TestSuite.php(703): PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::setUpBeforeClass()
-#1 /Users/ewout/proj/phpunit/src/Framework/TestSuite.php(746): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
-#2 /Users/ewout/proj/phpunit/src/TextUI/TestRunner.php(642): PHPUnit\Framework\TestSuite->run(Object(PHPUnit\Framework\TestResult))
-#3 /Users/ewout/proj/phpunit/src/TextUI/Command.php(207): PHPUnit\TextUI\TestRunner->doRun(Object(PHPUnit\Framework\TestSuite), Array, true)
-#4 /Users/ewout/proj/phpunit/src/TextUI/Command.php(163): PHPUnit\TextUI\Command->run(Array, true)
-#5 Standard input code(11): PHPUnit\TextUI\Command::main()
-#6 {main}
-3) PHPUnit\SelfTest\Basic\StatusTest::testError
+#0 %s
+#1 %s
+#2 %s
+#3 %s
+#4 %s
+#5 %s
+#6 %s
+3) PHPUnit\SelfTest\Basic\SetUpTest::testOneWithSetUpException
+RuntimeException: throw exception in setUp
+
+%stests%ebasic%eunit%eSetUpTest.php:%d
+
+4) PHPUnit\SelfTest\Basic\SetUpTest::testTwoWithSetUpException
+RuntimeException: throw exception in setUp
+
+%stests%ebasic%eunit%eSetUpTest.php:%d
+
+5) PHPUnit\SelfTest\Basic\StatusTest::testError
 RuntimeException:%w
 
 %stests%ebasic%eunit%eStatusTest.php:%d
 
-4) PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
+6) PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
 RuntimeException: error with custom message
 
 %stests%ebasic%eunit%eStatusTest.php:%d
@@ -126,4 +140,4 @@ This test did not perform any assertions
 %stests%ebasic%eunit%eStatusTest.php:%d
 
 ERRORS!
-Tests: 16, Assertions: 4, Errors: 4, Failures: 2, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.
+Tests: 18, Assertions: 4, Errors: 6, Failures: 2, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.
