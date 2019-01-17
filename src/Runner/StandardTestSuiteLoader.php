@@ -22,6 +22,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
     /**
      * @throws Exception
      * @throws \PHPUnit\Framework\Exception
+     * @throws \ReflectionException
      */
     public function load(string $suiteClassName, string $suiteClassFile = ''): ReflectionClass
     {
