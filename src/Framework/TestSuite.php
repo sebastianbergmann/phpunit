@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -302,7 +302,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             return true;
         }
 
-        $annotations = \PHPUnit\Util\Test::parseAnnotations($method->getDocComment());
+        $annotations = \PHPUnit\Util\Test::parseAnnotations((string) $method->getDocComment());
 
         return isset($annotations['test']);
     }
@@ -358,7 +358,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
 
         if (!$theClass->isSubclassOf(TestCase::class)) {
-            $this->setName($theClass);
+            $this->setName((string) $theClass);
 
             return;
         }

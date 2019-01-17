@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -299,7 +299,7 @@ final class TeamCity extends ResultPrinter
         }
 
         foreach ($params as $key => $value) {
-            $escapedValue = self::escapeValue($value);
+            $escapedValue = self::escapeValue((string) $value);
             $this->write(" $key='$escapedValue'");
         }
 
@@ -386,6 +386,6 @@ final class TeamCity extends ResultPrinter
      */
     private static function toMilliseconds(float $time): int
     {
-        return \round($time * 1000);
+        return (int) \round($time * 1000);
     }
 }

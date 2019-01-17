@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -341,7 +341,7 @@ class TestRunner extends BaseTestRunner
             if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
                 $this->writeMessage(
                     'Random seed',
-                    $arguments['randomOrderSeed']
+                    (string) $arguments['randomOrderSeed']
                 );
             }
 

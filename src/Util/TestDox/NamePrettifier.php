@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -108,7 +108,7 @@ final class NamePrettifier
         }
 
         if (\is_int($test->dataName())) {
-            $data = Color::dim(' with data set ') . Color::colorize('fg-cyan', $test->dataName());
+            $data = Color::dim(' with data set ') . Color::colorize('fg-cyan', (string) $test->dataName());
         } else {
             $data = Color::dim(' with ') . Color::colorize('fg-cyan', Color::visualizeWhitespace($test->dataName()));
         }
@@ -228,7 +228,7 @@ final class NamePrettifier
 
         if ($this->useColor) {
             $providedData = \array_map(function ($value) {
-                return Color::colorize('fg-cyan', Color::visualizeWhitespace($value, true));
+                return Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $value, true));
             }, $providedData);
         }
 

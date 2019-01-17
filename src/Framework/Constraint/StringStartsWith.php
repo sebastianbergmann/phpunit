@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -43,6 +43,6 @@ class StringStartsWith extends Constraint
      */
     protected function matches($other): bool
     {
-        return \strpos($other, $this->prefix) === 0;
+        return \strpos((string) $other, $this->prefix) === 0;
     }
 }

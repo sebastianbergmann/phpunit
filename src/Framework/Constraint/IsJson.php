@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -61,7 +61,7 @@ class IsJson extends Constraint
 
         \json_decode($other);
         $error = JsonMatchesErrorMessageProvider::determineJsonError(
-            \json_last_error()
+            (string) \json_last_error()
         );
 
         return \sprintf(
