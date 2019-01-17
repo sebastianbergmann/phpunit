@@ -28,6 +28,7 @@
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-xml": "*",
+        "ext-xmlwriter": "*",
         "doctrine/instantiator": "^1.1",
         "myclabs/deep-copy": "^1.7",
         "phar-io/manifest": "^1.0.2",
