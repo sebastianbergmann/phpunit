@@ -13,8 +13,14 @@ use SebastianBergmann\Version as VersionId;
 
 class Version
 {
+    /**
+     * @var string
+     */
     private static $pharVersion;
 
+    /**
+     * @var string
+     */
     private static $version;
 
     /**
