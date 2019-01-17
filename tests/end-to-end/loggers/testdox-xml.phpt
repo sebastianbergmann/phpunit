@@ -96,12 +96,12 @@ Time: %s, Memory: %s
 
 There were 2 errors:
 
-1) vendor\project\StatusTest::testError
+1) PHPUnit\SelfTest\Basic\StatusTest::testError
 RuntimeException:%w
 
 %s%eStatusTest.php:%d
 
-2) vendor\project\StatusTest::testErrorWithMessage
+2) PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
 RuntimeException: error with custom message
 
 %s%eStatusTest.php:%d
@@ -110,11 +110,11 @@ RuntimeException: error with custom message
 
 There were 2 warnings:
 
-1) vendor\project\StatusTest::testWarning
+1) PHPUnit\SelfTest\Basic\StatusTest::testWarning
 
 %s%eStatusTest.php:%d
 
-2) vendor\project\StatusTest::testWarningWithMessage
+2) PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage
 warning with custom message
 
 %s%eStatusTest.php:%d
@@ -123,12 +123,12 @@ warning with custom message
 
 There were 2 failures:
 
-1) vendor\project\StatusTest::testFailure
+1) PHPUnit\SelfTest\Basic\StatusTest::testFailure
 Failed asserting that false is true.
 
 %s%eStatusTest.php:%d
 
-2) vendor\project\StatusTest::testFailureWithMessage
+2) PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage
 failure with custom message
 Failed asserting that false is true.
 
@@ -138,12 +138,12 @@ Failed asserting that false is true.
 
 There were 2 risky tests:
 
-1) vendor\project\StatusTest::testRisky
+1) PHPUnit\SelfTest\Basic\StatusTest::testRisky
 This test did not perform any assertions
 
 %s%eStatusTest.php:%d
 
-2) vendor\project\StatusTest::testRiskyWithMessage
+2) PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage
 This test did not perform any assertions
 
 %s%eStatusTest.php:%d
