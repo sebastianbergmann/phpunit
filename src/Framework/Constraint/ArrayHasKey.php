@@ -32,6 +32,7 @@ class ArrayHasKey extends Constraint
     public function __construct($key)
     {
         parent::__construct();
+
         $this->key = $key;
     }
 
