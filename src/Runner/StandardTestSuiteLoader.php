@@ -17,7 +17,7 @@ use ReflectionClass;
 /**
  * The standard test suite loader.
  */
-class StandardTestSuiteLoader implements TestSuiteLoader
+final class StandardTestSuiteLoader implements TestSuiteLoader
 {
     /**
      * @throws Exception
