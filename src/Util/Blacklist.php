@@ -96,6 +96,9 @@ final class Blacklist
         return false;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     private function initialize(): void
     {
         if (self::$directories === null) {

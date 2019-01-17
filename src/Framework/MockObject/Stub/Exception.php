@@ -25,6 +25,9 @@ class Exception implements Stub
         $this->exception = $exception;
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function invoke(Invocation $invocation): void
     {
         throw $this->exception;
