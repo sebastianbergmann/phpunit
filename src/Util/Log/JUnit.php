@@ -30,7 +30,7 @@ use ReflectionException;
  *
  * The XML markup used is the same as the one that is used by the JUnit Ant task.
  */
-class JUnit extends Printer implements TestListener
+final class JUnit extends Printer implements TestListener
 {
     /**
      * @var DOMDocument

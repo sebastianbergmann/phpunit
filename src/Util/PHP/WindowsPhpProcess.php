@@ -19,7 +19,7 @@ use PHPUnit\Framework\Exception;
  *
  * @see https://bugs.php.net/bug.php?id=51800
  */
-class WindowsPhpProcess extends DefaultPhpProcess
+final class WindowsPhpProcess extends DefaultPhpProcess
 {
     public function getCommand(array $settings, string $file = null): string
     {

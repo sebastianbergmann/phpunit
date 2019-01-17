@@ -21,7 +21,7 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\Util\Printer;
 use ReflectionClass;
 
-class XmlResultPrinter extends Printer implements TestListener
+final class XmlResultPrinter extends Printer implements TestListener
 {
     /**
      * @var DOMDocument
