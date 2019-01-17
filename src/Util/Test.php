@@ -165,11 +165,11 @@ final class Test
                 '__FILE' => \realpath($reflector->getFileName()),
             ],
         ];
-        $requires = self::parseRequirements($reflector->getDocComment(), $reflector->getStartLine(), $requires);
+        $requires = self::parseRequirements((string) $reflector->getDocComment(), $reflector->getStartLine(), $requires);
 
         $reflector  = new ReflectionMethod($className, $methodName);
 
-        return self::parseRequirements($reflector->getDocComment(), $reflector->getStartLine(), $requires);
+        return self::parseRequirements((string) $reflector->getDocComment(), $reflector->getStartLine(), $requires);
     }
 
     public static function parseRequirements(string $docComment, int $offset = 0, array $requires = []): array
@@ -381,8 +381,8 @@ final class Test
     public static function getExpectedException(string $className, ?string $methodName)
     {
         $reflector  = new ReflectionMethod($className, $methodName);
-        $docComment = $reflector->getDocComment();
-        $docComment = \substr($docComment, 3, -2);
+        $docComment = (string) $reflector->getDocComment();
+        $docComment = (string) \substr($docComment, 3, -2);
 
         if (\preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
             $annotations = self::parseTestMethodAnnotations(
@@ -439,7 +439,7 @@ final class Test
     public static function getProvidedData(string $className, string $methodName): ?array
     {
         $reflector  = new ReflectionMethod($className, $methodName);
-        $docComment = $reflector->getDocComment();
+        $docComment = (string) $reflector->getDocComment();
 
         $data = self::getDataFromDataProviderAnnotation($docComment, $className, $methodName);
 
@@ -523,7 +523,7 @@ final class Test
 
             self::$annotationCache[$className] = \array_merge(
                 $annotations,
-                self::parseAnnotations($class->getDocComment())
+                self::parseAnnotations((string) $class->getDocComment())
             );
         }
 
@@ -532,7 +532,7 @@ final class Test
         if ($methodName !== null && !isset(self::$annotationCache[$cacheKey])) {
             try {
                 $method      = new ReflectionMethod($className, $methodName);
-                $annotations = self::parseAnnotations($method->getDocComment());
+                $annotations = self::parseAnnotations((string) $method->getDocComment());
             } catch (ReflectionException $e) {
                 $annotations = [];
             }
@@ -574,7 +574,7 @@ final class Test
     {
         $annotations = [];
         // Strip away the docblock header and footer to ease parsing of one line annotations
-        $docBlock = \substr($docBlock, 3, -2);
+        $docBlock = (string) \substr($docBlock, 3, -2);
 
         if (\preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)) {
             $numMatches = \count($matches[0]);
@@ -941,7 +941,7 @@ final class Test
         //removing initial '   * ' for docComment
         $docComment = \str_replace("\r\n", "\n", $docComment);
         $docComment = \preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
-        $docComment = \substr($docComment, 0, -1);
+        $docComment = (string) \substr($docComment, 0, -1);
 
         return \rtrim($docComment, "\n");
     }
