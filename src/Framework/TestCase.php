@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -520,7 +520,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             return $this->output;
         }
 
-        return \ob_get_contents();
+        return (string) \ob_get_contents();
     }
 
     public function hasOutput(): bool
@@ -1241,7 +1241,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      */
-    protected function iniSet(string $varName, $newValue): void
+    protected function iniSet(string $varName, string $newValue): void
     {
         $currentValue = \ini_set($varName, $newValue);
 
