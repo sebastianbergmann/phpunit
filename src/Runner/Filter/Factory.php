@@ -15,7 +15,7 @@ use Iterator;
 use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
 
-class Factory
+final class Factory
 {
     /**
      * @var array

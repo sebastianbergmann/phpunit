@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Runner\Filter;
 
-class IncludeGroupFilterIterator extends GroupFilterIterator
+final class IncludeGroupFilterIterator extends GroupFilterIterator
 {
     protected function doAccept(string $hash): bool
     {
