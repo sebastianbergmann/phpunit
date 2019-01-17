@@ -3070,6 +3070,8 @@ abstract class Assert
     {
         foreach (\debug_backtrace() as $step) {
             if (isset($step['object']) && $step['object'] instanceof TestCase) {
+                \assert($step['object'] instanceof TestCase);
+
                 $step['object']->addWarning($warning);
 
                 break;
