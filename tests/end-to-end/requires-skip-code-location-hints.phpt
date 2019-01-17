@@ -2,12 +2,12 @@
 phpunit --no-configuration RequirementsTest ../_files/RequirementsTest.php
 --FILE--
 <?php
-require_once(__DIR__ . '/bootstrap.php');
+require_once(__DIR__ . '/../bootstrap.php');
 
 $arguments = [
     '--no-configuration',
     'RequirementsTest',
-    \realpath(__DIR__ . '/_files/RequirementsTest.php'),
+    \realpath(__DIR__ . '/../_files/RequirementsTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
