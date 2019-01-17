@@ -141,5 +141,5 @@ abstract class BaseTestRunner
      * Override to define how to handle a failed loading of
      * a test suite.
      */
-    abstract protected function runFailed(string $message);
+    abstract protected function runFailed(string $message): void;
 }
