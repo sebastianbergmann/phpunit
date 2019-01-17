@@ -588,8 +588,6 @@ class TestResult implements Countable
     {
         Assert::resetCount();
 
-        $coversNothing = false;
-
         if ($test instanceof TestCase) {
             $test->setRegisterMockObjectsFromTestArgumentsRecursively(
                 $this->registerMockObjectsFromTestArgumentsRecursively
