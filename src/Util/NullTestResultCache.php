@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
-class NullTestResultCache implements TestResultCacheInterface
+final class NullTestResultCache implements TestResultCacheInterface
 {
     public function getState($testName): int
     {
