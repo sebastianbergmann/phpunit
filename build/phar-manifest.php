@@ -1,5 +1,5 @@
 #!/usr/bin/env php
-<?php
+<?php declare(strict_types=1);
 print 'phpunit/phpunit: ';
 
 $tag = @\exec('git describe --tags 2>&1');
