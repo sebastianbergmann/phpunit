@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -138,7 +138,7 @@ class Generator
 
         if (null !== $methods) {
             foreach ($methods as $method) {
-                if (!\preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', $method)) {
+                if (!\preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', (string) $method)) {
                     throw new RuntimeException(
                         \sprintf(
                             'Cannot stub or mock method with invalid name "%s"',
@@ -880,7 +880,7 @@ class Generator
         if ($className === '') {
             do {
                 $className = $prefix . $type . '_' .
-                             \substr(\md5(\mt_rand()), 0, 8);
+                             \substr(\md5((string) \mt_rand()), 0, 8);
             } while (\class_exists($className, false));
         }
 
