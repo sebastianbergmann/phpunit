@@ -11,9 +11,6 @@ namespace PHPUnit\Runner;
 
 use SebastianBergmann\Version as VersionId;
 
-/**
- * This class defines the current version of PHPUnit.
- */
 class Version
 {
     private static $pharVersion;
