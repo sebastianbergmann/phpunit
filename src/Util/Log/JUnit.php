@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -242,27 +242,27 @@ final class JUnit extends Printer implements TestListener
     {
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'tests',
-            $this->testSuiteTests[$this->testSuiteLevel]
+            (string) $this->testSuiteTests[$this->testSuiteLevel]
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'assertions',
-            $this->testSuiteAssertions[$this->testSuiteLevel]
+            (string) $this->testSuiteAssertions[$this->testSuiteLevel]
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'errors',
-            $this->testSuiteErrors[$this->testSuiteLevel]
+            (string) $this->testSuiteErrors[$this->testSuiteLevel]
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'failures',
-            $this->testSuiteFailures[$this->testSuiteLevel]
+            (string) $this->testSuiteFailures[$this->testSuiteLevel]
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'skipped',
-            $this->testSuiteSkipped[$this->testSuiteLevel]
+            (string) $this->testSuiteSkipped[$this->testSuiteLevel]
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
@@ -308,7 +308,7 @@ final class JUnit extends Printer implements TestListener
             $testCase->setAttribute('class', $class->getName());
             $testCase->setAttribute('classname', \str_replace('\\', '.', $class->getName()));
             $testCase->setAttribute('file', $class->getFileName());
-            $testCase->setAttribute('line', $method->getStartLine());
+            $testCase->setAttribute('line', (string) $method->getStartLine());
         }
 
         $this->currentTestCase = $testCase;
@@ -329,7 +329,7 @@ final class JUnit extends Printer implements TestListener
 
         $this->currentTestCase->setAttribute(
             'assertions',
-            $numAssertions
+            (string) $numAssertions
         );
 
         $this->currentTestCase->setAttribute(
