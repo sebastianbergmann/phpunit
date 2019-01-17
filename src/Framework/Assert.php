@@ -3052,7 +3052,7 @@ abstract class Assert
 
     private static function isValidAttributeName(string $attributeName): bool
     {
-        return \preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName);
+        return (bool) \preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName);
     }
 
     /**
