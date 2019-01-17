@@ -996,6 +996,8 @@ abstract class Assert
 
         $constraint = new IsEqual(
             \file_get_contents($expected),
+            0.0,
+            10,
             $canonicalize,
             $ignoreCase
         );
@@ -1018,6 +1020,8 @@ abstract class Assert
         $constraint = new LogicalNot(
             new IsEqual(
                 \file_get_contents($expected),
+                0.0,
+                10,
                 $canonicalize,
                 $ignoreCase
             )
@@ -1039,6 +1043,8 @@ abstract class Assert
 
         $constraint = new IsEqual(
             \file_get_contents($expectedFile),
+            0.0,
+            10,
             $canonicalize,
             $ignoreCase
         );
@@ -1060,6 +1066,8 @@ abstract class Assert
         $constraint = new LogicalNot(
             new IsEqual(
                 \file_get_contents($expectedFile),
+                0.0,
+                10,
                 $canonicalize,
                 $ignoreCase
             )
