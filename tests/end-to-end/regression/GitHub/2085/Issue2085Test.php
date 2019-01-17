@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -14,7 +14,7 @@ class Issue2085Test extends TestCase
     public function testShouldAbortSlowTestByEnforcingTimeLimit(): void
     {
         $this->assertTrue(true);
-        \sleep(1.2);
+        \sleep(2);
         $this->assertTrue(true);
     }
 }

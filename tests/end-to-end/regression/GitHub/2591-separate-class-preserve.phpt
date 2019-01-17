@@ -2,7 +2,7 @@
 GH-2591: Test class process isolation with preserving global state and with loaded bootstrap.
 Expected result is to have a global variable modified in first test to be the same in the second.
 --FILE--
-<?php
+<?php declare(strict_types=1);
 
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--bootstrap';

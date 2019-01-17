@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -13,13 +13,13 @@ class Issue578Test extends TestCase
 {
     public function testNoticesDoublePrintStackTrace(): void
     {
-        $this->iniSet('error_reporting', \E_ALL | \E_NOTICE);
+        $this->iniSet('error_reporting', (string) (\E_ALL | \E_NOTICE));
         \trigger_error('Stack Trace Test Notice', \E_NOTICE);
     }
 
     public function testWarningsDoublePrintStackTrace(): void
     {
-        $this->iniSet('error_reporting', \E_ALL | \E_NOTICE);
+        $this->iniSet('error_reporting', (string) (\E_ALL | \E_NOTICE));
         \trigger_error('Stack Trace Test Notice', \E_WARNING);
     }
 
