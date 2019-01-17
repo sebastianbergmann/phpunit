@@ -51,7 +51,14 @@ Test 'PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage' started
 Test 'PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage' ended
 Test 'PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage' started
 Test 'PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage' ended
+Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testOne' started
+Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testOne' ended
+Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testTwo' started
+Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testTwo' ended
 
+Warning: Exception: forcing an Exception in tearDownAfterClass() in %stests%ebasic%eunit%eTearDownAfterClassTest.php:26
+Stack trace:
+%A
 
 Time: %s, Memory: %s
 
@@ -140,4 +147,4 @@ This test did not perform any assertions
 %stests%ebasic%eunit%eStatusTest.php:%d
 
 ERRORS!
-Tests: 18, Assertions: 4, Errors: 6, Failures: 2, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.
+Tests: 20, Assertions: 6, Errors: 6, Failures: 2, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.
