@@ -11,7 +11,7 @@ namespace PHPUnit\Runner;
 
 use SebastianBergmann\Version as VersionId;
 
-class Version
+final class Version
 {
     /**
      * @var string
