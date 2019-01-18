@@ -228,6 +228,9 @@ class TestSuiteTest extends TestCase
         TestSuite::createTest($reflection, 'TestForConstructorlessTestClass');
     }
 
+    /**
+     * @testdox Handles exceptions in tearDownAfterClass()
+     */
     public function testTearDownAfterClassInTestSuite(): void
     {
         $suite = new TestSuite(\ExceptionInTearDownAfterClassTest::class);
@@ -238,6 +241,10 @@ class TestSuiteTest extends TestCase
 
         /** @var TestFailure $failure */
         $failure = $this->result->failures()[0];
-        $this->assertSame('throw Exception in tearDownAfterClass()', $failure->thrownException()->getMessage());
+        $this->assertSame(
+            'Exception in ExceptionInTearDownAfterClassTest::tearDownAfterClass' . \PHP_EOL .
+            'throw Exception in tearDownAfterClass()',
+            $failure->thrownException()->getMessage()
+        );
     }
 }

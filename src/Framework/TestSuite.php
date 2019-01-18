@@ -756,8 +756,9 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 }
             }
         } catch (Throwable $t) {
-            $error = new SyntheticError($t->getMessage(), 0, $t->getFile(), $t->getLine(), $t->getTrace());
-            $test  = new \Failure('tearDownAfterClass');
+            $message = "Exception in {$this->name}::$afterClassMethod" . \PHP_EOL . $t->getMessage();
+            $error   = new SyntheticError($message, 0, $t->getFile(), $t->getLine(), $t->getTrace());
+            $test    = new \Failure($afterClassMethod);
 
             $result->startTest($test);
             $result->addFailure($test, $error, 0);
