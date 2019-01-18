@@ -9,7 +9,7 @@
  */
 use PHPUnit\Framework\TestCase;
 
-class ExceptionInTearDownTest extends TestCase
+class ExceptionInTearDownAfterClassTest extends TestCase
 {
     public $setUp                = false;
 
@@ -19,7 +19,14 @@ class ExceptionInTearDownTest extends TestCase
 
     public $tearDown             = false;
 
+    public $tearDownAfterClass   = false;
+
     public $testSomething        = false;
+
+    public static function tearDownAfterClass(): void
+    {
+        throw new Exception('throw Exception in tearDownAfterClass()');
+    }
 
     protected function setUp(): void
     {
@@ -29,13 +36,18 @@ class ExceptionInTearDownTest extends TestCase
     protected function tearDown(): void
     {
         $this->tearDown = true;
-
-        throw new Exception('throw Exception in tearDown()');
     }
 
-    public function testSomething(): void
+    public function testOne(): void
     {
         $this->testSomething = true;
+        $this->assertTrue(true);
+    }
+
+    public function testTwo(): void
+    {
+        $this->testSomething = $this->testSomething && true;
+        $this->assertTrue(true);
     }
 
     protected function assertPreConditions(): void

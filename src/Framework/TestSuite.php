@@ -703,10 +703,10 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                     \call_user_func([$this->name, $beforeClassMethod]);
                 }
             }
-        } catch (SkippedTestSuiteError $e) {
+        } catch (SkippedTestSuiteError $error) {
             foreach ($this->tests() as $test) {
                 $result->startTest($test);
-                $result->addFailure($test, $e, 0);
+                $result->addFailure($test, $error, 0);
                 $result->endTest($test, 0);
             }
 
@@ -756,7 +756,12 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 }
             }
         } catch (Throwable $t) {
-            \trigger_error($t->__toString(), \E_USER_WARNING);
+            $error = new SyntheticError($t->getMessage(), 0, $t->getFile(), $t->getLine(), $t->getTrace());
+            $test  = new \Failure('tearDownAfterClass');
+
+            $result->startTest($test);
+            $result->addFailure($test, $error, 0);
+            $result->endTest($test, 0);
         }
 
         $this->tearDown();
