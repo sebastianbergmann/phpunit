@@ -59,6 +59,7 @@ class ConsecutiveParameters extends StatelessInvocation
 
     /**
      * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return bool
      */
@@ -72,6 +73,10 @@ class ConsecutiveParameters extends StatelessInvocation
         return false;
     }
 
+    /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function verify(): void
     {
         foreach ($this->invocations as $callIndex => $invocation) {
@@ -85,6 +90,7 @@ class ConsecutiveParameters extends StatelessInvocation
      * @param int $callIndex
      *
      * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     private function verifyInvocation(BaseInvocation $invocation, $callIndex): void
     {

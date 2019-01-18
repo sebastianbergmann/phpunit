@@ -42,6 +42,9 @@ final class NameFilterIterator extends RecursiveFilterIterator
         $this->setFilter($filter);
     }
 
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function accept(): bool
     {
         $test = $this->getInnerIterator()->current();

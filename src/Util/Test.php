@@ -101,6 +101,9 @@ final class Test
      */
     private static $hookMethods = [];
 
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public static function describe(\PHPUnit\Framework\Test $test): array
     {
         if ($test instanceof TestCase) {
@@ -435,6 +438,7 @@ final class Test
      * Returns the provided data for a method.
      *
      * @throws Exception
+     * @throws ReflectionException
      */
     public static function getProvidedData(string $className, string $methodName): ?array
     {
@@ -863,7 +867,8 @@ final class Test
     }
 
     /**
-     * Returns the provided data for a method.
+     * @throws \ReflectionException
+     * @throws \PHPUnit\Framework\InvalidDataProviderException
      */
     private static function getDataFromDataProviderAnnotation(string $docComment, string $className, string $methodName): ?iterable
     {

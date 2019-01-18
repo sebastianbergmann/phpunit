@@ -94,6 +94,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
         ],
     ];
 
+    /**
+     * @throws \SebastianBergmann\Timer\RuntimeException
+     */
     public function printResult(TestResult $result): void
     {
         $this->printHeader();
@@ -103,6 +106,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
         $this->printFooter($result);
     }
 
+    /**
+     * @throws \SebastianBergmann\Timer\RuntimeException
+     */
     protected function printHeader(): void
     {
         $this->write("\n" . Timer::resourceUsage() . "\n\n");
@@ -117,6 +123,10 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return \get_class($test);
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     protected function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
     {
         if ($status !== BaseTestRunner::STATUS_PASSED) {
@@ -126,6 +136,10 @@ class CliTestDoxPrinter extends TestDoxPrinter
         parent::registerTestResult($test, $t, $status, $time, $verbose);
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     protected function formatTestName(Test $test): string
     {
         if ($test instanceof TestCase) {
@@ -206,6 +220,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return [$message, $diff];
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     protected function formatStacktrace(\Throwable $t): string
     {
         $trace = \PHPUnit\Util\Filter::getFilteredStacktrace($t);
@@ -233,6 +250,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return \implode('', $lines);
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     protected function formatTestResultMessage(\Throwable $t, array $result, ?string $prefix = null): string
     {
         $message = $this->formatThrowable($t, $result['status']);

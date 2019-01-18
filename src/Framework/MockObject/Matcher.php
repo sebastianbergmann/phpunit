@@ -176,6 +176,7 @@ class Matcher implements MatcherInvocation
     /**
      * @throws RuntimeException
      * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return bool
      */
@@ -242,6 +243,7 @@ class Matcher implements MatcherInvocation
     /**
      * @throws RuntimeException
      * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function verify(): void
     {

@@ -141,6 +141,7 @@ final class XmlResultPrinter extends Printer implements TestListener
      * A test ended.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \ReflectionException
      */
     public function endTest(Test $test, float $time): void
     {

@@ -68,11 +68,17 @@ class TestResultCache implements \Serializable, TestResultCacheInterface
         $this->cacheFilename = $filename ?? $_ENV['PHPUNIT_RESULT_CACHE'] ?? self::DEFAULT_RESULT_CACHE_FILENAME;
     }
 
+    /**
+     * @throws Exception
+     */
     public function persist(): void
     {
         $this->saveToFile();
     }
 
+    /**
+     * @throws Exception
+     */
     public function saveToFile(): void
     {
         if (\defined('PHPUNIT_TESTSUITE_RESULTCACHE')) {

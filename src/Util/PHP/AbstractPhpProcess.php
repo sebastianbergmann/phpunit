@@ -237,9 +237,14 @@ abstract class AbstractPhpProcess
                 $time
             );
         } else {
-            \set_error_handler(function ($errno, $errstr, $errfile, $errline): void {
-                throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
-            });
+            \set_error_handler(
+                /**
+                 * @throws ErrorException
+                 */
+                function ($errno, $errstr, $errfile, $errline): void {
+                    throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
+                }
+            );
 
             try {
                 if (\strpos($stdout, "#!/usr/bin/env php\n") === 0) {

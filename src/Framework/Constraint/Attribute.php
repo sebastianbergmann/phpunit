@@ -43,6 +43,7 @@ class Attribute extends Composite
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \ReflectionException
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {

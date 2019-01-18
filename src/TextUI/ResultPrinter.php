@@ -156,6 +156,9 @@ class ResultPrinter extends Printer implements TestListener
         }
     }
 
+    /**
+     * @throws \SebastianBergmann\Timer\RuntimeException
+     */
     public function printResult(TestResult $result): void
     {
         $this->printHeader();
@@ -383,6 +386,9 @@ class ResultPrinter extends Printer implements TestListener
         $this->printDefects($result->skipped(), 'skipped test');
     }
 
+    /**
+     * @throws \SebastianBergmann\Timer\RuntimeException
+     */
     protected function printHeader(): void
     {
         $this->write("\n\n" . Timer::resourceUsage() . "\n\n");

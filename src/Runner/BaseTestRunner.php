@@ -55,6 +55,7 @@ abstract class BaseTestRunner
      * @param array|string $suffixes
      *
      * @throws Exception
+     * @throws ReflectionException
      */
     public function getTest(string $suiteClassName, string $suiteClassFile = '', $suffixes = ''): ?Test
     {

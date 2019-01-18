@@ -23,6 +23,7 @@ use PHPUnit\Framework\MockObject\Matcher\InvokedAtMostCount as InvokedAtMostCoun
 use PHPUnit\Framework\MockObject\Matcher\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls as ConsecutiveCallsStub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnArgument as ReturnArgumentStub;
@@ -1302,8 +1303,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param string|string[] $originalClassName
      *
-     * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
+     * @throws \PHPUnit\Framework\Exception
+     * @throws RuntimeException
      */
     protected function createMock($originalClassName): MockObject
     {
@@ -1320,8 +1322,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @param string|string[] $originalClassName
      *
-     * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
+     * @throws \PHPUnit\Framework\Exception
+     * @throws RuntimeException
      */
     protected function createConfiguredMock($originalClassName, array $configuration): MockObject
     {
@@ -1340,8 +1343,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @param string|string[] $originalClassName
      * @param string[]        $methods
      *
-     * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
+     * @throws \PHPUnit\Framework\Exception
+     * @throws RuntimeException
      */
     protected function createPartialMock($originalClassName, array $methods): MockObject
     {
@@ -1357,8 +1361,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * Returns a test proxy for the specified class.
      *
-     * @throws Exception
-     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
+     * @throws \PHPUnit\Framework\Exception
+     * @throws RuntimeException
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
@@ -1381,7 +1386,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      * @throws ReflectionException
-     * @throws \InvalidArgumentException
+     * @throws RuntimeException
      */
     protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false): string
     {
@@ -1414,7 +1419,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      * @throws ReflectionException
-     * @throws \InvalidArgumentException
+     * @throws RuntimeException
      */
     protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
@@ -1445,7 +1450,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      * @throws ReflectionException
-     * @throws \InvalidArgumentException
+     * @throws RuntimeException
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = []): MockObject
     {
@@ -1495,7 +1500,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      * @throws ReflectionException
-     * @throws \InvalidArgumentException
+     * @throws RuntimeException
      */
     protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
@@ -1526,7 +1531,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      *
      * @throws Exception
      * @throws ReflectionException
-     * @throws \InvalidArgumentException
+     * @throws RuntimeException
      *
      * @return object
      */
@@ -1636,6 +1641,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
+    /**
+     * @throws Warning
+     * @throws SkippedTestError
+     * @throws SyntheticSkippedError
+     */
     private function checkRequirements(): void
     {
         if (!$this->name || !\method_exists($this, $this->name)) {
@@ -1652,6 +1662,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
+    /**
+     * @throws Throwable
+     */
     private function verifyMockObjects(): void
     {
         foreach ($this->mockObjects as $mockObject) {
@@ -1686,6 +1699,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
     }
 
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     private function handleDependencies(): bool
     {
         if (!empty($this->dependencies) && !$this->inIsolation) {

@@ -152,6 +152,7 @@ class Command
     private $versionStringPrinted = false;
 
     /**
+     * @throws \ReflectionException
      * @throws \RuntimeException
      * @throws \PHPUnit\Framework\Exception
      * @throws \InvalidArgumentException
@@ -276,6 +277,7 @@ class Command
      * </code>
      *
      * @throws Exception
+     * @throws \ReflectionException
      */
     protected function handleArguments(array $argv): void
     {
@@ -935,6 +937,8 @@ class Command
 
     /**
      * Handles the loading of the PHPUnit\Runner\TestSuiteLoader implementation.
+     *
+     * @throws \ReflectionException
      */
     protected function handleLoader(string $loaderClass, string $loaderFile = ''): ?TestSuiteLoader
     {
@@ -977,6 +981,8 @@ class Command
 
     /**
      * Handles the loading of the PHPUnit\Util\Printer implementation.
+     *
+     * @throws \ReflectionException
      *
      * @return null|Printer|string
      */
@@ -1175,6 +1181,9 @@ class Command
         return TestRunner::SUCCESS_EXIT;
     }
 
+    /**
+     * @throws \PHPUnit\Framework\Exception
+     */
     private function handleListSuites(bool $exit): int
     {
         $this->printVersionString();
@@ -1201,6 +1210,9 @@ class Command
         return TestRunner::SUCCESS_EXIT;
     }
 
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     private function handleListTests(TestSuite $suite, bool $exit): int
     {
         $this->printVersionString();
@@ -1216,6 +1228,9 @@ class Command
         return TestRunner::SUCCESS_EXIT;
     }
 
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     private function handleListTestsXml(TestSuite $suite, string $target, bool $exit): int
     {
         $this->printVersionString();

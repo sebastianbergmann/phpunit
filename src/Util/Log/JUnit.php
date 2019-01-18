@@ -133,6 +133,7 @@ final class JUnit extends Printer implements TestListener
      * An error occurred.
      *
      * @throws \InvalidArgumentException
+     * @throws ReflectionException
      */
     public function addError(Test $test, \Throwable $t, float $time): void
     {
@@ -144,6 +145,7 @@ final class JUnit extends Printer implements TestListener
      * A warning occurred.
      *
      * @throws \InvalidArgumentException
+     * @throws ReflectionException
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
@@ -155,6 +157,7 @@ final class JUnit extends Printer implements TestListener
      * A failure occurred.
      *
      * @throws \InvalidArgumentException
+     * @throws ReflectionException
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
@@ -172,6 +175,8 @@ final class JUnit extends Printer implements TestListener
 
     /**
      * Risky test.
+     *
+     * @throws ReflectionException
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
@@ -388,6 +393,7 @@ final class JUnit extends Printer implements TestListener
      * Method which generalizes addError() and addFailure()
      *
      * @throws \InvalidArgumentException
+     * @throws ReflectionException
      */
     private function doAddFault(Test $test, \Throwable $t, float $time, $type): void
     {

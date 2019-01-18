@@ -59,6 +59,9 @@ class MethodName extends StatelessInvocation
     }
 
     /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
      * @return bool
      */
     public function matches(BaseInvocation $invocation)

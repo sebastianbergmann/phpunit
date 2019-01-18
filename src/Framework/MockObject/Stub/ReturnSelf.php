@@ -19,6 +19,9 @@ use PHPUnit\Framework\MockObject\Stub;
  */
 class ReturnSelf implements Stub
 {
+    /**
+     * @throws RuntimeException
+     */
     public function invoke(Invocation $invocation)
     {
         if (!$invocation instanceof ObjectInvocation) {

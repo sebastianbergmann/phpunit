@@ -987,6 +987,7 @@ final class Configuration
      * Returns the test suite configuration.
      *
      * @throws Exception
+     * @throws \ReflectionException
      */
     public function getTestSuiteConfiguration(string $testSuiteFilter = ''): TestSuite
     {
@@ -1080,6 +1081,7 @@ final class Configuration
 
     /**
      * @throws \PHPUnit\Framework\Exception
+     * @throws \ReflectionException
      */
     private function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
     {

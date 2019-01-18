@@ -15,6 +15,9 @@ use PHPUnit\Runner\PhptTestCase;
 
 final class XmlTestListRenderer
 {
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function render(TestSuite $suite): string
     {
         $writer = new \XMLWriter;

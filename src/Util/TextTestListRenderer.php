@@ -15,6 +15,9 @@ use PHPUnit\Runner\PhptTestCase;
 
 final class TextTestListRenderer
 {
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function render(TestSuite $suite): string
     {
         $buffer = 'Available test(s):' . \PHP_EOL;

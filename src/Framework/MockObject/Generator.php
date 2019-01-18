@@ -540,6 +540,7 @@ class Generator
 
     /**
      * @throws \ReflectionException
+     * @throws RuntimeException
      *
      * @return MockMethod[]
      */
@@ -634,7 +635,6 @@ class Generator
      * @param bool         $cloneArguments
      * @param bool         $callOriginalMethods
      *
-     * @throws \InvalidArgumentException
      * @throws \ReflectionException
      * @throws RuntimeException
      *
@@ -955,8 +955,6 @@ class Generator
 
     /**
      * @param string $template
-     *
-     * @throws \InvalidArgumentException
      *
      * @return Text_Template
      */

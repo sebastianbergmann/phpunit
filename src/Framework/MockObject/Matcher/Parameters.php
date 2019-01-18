@@ -97,6 +97,7 @@ class Parameters extends StatelessInvocation
      * if an expectation is met.
      *
      * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @return bool
      */
@@ -149,7 +150,7 @@ class Parameters extends StatelessInvocation
      */
     private function guardAgainstDuplicateEvaluationOfParameterConstraints()
     {
-        if ($this->parameterVerificationResult instanceof \Exception) {
+        if ($this->parameterVerificationResult instanceof ExpectationFailedException) {
             throw $this->parameterVerificationResult;
         }
 

@@ -26,6 +26,9 @@ final class GlobalState
         '_REQUEST',
     ];
 
+    /**
+     * @throws \ReflectionException
+     */
     public static function getIncludedFilesAsString(): string
     {
         return static::processIncludedFilesAsString(\get_included_files());
@@ -33,6 +36,8 @@ final class GlobalState
 
     /**
      * @param string[] $files
+     *
+     * @throws \ReflectionException
      */
     public static function processIncludedFilesAsString(array $files): string
     {

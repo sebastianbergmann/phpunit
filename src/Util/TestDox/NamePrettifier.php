@@ -67,6 +67,7 @@ final class NamePrettifier
     }
 
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \ReflectionException
      */
     public function prettifyTestCase(TestCase $test): string
@@ -177,6 +178,7 @@ final class NamePrettifier
     }
 
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \ReflectionException
      */
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array

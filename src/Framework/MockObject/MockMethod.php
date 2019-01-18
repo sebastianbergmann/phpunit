@@ -81,6 +81,9 @@ final class MockMethod
      */
     private $allowsReturnNull;
 
+    /**
+     * @throws RuntimeException
+     */
     public static function fromReflection(ReflectionMethod $method, bool $callOriginalMethod, bool $cloneArguments): self
     {
         if ($method->isPrivate()) {

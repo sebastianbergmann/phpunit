@@ -55,6 +55,8 @@ class Exception extends Constraint
      * cases. This method should return the second part of that sentence.
      *
      * @param mixed $other evaluated value or object
+     *
+     * @throws \ReflectionException
      */
     protected function failureDescription($other): string
     {

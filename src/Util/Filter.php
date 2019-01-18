@@ -14,6 +14,9 @@ use PHPUnit\Framework\SyntheticError;
 
 final class Filter
 {
+    /**
+     * @throws \ReflectionException
+     */
     public static function getFilteredStacktrace(\Throwable $t): string
     {
         $prefix = false;

@@ -26,6 +26,9 @@ final class WindowsPhpProcess extends DefaultPhpProcess
         return '"' . parent::getCommand($settings, $file) . '"';
     }
 
+    /**
+     * @throws Exception
+     */
     protected function getHandles(): array
     {
         if (false === $stdout_handle = \tmpfile()) {

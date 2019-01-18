@@ -57,6 +57,11 @@ class TestDoxPrinter extends ResultPrinter
      */
     protected $originalExecutionOrder = [];
 
+    /**
+     * @param null|mixed $out
+     *
+     * @throws \PHPUnit\Framework\Exception
+     */
     public function __construct(
         $out = null,
         bool $verbose = false,
@@ -80,6 +85,10 @@ class TestDoxPrinter extends ResultPrinter
     {
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function endTest(Test $test, float $time): void
     {
         if (!$test instanceof TestCase && !$test instanceof PhptTestCase && !$test instanceof TestSuite) {
@@ -97,31 +106,55 @@ class TestDoxPrinter extends ResultPrinter
         parent::endTest($test, $time);
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function addError(Test $test, \Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, BaseTestRunner::STATUS_ERROR, $time, true);
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
         $this->registerTestResult($test, $e, BaseTestRunner::STATUS_WARNING, $time, true);
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         $this->registerTestResult($test, $e, BaseTestRunner::STATUS_FAILURE, $time, true);
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, BaseTestRunner::STATUS_INCOMPLETE, $time, false);
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, BaseTestRunner::STATUS_RISKY, $time, false);
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, BaseTestRunner::STATUS_SKIPPED, $time, false);
@@ -137,6 +170,10 @@ class TestDoxPrinter extends ResultPrinter
         $this->flushOutputBuffer();
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     protected function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
     {
         $testName = TestSuiteSorter::getTestSorterUID($test);
@@ -240,6 +277,9 @@ class TestDoxPrinter extends ResultPrinter
         return [];
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     protected function formatThrowable(\Throwable $t, ?int $status = null): string
     {
         $message = \trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
@@ -253,11 +293,17 @@ class TestDoxPrinter extends ResultPrinter
         return $message;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     protected function formatStacktrace(\Throwable $t): string
     {
         return \PHPUnit\Util\Filter::getFilteredStacktrace($t);
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     protected function formatTestResultMessage(\Throwable $t, array $result, string $prefix = '│'): string
     {
         $message = $this->formatThrowable($t, $result['status']);

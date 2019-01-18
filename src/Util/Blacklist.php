@@ -70,6 +70,8 @@ final class Blacklist
     private static $directories;
 
     /**
+     * @throws \ReflectionException
+     *
      * @return string[]
      */
     public function getBlacklistedDirectories(): array
@@ -79,6 +81,9 @@ final class Blacklist
         return self::$directories;
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function isBlacklisted(string $file): bool
     {
         if (\defined('PHPUNIT_TESTSUITE')) {

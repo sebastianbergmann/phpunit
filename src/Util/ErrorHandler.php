@@ -29,6 +29,12 @@ final class ErrorHandler
         return self::$errorStack;
     }
 
+    /**
+     * @throws \PHPUnit\Framework\Error\Deprecated
+     * @throws \PHPUnit\Framework\Error\Error
+     * @throws \PHPUnit\Framework\Error\Notice
+     * @throws \PHPUnit\Framework\Error\Warning
+     */
     public static function handleError(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
         if (!($errorNumber & \error_reporting())) {

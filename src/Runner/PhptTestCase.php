@@ -302,6 +302,8 @@ final class PhptTestCase implements Test, SelfDescribing
     }
 
     /**
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
     private function assertPhptExpectation(array $sections, string $output): void
@@ -322,6 +324,7 @@ final class PhptTestCase implements Test, SelfDescribing
                 if ($expected === null) {
                     throw new Exception('No PHPT expectation found');
                 }
+
                 Assert::$sectionAssertion($expected, $actual);
 
                 return;

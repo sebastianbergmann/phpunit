@@ -34,8 +34,6 @@ class TestFailure
 
     /**
      * Returns a description for an exception.
-     *
-     * @throws \InvalidArgumentException
      */
     public static function exceptionToString(Throwable $e): string
     {

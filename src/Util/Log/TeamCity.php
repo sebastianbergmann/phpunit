@@ -44,6 +44,9 @@ final class TeamCity extends ResultPrinter
      */
     private $flowId;
 
+    /**
+     * @throws \SebastianBergmann\Timer\RuntimeException
+     */
     public function printResult(TestResult $result): void
     {
         $this->printHeader();
@@ -54,6 +57,7 @@ final class TeamCity extends ResultPrinter
      * An error occurred.
      *
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     public function addError(Test $test, \Throwable $t, float $time): void
     {
@@ -72,6 +76,7 @@ final class TeamCity extends ResultPrinter
      * A warning occurred.
      *
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
@@ -90,6 +95,7 @@ final class TeamCity extends ResultPrinter
      * A failure occurred.
      *
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
@@ -129,6 +135,8 @@ final class TeamCity extends ResultPrinter
 
     /**
      * Incomplete test.
+     *
+     * @throws \ReflectionException
      */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
@@ -139,6 +147,7 @@ final class TeamCity extends ResultPrinter
      * Risky test.
      *
      * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
@@ -163,6 +172,9 @@ final class TeamCity extends ResultPrinter
         }
     }
 
+    /**
+     * @throws \ReflectionException
+     */
     public function printIgnoredTest($testName, \Throwable $t, float $time): void
     {
         $this->printEvent(
@@ -324,7 +336,7 @@ final class TeamCity extends ResultPrinter
     }
 
     /**
-     * @throws \InvalidArgumentException
+     * @throws \ReflectionException
      */
     private static function getDetails(\Throwable $t): string
     {

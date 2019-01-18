@@ -23,6 +23,9 @@ class DeferredError extends StatelessInvocation
         $this->exception = $exception;
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function verify(): void
     {
         throw $this->exception;
