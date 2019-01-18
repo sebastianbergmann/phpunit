@@ -226,4 +226,17 @@ class TestSuiteTest extends TestCase
             ->willReturn(__CLASS__);
         TestSuite::createTest($reflection, 'TestForConstructorlessTestClass');
     }
+
+    public function testTearDownAfterClassInTestSuite(): void
+    {
+        $suite = new TestSuite(\ExceptionInTearDownAfterClassTest::class);
+        $suite->run($this->result);
+
+        $this->assertSame(3, $this->result->count());
+        $this->assertCount(1, $this->result->failures());
+
+        /** @var TestFailure $failure */
+        $failure = $this->result->failures()[0];
+        $this->assertSame('throw Exception in tearDownAfterClass()', $failure->thrownException()->getMessage());
+    }
 }
