@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -3012,7 +3012,7 @@ abstract class Assert
             $trace = \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS);
             \array_unshift($trace, $hint);
 
-            throw new SyntheticSkippedError($hint['message'], 0, $hint['file'], $hint['line'], $trace);
+            throw new SyntheticSkippedError($hint['message'], 0, $hint['file'], (int) $hint['line'], $trace);
         }
 
         throw new SkippedTestError($message);

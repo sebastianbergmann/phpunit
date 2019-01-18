@@ -9,7 +9,7 @@ require __DIR__ . '/../vendor/autoload.php';
 /** @var string[] $lines */
 $lines = \file(__DIR__ . '/../src/Framework/Assert.php');
 
-$buffer = '<?php
+$buffer = '<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *

@@ -1592,6 +1592,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     private function setExpectedExceptionFromAnnotation(): void
     {
+        if ($this->name === null) {
+            return;
+        }
+
         try {
             $expectedException = \PHPUnit\Util\Test::getExpectedException(
                 \get_class($this),

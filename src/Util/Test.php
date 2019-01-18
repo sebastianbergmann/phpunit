@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -378,7 +378,7 @@ final class Test
      * @deprecated
      * @codeCoverageIgnore
      */
-    public static function getExpectedException(string $className, ?string $methodName)
+    public static function getExpectedException(string $className, string $methodName)
     {
         $reflector  = new ReflectionMethod($className, $methodName);
         $docComment = (string) $reflector->getDocComment();
@@ -517,7 +517,7 @@ final class Test
             foreach ($traits as $trait) {
                 $annotations = \array_merge(
                     $annotations,
-                    self::parseAnnotations($trait->getDocComment())
+                    self::parseAnnotations((string) $trait->getDocComment())
                 );
             }
 
