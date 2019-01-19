@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework;
 
 /**
- * A skipped test case
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class SkippedTestCase extends TestCase
 {

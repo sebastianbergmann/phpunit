@@ -24,8 +24,7 @@ use ReflectionClass;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
- * A TestListener that generates a logfile of the test execution using the
- * TeamCity format (for use with PhpStorm, for instance).
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TeamCity extends ResultPrinter
 {

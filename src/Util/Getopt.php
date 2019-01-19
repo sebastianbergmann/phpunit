@@ -12,7 +12,7 @@ namespace PHPUnit\Util;
 use PHPUnit\Framework\Exception;
 
 /**
- * Command-line options parsing class.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Getopt
 {

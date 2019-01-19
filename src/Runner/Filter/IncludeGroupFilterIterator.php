@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Runner\Filter;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class IncludeGroupFilterIterator extends GroupFilterIterator
 {
     protected function doAccept(string $hash): bool

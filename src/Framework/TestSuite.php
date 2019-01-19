@@ -21,7 +21,7 @@ use ReflectionMethod;
 use Throwable;
 
 /**
- * A TestSuite is a composite of Tests. It runs a collection of test cases.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 class TestSuite implements Test, SelfDescribing, IteratorAggregate
 {

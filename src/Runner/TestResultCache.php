@@ -11,6 +11,9 @@ namespace PHPUnit\Runner;
 
 use PHPUnit\Util\Filesystem;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class TestResultCache implements \Serializable, TestResultCacheInterface
 {
     /**

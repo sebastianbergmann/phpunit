@@ -15,7 +15,7 @@ use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning;
 
 /**
- * Error handler that converts PHP errors and warnings to exceptions.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class ErrorHandler
 {

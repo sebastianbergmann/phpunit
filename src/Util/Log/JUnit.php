@@ -26,9 +26,7 @@ use ReflectionClass;
 use ReflectionException;
 
 /**
- * A TestListener that generates a logfile of the test execution in XML markup.
- *
- * The XML markup used is the same as the one that is used by the JUnit Ant task.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class JUnit extends Printer implements TestListener
 {

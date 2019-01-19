@@ -18,8 +18,7 @@ use PHPUnit\Util\Color;
 use SebastianBergmann\Timer\Timer;
 
 /**
- * This printer is for CLI output only. For the classes that output to file, html and xml,
- * please refer to the PHPUnit\Util\TestDox namespace
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 class CliTestDoxPrinter extends TestDoxPrinter
 {

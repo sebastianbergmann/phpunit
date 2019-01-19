@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject\Builder;
 use PHPUnit\Framework\MockObject\Matcher\AnyParameters;
 
 /**
- * Builder interface for parameter matchers.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 interface ParametersMatch extends Match
 {

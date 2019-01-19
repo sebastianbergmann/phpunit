@@ -10,8 +10,7 @@
 namespace PHPUnit\Util\TestDox;
 
 /**
- * Prints TestDox documentation in text format to files.
- * For the CLI testdox printer please refer to \PHPUnit\TextUI\TextDoxPrinter.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TextResultPrinter extends ResultPrinter
 {

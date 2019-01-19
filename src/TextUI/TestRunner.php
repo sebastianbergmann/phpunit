@@ -60,8 +60,7 @@ use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Invoker\Invoker;
 
 /**
- * A TestRunner for the Command Line Interface (CLI)
- * PHP SAPI Module.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestRunner extends BaseTestRunner
 {

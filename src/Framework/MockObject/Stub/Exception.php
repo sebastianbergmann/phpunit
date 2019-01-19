@@ -14,7 +14,7 @@ use PHPUnit\Framework\MockObject\Stub;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
- * Stubs a method by raising a user-defined exception.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Exception implements Stub
 {

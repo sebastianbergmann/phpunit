@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework;
 
 /**
- * Creates a synthetic failed assertion.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 class SyntheticError extends AssertionFailedError
 {

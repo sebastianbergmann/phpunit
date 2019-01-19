@@ -16,7 +16,7 @@ use ReflectionObject;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
- * Represents a static invocation.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 class StaticInvocation implements Invocation, SelfDescribing
 {

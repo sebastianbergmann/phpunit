@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit\Framework\MockObject\Stub;
 
 /**
- * Stubs a method by returning the current object.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class ReturnSelf implements Stub
 {

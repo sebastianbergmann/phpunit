@@ -15,14 +15,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
- * Invocation matcher which looks for sets of specific parameters in the invocations.
- *
- * Checks the parameters of the incoming invocations, the parameter list is
- * checked against the defined constraints in $parameters. If the constraint
- * is met it will return true in matches().
- *
- * It takes a list of match groups and and increases a call index after each invocation.
- * So the first invocation uses the first group of constraints, the second the next and so on.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class ConsecutiveParameters extends StatelessInvocation
 {

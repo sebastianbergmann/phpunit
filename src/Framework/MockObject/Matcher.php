@@ -19,13 +19,7 @@ use PHPUnit\Framework\MockObject\Matcher\Parameters;
 use PHPUnit\Framework\TestFailure;
 
 /**
- * Main matcher which defines a full expectation using method, parameter and
- * invocation matchers.
- * This matcher encapsulates all the other matchers and allows the builder to
- * set the specific matchers when the appropriate methods are called (once(),
- * where() etc.).
- *
- * All properties are public so that they can easily be accessed by the builder.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Matcher implements MatcherInvocation
 {

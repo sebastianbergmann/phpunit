@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject\Matcher;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
- * Invocation matcher which allows any parameters to a method.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class AnyParameters extends StatelessInvocation
 {

@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Util;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class XdebugFilterScriptGenerator
 {
     public function generate(array $filterData): string

@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
- * Interface for classes which must verify a given expectation.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 interface Verifiable
 {

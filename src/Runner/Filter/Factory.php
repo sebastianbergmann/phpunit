@@ -15,6 +15,9 @@ use Iterator;
 use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class Factory
 {
     /**

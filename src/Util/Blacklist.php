@@ -32,7 +32,7 @@ use SebastianBergmann\Version;
 use Text_Template;
 
 /**
- * Utility class for blacklisting PHPUnit's own source code files.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Blacklist
 {

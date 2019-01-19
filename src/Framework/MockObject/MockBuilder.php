@@ -11,9 +11,6 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * Implementation of the Builder pattern for Mock objects.
- */
 final class MockBuilder
 {
     /**

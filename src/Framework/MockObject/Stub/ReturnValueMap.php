@@ -13,7 +13,7 @@ use PHPUnit\Framework\MockObject\Invocation;
 use PHPUnit\Framework\MockObject\Stub;
 
 /**
- * Stubs a method by returning a value from a map.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class ReturnValueMap implements Stub
 {

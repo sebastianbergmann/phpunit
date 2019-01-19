@@ -12,11 +12,7 @@ namespace PHPUnit\Util\PHP;
 use PHPUnit\Framework\Exception;
 
 /**
- * Windows utility for PHP sub-processes.
- *
- * Reading from STDOUT or STDERR hangs forever on Windows if the output is
- * too large.
- *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @see https://bugs.php.net/bug.php?id=51800
  */
 final class WindowsPhpProcess extends DefaultPhpProcess

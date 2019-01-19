@@ -22,7 +22,7 @@ use Text_Template;
 use Traversable;
 
 /**
- * Mock Object Code Generator
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Generator
 {

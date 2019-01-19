@@ -16,11 +16,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
- * Invocation matcher which looks for specific parameters in the invocations.
- *
- * Checks the parameters of all incoming invocations, the parameter list is
- * checked against the defined constraints in $parameters. If the constraint
- * is met it will return true in matches().
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Parameters extends StatelessInvocation
 {

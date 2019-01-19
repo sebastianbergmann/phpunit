@@ -14,8 +14,7 @@ use PHPUnit\Framework\MockObject\Verifiable;
 use PHPUnit\Framework\SelfDescribing;
 
 /**
- * Interface for classes which matches an invocation based on its
- * method name, argument, order or call count.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 interface Invocation extends SelfDescribing, Verifiable
 {

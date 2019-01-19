@@ -20,6 +20,9 @@ use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 class TestDoxPrinter extends ResultPrinter
 {
     /**

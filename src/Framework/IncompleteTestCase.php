@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework;
 
 /**
- * An incomplete test case
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class IncompleteTestCase extends TestCase
 {

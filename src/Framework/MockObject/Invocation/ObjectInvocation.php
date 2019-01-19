@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\MockObject\Invocation;
 
 /**
- * Represents a non-static invocation.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class ObjectInvocation extends StaticInvocation
 {

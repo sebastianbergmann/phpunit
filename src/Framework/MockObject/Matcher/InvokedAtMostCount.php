@@ -12,8 +12,7 @@ namespace PHPUnit\Framework\MockObject\Matcher;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
- * Invocation matcher which checks if a method has been invoked at least
- * N times.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class InvokedAtMostCount extends InvokedRecorder
 {

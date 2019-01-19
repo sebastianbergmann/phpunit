@@ -14,6 +14,9 @@ use ReflectionException;
 use ReflectionMethod;
 use Text_Template;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class MockMethod
 {
     /**

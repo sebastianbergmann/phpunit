@@ -17,7 +17,7 @@ use ReflectionException;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
- * Base class for all test runners.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 abstract class BaseTestRunner
 {

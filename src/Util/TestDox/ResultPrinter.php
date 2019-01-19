@@ -20,7 +20,7 @@ use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Util\Printer;
 
 /**
- * Base class for printers of TestDox documentation.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 abstract class ResultPrinter extends Printer implements TestListener
 {

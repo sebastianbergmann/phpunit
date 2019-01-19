@@ -10,10 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 /**
- * Interface for classes which can be invoked.
- *
- * The invocation will be taken from a mock object and passed to an object
- * of this class.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 interface Invokable extends Verifiable
 {

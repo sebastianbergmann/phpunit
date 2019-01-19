@@ -16,6 +16,9 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Util\Test as TestUtil;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class TestListenerAdapter implements TestListener
 {
     /**

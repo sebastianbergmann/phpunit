@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestResult;
 use SebastianBergmann\Environment\Runtime;
 
 /**
- * Utility methods for PHP sub-processes.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 abstract class AbstractPhpProcess
 {

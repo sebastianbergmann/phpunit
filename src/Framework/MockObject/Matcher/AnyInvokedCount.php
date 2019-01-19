@@ -10,8 +10,7 @@
 namespace PHPUnit\Framework\MockObject\Matcher;
 
 /**
- * Invocation matcher which checks if a method has been invoked zero or more
- * times. This matcher will always match.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class AnyInvokedCount extends InvokedRecorder
 {

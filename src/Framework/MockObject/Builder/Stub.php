@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject\Builder;
 use PHPUnit\Framework\MockObject\Stub as BaseStub;
 
 /**
- * Builder interface for stubs which are actions replacing an invocation.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 interface Stub extends Identity
 {

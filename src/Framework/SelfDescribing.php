@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework;
 
 /**
- * Interface for classes that can return a description of itself.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 interface SelfDescribing
 {

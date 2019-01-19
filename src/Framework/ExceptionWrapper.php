@@ -20,6 +20,8 @@ use Throwable;
  *
  * Unlike PHPUnit\Framework_\Exception, the complete stack of previous Exceptions
  * is processed.
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class ExceptionWrapper extends Exception
 {

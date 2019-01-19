@@ -28,7 +28,7 @@ use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
- * A TestResult collects the results of executing a test case.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestResult implements Countable
 {

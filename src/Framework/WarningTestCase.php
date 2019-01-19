@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework;
 
 /**
- * A warning.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class WarningTestCase extends TestCase
 {

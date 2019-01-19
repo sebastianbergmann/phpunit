@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework;
 
 /**
- * Thrown when there is a warning.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Warning extends Exception implements SelfDescribing
 {

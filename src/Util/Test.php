@@ -27,6 +27,9 @@ use ReflectionMethod;
 use SebastianBergmann\Environment\OperatingSystem;
 use Traversable;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class Test
 {
     /**

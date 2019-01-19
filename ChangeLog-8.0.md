@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 ### Changed
 
 * Implemented [#3133](https://github.com/sebastianbergmann/phpunit/issues/3133): Enable dependency resolution by default
+* Implemented [#3236](https://github.com/sebastianbergmann/phpunit/issues/3236): Define which parts of PHPUnit are covered by the backward compatibility promise
 * Implemented [#3244](https://github.com/sebastianbergmann/phpunit/issues/3244): Enable result cache by default
 * Implemented [#3288](https://github.com/sebastianbergmann/phpunit/issues/3288): The `void_return` fixer of php-cs-fixer is now in effect
 * Implemented [#3332](https://github.com/sebastianbergmann/phpunit/issues/3332): Deprecate annotation(s) for expecting exceptions

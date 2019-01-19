@@ -12,8 +12,7 @@ namespace PHPUnit\Util;
 use PHPUnit\Framework\Exception;
 
 /**
- * Factory for PHPUnit\Framework\Exception objects that are used to describe
- * invalid arguments passed to a function or method.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class InvalidArgumentHelper
 {

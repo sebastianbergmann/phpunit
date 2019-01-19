@@ -15,6 +15,9 @@ use PHPUnit\Util\RegularExpression;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class NameFilterIterator extends RecursiveFilterIterator
 {
     /**

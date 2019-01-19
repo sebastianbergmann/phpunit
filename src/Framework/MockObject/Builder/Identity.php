@@ -10,12 +10,7 @@
 namespace PHPUnit\Framework\MockObject\Builder;
 
 /**
- * Builder interface for unique identifiers.
- *
- * Defines the interface for recording unique identifiers. The identifiers
- * can be used to define the invocation order of expectations. The expectation
- * is recorded using id() and then defined in order using
- * PHPUnit\Framework\MockObject\Builder\Match::after().
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 interface Identity
 {

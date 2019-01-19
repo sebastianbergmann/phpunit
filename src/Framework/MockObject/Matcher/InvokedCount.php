@@ -13,12 +13,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
- * Invocation matcher which checks if a method has been invoked a certain amount
- * of times.
- * If the number of invocations exceeds the value it will immediately throw an
- * exception,
- * If the number is less it will later be checked in verify() and also throw an
- * exception.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class InvokedCount extends InvokedRecorder
 {

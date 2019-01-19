@@ -10,7 +10,7 @@
 namespace PHPUnit\Util\TestDox;
 
 /**
- * Prints TestDox documentation in HTML format.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class HtmlResultPrinter extends ResultPrinter
 {

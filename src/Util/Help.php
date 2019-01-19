@@ -12,6 +12,9 @@
 use PHPUnit\Util\Color;
 use SebastianBergmann\Environment\Console;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class Help
 {
     private const LEFT_MARGIN = '  ';

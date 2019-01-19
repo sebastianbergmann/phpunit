@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\MockObject\Builder;
 
 /**
- * Builder interface for invocation order matches.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 interface Match extends Stub
 {

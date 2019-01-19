@@ -13,7 +13,7 @@ use PHPUnit\Framework\Error\Error;
 use Throwable;
 
 /**
- * A TestFailure collects a failed test together with the caught exception.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestFailure
 {

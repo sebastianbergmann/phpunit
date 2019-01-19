@@ -12,10 +12,7 @@ namespace PHPUnit\Framework\MockObject\Matcher;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
- * Invocation matcher which checks if a method has been invoked at least one
- * time.
- *
- * If the number of invocations is 0 it will throw an exception in verify.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class InvokedAtLeastOnce extends InvokedRecorder
 {

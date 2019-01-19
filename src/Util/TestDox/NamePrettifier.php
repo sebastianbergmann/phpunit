@@ -14,7 +14,7 @@ use PHPUnit\Util\Color;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
- * Prettifies class and method names for use in TestDox documentation.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class NamePrettifier
 {

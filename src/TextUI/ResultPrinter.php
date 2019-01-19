@@ -26,7 +26,7 @@ use SebastianBergmann\Environment\Console;
 use SebastianBergmann\Timer\Timer;
 
 /**
- * Prints the result of a TextUI TestRunner run.
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 class ResultPrinter extends Printer implements TestListener
 {
