@@ -65,7 +65,6 @@ final class Configuration
             );
         }
 
-        /** @var string $realPath */
         if (!isset(self::$instances[$realPath])) {
             self::$instances[$realPath] = new self($realPath);
         }
@@ -126,7 +125,8 @@ final class Configuration
         $result = [];
 
         foreach ($this->xpath->query('extensions/extension') as $extension) {
-            /** @var DOMElement $extension */
+            \assert($extension instanceof DOMElement);
+
             $class     = (string) $extension->getAttribute('class');
             $file      = '';
             $arguments = $this->getConfigurationArguments($extension->childNodes);
@@ -237,7 +237,8 @@ final class Configuration
         $result = [];
 
         foreach ($this->xpath->query('listeners/listener') as $listener) {
-            /** @var DOMElement $listener */
+            \assert($listener instanceof DOMElement);
+
             $class     = (string) $listener->getAttribute('class');
             $file      = '';
             $arguments = $this->getConfigurationArguments($listener->childNodes);
@@ -267,7 +268,8 @@ final class Configuration
         $result = [];
 
         foreach ($this->xpath->query('logging/log') as $log) {
-            /** @var DOMElement $log */
+            \assert($log instanceof DOMElement);
+
             $type   = (string) $log->getAttribute('type');
             $target = (string) $log->getAttribute('target');
 
@@ -348,7 +350,8 @@ final class Configuration
         }
 
         foreach ($this->xpath->query('php/ini') as $ini) {
-            /** @var DOMElement $ini */
+            \assert($ini instanceof DOMElement);
+
             $name  = (string) $ini->getAttribute('name');
             $value = (string) $ini->getAttribute('value');
 
@@ -356,7 +359,8 @@ final class Configuration
         }
 
         foreach ($this->xpath->query('php/const') as $const) {
-            /** @var DOMElement $const */
+            \assert($const instanceof  DOMElement);
+
             $name  = (string) $const->getAttribute('name');
             $value = (string) $const->getAttribute('value');
 
@@ -365,7 +369,8 @@ final class Configuration
 
         foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($this->xpath->query('php/' . $array) as $var) {
-                /** @var DOMElement $var */
+                \assert($var instanceof DOMElement);
+
                 $name     = (string) $var->getAttribute('name');
                 $value    = (string) $var->getAttribute('value');
                 $verbatim = false;
@@ -971,7 +976,8 @@ final class Configuration
         $testSuiteFilter    = $testSuiteFilter ? \explode(',', $testSuiteFilter) : [];
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
-            /** @var DOMElement $directoryNode */
+            \assert($directoryNode instanceof DOMElement);
+
             if (!empty($testSuiteFilter) && !\in_array($directoryNode->parentNode->getAttribute('name'), $testSuiteFilter)) {
                 continue;
             }
@@ -1008,7 +1014,8 @@ final class Configuration
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
-            /** @var DOMElement $fileNode */
+            \assert($fileNode instanceof DOMElement);
+
             if (!empty($testSuiteFilter) && !\in_array($fileNode->parentNode->getAttribute('name'), $testSuiteFilter)) {
                 continue;
             }
@@ -1091,7 +1098,8 @@ final class Configuration
         $directories = [];
 
         foreach ($this->xpath->query($query) as $directoryNode) {
-            /** @var DOMElement $directoryNode */
+            \assert($directoryNode instanceof DOMElement);
+
             $directoryPath = (string) $directoryNode->textContent;
 
             if (!$directoryPath) {

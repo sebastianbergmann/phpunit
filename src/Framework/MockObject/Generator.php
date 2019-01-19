@@ -804,7 +804,6 @@ final class Generator
         $mockedMethods = '';
         $configurable  = [];
 
-        /** @var MockMethod $mockMethod */
         foreach ($mockMethods->asArray() as $mockMethod) {
             $mockedMethods .= $mockMethod->generateCode();
             $configurable[] = \strtolower($mockMethod->getName());

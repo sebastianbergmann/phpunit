@@ -179,7 +179,6 @@ final class PhptTestCase implements Test, SelfDescribing
                 $failure = new IncompleteTestError($xfail, 0, $e);
             } else {
                 if ($e instanceof ExpectationFailedException) {
-                    /** @var ExpectationFailedException $e */
                     if ($e->getComparisonFailure()) {
                         $diff = $e->getComparisonFailure()->getDiff();
                     } else {

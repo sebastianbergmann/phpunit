@@ -1686,8 +1686,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
             foreach ($this->prophet->getProphecies() as $objectProphecy) {
                 foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
-                    /** @var MethodProphecy[] $methodProphecies */
                     foreach ($methodProphecies as $methodProphecy) {
+                        \assert($methodProphecy instanceof MethodProphecy);
+
                         $this->numAssertions += \count($methodProphecy->getCheckedPredictions());
                     }
                 }

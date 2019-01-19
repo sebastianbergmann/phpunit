@@ -2532,13 +2532,10 @@ abstract class Assert
             );
 
             for ($i = 0; $i < $expectedElement->attributes->length; $i++) {
-                /** @var \DOMAttr $expectedAttribute */
                 $expectedAttribute = $expectedElement->attributes->item($i);
+                $actualAttribute   = $actualElement->attributes->getNamedItem($expectedAttribute->name);
 
-                /** @var \DOMAttr $actualAttribute */
-                $actualAttribute = $actualElement->attributes->getNamedItem(
-                    $expectedAttribute->name
-                );
+                \assert($expectedAttribute instanceof \DOMAttr);
 
                 if (!$actualAttribute) {
                     static::fail(

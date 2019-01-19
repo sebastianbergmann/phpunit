@@ -27,6 +27,9 @@ final class MockMethodSet
         }
     }
 
+    /**
+     * @return MockMethod[]
+     */
     public function asArray(): array
     {
         return \array_values($this->methods);
