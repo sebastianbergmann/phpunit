@@ -13,6 +13,7 @@ use PHPUnit\Framework\Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
  * @see https://bugs.php.net/bug.php?id=51800
  */
 final class WindowsPhpProcess extends DefaultPhpProcess
