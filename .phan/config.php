@@ -22,7 +22,10 @@ return [
     'warn_about_undocumented_exceptions_thrown_by_invoked_functions' => true,
 
     'suppress_issue_types' => [
+        'PhanAccessClassInternal',
+        'PhanAccessClassConstantInternal',
         'PhanAccessMethodInternal',
+        'PhanAccessPropertyInternal',
         'PhanDeprecatedFunction',
         'PhanUnusedPublicMethodParameter',
         'PhanUnusedPublicFinalMethodParameter',
