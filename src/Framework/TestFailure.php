@@ -20,12 +20,12 @@ final class TestFailure
     /**
      * @var null|Test
      */
-    protected $failedTest;
+    private $failedTest;
 
     /**
      * @var Throwable
      */
-    protected $thrownException;
+    private $thrownException;
 
     /**
      * @var string

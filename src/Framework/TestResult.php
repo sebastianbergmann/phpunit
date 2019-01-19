@@ -35,149 +35,149 @@ final class TestResult implements Countable
     /**
      * @var array
      */
-    protected $passed = [];
+    private $passed = [];
 
     /**
      * @var array
      */
-    protected $errors = [];
+    private $errors = [];
 
     /**
      * @var array
      */
-    protected $failures = [];
+    private $failures = [];
 
     /**
      * @var array
      */
-    protected $warnings = [];
+    private $warnings = [];
 
     /**
      * @var array
      */
-    protected $notImplemented = [];
+    private $notImplemented = [];
 
     /**
      * @var array
      */
-    protected $risky = [];
+    private $risky = [];
 
     /**
      * @var array
      */
-    protected $skipped = [];
+    private $skipped = [];
 
     /**
      * @var array
      */
-    protected $listeners = [];
+    private $listeners = [];
 
     /**
      * @var int
      */
-    protected $runTests = 0;
+    private $runTests = 0;
 
     /**
      * @var float
      */
-    protected $time = 0;
+    private $time = 0;
 
     /**
      * @var TestSuite
      */
-    protected $topTestSuite;
+    private $topTestSuite;
 
     /**
      * Code Coverage information.
      *
      * @var CodeCoverage
      */
-    protected $codeCoverage;
+    private $codeCoverage;
 
     /**
      * @var bool
      */
-    protected $convertErrorsToExceptions = true;
+    private $convertErrorsToExceptions = true;
 
     /**
      * @var bool
      */
-    protected $stop = false;
+    private $stop = false;
 
     /**
      * @var bool
      */
-    protected $stopOnError = false;
+    private $stopOnError = false;
 
     /**
      * @var bool
      */
-    protected $stopOnFailure = false;
+    private $stopOnFailure = false;
 
     /**
      * @var bool
      */
-    protected $stopOnWarning = false;
+    private $stopOnWarning = false;
 
     /**
      * @var bool
      */
-    protected $beStrictAboutTestsThatDoNotTestAnything = true;
+    private $beStrictAboutTestsThatDoNotTestAnything = true;
 
     /**
      * @var bool
      */
-    protected $beStrictAboutOutputDuringTests = false;
+    private $beStrictAboutOutputDuringTests = false;
 
     /**
      * @var bool
      */
-    protected $beStrictAboutTodoAnnotatedTests = false;
+    private $beStrictAboutTodoAnnotatedTests = false;
 
     /**
      * @var bool
      */
-    protected $beStrictAboutResourceUsageDuringSmallTests = false;
+    private $beStrictAboutResourceUsageDuringSmallTests = false;
 
     /**
      * @var bool
      */
-    protected $enforceTimeLimit = false;
+    private $enforceTimeLimit = false;
 
     /**
      * @var int
      */
-    protected $timeoutForSmallTests = 1;
+    private $timeoutForSmallTests = 1;
 
     /**
      * @var int
      */
-    protected $timeoutForMediumTests = 10;
+    private $timeoutForMediumTests = 10;
 
     /**
      * @var int
      */
-    protected $timeoutForLargeTests = 60;
+    private $timeoutForLargeTests = 60;
 
     /**
      * @var bool
      */
-    protected $stopOnRisky = false;
+    private $stopOnRisky = false;
 
     /**
      * @var bool
      */
-    protected $stopOnIncomplete = false;
+    private $stopOnIncomplete = false;
 
     /**
      * @var bool
      */
-    protected $stopOnSkipped = false;
+    private $stopOnSkipped = false;
 
     /**
      * @var bool
      */
-    protected $lastTestFailed = false;
+    private $lastTestFailed = false;
 
     /**
      * @var int
