@@ -35,6 +35,8 @@ final class ClassHasStaticAttribute extends ClassHasAttribute
      * constraint is met, false otherwise.
      *
      * @param mixed $other value or object to evaluate
+     *
+     * @throws \ReflectionException
      */
     protected function matches($other): bool
     {
