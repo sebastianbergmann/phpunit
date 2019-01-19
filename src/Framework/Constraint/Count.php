@@ -24,8 +24,6 @@ class Count extends Constraint
 
     public function __construct(int $expected)
     {
-        parent::__construct();
-
         $this->expectedCount = $expected;
     }
 

@@ -21,8 +21,6 @@ final class Exception extends Constraint
 
     public function __construct(string $className)
     {
-        parent::__construct();
-
         $this->className = $className;
     }
 

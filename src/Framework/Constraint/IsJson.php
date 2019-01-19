@@ -66,7 +66,7 @@ final class IsJson extends Constraint
 
         return \sprintf(
             '%s is valid JSON (%s)',
-            $this->exporter->shortenedExport($other),
+            $this->exporter()->shortenedExport($other),
             $error
         );
     }

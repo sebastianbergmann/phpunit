@@ -20,8 +20,6 @@ final class ExceptionMessageRegularExpression extends Constraint
 
     public function __construct(string $expected)
     {
-        parent::__construct();
-
         $this->expectedMessageRegExp = $expected;
     }
 

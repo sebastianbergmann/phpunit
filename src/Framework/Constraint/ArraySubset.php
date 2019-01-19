@@ -32,8 +32,6 @@ final class ArraySubset extends Constraint
 
     public function __construct(iterable $subset, bool $strict = false)
     {
-        parent::__construct();
-
         $this->strict = $strict;
         $this->subset = $subset;
     }
@@ -48,14 +46,10 @@ final class ArraySubset extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @param mixed  $other        value or object to evaluate
-     * @param string $description  Additional information about the test
-     * @param bool   $returnResult Whether to return a result or throw an exception
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function evaluate($other, $description = '', $returnResult = false)
+    public function evaluate($other, string $description = '', bool $returnResult = false)
     {
         //type cast $other & $this->subset as an array to allow
         //support in standard array functions.
@@ -93,7 +87,7 @@ final class ArraySubset extends Constraint
      */
     public function toString(): string
     {
-        return 'has the subset ' . $this->exporter->export($this->subset);
+        return 'has the subset ' . $this->exporter()->export($this->subset);
     }
 
     /**

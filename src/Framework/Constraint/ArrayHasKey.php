@@ -31,8 +31,6 @@ final class ArrayHasKey extends Constraint
      */
     public function __construct($key)
     {
-        parent::__construct();
-
         $this->key = $key;
     }
 
@@ -43,7 +41,7 @@ final class ArrayHasKey extends Constraint
      */
     public function toString(): string
     {
-        return 'has the key ' . $this->exporter->export($this->key);
+        return 'has the key ' . $this->exporter()->export($this->key);
     }
 
     /**

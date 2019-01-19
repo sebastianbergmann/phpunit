@@ -37,8 +37,6 @@ final class TraversableContains extends Constraint
      */
     public function __construct($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false)
     {
-        parent::__construct();
-
         $this->checkForObjectIdentity    = $checkForObjectIdentity;
         $this->checkForNonObjectIdentity = $checkForNonObjectIdentity;
         $this->value                     = $value;
@@ -55,7 +53,7 @@ final class TraversableContains extends Constraint
             return 'contains "' . $this->value . '"';
         }
 
-        return 'contains ' . $this->exporter->export($this->value);
+        return 'contains ' . $this->exporter()->export($this->value);
     }
 
     /**

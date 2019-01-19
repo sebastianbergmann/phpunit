@@ -25,8 +25,6 @@ final class LessThan extends Constraint
      */
     public function __construct($value)
     {
-        parent::__construct();
-
         $this->value = $value;
     }
 
@@ -37,7 +35,7 @@ final class LessThan extends Constraint
      */
     public function toString(): string
     {
-        return 'is less than ' . $this->exporter->export($this->value);
+        return 'is less than ' . $this->exporter()->export($this->value);
     }
 
     /**

@@ -32,8 +32,6 @@ final class StringContains extends Constraint
 
     public function __construct(string $string, bool $ignoreCase = false)
     {
-        parent::__construct();
-
         $this->string     = $string;
         $this->ignoreCase = $ignoreCase;
     }

@@ -73,8 +73,6 @@ final class IsType extends Constraint
      */
     public function __construct(string $type)
     {
-        parent::__construct();
-
         if (!isset(self::KNOWN_TYPES[$type])) {
             throw new \PHPUnit\Framework\Exception(
                 \sprintf(

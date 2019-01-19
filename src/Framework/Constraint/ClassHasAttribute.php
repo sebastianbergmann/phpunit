@@ -26,8 +26,6 @@ class ClassHasAttribute extends Constraint
 
     public function __construct(string $attributeName)
     {
-        parent::__construct();
-
         $this->attributeName = $attributeName;
     }
 

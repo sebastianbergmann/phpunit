@@ -18,8 +18,6 @@ final class ExceptionMessage extends Constraint
 
     public function __construct(string $expected)
     {
-        parent::__construct();
-
         $this->expectedMessage = $expected;
     }
 

@@ -25,8 +25,6 @@ final class GreaterThan extends Constraint
      */
     public function __construct($value)
     {
-        parent::__construct();
-
         $this->value = $value;
     }
 
@@ -37,7 +35,7 @@ final class GreaterThan extends Constraint
      */
     public function toString(): string
     {
-        return 'is greater than ' . $this->exporter->export($this->value);
+        return 'is greater than ' . $this->exporter()->export($this->value);
     }
 
     /**

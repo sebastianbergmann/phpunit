@@ -22,8 +22,6 @@ final class StringEndsWith extends Constraint
 
     public function __construct(string $suffix)
     {
-        parent::__construct();
-
         $this->suffix = $suffix;
     }
 

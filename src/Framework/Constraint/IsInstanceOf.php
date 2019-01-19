@@ -27,8 +27,6 @@ final class IsInstanceOf extends Constraint
 
     public function __construct(string $className)
     {
-        parent::__construct();
-
         $this->className = $className;
     }
 
@@ -69,7 +67,7 @@ final class IsInstanceOf extends Constraint
     {
         return \sprintf(
             '%s is an instance of %s "%s"',
-            $this->exporter->shortenedExport($other),
+            $this->exporter()->shortenedExport($other),
             $this->getType(),
             $this->className
         );

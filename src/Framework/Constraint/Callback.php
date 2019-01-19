@@ -21,8 +21,6 @@ final class Callback extends Constraint
 
     public function __construct(callable $callback)
     {
-        parent::__construct();
-
         $this->callback = $callback;
     }
 

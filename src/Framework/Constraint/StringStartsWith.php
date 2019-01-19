@@ -22,8 +22,6 @@ final class StringStartsWith extends Constraint
 
     public function __construct(string $prefix)
     {
-        parent::__construct();
-
         $this->prefix = $prefix;
     }
 

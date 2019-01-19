@@ -25,8 +25,6 @@ final class JsonMatches extends Constraint
 
     public function __construct(string $value)
     {
-        parent::__construct();
-
         $this->value = $value;
     }
 
