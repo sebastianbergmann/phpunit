@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Error;
 
-class Deprecated extends Error
+final class Deprecated extends Error
 {
     public static $enabled = true;
 }

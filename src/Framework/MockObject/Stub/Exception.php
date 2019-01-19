@@ -16,7 +16,7 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * Stubs a method by raising a user-defined exception.
  */
-class Exception implements Stub
+final class Exception implements Stub
 {
     private $exception;
 

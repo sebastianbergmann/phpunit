@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-class IncompleteTestError extends AssertionFailedError implements IncompleteTest
+final class IncompleteTestError extends AssertionFailedError implements IncompleteTest
 {
 }

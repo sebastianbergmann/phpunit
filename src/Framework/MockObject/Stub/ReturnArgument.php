@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\Stub;
 /**
  * Stubs a method by returning an argument that was passed to the mocked method.
  */
-class ReturnArgument implements Stub
+final class ReturnArgument implements Stub
 {
     /**
      * @var int

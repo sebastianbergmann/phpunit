@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-class MissingCoversAnnotationException extends RiskyTestError
+final class MissingCoversAnnotationException extends RiskyTestError
 {
 }

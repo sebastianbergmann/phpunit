@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\Stub;
 /**
  * Stubs a method by returning a value from a map.
  */
-class ReturnValueMap implements Stub
+final class ReturnValueMap implements Stub
 {
     /**
      * @var array

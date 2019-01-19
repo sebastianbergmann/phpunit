@@ -18,7 +18,7 @@ namespace PHPUnit\Framework\Constraint;
  *
  * The sub-string is passed in the constructor.
  */
-class StringContains extends Constraint
+final class StringContains extends Constraint
 {
     /**
      * @var string

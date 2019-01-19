@@ -14,7 +14,7 @@ namespace PHPUnit\Framework\Constraint;
  *
  * The file path to check is passed as $other in evaluate().
  */
-class DirectoryExists extends Constraint
+final class DirectoryExists extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

@@ -16,7 +16,7 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * Stubs a method by returning a user-defined value.
  */
-class ReturnStub implements Stub
+final class ReturnStub implements Stub
 {
     /**
      * @var mixed

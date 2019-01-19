@@ -14,7 +14,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * Logical NOT.
  */
-class LogicalNot extends Constraint
+final class LogicalNot extends Constraint
 {
     /**
      * @var Constraint

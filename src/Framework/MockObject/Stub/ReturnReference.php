@@ -16,7 +16,7 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * Stubs a method by returning a user-defined reference to a value.
  */
-class ReturnReference implements Stub
+final class ReturnReference implements Stub
 {
     /**
      * @var mixed

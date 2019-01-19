@@ -18,7 +18,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  * Uses array_replace_recursive() to check if a key value subset is part of the
  * subject array.
  */
-class ArraySubset extends Constraint
+final class ArraySubset extends Constraint
 {
     /**
      * @var iterable

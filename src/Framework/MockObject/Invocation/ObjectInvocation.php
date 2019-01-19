@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject\Invocation;
 /**
  * Represents a non-static invocation.
  */
-class ObjectInvocation extends StaticInvocation
+final class ObjectInvocation extends StaticInvocation
 {
     /**
      * @var object

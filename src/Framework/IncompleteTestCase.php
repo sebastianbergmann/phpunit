@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 /**
  * An incomplete test case
  */
-class IncompleteTestCase extends TestCase
+final class IncompleteTestCase extends TestCase
 {
     /**
      * @var string

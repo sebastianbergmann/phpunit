@@ -17,7 +17,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  *
  * If the number of invocations is 0 it will throw an exception in verify.
  */
-class InvokedAtLeastOnce extends InvokedRecorder
+final class InvokedAtLeastOnce extends InvokedRecorder
 {
     public function toString(): string
     {

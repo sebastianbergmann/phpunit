@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\Stub;
 /**
  * Stubs a method by returning the current object.
  */
-class ReturnSelf implements Stub
+final class ReturnSelf implements Stub
 {
     /**
      * @throws RuntimeException

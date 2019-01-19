@@ -19,7 +19,7 @@ use ArrayAccess;
  *
  * The array key is passed in the constructor.
  */
-class ArrayHasKey extends Constraint
+final class ArrayHasKey extends Constraint
 {
     /**
      * @var int|string

@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 /**
  * A skipped test case
  */
-class SkippedTestCase extends TestCase
+final class SkippedTestCase extends TestCase
 {
     /**
      * @var string

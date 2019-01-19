@@ -13,7 +13,7 @@ namespace PHPUnit\Framework\Constraint;
  * Constraint that asserts that the string it is evaluated for begins with a
  * given prefix.
  */
-class StringStartsWith extends Constraint
+final class StringStartsWith extends Constraint
 {
     /**
      * @var string

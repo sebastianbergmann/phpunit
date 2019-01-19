@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 /**
  * A warning.
  */
-class WarningTestCase extends TestCase
+final class WarningTestCase extends TestCase
 {
     /**
      * @var string

@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
-class DeferredError extends StatelessInvocation
+final class DeferredError extends StatelessInvocation
 {
     /**
      * @var \Throwable

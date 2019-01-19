@@ -22,7 +22,7 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
  *
  * The expected value is passed in the constructor.
  */
-class IsEqual extends Constraint
+final class IsEqual extends Constraint
 {
     /**
      * @var mixed

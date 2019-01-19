@@ -13,7 +13,7 @@ namespace PHPUnit\Framework\Constraint;
  * Constraint that asserts that the value it is evaluated for is greater
  * than a given value.
  */
-class GreaterThan extends Constraint
+final class GreaterThan extends Constraint
 {
     /**
      * @var float|int

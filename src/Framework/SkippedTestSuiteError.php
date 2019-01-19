@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-class SkippedTestSuiteError extends AssertionFailedError implements SkippedTest
+final class SkippedTestSuiteError extends AssertionFailedError implements SkippedTest
 {
 }

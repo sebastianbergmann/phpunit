@@ -63,7 +63,7 @@ use SebastianBergmann\Invoker\Invoker;
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
  */
-class TestRunner extends BaseTestRunner
+final class TestRunner extends BaseTestRunner
 {
     public const SUCCESS_EXIT   = 0;
 

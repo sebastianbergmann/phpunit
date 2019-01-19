@@ -16,7 +16,7 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * Stubs a method by returning a user-defined stack of values.
  */
-class ConsecutiveCalls implements Stub
+final class ConsecutiveCalls implements Stub
 {
     /**
      * @var array

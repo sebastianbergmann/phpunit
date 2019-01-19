@@ -14,7 +14,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * Constraint that accepts any input value.
  */
-class IsAnything extends Constraint
+final class IsAnything extends Constraint
 {
     /**
      * Evaluates the constraint for parameter $other

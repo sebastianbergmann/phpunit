@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-class CoveredCodeNotExecutedException extends RiskyTestError
+final class CoveredCodeNotExecutedException extends RiskyTestError
 {
 }

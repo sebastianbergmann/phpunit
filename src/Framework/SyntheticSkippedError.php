@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-class SyntheticSkippedError extends SyntheticError implements SkippedTest
+final class SyntheticSkippedError extends SyntheticError implements SkippedTest
 {
 }

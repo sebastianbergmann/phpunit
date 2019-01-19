@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 /**
  * Constraint that evaluates against a specified closure.
  */
-class Callback extends Constraint
+final class Callback extends Constraint
 {
     /**
      * @var callable

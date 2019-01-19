@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Implementation of the Builder pattern for Mock objects.
  */
-class MockBuilder
+final class MockBuilder
 {
     /**
      * @var TestCase

@@ -15,7 +15,7 @@ use SplObjectStorage;
  * Constraint that asserts that the Traversable it is applied to contains
  * a given value.
  */
-class TraversableContains extends Constraint
+final class TraversableContains extends Constraint
 {
     /**
      * @var bool

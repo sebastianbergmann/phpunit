@@ -14,7 +14,7 @@ namespace PHPUnit\Framework\Constraint;
  *
  * The file path to check is passed as $other in evaluate().
  */
-class IsWritable extends Constraint
+final class IsWritable extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

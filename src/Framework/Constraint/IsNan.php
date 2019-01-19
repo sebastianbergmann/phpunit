@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 /**
  * Constraint that accepts nan.
  */
-class IsNan extends Constraint
+final class IsNan extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

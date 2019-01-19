@@ -14,7 +14,7 @@ use Countable;
 /**
  * Constraint that checks whether a variable is empty().
  */
-class IsEmpty extends Constraint
+final class IsEmpty extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

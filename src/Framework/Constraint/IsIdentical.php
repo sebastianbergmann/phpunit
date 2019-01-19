@@ -23,7 +23,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  *
  * The expected value is passed in the constructor.
  */
-class IsIdentical extends Constraint
+final class IsIdentical extends Constraint
 {
     /**
      * @var float

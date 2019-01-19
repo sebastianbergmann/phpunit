@@ -21,7 +21,7 @@ use Throwable;
  * Unlike PHPUnit\Framework_\Exception, the complete stack of previous Exceptions
  * is processed.
  */
-class ExceptionWrapper extends Exception
+final class ExceptionWrapper extends Exception
 {
     /**
      * @var string

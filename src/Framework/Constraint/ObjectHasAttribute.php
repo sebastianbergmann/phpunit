@@ -17,7 +17,7 @@ use ReflectionObject;
  *
  * The attribute name is passed in the constructor.
  */
-class ObjectHasAttribute extends ClassHasAttribute
+final class ObjectHasAttribute extends ClassHasAttribute
 {
     /**
      * Evaluates the constraint for parameter $other. Returns true if the

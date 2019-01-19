@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-class ExceptionCode extends Constraint
+final class ExceptionCode extends Constraint
 {
     /**
      * @var int|string

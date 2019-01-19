@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 /**
  * Constraint that accepts true.
  */
-class IsTrue extends Constraint
+final class IsTrue extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

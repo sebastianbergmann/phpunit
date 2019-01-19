@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
-class DataProviderTestSuite extends TestSuite
+final class DataProviderTestSuite extends TestSuite
 {
     /**
      * @var string[]

@@ -22,7 +22,7 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
  * checked against the defined constraints in $parameters. If the constraint
  * is met it will return true in matches().
  */
-class Parameters extends StatelessInvocation
+final class Parameters extends StatelessInvocation
 {
     /**
      * @var Constraint[]

@@ -30,7 +30,7 @@ use Throwable;
 /**
  * A TestResult collects the results of executing a test case.
  */
-class TestResult implements Countable
+final class TestResult implements Countable
 {
     /**
      * @var array

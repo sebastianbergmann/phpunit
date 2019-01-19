@@ -14,7 +14,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * Logical XOR.
  */
-class LogicalXor extends Constraint
+final class LogicalXor extends Constraint
 {
     /**
      * @var Constraint[]

@@ -20,7 +20,7 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
  * If the number is less it will later be checked in verify() and also throw an
  * exception.
  */
-class InvokedCount extends InvokedRecorder
+final class InvokedCount extends InvokedRecorder
 {
     /**
      * @var int

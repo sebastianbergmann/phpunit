@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-class OutputError extends AssertionFailedError
+final class OutputError extends AssertionFailedError
 {
 }

@@ -14,7 +14,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * Logical AND.
  */
-class LogicalAnd extends Constraint
+final class LogicalAnd extends Constraint
 {
     /**
      * @var Constraint[]

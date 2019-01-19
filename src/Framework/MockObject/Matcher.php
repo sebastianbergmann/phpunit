@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestFailure;
  *
  * All properties are public so that they can easily be accessed by the builder.
  */
-class Matcher implements MatcherInvocation
+final class Matcher implements MatcherInvocation
 {
     /**
      * @var MatcherInvocation

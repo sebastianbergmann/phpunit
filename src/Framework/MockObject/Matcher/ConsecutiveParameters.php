@@ -24,7 +24,7 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
  * It takes a list of match groups and and increases a call index after each invocation.
  * So the first invocation uses the first group of constraints, the second the next and so on.
  */
-class ConsecutiveParameters extends StatelessInvocation
+final class ConsecutiveParameters extends StatelessInvocation
 {
     /**
      * @var array

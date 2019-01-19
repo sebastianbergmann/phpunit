@@ -11,7 +11,7 @@ namespace PHPUnit\Runner;
 
 use PHPUnit\Util\Filesystem;
 
-class TestResultCache implements \Serializable, TestResultCacheInterface
+final class TestResultCache implements \Serializable, TestResultCacheInterface
 {
     /**
      * @var string

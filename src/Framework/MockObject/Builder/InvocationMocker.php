@@ -24,7 +24,7 @@ use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
  * more natural way of reading the expectation. This class should be together
  * with the test case PHPUnit\Framework\MockObject\TestCase.
  */
-class InvocationMocker implements MethodNameMatch
+final class InvocationMocker implements MethodNameMatch
 {
     /**
      * @var MatcherCollection

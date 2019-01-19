@@ -24,7 +24,7 @@ use Traversable;
 /**
  * Mock Object Code Generator
  */
-class Generator
+final class Generator
 {
     /**
      * @var array

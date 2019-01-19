@@ -14,7 +14,7 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 /**
  * Invocation matcher which allows any parameters to a method.
  */
-class AnyParameters extends StatelessInvocation
+final class AnyParameters extends StatelessInvocation
 {
     public function toString(): string
     {

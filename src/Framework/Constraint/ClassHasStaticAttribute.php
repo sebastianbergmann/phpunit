@@ -17,7 +17,7 @@ use ReflectionClass;
  *
  * The attribute name is passed in the constructor.
  */
-class ClassHasStaticAttribute extends ClassHasAttribute
+final class ClassHasStaticAttribute extends ClassHasAttribute
 {
     /**
      * Returns a string representation of the constraint.

@@ -18,7 +18,7 @@ use ReflectionException;
  *
  * The expected class name is passed in the constructor.
  */
-class IsInstanceOf extends Constraint
+final class IsInstanceOf extends Constraint
 {
     /**
      * @var string

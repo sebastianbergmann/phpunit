@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-class InvalidCoversTargetException extends CodeCoverageException
+final class InvalidCoversTargetException extends CodeCoverageException
 {
 }

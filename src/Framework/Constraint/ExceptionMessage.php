@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-class ExceptionMessage extends Constraint
+final class ExceptionMessage extends Constraint
 {
     /**
      * @var string

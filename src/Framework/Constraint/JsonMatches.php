@@ -16,7 +16,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 /**
  * Asserts whether or not two JSON objects are equal.
  */
-class JsonMatches extends Constraint
+final class JsonMatches extends Constraint
 {
     /**
      * @var string

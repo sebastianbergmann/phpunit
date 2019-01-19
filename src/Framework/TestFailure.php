@@ -15,7 +15,7 @@ use Throwable;
 /**
  * A TestFailure collects a failed test together with the caught exception.
  */
-class TestFailure
+final class TestFailure
 {
     /**
      * @var null|Test

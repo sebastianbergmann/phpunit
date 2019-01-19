@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-class SameSize extends Count
+final class SameSize extends Count
 {
     public function __construct(iterable $expected)
     {

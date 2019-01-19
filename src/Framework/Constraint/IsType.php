@@ -15,7 +15,7 @@ namespace PHPUnit\Framework\Constraint;
  *
  * The expected value is passed in the constructor.
  */
-class IsType extends Constraint
+final class IsType extends Constraint
 {
     public const TYPE_ARRAY    = 'array';
 

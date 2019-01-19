@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Util\RegularExpression as RegularExpressionUtil;
 
-class ExceptionMessageRegularExpression extends Constraint
+final class ExceptionMessageRegularExpression extends Constraint
 {
     /**
      * @var string

@@ -21,7 +21,7 @@ use PHPUnit\Util\InvalidArgumentHelper;
  * the defined constraint $constraint. If the constraint is met it will return
  * true in matches().
  */
-class MethodName extends StatelessInvocation
+final class MethodName extends StatelessInvocation
 {
     /**
      * @var Constraint

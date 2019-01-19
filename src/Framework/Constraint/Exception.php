@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Util\Filter;
 use Throwable;
 
-class Exception extends Constraint
+final class Exception extends Constraint
 {
     /**
      * @var string

@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 /**
  * Provides human readable messages for each JSON error.
  */
-class JsonMatchesErrorMessageProvider
+final class JsonMatchesErrorMessageProvider
 {
     /**
      * Translates JSON error to a human readable string.

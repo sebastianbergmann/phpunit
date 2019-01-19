@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 /**
  * Constraint that asserts that a string is valid JSON.
  */
-class IsJson extends Constraint
+final class IsJson extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

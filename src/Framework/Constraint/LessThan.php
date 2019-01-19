@@ -13,7 +13,7 @@ namespace PHPUnit\Framework\Constraint;
  * Constraint that asserts that the value it is evaluated for is less than
  * a given value.
  */
-class LessThan extends Constraint
+final class LessThan extends Constraint
 {
     /**
      * @var float|int

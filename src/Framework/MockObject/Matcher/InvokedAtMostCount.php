@@ -15,7 +15,7 @@ use PHPUnit\Framework\ExpectationFailedException;
  * Invocation matcher which checks if a method has been invoked at least
  * N times.
  */
-class InvokedAtMostCount extends InvokedRecorder
+final class InvokedAtMostCount extends InvokedRecorder
 {
     /**
      * @var int

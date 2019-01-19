@@ -18,7 +18,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  * SebastianBergmann\Comparator\ComparisonFailure which is used to
  * generate diff output of the failed expectations.
  */
-class ExpectationFailedException extends AssertionFailedError
+final class ExpectationFailedException extends AssertionFailedError
 {
     /**
      * @var ComparisonFailure

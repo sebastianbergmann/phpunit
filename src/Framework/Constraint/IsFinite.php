@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 /**
  * Constraint that accepts finite.
  */
-class IsFinite extends Constraint
+final class IsFinite extends Constraint
 {
     /**
      * Returns a string representation of the constraint.

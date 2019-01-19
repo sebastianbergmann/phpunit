@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-class PHPTAssertionFailedError extends SyntheticError
+final class PHPTAssertionFailedError extends SyntheticError
 {
 }

@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 /**
  * Thrown when there is a warning.
  */
-class Warning extends Exception implements SelfDescribing
+final class Warning extends Exception implements SelfDescribing
 {
     /**
      * Wrapper for getMessage() which is declared as final.
