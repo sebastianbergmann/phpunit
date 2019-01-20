@@ -46,6 +46,13 @@ class CliTestDoxPrinter extends TestDoxPrinter
         'last'    => '┴',
     ];
 
+    private const SPINNER_ICONS = [
+        " \e[36m◐\e[0m running tests",
+        " \e[36m◓\e[0m running tests",
+        " \e[36m◑\e[0m running tests",
+        " \e[36m◒\e[0m running tests",
+    ];
+
     /**
      * @var int[]
      */
@@ -299,6 +306,22 @@ class CliTestDoxPrinter extends TestDoxPrinter
         $out .= $this->prefixLines($prefix['last'], \PHP_EOL) . \PHP_EOL;
 
         return $out;
+    }
+
+    protected function drawSpinner(): void
+    {
+        if ($this->colors) {
+            $id =  $this->spinState % \count(self::SPINNER_ICONS);
+            $this->write(self::SPINNER_ICONS[$id]);
+        }
+    }
+
+    protected function undrawSpinner(): void
+    {
+        if ($this->colors) {
+            $id =  $this->spinState % \count(self::SPINNER_ICONS);
+            $this->write("\e[1K\e[" . \strlen(self::SPINNER_ICONS[$id]) . 'D');
+        }
     }
 
     private function formatRuntime(float $time, string $color = ''): string
