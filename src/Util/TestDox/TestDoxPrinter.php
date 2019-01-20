@@ -61,6 +61,11 @@ class TestDoxPrinter extends ResultPrinter
     protected $originalExecutionOrder = [];
 
     /**
+     * @var int
+     */
+    protected $spinState = 0;
+
+    /**
      * @param null|mixed $out
      *
      * @throws \PHPUnit\Framework\Exception
@@ -247,13 +252,43 @@ class TestDoxPrinter extends ResultPrinter
                 $result  = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
 
                 if (!empty($result)) {
+                    $this->hideSpinner();
                     $this->writeTestResult($prevResult, $result);
                     $this->testFlushIndex++;
                     $prevResult = $result;
                     $flushed    = true;
+                } else {
+                    $this->showSpinner();
                 }
             } while ($flushed && $this->testFlushIndex < $this->testIndex);
         }
+    }
+
+    protected function showSpinner(): void
+    {
+        if ($this->spinState) {
+            $this->undrawSpinner();
+        }
+        $this->spinState++;
+        $this->drawSpinner();
+    }
+
+    protected function hideSpinner(): void
+    {
+        if ($this->spinState) {
+            $this->undrawSpinner();
+        }
+        $this->spinState = 0;
+    }
+
+    protected function drawSpinner(): void
+    {
+        // optional for CLI printers: show the user a 'buffering output' spinner
+    }
+
+    protected function undrawSpinner(): void
+    {
+        // remove the spinner from the current line
     }
 
     protected function writeTestResult(array $prevResult, array $result): void
