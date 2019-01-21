@@ -30,7 +30,7 @@ class ExceptionInTearDownTest extends TestCase
     {
         $this->tearDown = true;
 
-        throw new Exception;
+        throw new Exception('throw Exception in tearDown()');
     }
 
     public function testSomething(): void

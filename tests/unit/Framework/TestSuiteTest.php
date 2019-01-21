@@ -224,6 +224,30 @@ class TestSuiteTest extends TestCase
         $reflection->expects($this->once())
             ->method('getName')
             ->willReturn(__CLASS__);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('No valid test provided.');
+
         TestSuite::createTest($reflection, 'TestForConstructorlessTestClass');
+    }
+
+    /**
+     * @testdox Handles exceptions in tearDownAfterClass()
+     */
+    public function testTearDownAfterClassInTestSuite(): void
+    {
+        $suite = new TestSuite(\ExceptionInTearDownAfterClassTest::class);
+        $suite->run($this->result);
+
+        $this->assertSame(3, $this->result->count());
+        $this->assertCount(1, $this->result->failures());
+
+        $failure = $this->result->failures()[0];
+
+        $this->assertSame(
+            'Exception in ExceptionInTearDownAfterClassTest::tearDownAfterClass' . \PHP_EOL .
+            'throw Exception in tearDownAfterClass()',
+            $failure->thrownException()->getMessage()
+        );
     }
 }
