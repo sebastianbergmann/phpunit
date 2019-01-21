@@ -240,7 +240,7 @@ class TestSuiteTest extends TestCase
         $this->assertCount(1, $this->result->failures());
 
         $failure = $this->result->failures()[0];
-        \assert($failure instanceof TestFailure);
+
         $this->assertSame(
             'Exception in ExceptionInTearDownAfterClassTest::tearDownAfterClass' . \PHP_EOL .
             'throw Exception in tearDownAfterClass()',
