@@ -77,10 +77,6 @@ class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($configurationFilename);
 
         $this->assertTrue($configurationInstance->hasValidationErrors());
-        $this->assertArraySubset(
-            [1 => ["Element 'phpunit', attribute 'colors': 'Something else' is not a valid value of the atomic type 'xs:boolean'."]],
-            $configurationInstance->getValidationErrors()
-        );
     }
 
     public function testShouldUseDefaultValuesForInvalidIntegers(): void

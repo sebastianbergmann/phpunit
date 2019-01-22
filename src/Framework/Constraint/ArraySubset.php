@@ -18,6 +18,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  * Uses array_replace_recursive() to check if a key value subset is part of the
  * subject array.
  *
+ * @codeCoverageIgnore
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3494
  */
 final class ArraySubset extends Constraint
