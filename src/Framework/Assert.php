@@ -114,6 +114,7 @@ abstract class Assert
      * @throws Exception
      *
      * @codeCoverageIgnore
+     *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3494
      */
     public static function assertArraySubset($subset, $array, bool $checkForObjectIdentity = false, string $message = ''): void
