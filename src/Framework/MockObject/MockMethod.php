@@ -181,7 +181,6 @@ final class MockMethod
     /**
      * @throws \ReflectionException
      * @throws \PHPUnit\Framework\MockObject\RuntimeException
-     * @throws \InvalidArgumentException
      */
     public function generateCode(): string
     {
