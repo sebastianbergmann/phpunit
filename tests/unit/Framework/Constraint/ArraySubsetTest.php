@@ -44,49 +44,49 @@ class ArraySubsetTest extends ConstraintTestCase
                 'expected' => true,
                 'subset'   => [0],
                 'other'    => ['', '0'],
-                'strict'   => false
+                'strict'   => false,
             ],
             'strict indexed array subset and array other' => [
                 'expected' => false,
                 'subset'   => [0],
                 'other'    => ['', '0'],
-                'strict'   => true
+                'strict'   => true,
             ],
             'loose indexed array subset and ArrayObject other' => [
                 'expected' => true,
                 'subset'   => [0],
                 'other'    => new \ArrayObject(['', '0']),
-                'strict'   => false
+                'strict'   => false,
             ],
             'strict indexed ArrayObject subset and array other' => [
                 'expected' => true,
                 'subset'   => new \ArrayObject([0]),
                 'other'    => ['', 0],
-                'strict'   => true
+                'strict'   => true,
             ],
             'loose unordered indexed array subset and array other' => [
                 'expected' => true,
                 'subset'   => [0, '1'],
                 'other'    => ['1', '2', '0'],
-                'strict'   => false
+                'strict'   => false,
             ],
             'strict unordered indexed array subset and array other' => [
                 'expected' => false,
                 'subset'   => [0, '1'],
                 'other'    => ['1', '2', '0'],
-                'strict'   => true
+                'strict'   => true,
             ],
             'loose unordered indexed array subset and ArrayObject other' => [
                 'expected' => true,
                 'subset'   => [0, '1'],
                 'other'    => new \ArrayObject(['1', '2', '0']),
-                'strict'   => false
+                'strict'   => false,
             ],
             'strict unordered indexed ArrayObject subset and array other' => [
                 'expected' => true,
                 'subset'   => new \ArrayObject([0, '1']),
                 'other'    => ['1', '2', 0],
-                'strict'   => true
+                'strict'   => true,
             ],
             'loose unordered multidimensional indexed array subset and array other' => [
                 'expected' => true,
@@ -97,13 +97,13 @@ class ArraySubsetTest extends ConstraintTestCase
                 'other'    => [
                     0   => '1',
                     'a' => [
-                      'aa' => '2',
-                      'ab' => [5, 4, 3],
-                      'ac' => 10,
+                        'aa' => '2',
+                        'ab' => [5, 4, 3],
+                        'ac' => 10,
                     ],
                     'b' => '10',
                 ],
-                'strict'   => false
+                'strict'   => false,
             ],
             'strict unordered multidimensional indexed array subset and array other' => [
                 'expected' => false,
@@ -120,7 +120,7 @@ class ArraySubsetTest extends ConstraintTestCase
                     ],
                     'b' => '10',
                 ],
-                'strict'   => true
+                'strict'   => true,
             ],
             'loose unordered multidimensional indexed array subset and ArrayObject other' => [
                 'expected' => true,
@@ -137,7 +137,7 @@ class ArraySubsetTest extends ConstraintTestCase
                     ],
                     'b' => '10',
                 ]),
-                'strict'   => false
+                'strict'   => false,
             ],
             'strict unordered multidimensional indexed ArrayObject subset and array other' => [
                 'expected' => true,
@@ -154,7 +154,7 @@ class ArraySubsetTest extends ConstraintTestCase
                     ],
                     'b' => '10',
                 ],
-                'strict'   => true
+                'strict'   => true,
             ],
             'loose indexed array subset with duplicates and array other' => [
                 'expected' => true,

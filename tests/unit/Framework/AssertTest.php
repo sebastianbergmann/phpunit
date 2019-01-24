@@ -75,7 +75,7 @@ class AssertTest extends TestCase
             'a' => 'item a',
             'b' => 'item b',
             'c' => ['a2' => 'item a2', 'b2' => 'item b2'],
-            'd' => ['a2' => ['a3' => 'item a3', 'b3' => 'item b3']]
+            'd' => ['a2' => ['a3' => 'item a3', 'b3' => 'item b3']],
         ];
 
         $this->assertArraySubset(['a' => 'item a'], $array);
@@ -110,7 +110,7 @@ class AssertTest extends TestCase
             'item a',
             'item b',
             ['a2' => 'item a2', 'b2' => 'item b2'],
-            ['a2' => ['a3' => 'item a3', 'b3' => 'item b3']]
+            ['a2' => ['a3' => 'item a3', 'b3' => 'item b3']],
         ];
 
         $this->assertArraySubset(['item a', ['a2' => 'item a2']], $array);
@@ -143,10 +143,10 @@ class AssertTest extends TestCase
             'path' => [
                 'to' => [
                     'the' => [
-                        'cake' => 'is a lie'
-                    ]
-                ]
-            ]
+                        'cake' => 'is a lie',
+                    ],
+                ],
+            ],
         ];
 
         $this->assertArraySubset(['path' => []], $array);
@@ -184,9 +184,6 @@ class AssertTest extends TestCase
 
     /**
      * @dataProvider assertArraySubsetInvalidArgumentProvider
-     *
-     * @param mixed $partial
-     * @param mixed $subject
      *
      * @throws Exception
      * @throws ExpectationFailedException
