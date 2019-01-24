@@ -116,8 +116,8 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * Constructor.
      *
-     * @param string|resource|null $out
-     * @param int|string $numberOfColumns
+     * @param null|resource|string $out
+     * @param int|string           $numberOfColumns
      *
      * @throws Exception
      */

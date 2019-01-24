@@ -36,7 +36,7 @@ class Printer
     /**
      * Constructor.
      *
-     * @param string|resource|null $out
+     * @param null|resource|string $out
      *
      * @throws Exception
      */

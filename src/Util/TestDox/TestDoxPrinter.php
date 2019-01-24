@@ -66,7 +66,7 @@ class TestDoxPrinter extends ResultPrinter
     protected $spinState = 0;
 
     /**
-     * @param string|resource|null $out
+     * @param null|resource|string $out
      *
      * @throws \PHPUnit\Framework\Exception
      */
