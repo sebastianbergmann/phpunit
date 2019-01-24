@@ -11,11 +11,8 @@ php:
   - 7.0
   - 7.1
   - 7.2
-  - master
 
 matrix:
-  allow_failures:
-    - php: master
   fast_finish: true
 
 env:
