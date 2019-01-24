@@ -66,18 +66,12 @@ class TestDoxPrinter extends ResultPrinter
     protected $spinState = 0;
 
     /**
-     * @param null|mixed $out
+     * @param string|resource|null $out
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct(
-        $out = null,
-        bool $verbose = false,
-        $colors = self::COLOR_DEFAULT,
-        bool $debug = false,
-        $numberOfColumns = 80,
-        bool $reverse = false
-    ) {
+    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
+    {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
         $this->prettifier = new NamePrettifier($this->colors);

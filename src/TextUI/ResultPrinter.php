@@ -116,13 +116,12 @@ class ResultPrinter extends Printer implements TestListener
     /**
      * Constructor.
      *
-     * @param string     $colors
+     * @param string|resource|null $out
      * @param int|string $numberOfColumns
-     * @param null|mixed $out
      *
      * @throws Exception
      */
-    public function __construct($out = null, bool $verbose = false, $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
+    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out);
 
