@@ -3,6 +3,7 @@
          xsi:noNamespaceSchemaLocation="phpunit.xsd"
          bootstrap="tests/bootstrap.php"
          cacheResult="true"
+         colors="true"
          verbose="true">
     <testsuites>
         <testsuite name="unit">
@@ -11,6 +12,7 @@
 
         <testsuite name="end-to-end">
             <directory suffix=".phpt">tests/end-to-end</directory>
+            <exclude>tests/end-to-end/_files</exclude>
         </testsuite>
     </testsuites>
 
