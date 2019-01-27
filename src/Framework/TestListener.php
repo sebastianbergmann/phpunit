@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 /**
  * @deprecated Use the `TestHook` interfaces instead
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 interface TestListener
