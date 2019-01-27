@@ -15,6 +15,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 * Implemented [#3338](https://github.com/sebastianbergmann/phpunit/issues/3338): Deprecate assertions (and helper methods) that operate on (non-public) attributes
 * Implemented [#3341](https://github.com/sebastianbergmann/phpunit/issues/3341): Deprecate optional parameters of `assertEquals()` and `assertNotEquals()`
 * Implemented [#3369](https://github.com/sebastianbergmann/phpunit/issues/3369): Deprecate `assertInternalType()` and `assertNotInternalType()`
+* Implemented [#3388](https://github.com/sebastianbergmann/phpunit/issues/3388): Deprecate the `TestListener` interface
 * Implemented [#3425](https://github.com/sebastianbergmann/phpunit/issues/3425): Deprecate optional parameters of `assertContains()` and `assertNotContains()` as well as using these methods with `string` haystacks
 * Implemented [#3439](https://github.com/sebastianbergmann/phpunit/pull/3439): Improve colorization of TestDox output
 * Implemented [#3444](https://github.com/sebastianbergmann/phpunit/pull/3444): Consider data provider that provides data with duplicate keys to be invalid

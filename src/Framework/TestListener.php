@@ -10,7 +10,8 @@
 namespace PHPUnit\Framework;
 
 /**
- * A Listener for test progress.
+ * @deprecated
+ * @internal
  */
 interface TestListener
 {
