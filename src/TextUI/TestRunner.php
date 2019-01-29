@@ -327,16 +327,7 @@ final class TestRunner extends BaseTestRunner
         self::$versionStringPrinted = true;
 
         if ($arguments['verbose']) {
-            $runtime = $this->runtime->getNameWithVersion();
-
-            if ($this->runtime->hasXdebug()) {
-                $runtime .= \sprintf(
-                    ' with Xdebug %s',
-                    \phpversion('xdebug')
-                );
-            }
-
-            $this->writeMessage('Runtime', $runtime);
+            $this->writeMessage('Runtime', $this->runtime->getNameWithVersionAndCodeCoverageDriver());
 
             if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
                 $this->writeMessage(
