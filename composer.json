@@ -20,7 +20,6 @@
         "issues": "https://github.com/sebastianbergmann/phpunit/issues"
     },
     "prefer-stable": true,
-    "minimum-stability": "dev",
     "require": {
         "php": "^7.2",
         "ext-dom": "*",
