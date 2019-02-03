@@ -787,9 +787,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 $var['methodName'] = $this->name;
             }
 
-            $template->setVar(
-                $var
-            );
+            $template->setVar($var);
 
             $php = AbstractPhpProcess::factory();
             $php->runTestJob($template->render(), $this, $result);
