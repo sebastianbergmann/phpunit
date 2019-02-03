@@ -32,9 +32,17 @@ final class FileLoader
         $localFile           = __DIR__ . \DIRECTORY_SEPARATOR . $filename;
 
         /**
-         * @see https://github.com/sebastianbergmann/phpunit/pull/2751
+         * Due to strict_types = 1 declaration, fopen() expects a string as the path parameter. 
+         * If a boolean is provided as the path paramater, then a fatal TypeError is thrown.
          */
-        $isReadable = @\fopen($includePathFilename, 'r') !== false;
+        if ($includePathFilename !== false) {
+            /**
+             * @see https://github.com/sebastianbergmann/phpunit/pull/2751
+             */
+            $isReadable = @\fopen($includePathFilename, 'r') !== false;
+        } else {
+            $isReadable = false;
+        }
 
         if (!$includePathFilename || !$isReadable || $includePathFilename === $localFile) {
             throw new Exception(
