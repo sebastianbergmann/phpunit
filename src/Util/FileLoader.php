@@ -31,8 +31,8 @@ final class FileLoader
         $includePathFilename = \stream_resolve_include_path($filename);
         $localFile           = __DIR__ . \DIRECTORY_SEPARATOR . $filename;
 
-        /**
-         * Due to strict_types = 1 declaration, fopen() expects a string as the path parameter. 
+        /*
+         * Due to strict_types = 1 declaration, fopen() expects a string as the path parameter.
          * If a boolean is provided as the path paramater, then a fatal TypeError is thrown, without
          * describing what file has failed to load.
          */
