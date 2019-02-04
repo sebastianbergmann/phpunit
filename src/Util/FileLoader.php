@@ -29,14 +29,16 @@ final class FileLoader
     public static function checkAndLoad(string $filename): string
     {
         $includePathFilename = \stream_resolve_include_path($filename);
-        $localFile           = __DIR__ . \DIRECTORY_SEPARATOR . $filename;
 
-        /**
-         * @see https://github.com/sebastianbergmann/phpunit/pull/2751
-         */
-        $isReadable = @\fopen($includePathFilename, 'r') !== false;
+        if (!$includePathFilename) {
+            throw new Exception(
+                \sprintf('Cannot open file "%s".' . "\n", $filename)
+            );
+        }
 
-        if (!$includePathFilename || !$isReadable || $includePathFilename === $localFile) {
+        $localFile = __DIR__ . \DIRECTORY_SEPARATOR . $filename;
+
+        if (!self::isReadable($includePathFilename) || $includePathFilename === $localFile) {
             throw new Exception(
                 \sprintf('Cannot open file "%s".' . "\n", $filename)
             );
@@ -64,5 +66,13 @@ final class FileLoader
                 $GLOBALS[$variableName] = $newVariables[$variableName];
             }
         }
+    }
+
+    /**
+     * @see https://github.com/sebastianbergmann/phpunit/pull/2751
+     */
+    private static function isReadable(string $filename): bool
+    {
+        return @\fopen($filename, 'r') !== false;
     }
 }

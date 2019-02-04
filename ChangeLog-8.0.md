@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 8.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [8.0.2] - 2019-MM-DD
+
+### Fixed
+
+* Fixed [#3508](https://github.com/sebastianbergmann/phpunit/pull/3508): `TypeError` in `Fileloader` when trying to load nonexistent file
+
 ## [8.0.1] - 2019-02-03
 
 ### Fixed
@@ -37,6 +43,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 * Implemented [#2762](https://github.com/sebastianbergmann/phpunit/issues/2762): Drop support for PHP 7.1
 * Implemented [#3123](https://github.com/sebastianbergmann/phpunit/issues/3123): Remove `PHPUnit_Framework_MockObject_MockObject`
 
+[8.0.2]: https://github.com/sebastianbergmann/phpunit/compare/8.0.1...8.0.2
 [8.0.1]: https://github.com/sebastianbergmann/phpunit/compare/8.0.0...8.0.1
 [8.0.0]: https://github.com/sebastianbergmann/phpunit/compare/7.5...8.0.0
 
