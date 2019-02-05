@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3508](https://github.com/sebastianbergmann/phpunit/pull/3508): `TypeError` in `Fileloader` when trying to load nonexistent file
+* Fixed [#3511](https://github.com/sebastianbergmann/phpunit/issues/3511): Asserting that an object is contained in an `iterable` while using `==` instead of `===` is no longer possible
 
 ## [8.0.1] - 2019-02-03
 
