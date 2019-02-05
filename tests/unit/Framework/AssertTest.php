@@ -3004,6 +3004,38 @@ XML;
         $this->fail();
     }
 
+    public function testIterableContainsSameObjectCanBeAsserted(): void
+    {
+        $object   = new \stdClass;
+        $iterable = [$object];
+
+        $this->assertContains($object, $iterable);
+
+        try {
+            $this->assertContains(new \stdClass, $iterable);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testIterableNotContainsSameObjectCanBeAsserted(): void
+    {
+        $object   = new \stdClass;
+        $iterable = [$object];
+
+        $this->assertNotContains(new \stdClass, $iterable);
+
+        try {
+            $this->assertNotContains($object, $iterable);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     protected function sameValues(): array
     {
         $object   = new \SampleClass(4, 8, 15);
