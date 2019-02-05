@@ -2192,6 +2192,44 @@ XML;
         $this->fail();
     }
 
+    public function testIterableContainsEqualObjectCanBeAsserted(): void
+    {
+        $a      = new \stdClass;
+        $a->foo = 'bar';
+
+        $b      = new \stdClass;
+        $b->foo = 'baz';
+
+        $this->assertContainsEquals($a, [$a]);
+
+        try {
+            $this->assertContainsEquals($b, [$a]);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testIterableNotContainsEqualObjectCanBeAsserted(): void
+    {
+        $a      = new \stdClass;
+        $a->foo = 'bar';
+
+        $b      = new \stdClass;
+        $b->foo = 'baz';
+
+        $this->assertNotContainsEquals($b, [$a]);
+
+        try {
+            $this->assertNotContainsEquals($a, [$a]);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     protected function sameValues(): array
     {
         $object   = new \SampleClass(4, 8, 15);

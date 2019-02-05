@@ -188,7 +188,7 @@ abstract class Assert
         }
 
         if ($checkForObjectIdentity !== true) {
-            self::createWarning('The optional $checkForObjectIdentity parameter of assertContains() is deprecated and will be removed in PHPUnit 9.');
+            self::createWarning('The optional $checkForObjectIdentity parameter of assertContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertContainsEquals() instead.');
         }
 
         if ($checkForNonObjectIdentity !== false) {
@@ -225,6 +225,13 @@ abstract class Assert
                 'array, traversable or string'
             );
         }
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    public static function assertContainsEquals($needle, iterable $haystack, string $message = ''): void
+    {
+        $constraint = new TraversableContains($needle, false, false);
 
         static::assertThat($haystack, $constraint, $message);
     }
@@ -272,7 +279,7 @@ abstract class Assert
         }
 
         if ($checkForObjectIdentity !== true) {
-            self::createWarning('The optional $checkForObjectIdentity parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9.');
+            self::createWarning('The optional $checkForObjectIdentity parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotContainsEquals() instead.');
         }
 
         if ($checkForNonObjectIdentity !== false) {
@@ -313,6 +320,13 @@ abstract class Assert
                 'array, traversable or string'
             );
         }
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    public static function assertNotContainsEquals($needle, iterable $haystack, string $message = ''): void
+    {
+        $constraint = new LogicalNot(new TraversableContains($needle, false, false));
 
         static::assertThat($haystack, $constraint, $message);
     }
