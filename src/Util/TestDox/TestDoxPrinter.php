@@ -66,6 +66,11 @@ class TestDoxPrinter extends ResultPrinter
     protected $spinState = 0;
 
     /**
+     * @var bool
+     */
+    protected $showProgress = true;
+
+    /**
      * @param null|resource|string $out
      *
      * @throws \PHPUnit\Framework\Exception
@@ -81,6 +86,11 @@ class TestDoxPrinter extends ResultPrinter
     {
         $this->originalExecutionOrder = $order;
         $this->enableOutputBuffer     = !empty($order);
+    }
+
+    public function setShowProgressAnimation(bool $doShowSpinner): void
+    {
+        $this->showProgress = $doShowSpinner;
     }
 
     public function printResult(TestResult $result): void
@@ -260,18 +270,28 @@ class TestDoxPrinter extends ResultPrinter
 
     protected function showSpinner(): void
     {
+        if (!$this->showProgress) {
+            return;
+        }
+
         if ($this->spinState) {
             $this->undrawSpinner();
         }
+
         $this->spinState++;
         $this->drawSpinner();
     }
 
     protected function hideSpinner(): void
     {
+        if (!$this->showProgress) {
+            return;
+        }
+
         if ($this->spinState) {
             $this->undrawSpinner();
         }
+
         $this->spinState = 0;
     }
 

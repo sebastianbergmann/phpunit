@@ -316,6 +316,7 @@ final class TestRunner extends BaseTestRunner
                 if (isset($originalExecutionOrder) && ($this->printer instanceof CliTestDoxPrinter)) {
                     /* @var CliTestDoxPrinter */
                     $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
+//                    $this->printer->setShowProgressAnimation(true);
                 }
             }
         }
