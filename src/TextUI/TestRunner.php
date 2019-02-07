@@ -329,13 +329,6 @@ final class TestRunner extends BaseTestRunner
         if ($arguments['verbose']) {
             $this->writeMessage('Runtime', $this->runtime->getNameWithVersionAndCodeCoverageDriver());
 
-            if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
-                $this->writeMessage(
-                    'Random seed',
-                    (string) $arguments['randomOrderSeed']
-                );
-            }
-
             if (isset($arguments['configuration'])) {
                 $this->writeMessage(
                     'Configuration',
@@ -356,6 +349,13 @@ final class TestRunner extends BaseTestRunner
                     $extension
                 );
             }
+        }
+
+        if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
+            $this->writeMessage(
+                'Random seed',
+                (string) $arguments['randomOrderSeed']
+            );
         }
 
         if (isset($tooFewColumnsRequested)) {

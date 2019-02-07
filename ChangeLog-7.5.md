@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.5.5] - 2019-MM-DD
+
+### Fixed
+
+* Fixed [#3515](https://github.com/sebastianbergmann/phpunit/issues/3515): Random order seed is only printed in verbose mode
+
 ## [7.5.4] - 2019-02-07
 
 ### Fixed
@@ -57,6 +63,7 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 * Fixed [#3429](https://github.com/sebastianbergmann/phpunit/pull/3429): Inefficient loop in `getHookMethods()`
 * Fixed [#3437](https://github.com/sebastianbergmann/phpunit/pull/3437): JUnit logger skips PHPT tests
 
+[7.5.5]: https://github.com/sebastianbergmann/phpunit/compare/7.5.4...7.5.5
 [7.5.4]: https://github.com/sebastianbergmann/phpunit/compare/7.5.3...7.5.4
 [7.5.3]: https://github.com/sebastianbergmann/phpunit/compare/7.5.2...7.5.3
 [7.5.2]: https://github.com/sebastianbergmann/phpunit/compare/7.5.1...7.5.2

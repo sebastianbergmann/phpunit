@@ -5,7 +5,6 @@ phpunit --order-by=depends,random --random-order-seed=54321 ../_files/MultiDepen
 $arguments = [
     '--no-configuration',
     '--debug',
-    '--verbose',
     '--order-by=depends,random',
     '--random-order-seed=54321',
     'MultiDependencyTest',
@@ -19,7 +18,6 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Runtime:       %s
 Random seed:   54321
 
 Test 'MultiDependencyTest::testTwo' started
