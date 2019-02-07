@@ -172,6 +172,14 @@ final class XmlResultPrinter extends Printer implements TestListener
         $node->setAttribute('size', (string) $test->getSize());
         $node->setAttribute('groups', \implode(',', $groups));
 
+        foreach ($groups as $group) {
+            $groupNode = $this->document->createElement('group');
+
+            $groupNode->setAttribute('name', $group);
+
+            $node->appendChild($groupNode);
+        }
+
         $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(\get_class($test), $test->getName());
 
         if (isset($inlineAnnotations['given'], $inlineAnnotations['when'], $inlineAnnotations['then'])) {
