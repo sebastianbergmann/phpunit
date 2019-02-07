@@ -15,7 +15,7 @@ if (version_compare('7.1.0', PHP_VERSION, '>')) {
     die(1);
 }
 
-if (__FILE__ === realpath($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
+if (__FILE__ === realpath($_SERVER['SCRIPT_NAME'])) {
     $execute = true;
 } else {
     $execute = false;
