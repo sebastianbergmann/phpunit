@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#3352](https://github.com/sebastianbergmann/phpunit/issues/3352): Using `phpunit.phar` with PHPDBG does not work with `auto_globals_jit=On`
 * Fixed [#3502](https://github.com/sebastianbergmann/phpunit/issues/3502): Numeric `@ticket` or `@group` annotations no longer work
 
 ## [7.5.3] - 2019-02-01
