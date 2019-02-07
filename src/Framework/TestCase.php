@@ -264,6 +264,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $customComparators = [];
 
     /**
+     * @var string[]
+     */
+    private $doubledTypes = [];
+
+    /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
      */
@@ -438,6 +443,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function count(): int
     {
         return 1;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function doubledTypes(): array {
+        return \array_unique($this->doubledTypes);
     }
 
     public function getGroups(): array
@@ -1052,6 +1064,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function getMockBuilder($className): MockBuilder
     {
+        $this->recordDoubledType($className);
+
         return new MockBuilder($this, $className);
     }
 
@@ -1388,6 +1402,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false): string
     {
+        $this->recordDoubledType($originalClassName);
+
         $mock = $this->getMockObjectGenerator()->getMock(
             $originalClassName,
             $methods,
@@ -1421,6 +1437,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
+        $this->recordDoubledType($originalClassName);
+
         $mockObject = $this->getMockObjectGenerator()->getMockForAbstractClass(
             $originalClassName,
             $arguments,
@@ -1452,6 +1470,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = []): MockObject
     {
+        $this->recordDoubledType('SoapClient');
+
         if ($originalClassName === '') {
             $fileName          = \pathinfo(\basename(\parse_url($wsdlFile)['path']), \PATHINFO_FILENAME);
             $originalClassName = \preg_replace('/[^a-zA-Z0-9_]/', '', $fileName);
@@ -1502,6 +1522,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
+        $this->recordDoubledType($traitName);
+
         $mockObject = $this->getMockObjectGenerator()->getMockForTrait(
             $traitName,
             $arguments,
@@ -1535,6 +1557,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)/*: object*/
     {
+        $this->recordDoubledType($traitName);
+
         return $this->getMockObjectGenerator()->getObjectForTrait(
             $traitName,
             $arguments,
@@ -1554,6 +1578,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function prophesize($classOrInterface = null): ObjectProphecy
     {
+        if (is_string($classOrInterface)) {
+            $this->recordDoubledType($classOrInterface);
+        }
+
         return $this->getProphet()->prophesize($classOrInterface);
     }
 
@@ -2137,5 +2165,23 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     {
         return ($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
                $this->inIsolation !== true && !$this instanceof PhptTestCase;
+    }
+
+    /**
+     * @param string|string[] $originalClassName
+     */
+    private function recordDoubledType($originalClassName): void
+    {
+        if (is_string($originalClassName)) {
+            $this->doubledTypes[] = $originalClassName;
+        }
+
+        if (is_array($originalClassName)) {
+            foreach ($originalClassName as $_originalClassName) {
+                if (is_string($_originalClassName)) {
+                    $this->doubledTypes[] = $_originalClassName;
+                }
+            }
+        }
     }
 }
