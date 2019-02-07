@@ -1723,7 +1723,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (!isset($passedKeys[$dependency])) {
-                    if (!is_callable($dependency, false, $callableName) || $dependency !== $callableName) {
+                    if (!\is_callable($dependency, false, $callableName) || $dependency !== $callableName) {
                         $this->markWarningForUncallableDependency($dependency);
                     } else {
                         $this->markSkippedForMissingDependecy($dependency);

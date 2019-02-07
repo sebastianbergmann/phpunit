@@ -45,6 +45,7 @@ class DependencyFailureTest extends TestCase
      * when a dependency simply doesn't exist.
      *
      * @depends doesNotExist
+     *
      * @see https://github.com/sebastianbergmann/phpunit/issues/3517
      */
     public function testHandlesDependsAnnotationForNonexistentTests(): void
