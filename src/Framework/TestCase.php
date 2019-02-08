@@ -448,7 +448,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @return string[]
      */
-    public function doubledTypes(): array {
+    public function doubledTypes(): array
+    {
         return \array_unique($this->doubledTypes);
     }
 
@@ -792,7 +793,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
                 'codeCoverageFilter'                         => $codeCoverageFilter,
                 'configurationFilePath'                      => $configurationFilePath,
-                'name'                                       => $this->getName(false)
+                'name'                                       => $this->getName(false),
             ];
 
             if (!$runEntireClass) {
@@ -1578,7 +1579,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function prophesize($classOrInterface = null): ObjectProphecy
     {
-        if (is_string($classOrInterface)) {
+        if (\is_string($classOrInterface)) {
             $this->recordDoubledType($classOrInterface);
         }
 
@@ -2195,13 +2196,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     private function recordDoubledType($originalClassName): void
     {
-        if (is_string($originalClassName)) {
+        if (\is_string($originalClassName)) {
             $this->doubledTypes[] = $originalClassName;
         }
 
-        if (is_array($originalClassName)) {
+        if (\is_array($originalClassName)) {
             foreach ($originalClassName as $_originalClassName) {
-                if (is_string($_originalClassName)) {
+                if (\is_string($_originalClassName)) {
                     $this->doubledTypes[] = $_originalClassName;
                 }
             }
