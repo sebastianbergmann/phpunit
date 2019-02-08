@@ -793,6 +793,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 'codeCoverageFilter'                         => $codeCoverageFilter,
                 'configurationFilePath'                      => $configurationFilePath,
                 'name'                                       => $this->getName(false),
+                'errcontext'                                 => \PHP_MAJOR_VERSION < 8 ? ', $errcontext' : ''
             ];
 
             if (!$runEntireClass) {
