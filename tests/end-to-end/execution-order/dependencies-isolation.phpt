@@ -18,9 +18,16 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-...FSSS                                                             7 / 7 (100%)
+...FSSSW                                                            8 / 8 (100%)
 
 Time: %s, Memory: %s
+
+There was 1 warning:
+
+1) DependencyFailureTest::testHandlesDependsAnnotationForNonexistentTests
+This test depends on "DependencyFailureTest::doesNotExist" which does not exist.
+
+--
 
 There was 1 failure:
 
@@ -42,4 +49,4 @@ This test depends on "DependencyFailureTest::testTwo" to pass.
 This test depends on "DependencyFailureTest::testOne" to pass.
 
 FAILURES!
-Tests: 7, Assertions: 4, Failures: 1, Skipped: 3.
+Tests: 8, Assertions: 4, Failures: 1, Warnings: 1, Skipped: 3.
