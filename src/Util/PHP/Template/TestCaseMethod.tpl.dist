@@ -90,7 +90,7 @@ if ('' !== $configurationFilePath) {
     unset($configuration);
 }
 
-function __phpunit_error_handler($errno, $errstr, $errfile, $errline{errcontext})
+function __phpunit_error_handler($errno, $errstr, $errfile, $errline)
 {
    return true;
 }
