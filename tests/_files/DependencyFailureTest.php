@@ -39,4 +39,17 @@ class DependencyFailureTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+    /**
+     * This test has been added to check the printed warnings for the user
+     * when a dependency simply doesn't exist.
+     *
+     * @depends doesNotExist
+     *
+     * @see https://github.com/sebastianbergmann/phpunit/issues/3517
+     */
+    public function testHandlesDependsAnnotationForNonexistentTests(): void
+    {
+        $this->assertTrue(true);
+    }
 }

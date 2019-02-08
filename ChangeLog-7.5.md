@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3515](https://github.com/sebastianbergmann/phpunit/issues/3515): Random order seed is only printed in verbose mode
+* Fixed [#3517](https://github.com/sebastianbergmann/phpunit/issues/3517): Useless error message when depending on test that does not exist
 
 ## [7.5.4] - 2019-02-07
 
