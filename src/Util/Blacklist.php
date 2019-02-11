@@ -46,7 +46,6 @@ final class Blacklist
         TestCase::class               => 2,
         Generator::class              => 1,
         Text_Template::class          => 1,
-        'Symfony\Component\Yaml\Yaml' => 1,
         CodeCoverage::class           => 1,
         Diff::class                   => 1,
         Runtime::class                => 1,
