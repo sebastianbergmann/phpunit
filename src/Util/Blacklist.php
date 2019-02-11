@@ -12,13 +12,17 @@ namespace PHPUnit\Util;
 use Composer\Autoload\ClassLoader;
 use DeepCopy\DeepCopy;
 use Doctrine\Instantiator\Instantiator;
+use PharIo\Manifest\Manifest;
+use PharIo\Version\Version as PharIoVersion;
 use PHP_Token;
 use phpDocumentor\Reflection\DocBlock;
-use PHPUnit\Framework\MockObject\Generator;
+use phpDocumentor\Reflection\Project;
+use phpDocumentor\Reflection\Type;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeUnitReverseLookup\Wizard;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Diff\Diff;
 use SebastianBergmann\Environment\Runtime;
@@ -26,10 +30,14 @@ use SebastianBergmann\Exporter\Exporter;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\ObjectEnumerator\Enumerator;
 use SebastianBergmann\RecursionContext\Context;
+use SebastianBergmann\ResourceOperations\ResourceOperations;
 use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Version;
 use Text_Template;
+use TheSeer\Tokenizer\Tokenizer;
+use Webmozart\Assert\Assert;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -40,28 +48,89 @@ final class Blacklist
      * @var array
      */
     public static $blacklistedClassNames = [
-        FileIteratorFacade::class     => 1,
-        Timer::class                  => 1,
-        PHP_Token::class              => 1,
-        TestCase::class               => 2,
-        'PHPUnit\DbUnit\TestCase'     => 2,
-        Generator::class              => 1,
-        Text_Template::class          => 1,
-        'Symfony\Component\Yaml\Yaml' => 1,
-        CodeCoverage::class           => 1,
-        Diff::class                   => 1,
-        Runtime::class                => 1,
-        Comparator::class             => 1,
-        Exporter::class               => 1,
-        Snapshot::class               => 1,
-        Invoker::class                => 1,
-        Context::class                => 1,
-        Version::class                => 1,
-        ClassLoader::class            => 1,
-        Instantiator::class           => 1,
-        DocBlock::class               => 1,
-        Prophet::class                => 1,
-        DeepCopy::class               => 1,
+        // composer
+        ClassLoader::class => 1,
+
+        // doctrine/instantiator
+        Instantiator::class => 1,
+
+        // myclabs/deepcopy
+        DeepCopy::class => 1,
+
+        // phar-io/manifest
+        Manifest::class => 1,
+
+        // phar-io/version
+        PharIoVersion::class => 1,
+
+        // phpdocumentor/reflection-common
+        Project::class => 1,
+
+        // phpdocumentor/reflection-docblock
+        DocBlock::class => 1,
+
+        // phpdocumentor/type-resolver
+        Type::class => 1,
+
+        // phpspec/prophecy
+        Prophet::class => 1,
+
+        // phpunit/phpunit
+        TestCase::class => 2,
+
+        // phpunit/php-code-coverage
+        CodeCoverage::class => 1,
+
+        // phpunit/php-file-iterator
+        FileIteratorFacade::class => 1,
+
+        // phpunit/php-invoker
+        Invoker::class => 1,
+
+        // phpunit/php-text-template
+        Text_Template::class => 1,
+
+        // phpunit/php-timer
+        Timer::class => 1,
+
+        // phpunit/php-token-stream
+        PHP_Token::class => 1,
+
+        // sebastian/code-unit-reverse-lookup
+        Wizard::class => 1,
+
+        // sebastian/comparator
+        Comparator::class => 1,
+
+        // sebastian/diff
+        Diff::class => 1,
+
+        // sebastian/environment
+        Runtime::class => 1,
+
+        // sebastian/exporter
+        Exporter::class => 1,
+
+        // sebastian/global-state
+        Snapshot::class => 1,
+
+        // sebastian/object-enumerator
+        Enumerator::class => 1,
+
+        // sebastian/recursion-context
+        Context::class => 1,
+
+        // sebastian/resource-operations
+        ResourceOperations::class => 1,
+
+        // sebastian/version
+        Version::class => 1,
+
+        // theseer/tokenizer
+        Tokenizer::class => 1,
+
+        // webmozart/assert
+        Assert::class => 1,
     ];
 
     /**
