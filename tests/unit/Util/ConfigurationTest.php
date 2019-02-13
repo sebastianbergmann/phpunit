@@ -505,6 +505,7 @@ class ConfigurationTest extends TestCase
                 'executionOrder'                             => TestSuiteSorter::ORDER_DEFAULT,
                 'executionOrderDefects'                      => TestSuiteSorter::ORDER_DEFAULT,
                 'resolveDependencies'                        => false,
+                'noProgress'                                 => true,
             ],
             $this->configuration->getPHPUnitConfiguration()
         );
