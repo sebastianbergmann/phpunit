@@ -1900,11 +1900,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private function snapshotGlobalState(): void
     {
         if ($this->runTestInSeparateProcess || $this->inIsolation ||
-            (!$this->backupGlobals === true && !$this->backupStaticAttributes)) {
+            (!$this->backupGlobals && !$this->backupStaticAttributes)) {
             return;
         }
 
-        $this->snapshot = $this->createGlobalStateSnapshot($this->backupGlobals === true);
+        $this->snapshot = $this->createGlobalStateSnapshot($this->backupGlobals);
     }
 
     /**
@@ -1922,7 +1922,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             try {
                 $this->compareGlobalStateSnapshots(
                     $this->snapshot,
-                    $this->createGlobalStateSnapshot($this->backupGlobals === true)
+                    $this->createGlobalStateSnapshot($this->backupGlobals)
                 );
             } catch (RiskyTestError $rte) {
                 // Intentionally left empty
@@ -1931,7 +1931,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         $restorer = new Restorer;
 
-        if ($this->backupGlobals === true) {
+        if ($this->backupGlobals) {
             $restorer->restoreGlobalVariables($this->snapshot);
         }
 
@@ -1994,7 +1994,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
     {
-        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals === true;
+        $backupGlobals = $this->backupGlobals === null || $this->backupGlobals;
 
         if ($backupGlobals) {
             $this->compareGlobalStateSnapshotPart(
@@ -2187,8 +2187,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     private function runInSeparateProcess(): bool
     {
-        return ($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
-               $this->inIsolation !== true && !$this instanceof PhptTestCase;
+        return ($this->runTestInSeparateProcess || $this->runClassInSeparateProcess) &&
+            !$this->inIsolation && !$this instanceof PhptTestCase;
     }
 
     /**

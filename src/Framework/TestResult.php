@@ -836,15 +836,15 @@ final class TestResult implements Countable
             }
         }
 
-        if ($errorHandlerSet === true) {
+        if ($errorHandlerSet) {
             \restore_error_handler();
         }
 
-        if ($error === true) {
+        if ($error) {
             $this->addError($test, $e, $time);
-        } elseif ($failure === true) {
+        } elseif ($failure) {
             $this->addFailure($test, $e, $time);
-        } elseif ($warning === true) {
+        } elseif ($warning) {
             $this->addWarning($test, $e, $time);
         } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
             !$test->doesNotPerformAssertions() &&

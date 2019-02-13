@@ -120,7 +120,7 @@ final class JUnit extends Printer implements TestListener
      */
     public function flush(): void
     {
-        if ($this->writeDocument === true) {
+        if ($this->writeDocument) {
             $this->write($this->getXML());
         }
 

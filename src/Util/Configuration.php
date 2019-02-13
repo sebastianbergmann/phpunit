@@ -470,7 +470,7 @@ final class Configuration
                 $_ENV[$name] = $value;
             }
 
-            if ($force === true) {
+            if ($force) {
                 $_ENV[$name] = $value;
             }
         }

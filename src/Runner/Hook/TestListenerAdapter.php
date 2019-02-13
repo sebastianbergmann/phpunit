@@ -115,7 +115,7 @@ final class TestListenerAdapter implements TestListener
 
     public function endTest(Test $test, float $time): void
     {
-        if ($this->lastTestWasNotSuccessful !== true) {
+        if (!$this->lastTestWasNotSuccessful) {
             foreach ($this->hooks as $hook) {
                 if ($hook instanceof AfterSuccessfulTestHook) {
                     $hook->executeAfterSuccessfulTest(TestUtil::describeAsString($test), $time);

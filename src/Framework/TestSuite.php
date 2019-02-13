@@ -708,7 +708,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $this->setUp();
 
             foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
-                if ($this->testCase === true &&
+                if ($this->testCase &&
                     \class_exists($this->name, false) &&
                     \method_exists($this->name, $beforeClassMethod)) {
                     if ($missingRequirements = \PHPUnit\Util\Test::getMissingRequirements($this->name, $beforeClassMethod)) {
@@ -763,7 +763,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
         try {
             foreach ($hookMethods['afterClass'] as $afterClassMethod) {
-                if ($this->testCase === true && \class_exists($this->name, false) && \method_exists(
+                if ($this->testCase && \class_exists($this->name, false) && \method_exists(
                     $this->name,
                     $afterClassMethod
                 )) {

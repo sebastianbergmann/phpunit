@@ -133,7 +133,7 @@ final class InvocationMocker implements MatcherCollection, Invokable, NamespaceM
             return $returnValue;
         }
 
-        if ($this->returnValueGeneration === false) {
+        if (!$this->returnValueGeneration) {
             $exception = new ExpectationFailedException(
                 \sprintf(
                     'Return value inference disabled and no expectation set up for %s::%s()',

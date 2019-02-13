@@ -53,19 +53,19 @@ final class ErrorHandler
         }
 
         if ($errorNumber === \E_NOTICE || $errorNumber === \E_USER_NOTICE || $errorNumber === \E_STRICT) {
-            if (Notice::$enabled !== true) {
+            if (!Notice::$enabled) {
                 return false;
             }
 
             $exception = Notice::class;
         } elseif ($errorNumber === \E_WARNING || $errorNumber === \E_USER_WARNING) {
-            if (Warning::$enabled !== true) {
+            if (!Warning::$enabled) {
                 return false;
             }
 
             $exception = Warning::class;
         } elseif ($errorNumber === \E_DEPRECATED || $errorNumber === \E_USER_DEPRECATED) {
-            if (Deprecated::$enabled !== true) {
+            if (!Deprecated::$enabled) {
                 return false;
             }
 

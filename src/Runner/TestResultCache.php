@@ -129,7 +129,7 @@ final class TestResultCache implements \Serializable, TestResultCacheInterface
     {
         $this->clear();
 
-        if (\is_file($this->cacheFilename) === false) {
+        if (!\is_file($this->cacheFilename)) {
             return;
         }
 

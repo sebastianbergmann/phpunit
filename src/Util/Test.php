@@ -141,7 +141,7 @@ final class Test
             $methodName
         );
 
-        if (self::shouldCoversAnnotationBeUsed($annotations) === false) {
+        if (!self::shouldCoversAnnotationBeUsed($annotations)) {
             return false;
         }
 

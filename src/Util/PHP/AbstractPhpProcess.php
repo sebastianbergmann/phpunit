@@ -198,7 +198,7 @@ abstract class AbstractPhpProcess
             $command .= ' ' . $this->args;
         }
 
-        if ($this->stderrRedirection === true) {
+        if ($this->stderrRedirection) {
             $command .= ' 2>&1';
         }
 

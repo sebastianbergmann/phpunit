@@ -361,7 +361,7 @@ final class TeamCity extends ResultPrinter
         }
 
         if (\is_bool($value)) {
-            return $value === true ? 'true' : 'false';
+            return $value ? 'true' : 'false';
         }
 
         if (\is_scalar($value)) {

@@ -170,7 +170,7 @@ final class Generator
             }
         }
 
-        if ($callOriginalConstructor === false && $callOriginalMethods === true) {
+        if (!$callOriginalConstructor && $callOriginalMethods) {
             throw new RuntimeException(
                 'Proxying to original methods requires invoking the original constructor'
             );

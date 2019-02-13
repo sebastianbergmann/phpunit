@@ -170,7 +170,7 @@ final class GlobalState
                 $result = false;
             }
 
-            if ($result === false) {
+            if (!$result) {
                 break;
             }
         }

@@ -187,15 +187,15 @@ abstract class Assert
             self::createWarning('Using assertContains() with string haystacks is deprecated and will not be supported in PHPUnit 9. Refactor your test to use assertStringContainsString() or assertStringContainsStringIgnoringCase() instead.');
         }
 
-        if ($checkForObjectIdentity !== true) {
+        if (!$checkForObjectIdentity) {
             self::createWarning('The optional $checkForObjectIdentity parameter of assertContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertContainsEquals() instead.');
         }
 
-        if ($checkForNonObjectIdentity !== false) {
+        if ($checkForNonObjectIdentity) {
             self::createWarning('The optional $checkForNonObjectIdentity parameter of assertContains() is deprecated and will be removed in PHPUnit 9.');
         }
 
-        if ($ignoreCase !== false) {
+        if ($ignoreCase) {
             self::createWarning('The optional $ignoreCase parameter of assertContains() is deprecated and will be removed in PHPUnit 9.');
         }
         // @codeCoverageIgnoreEnd
@@ -278,15 +278,15 @@ abstract class Assert
             self::createWarning('Using assertNotContains() with string haystacks is deprecated and will not be supported in PHPUnit 9. Refactor your test to use assertStringNotContainsString() or assertStringNotContainsStringIgnoringCase() instead.');
         }
 
-        if ($checkForObjectIdentity !== true) {
+        if (!$checkForObjectIdentity) {
             self::createWarning('The optional $checkForObjectIdentity parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotContainsEquals() instead.');
         }
 
-        if ($checkForNonObjectIdentity !== false) {
+        if ($checkForNonObjectIdentity) {
             self::createWarning('The optional $checkForNonObjectIdentity parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9.');
         }
 
-        if ($ignoreCase !== false) {
+        if ($ignoreCase) {
             self::createWarning('The optional $ignoreCase parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9.');
         }
         // @codeCoverageIgnoreEnd
@@ -589,11 +589,11 @@ abstract class Assert
             self::createWarning('The optional $maxDepth parameter of assertEquals() is deprecated and will be removed in PHPUnit 9.');
         }
 
-        if ($canonicalize !== false) {
+        if ($canonicalize) {
             self::createWarning('The optional $canonicalize parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsCanonicalizing() instead.');
         }
 
-        if ($ignoreCase !== false) {
+        if ($ignoreCase) {
             self::createWarning('The optional $ignoreCase parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsIgnoringCase() instead.');
         }
         // @codeCoverageIgnoreEnd
@@ -713,11 +713,11 @@ abstract class Assert
             self::createWarning('The optional $maxDepth parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9.');
         }
 
-        if ($canonicalize !== false) {
+        if ($canonicalize) {
             self::createWarning('The optional $canonicalize parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsCanonicalizing() instead.');
         }
 
-        if ($ignoreCase !== false) {
+        if ($ignoreCase) {
             self::createWarning('The optional $ignoreCase parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsIgnoringCase() instead.');
         }
         // @codeCoverageIgnoreEnd
