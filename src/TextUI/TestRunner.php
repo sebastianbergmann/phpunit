@@ -25,6 +25,7 @@ use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\NameFilterIterator;
+use PHPUnit\Runner\Filter\LineNumberFilterIterator;
 use PHPUnit\Runner\Hook;
 use PHPUnit\Runner\NullTestResultCache;
 use PHPUnit\Runner\ResultCacheExtension;
@@ -852,9 +853,10 @@ final class TestRunner extends BaseTestRunner
             );
         }
 
-        $arguments['debug']     = $arguments['debug'] ?? false;
-        $arguments['filter']    = $arguments['filter'] ?? false;
-        $arguments['listeners'] = $arguments['listeners'] ?? [];
+        $arguments['debug']      = $arguments['debug'] ?? false;
+        $arguments['filter']     = $arguments['filter'] ?? false;
+        $arguments['lineFilter'] = $arguments['lineFilter'] ?? false;
+        $arguments['listeners']  = $arguments['listeners'] ?? [];
 
         if (isset($arguments['configuration'])) {
             $arguments['configuration']->handlePHPConfiguration();
@@ -1267,6 +1269,7 @@ final class TestRunner extends BaseTestRunner
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {
         if (!$arguments['filter'] &&
+            !$arguments['lineFilter'] &&
             empty($arguments['groups']) &&
             empty($arguments['excludeGroups'])) {
             return;
@@ -1292,6 +1295,13 @@ final class TestRunner extends BaseTestRunner
             $filterFactory->addFilter(
                 new ReflectionClass(NameFilterIterator::class),
                 $arguments['filter']
+            );
+        }
+
+        if ($arguments['lineFilter']) {
+            $filterFactory->addFilter(
+                new ReflectionClass(LineNumberFilterIterator::class),
+                $arguments['lineFilter']
             );
         }
 

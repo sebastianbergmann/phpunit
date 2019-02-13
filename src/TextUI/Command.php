@@ -781,6 +781,17 @@ class Command
         $this->handleCustomTestSuite();
 
         if (!isset($this->arguments['test'])) {
+
+            $lineFilter = null;
+
+            if (isset($this->options[1][0])) {
+                $lineFilterPattern = "/:([0-9]+)$/";
+                if (preg_match($lineFilterPattern, $this->options[1][0], $matches)) {
+                    $lineFilter = (int) $matches[1];
+                    $this->options[1][0] = preg_replace($lineFilterPattern, "", $this->options[1][0]);
+                }
+            }
+
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
             }
@@ -794,8 +805,9 @@ class Command
             if (isset($this->arguments['test']) &&
                 \is_file($this->arguments['test']) &&
                 \substr($this->arguments['test'], -5, 5) != '.phpt') {
-                $this->arguments['testFile'] = \realpath($this->arguments['test']);
-                $this->arguments['test']     = \substr($this->arguments['test'], 0, \strrpos($this->arguments['test'], '.'));
+                $this->arguments['testFile']   = \realpath($this->arguments['test']);
+                $this->arguments['test']       = \substr($this->arguments['test'], 0, \strrpos($this->arguments['test'], '.'));
+                $this->arguments['lineFilter'] = $lineFilter;
             }
         }
 
