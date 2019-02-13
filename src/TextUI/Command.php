@@ -781,14 +781,14 @@ class Command
         $this->handleCustomTestSuite();
 
         if (!isset($this->arguments['test'])) {
-
             $lineFilter = null;
 
             if (isset($this->options[1][0])) {
-                $lineFilterPattern = "/:([0-9]+)$/";
-                if (preg_match($lineFilterPattern, $this->options[1][0], $matches)) {
-                    $lineFilter = (int) $matches[1];
-                    $this->options[1][0] = preg_replace($lineFilterPattern, "", $this->options[1][0]);
+                $lineFilterPattern = '/:([0-9]+)$/';
+
+                if (\preg_match($lineFilterPattern, $this->options[1][0], $matches)) {
+                    $lineFilter          = (int) $matches[1];
+                    $this->options[1][0] = \preg_replace($lineFilterPattern, '', $this->options[1][0]);
                 }
             }
 
