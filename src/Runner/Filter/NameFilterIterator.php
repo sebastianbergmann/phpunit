@@ -60,12 +60,10 @@ final class NameFilterIterator extends RecursiveFilterIterator
 
         if ($test instanceof WarningTestCase) {
             $name = $test->getMessage();
+        } else if ($tmp[0] !== '') {
+            $name = \implode('::', $tmp);
         } else {
-            if ($tmp[0] !== '') {
-                $name = \implode('::', $tmp);
-            } else {
-                $name = $tmp[1];
-            }
+            $name = $tmp[1];
         }
 
         $accepted = @\preg_match($this->filter, $name, $matches);

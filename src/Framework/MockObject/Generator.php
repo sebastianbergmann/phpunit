@@ -122,17 +122,15 @@ final class Generator
                         );
                     }
                 }
-            } else {
-                if (!\class_exists($type, $callAutoload) &&
-                    !\interface_exists($type, $callAutoload)
-                ) {
-                    throw new RuntimeException(
-                        \sprintf(
-                            'Cannot stub or mock class or interface "%s" which does not exist',
-                            $type
-                        )
-                    );
-                }
+            } else if (!\class_exists($type, $callAutoload) &&
+                !\interface_exists($type, $callAutoload)
+            ) {
+                throw new RuntimeException(
+                    \sprintf(
+                        'Cannot stub or mock class or interface "%s" which does not exist',
+                        $type
+                    )
+                );
             }
         }
 

@@ -148,12 +148,10 @@ class DefaultPhpProcess extends AbstractPhpProcess
                             \fclose($pipes[$pipeOffset]);
 
                             unset($pipes[$pipeOffset]);
+                        } else if ($pipeOffset === 1) {
+                            $stdout .= $line;
                         } else {
-                            if ($pipeOffset === 1) {
-                                $stdout .= $line;
-                            } else {
-                                $stderr .= $line;
-                            }
+                            $stderr .= $line;
                         }
                     }
 

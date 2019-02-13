@@ -186,24 +186,22 @@ final class PhptTestCase implements Test, SelfDescribing
 
             if ($xfail !== false) {
                 $failure = new IncompleteTestError($xfail, 0, $e);
-            } else {
-                if ($e instanceof ExpectationFailedException) {
-                    if ($e->getComparisonFailure()) {
-                        $diff = $e->getComparisonFailure()->getDiff();
-                    } else {
-                        $diff = $e->getMessage();
-                    }
-
-                    $hint    = $this->getLocationHintFromDiff($diff, $sections);
-                    $trace   = \array_merge($hint, \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
-                    $failure = new PHPTAssertionFailedError(
-                        $e->getMessage(),
-                        0,
-                        $trace[0]['file'],
-                        $trace[0]['line'],
-                        $trace
-                    );
+            } else if ($e instanceof ExpectationFailedException) {
+                if ($e->getComparisonFailure()) {
+                    $diff = $e->getComparisonFailure()->getDiff();
+                } else {
+                    $diff = $e->getMessage();
                 }
+
+                $hint    = $this->getLocationHintFromDiff($diff, $sections);
+                $trace   = \array_merge($hint, \debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS));
+                $failure = new PHPTAssertionFailedError(
+                    $e->getMessage(),
+                    0,
+                    $trace[0]['file'],
+                    $trace[0]['line'],
+                    $trace
+                );
             }
 
             $result->addFailure($this, $failure, $time);

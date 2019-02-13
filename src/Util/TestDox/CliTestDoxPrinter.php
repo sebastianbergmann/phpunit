@@ -264,11 +264,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
         $message = $this->formatThrowable($t, $result['status']);
         $diff    = '';
 
-        if ($message) {
-            if ($this->colors) {
-                $style            = $this->statusStyles[$result['status']]['message'] ?? '';
-                [$message, $diff] = $this->colorizeMessageAndDiff($style, $message);
-            }
+        if ($message && $this->colors) {
+            $style            = $this->statusStyles[$result['status']]['message'] ?? '';
+            [$message, $diff] = $this->colorizeMessageAndDiff($style, $message);
         }
 
         if (!($this->verbose || $result['verbose'])) {
