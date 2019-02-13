@@ -186,7 +186,7 @@ final class PhptTestCase implements Test, SelfDescribing
 
             if ($xfail !== false) {
                 $failure = new IncompleteTestError($xfail, 0, $e);
-            } else if ($e instanceof ExpectationFailedException) {
+            } elseif ($e instanceof ExpectationFailedException) {
                 if ($e->getComparisonFailure()) {
                     $diff = $e->getComparisonFailure()->getDiff();
                 } else {
@@ -574,8 +574,8 @@ final class PhptTestCase implements Test, SelfDescribing
 
         if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
             $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . \var_export(
-                    $GLOBALS['__PHPUNIT_BOOTSTRAP'],
-                    true
+                $GLOBALS['__PHPUNIT_BOOTSTRAP'],
+                true
                 ) . ";\n";
         }
 

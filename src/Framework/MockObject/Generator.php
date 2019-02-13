@@ -122,7 +122,7 @@ final class Generator
                         );
                     }
                 }
-            } else if (!\class_exists($type, $callAutoload) &&
+            } elseif (!\class_exists($type, $callAutoload) &&
                 !\interface_exists($type, $callAutoload)
             ) {
                 throw new RuntimeException(
