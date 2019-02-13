@@ -73,7 +73,7 @@ final class TestRunner extends BaseTestRunner
     /**
      * @var bool
      */
-    protected static $versionStringPrinted = false;
+    private static $versionStringPrinted = false;
 
     /**
      * @var CodeCoverageFilter

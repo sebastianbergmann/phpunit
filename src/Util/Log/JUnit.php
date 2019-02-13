@@ -33,67 +33,67 @@ final class JUnit extends Printer implements TestListener
     /**
      * @var DOMDocument
      */
-    protected $document;
+    private $document;
 
     /**
      * @var DOMElement
      */
-    protected $root;
+    private $root;
 
     /**
      * @var bool
      */
-    protected $reportUselessTests = false;
+    private $reportUselessTests = false;
 
     /**
      * @var bool
      */
-    protected $writeDocument = true;
+    private $writeDocument = true;
 
     /**
      * @var DOMElement[]
      */
-    protected $testSuites = [];
+    private $testSuites = [];
 
     /**
      * @var int[]
      */
-    protected $testSuiteTests = [0];
+    private $testSuiteTests = [0];
 
     /**
      * @var int[]
      */
-    protected $testSuiteAssertions = [0];
+    private $testSuiteAssertions = [0];
 
     /**
      * @var int[]
      */
-    protected $testSuiteErrors = [0];
+    private $testSuiteErrors = [0];
 
     /**
      * @var int[]
      */
-    protected $testSuiteFailures = [0];
+    private $testSuiteFailures = [0];
 
     /**
      * @var int[]
      */
-    protected $testSuiteSkipped = [0];
+    private $testSuiteSkipped = [0];
 
     /**
      * @var int[]
      */
-    protected $testSuiteTimes = [0];
+    private $testSuiteTimes = [0];
 
     /**
      * @var int
      */
-    protected $testSuiteLevel = 0;
+    private $testSuiteLevel = 0;
 
     /**
      * @var DOMElement
      */
-    protected $currentTestCase;
+    private $currentTestCase;
 
     /**
      * Constructor.

@@ -15,11 +15,6 @@ namespace PHPUnit\Framework;
 final class IncompleteTestCase extends TestCase
 {
     /**
-     * @var string
-     */
-    protected $message = '';
-
-    /**
      * @var bool
      */
     protected $backupGlobals = false;
@@ -40,9 +35,14 @@ final class IncompleteTestCase extends TestCase
     protected $useErrorHandler = false;
 
     /**
+     * @var string
+     */
+    private $message = '';
+
+    /**
      * @var bool
      */
-    protected $useOutputBuffering = false;
+    private $useOutputBuffering = false;
 
     public function __construct(string $className, string $methodName, string $message = '')
     {
