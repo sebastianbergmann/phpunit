@@ -1030,6 +1030,10 @@ final class TestRunner extends BaseTestRunner
                 $arguments['resolveDependencies'] = $phpunitConfiguration['resolveDependencies'];
             }
 
+            if (isset($phpunitConfiguration['noProgress']) && !isset($arguments['noProgress'])) {
+                $arguments['noProgress'] = $phpunitConfiguration['noProgress'];
+            }
+
             $groupCliArgs = [];
 
             if (!empty($arguments['groups'])) {

@@ -849,6 +849,13 @@ final class Configuration
             );
         }
 
+        if ($root->hasAttribute('noProgress')) {
+            $result['noProgress'] = $this->getBoolean(
+                (string) $root->getAttribute('noProgress'),
+                false
+            );
+        }
+
         return $result;
     }
 
