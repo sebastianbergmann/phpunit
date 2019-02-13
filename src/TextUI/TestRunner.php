@@ -316,7 +316,7 @@ final class TestRunner extends BaseTestRunner
                 if (isset($originalExecutionOrder) && ($this->printer instanceof CliTestDoxPrinter)) {
                     /* @var CliTestDoxPrinter */
                     $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
-//                    $this->printer->setShowProgressAnimation(true);
+                    $this->printer->setShowProgressAnimation(!$arguments['noProgress']);
                 }
             }
         }
@@ -1230,10 +1230,12 @@ final class TestRunner extends BaseTestRunner
         $arguments['defaultTimeLimit']                                = $arguments['defaultTimeLimit'] ?? 0;
         $arguments['enforceTimeLimit']                                = $arguments['enforceTimeLimit'] ?? false;
         $arguments['excludeGroups']                                   = $arguments['excludeGroups'] ?? [];
+        $arguments['executionOrder']                                  = $arguments['executionOrder'] ?? TestSuiteSorter::ORDER_DEFAULT;
+        $arguments['executionOrderDefects']                           = $arguments['executionOrderDefects'] ?? TestSuiteSorter::ORDER_DEFAULT;
         $arguments['failOnRisky']                                     = $arguments['failOnRisky'] ?? false;
         $arguments['failOnWarning']                                   = $arguments['failOnWarning'] ?? false;
-        $arguments['executionOrderDefects']                           = $arguments['executionOrderDefects'] ?? TestSuiteSorter::ORDER_DEFAULT;
         $arguments['groups']                                          = $arguments['groups'] ?? [];
+        $arguments['noProgress']                                      = $arguments['noProgress'] ?? false;
         $arguments['processIsolation']                                = $arguments['processIsolation'] ?? false;
         $arguments['processUncoveredFilesFromWhitelist']              = $arguments['processUncoveredFilesFromWhitelist'] ?? false;
         $arguments['randomOrderSeed']                                 = $arguments['randomOrderSeed'] ?? \time();
@@ -1243,7 +1245,6 @@ final class TestRunner extends BaseTestRunner
         $arguments['reportLowUpperBound']                             = $arguments['reportLowUpperBound'] ?? 50;
         $arguments['reportUselessTests']                              = $arguments['reportUselessTests'] ?? true;
         $arguments['reverseList']                                     = $arguments['reverseList'] ?? false;
-        $arguments['executionOrder']                                  = $arguments['executionOrder'] ?? TestSuiteSorter::ORDER_DEFAULT;
         $arguments['resolveDependencies']                             = $arguments['resolveDependencies'] ?? true;
         $arguments['stopOnError']                                     = $arguments['stopOnError'] ?? false;
         $arguments['stopOnFailure']                                   = $arguments['stopOnFailure'] ?? false;

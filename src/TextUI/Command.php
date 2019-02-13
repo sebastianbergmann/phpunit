@@ -107,6 +107,7 @@ class Command
         'no-configuration'          => null,
         'no-coverage'               => null,
         'no-logging'                => null,
+        'no-progress'               => null,
         'no-extensions'             => null,
         'order-by='                 => null,
         'printer='                  => null,
@@ -637,6 +638,11 @@ class Command
 
                 case '--no-logging':
                     $this->arguments['noLogging'] = true;
+
+                    break;
+
+                case '--no-progress':
+                    $this->arguments['noProgress'] = true;
 
                     break;
 

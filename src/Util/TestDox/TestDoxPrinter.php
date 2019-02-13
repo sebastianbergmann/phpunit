@@ -88,9 +88,9 @@ class TestDoxPrinter extends ResultPrinter
         $this->enableOutputBuffer     = !empty($order);
     }
 
-    public function setShowProgressAnimation(bool $doShowSpinner): void
+    public function setShowProgressAnimation(bool $showProgress): void
     {
-        $this->showProgress = $doShowSpinner;
+        $this->showProgress = $showProgress;
     }
 
     public function printResult(TestResult $result): void
