@@ -107,7 +107,7 @@ class Command
         'no-configuration'          => null,
         'no-coverage'               => null,
         'no-logging'                => null,
-        'no-progress'               => null,
+        'no-interaction'            => null,
         'no-extensions'             => null,
         'order-by='                 => null,
         'printer='                  => null,
@@ -641,8 +641,8 @@ class Command
 
                     break;
 
-                case '--no-progress':
-                    $this->arguments['noProgress'] = true;
+                case '--no-interaction':
+                    $this->arguments['noInteraction'] = true;
 
                     break;
 

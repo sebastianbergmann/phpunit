@@ -849,9 +849,9 @@ final class Configuration
             );
         }
 
-        if ($root->hasAttribute('noProgress')) {
-            $result['noProgress'] = $this->getBoolean(
-                (string) $root->getAttribute('noProgress'),
+        if ($root->hasAttribute('noInteraction')) {
+            $result['noInteraction'] = $this->getBoolean(
+                (string) $root->getAttribute('noInteraction'),
                 false
             );
         }
