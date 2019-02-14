@@ -250,7 +250,27 @@ EOF
         $result = $this->testCase->run();
 
         $this->assertCount(1, $result->skipped());
-        $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
+        $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
+        $this->assertSame('Invalid PHPT file', $skipMessage);
+    }
+
+    public function testShouldSkipTestWhenSectionHeaderIsMalformed(): void
+    {
+        $this->setPhpContent(
+            <<<EOF
+----
+--TEST--
+This is not going to work out
+--EXPECT--
+Tears and misery
+EOF
+        );
+
+        $result = $this->testCase->run();
+
+        $this->assertCount(1, $result->skipped());
+        $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
+        $this->assertSame('Invalid PHPT file: empty section header', $skipMessage);
     }
 
     public function testShouldValidateExpectSession(): void
