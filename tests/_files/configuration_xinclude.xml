@@ -35,7 +35,7 @@
          verbose="false"
          executionOrder="default"
          resolveDependencies="false"
-         noProgress="true">
+         noInteraction="true">
          <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
              href="configuration.xml"
              parse="xml"
