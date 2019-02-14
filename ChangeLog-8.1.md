@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.1 release series are documented in this fil
 
 ### Added
 
+* Implemented [#3528](https://github.com/sebastianbergmann/phpunit/pull/3528): Option to disable TestDox progress animation
 * Information on test groups in the TestDox XML report is now stored in `group` elements that are child nodes of `test`
 
 ### Changed
