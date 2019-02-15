@@ -2,6 +2,10 @@
 
 All notable changes of the PHPUnit 8.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [8.0.4] - 2019-MM-DD
+
+* Fixed [#3531](https://github.com/sebastianbergmann/phpunit/issues/3531): Test suite fails on warning
+
 ## [8.0.3] - 2019-02-15
 
 ### Fixed
@@ -54,6 +58,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 * Implemented [#2762](https://github.com/sebastianbergmann/phpunit/issues/2762): Drop support for PHP 7.1
 * Implemented [#3123](https://github.com/sebastianbergmann/phpunit/issues/3123): Remove `PHPUnit_Framework_MockObject_MockObject`
 
+[8.0.4]: https://github.com/sebastianbergmann/phpunit/compare/8.0.3...8.0.4
 [8.0.3]: https://github.com/sebastianbergmann/phpunit/compare/8.0.2...8.0.3
 [8.0.2]: https://github.com/sebastianbergmann/phpunit/compare/8.0.1...8.0.2
 [8.0.1]: https://github.com/sebastianbergmann/phpunit/compare/8.0.0...8.0.1
