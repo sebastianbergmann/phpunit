@@ -13,6 +13,10 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 
 /**
+ * @covers Foo
+ *
+ * @uses Bar
+ *
  * @testdox Test result status with and without message
  */
 class StatusTest extends TestCase

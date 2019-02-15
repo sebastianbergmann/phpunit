@@ -180,6 +180,24 @@ final class XmlResultPrinter extends Printer implements TestListener
             $testNode->appendChild($groupNode);
         }
 
+        $annotations = $test->getAnnotations();
+
+        foreach (['class', 'method'] as $type) {
+            foreach ($annotations[$type] as $annotation => $values) {
+                if ($annotation !== 'covers' && $annotation !== 'uses') {
+                    continue;
+                }
+
+                foreach ($values as $value) {
+                    $coversNode = $this->document->createElement($annotation);
+
+                    $coversNode->setAttribute('target', $value);
+
+                    $testNode->appendChild($coversNode);
+                }
+            }
+        }
+
         $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(\get_class($test), $test->getName());
 
         if (isset($inlineAnnotations['given'], $inlineAnnotations['when'], $inlineAnnotations['then'])) {
