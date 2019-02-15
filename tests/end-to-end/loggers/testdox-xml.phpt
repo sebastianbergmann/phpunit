@@ -22,6 +22,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
+    <testDouble type="AnInterface"/>
   </test>
   <test className="vendor\project\StatusTest" methodName="testFailure" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Failure" status="3" time="%s" size="-1" groups="default" exceptionLine="%d" exceptionMessage="Failed asserting that false is true.">
     <group name="default"/>

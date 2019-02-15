@@ -198,6 +198,14 @@ final class XmlResultPrinter extends Printer implements TestListener
             }
         }
 
+        foreach ($test->doubledTypes() as $doubledType) {
+            $testDoubleNode = $this->document->createElement('testDouble');
+
+            $testDoubleNode->setAttribute('type', $doubledType);
+
+            $testNode->appendChild($testDoubleNode);
+        }
+
         $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(\get_class($test), $test->getName());
 
         if (isset($inlineAnnotations['given'], $inlineAnnotations['when'], $inlineAnnotations['then'])) {

@@ -23,6 +23,8 @@ class StatusTest extends TestCase
 {
     public function testSuccess(): void
     {
+        $this->createMock(\AnInterface::class);
+
         $this->assertTrue(true);
     }
 
