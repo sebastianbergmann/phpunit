@@ -750,7 +750,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             foreach ($hookMethods['afterClass'] as $afterClassMethod) {
                 if ($this->testCase === true && \class_exists($this->name, false) && \method_exists(
                     $this->name,
-                        $afterClassMethod
+                    $afterClassMethod
                 )) {
                     \call_user_func([$this->name, $afterClassMethod]);
                 }
