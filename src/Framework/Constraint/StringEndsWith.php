@@ -41,6 +41,6 @@ final class StringEndsWith extends Constraint
      */
     protected function matches($other): bool
     {
-        return \substr($other, 0 - \strlen($this->suffix)) == $this->suffix;
+        return \substr($other, 0 - \strlen($this->suffix)) === $this->suffix;
     }
 }
