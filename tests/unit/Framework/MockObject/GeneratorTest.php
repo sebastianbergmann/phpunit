@@ -242,4 +242,26 @@ class GeneratorTest extends TestCase
 
         $mock->foo(...$arguments);
     }
+
+    public function testGenerateClassFromWsdlForMultipleOutputValues()
+    {
+        $generator = new Generator();
+        $result    = $generator->generateClassFromWsdl(TEST_FILES_PATH . '3530.xml', 'Test');
+
+        $expected = <<<EOM
+class Test extends \SoapClient
+{
+    public function __construct(\$wsdl, array \$options)
+    {
+        parent::__construct('/home/mo/codes/phpunit/tests/_files/3530.xml', \$options);
+    }
+
+    public function Contact_Information(\$Contact_Id)
+    {
+    }
+}
+
+EOM;
+        $this->assertEquals($expected, $result);
+    }
 }

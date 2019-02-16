@@ -458,18 +458,16 @@ class Generator
         $methodsBuffer  = '';
 
         foreach ($_methods as $method) {
-            $nameStart = \strpos($method, ' ') + 1;
-            $nameEnd   = \strpos($method, '(');
-            $name      = \substr($method, $nameStart, $nameEnd - $nameStart);
+            \preg_match_all("/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\(/", $method, $matches, \PREG_OFFSET_CAPTURE);
+            $lastFunction = \array_pop($matches[0]);
+            $nameStart    = $lastFunction[1];
+            $nameEnd      = $nameStart + \strlen($lastFunction[0]) - 1;
+            $name         = \str_replace('(', '', $lastFunction[0]);
 
             if (empty($methods) || \in_array($name, $methods, true)) {
-                $args    = \explode(
+                $args = \explode(
                     ',',
-                    \substr(
-                        $method,
-                        $nameEnd + 1,
-                        \strpos($method, ')') - $nameEnd - 1
-                    )
+                    \str_replace(')', '', \substr($method, $nameEnd + 1))
                 );
 
                 foreach (\range(0, \count($args) - 1) as $i) {
