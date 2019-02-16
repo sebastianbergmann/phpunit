@@ -245,15 +245,16 @@ class GeneratorTest extends TestCase
 
     public function testGenerateClassFromWsdlForMultipleOutputValues()
     {
+        $wsdlPath  = TEST_FILES_PATH . '3530.xml';
         $generator = new Generator();
-        $result    = $generator->generateClassFromWsdl(TEST_FILES_PATH . '3530.xml', 'Test');
+        $result    = $generator->generateClassFromWsdl($wsdlPath, 'Test');
 
         $expected = <<<EOM
 class Test extends \SoapClient
 {
     public function __construct(\$wsdl, array \$options)
     {
-        parent::__construct('/home/mo/codes/phpunit/tests/_files/3530.xml', \$options);
+        parent::__construct('$wsdlPath', \$options);
     }
 
     public function Contact_Information(\$Contact_Id)
