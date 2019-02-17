@@ -458,7 +458,7 @@ class Generator
         $methodsBuffer  = '';
 
         foreach ($_methods as $method) {
-            \preg_match_all("/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\(/", $method, $matches, \PREG_OFFSET_CAPTURE);
+            \preg_match_all('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*\(/', $method, $matches, \PREG_OFFSET_CAPTURE);
             $lastFunction = \array_pop($matches[0]);
             $nameStart    = $lastFunction[1];
             $nameEnd      = $nameStart + \strlen($lastFunction[0]) - 1;
