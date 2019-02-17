@@ -5,6 +5,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 ## [8.0.4] - 2019-MM-DD
 
 * Fixed [#3531](https://github.com/sebastianbergmann/phpunit/issues/3531): Test suite fails on warning
+* Fixed [#3534](https://github.com/sebastianbergmann/phpunit/pull/3534): Wrong message in `ConstraintTestCase`
 
 ## [8.0.3] - 2019-02-15
 
