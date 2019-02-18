@@ -376,7 +376,7 @@ class Command
                         if (isset($ini[1])) {
                             \ini_set($ini[0], $ini[1]);
                         } else {
-                            \ini_set($ini[0], true);
+                            \ini_set($ini[0], '1');
                         }
                     }
 
