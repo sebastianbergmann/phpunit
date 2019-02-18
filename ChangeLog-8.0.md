@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 8.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [8.0.4] - 2019-MM-DD
+## [8.0.4] - 2019-02-18
 
 * Fixed [#3530](https://github.com/sebastianbergmann/phpunit/issues/3530): `generateClassFromWsdl()` does not handle methods with multiple output values
 * Fixed [#3531](https://github.com/sebastianbergmann/phpunit/issues/3531): Test suite fails on warning
