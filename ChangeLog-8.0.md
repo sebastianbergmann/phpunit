@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 * Fixed [#3530](https://github.com/sebastianbergmann/phpunit/issues/3530): `generateClassFromWsdl()` does not handle methods with multiple output values
 * Fixed [#3531](https://github.com/sebastianbergmann/phpunit/issues/3531): Test suite fails on warning
 * Fixed [#3534](https://github.com/sebastianbergmann/phpunit/pull/3534): Wrong message in `ConstraintTestCase`
+* Fixed [#3535](https://github.com/sebastianbergmann/phpunit/issues/3535): `TypeError` in `Command`
 
 ## [8.0.3] - 2019-02-15
 
