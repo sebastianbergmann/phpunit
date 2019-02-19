@@ -172,11 +172,11 @@ class XmlResultPrinter extends Printer implements TestListener
 
         if (isset($inlineAnnotations['given'], $inlineAnnotations['when'], $inlineAnnotations['then'])) {
             $node->setAttribute('given', $inlineAnnotations['given']['value']);
-            $node->setAttribute('givenStartLine', $inlineAnnotations['given']['line']);
+            $node->setAttribute('givenStartLine', (string) $inlineAnnotations['given']['line']);
             $node->setAttribute('when', $inlineAnnotations['when']['value']);
-            $node->setAttribute('whenStartLine', $inlineAnnotations['when']['line']);
+            $node->setAttribute('whenStartLine', (string) $inlineAnnotations['when']['line']);
             $node->setAttribute('then', $inlineAnnotations['then']['value']);
-            $node->setAttribute('thenStartLine', $inlineAnnotations['then']['line']);
+            $node->setAttribute('thenStartLine', (string) $inlineAnnotations['then']['line']);
         }
 
         if ($this->exception !== null) {
