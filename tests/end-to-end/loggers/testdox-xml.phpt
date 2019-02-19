@@ -18,73 +18,73 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 .FEISRW.FEISRW                                                    14 / 14 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <tests>
-  <test className="vendor\project\StatusTest" methodName="testSuccess" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Success" status="0" time="%s" size="-1" groups="default">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testSuccess" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Success" status="0" time="%s" size="-1" groups="default">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
     <testDouble type="AnInterface"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testFailure" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Failure" status="3" time="%s" size="-1" groups="default" exceptionLine="%d" exceptionMessage="Failed asserting that false is true.">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testFailure" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Failure" status="3" time="%s" size="-1" groups="default" exceptionLine="%d" exceptionMessage="Failed asserting that false is true.">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testError" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Error" status="4" time="%s" size="-1" groups="default" exceptionMessage="">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testError" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Error" status="4" time="%s" size="-1" groups="default" exceptionMessage="">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testIncomplete" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Incomplete" status="2" time="%s" size="-1" groups="default">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testIncomplete" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Incomplete" status="2" time="%s" size="-1" groups="default">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testSkipped" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Skipped" status="1" time="%s" size="-1" groups="default">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testSkipped" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Skipped" status="1" time="%s" size="-1" groups="default">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testRisky" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Risky" status="5" time="%s" size="-1" groups="default">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testRisky" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Risky" status="5" time="%s" size="-1" groups="default">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testWarning" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Warning" status="6" time="%s" size="-1" groups="default">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testWarning" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Warning" status="6" time="%s" size="-1" groups="default">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testSuccessWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Success with message" status="0" time="%s" size="-1" groups="default">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testSuccessWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Success with message" status="0" time="%s" size="-1" groups="default">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testFailureWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Failure with message" status="3" time="%s" size="-1" groups="default" exceptionLine="%d" exceptionMessage="failure with custom message&#10;Failed asserting that false is true.">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testFailureWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Failure with message" status="3" time="%s" size="-1" groups="default" exceptionLine="%d" exceptionMessage="failure with custom message&#10;Failed asserting that false is true.">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testErrorWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Error with message" status="4" time="%s" size="-1" groups="default" exceptionMessage="error with custom message">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testErrorWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Error with message" status="4" time="%s" size="-1" groups="default" exceptionMessage="error with custom message">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testIncompleteWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Incomplete with message" status="2" time="%s" size="-1" groups="default">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testIncompleteWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Incomplete with message" status="2" time="%s" size="-1" groups="default">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testSkippedWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Skipped with message" status="1" time="%s" size="-1" groups="default">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testSkippedWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Skipped with message" status="1" time="%s" size="-1" groups="default">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testRiskyWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Risky with message" status="5" time="%s" size="-1" groups="default">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testRiskyWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Risky with message" status="5" time="%s" size="-1" groups="default">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
   </test>
-  <test className="vendor\project\StatusTest" methodName="testWarningWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Warning with message" status="6" time="%s" size="-1" groups="default">
+  <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testWarningWithMessage" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Warning with message" status="6" time="%s" size="-1" groups="default">
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
