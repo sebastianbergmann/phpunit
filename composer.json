@@ -35,7 +35,7 @@
         "phpunit/php-code-coverage": "^6.0.7",
         "phpunit/php-file-iterator": "^2.0.1",
         "phpunit/php-text-template": "^1.2.1",
-        "phpunit/php-timer": "^2.0",
+        "phpunit/php-timer": "^2.1",
         "sebastian/comparator": "^3.0",
         "sebastian/diff": "^3.0",
         "sebastian/environment": "^4.0",
