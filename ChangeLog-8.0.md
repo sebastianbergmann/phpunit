@@ -2,7 +2,15 @@
 
 All notable changes of the PHPUnit 8.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [8.0.5] - 2019-MM-DD
+
+### Fixed
+
+* Fixed [#3532](https://github.com/sebastianbergmann/phpunit/issues/3532): Wrong default value for `cacheResult` in `phpunit.xsd`
+
 ## [8.0.4] - 2019-02-18
+
+### Fixed
 
 * Fixed [#3530](https://github.com/sebastianbergmann/phpunit/issues/3530): `generateClassFromWsdl()` does not handle methods with multiple output values
 * Fixed [#3531](https://github.com/sebastianbergmann/phpunit/issues/3531): Test suite fails on warning
@@ -61,6 +69,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 * Implemented [#2762](https://github.com/sebastianbergmann/phpunit/issues/2762): Drop support for PHP 7.1
 * Implemented [#3123](https://github.com/sebastianbergmann/phpunit/issues/3123): Remove `PHPUnit_Framework_MockObject_MockObject`
 
+[8.0.5]: https://github.com/sebastianbergmann/phpunit/compare/8.0.4...8.0.5
 [8.0.4]: https://github.com/sebastianbergmann/phpunit/compare/8.0.3...8.0.4
 [8.0.3]: https://github.com/sebastianbergmann/phpunit/compare/8.0.2...8.0.3
 [8.0.2]: https://github.com/sebastianbergmann/phpunit/compare/8.0.1...8.0.2
