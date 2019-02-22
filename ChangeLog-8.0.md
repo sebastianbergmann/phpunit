@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3532](https://github.com/sebastianbergmann/phpunit/issues/3532): Wrong default value for `cacheResult` in `phpunit.xsd`
+* Fixed [#3539](https://github.com/sebastianbergmann/phpunit/issues/3539): Wrong default value for `resolveDependencies` in `phpunit.xsd`
 
 ## [8.0.4] - 2019-02-18
 
