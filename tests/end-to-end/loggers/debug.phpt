@@ -55,8 +55,8 @@ Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testOne' started
 Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testOne' ended
 Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testTwo' started
 Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testTwo' ended
-Test 'Failure::tearDownAfterClass' started
-Test 'Failure::tearDownAfterClass' ended
+Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::tearDownAfterClass' started
+Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::tearDownAfterClass' ended
 
 
 Time: %s, Memory: %s
@@ -131,7 +131,7 @@ Failed asserting that false is true.
 
 %stests%ebasic%eunit%eStatusTest.php:%d
 
-3) Failure::tearDownAfterClass
+3) PHPUnit\SelfTest\Basic\TearDownAfterClassTest::tearDownAfterClass
 Exception in PHPUnit\SelfTest\Basic\TearDownAfterClassTest::tearDownAfterClass
 forcing an Exception in tearDownAfterClass()
 
@@ -152,4 +152,4 @@ This test did not perform any assertions
 %stests%ebasic%eunit%eStatusTest.php:%d
 
 ERRORS!
-Tests: 21, Assertions: 6, Errors: 6, Failures: 3, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.
+Tests: 21, Assertions: 7, Errors: 6, Failures: 3, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.

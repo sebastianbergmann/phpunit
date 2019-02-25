@@ -253,7 +253,14 @@ class TestDoxPrinter extends ResultPrinter
         } else {
             do {
                 $flushed = false;
-                $result  = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
+
+                if (isset($this->originalExecutionOrder[$this->testFlushIndex])) {
+                    $result  = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
+                } else {
+                    // This test(name) cannot found in original execution order,
+                    // flush result to output stream right away
+                    $result = $this->testResults[$this->testFlushIndex];
+                }
 
                 if (!empty($result)) {
                     $this->hideSpinner();
