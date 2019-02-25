@@ -55,10 +55,9 @@ Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testOne' started
 Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testOne' ended
 Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testTwo' started
 Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::testTwo' ended
+Test 'Failure::tearDownAfterClass' started
+Test 'Failure::tearDownAfterClass' ended
 
-Warning: Exception: forcing an Exception in tearDownAfterClass() in %stests%ebasic%eunit%eTearDownAfterClassTest.php:26
-Stack trace:
-%A
 
 Time: %s, Memory: %s
 
@@ -119,7 +118,7 @@ warning with custom message
 
 --
 
-There were 2 failures:
+There were 3 failures:
 
 1) PHPUnit\SelfTest\Basic\StatusTest::testFailure
 Failed asserting that false is true.
@@ -131,6 +130,12 @@ failure with custom message
 Failed asserting that false is true.
 
 %stests%ebasic%eunit%eStatusTest.php:%d
+
+3) Failure::tearDownAfterClass
+Exception in PHPUnit\SelfTest\Basic\TearDownAfterClassTest::tearDownAfterClass
+forcing an Exception in tearDownAfterClass()
+
+%stests%ebasic%eunit%eTearDownAfterClassTest.php:%d
 
 --
 
@@ -147,4 +152,4 @@ This test did not perform any assertions
 %stests%ebasic%eunit%eStatusTest.php:%d
 
 ERRORS!
-Tests: 20, Assertions: 6, Errors: 6, Failures: 2, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.
+Tests: 21, Assertions: 6, Errors: 6, Failures: 3, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.
