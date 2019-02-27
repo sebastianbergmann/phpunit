@@ -388,7 +388,8 @@ class TestDoxPrinter extends ResultPrinter
                 function (string $text) use ($prefix) {
                     return '   ' . $prefix . ($text ? ' ' . $text : '');
                 },
-                \preg_split('/\r\n|\r|\n/', $message)
+                explode(\PHP_EOL, $message)
+                //\preg_split('/\r\n|\r|\n/', $message)
             )
         );
     }
