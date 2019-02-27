@@ -160,12 +160,12 @@ class CliTestDoxPrinter extends TestDoxPrinter
         // spacer line for new suite headers and after verbose messages
         if ($prevResult['testName'] !== '' &&
             (!empty($prevResult['message']) || $prevResult['className'] !== $result['className'])) {
-            $this->write("\n");
+            $this->write(\PHP_EOL);
         }
 
         // suite header
         if ($prevResult['className'] !== $result['className']) {
-            $this->write($this->colorizeTextBox('underlined', $result['className']) . "\n");
+            $this->write($this->colorizeTextBox('underlined', $result['className']) . \PHP_EOL);
         }
 
         // test result line
@@ -176,7 +176,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         }
         $style = $this->statusStyles[$result['status']];
         $line  = \sprintf(
-            " %s %s%s\n",
+            ' %s %s%s' . \PHP_EOL,
             $this->colorizeTextBox($style['color'], $style['symbol']),
             $testName,
             $this->verbose ? ' ' . $this->formatRuntime($result['time'], $style['color']) : ''

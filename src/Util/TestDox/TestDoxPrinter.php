@@ -344,7 +344,7 @@ class TestDoxPrinter extends ResultPrinter
         $message = \trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
 
         if ($message) {
-            $message .= "\n\n" . $this->formatStacktrace($t);
+            $message .= \PHP_EOL . \PHP_EOL . $this->formatStacktrace($t);
         } else {
             $message = $this->formatStacktrace($t);
         }
@@ -388,8 +388,7 @@ class TestDoxPrinter extends ResultPrinter
                 function (string $text) use ($prefix) {
                     return '   ' . $prefix . ($text ? ' ' . $text : '');
                 },
-                explode(\PHP_EOL, $message)
-                //\preg_split('/\r\n|\r|\n/', $message)
+                \explode(\PHP_EOL, $message)
             )
         );
     }
