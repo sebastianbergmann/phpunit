@@ -211,10 +211,6 @@ final class Matcher implements MatcherInvocation
             throw new RuntimeException('No method matcher is set');
         }
 
-        if (!$this->invocationMatcher->matches($invocation)) {
-            return false;
-        }
-
         try {
             if (!$this->methodNameMatcher->matches($invocation)) {
                 return false;
@@ -231,7 +227,7 @@ final class Matcher implements MatcherInvocation
             );
         }
 
-        return true;
+        return $this->invocationMatcher->matches($invocation);
     }
 
     /**
