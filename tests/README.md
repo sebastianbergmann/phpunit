@@ -29,4 +29,4 @@ Note: this section will change often while `tests/` is being refactored.
   - `basic/`: fast tests covering all basics
     - `configuration.basic.xml`: configuration file tailored for the `basic` suite
   - `end-to-end/`: run PHPUnit as a seperate process and observe its behaviour via console messages and the filesystem
-  - `unit/`: unit tests for individual smallest components and integration tests of common usa cases
+  - `unit/`: unit tests for individual smallest components and integration tests of common use cases
