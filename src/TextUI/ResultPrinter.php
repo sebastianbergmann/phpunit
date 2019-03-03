@@ -516,16 +516,16 @@ class ResultPrinter extends Printer implements TestListener
             return $buffer;
         }
 
-        $lines   = \explode("\n", $buffer);
+        $lines   = \preg_split('/\r\n|\r|\n/', $buffer);
         $padding = \max(\array_map('\strlen', $lines));
 
         $styledLines = [];
 
         foreach ($lines as $line) {
-            $styledLines[] = Color::colorize($color, \str_pad($line, $padding));
+            $styledLines[] = Color::colorize($color, \str_pad($line, $padding), false);
         }
 
-        return \implode("\n", $styledLines);
+        return \implode(\PHP_EOL, $styledLines);
     }
 
     /**
@@ -536,7 +536,7 @@ class ResultPrinter extends Printer implements TestListener
         $this->write($this->colorizeTextBox($color, $buffer));
 
         if ($lf) {
-            $this->write("\n");
+            $this->write(\PHP_EOL);
         }
     }
 
