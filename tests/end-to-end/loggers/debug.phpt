@@ -66,23 +66,11 @@ There were 6 errors:
 1) PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testOne
 Exception: forcing an Exception in setUpBeforeClass() in %stests%ebasic%eunit%eSetUpBeforeClassTest.php:%d
 Stack trace:
-#0 %s
-#1 %s
-#2 %s
-#3 %s
-#4 %s
-#5 %s
-#6 %s
+%a
 2) PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testTwo
 Exception: forcing an Exception in setUpBeforeClass() in %stests%ebasic%eunit%eSetUpBeforeClassTest.php:%d
 Stack trace:
-#0 %s
-#1 %s
-#2 %s
-#3 %s
-#4 %s
-#5 %s
-#6 %s
+%a
 3) PHPUnit\SelfTest\Basic\SetUpTest::testOneWithSetUpException
 RuntimeException: throw exception in setUp
 
