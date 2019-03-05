@@ -14,10 +14,7 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Util\Test as TestUtil;
 
-/**
- * @small
- */
-final class TestCaseTest extends TestCase
+class TestCaseTest extends TestCase
 {
     protected static $testStatic = 456;
 
@@ -969,56 +966,27 @@ final class TestCaseTest extends TestCase
         $this->assertNull($test->getTestResultObject());
     }
 
-    public function testSizeUnknown(): void
+    public function testCanUseDependsToDependOnSuccessfulClass(): void
     {
-        $test = new \TestWithDifferentSizes('testWithSizeUnknown');
+        $result = new TestResult();
+        $suite  = new TestSuite();
+        $suite->addTestSuite(\DependencySuccessTest::class);
+        $suite->addTestSuite(\DependencyFailureTest::class);
+        $suite->addTestSuite(\DependencyOnClassTest::class);
+        $suite->run($result);
 
-        $this->assertFalse($test->hasSize());
+        // Confirm only the passing TestSuite::class has passed
+        $this->assertContains(\DependencySuccessTest::class, $result->passedClasses());
+        $this->assertNotContains(\DependencyFailureTest::class, $result->passedClasses());
 
-        $this->assertSame(TestUtil::UNKNOWN, $test->getSize());
+        // Confirm the test depending on the passing TestSuite::class did run and has passed
+        $this->assertArrayHasKey(\DependencyOnClassTest::class . '::testThatDependsOnASuccessfulClass', $result->passed());
 
-        $this->assertFalse($test->isLarge());
-        $this->assertFalse($test->isMedium());
-        $this->assertFalse($test->isSmall());
-    }
-
-    public function testSizeLarge(): void
-    {
-        $test = new \TestWithDifferentSizes('testWithSizeLarge');
-
-        $this->assertTrue($test->hasSize());
-
-        $this->assertSame(TestUtil::LARGE, $test->getSize());
-
-        $this->assertTrue($test->isLarge());
-        $this->assertFalse($test->isMedium());
-        $this->assertFalse($test->isSmall());
-    }
-
-    public function testSizeMedium(): void
-    {
-        $test = new \TestWithDifferentSizes('testWithSizeMedium');
-
-        $this->assertTrue($test->hasSize());
-
-        $this->assertSame(TestUtil::MEDIUM, $test->getSize());
-
-        $this->assertFalse($test->isLarge());
-        $this->assertTrue($test->isMedium());
-        $this->assertFalse($test->isSmall());
-    }
-
-    public function testSizeSmall(): void
-    {
-        $test = new \TestWithDifferentSizes('testWithSizeSmall');
-
-        $this->assertTrue($test->hasSize());
-
-        $this->assertSame(TestUtil::SMALL, $test->getSize());
-
-        $this->assertFalse($test->isLarge());
-        $this->assertFalse($test->isMedium());
-        $this->assertTrue($test->isSmall());
+        // Confirm the test depending on the failing TestSuite::class has been warn-skipped
+        $skipped = \array_map(function (TestFailure $t) {
+            return $t->getTestName();
+        }, $result->skipped());
+        $this->assertContains(\DependencyOnClassTest::class . '::testThatDependsOnAFailingClass', $skipped);
     }
 
     public function testGetNameReturnsMethodName(): void
