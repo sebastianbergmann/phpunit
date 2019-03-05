@@ -966,6 +966,32 @@ XML;
         $this->assertObjectHasAttribute('foo', $o);
     }
 
+    public function testAssertObjectHasAttributeNumericAttribute(): void
+    {
+        $object = (object) [
+            '2016' => [
+                'hostCity' => 'Rio',
+                'games'    => 'summer',
+            ],
+            '2018' => [
+                'hostCity' => 'Pyeongchang',
+                'games'    => 'winter',
+            ],
+            '2020' => [
+                'hostCity' => 'Tokyo',
+                'games'    => 'summer',
+            ],
+        ];
+
+        $this->assertObjectHasAttribute('2016', $object);
+        $this->assertObjectHasAttribute('2018', $object);
+        $this->assertObjectHasAttribute('2020', $object);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertObjectHasAttribute('foo', $object);
+    }
+
     public function testAssertObjectNotHasAttribute(): void
     {
         $o = new \Author('Terry Pratchett');
