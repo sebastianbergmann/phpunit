@@ -1737,83 +1737,98 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     private function handleDependencies(): bool
     {
-        if (!empty($this->dependencies) && !$this->inIsolation) {
-            $className  = \get_class($this);
-            $passed     = $this->result->passed();
-            $passedKeys = \array_keys($passed);
+        if (empty($this->dependencies) || $this->inIsolation) {
+            return true;
+        }
 
-            foreach ($passedKeys as $key => $value) {
-                $pos = \strpos($value, ' with data set');
+        $className  = \get_class($this);
+        $passed     = $this->result->passed();
+        $passedKeys = \array_keys($passed);
 
-                if ($pos !== false) {
-                    $passedKeys[$key] = \substr($value, 0, $pos);
-                }
+
+        foreach ($passedKeys as $key => $value) {
+            $pos = \strpos($value, ' with data set');
+
+            if ($pos !== false) {
+                $passedKeys[$key] = \substr($value, 0, $pos);
             }
+        }
 
-            $passedKeys = \array_flip(\array_unique($passedKeys));
+        $passedKeys = \array_flip(\array_unique($passedKeys));
 
-            foreach ($this->dependencies as $dependency) {
-                $deepClone    = false;
-                $shallowClone = false;
+        foreach ($this->dependencies as $dependency) {
+            if (\substr($dependency, -7) === '::class') {
+                $dependencyClassName = \substr($dependency, 0, -7);
 
-                if (\strpos($dependency, 'clone ') === 0) {
-                    $deepClone  = true;
-                    $dependency = \substr($dependency, \strlen('clone '));
-                } elseif (\strpos($dependency, '!clone ') === 0) {
-                    $deepClone  = false;
-                    $dependency = \substr($dependency, \strlen('!clone '));
-                }
-
-                if (\strpos($dependency, 'shallowClone ') === 0) {
-                    $shallowClone = true;
-                    $dependency   = \substr($dependency, \strlen('shallowClone '));
-                } elseif (\strpos($dependency, '!shallowClone ') === 0) {
-                    $shallowClone = false;
-                    $dependency   = \substr($dependency, \strlen('!shallowClone '));
-                }
-
-                if (\strpos($dependency, '::') === false) {
-                    $dependency = $className . '::' . $dependency;
-                }
-
-                if (!isset($passedKeys[$dependency])) {
-                    if (!\is_callable($dependency, false, $callableName) || $dependency !== $callableName) {
-                        $this->markWarningForUncallableDependency($dependency);
-                    } else {
-                        $this->markSkippedForMissingDependecy($dependency);
-                    }
+                if (\array_search($dependencyClassName, $this->result->passedClasses()) === false) {
+                    $this->markSkippedForMissingDependecy($dependency);
 
                     return false;
                 }
 
-                if (isset($passed[$dependency])) {
-                    if ($passed[$dependency]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
-                        $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
-                        $passed[$dependency]['size'] > $this->getSize()) {
-                        $this->result->addError(
-                            $this,
-                            new SkippedTestError(
-                                'This test depends on a test that is larger than itself.'
-                            ),
-                            0
-                        );
+                continue;
+            }
 
-                        return false;
-                    }
+            $deepClone    = false;
+            $shallowClone = false;
 
-                    if ($deepClone) {
-                        $deepCopy = new DeepCopy;
-                        $deepCopy->skipUncloneable(false);
+            if (\strpos($dependency, 'clone ') === 0) {
+                $deepClone  = true;
+                $dependency = \substr($dependency, \strlen('clone '));
+            } elseif (\strpos($dependency, '!clone ') === 0) {
+                $deepClone  = false;
+                $dependency = \substr($dependency, \strlen('!clone '));
+            }
 
-                        $this->dependencyInput[$dependency] = $deepCopy->copy($passed[$dependency]['result']);
-                    } elseif ($shallowClone) {
-                        $this->dependencyInput[$dependency] = clone $passed[$dependency]['result'];
-                    } else {
-                        $this->dependencyInput[$dependency] = $passed[$dependency]['result'];
-                    }
+            if (\strpos($dependency, 'shallowClone ') === 0) {
+                $shallowClone = true;
+                $dependency   = \substr($dependency, \strlen('shallowClone '));
+            } elseif (\strpos($dependency, '!shallowClone ') === 0) {
+                $shallowClone = false;
+                $dependency   = \substr($dependency, \strlen('!shallowClone '));
+            }
+
+            if (\strpos($dependency, '::') === false) {
+                $dependency = $className . '::' . $dependency;
+            }
+
+            if (!isset($passedKeys[$dependency])) {
+                if (!\is_callable($dependency, false, $callableName) || $dependency !== $callableName) {
+                    $this->markWarningForUncallableDependency($dependency);
                 } else {
-                    $this->dependencyInput[$dependency] = null;
+                    $this->markSkippedForMissingDependecy($dependency);
                 }
+
+                return false;
+            }
+
+            if (isset($passed[$dependency])) {
+                if ($passed[$dependency]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
+                    $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
+                    $passed[$dependency]['size'] > $this->getSize()) {
+                    $this->result->addError(
+                        $this,
+                        new SkippedTestError(
+                            'This test depends on a test that is larger than itself.'
+                        ),
+                        0
+                    );
+
+                    return false;
+                }
+
+                if ($deepClone) {
+                    $deepCopy = new DeepCopy;
+                    $deepCopy->skipUncloneable(false);
+
+                    $this->dependencyInput[$dependency] = $deepCopy->copy($passed[$dependency]['result']);
+                } elseif ($shallowClone) {
+                    $this->dependencyInput[$dependency] = clone $passed[$dependency]['result'];
+                } else {
+                    $this->dependencyInput[$dependency] = $passed[$dependency]['result'];
+                }
+            } else {
+                $this->dependencyInput[$dependency] = null;
             }
         }
 

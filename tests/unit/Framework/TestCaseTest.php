@@ -762,6 +762,29 @@ class TestCaseTest extends TestCase
         $this->assertNull($test->getTestResultObject());
     }
 
+    public function testCanUseDependsToDependOnSuccessfulClass(): void
+    {
+        $result = new TestResult();
+        $suite  = new TestSuite();
+        $suite->addTestSuite(\DependencySuccessTest::class);
+        $suite->addTestSuite(\DependencyFailureTest::class);
+        $suite->addTestSuite(\DependencyOnClassTest::class);
+        $suite->run($result);
+
+        // Confirm only the passing TestSuite::class has passed
+        $this->assertContains(\DependencySuccessTest::class, $result->passedClasses());
+        $this->assertNotContains(\DependencyFailureTest::class, $result->passedClasses());
+
+        // Confirm the test depending on the passing TestSuite::class did run and has passed
+        $this->assertArrayHasKey(\DependencyOnClassTest::class . '::testThatDependsOnASuccessfulClass', $result->passed());
+
+        // Confirm the test depending on the failing TestSuite::class has been warn-skipped
+        $skipped = \array_map(function (TestFailure $t) {
+            return $t->getTestName();
+        }, $result->skipped());
+        $this->assertContains(\DependencyOnClassTest::class . '::testThatDependsOnAFailingClass', $skipped);
+    }
+
     /**
      * @return array<string, array>
      */
