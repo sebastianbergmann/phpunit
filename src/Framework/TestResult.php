@@ -33,6 +33,11 @@ final class TestResult implements \Countable
     private $passed = [];
 
     /**
+     * @var array<string>
+     */
+    private $passedClasses = [];
+
+    /**
      * @var TestFailure[]
      */
     private $errors = [];
@@ -393,6 +398,10 @@ final class TestResult implements \Countable
      */
     public function endTestSuite(TestSuite $suite): void
     {
+        if ($this->wasSuccessful()) {
+            $this->passedClasses[] = $suite->getName();
+        }
+
         foreach ($this->listeners as $listener) {
             $listener->endTestSuite($suite);
         }
@@ -576,6 +585,15 @@ final class TestResult implements \Countable
     public function passed(): array
     {
         return $this->passed;
+    }
+
+    /**
+     * Returns the names of the TestSuites that have passed.
+     * This enables @depends-annotations for TestClasName::class
+     */
+    public function passedClasses(): array
+    {
+        return $this->passedClasses;
     }
 
     /**
