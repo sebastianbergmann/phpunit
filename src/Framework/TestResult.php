@@ -38,11 +38,6 @@ final class TestResult implements Countable
     private $passed = [];
 
     /**
-     * @var array<string>
-     */
-    private $passedClasses = [];
-
-    /**
      * @var TestFailure[]
      */
     private $errors = [];
@@ -183,6 +178,11 @@ final class TestResult implements Countable
      * @var bool
      */
     private $lastTestFailed = false;
+
+    /**
+     * @var array<string>
+     */
+    private $passedClasses = [];
 
     /**
      * @var int
@@ -388,8 +388,8 @@ final class TestResult implements Countable
      */
     public function endTestSuite(TestSuite $suite): void
     {
-        if ($this->wasSuccessful()) {
-            $this->passedClasses[] = $suite->getName();
+        if ($this->wasSuccessful() && !($suite instanceof DataProviderTestSuite)) {
+            $this->passedClasses[$suite->getName()] = true;
         }
 
         foreach ($this->listeners as $listener) {
@@ -583,7 +583,7 @@ final class TestResult implements Countable
      */
     public function passedClasses(): array
     {
-        return $this->passedClasses;
+        return \array_keys($this->passedClasses);
     }
 
     /**
