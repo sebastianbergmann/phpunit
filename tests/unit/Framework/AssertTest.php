@@ -968,7 +968,7 @@ XML;
 
     public function testAssertObjectHasAttributeNumericAttribute(): void
     {
-        $object           = new \stdClass();
+        $object           = new \stdClass;
         $object->{'2020'} = 'Tokyo';
 
         $this->assertObjectHasAttribute('2020', $object);
@@ -980,7 +980,7 @@ XML;
 
     public function testAssertObjectHasAttributeMultiByteAttribute(): void
     {
-        $object         = new \stdClass();
+        $object         = new \stdClass;
         $object->{'東京'} = 2020;
 
         $this->assertObjectHasAttribute('東京', $object);
@@ -1003,7 +1003,7 @@ XML;
 
     public function testAssertObjectNotHasAttributeNumericAttribute(): void
     {
-        $object           = new \stdClass();
+        $object           = new \stdClass;
         $object->{'2020'} = 'Tokyo';
 
         $this->assertObjectNotHasAttribute('2018', $object);
@@ -1015,7 +1015,7 @@ XML;
 
     public function testAssertObjectNotHasAttributeMultiByteAttribute(): void
     {
-        $object         = new \stdClass();
+        $object         = new \stdClass;
         $object->{'東京'} = 2020;
 
         $this->assertObjectNotHasAttribute('長野', $object);
