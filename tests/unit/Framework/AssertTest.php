@@ -661,6 +661,30 @@ XML;
         $this->assertObjectHasAttribute('foo', $o);
     }
 
+    public function testAssertObjectHasAttributeNumericAttribute(): void
+    {
+        $object           = new \stdClass;
+        $object->{'2020'} = 'Tokyo';
+
+        $this->assertObjectHasAttribute('2020', $object);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertObjectHasAttribute('2018', $object);
+    }
+
+    public function testAssertObjectHasAttributeMultiByteAttribute(): void
+    {
+        $object         = new \stdClass;
+        $object->{'東京'} = 2020;
+
+        $this->assertObjectHasAttribute('東京', $object);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertObjectHasAttribute('長野', $object);
+    }
+
     public function testAssertObjectNotHasAttribute(): void
     {
         $o = new \Author('Terry Pratchett');
@@ -670,6 +694,30 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertObjectNotHasAttribute('name', $o);
+    }
+
+    public function testAssertObjectNotHasAttributeNumericAttribute(): void
+    {
+        $object           = new \stdClass;
+        $object->{'2020'} = 'Tokyo';
+
+        $this->assertObjectNotHasAttribute('2018', $object);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertObjectNotHasAttribute('2020', $object);
+    }
+
+    public function testAssertObjectNotHasAttributeMultiByteAttribute(): void
+    {
+        $object         = new \stdClass;
+        $object->{'東京'} = 2020;
+
+        $this->assertObjectNotHasAttribute('長野', $object);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertObjectNotHasAttribute('東京', $object);
     }
 
     public function testAssertFinite(): void
