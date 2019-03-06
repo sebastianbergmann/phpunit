@@ -3227,7 +3227,7 @@ abstract class Assert
 
     private static function isValidObjectAttributeName(string $attributeName): bool
     {
-        return \preg_match('/[^\x00-\x1f\x7f-\x9f]+/', $attributeName);
+        return (bool) \preg_match('/[^\x00-\x1f\x7f-\x9f]+/', $attributeName);
     }
 
     private static function isValidClassAttributeName(string $attributeName): bool
