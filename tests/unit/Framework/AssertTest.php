@@ -894,23 +894,6 @@ XML;
         $this->assertGreaterThan(2, 1);
     }
 
-    public function testAttributeGreaterThan(): void
-    {
-        $this->assertAttributeGreaterThan(
-            1,
-            'bar',
-            new \ClassWithNonPublicAttributes
-        );
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertAttributeGreaterThan(
-            1,
-            'foo',
-            new \ClassWithNonPublicAttributes
-        );
-    }
-
     public function testGreaterThanOrEqual(): void
     {
         $this->assertGreaterThanOrEqual(1, 2);
@@ -918,23 +901,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertGreaterThanOrEqual(2, 1);
-    }
-
-    public function testAttributeGreaterThanOrEqual(): void
-    {
-        $this->assertAttributeGreaterThanOrEqual(
-            1,
-            'bar',
-            new \ClassWithNonPublicAttributes
-        );
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertAttributeGreaterThanOrEqual(
-            2,
-            'foo',
-            new \ClassWithNonPublicAttributes
-        );
     }
 
     public function testLessThan(): void
@@ -950,23 +916,6 @@ XML;
         $this->fail();
     }
 
-    public function testAttributeLessThan(): void
-    {
-        $this->assertAttributeLessThan(
-            2,
-            'foo',
-            new \ClassWithNonPublicAttributes
-        );
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertAttributeLessThan(
-            1,
-            'bar',
-            new \ClassWithNonPublicAttributes
-        );
-    }
-
     public function testLessThanOrEqual(): void
     {
         $this->assertLessThanOrEqual(2, 1);
@@ -974,114 +923,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertLessThanOrEqual(1, 2);
-    }
-
-    public function testAttributeLessThanOrEqual(): void
-    {
-        $this->assertAttributeLessThanOrEqual(
-            2,
-            'foo',
-            new \ClassWithNonPublicAttributes
-        );
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertAttributeLessThanOrEqual(
-            1,
-            'bar',
-            new \ClassWithNonPublicAttributes
-        );
-    }
-
-    public function testReadAttribute(): void
-    {
-        $obj = new \ClassWithNonPublicAttributes;
-
-        $this->assertEquals('foo', $this->readAttribute($obj, 'publicAttribute'));
-        $this->assertEquals('bar', $this->readAttribute($obj, 'protectedAttribute'));
-        $this->assertEquals('baz', $this->readAttribute($obj, 'privateAttribute'));
-        $this->assertEquals('bar', $this->readAttribute($obj, 'protectedParentAttribute'));
-        //$this->assertEquals('bar', $this->readAttribute($obj, 'privateParentAttribute'));
-    }
-
-    public function testReadAttribute2(): void
-    {
-        $this->assertEquals('foo', $this->readAttribute(\ClassWithNonPublicAttributes::class, 'publicStaticAttribute'));
-        $this->assertEquals('bar', $this->readAttribute(\ClassWithNonPublicAttributes::class, 'protectedStaticAttribute'));
-        $this->assertEquals('baz', $this->readAttribute(\ClassWithNonPublicAttributes::class, 'privateStaticAttribute'));
-        $this->assertEquals('foo', $this->readAttribute(\ClassWithNonPublicAttributes::class, 'protectedStaticParentAttribute'));
-        $this->assertEquals('foo', $this->readAttribute(\ClassWithNonPublicAttributes::class, 'privateStaticParentAttribute'));
-    }
-
-    public function testReadAttribute4(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->readAttribute('NotExistingClass', 'foo');
-    }
-
-    public function testReadAttribute5(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->readAttribute(null, 'foo');
-    }
-
-    public function testReadAttributeIfAttributeNameIsNotValid(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->readAttribute(\stdClass::class, '2');
-    }
-
-    public function testGetStaticAttributeRaisesExceptionForInvalidFirstArgument2(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->getStaticAttribute('NotExistingClass', 'foo');
-    }
-
-    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument2(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->getStaticAttribute(\stdClass::class, '0');
-    }
-
-    public function testGetStaticAttributeRaisesExceptionForInvalidSecondArgument3(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->getStaticAttribute(\stdClass::class, 'foo');
-    }
-
-    public function testGetObjectAttributeRaisesExceptionForInvalidFirstArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->getObjectAttribute(null, 'foo');
-    }
-
-    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument2(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->getObjectAttribute(new \stdClass, '0');
-    }
-
-    public function testGetObjectAttributeRaisesExceptionForInvalidSecondArgument3(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->getObjectAttribute(new \stdClass, 'foo');
-    }
-
-    public function testGetObjectAttributeWorksForInheritedAttributes(): void
-    {
-        $this->assertEquals(
-            'bar',
-            $this->getObjectAttribute(new \ClassWithNonPublicAttributes, 'privateParentAttribute')
-        );
     }
 
     public function testAssertClassHasAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
