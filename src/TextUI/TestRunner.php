@@ -78,17 +78,17 @@ final class TestRunner extends BaseTestRunner
     /**
      * @var CodeCoverageFilter
      */
-    protected $codeCoverageFilter;
+    private $codeCoverageFilter;
 
     /**
      * @var TestSuiteLoader
      */
-    protected $loader;
+    private $loader;
 
     /**
      * @var ResultPrinter
      */
-    protected $printer;
+    private $printer;
 
     /**
      * @var Runtime
@@ -775,7 +775,7 @@ final class TestRunner extends BaseTestRunner
         $this->extensions[] = $extension;
     }
 
-    protected function createTestResult(): TestResult
+    private function createTestResult(): TestResult
     {
         return new TestResult;
     }
@@ -791,7 +791,7 @@ final class TestRunner extends BaseTestRunner
         exit(self::FAILURE_EXIT);
     }
 
-    protected function write(string $buffer): void
+    private function write(string $buffer): void
     {
         if (\PHP_SAPI !== 'cli' && \PHP_SAPI !== 'phpdbg') {
             $buffer = \htmlspecialchars($buffer);
@@ -807,7 +807,7 @@ final class TestRunner extends BaseTestRunner
     /**
      * @throws Exception
      */
-    protected function handleConfiguration(array &$arguments): void
+    private function handleConfiguration(array &$arguments): void
     {
         if (isset($arguments['configuration']) &&
             !$arguments['configuration'] instanceof Configuration) {
