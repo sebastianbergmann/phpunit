@@ -105,32 +105,6 @@ final class TestRunner extends BaseTestRunner
      */
     private $extensions = [];
 
-    /**
-     * @param ReflectionClass|Test $test
-     * @param bool                 $exit
-     *
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
-     * @throws Exception
-     * @throws \ReflectionException
-     */
-    public static function run($test, array $arguments = [], $exit = true): TestResult
-    {
-        if ($test instanceof ReflectionClass) {
-            $test = new TestSuite($test);
-        }
-
-        if ($test instanceof Test) {
-            return (new self)->doRun(
-                $test,
-                $arguments,
-                $exit
-            );
-        }
-
-        throw new Exception('No test case or test suite found.');
-    }
-
     public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
     {
         if ($filter === null) {
