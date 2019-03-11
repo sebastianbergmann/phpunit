@@ -313,8 +313,9 @@ final class TestRunner extends BaseTestRunner
                     $arguments['reverseList']
                 );
 
-                if (isset($originalExecutionOrder) && ($this->printer instanceof CliTestDoxPrinter)) {
-                    /* @var CliTestDoxPrinter */
+                if (isset($originalExecutionOrder) && $this->printer instanceof CliTestDoxPrinter) {
+                    \assert($this->printer instanceof CliTestDoxPrinter);
+
                     $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
                 }
             }
