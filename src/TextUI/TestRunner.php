@@ -121,9 +121,7 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($test instanceof Test) {
-            $aTestRunner = new self;
-
-            return $aTestRunner->doRun(
+            return (new self)->doRun(
                 $test,
                 $arguments,
                 $exit
