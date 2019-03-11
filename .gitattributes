@@ -1,4 +1,5 @@
 /build export-ignore
+/tools export-ignore
 
 *.php diff=php
 

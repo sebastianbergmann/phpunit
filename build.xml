@@ -27,7 +27,7 @@
     </target>
 
     <target name="validate-composer-json" depends="clean" unless="validate-composer-json.done" description="Validate composer.json">
-        <exec executable="${basedir}/build/tools/composer" failonerror="true" taskname="composer">
+        <exec executable="${basedir}/tools/composer" failonerror="true" taskname="composer">
             <arg value="validate"/>
             <arg value="--strict"/>
             <arg value="${basedir}/composer.json"/>
@@ -43,13 +43,13 @@
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
         <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
 
-        <exec executable="${basedir}/build/tools/composer" taskname="composer">
+        <exec executable="${basedir}/tools/composer" taskname="composer">
             <arg value="require"/>
             <arg value="--no-update"/>
             <arg value="phpunit/php-invoker:^2.0"/>
         </exec>
 
-        <exec executable="${basedir}/build/tools/composer" taskname="composer">
+        <exec executable="${basedir}/tools/composer" taskname="composer">
             <arg value="update"/>
             <arg value="--no-interaction"/>
             <arg value="--no-progress"/>
@@ -61,7 +61,7 @@
     </target>
 
     <target name="check-dependencies" description="Performs check for outdated dependencies">
-        <exec executable="${basedir}/build/tools/composer" taskname="composer">
+        <exec executable="${basedir}/tools/composer" taskname="composer">
             <arg value="show"/>
             <arg value="--minor-only"/>
             <arg value="--latest"/>
@@ -341,7 +341,7 @@
             <arg value="${type}"/>
         </exec>
 
-        <exec executable="${basedir}/build/tools/phpab" taskname="phpab" failonerror="true">
+        <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
             <arg value="--static" />
             <arg value="--once" />
@@ -358,7 +358,7 @@
         <copy file="${basedir}/build/binary-phar-autoload.php.in" tofile="${basedir}/build/binary-phar-autoload.php"/>
         <replace file="${basedir}/build/binary-phar-autoload.php" token="X.Y.Z" value="${_version}"/>
 
-        <exec executable="${basedir}/build/tools/phpab" taskname="phpab" failonerror="true">
+        <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
             <arg value="--nolower" />
             <arg value="--static" />
@@ -383,7 +383,7 @@
     </target>
 
     <target name="generate-project-documentation" depends="-phploc,-checkstyle,-phpunit">
-        <exec executable="${basedir}/build/tools/phpdox" dir="${basedir}/build" taskname="phpdox"/>
+        <exec executable="${basedir}/tools/phpdox" dir="${basedir}/build" taskname="phpdox"/>
     </target>
 
     <target name="update-tools">
@@ -392,13 +392,13 @@
             <arg value="update"/>
         </exec>
 
-        <exec executable="${basedir}/build/tools/composer">
+        <exec executable="${basedir}/tools/composer">
             <arg value="self-update"/>
         </exec>
     </target>
 
     <target name="-phploc" depends="prepare">
-        <exec executable="${basedir}/build/tools/phploc" output="/dev/null" taskname="phploc">
+        <exec executable="${basedir}/tools/phploc" output="/dev/null" taskname="phploc">
             <arg value="--count-tests"/>
             <arg value="--log-xml"/>
             <arg path="${basedir}/build/logfiles/phploc.xml"/>
@@ -408,7 +408,7 @@
     </target>
 
     <target name="-checkstyle" depends="prepare">
-        <exec executable="${basedir}/build/tools/php-cs-fixer" output="${basedir}/build/logfiles/checkstyle.xml" error="/dev/null" taskname="php-cs-fixer">
+        <exec executable="${basedir}/tools/php-cs-fixer" output="${basedir}/build/logfiles/checkstyle.xml" error="/dev/null" taskname="php-cs-fixer">
             <arg value="--diff"/>
             <arg value="--dry-run"/>
             <arg value="fix"/>
