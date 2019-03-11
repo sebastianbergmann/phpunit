@@ -807,7 +807,7 @@ final class TestRunner extends BaseTestRunner
         return $this->loader;
     }
 
-    public function addExtension(TestHook $extension): void
+    public function addExtension(Hook $extension): void
     {
         $this->extensions[] = $extension;
     }
@@ -1083,7 +1083,7 @@ final class TestRunner extends BaseTestRunner
                     );
                 }
 
-                \assert($extensionObject instanceof TestHook);
+                \assert($extensionObject instanceof Hook);
 
                 $this->addExtension($extensionObject);
             }
