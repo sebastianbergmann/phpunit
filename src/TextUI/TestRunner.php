@@ -1139,19 +1139,9 @@ final class TestRunner extends BaseTestRunner
             }
 
             if (isset($loggingConfiguration['coverage-text']) && !isset($arguments['coverageText'])) {
-                $arguments['coverageText'] = $loggingConfiguration['coverage-text'];
-
-                if (isset($loggingConfiguration['coverageTextShowUncoveredFiles'])) {
-                    $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration['coverageTextShowUncoveredFiles'];
-                } else {
-                    $arguments['coverageTextShowUncoveredFiles'] = false;
-                }
-
-                if (isset($loggingConfiguration['coverageTextShowOnlySummary'])) {
-                    $arguments['coverageTextShowOnlySummary'] = $loggingConfiguration['coverageTextShowOnlySummary'];
-                } else {
-                    $arguments['coverageTextShowOnlySummary'] = false;
-                }
+                $arguments['coverageText']                   = $loggingConfiguration['coverage-text'];
+                $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration['coverageTextShowUncoveredFiles'] ?? false;
+                $arguments['coverageTextShowOnlySummary']    = $loggingConfiguration['coverageTextShowOnlySummary'] ?? false;
             }
 
             if (isset($loggingConfiguration['coverage-xml']) && !isset($arguments['coverageXml'])) {
