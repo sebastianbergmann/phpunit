@@ -23,11 +23,11 @@ env:
     - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-ansi --no-progress --no-suggest"
 
 before_install:
-  - ./build/tools/composer clear-cache
+  - ./tools/composer clear-cache
 
 install:
-  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry ./build/tools/composer update $DEFAULT_COMPOSER_FLAGS; fi
-  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry ./build/tools/composer update $DEFAULT_COMPOSER_FLAGS --prefer-lowest; fi
+  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry ./tools/composer update $DEFAULT_COMPOSER_FLAGS; fi
+  - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry ./tools/composer update $DEFAULT_COMPOSER_FLAGS --prefer-lowest; fi
 
 before_script:
   - echo 'zend.assertions=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
@@ -55,4 +55,4 @@ jobs:
       install:
         - phpenv config-rm xdebug.ini
       script:
-        - ./build/tools/php-cs-fixer fix --dry-run -v --show-progress=dots --diff-format=udiff
+        - ./tools/php-cs-fixer fix --dry-run -v --show-progress=dots --diff-format=udiff

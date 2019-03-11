@@ -24,7 +24,7 @@ Due to time constraints, we are not always able to respond as quickly as we woul
 This project comes with a configuration file and an executable for [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (`.php_cs`) that you can use to (re)format your source code for compliance with this project's coding guidelines:
 
 ```bash
-$ ./build/tools/php-cs-fixer fix
+$ ./tools/php-cs-fixer fix
 ```
 
 ## Using PHPUnit from a Git checkout
@@ -40,7 +40,7 @@ $ cd phpunit
 Retrieve PHPUnit's dependencies using [Composer](https://getcomposer.org/):
 
 ```bash
-$ composer install
+$ ./tools/composer install
 ```
 
 The `phpunit` script can be used to invoke the PHPUnit test runner:
