@@ -725,9 +725,9 @@ final class TestRunner extends BaseTestRunner
             }
 
             if (isset($arguments['coverageText'])) {
-                if ($arguments['coverageText'] == 'php://stdout') {
+                if ($arguments['coverageText'] === 'php://stdout') {
                     $outputStream = $this->printer;
-                    $colors       = $arguments['colors'] && $arguments['colors'] != ResultPrinter::COLOR_NEVER;
+                    $colors       = $arguments['colors'] && $arguments['colors'] !== ResultPrinter::COLOR_NEVER;
                 } else {
                     $outputStream = new Printer($arguments['coverageText']);
                     $colors       = false;
@@ -829,7 +829,7 @@ final class TestRunner extends BaseTestRunner
 
     protected function write(string $buffer): void
     {
-        if (\PHP_SAPI != 'cli' && \PHP_SAPI != 'phpdbg') {
+        if (\PHP_SAPI !== 'cli' && \PHP_SAPI !== 'phpdbg') {
             $buffer = \htmlspecialchars($buffer);
         }
 
@@ -1070,7 +1070,7 @@ final class TestRunner extends BaseTestRunner
                     );
                 }
 
-                if (\count($extension['arguments']) == 0) {
+                if (\count($extension['arguments']) === 0) {
                     $extensionObject = $extensionClass->newInstance();
                 } else {
                     $extensionObject = $extensionClass->newInstanceArgs(
@@ -1109,7 +1109,7 @@ final class TestRunner extends BaseTestRunner
                     );
                 }
 
-                if (\count($listener['arguments']) == 0) {
+                if (\count($listener['arguments']) === 0) {
                     $listener = new $listener['class'];
                 } else {
                     $listener = $listenerClass->newInstanceArgs(
