@@ -63,7 +63,7 @@ final class TestSuiteSorter
     private $defectSortOrder = [];
 
     /**
-     * @var TestResultCacheInterface
+     * @var TestResultCache
      */
     private $cache;
 
@@ -99,7 +99,7 @@ final class TestSuiteSorter
         return $test->getName();
     }
 
-    public function __construct(?TestResultCacheInterface $cache = null)
+    public function __construct(?TestResultCache $cache = null)
     {
         $this->cache = $cache ?? new NullTestResultCache;
     }
