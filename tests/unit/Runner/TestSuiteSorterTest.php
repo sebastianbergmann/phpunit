@@ -182,7 +182,7 @@ class TestSuiteSorterTest extends TestCase
 
         $suite->addTestSuite(\MultiDependencyTest::class);
 
-        $cache = new TestResultCache;
+        $cache = new DefaultTestResultCache;
 
         foreach ($testTimes as $testName => $time) {
             $cache->setTime(\MultiDependencyTest::class . '::' . $testName, $time);
@@ -282,7 +282,7 @@ class TestSuiteSorterTest extends TestCase
         $suite = new TestSuite;
         $suite->addTestSuite(\MultiDependencyTest::class);
 
-        $cache = new TestResultCache;
+        $cache = new DefaultTestResultCache;
 
         foreach ($runState as $testName => $data) {
             $cache->setState(\MultiDependencyTest::class . '::' . $testName, $data['state']);

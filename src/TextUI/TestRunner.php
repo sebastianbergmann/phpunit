@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\BeforeFirstTestHook;
+use PHPUnit\Runner\DefaultTestResultCache;
 use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
@@ -31,7 +32,6 @@ use PHPUnit\Runner\ResultCacheExtension;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestHook;
 use PHPUnit\Runner\TestListenerAdapter;
-use PHPUnit\Runner\TestResultCache;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
@@ -160,9 +160,9 @@ final class TestRunner extends BaseTestRunner
 
         if ($arguments['cacheResult']) {
             if (isset($arguments['cacheResultFile'])) {
-                $cache = new TestResultCache($arguments['cacheResultFile']);
+                $cache = new DefaultTestResultCache($arguments['cacheResultFile']);
             } else {
-                $cache = new TestResultCache;
+                $cache = new DefaultTestResultCache;
             }
 
             $this->addExtension(new ResultCacheExtension($cache));

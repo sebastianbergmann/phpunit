@@ -15,7 +15,7 @@ namespace PHPUnit\Runner;
 final class ResultCacheExtension implements AfterSuccessfulTestHook, AfterSkippedTestHook, AfterRiskyTestHook, AfterIncompleteTestHook, AfterTestErrorHook, AfterTestWarningHook, AfterTestFailureHook, AfterLastTestHook
 {
     /**
-     * @var TestResultCacheInterface
+     * @var TestResultCache
      */
     private $cache;
 
