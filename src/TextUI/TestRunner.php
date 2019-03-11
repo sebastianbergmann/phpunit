@@ -288,35 +288,25 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($this->printer === null) {
-            if (isset($arguments['printer']) &&
-                $arguments['printer'] instanceof Printer) {
-                $this->printer = $arguments['printer'];
-            } else {
-                $printerClass = ResultPrinter::class;
-
-                if (isset($arguments['printer']) && \is_string($arguments['printer']) && \class_exists($arguments['printer'], false)) {
+            if (isset($arguments['printer'])) {
+                if ($arguments['printer'] instanceof Printer) {
+                    $this->printer = $arguments['printer'];
+                } elseif (\is_string($arguments['printer']) && \class_exists($arguments['printer'], false)) {
                     $class = new ReflectionClass($arguments['printer']);
 
                     if ($class->isSubclassOf(ResultPrinter::class)) {
-                        $printerClass = $arguments['printer'];
+                        $this->printer = $this->createPrinter($arguments['printer'], $arguments);
                     }
                 }
-
-                $this->printer = new $printerClass(
-                    (isset($arguments['stderr']) && $arguments['stderr'] === true) ? 'php://stderr' : null,
-                    $arguments['verbose'],
-                    $arguments['colors'],
-                    $arguments['debug'],
-                    $arguments['columns'],
-                    $arguments['reverseList']
-                );
-
-                if (isset($originalExecutionOrder) && $this->printer instanceof CliTestDoxPrinter) {
-                    \assert($this->printer instanceof CliTestDoxPrinter);
-
-                    $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
-                }
+            } else {
+                $this->printer = $this->createPrinter(ResultPrinter::class, $arguments);
             }
+        }
+
+        if (isset($originalExecutionOrder) && $this->printer instanceof CliTestDoxPrinter) {
+            \assert($this->printer instanceof CliTestDoxPrinter);
+
+            $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
         }
 
         $this->printer->write(
@@ -1311,5 +1301,17 @@ final class TestRunner extends BaseTestRunner
         );
 
         $this->messagePrinted = true;
+    }
+
+    private function createPrinter(string $class, array $arguments): Printer
+    {
+        return new $class(
+            (isset($arguments['stderr']) && $arguments['stderr'] === true) ? 'php://stderr' : null,
+            $arguments['verbose'],
+            $arguments['colors'],
+            $arguments['debug'],
+            $arguments['columns'],
+            $arguments['reverseList']
+        );
     }
 }
