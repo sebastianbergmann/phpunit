@@ -1047,7 +1047,7 @@ final class TestRunner extends BaseTestRunner
             }
 
             foreach ($arguments['configuration']->getExtensionConfiguration() as $extension) {
-                if (!\class_exists($extension['class'], false) && $extension['file'] !== '') {
+                if ($extension['file'] !== '' && !\class_exists($extension['class'], false)) {
                     require_once $extension['file'];
                 }
 
@@ -1085,8 +1085,7 @@ final class TestRunner extends BaseTestRunner
             }
 
             foreach ($arguments['configuration']->getListenerConfiguration() as $listener) {
-                if (!\class_exists($listener['class'], false) &&
-                    $listener['file'] !== '') {
+                if ($listener['file'] !== '' && !\class_exists($listener['class'], false)) {
                     require_once $listener['file'];
                 }
 
