@@ -346,6 +346,10 @@ final class TestRunner extends BaseTestRunner
             $this->write("\n  Test results may not be as expected.\n\n");
         }
 
+        if (isset($arguments['conflictBetweenPrinterClassAndTestdox'])) {
+            $this->writeMessage('Warning', 'Directives printerClass and testdox are mutually exclusive');
+        }
+
         foreach ($arguments['listeners'] as $listener) {
             $result->addListener($listener);
         }
@@ -996,6 +1000,10 @@ final class TestRunner extends BaseTestRunner
 
             if (isset($phpunitConfiguration['noInteraction']) && !isset($arguments['noInteraction'])) {
                 $arguments['noInteraction'] = $phpunitConfiguration['noInteraction'];
+            }
+
+            if (isset($phpunitConfiguration['conflictBetweenPrinterClassAndTestdox'])) {
+                $arguments['conflictBetweenPrinterClassAndTestdox'] = true;
             }
 
             $groupCliArgs = [];
