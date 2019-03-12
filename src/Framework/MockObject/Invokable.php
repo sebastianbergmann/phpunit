@@ -28,8 +28,6 @@ interface Invokable extends Verifiable
      * Checks if the invocation matches.
      *
      * @param Invocation $invocation The invocation object passed from mock object
-     *
-     * @return bool
      */
-    public function matches(Invocation $invocation);
+    public function matches(Invocation $invocation): bool;
 }

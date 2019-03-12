@@ -154,10 +154,7 @@ final class InvocationMocker implements MatcherCollection, Invokable, NamespaceM
         return $invocation->generateReturnValue();
     }
 
-    /**
-     * @return bool
-     */
-    public function matches(Invocation $invocation)
+    public function matches(Invocation $invocation): bool
     {
         foreach ($this->matchers as $matcher) {
             if (!$matcher->matches($invocation)) {
