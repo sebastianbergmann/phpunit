@@ -53,12 +53,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         " \e[36m◒\e[0m running tests",
     ];
 
-    /**
-     * @var int[]
-     */
-    private $nonSuccessfulTestResults = [];
-
-    private $statusStyles = [
+    private const STATUS_STYLES = [
         BaseTestRunner::STATUS_PASSED     => [
             'symbol' => '✔',
             'color'  => 'fg-green',
@@ -99,6 +94,11 @@ class CliTestDoxPrinter extends TestDoxPrinter
             'message' => 'fg-white,bg-blue',
         ],
     ];
+
+    /**
+     * @var int[]
+     */
+    private $nonSuccessfulTestResults = [];
 
     /**
      * @throws \SebastianBergmann\Timer\RuntimeException
@@ -269,7 +269,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         }
 
         if ($message && $this->colors) {
-            $style            = $this->statusStyles[$result['status']]['message'] ?? '';
+            $style            = self::STATUS_STYLES[$result['status']]['message'] ?? '';
             [$message, $diff] = $this->colorizeMessageAndDiff($style, $message);
         }
 
@@ -278,7 +278,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         }
 
         if ($this->colors) {
-            $color  = $this->statusStyles[$result['status']]['color'] ?? '';
+            $color  = self::STATUS_STYLES[$result['status']]['color'] ?? '';
             $prefix = \array_map(function ($p) use ($color) {
                 return Color::colorize($color, $p);
             }, self::PREFIX_DECORATED);
