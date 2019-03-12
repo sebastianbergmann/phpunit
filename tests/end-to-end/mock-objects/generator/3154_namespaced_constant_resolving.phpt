@@ -71,7 +71,7 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
         return $__phpunit_result;
     }
 
-    public function expects(\PHPUnit\Framework\MockObject\Matcher\Invocation $matcher)
+    public function expects(\PHPUnit\Framework\MockObject\Matcher\Invocation $matcher): \PHPUnit\Framework\MockObject\Builder\InvocationMocker
     {
         return $this->__phpunit_getInvocationMocker()->expects($matcher);
     }
@@ -84,17 +84,17 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
         return call_user_func_array([$expects, 'method'], func_get_args());
     }
 
-    public function __phpunit_setOriginalObject($originalObject)
+    public function __phpunit_setOriginalObject($originalObject): void
     {
         $this->__phpunit_originalObject = $originalObject;
     }
 
-    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration)
+    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration): void
     {
         $this->__phpunit_returnValueGeneration = $returnValueGeneration;
     }
 
-    public function __phpunit_getInvocationMocker()
+    public function __phpunit_getInvocationMocker(): \PHPUnit\Framework\MockObject\InvocationMocker
     {
         if ($this->__phpunit_invocationMocker === null) {
             $this->__phpunit_invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker($this->__phpunit_configurable, $this->__phpunit_returnValueGeneration);
@@ -103,12 +103,12 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
         return $this->__phpunit_invocationMocker;
     }
 
-    public function __phpunit_hasMatchers()
+    public function __phpunit_hasMatchers(): bool
     {
         return $this->__phpunit_getInvocationMocker()->hasMatchers();
     }
 
-    public function __phpunit_verify(bool $unsetInvocationMocker = true)
+    public function __phpunit_verify(bool $unsetInvocationMocker = true): void
     {
         $this->__phpunit_getInvocationMocker()->verify();
 
