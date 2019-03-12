@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#3480](https://github.com/sebastianbergmann/phpunit/issues/3480): Wrong return type declaration for `TestCase::getExpectedExceptionMessage()` and `TestCase::getExpectedExceptionMessageRegExp()`
 * Fixed [#3532](https://github.com/sebastianbergmann/phpunit/issues/3532): Wrong default value for `cacheResult` in `phpunit.xsd`
 * Fixed [#3539](https://github.com/sebastianbergmann/phpunit/issues/3539): Wrong default value for `resolveDependencies` in `phpunit.xsd`
 * Fixed [#3550](https://github.com/sebastianbergmann/phpunit/issues/3550): Check for valid attribute names in `assertObjectHasAttribute()` is too strict
