@@ -128,7 +128,7 @@ final class NamePrettifier
             return $buffer;
         }
 
-        $string = \preg_replace('#\d+$#', '', $name, -1, $count);
+        $string = (string) \preg_replace('#\d+$#', '', $name, -1, $count);
 
         if (\in_array($string, $this->strings)) {
             $name = $string;
