@@ -1741,13 +1741,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             $className  = \get_class($this);
             $passed     = $this->result->passed();
             $passedKeys = \array_keys($passed);
-            $numKeys    = \count($passedKeys);
 
-            for ($i = 0; $i < $numKeys; $i++) {
-                $pos = \strpos($passedKeys[$i], ' with data set');
+            foreach ($passedKeys as $key => $value) {
+                $pos = \strpos($value, ' with data set');
 
                 if ($pos !== false) {
-                    $passedKeys[$i] = \substr($passedKeys[$i], 0, $pos);
+                    $passedKeys[$key] = \substr($value, 0, $pos);
                 }
             }
 
