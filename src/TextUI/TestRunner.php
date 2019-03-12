@@ -342,6 +342,7 @@ final class TestRunner extends BaseTestRunner
                     $this->write(\sprintf("  - %s\n", $msg));
                 }
             }
+
             $this->write("\n  Test results may not be as expected.\n\n");
         }
 
