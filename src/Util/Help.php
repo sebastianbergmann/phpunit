@@ -136,7 +136,7 @@ final class Help
     /**
      * @var int Number of columns left for the description field after padding and option
      */
-    private $maxDescLength = 0;
+    private $maxDescLength;
 
     /**
      * @var bool Use color highlights for sections, options and parameters
