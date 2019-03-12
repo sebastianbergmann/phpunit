@@ -174,13 +174,15 @@ class CliTestDoxPrinter extends TestDoxPrinter
         } else {
             $testName = $result['testMethod'];
         }
-        $style = $this->statusStyles[$result['status']];
+
+        $style = self::STATUS_STYLES[$result['status']];
         $line  = \sprintf(
             ' %s %s%s' . \PHP_EOL,
             $this->colorizeTextBox($style['color'], $style['symbol']),
             $testName,
             $this->verbose ? ' ' . $this->formatRuntime($result['time'], $style['color']) : ''
         );
+
         $this->write($line);
 
         // additional information when verbose
