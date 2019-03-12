@@ -804,11 +804,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      */
     public function testAt(int $index)
     {
-        if (isset($this->tests[$index])) {
-            return $this->tests[$index];
-        }
-
-        return false;
+        return $this->tests[$index] ?? false;
     }
 
     /**

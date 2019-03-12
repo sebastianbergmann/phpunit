@@ -877,11 +877,7 @@ class Command
             }
 
             if (!isset($this->arguments['printer']) && isset($phpunitConfiguration['printerClass'])) {
-                if (isset($phpunitConfiguration['printerFile'])) {
-                    $file = $phpunitConfiguration['printerFile'];
-                } else {
-                    $file = '';
-                }
+                $file = $phpunitConfiguration['printerFile'] ?? '';
 
                 $this->arguments['printer'] = $this->handlePrinter(
                     $phpunitConfiguration['printerClass'],
