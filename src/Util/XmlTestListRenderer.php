@@ -71,8 +71,6 @@ final class XmlTestListRenderer
                 $writer->startElement('phptFile');
                 $writer->writeAttribute('path', $test->getName());
                 $writer->endElement();
-            } else {
-                continue;
             }
         }
 
