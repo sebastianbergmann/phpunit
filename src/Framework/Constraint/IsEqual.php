@@ -35,11 +35,6 @@ final class IsEqual extends Constraint
     private $delta;
 
     /**
-     * @var int
-     */
-    private $maxDepth;
-
-    /**
      * @var bool
      */
     private $canonicalize;
@@ -53,7 +48,6 @@ final class IsEqual extends Constraint
     {
         $this->value        = $value;
         $this->delta        = $delta;
-        $this->maxDepth     = $maxDepth;
         $this->canonicalize = $canonicalize;
         $this->ignoreCase   = $ignoreCase;
     }

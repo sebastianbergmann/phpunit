@@ -883,11 +883,7 @@ class Command
             }
 
             if (!isset($this->arguments['printer']) && isset($phpunitConfiguration['printerClass'])) {
-                if (isset($phpunitConfiguration['printerFile'])) {
-                    $file = $phpunitConfiguration['printerFile'];
-                } else {
-                    $file = '';
-                }
+                $file = $phpunitConfiguration['printerFile'] ?? '';
 
                 $this->arguments['printer'] = $this->handlePrinter(
                     $phpunitConfiguration['printerClass'],
@@ -965,9 +961,12 @@ class Command
         if (\class_exists($loaderClass, false)) {
             $class = new ReflectionClass($loaderClass);
 
-            if ($class->implementsInterface(TestSuiteLoader::class) &&
-                $class->isInstantiable()) {
-                return $class->newInstance();
+            if ($class->implementsInterface(TestSuiteLoader::class) && $class->isInstantiable()) {
+                $object = $class->newInstance();
+
+                \assert($object instanceof TestSuiteLoader);
+
+                return $object;
             }
         }
 

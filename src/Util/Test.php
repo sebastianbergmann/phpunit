@@ -617,11 +617,7 @@ final class Test
             $methodName
         );
 
-        $dependencies = [];
-
-        if (isset($annotations['class']['depends'])) {
-            $dependencies = $annotations['class']['depends'];
-        }
+        $dependencies = $annotations['class']['depends'] ?? [];
 
         if (isset($annotations['method']['depends'])) {
             $dependencies = \array_merge(
@@ -814,11 +810,7 @@ final class Test
             $classShortcut = $annotations['class'][$mode . 'DefaultClass'][0];
         }
 
-        $list = [];
-
-        if (isset($annotations['class'][$mode])) {
-            $list = $annotations['class'][$mode];
-        }
+        $list = $annotations['class'][$mode] ?? [];
 
         if (isset($annotations['method'][$mode])) {
             $list = \array_merge($list, $annotations['method'][$mode]);
