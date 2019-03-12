@@ -775,11 +775,6 @@ final class TestRunner extends BaseTestRunner
         $this->extensions[] = $extension;
     }
 
-    private function createTestResult(): TestResult
-    {
-        return new TestResult;
-    }
-
     /**
      * Override to define how to handle a failed loading of
      * a test suite.
@@ -789,6 +784,11 @@ final class TestRunner extends BaseTestRunner
         $this->write($message . \PHP_EOL);
 
         exit(self::FAILURE_EXIT);
+    }
+
+    private function createTestResult(): TestResult
+    {
+        return new TestResult;
     }
 
     private function write(string $buffer): void
