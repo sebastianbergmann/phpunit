@@ -959,9 +959,12 @@ class Command
         if (\class_exists($loaderClass, false)) {
             $class = new ReflectionClass($loaderClass);
 
-            if ($class->implementsInterface(TestSuiteLoader::class) &&
-                $class->isInstantiable()) {
-                return $class->newInstance();
+            if ($class->implementsInterface(TestSuiteLoader::class) && $class->isInstantiable()) {
+                $object = $class->newInstance();
+
+                \assert($object instanceof TestSuiteLoader);
+
+                return $object;
             }
         }
 
