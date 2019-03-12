@@ -65,10 +65,7 @@ final class InvocationMocker implements MatcherCollection, Invokable, NamespaceM
         return false;
     }
 
-    /**
-     * @return null|bool
-     */
-    public function lookupId($id)
+    public function lookupId($id): ?bool
     {
         if (isset($this->builderMap[$id])) {
             return $this->builderMap[$id];
@@ -89,10 +86,7 @@ final class InvocationMocker implements MatcherCollection, Invokable, NamespaceM
         $this->builderMap[$id] = $builder;
     }
 
-    /**
-     * @return BuilderInvocationMocker
-     */
-    public function expects(MatcherInvocation $matcher)
+    public function expects(MatcherInvocation $matcher): BuilderInvocationMocker
     {
         return new BuilderInvocationMocker(
             $this,
@@ -167,10 +161,8 @@ final class InvocationMocker implements MatcherCollection, Invokable, NamespaceM
 
     /**
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     *
-     * @return bool
      */
-    public function verify()
+    public function verify(): void
     {
         foreach ($this->matchers as $matcher) {
             $matcher->verify();
