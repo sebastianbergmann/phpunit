@@ -183,8 +183,7 @@ final class Blacklist
                     continue;
                 }
 
-                $reflector = new ReflectionClass($className);
-                $directory = $reflector->getFileName();
+                $directory = (new ReflectionClass($className))->getFileName();
 
                 for ($i = 0; $i < $parent; $i++) {
                     $directory = \dirname($directory);

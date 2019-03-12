@@ -212,9 +212,7 @@ final class NamePrettifier
             }
 
             if (\is_bool($value) || \is_int($value) || \is_float($value)) {
-                $exporter = new Exporter;
-
-                $value = $exporter->export($value);
+                $value = (new Exporter)->export($value);
             }
 
             if (\is_string($value) && $value === '') {

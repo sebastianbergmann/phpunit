@@ -237,8 +237,7 @@ class StaticInvocation implements Invocation, SelfDescribing
         }
 
         if ($cloneable === null && $object->hasMethod('__clone')) {
-            $method    = $object->getMethod('__clone');
-            $cloneable = $method->isPublic();
+            $cloneable = $object->getMethod('__clone')->isPublic();
         }
 
         if ($cloneable === null) {

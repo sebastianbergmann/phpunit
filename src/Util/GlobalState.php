@@ -80,9 +80,8 @@ final class GlobalState
     public static function getIniSettingsAsString(): string
     {
         $result      = '';
-        $iniSettings = \ini_get_all(null, false);
 
-        foreach ($iniSettings as $key => $value) {
+        foreach (\ini_get_all(null, false) as $key => $value) {
             $result .= \sprintf(
                 '@ini_set(%s, %s);' . "\n",
                 self::exportVariable($key),

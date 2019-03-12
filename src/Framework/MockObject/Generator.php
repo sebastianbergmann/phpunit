@@ -572,8 +572,7 @@ final class Generator
             }
         } else {
             try {
-                $instantiator = new Instantiator;
-                $object       = $instantiator->instantiate($className);
+                $object       = (new Instantiator)->instantiate($className);
             } catch (InstantiatorException $exception) {
                 throw new RuntimeException($exception->getMessage());
             }
@@ -794,9 +793,7 @@ final class Generator
         $method = '';
 
         if (!$mockMethods->hasMethod('method') && (!isset($class) || !$class->hasMethod('method'))) {
-            $methodTemplate = $this->getTemplate('mocked_class_method.tpl');
-
-            $method = $methodTemplate->render();
+            $method = $this->getTemplate('mocked_class_method.tpl')->render();
         }
 
         $classTemplate->setVar(

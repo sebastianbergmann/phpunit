@@ -50,9 +50,7 @@ class ClassHasAttribute extends Constraint
      */
     protected function matches($other): bool
     {
-        $class = new ReflectionClass($other);
-
-        return $class->hasProperty($this->attributeName);
+        return (new ReflectionClass($other))->hasProperty($this->attributeName);
     }
 
     /**

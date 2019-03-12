@@ -740,9 +740,7 @@ final class Test
             self::$hookMethods[$className] = self::emptyHookMethodsArray();
 
             try {
-                $class = new ReflectionClass($className);
-
-                foreach ($class->getMethods() as $method) {
+                foreach ((new ReflectionClass($className))->getMethods() as $method) {
                     if ($method->getDeclaringClass()->getName() === Assert::class) {
                         continue;
                     }
@@ -1014,8 +1012,7 @@ final class Test
                         );
                     }
 
-                    $class      = new ReflectionClass($className);
-                    $methods    = $class->getMethods();
+                    $methods    = (new ReflectionClass($className))->getMethods();
                     $inverse    = isset($methodName[1]) && $methodName[1] === '!';
                     $visibility = 'isPublic';
 

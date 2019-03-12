@@ -160,9 +160,7 @@ class Command
      */
     public static function main(bool $exit = true): int
     {
-        $command = new static;
-
-        return $command->run($_SERVER['argv'], $exit);
+        return (new static)->run($_SERVER['argv'], $exit);
     }
 
     /**
@@ -1122,9 +1120,7 @@ class Command
 
     private function handleExtensions(string $directory): void
     {
-        $facade = new FileIteratorFacade;
-
-        foreach ($facade->getFilesAsArray($directory, '.phar') as $file) {
+        foreach ((new FileIteratorFacade)->getFilesAsArray($directory, '.phar') as $file) {
             if (!\file_exists('phar://' . $file . '/manifest.xml')) {
                 $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
 
@@ -1195,9 +1191,7 @@ class Command
             $this->arguments['configuration']
         );
 
-        $suiteNames = $configuration->getTestSuiteNames();
-
-        foreach ($suiteNames as $suiteName) {
+        foreach ($configuration->getTestSuiteNames() as $suiteName) {
             \printf(
                 ' - %s' . \PHP_EOL,
                 $suiteName

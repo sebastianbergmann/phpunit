@@ -206,9 +206,7 @@ final class MockMethod
 
         // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/406
         if ($returnType === 'parent') {
-            $reflector = new ReflectionClass($this->className);
-
-            $parentClass = $reflector->getParentClass();
+            $parentClass = (new ReflectionClass($this->className))->getParentClass();
 
             if ($parentClass === false) {
                 throw new RuntimeException(

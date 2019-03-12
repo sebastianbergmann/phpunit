@@ -387,9 +387,7 @@ final class TeamCity extends ResultPrinter
      */
     private static function getFileName($className): string
     {
-        $reflectionClass = new ReflectionClass($className);
-
-        return $reflectionClass->getFileName();
+        return (new ReflectionClass($className))->getFileName();
     }
 
     /**

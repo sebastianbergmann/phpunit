@@ -721,9 +721,7 @@ final class PhptTestCase implements Test, SelfDescribing
             $sectionOffset = $sections[$section . '_offset'] ?? 0;
             $offset        = $sectionOffset + 1;
 
-            $lines = \preg_split('/\r\n|\r|\n/', $sections[$section]);
-
-            foreach ($lines as $line) {
+            foreach (\preg_split('/\r\n|\r|\n/', $sections[$section]) as $line) {
                 if (\strpos($line, $needle) !== false) {
                     return [[
                         'file' => \realpath($this->filename),

@@ -224,8 +224,7 @@ final class XmlResultPrinter extends Printer implements TestListener
                 $steps = $this->exception->getTrace();
             }
 
-            $class = new ReflectionClass($test);
-            $file  = $class->getFileName();
+            $file  = (new ReflectionClass($test))->getFileName();
 
             foreach ($steps as $step) {
                 if (isset($step['file']) && $step['file'] === $file) {
