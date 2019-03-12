@@ -892,11 +892,7 @@ class Command
             }
 
             if (isset($phpunitConfiguration['testSuiteLoaderClass'])) {
-                if (isset($phpunitConfiguration['testSuiteLoaderFile'])) {
-                    $file = $phpunitConfiguration['testSuiteLoaderFile'];
-                } else {
-                    $file = '';
-                }
+                $file = $phpunitConfiguration['testSuiteLoaderFile'] ?? '';
 
                 $this->arguments['loader'] = $this->handleLoader(
                     $phpunitConfiguration['testSuiteLoaderClass'],
