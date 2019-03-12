@@ -194,7 +194,7 @@ final class TestResult implements Countable
      */
     private $registerMockObjectsFromTestArgumentsRecursively = false;
 
-    public static function isAnyCoverageRequired(TestCase $test)
+    public static function isAnyCoverageRequired(TestCase $test): bool
     {
         $annotations = $test->getAnnotations();
 
