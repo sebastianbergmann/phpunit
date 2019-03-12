@@ -980,6 +980,11 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->dependencyInput = $dependencyInput;
     }
 
+    public function getDependencyInput(): array
+    {
+        return $this->dependencyInput;
+    }
+
     public function setBeStrictAboutChangesToGlobalState(?bool $beStrictAboutChangesToGlobalState): void
     {
         $this->beStrictAboutChangesToGlobalState = $beStrictAboutChangesToGlobalState;
