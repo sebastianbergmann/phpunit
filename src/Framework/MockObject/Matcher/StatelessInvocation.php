@@ -40,7 +40,7 @@ abstract class StatelessInvocation implements Invocation
      *
      * @return bool
      */
-    public function verify()
+    public function verify(): void
     {
     }
 }

@@ -22,5 +22,5 @@ interface Verifiable
      *
      * @throws ExpectationFailedException
      */
-    public function verify();
+    public function verify(): void;
 }

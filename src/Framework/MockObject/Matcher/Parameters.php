@@ -75,7 +75,7 @@ final class Parameters extends StatelessInvocation
         $this->parameterVerificationResult = null;
 
         try {
-            $this->parameterVerificationResult = $this->verify();
+            $this->parameterVerificationResult = $this->doVerify();
 
             return $this->parameterVerificationResult;
         } catch (ExpectationFailedException $e) {
@@ -93,7 +93,16 @@ final class Parameters extends StatelessInvocation
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function verify(): bool
+    public function verify(): void
+    {
+        $this->doVerify();
+    }
+
+    /**
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    private function doVerify(): bool
     {
         if (isset($this->parameterVerificationResult)) {
             return $this->guardAgainstDuplicateEvaluationOfParameterConstraints();
