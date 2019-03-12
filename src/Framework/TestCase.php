@@ -118,12 +118,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $expectedException;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $expectedExceptionMessage;
 
     /**
-     * @var string
+     * @var null|string
      */
     private $expectedExceptionMessageRegExp;
 
@@ -569,12 +569,12 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return $this->expectedExceptionCode;
     }
 
-    public function getExpectedExceptionMessage(): string
+    public function getExpectedExceptionMessage(): ?string
     {
         return $this->expectedExceptionMessage;
     }
 
-    public function getExpectedExceptionMessageRegExp(): string
+    public function getExpectedExceptionMessageRegExp(): ?string
     {
         return $this->expectedExceptionMessageRegExp;
     }

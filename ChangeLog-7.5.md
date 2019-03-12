@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#3480](https://github.com/sebastianbergmann/phpunit/issues/3480): Wrong return type declaration for `TestCase::getExpectedExceptionMessage()` and `TestCase::getExpectedExceptionMessageRegExp()`
 * Fixed [#3550](https://github.com/sebastianbergmann/phpunit/issues/3550): Check for valid attribute names in `assertObjectHasAttribute()` is too strict
 
 ## [7.5.6] - 2019-02-18
