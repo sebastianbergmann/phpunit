@@ -145,12 +145,12 @@ final class Help
 
     public function __construct(?int $width = null, ?bool $withColor = null)
     {
-        if ($width === null || $withColor === null) {
-            $console = new Console();
+        if ($width === null) {
+            $width = (new Console)->getNumberOfColumns();
         }
 
         if ($withColor === null) {
-            $this->hasColor = $console->hasColorSupport();
+            $this->hasColor = (new Console)->hasColorSupport();
         } else {
             $this->hasColor = $withColor;
         }
@@ -163,9 +163,6 @@ final class Help
             }
         }
 
-        if ($width === null) {
-            $width = $console->getNumberOfColumns();
-        }
         $this->maxDescLength = $width - $this->maxArgLength - 4;
     }
 
