@@ -40,10 +40,7 @@ class InvokedAtIndex implements Invocation
         return 'invoked at sequence index ' . $this->sequenceIndex;
     }
 
-    /**
-     * @return bool
-     */
-    public function matches(BaseInvocation $invocation)
+    public function matches(BaseInvocation $invocation): bool
     {
         $this->currentIndex++;
 

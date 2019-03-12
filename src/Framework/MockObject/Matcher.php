@@ -171,10 +171,8 @@ final class Matcher implements MatcherInvocation
      * @throws RuntimeException
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return bool
      */
-    public function matches(Invocation $invocation)
+    public function matches(Invocation $invocation): bool
     {
         if ($this->afterMatchBuilderId !== null) {
             $builder = $invocation->getObject()

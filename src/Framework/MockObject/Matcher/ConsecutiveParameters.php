@@ -51,12 +51,10 @@ final class ConsecutiveParameters extends StatelessInvocation
     }
 
     /**
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return bool
      */
-    public function matches(BaseInvocation $invocation)
+    public function matches(BaseInvocation $invocation): bool
     {
         $this->invocations[] = $invocation;
         $callIndex           = \count($this->invocations) - 1;

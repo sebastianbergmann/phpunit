@@ -21,10 +21,7 @@ final class AnyParameters extends StatelessInvocation
         return 'with any parameters';
     }
 
-    /**
-     * @return bool
-     */
-    public function matches(BaseInvocation $invocation)
+    public function matches(BaseInvocation $invocation): bool
     {
         return true;
     }

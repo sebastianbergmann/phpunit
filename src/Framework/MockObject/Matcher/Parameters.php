@@ -68,10 +68,8 @@ final class Parameters extends StatelessInvocation
 
     /**
      * @throws \Exception
-     *
-     * @return bool
      */
-    public function matches(BaseInvocation $invocation)
+    public function matches(BaseInvocation $invocation): bool
     {
         $this->invocation                  = $invocation;
         $this->parameterVerificationResult = null;

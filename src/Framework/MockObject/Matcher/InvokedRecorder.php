@@ -50,10 +50,7 @@ abstract class InvokedRecorder implements Invocation
         $this->invocations[] = $invocation;
     }
 
-    /**
-     * @return bool
-     */
-    public function matches(BaseInvocation $invocation)
+    public function matches(BaseInvocation $invocation): bool
     {
         return true;
     }
