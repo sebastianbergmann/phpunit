@@ -124,7 +124,7 @@ final class NamePrettifier
     {
         $buffer = '';
 
-        if (!\is_string($name) || $name === '') {
+        if ($name === '') {
             return $buffer;
         }
 
