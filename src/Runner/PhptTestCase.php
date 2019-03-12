@@ -209,7 +209,7 @@ final class PhptTestCase implements Test, SelfDescribing
             $result->addError($this, $t, $time);
         }
 
-        if ($result->allCompletelyImplemented() && $xfail !== false) {
+        if ($xfail !== false && $result->allCompletelyImplemented()) {
             $result->addFailure($this, new IncompleteTestError('XFAIL section but test passes'), $time);
         }
 

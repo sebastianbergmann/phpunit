@@ -38,7 +38,7 @@ final class FileLoader
 
         $localFile = __DIR__ . \DIRECTORY_SEPARATOR . $filename;
 
-        if (!self::isReadable($includePathFilename) || $includePathFilename === $localFile) {
+        if ($includePathFilename === $localFile || !self::isReadable($includePathFilename)) {
             throw new Exception(
                 \sprintf('Cannot open file "%s".' . "\n", $filename)
             );

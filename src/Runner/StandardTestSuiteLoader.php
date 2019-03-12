@@ -44,7 +44,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             );
         }
 
-        if (!\class_exists($suiteClassName, false) && !empty($loadedClasses)) {
+        if (!empty($loadedClasses) && !\class_exists($suiteClassName, false)) {
             $offset = 0 - \strlen($suiteClassName);
 
             foreach ($loadedClasses as $loadedClass) {
@@ -59,7 +59,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             }
         }
 
-        if (!\class_exists($suiteClassName, false) && !empty($loadedClasses)) {
+        if (!empty($loadedClasses) && !\class_exists($suiteClassName, false)) {
             $testCaseClass = TestCase::class;
 
             foreach ($loadedClasses as $loadedClass) {

@@ -95,7 +95,7 @@ final class NamePrettifier
             $result = $this->prettifyTestMethod($test->getName(false));
         }
 
-        if ($test->usesDataProvider() && !$annotationWithPlaceholders) {
+        if (!$annotationWithPlaceholders && $test->usesDataProvider()) {
             $result .= $this->prettifyDataSet($test);
         }
 

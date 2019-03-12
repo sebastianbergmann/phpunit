@@ -993,7 +993,7 @@ final class Test
     {
         $codeToCoverList = [];
 
-        if (\strpos($element, '\\') !== false && \function_exists($element)) {
+        if (\function_exists($element) && \strpos($element, '\\') !== false) {
             $codeToCoverList[] = new ReflectionFunction($element);
         } elseif (\strpos($element, '::') !== false) {
             [$className, $methodName] = \explode('::', $element);

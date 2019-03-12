@@ -59,8 +59,7 @@ abstract class BaseTestRunner
      */
     public function getTest(string $suiteClassName, string $suiteClassFile = '', $suffixes = ''): ?Test
     {
-        if (\is_dir($suiteClassName) &&
-            !\is_file($suiteClassName . '.php') && empty($suiteClassFile)) {
+        if (empty($suiteClassFile) && \is_dir($suiteClassName) && !\is_file($suiteClassName . '.php')) {
             $facade = new FileIteratorFacade;
             $files  = $facade->getFilesAsArray(
                 $suiteClassName,
