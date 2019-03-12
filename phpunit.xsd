@@ -275,6 +275,7 @@
         <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>
         <xs:attribute name="defaultTestSuite" type="xs:string" default=""/>
         <xs:attribute name="verbose" type="xs:boolean" default="false"/>
+        <xs:attribute name="testdox" type="xs:boolean" default="false"/>
         <xs:attribute name="stderr" type="xs:boolean" default="false"/>
         <xs:attribute name="reverseDefectList" type="xs:boolean" default="false"/>
         <xs:attribute name="registerMockObjectsFromTestArgumentsRecursively" type="xs:boolean" default="false"/>

@@ -15,6 +15,7 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
+use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
@@ -779,6 +780,21 @@ final class Configuration
                 (string) $root->getAttribute('verbose'),
                 false
             );
+        }
+
+        if ($root->hasAttribute('testdox')) {
+            $testdox = $this->getBoolean(
+                (string) $root->getAttribute('testdox'),
+                false
+            );
+
+            if ($testdox) {
+                if (isset($result['printerClass'])) {
+                    $result['conflictBetweenPrinterClassAndTestdox'] = true;
+                } else {
+                    $result['printerClass'] = CliTestDoxPrinter::class;
+                }
+            }
         }
 
         if ($root->hasAttribute('registerMockObjectsFromTestArgumentsRecursively')) {

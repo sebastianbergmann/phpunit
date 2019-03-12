@@ -13,6 +13,7 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
+use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 
 class ConfigurationTest extends TestCase
 {
@@ -574,6 +575,29 @@ class ConfigurationTest extends TestCase
         $tests  = $config->tests();
 
         $this->assertCount(1, $tests);
+    }
+
+    public function test_TestDox_configuration_is_parsed_correctly(): void
+    {
+        $configuration = Configuration::getInstance(
+            TEST_FILES_PATH . 'configuration_testdox.xml'
+        );
+
+        $config = $configuration->getPHPUnitConfiguration();
+
+        $this->assertSame(CliTestDoxPrinter::class, $config['printerClass']);
+    }
+
+    public function test_Conflict_between_testdox_and_printerClass_is_detected(): void
+    {
+        $configuration = Configuration::getInstance(
+            TEST_FILES_PATH . 'configuration_testdox_printerClass.xml'
+        );
+
+        $config = $configuration->getPHPUnitConfiguration();
+
+        $this->assertSame('foo', $config['printerClass']);
+        $this->assertTrue($config['conflictBetweenPrinterClassAndTestdox']);
     }
 
     /**
