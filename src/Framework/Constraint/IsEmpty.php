@@ -53,7 +53,7 @@ final class IsEmpty extends Constraint
 
         return \sprintf(
             '%s %s %s',
-            $type[0] == 'a' || $type[0] == 'o' ? 'an' : 'a',
+            \strpos($type, 'a') === 0 || \strpos($type, 'o') === 0 ? 'an' : 'a',
             $type,
             $this->toString()
         );

@@ -646,13 +646,13 @@ final class PhptTestCase implements Test, SelfDescribing
             }
 
             if ($block === 'diff') {
-                if (\substr($line, 0, 1) === '+') {
+                if (\strpos($line, '+') === 0) {
                     $needle = $this->getCleanDiffLine($previousLine);
 
                     break;
                 }
 
-                if (\substr($line, 0, 1) === '-') {
+                if (\strpos($line, '-') === 0) {
                     $needle = $this->getCleanDiffLine($line);
 
                     break;

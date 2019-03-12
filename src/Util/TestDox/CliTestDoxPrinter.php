@@ -209,9 +209,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
             if (!$insideDiff) {
                 $message[] = $line;
             } else {
-                if (\substr($line, 0, 1) === '-') {
+                if (\strpos($line, '-') === 0) {
                     $line = Color::colorize('fg-red', Color::visualizeWhitespace($line, true));
-                } elseif (\substr($line, 0, 1) === '+') {
+                } elseif (\strpos($line, '+') === 0) {
                     $line = Color::colorize('fg-green', Color::visualizeWhitespace($line, true));
                 } elseif ($line === '@@ @@') {
                     $line = Color::colorize('fg-cyan', $line);
