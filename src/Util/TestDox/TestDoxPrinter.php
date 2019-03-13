@@ -252,7 +252,7 @@ class TestDoxPrinter extends ResultPrinter
             $this->writeTestResult($prevResult, $this->testResults[$this->testFlushIndex++]);
         } else {
             do {
-                $flushed = $forceFlush;
+                $flushed = false;
 
                 if (!$forceFlush && isset($this->originalExecutionOrder[$this->testFlushIndex])) {
                     $result  = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
