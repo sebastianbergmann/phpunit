@@ -169,7 +169,7 @@ class TestDoxPrinter extends ResultPrinter
 
     public function flush(): void
     {
-        $this->flushOutputBuffer();
+        $this->flushOutputBuffer(true);
     }
 
     /**
@@ -222,7 +222,7 @@ class TestDoxPrinter extends ResultPrinter
         return false;
     }
 
-    protected function flushOutputBuffer(): void
+    protected function flushOutputBuffer(bool $forceFlush = false): void
     {
         if ($this->testFlushIndex === $this->testIndex) {
             return;
@@ -243,7 +243,14 @@ class TestDoxPrinter extends ResultPrinter
         } else {
             do {
                 $flushed = false;
-                $result  = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
+
+                if (!$forceFlush && isset($this->originalExecutionOrder[$this->testFlushIndex])) {
+                    $result  = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
+                } else {
+                    // This test(name) cannot found in original execution order,
+                    // flush result to output stream right away
+                    $result = $this->testResults[$this->testFlushIndex];
+                }
 
                 if (!empty($result)) {
                     $this->hideSpinner();
