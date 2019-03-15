@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 8.0 release series are documented in this fil
 * Fixed [#3539](https://github.com/sebastianbergmann/phpunit/issues/3539): Wrong default value for `resolveDependencies` in `phpunit.xsd`
 * Fixed [#3550](https://github.com/sebastianbergmann/phpunit/issues/3550): Check for valid attribute names in `assertObjectHasAttribute()` is too strict
 * Fixed [#3555](https://github.com/sebastianbergmann/phpunit/issues/3555): Extension loader only allows objects that implement `TestHook` but should also allow `Hook`
+* Fixed [#3560](https://github.com/sebastianbergmann/phpunit/issues/3560): TestDox does not work when tests are filtered
 
 ## [8.0.4] - 2019-02-18
 
