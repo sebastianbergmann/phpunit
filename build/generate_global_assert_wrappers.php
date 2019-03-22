@@ -80,12 +80,14 @@ foreach ($class->getMethods() as $method) {
         continue;
     }
 
-    $buffer .= \sprintf(
-        "%s\n%s\n{\n    Assert::%s(...\\func_get_args());\n}\n\n",
-        \str_replace('     *', ' *', $method->getDocComment()),
-        \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1])),
-        $method->getName()
+    $docComment = \str_replace(
+        ['*/', '     *'],
+        ["*\n * @see Assert::" . $method->getName() . "\n */", ' *'],
+        $method->getDocComment()
     );
+    $signature = \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1]));
+    $body      = "{\n    Assert::" . $method->getName() . "(...\\func_get_args());\n}";
+    $buffer .= "$docComment\n$signature\n$body\n\n";
 }
 
 $buffer .= $constraintMethods;
