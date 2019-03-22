@@ -1564,10 +1564,8 @@ function never(): InvokedCountMatcher
 /**
  * Returns a matcher that matches when the method is executed
  * at least N times.
- *
- * @param int $requiredInvocations
  */
-function atLeast($requiredInvocations): InvokedAtLeastCountMatcher
+function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
 {
     return new InvokedAtLeastCountMatcher(
         $requiredInvocations
@@ -1593,10 +1591,8 @@ function once(): InvokedCountMatcher
 /**
  * Returns a matcher that matches when the method is executed
  * exactly $count times.
- *
- * @param int $count
  */
-function exactly($count): InvokedCountMatcher
+function exactly(int $count): InvokedCountMatcher
 {
     return new InvokedCountMatcher($count);
 }
@@ -1604,10 +1600,8 @@ function exactly($count): InvokedCountMatcher
 /**
  * Returns a matcher that matches when the method is executed
  * at most N times.
- *
- * @param int $allowedInvocations
  */
-function atMost($allowedInvocations): InvokedAtMostCountMatcher
+function atMost(int $allowedInvocations): InvokedAtMostCountMatcher
 {
     return new InvokedAtMostCountMatcher($allowedInvocations);
 }
@@ -1615,10 +1609,8 @@ function atMost($allowedInvocations): InvokedAtMostCountMatcher
 /**
  * Returns a matcher that matches when the method is executed
  * at the given index.
- *
- * @param int $index
  */
-function at($index): InvokedAtIndexMatcher
+function at(int $index): InvokedAtIndexMatcher
 {
     return new InvokedAtIndexMatcher($index);
 }
@@ -1633,10 +1625,7 @@ function returnValueMap(array $valueMap): ReturnValueMapStub
     return new ReturnValueMapStub($valueMap);
 }
 
-/**
- * @param int $argumentIndex
- */
-function returnArgument($argumentIndex): ReturnArgumentStub
+function returnArgument(int $argumentIndex): ReturnArgumentStub
 {
     return new ReturnArgumentStub($argumentIndex);
 }
