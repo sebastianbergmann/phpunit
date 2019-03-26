@@ -121,6 +121,24 @@
         </exec>
     </target>
 
+    <target name="signed-scoped-phar" depends="scoped-phar" description="Create signed scoped PHAR archive of PHPUnit and all its dependencies">
+        <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/phpunit-scoped-library-${version}.phar"/>
+        </exec>
+
+        <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/phpunit-scoped-${version}.phar"/>
+        </exec>
+    </target>
+
     <target name="phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of PHPUnit and all its dependencies">
         <antcall target="-phar-build">
             <param name="type" value="release"/>
