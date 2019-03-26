@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 8.0 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [8.0.6] - 2019-MM-DD
+## [8.0.6] - 2019-03-26
 
 ### Fixed
 

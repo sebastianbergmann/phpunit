@@ -121,6 +121,24 @@
         </exec>
     </target>
 
+    <target name="signed-scoped-phar" depends="scoped-phar" description="Create signed scoped PHAR archive of PHPUnit and all its dependencies">
+        <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/phpunit-scoped-library-${version}.phar"/>
+        </exec>
+
+        <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/phpunit-scoped-${version}.phar"/>
+        </exec>
+    </target>
+
     <target name="phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of PHPUnit and all its dependencies">
         <antcall target="-phar-build">
             <param name="type" value="release"/>
@@ -151,8 +169,10 @@
 
     <target name="-phar-prepare" depends="clean,install-dependencies">
         <mkdir dir="${basedir}/build/phar"/>
+        <mkdir dir="${basedir}/build/phar-scoped"/>
 
         <copy file="${basedir}/phpunit.xsd" tofile="${basedir}/build/phar/phpunit.xsd"/>
+        <copy file="${basedir}/phpunit.xsd" tofile="${basedir}/build/phar-scoped/phpunit.xsd"/>
 
         <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt" failonerror="true"/>
 
@@ -381,7 +401,8 @@
             <arg value="--hash" />
             <arg value="SHA-1" />
             <arg value="--output" />
-            <arg path="${basedir}/build/phpunit-library-${_version}.phar" />
+            <arg if:true="${scoped}" path="${basedir}/build/phpunit-scoped-library-${_version}.phar" />
+            <arg unless:true="${scoped}" path="${basedir}/build/phpunit-library-${_version}.phar" />
             <arg value="--template" />
             <arg path="${basedir}/build/library-phar-autoload.php.in" />
             <arg if:true="${scoped}" path="${basedir}/build/phar-scoped" />
@@ -399,14 +420,16 @@
             <arg value="--hash" />
             <arg value="SHA-1" />
             <arg value="--output" />
-            <arg path="${basedir}/build/phpunit-${_version}.phar" />
+            <arg if:true="${scoped}" path="${basedir}/build/phpunit-scoped-${_version}.phar" />
+            <arg unless:true="${scoped}" path="${basedir}/build/phpunit-${_version}.phar" />
             <arg value="--template" />
             <arg path="${basedir}/build/binary-phar-autoload.php" />
             <arg if:true="${scoped}" path="${basedir}/build/phar-scoped" />
             <arg unless:true="${scoped}" path="${basedir}/build/phar" />
         </exec>
 
-        <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
+        <chmod if:true="${scoped}" file="${basedir}/build/phpunit-scoped-${_version}.phar" perm="ugo+rx"/>
+        <chmod unless:true="${scoped}" file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
 
         <delete dir="${basedir}/build/phar"/>
         <delete dir="${basedir}/build/phar-scoped"/>
