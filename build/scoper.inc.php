@@ -14,6 +14,7 @@ $whitelistClasses = [
     'PharIo\*',
     'PHP_Token*',
 ];
+
 return [
     'whitelist' => $whitelistClasses,
 ];
