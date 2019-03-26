@@ -151,8 +151,10 @@
 
     <target name="-phar-prepare" depends="clean,install-dependencies">
         <mkdir dir="${basedir}/build/phar"/>
+        <mkdir dir="${basedir}/build/phar-scoped"/>
 
         <copy file="${basedir}/phpunit.xsd" tofile="${basedir}/build/phar/phpunit.xsd"/>
+        <copy file="${basedir}/phpunit.xsd" tofile="${basedir}/build/phar-scoped/phpunit.xsd"/>
 
         <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt" failonerror="true"/>
 
