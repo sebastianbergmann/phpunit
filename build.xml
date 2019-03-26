@@ -397,6 +397,14 @@
         </exec>
     </target>
 
+    <target name="generate-global-assert-wrappers" description="Generate global function wrappers for static methods in Assert and TestCase that are commonly used">
+        <exec executable="${basedir}/build/generate_global_assert_wrappers.php" taskname="generate-global-assert-wrappers" failonerror="true"/>
+        <exec executable="${basedir}/tools/php-cs-fixer" taskname="php-cs-fixer" failonerror="true">
+            <arg value="fix"/>
+            <arg path="${basedir}/src/Framework/Assert/Functions.php"/>
+        </exec>
+    </target>
+
     <target name="-phploc" depends="prepare">
         <exec executable="${basedir}/tools/phploc" output="/dev/null" taskname="phploc">
             <arg value="--count-tests"/>
