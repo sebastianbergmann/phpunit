@@ -383,7 +383,8 @@
             <arg value="--hash" />
             <arg value="SHA-1" />
             <arg value="--output" />
-            <arg path="${basedir}/build/phpunit-library-${_version}.phar" />
+            <arg if:true="${scoped}" path="${basedir}/build/phpunit-scoped-library-${_version}.phar" />
+            <arg unless:true="${scoped}" path="${basedir}/build/phpunit-library-${_version}.phar" />
             <arg value="--template" />
             <arg path="${basedir}/build/library-phar-autoload.php.in" />
             <arg if:true="${scoped}" path="${basedir}/build/phar-scoped" />
@@ -401,14 +402,16 @@
             <arg value="--hash" />
             <arg value="SHA-1" />
             <arg value="--output" />
-            <arg path="${basedir}/build/phpunit-${_version}.phar" />
+            <arg if:true="${scoped}" path="${basedir}/build/phpunit-scoped-${_version}.phar" />
+            <arg unless:true="${scoped}" path="${basedir}/build/phpunit-${_version}.phar" />
             <arg value="--template" />
             <arg path="${basedir}/build/binary-phar-autoload.php" />
             <arg if:true="${scoped}" path="${basedir}/build/phar-scoped" />
             <arg unless:true="${scoped}" path="${basedir}/build/phar" />
         </exec>
 
-        <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
+        <chmod if:true="${scoped}" file="${basedir}/build/phpunit-scoped-${_version}.phar" perm="ugo+rx"/>
+        <chmod unless:true="${scoped}" file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
 
         <delete dir="${basedir}/build/phar"/>
         <delete dir="${basedir}/build/phar-scoped"/>
