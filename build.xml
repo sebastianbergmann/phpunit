@@ -103,7 +103,7 @@
         <exec executable="${basedir}/phpunit" taskname="phpunit"/>
     </target>
 
-    <target name="signed-phar" depends="phar" description="Create signed PHAR archive of PHPUnit and all its dependencies">
+    <target name="signed-phar" depends="phar,scoped-phar" description="Create signed PHAR archive of PHPUnit and all its dependencies">
         <exec executable="gpg" failonerror="true">
             <arg value="--local-user"/>
             <arg value="sb@sebastian-bergmann.de"/>
@@ -118,6 +118,22 @@
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
             <arg path="${basedir}/build/phpunit-${version}.phar"/>
+        </exec>
+
+        <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/phpunit-scoped-library-${version}.phar"/>
+        </exec>
+
+        <exec executable="gpg" failonerror="true">
+            <arg value="--local-user"/>
+            <arg value="sb@sebastian-bergmann.de"/>
+            <arg value="--armor"/>
+            <arg value="--detach-sign"/>
+            <arg path="${basedir}/build/phpunit-scoped-${version}.phar"/>
         </exec>
     </target>
 
