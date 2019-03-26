@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="phpunit" default="setup">
+<project name="phpunit" default="setup" xmlns:if="ant:if" xmlns:unless="ant:unless">
     <target name="setup" depends="clean,install-dependencies"/>
     <target name="validate" depends="php-syntax-check,validate-composer-json,validate-phpunit-xsd"/>
 
@@ -124,12 +124,28 @@
     <target name="phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of PHPUnit and all its dependencies">
         <antcall target="-phar-build">
             <param name="type" value="release"/>
+            <param name="scoped" value="false"/>
         </antcall>
     </target>
 
     <target name="phar-nightly" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (nightly)">
         <antcall target="-phar-build">
             <param name="type" value="nightly"/>
+            <param name="scoped" value="false"/>
+        </antcall>
+    </target>
+
+    <target name="scoped-phar" depends="-phar-prepare,-phar-determine-version" description="Create scoped PHAR archive of PHPUnit and all its dependencies">
+        <antcall target="-phar-build">
+            <param name="type" value="release"/>
+            <param name="scoped" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="scoped-phar-nightly" depends="-phar-prepare" description="Create scoped PHAR archive of PHPUnit and all its dependencies (nightly)">
+        <antcall target="-phar-build">
+            <param name="type" value="nightly"/>
+            <param name="scoped" value="true"/>
         </antcall>
     </target>
 
@@ -342,7 +358,7 @@
             <arg value="${type}"/>
         </exec>
 
-        <exec executable="${basedir}/tools/php-scoper" taskname="php-scoper">
+        <exec if:true="${scoped}" executable="${basedir}/tools/php-scoper" taskname="php-scoper">
             <arg value="add-prefix" />
             <arg value="--no-ansi" />
             <arg value="--force" />
@@ -368,7 +384,8 @@
             <arg path="${basedir}/build/phpunit-library-${_version}.phar" />
             <arg value="--template" />
             <arg path="${basedir}/build/library-phar-autoload.php.in" />
-            <arg path="${basedir}/build/phar" />
+            <arg if:true="${scoped}" path="${basedir}/build/phar-scoped" />
+            <arg unless:true="${scoped}" path="${basedir}/build/phar" />
         </exec>
 
         <copy file="${basedir}/build/binary-phar-autoload.php.in" tofile="${basedir}/build/binary-phar-autoload.php"/>
@@ -385,7 +402,8 @@
             <arg path="${basedir}/build/phpunit-${_version}.phar" />
             <arg value="--template" />
             <arg path="${basedir}/build/binary-phar-autoload.php" />
-            <arg path="${basedir}/build/phar-scoped" />
+            <arg if:true="${scoped}" path="${basedir}/build/phar-scoped" />
+            <arg unless:true="${scoped}" path="${basedir}/build/phar" />
         </exec>
 
         <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
