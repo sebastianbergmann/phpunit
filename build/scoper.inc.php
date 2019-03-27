@@ -13,6 +13,7 @@ $whitelistClasses = [
     'SebastianBergmann\CodeCoverage\*',
     'PharIo\*',
     'PHP_Token*',
+    'Prophecy\*',
 ];
 
 return [
