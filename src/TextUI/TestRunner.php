@@ -614,14 +614,14 @@ final class TestRunner extends BaseTestRunner
         }
 
         if (isset($codeCoverage)) {
-            Timer::start();
-
             if (isset($arguments['coverageClover'])) {
                 $this->printer->write(
                     "\nGenerating code coverage report in Clover XML format ..."
                 );
 
                 try {
+                    Timer::start();
+
                     $writer = new CloverReport;
                     $writer->process($codeCoverage, $arguments['coverageClover']);
 
@@ -640,6 +640,8 @@ final class TestRunner extends BaseTestRunner
                 );
 
                 try {
+                    Timer::start();
+
                     $writer = new Crap4jReport($arguments['crap4jThreshold']);
                     $writer->process($codeCoverage, $arguments['coverageCrap4J']);
 
@@ -658,6 +660,8 @@ final class TestRunner extends BaseTestRunner
                 );
 
                 try {
+                    Timer::start();
+
                     $writer = new HtmlReport(
                         $arguments['reportLowUpperBound'],
                         $arguments['reportHighLowerBound'],
@@ -684,6 +688,8 @@ final class TestRunner extends BaseTestRunner
                 );
 
                 try {
+                    Timer::start();
+
                     $writer = new PhpReport;
                     $writer->process($codeCoverage, $arguments['coveragePHP']);
 
@@ -723,6 +729,8 @@ final class TestRunner extends BaseTestRunner
                 );
 
                 try {
+                    Timer::start();
+
                     $writer = new XmlReport(Version::id());
                     $writer->process($codeCoverage, $arguments['coverageXml']);
 
