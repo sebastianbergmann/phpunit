@@ -12,6 +12,9 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMocker;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 
+/**
+ * @method InvocationMocker method($constraint)
+ */
 interface MockObject /*extends Verifiable*/
 {
     public function __phpunit_setOriginalObject($originalObject): void;
