@@ -17,5 +17,5 @@ All notable changes of the PHPUnit 8.1 release series are documented in this fil
 
 * The `groups` attribute on the `test` element in the TestDox XML report is now deprecated
 
-[8.1.0]: https://github.com/sebastianbergmann/phpunit/compare/8.0...8.1.0
+[8.1.0]: https://github.com/sebastianbergmann/phpunit/compare/8.0.6...8.1.0
 
