@@ -58,6 +58,7 @@ use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\Timer\Timer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -613,6 +614,8 @@ final class TestRunner extends BaseTestRunner
         }
 
         if (isset($codeCoverage)) {
+            Timer::start();
+
             if (isset($arguments['coverageClover'])) {
                 $this->printer->write(
                     "\nGenerating code coverage report in Clover XML format ..."
@@ -622,7 +625,7 @@ final class TestRunner extends BaseTestRunner
                     $writer = new CloverReport;
                     $writer->process($codeCoverage, $arguments['coverageClover']);
 
-                    $this->printer->write(" done\n");
+                    $this->printer->write(\sprintf(" done (time: %s)\n", Timer::timeSinceStartOfRequest()));
                     unset($writer);
                 } catch (CodeCoverageException $e) {
                     $this->printer->write(
@@ -640,7 +643,7 @@ final class TestRunner extends BaseTestRunner
                     $writer = new Crap4jReport($arguments['crap4jThreshold']);
                     $writer->process($codeCoverage, $arguments['coverageCrap4J']);
 
-                    $this->printer->write(" done\n");
+                    $this->printer->write(\sprintf(" done (time: %s)\n", Timer::timeSinceStartOfRequest()));
                     unset($writer);
                 } catch (CodeCoverageException $e) {
                     $this->printer->write(
@@ -666,7 +669,7 @@ final class TestRunner extends BaseTestRunner
 
                     $writer->process($codeCoverage, $arguments['coverageHtml']);
 
-                    $this->printer->write(" done\n");
+                    $this->printer->write(\sprintf(" done (time: %s)\n", Timer::timeSinceStartOfRequest()));
                     unset($writer);
                 } catch (CodeCoverageException $e) {
                     $this->printer->write(
@@ -684,7 +687,7 @@ final class TestRunner extends BaseTestRunner
                     $writer = new PhpReport;
                     $writer->process($codeCoverage, $arguments['coveragePHP']);
 
-                    $this->printer->write(" done\n");
+                    $this->printer->write(\sprintf(" done (time: %s)\n", Timer::timeSinceStartOfRequest()));
                     unset($writer);
                 } catch (CodeCoverageException $e) {
                     $this->printer->write(
@@ -723,7 +726,7 @@ final class TestRunner extends BaseTestRunner
                     $writer = new XmlReport(Version::id());
                     $writer->process($codeCoverage, $arguments['coverageXml']);
 
-                    $this->printer->write(" done\n");
+                    $this->printer->write(\sprintf(" done (time: %s)\n", Timer::timeSinceStartOfRequest()));
                     unset($writer);
                 } catch (CodeCoverageException $e) {
                     $this->printer->write(
