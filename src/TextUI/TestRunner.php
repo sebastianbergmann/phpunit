@@ -58,6 +58,7 @@ use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\Timer\Timer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -1287,17 +1288,28 @@ final class TestRunner extends BaseTestRunner
                 $format
             )
         );
+
+        Timer::start();
     }
 
     private function codeCoverageGenerationSucceeded(): void
     {
-        $this->printer->write(" done\n");
+        $this->printer->write(
+            \sprintf(
+                " done [%s]\n",
+                Timer::secondsToTimeString(Timer::stop())
+            )
+        );
     }
 
     private function codeCoverageGenerationFailed(\Exception $e): void
     {
         $this->printer->write(
-            " failed\n" . $e->getMessage() . "\n"
+            \sprintf(
+                " failed [%s]\n%s\n",
+                Timer::secondsToTimeString(Timer::stop()),
+                $e->getMessage()
+            )
         );
     }
 }
