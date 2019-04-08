@@ -13,7 +13,7 @@ use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMo
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 
 /**
- * @method InvocationMocker method($constraint)
+ * @method BuilderInvocationMocker method($constraint)
  */
 interface MockObject /*extends Verifiable*/
 {
