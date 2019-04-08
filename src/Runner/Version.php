@@ -33,7 +33,7 @@ final class Version
         }
 
         if (self::$version === null) {
-            self::$version = (new VersionId('8.1.0', \dirname(__DIR__, 2)))->getVersion();
+            self::$version = (new VersionId('8.1.1', \dirname(__DIR__, 2)))->getVersion();
         }
 
         return self::$version;

@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 8.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [8.1.1] - 2019-04-08
+
+### Fixed
+
+* Fixed [#3588](https://github.com/sebastianbergmann/phpunit/issues/3588): PHPUnit 8.1.0 breaks static analysis of MockObject usage
+
 ## [8.1.0] - 2019-04-05
 
 ### Added
