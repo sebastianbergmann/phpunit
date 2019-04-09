@@ -29,11 +29,6 @@ final class MockBuilder
     private $methods = [];
 
     /**
-     * @var array
-     */
-    private $methodsExcept = [];
-
-    /**
      * @var string
      */
     private $mockClassName = '';
@@ -194,16 +189,12 @@ final class MockBuilder
      */
     public function setMethodsExcept(array $methods = []): self
     {
-        $this->methodsExcept = $methods;
-
-        $this->setMethods(
+        return $this->setMethods(
             \array_diff(
                 $this->generator->getClassMethods($this->type),
-                $this->methodsExcept
+                $methods
             )
         );
-
-        return $this;
     }
 
     /**
