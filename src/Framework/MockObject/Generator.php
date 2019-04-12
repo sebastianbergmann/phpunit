@@ -556,6 +556,25 @@ class Generator
     }
 
     /**
+     * @throws \ReflectionException
+     *
+     * @return \ReflectionMethod[]
+     */
+    private function getInterfaceOwnMethods(string $interfaceName): array
+    {
+        $reflect = new ReflectionClass($interfaceName);
+        $methods = [];
+
+        foreach ($reflect->getMethods() as $method) {
+            if ($method->getDeclaringClass()->getName() === $interfaceName) {
+                $methods[] = $method;
+            }
+        }
+
+        return $methods;
+    }
+
+    /**
      * @param string       $code
      * @param string       $className
      * @param array|string $type
@@ -729,7 +748,14 @@ class Generator
             // @see https://github.com/sebastianbergmann/phpunit/issues/2995
             if ($isInterface && $class->implementsInterface(\Throwable::class)) {
                 $additionalInterfaces[] = $class->getName();
+                $interfaceOwnMethods    = [];
                 $isInterface            = false;
+
+                foreach ($this->getInterfaceOwnMethods($mockClassName['fullClassName']) as $method) {
+                    $interfaceOwnMethods[] = MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments);
+                }
+
+                $mockMethods->addMethods(...$interfaceOwnMethods);
 
                 $mockClassName = $this->generateClassName(
                     \Exception::class,
