@@ -145,6 +145,8 @@ class Command
         'version'                   => null,
         'whitelist='                => null,
         'dump-xdebug-filter='       => null,
+        'chunk'                     => null,
+        'num-chunks'                => null,
     ];
 
     /**
@@ -762,6 +764,16 @@ class Command
 
                 case '--dump-xdebug-filter':
                     $this->arguments['xdebugFilterFile'] = $option[1];
+
+                    break;
+
+                case '--chunk':
+                    $this->arguments['chunk'] = (int) $option[1];
+
+                    break;
+
+                case '--num-chunks':
+                    $this->arguments['num-chunks'] = (int) $option[1];
 
                     break;
 

@@ -1248,6 +1248,16 @@ final class TestRunner extends BaseTestRunner
             );
         }
 
+        if (isset($arguments['chunk']) && $arguments['chunk']) {
+            $filterFactory->addFilter(
+                new ReflectionClass(ChunkIterator::class),
+                [
+                    'chunk' => $arguments['chunk'],
+                    'numChunks' => $arguments['num-chunk'] ?? 2,
+                ]
+            );
+        }
+
         $suite->injectFilter($filterFactory);
     }
 
