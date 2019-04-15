@@ -135,7 +135,7 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
             \class_exists($theClass, true)) {
             $argumentsValid = true;
 
-            if ($name == '') {
+            if ($name === '') {
                 $name = $theClass;
             }
 
@@ -156,7 +156,7 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
             return;
         }
 
-        if ($name != '') {
+        if ($name !== '') {
             $this->setName($name);
         } else {
             $this->setName($theClass->getName());
@@ -324,7 +324,7 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      */
     public function addTestFile(string $filename): void
     {
-        if (\file_exists($filename) && \substr($filename, -5) == '.phpt') {
+        if (\file_exists($filename) && \substr($filename, -5) === '.phpt') {
             $this->addTest(
                 new PhptTestCase($filename)
             );
@@ -475,7 +475,7 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
             $result = $this->createResult();
         }
 
-        if (\count($this) == 0) {
+        if (\count($this) === 0) {
             return $result;
         }
 
