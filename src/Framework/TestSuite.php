@@ -272,15 +272,15 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      */
     public function addTestSuite($testClass): void
     {
-        if (\is_string($testClass) && \class_exists($testClass)) {
-            $testClass = new \ReflectionClass($testClass);
-        }
-
-        if (!\is_object($testClass)) {
+        if (!(\is_object($testClass) || (\is_string($testClass) && \class_exists($testClass)))) {
             throw InvalidArgumentHelper::factory(
                 1,
                 'class name or object'
             );
+        }
+
+        if (!\is_object($testClass)) {
+            $testClass = new \ReflectionClass($testClass);
         }
 
         if ($testClass instanceof self) {
