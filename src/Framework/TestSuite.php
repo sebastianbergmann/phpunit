@@ -117,6 +117,8 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      *     name of an existing class) or constructs an empty TestSuite
      *     with the given name.
      *
+     * @param \ReflectionClass|string $theClass
+     *
      * @throws Exception
      * @throws \ReflectionException
      */
