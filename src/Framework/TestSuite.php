@@ -265,6 +265,8 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
     /**
      * Adds the tests from the given class to the suite.
      *
+     * @param object|string $testClass
+     *
      * @throws Exception
      * @throws \ReflectionException
      */
