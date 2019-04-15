@@ -16,6 +16,7 @@ use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\InvalidArgumentHelper;
+use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionMethod;
 use Throwable;
@@ -496,7 +497,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             return $result;
         }
 
-        $hookMethods = \PHPUnit\Util\Test::getHookMethods($this->name);
+        $hookMethods = TestUtil::getHookMethods($this->name);
 
         $result->startTestSuite($this);
 
@@ -507,7 +508,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 if ($this->testCase &&
                     \class_exists($this->name, false) &&
                     \method_exists($this->name, $beforeClassMethod)) {
-                    if ($missingRequirements = \PHPUnit\Util\Test::getMissingRequirements($this->name, $beforeClassMethod)) {
+                    if ($missingRequirements = TestUtil::getMissingRequirements($this->name, $beforeClassMethod)) {
                         $this->markTestSuiteSkipped(\implode(\PHP_EOL, $missingRequirements));
                     }
 
@@ -726,13 +727,13 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(
-                \PHPUnit\Util\Test::getDependencies($class->getName(), $name)
+                TestUtil::getDependencies($class->getName(), $name)
             );
         }
 
         $this->addTest(
             $test,
-            \PHPUnit\Util\Test::getGroups($class->getName(), $name)
+            TestUtil::getGroups($class->getName(), $name)
         );
     }
 
@@ -742,7 +743,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             return true;
         }
 
-        $annotations = \PHPUnit\Util\Test::parseAnnotations((string) $method->getDocComment());
+        $annotations = TestUtil::parseAnnotations((string) $method->getDocComment());
 
         return isset($annotations['test']);
     }
