@@ -124,30 +124,24 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      */
     public function __construct($theClass = '', string $name = '')
     {
-        $this->declaredClasses = \get_declared_classes();
-
-        $argumentsValid = false;
-
-        if ($theClass instanceof \ReflectionClass) {
-            $argumentsValid = true;
-        } elseif (\is_string($theClass) &&
-            $theClass !== '' &&
-            \class_exists($theClass, true)) {
-            $argumentsValid = true;
-
-            if ($name === '') {
-                $name = $theClass;
-            }
-
-            $theClass = new \ReflectionClass($theClass);
-        } elseif (\is_string($theClass)) {
-            $this->setName($theClass);
-
-            return;
+        if (!\is_string($theClass) && !$theClass instanceof \ReflectionClass) {
+            throw new Exception;
         }
 
-        if (!$argumentsValid) {
-            throw new Exception;
+        $this->declaredClasses = \get_declared_classes();
+
+        if (!$theClass instanceof \ReflectionClass) {
+            if (\class_exists($theClass, true)) {
+                if ($name === '') {
+                    $name = $theClass;
+                }
+
+                $theClass = new \ReflectionClass($theClass);
+            } else {
+                $this->setName($theClass);
+
+                return;
+            }
         }
 
         if (!$theClass->isSubclassOf(TestCase::class)) {
