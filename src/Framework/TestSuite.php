@@ -104,17 +104,6 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      */
     private $declaredClasses;
 
-    public static function isTestMethod(ReflectionMethod $method): bool
-    {
-        if (\strpos($method->name, 'test') === 0) {
-            return true;
-        }
-
-        $annotations = \PHPUnit\Util\Test::parseAnnotations((string) $method->getDocComment());
-
-        return isset($annotations['test']);
-    }
-
     /**
      * Constructs a new TestSuite:
      *
@@ -745,5 +734,16 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $test,
             \PHPUnit\Util\Test::getGroups($class->getName(), $name)
         );
+    }
+
+    private function isTestMethod(ReflectionMethod $method): bool
+    {
+        if (\strpos($method->name, 'test') === 0) {
+            return true;
+        }
+
+        $annotations = \PHPUnit\Util\Test::parseAnnotations((string) $method->getDocComment());
+
+        return isset($annotations['test']);
     }
 }
