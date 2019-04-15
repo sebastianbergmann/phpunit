@@ -397,21 +397,11 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
     /**
      * Wrapper for addTestFile() that adds multiple test files.
      *
-     * @param array|Iterator $fileNames
-     *
      * @throws Exception
      * @throws \ReflectionException
      */
-    public function addTestFiles($fileNames): void
+    public function addTestFiles(iterable $fileNames): void
     {
-        if (!(\is_array($fileNames) ||
-            (\is_object($fileNames) && $fileNames instanceof Iterator))) {
-            throw InvalidArgumentHelper::factory(
-                1,
-                'array or iterator'
-            );
-        }
-
         foreach ($fileNames as $filename) {
             $this->addTestFile((string) $filename);
         }
