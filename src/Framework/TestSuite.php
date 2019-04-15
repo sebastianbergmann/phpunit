@@ -125,7 +125,10 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
     public function __construct($theClass = '', string $name = '')
     {
         if (!\is_string($theClass) && !$theClass instanceof \ReflectionClass) {
-            throw new Exception;
+            throw InvalidArgumentHelper::factory(
+                1,
+                'ReflectionClass object or string'
+            );
         }
 
         $this->declaredClasses = \get_declared_classes();
