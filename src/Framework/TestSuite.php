@@ -9,22 +9,17 @@
  */
 namespace PHPUnit\Framework;
 
-use Iterator;
-use IteratorAggregate;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Test as TestUtil;
-use ReflectionClass;
-use ReflectionMethod;
-use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class TestSuite implements Test, SelfDescribing, IteratorAggregate
+class TestSuite implements Test, SelfDescribing, \IteratorAggregate
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
@@ -133,8 +128,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
         $argumentsValid = false;
 
-        if (\is_object($theClass) &&
-            $theClass instanceof ReflectionClass) {
+        if ($theClass instanceof \ReflectionClass) {
             $argumentsValid = true;
         } elseif (\is_string($theClass) &&
             $theClass !== '' &&
@@ -145,7 +139,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                 $name = $theClass;
             }
 
-            $theClass = new ReflectionClass($theClass);
+            $theClass = new \ReflectionClass($theClass);
         } elseif (\is_string($theClass)) {
             $this->setName($theClass);
 
@@ -243,7 +237,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      */
     public function addTest(Test $test, $groups = []): void
     {
-        $class = new ReflectionClass($test);
+        $class = new \ReflectionClass($test);
 
         if (!$class->isAbstract()) {
             $this->tests[]  = $test;
@@ -280,7 +274,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     public function addTestSuite($testClass): void
     {
         if (\is_string($testClass) && \class_exists($testClass)) {
-            $testClass = new ReflectionClass($testClass);
+            $testClass = new \ReflectionClass($testClass);
         }
 
         if (!\is_object($testClass)) {
@@ -292,7 +286,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
         if ($testClass instanceof self) {
             $this->addTest($testClass);
-        } elseif ($testClass instanceof ReflectionClass) {
+        } elseif ($testClass instanceof \ReflectionClass) {
             $suiteMethod = false;
 
             if (!$testClass->isAbstract() && $testClass->hasMethod(BaseTestRunner::SUITE_METHODNAME)) {
@@ -364,7 +358,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
 
         foreach ($this->foundClasses as $i => $className) {
             if (\preg_match($shortNameRegEx, $className)) {
-                $class = new ReflectionClass($className);
+                $class = new \ReflectionClass($className);
 
                 if ($class->getFileName() == $filename) {
                     $newClasses = [$className];
@@ -376,7 +370,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         }
 
         foreach ($newClasses as $className) {
-            $class = new ReflectionClass($className);
+            $class = new \ReflectionClass($className);
 
             if (\dirname($class->getFileName()) === __DIR__) {
                 continue;
@@ -526,7 +520,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
             $result->endTestSuite($this);
 
             return $result;
-        } catch (Throwable $t) {
+        } catch (\Throwable $t) {
             foreach ($this->tests() as $test) {
                 if ($result->shouldStop()) {
                     break;
@@ -567,7 +561,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
                     \call_user_func([$this->name, $afterClassMethod]);
                 }
             }
-        } catch (Throwable $t) {
+        } catch (\Throwable $t) {
             $message = "Exception in {$this->name}::$afterClassMethod" . \PHP_EOL . $t->getMessage();
             $error   = new SyntheticError($message, 0, $t->getFile(), $t->getLine(), $t->getTrace());
 
@@ -667,7 +661,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
     /**
      * Returns an iterator for this test suite.
      */
-    public function getIterator(): Iterator
+    public function getIterator(): \Iterator
     {
         $iterator = new TestSuiteIterator($this);
 
@@ -701,7 +695,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
      * @throws Exception
      * @throws \ReflectionException
      */
-    protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
+    protected function addTestMethod(\ReflectionClass $class, \ReflectionMethod $method): void
     {
         if (!$this->isTestMethod($method)) {
             return;
@@ -737,7 +731,7 @@ class TestSuite implements Test, SelfDescribing, IteratorAggregate
         );
     }
 
-    private function isTestMethod(ReflectionMethod $method): bool
+    private function isTestMethod(\ReflectionMethod $method): bool
     {
         if (\strpos($method->name, 'test') === 0) {
             return true;
