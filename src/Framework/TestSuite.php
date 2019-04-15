@@ -122,7 +122,7 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      * @throws Exception
      * @throws \ReflectionException
      */
-    public function __construct($theClass = '', $name = '')
+    public function __construct($theClass = '', string $name = '')
     {
         $this->declaredClasses = \get_declared_classes();
 
