@@ -409,10 +409,8 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
 
     /**
      * Counts the number of test cases that will be run by this test.
-     *
-     * @param bool $preferCache indicates if cache is preferred
      */
-    public function count($preferCache = false): int
+    public function count(bool $preferCache = false): int
     {
         if ($preferCache && $this->cachedNumTests !== null) {
             return $this->cachedNumTests;
@@ -445,7 +443,7 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
         return \array_keys($this->groups);
     }
 
-    public function getGroupDetails()
+    public function getGroupDetails(): array
     {
         return $this->groups;
     }
