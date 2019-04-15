@@ -202,22 +202,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
     }
 
     /**
-     * Template Method that is called before the tests
-     * of this test suite are run.
-     */
-    protected function setUp(): void
-    {
-    }
-
-    /**
-     * Template Method that is called after the tests
-     * of this test suite have finished running.
-     */
-    protected function tearDown(): void
-    {
-    }
-
-    /**
      * Returns a string representation of the test suite.
      */
     public function toString(): string
@@ -483,8 +467,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
         $result->startTestSuite($this);
 
         try {
-            $this->setUp();
-
             foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
                 if ($this->testCase &&
                     \class_exists($this->name, false) &&
@@ -503,7 +485,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
                 $result->endTest($test, 0);
             }
 
-            $this->tearDown();
             $result->endTestSuite($this);
 
             return $result;
@@ -518,7 +499,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
                 $result->endTest($test, 0);
             }
 
-            $this->tearDown();
             $result->endTestSuite($this);
 
             return $result;
@@ -558,8 +538,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
             $result->addFailure($placeholderTest, $error, 0);
             $result->endTest($placeholderTest, 0);
         }
-
-        $this->tearDown();
 
         $result->endTestSuite($this);
 
