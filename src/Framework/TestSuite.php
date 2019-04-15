@@ -721,7 +721,7 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
 
     private function isTestMethod(\ReflectionMethod $method): bool
     {
-        if (\strpos($method->name, 'test') === 0) {
+        if (\strpos($method->getName(), 'test') === 0) {
             return true;
         }
 
