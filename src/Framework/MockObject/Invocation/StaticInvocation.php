@@ -71,16 +71,22 @@ class StaticInvocation implements Invocation, SelfDescribing
     private $isReturnTypeNullable = false;
 
     /**
+     * @var bool
+     */
+    private $proxiedCall;
+
+    /**
      * @param string $className
      * @param string $methodName
      * @param string $returnType
      * @param bool   $cloneObjects
      */
-    public function __construct($className, $methodName, array $parameters, $returnType, $cloneObjects = false)
+    public function __construct($className, $methodName, array $parameters, $returnType, $cloneObjects = false, bool $proxiedCall = false)
     {
-        $this->className  = $className;
-        $this->methodName = $methodName;
-        $this->parameters = $parameters;
+        $this->className   = $className;
+        $this->methodName  = $methodName;
+        $this->parameters  = $parameters;
+        $this->proxiedCall = $proxiedCall;
 
         if (\strtolower($methodName) === '__tostring') {
             $returnType = 'string';
@@ -138,7 +144,7 @@ class StaticInvocation implements Invocation, SelfDescribing
      */
     public function generateReturnValue()
     {
-        if ($this->isReturnTypeNullable) {
+        if ($this->isReturnTypeNullable || $this->proxiedCall) {
             return;
         }
 
