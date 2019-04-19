@@ -12,11 +12,13 @@
             }
         }
 
-        $this->__phpunit_getInvocationMocker()->invoke(
-            new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
-                '{class_name}', '{method_name}', $__phpunit_arguments, '{return_type}', $this, {clone_arguments}
-            )
+        $invocation = new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
+            '{class_name}', '{method_name}', $__phpunit_arguments, '{return_type}', $this, {clone_arguments}
         );
+
+        $invocation->setProxiedCall();
+
+        $this->__phpunit_getInvocationMocker()->invoke($invocation);
 
         call_user_func_array(array($this->__phpunit_originalObject, "{method_name}"), $__phpunit_arguments);
     }
