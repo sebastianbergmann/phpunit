@@ -26,9 +26,9 @@ final class ObjectInvocation extends StaticInvocation
      * @param object $object
      * @param bool   $cloneObjects
      */
-    public function __construct($className, $methodName, array $parameters, $returnType, $object, $cloneObjects = false)
+    public function __construct($className, $methodName, array $parameters, $returnType, $object, $cloneObjects = false, bool $proxiedCall = false)
     {
-        parent::__construct($className, $methodName, $parameters, $returnType, $cloneObjects);
+        parent::__construct($className, $methodName, $parameters, $returnType, $cloneObjects, $proxiedCall);
 
         $this->object = $object;
     }

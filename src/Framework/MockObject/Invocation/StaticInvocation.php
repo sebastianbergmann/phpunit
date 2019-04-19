@@ -73,7 +73,7 @@ class StaticInvocation implements Invocation, SelfDescribing
     /**
      * @var bool
      */
-    private $proxiedCall = false;
+    private $proxiedCall;
 
     /**
      * @param string $className
@@ -81,11 +81,12 @@ class StaticInvocation implements Invocation, SelfDescribing
      * @param string $returnType
      * @param bool   $cloneObjects
      */
-    public function __construct($className, $methodName, array $parameters, $returnType, $cloneObjects = false)
+    public function __construct($className, $methodName, array $parameters, $returnType, $cloneObjects = false, bool $proxiedCall = false)
     {
-        $this->className  = $className;
-        $this->methodName = $methodName;
-        $this->parameters = $parameters;
+        $this->className   = $className;
+        $this->methodName  = $methodName;
+        $this->parameters  = $parameters;
+        $this->proxiedCall = $proxiedCall;
 
         if (\strtolower($methodName) === '__tostring') {
             $returnType = 'string';
@@ -189,11 +190,6 @@ class StaticInvocation implements Invocation, SelfDescribing
 
                 return $generator->getMock($this->returnType, [], [], '', false);
         }
-    }
-
-    public function setProxiedCall(): void
-    {
-        $this->proxiedCall = true;
     }
 
     public function toString(): string
