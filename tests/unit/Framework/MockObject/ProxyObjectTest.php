@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -8,34 +8,60 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class ProxyObjectTest extends TestCase
+final class ProxyObjectTest extends TestCase
 {
-    public function testMockedMethodIsProxiedToOriginalMethod(): void
+    public function testProxyingMethodWithUndeclaredScalarReturnTypeWorks(): void
     {
-        $proxy = $this->getMockBuilder(Bar::class)
-                      ->enableProxyingToOriginalMethods()
-                      ->getMock();
+        $proxy = $this->createTestProxy(TestProxyFixture::class);
 
         $proxy->expects($this->once())
-              ->method('doSomethingElse');
+              ->method('returnString');
 
-        $foo = new Foo;
+        \assert($proxy instanceof MockObject);
+        \assert($proxy instanceof TestProxyFixture);
 
-        $this->assertEquals('result', $foo->doSomething($proxy));
+        $this->assertSame('result', $proxy->returnString());
     }
 
-    public function testMockedMethodWithReferenceIsProxiedToOriginalMethod(): void
+    public function testProxyingMethodWithDeclaredScalarReturnTypeWorks(): void
     {
-        $proxy = $this->getMockBuilder(MethodCallbackByReference::class)
-                      ->enableProxyingToOriginalMethods()
-                      ->getMock();
+        $proxy = $this->createTestProxy(TestProxyFixture::class);
 
-        $a = $b = $c = 0;
+        $proxy->expects($this->once())
+              ->method('returnTypedString');
 
-        $proxy->callback($a, $b, $c);
+        \assert($proxy instanceof MockObject);
+        \assert($proxy instanceof TestProxyFixture);
 
-        $this->assertEquals(1, $b);
+        $this->assertSame('result', $proxy->returnTypedString());
+    }
+
+    public function testProxyingMethodWithUndeclaredObjectReturnTypeWorks(): void
+    {
+        $proxy = $this->createTestProxy(TestProxyFixture::class);
+
+        $proxy->expects($this->once())
+            ->method('returnObject');
+
+        \assert($proxy instanceof MockObject);
+        \assert($proxy instanceof TestProxyFixture);
+
+        $this->assertInstanceOf(TestProxyFixture::class, $proxy->returnObject());
+    }
+
+    public function testProxyingMethodWithDeclaredObjectReturnTypeWorks(): void
+    {
+        $proxy = $this->createTestProxy(TestProxyFixture::class);
+
+        $proxy->expects($this->once())
+            ->method('returnTypedObject');
+
+        \assert($proxy instanceof MockObject);
+        \assert($proxy instanceof TestProxyFixture);
+
+        $this->assertInstanceOf(TestProxyFixture::class, $proxy->returnTypedObject());
     }
 }
