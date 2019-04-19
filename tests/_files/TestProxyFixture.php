@@ -21,11 +21,29 @@ class TestProxyFixture
 
     public function returnObject()
     {
-        return new self;
+        $result = new stdClass;
+
+        $result->foo = 'bar';
+
+        return $result;
     }
 
-    public function returnTypedObject(): self
+    public function returnTypedObject(): stdClass
     {
-        return new self;
+        $result = new stdClass;
+
+        $result->foo = 'bar';
+
+        return $result;
+    }
+
+    public function returnObjectOfFinalClass()
+    {
+        return new FinalClass('value');
+    }
+
+    public function returnTypedObjectOfFinalClass(): FinalClass
+    {
+        return new FinalClass('value');
     }
 }

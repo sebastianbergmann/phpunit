@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ProxyObjectTest extends TestCase
 {
-    public function testProxyingMethodWithUndeclaredScalarReturnTypeWorks(): void
+    public function testProxyingWorksForMethodThatReturnsUndeclaredScalarValue(): void
     {
         $proxy = $this->createTestProxy(TestProxyFixture::class);
 
@@ -26,7 +26,7 @@ final class ProxyObjectTest extends TestCase
         $this->assertSame('result', $proxy->returnString());
     }
 
-    public function testProxyingMethodWithDeclaredScalarReturnTypeWorks(): void
+    public function testProxyingWorksForMethodThatReturnsDeclaredScalarValue(): void
     {
         $proxy = $this->createTestProxy(TestProxyFixture::class);
 
@@ -39,29 +39,42 @@ final class ProxyObjectTest extends TestCase
         $this->assertSame('result', $proxy->returnTypedString());
     }
 
-    public function testProxyingMethodWithUndeclaredObjectReturnTypeWorks(): void
+    public function testProxyingWorksForMethodThatReturnsUndeclaredObject(): void
     {
         $proxy = $this->createTestProxy(TestProxyFixture::class);
 
         $proxy->expects($this->once())
-            ->method('returnObject');
+              ->method('returnObject');
 
         \assert($proxy instanceof MockObject);
         \assert($proxy instanceof TestProxyFixture);
 
-        $this->assertInstanceOf(TestProxyFixture::class, $proxy->returnObject());
+        $this->assertSame('bar', $proxy->returnObject()->foo);
     }
 
-    public function testProxyingMethodWithDeclaredObjectReturnTypeWorks(): void
+    public function testProxyingWorksForMethodThatReturnsDeclaredObject(): void
     {
         $proxy = $this->createTestProxy(TestProxyFixture::class);
 
         $proxy->expects($this->once())
-            ->method('returnTypedObject');
+              ->method('returnTypedObject');
 
         \assert($proxy instanceof MockObject);
         \assert($proxy instanceof TestProxyFixture);
 
-        $this->assertInstanceOf(TestProxyFixture::class, $proxy->returnTypedObject());
+        $this->assertSame('bar', $proxy->returnTypedObject()->foo);
+    }
+
+    public function testProxyingWorksForMethodThatReturnsUndeclaredObjectOfFinalClass(): void
+    {
+        $proxy = $this->createTestProxy(TestProxyFixture::class);
+
+        $proxy->expects($this->once())
+              ->method('returnObjectOfFinalClass');
+
+        \assert($proxy instanceof MockObject);
+        \assert($proxy instanceof TestProxyFixture);
+
+        $this->assertSame('value', $proxy->returnObjectOfFinalClass()->value());
     }
 }
