@@ -77,4 +77,17 @@ final class ProxyObjectTest extends TestCase
 
         $this->assertSame('value', $proxy->returnObjectOfFinalClass()->value());
     }
+
+    public function testProxyingWorksForMethodThatReturnsDeclaredObjectOfFinalClass(): void
+    {
+        $proxy = $this->createTestProxy(TestProxyFixture::class);
+
+        $proxy->expects($this->once())
+              ->method('returnTypedObjectOfFinalClass');
+
+        \assert($proxy instanceof MockObject);
+        \assert($proxy instanceof TestProxyFixture);
+
+        $this->assertSame('value', $proxy->returnTypedObjectOfFinalClass()->value());
+    }
 }
