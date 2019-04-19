@@ -71,6 +71,11 @@ class StaticInvocation implements Invocation, SelfDescribing
     private $isReturnTypeNullable = false;
 
     /**
+     * @var bool
+     */
+    private $proxiedCall = false;
+
+    /**
      * @param string $className
      * @param string $methodName
      * @param string $returnType
@@ -138,7 +143,7 @@ class StaticInvocation implements Invocation, SelfDescribing
      */
     public function generateReturnValue()
     {
-        if ($this->isReturnTypeNullable) {
+        if ($this->isReturnTypeNullable || $this->proxiedCall) {
             return;
         }
 
@@ -184,6 +189,11 @@ class StaticInvocation implements Invocation, SelfDescribing
 
                 return $generator->getMock($this->returnType, [], [], '', false);
         }
+    }
+
+    public function setProxiedCall(): void
+    {
+        $this->proxiedCall = true;
     }
 
     public function toString(): string

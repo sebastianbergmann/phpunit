@@ -35,11 +35,13 @@ print $code;
             }
         }
 
-        $this->__phpunit_getInvocationMocker()->invoke(
-            new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
-                'Foo', 'bar', $__phpunit_arguments, 'void', $this, false
-            )
+        $invocation = new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
+            'Foo', 'bar', $__phpunit_arguments, 'void', $this, false
         );
+
+        $invocation->setProxiedCall();
+
+        $this->__phpunit_getInvocationMocker()->invoke($invocation);
 
         call_user_func_array(array($this->__phpunit_originalObject, "bar"), $__phpunit_arguments);
     }
