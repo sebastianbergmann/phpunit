@@ -1613,10 +1613,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
             return $this->getMockObjectGenerator()->getObjectForTrait(
                 $traitName,
-                $arguments,
                 $traitClassName,
-                $callOriginalConstructor,
-                $callOriginalClone,
                 $callAutoload
             );
         } catch (\Exception $e) {

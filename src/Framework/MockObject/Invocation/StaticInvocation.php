@@ -11,8 +11,8 @@ namespace PHPUnit\Framework\MockObject\Invocation;
 
 use PHPUnit\Framework\MockObject\Generator;
 use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit\Framework\SelfDescribing;
-use ReflectionObject;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
@@ -136,9 +136,7 @@ class StaticInvocation implements Invocation, SelfDescribing
     }
 
     /**
-     * @throws \ReflectionException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
-     * @throws \PHPUnit\Framework\Exception
+     * @throws RuntimeException
      *
      * @return mixed Mocked return value
      */
@@ -211,15 +209,10 @@ class StaticInvocation implements Invocation, SelfDescribing
         );
     }
 
-    /**
-     * @param object $original
-     *
-     * @return object
-     */
-    private function cloneObject($original)
+    private function cloneObject(object $original): object
     {
         $cloneable = null;
-        $object    = new ReflectionObject($original);
+        $object    = new \ReflectionObject($original);
 
         // Check the blacklist before asking PHP reflection to work around
         // https://bugs.php.net/bug.php?id=53967
@@ -243,7 +236,15 @@ class StaticInvocation implements Invocation, SelfDescribing
         }
 
         if ($cloneable === null && $object->hasMethod('__clone')) {
-            $cloneable = $object->getMethod('__clone')->isPublic();
+            try {
+                $cloneable = $object->getMethod('__clone')->isPublic();
+            } catch (\ReflectionException $e) {
+                throw new RuntimeException(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
         }
 
         if ($cloneable === null) {

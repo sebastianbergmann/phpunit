@@ -9,18 +9,13 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use ReflectionClass;
-use ReflectionException;
-use ReflectionMethod;
-use Text_Template;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class MockMethod
 {
     /**
-     * @var Text_Template[]
+     * @var \Text_Template[]
      */
     private static $templates = [];
 
@@ -87,7 +82,7 @@ final class MockMethod
     /**
      * @throws RuntimeException
      */
-    public static function fromReflection(ReflectionMethod $method, bool $callOriginalMethod, bool $cloneArguments): self
+    public static function fromReflection(\ReflectionMethod $method, bool $callOriginalMethod, bool $cloneArguments): self
     {
         if ($method->isPrivate()) {
             $modifier = 'private';
@@ -115,9 +110,8 @@ final class MockMethod
 
         $docComment = $method->getDocComment();
 
-        if (\is_string($docComment)
-            && \preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $docComment, $deprecation)
-        ) {
+        if (\is_string($docComment) &&
+            \preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $docComment, $deprecation)) {
             $deprecation = \trim(\preg_replace('#[ \t]*\r?\n[ \t]*+\*[ \t]*+#', ' ', $deprecation[1]));
         } else {
             $deprecation = null;
@@ -179,8 +173,7 @@ final class MockMethod
     }
 
     /**
-     * @throws \ReflectionException
-     * @throws \PHPUnit\Framework\MockObject\RuntimeException
+     * @throws RuntimeException
      */
     public function generateCode(): string
     {
@@ -199,6 +192,7 @@ final class MockMethod
         }
 
         $returnType = $this->returnType;
+
         // @see https://bugs.php.net/bug.php?id=70722
         if ($returnType === 'self') {
             $returnType = $this->className;
@@ -206,7 +200,15 @@ final class MockMethod
 
         // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/406
         if ($returnType === 'parent') {
-            $parentClass = (new ReflectionClass($this->className))->getParentClass();
+            try {
+                $parentClass = (new \ReflectionClass($this->className))->getParentClass();
+            } catch (\ReflectionException $e) {
+                throw new RuntimeException(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
 
             if ($parentClass === false) {
                 throw new RuntimeException(
@@ -256,12 +258,12 @@ final class MockMethod
         return $template->render();
     }
 
-    private function getTemplate(string $template): Text_Template
+    private function getTemplate(string $template): \Text_Template
     {
         $filename = __DIR__ . \DIRECTORY_SEPARATOR . 'Generator' . \DIRECTORY_SEPARATOR . $template;
 
         if (!isset(self::$templates[$filename])) {
-            self::$templates[$filename] = new Text_Template($filename);
+            self::$templates[$filename] = new \Text_Template($filename);
         }
 
         return self::$templates[$filename];
@@ -272,7 +274,7 @@ final class MockMethod
      *
      * @throws RuntimeException
      */
-    private static function getMethodParameters(ReflectionMethod $method, bool $forCall = false): string
+    private static function getMethodParameters(\ReflectionMethod $method, bool $forCall = false): string
     {
         $parameters = [];
 
@@ -309,7 +311,7 @@ final class MockMethod
                 } else {
                     try {
                         $class = $parameter->getClass();
-                    } catch (ReflectionException $e) {
+                    } catch (\ReflectionException $e) {
                         throw new RuntimeException(
                             \sprintf(
                                 'Cannot mock %s::%s() because a class or ' .
@@ -329,10 +331,26 @@ final class MockMethod
 
                 if (!$parameter->isVariadic()) {
                     if ($parameter->isDefaultValueAvailable()) {
-                        $value = $parameter->getDefaultValueConstantName();
+                        try {
+                            $value = $parameter->getDefaultValueConstantName();
+                        } catch (\ReflectionException $e) {
+                            throw new RuntimeException(
+                                $e->getMessage(),
+                                (int) $e->getCode(),
+                                $e
+                            );
+                        }
 
                         if ($value === null) {
-                            $value = \var_export($parameter->getDefaultValue(), true);
+                            try {
+                                $value = \var_export($parameter->getDefaultValue(), true);
+                            } catch (\ReflectionException $e) {
+                                throw new RuntimeException(
+                                    $e->getMessage(),
+                                    (int) $e->getCode(),
+                                    $e
+                                );
+                            }
                         } elseif (!\defined($value)) {
                             $rootValue = \preg_replace('/^.*\\\\/', '', $value);
                             $value     = \defined($rootValue) ? $rootValue : $value;

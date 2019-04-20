@@ -96,8 +96,6 @@ final class MockBuilder
     /**
      * Creates a mock object using a fluent interface.
      *
-     * @throws \ReflectionException
-     * @throws \PHPUnit\Framework\Exception
      * @throws RuntimeException
      */
     public function getMock(): MockObject
@@ -125,7 +123,6 @@ final class MockBuilder
     /**
      * Creates a mock object for an abstract class using a fluent interface.
      *
-     * @throws \ReflectionException
      * @throws \PHPUnit\Framework\Exception
      * @throws RuntimeException
      */
@@ -150,7 +147,6 @@ final class MockBuilder
     /**
      * Creates a mock object for a trait using a fluent interface.
      *
-     * @throws \ReflectionException
      * @throws \PHPUnit\Framework\Exception
      * @throws RuntimeException
      */
@@ -184,8 +180,6 @@ final class MockBuilder
 
     /**
      * Specifies the subset of methods to not mock. Default is to mock all of them.
-     *
-     * @throws \ReflectionException
      */
     public function setMethodsExcept(array $methods = []): self
     {
@@ -209,10 +203,8 @@ final class MockBuilder
 
     /**
      * Specifies the name for the mock class.
-     *
-     * @param string $name
      */
-    public function setMockClassName($name): self
+    public function setMockClassName(string $name): self
     {
         $this->mockClassName = $name;
 
@@ -322,10 +314,8 @@ final class MockBuilder
 
     /**
      * Sets the proxy target.
-     *
-     * @param object $object
      */
-    public function setProxyTarget($object): self
+    public function setProxyTarget(object $object): self
     {
         $this->proxyTarget = $object;
 
