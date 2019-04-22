@@ -1825,7 +1825,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (!isset($passedKeys[$dependency])) {
-                    if (!\is_callable($dependency, false, $callableName) || $dependency !== $callableName) {
+                    if (!$this->isCallableTestMethod($dependency)) {
                         $this->warnAboutDependencyThatDoesNotExist($dependency);
                     } else {
                         $this->markSkippedForMissingDependency($dependency);
@@ -2263,5 +2263,36 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
             }
         }
+    }
+
+    private function isCallableTestMethod(string $dependency): bool
+    {
+        [$className, $methodName] = \explode('::', $dependency);
+
+        if (!\class_exists($className)) {
+            return false;
+        }
+
+        try {
+            $class = new \ReflectionClass($className);
+        } catch (\ReflectionException $e) {
+            return false;
+        }
+
+        if (!$class->isSubclassOf(__CLASS__)) {
+            return false;
+        }
+
+        if (!$class->hasMethod($methodName)) {
+            return false;
+        }
+
+        try {
+            $method = $class->getMethod($methodName);
+        } catch (\ReflectionException $e) {
+            return false;
+        }
+
+        return TestUtil::isTestMethod($method);
     }
 }
