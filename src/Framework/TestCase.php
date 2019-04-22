@@ -34,6 +34,7 @@ use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
+use PHPUnit\Util\Test as TestUtil;
 use Prophecy;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophecy\MethodProphecy;
@@ -464,7 +465,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     public function getAnnotations(): array
     {
-        return \PHPUnit\Util\Test::parseTestMethodAnnotations(
+        return TestUtil::parseTestMethodAnnotations(
             \get_class($this),
             $this->name
         );
@@ -489,7 +490,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function getSize(): int
     {
-        return \PHPUnit\Util\Test::getSize(
+        return TestUtil::getSize(
             \get_class($this),
             $this->getName(false)
         );
@@ -500,7 +501,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function hasSize(): bool
     {
-        return $this->getSize() !== \PHPUnit\Util\Test::UNKNOWN;
+        return $this->getSize() !== TestUtil::UNKNOWN;
     }
 
     /**
@@ -508,7 +509,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function isSmall(): bool
     {
-        return $this->getSize() === \PHPUnit\Util\Test::SMALL;
+        return $this->getSize() === TestUtil::SMALL;
     }
 
     /**
@@ -516,7 +517,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function isMedium(): bool
     {
-        return $this->getSize() === \PHPUnit\Util\Test::MEDIUM;
+        return $this->getSize() === TestUtil::MEDIUM;
     }
 
     /**
@@ -524,7 +525,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     public function isLarge(): bool
     {
-        return $this->getSize() === \PHPUnit\Util\Test::LARGE;
+        return $this->getSize() === TestUtil::LARGE;
     }
 
     public function getActualOutput(): string
@@ -828,7 +829,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         \clearstatcache();
         $currentWorkingDirectory = \getcwd();
 
-        $hookMethods = \PHPUnit\Util\Test::getHookMethods(\get_class($this));
+        $hookMethods = TestUtil::getHookMethods(\get_class($this));
 
         $hasMetRequirements = false;
 
@@ -1684,7 +1685,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         try {
-            $expectedException = \PHPUnit\Util\Test::getExpectedException(
+            $expectedException = TestUtil::getExpectedException(
                 \get_class($this),
                 $this->name
             );
@@ -1711,7 +1712,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private function setUseErrorHandlerFromAnnotation(): void
     {
         try {
-            $useErrorHandler = \PHPUnit\Util\Test::getErrorHandlerSettings(
+            $useErrorHandler = TestUtil::getErrorHandlerSettings(
                 \get_class($this),
                 $this->name
             );
@@ -1734,7 +1735,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             return;
         }
 
-        $missingRequirements = \PHPUnit\Util\Test::getMissingRequirements(
+        $missingRequirements = TestUtil::getMissingRequirements(
             \get_class($this),
             $this->name
         );
@@ -1837,8 +1838,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (isset($passed[$dependency])) {
-                    if ($passed[$dependency]['size'] !== \PHPUnit\Util\Test::UNKNOWN &&
-                        $this->getSize() !== \PHPUnit\Util\Test::UNKNOWN &&
+                    if ($passed[$dependency]['size'] !== TestUtil::UNKNOWN &&
+                        $this->getSize() !== TestUtil::UNKNOWN &&
                         $passed[$dependency]['size'] > $this->getSize()) {
                         $this->result->addError(
                             $this,
