@@ -9,4 +9,5 @@
  */
 interface ExceptionWithThrowable extends \Throwable
 {
+    public function getAdditionalInformation();
 }
