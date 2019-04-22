@@ -1823,7 +1823,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private function markSkippedForMissingDependency(string $dependency): void
     {
         $this->status = BaseTestRunner::STATUS_SKIPPED;
+
         $this->result->startTest($this);
+
         $this->result->addError(
             $this,
             new SkippedTestError(
@@ -1834,13 +1836,16 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             ),
             0
         );
+
         $this->result->endTest($this, 0);
     }
 
     private function warnAboutDependencyThatDoesNotExist(string $dependency): void
     {
         $this->status = BaseTestRunner::STATUS_WARNING;
+
         $this->result->startTest($this);
+
         $this->result->addWarning(
             $this,
             new Warning(
@@ -1851,6 +1856,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             ),
             0
         );
+
         $this->result->endTest($this, 0);
     }
 
