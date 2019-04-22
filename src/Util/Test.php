@@ -782,6 +782,17 @@ final class Test
         return self::$hookMethods[$className];
     }
 
+    public static function isTestMethod(\ReflectionMethod $method): bool
+    {
+        if (\strpos($method->getName(), 'test') === 0) {
+            return true;
+        }
+
+        $annotations = self::parseAnnotations((string) $method->getDocComment());
+
+        return isset($annotations['test']);
+    }
+
     /**
      * @throws CodeCoverageException
      */

@@ -661,7 +661,7 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      */
     protected function addTestMethod(\ReflectionClass $class, \ReflectionMethod $method): void
     {
-        if (!$this->isTestMethod($method)) {
+        if (!TestUtil::isTestMethod($method)) {
             return;
         }
 
@@ -693,16 +693,5 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
             $test,
             TestUtil::getGroups($class->getName(), $name)
         );
-    }
-
-    private function isTestMethod(\ReflectionMethod $method): bool
-    {
-        if (\strpos($method->getName(), 'test') === 0) {
-            return true;
-        }
-
-        $annotations = TestUtil::parseAnnotations((string) $method->getDocComment());
-
-        return isset($annotations['test']);
     }
 }
