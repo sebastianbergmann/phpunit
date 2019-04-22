@@ -126,7 +126,7 @@ final class InvocationMocker implements MethodNameMatch
         return $this->will($stub);
     }
 
-    public function willThrowException(\Exception $exception): self
+    public function willThrowException(\Throwable $exception): self
     {
         $stub = new Stub\Exception($exception);
 

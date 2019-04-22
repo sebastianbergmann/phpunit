@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.1 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#3414](https://github.com/sebastianbergmann/phpunit/pull/3414): `willThrowException()` only accepts `Exception`, not `Throwable`
 * Fixed [#3596](https://github.com/sebastianbergmann/phpunit/issues/3596): Mocking an interface that extends another interface forgets to mock its own methods
 * Fixed [#3599](https://github.com/sebastianbergmann/phpunit/issues/3599): Type error in `TestCase::createGlobalStateSnapshot()`
 
