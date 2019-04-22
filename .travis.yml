@@ -6,6 +6,7 @@ addons:
   apt:
     packages:
       - libxml2-utils
+      - libonig-dev
 
 php:
   - 7.2
