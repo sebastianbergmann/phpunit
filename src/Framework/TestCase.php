@@ -920,7 +920,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         \clearstatcache();
 
-        if ($currentWorkingDirectory != \getcwd()) {
+        if ($currentWorkingDirectory !== \getcwd()) {
             \chdir($currentWorkingDirectory);
         }
 
@@ -1787,8 +1787,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 }
 
                 if (isset($passed[$dependency])) {
-                    if ($passed[$dependency]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
-                        $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
+                    if ($passed[$dependency]['size'] !== \PHPUnit\Util\Test::UNKNOWN &&
+                        $this->getSize() !== \PHPUnit\Util\Test::UNKNOWN &&
                         $passed[$dependency]['size'] > $this->getSize()) {
                         $this->result->addError(
                             $this,
