@@ -1778,7 +1778,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
                 if (!isset($passedKeys[$dependency])) {
                     if (!\is_callable($dependency, false, $callableName) || $dependency !== $callableName) {
-                        $this->markWarningForUncallableDependency($dependency);
+                        $this->warnAboutDependencyThatDoesNotExist($dependency);
                     } else {
                         $this->markSkippedForMissingDependency($dependency);
                     }
@@ -1837,7 +1837,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->result->endTest($this, 0);
     }
 
-    private function markWarningForUncallableDependency(string $dependency): void
+    private function warnAboutDependencyThatDoesNotExist(string $dependency): void
     {
         $this->status = BaseTestRunner::STATUS_WARNING;
         $this->result->startTest($this);
