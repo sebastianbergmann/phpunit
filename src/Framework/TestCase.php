@@ -1958,7 +1958,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             return;
         }
 
-        $this->snapshot = $this->createGlobalStateSnapshot($this->backupGlobals);
+        $this->snapshot = $this->createGlobalStateSnapshot($this->backupGlobals === true);
     }
 
     /**
@@ -1976,7 +1976,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
             try {
                 $this->compareGlobalStateSnapshots(
                     $this->snapshot,
-                    $this->createGlobalStateSnapshot($this->backupGlobals)
+                    $this->createGlobalStateSnapshot($this->backupGlobals === true)
                 );
             } catch (RiskyTestError $rte) {
                 // Intentionally left empty

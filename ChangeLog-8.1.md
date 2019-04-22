@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 8.1 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [8.1.4] - 2019-MM-DD
+
+### Fixed
+
+* Fixed [#3599](https://github.com/sebastianbergmann/phpunit/issues/3599): Type error in `TestCase::createGlobalStateSnapshot()`
+
 ## [8.1.3] - 2019-04-19
 
 ### Fixed
@@ -35,6 +41,7 @@ All notable changes of the PHPUnit 8.1 release series are documented in this fil
 
 * The `groups` attribute on the `test` element in the TestDox XML report is now deprecated
 
+[8.1.4]: https://github.com/sebastianbergmann/phpunit/compare/8.1.3...8.1.4
 [8.1.3]: https://github.com/sebastianbergmann/phpunit/compare/8.1.2...8.1.3
 [8.1.2]: https://github.com/sebastianbergmann/phpunit/compare/8.1.1...8.1.2
 [8.1.1]: https://github.com/sebastianbergmann/phpunit/compare/8.1.0...8.1.1
