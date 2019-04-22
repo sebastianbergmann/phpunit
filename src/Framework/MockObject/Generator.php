@@ -497,13 +497,20 @@ final class Generator
     }
 
     /**
-     * @throws \ReflectionException
-     *
      * @return \ReflectionMethod[]
      */
     private function getInterfaceOwnMethods(string $interfaceName): array
     {
-        $reflect = new \ReflectionClass($interfaceName);
+        try {
+            $reflect = new \ReflectionClass($interfaceName);
+        } catch (\ReflectionException $e) {
+            throw new RuntimeException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+
         $methods = [];
 
         foreach ($reflect->getMethods() as $method) {
