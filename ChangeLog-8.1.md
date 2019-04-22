@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.1 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#3596](https://github.com/sebastianbergmann/phpunit/issues/3596): Mocking an interface that extends another interface forgets to mock its own methods
 * Fixed [#3599](https://github.com/sebastianbergmann/phpunit/issues/3599): Type error in `TestCase::createGlobalStateSnapshot()`
 
 ## [8.1.3] - 2019-04-19
