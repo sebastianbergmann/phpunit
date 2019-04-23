@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 /**
  * @small
  */
-class TestResultTest extends TestCase
+final class TestResultTest extends TestCase
 {
     /**
      * @dataProvider canSkipCoverageProvider

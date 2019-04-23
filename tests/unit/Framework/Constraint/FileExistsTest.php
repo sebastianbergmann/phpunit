@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class FileExistsTest extends ConstraintTestCase
+final class FileExistsTest extends ConstraintTestCase
 {
     public function testConstraintFileExists(): void
     {

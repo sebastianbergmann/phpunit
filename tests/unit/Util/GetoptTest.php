@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class GetoptTest extends TestCase
+final class GetoptTest extends TestCase
 {
     public function testItIncludeTheLongOptionsAfterTheArgument(): void
     {

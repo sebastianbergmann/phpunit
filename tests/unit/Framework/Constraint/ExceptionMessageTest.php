@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class ExceptionMessageTest extends TestCase
+final class ExceptionMessageTest extends TestCase
 {
     public function testLiteralMessage(): void
     {

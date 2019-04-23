@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class IsTypeTest extends ConstraintTestCase
+final class IsTypeTest extends ConstraintTestCase
 {
     public function testConstraintIsType(): void
     {

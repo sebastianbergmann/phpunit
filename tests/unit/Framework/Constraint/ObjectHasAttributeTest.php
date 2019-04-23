@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class ObjectHasAttributeTest extends ConstraintTestCase
+final class ObjectHasAttributeTest extends ConstraintTestCase
 {
     public function testConstraintObjectHasAttribute(): void
     {

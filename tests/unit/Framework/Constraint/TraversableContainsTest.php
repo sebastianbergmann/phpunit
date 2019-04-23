@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class TraversableContainsTest extends ConstraintTestCase
+final class TraversableContainsTest extends ConstraintTestCase
 {
     public function testConstraintTraversableCheckForObjectIdentityForDefaultCase(): void
     {

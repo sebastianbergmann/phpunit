@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class StringContainsTest extends ConstraintTestCase
+final class StringContainsTest extends ConstraintTestCase
 {
     public function testConstraintStringContains(): void
     {

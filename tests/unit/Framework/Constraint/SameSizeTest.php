@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class SameSizeTest extends ConstraintTestCase
+final class SameSizeTest extends ConstraintTestCase
 {
     public function testConstraintSameSizeWithAnArray(): void
     {

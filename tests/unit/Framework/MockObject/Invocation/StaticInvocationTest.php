@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class StaticInvocationTest extends TestCase
+final class StaticInvocationTest extends TestCase
 {
     public function testConstructorRequiresClassAndMethodAndParameters(): void
     {

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class ArrayHasKeyTest extends ConstraintTestCase
+final class ArrayHasKeyTest extends ConstraintTestCase
 {
     public function testConstraintArrayHasKey(): void
     {

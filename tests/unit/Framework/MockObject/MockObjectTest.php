@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class MockObjectTest extends TestCase
+final class MockObjectTest extends TestCase
 {
     public function testMockedMethodIsNeverCalled(): void
     {

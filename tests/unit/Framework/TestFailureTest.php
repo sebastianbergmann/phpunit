@@ -15,7 +15,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 /**
  * @small
  */
-class TestFailureTest extends TestCase
+final class TestFailureTest extends TestCase
 {
     public function testToString(): void
     {

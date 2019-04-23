@@ -15,7 +15,7 @@ use PHPUnit\Util\PHP\AbstractPhpProcess;
 /**
  * @medium
  */
-class PhptTestCaseTest extends TestCase
+final class PhptTestCaseTest extends TestCase
 {
     private const EXPECT_CONTENT = <<<EOF
 --TEST--

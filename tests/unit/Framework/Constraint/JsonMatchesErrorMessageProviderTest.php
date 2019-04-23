@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class JsonMatchesErrorMessageProviderTest extends TestCase
+final class JsonMatchesErrorMessageProviderTest extends TestCase
 {
     public static function determineJsonErrorDataprovider(): array
     {

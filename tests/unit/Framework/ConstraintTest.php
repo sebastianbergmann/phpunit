@@ -17,7 +17,7 @@ use PHPUnit\Util\Filter;
 /**
  * @small
  */
-class ConstraintTest extends TestCase
+final class ConstraintTest extends TestCase
 {
     public function testConstraintArrayNotHasKey(): void
     {

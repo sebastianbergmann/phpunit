@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class RegularExpressionTest extends TestCase
+final class RegularExpressionTest extends TestCase
 {
     public function validRegexpProvider(): array
     {

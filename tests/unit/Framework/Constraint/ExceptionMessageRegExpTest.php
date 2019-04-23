@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class ExceptionMessageRegExpTest extends TestCase
+final class ExceptionMessageRegExpTest extends TestCase
 {
     public function testRegexMessage(): void
     {

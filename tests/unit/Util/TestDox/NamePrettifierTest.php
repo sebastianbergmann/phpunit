@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  * @group testdox
  * @small
  */
-class NamePrettifierTest extends TestCase
+final class NamePrettifierTest extends TestCase
 {
     /**
      * @var NamePrettifier

@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class DirectoryExistsTest extends ConstraintTestCase
+final class DirectoryExistsTest extends ConstraintTestCase
 {
     public function testDefaults(): void
     {

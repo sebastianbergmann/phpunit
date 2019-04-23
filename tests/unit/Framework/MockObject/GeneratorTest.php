@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @small
  */
-class GeneratorTest extends TestCase
+final class GeneratorTest extends TestCase
 {
     /**
      * @var Generator

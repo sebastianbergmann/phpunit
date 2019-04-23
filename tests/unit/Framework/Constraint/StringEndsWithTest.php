@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class StringEndsWithTest extends ConstraintTestCase
+final class StringEndsWithTest extends ConstraintTestCase
 {
     public function testConstraintStringEndsWithCorrectValueAndReturnResult(): void
     {

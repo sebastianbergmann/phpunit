@@ -14,7 +14,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 /**
  * @small
  */
-class CallbackTest extends ConstraintTestCase
+final class CallbackTest extends ConstraintTestCase
 {
     public static function staticCallbackReturningTrue()
     {

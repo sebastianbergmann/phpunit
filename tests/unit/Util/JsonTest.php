@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class JsonTest extends TestCase
+final class JsonTest extends TestCase
 {
     /**
      * @testdox Canonicalize $actual

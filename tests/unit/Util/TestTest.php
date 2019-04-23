@@ -19,7 +19,7 @@ use PHPUnit\Framework\Warning;
 /**
  * @small
  */
-class TestTest extends TestCase
+final class TestTest extends TestCase
 {
     /**
      * @var string

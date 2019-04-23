@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class XmlTest extends TestCase
+final class XmlTest extends TestCase
 {
     /**
      * @dataProvider charProvider

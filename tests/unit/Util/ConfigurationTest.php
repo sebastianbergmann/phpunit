@@ -18,7 +18,7 @@ use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 /**
  * @small
  */
-class ConfigurationTest extends TestCase
+final class ConfigurationTest extends TestCase
 {
     /**
      * @var Configuration

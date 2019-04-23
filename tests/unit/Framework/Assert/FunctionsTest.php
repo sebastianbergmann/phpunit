@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
-class FunctionsTest extends TestCase
+final class FunctionsTest extends TestCase
 {
     private static $globalAssertionFunctions = [];
 

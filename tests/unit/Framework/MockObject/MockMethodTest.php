@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class MockMethodTest extends TestCase
+final class MockMethodTest extends TestCase
 {
     public function testGetNameReturnsMethodName(): void
     {

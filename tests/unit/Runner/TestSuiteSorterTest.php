@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestSuite;
  * @group test-reorder
  * @small
  */
-class TestSuiteSorterTest extends TestCase
+final class TestSuiteSorterTest extends TestCase
 {
     /**
      * Constants to improve clarity of @dataprovider

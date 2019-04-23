@@ -15,7 +15,7 @@ use PHPUnit\Runner\BaseTestRunner;
 /**
  * @small
  */
-class TestCaseTest extends TestCase
+final class TestCaseTest extends TestCase
 {
     protected static $testStatic = 456;
 

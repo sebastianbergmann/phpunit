@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class InvocationMockerTest extends TestCase
+final class InvocationMockerTest extends TestCase
 {
     public function testWillReturnWithOneValue(): void
     {

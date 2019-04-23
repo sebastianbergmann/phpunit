@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @small
  */
-class ConsecutiveParametersTest extends TestCase
+final class ConsecutiveParametersTest extends TestCase
 {
     public function testIntegration(): void
     {

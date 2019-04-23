@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestSuite;
 /**
  * @small
  */
-class NameFilterIteratorTest extends TestCase
+final class NameFilterIteratorTest extends TestCase
 {
     public function testCaseSensitiveMatch(): void
     {

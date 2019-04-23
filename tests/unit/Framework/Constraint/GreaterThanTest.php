@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class GreaterThanTest extends ConstraintTestCase
+final class GreaterThanTest extends ConstraintTestCase
 {
     public function testConstraintGreaterThan(): void
     {

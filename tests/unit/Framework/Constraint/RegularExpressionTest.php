@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestFailure;
 /**
  * @small
  */
-class RegularExpressionTest extends ConstraintTestCase
+final class RegularExpressionTest extends ConstraintTestCase
 {
     public function testConstraintRegularExpression(): void
     {

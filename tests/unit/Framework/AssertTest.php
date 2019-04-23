@@ -14,7 +14,7 @@ use PHPUnit\Util\Xml;
 /**
  * @small
  */
-class AssertTest extends TestCase
+final class AssertTest extends TestCase
 {
     public static function validInvalidJsonDataprovider(): array
     {

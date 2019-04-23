@@ -15,7 +15,7 @@ use PHPUnit\Util\Json;
 /**
  * @small
  */
-class JsonMatchesTest extends ConstraintTestCase
+final class JsonMatchesTest extends ConstraintTestCase
 {
     public static function evaluateDataprovider(): array
     {
