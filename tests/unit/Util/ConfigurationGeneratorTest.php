@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @small
+ * @covers \PHPUnit\Util\ConfigurationGenerator
  */
 final class ConfigurationGeneratorTest extends TestCase
 {
