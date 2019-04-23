@@ -2,12 +2,11 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="phpunit.xsd"
          bootstrap="tests/bootstrap.php"
-         cacheResult="true"
          colors="true"
          verbose="true">
     <testsuites>
         <testsuite name="unit">
-            <directory suffix="Test.php">tests/unit</directory>
+            <directory>tests/unit</directory>
         </testsuite>
 
         <testsuite name="end-to-end">
