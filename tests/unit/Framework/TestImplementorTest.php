@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework;
 
+/**
+ * @small
+ */
 class TestImplementorTest extends TestCase
 {
     public function testSuccessfulRun(): void

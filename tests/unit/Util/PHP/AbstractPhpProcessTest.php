@@ -11,6 +11,9 @@ namespace PHPUnit\Util\PHP;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @small
+ */
 class AbstractPhpProcessTest extends TestCase
 {
     /**

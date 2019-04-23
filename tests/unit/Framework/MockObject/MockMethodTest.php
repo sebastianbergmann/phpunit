@@ -11,6 +11,9 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @small
+ */
 class MockMethodTest extends TestCase
 {
     public function testGetNameReturnsMethodName(): void

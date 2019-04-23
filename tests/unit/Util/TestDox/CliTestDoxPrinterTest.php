@@ -16,6 +16,7 @@ use PHPUnit\Framework\Warning;
 
 /**
  * @group testdox
+ * @small
  */
 final class CliTestDoxPrinterTest extends TestCase
 {

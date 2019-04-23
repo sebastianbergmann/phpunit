@@ -11,6 +11,9 @@
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @small
+ */
 class ConsecutiveParametersTest extends TestCase
 {
     public function testIntegration(): void

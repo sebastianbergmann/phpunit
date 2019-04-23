@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework;
 
+/**
+ * @small
+ */
 class TestResultTest extends TestCase
 {
     /**

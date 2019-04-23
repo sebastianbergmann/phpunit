@@ -12,6 +12,9 @@ namespace PHPUnit\Framework;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Runner\BaseTestRunner;
 
+/**
+ * @small
+ */
 class TestCaseTest extends TestCase
 {
     protected static $testStatic = 456;

@@ -11,6 +11,9 @@
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @small
+ */
 class MockBuilderTest extends TestCase
 {
     public function testMockBuilderRequiresClassName(): void

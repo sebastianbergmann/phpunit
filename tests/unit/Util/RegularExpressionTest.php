@@ -11,6 +11,9 @@ namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @small
+ */
 class RegularExpressionTest extends TestCase
 {
     public function validRegexpProvider(): array

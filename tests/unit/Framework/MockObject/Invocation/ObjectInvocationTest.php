@@ -11,6 +11,9 @@
 use PHPUnit\Framework\MockObject\Invocation\ObjectInvocation;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @small
+ */
 class ObjectInvocationTest extends TestCase
 {
     public function testConstructorRequiresClassAndMethodAndParametersAndObject(): void

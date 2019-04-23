@@ -11,6 +11,9 @@ namespace PHPUnit\Framework;
 
 use MyTestListener;
 
+/**
+ * @small
+ */
 final class TestListenerTest extends TestCase
 {
     /**

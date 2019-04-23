@@ -13,6 +13,7 @@ use PHPUnit\Runner\DefaultTestResultCache;
 
 /**
  * @group test-reorder
+ * @small
  */
 class TestResultCacheTest extends TestCase
 {

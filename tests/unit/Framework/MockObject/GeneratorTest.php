@@ -24,6 +24,8 @@ use PHPUnit\Framework\TestCase;
  * @uses \PHPUnit\Framework\MockObject\Matcher\MethodName
  * @uses \PHPUnit\Framework\MockObject\Stub\ReturnStub
  * @uses \PHPUnit\Framework\MockObject\Matcher\InvokedCount
+ *
+ * @small
  */
 class GeneratorTest extends TestCase
 {

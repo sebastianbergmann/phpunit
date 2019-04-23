@@ -11,6 +11,9 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @small
+ */
 class ExceptionMessageTest extends TestCase
 {
     public function testLiteralMessage(): void

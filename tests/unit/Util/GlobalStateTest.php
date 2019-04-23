@@ -11,6 +11,9 @@ namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @small
+ */
 class GlobalStateTest extends TestCase
 {
     public function testIncludedFilesAsStringSkipsVfsProtocols(): void

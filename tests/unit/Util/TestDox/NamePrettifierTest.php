@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @group testdox
+ * @small
  */
 class NamePrettifierTest extends TestCase
 {

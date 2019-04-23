@@ -15,6 +15,9 @@ use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 
+/**
+ * @small
+ */
 class ConfigurationTest extends TestCase
 {
     /**

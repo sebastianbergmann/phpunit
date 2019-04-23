@@ -16,6 +16,9 @@ use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 
+/**
+ * @small
+ */
 class TestTest extends TestCase
 {
     /**

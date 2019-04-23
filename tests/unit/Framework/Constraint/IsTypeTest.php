@@ -13,6 +13,9 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
+/**
+ * @small
+ */
 class IsTypeTest extends ConstraintTestCase
 {
     public function testConstraintIsType(): void

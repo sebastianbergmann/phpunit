@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestSuite;
 /**
  * @testdox Reordering test execution
  * @group test-reorder
+ * @small
  */
 class TestSuiteSorterTest extends TestCase
 {

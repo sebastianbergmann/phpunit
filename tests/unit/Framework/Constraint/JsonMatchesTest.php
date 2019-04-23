@@ -12,6 +12,9 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Util\Json;
 
+/**
+ * @small
+ */
 class JsonMatchesTest extends ConstraintTestCase
 {
     public static function evaluateDataprovider(): array

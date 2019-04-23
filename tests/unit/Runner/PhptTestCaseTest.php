@@ -12,6 +12,9 @@ namespace PHPUnit\Runner;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 
+/**
+ * @medium
+ */
 class PhptTestCaseTest extends TestCase
 {
     private const EXPECT_CONTENT = <<<EOF
