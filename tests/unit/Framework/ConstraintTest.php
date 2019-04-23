@@ -14,7 +14,10 @@ use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Util\Filter;
 
-class ConstraintTest extends TestCase
+/**
+ * @small
+ */
+final class ConstraintTest extends TestCase
 {
     public function testConstraintArrayNotHasKey(): void
     {

@@ -12,7 +12,10 @@ use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class MockObjectTest extends TestCase
+/**
+ * @small
+ */
+final class MockObjectTest extends TestCase
 {
     public function testMockedMethodIsNeverCalled(): void
     {

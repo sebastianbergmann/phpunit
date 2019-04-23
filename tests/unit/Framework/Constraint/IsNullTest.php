@@ -12,7 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class IsNullTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class IsNullTest extends ConstraintTestCase
 {
     public function testConstraintIsNull(): void
     {

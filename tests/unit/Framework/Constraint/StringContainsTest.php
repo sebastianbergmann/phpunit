@@ -12,7 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class StringContainsTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class StringContainsTest extends ConstraintTestCase
 {
     public function testConstraintStringContains(): void
     {

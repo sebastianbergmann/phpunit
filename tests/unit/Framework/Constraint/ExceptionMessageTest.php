@@ -11,7 +11,10 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\TestCase;
 
-class ExceptionMessageTest extends TestCase
+/**
+ * @small
+ */
+final class ExceptionMessageTest extends TestCase
 {
     public function testLiteralMessage(): void
     {

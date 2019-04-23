@@ -16,7 +16,10 @@ use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 
-class TestTest extends TestCase
+/**
+ * @small
+ */
+final class TestTest extends TestCase
 {
     /**
      * @var string

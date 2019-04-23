@@ -11,7 +11,10 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\TestCase;
 
-class ExceptionMessageRegExpTest extends TestCase
+/**
+ * @small
+ */
+final class ExceptionMessageRegExpTest extends TestCase
 {
     public function testRegexMessage(): void
     {

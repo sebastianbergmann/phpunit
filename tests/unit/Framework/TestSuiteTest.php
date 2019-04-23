@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Framework;
 
-class TestSuiteTest extends TestCase
+/**
+ * @small
+ */
+final class TestSuiteTest extends TestCase
 {
     /**
      * @var TestResult

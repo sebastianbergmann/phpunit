@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-class CountTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class CountTest extends ConstraintTestCase
 {
     public function testCount(): void
     {

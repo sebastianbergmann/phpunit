@@ -11,7 +11,10 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
 
-class CallbackTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class CallbackTest extends ConstraintTestCase
 {
     public static function staticCallbackReturningTrue()
     {

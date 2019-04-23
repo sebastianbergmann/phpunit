@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-class IsJsonTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class IsJsonTest extends ConstraintTestCase
 {
     public static function evaluateDataprovider(): array
     {

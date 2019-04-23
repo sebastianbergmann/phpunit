@@ -13,8 +13,9 @@ use PHPUnit\Runner\NullTestResultCache;
 
 /**
  * @group test-reorder
+ * @small
  */
-class NullTestResultCacheTest extends TestCase
+final class NullTestResultCacheTest extends TestCase
 {
     public function testHasWorkingStubs(): void
     {

@@ -12,7 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class StringStartsWithTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class StringStartsWithTest extends ConstraintTestCase
 {
     public function testConstraintStringStartsWithCorrectValueAndReturnResult(): void
     {

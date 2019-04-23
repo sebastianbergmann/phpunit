@@ -11,7 +11,10 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Util\Xml;
 
-class AssertTest extends TestCase
+/**
+ * @small
+ */
+final class AssertTest extends TestCase
 {
     public static function validInvalidJsonDataprovider(): array
     {

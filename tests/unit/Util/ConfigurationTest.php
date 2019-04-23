@@ -15,7 +15,10 @@ use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 
-class ConfigurationTest extends TestCase
+/**
+ * @small
+ */
+final class ConfigurationTest extends TestCase
 {
     /**
      * @var Configuration

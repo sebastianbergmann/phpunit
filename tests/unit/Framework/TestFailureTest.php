@@ -12,7 +12,10 @@ namespace PHPUnit\Framework;
 use PHPUnit\Framework\Error\Error;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
-class TestFailureTest extends TestCase
+/**
+ * @small
+ */
+final class TestFailureTest extends TestCase
 {
     public function testToString(): void
     {

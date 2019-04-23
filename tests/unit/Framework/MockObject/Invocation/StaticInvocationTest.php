@@ -11,7 +11,10 @@
 use PHPUnit\Framework\MockObject\Invocation\StaticInvocation;
 use PHPUnit\Framework\TestCase;
 
-class StaticInvocationTest extends TestCase
+/**
+ * @small
+ */
+final class StaticInvocationTest extends TestCase
 {
     public function testConstructorRequiresClassAndMethodAndParameters(): void
     {

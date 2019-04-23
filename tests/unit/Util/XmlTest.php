@@ -12,7 +12,10 @@ namespace PHPUnit\Util;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
-class XmlTest extends TestCase
+/**
+ * @small
+ */
+final class XmlTest extends TestCase
 {
     /**
      * @dataProvider charProvider

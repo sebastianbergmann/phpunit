@@ -14,8 +14,9 @@ use PHPUnit\Util\Color;
 
 /**
  * @testdox Basic ANSI color highlighting support
+ * @small
  */
-class ColorTest extends TestCase
+final class ColorTest extends TestCase
 {
     /**
      * @testdox Colorize with $_dataName

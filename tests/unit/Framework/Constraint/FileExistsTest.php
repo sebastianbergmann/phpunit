@@ -12,7 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class FileExistsTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class FileExistsTest extends ConstraintTestCase
 {
     public function testConstraintFileExists(): void
     {

@@ -12,7 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class TraversableContainsTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class TraversableContainsTest extends ConstraintTestCase
 {
     public function testConstraintTraversableCheckForObjectIdentityForDefaultCase(): void
     {

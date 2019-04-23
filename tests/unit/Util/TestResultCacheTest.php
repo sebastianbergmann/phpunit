@@ -13,8 +13,9 @@ use PHPUnit\Runner\DefaultTestResultCache;
 
 /**
  * @group test-reorder
+ * @small
  */
-class TestResultCacheTest extends TestCase
+final class TestResultCacheTest extends TestCase
 {
     public function testReadsCacheFromProvidedFilename(): void
     {

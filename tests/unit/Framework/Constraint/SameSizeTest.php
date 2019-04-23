@@ -12,7 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-class SameSizeTest extends ConstraintTestCase
+/**
+ * @small
+ */
+final class SameSizeTest extends ConstraintTestCase
 {
     public function testConstraintSameSizeWithAnArray(): void
     {

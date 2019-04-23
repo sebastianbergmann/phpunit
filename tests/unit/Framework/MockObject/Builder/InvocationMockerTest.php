@@ -11,7 +11,10 @@
 use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
 use PHPUnit\Framework\TestCase;
 
-class InvocationMockerTest extends TestCase
+/**
+ * @small
+ */
+final class InvocationMockerTest extends TestCase
 {
     public function testWillReturnWithOneValue(): void
     {

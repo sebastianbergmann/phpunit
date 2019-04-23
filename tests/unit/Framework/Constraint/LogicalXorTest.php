@@ -13,6 +13,9 @@ use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @small
+ */
 final class LogicalXorTest extends TestCase
 {
     public function testFromConstraintsReturnsConstraint(): void

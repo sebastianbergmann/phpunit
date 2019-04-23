@@ -12,7 +12,10 @@ namespace PHPUnit\Util;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
-class JsonTest extends TestCase
+/**
+ * @small
+ */
+final class JsonTest extends TestCase
 {
     /**
      * @testdox Canonicalize $actual

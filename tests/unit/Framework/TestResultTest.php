@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Framework;
 
-class TestResultTest extends TestCase
+/**
+ * @small
+ */
+final class TestResultTest extends TestCase
 {
     /**
      * @dataProvider canSkipCoverageProvider

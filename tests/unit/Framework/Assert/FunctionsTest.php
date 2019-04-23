@@ -9,27 +9,21 @@
  */
 namespace PHPUnit\Framework;
 
-class FunctionsTest extends TestCase
+final class FunctionsTest extends TestCase
 {
     private static $globalAssertionFunctions = [];
 
     public static function setUpBeforeClass(): void
     {
-        $globalAssertionFunctions = \file_get_contents(__DIR__ . '/../../../../src/Framework/Assert/Functions.php');
-        \preg_match_all('/function (assert[^ \(]+)/', $globalAssertionFunctions, $matches);
+        \preg_match_all(
+            '/function (assert[^ \(]+)/',
+            \file_get_contents(
+                __DIR__ . '/../../../../src/Framework/Assert/Functions.php'
+            ),
+            $matches
+        );
+
         self::$globalAssertionFunctions = $matches[1];
-    }
-
-    public function provideStaticAssertionMethodNames(): array
-    {
-        $staticAssertionMethods = \file_get_contents(__DIR__ . '/../../../../src/Framework/Assert.php');
-        \preg_match_all('/public static function (assert[^ \(]+)/', $staticAssertionMethods, $matches);
-
-        return \array_reduce($matches[1], function (array $functionNames, string $functionName) {
-            $functionNames[$functionName] = [$functionName];
-
-            return $functionNames;
-        }, []);
     }
 
     /**
@@ -41,6 +35,27 @@ class FunctionsTest extends TestCase
             $methodName,
             self::$globalAssertionFunctions,
             "Mapping for Assert::$methodName is missing in Functions.php"
+        );
+    }
+
+    public function provideStaticAssertionMethodNames(): array
+    {
+        \preg_match_all(
+            '/public static function (assert[^ \(]+)/',
+            \file_get_contents(
+                __DIR__ . '/../../../../src/Framework/Assert.php'
+            ),
+            $matches
+        );
+
+        return \array_reduce(
+            $matches[1],
+            function (array $functionNames, string $functionName) {
+                $functionNames[$functionName] = [$functionName];
+
+                return $functionNames;
+            },
+            []
         );
     }
 }

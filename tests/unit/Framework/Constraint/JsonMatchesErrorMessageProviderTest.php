@@ -11,7 +11,10 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\TestCase;
 
-class JsonMatchesErrorMessageProviderTest extends TestCase
+/**
+ * @small
+ */
+final class JsonMatchesErrorMessageProviderTest extends TestCase
 {
     public static function determineJsonErrorDataprovider(): array
     {
