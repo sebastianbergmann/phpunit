@@ -1088,7 +1088,7 @@ class Command
     protected function showHelp(): void
     {
         $this->printVersionString();
-        (new \Help())->writeToConsole();
+        (new Help)->writeToConsole();
     }
 
     /**
