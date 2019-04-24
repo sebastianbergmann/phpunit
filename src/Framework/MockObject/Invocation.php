@@ -53,14 +53,7 @@ final class Invocation implements SelfDescribing
      */
     private $object;
 
-    /**
-     * @param string $className
-     * @param string $methodName
-     * @param string $returnType
-     * @param object $object
-     * @param bool   $cloneObjects
-     */
-    public function __construct($className, $methodName, array $parameters, $returnType, $object, $cloneObjects = false, bool $proxiedCall = false)
+    public function __construct(string $className, string $methodName, array $parameters, string $returnType, object $object, bool $cloneObjects = false, bool $proxiedCall = false)
     {
         $this->className   = $className;
         $this->methodName  = $methodName;
@@ -189,7 +182,7 @@ final class Invocation implements SelfDescribing
         );
     }
 
-    public function getObject()
+    public function getObject(): ?object
     {
         return $this->object;
     }
