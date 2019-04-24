@@ -20,7 +20,7 @@ final class Invocation implements SelfDescribing
     /**
      * @var array
      */
-    private static $uncloneableExtensions = [
+    private const UNCLONEABLE_EXTENSIONS = [
         'mysqli'    => true,
         'SQLite'    => true,
         'sqlite3'   => true,
@@ -32,7 +32,7 @@ final class Invocation implements SelfDescribing
     /**
      * @var array
      */
-    private static $uncloneableClasses = [
+    private const UNCLONEABLE_CLASSES = [
         'Closure',
         'COMPersistHelper',
         'IteratorIterator',
@@ -226,12 +226,12 @@ final class Invocation implements SelfDescribing
         // Check the blacklist before asking PHP reflection to work around
         // https://bugs.php.net/bug.php?id=53967
         if ($object->isInternal() &&
-            isset(self::$uncloneableExtensions[$object->getExtensionName()])) {
+            isset(self::UNCLONEABLE_EXTENSIONS[$object->getExtensionName()])) {
             $cloneable = false;
         }
 
         if ($cloneable === null) {
-            foreach (self::$uncloneableClasses as $class) {
+            foreach (self::UNCLONEABLE_CLASSES as $class) {
                 if ($original instanceof $class) {
                     $cloneable = false;
 
