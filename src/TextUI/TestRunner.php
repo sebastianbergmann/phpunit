@@ -1284,7 +1284,7 @@ final class TestRunner extends BaseTestRunner
     {
         $this->printer->write(
             \sprintf(
-                "\nGenerating code coverage report in %s format ...",
+                "\nGenerating code coverage report in %s format ... ",
                 $format
             )
         );
@@ -1296,7 +1296,7 @@ final class TestRunner extends BaseTestRunner
     {
         $this->printer->write(
             \sprintf(
-                " done [%s]\n",
+                "done [%s]\n",
                 Timer::secondsToTimeString(Timer::stop())
             )
         );
@@ -1306,7 +1306,7 @@ final class TestRunner extends BaseTestRunner
     {
         $this->printer->write(
             \sprintf(
-                " failed [%s]\n%s\n",
+                "failed [%s]\n%s\n",
                 Timer::secondsToTimeString(Timer::stop()),
                 $e->getMessage()
             )
