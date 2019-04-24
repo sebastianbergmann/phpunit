@@ -250,7 +250,7 @@ final class TestResult implements Countable
      */
     public function addError(Test $test, Throwable $t, float $time): void
     {
-        if ($t instanceof RiskyTest) {
+        if ($t instanceof RiskyTestError) {
             $this->risky[] = new TestFailure($test, $t);
             $notifyMethod  = 'addRiskyTest';
 
@@ -322,7 +322,7 @@ final class TestResult implements Countable
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
-        if ($e instanceof RiskyTest || $e instanceof OutputError) {
+        if ($e instanceof RiskyTestError || $e instanceof OutputError) {
             $this->risky[] = new TestFailure($test, $e);
             $notifyMethod  = 'addRiskyTest';
 

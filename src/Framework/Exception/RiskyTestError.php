@@ -12,6 +12,6 @@ namespace PHPUnit\Framework;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class RiskyTestError extends AssertionFailedError implements RiskyTest
+class RiskyTestError extends AssertionFailedError
 {
 }
