@@ -20,7 +20,6 @@ use phpDocumentor\Reflection\Project;
 use phpDocumentor\Reflection\Type;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
-use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeUnitReverseLookup\Wizard;
 use SebastianBergmann\Comparator\Comparator;
@@ -139,7 +138,7 @@ final class Blacklist
     private static $directories;
 
     /**
-     * @throws \ReflectionException
+     * @throws Exception
      *
      * @return string[]
      */
@@ -151,7 +150,7 @@ final class Blacklist
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws Exception
      */
     public function isBlacklisted(string $file): bool
     {
@@ -171,7 +170,7 @@ final class Blacklist
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws Exception
      */
     private function initialize(): void
     {
@@ -183,7 +182,15 @@ final class Blacklist
                     continue;
                 }
 
-                $directory = (new ReflectionClass($className))->getFileName();
+                try {
+                    $directory = (new \ReflectionClass($className))->getFileName();
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
 
                 for ($i = 0; $i < $parent; $i++) {
                     $directory = \dirname($directory);

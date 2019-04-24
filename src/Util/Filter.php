@@ -18,7 +18,7 @@ use PHPUnit\Framework\SyntheticError;
 final class Filter
 {
     /**
-     * @throws \ReflectionException
+     * @throws Exception
      */
     public static function getFilteredStacktrace(\Throwable $t): string
     {

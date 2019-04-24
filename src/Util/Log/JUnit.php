@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
+use PHPUnit\Util\Exception;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml;
@@ -93,8 +94,6 @@ final class JUnit extends Printer implements TestListener
 
     /**
      * @param null|mixed $out
-     *
-     * @throws \PHPUnit\Framework\Exception
      */
     public function __construct($out = null, bool $reportUselessTests = false)
     {
@@ -123,9 +122,6 @@ final class JUnit extends Printer implements TestListener
 
     /**
      * An error occurred.
-     *
-     * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function addError(Test $test, \Throwable $t, float $time): void
     {
@@ -135,9 +131,6 @@ final class JUnit extends Printer implements TestListener
 
     /**
      * A warning occurred.
-     *
-     * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
@@ -147,9 +140,6 @@ final class JUnit extends Printer implements TestListener
 
     /**
      * A failure occurred.
-     *
-     * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
@@ -162,13 +152,11 @@ final class JUnit extends Printer implements TestListener
      */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
     {
-        $this->doAddSkipped($test);
+        $this->doAddSkipped();
     }
 
     /**
      * Risky test.
-     *
-     * @throws \ReflectionException
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
@@ -196,7 +184,7 @@ final class JUnit extends Printer implements TestListener
      */
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
     {
-        $this->doAddSkipped($test);
+        $this->doAddSkipped();
     }
 
     /**
@@ -281,9 +269,6 @@ final class JUnit extends Printer implements TestListener
 
     /**
      * A test started.
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function startTest(Test $test): void
     {
@@ -296,11 +281,28 @@ final class JUnit extends Printer implements TestListener
         $testCase = $this->document->createElement('testcase');
         $testCase->setAttribute('name', $test->getName());
 
-        $class      = new \ReflectionClass($test);
+        try {
+            $class = new \ReflectionClass($test);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+
         $methodName = $test->getName(!$usesDataprovider);
 
         if ($class->hasMethod($methodName)) {
-            $method = $class->getMethod($methodName);
+            try {
+                $method = $class->getMethod($methodName);
+            } catch (\ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
 
             $testCase->setAttribute('class', $class->getName());
             $testCase->setAttribute('classname', \str_replace('\\', '.', $class->getName()));
@@ -381,12 +383,6 @@ final class JUnit extends Printer implements TestListener
         }
     }
 
-    /**
-     * Method which generalizes addError() and addFailure()
-     *
-     * @throws \InvalidArgumentException
-     * @throws \ReflectionException
-     */
     private function doAddFault(Test $test, \Throwable $t, float $time, $type): void
     {
         if ($this->currentTestCase === null) {
@@ -416,13 +412,14 @@ final class JUnit extends Printer implements TestListener
         $this->currentTestCase->appendChild($fault);
     }
 
-    private function doAddSkipped(Test $test): void
+    private function doAddSkipped(): void
     {
         if ($this->currentTestCase === null) {
             return;
         }
 
         $skipped = $this->document->createElement('skipped');
+
         $this->currentTestCase->appendChild($skipped);
 
         $this->testSuiteSkipped[$this->testSuiteLevel]++;
