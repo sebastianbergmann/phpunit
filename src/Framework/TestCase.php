@@ -35,6 +35,7 @@ use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use PHPUnit\Util\Test as TestUtil;
+use PHPUnit\Util\Type;
 use Prophecy;
 use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophecy\MethodProphecy;
@@ -42,7 +43,6 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
 use ReflectionClass;
 use ReflectionException;
-use ReflectionObject;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
@@ -2142,7 +2142,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         } else {
             foreach ($testArguments as $testArgument) {
                 if ($testArgument instanceof MockObject) {
-                    if ($this->isCloneable($testArgument)) {
+                    if (Type::isCloneable($testArgument)) {
                         $testArgument = clone $testArgument;
                     }
 
@@ -2166,22 +2166,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if (isset($annotations['method']['doesNotPerformAssertions'])) {
             $this->doesNotPerformAssertions = true;
         }
-    }
-
-    private function isCloneable(MockObject $testArgument): bool
-    {
-        $reflector = new ReflectionObject($testArgument);
-
-        if (!$reflector->isCloneable()) {
-            return false;
-        }
-
-        if ($reflector->hasMethod('__clone') &&
-            $reflector->getMethod('__clone')->isPublic()) {
-            return true;
-        }
-
-        return false;
     }
 
     private function unregisterCustomComparators(): void

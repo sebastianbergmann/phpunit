@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Util\Type;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
@@ -17,31 +18,6 @@ use SebastianBergmann\Exporter\Exporter;
  */
 final class Invocation implements SelfDescribing
 {
-    /**
-     * @var array<string,bool>
-     */
-    private const UNCLONEABLE_EXTENSIONS = [
-        'mysqli'    => true,
-        'SQLite'    => true,
-        'sqlite3'   => true,
-        'tidy'      => true,
-        'xmlwriter' => true,
-        'xsl'       => true,
-    ];
-
-    /**
-     * @var string[]
-     */
-    private const UNCLONEABLE_CLASSES = [
-        'Closure',
-        'COMPersistHelper',
-        'IteratorIterator',
-        'RecursiveIteratorIterator',
-        'SplFileObject',
-        'PDORow',
-        'ZipArchive',
-    ];
-
     /**
      * @var string
      */
@@ -220,54 +196,10 @@ final class Invocation implements SelfDescribing
 
     private function cloneObject(object $original): object
     {
-        $cloneable = null;
-        $object    = new \ReflectionObject($original);
-
-        // Check the blacklist before asking PHP reflection to work around
-        // https://bugs.php.net/bug.php?id=53967
-        if ($object->isInternal() &&
-            isset(self::UNCLONEABLE_EXTENSIONS[$object->getExtensionName()])) {
-            $cloneable = false;
+        if (Type::isCloneable($original)) {
+            return clone $original;
         }
 
-        if ($cloneable === null) {
-            foreach (self::UNCLONEABLE_CLASSES as $class) {
-                if ($original instanceof $class) {
-                    $cloneable = false;
-
-                    break;
-                }
-            }
-        }
-
-        if ($cloneable === null) {
-            $cloneable = $object->isCloneable();
-        }
-
-        if ($cloneable === null && $object->hasMethod('__clone')) {
-            try {
-                $cloneable = $object->getMethod('__clone')->isPublic();
-            } catch (\ReflectionException $e) {
-                throw new RuntimeException(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-        }
-
-        if ($cloneable === null) {
-            $cloneable = true;
-        }
-
-        if ($cloneable) {
-            try {
-                return clone $original;
-            } catch (\Exception $e) {
-                return $original;
-            }
-        } else {
-            return $original;
-        }
+        return $original;
     }
 }
