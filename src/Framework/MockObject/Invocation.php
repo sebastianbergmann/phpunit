@@ -18,7 +18,7 @@ use SebastianBergmann\Exporter\Exporter;
 final class Invocation implements SelfDescribing
 {
     /**
-     * @var array
+     * @var array<string,bool>
      */
     private const UNCLONEABLE_EXTENSIONS = [
         'mysqli'    => true,
@@ -30,7 +30,7 @@ final class Invocation implements SelfDescribing
     ];
 
     /**
-     * @var array
+     * @var string[]
      */
     private const UNCLONEABLE_CLASSES = [
         'Closure',
