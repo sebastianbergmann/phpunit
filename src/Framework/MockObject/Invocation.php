@@ -7,18 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Invocation;
+namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\MockObject\Generator;
-use PHPUnit\Framework\MockObject\Invocation;
-use PHPUnit\Framework\MockObject\RuntimeException;
 use PHPUnit\Framework\SelfDescribing;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class StaticInvocation implements Invocation, SelfDescribing
+final class Invocation implements SelfDescribing
 {
     /**
      * @var array
@@ -76,16 +73,23 @@ class StaticInvocation implements Invocation, SelfDescribing
     private $proxiedCall;
 
     /**
+     * @var object
+     */
+    private $object;
+
+    /**
      * @param string $className
      * @param string $methodName
      * @param string $returnType
+     * @param object $object
      * @param bool   $cloneObjects
      */
-    public function __construct($className, $methodName, array $parameters, $returnType, $cloneObjects = false, bool $proxiedCall = false)
+    public function __construct($className, $methodName, array $parameters, $returnType, $object, $cloneObjects = false, bool $proxiedCall = false)
     {
         $this->className   = $className;
         $this->methodName  = $methodName;
         $this->parameters  = $parameters;
+        $this->object      = $object;
         $this->proxiedCall = $proxiedCall;
 
         if (\strtolower($methodName) === '__tostring') {
@@ -207,6 +211,11 @@ class StaticInvocation implements Invocation, SelfDescribing
             ),
             $this->returnType ? \sprintf(': %s', $this->returnType) : ''
         );
+    }
+
+    public function getObject()
+    {
+        return $this->object;
     }
 
     private function cloneObject(object $original): object

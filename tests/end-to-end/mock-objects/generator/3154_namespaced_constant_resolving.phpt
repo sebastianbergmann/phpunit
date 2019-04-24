@@ -63,7 +63,7 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
         }
 
         $__phpunit_result = $this->__phpunit_getInvocationMocker()->invoke(
-            new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
+            new \PHPUnit\Framework\MockObject\Invocation(
                 'Is\Namespaced\Issue3154', 'a', $__phpunit_arguments, 'string', $this, true
             )
         );

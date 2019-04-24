@@ -50,7 +50,7 @@ class MockFoo extends ClassWithMethodWithTypehintedVariadicArguments implements 
         }
 
         $__phpunit_result = $this->__phpunit_getInvocationMocker()->invoke(
-            new \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation(
+            new \PHPUnit\Framework\MockObject\Invocation(
                 'ClassWithMethodWithTypehintedVariadicArguments', 'methodWithTypehintedVariadicArguments', $__phpunit_arguments, '', $this, true
             )
         );

@@ -17,8 +17,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @uses \PHPUnit\Framework\MockObject\InvocationMocker
  * @uses \PHPUnit\Framework\MockObject\Builder\InvocationMocker
- * @uses \PHPUnit\Framework\MockObject\Invocation\ObjectInvocation
- * @uses \PHPUnit\Framework\MockObject\Invocation\StaticInvocation
+ * @uses \PHPUnit\Framework\MockObject\Invocation
  * @uses \PHPUnit\Framework\MockObject\Matcher
  * @uses \PHPUnit\Framework\MockObject\Matcher\InvokedRecorder
  * @uses \PHPUnit\Framework\MockObject\Matcher\MethodName
