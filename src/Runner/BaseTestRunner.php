@@ -12,8 +12,6 @@ namespace PHPUnit\Runner;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
-use ReflectionClass;
-use ReflectionException;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
@@ -55,7 +53,7 @@ abstract class BaseTestRunner
      * @param array|string $suffixes
      *
      * @throws Exception
-     * @throws ReflectionException
+     * @throws \ReflectionException
      */
     public function getTest(string $suiteClassName, string $suiteClassFile = '', $suffixes = ''): ?Test
     {
@@ -94,7 +92,7 @@ abstract class BaseTestRunner
             }
 
             $test = $suiteMethod->invoke(null, $testClass->getName());
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException $e) {
             try {
                 $test = new TestSuite($testClass);
             } catch (Exception $e) {
@@ -111,7 +109,7 @@ abstract class BaseTestRunner
     /**
      * Returns the loaded ReflectionClass for a suite name.
      */
-    protected function loadSuiteClass(string $suiteClassName, string $suiteClassFile = ''): ReflectionClass
+    protected function loadSuiteClass(string $suiteClassName, string $suiteClassFile = ''): \ReflectionClass
     {
         return $this->getLoader()->load($suiteClassName, $suiteClassFile);
     }
