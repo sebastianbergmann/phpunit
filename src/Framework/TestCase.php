@@ -41,8 +41,6 @@ use Prophecy\Exception\Prediction\PredictionException;
 use Prophecy\Prophecy\MethodProphecy;
 use Prophecy\Prophecy\ObjectProphecy;
 use Prophecy\Prophet;
-use ReflectionClass;
-use ReflectionException;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
@@ -51,8 +49,6 @@ use SebastianBergmann\GlobalState\Blacklist;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
-use Text_Template;
-use Throwable;
 
 abstract class TestCase extends Assert implements Test, SelfDescribing
 {
@@ -369,7 +365,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return new ReturnSelfStub;
     }
 
-    public static function throwException(Throwable $exception): ExceptionStub
+    public static function throwException(\Throwable $exception): ExceptionStub
     {
         return new ExceptionStub($exception);
     }
@@ -430,8 +426,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     public function toString(): string
     {
         try {
-            $class = new ReflectionClass($this);
-        } catch (ReflectionException $e) {
+            $class = new \ReflectionClass($this);
+        } catch (\ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),
@@ -678,7 +674,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * If no TestResult object is passed a new one will be created.
      *
      * @throws CodeCoverageException
-     * @throws ReflectionException
+     * @throws \ReflectionException
      * @throws \SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\MissingCoversAnnotationException
@@ -711,14 +707,14 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if ($this->runInSeparateProcess()) {
             $runEntireClass = $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
 
-            $class = new ReflectionClass($this);
+            $class = new \ReflectionClass($this);
 
             if ($runEntireClass) {
-                $template = new Text_Template(
+                $template = new \Text_Template(
                     __DIR__ . '/../Util/PHP/Template/TestCaseClass.tpl'
                 );
             } else {
-                $template = new Text_Template(
+                $template = new \Text_Template(
                     __DIR__ . '/../Util/PHP/Template/TestCaseMethod.tpl'
                 );
             }
@@ -888,7 +884,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         } catch (PredictionException $e) {
             $this->status        = BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
-        } catch (Throwable $_e) {
+        } catch (\Throwable $_e) {
             $e                   = $_e;
             $this->status        = BaseTestRunner::STATUS_ERROR;
             $this->statusMessage = $_e->getMessage();
@@ -911,7 +907,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     }
                 }
             }
-        } catch (Throwable $_e) {
+        } catch (\Throwable $_e) {
             $e = $e ?? $_e;
         }
 
@@ -945,7 +941,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 } elseif ($this->outputExpectedString !== null) {
                     $this->assertEquals($this->outputExpectedString, $this->output);
                 }
-            } catch (Throwable $_e) {
+            } catch (\Throwable $_e) {
                 $e = $_e;
             }
         }
@@ -1162,7 +1158,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * @throws Exception
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\ObjectEnumerator\InvalidArgumentException
-     * @throws Throwable
+     * @throws \Throwable
      */
     protected function runTest()
     {
@@ -1178,7 +1174,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         try {
             $testResult = $this->{$this->name}(...\array_values($testArguments));
-        } catch (Throwable $exception) {
+        } catch (\Throwable $exception) {
             if (!$this->checkExceptionExpectations($exception)) {
                 throw $exception;
             }
@@ -1679,9 +1675,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * This method is called when a test method did not execute successfully.
      *
-     * @throws Throwable
+     * @throws \Throwable
      */
-    protected function onNotSuccessfulTest(Throwable $t): void
+    protected function onNotSuccessfulTest(\Throwable $t): void
     {
         throw $t;
     }
@@ -1713,7 +1709,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                     $this->expectExceptionMessageRegExp($expectedException['message_regex']);
                 }
             }
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException $e) {
         }
     }
 
@@ -1751,7 +1747,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @throws Throwable
+     * @throws \Throwable
      */
     private function verifyMockObjects(): void
     {
@@ -1768,7 +1764,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if ($this->prophet !== null) {
             try {
                 $this->prophet->checkPredictions();
-            } catch (Throwable $t) {
+            } catch (\Throwable $t) {
                 /* Intentionally left empty */
             }
 
@@ -2205,7 +2201,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @throws Exception
      */
-    private function checkExceptionExpectations(Throwable $throwable): bool
+    private function checkExceptionExpectations(\Throwable $throwable): bool
     {
         $result = false;
 
@@ -2219,8 +2215,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
         if (\is_string($this->expectedException)) {
             try {
-                $reflector = new ReflectionClass($this->expectedException);
-            } catch (ReflectionException $e) {
+                $reflector = new \ReflectionClass($this->expectedException);
+            } catch (\ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
                     (int) $e->getCode(),
