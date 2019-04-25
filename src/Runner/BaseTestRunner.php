@@ -93,18 +93,7 @@ abstract class BaseTestRunner
                 return null;
             }
 
-            try {
-                $test = $suiteMethod->invoke(null, $testClass->getName());
-            } catch (ReflectionException $e) {
-                $this->runFailed(
-                    \sprintf(
-                        "Failed to invoke suite() method.\n%s",
-                        $e->getMessage()
-                    )
-                );
-
-                return null;
-            }
+            $test = $suiteMethod->invoke(null, $testClass->getName());
         } catch (ReflectionException $e) {
             try {
                 $test = new TestSuite($testClass);
