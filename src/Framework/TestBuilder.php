@@ -16,9 +16,6 @@ use PHPUnit\Util\Test as TestUtil;
  */
 final class TestBuilder
 {
-    /**
-     * @throws \ReflectionException
-     */
     public function build(\ReflectionClass $theClass, string $name): Test
     {
         $className = $theClass->getName();

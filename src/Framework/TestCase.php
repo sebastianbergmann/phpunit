@@ -425,11 +425,19 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * Returns a string representation of the test case.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \ReflectionException
+     * @throws Exception
      */
     public function toString(): string
     {
-        $class = new ReflectionClass($this);
+        try {
+            $class = new ReflectionClass($this);
+        } catch (ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
 
         $buffer = \sprintf(
             '%s::%s',
@@ -1711,16 +1719,13 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     private function setUseErrorHandlerFromAnnotation(): void
     {
-        try {
-            $useErrorHandler = TestUtil::getErrorHandlerSettings(
-                \get_class($this),
-                $this->name
-            );
+        $useErrorHandler = TestUtil::getErrorHandlerSettings(
+            \get_class($this),
+            $this->name
+        );
 
-            if ($useErrorHandler !== null) {
-                $this->setUseErrorHandler($useErrorHandler);
-            }
-        } catch (ReflectionException $e) {
+        if ($useErrorHandler !== null) {
+            $this->setUseErrorHandler($useErrorHandler);
         }
     }
 
@@ -2198,7 +2203,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     }
 
     /**
-     * @throws ReflectionException
+     * @throws Exception
      */
     private function checkExceptionExpectations(Throwable $throwable): bool
     {
@@ -2213,7 +2218,15 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         if (\is_string($this->expectedException)) {
-            $reflector = new ReflectionClass($this->expectedException);
+            try {
+                $reflector = new ReflectionClass($this->expectedException);
+            } catch (ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
 
             if ($this->expectedException === 'PHPUnit\Framework\Exception' ||
                 $this->expectedException === '\PHPUnit\Framework\Exception' ||

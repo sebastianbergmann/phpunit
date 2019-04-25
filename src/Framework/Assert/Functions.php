@@ -143,7 +143,6 @@ function assertContainsEquals($needle, iterable $haystack, string $message = '')
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -183,7 +182,6 @@ function assertNotContainsEquals($needle, iterable $haystack, string $message = 
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -231,7 +229,6 @@ function assertContainsOnlyInstancesOf(string $className, iterable $haystack, st
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -267,7 +264,6 @@ function assertNotContainsOnly(string $type, iterable $haystack, ?bool $isNative
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -304,7 +300,6 @@ function assertCount(int $expectedCount, $haystack, string $message = ''): void
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -341,7 +336,6 @@ function assertNotCount(int $expectedCount, $haystack, string $message = ''): vo
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -413,7 +407,6 @@ function assertEqualsWithDelta($expected, $actual, float $delta, string $message
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -490,7 +483,6 @@ function assertNotEqualsWithDelta($expected, $actual, float $delta, string $mess
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -524,7 +516,6 @@ function assertEmpty($actual, string $message = ''): void
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -558,7 +549,6 @@ function assertNotEmpty($actual, string $message = ''): void
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -591,7 +581,6 @@ function assertGreaterThan($expected, $actual, string $message = ''): void
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -624,7 +613,6 @@ function assertGreaterThanOrEqual($expected, $actual, string $message = ''): voi
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -657,7 +645,6 @@ function assertLessThan($expected, $actual, string $message = ''): void
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -690,7 +677,6 @@ function assertLessThanOrEqual($expected, $actual, string $message = ''): void
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -1195,7 +1181,6 @@ function assertSame($expected, $actual, string $message = ''): void
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -1231,7 +1216,6 @@ function assertNotSame($expected, $actual, string $message = ''): void
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -1265,7 +1249,6 @@ function assertInstanceOf(string $expected, $actual, string $message = ''): void
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -1299,7 +1282,6 @@ function assertNotInstanceOf(string $expected, $actual, string $message = ''): v
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -1335,7 +1317,6 @@ function assertInternalType(string $expected, $actual, string $message = ''): vo
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
@@ -1657,7 +1638,6 @@ function assertIsNotIterable($actual, string $message = ''): void
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws ReflectionException
  * @throws Exception
  *
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338

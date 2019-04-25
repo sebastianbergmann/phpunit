@@ -120,7 +120,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      * @param \ReflectionClass|string $theClass
      *
      * @throws Exception
-     * @throws \ReflectionException
      */
     public function __construct($theClass = '', string $name = '')
     {
@@ -139,7 +138,15 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
                     $name = $theClass;
                 }
 
-                $theClass = new \ReflectionClass($theClass);
+                try {
+                    $theClass = new \ReflectionClass($theClass);
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
             } else {
                 $this->setName($theClass);
 
@@ -213,12 +220,18 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      * Adds a test to the suite.
      *
      * @param array $groups
-     *
-     * @throws \ReflectionException
      */
     public function addTest(Test $test, $groups = []): void
     {
-        $class = new \ReflectionClass($test);
+        try {
+            $class = new \ReflectionClass($test);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
 
         if (!$class->isAbstract()) {
             $this->tests[]  = $test;
@@ -252,7 +265,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      * @param object|string $testClass
      *
      * @throws Exception
-     * @throws \ReflectionException
      */
     public function addTestSuite($testClass): void
     {
@@ -264,7 +276,15 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
         }
 
         if (!\is_object($testClass)) {
-            $testClass = new \ReflectionClass($testClass);
+            try {
+                $testClass = new \ReflectionClass($testClass);
+            } catch (\ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
         }
 
         if ($testClass instanceof self) {
@@ -273,9 +293,17 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
             $suiteMethod = false;
 
             if (!$testClass->isAbstract() && $testClass->hasMethod(BaseTestRunner::SUITE_METHODNAME)) {
-                $method = $testClass->getMethod(
-                    BaseTestRunner::SUITE_METHODNAME
-                );
+                try {
+                    $method = $testClass->getMethod(
+                        BaseTestRunner::SUITE_METHODNAME
+                    );
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
 
                 if ($method->isStatic()) {
                     $this->addTest(
