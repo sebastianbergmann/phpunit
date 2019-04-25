@@ -30,7 +30,7 @@ final class GlobalState
     ];
 
     /**
-     * @throws \ReflectionException
+     * @throws Exception
      */
     public static function getIncludedFilesAsString(): string
     {
@@ -40,7 +40,7 @@ final class GlobalState
     /**
      * @param string[] $files
      *
-     * @throws \ReflectionException
+     * @throws Exception
      */
     public static function processIncludedFilesAsString(array $files): string
     {

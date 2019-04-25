@@ -224,7 +224,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $snapshot;
 
     /**
-     * @var Prophecy\Prophet
+     * @var \Prophecy\Prophet
      */
     private $prophet;
 
@@ -673,7 +673,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      * If no TestResult object is passed a new one will be created.
      *
      * @throws CodeCoverageException
-     * @throws \ReflectionException
+     * @throws \PHPUnit\Util\Exception
      * @throws \SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\MissingCoversAnnotationException
@@ -706,7 +706,15 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         if ($this->runInSeparateProcess()) {
             $runEntireClass = $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
 
-            $class = new \ReflectionClass($this);
+            try {
+                $class = new \ReflectionClass($this);
+            } catch (\ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
 
             if ($runEntireClass) {
                 $template = new \Text_Template(
@@ -1632,9 +1640,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @param null|string $classOrInterface
      *
-     * @throws Prophecy\Exception\Doubler\ClassNotFoundException
-     * @throws Prophecy\Exception\Doubler\DoubleException
-     * @throws Prophecy\Exception\Doubler\InterfaceNotFoundException
+     * @throws \Prophecy\Exception\Doubler\ClassNotFoundException
+     * @throws \Prophecy\Exception\Doubler\DoubleException
+     * @throws \Prophecy\Exception\Doubler\InterfaceNotFoundException
      */
     protected function prophesize($classOrInterface = null): ObjectProphecy
     {
