@@ -178,16 +178,22 @@ abstract class AbstractPhpProcess
     {
         $command = $this->runtime->getBinary();
 
-	    if ($this->runtime->hasPCOV()) {
-            $pcov = $this->runtime->getCurrentSettings(
-		        \array_keys(\ini_get_all("pcov")));
-            $settings = \array_merge($settings, $pcov);
-        } else if ($this->runtime->hasXdebug()) {
-            $xdebug = $this->runtime->getCurrentSettings(
-                \array_keys(\ini_get_all("xdebug")));
-            $settings = \array_merge($settings, $xdebug);
+        if ($this->runtime->hasPCOV()) {
+            $settings = \array_merge(
+                $settings,
+                $this->runtime->getCurrentSettings(
+                    \array_keys(\ini_get_all('pcov'))
+                )
+            );
+        } elseif ($this->runtime->hasXdebug()) {
+            $settings = \array_merge(
+                $settings,
+                $this->runtime->getCurrentSettings(
+                    \array_keys(\ini_get_all('xdebug'))
+                )
+            );
         }
-        
+
         $command .= $this->settingsToParameters($settings);
 
         if (\PHP_SAPI === 'phpdbg') {
