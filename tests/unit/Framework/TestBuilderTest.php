@@ -42,4 +42,33 @@ final class TestBuilderTest extends TestCase
 
         (new TestBuilder)->build($reflector, 'TestForConstructorlessTestClass');
     }
+
+    public function testCreateTestForNotInstantiableTestClass(): void
+    {
+        $reflector = $this->getMockBuilder(\ReflectionClass::class)
+            ->setConstructorArgs([$this])
+            ->getMock();
+
+        \assert($reflector instanceof MockObject);
+        \assert($reflector instanceof \ReflectionClass);
+
+        $reflector->expects($this->once())
+            ->method('isInstantiable')
+            ->willReturn(false);
+
+        $reflector->expects($this->once())
+            ->method('getName')
+            ->willReturn('foo');
+
+        $test = (new TestBuilder)->build($reflector, 'TestForNonInstantiableTestClass');
+        $this->assertInstanceOf(WarningTestCase::class, $test);
+        /* @var WarningTestCase $test */
+        $this->assertSame('Cannot instantiate class "foo".', $test->getMessage());
+    }
+
+    public function testCreateTestForTestClassWithModifiedConstructor(): void
+    {
+        $test = (new TestBuilder)->build(new \ReflectionClass(\ModifiedConstructorTestCase::class), 'testCase');
+        $this->assertInstanceOf(\ModifiedConstructorTestCase::class, $test);
+    }
 }
