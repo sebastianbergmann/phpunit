@@ -693,14 +693,14 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
             return;
         }
 
-        $name = $method->getName();
+        $methodName = $method->getName();
 
         if (!$method->isPublic()) {
             $this->addTest(
                 new WarningTestCase(
                     \sprintf(
                         'Test method "%s" in test class "%s" is not public.',
-                        $name,
+                        $methodName,
                         $class->getName()
                     )
                 )
@@ -709,17 +709,17 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
             return;
         }
 
-        $test = (new TestBuilder)->build($class, $name);
+        $test = (new TestBuilder)->build($class, $methodName);
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(
-                TestUtil::getDependencies($class->getName(), $name)
+                TestUtil::getDependencies($class->getName(), $methodName)
             );
         }
 
         $this->addTest(
             $test,
-            TestUtil::getGroups($class->getName(), $name)
+            TestUtil::getGroups($class->getName(), $methodName)
         );
     }
 }
