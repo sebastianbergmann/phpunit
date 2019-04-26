@@ -53,6 +53,55 @@ notifications:
 
 jobs:
   include:
+    - stage: Test
+      name: "PHP: 7.2 on Windows"
+      os: windows
+      dist: 1803-containers
+      language: sh # no PHP currently
+      env: PHP_VERSION=7.2 XDEBUG_VERSION=2.7.1 DEPENDENCIES=""
+      before_install:
+        - choco install php --version=${PHP_VERSION} --package-parameters="/InstallDir:c:\tools\php"
+        - choco install composer --ia "/DEV=C:\tools\php"
+        - export PATH=/c/tools/php:$PATH
+        - ./tools/composer clear-cache
+        - sed -i '/zend.assertions = -1/c\zend.assertions = 1' /c/tools/php/php.ini
+        - sed -i '/;assert.exception = On/c\assert.exception = On' /c/tools/php/php.ini
+        - sed -i '/;extension=pdo_sqlite/c\extension=pdo_sqlite' /c/tools/php/php.ini
+        - sed -i '/;extension=soap/c\extension=soap' /c/tools/php/php.ini
+        - curl --output /c/tools/php/ext/xdebug.dll https://xdebug.org/files/php_xdebug-${XDEBUG_VERSION}-${PHP_VERSION}-vc15-nts-x86_64.dll
+        - echo "zend_extension=C:\tools\php\ext\xdebug.dll" >> /c/tools/php/php.ini
+      install:
+        ./tools/composer update $DEFAULT_COMPOSER_FLAGS
+      before_script: false
+      script:
+        - ./phpunit --coverage-clover=coverage.xml
+        - ./phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
+
+    - stage: Test
+      name: "PHP: 7.3 on Windows"
+      os: windows
+      dist: 1803-containers
+      language: sh # no PHP currently
+      env: PHP_VERSION=7.3 XDEBUG_VERSION=2.7.1 DEPENDENCIES=""
+      before_install:
+        - choco install php --version=${PHP_VERSION} --package-parameters="/InstallDir:c:\tools\php"
+        - choco install composer --ia "/DEV=C:\tools\php"
+        - export PATH=/c/tools/php:$PATH
+        - ./tools/composer clear-cache
+        - sed -i '/zend.assertions = -1/c\zend.assertions = 1' /c/tools/php/php.ini
+        - sed -i '/;assert.exception = On/c\assert.exception = On' /c/tools/php/php.ini
+        - sed -i '/;extension=pdo_sqlite/c\extension=pdo_sqlite' /c/tools/php/php.ini
+        - sed -i '/;extension=soap/c\extension=soap' /c/tools/php/php.ini
+        - curl --output /c/tools/php/ext/xdebug.dll https://xdebug.org/files/php_xdebug-${XDEBUG_VERSION}-${PHP_VERSION}-vc15-nts-x86_64.dll
+        - echo "zend_extension=C:\tools\php\ext\xdebug.dll" >> /c/tools/php/php.ini
+
+      install:
+        ./tools/composer update $DEFAULT_COMPOSER_FLAGS
+      before_script: false
+      script:
+        - ./phpunit --coverage-clover=coverage.xml
+        - ./phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
+
     - stage: Static Code Analysis
       php: 7.3
       env: php-cs-fixer

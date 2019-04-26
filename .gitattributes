@@ -2,4 +2,4 @@
 /tools export-ignore
 
 *.php diff=php
-
+* text=auto eol=lf
