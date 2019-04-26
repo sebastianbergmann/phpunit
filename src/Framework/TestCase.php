@@ -32,6 +32,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use PHPUnit\Util\Test as TestUtil;
@@ -2294,5 +2295,25 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         return TestUtil::isTestMethod($method);
+    }
+
+    protected function convertErrorsToExceptions(bool $convert = true): void
+    {
+        $this->setUseErrorHandler($convert);
+    }
+
+    protected function convertDeprecationsToExceptions(bool $convert = true) : void
+    {
+        ErrorHandler::getInstance()->setConvertDeprecated($convert);
+    }
+
+    protected function convertNoticesToExceptions(bool $convert = true) : void
+    {
+        ErrorHandler::getInstance()->setConvertNotice($convert);
+    }
+
+    protected function convertWarningsToExceptions(bool $convert = true) : void
+    {
+        ErrorHandler::getInstance()->setConvertWarning($convert);
     }
 }

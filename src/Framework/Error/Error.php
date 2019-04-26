@@ -16,11 +16,20 @@ use PHPUnit\Framework\Exception;
  */
 class Error extends Exception
 {
-    public function __construct(string $message, int $code, string $file, int $line, \Exception $previous = null)
+
+    private $severity;
+
+    public function __construct(string $message, int $code, int $severity, string $file, int $line, \Exception $previous = null)
     {
         parent::__construct($message, $code, $previous);
-
+        $this->severity = $severity;
         $this->file = $file;
         $this->line = $line;
     }
+
+    public function getSeverity() {
+        return $this->severity;
+    }
+
+
 }

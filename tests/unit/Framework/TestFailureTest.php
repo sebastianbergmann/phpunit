@@ -76,7 +76,7 @@ final class TestFailureTest extends TestCase
 
     public function testExceptionToStringForFrameworkError(): void
     {
-        $exception = new Error('message', 0, 'file', 1);
+        $exception = new Error('message', 0, E_WARNING,'file', 1);
 
         $this->assertEquals("message\n", TestFailure::exceptionToString($exception));
     }

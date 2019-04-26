@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\TextUI;
 
-use PHPUnit\Framework\Error\Deprecated;
-use PHPUnit\Framework\Error\Notice;
-use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -36,6 +33,7 @@ use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Configuration;
+use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
@@ -219,15 +217,15 @@ final class TestRunner extends BaseTestRunner
         }
 
         if (!$arguments['convertDeprecationsToExceptions']) {
-            Deprecated::$enabled = false;
+            ErrorHandler::getInstance()->setConvertDeprecated(true);
         }
 
         if (!$arguments['convertNoticesToExceptions']) {
-            Notice::$enabled = false;
+            ErrorHandler::getInstance()->setConvertNotice(true);
         }
 
         if (!$arguments['convertWarningsToExceptions']) {
-            Warning::$enabled = false;
+            ErrorHandler::getInstance()->setConvertWarning(true);
         }
 
         if ($arguments['stopOnError']) {

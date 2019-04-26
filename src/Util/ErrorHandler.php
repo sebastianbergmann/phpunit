@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\Error\Deprecated;
@@ -19,29 +20,29 @@ use PHPUnit\Framework\Error\Warning;
  */
 final class ErrorHandler
 {
-    private static $errorStack = [];
+    private $errorStack = [];
 
-    /**
-     * Returns the error stack.
-     */
-    public static function getErrorStack(): array
+    protected $convertWarning = true;
+    protected $convertNotice = true;
+    protected $convertDeprecated = true;
+
+
+    protected function __construct()
     {
-        return self::$errorStack;
+
     }
 
+
     /**
-     * @throws \PHPUnit\Framework\Error\Deprecated
      * @throws \PHPUnit\Framework\Error\Error
-     * @throws \PHPUnit\Framework\Error\Notice
-     * @throws \PHPUnit\Framework\Error\Warning
      */
-    public static function handleError(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
+    public function handleError(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
         if (!($errorNumber & \error_reporting())) {
             return false;
         }
 
-        self::$errorStack[] = [$errorNumber, $errorString, $errorFile, $errorLine];
+        $this->errorStack[] = [$errorNumber, $errorString, $errorFile, $errorLine];
 
         $trace = \debug_backtrace();
         \array_shift($trace);
@@ -51,30 +52,29 @@ final class ErrorHandler
                 return false;
             }
         }
-
+        $exception = Error::class;
         if ($errorNumber === \E_NOTICE || $errorNumber === \E_USER_NOTICE || $errorNumber === \E_STRICT) {
-            if (!Notice::$enabled) {
+            if(!$this->convertNotice) {
                 return false;
             }
-
             $exception = Notice::class;
-        } elseif ($errorNumber === \E_WARNING || $errorNumber === \E_USER_WARNING) {
-            if (!Warning::$enabled) {
+        }
+        if ($errorNumber === \E_WARNING || $errorNumber === \E_USER_WARNING) {
+            if(!$this->convertWarning) {
                 return false;
             }
-
             $exception = Warning::class;
-        } elseif ($errorNumber === \E_DEPRECATED || $errorNumber === \E_USER_DEPRECATED) {
-            if (!Deprecated::$enabled) {
+
+        }
+        if ($errorNumber === \E_DEPRECATED || $errorNumber === \E_USER_DEPRECATED) {
+            if(!$this->convertDeprecated) {
                 return false;
             }
-
             $exception = Deprecated::class;
-        } else {
-            $exception = Error::class;
+
         }
 
-        throw new $exception($errorString, $errorNumber, $errorFile, $errorLine);
+        throw new $exception($errorString, 0, $errorNumber, $errorFile, $errorLine);
     }
 
     /**
@@ -108,5 +108,71 @@ final class ErrorHandler
         );
 
         return $terminator;
+    }
+
+    /**
+     * @param bool $convertError
+     */
+    public function setConvertError(bool $convertError): void
+    {
+        $this->convertError = $convertError;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getConvertWarning(): bool
+    {
+        return $this->convertWarning;
+    }
+
+    /**
+     * @param bool $convertWarning
+     */
+    public function setConvertWarning(bool $convertWarning): void
+    {
+        $this->convertWarning = $convertWarning;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getConvertNotice(): bool
+    {
+        return $this->convertNotice;
+    }
+
+    /**
+     * @param bool $convertNotice
+     */
+    public function setConvertNotice(bool $convertNotice): void
+    {
+        $this->convertNotice = $convertNotice;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getConvertDeprecated(): bool
+    {
+        return $this->convertDeprecated;
+    }
+
+    /**
+     * @param bool $convertDeprecated
+     */
+    public function setConvertDeprecated(bool $convertDeprecated): void
+    {
+        $this->convertDeprecated = $convertDeprecated;
+    }
+
+    private static $instace;
+
+    public static function getInstance()
+    {
+        if (self::$instace === null) {
+            self::$instace = new self();
+        }
+        return self::$instace;
     }
 }
