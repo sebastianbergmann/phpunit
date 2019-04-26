@@ -168,15 +168,6 @@ final class TestBuilder
             $className . '::' . $methodName
         );
 
-        if (empty($data)) {
-            $data = new WarningTestCase(
-                \sprintf(
-                    'No tests found in suite "%s".',
-                    $dataProviderTestSuite->getName()
-                )
-            );
-        }
-
         $groups = TestUtil::getGroups($className, $methodName);
 
         if ($data instanceof WarningTestCase ||

@@ -71,4 +71,12 @@ final class TestBuilderTest extends TestCase
         $test = (new TestBuilder)->build(new \ReflectionClass(\ModifiedConstructorTestCase::class), 'testCase');
         $this->assertInstanceOf(\ModifiedConstructorTestCase::class, $test);
     }
+
+    public function testCreateWithEmptyData(): void
+    {
+        $test = (new TestBuilder)->build(new \ReflectionClass(\EmptyDataProviderTest::class), 'testCase');
+        $this->assertInstanceOf(DataProviderTestSuite::class, $test);
+        /* @var DataProviderTestSuite $test */
+        $this->assertInstanceOf(SkippedTestCase::class, $test->getGroupDetails()['default'][0]);
+    }
 }
