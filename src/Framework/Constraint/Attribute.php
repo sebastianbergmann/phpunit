@@ -12,6 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
+/**
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+ * @codeCoverageIgnore
+ */
 final class Attribute extends Composite
 {
     /**
