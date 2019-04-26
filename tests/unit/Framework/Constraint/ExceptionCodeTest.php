@@ -1,14 +1,21 @@
-<?php  declare(strict_types=1);
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestFailure;
 
 class ExceptionCodeTest extends TestCase
 {
-    public function testExceptionCodeCanEvaluateExceptions()
+    public function testExceptionCodeCanEvaluateExceptions(): void
     {
         $exceptionCode = new ExceptionCode(123);
 
@@ -30,7 +37,7 @@ EOF
         }
     }
 
-    public function testExceptionCodeCanBeExportedAsString()
+    public function testExceptionCodeCanBeExportedAsString(): void
     {
         $exceptionCode = new ExceptionCode(ExceptionCode::class);
 
