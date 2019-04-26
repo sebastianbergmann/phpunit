@@ -53,6 +53,19 @@ notifications:
 
 jobs:
   include:
+
+  - stage: Test
+        os: windows
+        dist: 1803-containers
+        language: sh # No PHP currently
+        env: PHP_VERSION=7.2.17 DEPENDENCIES=""
+        install:
+          - choco install php --version=${PHP_VERSION} --package-parameters="/InstallDir:c:\tools\php" -y
+          - choco install composer --ia "/DEV=C:\tools\php" -y
+          - export PATH=/c/tools/php:$PATH
+        script: vendor/bin/phpunit
+
+
     - stage: Static Code Analysis
       php: 7.3
       env: php-cs-fixer
