@@ -9,8 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Runner\BaseTestRunner;
+use SebastianBergmann\Comparator\Comparator;
+use SebastianBergmann\GlobalState\Snapshot;
 
 /**
  * @small
@@ -778,5 +781,100 @@ final class TestCaseTest extends TestCase
                 'data' => $recursionData,
             ],
         ];
+    }
+
+    public function testSetDependencyInput() :void
+    {
+        $mock = self::getMock();
+        $mock->setDependencyInput(['test']);
+        $this->assertContains('test', $mock->getDependencyInput());
+    }
+
+    public function testCreateConfiguredMock(): void
+    {
+        $mock = self::getMock();
+        $method = self::getNotAccessibleMethods("createConfiguredMock");
+        try {
+            $method->invokeArgs($mock, [TestCase::class, ['notfound' => 'false']]);
+        } catch (\Exception $e) {
+            $this->assertSame(
+                'Trying to configure method "notfound" which cannot be configured because it does not exist, has not been specified, is final, or is static',
+                $e->getMessage()
+            );
+            return;
+        }
+
+        $this->fail("Expected an Exception to be thrown but none was thrown!");
+    }
+
+    public function testExpectExceptionObject(): void
+    {
+        $e = new \Exception("Test message");
+
+        $mock = self::getMock();
+        $mock->expectExceptionCode($e->getCode());
+        $mock->expectExceptionMessage($e->getMessage());
+
+        $this->assertEmpty($mock->expectExceptionObject($e));
+        $this->assertSame($mock->getExpectedExceptionCode(), $e->getCode());
+        $this->assertSame($mock->getExpectedExceptionMessage(), $e->getMessage());
+        $this->assertEmpty($mock->getExpectedExceptionMessageRegExp());
+    }
+
+    public function testCompareGlobalStateSnapshots(): void
+    {
+        $method = self::getNotAccessibleMethods("compareGlobalStateSnapshots");
+        $testCaseMocked = $this->getMockBuilder(TestCase::class)
+            ->setMethods(['compareGlobalStateSnapshots'])
+            ->getMock();
+
+        $result = $method->invokeArgs($testCaseMocked, [new Snapshot(), new Snapshot()]);
+        $this->assertEmpty($result);
+    }
+
+    public function testDataDescription(): void
+    {
+        $testDataMock = $this->getMock();
+
+        $this->assertEquals('', $testDataMock->dataDescription());
+    }
+
+    public function testRegisterComparator(): void
+    {
+        $testCaseMock = $this->getMock();
+        $comparatorMock = $this->getMockForAbstractClass(Comparator::class);
+        $this->assertEmpty($testCaseMock->registerComparator($comparatorMock));
+    }
+
+    public function testAddWarning(): void
+    {
+        $mock = self::getMock();
+        $this->assertEmpty($mock->addWarning("some string"));
+    }
+
+    public function testRunTest(): void
+    {
+        $mock = self::getMock();
+        try {
+            $mock->runTest();
+        } catch (Exception $e) {
+            $this->assertSame('PHPUnit\Framework\TestCase::$name must not be null.', $e->getMessage());
+            return;
+        }
+
+        $this->fail("Expected an Exception to be thrown but none was thrown!");
+    }
+
+    private function getMock(): MockObject
+    {
+        return $this->getMockForAbstractClass(TestCase::class);
+    }
+    private static function getNotAccessibleMethods(string $method): \ReflectionMethod
+    {
+        $reflection = new \ReflectionClass(TestCase::class);
+        $method = $reflection->getMethod($method);
+        $method->setAccessible(true);
+
+        return $method;
     }
 }
