@@ -200,7 +200,8 @@ final class PhptTestCase implements Test, SelfDescribing
                     0,
                     $trace[0]['file'],
                     $trace[0]['line'],
-                    $trace
+                    $trace,
+                    $diff
                 );
             }
 
