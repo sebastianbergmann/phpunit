@@ -187,8 +187,10 @@ final class PhptTestCase implements Test, SelfDescribing
             if ($xfail !== false) {
                 $failure = new IncompleteTestError($xfail, 0, $e);
             } elseif ($e instanceof ExpectationFailedException) {
-                if ($e->getComparisonFailure()) {
-                    $diff = $e->getComparisonFailure()->getDiff();
+                $comparisonFailure = $e->getComparisonFailure();
+
+                if ($comparisonFailure) {
+                    $diff = $comparisonFailure->getDiff();
                 } else {
                     $diff = $e->getMessage();
                 }
@@ -200,7 +202,8 @@ final class PhptTestCase implements Test, SelfDescribing
                     0,
                     $trace[0]['file'],
                     $trace[0]['line'],
-                    $trace
+                    $trace,
+                    $comparisonFailure ? $diff : ''
                 );
             }
 

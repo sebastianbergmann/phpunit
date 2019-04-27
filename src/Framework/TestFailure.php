@@ -44,6 +44,10 @@ final class TestFailure
                 $buffer .= $e->getComparisonFailure()->getDiff();
             }
 
+            if ($e instanceof PHPTAssertionFailedError) {
+                $buffer .= $e->getDiff();
+            }
+
             if (!empty($buffer)) {
                 $buffer = \trim($buffer) . "\n";
             }

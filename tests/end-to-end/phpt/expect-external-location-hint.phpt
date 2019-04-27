@@ -24,6 +24,15 @@ There was 1 failure:
 
 1) %stests%eend-to-end%e_files%ephpt-expect-external-location-hint-example.phpt
 Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'Hello World\n
+-This is line two\n
+-and this is line three'
++'Hello world\n
++This is line 2\n
++and this is line 3'
 
 %stests%eend-to-end%e_files%eexpect_external.txt:1
 %stests%eend-to-end%e_files%ephpt-expect-external-location-hint-example.phpt:10
