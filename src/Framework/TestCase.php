@@ -1891,7 +1891,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->result->addError(
             $this,
             new SkippedTestError(
-                \sprintf('This test has no dependency specified.')
+                \sprintf('This test has dependency declared but no method specified.')
             ),
             0
         );
