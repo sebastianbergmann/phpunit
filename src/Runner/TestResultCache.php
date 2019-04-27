@@ -16,11 +16,11 @@ interface TestResultCache
 {
     public function setState(string $testName, int $state): void;
 
-    public function getState($testName): int;
+    public function getState(string $testName): int;
 
     public function setTime(string $testName, float $time): void;
 
-    public function getTime($testName): float;
+    public function getTime(string $testName): float;
 
     public function load(): void;
 
