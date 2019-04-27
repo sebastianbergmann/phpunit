@@ -96,4 +96,13 @@ EOF
 
         $this->fail();
     }
+
+    public function testEvaluateEmptyStringInFoo(): void
+    {
+        $stringContains = new StringContains('');
+
+        $stringContains->evaluate('foo');
+
+        $this->assertSame('contains ""', $stringContains->toString());
+    }
 }
