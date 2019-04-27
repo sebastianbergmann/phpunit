@@ -220,6 +220,30 @@ final class TestCaseTest extends TestCase
         $this->assertTrue($result->wasSuccessful());
     }
 
+    public function testExpectExceptionCodeWithSameCode(): void
+    {
+        $test = new \ThrowExceptionTestCase('test');
+
+        $test->expectExceptionCode(0);
+
+        $result = $test->run();
+
+        $this->assertCount(1, $result);
+        $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testExpectExceptionCodeWithDifferentCode(): void
+    {
+        $test = new \ThrowExceptionTestCase('test');
+
+        $test->expectExceptionCode(9000);
+
+        $result = $test->run();
+
+        $this->assertCount(1, $result);
+        $this->assertFalse($result->wasSuccessful());
+    }
+
     public function testExceptionWithEmptyMessage(): void
     {
         $test = new \ThrowExceptionTestCase('test');
@@ -310,6 +334,74 @@ final class TestCaseTest extends TestCase
             "Invalid expected exception message regex given: '#runtime .*? occurred/'",
             $test->getStatusMessage()
         );
+    }
+
+    public function testExpectExceptionObjectWithDifferentExceptionClass(): void
+    {
+        $exception = new \InvalidArgumentException(
+            'Cannot compute at this time.',
+            9000
+        );
+
+        $test = new \ThrowExceptionTestCase('testWithExpectExceptionObject');
+
+        $test->expectExceptionObject($exception);
+
+        $result = $test->run();
+
+        $this->assertCount(1, $result);
+        $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testExpectExceptionObjectWithDifferentExceptionMessage(): void
+    {
+        $exception = new \RuntimeException(
+            'This is fine!',
+            9000
+        );
+
+        $test = new \ThrowExceptionTestCase('testWithExpectExceptionObject');
+
+        $test->expectExceptionObject($exception);
+
+        $result = $test->run();
+
+        $this->assertCount(1, $result);
+        $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testExpectExceptionObjectWithDifferentExceptionCode(): void
+    {
+        $exception = new \RuntimeException(
+            'Cannot compute at this time.',
+            9001
+        );
+
+        $test = new \ThrowExceptionTestCase('testWithExpectExceptionObject');
+
+        $test->expectExceptionObject($exception);
+
+        $result = $test->run();
+
+        $this->assertCount(1, $result);
+        $this->assertFalse($result->wasSuccessful());
+    }
+
+    public function testExpectExceptionObjectWithEqualException(): void
+    {
+        $exception = new \RuntimeException(
+            'Cannot compute at this time',
+            9000
+        );
+
+        $test = new \ThrowExceptionTestCase('testWithExpectExceptionObject');
+
+        $test->expectExceptionObject($exception);
+
+        $result = $test->run();
+
+        $this->assertCount(1, $result);
+        $this->assertTrue($result->wasSuccessful());
     }
 
     public function testNoException(): void
@@ -763,6 +855,84 @@ final class TestCaseTest extends TestCase
     {
         $test = new \Success;
         $this->assertNull($test->getTestResultObject());
+    }
+
+    public function testHasFailedReturnsFalseWhenTestHasNotRunYet(): void
+    {
+        $test = new \TestWithDifferentStatuses();
+
+        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $test->getStatus());
+        $this->assertFalse($test->hasFailed());
+    }
+
+    public function testHasFailedReturnsTrueWhenTestHasFailed(): void
+    {
+        $test = new \TestWithDifferentStatuses('testThatFails');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_FAILURE, $test->getStatus());
+        $this->assertTrue($test->hasFailed());
+    }
+
+    public function testHasFailedReturnsTrueWhenTestHasErrored(): void
+    {
+        $test = new \TestWithDifferentStatuses('testThatErrors');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_ERROR, $test->getStatus());
+        $this->assertTrue($test->hasFailed());
+    }
+
+    public function testHasFailedReturnsFalseWhenTestHasPassed(): void
+    {
+        $test = new \TestWithDifferentStatuses('testThatPasses');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_PASSED, $test->getStatus());
+        $this->assertFalse($test->hasFailed());
+    }
+
+    public function testHasFailedReturnsFalseWhenTestHasBeenMarkedAsIncomplete(): void
+    {
+        $test = new \TestWithDifferentStatuses('testThatIsMarkedAsIncomplete');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_INCOMPLETE, $test->getStatus());
+        $this->assertFalse($test->hasFailed());
+    }
+
+    public function testHasFailedReturnsFalseWhenTestHasBeenMarkedAsRisky(): void
+    {
+        $test = new \TestWithDifferentStatuses('testThatIsMarkedAsRisky');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_RISKY, $test->getStatus());
+        $this->assertFalse($test->hasFailed());
+    }
+
+    public function testHasFailedReturnsFalseWhenTestHasBeenMarkedAsSkipped(): void
+    {
+        $test = new \TestWithDifferentStatuses('testThatIsMarkedAsSkipped');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $test->getStatus());
+        $this->assertFalse($test->hasFailed());
+    }
+
+    public function testHasFailedReturnsFalseWhenTestHasEmittedWarning(): void
+    {
+        $test = new \TestWithDifferentStatuses('testThatAddsAWarning');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_WARNING, $test->getStatus());
+        $this->assertFalse($test->hasFailed());
     }
 
     /**
