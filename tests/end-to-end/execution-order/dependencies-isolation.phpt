@@ -49,7 +49,7 @@ This test depends on "DependencyFailureTest::testTwo" to pass.
 This test depends on "DependencyFailureTest::testOne" to pass.
 
 4) DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
-This test has dependency declared but no method specified.
+This method is invalid at depends annotation.
 
 FAILURES!
 Tests: 9, Assertions: 4, Failures: 1, Warnings: 1, Skipped: 4.
