@@ -1812,6 +1812,10 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
                 $deepClone    = false;
                 $shallowClone = false;
 
+                if (empty($dependency)) {
+                    $this->markSkippedForNotSpecifyingDependency();
+                }
+
                 if (\strpos($dependency, 'clone ') === 0) {
                     $deepClone  = true;
                     $dependency = \substr($dependency, \strlen('clone '));
@@ -1874,6 +1878,25 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         }
 
         return true;
+    }
+
+    private function markSkippedForNotSpecifyingDependency()
+    {
+        $this->status = BaseTestRunner::STATUS_SKIPPED;
+
+        $this->result->startTest($this);
+
+        $this->result->addError(
+            $this,
+            new SkippedTestError(
+                \sprintf(
+                    'This test has no dependency specified.'
+                )
+            ),
+            0
+        );
+
+        $this->result->endTest($this, 0);
     }
 
     private function markSkippedForMissingDependency(string $dependency): void
