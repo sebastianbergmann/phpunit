@@ -24,7 +24,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
     /**
      * Provide extra protection against incomplete or corrupt caches
      *
-     * @var array<string, string>
+     * @var int[]
      */
     private const ALLOWED_CACHE_TEST_STATUSES = [
         BaseTestRunner::STATUS_SKIPPED,
@@ -50,7 +50,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
      * $this->defects[$testName] = BaseTestRunner::TEST_SKIPPED;
      * </code>
      *
-     * @var array array<string, int>
+     * @var array<string, int>
      */
     private $defects = [];
 
@@ -66,7 +66,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
      */
     private $times = [];
 
-    public function __construct($filepath = null)
+    public function __construct(?string $filepath = null)
     {
         if ($filepath !== null && \is_dir($filepath)) {
             // cache path provided, use default cache filename in that location
@@ -153,7 +153,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
         }
 
         if ($cache instanceof self) {
-            /* @var \PHPUnit\Runner\DefaultTestResultCache */
+            /* @var DefaultTestResultCache $cache */
             $cache->copyStateToCache($this);
         }
     }
@@ -183,18 +183,26 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
         ]);
     }
 
+    /**
+     * @param string $serialized
+     */
     public function unserialize($serialized): void
     {
         $data = \unserialize($serialized);
 
         if (isset($data['times'])) {
             foreach ($data['times'] as $testName => $testTime) {
-                $this->times[$testName] = (float) $testTime;
+                \assert(\is_string($testName));
+                \assert(\is_float($testTime));
+                $this->times[$testName] = $testTime;
             }
         }
 
         if (isset($data['defects'])) {
             foreach ($data['defects'] as $testName => $testResult) {
+                \assert(\is_string($testName));
+                \assert(\is_int($testResult));
+
                 if (\in_array($testResult, self::ALLOWED_CACHE_TEST_STATUSES, true)) {
                     $this->defects[$testName] = $testResult;
                 }
