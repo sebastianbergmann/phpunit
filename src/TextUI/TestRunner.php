@@ -194,6 +194,7 @@ class TestRunner extends BaseTestRunner
                 } else {
                     $cacheLocation = $_SERVER['PHP_SELF'];
                 }
+
                 $arguments['cacheResultFile'] = \dirname(\realpath($cacheLocation));
             }
 
