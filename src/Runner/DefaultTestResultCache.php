@@ -110,7 +110,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
         }
     }
 
-    public function getState($testName): int
+    public function getState(string $testName): int
     {
         return $this->defects[$testName] ?? BaseTestRunner::STATUS_UNKNOWN;
     }
@@ -120,7 +120,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
         $this->times[$testName] = $time;
     }
 
-    public function getTime($testName): float
+    public function getTime(string $testName): float
     {
         return $this->times[$testName] ?? 0;
     }

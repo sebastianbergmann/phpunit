@@ -18,7 +18,7 @@ final class NullTestResultCache implements TestResultCache
     {
     }
 
-    public function getState($testName): int
+    public function getState(string $testName): int
     {
         return BaseTestRunner::STATUS_UNKNOWN;
     }
@@ -27,7 +27,7 @@ final class NullTestResultCache implements TestResultCache
     {
     }
 
-    public function getTime($testName): float
+    public function getTime(string $testName): float
     {
         return 0;
     }
