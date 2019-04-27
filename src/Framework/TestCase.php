@@ -1891,7 +1891,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->result->addError(
             $this,
             new SkippedTestError(
-                \sprintf('This method is invalid at depends annotation.')
+                \sprintf('This method has an invalid @depends annotation.')
             ),
             0
         );
