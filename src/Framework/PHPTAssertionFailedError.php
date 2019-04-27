@@ -14,4 +14,19 @@ namespace PHPUnit\Framework;
  */
 final class PHPTAssertionFailedError extends SyntheticError
 {
+    /**
+     * @var string
+     */
+    private $diff;
+
+    public function __construct(string $message, int $code, string $file, int $line, array $trace, string $diff)
+    {
+        parent::__construct($message, $code, $file, $line, $trace);
+        $this->diff = $diff;
+    }
+
+    public function getDiff(): string
+    {
+        return $this->diff;
+    }
 }
