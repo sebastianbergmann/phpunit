@@ -37,7 +37,7 @@ final class WarningTestCase extends TestCase
     /**
      * @var string
      */
-    private $message = '';
+    private $message;
 
     /**
      * @param string $message
