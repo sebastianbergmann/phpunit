@@ -108,32 +108,13 @@ final class TestBuilder
 
         if ($test instanceof TestCase) {
             $test->setName($methodName);
-
-            if ($runTestInSeparateProcess) {
-                $test->setRunTestInSeparateProcess(true);
-
-                if ($preserveGlobalState !== null) {
-                    $test->setPreserveGlobalState($preserveGlobalState);
-                }
-            }
-
-            if ($runClassInSeparateProcess) {
-                $test->setRunClassInSeparateProcess(true);
-
-                if ($preserveGlobalState !== null) {
-                    $test->setPreserveGlobalState($preserveGlobalState);
-                }
-            }
-
-            if ($backupSettings['backupGlobals'] !== null) {
-                $test->setBackupGlobals($backupSettings['backupGlobals']);
-            }
-
-            if ($backupSettings['backupStaticAttributes'] !== null) {
-                $test->setBackupStaticAttributes(
-                    $backupSettings['backupStaticAttributes']
-                );
-            }
+            $this->configureTestCase(
+                $test,
+                $runTestInSeparateProcess,
+                $preserveGlobalState,
+                $runClassInSeparateProcess,
+                $backupSettings
+            );
         }
 
         return $test;
@@ -180,38 +161,52 @@ final class TestBuilder
 
                 \assert($_test instanceof TestCase);
 
-                if ($runTestInSeparateProcess) {
-                    $_test->setRunTestInSeparateProcess(true);
-
-                    if ($preserveGlobalState !== null) {
-                        $_test->setPreserveGlobalState($preserveGlobalState);
-                    }
-                }
-
-                if ($runClassInSeparateProcess) {
-                    $_test->setRunClassInSeparateProcess(true);
-
-                    if ($preserveGlobalState !== null) {
-                        $_test->setPreserveGlobalState($preserveGlobalState);
-                    }
-                }
-
-                if ($backupSettings['backupGlobals'] !== null) {
-                    $_test->setBackupGlobals(
-                        $backupSettings['backupGlobals']
-                    );
-                }
-
-                if ($backupSettings['backupStaticAttributes'] !== null) {
-                    $_test->setBackupStaticAttributes(
-                        $backupSettings['backupStaticAttributes']
-                    );
-                }
+                $this->configureTestCase(
+                    $_test,
+                    $runTestInSeparateProcess,
+                    $preserveGlobalState,
+                    $runClassInSeparateProcess,
+                    $backupSettings
+                );
 
                 $dataProviderTestSuite->addTest($_test, $groups);
             }
         }
 
         return $dataProviderTestSuite;
+    }
+
+    private function configureTestCase(
+        TestCase $test,
+        bool $runTestInSeparateProcess,
+        ?bool $preserveGlobalState,
+        bool $runClassInSeparateProcess,
+        array $backupSettings
+    ): void {
+        if ($runTestInSeparateProcess) {
+            $test->setRunTestInSeparateProcess(true);
+
+            if ($preserveGlobalState !== null) {
+                $test->setPreserveGlobalState($preserveGlobalState);
+            }
+        }
+
+        if ($runClassInSeparateProcess) {
+            $test->setRunClassInSeparateProcess(true);
+
+            if ($preserveGlobalState !== null) {
+                $test->setPreserveGlobalState($preserveGlobalState);
+            }
+        }
+
+        if ($backupSettings['backupGlobals'] !== null) {
+            $test->setBackupGlobals($backupSettings['backupGlobals']);
+        }
+
+        if ($backupSettings['backupStaticAttributes'] !== null) {
+            $test->setBackupStaticAttributes(
+                $backupSettings['backupStaticAttributes']
+            );
+        }
     }
 }
