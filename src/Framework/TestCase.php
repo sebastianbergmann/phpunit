@@ -474,10 +474,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         );
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function getName(bool $withDataSet = true): string
+    public function getName(bool $withDataSet = true): ?string
     {
         if ($withDataSet) {
             return $this->name . $this->getDataSetAsString(false);
@@ -488,8 +485,6 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
     /**
      * Returns the size of the test.
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function getSize(): int
     {
@@ -499,33 +494,21 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         );
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
     public function hasSize(): bool
     {
         return $this->getSize() !== TestUtil::UNKNOWN;
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
     public function isSmall(): bool
     {
         return $this->getSize() === TestUtil::SMALL;
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
     public function isMedium(): bool
     {
         return $this->getSize() === TestUtil::MEDIUM;
     }
 
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
     public function isLarge(): bool
     {
         return $this->getSize() === TestUtil::LARGE;
