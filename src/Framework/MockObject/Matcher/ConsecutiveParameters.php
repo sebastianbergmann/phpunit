@@ -37,7 +37,12 @@ class ConsecutiveParameters extends StatelessInvocation
     private $invocations = [];
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @var array
+     */
+    private $parameterVerificationResults = [];
+
+    /**
+     * @param array $parameterGroups
      */
     public function __construct(array $parameterGroups)
     {
@@ -58,41 +63,85 @@ class ConsecutiveParameters extends StatelessInvocation
     }
 
     /**
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @param BaseInvocation $invocation
      *
+     * @throws \PHPUnit\Framework\ExpectationFailedException
      * @return bool
      */
     public function matches(BaseInvocation $invocation)
     {
         $this->invocations[] = $invocation;
         $callIndex           = \count($this->invocations) - 1;
+        $this->parameterVerificationResults[$callIndex] = null;
 
-        $this->verifyInvocation($invocation, $callIndex);
+        if (!$this->shouldInvocationBeVerified($callIndex)) {
+            return false;
+        }
 
-        return false;
+        $this->parameterVerificationResults[$callIndex] =
+            $this->verifyInvocation($invocation, $callIndex);
+
+        return $this->parameterVerificationResults[$callIndex];
     }
 
-    public function verify(): void
+    /**
+     * Verify all constraints within this expectation
+     *
+     * @return bool|mixed
+     */
+    public function verify()
     {
         foreach ($this->invocations as $callIndex => $invocation) {
-            $this->verifyInvocation($invocation, $callIndex);
+
+            if (!$this->shouldInvocationBeVerified($callIndex)) {
+                continue;
+            }
+
+            try {
+                $this->parameterVerificationResults[$callIndex] = $this->verifyInvocation($invocation, $callIndex);
+
+                return $this->parameterVerificationResults[$callIndex];
+            } catch (ExpectationFailedException $e) {
+                $this->parameterVerificationResults[$callIndex] = $e;
+
+                throw $this->parameterVerificationResults[$callIndex];
+            }
         }
+    }
+
+    /**
+     * Check if the invocation should be verified.
+     * As soon as
+     *  1. this should be verified to avoid duplicate calls when a callback is specified
+     *  2. check is performed for all _and_ individual callbacks
+     *
+     * to avoid duplication, it was exported into a separate method
+     *
+     * @param $callIndex
+     * @return bool
+     */
+    private function shouldInvocationBeVerified($callIndex): bool
+    {
+        // skip check if there is no parameter assertion for this call index and invocation already evaluated
+        if (!isset($this->parameterGroups[$callIndex])
+            || $this->parameterVerificationResults[$callIndex] !== null
+        ) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
      * Verify a single invocation
      *
+     * @param BaseInvocation|null $invocation
      * @param int $callIndex
      *
-     * @throws ExpectationFailedException
+     * @return bool
      */
-    private function verifyInvocation(BaseInvocation $invocation, $callIndex): void
+    private function verifyInvocation(?BaseInvocation $invocation, $callIndex): bool
     {
-        if (!isset($this->parameterGroups[$callIndex])) {
-            // no parameter assertion for this call index
-            return;
-        }
-
         if ($invocation === null) {
             throw new ExpectationFailedException(
                 'Mocked method does not exist.'
@@ -122,5 +171,7 @@ class ConsecutiveParameters extends StatelessInvocation
                 )
             );
         }
+
+        return true;
     }
 }

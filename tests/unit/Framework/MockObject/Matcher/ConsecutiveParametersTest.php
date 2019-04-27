@@ -65,4 +65,36 @@ class ConsecutiveParametersTest extends TestCase
 
         $mock->foo('invalid');
     }
+
+    public function testMutableObjectsChangeSuccess()
+    {
+        /** @var \DateTime|MockObject $b */
+        $b = $this->getMockBuilder(\DateTime::class)
+            ->setMethods(['diff'])
+            ->getMock();
+
+        $validationValues = [];
+
+        $b->expects($this->exactly(2))
+        ->method('diff')
+            ->withConsecutive([
+                $this->callback(function (\DateTime $it) use (&$validationValues) {
+                    $validationValues[0] = $it->format('Y');
+                    return $it->format('Y') === '2019';
+                })],
+                [$this->callback(function (\DateTime $it) use (&$validationValues)  {
+                    $validationValues[1] = $it->format('Y');
+                    return $it->format('Y') === '1970';
+                })]
+            );
+
+        $arg = \DateTime::createFromFormat('Y-m-d', '2019-01-01');
+
+        $b->diff($arg);
+        $arg->setDate(1970, 4, 5);
+        $b->diff($arg);
+
+        // actually this equals to [1970, 1970] at this point, which is an error
+        $this->assertEquals([0 => 2019, 1 => 1970], $validationValues);
+    }
 }
