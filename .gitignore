@@ -2,7 +2,6 @@
 /.idea
 /.php_cs
 /.php_cs.cache
-/.phpunit.result.cache
 /build/documentation
 /build/logfiles
 /build/phar
@@ -18,3 +17,4 @@
 /tests/end-to-end/*.out
 /tests/end-to-end/*.php
 /vendor
+.phpunit.result.cache
