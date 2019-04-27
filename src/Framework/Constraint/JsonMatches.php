@@ -82,16 +82,12 @@ final class JsonMatches extends Constraint
 
             if ($error) {
                 parent::fail($other, $description);
-
-                return;
             }
 
             [$error] = Json::canonicalize($this->value);
 
             if ($error) {
                 parent::fail($other, $description);
-
-                return;
             }
 
             $comparisonFailure = new ComparisonFailure(
@@ -105,5 +101,8 @@ final class JsonMatches extends Constraint
         }
 
         parent::fail($other, $description, $comparisonFailure);
+
+        // @codeCoverageIgnoreStart
     }
+    // @codeCoverageIgnoreEnd @codeCoverageIgnore
 }
