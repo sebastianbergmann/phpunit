@@ -15,6 +15,8 @@ print $generator->generateClassFromWsdl(
 );
 ?>
 --EXPECTF--
+declare(strict_types=1);
+
 namespace My\Space;
 
 class GoogleSearch extends \SoapClient

@@ -93,7 +93,7 @@ final class InvocationMocker implements MatcherCollection, Invokable, NamespaceM
         return new BuilderInvocationMocker(
             $this,
             $matcher,
-            $this->configurableMethods
+            ...$this->configurableMethods
         );
     }
 

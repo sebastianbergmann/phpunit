@@ -21,13 +21,16 @@ $mock = $generator->generate(
     true
 );
 
-print $mock['code'];
---EXPECT--
+print $mock->getClassCode();
+--EXPECTF--
+declare(strict_types=1);
+
 class MockC extends C implements PHPUnit\Framework\MockObject\MockObject
 {
+    use \PHPUnit\Framework\MockObject\ConfigurableMethods;
+
     private $__phpunit_invocationMocker;
     private $__phpunit_originalObject;
-    private $__phpunit_configurable = ['m'];
     private $__phpunit_returnValueGeneration = true;
 
     public function __clone()
@@ -50,7 +53,7 @@ class MockC extends C implements PHPUnit\Framework\MockObject\MockObject
 
         $__phpunit_result = $this->__phpunit_getInvocationMocker()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'C', 'm', $__phpunit_arguments, 'C', $this, true
+                'C', 'm', $__phpunit_arguments, ': C', $this, true
             )
         );
 
@@ -83,7 +86,7 @@ class MockC extends C implements PHPUnit\Framework\MockObject\MockObject
     public function __phpunit_getInvocationMocker(): \PHPUnit\Framework\MockObject\InvocationMocker
     {
         if ($this->__phpunit_invocationMocker === null) {
-            $this->__phpunit_invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker($this->__phpunit_configurable, $this->__phpunit_returnValueGeneration);
+            $this->__phpunit_invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker(static::$__phpunit_configurableMethods, $this->__phpunit_returnValueGeneration);
         }
 
         return $this->__phpunit_invocationMocker;

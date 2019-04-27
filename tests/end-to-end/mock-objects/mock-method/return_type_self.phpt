@@ -20,7 +20,7 @@ $code = $mockMethod->generateCode();
 
 print $code;
 ?>
---EXPECT--
+--EXPECTF--
 
 public function bar(): Foo
     {
@@ -37,7 +37,7 @@ public function bar(): Foo
 
         $__phpunit_result = $this->__phpunit_getInvocationMocker()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, 'Foo', $this, false
+                'Foo', 'bar', $__phpunit_arguments, ': Foo', $this, false
             )
         );
 
