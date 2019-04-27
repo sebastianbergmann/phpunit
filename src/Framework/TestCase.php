@@ -1814,6 +1814,8 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
 
                 if (empty($dependency)) {
                     $this->markSkippedForNotSpecifyingDependency();
+
+                    return false;
                 }
 
                 if (\strpos($dependency, 'clone ') === 0) {
