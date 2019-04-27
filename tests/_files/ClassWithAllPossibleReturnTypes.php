@@ -9,7 +9,7 @@
  */
 class ClassWithAllPossibleReturnTypes
 {
-    public function methodWithNoReturnTypeDeclaration(): void
+    public function methodWithNoReturnTypeDeclaration()
     {
     }
 
