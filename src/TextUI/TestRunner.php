@@ -159,11 +159,23 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($arguments['cacheResult']) {
-            if (isset($arguments['cacheResultFile'])) {
-                $cache = new DefaultTestResultCache($arguments['cacheResultFile']);
-            } else {
-                $cache = new DefaultTestResultCache;
+            if (!isset($arguments['cacheResultFile'])) {
+                if (isset($arguments['configuration']) && $arguments['configuration'] instanceof Configuration) {
+                    $cacheLocation = $arguments['configuration']->getFilename();
+                } else {
+                    $cacheLocation = $_SERVER['PHP_SELF'];
+                }
+
+                $arguments['cacheResultFile'] = null;
+
+                $cacheResultFile = \realpath($cacheLocation);
+
+                if ($cacheResultFile !== false) {
+                    $arguments['cacheResultFile'] = \dirname($cacheResultFile);
+                }
             }
+
+            $cache = new DefaultTestResultCache($arguments['cacheResultFile']);
 
             $this->addExtension(new ResultCacheExtension($cache));
         }
