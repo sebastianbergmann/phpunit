@@ -131,7 +131,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @var string
      */
-    private $name;
+    private $name = '';
 
     /**
      * @var string[]
@@ -477,7 +477,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function getName(bool $withDataSet = true): ?string
+    public function getName(bool $withDataSet = true): string
     {
         if ($withDataSet) {
             return $this->name . $this->getDataSetAsString(false);
