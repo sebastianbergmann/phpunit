@@ -1880,7 +1880,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         return true;
     }
 
-    private function markSkippedForNotSpecifyingDependency()
+    private function markSkippedForNotSpecifyingDependency(): void
     {
         $this->status = BaseTestRunner::STATUS_SKIPPED;
 
@@ -1889,9 +1889,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
         $this->result->addError(
             $this,
             new SkippedTestError(
-                \sprintf(
-                    'This test has no dependency specified.'
-                )
+                \sprintf('This test has no dependency specified.')
             ),
             0
         );
