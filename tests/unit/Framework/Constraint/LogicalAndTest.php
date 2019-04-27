@@ -18,6 +18,25 @@ use PHPUnit\Framework\TestFailure;
  */
 final class LogicalAndTest extends ConstraintTestCase
 {
+    public function testFromConstraintsReturnsConstraint(): void
+    {
+        $count = 5;
+
+        $constraints = \array_map(function () {
+            static $count = 0;
+
+            $constraint = $this->getMockBuilder(Constraint::class)->getMock();
+
+            ++$count;
+
+            return $constraint;
+        }, \array_fill(0, $count, null));
+
+        $constraint = LogicalAnd::fromConstraints(...$constraints);
+
+        $this->assertInstanceOf(LogicalAnd::class, $constraint);
+    }
+
     public function testSetConstraintsRejectsInvalidConstraint(): void
     {
         $constraints = [
