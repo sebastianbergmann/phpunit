@@ -104,5 +104,5 @@ final class JsonMatches extends Constraint
 
         // @codeCoverageIgnoreStart
     }
-    // @codeCoverageIgnoreEnd @codeCoverageIgnore
+    // @codeCoverageIgnoreEnd
 }
