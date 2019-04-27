@@ -381,12 +381,11 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @param string $name
      * @param string $dataName
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct($name = null, array $data = [], $dataName = '')
+    public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         if ($name !== null) {
             $this->setName($name);
