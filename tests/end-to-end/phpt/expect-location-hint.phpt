@@ -24,6 +24,14 @@ There was 1 failure:
 
 1) %stests%eend-to-end%e_files%ephpt-expect-location-hint-example.phpt
 Failed asserting that two strings are equal.
+--- Expected
++++ Actual
+@@ @@
+-'Nothing to see here, move along'
++'Fatal error: Uncaught Error: Call to undefined function some_unknown_function() in %s:2\n
++Stack trace:\n
++#0 {main}\n
++  thrown in %s on line 2'
 
 %stests%eend-to-end%e_files%ephpt-expect-location-hint-example.phpt:10
 
