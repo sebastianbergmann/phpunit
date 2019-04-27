@@ -970,6 +970,44 @@ final class TestCaseTest extends TestCase
         $this->assertTrue($test->isSmall());
     }
 
+    public function testGetNameReturnsMethodName(): void
+    {
+        $methodName = 'testWithName';
+
+        $testCase = new \TestWithDifferentNames($methodName);
+
+        $this->assertSame($methodName, $testCase->getName());
+    }
+
+    public function testGetNameReturnsEmptyStringAsDefault(): void
+    {
+        $testCase = new \TestWithDifferentNames();
+
+        $this->assertSame('', $testCase->getName());
+    }
+
+    /**
+     * @dataProvider providerInvalidName
+     */
+    public function testRunBareThrowsExceptionWhenTestHasInvalidName($name): void
+    {
+        $testCase = new \TestWithDifferentNames($name);
+
+        $this->expectException(Exception::class);
+        $this->expectExceptionMessage('PHPUnit\Framework\TestCase::$name must be a non-blank string.');
+
+        $testCase->runBare();
+    }
+
+    public function providerInvalidName(): array
+    {
+        return [
+            'null'         => [null],
+            'string-empty' => [''],
+            'string-blank' => ['  '],
+        ];
+    }
+
     public function testHasFailedReturnsFalseWhenTestHasNotRunYet(): void
     {
         $test = new \TestWithDifferentStatuses();
