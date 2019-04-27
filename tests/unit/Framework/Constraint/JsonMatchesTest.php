@@ -124,7 +124,7 @@ EOF
             $this->fail(\sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-<<<EOF
+                <<<EOF
 Failed asserting that '{"Mascott":"Tux"}' matches JSON string "{"Mascott"::}".
 
 EOF

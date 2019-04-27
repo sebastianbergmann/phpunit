@@ -101,8 +101,5 @@ final class JsonMatches extends Constraint
         }
 
         parent::fail($other, $description, $comparisonFailure);
-
-        // @codeCoverageIgnoreStart
     }
-    // @codeCoverageIgnoreEnd
 }
