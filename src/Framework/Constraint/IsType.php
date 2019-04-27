@@ -159,7 +159,5 @@ final class IsType extends Constraint
             case 'iterable':
                 return \is_iterable($other);
         }
-        // @codeCoverageIgnoreStart
     }
-    // @codeCoverageIgnoreEnd
 }
