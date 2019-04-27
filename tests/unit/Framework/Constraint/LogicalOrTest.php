@@ -17,6 +17,25 @@ use PHPUnit\Framework\TestFailure;
  */
 final class LogicalOrTest extends ConstraintTestCase
 {
+    public function testFromConstraintsReturnsConstraint(): void
+    {
+        $count = 5;
+
+        $constraints = \array_map(function () {
+            static $count = 0;
+
+            $constraint = $this->getMockBuilder(Constraint::class)->getMock();
+
+            ++$count;
+
+            return $constraint;
+        }, \array_fill(0, $count, null));
+
+        $constraint = LogicalOr::fromConstraints(...$constraints);
+
+        $this->assertInstanceOf(LogicalOr::class, $constraint);
+    }
+
     public function testSetConstraintsDecoratesNonConstraintWithIsEqual(): void
     {
         $constraints = [
