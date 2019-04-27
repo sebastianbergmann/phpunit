@@ -66,6 +66,9 @@ class ConsecutiveParametersTest extends TestCase
         $mock->foo('invalid');
     }
 
+    /**
+     * Test for the issue https://github.com/sebastianbergmann/phpunit/issues/3590
+     */
     public function testMutableObjectsChangeSuccess()
     {
         /** @var \DateTime|MockObject $b */
@@ -94,7 +97,6 @@ class ConsecutiveParametersTest extends TestCase
         $arg->setDate(1970, 4, 5);
         $b->diff($arg);
 
-        // actually this equals to [1970, 1970] at this point, which is an error
         $this->assertEquals([0 => 2019, 1 => 1970], $validationValues);
     }
 }
