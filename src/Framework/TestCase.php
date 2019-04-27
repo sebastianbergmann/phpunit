@@ -1169,9 +1169,9 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
      */
     protected function runTest()
     {
-        if ($this->name === null) {
+        if (\trim($this->name) === '') {
             throw new Exception(
-                'PHPUnit\Framework\TestCase::$name must not be null.'
+                'PHPUnit\Framework\TestCase::$name must be a non-blank string.'
             );
         }
 
