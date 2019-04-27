@@ -37,7 +37,7 @@ final class IncompleteTestCase extends TestCase
     /**
      * @var string
      */
-    private $message = '';
+    private $message;
 
     public function __construct(string $className, string $methodName, string $message = '')
     {
