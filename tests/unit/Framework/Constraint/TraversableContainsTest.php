@@ -17,6 +17,13 @@ use PHPUnit\Framework\TestFailure;
  */
 final class TraversableContainsTest extends ConstraintTestCase
 {
+    public function testConstraintTraversableCheckForNonObjectIdentityForDefaultCase(): void
+    {
+        $constraint = new TraversableContains('foo', true, true);
+
+        $this->assertTrue($constraint->evaluate(['foo'], '', true));
+    }
+
     public function testConstraintTraversableCheckForObjectIdentityForDefaultCase(): void
     {
         $constraint = new TraversableContains('foo');
@@ -64,6 +71,27 @@ final class TraversableContainsTest extends ConstraintTestCase
             $this->assertEquals(
                 <<<EOF
 Failed asserting that an array contains 'foo'.
+
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+        $this->fail();
+    }
+
+    public function testConstraintTraversableEvaluateMethodWithFailExample2(): void
+    {
+        $constraint = new TraversableContains('foo' . "\n");
+
+        try {
+            $constraint->evaluate(['bar']);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that an array contains "foo\n".
 
 EOF
                 ,
