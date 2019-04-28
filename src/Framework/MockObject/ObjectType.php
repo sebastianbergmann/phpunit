@@ -1,12 +1,19 @@
-<?php
-
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\Framework\MockObject;
 
-
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 class ObjectType extends Type
 {
-
     /**
      * @var TypeName
      */
@@ -19,7 +26,7 @@ class ObjectType extends Type
 
     public function __construct(TypeName $className, bool $nullable)
     {
-        $this->className = $className;
+        $this->className  = $className;
         $this->allowsNull = $nullable;
     }
 
@@ -28,15 +35,17 @@ class ObjectType extends Type
         if ($this->allowsNull && isNull($other)) {
             return true;
         }
+
         if ($other instanceof self) {
             if ($this->className->getQualifiedName() === $other->className->getQualifiedName()) {
                 return true;
             }
 
-            if (is_subclass_of($other->className->getQualifiedName(), $this->className->getQualifiedName(), true)) {
+            if (\is_subclass_of($other->className->getQualifiedName(), $this->className->getQualifiedName(), true)) {
                 return true;
             }
         }
+
         return false;
     }
 

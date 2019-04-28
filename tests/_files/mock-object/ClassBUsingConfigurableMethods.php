@@ -7,16 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture\MockObject;
 
-namespace PHPUnit\Framework\MockObject;
+use PHPUnit\Framework\MockObject\ConfigurableMethods;
 
 class ClassBUsingConfigurableMethods
 {
     use ConfigurableMethods;
 
-    public static function getConfigurableMethods()
+    public static function getConfigurableMethods(): array
     {
         return static::$__phpunit_configurableMethods;
     }
-
 }

@@ -82,7 +82,7 @@ final class InvocationMockerTest extends TestCase
     {
         /** @var MatcherCollection|\PHPUnit\Framework\MockObject\MockObject $matcherCollection */
         $matcherCollection = $this->createMock(MatcherCollection::class);
-        $invocationMocker = new \PHPUnit\Framework\MockObject\Builder\InvocationMocker(
+        $invocationMocker  = new \PHPUnit\Framework\MockObject\Builder\InvocationMocker(
             $matcherCollection,
             $this->any()
         );
@@ -126,5 +126,4 @@ final class InvocationMockerTest extends TestCase
         $this->expectExceptionMessage('Method methodWithBoolReturnTypeDeclaration may not return value of type integer');
         $invocationMocker->willReturn(true, 1);
     }
-
 }

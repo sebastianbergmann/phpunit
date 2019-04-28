@@ -263,7 +263,7 @@ final class Generator
         );
 
         $mockClass = new MockTrait($classTemplate->render(), $className['className']);
-        $mockClass->bringIntoExistence();
+        $mockClass->generate();
 
         return $this->getMockForAbstractClass($className['className'], $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
     }
@@ -514,9 +514,9 @@ final class Generator
         return $methods;
     }
 
-    private function getObject(MockBrick $mockClass, $type = '', bool $callOriginalConstructor = false, bool $callAutoload = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true)
+    private function getObject(MockType $mockClass, $type = '', bool $callOriginalConstructor = false, bool $callAutoload = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true)
     {
-        $className = $mockClass->bringIntoExistence();
+        $className = $mockClass->generate();
 
         if ($callOriginalConstructor &&
             \is_string($type) &&

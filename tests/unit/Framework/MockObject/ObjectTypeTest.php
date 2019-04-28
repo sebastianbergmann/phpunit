@@ -1,16 +1,25 @@
-<?php
-
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\MockObject\ChildClass;
+use PHPUnit\TestFixture\MockObject\ParentClass;
 
 class ObjectTypeTest extends TestCase
 {
-
     /**
      * @var ObjectType
      */
     private $childClass;
+
     /**
      * @var ObjectType
      */
@@ -49,7 +58,7 @@ class ObjectTypeTest extends TestCase
         $this->assertFalse($this->parentClass->isAssignable(new SimpleType('int', false)));
     }
 
-    public function testClassFromOneNamespaceIsNotAssignableToClassInOtherNamespace()
+    public function testClassFromOneNamespaceIsNotAssignableToClassInOtherNamespace(): void
     {
         $classFromNamespaceA = new ObjectType(
             TypeName::fromQualifiedName(\someNamespaceA\NamespacedClass::class),
@@ -62,7 +71,7 @@ class ObjectTypeTest extends TestCase
         $this->assertFalse($classFromNamespaceA->isAssignable($classFromNamespaceB));
     }
 
-    public function testNullIsAssignableToNullableType()
+    public function testNullIsAssignableToNullableType(): void
     {
         $someClass = new ObjectType(
             TypeName::fromQualifiedName(ParentClass::class),
@@ -71,7 +80,7 @@ class ObjectTypeTest extends TestCase
         $this->assertTrue($someClass->isAssignable(Type::fromValue(null, true)));
     }
 
-    public function testNullIsNotAssignableToNotNullableType()
+    public function testNullIsNotAssignableToNotNullableType(): void
     {
         $someClass = new ObjectType(
             TypeName::fromQualifiedName(ParentClass::class),
@@ -79,6 +88,4 @@ class ObjectTypeTest extends TestCase
         );
         $this->assertFalse($someClass->isAssignable(Type::fromValue(null, true)));
     }
-
-
 }

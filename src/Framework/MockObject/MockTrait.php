@@ -7,12 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework\MockObject;
 
-class MockTrait implements MockBrick
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+class MockTrait implements MockType
 {
-
     /**
      * @var string
      */
@@ -26,25 +27,20 @@ class MockTrait implements MockBrick
     public function __construct(string $classCode, string $mockName)
     {
         $this->classCode = $classCode;
-        $this->mockName = $mockName;
+        $this->mockName  = $mockName;
+    }
+
+    public function generate(): string
+    {
+        if (!\class_exists($this->mockName, false)) {
+            eval($this->classCode);
+        }
+
+        return $this->mockName;
     }
 
     public function getClassCode(): string
     {
         return $this->classCode;
     }
-
-    public function getMockName(): string
-    {
-        return $this->mockName;
-    }
-
-    public function bringIntoExistence(): string
-    {
-        if (!\class_exists($this->getMockName(), false)) {
-            eval($this->getClassCode());
-        }
-        return $this->getMockName();
-    }
-
 }

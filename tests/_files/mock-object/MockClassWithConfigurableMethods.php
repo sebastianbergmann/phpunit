@@ -9,9 +9,14 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-class ParentClass
+use PHPUnit\Framework\MockObject\ConfigurableMethods;
+
+class MockClassWithConfigurableMethods
 {
-    public function foo(): void
+    use ConfigurableMethods;
+
+    public static function getConfigurableMethods(): array
     {
+        return static::$__phpunit_configurableMethods;
     }
 }

@@ -38,7 +38,7 @@ final class InvocationMocker implements MethodNameMatch
      */
     private $configurableMethods;
 
-    public function __construct(MatcherCollection $collection, Invocation $invocationMatcher, ConfigurableMethod... $configurableMethods)
+    public function __construct(MatcherCollection $collection, Invocation $invocationMatcher, ConfigurableMethod...$configurableMethods)
     {
         $this->collection = $collection;
         $this->matcher    = new Matcher($invocationMatcher);
@@ -196,12 +196,13 @@ final class InvocationMocker implements MethodNameMatch
             );
         }
 
-        $configurableMethodNames = array_map(
+        $configurableMethodNames = \array_map(
             function (ConfigurableMethod $configurable) {
-                return strtolower($configurable->getName());
+                return \strtolower($configurable->getName());
             },
             $this->configurableMethods
         );
+
         if (\is_string($constraint) && !\in_array(\strtolower($constraint), $configurableMethodNames, true)) {
             throw new RuntimeException(
                 \sprintf(
@@ -240,32 +241,35 @@ final class InvocationMocker implements MethodNameMatch
     private function getConfiguredMethod(): ?ConfigurableMethod
     {
         $configuredMethod = null;
+
         foreach ($this->configurableMethods as $configurableMethod) {
-            if ($this->matcher->getMethodNameMatcher()->matchesMethodName($configurableMethod->getName())) {
+            if ($this->matcher->getMethodNameMatcher()->matchesName($configurableMethod->getName())) {
                 if ($configuredMethod !== null) {
                     return null;
                 }
                 $configuredMethod = $configurableMethod;
             }
         }
+
         return $configuredMethod;
     }
 
     private function ensureTypeOfReturnValues(array $values): void
     {
         $configuredMethod = $this->getConfiguredMethod();
+
         if ($configuredMethod === null) {
             return;
         }
+
         foreach ($values as $value) {
             if (!$configuredMethod->mayReturn($value)) {
-                throw new IncompatibleReturnValueException(sprintf(
+                throw new IncompatibleReturnValueException(\sprintf(
                     'Method %s may not return value of type %s',
                     $configuredMethod->getName(),
-                    gettype($value)
+                    \gettype($value)
                 ));
             }
         }
     }
-
 }

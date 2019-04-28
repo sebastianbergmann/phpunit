@@ -9,24 +9,26 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 abstract class Type
 {
-
-    public static function fromValue($value, bool $allowsNull): Type
+    public static function fromValue($value, bool $allowsNull): self
     {
-        $type = gettype($value);
+        $type = \gettype($value);
+
         switch ($type) {
             case 'object':
-                return self::fromName(get_class($value), $allowsNull);
+                return self::fromName(\get_class($value), $allowsNull);
             default:
                 return new SimpleType($type, $allowsNull);
         }
     }
 
-    public static function fromName(?string $typeName, bool $allowsNull): Type
+    public static function fromName(?string $typeName, bool $allowsNull): self
     {
-        switch (mb_strtolower($typeName)) {
+        switch (\mb_strtolower($typeName)) {
             case null:
             case 'unknown type':
                 return new UnknownType();
@@ -48,10 +50,9 @@ abstract class Type
         }
     }
 
-    abstract public function isAssignable(Type $other): bool;
+    abstract public function isAssignable(self $other): bool;
 
     abstract public function getReturnTypeDeclaration(): string;
 
     abstract public function allowsNull(): bool;
-
 }

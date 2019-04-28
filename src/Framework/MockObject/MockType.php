@@ -12,20 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class UnknownType extends Type
+interface MockType
 {
-    public function isAssignable(Type $other): bool
-    {
-        return true;
-    }
-
-    public function getReturnTypeDeclaration(): string
-    {
-        return '';
-    }
-
-    public function allowsNull(): bool
-    {
-        return true;
-    }
+    public function generate(): string;
 }

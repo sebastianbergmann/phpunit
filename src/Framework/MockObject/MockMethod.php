@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework\MockObject;
 
 /**
@@ -150,18 +149,18 @@ final class MockMethod
 
     public function __construct(string $className, string $methodName, bool $cloneArguments, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, Type $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation, bool $allowsReturnNull)
     {
-        $this->className = $className;
-        $this->methodName = $methodName;
-        $this->cloneArguments = $cloneArguments;
-        $this->modifier = $modifier;
+        $this->className               = $className;
+        $this->methodName              = $methodName;
+        $this->cloneArguments          = $cloneArguments;
+        $this->modifier                = $modifier;
         $this->argumentsForDeclaration = $argumentsForDeclaration;
-        $this->argumentsForCall = $argumentsForCall;
-        $this->returnType = $returnType;
-        $this->reference = $reference;
-        $this->callOriginalMethod = $callOriginalMethod;
-        $this->static = $static;
-        $this->deprecation = $deprecation;
-        $this->allowsReturnNull = $allowsReturnNull;
+        $this->argumentsForCall        = $argumentsForCall;
+        $this->returnType              = $returnType;
+        $this->reference               = $reference;
+        $this->callOriginalMethod      = $callOriginalMethod;
+        $this->static                  = $static;
+        $this->deprecation             = $deprecation;
+        $this->allowsReturnNull        = $allowsReturnNull;
     }
 
     public function getName(): string
@@ -191,7 +190,7 @@ final class MockMethod
         $deprecation = $this->deprecation;
 
         if (null !== $this->deprecation) {
-            $deprecation = "The $this->className::$this->methodName method is deprecated ($this->deprecation).";
+            $deprecation         = "The $this->className::$this->methodName method is deprecated ($this->deprecation).";
             $deprecationTemplate = $this->getTemplate('deprecation.tpl');
 
             $deprecationTemplate->setVar([
@@ -205,20 +204,25 @@ final class MockMethod
 
         $template->setVar(
             [
-                'arguments_decl' => $this->argumentsForDeclaration,
-                'arguments_call' => $this->argumentsForCall,
+                'arguments_decl'     => $this->argumentsForDeclaration,
+                'arguments_call'     => $this->argumentsForCall,
                 'return_declaration' => $this->returnType->getReturnTypeDeclaration(),
-                'arguments_count' => !empty($this->argumentsForCall) ? \substr_count($this->argumentsForCall, ',') + 1 : 0,
-                'class_name' => $this->className,
-                'method_name' => $this->methodName,
-                'modifier' => $this->modifier,
-                'reference' => $this->reference,
-                'clone_arguments' => $this->cloneArguments ? 'true' : 'false',
-                'deprecation' => $deprecation,
+                'arguments_count'    => !empty($this->argumentsForCall) ? \substr_count($this->argumentsForCall, ',') + 1 : 0,
+                'class_name'         => $this->className,
+                'method_name'        => $this->methodName,
+                'modifier'           => $this->modifier,
+                'reference'          => $this->reference,
+                'clone_arguments'    => $this->cloneArguments ? 'true' : 'false',
+                'deprecation'        => $deprecation,
             ]
         );
 
         return $template->render();
+    }
+
+    public function getReturnType(): Type
+    {
+        return $this->returnType;
     }
 
     private function getTemplate(string $template): \Text_Template
@@ -259,9 +263,9 @@ final class MockMethod
                 $name = '...' . $name;
             }
 
-            $nullable = '';
-            $default = '';
-            $reference = '';
+            $nullable        = '';
+            $default         = '';
+            $reference       = '';
             $typeDeclaration = '';
 
             if (!$forCall) {
@@ -269,7 +273,7 @@ final class MockMethod
                     $nullable = '?';
                 }
 
-                if ($parameter->hasType() && (string)$parameter->getType() !== 'self') {
+                if ($parameter->hasType() && (string) $parameter->getType() !== 'self') {
                     $typeDeclaration = $parameter->getType() . ' ';
                 } else {
                     try {
@@ -299,7 +303,7 @@ final class MockMethod
                         } catch (\ReflectionException $e) {
                             throw new RuntimeException(
                                 $e->getMessage(),
-                                (int)$e->getCode(),
+                                (int) $e->getCode(),
                                 $e
                             );
                         }
@@ -310,13 +314,13 @@ final class MockMethod
                             } catch (\ReflectionException $e) {
                                 throw new RuntimeException(
                                     $e->getMessage(),
-                                    (int)$e->getCode(),
+                                    (int) $e->getCode(),
                                     $e
                                 );
                             }
                         } elseif (!\defined($value)) {
                             $rootValue = \preg_replace('/^.*\\\\/', '', $value);
-                            $value = \defined($rootValue) ? $rootValue : $value;
+                            $value     = \defined($rootValue) ? $rootValue : $value;
                         }
 
                         $default = ' = ' . $value;
@@ -368,10 +372,5 @@ final class MockMethod
         }
 
         return Type::fromName($returnType->getName(), $returnType->allowsNull());
-    }
-
-    public function getReturnType(): Type
-    {
-        return $this->returnType;
     }
 }
