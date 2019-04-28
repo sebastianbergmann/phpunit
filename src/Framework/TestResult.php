@@ -68,6 +68,8 @@ final class TestResult implements Countable
     private $skipped = [];
 
     /**
+     * @deprecated Use the `TestHook` interfaces instead
+     *
      * @var TestListener[]
      */
     private $listeners = [];
@@ -214,6 +216,10 @@ final class TestResult implements Countable
     }
 
     /**
+     * @deprecated Use the `TestHook` interfaces instead
+     *
+     * @codeCoverageIgnore
+     *
      * Registers a TestListener.
      */
     public function addListener(TestListener $listener): void
@@ -222,6 +228,10 @@ final class TestResult implements Countable
     }
 
     /**
+     * @deprecated Use the `TestHook` interfaces instead
+     *
+     * @codeCoverageIgnore
+     *
      * Unregisters a TestListener.
      */
     public function removeListener(TestListener $listener): void
@@ -234,6 +244,10 @@ final class TestResult implements Countable
     }
 
     /**
+     * @deprecated Use the `TestHook` interfaces instead
+     *
+     * @codeCoverageIgnore
+     *
      * Flushes all flushable TestListeners.
      */
     public function flushListeners(): void
