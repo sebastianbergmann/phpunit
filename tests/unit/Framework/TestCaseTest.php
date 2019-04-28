@@ -1086,6 +1086,42 @@ final class TestCaseTest extends TestCase
         $this->assertFalse($test->hasFailed());
     }
 
+    public function testHasOutputReturnsFalseWhenTestDoesNotGenerateOutput(): void
+    {
+        $test = new \TestWithDifferentOutput('testThatDoesNotGenerateOutput');
+
+        $test->run();
+
+        $this->assertFalse($test->hasOutput());
+    }
+
+    public function testHasOutputReturnsFalseWhenTestExpectsOutputRegex(): void
+    {
+        $test = new \TestWithDifferentOutput('testThatExpectsOutputRegex');
+
+        $test->run();
+
+        $this->assertFalse($test->hasOutput());
+    }
+
+    public function testHasOutputReturnsFalseWhenTestExpectsOutputString(): void
+    {
+        $test = new \TestWithDifferentOutput('testThatExpectsOutputString');
+
+        $test->run();
+
+        $this->assertFalse($test->hasOutput());
+    }
+
+    public function testHasOutputReturnsTrueWhenTestGeneratesOutput(): void
+    {
+        $test = new \TestWithDifferentOutput('testThatGeneratesOutput');
+
+        $test->run();
+
+        $this->assertTrue($test->hasOutput());
+    }
+
     /**
      * @return array<string, array>
      */
