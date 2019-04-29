@@ -19,7 +19,7 @@ use SebastianBergmann\Exporter\Exporter;
 final class NamePrettifier
 {
     /**
-     * @var array
+     * @var string[]
      */
     private $strings = [];
 
