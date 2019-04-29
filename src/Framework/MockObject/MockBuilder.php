@@ -24,7 +24,7 @@ final class MockBuilder
     private $type;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $methods = [];
 
