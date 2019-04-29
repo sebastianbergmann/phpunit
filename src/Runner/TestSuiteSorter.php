@@ -68,12 +68,12 @@ final class TestSuiteSorter
     private $cache;
 
     /**
-     * @var array array<string> A list of normalized names of tests before reordering
+     * @var string[] A list of normalized names of tests before reordering
      */
     private $originalExecutionOrder = [];
 
     /**
-     * @var array array<string> A list of normalized names of tests affected by reordering
+     * @var string[] A list of normalized names of tests affected by reordering
      */
     private $executionOrder = [];
 
