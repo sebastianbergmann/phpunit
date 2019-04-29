@@ -44,7 +44,7 @@ use Webmozart\Assert\Assert;
 final class Blacklist
 {
     /**
-     * @var array
+     * @var array<string,int>
      */
     public static $blacklistedClassNames = [
         // composer
