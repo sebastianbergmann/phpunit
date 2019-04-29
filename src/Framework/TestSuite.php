@@ -74,7 +74,7 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
     protected $testCase = false;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $foundClasses = [];
 
