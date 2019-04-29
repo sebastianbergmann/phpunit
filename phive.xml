@@ -5,5 +5,5 @@
   <phar name="phpdox" version="^0.11" installed="0.12.0" location="./tools/phpdox" copy="true"/>
   <phar name="phploc" version="^4.0" installed="4.0.1" location="./tools/phploc" copy="true"/>
   <phar name="humbug/php-scoper" version="^0.11" installed="0.11.4" location="./tools/php-scoper" copy="true"/>
-  <phar name="psalm" version="^3.2" installed="3.2.9" location="./tools/psalm" copy="true"/>
+  <phar name="psalm" version="^3.2" installed="3.2.10" location="./tools/psalm" copy="true"/>
 </phive>
