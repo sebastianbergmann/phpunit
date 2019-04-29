@@ -57,4 +57,5 @@ jobs:
         - phpenv config-rm xdebug.ini
       script:
         - ./tools/php-cs-fixer fix --dry-run -v --show-progress=dots --diff-format=udiff
+        - travis_retry ./tools/composer update $DEFAULT_COMPOSER_FLAGS
         - ./tools/psalm --config=.psalm/config.xml --shepherd --stats
