@@ -59,7 +59,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected $backupGlobals;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $backupGlobalsBlacklist = [];
 
@@ -69,7 +69,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     protected $backupStaticAttributes;
 
     /**
-     * @var array
+     * @var array<string,array<int,string>>
      */
     protected $backupStaticAttributesBlacklist = [];
 
@@ -144,7 +144,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $dependencyInput = [];
 
     /**
-     * @var array
+     * @var array<string,string>
      */
     private $iniSettings = [];
 
@@ -154,7 +154,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $locale = [];
 
     /**
-     * @var array
+     * @var MockObject[]
      */
     private $mockObjects = [];
 
@@ -244,7 +244,7 @@ abstract class TestCase extends Assert implements Test, SelfDescribing
     private $warnings = [];
 
     /**
-     * @var array
+     * @var string[]
      */
     private $groups = [];
 
