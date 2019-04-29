@@ -17,28 +17,64 @@ namespace PHPUnit\Framework\Constraint;
  */
 final class IsType extends Constraint
 {
+    /**
+     * @var string
+     */
     public const TYPE_ARRAY = 'array';
 
+    /**
+     * @var string
+     */
     public const TYPE_BOOL = 'bool';
 
+    /**
+     * @var string
+     */
     public const TYPE_FLOAT = 'float';
 
+    /**
+     * @var string
+     */
     public const TYPE_INT = 'int';
 
+    /**
+     * @var string
+     */
     public const TYPE_NULL = 'null';
 
+    /**
+     * @var string
+     */
     public const TYPE_NUMERIC = 'numeric';
 
+    /**
+     * @var string
+     */
     public const TYPE_OBJECT = 'object';
 
+    /**
+     * @var string
+     */
     public const TYPE_RESOURCE = 'resource';
 
+    /**
+     * @var string
+     */
     public const TYPE_STRING = 'string';
 
+    /**
+     * @var string
+     */
     public const TYPE_SCALAR = 'scalar';
 
+    /**
+     * @var string
+     */
     public const TYPE_CALLABLE = 'callable';
 
+    /**
+     * @var string
+     */
     public const TYPE_ITERABLE = 'iterable';
 
     /**
