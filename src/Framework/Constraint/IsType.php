@@ -78,7 +78,7 @@ final class IsType extends Constraint
     public const TYPE_ITERABLE = 'iterable';
 
     /**
-     * @var array
+     * @var array<string,bool>
      */
     private const KNOWN_TYPES = [
         'array'    => true,
