@@ -14,11 +14,17 @@ namespace PHPUnit\Util;
  */
 final class Color
 {
+    /**
+     * @var array<string,string>
+     */
     private const WHITESPACE_MAP = [
         ' '  => '·',
         "\t" => '⇥',
     ];
 
+    /**
+     * @var array<string,string>
+     */
     private const WHITESPACE_EOL_MAP = [
         ' '  => '·',
         "\t" => '⇥',
