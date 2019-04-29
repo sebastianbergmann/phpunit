@@ -44,7 +44,7 @@ use Throwable;
 class Command
 {
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     protected $arguments = [
         'listGroups'              => false,
@@ -58,12 +58,12 @@ class Command
     ];
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     protected $options = [];
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     protected $longOptions = [
         'atleast-version='          => null,
