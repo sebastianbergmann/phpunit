@@ -33,7 +33,7 @@ final class Color
     ];
 
     /**
-     * @var array
+     * @var array<string,string>
      */
     private static $ansiCodes = [
         'reset'             => '0',
