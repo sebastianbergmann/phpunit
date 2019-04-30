@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files>
   <file src="src/Framework/Assert.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
+      <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
+    </ArgumentTypeCoercion>
     <PossiblyInvalidArgument occurrences="3">
       <code>$subset</code>
       <code>$expected</code>
@@ -13,10 +17,6 @@
     <PossiblyNullPropertyFetch occurrences="1">
       <code>$expectedAttribute-&gt;name</code>
     </PossiblyNullPropertyFetch>
-    <TypeCoercion occurrences="2">
-      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
-      <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
-    </TypeCoercion>
     <UndefinedPropertyFetch occurrences="1">
       <code>$expectedAttribute-&gt;name</code>
     </UndefinedPropertyFetch>
@@ -59,9 +59,9 @@
     </MoreSpecificImplementedParamType>
   </file>
   <file src="src/Framework/Constraint/IsInstanceOf.php">
-    <TypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="1">
       <code>$this-&gt;className</code>
-    </TypeCoercion>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/Constraint/IsJson.php">
     <PossiblyNullArgument occurrences="1">
@@ -122,19 +122,19 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
+    <ArgumentTypeCoercion occurrences="5">
+      <code>$originalClassName</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$interfaceName</code>
+      <code>$className</code>
+    </ArgumentTypeCoercion>
     <InvalidArgument occurrences="1">
       <code>$type</code>
     </InvalidArgument>
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($args[$i], '$')</code>
     </PossiblyFalseArgument>
-    <TypeCoercion occurrences="5">
-      <code>$originalClassName</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$interfaceName</code>
-      <code>$className</code>
-    </TypeCoercion>
     <UndefinedClass occurrences="1">
       <code>new $type</code>
     </UndefinedClass>
@@ -203,20 +203,23 @@
     </PossiblyNullPropertyAssignmentValue>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;className</code>
+    </ArgumentTypeCoercion>
     <PossiblyNullOperand occurrences="1">
       <code>$parameter-&gt;getType()</code>
     </PossiblyNullOperand>
     <PossiblyNullReference occurrences="1">
       <code>allowsNull</code>
     </PossiblyNullReference>
-    <TypeCoercion occurrences="1">
-      <code>$this-&gt;className</code>
-    </TypeCoercion>
     <TypeDoesNotContainNull occurrences="1">
       <code>$value === null</code>
     </TypeDoesNotContainNull>
   </file>
   <file src="src/Framework/TestCase.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;expectedException</code>
+    </ArgumentTypeCoercion>
     <InvalidArgument occurrences="2">
       <code>0</code>
       <code>$header</code>
@@ -233,9 +236,6 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$categories</code>
     </PossiblyUndefinedVariable>
-    <TypeCoercion occurrences="1">
-      <code>$this-&gt;expectedException</code>
-    </TypeCoercion>
     <UndefinedInterfaceMethod occurrences="1">
       <code>method</code>
     </UndefinedInterfaceMethod>
@@ -251,26 +251,28 @@
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/Framework/TestSuite.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$className</code>
+      <code>$className</code>
+    </ArgumentTypeCoercion>
     <PossiblyUndefinedVariable occurrences="1">
       <code>$afterClassMethod</code>
     </PossiblyUndefinedVariable>
-    <TypeCoercion occurrences="4">
+    <PropertyTypeCoercion occurrences="2">
       <code>$this-&gt;tests</code>
       <code>$this-&gt;tests</code>
-      <code>$className</code>
-      <code>$className</code>
-    </TypeCoercion>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestSuiteIterator.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;tests[$this-&gt;position]</code>
+    </ArgumentTypeCoercion>
     <InvalidNullableReturnType occurrences="1">
       <code>Test</code>
     </InvalidNullableReturnType>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;valid() ? $this-&gt;tests[$this-&gt;position] : null</code>
     </NullableReturnStatement>
-    <TypeCoercion occurrences="1">
-      <code>$this-&gt;tests[$this-&gt;position]</code>
-    </TypeCoercion>
   </file>
   <file src="src/Runner/DefaultTestResultCache.php">
     <MethodSignatureMismatch occurrences="1">
@@ -308,6 +310,12 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/TextUI/Command.php">
+    <ArgumentTypeCoercion occurrences="4">
+      <code>$suite</code>
+      <code>$suite</code>
+      <code>$suite</code>
+      <code>$printerClass</code>
+    </ArgumentTypeCoercion>
     <InvalidCatch occurrences="1"/>
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
@@ -324,12 +332,6 @@
       <code>$suite</code>
       <code>$suite</code>
     </PossiblyNullArgument>
-    <TypeCoercion occurrences="4">
-      <code>$suite</code>
-      <code>$suite</code>
-      <code>$suite</code>
-      <code>$printerClass</code>
-    </TypeCoercion>
   </file>
   <file src="src/TextUI/Help.php">
     <PossiblyUndefinedArrayOffset occurrences="2">
@@ -356,11 +358,11 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$whitelistFromConfigurationFile</code>
     </PossiblyUndefinedVariable>
-    <TypeCoercion occurrences="3">
+    <PropertyTypeCoercion occurrences="3">
       <code>$arguments['printer']</code>
       <code>$this-&gt;createPrinter($arguments['printer'], $arguments)</code>
       <code>$this-&gt;createPrinter(ResultPrinter::class, $arguments)</code>
-    </TypeCoercion>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/Util/Blacklist.php">
     <UndefinedClass occurrences="1">
@@ -368,6 +370,10 @@
     </UndefinedClass>
   </file>
   <file src="src/Util/Configuration.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$testSuiteNodes-&gt;item(0)</code>
+      <code>$testSuiteNode</code>
+    </ArgumentTypeCoercion>
     <InvalidNullableReturnType occurrences="1">
       <code>bool</code>
     </InvalidNullableReturnType>
@@ -388,10 +394,6 @@
       <code>hasAttribute</code>
       <code>getAttribute</code>
     </PossiblyNullReference>
-    <TypeCoercion occurrences="2">
-      <code>$testSuiteNodes-&gt;item(0)</code>
-      <code>$testSuiteNode</code>
-    </TypeCoercion>
     <UndefinedMethod occurrences="7">
       <code>hasAttribute</code>
       <code>getAttribute</code>
@@ -426,20 +428,20 @@
     </PossiblyInvalidIterator>
   </file>
   <file src="src/Util/Log/JUnit.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$suite-&gt;getName()</code>
+    </ArgumentTypeCoercion>
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
-    <TypeCoercion occurrences="1">
-      <code>$suite-&gt;getName()</code>
-    </TypeCoercion>
   </file>
   <file src="src/Util/Log/TeamCity.php">
-    <TypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="1">
       <code>$className</code>
-    </TypeCoercion>
+    </ArgumentTypeCoercion>
     <UndefinedInterfaceMethod occurrences="7">
       <code>getName</code>
       <code>getName</code>
@@ -451,6 +453,10 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$this-&gt;getException($warnings[0])</code>
+      <code>$this-&gt;getException($failures[0])</code>
+    </ArgumentTypeCoercion>
     <InvalidArgument occurrences="1"/>
     <LessSpecificReturnStatement occurrences="1">
       <code>$exception</code>
@@ -467,10 +473,6 @@
     <PossiblyNullReference occurrences="1">
       <code>merge</code>
     </PossiblyNullReference>
-    <TypeCoercion occurrences="2">
-      <code>$this-&gt;getException($warnings[0])</code>
-      <code>$this-&gt;getException($failures[0])</code>
-    </TypeCoercion>
     <UndefinedInterfaceMethod occurrences="2">
       <code>setResult</code>
       <code>addToAssertionCount</code>
@@ -497,6 +499,12 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Util/Test.php">
+    <ArgumentTypeCoercion occurrences="4">
+      <code>$className</code>
+      <code>$className</code>
+      <code>$dataProviderClassName</code>
+      <code>$className</code>
+    </ArgumentTypeCoercion>
     <InvalidArgument occurrences="1">
       <code>$e</code>
     </InvalidArgument>
@@ -518,12 +526,6 @@
     <PossiblyNullOperand occurrences="1">
       <code>$methodName</code>
     </PossiblyNullOperand>
-    <TypeCoercion occurrences="4">
-      <code>$className</code>
-      <code>$className</code>
-      <code>$dataProviderClassName</code>
-      <code>$className</code>
-    </TypeCoercion>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <PossiblyInvalidArrayOffset occurrences="6">
@@ -564,11 +566,14 @@
     </PossiblyNullOperand>
   </file>
   <file src="src/Util/TextTestListRenderer.php">
-    <TypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="1">
       <code>$suite-&gt;getIterator()</code>
-    </TypeCoercion>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Util/Xml.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$item</code>
+    </ArgumentTypeCoercion>
     <LessSpecificReturnStatement occurrences="1">
       <code>(new DOMDocument)-&gt;importNode($element, true)</code>
     </LessSpecificReturnStatement>
@@ -584,13 +589,10 @@
     <PossiblyNullPropertyFetch occurrences="1">
       <code>$element-&gt;childNodes-&gt;item(0)-&gt;childNodes</code>
     </PossiblyNullPropertyFetch>
-    <TypeCoercion occurrences="1">
-      <code>$item</code>
-    </TypeCoercion>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">
-    <TypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="1">
       <code>$suite-&gt;getIterator()</code>
-    </TypeCoercion>
+    </ArgumentTypeCoercion>
   </file>
 </files>
