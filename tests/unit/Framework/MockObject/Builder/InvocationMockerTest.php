@@ -140,4 +140,42 @@ final class InvocationMockerTest extends TestCase
         $this->assertEquals(true, $mock->methodWithBoolReturnTypeDeclaration());
         $this->assertEquals(1, $mock->methodWithIntReturnTypeDeclaration());
     }
+
+    public function testWillReturnValidType(): void
+    {
+        $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
+            ->getMock();
+
+        $mock->expects($this->any())
+            ->method('methodWithBoolReturnTypeDeclaration')
+            ->willReturn(true);
+
+        $this->assertEquals(true, $mock->methodWithBoolReturnTypeDeclaration());
+    }
+
+    public function testWillReturnValidTypeForLowercaseCall(): void
+    {
+        $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
+            ->getMock();
+
+        $mock->expects($this->any())
+            ->method('methodWithBoolReturnTypeDeclaration')
+            ->willReturn(true);
+
+        $this->assertEquals(true, $mock->methodwithboolreturntypedeclaration());
+    }
+
+    public function testWillReturnValidTypeForLowercaseMethod(): void
+    {
+        $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
+            ->getMock();
+
+        $mock->expects($this->any())
+            ->method('methodwithboolreturntypedeclaration')
+            ->willReturn(true);
+
+        $this->assertEquals(true, $mock->methodWithBoolReturnTypeDeclaration());
+    }
+
+
 }
