@@ -9,11 +9,12 @@
  * file that was distributed with this source code.
  */
 
-use PHPUnit\Framework\IncompatibleReturnValueException;
+use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
 use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @covers \PHPUnit\Framework\MockObject\Builder\InvocationMocker
  * @small
  */
 final class InvocationMockerTest extends TestCase
@@ -125,5 +126,18 @@ final class InvocationMockerTest extends TestCase
         $this->expectException(IncompatibleReturnValueException::class);
         $this->expectExceptionMessage('Method methodWithBoolReturnTypeDeclaration may not return value of type integer');
         $invocationMocker->willReturn(true, 1);
+    }
+
+    public function testWillReturnAllowsMatchersForMultipleMethodsWithDifferentReturnTypes(): void
+    {
+        /** @var ClassWithAllPossibleReturnTypes|\PHPUnit\Framework\MockObject\MockObject $mock */
+        $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
+            ->getMock();
+
+        $invocationMocker = $mock->method(new \PHPUnit\Framework\Constraint\IsAnything());
+        $invocationMocker->willReturn(true, 1);
+
+        $this->assertEquals(true, $mock->methodWithBoolReturnTypeDeclaration());
+        $this->assertEquals(1, $mock->methodWithIntReturnTypeDeclaration());
     }
 }

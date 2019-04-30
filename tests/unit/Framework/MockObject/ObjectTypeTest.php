@@ -13,6 +13,9 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ChildClass;
 use PHPUnit\TestFixture\MockObject\ParentClass;
 
+/**
+ * @covers \PHPUnit\Framework\MockObject\ObjectType
+ */
 class ObjectTypeTest extends TestCase
 {
     /**
@@ -87,5 +90,23 @@ class ObjectTypeTest extends TestCase
             false
         );
         $this->assertFalse($someClass->isAssignable(Type::fromValue(null, true)));
+    }
+
+    public function testPreservesNullNotAllowed(): void
+    {
+        $someClass = new ObjectType(
+            TypeName::fromQualifiedName(ParentClass::class),
+            false
+        );
+        $this->assertFalse($someClass->allowsNull());
+    }
+
+    public function testPreservesNullAllowed(): void
+    {
+        $someClass = new ObjectType(
+            TypeName::fromQualifiedName(ParentClass::class),
+            true
+        );
+        $this->assertTrue($someClass->allowsNull());
     }
 }

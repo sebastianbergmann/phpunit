@@ -20,18 +20,21 @@ abstract class Type
 
         switch ($type) {
             case 'object':
-                return self::fromName(\get_class($value), $allowsNull);
+                return new ObjectType(TypeName::fromQualifiedName(\get_class($value)), $allowsNull);
             default:
-                return new SimpleType($type, $allowsNull);
+                return self::fromName($type, $allowsNull);
         }
     }
 
     public static function fromName(?string $typeName, bool $allowsNull): self
     {
         switch (\mb_strtolower($typeName)) {
-            case null:
+            case 'null':
+                return new NullType();
             case 'unknown type':
                 return new UnknownType();
+            case 'void':
+                return new VoidType();
             case 'object':
             case 'boolean':
             case 'bool':

@@ -24,15 +24,15 @@ class ObjectType extends Type
      */
     private $allowsNull;
 
-    public function __construct(TypeName $className, bool $nullable)
+    public function __construct(TypeName $className, bool $allowsNull)
     {
         $this->className  = $className;
-        $this->allowsNull = $nullable;
+        $this->allowsNull = $allowsNull;
     }
 
     public function isAssignable(Type $other): bool
     {
-        if ($this->allowsNull && isNull($other)) {
+        if ($this->allowsNull && $other instanceof NullType) {
             return true;
         }
 

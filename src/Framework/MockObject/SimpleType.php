@@ -32,7 +32,7 @@ class SimpleType extends Type
 
     public function isAssignable(Type $other): bool
     {
-        if ($this->allowsNull && isNull($other)) {
+        if ($this->allowsNull && $other instanceof NullType) {
             return true;
         }
 
