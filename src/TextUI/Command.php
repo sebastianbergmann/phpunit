@@ -778,7 +778,17 @@ class Command
             }
 
             if (isset($this->options[1][1])) {
-                $this->arguments['testFile'] = \realpath($this->options[1][1]);
+                $testFile = \realpath($this->options[1][1]);
+
+                if ($testFile === false) {
+                    $this->exitWithErrorMessage(
+                        \sprintf(
+                            'Cannot open file "%s".',
+                            $this->options[1][1]
+                        )
+                    );
+                }
+                $this->arguments['testFile'] = $testFile;
             } else {
                 $this->arguments['testFile'] = '';
             }
