@@ -180,10 +180,10 @@ final class InvocationMockerTest extends TestCase
     /**
      * @see https://github.com/sebastianbergmann/phpunit/issues/3602
      */
-    public function testWillReturnFailsWhenTryingToReturnValueFromVoidMethod() : void
+    public function testWillReturnFailsWhenTryingToReturnValueFromVoidMethod(): void
     {
         /** @var ClassWithAllPossibleReturnTypes|\PHPUnit\Framework\MockObject\MockObject $out */
-        $out = $this->createMock(ClassWithAllPossibleReturnTypes::class);
+        $out    = $this->createMock(ClassWithAllPossibleReturnTypes::class);
         $method = $out->method('methodWithVoidReturnTypeDeclaration');
 
         $this->expectException(IncompatibleReturnValueException::class);
