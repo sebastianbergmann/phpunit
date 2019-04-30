@@ -84,8 +84,6 @@ final class MockMethod
      */
     public static function fromReflection(\ReflectionMethod $method, bool $callOriginalMethod, bool $cloneArguments): self
     {
-        $className = $method->getDeclaringClass()->getName();
-
         if ($method->isPrivate()) {
             $modifier = 'private';
         } elseif ($method->isProtected()) {
@@ -114,7 +112,7 @@ final class MockMethod
         }
 
         return new self(
-            $className,
+            $method->getDeclaringClass()->getName(),
             $method->getName(),
             $cloneArguments,
             $modifier,
@@ -175,7 +173,7 @@ final class MockMethod
     {
         if ($this->static) {
             $templateFile = 'mocked_static_method.tpl';
-        } elseif ($this->returnType->getReturnTypeDeclaration() === ': void') {
+        } elseif ($this->returnType instanceof VoidType) {
             $templateFile = \sprintf(
                 '%s_method_void.tpl',
                 $this->callOriginalMethod ? 'proxied' : 'mocked'

@@ -176,6 +176,4 @@ final class InvocationMockerTest extends TestCase
 
         $this->assertEquals(true, $mock->methodWithBoolReturnTypeDeclaration());
     }
-
-
 }

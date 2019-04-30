@@ -262,8 +262,8 @@ final class Generator
             ]
         );
 
-        $mockClass = new MockTrait($classTemplate->render(), $className['className']);
-        $mockClass->generate();
+        $mockTrait = new MockTrait($classTemplate->render(), $className['className']);
+        $mockTrait->generate();
 
         return $this->getMockForAbstractClass($className['className'], $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
     }
