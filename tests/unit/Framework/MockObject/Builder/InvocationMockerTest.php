@@ -176,4 +176,18 @@ final class InvocationMockerTest extends TestCase
 
         $this->assertEquals(true, $mock->methodWithBoolReturnTypeDeclaration());
     }
+
+    /**
+     * @see https://github.com/sebastianbergmann/phpunit/issues/3602
+     */
+    public function testWillReturnFailsWhenTryingToReturnValueFromVoidMethod() : void
+    {
+        /** @var ClassWithAllPossibleReturnTypes|\PHPUnit\Framework\MockObject\MockObject $out */
+        $out = $this->createMock(ClassWithAllPossibleReturnTypes::class);
+        $method = $out->method('methodWithVoidReturnTypeDeclaration');
+
+        $this->expectException(IncompatibleReturnValueException::class);
+        $this->expectExceptionMessage('Method methodWithVoidReturnTypeDeclaration may not return value of type boolean');
+        $method->willReturn(true);
+    }
 }
