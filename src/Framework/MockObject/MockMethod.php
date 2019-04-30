@@ -338,7 +338,7 @@ final class MockMethod
         return \implode(', ', $parameters);
     }
 
-    private static function deriveReturnType(\ReflectionMethod $method): ?Type
+    private static function deriveReturnType(\ReflectionMethod $method): Type
     {
         $returnType = $method->getReturnType();
 

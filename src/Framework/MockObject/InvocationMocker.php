@@ -34,7 +34,7 @@ final class InvocationMocker implements MatcherCollection, Invokable, NamespaceM
     private $builderMap = [];
 
     /**
-     * @var string[]
+     * @var ConfigurableMethod[]
      */
     private $configurableMethods;
 

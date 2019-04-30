@@ -26,7 +26,7 @@ abstract class Type
         }
     }
 
-    public static function fromName(?string $typeName, bool $allowsNull): self
+    public static function fromName(string $typeName, bool $allowsNull): self
     {
         switch (\mb_strtolower($typeName)) {
             case 'null':

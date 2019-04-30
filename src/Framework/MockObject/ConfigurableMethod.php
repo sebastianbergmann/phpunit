@@ -37,7 +37,7 @@ class ConfigurableMethod
 
     public function mayReturn($value): bool
     {
-        if (isNull($value) && $this->returnType->allowsNull()) {
+        if ($value === null && $this->returnType->allowsNull()) {
             return true;
         }
 

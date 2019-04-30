@@ -67,9 +67,9 @@ final class TypeName
 
     public function getQualifiedName(): string
     {
-        return $this->isNamespaced()
-             ? $this->namespaceName . '\\' . $this->simpleName
-             : $this->simpleName;
+        return $this->namespaceName === null
+             ? $this->simpleName
+             : $this->namespaceName . '\\' . $this->simpleName;
     }
 
     public function isNamespaced(): bool
