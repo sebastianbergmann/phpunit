@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ClassAUsingConfigurableMethods;
 use PHPUnit\TestFixture\MockObject\ClassBUsingConfigurableMethods;
+use PHPUnit\TestFixture\MockObject\ReinitializeConfigurableMethods;
 
 class ConfigurableMethodsTest extends TestCase
 {
@@ -24,5 +25,12 @@ class ConfigurableMethodsTest extends TestCase
 
         $this->assertSame($configurableMethodsA, ClassAUsingConfigurableMethods::getConfigurableMethods());
         $this->assertSame($configurableMethodsB, ClassBUsingConfigurableMethods::getConfigurableMethods());
+    }
+
+    public function testConfigurableMethodsAreImmutable(): void
+    {
+        ReinitializeConfigurableMethods::__phpunit_initConfigurableMethods();
+        $this->expectException(ConfigurableMethodsAlreadyInitializedException::class);
+        ReinitializeConfigurableMethods::__phpunit_initConfigurableMethods();
     }
 }

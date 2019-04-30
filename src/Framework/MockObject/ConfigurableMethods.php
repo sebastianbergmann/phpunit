@@ -22,8 +22,7 @@ trait ConfigurableMethods
     public static function __phpunit_initConfigurableMethods(\PHPUnit\Framework\MockObject\ConfigurableMethod...$configurable): void
     {
         if (isset(static::$__phpunit_configurableMethods)) {
-            // TODO: improve exception
-            throw new \Exception('nogo!');
+            throw new ConfigurableMethodsAlreadyInitializedException('Configurable methods is already initialized and can not be reinitialized.');
         }
         static::$__phpunit_configurableMethods = $configurable;
     }
