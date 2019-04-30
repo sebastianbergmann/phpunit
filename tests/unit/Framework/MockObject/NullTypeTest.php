@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 
-class NullTypeTest extends TestCase
+final class NullTypeTest extends TestCase
 {
     /**
      * @dataProvider assignableTypes

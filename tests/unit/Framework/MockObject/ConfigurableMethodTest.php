@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 
-class ConfigurableMethodTest extends TestCase
+final class ConfigurableMethodTest extends TestCase
 {
     public function testMethodMayReturnAssignableValue(): void
     {

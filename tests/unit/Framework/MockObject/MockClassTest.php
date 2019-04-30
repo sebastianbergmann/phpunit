@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\MockClassWithConfigurableMethods;
 
-class MockClassTest extends TestCase
+final class MockClassTest extends TestCase
 {
     public function testGenerateClassFromSource(): void
     {

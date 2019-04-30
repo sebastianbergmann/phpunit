@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class NullType extends Type
+final class NullType extends Type
 {
     public function isAssignable(Type $other): bool
     {

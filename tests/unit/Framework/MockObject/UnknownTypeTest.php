@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \PHPUnit\Framework\MockObject\UnknownType
  */
-class UnknownTypeTest extends TestCase
+final class UnknownTypeTest extends TestCase
 {
     /**
      * @dataProvider assignableTypes

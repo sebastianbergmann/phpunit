@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \PHPUnit\Framework\MockObject\VoidType
  */
-class VoidTypeTest extends TestCase
+final class VoidTypeTest extends TestCase
 {
     /**
      * @dataProvider assignableTypes

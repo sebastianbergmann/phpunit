@@ -14,7 +14,7 @@ use PHPUnit\TestFixture\MockObject\ClassAUsingConfigurableMethods;
 use PHPUnit\TestFixture\MockObject\ClassBUsingConfigurableMethods;
 use PHPUnit\TestFixture\MockObject\ReinitializeConfigurableMethods;
 
-class ConfigurableMethodsTest extends TestCase
+final class ConfigurableMethodsTest extends TestCase
 {
     public function testTwoClassesUsingConfigurableMethodsDontInterfere(): void
     {

@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \PHPUnit\Framework\MockObject\SimpleType
  */
-class SimpleTypeTest extends TestCase
+final class SimpleTypeTest extends TestCase
 {
     /**
      * @dataProvider assignablePairs

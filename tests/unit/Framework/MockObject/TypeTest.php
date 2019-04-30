@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \PHPUnit\Framework\MockObject\Type
  */
-class TypeTest extends TestCase
+final class TypeTest extends TestCase
 {
     /**
      * @dataProvider valuesToNullableType

@@ -16,7 +16,7 @@ use PHPUnit\TestFixture\MockObject\ParentClass;
 /**
  * @covers \PHPUnit\Framework\MockObject\ObjectType
  */
-class ObjectTypeTest extends TestCase
+final class ObjectTypeTest extends TestCase
 {
     /**
      * @var ObjectType

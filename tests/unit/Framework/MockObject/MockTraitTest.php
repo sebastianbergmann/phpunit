@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 
-class MockTraitTest extends TestCase
+final class MockTraitTest extends TestCase
 {
     public function testGenerateClassFromSource(): void
     {

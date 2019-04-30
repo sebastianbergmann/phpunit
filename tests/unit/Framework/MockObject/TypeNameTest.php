@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 
-class TypeNameTest extends TestCase
+final class TypeNameTest extends TestCase
 {
     public function testFromReflection(): void
     {
