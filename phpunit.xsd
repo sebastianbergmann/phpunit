@@ -176,19 +176,19 @@
         <xs:restriction base="xs:string">
             <xs:enumeration value="default"/>
             <xs:enumeration value="defects"/>
-            <xs:enumeration value="duration"/>
             <xs:enumeration value="depends"/>
             <xs:enumeration value="depends,defects"/>
-            <xs:enumeration value="random"/>
-            <xs:enumeration value="reverse"/>
+            <xs:enumeration value="depends,duration"/>
             <xs:enumeration value="depends,random"/>
             <xs:enumeration value="depends,reverse"/>
-            <xs:enumeration value="depends,duration"/>
+            <xs:enumeration value="duration"/>
             <xs:enumeration value="no-depends"/>
             <xs:enumeration value="no-depends,defects"/>
+            <xs:enumeration value="no-depends,duration"/>
             <xs:enumeration value="no-depends,random"/>
             <xs:enumeration value="no-depends,reverse"/>
-            <xs:enumeration value="no-depends,duration"/>
+            <xs:enumeration value="random"/>
+            <xs:enumeration value="reverse"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:complexType name="fileFilterType">
