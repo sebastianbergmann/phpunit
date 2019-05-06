@@ -24,7 +24,7 @@ use Throwable;
 /**
  * Runner for PHPT test cases.
  */
-class PhptTestCase implements Test, SelfDescribing
+class PhptTestCase implements SelfDescribing, Test
 {
     /**
      * @var string[]

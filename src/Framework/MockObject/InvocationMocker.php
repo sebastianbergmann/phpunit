@@ -25,7 +25,7 @@ use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
  * Keeps track of all expectations and stubs as well as registering
  * identifications for builders.
  */
-class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
+class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
 {
     /**
      * @var MatcherInvocation[]
