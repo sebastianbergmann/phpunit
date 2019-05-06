@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 8.1 release series are documented in this fil
 * Fixed [#3596](https://github.com/sebastianbergmann/phpunit/issues/3596): Mocking an interface that extends another interface forgets to mock its own methods
 * Fixed [#3599](https://github.com/sebastianbergmann/phpunit/issues/3599): Type error in `TestCase::createGlobalStateSnapshot()`
 * Fixed [#3614](https://github.com/sebastianbergmann/phpunit/pull/3599): `PHPUnit\Framework\Constraint\Attribute` should be deprecated (and ignored from code coverage)
+* Fixed [#3674](https://github.com/sebastianbergmann/phpunit/issues/3674): `TypeError` when an incorrect file path is given
 
 ## [8.1.3] - 2019-04-19
 
