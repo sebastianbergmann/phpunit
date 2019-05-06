@@ -66,9 +66,8 @@ class ConsecutiveParameters extends StatelessInvocation
      * @param BaseInvocation $invocation
      *
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @return bool
      */
-    public function matches(BaseInvocation $invocation)
+    public function matches(BaseInvocation $invocation): bool
     {
         $this->invocations[] = $invocation;
         $callIndex           = \count($this->invocations) - 1;
@@ -86,10 +85,8 @@ class ConsecutiveParameters extends StatelessInvocation
 
     /**
      * Verify all constraints within this expectation
-     *
-     * @return bool|mixed
      */
-    public function verify()
+    public function verify(): bool
     {
         foreach ($this->invocations as $callIndex => $invocation) {
 
@@ -107,6 +104,7 @@ class ConsecutiveParameters extends StatelessInvocation
                 throw $this->parameterVerificationResults[$callIndex];
             }
         }
+        return true;
     }
 
     /**
@@ -116,11 +114,8 @@ class ConsecutiveParameters extends StatelessInvocation
      *  2. check is performed for all _and_ individual callbacks
      *
      * to avoid duplication, it was exported into a separate method
-     *
-     * @param $callIndex
-     * @return bool
      */
-    private function shouldInvocationBeVerified($callIndex): bool
+    private function shouldInvocationBeVerified(int $callIndex): bool
     {
         // skip check if there is no parameter assertion for this call index and invocation already evaluated
         if (!isset($this->parameterGroups[$callIndex])
@@ -134,13 +129,8 @@ class ConsecutiveParameters extends StatelessInvocation
 
     /**
      * Verify a single invocation
-     *
-     * @param BaseInvocation|null $invocation
-     * @param int $callIndex
-     *
-     * @return bool
      */
-    private function verifyInvocation(?BaseInvocation $invocation, $callIndex): bool
+    private function verifyInvocation(?BaseInvocation $invocation, int $callIndex): bool
     {
         if ($invocation === null) {
             throw new ExpectationFailedException(
