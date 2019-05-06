@@ -107,4 +107,36 @@ class ConsecutiveParametersTest extends TestCase
 
         $this->assertEquals([0 => 2019, 1 => 1970], $validationValues);
     }
+
+    public function testMutableObjectsIgnoreOneExpectationFailure(): void
+    {
+        /** @var \DateTimeImmutable|MockObject $mock */
+        $mock = $this
+            ->getMockBuilder(\DateTimeImmutable::class)
+            ->setMethods(['diff'])
+            ->getMock();
+
+        $mock
+            ->expects($this->exactly(3))
+            ->method('diff')
+            ->withConsecutive(
+                [
+                    $this->isInstanceOf(DateTimeImmutable::class),
+                ],
+                [],
+                [
+                    21, 23,
+                ]
+            );
+
+        $arg = \DateTimeImmutable::createFromFormat('Y-m-d', '2019-01-01');
+
+        $mock->diff($arg);
+
+        $mock->diff(null);
+
+        $this->expectException(ExpectationFailedException::class);
+
+        $mock->diff($arg);
+    }
 }

@@ -69,13 +69,10 @@ class ConsecutiveParameters extends StatelessInvocation
         $this->parameterVerificationResults[$callIndex] = null;
 
         if (!$this->shouldInvocationBeVerified($callIndex)) {
-            return false;
+            return true;
         }
 
-        $this->parameterVerificationResults[$callIndex] =
-            $this->verifyInvocation($invocation, $callIndex);
-
-        return $this->parameterVerificationResults[$callIndex];
+        return false;
     }
 
     /**
