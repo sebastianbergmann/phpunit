@@ -23,7 +23,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class TestSuite implements Test, SelfDescribing, IteratorAggregate
+class TestSuite implements IteratorAggregate, SelfDescribing, Test
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.

@@ -21,7 +21,7 @@ use PHPUnit\Runner\AfterTestWarningHook;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\BeforeTestHook;
 
-final class Extension implements BeforeFirstTestHook, BeforeTestHook, AfterTestHook, AfterSuccessfulTestHook, AfterSkippedTestHook, AfterRiskyTestHook, AfterIncompleteTestHook, AfterTestErrorHook, AfterTestWarningHook, AfterTestFailureHook, AfterLastTestHook
+final class Extension implements AfterIncompleteTestHook, AfterLastTestHook, AfterRiskyTestHook, AfterSkippedTestHook, AfterSuccessfulTestHook, AfterTestErrorHook, AfterTestFailureHook, AfterTestHook, AfterTestWarningHook, BeforeFirstTestHook, BeforeTestHook
 {
     private $amountOfInjectedArguments = 0;
 

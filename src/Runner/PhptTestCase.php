@@ -27,7 +27,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class PhptTestCase implements Test, SelfDescribing
+final class PhptTestCase implements SelfDescribing, Test
 {
     /**
      * @var string[]
