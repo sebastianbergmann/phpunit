@@ -1292,6 +1292,11 @@ class Command
 
                     break;
 
+                case 'duration':
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_DURATION;
+
+                    break;
+
                 default:
                     $this->exitWithErrorMessage("unrecognized --order-by option: $order");
             }

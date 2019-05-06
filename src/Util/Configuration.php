@@ -854,6 +854,10 @@ final class Configuration
                         $result['resolveDependencies'] = false;
 
                         break;
+                    case 'duration':
+                        $result['executionOrder'] = TestSuiteSorter::ORDER_DURATION;
+
+                        break;
                 }
             }
         }
