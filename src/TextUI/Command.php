@@ -1267,16 +1267,6 @@ class Command
 
                     break;
 
-                case 'reverse':
-                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
-
-                    break;
-
-                case 'random':
-                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
-
-                    break;
-
                 case 'defects':
                     $this->arguments['executionOrderDefects'] = TestSuiteSorter::ORDER_DEFECTS_FIRST;
 
@@ -1287,13 +1277,23 @@ class Command
 
                     break;
 
+                case 'duration':
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_DURATION;
+
+                    break;
+
                 case 'no-depends':
                     $this->arguments['resolveDependencies'] = false;
 
                     break;
 
-                case 'duration':
-                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_DURATION;
+                case 'random':
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
+
+                    break;
+
+                case 'reverse':
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
 
                     break;
 
