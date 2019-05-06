@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
+final class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
 {
     /**
      * @var MatcherInvocation[]
