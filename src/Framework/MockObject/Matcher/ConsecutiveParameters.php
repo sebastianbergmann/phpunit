@@ -41,9 +41,6 @@ class ConsecutiveParameters extends StatelessInvocation
      */
     private $parameterVerificationResults = [];
 
-    /**
-     * @param array $parameterGroups
-     */
     public function __construct(array $parameterGroups)
     {
         foreach ($parameterGroups as $index => $parameters) {
@@ -63,14 +60,12 @@ class ConsecutiveParameters extends StatelessInvocation
     }
 
     /**
-     * @param BaseInvocation $invocation
-     *
      * @throws \PHPUnit\Framework\ExpectationFailedException
      */
     public function matches(BaseInvocation $invocation): bool
     {
-        $this->invocations[] = $invocation;
-        $callIndex           = \count($this->invocations) - 1;
+        $this->invocations[]                            = $invocation;
+        $callIndex                                      = \count($this->invocations) - 1;
         $this->parameterVerificationResults[$callIndex] = null;
 
         if (!$this->shouldInvocationBeVerified($callIndex)) {
@@ -89,7 +84,6 @@ class ConsecutiveParameters extends StatelessInvocation
     public function verify(): bool
     {
         foreach ($this->invocations as $callIndex => $invocation) {
-
             if (!$this->shouldInvocationBeVerified($callIndex)) {
                 continue;
             }
@@ -104,6 +98,7 @@ class ConsecutiveParameters extends StatelessInvocation
                 throw $this->parameterVerificationResults[$callIndex];
             }
         }
+
         return true;
     }
 

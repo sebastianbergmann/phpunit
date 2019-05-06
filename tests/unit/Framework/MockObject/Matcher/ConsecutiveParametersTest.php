@@ -82,15 +82,21 @@ class ConsecutiveParametersTest extends TestCase
         $mock
             ->expects($this->exactly(2))
             ->method('diff')
-            ->withConsecutive([
-                $this->callback(function (\DateTime $it) use (&$validationValues) {
-                    $validationValues[0] = $it->format('Y');
-                    return $it->format('Y') === '2019';
-                })],
-                [$this->callback(function (\DateTime $it) use (&$validationValues) {
-                    $validationValues[1] = $it->format('Y');
-                    return $it->format('Y') === '1970';
-                })]
+            ->withConsecutive(
+                [
+                    $this->callback(function (\DateTime $it) use (&$validationValues) {
+                        $validationValues[0] = $it->format('Y');
+
+                        return $it->format('Y') === '2019';
+                    }),
+                ],
+                [
+                    $this->callback(function (\DateTime $it) use (&$validationValues) {
+                        $validationValues[1] = $it->format('Y');
+
+                        return $it->format('Y') === '1970';
+                    }),
+                ]
             );
 
         $arg = \DateTime::createFromFormat('Y-m-d', '2019-01-01');
