@@ -51,6 +51,34 @@ final class MockBuilderTest extends TestCase
         $this->assertNull($mock->anotherMockableMethod());
     }
 
+    public function testSetMethodsAllowsNonExistentMethodNames(): void
+    {
+        $mock = $this->getMockBuilder(Mockable::class)
+          ->setMethods(['mockableMethodWithCrazyName'])
+          ->getMock();
+
+        $this->assertNull($mock->mockableMethodWithCrazyName());
+    }
+
+    public function testSetRealMethodsWithNonExistentMethodNames(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->getMockBuilder(Mockable::class)
+          ->setRealMethods(['mockableMethodWithCrazyName'])
+          ->getMock();
+    }
+
+    public function testSetRealMethodsWithExistingMethodNames(): void
+    {
+        $mock = $this->getMockBuilder(Mockable::class)
+            ->setRealMethods(['mockableMethod'])
+            ->getMock();
+
+        $this->assertNull($mock->mockableMethod());
+        $this->assertTrue($mock->anotherMockableMethod());
+    }
+
     public function testEmptyMethodExceptionsToMockCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
