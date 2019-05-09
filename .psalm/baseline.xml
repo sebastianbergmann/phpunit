@@ -201,6 +201,9 @@
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this->type</code>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
     <ArgumentTypeCoercion occurrences="1">
