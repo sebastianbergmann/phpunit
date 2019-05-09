@@ -190,6 +190,31 @@ final class MockBuilder
     }
 
     /**
+     * Specifies the subset of methods to mock, requiring each to exist in the class
+     */
+    public function setRealMethods(array $methods = null): self
+    {
+        if ($methods) {
+            $reflection = new \ReflectionClass($this->type);
+
+            foreach ($methods as $method) {
+                if (!$reflection->hasMethod($method)) {
+                    throw new RuntimeException(
+                        \sprintf(
+                            'Trying to set mock method "%s" which cannot be configured because it does not exist',
+                            $method
+                        )
+                    );
+                }
+            }
+        }
+
+        $this->methods = $methods;
+
+        return $this;
+    }
+
+    /**
      * Specifies the subset of methods to not mock. Default is to mock all of them.
      */
     public function setMethodsExcept(array $methods = []): self
