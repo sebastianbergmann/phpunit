@@ -127,7 +127,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
 
     public function getTime($testName): float
     {
-        return $this->times[$testName] ?? 0;
+        return $this->times[$testName] ?? 0.0;
     }
 
     public function load(): void
