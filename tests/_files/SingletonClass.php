@@ -17,7 +17,7 @@ class SingletonClass
     {
     }
 
-    private function __sleep(): void
+    public function __sleep(): array
     {
     }
 
