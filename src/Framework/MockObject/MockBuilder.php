@@ -191,8 +191,10 @@ final class MockBuilder
 
     /**
      * Specifies the subset of methods to mock, requiring each to exist in the class
+     *
+     * @param string[] $methods
      */
-    public function setRealMethods(array $methods = null): self
+    public function setRealMethods(array $methods): self
     {
         if ($methods) {
             $reflection = new \ReflectionClass($this->type);
