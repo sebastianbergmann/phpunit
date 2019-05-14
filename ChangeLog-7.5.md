@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.5.11] - 2019-05-14
+
+### Fixed
+
+* Fixed [#3683](https://github.com/sebastianbergmann/phpunit/issues/3683): Regression in PHPUnit 7.5.10 with regard to Exception stubbing/mocking
+
 ## [7.5.10] - 2019-05-09
 
 ### Fixed
@@ -102,6 +108,7 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 * Fixed [#3429](https://github.com/sebastianbergmann/phpunit/pull/3429): Inefficient loop in `getHookMethods()`
 * Fixed [#3437](https://github.com/sebastianbergmann/phpunit/pull/3437): JUnit logger skips PHPT tests
 
+[7.5.11]: https://github.com/sebastianbergmann/phpunit/compare/7.5.10...7.5.11
 [7.5.10]: https://github.com/sebastianbergmann/phpunit/compare/7.5.9...7.5.10
 [7.5.9]: https://github.com/sebastianbergmann/phpunit/compare/7.5.8...7.5.9
 [7.5.8]: https://github.com/sebastianbergmann/phpunit/compare/7.5.7...7.5.8
