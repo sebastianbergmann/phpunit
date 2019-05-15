@@ -181,6 +181,8 @@ final class MockBuilder
 
     /**
      * Specifies the subset of methods to mock. Default is to mock none of them.
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/pull/3687
      */
     public function setMethods(array $methods = null): self
     {
@@ -196,7 +198,7 @@ final class MockBuilder
      *
      * @throws RuntimeException
      */
-    public function setRealMethods(array $methods): self
+    public function onlyMethods(array $methods): self
     {
         $reflection = new \ReflectionClass($this->type);
 
@@ -204,7 +206,35 @@ final class MockBuilder
             if (!$reflection->hasMethod($method)) {
                 throw new RuntimeException(
                     \sprintf(
-                        'Trying to set mock method "%s", but it does not exist in class "%s"',
+                        'Trying to set mock method "%s" with onlyMethods, but it does not exist in class "%s". Use addMethods() for methods that don\'t exist in the class.',
+                        $method,
+                        $this->type
+                    )
+                );
+            }
+        }
+
+        $this->methods = $methods;
+
+        return $this;
+    }
+
+    /**
+     * Specifies methods that don't exist in the class which you want to mock
+     *
+     * @param string[] $methods
+     *
+     * @throws RuntimeException
+     */
+    public function addMethods(array $methods): self
+    {
+        $reflection = new \ReflectionClass($this->type);
+
+        foreach ($methods as $method) {
+            if ($reflection->hasMethod($method)) {
+                throw new RuntimeException(
+                    \sprintf(
+                        'Trying to set mock method "%s" with addMethod, but it exists in class "%s". Use onlyMethods() for methods that exist in the class.',
                         $method,
                         $this->type
                     )

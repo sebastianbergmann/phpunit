@@ -60,30 +60,49 @@ final class MockBuilderTest extends TestCase
         $this->assertNull($mock->mockableMethodWithCrazyName());
     }
 
-    public function testSetRealMethodsWithNonExistentMethodNames(): void
+    public function testOnlyMethodsWithNonExistentMethodNames(): void
     {
         $this->expectException(RuntimeException::class);
 
         $this->getMockBuilder(Mockable::class)
-          ->setRealMethods(['mockableMethodWithCrazyName'])
+          ->onlyMethods(['mockableMethodWithCrazyName'])
           ->getMock();
     }
 
-    public function testSetRealMethodsWithExistingMethodNames(): void
+    public function testOnlyMethodsWithExistingMethodNames(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-            ->setRealMethods(['mockableMethod'])
-            ->getMock();
+                     ->onlyMethods(['mockableMethod'])
+                     ->getMock();
 
         $this->assertNull($mock->mockableMethod());
+        $this->assertTrue($mock->anotherMockableMethod());
+    }
+
+    public function testAddMethodsWithNonExistentMethodNames(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->getMockBuilder(Mockable::class)
+             ->addMethods(['mockableMethod'])
+             ->getMock();
+    }
+
+    public function testAddMethodsWithExistingMethodNames(): void
+    {
+        $mock = $this->getMockBuilder(Mockable::class)
+                     ->addMethods(['mockableMethodWithFakeMethod'])
+                     ->getMock();
+
+        $this->assertNull($mock->mockableMethodWithFakeMethod());
         $this->assertTrue($mock->anotherMockableMethod());
     }
 
     public function testEmptyMethodExceptionsToMockCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-            ->setMethodsExcept()
-            ->getMock();
+                     ->setMethodsExcept()
+                     ->getMock();
 
         $this->assertNull($mock->mockableMethod());
         $this->assertNull($mock->anotherMockableMethod());
