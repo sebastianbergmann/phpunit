@@ -193,6 +193,8 @@ final class MockBuilder
     {
         $this->methods = $methods;
 
+        $this->alreadyUsedMockMethodConfiguration = true;
+
         return $this;
     }
 
@@ -206,7 +208,12 @@ final class MockBuilder
     public function onlyMethods(array $methods): self
     {
         if ($this->alreadyUsedMockMethodConfiguration) {
-            throw new RuntimeException('Can\'t use onlyMethods after already configuring mock methods on the mock.');
+            throw new RuntimeException(
+                \sprintf(
+                    'Can\'t use onlyMethods on "%s" mock because mocked methods were already configured.',
+                    $this->type
+                )
+            );
         }
 
         $this->alreadyUsedMockMethodConfiguration = true;
@@ -240,7 +247,12 @@ final class MockBuilder
     public function addMethods(array $methods): self
     {
         if ($this->alreadyUsedMockMethodConfiguration) {
-            throw new RuntimeException('Can\'t use addMethods after already configuring mock methods on the mock.');
+            throw new RuntimeException(
+                \sprintf(
+                    'Can\'t use addMethods on "%s" mock because mocked methods were already configured.',
+                    $this->type
+                )
+            );
         }
 
         $this->alreadyUsedMockMethodConfiguration = true;
