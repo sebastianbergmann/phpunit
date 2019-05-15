@@ -108,6 +108,26 @@ final class MockBuilderTest extends TestCase
         $this->assertNull($mock->anotherMockableMethod());
     }
 
+    public function testNotAbleToUseAddMethodsAfterOnlyMethods(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->getMockBuilder(Mockable::class)
+             ->onlyMethods(['mockableMethod'])
+             ->addMethods(['mockableMethodWithFakeMethod'])
+             ->getMock();
+    }
+
+    public function testNotAbleToUseOnlyMethodsAfterAddMethods(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->getMockBuilder(Mockable::class)
+             ->addMethods(['mockableMethodWithFakeMethod'])
+             ->onlyMethods(['mockableMethod'])
+             ->getMock();
+    }
+
     public function testByDefaultDoesNotPassArgumentsToTheConstructor(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)->getMock();
