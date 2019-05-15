@@ -87,6 +87,11 @@ final class MockBuilder
     private $generator;
 
     /**
+     * @var bool
+     */
+    private $alreadyUsedMockMethodConfiguration = false;
+
+    /**
      * @param string|string[] $type
      *
      * @psalm-param class-string<MockedType>|string|string[] $type
@@ -200,6 +205,12 @@ final class MockBuilder
      */
     public function onlyMethods(array $methods): self
     {
+        if ($this->alreadyUsedMockMethodConfiguration) {
+            throw new RuntimeException('Can\'t use onlyMethods after already configuring mock methods on the mock.');
+        }
+
+        $this->alreadyUsedMockMethodConfiguration = true;
+
         $reflection = new \ReflectionClass($this->type);
 
         foreach ($methods as $method) {
@@ -228,6 +239,12 @@ final class MockBuilder
      */
     public function addMethods(array $methods): self
     {
+        if ($this->alreadyUsedMockMethodConfiguration) {
+            throw new RuntimeException('Can\'t use addMethods after already configuring mock methods on the mock.');
+        }
+
+        $this->alreadyUsedMockMethodConfiguration = true;
+
         $reflection = new \ReflectionClass($this->type);
 
         foreach ($methods as $method) {
