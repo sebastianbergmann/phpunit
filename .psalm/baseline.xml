@@ -220,7 +220,8 @@
     </TypeDoesNotContainNull>
   </file>
   <file src="src/Framework/TestCase.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$class_name</code>
       <code>$this-&gt;expectedException</code>
     </ArgumentTypeCoercion>
     <InvalidArgument occurrences="2">

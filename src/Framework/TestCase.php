@@ -1521,6 +1521,26 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     protected function createPartialMock($originalClassName, array $methods): MockObject
     {
+        $class_names = \is_array($originalClassName) ? $originalClassName : [$originalClassName];
+
+        foreach ($class_names as $class_name) {
+            $reflection = new \ReflectionClass($class_name);
+
+            $mockedMethodsThatDontExist = \array_filter($methods, function (string $method) use ($reflection) {
+                return !$reflection->hasMethod($method);
+            });
+
+            if ($mockedMethodsThatDontExist) {
+                $this->addWarning(
+                    \sprintf(
+                        'createPartialMock called with method(s) %s that do not exist in %s. This will not be allowed in future versions of PHPUnit.',
+                        \implode(', ', $mockedMethodsThatDontExist),
+                        $class_name
+                    )
+                );
+            }
+        }
+
         return $this->getMockBuilder($originalClassName)
                     ->disableOriginalConstructor()
                     ->disableOriginalClone()

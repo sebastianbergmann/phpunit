@@ -857,6 +857,26 @@ final class TestCaseTest extends TestCase
         $this->assertTrue($mock->anotherMockableMethod());
     }
 
+    public function testCreatePartialMockWithFakeMethods(): void
+    {
+        $test = new \TestWithDifferentStatuses('testWithCreatePartialMockWarning');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_WARNING, $test->getStatus());
+        $this->assertFalse($test->hasFailed());
+    }
+
+    public function testCreatePartialMockWithRealMethods(): void
+    {
+        $test = new \TestWithDifferentStatuses('testWithCreatePartialMockPassesNoWarning');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_PASSED, $test->getStatus());
+        $this->assertFalse($test->hasFailed());
+    }
+
     public function testCreateMockSkipsConstructor(): void
     {
         /** @var \Mockable $mock */
