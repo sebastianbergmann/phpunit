@@ -518,9 +518,7 @@ final class Generator
     {
         $className = $mockClass->generate();
 
-        if ($callOriginalConstructor &&
-            \is_string($type) &&
-            !\interface_exists($type, $callAutoload)) {
+        if ($callOriginalConstructor) {
             if (\count($arguments) === 0) {
                 $object = new $className;
             } else {
