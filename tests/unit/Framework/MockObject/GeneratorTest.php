@@ -220,6 +220,12 @@ class GeneratorTest extends TestCase
         $this->assertInstanceOf(MockObject::class, $stub);
     }
 
+    public function testMockingOfThrowableConstructorArguments(): void
+    {
+        $mock = $this->generator->getMock(Throwable::class, null, ['It works']);
+        $this->assertSame('It works', $mock->getMessage());
+    }
+
     public function testVariadicArgumentsArePassedToOriginalMethod()
     {
         /** @var ClassWithVariadicArgumentMethod|MockObject $mock */
