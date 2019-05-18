@@ -10,5 +10,13 @@ All notable changes of the PHPUnit 8.2 release series are documented in this fil
 * Implemented [#3586](https://github.com/sebastianbergmann/phpunit/issues/3586): Show time spent on code coverage report generation
 * Implemented [#3682](https://github.com/sebastianbergmann/phpunit/issues/3682): Allow using `duration` for the `--order-by` option as well as for the `executionOrder` attribute in `phpunit.xml`
 
+### Changed
+
+* Implemented [#3122](https://github.com/sebastianbergmann/phpunit/issues/3122): Prevent runtime type error due to wrong return value configuration of test double
+
+### Fixed
+
+* Fixed [#3602](https://github.com/sebastianbergmann/phpunit/issues/3602): PHPUnit silently ignores the return value on a `void` method of test double
+
 [8.2.0]: https://github.com/sebastianbergmann/phpunit/compare/8.1...8.2.0
 
