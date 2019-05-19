@@ -38,7 +38,7 @@ final class InvocationMocker implements MethodNameMatch
      */
     private $configurableMethods;
 
-    public function __construct(MatcherCollection $collection, Invocation $invocationMatcher, ConfigurableMethod...$configurableMethods)
+    public function __construct(MatcherCollection $collection, Invocation $invocationMatcher, ConfigurableMethod ...$configurableMethods)
     {
         $this->collection = $collection;
         $this->matcher    = new Matcher($invocationMatcher);
@@ -71,10 +71,13 @@ final class InvocationMocker implements MethodNameMatch
     {
         if (\count($nextValues) === 0) {
             $this->ensureTypeOfReturnValues([$value]);
+
             $stub = new Stub\ReturnStub($value);
         } else {
             $values = \array_merge([$value], $nextValues);
+
             $this->ensureTypeOfReturnValues($values);
+
             $stub = new Stub\ConsecutiveCalls($values);
         }
 
@@ -197,7 +200,7 @@ final class InvocationMocker implements MethodNameMatch
         }
 
         $configurableMethodNames = \array_map(
-            function (ConfigurableMethod $configurable) {
+            static function (ConfigurableMethod $configurable) {
                 return \strtolower($configurable->getName());
             },
             $this->configurableMethods
@@ -247,6 +250,7 @@ final class InvocationMocker implements MethodNameMatch
                 if ($configuredMethod !== null) {
                     return null;
                 }
+
                 $configuredMethod = $configurableMethod;
             }
         }
@@ -264,11 +268,13 @@ final class InvocationMocker implements MethodNameMatch
 
         foreach ($values as $value) {
             if (!$configuredMethod->mayReturn($value)) {
-                throw new IncompatibleReturnValueException(\sprintf(
-                    'Method %s may not return value of type %s',
-                    $configuredMethod->getName(),
-                    \gettype($value)
-                ));
+                throw new IncompatibleReturnValueException(
+                    \sprintf(
+                        'Method %s may not return value of type %s',
+                        $configuredMethod->getName(),
+                        \gettype($value)
+                    )
+                );
             }
         }
     }

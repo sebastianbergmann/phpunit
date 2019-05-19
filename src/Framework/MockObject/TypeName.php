@@ -51,8 +51,9 @@ final class TypeName
         if ($namespaceName === '') {
             $namespaceName = null;
         }
-        $this->namespaceName  = $namespaceName;
-        $this->simpleName     = $simpleName;
+
+        $this->namespaceName = $namespaceName;
+        $this->simpleName    = $simpleName;
     }
 
     public function getNamespaceName(): ?string

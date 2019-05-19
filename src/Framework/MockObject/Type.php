@@ -18,23 +18,25 @@ abstract class Type
     {
         $type = \gettype($value);
 
-        switch ($type) {
-            case 'object':
-                return new ObjectType(TypeName::fromQualifiedName(\get_class($value)), $allowsNull);
-            default:
-                return self::fromName($type, $allowsNull);
+        if ($type === 'object') {
+            return new ObjectType(TypeName::fromQualifiedName(\get_class($value)), $allowsNull);
         }
+
+        return self::fromName($type, $allowsNull);
     }
 
     public static function fromName(string $typeName, bool $allowsNull): self
     {
         switch (\mb_strtolower($typeName)) {
             case 'null':
-                return new NullType();
+                return new NullType;
+
             case 'unknown type':
-                return new UnknownType();
+                return new UnknownType;
+
             case 'void':
-                return new VoidType();
+                return new VoidType;
+
             case 'object':
             case 'boolean':
             case 'bool':
@@ -48,6 +50,7 @@ abstract class Type
             case 'resource':
             case 'resource (closed)':
                 return new SimpleType($typeName, $allowsNull);
+
             default:
                 return new ObjectType(TypeName::fromQualifiedName($typeName), $allowsNull);
         }

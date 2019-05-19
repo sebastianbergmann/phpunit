@@ -40,7 +40,14 @@ final class MockClass implements MockType
     {
         if (!\class_exists($this->mockName, false)) {
             eval($this->classCode);
-            \call_user_func([$this->mockName, '__phpunit_initConfigurableMethods'], ...$this->configurableMethods);
+
+            \call_user_func(
+                [
+                    $this->mockName,
+                    '__phpunit_initConfigurableMethods',
+                ],
+                ...$this->configurableMethods
+            );
         }
 
         return $this->mockName;
