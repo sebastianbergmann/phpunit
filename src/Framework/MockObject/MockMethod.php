@@ -141,7 +141,7 @@ final class MockMethod
             'public',
             '',
             '',
-            new UnknownType(),
+            new UnknownType,
             '',
             false,
             false,

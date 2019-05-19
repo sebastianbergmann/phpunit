@@ -27,7 +27,7 @@ final class MockMethodTest extends TestCase
             '',
             '',
             '',
-            new UnknownType(),
+            new UnknownType,
             '',
             false,
             false,
