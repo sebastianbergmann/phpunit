@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\MockClassWithConfigurableMethods;
+use SebastianBergmann\Type\Type;
 
 final class MockClassTest extends TestCase
 {

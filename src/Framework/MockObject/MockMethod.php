@@ -9,6 +9,11 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use SebastianBergmann\Type\ObjectType;
+use SebastianBergmann\Type\Type;
+use SebastianBergmann\Type\UnknownType;
+use SebastianBergmann\Type\VoidType;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */

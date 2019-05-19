@@ -33,6 +33,7 @@ use SebastianBergmann\ObjectEnumerator\Enumerator;
 use SebastianBergmann\RecursionContext\Context;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
 use SebastianBergmann\Timer\Timer;
+use SebastianBergmann\Type\TypeName;
 use SebastianBergmann\Version;
 use Text_Template;
 use TheSeer\Tokenizer\Tokenizer;
@@ -121,6 +122,9 @@ final class Blacklist
 
         // sebastian/resource-operations
         ResourceOperations::class => 1,
+
+        // sebastian/type
+        TypeName::class => 1,
 
         // sebastian/version
         Version::class => 1,

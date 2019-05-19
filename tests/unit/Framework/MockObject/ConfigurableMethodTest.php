@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
+use SebastianBergmann\Type\Type;
 
 final class ConfigurableMethodTest extends TestCase
 {

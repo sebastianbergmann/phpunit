@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ClassWithoutParentButParentReturnType;
+use SebastianBergmann\Type\UnknownType;
 
 /**
  * @small

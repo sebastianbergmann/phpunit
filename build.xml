@@ -281,6 +281,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/sebastian/type/LICENSE" tofile="${basedir}/build/phar/sebastian-type/LICENSE"/>
+        <copy todir="${basedir}/build/phar/sebastian-type">
+            <fileset dir="${basedir}/vendor/sebastian/type/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/sebastian/version/LICENSE" tofile="${basedir}/build/phar/sebastian-version/LICENSE"/>
         <copy todir="${basedir}/build/phar/sebastian-version">
             <fileset dir="${basedir}/vendor/sebastian/version/src">

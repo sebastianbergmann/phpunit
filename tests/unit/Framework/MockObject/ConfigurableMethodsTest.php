@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ClassAUsingConfigurableMethods;
 use PHPUnit\TestFixture\MockObject\ClassBUsingConfigurableMethods;
 use PHPUnit\TestFixture\MockObject\ReinitializeConfigurableMethods;
+use SebastianBergmann\Type\SimpleType;
 
 final class ConfigurableMethodsTest extends TestCase
 {

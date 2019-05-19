@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use SebastianBergmann\Type\Type;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
