@@ -34,7 +34,7 @@ final class InvocationMocker implements Invokable, MatcherCollection, NamespaceM
     private $builderMap = [];
 
     /**
-     * @var string[]
+     * @var ConfigurableMethod[]
      */
     private $configurableMethods;
 
@@ -93,7 +93,7 @@ final class InvocationMocker implements Invokable, MatcherCollection, NamespaceM
         return new BuilderInvocationMocker(
             $this,
             $matcher,
-            $this->configurableMethods
+            ...$this->configurableMethods
         );
     }
 

@@ -167,8 +167,7 @@ final class Generator
         );
 
         return $this->getObject(
-            $mock['code'],
-            $mock['mockClassName'],
+            $mock,
             $type,
             $callOriginalConstructor,
             $callAutoload,
@@ -263,10 +262,8 @@ final class Generator
             ]
         );
 
-        $this->evalClass(
-            $classTemplate->render(),
-            $className['className']
-        );
+        $mockTrait = new MockTrait($classTemplate->render(), $className['className']);
+        $mockTrait->generate();
 
         return $this->getMockForAbstractClass($className['className'], $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
     }
@@ -303,15 +300,10 @@ final class Generator
             ]
         );
 
-        return $this->getObject($classTemplate->render(), $className['className']);
+        return $this->getObject(new MockTrait($classTemplate->render(), $className['className']));
     }
 
-    /**
-     * @param array|string $type
-     *
-     * @throws RuntimeException
-     */
-    public function generate($type, array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false): array
+    public function generate($type, array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false): MockClass
     {
         if (\is_array($type)) {
             \sort($type);
@@ -522,14 +514,9 @@ final class Generator
         return $methods;
     }
 
-    /**
-     * @param array|string $type
-     *
-     * @throws RuntimeException
-     */
-    private function getObject(string $code, string $className, $type = '', bool $callOriginalConstructor = false, bool $callAutoload = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true)
+    private function getObject(MockType $mockClass, $type = '', bool $callOriginalConstructor = false, bool $callAutoload = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true)
     {
-        $this->evalClass($code, $className);
+        $className = $mockClass->generate();
 
         if ($callOriginalConstructor) {
             if (\count($arguments) === 0) {
@@ -584,20 +571,12 @@ final class Generator
         return $object;
     }
 
-    private function evalClass(string $code, string $className): void
-    {
-        if (!\class_exists($className, false)) {
-            eval($code);
-        }
-    }
-
     /**
      * @param array|string $type
-     * @param null|array   $explicitMethods
      *
      * @throws RuntimeException
      */
-    private function generateMock($type, $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): array
+    private function generateMock($type, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
     {
         $classTemplate       = $this->getTemplate('mocked_class.tpl');
 
@@ -837,7 +816,7 @@ final class Generator
 
         foreach ($mockMethods->asArray() as $mockMethod) {
             $mockedMethods .= $mockMethod->generateCode();
-            $configurable[] = \strtolower($mockMethod->getName());
+            $configurable[] = new ConfigurableMethod($mockMethod->getName(), $mockMethod->getReturnType());
         }
 
         $method = '';
@@ -859,22 +838,14 @@ final class Generator
                 'mock_class_name'   => $mockClassName['className'],
                 'mocked_methods'    => $mockedMethods,
                 'method'            => $method,
-                'configurable'      => '[' . \implode(
-                    ', ',
-                    \array_map(
-                        function ($m) {
-                            return '\'' . $m . '\'';
-                        },
-                        $configurable
-                    )
-                ) . ']',
             ]
         );
 
-        return [
-            'code'          => $classTemplate->render(),
-            'mockClassName' => $mockClassName['className'],
-        ];
+        return new MockClass(
+            $classTemplate->render(),
+            $mockClassName['className'],
+            $configurable
+        );
     }
 
     /**

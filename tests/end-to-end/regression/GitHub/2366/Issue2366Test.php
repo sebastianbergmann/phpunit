@@ -24,14 +24,14 @@ class Issue2366Test extends TestCase
      */
     public function testOne($o): void
     {
-        $this->assertEquals(1, $o->foo());
+        $this->assertEquals(true, $o->foo());
     }
 
     public function provider()
     {
         $o = $this->createMock(Issue2366::class);
 
-        $o->method('foo')->willReturn(1);
+        $o->method('foo')->willReturn(true);
 
         return [
             [$o],

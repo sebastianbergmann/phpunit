@@ -1,5 +1,5 @@
 
-    {modifier} function {reference}{method_name}({arguments_decl}){return_delim}{return_type}
+    {modifier} function {reference}{method_name}({arguments_decl}){return_declaration}
     {
         $__phpunit_arguments = [{arguments_call}];
         $__phpunit_count     = func_num_args();
@@ -14,7 +14,7 @@
 
         $this->__phpunit_getInvocationMocker()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                '{class_name}', '{method_name}', $__phpunit_arguments, '{return_type}', $this, {clone_arguments}, true
+                '{class_name}', '{method_name}', $__phpunit_arguments, '{return_declaration}', $this, {clone_arguments}, true
             )
         );
 

@@ -14,6 +14,8 @@ print $generator->generateClassFromWsdl(
     'Test'
 );
 --EXPECTF--
+declare(strict_types=1);
+
 class Test extends \SoapClient
 {
     public function __construct($wsdl, array $options)
