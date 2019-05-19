@@ -3,7 +3,6 @@
 --SKIPIF--
 <?php
 if (!extension_loaded('soap')) echo 'skip: SOAP extension is required';
-?>
 --FILE--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../../vendor/autoload.php';
@@ -15,7 +14,6 @@ print $generator->generateClassFromWsdl(
     'GoogleSearch',
     array('doGoogleSearch')
 );
-?>
 --EXPECTF--
 declare(strict_types=1);
 

@@ -21,7 +21,6 @@ $mockMethod = \PHPUnit\Framework\MockObject\MockMethod::fromReflection(
 $code = $mockMethod->generateCode();
 
 print $code;
-?>
 --EXPECT--
 
 private function bar($arg = FOO_CONST)

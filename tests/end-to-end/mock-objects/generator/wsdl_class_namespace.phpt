@@ -13,7 +13,6 @@ print $generator->generateClassFromWsdl(
     __DIR__ . '/../../../_files/GoogleSearch.wsdl',
     'My\\Space\\GoogleSearch'
 );
-?>
 --EXPECTF--
 declare(strict_types=1);
 

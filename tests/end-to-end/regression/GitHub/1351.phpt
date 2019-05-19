@@ -5,7 +5,6 @@ https://github.com/sebastianbergmann/phpunit/issues/1351
 if (!extension_loaded('pdo') || !in_array('sqlite', PDO::getAvailableDrivers())) {
     print 'skip: PDO_SQLITE is required';
 }
-?>
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';

@@ -51,7 +51,6 @@ $mock = $generator->generate(
 );
 
 print $mock->getClassCode();
-?>
 --EXPECTF--
 declare(strict_types=1);
 

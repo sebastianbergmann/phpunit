@@ -33,7 +33,7 @@ Failed asserting that two strings are equal.
 +#0 {main}\n
 +  thrown in %s on line 2'
 
-%stests%eend-to-end%e_files%ephpt-expect-location-hint-example.phpt:10
+%stests%eend-to-end%e_files%ephpt-expect-location-hint-example.phpt:9
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.

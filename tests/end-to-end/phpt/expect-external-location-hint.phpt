@@ -35,7 +35,7 @@ Failed asserting that two strings are equal.
 +and this is line 3'
 
 %stests%eend-to-end%e_files%eexpect_external.txt:1
-%stests%eend-to-end%e_files%ephpt-expect-external-location-hint-example.phpt:10
+%stests%eend-to-end%e_files%ephpt-expect-external-location-hint-example.phpt:9
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.

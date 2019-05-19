@@ -19,7 +19,6 @@ $mockMethod = \PHPUnit\Framework\MockObject\MockMethod::fromReflection(
 $code = $mockMethod->generateCode();
 
 print $code;
-?>
 --EXPECTF--
 
 public function bar(): string
