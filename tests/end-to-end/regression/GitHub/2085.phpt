@@ -3,7 +3,7 @@ Test CLI flags --enforce-time-limit --default-time-limit
 --DESCRIPTION--
 https://github.com/sebastianbergmann/phpunit/issues/2085
 --SKIPIF--
-<?php
+<?php declare(strict_types=1);
 require __DIR__ . '/../../../bootstrap.php';
 
 if (!\class_exists(SebastianBergmann\Invoker\Invoker::class)) {

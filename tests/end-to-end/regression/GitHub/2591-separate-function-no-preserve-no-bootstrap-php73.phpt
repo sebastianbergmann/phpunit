@@ -2,7 +2,7 @@
 GH-2591: Test method process isolation without preserving global state and without loaded bootstrap.
 Expected result is to have an error, because of no classes loaded.
 --SKIPIF--
-<?php
+<?php declare(strict_types=1);
 if (extension_loaded('xdebug')) {
     print 'skip: xdebug loaded';
 } elseif (version_compare(PHP_VERSION, '7.3.0-dev', '<')) {

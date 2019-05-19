@@ -1,7 +1,7 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/1348
 --SKIPIF--
-<?php
+<?php declare(strict_types=1);
 if (defined('HHVM_VERSION') || defined('PHPDBG_VERSION')) {
     print 'skip: PHP runtime required';
 }

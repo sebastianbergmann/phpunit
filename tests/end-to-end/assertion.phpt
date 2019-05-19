@@ -1,7 +1,7 @@
 --TEST--
 phpunit AssertionExampleTest ../../_files/AssertionExampleTest.php
 --SKIPIF--
-<?php
+<?php declare(strict_types=1);
 if (PHP_MAJOR_VERSION < 7) {
     print 'skip: PHP 7 is required' . PHP_EOL;
 }

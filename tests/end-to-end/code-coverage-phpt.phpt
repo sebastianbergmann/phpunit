@@ -1,7 +1,7 @@
 --TEST--
 phpunit --colors=never --coverage-text=php://stdout ../../_files/phpt-for-coverage.phpt --whitelist ../../_files/CoveredClass.php
 --SKIPIF--
-<?php
+<?php declare(strict_types=1);
 if (!extension_loaded('xdebug')) {
     print 'skip: Extension xdebug is required.';
 }

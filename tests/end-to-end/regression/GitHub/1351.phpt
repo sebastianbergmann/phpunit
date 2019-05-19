@@ -1,7 +1,7 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/1351
 --SKIPIF--
-<?php
+<?php declare(strict_types=1);
 if (!extension_loaded('pdo') || !in_array('sqlite', PDO::getAvailableDrivers())) {
     print 'skip: PDO_SQLITE is required';
 }

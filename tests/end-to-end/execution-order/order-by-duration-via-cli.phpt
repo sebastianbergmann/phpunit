@@ -1,7 +1,7 @@
 --TEST--
 phpunit --order-by=duration ./tests/end-to-end/execution-order/_files/TestWithDifferentDurations.php
 --FILE--
-<?php
+<?php declare(strict_types=1);
 
 $tmpResultCache = tempnam(sys_get_temp_dir(), __FILE__);
 file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/_files/TestWithDifferentDurations.phpunit.result.cache.txt'));
