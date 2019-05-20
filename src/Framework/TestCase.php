@@ -916,7 +916,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->unregisterCustomComparators();
         $this->cleanupIniSettings();
         $this->cleanupLocaleSettings();
-        $this->cleanupLibXml();
+        \libxml_clear_errors();
 
         // Perform assertion on output.
         if (!isset($e)) {
@@ -2140,12 +2140,5 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     {
         return ($this->runTestInSeparateProcess === true || $this->runClassInSeparateProcess === true) &&
                $this->inIsolation !== true && !$this instanceof PhptTestCase;
-    }
-
-    private function cleanupLibXml(): void
-    {
-        if (\function_exists('libxml_clear_errors')) {
-            \libxml_clear_errors();
-        }
     }
 }
