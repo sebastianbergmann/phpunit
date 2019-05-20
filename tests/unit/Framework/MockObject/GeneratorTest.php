@@ -228,7 +228,7 @@ final class GeneratorTest extends TestCase
         $this->assertSame('It works', $mock->getMessage());
     }
 
-    public function testVariadicArgumentsArePassedToOriginalMethod()
+    public function testVariadicArgumentsArePassedToOriginalMethod(): void
     {
         /** @var ClassWithVariadicArgumentMethod|MockObject $mock */
         $mock = $this->generator->getMock(
