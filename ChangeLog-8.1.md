@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 8.1 release series are documented in this fil
 
 ### Changed
 
-* After each test, `libxml_clear_errors()` is now called (when available) to clear the libxml error buffer
+* After each test, `libxml_clear_errors()` is now called to clear the libxml error buffer
 
 ### Fixed
 
