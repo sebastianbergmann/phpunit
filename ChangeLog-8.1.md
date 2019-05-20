@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 8.1 release series are documented in this fil
 
 ## [8.1.6] - 2019-MM-DD
 
+### Changed
+
+* After each test, `libxml_clear_errors()` is now called (when available) to clear the libxml error buffer
+
 ### Fixed
 
 * Fixed [#3694](https://github.com/sebastianbergmann/phpunit/pull/3694): Constructor arguments for `Throwable` and `Exception` are ignored
