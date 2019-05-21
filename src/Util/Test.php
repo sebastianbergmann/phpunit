@@ -12,7 +12,6 @@ namespace PHPUnit\Util;
 use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\SelfDescribing;
@@ -20,12 +19,7 @@ use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionFunction;
-use ReflectionMethod;
 use SebastianBergmann\Environment\OperatingSystem;
-use Traversable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -180,21 +174,37 @@ final class Test
     }
 
     /**
-     * Returns the requirements for a test.
-     *
-     * @throws Warning
+     * @throws Exception
      */
     public static function getRequirements(string $className, string $methodName): array
     {
-        $reflector  = new ReflectionClass($className);
+        try {
+            $reflector = new \ReflectionClass($className);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+
         $requires   = [
             '__OFFSET' => [
                 '__FILE' => \realpath($reflector->getFileName()),
             ],
         ];
+
         $requires = self::parseRequirements((string) $reflector->getDocComment(), $reflector->getStartLine(), $requires);
 
-        $reflector  = new ReflectionMethod($className, $methodName);
+        try {
+            $reflector = new \ReflectionMethod($className, $methodName);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
 
         return self::parseRequirements((string) $reflector->getDocComment(), $reflector->getStartLine(), $requires);
     }
@@ -407,7 +417,16 @@ final class Test
      */
     public static function getExpectedException(string $className, string $methodName)
     {
-        $reflector  = new ReflectionMethod($className, $methodName);
+        try {
+            $reflector = new \ReflectionMethod($className, $methodName);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+
         $docComment = (string) $reflector->getDocComment();
         $docComment = (string) \substr($docComment, 3, -2);
 
@@ -462,11 +481,19 @@ final class Test
      * Returns the provided data for a method.
      *
      * @throws Exception
-     * @throws ReflectionException
      */
     public static function getProvidedData(string $className, string $methodName): ?array
     {
-        $reflector  = new ReflectionMethod($className, $methodName);
+        try {
+            $reflector = new \ReflectionMethod($className, $methodName);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+
         $docComment = (string) $reflector->getDocComment();
 
         $data = self::getDataFromDataProviderAnnotation($docComment, $className, $methodName);
@@ -538,7 +565,16 @@ final class Test
     public static function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
     {
         if (!isset(self::$annotationCache[$className])) {
-            $class       = new ReflectionClass($className);
+            try {
+                $class = new \ReflectionClass($className);
+            } catch (\ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
+
             $traits      = $class->getTraits();
             $annotations = [];
 
@@ -559,9 +595,9 @@ final class Test
 
         if ($methodName !== null && !isset(self::$annotationCache[$cacheKey])) {
             try {
-                $method      = new ReflectionMethod($className, $methodName);
+                $method      = new \ReflectionMethod($className, $methodName);
                 $annotations = self::parseAnnotations((string) $method->getDocComment());
-            } catch (ReflectionException $e) {
+            } catch (\ReflectionException $e) {
                 $annotations = [];
             }
 
@@ -576,7 +612,16 @@ final class Test
 
     public static function getInlineAnnotations(string $className, string $methodName): array
     {
-        $method      = new ReflectionMethod($className, $methodName);
+        try {
+            $method = new \ReflectionMethod($className, $methodName);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+
         $code        = \file($method->getFileName());
         $lineNumber  = $method->getStartLine();
         $startLine   = $method->getStartLine() - 1;
@@ -761,7 +806,7 @@ final class Test
             self::$hookMethods[$className] = self::emptyHookMethodsArray();
 
             try {
-                foreach ((new ReflectionClass($className))->getMethods() as $method) {
+                foreach ((new \ReflectionClass($className))->getMethods() as $method) {
                     if ($method->getDeclaringClass()->getName() === Assert::class) {
                         continue;
                     }
@@ -770,7 +815,9 @@ final class Test
                         continue;
                     }
 
-                    if ($methodComment = $method->getDocComment()) {
+                    $methodComment = $method->getDocComment();
+
+                    if ($methodComment) {
                         if ($method->isStatic()) {
                             if (\strpos($methodComment, '@beforeClass') !== false) {
                                 \array_unshift(
@@ -796,7 +843,7 @@ final class Test
                         }
                     }
                 }
-            } catch (ReflectionException $e) {
+            } catch (\ReflectionException $e) {
             }
         }
 
@@ -892,8 +939,7 @@ final class Test
     }
 
     /**
-     * @throws \ReflectionException
-     * @throws \PHPUnit\Framework\InvalidDataProviderException
+     * @throws InvalidDataProviderException
      */
     private static function getDataFromDataProviderAnnotation(string $docComment, string $className, string $methodName): ?iterable
     {
@@ -917,10 +963,19 @@ final class Test
                     $dataProviderClassName = $dataProviderMethodNameNamespace . \array_pop($leaf);
                 }
 
-                $dataProviderClass  = new ReflectionClass($dataProviderClassName);
-                $dataProviderMethod = $dataProviderClass->getMethod(
-                    $dataProviderMethodName
-                );
+                try {
+                    $dataProviderClass = new \ReflectionClass($dataProviderClassName);
+
+                    $dataProviderMethod = $dataProviderClass->getMethod(
+                        $dataProviderMethodName
+                    );
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
 
                 if ($dataProviderMethod->isStatic()) {
                     $object = null;
@@ -934,7 +989,7 @@ final class Test
                     $data = $dataProviderMethod->invoke($object, $methodName);
                 }
 
-                if ($data instanceof Traversable) {
+                if ($data instanceof \Traversable) {
                     $origData = $data;
                     $data     = [];
 
@@ -1024,7 +1079,15 @@ final class Test
         $codeToCoverList = [];
 
         if (\function_exists($element) && \strpos($element, '\\') !== false) {
-            $codeToCoverList[] = new ReflectionFunction($element);
+            try {
+                $codeToCoverList[] = new \ReflectionFunction($element);
+            } catch (\ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
         } elseif (\strpos($element, '::') !== false) {
             [$className, $methodName] = \explode('::', $element);
 
@@ -1044,7 +1107,16 @@ final class Test
                         );
                     }
 
-                    $methods    = (new ReflectionClass($className))->getMethods();
+                    try {
+                        $methods = (new \ReflectionClass($className))->getMethods();
+                    } catch (\ReflectionException $e) {
+                        throw new Exception(
+                            $e->getMessage(),
+                            (int) $e->getCode(),
+                            $e
+                        );
+                    }
+
                     $inverse    = isset($methodName[1]) && $methodName[1] === '!';
                     $visibility = 'isPublic';
 
@@ -1067,9 +1139,17 @@ final class Test
 
                 foreach ($classes as $className) {
                     if ($className === '' && \function_exists($methodName)) {
-                        $codeToCoverList[] = new ReflectionFunction(
-                            $methodName
-                        );
+                        try {
+                            $codeToCoverList[] = new \ReflectionFunction(
+                                $methodName
+                            );
+                        } catch (\ReflectionException $e) {
+                            throw new Exception(
+                                $e->getMessage(),
+                                (int) $e->getCode(),
+                                $e
+                            );
+                        }
                     } else {
                         if (!((\class_exists($className) || \interface_exists($className) || \trait_exists($className)) &&
                             \method_exists($className, $methodName))) {
@@ -1082,10 +1162,18 @@ final class Test
                             );
                         }
 
-                        $codeToCoverList[] = new ReflectionMethod(
-                            $className,
-                            $methodName
-                        );
+                        try {
+                            $codeToCoverList[] = new \ReflectionMethod(
+                                $className,
+                                $methodName
+                            );
+                        } catch (\ReflectionException $e) {
+                            throw new Exception(
+                                $e->getMessage(),
+                                (int) $e->getCode(),
+                                $e
+                            );
+                        }
                     }
                 }
             }
@@ -1120,7 +1208,15 @@ final class Test
                     );
                 }
 
-                $codeToCoverList[] = new ReflectionClass($className);
+                try {
+                    $codeToCoverList[] = new \ReflectionClass($className);
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
             }
         }
 
@@ -1132,7 +1228,7 @@ final class Test
         $result = [];
 
         foreach ($reflectors as $reflector) {
-            if ($reflector instanceof ReflectionClass) {
+            if ($reflector instanceof \ReflectionClass) {
                 foreach ($reflector->getTraits() as $trait) {
                     $reflectors[] = $trait;
                 }

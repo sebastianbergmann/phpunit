@@ -11,7 +11,6 @@ namespace PHPUnit\Util;
 
 use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\CodeCoverageException;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;

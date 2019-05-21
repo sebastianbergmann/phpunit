@@ -11,6 +11,8 @@ namespace PHPUnit\Util\TestDox;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Color;
+use PHPUnit\Util\Exception as UtilException;
+use PHPUnit\Util\Test;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
@@ -39,12 +41,12 @@ final class NamePrettifier
     public function prettifyTestClass(string $className): string
     {
         try {
-            $annotations = \PHPUnit\Util\Test::parseTestMethodAnnotations($className);
+            $annotations = Test::parseTestMethodAnnotations($className);
 
             if (isset($annotations['class']['testdox'][0])) {
                 return $annotations['class']['testdox'][0];
             }
-        } catch (\ReflectionException $e) {
+        } catch (UtilException $e) {
         }
 
         $result = $className;

@@ -32,6 +32,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use PHPUnit\Util\Test as TestUtil;
@@ -673,7 +674,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * If no TestResult object is passed a new one will be created.
      *
      * @throws CodeCoverageException
-     * @throws \PHPUnit\Util\Exception
+     * @throws UtilException
      * @throws \SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\MissingCoversAnnotationException
@@ -1717,7 +1718,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                     $this->expectExceptionMessageRegExp($expectedException['message_regex']);
                 }
             }
-        } catch (\ReflectionException $e) {
+        } catch (UtilException $e) {
         }
     }
 
