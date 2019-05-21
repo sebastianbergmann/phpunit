@@ -16,6 +16,7 @@ use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Util\Blacklist;
 use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\Printer;
+use PHPUnit\Util\Test as TestUtil;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCoveredCodeNotExecutedException;
 use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
@@ -195,25 +196,6 @@ final class TestResult implements Countable
      * @var bool
      */
     private $registerMockObjectsFromTestArgumentsRecursively = false;
-
-    public static function isAnyCoverageRequired(TestCase $test): bool
-    {
-        $annotations = $test->getAnnotations();
-
-        // If any methods have covers, coverage must me generated
-        if (isset($annotations['method']['covers'])) {
-            return true;
-        }
-
-        // If there are no explicit covers, and the test class is
-        // marked as covers nothing, all coverage can be skipped
-        if (isset($annotations['class']['coversNothing'])) {
-            return false;
-        }
-
-        // Otherwise each test method can generate coverage
-        return true;
-    }
 
     /**
      * @deprecated Use the `TestHook` interfaces instead
@@ -619,7 +601,7 @@ final class TestResult implements Countable
                 $this->registerMockObjectsFromTestArgumentsRecursively
             );
 
-            $isAnyCoverageRequired = self::isAnyCoverageRequired($test);
+            $isAnyCoverageRequired = TestUtil::requiresCodeCoverageDataCollection($test);
         }
 
         $error      = false;

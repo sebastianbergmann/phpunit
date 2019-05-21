@@ -1326,6 +1326,28 @@ final class TestTest extends TestCase
         );
     }
 
+    /**
+     * @dataProvider canSkipCoverageProvider
+     */
+    public function testCanSkipCoverage($testCase, $expectedCanSkip): void
+    {
+        require_once TEST_FILES_PATH . $testCase . '.php';
+
+        $test            = new $testCase;
+        $canSkipCoverage = Test::requiresCodeCoverageDataCollection($test);
+
+        $this->assertEquals($expectedCanSkip, $canSkipCoverage);
+    }
+
+    public function canSkipCoverageProvider(): array
+    {
+        return [
+            ['CoverageClassTest', true],
+            ['CoverageNothingTest', true],
+            ['CoverageCoversOverridesCoversNothingTest', false],
+        ];
+    }
+
     private function getRequirementsTestClassFile(): string
     {
         if (!$this->fileRequirementsTest) {
