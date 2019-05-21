@@ -198,6 +198,12 @@ class TestResult implements Countable
     {
         $annotations = $test->getAnnotations();
 
+        // If there is a @coversNothing annotation on the test method then code
+        // coverage data does not need to be collected
+        if (isset($annotations['method']['coversNothing'])) {
+            return false;
+        }
+
         // If any methods have covers, coverage must me generated
         if (isset($annotations['method']['covers'])) {
             return true;
