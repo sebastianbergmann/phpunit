@@ -156,6 +156,12 @@ final class Test
     {
         $annotations = $test->getAnnotations();
 
+        // If there is no @covers annotation but a @coversNothing annotation on
+        // the test method then code coverage data does not need to be collected
+        if (isset($annotations['method']['coversNothing'])) {
+            return false;
+        }
+
         // If there is at least one @covers annotation then
         // code coverage data needs to be collected
         if (isset($annotations['method']['covers'])) {
