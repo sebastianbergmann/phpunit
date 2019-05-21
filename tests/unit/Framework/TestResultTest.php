@@ -67,10 +67,10 @@ class TestResultTest extends TestCase
     {
         return [
             ['CoverageClassTest', false],
-            ['CoverageClassNothingTest', true],
-            ['CoverageMethodNothingTest', false],
             ['CoverageClassWithoutAnnotationsTest', false],
             ['CoverageCoversOverridesCoversNothingTest', false],
+            ['CoverageClassNothingTest', true],
+            ['CoverageMethodNothingTest', true],
         ];
     }
 
