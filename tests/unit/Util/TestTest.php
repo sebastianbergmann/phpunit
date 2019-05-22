@@ -1328,11 +1328,12 @@ final class TestTest extends TestCase
     /**
      * @dataProvider canSkipCoverageProvider
      */
-    public function testCanSkipCoverage($testCase, $expectedCanSkip): void
+    public function testCanSkipCoverage($testCase, $expectedCanSkip, $forceCoversAnnotation): void
     {
         require_once TEST_FILES_PATH . $testCase . '.php';
 
         $test             = new $testCase('testSomething');
+        $test->setForceCoversAnnotation($forceCoversAnnotation);
         $coverageRequired = Test::requiresCodeCoverageDataCollection($test);
         $canSkipCoverage  = !$coverageRequired;
 
@@ -1342,11 +1343,17 @@ final class TestTest extends TestCase
     public function canSkipCoverageProvider(): array
     {
         return [
-            ['CoverageClassTest', false],
-            ['CoverageClassNothingTest', true],
-            ['CoverageMethodNothingTest', false],
-            ['CoverageClassWithoutAnnotationsTest', false],
-            ['CoverageCoversOverridesCoversNothingTest', false],
+            ['CoverageClassTest', false, false],
+            ['CoverageClassNothingTest', true, false],
+            ['CoverageMethodNothingTest', false, false],
+            ['CoverageClassWithoutAnnotationsTest', false, false],
+            ['CoverageCoversOverridesCoversNothingTest', false, false],
+
+            ['CoverageClassTest', false, true],
+            ['CoverageClassNothingTest', true, false],
+            ['CoverageMethodNothingTest', false, true],
+            ['CoverageClassWithoutAnnotationsTest', true, true],
+            ['CoverageCoversOverridesCoversNothingTest', false, true],
         ];
     }
 

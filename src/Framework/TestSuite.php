@@ -41,6 +41,11 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     protected $runTestInSeparateProcess = false;
 
     /**
+     * @var bool
+     */
+    protected $forceCoversAnnotation = false;
+
+    /**
      * The name of the test suite.
      *
      * @var string
@@ -542,6 +547,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
+                $test->setForceCoversAnnotation($this->forceCoversAnnotation);
             }
 
             $test->run($result);
@@ -575,6 +581,11 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess): void
     {
         $this->runTestInSeparateProcess = $runTestInSeparateProcess;
+    }
+
+    public function setForceCoversAnnotation(bool $forceCoversAnnotation): void
+    {
+        $this->forceCoversAnnotation = $forceCoversAnnotation;
     }
 
     public function setName(string $name): void

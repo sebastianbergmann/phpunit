@@ -87,6 +87,11 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * @var bool
      */
+    protected $forceCoversAnnotation = true;
+
+    /**
+     * @var bool
+     */
     private $runClassInSeparateProcess;
 
     /**
@@ -1044,6 +1049,16 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     public function isInIsolation(): bool
     {
         return $this->inIsolation;
+    }
+
+    public function setForceCoversAnnotation(bool $forceCoversAnnotation): void
+    {
+        $this->forceCoversAnnotation = $forceCoversAnnotation;
+    }
+
+    public function getForceCoversAnnotation(): bool
+    {
+        return $this->forceCoversAnnotation;
     }
 
     public function getResult()

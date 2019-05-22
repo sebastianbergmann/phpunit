@@ -162,14 +162,18 @@ final class Test
             return true;
         }
 
+        // If there is no @covers annotation and forceCoversAnnotation is set,
+        // then code coverage data does not need to be collected.
+        if ($test->getForceCoversAnnotation()) {
+            return false;
+        }
+
         // If there is no @covers annotation but a @coversNothing annotation
         // then code coverage data does not need to be collected
         if (isset($annotations['class']['coversNothing'])) {
             return false;
         }
 
-        // If there is no @coversNothing annotation then
-        // code coverage data may be collected
         return true;
     }
 
