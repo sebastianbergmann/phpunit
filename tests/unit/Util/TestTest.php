@@ -1069,7 +1069,7 @@ final class TestTest extends TestCase
             $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
         } elseif ($test === 'CoverageNoneTest') {
             $expected = [];
-        } elseif ($test === 'CoverageNothingTest') {
+        } elseif ($test === 'CoverageMethodNothingTest') {
             $expected = false;
         } elseif ($test === 'CoverageFunctionTest') {
             $expected = [
@@ -1292,7 +1292,7 @@ final class TestTest extends TestCase
                 \range(31, 35),
             ],
             [
-                'CoverageNothingTest',
+                'CoverageMethodNothingTest',
                 false,
             ],
             [
@@ -1332,8 +1332,9 @@ final class TestTest extends TestCase
     {
         require_once TEST_FILES_PATH . $testCase . '.php';
 
-        $test            = new $testCase;
-        $canSkipCoverage = Test::requiresCodeCoverageDataCollection($test);
+        $test             = new $testCase('testSomething');
+        $coverageRequired = Test::requiresCodeCoverageDataCollection($test);
+        $canSkipCoverage  = !$coverageRequired;
 
         $this->assertEquals($expectedCanSkip, $canSkipCoverage);
     }
@@ -1341,8 +1342,10 @@ final class TestTest extends TestCase
     public function canSkipCoverageProvider(): array
     {
         return [
-            ['CoverageClassTest', true],
-            ['CoverageNothingTest', true],
+            ['CoverageClassTest', false],
+            ['CoverageClassNothingTest', true],
+            ['CoverageMethodNothingTest', false],
+            ['CoverageClassWithoutAnnotationsTest', false],
             ['CoverageCoversOverridesCoversNothingTest', false],
         ];
     }
