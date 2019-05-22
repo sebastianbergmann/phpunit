@@ -9,7 +9,7 @@
  */
 use PHPUnit\Framework\TestCase;
 
-class CoverageNothingTest extends TestCase
+class CoverageMethodNothingTest extends TestCase
 {
     /**
      * @covers CoveredClass::publicMethod
