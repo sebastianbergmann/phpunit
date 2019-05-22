@@ -786,7 +786,7 @@ class TestTest extends TestCase
             $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
         } elseif ($test === 'CoverageNoneTest') {
             $expected = [];
-        } elseif ($test === 'CoverageNothingTest') {
+        } elseif ($test === 'CoverageMethodNothingTest') {
             $expected = false;
         } elseif ($test === 'CoverageFunctionTest') {
             $expected = [
@@ -1009,7 +1009,7 @@ class TestTest extends TestCase
                 \range(31, 35),
             ],
             [
-                'CoverageNothingTest',
+                'CoverageMethodNothingTest',
                 false,
             ],
             [
