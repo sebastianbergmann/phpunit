@@ -597,6 +597,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         return $this->expectedExceptionMessageRegExp;
     }
 
+    /**
+     * @psalm-param class-string<|Throwable> $exception
+     */
     public function expectException(string $exception): void
     {
         $this->expectedException = $exception;
@@ -1080,6 +1083,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * Returns a builder object to create mock objects using a fluent interface.
      *
      * @param string|string[] $className
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|string[] $className
+     * @psalm-return MockBuilder<RealInstanceType>
      */
     public function getMockBuilder($className): MockBuilder
     {
@@ -1335,6 +1342,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param string|string[] $originalClassName
      *
      * @throws Exception
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-return MockObject&RealInstanceType
      */
     protected function createMock($originalClassName): MockObject
     {
@@ -1360,6 +1371,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param string|string[] $originalClassName
      *
      * @throws Exception
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-return MockObject&RealInstanceType
      */
     protected function createConfiguredMock($originalClassName, array $configuration): MockObject
     {
@@ -1387,6 +1402,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param string[]        $methods
      *
      * @throws Exception
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-return MockObject&RealInstanceType
      */
     protected function createPartialMock($originalClassName, array $methods): MockObject
     {
@@ -1411,6 +1430,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * Returns a test proxy for the specified class.
      *
      * @throws Exception
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-return MockObject&RealInstanceType
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
@@ -1440,6 +1463,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param bool   $cloneArguments
      *
      * @throws Exception
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|string $originalClassName
+     * @psalm-return class-string<MockObject&RealInstanceType>
      */
     protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false): string
     {
@@ -1481,6 +1508,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param bool   $cloneArguments
      *
      * @throws Exception
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-return MockObject&RealInstanceType
      */
     protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
@@ -1520,6 +1551,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param array  $options                 An array of options passed to SOAPClient::_construct
      *
      * @throws Exception
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|string $originalClassName
+     * @psalm-return MockObject&RealInstanceType
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = []): MockObject
     {
@@ -1578,6 +1613,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param bool   $cloneArguments
      *
      * @throws Exception
+     *
+     * @psalm-template RealTraitType of object
+     * @psalm-param class-string<RealTraitType>|string $traitName
+     * @psalm-return MockObject&RealTraitType
      */
     protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
@@ -1619,6 +1658,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @throws Exception
      *
      * @return object
+     *
+     * @psalm-template RealTraitType of object
+     * @psalm-param class-string<RealTraitType>|string $traitName
+     * @psalm-return RealTraitType
      */
     protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)/*: object*/
     {
@@ -1645,6 +1688,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @throws \Prophecy\Exception\Doubler\ClassNotFoundException
      * @throws \Prophecy\Exception\Doubler\DoubleException
      * @throws \Prophecy\Exception\Doubler\InterfaceNotFoundException
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|null $classOrInterface
+     * @psalm-return ObjectProphecy<RealInstanceType>
      */
     protected function prophesize($classOrInterface = null): ObjectProphecy
     {

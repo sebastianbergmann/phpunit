@@ -11,6 +11,9 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @psalm-template MockedType
+ */
 final class MockBuilder
 {
     /**
@@ -84,7 +87,9 @@ final class MockBuilder
     private $generator;
 
     /**
-     * @param array|string $type
+     * @param string[]|string $type
+     *
+     * @psalm-param class-string<MockedType>|string|string[] $type
      */
     public function __construct(TestCase $testCase, $type)
     {
@@ -97,6 +102,8 @@ final class MockBuilder
      * Creates a mock object using a fluent interface.
      *
      * @throws RuntimeException
+     *
+     * @psalm-return MockObject&MockedType
      */
     public function getMock(): MockObject
     {
@@ -125,6 +132,8 @@ final class MockBuilder
      *
      * @throws \PHPUnit\Framework\Exception
      * @throws RuntimeException
+     *
+     * @psalm-return MockObject&MockedType
      */
     public function getMockForAbstractClass(): MockObject
     {
@@ -149,6 +158,8 @@ final class MockBuilder
      *
      * @throws \PHPUnit\Framework\Exception
      * @throws RuntimeException
+     *
+     * @psalm-return MockObject&MockedType
      */
     public function getMockForTrait(): MockObject
     {
