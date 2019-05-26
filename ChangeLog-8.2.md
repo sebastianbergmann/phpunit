@@ -17,6 +17,7 @@ All notable changes of the PHPUnit 8.2 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3602](https://github.com/sebastianbergmann/phpunit/issues/3602): PHPUnit silently ignores the return value on a `void` method of test double
+* Fixed [#3699](https://github.com/sebastianbergmann/phpunit/pull/3699): Method-level `@coversNothing` annotation does not prevent code coverage data collection
 
 [8.2.0]: https://github.com/sebastianbergmann/phpunit/compare/8.1...8.2.0
 
