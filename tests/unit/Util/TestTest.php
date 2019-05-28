@@ -1066,11 +1066,15 @@ final class TestTest extends TestCase
             $expected = [
                 TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines,
             ];
+        } elseif ($test === 'CoverageMethodNothingCoversMethod') {
+            $expected = false;
         } elseif ($test === 'CoverageCoversOverridesCoversNothingTest') {
             $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
         } elseif ($test === 'CoverageNoneTest') {
             $expected = [];
-        } elseif ($test === 'CoverageNothingTest') {
+        } elseif ($test === 'CoverageClassNothingTest') {
+            $expected = false;
+        } elseif ($test === 'CoverageMethodNothingTest') {
             $expected = false;
         } elseif ($test === 'CoverageFunctionTest') {
             $expected = [
@@ -1293,12 +1297,20 @@ final class TestTest extends TestCase
                 \range(31, 35),
             ],
             [
-                'CoverageNothingTest',
+                'CoverageClassNothingTest',
+                false,
+            ],
+            [
+                'CoverageMethodNothingTest',
                 false,
             ],
             [
                 'CoverageCoversOverridesCoversNothingTest',
                 \range(29, 33),
+            ],
+            [
+                'CoverageMethodNothingCoversMethod',
+                false,
             ],
         ];
     }

@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 /*
  * This file is part of PHPUnit.
  *
@@ -9,10 +9,9 @@
  */
 use PHPUnit\Framework\TestCase;
 
-class CoverageNothingTest extends TestCase
+class CoverageMethodNothingTest extends TestCase
 {
     /**
-     * @covers CoveredClass::publicMethod
      * @coversNothing
      */
     public function testSomething(): void

@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 8.1 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3694](https://github.com/sebastianbergmann/phpunit/pull/3694): Constructor arguments for `Throwable` and `Exception` are ignored
+* Fixed [#3709](https://github.com/sebastianbergmann/phpunit/pull/3709): Method-level `@coversNothing` annotation does not prevent code coverage data collection
 
 ## [8.1.5] - 2019-05-14
 
