@@ -272,17 +272,17 @@ final class Configuration
             \assert($log instanceof DOMElement);
 
             $type   = (string) $log->getAttribute('type');
-            if ($log->getAttribute('timestamps') == true)
+
+            if ($log->getAttribute('timestamps') == true) {
                 //User wants timestamps prefixing the logfile name
-            {
-                $targetArray = explode("/", $log->getAttribute('target'));
-                $end = sizeof($targetArray)-1;
+                $targetArray = \explode('/', $log->getAttribute('target'));
+                $end         = \count($targetArray) - 1;
                 //prefix unix timestamp
                 //add unique identifier to allow for concurrent phpunit tests to be run without collisions on
-                $targetArray[$end] = time() . "-" . uniqid() . "-" . $targetArray[$end];
-                $target = (string)implode("/",$targetArray);
+                $targetArray[$end] = \time() . '-' . \uniqid() . '-' . $targetArray[$end];
+                $target            = (string) \implode('/', $targetArray);
             } else {
-                $target = (string)$log->getAttribute('target');
+                $target = (string) $log->getAttribute('target');
             }
 
             if (!$target) {
