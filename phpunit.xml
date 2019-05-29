@@ -15,10 +15,6 @@
         </testsuite>
     </testsuites>
 
-    <logging>
-        <log type="testdox-text" target="./tests/logs/testdox.log" timestamps="true"/>
-    </logging>
-
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">src</directory>
