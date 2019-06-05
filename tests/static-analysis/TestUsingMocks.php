@@ -20,14 +20,6 @@ class HelloWorldClass
     }
 }
 
-trait HelloWorldTrait
-{
-    public function sayHello() : string
-    {
-        return 'hello world!';
-    }
-}
-
 /**
  * @small
  */
@@ -88,26 +80,5 @@ final class TestUsingMocks extends TestCase
             ->willReturn('hello mock!');
 
         self::assertSame('hello mock!', $mock->sayHello());
-    }
-
-    public function testWillSayHelloThroughGetMockForTrait() : void
-    {
-        $mock = $this->getMockForTrait(HelloWorldTrait::class);
-
-        $mock
-            ->method('sayHello')
-            ->willReturn('hello mock!');
-
-        self::assertSame('hello mock!', $mock->sayHello());
-    }
-
-    public function testWillSayHelloThroughGetObjectForTrait() : void
-    {
-        self::assertSame(
-            'hello world!',
-            $this
-                ->getObjectForTrait(HelloWorldTrait::class)
-                ->sayHello()
-        );
     }
 }
