@@ -1613,10 +1613,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param bool   $cloneArguments
      *
      * @throws Exception
-     *
-     * @psalm-template RealTraitType of object
-     * @psalm-param class-string<RealTraitType>|string $traitName
-     * @psalm-return MockObject&RealTraitType
      */
     protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
@@ -1658,10 +1654,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @throws Exception
      *
      * @return object
-     *
-     * @psalm-template RealTraitType of object
-     * @psalm-param class-string<RealTraitType>|string $traitName
-     * @psalm-return RealTraitType
      */
     protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)/*: object*/
     {
