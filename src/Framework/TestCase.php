@@ -598,7 +598,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @psalm-param class-string<|Throwable> $exception
+     * @psalm-param class-string<\Throwable> $exception
      */
     public function expectException(string $exception): void
     {
