@@ -28,8 +28,4 @@ interface MockObject /*extends Verifiable*/
     public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration): void;
 
     public function expects(Invocation $matcher): BuilderInvocationMocker;
-
-    // @TODO get rid of this - required by psalm-only right now - bug in parsing @method?
-    // @TODO this addition is a BC break and needs to be reverted before merge.
-    public function method($constraint) : BuilderInvocationMocker;
 }
