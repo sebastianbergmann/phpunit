@@ -820,7 +820,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @psalm-assert TEmptyMixed $actual
+     * @psalm-assert empty $actual
      */
     public static function assertEmpty($actual, string $message = ''): void
     {
@@ -856,7 +856,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @psalm-assert TNonEmptyMixed $actual
+     * @psalm-assert !empty $actual
      */
     public static function assertNotEmpty($actual, string $message = ''): void
     {
@@ -1362,7 +1362,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @psalm-assert TNull $actual
+     * @psalm-assert null $actual
      */
     public static function assertNull($actual, string $message = ''): void
     {
@@ -1375,7 +1375,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @psalm-assert !TNull $actual
+     * @psalm-assert !null $actual
      */
     public static function assertNotNull($actual, string $message = ''): void
     {
@@ -1617,10 +1617,6 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @psalm-template ExpectedType
-     * @psalm-param ExpectedType $expected
-     * @psalm-assert !=ExpectedType $actual
      */
     public static function assertNotSame($expected, $actual, string $message = ''): void
     {
@@ -1668,8 +1664,8 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      *
-     * @psalm-template ExpectedType
-     * @psalm-template-typeof ExpectedType $expected
+     * @psalm-template ExpectedType of object
+     * @psalm-param class-string<ExpectedType> $expected
      * @psalm-assert ExpectedType $actual
      */
     public static function assertInstanceOf(string $expected, $actual, string $message = ''): void
@@ -1715,8 +1711,8 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      *
-     * @psalm-template ExpectedType
-     * @psalm-template-typeof ExpectedType $expected
+     * @psalm-template ExpectedType of object
+     * @psalm-param class-string<ExpectedType> $expected
      * @psalm-assert !ExpectedType $actual
      */
     public static function assertNotInstanceOf(string $expected, $actual, string $message = ''): void
@@ -1908,7 +1904,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @psalm-assert TResource $actual
+     * @psalm-assert resource $actual
      */
     public static function assertIsResource($actual, string $message = ''): void
     {
@@ -1942,7 +1938,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @psalm-assert TScalar $actual
+     * @psalm-assert scalar $actual
      */
     public static function assertIsScalar($actual, string $message = ''): void
     {
@@ -1976,7 +1972,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @psalm-assert TIterable $actual
+     * @psalm-assert iterable $actual
      */
     public static function assertIsIterable($actual, string $message = ''): void
     {
@@ -2117,7 +2113,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @psalm-assert !TResource $actual
+     * @psalm-assert !resource $actual
      */
     public static function assertIsNotResource($actual, string $message = ''): void
     {
@@ -2185,7 +2181,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @psalm-assert !TIterable $actual
+     * @psalm-assert !iterable $actual
      */
     public static function assertIsNotIterable($actual, string $message = ''): void
     {
@@ -3063,7 +3059,7 @@ abstract class Assert
      *
      * @throws AssertionFailedError
      *
-     * @psalm-return TNever
+     * @psalm-return never-return
      */
     public static function fail(string $message = ''): void
     {
