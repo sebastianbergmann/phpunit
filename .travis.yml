@@ -13,7 +13,7 @@ php:
 
 matrix:
   allow_failures:
-    - php: master
+    - php: nightly
   fast_finish: true
 
 env:
