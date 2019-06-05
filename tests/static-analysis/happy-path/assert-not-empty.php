@@ -4,10 +4,9 @@ namespace PHPUnit\Framework\StaticAnalysis\HappyPath\AssertNotEmpty;
 
 use PHPUnit\Framework\Assert;
 
-/** @return false */
-function consume(string $value)
+function consume(?int $value) : int
 {
     Assert::assertNotEmpty($value);
 
-    return $value === '';
+    return $value;
 }
