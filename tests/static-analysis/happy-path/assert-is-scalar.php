@@ -9,7 +9,7 @@ use PHPUnit\Framework\Assert;
  *
  * @psalm-return scalar
  */
-function consume($value) : string
+function consume($value)
 {
     Assert::assertIsScalar($value);
 
