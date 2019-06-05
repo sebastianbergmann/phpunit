@@ -2147,7 +2147,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @psalm-assert !TScalar $actual
+     * @psalm-assert !scalar $actual
      */
     public static function assertIsNotScalar($actual, string $message = ''): void
     {
