@@ -87,7 +87,7 @@ final class MockBuilder
     private $generator;
 
     /**
-     * @param string[]|string $type
+     * @param string|string[] $type
      *
      * @psalm-param class-string<MockedType>|string|string[] $type
      */
