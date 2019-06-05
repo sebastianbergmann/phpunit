@@ -1432,7 +1432,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @throws Exception
      *
      * @psalm-template RealInstanceType of object
-     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
@@ -1510,7 +1510,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @throws Exception
      *
      * @psalm-template RealInstanceType of object
-     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
     protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
