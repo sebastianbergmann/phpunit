@@ -64,4 +64,5 @@ jobs:
         - phpenv config-rm xdebug.ini
       script:
         - travis_retry ./tools/composer update $DEFAULT_COMPOSER_FLAGS
+        - ./tools/psalm --config=tests/static-analysis/config.xml --no-progress
         - ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --stats
