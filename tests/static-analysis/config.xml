@@ -34,7 +34,7 @@
         <InvalidDocblock errorLevel="error" />
         <MisplacedRequiredParam errorLevel="error" />
 
-        <PropertyNotSetInConstructor errorLevel="error" />
+        <PropertyNotSetInConstructor errorLevel="info" />
         <MissingConstructor errorLevel="error" />
         <MissingClosureParamType errorLevel="error" />
         <MissingParamType errorLevel="error" />
