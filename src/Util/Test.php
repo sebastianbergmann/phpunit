@@ -290,8 +290,6 @@ final class Test
      * Returns the missing requirements for a test.
      *
      * @throws Warning
-     *
-     * @return string[]
      */
     public static function getMissingRequirements(string $className, string $methodName): array
     {
