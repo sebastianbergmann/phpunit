@@ -49,8 +49,7 @@
         "sebastian/version": "^2.0.1"
     },
     "require-dev": {
-        "ext-PDO": "*",
-        "vimeo/psalm": "dev-master@dev"
+        "ext-PDO": "*"
     },
     "config": {
         "platform": {
