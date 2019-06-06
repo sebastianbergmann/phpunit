@@ -276,26 +276,30 @@ final class MockMethod
                     $nullable = '?';
                 }
 
-                if ($parameter->hasType() && $parameter->getType()->getName() !== 'self') {
-                    $typeDeclaration = $parameter->getType()->getName() . ' ';
-                } else {
-                    try {
-                        $class = $parameter->getClass();
-                    } catch (\ReflectionException $e) {
-                        throw new RuntimeException(
-                            \sprintf(
-                                'Cannot mock %s::%s() because a class or ' .
-                                'interface used in the signature is not loaded',
-                                $method->getDeclaringClass()->getName(),
-                                $method->getName()
-                            ),
-                            0,
-                            $e
-                        );
-                    }
+                if ($parameter->hasType()) {
+                    $type = $parameter->getType();
 
-                    if ($class !== null) {
-                        $typeDeclaration = $class->getName() . ' ';
+                    if ($type instanceof \ReflectionNamedType && $type->getName() !== 'self') {
+                        $typeDeclaration = $type->getName() . ' ';
+                    } else {
+                        try {
+                            $class = $parameter->getClass();
+                        } catch (\ReflectionException $e) {
+                            throw new RuntimeException(
+                                \sprintf(
+                                    'Cannot mock %s::%s() because a class or ' .
+                                    'interface used in the signature is not loaded',
+                                    $method->getDeclaringClass()->getName(),
+                                    $method->getName()
+                                ),
+                                0,
+                                $e
+                            );
+                        }
+
+                        if ($class !== null) {
+                            $typeDeclaration = $class->getName() . ' ';
+                        }
                     }
                 }
 
