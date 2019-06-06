@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 8.2 release series are documented in this fil
 ### Changed
 
 * Implemented [#3122](https://github.com/sebastianbergmann/phpunit/issues/3122): Prevent runtime type error due to wrong return value configuration of test double
+* Implemented [#3708](https://github.com/sebastianbergmann/phpunit/pull/3708): Built-in assertion and mock type definitions
 
 ### Fixed
 
