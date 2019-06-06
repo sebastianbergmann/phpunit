@@ -45,7 +45,6 @@ final class ExceptionWrapper extends Exception
 
     /**
      * @throws \InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function __toString(): string
     {

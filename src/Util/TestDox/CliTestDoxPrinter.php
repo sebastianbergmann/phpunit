@@ -130,7 +130,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
@@ -143,7 +142,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function formatTestName(Test $test): string
@@ -228,9 +226,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return [$message, $diff];
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function formatStacktrace(\Throwable $t): string
     {
         $trace = \PHPUnit\Util\Filter::getFilteredStacktrace($t);
@@ -258,9 +253,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return \implode('', $lines);
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function formatTestResultMessage(\Throwable $t, array $result, ?string $prefix = null): string
     {
         $message = $this->formatThrowable($t, $result['status']);

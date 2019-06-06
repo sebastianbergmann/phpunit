@@ -587,7 +587,6 @@ final class TestResult implements Countable
      * @throws OriginalCoveredCodeNotExecutedException
      * @throws OriginalMissingCoversAnnotationException
      * @throws UnintentionallyCoveredCodeException
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\RuntimeException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -845,11 +844,28 @@ final class TestResult implements Countable
         } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
             !$test->doesNotPerformAssertions() &&
             $test->getNumAssertions() == 0) {
-            $reflected = new \ReflectionClass($test);
-            $name      = $test->getName(false);
+            try {
+                $reflected = new \ReflectionClass($test);
+            } catch (\ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
+
+            $name = $test->getName(false);
 
             if ($name && $reflected->hasMethod($name)) {
-                $reflected = $reflected->getMethod($name);
+                try {
+                    $reflected = $reflected->getMethod($name);
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
             }
             $this->addFailure(
                 $test,

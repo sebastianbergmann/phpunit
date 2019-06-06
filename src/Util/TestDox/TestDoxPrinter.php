@@ -98,7 +98,6 @@ class TestDoxPrinter extends ResultPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function endTest(Test $test, float $time): void
@@ -119,7 +118,6 @@ class TestDoxPrinter extends ResultPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addError(Test $test, \Throwable $t, float $time): void
@@ -128,7 +126,6 @@ class TestDoxPrinter extends ResultPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addWarning(Test $test, Warning $e, float $time): void
@@ -137,7 +134,6 @@ class TestDoxPrinter extends ResultPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
@@ -146,7 +142,6 @@ class TestDoxPrinter extends ResultPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
@@ -155,7 +150,6 @@ class TestDoxPrinter extends ResultPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
@@ -164,7 +158,6 @@ class TestDoxPrinter extends ResultPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addSkippedTest(Test $test, \Throwable $t, float $time): void
@@ -183,7 +176,6 @@ class TestDoxPrinter extends ResultPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
@@ -336,9 +328,6 @@ class TestDoxPrinter extends ResultPrinter
         return [];
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function formatThrowable(\Throwable $t, ?int $status = null): string
     {
         $message = \trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
@@ -352,17 +341,11 @@ class TestDoxPrinter extends ResultPrinter
         return $message;
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function formatStacktrace(\Throwable $t): string
     {
         return \PHPUnit\Util\Filter::getFilteredStacktrace($t);
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function formatTestResultMessage(\Throwable $t, array $result, string $prefix = '│'): string
     {
         $message = $this->formatThrowable($t, $result['status']);

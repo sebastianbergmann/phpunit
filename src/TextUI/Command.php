@@ -153,7 +153,6 @@ class Command
     private $versionStringPrinted = false;
 
     /**
-     * @throws \ReflectionException
      * @throws \RuntimeException
      * @throws \PHPUnit\Framework\Exception
      * @throws \InvalidArgumentException
@@ -165,7 +164,6 @@ class Command
 
     /**
      * @throws \RuntimeException
-     * @throws \ReflectionException
      * @throws \InvalidArgumentException
      * @throws Exception
      */
@@ -276,7 +274,6 @@ class Command
      * </code>
      *
      * @throws Exception
-     * @throws \ReflectionException
      */
     protected function handleArguments(array $argv): void
     {
@@ -943,8 +940,6 @@ class Command
 
     /**
      * Handles the loading of the PHPUnit\Runner\TestSuiteLoader implementation.
-     *
-     * @throws \ReflectionException
      */
     protected function handleLoader(string $loaderClass, string $loaderFile = ''): ?TestSuiteLoader
     {
@@ -963,7 +958,15 @@ class Command
         }
 
         if (\class_exists($loaderClass, false)) {
-            $class = new ReflectionClass($loaderClass);
+            try {
+                $class = new ReflectionClass($loaderClass);
+            } catch (\ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
 
             if ($class->implementsInterface(TestSuiteLoader::class) && $class->isInstantiable()) {
                 $object = $class->newInstance();
@@ -990,8 +993,6 @@ class Command
 
     /**
      * Handles the loading of the PHPUnit\Util\Printer implementation.
-     *
-     * @throws \ReflectionException
      *
      * @return null|Printer|string
      */
@@ -1020,7 +1021,15 @@ class Command
             );
         }
 
-        $class = new ReflectionClass($printerClass);
+        try {
+            $class = new ReflectionClass($printerClass);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
 
         if (!$class->implementsInterface(TestListener::class)) {
             $this->exitWithErrorMessage(

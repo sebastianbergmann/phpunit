@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Exception;
 use ReflectionClass;
 
 /**
@@ -45,12 +46,18 @@ class ClassHasAttribute extends Constraint
      * constraint is met, false otherwise.
      *
      * @param mixed $other value or object to evaluate
-     *
-     * @throws \ReflectionException
      */
     protected function matches($other): bool
     {
-        return (new ReflectionClass($other))->hasProperty($this->attributeName);
+        try {
+            return (new ReflectionClass($other))->hasProperty($this->attributeName);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
     }
 
     /**

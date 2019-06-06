@@ -144,7 +144,6 @@ final class XmlResultPrinter extends Printer implements TestListener
      * A test ended.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function endTest(Test $test, float $time): void
     {
@@ -224,7 +223,15 @@ final class XmlResultPrinter extends Printer implements TestListener
                 $steps = $this->exception->getTrace();
             }
 
-            $file  = (new ReflectionClass($test))->getFileName();
+            try {
+                $file = (new ReflectionClass($test))->getFileName();
+            } catch (\ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
 
             foreach ($steps as $step) {
                 if (isset($step['file']) && $step['file'] === $file) {

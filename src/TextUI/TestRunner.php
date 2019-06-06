@@ -122,7 +122,6 @@ final class TestRunner extends BaseTestRunner
      * @throws Exception
      * @throws \InvalidArgumentException
      * @throws \RuntimeException
-     * @throws \ReflectionException
      */
     public function doRun(Test $suite, array $arguments = [], bool $exit = true): TestResult
     {
@@ -279,7 +278,15 @@ final class TestRunner extends BaseTestRunner
                 if ($arguments['printer'] instanceof Printer) {
                     $this->printer = $arguments['printer'];
                 } elseif (\is_string($arguments['printer']) && \class_exists($arguments['printer'], false)) {
-                    $class = new ReflectionClass($arguments['printer']);
+                    try {
+                        $class = new ReflectionClass($arguments['printer']);
+                    } catch (\ReflectionException $e) {
+                        throw new Exception(
+                            $e->getMessage(),
+                            (int) $e->getCode(),
+                            $e
+                        );
+                    }
 
                     if ($class->isSubclassOf(ResultPrinter::class)) {
                         $this->printer = $this->createPrinter($arguments['printer'], $arguments);
@@ -1034,7 +1041,15 @@ final class TestRunner extends BaseTestRunner
                     );
                 }
 
-                $extensionClass = new ReflectionClass($extension['class']);
+                try {
+                    $extensionClass = new ReflectionClass($extension['class']);
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
 
                 if (!$extensionClass->implementsInterface(Hook::class)) {
                     throw new Exception(
@@ -1072,7 +1087,15 @@ final class TestRunner extends BaseTestRunner
                     );
                 }
 
-                $listenerClass = new ReflectionClass($listener['class']);
+                try {
+                    $listenerClass = new ReflectionClass($listener['class']);
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
 
                 if (!$listenerClass->implementsInterface(TestListener::class)) {
                     throw new Exception(
@@ -1226,7 +1249,6 @@ final class TestRunner extends BaseTestRunner
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \InvalidArgumentException
      */
     private function processSuiteFilters(TestSuite $suite, array $arguments): void

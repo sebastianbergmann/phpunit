@@ -70,7 +70,6 @@ final class NamePrettifier
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function prettifyTestCase(TestCase $test): string
     {
@@ -181,11 +180,19 @@ final class NamePrettifier
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \ReflectionException
      */
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
     {
-        $reflector          = new \ReflectionMethod(\get_class($test), $test->getName(false));
+        try {
+            $reflector = new \ReflectionMethod(\get_class($test), $test->getName(false));
+        } catch (\ReflectionException $e) {
+            throw new UtilException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+
         $providedData       = [];
         $providedDataValues = \array_values($test->getProvidedData());
         $i                  = 0;
@@ -194,7 +201,15 @@ final class NamePrettifier
 
         foreach ($reflector->getParameters() as $parameter) {
             if (!\array_key_exists($i, $providedDataValues) && $parameter->isDefaultValueAvailable()) {
-                $providedDataValues[$i] = $parameter->getDefaultValue();
+                try {
+                    $providedDataValues[$i] = $parameter->getDefaultValue();
+                } catch (\ReflectionException $e) {
+                    throw new UtilException(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
             }
 
             $value = $providedDataValues[$i++] ?? null;

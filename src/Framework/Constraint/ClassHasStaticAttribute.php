@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Exception;
 use ReflectionClass;
 
 /**
@@ -35,15 +36,21 @@ final class ClassHasStaticAttribute extends ClassHasAttribute
      * constraint is met, false otherwise.
      *
      * @param mixed $other value or object to evaluate
-     *
-     * @throws \ReflectionException
      */
     protected function matches($other): bool
     {
-        $class = new ReflectionClass($other);
+        try {
+            $class = new ReflectionClass($other);
 
-        if ($class->hasProperty($this->attributeName())) {
-            return $class->getProperty($this->attributeName())->isStatic();
+            if ($class->hasProperty($this->attributeName())) {
+                return $class->getProperty($this->attributeName())->isStatic();
+            }
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
         }
 
         return false;

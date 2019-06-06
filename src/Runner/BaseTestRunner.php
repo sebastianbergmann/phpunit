@@ -80,7 +80,6 @@ abstract class BaseTestRunner
      * @param string|string[] $suffixes
      *
      * @throws Exception
-     * @throws \ReflectionException
      */
     public function getTest(string $suiteClassName, string $suiteClassFile = '', $suffixes = ''): ?Test
     {
