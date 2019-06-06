@@ -7,14 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\StaticAnalysis;
 
 use PHPUnit\Framework\TestCase;
 
 class HelloWorldClass
 {
-    public function sayHello() : string
+    public function sayHello(): string
     {
         return 'hello world!';
     }
@@ -25,7 +24,7 @@ class HelloWorldClass
  */
 final class TestUsingMocks extends TestCase
 {
-    public function testWillSayHelloThroughCreateMock() : void
+    public function testWillSayHelloThroughCreateMock(): void
     {
         $mock = $this->createMock(HelloWorldClass::class);
 
@@ -36,7 +35,7 @@ final class TestUsingMocks extends TestCase
         self::assertSame('hello mock!', $mock->sayHello());
     }
 
-    public function testWillSayHelloThroughCreateConfiguredMock() : void
+    public function testWillSayHelloThroughCreateConfiguredMock(): void
     {
         $mock = $this->createConfiguredMock(HelloWorldClass::class, []);
 
@@ -47,7 +46,7 @@ final class TestUsingMocks extends TestCase
         self::assertSame('hello mock!', $mock->sayHello());
     }
 
-    public function testWillSayHelloThroughCreatePartialMock() : void
+    public function testWillSayHelloThroughCreatePartialMock(): void
     {
         $mock = $this->createPartialMock(HelloWorldClass::class, []);
 
@@ -58,7 +57,7 @@ final class TestUsingMocks extends TestCase
         self::assertSame('hello mock!', $mock->sayHello());
     }
 
-    public function testWillSayHelloThroughCreateTestProxy() : void
+    public function testWillSayHelloThroughCreateTestProxy(): void
     {
         $mock = $this->createTestProxy(HelloWorldClass::class, []);
 
@@ -69,7 +68,7 @@ final class TestUsingMocks extends TestCase
         self::assertSame('hello mock!', $mock->sayHello());
     }
 
-    public function testWillSayHelloThroughGetMockBuilder() : void
+    public function testWillSayHelloThroughGetMockBuilder(): void
     {
         $mock = $this
             ->getMockBuilder(HelloWorldClass::class)
