@@ -275,11 +275,7 @@ final class TeamCity extends ResultPrinter
     {
     }
 
-    /**
-     * @param string $eventName
-     * @param array  $params
-     */
-    private function printEvent($eventName, $params = []): void
+    private function printEvent(string $eventName, array $params = []): void
     {
         $this->write("\n##teamcity[$eventName");
 
