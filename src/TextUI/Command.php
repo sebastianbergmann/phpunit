@@ -153,9 +153,7 @@ class Command
     private $versionStringPrinted = false;
 
     /**
-     * @throws \RuntimeException
      * @throws \PHPUnit\Framework\Exception
-     * @throws \InvalidArgumentException
      */
     public static function main(bool $exit = true): int
     {
@@ -163,8 +161,6 @@ class Command
     }
 
     /**
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
      * @throws Exception
      */
     public function run(array $argv, bool $exit = true): int

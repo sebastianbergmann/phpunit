@@ -2040,7 +2040,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * @throws RiskyTestError
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \InvalidArgumentException
      */
     private function restoreGlobalState(): void
     {
@@ -2120,7 +2119,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * @throws RiskyTestError
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \InvalidArgumentException
      */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
     {

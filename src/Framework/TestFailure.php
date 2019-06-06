@@ -100,8 +100,6 @@ final class TestFailure
 
     /**
      * Returns a description for the thrown exception.
-     *
-     * @throws \InvalidArgumentException
      */
     public function getExceptionAsString(): string
     {

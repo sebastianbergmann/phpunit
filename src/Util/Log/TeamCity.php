@@ -55,8 +55,6 @@ final class TeamCity extends ResultPrinter
 
     /**
      * An error occurred.
-     *
-     * @throws \InvalidArgumentException
      */
     public function addError(Test $test, \Throwable $t, float $time): void
     {
@@ -73,8 +71,6 @@ final class TeamCity extends ResultPrinter
 
     /**
      * A warning occurred.
-     *
-     * @throws \InvalidArgumentException
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
@@ -91,8 +87,6 @@ final class TeamCity extends ResultPrinter
 
     /**
      * A failure occurred.
-     *
-     * @throws \InvalidArgumentException
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
@@ -140,8 +134,6 @@ final class TeamCity extends ResultPrinter
 
     /**
      * Risky test.
-     *
-     * @throws \InvalidArgumentException
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {

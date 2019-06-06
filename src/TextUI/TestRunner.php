@@ -120,8 +120,6 @@ final class TestRunner extends BaseTestRunner
     /**
      * @throws \PHPUnit\Runner\Exception
      * @throws Exception
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
      */
     public function doRun(Test $suite, array $arguments = [], bool $exit = true): TestResult
     {
@@ -1248,9 +1246,6 @@ final class TestRunner extends BaseTestRunner
         $arguments['verbose']                                             = $arguments['verbose'] ?? false;
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     */
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {
         if (!$arguments['filter'] &&
