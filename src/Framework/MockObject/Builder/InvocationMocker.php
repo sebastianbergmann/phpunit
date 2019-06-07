@@ -147,8 +147,6 @@ final class InvocationMocker implements MethodNameMatch
     }
 
     /**
-     * @param array ...$arguments
-     *
      * @throws RuntimeException
      */
     public function with(...$arguments): self
