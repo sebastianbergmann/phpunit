@@ -19,5 +19,5 @@ All notable changes of the PHPUnit 8.2 release series are documented in this fil
 
 * Fixed [#3602](https://github.com/sebastianbergmann/phpunit/issues/3602): PHPUnit silently ignores the return value on a `void` method of test double
 
-[8.2.0]: https://github.com/sebastianbergmann/phpunit/compare/8.1...8.2.0
+[8.2.0]: https://github.com/sebastianbergmann/phpunit/compare/8.1.6...8.2.0
 
