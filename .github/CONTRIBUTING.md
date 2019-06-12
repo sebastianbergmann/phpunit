@@ -66,3 +66,6 @@ Please use the most specific issue tracker to search for existing tickets and to
 * [Documentation](https://github.com/sebastianbergmann/phpunit-documentation-english/issues)
 * [Website](https://github.com/sebastianbergmann/phpunit-website/issues)
 
+## Issue triage [![Open Source Helpers](https://www.codetriage.com/sebastianbergmann/phpunit/badges/users.svg)](https://www.codetriage.com/sebastianbergmann/phpunit)
+
+You can contribute by triaging issues which may include reproducing bug reports or asking for vital information, such as version numbers or reproduction instructions. If you would like to start triaging issues, one easy way to get started is to [subscribe to phpunit on CodeTriage](https://www.codetriage.com/sebastianbergmann/phpunit).
