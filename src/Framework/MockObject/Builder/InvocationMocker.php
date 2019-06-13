@@ -193,7 +193,10 @@ final class InvocationMocker implements MethodNameMatch
     {
         if ($this->matcher->hasMethodNameMatcher()) {
             throw new RuntimeException(
-                'Method name matcher is already defined, cannot redefine'
+                \sprintf(
+                    'Method name matcher is already defined%s, cannot redefine',
+                    \is_string($constraint) ? \sprintf(' for "%s"', $constraint) : ''
+                )
             );
         }
 
