@@ -374,7 +374,14 @@ class Generator
             ]
         );
 
-        return $this->getObject($classTemplate->render(), $className['className']);
+        return $this->getObject(
+            $classTemplate->render(),
+            $className['className'],
+            '',
+            $callOriginalConstructor,
+            $callAutoload,
+            $arguments
+        );
     }
 
     /**
