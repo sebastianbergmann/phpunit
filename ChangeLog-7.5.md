@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#3722](https://github.com/sebastianbergmann/phpunit/issues/3722): `getObjectForTrait()` does not work for traits that declare a constructor
 * Fixed [#3723](https://github.com/sebastianbergmann/phpunit/pull/3723): Unescaped dash in character group in regular expression
 
 ## [7.5.12] - 2019-05-28
