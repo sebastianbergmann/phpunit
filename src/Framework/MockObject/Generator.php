@@ -273,7 +273,7 @@ final class Generator
      *
      * @throws RuntimeException
      */
-    public function getObjectForTrait(string $traitName, string $traitClassName = '', bool $callAutoload = true, bool $callOriginalConstructor, array $arguments = []): object
+    public function getObjectForTrait(string $traitName, string $traitClassName = '', bool $callAutoload = true, bool $callOriginalConstructor = false, array $arguments = []): object
     {
         if (!\trait_exists($traitName, $callAutoload)) {
             throw new RuntimeException(
