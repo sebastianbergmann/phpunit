@@ -25,7 +25,7 @@ before_install:
   - ./tools/composer clear-cache
 
 install:
-  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry ./tools/composer update $DEFAULT_COMPOSER_FLAGS; fi
+  - if [[ "$DEPENDENCIES" = 'high' ]]; then travis_retry ./tools/composer update $DEFAULT_COMPOSER_FLAGS --ignore-platform-reqs; fi
   - if [[ "$DEPENDENCIES" = 'low' ]]; then travis_retry ./tools/composer update $DEFAULT_COMPOSER_FLAGS --prefer-lowest; fi
 
 before_script:
