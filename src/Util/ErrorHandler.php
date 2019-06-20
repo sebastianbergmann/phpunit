@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Error\Deprecated;
+use PHPUnit\Framework\Error\Deprecation;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning;
@@ -30,7 +30,7 @@ final class ErrorHandler
     }
 
     /**
-     * @throws \PHPUnit\Framework\Error\Deprecated
+     * @throws \PHPUnit\Framework\Error\Deprecation
      * @throws \PHPUnit\Framework\Error\Error
      * @throws \PHPUnit\Framework\Error\Notice
      * @throws \PHPUnit\Framework\Error\Warning
@@ -65,11 +65,11 @@ final class ErrorHandler
 
             $exception = Warning::class;
         } elseif ($errorNumber === \E_DEPRECATED || $errorNumber === \E_USER_DEPRECATED) {
-            if (!Deprecated::$enabled) {
+            if (!Deprecation::$enabled) {
                 return false;
             }
 
-            $exception = Deprecated::class;
+            $exception = Deprecation::class;
         } else {
             $exception = Error::class;
         }

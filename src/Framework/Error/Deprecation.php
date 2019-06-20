@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Error;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Deprecated extends Error
+final class Deprecation extends Error
 {
     public static $enabled = true;
 }

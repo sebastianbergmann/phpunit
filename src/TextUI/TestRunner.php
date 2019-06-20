@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TextUI;
 
-use PHPUnit\Framework\Error\Deprecated;
+use PHPUnit\Framework\Error\Deprecation;
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\Exception;
@@ -228,7 +228,7 @@ final class TestRunner extends BaseTestRunner
         }
 
         if (!$arguments['convertDeprecationsToExceptions']) {
-            Deprecated::$enabled = false;
+            Deprecation::$enabled = false;
         }
 
         if (!$arguments['convertNoticesToExceptions']) {
