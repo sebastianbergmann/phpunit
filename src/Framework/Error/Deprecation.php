@@ -14,5 +14,4 @@ namespace PHPUnit\Framework\Error;
  */
 final class Deprecation extends Error
 {
-    public static $enabled = true;
 }
