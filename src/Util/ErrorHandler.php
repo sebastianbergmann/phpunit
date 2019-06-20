@@ -14,99 +14,101 @@ use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning;
 
-/**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
- */
 final class ErrorHandler
 {
-    private static $errorStack = [];
+    /**
+     * @var bool
+     */
+    private $convertDeprecationsToExceptions;
 
     /**
-     * Returns the error stack.
+     * @var bool
      */
-    public static function getErrorStack(): array
+    private $convertErrorsToExceptions;
+
+    /**
+     * @var bool
+     */
+    private $convertNoticesToExceptions;
+
+    /**
+     * @var bool
+     */
+    private $convertWarningsToExceptions;
+
+    /**
+     * @var bool
+     */
+    private $registered = false;
+
+    public function __construct(bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions)
     {
-        return self::$errorStack;
+        $this->convertDeprecationsToExceptions = $convertDeprecationsToExceptions;
+        $this->convertErrorsToExceptions       = $convertErrorsToExceptions;
+        $this->convertNoticesToExceptions      = $convertNoticesToExceptions;
+        $this->convertWarningsToExceptions     = $convertWarningsToExceptions;
     }
 
-    /**
-     * @throws \PHPUnit\Framework\Error\Deprecation
-     * @throws \PHPUnit\Framework\Error\Error
-     * @throws \PHPUnit\Framework\Error\Notice
-     * @throws \PHPUnit\Framework\Error\Warning
-     */
-    public static function handleError(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
+    public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
-        if (!($errorNumber & \error_reporting())) {
-            return false;
-        }
-
-        self::$errorStack[] = [$errorNumber, $errorString, $errorFile, $errorLine];
-
-        $trace = \debug_backtrace();
-        \array_shift($trace);
-
-        foreach ($trace as $frame) {
-            if ($frame['function'] === '__toString') {
-                return false;
-            }
-        }
-
-        if ($errorNumber === \E_NOTICE || $errorNumber === \E_USER_NOTICE || $errorNumber === \E_STRICT) {
-            if (!Notice::$enabled) {
-                return false;
-            }
-
-            $exception = Notice::class;
-        } elseif ($errorNumber === \E_WARNING || $errorNumber === \E_USER_WARNING) {
-            if (!Warning::$enabled) {
-                return false;
-            }
-
-            $exception = Warning::class;
-        } elseif ($errorNumber === \E_DEPRECATED || $errorNumber === \E_USER_DEPRECATED) {
-            if (!Deprecation::$enabled) {
-                return false;
-            }
-
-            $exception = Deprecation::class;
-        } else {
-            $exception = Error::class;
-        }
-
-        throw new $exception($errorString, $errorNumber, $errorFile, $errorLine);
-    }
-
-    /**
-     * Registers an error handler and returns a function that will restore
-     * the previous handler when invoked
-     *
-     * @param int $severity PHP predefined error constant
-     *
-     * @throws \Exception if event of specified severity is emitted
-     */
-    public static function handleErrorOnce($severity = \E_WARNING): callable
-    {
-        $terminator = function () {
-            static $expired = false;
-
-            if (!$expired) {
-                $expired = true;
-
-                return \restore_error_handler();
-            }
-        };
-
-        \set_error_handler(
-            function ($errorNumber, $errorString) use ($severity) {
-                if ($errorNumber === $severity) {
-                    return;
+        switch ($errorNumber) {
+            case \E_NOTICE:
+            case \E_USER_NOTICE:
+            case \E_STRICT:
+                if (!$this->convertNoticesToExceptions) {
+                    return false;
                 }
 
-                return false;
-            }
-        );
+                throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
 
-        return $terminator;
+            case \E_WARNING:
+            case \E_USER_WARNING:
+                if (!$this->convertWarningsToExceptions) {
+                    return false;
+                }
+
+                throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
+
+            case \E_DEPRECATED:
+            case \E_USER_DEPRECATED:
+                if (!$this->convertDeprecationsToExceptions) {
+                    return false;
+                }
+
+                throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
+
+            default:
+                if (!$this->convertErrorsToExceptions) {
+                    return false;
+                }
+
+                throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
+        }
+    }
+
+    public function register(): void
+    {
+        if ($this->registered) {
+            return;
+        }
+
+        $oldErrorHandler = \set_error_handler($this);
+
+        if ($oldErrorHandler !== null) {
+            \restore_error_handler();
+
+            return;
+        }
+
+        $this->registered = true;
+    }
+
+    public function unregister(): void
+    {
+        if (!$this->registered) {
+            return;
+        }
+
+        \restore_error_handler();
     }
 }
