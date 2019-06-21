@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework;
 
+/**
+ * @deprecated The `TestListener` interface is deprecated
+ */
 trait TestListenerDefaultImplementation
 {
     public function addError(Test $test, \Throwable $t, float $time): void
