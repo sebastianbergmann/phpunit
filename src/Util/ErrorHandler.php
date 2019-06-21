@@ -41,6 +41,25 @@ final class ErrorHandler
      */
     private $registered = false;
 
+    public static function invokeIgnoringWarnings(callable $callable)
+    {
+        \set_error_handler(
+            static function ($errorNumber, $errorString) {
+                if ($errorNumber === \E_WARNING) {
+                    return;
+                }
+
+                return false;
+            }
+        );
+
+        $result = $callable();
+
+        \restore_error_handler();
+
+        return $result;
+    }
+
     public function __construct(bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions)
     {
         $this->convertDeprecationsToExceptions = $convertDeprecationsToExceptions;

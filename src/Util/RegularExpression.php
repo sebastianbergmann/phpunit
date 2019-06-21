@@ -19,21 +19,10 @@ final class RegularExpression
      */
     public static function safeMatch(string $pattern, string $subject, ?array $matches = null, int $flags = 0, int $offset = 0)
     {
-        \set_error_handler(
-            function ($errorNumber, $errorString)
-            {
-                if ($errorNumber === \E_WARNING) {
-                    return;
-                }
-
-                return false;
+        return ErrorHandler::invokeIgnoringWarnings(
+            static function () use ($pattern, $subject, $matches, $flags, $offset) {
+                return \preg_match($pattern, $subject, $matches, $flags, $offset);
             }
         );
-
-        $match = \preg_match($pattern, $subject, $matches, $flags, $offset);
-
-        \restore_error_handler();
-
-        return $match;
     }
 }
