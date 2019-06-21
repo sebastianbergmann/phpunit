@@ -699,15 +699,6 @@ final class Test
         return \array_unique($dependencies);
     }
 
-    public static function getErrorHandlerSettings(string $className, ?string $methodName): ?bool
-    {
-        return self::getBooleanAnnotationSetting(
-            $className,
-            $methodName,
-            'errorHandler'
-        );
-    }
-
     public static function getGroups(string $className, ?string $methodName = ''): array
     {
         $annotations = self::parseTestMethodAnnotations(
