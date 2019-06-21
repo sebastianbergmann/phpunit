@@ -105,11 +105,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $dataName;
 
     /**
-     * @var bool
-     */
-    private $useErrorHandler;
-
-    /**
      * @var null|string
      */
     private $expectedException;
@@ -645,9 +640,11 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
 
+    /**
+     * @deprecated Invoking this method has no effect; it will be removed in PHPUnit 9
+     */
     public function setUseErrorHandler(bool $useErrorHandler): void
     {
-        $this->useErrorHandler = $useErrorHandler;
     }
 
     public function getStatus(): int
@@ -693,12 +690,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
         if (!$this instanceof WarningTestCase) {
             $this->setTestResultObject($result);
-            $this->setUseErrorHandlerFromAnnotation();
-        }
-
-        if ($this->useErrorHandler !== null) {
-            $oldErrorHandlerSetting = $result->getConvertErrorsToExceptions();
-            $result->convertErrorsToExceptions($this->useErrorHandler);
         }
 
         if (!$this instanceof WarningTestCase &&
@@ -821,10 +812,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             $php->runTestJob($template->render(), $this, $result);
         } else {
             $result->run($this);
-        }
-
-        if (isset($oldErrorHandlerSetting)) {
-            $result->convertErrorsToExceptions($oldErrorHandlerSetting);
         }
 
         $this->result = null;
@@ -1760,18 +1747,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 }
             }
         } catch (UtilException $e) {
-        }
-    }
-
-    private function setUseErrorHandlerFromAnnotation(): void
-    {
-        $useErrorHandler = TestUtil::getErrorHandlerSettings(
-            \get_class($this),
-            $this->name
-        );
-
-        if ($useErrorHandler !== null) {
-            $this->setUseErrorHandler($useErrorHandler);
         }
     }
 

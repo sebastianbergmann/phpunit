@@ -100,11 +100,6 @@ final class TestResult implements Countable
     /**
      * @var bool
      */
-    private $registerErrorHandler = true;
-
-    /**
-     * @var bool
-     */
     private $convertDeprecationsToExceptions = true;
 
     /**
@@ -632,7 +627,7 @@ final class TestResult implements Countable
 
         $this->startTest($test);
 
-        if ($this->registerErrorHandler && ($this->convertDeprecationsToExceptions || $this->convertErrorsToExceptions || $this->convertNoticesToExceptions || $this->convertWarningsToExceptions)) {
+        if ($this->convertDeprecationsToExceptions || $this->convertErrorsToExceptions || $this->convertNoticesToExceptions || $this->convertWarningsToExceptions) {
             $errorHandler = new ErrorHandler(
                 $this->convertDeprecationsToExceptions,
                 $this->convertErrorsToExceptions,
@@ -976,22 +971,6 @@ final class TestResult implements Countable
     public function setCodeCoverage(CodeCoverage $codeCoverage): void
     {
         $this->codeCoverage = $codeCoverage;
-    }
-
-    /**
-     * Enables or disables the registration of PHPUnit's error handler.
-     */
-    public function registerErrorHandler(bool $flag): void
-    {
-        $this->registerErrorHandler = $flag;
-    }
-
-    /**
-     * Returns whether PHPUnit's error handler is to be registered.
-     */
-    public function getRegisterErrorHandler(): bool
-    {
-        return $this->registerErrorHandler;
     }
 
     /**
