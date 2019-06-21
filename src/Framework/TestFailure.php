@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Framework\Error\Error;
 use Throwable;
 
 /**

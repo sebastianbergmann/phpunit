@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Error\Error;
+use PHPUnit\Framework\Error;
 
 final class ErrorHandler
 {
