@@ -9,10 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Error\Deprecation;
 use PHPUnit\Framework\Error\Error;
-use PHPUnit\Framework\Error\Notice;
-use PHPUnit\Framework\Error\Warning;
 
 final class ErrorHandler
 {
@@ -78,7 +75,7 @@ final class ErrorHandler
                     return false;
                 }
 
-                throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
+                break;
 
             case \E_WARNING:
             case \E_USER_WARNING:
@@ -86,7 +83,7 @@ final class ErrorHandler
                     return false;
                 }
 
-                throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
+                break;
 
             case \E_DEPRECATED:
             case \E_USER_DEPRECATED:
@@ -94,15 +91,17 @@ final class ErrorHandler
                     return false;
                 }
 
-                throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
+                break;
 
             default:
                 if (!$this->convertErrorsToExceptions) {
                     return false;
                 }
 
-                throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
+                break;
         }
+
+        throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
     }
 
     public function register(): void
