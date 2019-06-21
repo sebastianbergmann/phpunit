@@ -146,7 +146,20 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
         }
         // @codeCoverageIgnoreEnd
 
+        \set_error_handler(
+            function ($errorNumber, $errorString)
+            {
+                if ($errorNumber === \E_WARNING) {
+                    return;
+                }
+
+                return false;
+            }
+        );
+
         $cache = @\unserialize($cacheData, ['allowed_classes' => [self::class]]);
+
+        \restore_error_handler();
 
         if ($cache === false) {
             return;
