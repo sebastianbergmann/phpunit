@@ -9,4 +9,4 @@ need fix unset in foreach:
 - vendor/phpunit/phpunit/src/Util/PHP/DefaultPhpProcess.php:71
 
 fix unset example:
-- php/sportsbook/vendor/phpunit/phpunit/src/Framework/TestSuite.php:568
+- vendor/phpunit/phpunit/src/Framework/TestSuite.php:568
