@@ -366,26 +366,24 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
         $shortName      = \basename($filename, '.php');
         $shortNameRegEx = '/(?:^|_|\\\\)' . \preg_quote($shortName, '/') . '$/';
 
-        foreach ($this->foundClasses as $i => $className) {
+        while ($className = current($this->foundClasses)) {
             if (\preg_match($shortNameRegEx, $className)) {
-                try {
-                    $class = new \ReflectionClass($className);
-                } catch (\ReflectionException $e) {
-                    throw new Exception(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
+                $class = new ReflectionClass($className);
 
                 if ($class->getFileName() == $filename) {
+                    $i = key($this->foundClasses);
+
                     $newClasses = [$className];
                     unset($this->foundClasses[$i]);
 
                     break;
                 }
             }
+
+            next($this->foundClasses);
         }
+
+        reset($this->foundClasses);
 
         foreach ($newClasses as $className) {
             try {
