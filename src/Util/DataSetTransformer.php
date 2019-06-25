@@ -25,28 +25,27 @@ final class DataSetTransformer
             return $dataSet;
         }
 
-        $argsKeys = \array_keys($dataSet);
-        $origArgs = $dataSet;
-        $newArgs  = [];
+        $dataSetKeys = \array_keys($dataSet);
+        $result      = [];
 
         foreach ($method->getParameters() as $parameter) {
-            if (!\in_array($parameter->getName(), $argsKeys)) {
+            if (!\in_array($parameter->getName(), $dataSetKeys)) {
                 if (!$parameter->isOptional()) {
                     throw new InvalidDataSetException(\sprintf('parameter $%s is not given', $parameter->getName()));
                 }
 
                 if ($parameter->isDefaultValueAvailable()) {
-                    $newArgs[] = $parameter->getDefaultValue();
+                    $result[] = $parameter->getDefaultValue();
                 }
 
                 continue;
             }
 
-            $paramValue = $origArgs[$parameter->getName()];
-            unset($origArgs[$parameter->getName()]);
+            $paramValue = $dataSet[$parameter->getName()];
+            unset($dataSet[$parameter->getName()]);
 
             if (!$parameter->isVariadic()) {
-                $newArgs[] = $paramValue;
+                $result[] = $paramValue;
 
                 continue;
             }
@@ -61,19 +60,19 @@ final class DataSetTransformer
                 ));
             }
 
-            $newArgs = \array_merge($newArgs, $paramValue);
+            $result = \array_merge($result, $paramValue);
         }
 
-        if ([] !== $origArgs) {
+        if ([] !== $dataSet) {
             throw new InvalidDataSetException(\sprintf(
                 'method %s::%s does not have the following parameters: %s',
                 $method->getDeclaringClass()->getName(),
                 $method->getName(),
-                \implode(', ', \array_keys($origArgs))
+                \implode(', ', \array_keys($dataSet))
             ));
         }
 
-        return $newArgs;
+        return $result;
     }
 
     private static function isAssociativeArray(array $array): bool
