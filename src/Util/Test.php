@@ -528,6 +528,7 @@ final class Test
                     throw new Exception(
                         \sprintf(
                             'Data set %s is invalid: %s.',
+                            \is_int($key) ? '#' . $key : '"' . $key . '"',
                             $exception->getMessage()
                         ),
                         0,
