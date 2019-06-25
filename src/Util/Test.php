@@ -14,6 +14,7 @@ use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\InvalidDataProviderException;
+use PHPUnit\Framework\InvalidDataSetException;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\TestCase;
@@ -518,6 +519,19 @@ final class Test
                             'Data set %s is invalid.',
                             \is_int($key) ? '#' . $key : '"' . $key . '"'
                         )
+                    );
+                }
+
+                try {
+                    $data[$key] = DataSetTransformer::transform($reflector, $value);
+                } catch (InvalidDataSetException $exception) {
+                    throw new Exception(
+                        \sprintf(
+                            'Data set %s is invalid: %s.',
+                            $exception->getMessage()
+                        ),
+                        0,
+                        $exception
                     );
                 }
             }
