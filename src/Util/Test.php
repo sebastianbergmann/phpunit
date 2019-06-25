@@ -951,7 +951,7 @@ final class Test
     /**
      * @throws InvalidDataProviderException
      */
-    private static function getDataFromDataProviderAnnotation(string $docComment, string $className, string $methodName): ?iterable
+    private static function getDataFromDataProviderAnnotation(string $docComment, string $className, string $methodName): ?array
     {
         if (\preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             $result = [];
