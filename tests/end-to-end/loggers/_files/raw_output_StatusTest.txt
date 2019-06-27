@@ -11,12 +11,10 @@ Configuration: %stests%ebasic%econfiguration.basic.xml
    [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mSetUpBeforeClassTest.php[2m:[22m[34m31[0m
    [33m┴[0m
 
- [33m✘[0m Two [33m %f [2mms[0m
-   [33m┐[0m
-   [33m├[0m [43;30mException: forcing an Exception in setUpBeforeClass()[0m
-   [33m│[0m
-   [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mSetUpBeforeClassTest.php[2m:[22m[34m31[0m
-   [33m┴[0m
+ [36m↩[0m Two [36m %f [2mms[0m
+   [36m┐[0m
+   [36m├[0m [36mTest skipped because of an error in hook method[0m
+   [36m┴[0m
 
 [4mSet Up (PHPUnit\SelfTest\Basic\SetUp)[0m
  [33m✘[0m One with set up exception [33m %f [2mms[0m
@@ -130,4 +128,4 @@ Time: %s, Memory: %s
 
 
 [37;41mERRORS![0m
-[37;41mTests: 21[0m[37;41m, Assertions: 7[0m[37;41m, Errors: 6[0m[37;41m, Failures: 3[0m[37;41m, Warnings: 2[0m[37;41m, Skipped: 2[0m[37;41m, Incomplete: 2[0m[37;41m, Risky: 2[0m[37;41m.[0m
+[37;41mTests: 21[0m[37;41m, Assertions: 7[0m[37;41m, Errors: 5[0m[37;41m, Failures: 3[0m[37;41m, Warnings: 2[0m[37;41m, Skipped: 3[0m[37;41m, Incomplete: 2[0m[37;41m, Risky: 2[0m[37;41m.[0m
