@@ -61,32 +61,28 @@ Test 'PHPUnit\SelfTest\Basic\TearDownAfterClassTest::tearDownAfterClass' ended
 
 Time: %s, Memory: %s
 
-There were 6 errors:
+There were 5 errors:
 
 1) PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testOne
 Exception: forcing an Exception in setUpBeforeClass() in %stests%ebasic%eunit%eSetUpBeforeClassTest.php:%d
 Stack trace:
 %a
-2) PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testTwo
-Exception: forcing an Exception in setUpBeforeClass() in %stests%ebasic%eunit%eSetUpBeforeClassTest.php:%d
-Stack trace:
-%a
-3) PHPUnit\SelfTest\Basic\SetUpTest::testOneWithSetUpException
+2) PHPUnit\SelfTest\Basic\SetUpTest::testOneWithSetUpException
 RuntimeException: throw exception in setUp
 
 %stests%ebasic%eunit%eSetUpTest.php:%d
 
-4) PHPUnit\SelfTest\Basic\SetUpTest::testTwoWithSetUpException
+3) PHPUnit\SelfTest\Basic\SetUpTest::testTwoWithSetUpException
 RuntimeException: throw exception in setUp
 
 %stests%ebasic%eunit%eSetUpTest.php:%d
 
-5) PHPUnit\SelfTest\Basic\StatusTest::testError
+4) PHPUnit\SelfTest\Basic\StatusTest::testError
 RuntimeException:%w
 
 %stests%ebasic%eunit%eStatusTest.php:%d
 
-6) PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
+5) PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
 RuntimeException: error with custom message
 
 %stests%ebasic%eunit%eStatusTest.php:%d
@@ -140,4 +136,4 @@ This test did not perform any assertions
 %stests%ebasic%eunit%eStatusTest.php:%d
 
 ERRORS!
-Tests: 21, Assertions: 7, Errors: 6, Failures: 3, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.
+Tests: 21, Assertions: 7, Errors: 5, Failures: 3, Warnings: 2, Skipped: 3, Incomplete: 2, Risky: 2.
