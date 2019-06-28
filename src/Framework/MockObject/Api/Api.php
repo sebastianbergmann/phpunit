@@ -32,6 +32,9 @@ trait Api
      */
     private $__phpunit_returnValueGeneration = true;
 
+    /**
+     * @var InvocationMocker
+     */
     private $__phpunit_invocationMocker;
 
     /** @noinspection MagicMethodsValidityInspection */
