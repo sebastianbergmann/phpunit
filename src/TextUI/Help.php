@@ -224,7 +224,7 @@ final class Help
                     $arg = Color::colorize('fg-green', \str_pad($option['arg'], $this->maxArgLength));
                     $arg = \preg_replace_callback(
                         '/(<[^>]+>)/',
-                        function ($matches) {
+                        static function ($matches) {
                             return Color::colorize('fg-cyan', $matches[0]);
                         },
                         $arg

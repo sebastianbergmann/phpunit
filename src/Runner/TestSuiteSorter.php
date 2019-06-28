@@ -211,7 +211,7 @@ final class TestSuiteSorter
     {
         return \array_reduce(
             $suite->tests(),
-            function ($carry, $test) {
+            static function ($carry, $test) {
                 return $carry && ($test instanceof TestCase || $test instanceof DataProviderTestSuite);
             },
             true
@@ -321,7 +321,7 @@ final class TestSuiteSorter
                 /**
                  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
                  */
-                function ($test) {
+                static function ($test) {
                     return self::getTestSorterUID($test);
                 },
                 $tests
@@ -352,7 +352,7 @@ final class TestSuiteSorter
         }
 
         $names = \array_map(
-            function ($name) use ($testClass) {
+            static function ($name) use ($testClass) {
                 return \strpos($name, '::') === false ? $testClass . '::' . $name : $name;
             },
             $test->getDependencies()

@@ -152,7 +152,7 @@ final class Invocation implements SelfDescribing
             case 'traversable':
             case 'generator':
             case 'iterable':
-                $generator = function () {
+                $generator = static function () {
                     yield;
                 };
 

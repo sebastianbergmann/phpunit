@@ -19,7 +19,7 @@ final class XdebugFilterScriptGenerator
         $items = $this->getWhitelistItems($filterData);
 
         $files = \array_map(
-            function ($item) {
+            static function ($item) {
                 return \sprintf(
                     "        '%s'",
                     $item

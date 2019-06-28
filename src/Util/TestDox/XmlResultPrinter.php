@@ -155,7 +155,7 @@ final class XmlResultPrinter extends Printer implements TestListener
 
         $groups = \array_filter(
             $test->getGroups(),
-            function ($group) {
+            static function ($group) {
                 return !($group === 'small' || $group === 'medium' || $group === 'large');
             }
         );

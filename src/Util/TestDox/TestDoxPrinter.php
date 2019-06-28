@@ -368,7 +368,7 @@ class TestDoxPrinter extends ResultPrinter
         return \implode(
             \PHP_EOL,
             \array_map(
-                function (string $text) use ($prefix) {
+                static function (string $text) use ($prefix) {
                     return '   ' . $prefix . ($text ? ' ' . $text : '');
                 },
                 \preg_split('/\r\n|\r|\n/', $message)
