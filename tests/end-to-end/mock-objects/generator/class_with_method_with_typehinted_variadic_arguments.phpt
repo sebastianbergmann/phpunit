@@ -27,8 +27,8 @@ declare(strict_types=1);
 
 class MockFoo extends ClassWithMethodWithTypehintedVariadicArguments implements PHPUnit\Framework\MockObject\MockObject
 {
-    use \PHPUnit\Framework\MockObject\TestDoubleApi;
-    use \PHPUnit\Framework\MockObject\TestDoubleApiMethod;
+    use \PHPUnit\Framework\MockObject\Api;
+    use \PHPUnit\Framework\MockObject\Method;
 
     public function __clone()
     {

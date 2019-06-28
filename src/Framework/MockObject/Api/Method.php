@@ -14,7 +14,7 @@ use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
 /**
  * @internal This trait is not covered by the backward compatibility promise for PHPUnit
  */
-trait TestDoubleApiMethod
+trait Method
 {
     public function method()
     {

@@ -1,10 +1,10 @@
 namespace PHPUnit\TestFixture\MockObject;
 
-use PHPUnit\Framework\MockObject\TestDoubleApi;
+use PHPUnit\Framework\MockObject\Api;
 
 class MockClassGenerated
 {
-    use TestDoubleApi;
+    use Api;
 
     public static function getConfigurableMethods(): array
     {

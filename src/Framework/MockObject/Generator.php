@@ -831,7 +831,7 @@ final class Generator
         $method = '';
 
         if (!$mockMethods->hasMethod('method') && (!isset($class) || !$class->hasMethod('method'))) {
-            $method = \PHP_EOL . '    use \PHPUnit\Framework\MockObject\TestDoubleApiMethod;';
+            $method = \PHP_EOL . '    use \PHPUnit\Framework\MockObject\Method;';
         }
 
         $classTemplate->setVar(

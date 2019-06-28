@@ -27,8 +27,8 @@ declare(strict_types=1);
 
 class MockFoo implements PHPUnit\Framework\MockObject\MockObject, NS\Foo
 {
-    use \PHPUnit\Framework\MockObject\TestDoubleApi;
-    use \PHPUnit\Framework\MockObject\TestDoubleApiMethod;
+    use \PHPUnit\Framework\MockObject\Api;
+    use \PHPUnit\Framework\MockObject\Method;
 
     public function __clone()
     {

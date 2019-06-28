@@ -27,7 +27,7 @@ declare(strict_types=1);
 
 class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
-    use \PHPUnit\Framework\MockObject\TestDoubleApi;
+    use \PHPUnit\Framework\MockObject\Api;
 
     public function __clone()
     {

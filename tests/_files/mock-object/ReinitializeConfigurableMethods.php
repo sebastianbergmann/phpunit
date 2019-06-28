@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-use PHPUnit\Framework\MockObject\TestDoubleApi;
+use PHPUnit\Framework\MockObject\Api;
 
 class ReinitializeConfigurableMethods
 {
-    use TestDoubleApi;
+    use Api;
 }

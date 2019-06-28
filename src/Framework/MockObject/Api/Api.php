@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\Matcher\Invocation;
 /**
  * @internal This trait is not covered by the backward compatibility promise for PHPUnit
  */
-trait TestDoubleApi
+trait Api
 {
     /**
      * @var ConfigurableMethod[]
