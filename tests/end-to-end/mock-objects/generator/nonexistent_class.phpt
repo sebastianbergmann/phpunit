@@ -26,9 +26,5 @@ class MockFoo extends NonExistentClass implements PHPUnit\Framework\MockObject\M
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-
-    public function __clone()
-    {
-        $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationMocker();
-    }
+    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 }

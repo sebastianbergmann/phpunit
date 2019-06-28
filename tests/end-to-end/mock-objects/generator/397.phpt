@@ -29,11 +29,7 @@ class MockC extends C implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-
-    public function __clone()
-    {
-        $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationMocker();
-    }
+    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
     public function m(?C $other): C
     {

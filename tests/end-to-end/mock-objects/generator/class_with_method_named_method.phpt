@@ -28,11 +28,7 @@ declare(strict_types=1);
 class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
-
-    public function __clone()
-    {
-        $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationMocker();
-    }
+    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
     public function method()
     {

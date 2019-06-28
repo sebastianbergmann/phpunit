@@ -43,11 +43,7 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-
-    public function __clone()
-    {
-        $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationMocker();
-    }
+    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
     public function a(int $i = PHP_INT_MAX, int $j = Is\Namespaced\A_CONSTANT, string $v = PHP_VERSION, string $z = '#'): string
     {
