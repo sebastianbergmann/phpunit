@@ -15,7 +15,7 @@ namespace PHPUnit\Framework\MockObject;
 trait ConfigurableMethods
 {
     /**
-     * @var ConfigurableMethods[]
+     * @var ConfigurableMethod[]
      */
     private static $__phpunit_configurableMethods;
 
