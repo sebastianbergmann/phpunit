@@ -28,9 +28,9 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\ConfigurableMethods;
     use \PHPUnit\Framework\MockObject\OriginalObject;
+    use \PHPUnit\Framework\MockObject\ReturnValueGeneration;
 
     private $__phpunit_invocationMocker;
-    private $__phpunit_returnValueGeneration = true;
 
     public function __clone()
     {
@@ -48,11 +48,6 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
         $expects = $this->expects($any);
 
         return call_user_func_array([$expects, 'method'], func_get_args());
-    }
-
-    public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration): void
-    {
-        $this->__phpunit_returnValueGeneration = $returnValueGeneration;
     }
 
     public function __phpunit_getInvocationMocker(): \PHPUnit\Framework\MockObject\InvocationMocker
