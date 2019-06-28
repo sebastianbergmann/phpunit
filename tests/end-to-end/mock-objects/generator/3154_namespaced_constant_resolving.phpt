@@ -42,9 +42,9 @@ declare(strict_types=1);
 class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\ConfigurableMethods;
+    use \PHPUnit\Framework\MockObject\OriginalObject;
 
     private $__phpunit_invocationMocker;
-    private $__phpunit_originalObject;
     private $__phpunit_returnValueGeneration = true;
 
     public function __clone()
@@ -85,11 +85,6 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
         $expects = $this->expects($any);
 
         return call_user_func_array([$expects, 'method'], func_get_args());
-    }
-
-    public function __phpunit_setOriginalObject($originalObject): void
-    {
-        $this->__phpunit_originalObject = $originalObject;
     }
 
     public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration): void
