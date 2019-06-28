@@ -17,7 +17,7 @@ final class MockTraitTest extends TestCase
     {
         $mockName = 'PHPUnit\TestFixture\MockObject\MockTraitGenerated';
 
-        $file = __DIR__ . '/../../../_files/mock-object/MockTraitGenerated.tpl.dist';
+        $file = __DIR__ . '/../../../_files/mock-object/MockTraitGenerated.tpl';
 
         $mockTrait = new MockTrait(\file_get_contents($file), $mockName);
         $mockTrait->generate();
