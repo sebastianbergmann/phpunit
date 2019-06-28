@@ -71,7 +71,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
     {
         if ($filepath !== null && \is_dir($filepath)) {
             // cache path provided, use default cache filename in that location
-            $filepath = $filepath . \DIRECTORY_SEPARATOR . self::DEFAULT_RESULT_CACHE_FILENAME;
+            $filepath .= \DIRECTORY_SEPARATOR . self::DEFAULT_RESULT_CACHE_FILENAME;
         }
 
         $this->cacheFilename = $filepath ?? $_ENV['PHPUNIT_RESULT_CACHE'] ?? self::DEFAULT_RESULT_CACHE_FILENAME;
