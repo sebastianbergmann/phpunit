@@ -151,8 +151,6 @@ final class XmlResultPrinter extends Printer implements TestListener
             return;
         }
 
-        /* @var TestCase $test */
-
         $groups = \array_filter(
             $test->getGroups(),
             static function ($group) {
