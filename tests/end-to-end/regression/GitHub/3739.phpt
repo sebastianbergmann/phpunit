@@ -21,8 +21,8 @@ There was 1 error:
 1) Issue3739\Issue3739Test::testWithoutErrorSuppression
 unlink(%s/end-to-end/regression/GitHub/3739/DOES_NOT_EXIST): No such file or directory
 
-%s/Issue3739Test.php:15
-%s/Issue3739Test.php:28
+%s/Issue3739Test.php:%d
+%s/Issue3739Test.php:%d
 
 ERRORS!
 Tests: 2, Assertions: 1, Errors: 1.
