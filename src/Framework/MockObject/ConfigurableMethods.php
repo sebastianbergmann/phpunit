@@ -19,12 +19,12 @@ trait ConfigurableMethods
      */
     private static $__phpunit_configurableMethods;
 
-    public static function __phpunit_initConfigurableMethods(ConfigurableMethod ...$configurable): void
+    public static function __phpunit_initConfigurableMethods(ConfigurableMethod ...$configurableMethods): void
     {
         if (isset(static::$__phpunit_configurableMethods)) {
             throw new ConfigurableMethodsAlreadyInitializedException('Configurable methods is already initialized and can not be reinitialized.');
         }
 
-        static::$__phpunit_configurableMethods = $configurable;
+        static::$__phpunit_configurableMethods = $configurableMethods;
     }
 }
