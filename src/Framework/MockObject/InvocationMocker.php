@@ -67,11 +67,7 @@ final class InvocationMocker implements Invokable, MatcherCollection, NamespaceM
 
     public function lookupId($id): Match
     {
-        if (isset($this->builderMap[$id])) {
-            return $this->builderMap[$id];
-        }
-
-        return null;
+        return $this->builderMap[$id] ?? null;
     }
 
     /**
