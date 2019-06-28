@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture\MockObject;
 
 use PHPUnit\Framework\MockObject\ConfigurableMethods;
 
-class ClassAUsingConfigurableMethods
+class ClassUsingConfigurableMethods
 {
     use ConfigurableMethods;
 

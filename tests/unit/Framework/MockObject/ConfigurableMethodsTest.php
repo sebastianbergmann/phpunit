@@ -10,8 +10,8 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\MockObject\ClassAUsingConfigurableMethods;
-use PHPUnit\TestFixture\MockObject\ClassBUsingConfigurableMethods;
+use PHPUnit\TestFixture\MockObject\AnotherClassUsingConfigurableMethods;
+use PHPUnit\TestFixture\MockObject\ClassUsingConfigurableMethods;
 use PHPUnit\TestFixture\MockObject\ReinitializeConfigurableMethods;
 use SebastianBergmann\Type\SimpleType;
 
@@ -21,11 +21,11 @@ final class ConfigurableMethodsTest extends TestCase
     {
         $configurableMethodsA = [new ConfigurableMethod('foo', SimpleType::fromValue('boolean', false))];
         $configurableMethodsB = [];
-        ClassAUsingConfigurableMethods::__phpunit_initConfigurableMethods(...$configurableMethodsA);
-        ClassBUsingConfigurableMethods::__phpunit_initConfigurableMethods(...$configurableMethodsB);
+        ClassUsingConfigurableMethods::__phpunit_initConfigurableMethods(...$configurableMethodsA);
+        AnotherClassUsingConfigurableMethods::__phpunit_initConfigurableMethods(...$configurableMethodsB);
 
-        $this->assertSame($configurableMethodsA, ClassAUsingConfigurableMethods::getConfigurableMethods());
-        $this->assertSame($configurableMethodsB, ClassBUsingConfigurableMethods::getConfigurableMethods());
+        $this->assertSame($configurableMethodsA, ClassUsingConfigurableMethods::getConfigurableMethods());
+        $this->assertSame($configurableMethodsB, AnotherClassUsingConfigurableMethods::getConfigurableMethods());
     }
 
     public function testConfigurableMethodsAreImmutable(): void
