@@ -2,38 +2,6 @@ declare(strict_types=1);
 
 {prologue}{class_declaration}
 {
-    use \PHPUnit\Framework\MockObject\ConfigurableMethods;
-    use \PHPUnit\Framework\MockObject\OriginalObject;
-    use \PHPUnit\Framework\MockObject\ReturnValueGeneration;
+    use \PHPUnit\Framework\MockObject\TestDoubleApi;
 
-    private $__phpunit_invocationMocker;
-
-{clone}{mocked_methods}
-    public function expects(\PHPUnit\Framework\MockObject\Matcher\Invocation $matcher): \PHPUnit\Framework\MockObject\Builder\InvocationMocker
-    {
-        return $this->__phpunit_getInvocationMocker()->expects($matcher);
-    }
-{method}
-    public function __phpunit_getInvocationMocker(): \PHPUnit\Framework\MockObject\InvocationMocker
-    {
-        if ($this->__phpunit_invocationMocker === null) {
-            $this->__phpunit_invocationMocker = new \PHPUnit\Framework\MockObject\InvocationMocker(static::$__phpunit_configurableMethods, $this->__phpunit_returnValueGeneration);
-        }
-
-        return $this->__phpunit_invocationMocker;
-    }
-
-    public function __phpunit_hasMatchers(): bool
-    {
-        return $this->__phpunit_getInvocationMocker()->hasMatchers();
-    }
-
-    public function __phpunit_verify(bool $unsetInvocationMocker = true): void
-    {
-        $this->__phpunit_getInvocationMocker()->verify();
-
-        if ($unsetInvocationMocker) {
-            $this->__phpunit_invocationMocker = null;
-        }
-    }
-}{epilogue}
+{clone}{mocked_methods}{method}}{epilogue}
