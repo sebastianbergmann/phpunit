@@ -29,6 +29,7 @@ declare(strict_types=1);
 class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\TestDoubleApi;
+    use \PHPUnit\Framework\MockObject\TestDoubleApiMethod;
 
     public function __clone()
     {
@@ -38,13 +39,5 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
     public static function bar(string $baz): Bar
     {
         throw new \PHPUnit\Framework\MockObject\BadMethodCallException('Static method "bar" cannot be invoked on mock object');
-    }
-
-    public function method()
-    {
-        $any     = new \PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
-        $expects = $this->expects($any);
-
-        return call_user_func_array([$expects, 'method'], func_get_args());
     }
 }

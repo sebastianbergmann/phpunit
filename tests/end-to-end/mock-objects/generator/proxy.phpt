@@ -28,6 +28,7 @@ declare(strict_types=1);
 class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\TestDoubleApi;
+    use \PHPUnit\Framework\MockObject\TestDoubleApiMethod;
 
     public function __clone()
     {
@@ -76,13 +77,5 @@ class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
         );
 
         return call_user_func_array(array($this->__phpunit_originalObject, "baz"), $__phpunit_arguments);
-    }
-
-    public function method()
-    {
-        $any     = new \PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
-        $expects = $this->expects($any);
-
-        return call_user_func_array([$expects, 'method'], func_get_args());
     }
 }
