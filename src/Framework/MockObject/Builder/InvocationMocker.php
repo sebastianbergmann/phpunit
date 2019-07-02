@@ -270,7 +270,7 @@ final class InvocationMocker implements MethodNameMatch
                     \sprintf(
                         'Method %s may not return value of type %s, its return declaration is "%s"',
                         $configuredMethod->getName(),
-                        is_object($value) ? \get_class($value) : \gettype($value),
+                        \is_object($value) ? \get_class($value) : \gettype($value),
                         $configuredMethod->getReturnTypeDeclaration()
                     )
                 );

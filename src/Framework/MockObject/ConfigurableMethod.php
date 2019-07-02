@@ -45,7 +45,7 @@ final class ConfigurableMethod
 
         return $this->returnType->isAssignable(Type::fromValue($value, false));
     }
-    
+
     public function getReturnTypeDeclaration(): string
     {
         return $this->returnType->getReturnTypeDeclaration();
