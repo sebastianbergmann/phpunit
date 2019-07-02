@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.5.14] - 2019-MM-DD
+
+### Fixed
+
+* Fixed [#3743](https://github.com/sebastianbergmann/phpunit/issues/3743): `EmptyIterator` instances are not handled correctly by `Count` and `IsEmpty` constraints
+
 ## [7.5.13] - 2019-06-19
 
 ### Fixed
@@ -126,6 +132,7 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 * Fixed [#3429](https://github.com/sebastianbergmann/phpunit/pull/3429): Inefficient loop in `getHookMethods()`
 * Fixed [#3437](https://github.com/sebastianbergmann/phpunit/pull/3437): JUnit logger skips PHPT tests
 
+[7.5.14]: https://github.com/sebastianbergmann/phpunit/compare/7.5.13...7.5.14
 [7.5.13]: https://github.com/sebastianbergmann/phpunit/compare/7.5.12...7.5.13
 [7.5.12]: https://github.com/sebastianbergmann/phpunit/compare/7.5.11...7.5.12
 [7.5.11]: https://github.com/sebastianbergmann/phpunit/compare/7.5.10...7.5.11

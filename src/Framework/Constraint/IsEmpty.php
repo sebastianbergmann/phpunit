@@ -32,6 +32,10 @@ class IsEmpty extends Constraint
      */
     protected function matches($other): bool
     {
+        if ($other instanceof \EmptyIterator) {
+            return true;
+        }
+
         if ($other instanceof Countable) {
             return \count($other) === 0;
         }

@@ -142,4 +142,14 @@ class CountTest extends ConstraintTestCase
         $this->assertNotInstanceOf(\IteratorAggregate::class, $datePeriod);
         $this->assertTrue($countConstraint->evaluate($datePeriod, '', true));
     }
+
+    /**
+     * @ticket https://github.com/sebastianbergmann/phpunit/issues/3743
+     */
+    public function test_EmptyIterator_is_handled_correctly(): void
+    {
+        $constraint = new Count(0);
+
+        $this->assertTrue($constraint->evaluate(new \EmptyIterator, '', true));
+    }
 }
