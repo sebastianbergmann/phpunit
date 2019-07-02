@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 8.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [8.2.4] - 2019-MM-DD
+
+### Changed
+
+* Implemented [#3744](https://github.com/sebastianbergmann/phpunit/pull/3744): More context when value with incompatible type is configured to be returned by stub
+
 ## [8.2.3] - 2019-06-19
 
 ### Fixed
@@ -38,6 +44,7 @@ All notable changes of the PHPUnit 8.2 release series are documented in this fil
 
 * Fixed [#3602](https://github.com/sebastianbergmann/phpunit/issues/3602): PHPUnit silently ignores the return value on a `void` method of test double
 
+[8.2.4]: https://github.com/sebastianbergmann/phpunit/compare/8.2.3...8.2.4
 [8.2.3]: https://github.com/sebastianbergmann/phpunit/compare/8.2.2...8.2.3
 [8.2.2]: https://github.com/sebastianbergmann/phpunit/compare/8.2.1...8.2.2
 [8.2.1]: https://github.com/sebastianbergmann/phpunit/compare/8.2.0...8.2.1
