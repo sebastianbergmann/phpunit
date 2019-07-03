@@ -68,6 +68,9 @@
     "autoload": {
         "classmap": [
             "src/"
+        ],
+        "files": [
+            "src/Framework/Assert/Functions.php"
         ]
     },
     "autoload-dev": {
@@ -75,7 +78,6 @@
             "tests/"
         ],
         "files": [
-            "src/Framework/Assert/Functions.php",
             "tests/_files/CoverageNamespacedFunctionTest.php",
             "tests/_files/CoveredFunction.php",
             "tests/_files/NamespaceCoveredFunction.php"
