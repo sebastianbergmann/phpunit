@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 8.2 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [8.2.4] - 2019-MM-DD
+## [8.2.4] - 2019-07-03
 
 ### Changed
 
