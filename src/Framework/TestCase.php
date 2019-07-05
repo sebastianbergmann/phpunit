@@ -215,6 +215,11 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $outputBufferingLevel;
 
     /**
+     * @var bool
+     */
+    private $outputRetrievedForAssertion = false;
+
+    /**
      * @var Snapshot
      */
     private $snapshot;
@@ -536,6 +541,13 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         return (string) \ob_get_contents();
     }
 
+    public function getActualOutputForAssertion(): string
+    {
+        $this->outputRetrievedForAssertion = true;
+
+        return $this->getActualOutput();
+    }
+
     public function hasOutput(): bool
     {
         if ($this->output === '') {
@@ -566,7 +578,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function hasExpectationOnOutput(): bool
     {
-        return \is_string($this->outputExpectedString) || \is_string($this->outputExpectedRegex);
+        return \is_string($this->outputExpectedString) || \is_string($this->outputExpectedRegex) || $this->outputRetrievedForAssertion;
     }
 
     public function getExpectedException(): ?string

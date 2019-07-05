@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 8.3 release series are documented in this fil
 
 ## [8.3.0] - 2019-08-02
 
+### Added
+
+* Added `TestCase::getActualOutputForAssertion()` as a wrapper for `TestCase::getActualOutput()` to prevent a test being marked as risky when it prints output and that output is not expected using `TestCase::expectOutputString()` or `TestCase::expectOutputRegEx()`
+
 ### Changed
 
 * Implemented [#2015](https://github.com/sebastianbergmann/phpunit/issues/2015): Prefix all code bundled in PHAR distribution with random/unique namespace
