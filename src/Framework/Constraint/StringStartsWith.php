@@ -24,7 +24,7 @@ final class StringStartsWith extends Constraint
 
     public function __construct(string $prefix)
     {
-        if (empty($prefix)) {
+        if (\strlen($prefix) === 0) {
             throw InvalidArgumentHelper::factory(1, 'non-empty string');
         }
 
