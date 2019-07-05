@@ -38,10 +38,10 @@ class StringStartsWithTest extends ConstraintTestCase
     public function testConstraintStringStartsWithCorrectSingleZeroAndReturnResult(): void
     {
         $constraint = new StringStartsWith('0');
-        
+
         $this->assertTrue($constraint->evaluate('0ABC', '', true));
     }
-    
+
     public function testConstraintStringStartsWithNotCorrectNumericValueAndReturnResult(): void
     {
         $constraint = new StringStartsWith('0E1');
