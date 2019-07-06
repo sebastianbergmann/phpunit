@@ -99,7 +99,7 @@
   [32m--printer [36m<printer>[0m        [0m TestListener implementation to use
 
   [32m--order-by=[36m<order>[0m         [0m Run tests in order:
-                              default|defects|duration|no-depends|random|reverse
+                              default|defects|duration|no-depends|random|reverse|size
   [32m--random-order-seed=[36m<N>[0m    [0m Use a specific random seed <N> for random
                               order
   [32m--cache-result             [0m Write test results to cache file

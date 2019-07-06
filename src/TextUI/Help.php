@@ -100,7 +100,7 @@ final class Help
             ['arg'    => '--printer <printer>', 'desc' => 'TestListener implementation to use'],
             ['spacer' => ''],
 
-            ['arg'  => '--order-by=<order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse'],
+            ['arg'  => '--order-by=<order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
             ['arg'  => '--random-order-seed=<N>', 'desc' => 'Use a specific random seed <N> for random order'],
             ['arg'  => '--cache-result', 'desc' => 'Write test results to cache file'],
             ['arg'  => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
