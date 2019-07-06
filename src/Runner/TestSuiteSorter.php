@@ -13,6 +13,7 @@ use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Util\Test as TestUtil;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -62,6 +63,13 @@ final class TestSuiteSorter
         BaseTestRunner::STATUS_RISKY      => 2,
         BaseTestRunner::STATUS_SKIPPED    => 1,
         BaseTestRunner::STATUS_UNKNOWN    => 0,
+    ];
+
+    private const SIZE_SORT_WEIGHT = [
+        TestUtil::SMALL   => 1,
+        TestUtil::MEDIUM  => 2,
+        TestUtil::LARGE   => 3,
+        TestUtil::UNKNOWN => 4,
     ];
 
     /**
@@ -322,14 +330,18 @@ final class TestSuiteSorter
     }
 
     /**
-     * Compares test size for sorting test small->medium->large->unknown
+     * Compares test size for sorting tests small->medium->large->unknown
      */
     private function cmpSize(Test $a, Test $b): int
     {
-        $sizeA = ($size = $a->getSize()) !== -1 ? $size : 4;
-        $sizeB = ($size = $b->getSize()) !== -1 ? $size : 4;
+        $sizeA = ($a instanceof TestCase || $a instanceof DataProviderTestSuite)
+            ? $a->getSize()
+            : TestUtil::UNKNOWN;
+        $sizeB = ($b instanceof TestCase || $b instanceof DataProviderTestSuite)
+            ? $b->getSize()
+            : TestUtil::UNKNOWN;
 
-        return $sizeA <=> $sizeB;
+        return self::SIZE_SORT_WEIGHT[$sizeA] <=> self::SIZE_SORT_WEIGHT[$sizeB];
     }
 
     /**
