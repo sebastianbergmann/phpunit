@@ -1302,6 +1302,11 @@ class Command
 
                     break;
 
+                case 'size':
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_SIZE;
+
+                    break;
+
                 default:
                     $this->exitWithErrorMessage("unrecognized --order-by option: $order");
             }

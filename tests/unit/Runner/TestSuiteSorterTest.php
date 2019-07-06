@@ -41,7 +41,7 @@ final class TestSuiteSorterTest extends TestCase
         $sorter = new TestSuiteSorter;
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('$order must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, or TestSuiteSorter::ORDER_RANDOMIZED, or TestSuiteSorter::ORDER_DURATION');
+        $this->expectExceptionMessage('$order must be one of TestSuiteSorter::ORDER_[DEFAULT|REVERSED|RANDOMIZED|DURATION|SIZE]');
         $sorter->reorderTestsInSuite($suite, -1, false, TestSuiteSorter::ORDER_DEFAULT);
     }
 
@@ -607,5 +607,27 @@ final class TestSuiteSorterTest extends TestCase
         }
 
         return $data;
+    }
+
+    public function testOrderBySize(): void
+    {
+        $suite = new TestSuite;
+        $suite->addTestSuite(\TestWithDifferentSizes::class);
+        $sorter = new TestSuiteSorter;
+
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE, true, TestSuiteSorter::ORDER_DEFAULT);
+
+        $expectedOrder = [
+            \TestWithDifferentSizes::class . '::testWithSizeSmall',
+            \TestWithDifferentSizes::class . '::testDataProviderWithSizeSmall with data set #0',
+            \TestWithDifferentSizes::class . '::testDataProviderWithSizeSmall with data set #1',
+            \TestWithDifferentSizes::class . '::testDataProviderWithSizeMedium with data set #0',
+            \TestWithDifferentSizes::class . '::testDataProviderWithSizeMedium with data set #1',
+            \TestWithDifferentSizes::class . '::testWithSizeMedium',
+            \TestWithDifferentSizes::class . '::testWithSizeLarge',
+            \TestWithDifferentSizes::class . '::testWithSizeUnknown',
+        ];
+
+        $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
     }
 }
