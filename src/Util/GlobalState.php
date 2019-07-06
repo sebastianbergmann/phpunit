@@ -85,7 +85,7 @@ final class GlobalState
             $result .= \sprintf(
                 '@ini_set(%s, %s);' . "\n",
                 self::exportVariable($key),
-                self::exportVariable($value)
+                self::exportVariable((string) $value)
             );
         }
 
