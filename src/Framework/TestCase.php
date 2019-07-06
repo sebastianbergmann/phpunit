@@ -451,148 +451,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         return 1;
     }
 
-    /**
-     * @return string[]
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function doubledTypes(): array
-    {
-        return \array_unique($this->doubledTypes);
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function getGroups(): array
-    {
-        return $this->groups;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function setGroups(array $groups): void
-    {
-        $this->groups = $groups;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function getAnnotations(): array
-    {
-        return TestUtil::parseTestMethodAnnotations(
-            \get_class($this),
-            $this->name
-        );
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function getName(bool $withDataSet = true): string
-    {
-        if ($withDataSet) {
-            return $this->name . $this->getDataSetAsString(false);
-        }
-
-        return $this->name;
-    }
-
-    /**
-     * Returns the size of the test.
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function getSize(): int
-    {
-        return TestUtil::getSize(
-            \get_class($this),
-            $this->getName(false)
-        );
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function hasSize(): bool
-    {
-        return $this->getSize() !== TestUtil::UNKNOWN;
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function isSmall(): bool
-    {
-        return $this->getSize() === TestUtil::SMALL;
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function isMedium(): bool
-    {
-        return $this->getSize() === TestUtil::MEDIUM;
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function isLarge(): bool
-    {
-        return $this->getSize() === TestUtil::LARGE;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function getActualOutput(): string
-    {
-        if (!$this->outputBufferingActive) {
-            return $this->output;
-        }
-
-        return (string) \ob_get_contents();
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function hasOutput(): bool
-    {
-        if ($this->output === '') {
-            return false;
-        }
-
-        if ($this->hasExpectationOnOutput()) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function doesNotPerformAssertions(): bool
-    {
-        return $this->doesNotPerformAssertions;
-    }
-
     public function expectOutputRegex(string $expectedRegex): void
     {
         $this->outputExpectedRegex = $expectedRegex;
@@ -601,48 +459,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     public function expectOutputString(string $expectedString): void
     {
         $this->outputExpectedString = $expectedString;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function hasExpectationOnOutput(): bool
-    {
-        return \is_string($this->outputExpectedString) || \is_string($this->outputExpectedRegex);
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function getExpectedException(): ?string
-    {
-        return $this->expectedException;
-    }
-
-    /**
-     * @return null|int|string
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function getExpectedExceptionCode()
-    {
-        return $this->expectedExceptionCode;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function getExpectedExceptionMessage(): ?string
-    {
-        return $this->expectedExceptionMessage;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function getExpectedExceptionMessageRegExp(): ?string
-    {
-        return $this->expectedExceptionMessageRegExp;
     }
 
     /**
@@ -686,14 +502,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     public function expectNotToPerformAssertions(): void
     {
         $this->doesNotPerformAssertions = true;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function setRegisterMockObjectsFromTestArgumentsRecursively(bool $flag): void
-    {
-        $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
 
     public function setUseErrorHandler(bool $useErrorHandler): void
@@ -881,6 +689,221 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->result = null;
 
         return $result;
+    }
+
+    /**
+     * Returns a builder object to create mock objects using a fluent interface.
+     *
+     * @param string|string[] $className
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType>|string[] $className
+     * @psalm-return MockBuilder<RealInstanceType>
+     */
+    public function getMockBuilder($className): MockBuilder
+    {
+        $this->recordDoubledType($className);
+
+        return new MockBuilder($this, $className);
+    }
+
+    public function registerComparator(Comparator $comparator): void
+    {
+        ComparatorFactory::getInstance()->register($comparator);
+
+        $this->customComparators[] = $comparator;
+    }
+
+    /**
+     * @return string[]
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function doubledTypes(): array
+    {
+        return \array_unique($this->doubledTypes);
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function getGroups(): array
+    {
+        return $this->groups;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function setGroups(array $groups): void
+    {
+        $this->groups = $groups;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function getAnnotations(): array
+    {
+        return TestUtil::parseTestMethodAnnotations(
+            \get_class($this),
+            $this->name
+        );
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function getName(bool $withDataSet = true): string
+    {
+        if ($withDataSet) {
+            return $this->name . $this->getDataSetAsString(false);
+        }
+
+        return $this->name;
+    }
+
+    /**
+     * Returns the size of the test.
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function getSize(): int
+    {
+        return TestUtil::getSize(
+            \get_class($this),
+            $this->getName(false)
+        );
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function hasSize(): bool
+    {
+        return $this->getSize() !== TestUtil::UNKNOWN;
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function isSmall(): bool
+    {
+        return $this->getSize() === TestUtil::SMALL;
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function isMedium(): bool
+    {
+        return $this->getSize() === TestUtil::MEDIUM;
+    }
+
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function isLarge(): bool
+    {
+        return $this->getSize() === TestUtil::LARGE;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function getActualOutput(): string
+    {
+        if (!$this->outputBufferingActive) {
+            return $this->output;
+        }
+
+        return (string) \ob_get_contents();
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function hasOutput(): bool
+    {
+        if ($this->output === '') {
+            return false;
+        }
+
+        if ($this->hasExpectationOnOutput()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function doesNotPerformAssertions(): bool
+    {
+        return $this->doesNotPerformAssertions;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function hasExpectationOnOutput(): bool
+    {
+        return \is_string($this->outputExpectedString) || \is_string($this->outputExpectedRegex);
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function getExpectedException(): ?string
+    {
+        return $this->expectedException;
+    }
+
+    /**
+     * @return null|int|string
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function getExpectedExceptionCode()
+    {
+        return $this->expectedExceptionCode;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function getExpectedExceptionMessage(): ?string
+    {
+        return $this->expectedExceptionMessage;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function getExpectedExceptionMessageRegExp(): ?string
+    {
+        return $this->expectedExceptionMessageRegExp;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function setRegisterMockObjectsFromTestArgumentsRecursively(bool $flag): void
+    {
+        $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
 
     /**
@@ -1192,22 +1215,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * Returns a builder object to create mock objects using a fluent interface.
-     *
-     * @param string|string[] $className
-     *
-     * @psalm-template RealInstanceType of object
-     * @psalm-param class-string<RealInstanceType>|string[] $className
-     * @psalm-return MockBuilder<RealInstanceType>
-     */
-    public function getMockBuilder($className): MockBuilder
-    {
-        $this->recordDoubledType($className);
-
-        return new MockBuilder($this, $className);
-    }
-
-    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function addToAssertionCount(int $count): void
@@ -1249,13 +1256,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     public function dataName()
     {
         return $this->dataName;
-    }
-
-    public function registerComparator(Comparator $comparator): void
-    {
-        ComparatorFactory::getInstance()->register($comparator);
-
-        $this->customComparators[] = $comparator;
     }
 
     /**
