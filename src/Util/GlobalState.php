@@ -79,7 +79,7 @@ final class GlobalState
 
     public static function getIniSettingsAsString(): string
     {
-        $result      = '';
+        $result = '';
 
         foreach (\ini_get_all(null, false) as $key => $value) {
             $result .= \sprintf(
