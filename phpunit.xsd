@@ -233,7 +233,7 @@
         <xs:attribute name="bootstrap" type="xs:anyURI"/>
         <xs:attribute name="cacheResult" type="xs:boolean" default="false"/>
         <xs:attribute name="cacheResultFile" type="xs:anyURI"/>
-        <xs:attribute name="cacheTokens" type="xs:boolean"/>
+        <xs:attribute name="cacheTokens" type="xs:boolean" default="false"/>
         <xs:attribute name="colors" type="xs:boolean" default="false"/>
         <xs:attribute name="columns" type="columnsType" default="80"/>
         <xs:attribute name="convertDeprecationsToExceptions" type="xs:boolean" default="true"/>
