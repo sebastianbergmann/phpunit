@@ -569,13 +569,14 @@ final class TestCaseTest extends TestCase
     /**
      * @backupGlobals enabled
      * @backupStaticAttributes enabled
+     * @depends testGlobalsBackupPost
      *
      * @doesNotPerformAssertions
      */
     public function testStaticAttributesBackupPre(): void
     {
         $GLOBALS['singleton'] = \Singleton::getInstance();
-        $GLOBALS['i']         = 'not reset by backup';
+        $GLOBALS['i']         = 'set by testStaticAttributesBackupPre';
 
         $GLOBALS['j']         = 'reset by backup';
         self::$testStatic     = 123;
@@ -588,7 +589,7 @@ final class TestCaseTest extends TestCase
     {
         // Snapshots made by @backupGlobals
         $this->assertSame(\Singleton::getInstance(), $GLOBALS['singleton']);
-        $this->assertSame('not reset by backup', $GLOBALS['i']);
+        $this->assertSame('set by testStaticAttributesBackupPre', $GLOBALS['i']);
 
         // Reset global
         $this->assertArrayNotHasKey('j', $GLOBALS);
@@ -925,10 +926,6 @@ final class TestCaseTest extends TestCase
         $this->assertFalse($test->hasSize());
 
         $this->assertSame(TestUtil::UNKNOWN, $test->getSize());
-
-        $this->assertFalse($test->isLarge());
-        $this->assertFalse($test->isMedium());
-        $this->assertFalse($test->isSmall());
     }
 
     public function testSizeLarge(): void
@@ -938,10 +935,6 @@ final class TestCaseTest extends TestCase
         $this->assertTrue($test->hasSize());
 
         $this->assertSame(TestUtil::LARGE, $test->getSize());
-
-        $this->assertTrue($test->isLarge());
-        $this->assertFalse($test->isMedium());
-        $this->assertFalse($test->isSmall());
     }
 
     public function testSizeMedium(): void
@@ -951,10 +944,6 @@ final class TestCaseTest extends TestCase
         $this->assertTrue($test->hasSize());
 
         $this->assertSame(TestUtil::MEDIUM, $test->getSize());
-
-        $this->assertFalse($test->isLarge());
-        $this->assertTrue($test->isMedium());
-        $this->assertFalse($test->isSmall());
     }
 
     public function testSizeSmall(): void
@@ -964,10 +953,6 @@ final class TestCaseTest extends TestCase
         $this->assertTrue($test->hasSize());
 
         $this->assertSame(TestUtil::SMALL, $test->getSize());
-
-        $this->assertFalse($test->isLarge());
-        $this->assertFalse($test->isMedium());
-        $this->assertTrue($test->isSmall());
     }
 
     public function testGetNameReturnsMethodName(): void
