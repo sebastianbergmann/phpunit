@@ -504,11 +504,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->doesNotPerformAssertions = true;
     }
 
-    public function setUseErrorHandler(bool $useErrorHandler): void
-    {
-        $this->useErrorHandler = $useErrorHandler;
-    }
-
     public function getStatus(): int
     {
         return $this->status;
@@ -712,6 +707,14 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         ComparatorFactory::getInstance()->register($comparator);
 
         $this->customComparators[] = $comparator;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function setUseErrorHandler(bool $useErrorHandler): void
+    {
+        $this->useErrorHandler = $useErrorHandler;
     }
 
     /**
