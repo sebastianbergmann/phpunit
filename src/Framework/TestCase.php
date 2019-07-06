@@ -713,7 +713,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     public function setUseErrorHandler(bool $useErrorHandler): void
     {
-        $this->useErrorHandler = $useErrorHandler;
     }
 
     /**
