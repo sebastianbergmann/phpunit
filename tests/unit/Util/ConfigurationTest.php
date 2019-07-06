@@ -121,6 +121,7 @@ final class ConfigurationTest extends TestCase
             'executionOrder default'                         => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
             'executionOrder random'                          => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
             'executionOrder reverse'                         => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
+            'executionOrder size'                            => ['executionOrder', 'size', TestSuiteSorter::ORDER_SIZE],
             'cacheResult=false'                              => ['cacheResult', 'false', false],
             'cacheResult=true'                               => ['cacheResult', 'true', true],
             'cacheResultFile absolute path'                  => ['cacheResultFile', '/path/to/result/cache', '/path/to/result/cache'],
