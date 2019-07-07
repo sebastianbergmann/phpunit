@@ -926,6 +926,10 @@ final class TestCaseTest extends TestCase
         $this->assertFalse($test->hasSize());
 
         $this->assertSame(TestUtil::UNKNOWN, $test->getSize());
+
+        $this->assertFalse($test->isLarge());
+        $this->assertFalse($test->isMedium());
+        $this->assertFalse($test->isSmall());
     }
 
     public function testSizeLarge(): void
@@ -935,6 +939,10 @@ final class TestCaseTest extends TestCase
         $this->assertTrue($test->hasSize());
 
         $this->assertSame(TestUtil::LARGE, $test->getSize());
+
+        $this->assertTrue($test->isLarge());
+        $this->assertFalse($test->isMedium());
+        $this->assertFalse($test->isSmall());
     }
 
     public function testSizeMedium(): void
@@ -944,6 +952,10 @@ final class TestCaseTest extends TestCase
         $this->assertTrue($test->hasSize());
 
         $this->assertSame(TestUtil::MEDIUM, $test->getSize());
+
+        $this->assertFalse($test->isLarge());
+        $this->assertTrue($test->isMedium());
+        $this->assertFalse($test->isSmall());
     }
 
     public function testSizeSmall(): void
@@ -953,6 +965,10 @@ final class TestCaseTest extends TestCase
         $this->assertTrue($test->hasSize());
 
         $this->assertSame(TestUtil::SMALL, $test->getSize());
+
+        $this->assertFalse($test->isLarge());
+        $this->assertFalse($test->isMedium());
+        $this->assertTrue($test->isSmall());
     }
 
     public function testGetNameReturnsMethodName(): void
