@@ -12,7 +12,6 @@ return [
     'whitelist' => [
         'PHPUnit\*',
         'SebastianBergmann\CodeCoverage\*',
-        'PharIo\*',
         'PHP_Token*',
         'Prophecy\*',
     ],
