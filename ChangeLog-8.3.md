@@ -12,7 +12,7 @@ All notable changes of the PHPUnit 8.3 release series are documented in this fil
 ### Changed
 
 * Implemented [#2015](https://github.com/sebastianbergmann/phpunit/issues/2015): Prefix all code bundled in PHAR distribution with random/unique namespace
-* Implemented [#3503](https://github.com/sebastianbergmann/phpunit/issues/3503): The error handler has been refactored to longer rely on global state
+* Implemented [#3503](https://github.com/sebastianbergmann/phpunit/issues/3503): The error handler has been refactored to not rely on global state
 * Implemented [#3521](https://github.com/sebastianbergmann/phpunit/issues/3521): The `@errorHandler` annotation, which controlled a feature that was not documented and did not work correctly, does not have an effect anymore
 * Implemented [#3522](https://github.com/sebastianbergmann/phpunit/issues/3522): The `TestCase::setUseErrorHandler()` method, which controlled a feature that was not documented and did not work correctly, has been deprecated and does not have an effect anymore
 
