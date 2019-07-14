@@ -1477,28 +1477,18 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      *
      * @param string|string[] $originalClassName
      *
-     * @throws Exception
-     *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createMock($originalClassName): MockObject
     {
-        try {
-            return $this->getMockBuilder($originalClassName)
-                ->disableOriginalConstructor()
-                ->disableOriginalClone()
-                ->disableArgumentCloning()
-                ->disallowMockingUnknownTypes()
-                ->getMock();
-        } catch (\Exception $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
+        return $this->getMockBuilder($originalClassName)
+                    ->disableOriginalConstructor()
+                    ->disableOriginalClone()
+                    ->disableArgumentCloning()
+                    ->disallowMockingUnknownTypes()
+                    ->getMock();
     }
 
     /**
@@ -1506,29 +1496,19 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      *
      * @param string|string[] $originalClassName
      *
-     * @throws Exception
-     *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createConfiguredMock($originalClassName, array $configuration): MockObject
     {
-        try {
-            $o = $this->createMock($originalClassName);
+        $o = $this->createMock($originalClassName);
 
-            foreach ($configuration as $method => $return) {
-                $o->method($method)->willReturn($return);
-            }
-
-            return $o;
-        } catch (\Exception $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
+        foreach ($configuration as $method => $return) {
+            $o->method($method)->willReturn($return);
         }
+
+        return $o;
     }
 
     /**
@@ -1537,35 +1517,23 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param string|string[] $originalClassName
      * @param string[]        $methods
      *
-     * @throws Exception
-     *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createPartialMock($originalClassName, array $methods): MockObject
     {
-        try {
-            return $this->getMockBuilder($originalClassName)
-                ->disableOriginalConstructor()
-                ->disableOriginalClone()
-                ->disableArgumentCloning()
-                ->disallowMockingUnknownTypes()
-                ->setMethods(empty($methods) ? null : $methods)
-                ->getMock();
-        } catch (\Exception $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
+        return $this->getMockBuilder($originalClassName)
+                    ->disableOriginalConstructor()
+                    ->disableOriginalClone()
+                    ->disableArgumentCloning()
+                    ->disallowMockingUnknownTypes()
+                    ->setMethods(empty($methods) ? null : $methods)
+                    ->getMock();
     }
 
     /**
      * Returns a test proxy for the specified class.
-     *
-     * @throws Exception
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $originalClassName
@@ -1573,18 +1541,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
-        try {
-            return $this->getMockBuilder($originalClassName)
-                ->setConstructorArgs($constructorArguments)
-                ->enableProxyingToOriginalMethods()
-                ->getMock();
-        } catch (\Exception $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
+        return $this->getMockBuilder($originalClassName)
+                    ->setConstructorArgs($constructorArguments)
+                    ->enableProxyingToOriginalMethods()
+                    ->getMock();
     }
 
     /**
@@ -1598,36 +1558,26 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param bool   $callAutoload
      * @param bool   $cloneArguments
      *
-     * @throws Exception
-     *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
      * @psalm-return class-string<MockObject&RealInstanceType>
      */
     protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false): string
     {
-        try {
-            $this->recordDoubledType($originalClassName);
+        $this->recordDoubledType($originalClassName);
 
-            $mock = $this->getMockObjectGenerator()->getMock(
-                $originalClassName,
-                $methods,
-                $arguments,
-                $mockClassName,
-                $callOriginalConstructor,
-                $callOriginalClone,
-                $callAutoload,
-                $cloneArguments
-            );
+        $mock = $this->getMockObjectGenerator()->getMock(
+            $originalClassName,
+            $methods,
+            $arguments,
+            $mockClassName,
+            $callOriginalConstructor,
+            $callOriginalClone,
+            $callAutoload,
+            $cloneArguments
+        );
 
-            return \get_class($mock);
-        } catch (\Exception $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
+        return \get_class($mock);
     }
 
     /**
@@ -1643,38 +1593,28 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
      *
-     * @throws Exception
-     *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
     protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
-        try {
-            $this->recordDoubledType($originalClassName);
+        $this->recordDoubledType($originalClassName);
 
-            $mockObject = $this->getMockObjectGenerator()->getMockForAbstractClass(
-                $originalClassName,
-                $arguments,
-                $mockClassName,
-                $callOriginalConstructor,
-                $callOriginalClone,
-                $callAutoload,
-                $mockedMethods,
-                $cloneArguments
-            );
+        $mockObject = $this->getMockObjectGenerator()->getMockForAbstractClass(
+            $originalClassName,
+            $arguments,
+            $mockClassName,
+            $callOriginalConstructor,
+            $callOriginalClone,
+            $callAutoload,
+            $mockedMethods,
+            $cloneArguments
+        );
 
-            $this->registerMockObject($mockObject);
+        $this->registerMockObject($mockObject);
 
-            return $mockObject;
-        } catch (\Exception $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
+        return $mockObject;
     }
 
     /**
@@ -1686,53 +1626,43 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param bool   $callOriginalConstructor
      * @param array  $options                 An array of options passed to SOAPClient::_construct
      *
-     * @throws Exception
-     *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = []): MockObject
     {
-        try {
-            $this->recordDoubledType('SoapClient');
+        $this->recordDoubledType('SoapClient');
 
-            if ($originalClassName === '') {
-                $fileName          = \pathinfo(\basename(\parse_url($wsdlFile)['path']), \PATHINFO_FILENAME);
-                $originalClassName = \preg_replace('/[^a-zA-Z0-9_]/', '', $fileName);
-            }
+        if ($originalClassName === '') {
+            $fileName          = \pathinfo(\basename(\parse_url($wsdlFile)['path']), \PATHINFO_FILENAME);
+            $originalClassName = \preg_replace('/[^a-zA-Z0-9_]/', '', $fileName);
+        }
 
-            if (!\class_exists($originalClassName)) {
-                eval(
+        if (!\class_exists($originalClassName)) {
+            eval(
                 $this->getMockObjectGenerator()->generateClassFromWsdl(
                     $wsdlFile,
                     $originalClassName,
                     $methods,
                     $options
                 )
-                );
-            }
-
-            $mockObject = $this->getMockObjectGenerator()->getMock(
-                $originalClassName,
-                $methods,
-                ['', $options],
-                $mockClassName,
-                $callOriginalConstructor,
-                false,
-                false
-            );
-
-            $this->registerMockObject($mockObject);
-
-            return $mockObject;
-        } catch (\Exception $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
             );
         }
+
+        $mockObject = $this->getMockObjectGenerator()->getMock(
+            $originalClassName,
+            $methods,
+            ['', $options],
+            $mockClassName,
+            $callOriginalConstructor,
+            false,
+            false
+        );
+
+        $this->registerMockObject($mockObject);
+
+        return $mockObject;
     }
 
     /**
@@ -1747,35 +1677,25 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param bool   $callAutoload
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
-     *
-     * @throws Exception
      */
     protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
     {
-        try {
-            $this->recordDoubledType($traitName);
+        $this->recordDoubledType($traitName);
 
-            $mockObject = $this->getMockObjectGenerator()->getMockForTrait(
-                $traitName,
-                $arguments,
-                $mockClassName,
-                $callOriginalConstructor,
-                $callOriginalClone,
-                $callAutoload,
-                $mockedMethods,
-                $cloneArguments
-            );
+        $mockObject = $this->getMockObjectGenerator()->getMockForTrait(
+            $traitName,
+            $arguments,
+            $mockClassName,
+            $callOriginalConstructor,
+            $callOriginalClone,
+            $callAutoload,
+            $mockedMethods,
+            $cloneArguments
+        );
 
-            $this->registerMockObject($mockObject);
+        $this->registerMockObject($mockObject);
 
-            return $mockObject;
-        } catch (\Exception $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
+        return $mockObject;
     }
 
     /**
@@ -1787,29 +1707,19 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param bool   $callOriginalClone
      * @param bool   $callAutoload
      *
-     * @throws Exception
-     *
      * @return object
      */
     protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)/*: object*/
     {
-        try {
-            $this->recordDoubledType($traitName);
+        $this->recordDoubledType($traitName);
 
-            return $this->getMockObjectGenerator()->getObjectForTrait(
-                $traitName,
-                $traitClassName,
-                $callAutoload,
-                $callOriginalConstructor,
-                $arguments
-            );
-        } catch (\Exception $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
+        return $this->getMockObjectGenerator()->getObjectForTrait(
+            $traitName,
+            $traitClassName,
+            $callAutoload,
+            $callOriginalConstructor,
+            $arguments
+        );
     }
 
     /**

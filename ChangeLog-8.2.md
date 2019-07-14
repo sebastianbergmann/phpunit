@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.2 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3747](https://github.com/sebastianbergmann/phpunit/pull/3747): Regression in `StringStartsWith` constraint
+* Fixed [#3752](https://github.com/sebastianbergmann/phpunit/issues/3752): `expectException()` fails with `getMockForAbstractClass()`
 
 ## [8.2.4] - 2019-07-03
 
