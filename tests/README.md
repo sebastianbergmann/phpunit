@@ -28,5 +28,5 @@ Note: this section will change often while `tests/` is being refactored.
   - `_files`: specialized helper files; input/output samples
   - `basic/`: fast tests covering all basics
     - `configuration.basic.xml`: configuration file tailored for the `basic` suite
-  - `end-to-end/`: run PHPUnit as a seperate process and observe its behaviour via console messages and the filesystem
-  - `unit/`: unit tests for individual smallest components and integration tests of common usa cases
+  - `end-to-end/`: run PHPUnit as a separate process and observe its behaviour via console messages and the filesystem
+  - `unit/`: unit tests for individual smallest components and integration tests of common use cases
