@@ -102,7 +102,7 @@ final class MockMethod
         }
 
         if ($method->hasReturnType()) {
-            $returnType = (string) $method->getReturnType();
+            $returnType = $method->getReturnType()->getName();
         } else {
             $returnType = '';
         }
@@ -301,8 +301,8 @@ final class MockMethod
                     $nullable = '?';
                 }
 
-                if ($parameter->hasType() && (string) $parameter->getType() !== 'self') {
-                    $typeDeclaration = $parameter->getType() . ' ';
+                if ($parameter->hasType() && $parameter->getType()->getName() !== 'self') {
+                    $typeDeclaration = $parameter->getType()->getName() . ' ';
                 } else {
                     try {
                         $class = $parameter->getClass();
