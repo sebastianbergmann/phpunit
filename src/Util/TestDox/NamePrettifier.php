@@ -49,20 +49,47 @@ final class NamePrettifier
         } catch (UtilException $e) {
         }
 
-        $result = $className;
+        $parts     = \explode('\\', $className);
+        $className = \array_pop($parts);
 
         if (\substr($className, -1 * \strlen('Test')) === 'Test') {
-            $result = \substr($result, 0, \strripos($result, 'Test'));
+            $className = \substr($className, 0, \strlen($className) - \strlen('Test'));
         }
 
         if (\strpos($className, 'Tests') === 0) {
-            $result = \substr($result, \strlen('Tests'));
+            $className = \substr($className, \strlen('Tests'));
         } elseif (\strpos($className, 'Test') === 0) {
-            $result = \substr($result, \strlen('Test'));
+            $className = \substr($className, \strlen('Test'));
         }
 
-        if ($result[0] === '\\') {
-            $result = \substr($result, 1);
+        if (!empty($parts)) {
+            $parts[]            = $className;
+            $fullyQualifiedName = \implode('\\', $parts);
+        } else {
+            $fullyQualifiedName = $className;
+        }
+
+        $result       = '';
+        $wasLowerCase = false;
+
+        foreach (\range(0, \strlen($className) - 1) as $i) {
+            $isLowerCase = \mb_strtolower($className[$i], 'UTF-8') === $className[$i];
+
+            if ($wasLowerCase && !$isLowerCase) {
+                $result .= ' ';
+            }
+
+            $result .= $className[$i];
+
+            if ($isLowerCase) {
+                $wasLowerCase = true;
+            } else {
+                $wasLowerCase = false;
+            }
+        }
+
+        if ($fullyQualifiedName !== $className) {
+            return $result . ' (' . $fullyQualifiedName . ')';
         }
 
         return $result;
@@ -153,10 +180,9 @@ final class NamePrettifier
             return \trim(\str_replace('_', ' ', $name));
         }
 
-        $max        = \strlen($name);
         $wasNumeric = false;
 
-        for ($i = 0; $i < $max; $i++) {
+        foreach (\range(0, \strlen($name) - 1) as $i) {
             if ($i > 0 && \ord($name[$i]) >= 65 && \ord($name[$i]) <= 90) {
                 $buffer .= ' ' . \strtolower($name[$i]);
             } else {

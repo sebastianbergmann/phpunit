@@ -18,7 +18,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-DoxGroup
+Dox Group
 ..                                                                  2 / 2 (100%) [x] One
 
 

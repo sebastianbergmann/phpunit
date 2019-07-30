@@ -14,7 +14,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-NumericGroupAnnotation
+Numeric Group Annotation
  ✔ Empty test for @ticket numeric annotation values
  ✔ Empty test for @group numeric annotation values
 

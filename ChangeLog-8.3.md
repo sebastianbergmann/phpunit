@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.3 release series are documented in this fil
 
 ### Added
 
+* Implemented [#3741](https://github.com/sebastianbergmann/phpunit/issues/3741): Format class names as well as method names in testdox output
 * Implemented [#3748](https://github.com/sebastianbergmann/phpunit/issues/3748): Add option to sort tests based on information from `@small`, `@medium`, and `@large`
 * Added `TestCase::getActualOutputForAssertion()` as a wrapper for `TestCase::getActualOutput()` to prevent a test being marked as risky when it prints output and that output is not expected using `TestCase::expectOutputString()` or `TestCase::expectOutputRegEx()`
 
