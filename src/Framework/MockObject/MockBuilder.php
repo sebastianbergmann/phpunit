@@ -218,10 +218,18 @@ final class MockBuilder
 
         $this->alreadyUsedMockMethodConfiguration = true;
 
-        $reflection = new \ReflectionClass($this->type);
+        try {
+            $reflector = new \ReflectionClass($this->type);
+        } catch (\ReflectionException $e) {
+            throw new RuntimeException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
 
         foreach ($methods as $method) {
-            if (!$reflection->hasMethod($method)) {
+            if (!$reflector->hasMethod($method)) {
                 throw new RuntimeException(
                     \sprintf(
                         'Trying to set mock method "%s" with onlyMethods, but it does not exist in class "%s". Use addMethods() for methods that don\'t exist in the class.',
@@ -257,10 +265,18 @@ final class MockBuilder
 
         $this->alreadyUsedMockMethodConfiguration = true;
 
-        $reflection = new \ReflectionClass($this->type);
+        try {
+            $reflector = new \ReflectionClass($this->type);
+        } catch (\ReflectionException $e) {
+            throw new RuntimeException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
 
         foreach ($methods as $method) {
-            if ($reflection->hasMethod($method)) {
+            if ($reflector->hasMethod($method)) {
                 throw new RuntimeException(
                     \sprintf(
                         'Trying to set mock method "%s" with addMethod, but it exists in class "%s". Use onlyMethods() for methods that exist in the class.',
