@@ -210,7 +210,7 @@ final class MockBuilder
         if ($this->alreadyUsedMockMethodConfiguration) {
             throw new RuntimeException(
                 \sprintf(
-                    'Can\'t use onlyMethods on "%s" mock because mocked methods were already configured.',
+                    'Cannot use onlyMethods() on "%s" mock because mocked methods were already configured.',
                     $this->type
                 )
             );
@@ -249,7 +249,7 @@ final class MockBuilder
         if ($this->alreadyUsedMockMethodConfiguration) {
             throw new RuntimeException(
                 \sprintf(
-                    'Can\'t use addMethods on "%s" mock because mocked methods were already configured.',
+                    'Cannot use addMethods() on "%s" mock because mocked methods were already configured.',
                     $this->type
                 )
             );
