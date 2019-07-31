@@ -131,7 +131,7 @@ final class Generator
 
         if ($mockClassName !== '' && \class_exists($mockClassName, false)) {
             try {
-                $reflect = new \ReflectionClass($mockClassName);
+                $reflector = new \ReflectionClass($mockClassName);
             } catch (\ReflectionException $e) {
                 throw new RuntimeException(
                     $e->getMessage(),
@@ -140,7 +140,7 @@ final class Generator
                 );
             }
 
-            if (!$reflect->implementsInterface(MockObject::class)) {
+            if (!$reflector->implementsInterface(MockObject::class)) {
                 throw new RuntimeException(
                     \sprintf(
                         'Class "%s" already exists.',
