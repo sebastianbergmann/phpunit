@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.3 release series are documented in this fil
 
 ### Added
 
+* Implemented [#3687](https://github.com/sebastianbergmann/phpunit/pull/3687): Introduce `MockBuilder::addMethods()` and `MockBuilder::onlyMethods()` as alternatives to `MockBuilder::setMethods()`
 * Implemented [#3741](https://github.com/sebastianbergmann/phpunit/issues/3741): Format class names as well as method names in testdox output
 * Implemented [#3748](https://github.com/sebastianbergmann/phpunit/issues/3748): Add option to sort tests based on information from `@small`, `@medium`, and `@large`
 * Added `TestCase::getActualOutputForAssertion()` as a wrapper for `TestCase::getActualOutput()` to prevent a test being marked as risky when it prints output and that output is not expected using `TestCase::expectOutputString()` or `TestCase::expectOutputRegEx()`
@@ -16,6 +17,7 @@ All notable changes of the PHPUnit 8.3 release series are documented in this fil
 * Implemented [#3503](https://github.com/sebastianbergmann/phpunit/issues/3503): The error handler has been refactored to not rely on global state
 * Implemented [#3521](https://github.com/sebastianbergmann/phpunit/issues/3521): The `@errorHandler` annotation, which controlled a feature that was not documented and did not work correctly, does not have an effect anymore
 * Implemented [#3522](https://github.com/sebastianbergmann/phpunit/issues/3522): The `TestCase::setUseErrorHandler()` method, which controlled a feature that was not documented and did not work correctly, has been deprecated and does not have an effect anymore
+* Implemented [#3687](https://github.com/sebastianbergmann/phpunit/pull/3687): `MockBuilder::setMethods()` is now deprecated
 
 [8.3.0]: https://github.com/sebastianbergmann/phpunit/compare/8.2...8.3.0
 
