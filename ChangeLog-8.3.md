@@ -19,5 +19,5 @@ All notable changes of the PHPUnit 8.3 release series are documented in this fil
 * Implemented [#3522](https://github.com/sebastianbergmann/phpunit/issues/3522): The `TestCase::setUseErrorHandler()` method, which controlled a feature that was not documented and did not work correctly, has been deprecated and does not have an effect anymore
 * Implemented [#3687](https://github.com/sebastianbergmann/phpunit/pull/3687): `MockBuilder::setMethods()` is now deprecated
 
-[8.3.0]: https://github.com/sebastianbergmann/phpunit/compare/8.2...8.3.0
+[8.3.0]: https://github.com/sebastianbergmann/phpunit/compare/8.2.5...8.3.0
 
