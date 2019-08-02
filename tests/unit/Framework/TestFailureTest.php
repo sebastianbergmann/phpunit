@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Framework\Error\Error;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
