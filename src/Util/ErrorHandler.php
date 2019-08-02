@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Error\Deprecation;
+use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning;
@@ -103,7 +103,7 @@ final class ErrorHandler
                     return false;
                 }
 
-                throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
+                throw new Deprecated($errorString, $errorNumber, $errorFile, $errorLine);
 
             default:
                 if (!$this->convertErrorsToExceptions) {
