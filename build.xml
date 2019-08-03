@@ -322,6 +322,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/symfony/polyfill-ctype/LICENSE" tofile="${basedir}/build/phar/symfony-polyfill-ctype/LICENSE"/>
+        <copy todir="${basedir}/build/phar/symfony-polyfill-ctype">
+            <fileset dir="${basedir}/vendor/symfony/polyfill-ctype">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/theseer/tokenizer/LICENSE" tofile="${basedir}/build/phar/theseer-tokenizer/LICENSE"/>
         <copy todir="${basedir}/build/phar/theseer-tokenizer">
             <fileset dir="${basedir}/vendor/theseer/tokenizer/src">
