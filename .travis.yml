@@ -72,4 +72,4 @@ jobs:
       install:
           - phpenv config-rm xdebug.ini
       script:
-          - ./tools/roave-backward-compatibility-check
+          - ./tools/roave-backward-compatibility-check --from=8.3.3
