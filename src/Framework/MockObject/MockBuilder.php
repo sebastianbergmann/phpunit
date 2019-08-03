@@ -27,7 +27,7 @@ final class MockBuilder
     private $type;
 
     /**
-     * @var string[]
+     * @var null|string[]
      */
     private $methods = [];
 
@@ -207,7 +207,7 @@ final class MockBuilder
      */
     public function onlyMethods(array $methods): self
     {
-        if (!$methods) {
+        if (empty($methods)) {
             $this->methods = null;
 
             return $this;
@@ -260,7 +260,7 @@ final class MockBuilder
      */
     public function addMethods(array $methods): self
     {
-        if (!$methods) {
+        if (empty($methods)) {
             $this->methods = null;
 
             return $this;
