@@ -27,7 +27,7 @@ final class MockBuilder
     private $type;
 
     /**
-     * @var string[]
+     * @var null|string[]
      */
     private $methods = [];
 
@@ -207,6 +207,12 @@ final class MockBuilder
      */
     public function onlyMethods(array $methods): self
     {
+        if (empty($methods)) {
+            $this->methods = null;
+
+            return $this;
+        }
+
         if ($this->alreadyUsedMockMethodConfiguration) {
             throw new RuntimeException(
                 \sprintf(
@@ -254,6 +260,12 @@ final class MockBuilder
      */
     public function addMethods(array $methods): self
     {
+        if (empty($methods)) {
+            $this->methods = null;
+
+            return $this;
+        }
+
         if ($this->alreadyUsedMockMethodConfiguration) {
             throw new RuntimeException(
                 \sprintf(

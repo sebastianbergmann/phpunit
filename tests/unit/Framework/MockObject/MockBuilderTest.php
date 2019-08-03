@@ -44,8 +44,8 @@ final class MockBuilderTest extends TestCase
     public function testMethodExceptionsToMockCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-            ->setMethodsExcept(['mockableMethod'])
-            ->getMock();
+                     ->setMethodsExcept(['mockableMethod'])
+                     ->getMock();
 
         $this->assertTrue($mock->mockableMethod());
         $this->assertNull($mock->anotherMockableMethod());
@@ -79,6 +79,15 @@ final class MockBuilderTest extends TestCase
         $this->assertTrue($mock->anotherMockableMethod());
     }
 
+    public function testOnlyMethodsWithEmptyArray(): void
+    {
+        $mock = $this->getMockBuilder(Mockable::class)
+                     ->onlyMethods([])
+                     ->getMock();
+
+        $this->assertTrue($mock->mockableMethod());
+    }
+
     public function testAddMethodsWithNonExistentMethodNames(): void
     {
         $this->expectException(RuntimeException::class);
@@ -98,11 +107,20 @@ final class MockBuilderTest extends TestCase
         $this->assertTrue($mock->anotherMockableMethod());
     }
 
+    public function testAddMethodsWithEmptyArray(): void
+    {
+        $mock = $this->getMockBuilder(Mockable::class)
+                     ->addMethods([])
+                     ->getMock();
+
+        $this->assertTrue($mock->mockableMethod());
+    }
+
     public function testEmptyMethodExceptionsToMockCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-            ->setMethodsExcept()
-            ->getMock();
+                     ->setMethodsExcept()
+                     ->getMock();
 
         $this->assertNull($mock->mockableMethod());
         $this->assertNull($mock->anotherMockableMethod());

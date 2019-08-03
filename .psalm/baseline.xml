@@ -198,7 +198,7 @@
     <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$type</code>
     </PossiblyInvalidPropertyAssignmentValue>
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
+    <PossiblyNullPropertyAssignmentValue occurrences="3">
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
     <ArgumentTypeCoercion occurrences="2">
