@@ -14,6 +14,10 @@ use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
 use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
+use PHPUnit\Framework\Error\Deprecated;
+use PHPUnit\Framework\Error\Error;
+use PHPUnit\Framework\Error\Notice;
+use PHPUnit\Framework\Error\Warning as WarningError;
 use PHPUnit\Framework\MockObject\Generator as MockGenerator;
 use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount as AnyInvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Matcher\InvokedAtIndex as InvokedAtIndexMatcher;
@@ -509,6 +513,66 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     public function expectNotToPerformAssertions(): void
     {
         $this->doesNotPerformAssertions = true;
+    }
+
+    public function expectDeprecation(): void
+    {
+        $this->expectException(Deprecated::class);
+    }
+
+    public function expectDeprecationMessage(string $message): void
+    {
+        $this->expectExceptionMessage($message);
+    }
+
+    public function expectDeprecationMessageMatches(string $regularExpression): void
+    {
+        $this->expectExceptionMessageRegExp($regularExpression);
+    }
+
+    public function expectNotice(): void
+    {
+        $this->expectException(Notice::class);
+    }
+
+    public function expectNoticeMessage(string $message): void
+    {
+        $this->expectExceptionMessage($message);
+    }
+
+    public function expectNoticeMessageMatches(string $regularExpression): void
+    {
+        $this->expectExceptionMessageRegExp($regularExpression);
+    }
+
+    public function expectWarning(): void
+    {
+        $this->expectException(WarningError::class);
+    }
+
+    public function expectWarningMessage(string $message): void
+    {
+        $this->expectExceptionMessage($message);
+    }
+
+    public function expectWarningMessageMatches(string $regularExpression): void
+    {
+        $this->expectExceptionMessageRegExp($regularExpression);
+    }
+
+    public function expectError(): void
+    {
+        $this->expectException(Error::class);
+    }
+
+    public function expectErrorMessage(string $message): void
+    {
+        $this->expectExceptionMessage($message);
+    }
+
+    public function expectErrorMessageMatches(string $regularExpression): void
+    {
+        $this->expectExceptionMessageRegExp($regularExpression);
     }
 
     public function getStatus(): int
