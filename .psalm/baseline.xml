@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files>
+<files psalm-version="3.4.10@c283f0877d543e7ab738d231ba6a3cdce5e1039a">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -122,22 +122,15 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
-    <ArgumentTypeCoercion occurrences="5">
-      <code>$originalClassName</code>
+    <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
       <code>$className</code>
       <code>$interfaceName</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="1">
-      <code>$type</code>
-    </InvalidArgument>
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($args[$i], '$')</code>
     </PossiblyFalseArgument>
-    <UndefinedClass occurrences="1">
-      <code>new $type</code>
-    </UndefinedClass>
   </file>
   <file src="src/Framework/MockObject/InvocationMocker.php">
     <InvalidNullableReturnType occurrences="1">
@@ -160,22 +153,11 @@
     </PossiblyNullReference>
   </file>
   <file src="src/Framework/MockObject/Matcher/ConsecutiveParameters.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>void</code>
-    </ImplementedReturnTypeMismatch>
     <TypeDoesNotContainNull occurrences="1">
       <code>$invocation === null</code>
     </TypeDoesNotContainNull>
   </file>
-  <file src="src/Framework/MockObject/Matcher/DeferredError.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>void</code>
-    </ImplementedReturnTypeMismatch>
-  </file>
   <file src="src/Framework/MockObject/Matcher/Parameters.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>void</code>
-    </ImplementedReturnTypeMismatch>
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;doVerify()</code>
     </InvalidPropertyAssignmentValue>
@@ -183,41 +165,19 @@
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
   </file>
-  <file src="src/Framework/MockObject/Matcher/StatelessInvocation.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>void</code>
-    </ImplementedReturnTypeMismatch>
-    <InvalidReturnType occurrences="1">
-      <code>void</code>
-    </InvalidReturnType>
-    <MismatchingDocblockReturnType occurrences="1">
-      <code>void</code>
-    </MismatchingDocblockReturnType>
-  </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$this-&gt;type</code>
+      <code>$this-&gt;type</code>
+    </ArgumentTypeCoercion>
     <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$type</code>
     </PossiblyInvalidPropertyAssignmentValue>
-    <PossiblyNullPropertyAssignmentValue occurrences="3">
-      <code>null</code>
-    </PossiblyNullPropertyAssignmentValue>
-    <ArgumentTypeCoercion occurrences="2">
-      <code>$this->type</code>
-    </ArgumentTypeCoercion>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$this-&gt;className</code>
-    </ArgumentTypeCoercion>
-    <PossiblyNullOperand occurrences="1">
-      <code>$parameter-&gt;getType()</code>
-    </PossiblyNullOperand>
     <PossiblyNullReference occurrences="1">
       <code>allowsNull</code>
     </PossiblyNullReference>
-    <TypeDoesNotContainNull occurrences="1">
-      <code>$value === null</code>
-    </TypeDoesNotContainNull>
   </file>
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion occurrences="2">
@@ -240,9 +200,6 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$categories</code>
     </PossiblyUndefinedVariable>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>method</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Framework/TestFailure.php">
     <PossiblyNullReference occurrences="1">
@@ -262,8 +219,7 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$afterClassMethod</code>
     </PossiblyUndefinedVariable>
-    <PropertyTypeCoercion occurrences="2">
-      <code>$this-&gt;tests</code>
+    <PropertyTypeCoercion occurrences="1">
       <code>$this-&gt;tests</code>
     </PropertyTypeCoercion>
   </file>
@@ -277,11 +233,6 @@
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;valid() ? $this-&gt;tests[$this-&gt;position] : null</code>
     </NullableReturnStatement>
-  </file>
-  <file src="src/Runner/DefaultTestResultCache.php">
-    <MethodSignatureMismatch occurrences="1">
-      <code>$serialized</code>
-    </MethodSignatureMismatch>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <InvalidPropertyAssignmentValue occurrences="2">
@@ -367,11 +318,6 @@
       <code>$this-&gt;createPrinter($arguments['printer'], $arguments)</code>
       <code>$this-&gt;createPrinter(ResultPrinter::class, $arguments)</code>
     </PropertyTypeCoercion>
-  </file>
-  <file src="src/Util/Blacklist.php">
-    <UndefinedClass occurrences="1">
-      <code>Invoker</code>
-    </UndefinedClass>
   </file>
   <file src="src/Util/Configuration.php">
     <ArgumentTypeCoercion occurrences="2">
@@ -489,11 +435,7 @@
     <InvalidScalarArgument occurrences="1">
       <code>$out[1]</code>
     </InvalidScalarArgument>
-    <PossiblyInvalidPropertyAssignmentValue occurrences="5">
-      <code>$out</code>
-      <code>$out</code>
-      <code>$out</code>
-      <code>$out</code>
+    <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$out</code>
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
@@ -506,8 +448,8 @@
     <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
       <code>$className</code>
-      <code>$dataProviderClassName</code>
       <code>$className</code>
+      <code>$dataProviderClassName</code>
     </ArgumentTypeCoercion>
     <InvalidArgument occurrences="1">
       <code>$e</code>
@@ -516,12 +458,10 @@
     <InvalidOperand occurrences="1">
       <code>$matches[0][1]</code>
     </InvalidOperand>
-    <InvalidReturnStatement occurrences="2">
-      <code>$missing</code>
+    <InvalidReturnStatement occurrences="1">
       <code>$data</code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="2">
-      <code>array</code>
+    <InvalidReturnType occurrences="1">
       <code>?array</code>
     </InvalidReturnType>
     <InvalidScalarArgument occurrences="1">
@@ -550,9 +490,6 @@
     <InvalidCast occurrences="1">
       <code>$value</code>
     </InvalidCast>
-    <PossiblyFalseArgument occurrences="1">
-      <code>\strripos($result, 'Test')</code>
-    </PossiblyFalseArgument>
     <PossiblyInvalidArgument occurrences="3">
       <code>$test-&gt;dataName()</code>
       <code>$name</code>

@@ -27,9 +27,14 @@ final class MockBuilder
     private $type;
 
     /**
-     * @var null|string[]
+     * @var string[]
      */
     private $methods = [];
+
+    /**
+     * @var bool
+     */
+    private $emptyMethodsArray = false;
 
     /**
      * @var string
@@ -67,7 +72,7 @@ final class MockBuilder
     private $callOriginalMethods = false;
 
     /**
-     * @var object
+     * @var ?object
      */
     private $proxyTarget;
 
@@ -114,7 +119,7 @@ final class MockBuilder
     {
         $object = $this->generator->getMock(
             $this->type,
-            $this->methods,
+            !$this->emptyMethodsArray ? $this->methods : null,
             $this->constructorArgs,
             $this->mockClassName,
             $this->originalConstructor,
@@ -208,7 +213,7 @@ final class MockBuilder
     public function onlyMethods(array $methods): self
     {
         if (empty($methods)) {
-            $this->methods = null;
+            $this->emptyMethodsArray = true;
 
             return $this;
         }
@@ -261,7 +266,7 @@ final class MockBuilder
     public function addMethods(array $methods): self
     {
         if (empty($methods)) {
-            $this->methods = null;
+            $this->emptyMethodsArray = true;
 
             return $this;
         }
