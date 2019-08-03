@@ -493,9 +493,17 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->expectedExceptionMessage = $message;
     }
 
-    public function expectExceptionMessageRegExp(string $messageRegExp): void
+    public function expectExceptionMessageMatches(string $regularExpression): void
     {
-        $this->expectedExceptionMessageRegExp = $messageRegExp;
+        $this->expectedExceptionMessageRegExp = $regularExpression;
+    }
+
+    /**
+     * @deprecated Use expectExceptionMessageMatches() instead
+     */
+    public function expectExceptionMessageRegExp(string $regularExpression): void
+    {
+        $this->expectExceptionMessageMatches($regularExpression);
     }
 
     /**
