@@ -2,11 +2,11 @@
 
 All notable changes of the PHPUnit 8.3 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [8.3.3] - 2019-MM-DD
+## [8.3.3] - 2019-08-03
 
 ### Fixed
 
-* Implemented [#3781](https://github.com/sebastianbergmann/phpunit/pull/3781): `MockBuilder::addMethods()` and `MockBuilder::onlyMethods()` do not handle empty parameter array correctly
+* Fixed [#3781](https://github.com/sebastianbergmann/phpunit/pull/3781): `MockBuilder::addMethods()` and `MockBuilder::onlyMethods()` do not handle empty parameter array correctly
 
 ## [8.3.2] - 2019-08-02
 
