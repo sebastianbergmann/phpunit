@@ -319,6 +319,11 @@
       <code>$this-&gt;createPrinter(ResultPrinter::class, $arguments)</code>
     </PropertyTypeCoercion>
   </file>
+  <file src="src/Util/Blacklist.php">
+    <UndefinedClass occurrences="1">
+      <code>Invoker</code>
+    </UndefinedClass>
+  </file>
   <file src="src/Util/Configuration.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$testSuiteNodes-&gt;item(0)</code>
