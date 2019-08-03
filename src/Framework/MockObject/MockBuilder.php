@@ -67,7 +67,7 @@ final class MockBuilder
     private $callOriginalMethods = false;
 
     /**
-     * @var object
+     * @var ?object
      */
     private $proxyTarget;
 
