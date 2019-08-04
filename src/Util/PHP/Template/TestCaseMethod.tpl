@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 
