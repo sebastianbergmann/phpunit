@@ -598,6 +598,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 } else {
                     $globals = '';
                 }
+
                 $includedFiles = '';
                 $iniSettings   = '';
             }
