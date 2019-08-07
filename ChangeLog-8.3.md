@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 8.3 release series are documented in this fil
 
 ## [8.3.4] - 2019-MM-DD
 
+### Changed
+
+* Implemented [#3788](https://github.com/sebastianbergmann/phpunit/pull/3788): Cast exception message to string
+
 ### Fixed
 
 * Fixed [#3772](https://github.com/sebastianbergmann/phpunit/issues/3772): Process Isolation does not work when PHPDBG is used
