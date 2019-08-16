@@ -22,11 +22,12 @@ final class InvalidArgumentHelper
 
         return new Exception(
             \sprintf(
-                'Argument #%d%sof %s::%s() must be a %s',
+                'Argument #%d%sof %s::%s() must be %s %s',
                 $argument,
                 $value !== null ? ' (' . \gettype($value) . '#' . $value . ')' : ' (No Value) ',
                 $stack[1]['class'],
                 $stack[1]['function'],
+                \in_array($type[0], ['a', 'e', 'i', 'o', 'u']) ? 'a' : 'an',
                 $type
             )
         );
