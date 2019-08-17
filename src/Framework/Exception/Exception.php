@@ -51,10 +51,6 @@ class Exception extends \RuntimeException implements \PHPUnit\Exception
         }
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     * @throws \ReflectionException
-     */
     public function __toString(): string
     {
         $string = TestFailure::exceptionToString($this);

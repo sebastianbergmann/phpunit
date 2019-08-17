@@ -43,11 +43,6 @@ final class JUnit extends Printer implements TestListener
     private $reportUselessTests = false;
 
     /**
-     * @var bool
-     */
-    private $writeDocument = true;
-
-    /**
      * @var \DOMElement[]
      */
     private $testSuites = [];
@@ -113,9 +108,7 @@ final class JUnit extends Printer implements TestListener
      */
     public function flush(): void
     {
-        if ($this->writeDocument) {
-            $this->write($this->getXML());
-        }
+        $this->write($this->getXML());
 
         parent::flush();
     }
@@ -367,18 +360,6 @@ final class JUnit extends Printer implements TestListener
     public function getXML(): string
     {
         return $this->document->saveXML();
-    }
-
-    /**
-     * Enables or disables the writing of the document
-     * in flush().
-     *
-     * This is a "hack" needed for the integration of
-     * PHPUnit with Phing.
-     */
-    public function setWriteDocument(bool $flag): void
-    {
-        $this->writeDocument = $flag;
     }
 
     private function doAddFault(Test $test, \Throwable $t, float $time, $type): void

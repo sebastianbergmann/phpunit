@@ -47,4 +47,18 @@ final class ExceptionMessageTest extends TestCase
 
         throw new \Exception('A partial exception message');
     }
+
+    public function testEmptyMessageExportToString(): void
+    {
+        $exceptionMessage = new ExceptionMessage('');
+
+        $this->assertSame('exception message is empty', $exceptionMessage->toString());
+    }
+
+    public function testMessageExportToString(): void
+    {
+        $exceptionMessage = new ExceptionMessage('test');
+
+        $this->assertSame('exception message contains ', $exceptionMessage->toString());
+    }
 }

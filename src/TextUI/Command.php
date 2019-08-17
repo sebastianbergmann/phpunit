@@ -44,7 +44,7 @@ use Throwable;
 class Command
 {
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     protected $arguments = [
         'listGroups'              => false,
@@ -58,12 +58,12 @@ class Command
     ];
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     protected $options = [];
 
     /**
-     * @var array
+     * @var array<string,mixed>
      */
     protected $longOptions = [
         'atleast-version='          => null,
@@ -153,10 +153,7 @@ class Command
     private $versionStringPrinted = false;
 
     /**
-     * @throws \ReflectionException
-     * @throws \RuntimeException
      * @throws \PHPUnit\Framework\Exception
-     * @throws \InvalidArgumentException
      */
     public static function main(bool $exit = true): int
     {
@@ -164,9 +161,6 @@ class Command
     }
 
     /**
-     * @throws \RuntimeException
-     * @throws \ReflectionException
-     * @throws \InvalidArgumentException
      * @throws Exception
      */
     public function run(array $argv, bool $exit = true): int
@@ -276,7 +270,6 @@ class Command
      * </code>
      *
      * @throws Exception
-     * @throws \ReflectionException
      */
     protected function handleArguments(array $argv): void
     {
@@ -790,14 +783,24 @@ class Command
             }
 
             if (isset($this->options[1][1])) {
-                $this->arguments['testFile'] = \realpath($this->options[1][1]);
+                $testFile = \realpath($this->options[1][1]);
+
+                if ($testFile === false) {
+                    $this->exitWithErrorMessage(
+                        \sprintf(
+                            'Cannot open file "%s".',
+                            $this->options[1][1]
+                        )
+                    );
+                }
+                $this->arguments['testFile'] = $testFile;
             } else {
                 $this->arguments['testFile'] = '';
             }
 
             if (isset($this->arguments['test']) &&
                 \is_file($this->arguments['test']) &&
-                \substr($this->arguments['test'], -5, 5) != '.phpt') {
+                \substr($this->arguments['test'], -5, 5) !== '.phpt') {
                 $this->arguments['testFile'] = \realpath($this->arguments['test']);
                 $this->arguments['test']     = \substr($this->arguments['test'], 0, \strrpos($this->arguments['test'], '.'));
             }
@@ -918,7 +921,7 @@ class Command
             $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
         }
 
-        if (isset($this->arguments['test']) && \is_string($this->arguments['test']) && \substr($this->arguments['test'], -5, 5) == '.phpt') {
+        if (isset($this->arguments['test']) && \is_string($this->arguments['test']) && \substr($this->arguments['test'], -5, 5) === '.phpt') {
             $test = new PhptTestCase($this->arguments['test']);
 
             $this->arguments['test'] = new TestSuite;
@@ -933,8 +936,6 @@ class Command
 
     /**
      * Handles the loading of the PHPUnit\Runner\TestSuiteLoader implementation.
-     *
-     * @throws \ReflectionException
      */
     protected function handleLoader(string $loaderClass, string $loaderFile = ''): ?TestSuiteLoader
     {
@@ -953,7 +954,15 @@ class Command
         }
 
         if (\class_exists($loaderClass, false)) {
-            $class = new ReflectionClass($loaderClass);
+            try {
+                $class = new ReflectionClass($loaderClass);
+            } catch (\ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
 
             if ($class->implementsInterface(TestSuiteLoader::class) && $class->isInstantiable()) {
                 $object = $class->newInstance();
@@ -980,8 +989,6 @@ class Command
 
     /**
      * Handles the loading of the PHPUnit\Util\Printer implementation.
-     *
-     * @throws \ReflectionException
      *
      * @return null|Printer|string
      */
@@ -1010,7 +1017,15 @@ class Command
             );
         }
 
-        $class = new ReflectionClass($printerClass);
+        try {
+            $class = new ReflectionClass($printerClass);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
 
         if (!$class->implementsInterface(TestListener::class)) {
             $this->exitWithErrorMessage(
@@ -1257,16 +1272,6 @@ class Command
 
                     break;
 
-                case 'reverse':
-                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
-
-                    break;
-
-                case 'random':
-                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
-
-                    break;
-
                 case 'defects':
                     $this->arguments['executionOrderDefects'] = TestSuiteSorter::ORDER_DEFECTS_FIRST;
 
@@ -1277,8 +1282,28 @@ class Command
 
                     break;
 
+                case 'duration':
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_DURATION;
+
+                    break;
+
                 case 'no-depends':
                     $this->arguments['resolveDependencies'] = false;
+
+                    break;
+
+                case 'random':
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
+
+                    break;
+
+                case 'reverse':
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
+
+                    break;
+
+                case 'size':
+                    $this->arguments['executionOrder'] = TestSuiteSorter::ORDER_SIZE;
 
                     break;
 

@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -8,14 +7,12 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-$whitelistClasses = [
-    'PHPUnit\*',
-    'SebastianBergmann\CodeCoverage\*',
-    'PharIo\*',
-    'PHP_Token*',
-    'Prophecy\*',
-];
 
 return [
-    'whitelist' => $whitelistClasses,
+    'whitelist' => [
+        'PHPUnit\*',
+        'SebastianBergmann\CodeCoverage\*',
+        'PHP_Token*',
+        'Prophecy\*',
+    ],
 ];

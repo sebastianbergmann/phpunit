@@ -16,6 +16,7 @@ use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
 use PHPUnit\Framework\MockObject\Matcher\InvokedCount;
 use PHPUnit\Framework\MockObject\Matcher\MethodName;
 use PHPUnit\Framework\MockObject\Matcher\Parameters;
+use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Framework\TestFailure;
 
 /**

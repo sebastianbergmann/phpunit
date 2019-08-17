@@ -1,7 +1,7 @@
 --TEST--
 phpunit AssertionExampleTest ../../_files/AssertionExampleTest.php
 --SKIPIF--
-<?php
+<?php declare(strict_types=1);
 if (PHP_MAJOR_VERSION < 7) {
     print 'skip: PHP 7 is required' . PHP_EOL;
 }
@@ -21,7 +21,6 @@ $_SERVER['argv'][3] = __DIR__ . '/../_files/AssertionExampleTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
-?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

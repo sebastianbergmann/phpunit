@@ -70,9 +70,7 @@ final class LogicalAndTest extends ConstraintTestCase
             return \NamedConstraint::fromName($name);
         }, $names);
 
-        $constraint = new LogicalAnd;
-
-        $constraint->setConstraints($constraints);
+        $constraint = LogicalAnd::fromConstraints(...$constraints);
 
         $expected = \implode(' and ', $names);
 

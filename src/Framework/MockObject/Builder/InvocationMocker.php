@@ -10,11 +10,21 @@
 namespace PHPUnit\Framework\MockObject\Builder;
 
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\MockObject\ConfigurableMethod;
+use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
 use PHPUnit\Framework\MockObject\Matcher;
 use PHPUnit\Framework\MockObject\Matcher\Invocation;
 use PHPUnit\Framework\MockObject\RuntimeException;
-use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls;
+use PHPUnit\Framework\MockObject\Stub\Exception;
 use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
+use PHPUnit\Framework\MockObject\Stub\ReturnArgument;
+use PHPUnit\Framework\MockObject\Stub\ReturnCallback;
+use PHPUnit\Framework\MockObject\Stub\ReturnReference;
+use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
+use PHPUnit\Framework\MockObject\Stub\ReturnStub;
+use PHPUnit\Framework\MockObject\Stub\ReturnValueMap;
+use PHPUnit\Framework\MockObject\Stub\Stub;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -32,11 +42,11 @@ final class InvocationMocker implements MethodNameMatch
     private $matcher;
 
     /**
-     * @var string[]
+     * @var ConfigurableMethod[]
      */
     private $configurableMethods;
 
-    public function __construct(MatcherCollection $collection, Invocation $invocationMatcher, array $configurableMethods)
+    public function __construct(MatcherCollection $collection, Invocation $invocationMatcher, ConfigurableMethod ...$configurableMethods)
     {
         $this->collection = $collection;
         $this->matcher    = new Matcher($invocationMatcher);
@@ -68,11 +78,15 @@ final class InvocationMocker implements MethodNameMatch
     public function willReturn($value, ...$nextValues): self
     {
         if (\count($nextValues) === 0) {
-            $stub = new Stub\ReturnStub($value);
+            $this->ensureTypeOfReturnValues([$value]);
+
+            $stub = new ReturnStub($value);
         } else {
-            $stub = new Stub\ConsecutiveCalls(
-                \array_merge([$value], $nextValues)
-            );
+            $values = \array_merge([$value], $nextValues);
+
+            $this->ensureTypeOfReturnValues($values);
+
+            $stub = new ConsecutiveCalls($values);
         }
 
         return $this->will($stub);
@@ -83,21 +97,21 @@ final class InvocationMocker implements MethodNameMatch
      */
     public function willReturnReference(&$reference): self
     {
-        $stub = new Stub\ReturnReference($reference);
+        $stub = new ReturnReference($reference);
 
         return $this->will($stub);
     }
 
     public function willReturnMap(array $valueMap): self
     {
-        $stub = new Stub\ReturnValueMap($valueMap);
+        $stub = new ReturnValueMap($valueMap);
 
         return $this->will($stub);
     }
 
     public function willReturnArgument($argumentIndex): self
     {
-        $stub = new Stub\ReturnArgument($argumentIndex);
+        $stub = new ReturnArgument($argumentIndex);
 
         return $this->will($stub);
     }
@@ -107,28 +121,28 @@ final class InvocationMocker implements MethodNameMatch
      */
     public function willReturnCallback($callback): self
     {
-        $stub = new Stub\ReturnCallback($callback);
+        $stub = new ReturnCallback($callback);
 
         return $this->will($stub);
     }
 
     public function willReturnSelf(): self
     {
-        $stub = new Stub\ReturnSelf;
+        $stub = new ReturnSelf;
 
         return $this->will($stub);
     }
 
     public function willReturnOnConsecutiveCalls(...$values): self
     {
-        $stub = new Stub\ConsecutiveCalls($values);
+        $stub = new ConsecutiveCalls($values);
 
         return $this->will($stub);
     }
 
     public function willThrowException(\Throwable $exception): self
     {
-        $stub = new Stub\Exception($exception);
+        $stub = new Exception($exception);
 
         return $this->will($stub);
     }
@@ -141,8 +155,6 @@ final class InvocationMocker implements MethodNameMatch
     }
 
     /**
-     * @param array ...$arguments
-     *
      * @throws RuntimeException
      */
     public function with(...$arguments): self
@@ -193,7 +205,14 @@ final class InvocationMocker implements MethodNameMatch
             );
         }
 
-        if (\is_string($constraint) && !\in_array(\strtolower($constraint), $this->configurableMethods, true)) {
+        $configurableMethodNames = \array_map(
+            static function (ConfigurableMethod $configurable) {
+                return \strtolower($configurable->getName());
+            },
+            $this->configurableMethods
+        );
+
+        if (\is_string($constraint) && !\in_array(\strtolower($constraint), $configurableMethodNames, true)) {
             throw new RuntimeException(
                 \sprintf(
                     'Trying to configure method "%s" which cannot be configured because it does not exist, has not been specified, is final, or is static',
@@ -225,6 +244,45 @@ final class InvocationMocker implements MethodNameMatch
             throw new RuntimeException(
                 'Parameter matcher is already defined, cannot redefine'
             );
+        }
+    }
+
+    private function getConfiguredMethod(): ?ConfigurableMethod
+    {
+        $configuredMethod = null;
+
+        foreach ($this->configurableMethods as $configurableMethod) {
+            if ($this->matcher->getMethodNameMatcher()->matchesName($configurableMethod->getName())) {
+                if ($configuredMethod !== null) {
+                    return null;
+                }
+
+                $configuredMethod = $configurableMethod;
+            }
+        }
+
+        return $configuredMethod;
+    }
+
+    private function ensureTypeOfReturnValues(array $values): void
+    {
+        $configuredMethod = $this->getConfiguredMethod();
+
+        if ($configuredMethod === null) {
+            return;
+        }
+
+        foreach ($values as $value) {
+            if (!$configuredMethod->mayReturn($value)) {
+                throw new IncompatibleReturnValueException(
+                    \sprintf(
+                        'Method %s may not return value of type %s, its return declaration is "%s"',
+                        $configuredMethod->getName(),
+                        \is_object($value) ? \get_class($value) : \gettype($value),
+                        $configuredMethod->getReturnTypeDeclaration()
+                    )
+                );
+            }
         }
     }
 }

@@ -61,6 +61,8 @@ final class Invocation implements SelfDescribing
         $this->object      = $object;
         $this->proxiedCall = $proxiedCall;
 
+        $returnType = \ltrim($returnType, ': ');
+
         if (\strtolower($methodName) === '__tostring') {
             $returnType = 'string';
         }
@@ -150,7 +152,7 @@ final class Invocation implements SelfDescribing
             case 'traversable':
             case 'generator':
             case 'iterable':
-                $generator = function () {
+                $generator = static function () {
                     yield;
                 };
 

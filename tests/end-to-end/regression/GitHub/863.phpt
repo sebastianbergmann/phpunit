@@ -10,7 +10,6 @@ $_SERVER['argv'][5] = \dirname(\dirname(\dirname(__DIR__))) . '/_files/BankAccou
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
-?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

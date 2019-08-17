@@ -217,7 +217,6 @@ abstract class ResultPrinter extends Printer implements TestListener
      * A test started.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function startTest(Test $test): void
     {

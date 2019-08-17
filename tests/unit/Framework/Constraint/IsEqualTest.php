@@ -65,6 +65,13 @@ EOF
         $this->fail();
     }
 
+    public function testConstraintDeltaIsNotZero(): void
+    {
+        $constraint = new IsEqual(15, 1);
+
+        $this->assertSame('is equal to 15 with delta <1.000000>', $constraint->toString());
+    }
+
     public function isEqualProvider(): array
     {
         $a      = new \stdClass;

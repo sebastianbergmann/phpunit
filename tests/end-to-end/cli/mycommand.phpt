@@ -15,7 +15,6 @@ require __DIR__ . '/../../bootstrap.php';
 
 require __DIR__ . '/_files/MyCommand.php';
 MyCommand::main();
-?>
 --EXPECTF--
 MyCommand::myHandler 123
 PHPUnit %s by Sebastian Bergmann and contributors.

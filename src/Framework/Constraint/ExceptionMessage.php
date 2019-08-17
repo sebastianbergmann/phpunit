@@ -42,7 +42,7 @@ final class ExceptionMessage extends Constraint
             return $other->getMessage() === '';
         }
 
-        return \strpos($other->getMessage(), $this->expectedMessage) !== false;
+        return \strpos((string) $other->getMessage(), $this->expectedMessage) !== false;
     }
 
     /**

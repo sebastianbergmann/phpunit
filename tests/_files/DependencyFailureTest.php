@@ -52,4 +52,12 @@ class DependencyFailureTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+    /**
+     * @depends
+     */
+    public function testHandlesDependsAnnotationWithNoMethodSpecified(): void
+    {
+        $this->assertTrue(true);
+    }
 }

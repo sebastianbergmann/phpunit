@@ -3,7 +3,7 @@ PHPUnit %s Sebastian Bergmann and contributors.
 Runtime:       %s
 Configuration: %stests%ebasic%econfiguration.basic.xml
 
-[4mPHPUnit\SelfTest\Basic\SetUpBeforeClass[0m
+[4mSet Up Before Class (PHPUnit\SelfTest\Basic\SetUpBeforeClass)[0m
  [33m✘[0m One [33m %f [2mms[0m
    [33m┐[0m
    [33m├[0m [43;30mException: forcing an Exception in setUpBeforeClass()[0m
@@ -18,7 +18,7 @@ Configuration: %stests%ebasic%econfiguration.basic.xml
    [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mSetUpBeforeClassTest.php[2m:[22m[34m31[0m
    [33m┴[0m
 
-[4mPHPUnit\SelfTest\Basic\SetUp[0m
+[4mSet Up (PHPUnit\SelfTest\Basic\SetUp)[0m
  [33m✘[0m One with set up exception [33m %f [2mms[0m
    [33m┐[0m
    [33m├[0m [43;30mRuntimeException: throw exception in setUp[0m
@@ -115,7 +115,7 @@ Configuration: %stests%ebasic%econfiguration.basic.xml
    [33m╵[0m %stests[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
    [33m┴[0m
 
-[4mPHPUnit\SelfTest\Basic\TearDownAfterClass[0m
+[4mTear Down After Class (PHPUnit\SelfTest\Basic\TearDownAfterClass)[0m
  [32m✔[0m One [32m %f [2mms[0m
  [32m✔[0m Two [32m %f [2mms[0m
  [31m✘[0m Tear down after class [31m 0 [2mms[0m

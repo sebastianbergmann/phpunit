@@ -1,9 +1,8 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generateClassFromWsdl('GoogleSearch.wsdl', 'GoogleSearch')
 --SKIPIF--
-<?php
+<?php declare(strict_types=1);
 if (!extension_loaded('soap')) echo 'skip: SOAP extension is required';
-?>
 --FILE--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../../vendor/autoload.php';
@@ -14,8 +13,9 @@ print $generator->generateClassFromWsdl(
     __DIR__ . '/../../../_files/GoogleSearch.wsdl',
     'GoogleSearch'
 );
-?>
 --EXPECTF--
+declare(strict_types=1);
+
 class GoogleSearch extends \SoapClient
 {
     public function __construct($wsdl, array $options)

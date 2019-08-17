@@ -16,24 +16,24 @@ final class Version
     /**
      * @var string
      */
-    private static $pharVersion;
+    private static $pharVersion = '';
 
     /**
      * @var string
      */
-    private static $version;
+    private static $version = '';
 
     /**
      * Returns the current version of PHPUnit.
      */
     public static function id(): string
     {
-        if (self::$pharVersion !== null) {
+        if (self::$pharVersion !== '') {
             return self::$pharVersion;
         }
 
-        if (self::$version === null) {
-            self::$version = (new VersionId('8.2', \dirname(__DIR__, 2)))->getVersion();
+        if (self::$version === '') {
+            self::$version = (new VersionId('8.4', \dirname(__DIR__, 2)))->getVersion();
         }
 
         return self::$version;

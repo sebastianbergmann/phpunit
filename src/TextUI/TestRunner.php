@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\TextUI;
 
-use PHPUnit\Framework\Error\Deprecated;
-use PHPUnit\Framework\Error\Notice;
-use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -120,9 +117,6 @@ final class TestRunner extends BaseTestRunner
     /**
      * @throws \PHPUnit\Runner\Exception
      * @throws Exception
-     * @throws \InvalidArgumentException
-     * @throws \RuntimeException
-     * @throws \ReflectionException
      */
     public function doRun(Test $suite, array $arguments = [], bool $exit = true): TestResult
     {
@@ -160,11 +154,23 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($arguments['cacheResult']) {
-            if (isset($arguments['cacheResultFile'])) {
-                $cache = new DefaultTestResultCache($arguments['cacheResultFile']);
-            } else {
-                $cache = new DefaultTestResultCache;
+            if (!isset($arguments['cacheResultFile'])) {
+                if (isset($arguments['configuration']) && $arguments['configuration'] instanceof Configuration) {
+                    $cacheLocation = $arguments['configuration']->getFilename();
+                } else {
+                    $cacheLocation = $_SERVER['PHP_SELF'];
+                }
+
+                $arguments['cacheResultFile'] = null;
+
+                $cacheResultFile = \realpath($cacheLocation);
+
+                if ($cacheResultFile !== false) {
+                    $arguments['cacheResultFile'] = \dirname($cacheResultFile);
+                }
             }
+
+            $cache = new DefaultTestResultCache($arguments['cacheResultFile']);
 
             $this->addExtension(new ResultCacheExtension($cache));
         }
@@ -214,20 +220,20 @@ final class TestRunner extends BaseTestRunner
 
         unset($listener, $listenerNeeded);
 
+        if (!$arguments['convertDeprecationsToExceptions']) {
+            $result->convertDeprecationsToExceptions(false);
+        }
+
         if (!$arguments['convertErrorsToExceptions']) {
             $result->convertErrorsToExceptions(false);
         }
 
-        if (!$arguments['convertDeprecationsToExceptions']) {
-            Deprecated::$enabled = false;
-        }
-
         if (!$arguments['convertNoticesToExceptions']) {
-            Notice::$enabled = false;
+            $result->convertNoticesToExceptions(false);
         }
 
         if (!$arguments['convertWarningsToExceptions']) {
-            Warning::$enabled = false;
+            $result->convertWarningsToExceptions(false);
         }
 
         if ($arguments['stopOnError']) {
@@ -267,7 +273,15 @@ final class TestRunner extends BaseTestRunner
                 if ($arguments['printer'] instanceof Printer) {
                     $this->printer = $arguments['printer'];
                 } elseif (\is_string($arguments['printer']) && \class_exists($arguments['printer'], false)) {
-                    $class = new ReflectionClass($arguments['printer']);
+                    try {
+                        $class = new ReflectionClass($arguments['printer']);
+                    } catch (\ReflectionException $e) {
+                        throw new Exception(
+                            $e->getMessage(),
+                            (int) $e->getCode(),
+                            $e
+                        );
+                    }
 
                     if ($class->isSubclassOf(ResultPrinter::class)) {
                         $this->printer = $this->createPrinter($arguments['printer'], $arguments);
@@ -1022,7 +1036,15 @@ final class TestRunner extends BaseTestRunner
                     );
                 }
 
-                $extensionClass = new ReflectionClass($extension['class']);
+                try {
+                    $extensionClass = new ReflectionClass($extension['class']);
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
 
                 if (!$extensionClass->implementsInterface(Hook::class)) {
                     throw new Exception(
@@ -1060,7 +1082,15 @@ final class TestRunner extends BaseTestRunner
                     );
                 }
 
-                $listenerClass = new ReflectionClass($listener['class']);
+                try {
+                    $listenerClass = new ReflectionClass($listener['class']);
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
 
                 if (!$listenerClass->implementsInterface(TestListener::class)) {
                     throw new Exception(
@@ -1213,10 +1243,6 @@ final class TestRunner extends BaseTestRunner
         $arguments['verbose']                                             = $arguments['verbose'] ?? false;
     }
 
-    /**
-     * @throws \ReflectionException
-     * @throws \InvalidArgumentException
-     */
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {
         if (!$arguments['filter'] &&

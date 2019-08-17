@@ -37,12 +37,7 @@ final class SkippedTestCase extends TestCase
     /**
      * @var string
      */
-    private $message = '';
-
-    /**
-     * @var bool
-     */
-    private $useOutputBuffering = false;
+    private $message;
 
     public function __construct(string $className, string $methodName, string $message = '')
     {

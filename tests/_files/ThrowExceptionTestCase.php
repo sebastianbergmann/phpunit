@@ -15,4 +15,12 @@ class ThrowExceptionTestCase extends TestCase
     {
         throw new RuntimeException('A runtime error occurred');
     }
+
+    public function testWithExpectExceptionObject(): void
+    {
+        throw new RuntimeException(
+            'Cannot compute at this time.',
+            9000
+        );
+    }
 }

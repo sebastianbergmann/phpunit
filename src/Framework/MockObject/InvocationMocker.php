@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class InvocationMocker implements MatcherCollection, Invokable, NamespaceMatch
+final class InvocationMocker implements Invokable, MatcherCollection, NamespaceMatch
 {
     /**
      * @var MatcherInvocation[]
@@ -34,7 +34,7 @@ final class InvocationMocker implements MatcherCollection, Invokable, NamespaceM
     private $builderMap = [];
 
     /**
-     * @var string[]
+     * @var ConfigurableMethod[]
      */
     private $configurableMethods;
 
@@ -93,7 +93,7 @@ final class InvocationMocker implements MatcherCollection, Invokable, NamespaceM
         return new BuilderInvocationMocker(
             $this,
             $matcher,
-            $this->configurableMethods
+            ...$this->configurableMethods
         );
     }
 

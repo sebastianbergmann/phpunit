@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<psalm
+    totallyTyped="true"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="tests/static-analysis" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <LessSpecificReturnType errorLevel="error" />
+
+        <DeprecatedMethod errorLevel="error" />
+        <DeprecatedProperty errorLevel="error" />
+        <DeprecatedClass errorLevel="error" />
+        <DeprecatedConstant errorLevel="error" />
+        <DeprecatedInterface errorLevel="error" />
+        <DeprecatedTrait errorLevel="error" />
+
+        <InternalMethod errorLevel="error" />
+        <InternalProperty errorLevel="error" />
+        <InternalClass errorLevel="error" />
+
+        <MissingClosureReturnType errorLevel="error" />
+        <MissingReturnType errorLevel="error" />
+        <MissingPropertyType errorLevel="error" />
+        <InvalidDocblock errorLevel="error" />
+        <MisplacedRequiredParam errorLevel="error" />
+
+        <PropertyNotSetInConstructor errorLevel="info" />
+        <MissingConstructor errorLevel="error" />
+        <MissingClosureParamType errorLevel="error" />
+        <MissingParamType errorLevel="error" />
+
+        <RedundantCondition errorLevel="error" />
+
+        <DocblockTypeContradiction errorLevel="error" />
+        <RedundantConditionGivenDocblockType errorLevel="error" />
+
+        <UnresolvableInclude errorLevel="error" />
+
+        <RawObjectIteration errorLevel="error" />
+
+        <InvalidStringClass errorLevel="error" />
+    </issueHandlers>
+</psalm>

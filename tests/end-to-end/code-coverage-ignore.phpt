@@ -1,11 +1,10 @@
 --TEST--
 phpunit --colors=never --coverage-text=php://stdout IgnoreCodeCoverageClassTest ../../_files/IgnoreCodeCoverageClassTest.php --whitelist ../../../tests/_files/IgnoreCodeCoverageClass.php
 --SKIPIF--
-<?php
+<?php declare(strict_types=1);
 if (!extension_loaded('xdebug')) {
     print 'skip: Extension xdebug is required.';
 }
-?>
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';

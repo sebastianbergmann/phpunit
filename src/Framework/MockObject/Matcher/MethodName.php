@@ -60,6 +60,11 @@ final class MethodName extends StatelessInvocation
      */
     public function matches(BaseInvocation $invocation): bool
     {
-        return $this->constraint->evaluate($invocation->getMethodName(), '', true);
+        return $this->matchesName($invocation->getMethodName());
+    }
+
+    public function matchesName(string $methodName): bool
+    {
+        return $this->constraint->evaluate($methodName, '', true);
     }
 }

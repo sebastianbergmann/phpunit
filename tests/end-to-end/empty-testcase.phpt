@@ -8,7 +8,6 @@ $_SERVER['argv'][3] = __DIR__ . '/../_files/EmptyTestCaseTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
-?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

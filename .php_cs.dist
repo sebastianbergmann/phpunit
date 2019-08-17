@@ -142,6 +142,10 @@ return PhpCsFixer\Config::create()
                 ],
             ],
             'ordered_imports' => true,
+            'ordered_interfaces' => [
+                'direction' => 'ascend',
+                'order' => 'alpha',
+            ],
             'phpdoc_add_missing_param_annotation' => true,
             'phpdoc_align' => true,
             'phpdoc_annotation_without_dot' => true,
@@ -192,8 +196,12 @@ return PhpCsFixer\Config::create()
     ->setFinder(
         PhpCsFixer\Finder::create()
         ->files()
-        ->in(__DIR__ . '/build')
         ->in(__DIR__ . '/src')
-        ->in(__DIR__ . '/tests')
+        ->in(__DIR__ . '/tests/_files')
+        ->in(__DIR__ . '/tests/basic')
+        ->in(__DIR__ . '/tests/end-to-end')
+        ->in(__DIR__ . '/tests/fail')
+        ->in(__DIR__ . '/tests/unit')
         ->notName('*.phpt')
+        ->notName('ClassWithAllPossibleReturnTypes.php')
     );

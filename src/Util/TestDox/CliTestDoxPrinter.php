@@ -130,7 +130,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
@@ -143,7 +142,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function formatTestName(Test $test): string
@@ -169,7 +167,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         }
 
         // test result line
-        if ($this->colors && $result['className'] == PhptTestCase::class) {
+        if ($this->colors && $result['className'] === PhptTestCase::class) {
             $testName = Color::colorizePath($result['testName'], $prevResult['testName'], true);
         } else {
             $testName = $result['testMethod'];
@@ -228,9 +226,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return [$message, $diff];
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function formatStacktrace(\Throwable $t): string
     {
         $trace = \PHPUnit\Util\Filter::getFilteredStacktrace($t);
@@ -258,9 +253,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return \implode('', $lines);
     }
 
-    /**
-     * @throws \ReflectionException
-     */
     protected function formatTestResultMessage(\Throwable $t, array $result, ?string $prefix = null): string
     {
         $message = $this->formatThrowable($t, $result['status']);
@@ -281,7 +273,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
         if ($this->colors) {
             $color  = self::STATUS_STYLES[$result['status']]['color'] ?? '';
-            $prefix = \array_map(function ($p) use ($color) {
+            $prefix = \array_map(static function ($p) use ($color) {
                 return Color::colorize($color, $p);
             }, self::PREFIX_DECORATED);
         }

@@ -834,24 +834,39 @@ final class Configuration
                         $result['resolveDependencies']   = false;
 
                         break;
-                    case 'reverse':
-                        $result['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
 
-                        break;
-                    case 'random':
-                        $result['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
-
-                        break;
                     case 'defects':
                         $result['executionOrderDefects'] = TestSuiteSorter::ORDER_DEFECTS_FIRST;
 
                         break;
+
                     case 'depends':
                         $result['resolveDependencies'] = true;
 
                         break;
+
+                    case 'duration':
+                        $result['executionOrder'] = TestSuiteSorter::ORDER_DURATION;
+
+                        break;
+
                     case 'no-depends':
                         $result['resolveDependencies'] = false;
+
+                        break;
+
+                    case 'random':
+                        $result['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
+
+                        break;
+
+                    case 'reverse':
+                        $result['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
+
+                        break;
+
+                    case 'size':
+                        $result['executionOrder'] = TestSuiteSorter::ORDER_SIZE;
 
                         break;
                 }
@@ -879,7 +894,6 @@ final class Configuration
      * Returns the test suite configuration.
      *
      * @throws Exception
-     * @throws \ReflectionException
      */
     public function getTestSuiteConfiguration(string $testSuiteFilter = ''): TestSuite
     {
@@ -973,7 +987,6 @@ final class Configuration
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \ReflectionException
      */
     private function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
     {

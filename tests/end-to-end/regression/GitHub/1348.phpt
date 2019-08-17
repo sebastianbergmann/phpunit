@@ -1,11 +1,10 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/1348
 --SKIPIF--
-<?php
+<?php declare(strict_types=1);
 if (defined('HHVM_VERSION') || defined('PHPDBG_VERSION')) {
     print 'skip: PHP runtime required';
 }
-?>
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';

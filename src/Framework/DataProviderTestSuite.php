@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Util\Test as TestUtil;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -39,5 +41,17 @@ final class DataProviderTestSuite extends TestSuite
     public function hasDependencies(): bool
     {
         return \count($this->dependencies) > 0;
+    }
+
+    /**
+     * Returns the size of the each test created using the data provider(s)
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public function getSize(): int
+    {
+        [$className, $methodName] = \explode('::', $this->getName());
+
+        return TestUtil::getSize($className, $methodName);
     }
 }

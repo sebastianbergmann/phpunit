@@ -43,10 +43,6 @@ final class ExceptionWrapper extends Exception
         $this->setOriginalException($t);
     }
 
-    /**
-     * @throws \InvalidArgumentException
-     * @throws \ReflectionException
-     */
     public function __toString(): string
     {
         $string = TestFailure::exceptionToString($this);

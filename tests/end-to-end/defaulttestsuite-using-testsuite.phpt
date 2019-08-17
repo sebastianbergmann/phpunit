@@ -13,7 +13,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-DummyFoo
+Dummy Foo
  ✔ Foo equals foo
 
 Time: %s, Memory: %s

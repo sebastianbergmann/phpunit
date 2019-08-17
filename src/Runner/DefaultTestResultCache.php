@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\Filesystem;
 
 /**
@@ -24,7 +25,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
     /**
      * Provide extra protection against incomplete or corrupt caches
      *
-     * @var array<string, string>
+     * @var int[]
      */
     private const ALLOWED_CACHE_TEST_STATUSES = [
         BaseTestRunner::STATUS_SKIPPED,
@@ -50,7 +51,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
      * $this->defects[$testName] = BaseTestRunner::TEST_SKIPPED;
      * </code>
      *
-     * @var array array<string, int>
+     * @var array<string, int>
      */
     private $defects = [];
 
@@ -66,9 +67,14 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
      */
     private $times = [];
 
-    public function __construct($filename = null)
+    public function __construct(?string $filepath = null)
     {
-        $this->cacheFilename = $filename ?? $_ENV['PHPUNIT_RESULT_CACHE'] ?? self::DEFAULT_RESULT_CACHE_FILENAME;
+        if ($filepath !== null && \is_dir($filepath)) {
+            // cache path provided, use default cache filename in that location
+            $filepath .= \DIRECTORY_SEPARATOR . self::DEFAULT_RESULT_CACHE_FILENAME;
+        }
+
+        $this->cacheFilename = $filepath ?? $_ENV['PHPUNIT_RESULT_CACHE'] ?? self::DEFAULT_RESULT_CACHE_FILENAME;
     }
 
     /**
@@ -110,7 +116,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
         }
     }
 
-    public function getState($testName): int
+    public function getState(string $testName): int
     {
         return $this->defects[$testName] ?? BaseTestRunner::STATUS_UNKNOWN;
     }
@@ -120,9 +126,9 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
         $this->times[$testName] = $time;
     }
 
-    public function getTime($testName): float
+    public function getTime(string $testName): float
     {
-        return $this->times[$testName] ?? 0;
+        return $this->times[$testName] ?? 0.0;
     }
 
     public function load(): void
@@ -141,14 +147,18 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
         }
         // @codeCoverageIgnoreEnd
 
-        $cache = @\unserialize($cacheData, ['allowed_classes' => [self::class]]);
+        $cache = ErrorHandler::invokeIgnoringWarnings(
+            static function () use ($cacheData) {
+                return @\unserialize($cacheData, ['allowed_classes' => [self::class]]);
+            }
+        );
 
         if ($cache === false) {
             return;
         }
 
         if ($cache instanceof self) {
-            /* @var \PHPUnit\Runner\DefaultTestResultCache */
+            /* @var DefaultTestResultCache $cache */
             $cache->copyStateToCache($this);
         }
     }
@@ -178,18 +188,26 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
         ]);
     }
 
+    /**
+     * @param string $serialized
+     */
     public function unserialize($serialized): void
     {
         $data = \unserialize($serialized);
 
         if (isset($data['times'])) {
             foreach ($data['times'] as $testName => $testTime) {
-                $this->times[$testName] = (float) $testTime;
+                \assert(\is_string($testName));
+                \assert(\is_float($testTime));
+                $this->times[$testName] = $testTime;
             }
         }
 
         if (isset($data['defects'])) {
             foreach ($data['defects'] as $testName => $testResult) {
+                \assert(\is_string($testName));
+                \assert(\is_int($testResult));
+
                 if (\in_array($testResult, self::ALLOWED_CACHE_TEST_STATUSES, true)) {
                     $this->defects[$testName] = $testResult;
                 }

@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
-interface AfterTestHook extends Hook
+interface AfterTestHook extends TestHook
 {
     /**
      * This hook will fire after any test, regardless of the result.

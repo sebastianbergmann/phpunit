@@ -7,6 +7,5 @@ FOO=bar
 if (isset($_SERVER['FOO'])) {
     \var_dump($_SERVER['FOO']);
 }
-?>
 --EXPECTF_EXTERNAL--
 _files/phpt-env.expected.txt

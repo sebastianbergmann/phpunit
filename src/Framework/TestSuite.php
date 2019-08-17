@@ -19,7 +19,7 @@ use PHPUnit\Util\Test as TestUtil;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class TestSuite implements Test, SelfDescribing, \IteratorAggregate
+class TestSuite implements \IteratorAggregate, SelfDescribing, Test
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
@@ -74,7 +74,7 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
     protected $testCase = false;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $foundClasses = [];
 
@@ -331,7 +331,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      * leaving the current test run untouched.
      *
      * @throws Exception
-     * @throws \ReflectionException
      */
     public function addTestFile(string $filename): void
     {
@@ -369,7 +368,15 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
 
         foreach ($this->foundClasses as $i => $className) {
             if (\preg_match($shortNameRegEx, $className)) {
-                $class = new \ReflectionClass($className);
+                try {
+                    $class = new \ReflectionClass($className);
+                } catch (\ReflectionException $e) {
+                    throw new Exception(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
 
                 if ($class->getFileName() == $filename) {
                     $newClasses = [$className];
@@ -381,7 +388,15 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
         }
 
         foreach ($newClasses as $className) {
-            $class = new \ReflectionClass($className);
+            try {
+                $class = new \ReflectionClass($className);
+            } catch (\ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
 
             if (\dirname($class->getFileName()) === __DIR__) {
                 continue;
@@ -389,9 +404,17 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
 
             if (!$class->isAbstract()) {
                 if ($class->hasMethod(BaseTestRunner::SUITE_METHODNAME)) {
-                    $method = $class->getMethod(
-                        BaseTestRunner::SUITE_METHODNAME
-                    );
+                    try {
+                        $method = $class->getMethod(
+                            BaseTestRunner::SUITE_METHODNAME
+                        );
+                    } catch (\ReflectionException $e) {
+                        throw new Exception(
+                            $e->getMessage(),
+                            (int) $e->getCode(),
+                            $e
+                        );
+                    }
 
                     if ($method->isStatic()) {
                         $this->addTest($method->invoke(null, $className));
@@ -409,7 +432,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      * Wrapper for addTestFile() that adds multiple test files.
      *
      * @throws Exception
-     * @throws \ReflectionException
      */
     public function addTestFiles(iterable $fileNames): void
     {
@@ -471,7 +493,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
      * Runs the tests and collects their result in a TestResult.
      *
      * @throws \PHPUnit\Framework\CodeCoverageException
-     * @throws \ReflectionException
      * @throws \SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\MissingCoversAnnotationException
@@ -685,7 +706,6 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
 
     /**
      * @throws Exception
-     * @throws \ReflectionException
      */
     protected function addTestMethod(\ReflectionClass $class, \ReflectionMethod $method): void
     {
@@ -693,14 +713,14 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
             return;
         }
 
-        $name = $method->getName();
+        $methodName = $method->getName();
 
         if (!$method->isPublic()) {
             $this->addTest(
                 new WarningTestCase(
                     \sprintf(
                         'Test method "%s" in test class "%s" is not public.',
-                        $name,
+                        $methodName,
                         $class->getName()
                     )
                 )
@@ -709,17 +729,17 @@ class TestSuite implements Test, SelfDescribing, \IteratorAggregate
             return;
         }
 
-        $test = (new TestBuilder)->build($class, $name);
+        $test = (new TestBuilder)->build($class, $methodName);
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(
-                TestUtil::getDependencies($class->getName(), $name)
+                TestUtil::getDependencies($class->getName(), $methodName)
             );
         }
 
         $this->addTest(
             $test,
-            TestUtil::getGroups($class->getName(), $name)
+            TestUtil::getGroups($class->getName(), $methodName)
         );
     }
 }

@@ -1,5 +1,5 @@
 --TEST--
-phpunit --verbose --order-by=reverse ../_files/DependencySuccessTest.php
+phpunit --verbose --order-by=depends,reverse ../execution-order/_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
@@ -14,7 +14,6 @@ $arguments = [
 
 require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
-?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

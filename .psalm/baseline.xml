@@ -1,0 +1,544 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="3.4.10@c283f0877d543e7ab738d231ba6a3cdce5e1039a">
+  <file src="src/Framework/Assert.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
+      <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
+    </ArgumentTypeCoercion>
+    <PossiblyInvalidArgument occurrences="3">
+      <code>$subset</code>
+      <code>$expected</code>
+      <code>$expected</code>
+    </PossiblyInvalidArgument>
+    <PossiblyNullArgument occurrences="2">
+      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
+      <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
+    </PossiblyNullArgument>
+    <PossiblyNullPropertyFetch occurrences="1">
+      <code>$expectedAttribute-&gt;name</code>
+    </PossiblyNullPropertyFetch>
+    <UndefinedPropertyFetch occurrences="1">
+      <code>$expectedAttribute-&gt;name</code>
+    </UndefinedPropertyFetch>
+  </file>
+  <file src="src/Framework/Assert/Functions.php">
+    <TooManyArguments occurrences="13">
+      <code>Assert::anything(...\func_get_args())</code>
+      <code>Assert::isTrue(...\func_get_args())</code>
+      <code>Assert::isFalse(...\func_get_args())</code>
+      <code>Assert::isJson(...\func_get_args())</code>
+      <code>Assert::isNull(...\func_get_args())</code>
+      <code>Assert::isFinite(...\func_get_args())</code>
+      <code>Assert::isInfinite(...\func_get_args())</code>
+      <code>Assert::isNan(...\func_get_args())</code>
+      <code>Assert::isEmpty(...\func_get_args())</code>
+      <code>Assert::isWritable(...\func_get_args())</code>
+      <code>Assert::isReadable(...\func_get_args())</code>
+      <code>Assert::directoryExists(...\func_get_args())</code>
+      <code>Assert::fileExists(...\func_get_args())</code>
+    </TooManyArguments>
+  </file>
+  <file src="src/Framework/Constraint/Count.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$this-&gt;getCountOf($other)</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Framework/Constraint/ExceptionCode.php">
+    <MoreSpecificImplementedParamType occurrences="1">
+      <code>$other</code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="src/Framework/Constraint/ExceptionMessage.php">
+    <MoreSpecificImplementedParamType occurrences="1">
+      <code>$other</code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="src/Framework/Constraint/ExceptionMessageRegularExpression.php">
+    <MoreSpecificImplementedParamType occurrences="1">
+      <code>$other</code>
+    </MoreSpecificImplementedParamType>
+  </file>
+  <file src="src/Framework/Constraint/IsInstanceOf.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;className</code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Framework/Constraint/IsJson.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$error</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Framework/Constraint/IsType.php">
+    <InvalidReturnType occurrences="1">
+      <code>bool</code>
+    </InvalidReturnType>
+  </file>
+  <file src="src/Framework/Constraint/SameSize.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$this-&gt;getCountOf($expected)</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Framework/Constraint/StringMatchesFormatDescription.php">
+    <InvalidArgument occurrences="1">
+      <code>"--- Expected\n+++ Actual\n"</code>
+    </InvalidArgument>
+  </file>
+  <file src="src/Framework/Exception/ExpectationFailedException.php">
+    <PossiblyNullPropertyAssignmentValue occurrences="1">
+      <code>$comparisonFailure</code>
+    </PossiblyNullPropertyAssignmentValue>
+  </file>
+  <file src="src/Framework/ExceptionWrapper.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$t-&gt;getPrevious()</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
+    <ImplementedReturnTypeMismatch occurrences="1">
+      <code>self</code>
+    </ImplementedReturnTypeMismatch>
+    <LessSpecificReturnStatement occurrences="8">
+      <code>$this-&gt;will($stub)</code>
+      <code>$this-&gt;will($stub)</code>
+      <code>$this-&gt;will($stub)</code>
+      <code>$this-&gt;will($stub)</code>
+      <code>$this-&gt;will($stub)</code>
+      <code>$this-&gt;will($stub)</code>
+      <code>$this-&gt;will($stub)</code>
+      <code>$this-&gt;will($stub)</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="8">
+      <code>self</code>
+      <code>self</code>
+      <code>self</code>
+      <code>self</code>
+      <code>self</code>
+      <code>self</code>
+      <code>self</code>
+      <code>self</code>
+    </MoreSpecificReturnType>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>registerId</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Framework/MockObject/Generator.php">
+    <ArgumentTypeCoercion occurrences="4">
+      <code>$className</code>
+      <code>$className</code>
+      <code>$interfaceName</code>
+      <code>$className</code>
+    </ArgumentTypeCoercion>
+    <PossiblyFalseArgument occurrences="1">
+      <code>\strpos($args[$i], '$')</code>
+    </PossiblyFalseArgument>
+  </file>
+  <file src="src/Framework/MockObject/InvocationMocker.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>Match</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>null</code>
+    </NullableReturnStatement>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>hasMatchers</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Framework/MockObject/Matcher.php">
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>new AnyParameters</code>
+    </InvalidPropertyAssignmentValue>
+    <PossiblyNullReference occurrences="2">
+      <code>__phpunit_getInvocationMocker</code>
+      <code>__phpunit_getInvocationMocker</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/Framework/MockObject/Matcher/ConsecutiveParameters.php">
+    <TypeDoesNotContainNull occurrences="1">
+      <code>$invocation === null</code>
+    </TypeDoesNotContainNull>
+  </file>
+  <file src="src/Framework/MockObject/Matcher/Parameters.php">
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$this-&gt;doVerify()</code>
+    </InvalidPropertyAssignmentValue>
+    <PossiblyNullPropertyAssignmentValue occurrences="1">
+      <code>null</code>
+    </PossiblyNullPropertyAssignmentValue>
+  </file>
+  <file src="src/Framework/MockObject/MockBuilder.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$this-&gt;type</code>
+      <code>$this-&gt;type</code>
+    </ArgumentTypeCoercion>
+    <PossiblyInvalidPropertyAssignmentValue occurrences="1">
+      <code>$type</code>
+    </PossiblyInvalidPropertyAssignmentValue>
+  </file>
+  <file src="src/Framework/MockObject/MockMethod.php">
+    <PossiblyNullReference occurrences="1">
+      <code>allowsNull</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/Framework/TestCase.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$class_name</code>
+      <code>$this-&gt;expectedException</code>
+    </ArgumentTypeCoercion>
+    <InvalidArgument occurrences="2">
+      <code>0</code>
+      <code>$header</code>
+    </InvalidArgument>
+    <InvalidCatch occurrences="1"/>
+    <PossiblyNullPropertyAssignmentValue occurrences="3">
+      <code>null</code>
+      <code>$beStrictAboutChangesToGlobalState</code>
+      <code>null</code>
+    </PossiblyNullPropertyAssignmentValue>
+    <PossiblyNullReference occurrences="1">
+      <code>filter</code>
+    </PossiblyNullReference>
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$categories</code>
+    </PossiblyUndefinedVariable>
+  </file>
+  <file src="src/Framework/TestFailure.php">
+    <PossiblyNullReference occurrences="1">
+      <code>getDiff</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/Framework/TestResult.php">
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$isAnyCoverageRequired</code>
+    </PossiblyUndefinedVariable>
+  </file>
+  <file src="src/Framework/TestSuite.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$className</code>
+      <code>$className</code>
+    </ArgumentTypeCoercion>
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$afterClassMethod</code>
+    </PossiblyUndefinedVariable>
+    <PropertyTypeCoercion occurrences="1">
+      <code>$this-&gt;tests</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Framework/TestSuiteIterator.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;tests[$this-&gt;position]</code>
+    </ArgumentTypeCoercion>
+    <InvalidNullableReturnType occurrences="1">
+      <code>Test</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;valid() ? $this-&gt;tests[$this-&gt;position] : null</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/Runner/Filter/NameFilterIterator.php">
+    <InvalidPropertyAssignmentValue occurrences="2">
+      <code>$matches[2]</code>
+      <code>$matches[3]</code>
+    </InvalidPropertyAssignmentValue>
+  </file>
+  <file src="src/Runner/PhptTestCase.php">
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$sections['FILEEOF']</code>
+    </PossiblyInvalidArgument>
+    <PossiblyNullReference occurrences="1">
+      <code>append</code>
+    </PossiblyNullReference>
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$sectionOffset</code>
+    </PossiblyUndefinedVariable>
+  </file>
+  <file src="src/Runner/StandardTestSuiteLoader.php">
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$filename</code>
+    </PossiblyUndefinedVariable>
+  </file>
+  <file src="src/Runner/TestSuiteSorter.php">
+    <PossiblyFalseArgument occurrences="1">
+      <code>\strpos($test-&gt;getName(), '::')</code>
+    </PossiblyFalseArgument>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getName</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/TextUI/Command.php">
+    <ArgumentTypeCoercion occurrences="4">
+      <code>$suite</code>
+      <code>$suite</code>
+      <code>$suite</code>
+      <code>$printerClass</code>
+    </ArgumentTypeCoercion>
+    <InvalidCatch occurrences="1"/>
+    <LessSpecificReturnStatement occurrences="1">
+      <code>$class-&gt;newInstance($outputStream)</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>null|Printer|string</code>
+    </MoreSpecificReturnType>
+    <PossiblyFalseArgument occurrences="1">
+      <code>\strrpos($this-&gt;arguments['test'], '.')</code>
+    </PossiblyFalseArgument>
+    <PossiblyNullArgument occurrences="4">
+      <code>$suite</code>
+      <code>$suite</code>
+      <code>$suite</code>
+      <code>$suite</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/TextUI/Help.php">
+    <PossiblyUndefinedArrayOffset occurrences="2">
+      <code>$option['desc']</code>
+      <code>$option['desc']</code>
+    </PossiblyUndefinedArrayOffset>
+  </file>
+  <file src="src/TextUI/ResultPrinter.php">
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$color</code>
+    </PossiblyUndefinedVariable>
+    <TooManyArguments occurrences="1">
+      <code>Color::colorize($color, \str_pad($line, $padding), false)</code>
+    </TooManyArguments>
+  </file>
+  <file src="src/TextUI/TestRunner.php">
+    <LessSpecificReturnStatement occurrences="1"/>
+    <MoreSpecificReturnType occurrences="1">
+      <code>Printer</code>
+    </MoreSpecificReturnType>
+    <PossiblyNullPropertyAssignmentValue occurrences="1">
+      <code>$loader</code>
+    </PossiblyNullPropertyAssignmentValue>
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$whitelistFromConfigurationFile</code>
+    </PossiblyUndefinedVariable>
+    <PropertyTypeCoercion occurrences="3">
+      <code>$arguments['printer']</code>
+      <code>$this-&gt;createPrinter($arguments['printer'], $arguments)</code>
+      <code>$this-&gt;createPrinter(ResultPrinter::class, $arguments)</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Util/Blacklist.php">
+    <UndefinedClass occurrences="1">
+      <code>Invoker</code>
+    </UndefinedClass>
+  </file>
+  <file src="src/Util/Configuration.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$testSuiteNodes-&gt;item(0)</code>
+      <code>$testSuiteNode</code>
+    </ArgumentTypeCoercion>
+    <InvalidNullableReturnType occurrences="1">
+      <code>bool</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>\version_compare(\PHP_VERSION, $phpVersion, $phpVersionOperator)</code>
+    </NullableReturnStatement>
+    <PossiblyInvalidArrayOffset occurrences="3">
+      <code>$result[$array][$name]['verbatim']</code>
+      <code>$result[$array][$name]['force']</code>
+      <code>$result[$array][$name]['value']</code>
+    </PossiblyInvalidArrayOffset>
+    <PossiblyNullArgument occurrences="1">
+      <code>$testSuiteNodes-&gt;item(0)</code>
+    </PossiblyNullArgument>
+    <PossiblyNullReference occurrences="4">
+      <code>hasAttribute</code>
+      <code>getAttribute</code>
+      <code>hasAttribute</code>
+      <code>getAttribute</code>
+    </PossiblyNullReference>
+    <UndefinedMethod occurrences="7">
+      <code>hasAttribute</code>
+      <code>getAttribute</code>
+      <code>hasAttribute</code>
+      <code>getAttribute</code>
+      <code>getAttribute</code>
+      <code>getAttribute</code>
+      <code>getAttribute</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/Util/ErrorHandler.php">
+    <InvalidArgument occurrences="1"/>
+  </file>
+  <file src="src/Util/Filter.php">
+    <PossiblyNullReference occurrences="1">
+      <code>getTrace</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/Util/Getopt.php">
+    <InvalidOperand occurrences="3">
+      <code>$i</code>
+      <code>$i</code>
+      <code>$i</code>
+    </InvalidOperand>
+    <PossiblyNullArgument occurrences="1">
+      <code>$long_options</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Util/GlobalState.php">
+    <PossiblyInvalidIterator occurrences="1">
+      <code>$constants['user']</code>
+    </PossiblyInvalidIterator>
+  </file>
+  <file src="src/Util/Log/JUnit.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$suite-&gt;getName()</code>
+    </ArgumentTypeCoercion>
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$this-&gt;testSuiteTimes</code>
+    </InvalidPropertyAssignmentValue>
+    <PossiblyNullPropertyAssignmentValue occurrences="1">
+      <code>null</code>
+    </PossiblyNullPropertyAssignmentValue>
+  </file>
+  <file src="src/Util/Log/TeamCity.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$className</code>
+    </ArgumentTypeCoercion>
+    <UndefinedInterfaceMethod occurrences="7">
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Util/PHP/AbstractPhpProcess.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$this-&gt;getException($warnings[0])</code>
+      <code>$this-&gt;getException($failures[0])</code>
+    </ArgumentTypeCoercion>
+    <InvalidArgument occurrences="1"/>
+    <LessSpecificReturnStatement occurrences="1">
+      <code>$exception</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>Exception</code>
+    </MoreSpecificReturnType>
+    <PossiblyFalseOperand occurrences="1">
+      <code>\strrpos($key, "\0")</code>
+    </PossiblyFalseOperand>
+    <PossiblyNullArgument occurrences="1">
+      <code>$childResult-&gt;getCodeCoverage()</code>
+    </PossiblyNullArgument>
+    <PossiblyNullReference occurrences="1">
+      <code>merge</code>
+    </PossiblyNullReference>
+    <UndefinedInterfaceMethod occurrences="2">
+      <code>setResult</code>
+      <code>addToAssertionCount</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Util/Printer.php">
+    <InvalidArgument occurrences="1">
+      <code>$out[1]</code>
+    </InvalidArgument>
+    <InvalidScalarArgument occurrences="1">
+      <code>$out[1]</code>
+    </InvalidScalarArgument>
+    <PossiblyInvalidPropertyAssignmentValue occurrences="1">
+      <code>$out</code>
+    </PossiblyInvalidPropertyAssignmentValue>
+  </file>
+  <file src="src/Util/RegularExpression.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$matches</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Util/Test.php">
+    <ArgumentTypeCoercion occurrences="4">
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$dataProviderClassName</code>
+    </ArgumentTypeCoercion>
+    <InvalidArgument occurrences="1">
+      <code>$e</code>
+    </InvalidArgument>
+    <InvalidCatch occurrences="1"/>
+    <InvalidOperand occurrences="1">
+      <code>$matches[0][1]</code>
+    </InvalidOperand>
+    <InvalidReturnStatement occurrences="1">
+      <code>$data</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>?array</code>
+    </InvalidReturnType>
+    <InvalidScalarArgument occurrences="1">
+      <code>\array_flip($lineNumbers)</code>
+    </InvalidScalarArgument>
+    <PossiblyNullOperand occurrences="1">
+      <code>$methodName</code>
+    </PossiblyNullOperand>
+  </file>
+  <file src="src/Util/TestDox/CliTestDoxPrinter.php">
+    <PossiblyInvalidArrayOffset occurrences="6">
+      <code>$prefix['start']</code>
+      <code>$prefix['message']</code>
+      <code>$prefix['diff']</code>
+      <code>$prefix['default']</code>
+      <code>$prefix['trace']</code>
+      <code>$prefix['last']</code>
+    </PossiblyInvalidArrayOffset>
+  </file>
+  <file src="src/Util/TestDox/HtmlResultPrinter.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$this-&gt;currentTestClassPrettified</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Util/TestDox/NamePrettifier.php">
+    <InvalidCast occurrences="1">
+      <code>$value</code>
+    </InvalidCast>
+    <PossiblyInvalidArgument occurrences="3">
+      <code>$test-&gt;dataName()</code>
+      <code>$name</code>
+      <code>$name</code>
+    </PossiblyInvalidArgument>
+  </file>
+  <file src="src/Util/TestDox/TestDoxPrinter.php">
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getName</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Util/TestDox/TextResultPrinter.php">
+    <PossiblyNullOperand occurrences="1">
+      <code>$this-&gt;currentTestClassPrettified</code>
+    </PossiblyNullOperand>
+  </file>
+  <file src="src/Util/TextTestListRenderer.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$suite-&gt;getIterator()</code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Util/Xml.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$item</code>
+    </ArgumentTypeCoercion>
+    <LessSpecificReturnStatement occurrences="1">
+      <code>(new DOMDocument)-&gt;importNode($element, true)</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>DOMElement</code>
+    </MoreSpecificReturnType>
+    <PossiblyNullArgument occurrences="1">
+      <code>$item</code>
+    </PossiblyNullArgument>
+    <PossiblyNullIterator occurrences="1">
+      <code>$arguments</code>
+    </PossiblyNullIterator>
+    <PossiblyNullPropertyFetch occurrences="1">
+      <code>$element-&gt;childNodes-&gt;item(0)-&gt;childNodes</code>
+    </PossiblyNullPropertyFetch>
+  </file>
+  <file src="src/Util/XmlTestListRenderer.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$suite-&gt;getIterator()</code>
+    </ArgumentTypeCoercion>
+  </file>
+</files>

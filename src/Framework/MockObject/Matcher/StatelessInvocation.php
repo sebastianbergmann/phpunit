@@ -37,8 +37,6 @@ abstract class StatelessInvocation implements Invocation
      * Checks if the invocation $invocation matches the current rules. If it does
      * the matcher will get the invoked() method called which should check if an
      * expectation is met.
-     *
-     * @return bool
      */
     public function verify(): void
     {

@@ -12,6 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 
+/**
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+ * @codeCoverageIgnore
+ */
 final class Attribute extends Composite
 {
     /**
@@ -39,7 +43,6 @@ final class Attribute extends Composite
      * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \ReflectionException
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {

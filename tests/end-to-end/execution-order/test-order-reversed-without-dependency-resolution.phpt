@@ -14,7 +14,6 @@ $arguments = [
 
 require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
-?>
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

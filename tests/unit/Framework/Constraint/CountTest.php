@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestFailure;
+
 /**
  * @small
  */
@@ -144,5 +147,40 @@ final class CountTest extends ConstraintTestCase
         $this->assertNotInstanceOf(\Iterator::class, $datePeriod);
         $this->assertNotInstanceOf(\IteratorAggregate::class, $datePeriod);
         $this->assertTrue($countConstraint->evaluate($datePeriod, '', true));
+    }
+
+    public function testCountCanBeExportedToString(): void
+    {
+        $countConstraint = new Count(1);
+
+        $this->assertEquals('count matches 1', $countConstraint->toString());
+    }
+
+    public function testCountEvaluateReturnsNullWithNonCountableAndNonTraversableOther(): void
+    {
+        $countConstraint = new Count(1);
+
+        try {
+            $this->assertNull($countConstraint->evaluate(1));
+        } catch (ExpectationFailedException  $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that actual size 0 matches expected size 1.
+
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+        }
+    }
+
+    /**
+     * @ticket https://github.com/sebastianbergmann/phpunit/issues/3743
+     */
+    public function test_EmptyIterator_is_handled_correctly(): void
+    {
+        $constraint = new Count(0);
+
+        $this->assertTrue($constraint->evaluate(new \EmptyIterator, '', true));
     }
 }
