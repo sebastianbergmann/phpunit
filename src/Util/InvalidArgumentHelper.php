@@ -27,7 +27,7 @@ final class InvalidArgumentHelper
                 $value !== null ? ' (' . \gettype($value) . '#' . $value . ')' : ' (No Value) ',
                 $stack[1]['class'],
                 $stack[1]['function'],
-                \in_array($type[0], ['a', 'e', 'i', 'o', 'u']) ? 'an' : 'a',
+                \in_array(\lcfirst($type)[0], ['a', 'e', 'i', 'o', 'u']) ? 'an' : 'a',
                 $type
             )
         );
