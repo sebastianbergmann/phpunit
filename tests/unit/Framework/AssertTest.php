@@ -1524,7 +1524,7 @@ XML;
         $this->fail();
     }
 
-    public function testInvalidArgumentExceptionUseCorrectArticleInErrorMessage(): void
+    public function testInvalidArgumentExceptionUsesCorrectArticleInErrorMessage(): void
     {
         try {
             $this->assertArrayHasKey('key', 'not an array');
