@@ -1524,6 +1524,9 @@ XML;
         $this->fail();
     }
 
+    /**
+     * @testdox InvalidArgumentException uses correct article for variable type
+     */
     public function testInvalidArgumentExceptionUsesCorrectArticleInErrorMessage(): void
     {
         try {
