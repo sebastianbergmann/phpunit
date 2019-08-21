@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.5 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+## [7.5.15] - 2019-08-21
+
+### Changed
+
+* Implemented [#3765](https://github.com/sebastianbergmann/phpunit/pull/3765): Use `ReflectionType::getName()` instead of `ReflectionType::__toString()` (which is deprecated in PHP 7.4)
+
 ## [7.5.14] - 2019-07-15
 
 ### Fixed
@@ -132,6 +138,7 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 * Fixed [#3429](https://github.com/sebastianbergmann/phpunit/pull/3429): Inefficient loop in `getHookMethods()`
 * Fixed [#3437](https://github.com/sebastianbergmann/phpunit/pull/3437): JUnit logger skips PHPT tests
 
+[7.5.15]: https://github.com/sebastianbergmann/phpunit/compare/7.5.14...7.5.15
 [7.5.14]: https://github.com/sebastianbergmann/phpunit/compare/7.5.13...7.5.14
 [7.5.13]: https://github.com/sebastianbergmann/phpunit/compare/7.5.12...7.5.13
 [7.5.12]: https://github.com/sebastianbergmann/phpunit/compare/7.5.11...7.5.12
