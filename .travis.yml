@@ -57,6 +57,9 @@ jobs:
       language: sh # no PHP currently
       env: PHP_VERSION=7.2 XDEBUG_VERSION=2.7.1 DEPENDENCIES=""
       before_install:
+        - git config core.autocrlf false # Workaround to enfore LF
+        - git add --renormalize .
+        - git reset --hard
         - choco install php --version=${PHP_VERSION} --package-parameters="/InstallDir:c:\tools\php"
         - choco install composer --ia "/DEV=C:\tools\php"
         - export PATH=/c/tools/php:$PATH
@@ -81,6 +84,9 @@ jobs:
       language: sh # no PHP currently
       env: PHP_VERSION=7.3 XDEBUG_VERSION=2.7.1 DEPENDENCIES=""
       before_install:
+        - git config core.autocrlf false # Workaround to enfore LF
+        - git add --renormalize .
+        - git reset --hard
         - choco install php --version=${PHP_VERSION} --package-parameters="/InstallDir:c:\tools\php"
         - choco install composer --ia "/DEV=C:\tools\php"
         - export PATH=/c/tools/php:$PATH
