@@ -1516,7 +1516,7 @@ XML;
         try {
             $this->assertCount(2, '');
         } catch (Exception $e) {
-            $this->assertEquals('Argument #2 (No Value) of PHPUnit\Framework\Assert::assertCount() must be a countable or iterable', $e->getMessage());
+            $this->assertEquals('Argument #2 of PHPUnit\Framework\Assert::assertCount() must be a countable or iterable', $e->getMessage());
 
             return;
         }
@@ -1554,7 +1554,7 @@ XML;
         try {
             $this->assertSameSize('a', []);
         } catch (Exception $e) {
-            $this->assertEquals('Argument #1 (No Value) of PHPUnit\Framework\Assert::assertSameSize() must be a countable or iterable', $e->getMessage());
+            $this->assertEquals('Argument #1 of PHPUnit\Framework\Assert::assertSameSize() must be a countable or iterable', $e->getMessage());
 
             return;
         }
@@ -1567,7 +1567,7 @@ XML;
         try {
             $this->assertSameSize([], '');
         } catch (Exception $e) {
-            $this->assertEquals('Argument #2 (No Value) of PHPUnit\Framework\Assert::assertSameSize() must be a countable or iterable', $e->getMessage());
+            $this->assertEquals('Argument #2 of PHPUnit\Framework\Assert::assertSameSize() must be a countable or iterable', $e->getMessage());
 
             return;
         }

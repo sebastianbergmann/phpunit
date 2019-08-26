@@ -1428,7 +1428,7 @@ abstract class Assert
         }
 
         if (!\class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name', $className);
+            throw InvalidArgumentException::create(2, 'class name');
         }
 
         static::assertThat($className, new ClassHasAttribute($attributeName), $message);
@@ -1448,7 +1448,7 @@ abstract class Assert
         }
 
         if (!\class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name', $className);
+            throw InvalidArgumentException::create(2, 'class name');
         }
 
         static::assertThat(
@@ -1474,7 +1474,7 @@ abstract class Assert
         }
 
         if (!\class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name', $className);
+            throw InvalidArgumentException::create(2, 'class name');
         }
 
         static::assertThat(
@@ -1498,7 +1498,7 @@ abstract class Assert
         }
 
         if (!\class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name', $className);
+            throw InvalidArgumentException::create(2, 'class name');
         }
 
         static::assertThat(

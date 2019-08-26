@@ -59,7 +59,7 @@ final class Generator
         }
 
         if (!\is_array($methods) && null !== $methods) {
-            throw InvalidArgumentException::create(2, 'array', $methods);
+            throw InvalidArgumentException::create(2, 'array');
         }
 
         if ($type === 'Traversable' || $type === '\\Traversable') {

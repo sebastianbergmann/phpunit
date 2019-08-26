@@ -14,15 +14,14 @@ namespace PHPUnit\Framework;
  */
 final class InvalidArgumentException extends Exception
 {
-    public static function create(int $argument, string $type, $value = null): self
+    public static function create(int $argument, string $type): self
     {
         $stack = \debug_backtrace();
 
         return new self(
             \sprintf(
-                'Argument #%d%sof %s::%s() must be %s %s',
+                'Argument #%d of %s::%s() must be %s %s',
                 $argument,
-                $value !== null ? ' (' . \gettype($value) . '#' . $value . ')' : ' (No Value) ',
                 $stack[1]['class'],
                 $stack[1]['function'],
                 \in_array(\lcfirst($type)[0], ['a', 'e', 'i', 'o', 'u']) ? 'an' : 'a',

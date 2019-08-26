@@ -27,8 +27,8 @@ final class InvalidArgumentExceptionTest extends TestCase
     public function provider(): array
     {
         return [
-            'an array'  => ['Argument #1 (No Value) of %s must be an array', 'array'],
-            'a boolean' => ['Argument #1 (No Value) of %s must be a boolean', 'boolean'],
+            'an array'  => ['Argument #1 of %s must be an array', 'array'],
+            'a boolean' => ['Argument #1 of %s must be a boolean', 'boolean'],
         ];
     }
 }
