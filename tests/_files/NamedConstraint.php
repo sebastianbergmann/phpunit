@@ -12,7 +12,7 @@ use PHPUnit\Framework\Constraint\Constraint;
 final class NamedConstraint extends Constraint
 {
     /**
-     * @var int
+     * @var string
      */
     private $name;
 

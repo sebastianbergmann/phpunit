@@ -318,14 +318,14 @@ final class TestRunner extends BaseTestRunner
             foreach ($arguments['loadedExtensions'] as $extension) {
                 $this->writeMessage(
                     'Extension',
-                    $extension
+                    (string) $extension
                 );
             }
 
             foreach ($arguments['notLoadedExtensions'] as $extension) {
                 $this->writeMessage(
                     'Extension',
-                    $extension
+                    (string) $extension
                 );
             }
         }
