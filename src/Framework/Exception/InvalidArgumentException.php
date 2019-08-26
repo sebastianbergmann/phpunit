@@ -7,20 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util;
-
-use PHPUnit\Framework\Exception;
+namespace PHPUnit\Framework;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class InvalidArgumentHelper
+final class InvalidArgumentException extends Exception
 {
-    public static function factory(int $argument, string $type, $value = null): Exception
+    public static function create(int $argument, string $type, $value = null): self
     {
         $stack = \debug_backtrace();
 
-        return new Exception(
+        return new self(
             \sprintf(
                 'Argument #%d%sof %s::%s() must be %s %s',
                 $argument,
@@ -31,5 +29,10 @@ final class InvalidArgumentHelper
                 $type
             )
         );
+    }
+
+    private function __construct(string $message = '', int $code = 0, \Exception $previous = null)
+    {
+        parent::__construct($message, $code, $previous);
     }
 }

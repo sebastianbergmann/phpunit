@@ -11,8 +11,8 @@ namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
-use PHPUnit\Util\InvalidArgumentHelper;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -34,7 +34,7 @@ final class MethodName extends StatelessInvocation
     {
         if (!$constraint instanceof Constraint) {
             if (!\is_string($constraint)) {
-                throw InvalidArgumentHelper::factory(1, 'string');
+                throw InvalidArgumentException::create(1, 'string');
             }
 
             $constraint = new IsEqual(

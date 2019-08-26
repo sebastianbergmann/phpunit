@@ -1524,22 +1524,6 @@ XML;
         $this->fail();
     }
 
-    /**
-     * @testdox InvalidArgumentException uses correct article for variable type
-     */
-    public function testInvalidArgumentExceptionUsesCorrectArticleInErrorMessage(): void
-    {
-        try {
-            $this->assertArrayHasKey('key', 'not an array');
-        } catch (Exception $e) {
-            $this->assertEquals('Argument #2 (No Value) of PHPUnit\Framework\Assert::assertArrayHasKey() must be an array or ArrayAccess', $e->getMessage());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testAssertNotCount(): void
     {
         $this->assertNotCount(2, [1, 2, 3]);

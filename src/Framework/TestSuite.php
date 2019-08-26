@@ -13,7 +13,6 @@ use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\FileLoader;
-use PHPUnit\Util\InvalidArgumentHelper;
 use PHPUnit\Util\Test as TestUtil;
 
 /**
@@ -124,7 +123,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     public function __construct($theClass = '', string $name = '')
     {
         if (!\is_string($theClass) && !$theClass instanceof \ReflectionClass) {
-            throw InvalidArgumentHelper::factory(
+            throw InvalidArgumentException::create(
                 1,
                 'ReflectionClass object or string'
             );
@@ -269,7 +268,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     public function addTestSuite($testClass): void
     {
         if (!(\is_object($testClass) || (\is_string($testClass) && \class_exists($testClass)))) {
-            throw InvalidArgumentHelper::factory(
+            throw InvalidArgumentException::create(
                 1,
                 'class name or object'
             );
