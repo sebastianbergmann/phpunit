@@ -453,9 +453,6 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile'])) {
-            $whitelistFromConfigurationFile = false;
-            $whitelistFromOption            = false;
-
             if (isset($arguments['whitelist'])) {
                 $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
 

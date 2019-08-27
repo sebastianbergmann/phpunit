@@ -41,27 +41,29 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             $loadedClasses = \array_values(
                 \array_diff(\get_declared_classes(), $loadedClasses)
             );
-        }
 
-        if (!empty($loadedClasses) && !\class_exists($suiteClassName, false)) {
-            $offset = 0 - \strlen($suiteClassName);
+            if (!empty($loadedClasses)) {
+                $offset = 0 - \strlen($suiteClassName);
 
-            foreach ($loadedClasses as $loadedClass) {
-                try {
-                    $class = new ReflectionClass($loadedClass);
-                } catch (\ReflectionException $e) {
-                    throw new Exception(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
+                foreach ($loadedClasses as $loadedClass) {
+                    try {
+                        $class = new ReflectionClass($loadedClass);
+                    } catch (\ReflectionException $e) {
+                        throw new Exception(
+                            $e->getMessage(),
+                            (int) $e->getCode(),
+                            $e
+                        );
+                    }
 
-                if (\substr($loadedClass, $offset) === $suiteClassName &&
-                    $class->getFileName() == $filename) {
-                    $suiteClassName = $loadedClass;
+                    if (
+                        \substr($loadedClass, $offset) === $suiteClassName &&
+                        $class->getFileName() == $filename
+                    ) {
+                        $suiteClassName = $loadedClass;
 
-                    break;
+                        break;
+                    }
                 }
             }
         }

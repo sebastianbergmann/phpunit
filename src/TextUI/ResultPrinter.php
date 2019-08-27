@@ -432,17 +432,14 @@ class ResultPrinter extends Printer implements TestListener
                 );
             } else {
                 $this->write("\n");
+                $color = 'fg-white, bg-red';
 
                 if ($result->errorCount()) {
-                    $color = 'fg-white, bg-red';
-
                     $this->writeWithColor(
                         $color,
                         'ERRORS!'
                     );
                 } elseif ($result->failureCount()) {
-                    $color = 'fg-white, bg-red';
-
                     $this->writeWithColor(
                         $color,
                         'FAILURES!'

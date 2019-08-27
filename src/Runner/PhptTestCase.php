@@ -734,7 +734,7 @@ final class PhptTestCase implements SelfDescribing, Test
             }
         }
 
-        if ($sectionName) {
+        if ($sectionName && isset($sectionOffset)) {
             // String not found in specified section, show user the start of the named section
             return [[
                 'file' => \realpath($this->filename),
@@ -742,7 +742,7 @@ final class PhptTestCase implements SelfDescribing, Test
             ]];
         }
 
-        // No section specified, show user start of code
+        // No section specified or located, show user start of code
         return [[
             'file' => \realpath($this->filename),
             'line' => 1,
