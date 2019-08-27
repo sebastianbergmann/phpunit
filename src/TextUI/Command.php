@@ -724,7 +724,11 @@ class Command
                     break;
 
                 case '--whitelist':
-                    $this->arguments['whitelist'] = $option[1];
+                    if (!isset($this->arguments['whitelist'])) {
+                        $this->arguments['whitelist'] = [];
+                    }
+
+                    $this->arguments['whitelist'][] = $option[1];
 
                     break;
 

@@ -457,7 +457,15 @@ final class TestRunner extends BaseTestRunner
             $whitelistFromOption            = false;
 
             if (isset($arguments['whitelist'])) {
-                $this->codeCoverageFilter->addDirectoryToWhitelist($arguments['whitelist']);
+                if (!\is_array($arguments['whitelist'])) {
+                    $whitelistDirectories = [$arguments['whitelist']];
+                } else {
+                    $whitelistDirectories = $arguments['whitelist'];
+                }
+
+                foreach ($whitelistDirectories as $whitelistDirectory) {
+                    $this->codeCoverageFilter->addDirectoryToWhitelist($whitelistDirectory);
+                }
 
                 $whitelistFromOption = true;
             }
