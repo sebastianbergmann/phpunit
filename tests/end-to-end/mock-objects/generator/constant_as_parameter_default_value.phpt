@@ -4,7 +4,7 @@
 <?php
 class Foo
 {
-    public function bar(int $baz = PHP_INT_MIN)
+    public function bar(int $baz = PHP_INT_MAX)
     {
     }
 }
@@ -23,7 +23,7 @@ $mock = $generator->generate(
 
 print $mock['code'];
 ?>
---EXPECT--
+--EXPECTF--
 class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     private $__phpunit_invocationMocker;
@@ -36,7 +36,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
         $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationMocker();
     }
 
-    public function bar(int $baz = PHP_INT_MIN)
+    public function bar(int $baz = %d)
     {
         $__phpunit_arguments = [$baz];
         $__phpunit_count     = func_num_args();

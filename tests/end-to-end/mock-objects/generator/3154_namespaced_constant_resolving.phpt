@@ -14,7 +14,7 @@ namespace Is\Namespaced;
  */
 
 const A_CONSTANT = 17;
-const PHP_VERSION = "0.0.0";
+const PHP_VERSION = "";
 
 class Issue3154
 {
@@ -36,7 +36,7 @@ $mock = $generator->generate(
 );
 
 print $mock['code'];
---EXPECT--
+--EXPECTF--
 class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework\MockObject\MockObject
 {
     private $__phpunit_invocationMocker;
@@ -49,7 +49,7 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
         $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationMocker();
     }
 
-    public function a(int $i = PHP_INT_MAX, int $j = Is\Namespaced\A_CONSTANT, string $v = PHP_VERSION, string $z = '#'): string
+    public function a(int $i = %d, int $j = 17, string $v = '%s', string $z = '#'): string
     {
         $__phpunit_arguments = [$i, $j, $v, $z];
         $__phpunit_count     = func_num_args();
