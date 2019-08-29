@@ -14,7 +14,7 @@ namespace Is\Namespaced;
  */
 
 const A_CONSTANT = 17;
-const PHP_VERSION = "0.0.0";
+const PHP_VERSION = "";
 
 class Issue3154
 {
@@ -45,7 +45,7 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
     use \PHPUnit\Framework\MockObject\Method;
     use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
-    public function a(int $i = PHP_INT_MAX, int $j = Is\Namespaced\A_CONSTANT, string $v = PHP_VERSION, string $z = '#'): string
+    public function a(int $i = %d, int $j = 17, string $v = '%s', string $z = '#'): string
     {
         $__phpunit_arguments = [$i, $j, $v, $z];
         $__phpunit_count     = func_num_args();

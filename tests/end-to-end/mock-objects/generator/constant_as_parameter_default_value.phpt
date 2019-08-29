@@ -4,7 +4,7 @@
 <?php declare(strict_types=1);
 class Foo
 {
-    public function bar(int $baz = PHP_INT_MIN)
+    public function bar(int $baz = PHP_INT_MAX)
     {
     }
 }
@@ -31,7 +31,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
     use \PHPUnit\Framework\MockObject\Method;
     use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
-    public function bar(int $baz = PHP_INT_MIN)
+    public function bar(int $baz = %d)
     {
         $__phpunit_arguments = [$baz];
         $__phpunit_count     = func_num_args();
