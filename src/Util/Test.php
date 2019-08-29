@@ -479,16 +479,24 @@ final class Test
         if (!isset(self::$annotationCache[$className])) {
             $class       = new ReflectionClass($className);
             $traits      = $class->getTraits();
+            $parent      = $class;
             $annotations = [];
 
             foreach ($traits as $trait) {
-                $annotations = \array_merge(
+                $annotations = \array_merge_recursive(
                     $annotations,
                     self::parseAnnotations($trait->getDocComment())
                 );
             }
 
-            self::$annotationCache[$className] = \array_merge(
+            while ($parent = $parent->getParentClass()) {
+                $annotations = \array_merge_recursive(
+                    $annotations,
+                    self::parseAnnotations((string) $parent->getDocComment())
+                );
+            }
+
+            self::$annotationCache[$className] = \array_merge_recursive(
                 $annotations,
                 self::parseAnnotations($class->getDocComment())
             );
