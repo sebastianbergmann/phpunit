@@ -65,7 +65,7 @@ jobs:
       script:
         - travis_retry ./tools/composer update $DEFAULT_COMPOSER_FLAGS
         - ./tools/psalm --config=.psalm/static-analysis.xml --no-progress
-        - ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --stats
+        - ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --stats --show-info=false
     - stage: "Static Code Analysis"
       php: 7.3
       env: roave-backward-compatibility-check
