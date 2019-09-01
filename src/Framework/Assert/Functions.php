@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Attribute;

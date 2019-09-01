@@ -405,7 +405,7 @@ final class Test
 
         if ($hint && isset($required['__OFFSET'])) {
             \array_unshift($missing, '__OFFSET_FILE=' . $required['__OFFSET']['__FILE']);
-            \array_unshift($missing, '__OFFSET_LINE=' . $required['__OFFSET'][$hint] ?? 1);
+            \array_unshift($missing, '__OFFSET_LINE=' . ($required['__OFFSET'][$hint] ?? 1));
         }
 
         return $missing;
