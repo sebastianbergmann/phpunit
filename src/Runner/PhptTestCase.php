@@ -578,7 +578,7 @@ final class PhptTestCase implements SelfDescribing, Test
             $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . \var_export(
                 $GLOBALS['__PHPUNIT_BOOTSTRAP'],
                 true
-                ) . ";\n";
+            ) . ";\n";
         }
 
         $template->setVar(
