@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.4.10@c283f0877d543e7ab738d231ba6a3cdce5e1039a">
+<files psalm-version="3.x-dev@0279c6f6d9bbe22854526c45eaf1f5482c12ade3">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -184,8 +184,7 @@
       <code>$class_name</code>
       <code>$this-&gt;expectedException</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="2">
-      <code>0</code>
+    <InvalidArgument occurrences="1">
       <code>$header</code>
     </InvalidArgument>
     <InvalidCatch occurrences="1"/>
@@ -392,9 +391,15 @@
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
+    <UndefinedInterfaceMethod occurrences="2">
+      <code>getName</code>
+      <code>getName</code>
+    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/Log/TeamCity.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="3">
+      <code>$split[0]</code>
+      <code>$split[0]</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
     <UndefinedInterfaceMethod occurrences="7">
@@ -450,19 +455,20 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Util/Test.php">
-    <ArgumentTypeCoercion occurrences="4">
+    <ArgumentTypeCoercion occurrences="5">
       <code>$className</code>
+      <code>$pieces[0]</code>
       <code>$className</code>
       <code>$className</code>
       <code>$dataProviderClassName</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="1">
+    <InvalidArgument occurrences="4">
       <code>$e</code>
+      <code>$operator</code>
+      <code>$operator</code>
+      <code>$operator</code>
     </InvalidArgument>
     <InvalidCatch occurrences="1"/>
-    <InvalidOperand occurrences="1">
-      <code>$matches[0][1]</code>
-    </InvalidOperand>
     <InvalidReturnStatement occurrences="1">
       <code>$data</code>
     </InvalidReturnStatement>

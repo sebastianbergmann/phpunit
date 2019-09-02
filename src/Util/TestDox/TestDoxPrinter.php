@@ -181,7 +181,6 @@ class TestDoxPrinter extends ResultPrinter
     protected function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
     {
         $testName = TestSuiteSorter::getTestSorterUID($test);
-        $status   = $status ?? BaseTestRunner::STATUS_UNKNOWN;
 
         $result = [
             'className'  => $this->formatClassName($test),
