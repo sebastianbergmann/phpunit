@@ -306,7 +306,7 @@ final class MockMethod
                 if (!$parameter->isVariadic()) {
                     if ($parameter->isDefaultValueAvailable()) {
                         try {
-                            $value = $parameter->getDefaultValueConstantName();
+                            $value = \var_export($parameter->getDefaultValue(), true);
                         } catch (\ReflectionException $e) {
                             throw new RuntimeException(
                                 $e->getMessage(),
@@ -314,22 +314,6 @@ final class MockMethod
                                 $e
                             );
                         }
-
-                        if ($value === null) {
-                            try {
-                                $value = \var_export($parameter->getDefaultValue(), true);
-                            } catch (\ReflectionException $e) {
-                                throw new RuntimeException(
-                                    $e->getMessage(),
-                                    (int) $e->getCode(),
-                                    $e
-                                );
-                            }
-                        } elseif (!\defined($value)) {
-                            $rootValue = \preg_replace('/^.*\\\\/', '', $value);
-                            $value     = \defined($rootValue) ? $rootValue : $value;
-                        }
-
                         $default = ' = ' . $value;
                     } elseif ($parameter->isOptional()) {
                         $default = ' = null';
