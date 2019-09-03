@@ -92,7 +92,7 @@ final class MockBuilderTest extends TestCase
     public function testAddMethodsWithNonExistentMethodNames(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Trying to set mock method "mockableMethod" with addMethods, but it exists in class "Mockable". Use onlyMethods() for methods that exist in the class.');
+        $this->expectExceptionMessage('Trying to set mock method "mockableMethod" with addMethods(), but it exists in class "Mockable". Use onlyMethods() for methods that exist in the class.');
 
         $this->getMockBuilder(Mockable::class)
              ->addMethods(['mockableMethod'])
