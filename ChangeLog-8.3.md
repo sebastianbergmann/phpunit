@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.3 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3801](https://github.com/sebastianbergmann/phpunit/issues/3801): Class constant as default parameter is undefined
+* Fixed [#3807](https://github.com/sebastianbergmann/phpunit/pull/3807): Fixed message of exception raised by `MockBuilder::addMethods()`
 
 ## [8.3.4] - 2019-08-11
 
