@@ -63,6 +63,7 @@ final class MockBuilderTest extends TestCase
     public function testOnlyMethodsWithNonExistentMethodNames(): void
     {
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Trying to set mock method "mockableMethodWithCrazyName" with onlyMethods, but it does not exist in class "Mockable". Use addMethods() for methods that don\'t exist in the class.');
 
         $this->getMockBuilder(Mockable::class)
              ->onlyMethods(['mockableMethodWithCrazyName'])
@@ -91,6 +92,7 @@ final class MockBuilderTest extends TestCase
     public function testAddMethodsWithNonExistentMethodNames(): void
     {
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Trying to set mock method "mockableMethod" with addMethods(), but it exists in class "Mockable". Use onlyMethods() for methods that exist in the class.');
 
         $this->getMockBuilder(Mockable::class)
              ->addMethods(['mockableMethod'])
@@ -129,6 +131,7 @@ final class MockBuilderTest extends TestCase
     public function testNotAbleToUseAddMethodsAfterOnlyMethods(): void
     {
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Cannot use addMethods() on "Mockable" mock because mocked methods were already configured.');
 
         $this->getMockBuilder(Mockable::class)
              ->onlyMethods(['mockableMethod'])
@@ -139,6 +142,7 @@ final class MockBuilderTest extends TestCase
     public function testNotAbleToUseOnlyMethodsAfterAddMethods(): void
     {
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Cannot use onlyMethods() on "Mockable" mock because mocked methods were already configured.');
 
         $this->getMockBuilder(Mockable::class)
              ->addMethods(['mockableMethodWithFakeMethod'])
@@ -169,6 +173,7 @@ final class MockBuilderTest extends TestCase
     public function testNotAbleToUseAddMethodsAfterSetMethods(): void
     {
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Cannot use addMethods() on "Mockable" mock because mocked methods were already configured.');
 
         $this->getMockBuilder(Mockable::class)
               ->setMethods(['mockableMethod'])
@@ -179,6 +184,7 @@ final class MockBuilderTest extends TestCase
     public function testNotAbleToUseOnlyMethodsAfterSetMethods(): void
     {
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Cannot use onlyMethods() on "Mockable" mock because mocked methods were already configured.');
 
         $this->getMockBuilder(Mockable::class)
              ->setMethods(['mockableMethodWithFakeMethod'])

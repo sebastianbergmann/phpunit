@@ -296,7 +296,7 @@ final class MockBuilder
             if ($reflector->hasMethod($method)) {
                 throw new RuntimeException(
                     \sprintf(
-                        'Trying to set mock method "%s" with addMethod, but it exists in class "%s". Use onlyMethods() for methods that exist in the class.',
+                        'Trying to set mock method "%s" with addMethods(), but it exists in class "%s". Use onlyMethods() for methods that exist in the class.',
                         $method,
                         $this->type
                     )
