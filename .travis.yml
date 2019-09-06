@@ -52,14 +52,16 @@ jobs:
   include:
     - stage: "Static Code Analysis"
       php: 7.3
-      env: php-cs-fixer
+      env:
+        - TOOL="php-cs-fixer"
       install:
         - phpenv config-rm xdebug.ini
       script:
         - ./tools/php-cs-fixer fix --dry-run -v --show-progress=dots --diff-format=udiff
     - stage: "Static Code Analysis"
       php: 7.3
-      env: psalm
+      env:
+        - TOOL="psalm"
       install:
         - phpenv config-rm xdebug.ini
       script:
@@ -68,7 +70,8 @@ jobs:
         - ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --stats --show-info=false
     - stage: "Static Code Analysis"
       php: 7.3
-      env: roave-backward-compatibility-check
+      env:
+        - TOOL="roave-backward-compatibility-check"
       install:
           - phpenv config-rm xdebug.ini
       script:
