@@ -9,14 +9,11 @@
  */
 namespace PHPUnit\Util;
 
-use PharIo\Version\VersionConstraintParser;
-use PHPUnit\Annotation\DocBlock;
+use PHPUnit\Annotation\Registry;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
-use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
@@ -150,30 +147,12 @@ final class Test
      */
     public static function getRequirements(string $className, string $methodName): array
     {
-        try {
-            $reflector = new \ReflectionClass($className);
-        } catch (\ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-
-        try {
-            $method = $reflector->getMethod($methodName);
-        } catch (\ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-
         return self::mergeThingsRecursivelyBecausePHPsArrayMergeRecursiveIsUselessBurningGarbage(
-            DocBlock::ofClass($reflector)
+            Registry::singleton()
+                ->forClassName($className)
                 ->requirements(),
-            DocBlock::ofFunction($method)
+            Registry::singleton()
+                ->forMethod($className, $methodName)
                 ->requirements()
         );
     }
@@ -313,17 +292,8 @@ final class Test
      */
     public static function getExpectedException(string $className, string $methodName)
     {
-        try {
-            $reflector = new \ReflectionMethod($className, $methodName);
-        } catch (\ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-
-        return DocBlock::ofFunction($reflector)
+        return Registry::singleton()
+            ->forMethod($className, $methodName)
             ->expectedException();
     }
 
@@ -334,17 +304,8 @@ final class Test
      */
     public static function getProvidedData(string $className, string $methodName): ?array
     {
-        try {
-            $reflector = new \ReflectionMethod($className, $methodName);
-        } catch (\ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-
-        return DocBlock::ofFunction($reflector)
+        return Registry::singleton()
+            ->forMethod($className, $methodName)
             ->getProvidedData();
     }
 
@@ -353,54 +314,29 @@ final class Test
      */
     public static function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
     {
-        if (!isset(self::$annotationCache[$className])) {
-            try {
-                $class = new \ReflectionClass($className);
-            } catch (\ReflectionException $e) {
-                throw new Exception(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-
-            self::$annotationCache[$className] = DocBlock::ofClass($class)
-                ->parseSymbolAnnotations();
-        }
-
-        $cacheKey = $className . '::' . $methodName;
-
-        if ($methodName !== null && !isset(self::$annotationCache[$cacheKey])) {
-            self::$annotationCache[$cacheKey] = [];
-
-            try {
-                $method                           = new \ReflectionMethod($className, $methodName);
-                self::$annotationCache[$cacheKey] = DocBlock::ofFunction($method)
-                    ->parseSymbolAnnotations();
-            } catch (\ReflectionException $e) {
-                self::$annotationCache[$cacheKey] = [];
-            }
+        if ($methodName === null) {
+            return [
+                'class' => Registry::singleton()
+                    ->forClassName($className)
+                    ->parseSymbolAnnotations(),
+                'method' => null,
+            ];
         }
 
         return [
-            'class'  => self::$annotationCache[$className],
-            'method' => $methodName !== null ? self::$annotationCache[$cacheKey] : [],
+            'class' => Registry::singleton()
+                ->forClassName($className)
+                ->parseSymbolAnnotations(),
+            'method' => Registry::singleton()
+                ->forMethod($className, $methodName)
+                ->parseSymbolAnnotations(),
         ];
     }
 
     public static function getInlineAnnotations(string $className, string $methodName): array
     {
-        try {
-            $method = new \ReflectionMethod($className, $methodName);
-        } catch (\ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-
-        return DocBlock::ofFunction($method)
+        return Registry::singleton()
+            ->forMethod($className, $methodName)
             ->getInlineAnnotations();
     }
 
@@ -550,7 +486,8 @@ final class Test
                         continue;
                     }
 
-                    $docBlock = DocBlock::ofFunction($method);
+                    $docBlock = Registry::singleton()
+                        ->forMethod($className, $method->getName());
 
                     if ($method->isStatic()) {
                         if ($docBlock->isHookToBeExecutedBeforeClass()) {
@@ -591,7 +528,12 @@ final class Test
 
         return \array_key_exists(
             'test',
-            DocBlock::ofFunction($method)
+            Registry::singleton()
+                ->forMethod(
+                    $method->getDeclaringClass()
+                        ->getName(),
+                    $method->getName()
+                )
                 ->parseSymbolAnnotations()
         );
     }
