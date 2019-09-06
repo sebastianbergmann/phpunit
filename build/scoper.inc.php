@@ -11,8 +11,6 @@
 return [
     'whitelist' => [
         'PHPUnit\*',
-        'SebastianBergmann\CodeCoverage\*',
-        'PHP_Token*',
         'Prophecy\*',
     ],
 ];
