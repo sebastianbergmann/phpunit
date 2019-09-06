@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\MockObject\Stub\Stub;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Util\Test as TestUtil;
 
