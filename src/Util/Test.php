@@ -203,77 +203,6 @@ final class Test
         );
     }
 
-    public static function parseRequirements(string $docComment, int $offset = 0, array $requires = []): array
-    {
-        // Split docblock into lines and rewind offset to start of docblock
-        $lines = \preg_split('/\r\n|\r|\n/', $docComment);
-        $offset -= \count($lines);
-
-        foreach ($lines as $line) {
-            if (\preg_match(self::REGEX_REQUIRES_OS, $line, $matches)) {
-                $requires[$matches['name']]             = $matches['value'];
-                $requires['__OFFSET'][$matches['name']] = $offset;
-            }
-
-            if (\preg_match(self::REGEX_REQUIRES_VERSION, $line, $matches)) {
-                $requires[$matches['name']] = [
-                    'version'  => $matches['version'],
-                    'operator' => $matches['operator'],
-                ];
-                $requires['__OFFSET'][$matches['name']] = $offset;
-            }
-
-            if (\preg_match(self::REGEX_REQUIRES_VERSION_CONSTRAINT, $line, $matches)) {
-                if (!empty($requires[$matches['name']])) {
-                    $offset++;
-
-                    continue;
-                }
-
-                try {
-                    $versionConstraintParser = new VersionConstraintParser;
-
-                    $requires[$matches['name'] . '_constraint'] = [
-                        'constraint' => $versionConstraintParser->parse(\trim($matches['constraint'])),
-                    ];
-                    $requires['__OFFSET'][$matches['name'] . '_constraint'] = $offset;
-                } catch (\PharIo\Version\Exception $e) {
-                    throw new Warning($e->getMessage(), $e->getCode(), $e);
-                }
-            }
-
-            if (\preg_match(self::REGEX_REQUIRES_SETTING, $line, $matches)) {
-                if (!isset($requires['setting'])) {
-                    $requires['setting'] = [];
-                }
-                $requires['setting'][$matches['setting']]                 = $matches['value'];
-                $requires['__OFFSET']['__SETTING_' . $matches['setting']] = $offset;
-            }
-
-            if (\preg_match(self::REGEX_REQUIRES, $line, $matches)) {
-                $name = $matches['name'] . 's';
-
-                if (!isset($requires[$name])) {
-                    $requires[$name] = [];
-                }
-
-                $requires[$name][]                                                = $matches['value'];
-                $requires['__OFFSET'][$matches['name'] . '_' . $matches['value']] = $offset;
-
-                if ($name === 'extensions' && !empty($matches['version'])) {
-                    $requires['extension_versions'][$matches['value']] = [
-                        'version'  => $matches['version'],
-                        'operator' => $matches['operator'],
-                    ];
-                }
-            }
-
-            $offset++;
-        }
-
-        return $requires;
-    }
-
     /**
      * Returns the missing requirements for a test.
      *
@@ -444,6 +373,9 @@ final class Test
             ->getProvidedData();
     }
 
+    /**
+     * @deprecated please use the {@see \PHPUnit\Annotation\Docblock} API instead
+     */
     public static function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
     {
         if (!isset(self::$annotationCache[$className])) {
