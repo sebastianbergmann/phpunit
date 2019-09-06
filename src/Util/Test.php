@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use PharIo\Version\VersionConstraintParser;
+use PHPUnit\Annotation\DocBlock;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
@@ -194,16 +195,8 @@ final class Test
             );
         }
 
-        $requires   = [
-            '__OFFSET' => [
-                '__FILE' => \realpath($reflector->getFileName()),
-            ],
-        ];
-
-        $requires = self::parseRequirements((string) $reflector->getDocComment(), $reflector->getStartLine(), $requires);
-
         try {
-            $reflector = new \ReflectionMethod($className, $methodName);
+            $method = $reflector->getMethod($methodName);
         } catch (\ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
@@ -212,7 +205,12 @@ final class Test
             );
         }
 
-        return self::parseRequirements((string) $reflector->getDocComment(), $reflector->getStartLine(), $requires);
+        return self::mergeThingsRecursivelyBecausePHPsArrayMergeRecursiveIsUselessBurningGarbage(
+            DocBlock::ofClass($reflector)
+                ->requirements(),
+            DocBlock::ofFunction($method)
+                ->requirements()
+        );
     }
 
     public static function parseRequirements(string $docComment, int $offset = 0, array $requires = []): array
@@ -1278,5 +1276,29 @@ final class Test
         }
 
         return true;
+    }
+
+    /**
+     * @TODO isolate to own file if used more than once
+     * @TODO add ZendFramework license note
+     * @TODO this is copied from https://github.com/zendframework/zend-stdlib/blob/master/src/ArrayUtils.php
+     */
+    private static function mergeThingsRecursivelyBecausePHPsArrayMergeRecursiveIsUselessBurningGarbage(array $a, array $b): array
+    {
+        foreach ($b as $key => $value) {
+            if (\array_key_exists($key, $a)) {
+                if (\is_int($key)) {
+                    $a[] = $value;
+                } elseif (\is_array($value) && \is_array($a[$key])) {
+                    $a[$key] = self::mergeThingsRecursivelyBecausePHPsArrayMergeRecursiveIsUselessBurningGarbage($a[$key], $value);
+                } else {
+                    $a[$key] = $value;
+                }
+            } else {
+                $a[$key] = $value;
+            }
+        }
+
+        return $a;
     }
 }
