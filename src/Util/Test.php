@@ -54,11 +54,6 @@ final class Test
     /**
      * @var array
      */
-    private static $annotationCache = [];
-
-    /**
-     * @var array
-     */
     private static $hookMethods = [];
 
     /**
@@ -309,27 +304,28 @@ final class Test
             ->getProvidedData();
     }
 
-    /**
-     * @deprecated please use the {@see \PHPUnit\Annotation\Docblock} API instead
-     */
     public static function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
     {
-        if ($methodName === null) {
-            return [
-                'class' => Registry::singleton()
-                    ->forClassName($className)
-                    ->parseSymbolAnnotations(),
-                'method' => null,
-            ];
+        if ($methodName !== null) {
+            try {
+                return [
+                    'class' => Registry::singleton()
+                        ->forClassName($className)
+                        ->symbolAnnotations(),
+                    'method' => Registry::singleton()
+                        ->forMethod($className, $methodName)
+                        ->symbolAnnotations(),
+                ];
+            } catch (Exception $methodNotFound) {
+                // ignored
+            }
         }
 
         return [
             'class' => Registry::singleton()
                 ->forClassName($className)
-                ->parseSymbolAnnotations(),
-            'method' => Registry::singleton()
-                ->forMethod($className, $methodName)
-                ->parseSymbolAnnotations(),
+                ->symbolAnnotations(),
+            'method' => null,
         ];
     }
 
@@ -534,7 +530,7 @@ final class Test
                         ->getName(),
                     $method->getName()
                 )
-                ->parseSymbolAnnotations()
+                ->symbolAnnotations()
         );
     }
 
@@ -597,32 +593,6 @@ final class Test
         }
 
         return self::resolveReflectionObjectsToLines($codeList);
-    }
-
-    /**
-     * Parse annotation content to use constant/class constant values
-     *
-     * Constants are specified using a starting '@'. For example: @ClassName::CONST_NAME
-     *
-     * If the constant is not found the string is used as is to ensure maximum BC.
-     */
-    private static function parseAnnotationContent(string $message): string
-    {
-        if (\defined($message) && (\strpos($message, '::') !== false && \substr_count($message, '::') + 1 === 2)) {
-            $message = \constant($message);
-        }
-
-        return $message;
-    }
-
-    private static function cleanUpMultiLineAnnotation(string $docComment): string
-    {
-        //removing initial '   * ' for docComment
-        $docComment = \str_replace("\r\n", "\n", $docComment);
-        $docComment = \preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
-        $docComment = (string) \substr($docComment, 0, -1);
-
-        return \rtrim($docComment, "\n");
     }
 
     private static function emptyHookMethodsArray(): array
