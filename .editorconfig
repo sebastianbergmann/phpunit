@@ -7,5 +7,8 @@ indent_style = space
 indent_size = 4
 charset = utf-8
 
+[*.yml]
+indent_size = 2
+
 [tests/_files/*_result_cache.txt]
 insert_final_newline = false
