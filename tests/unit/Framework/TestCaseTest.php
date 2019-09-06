@@ -847,7 +847,7 @@ final class TestCaseTest extends TestCase
         $this->assertInstanceOf(Stub::class, $mock);
     }
 
-    public function testCreateStubMocksAllMethods(): void
+    public function testCreateStubStubsAllMethods(): void
     {
         $mock = $this->createStub(\Mockable::class);
 
