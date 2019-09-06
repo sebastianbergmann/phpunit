@@ -235,6 +235,32 @@ final class DocBlock
         return $data;
     }
 
+    /**
+     * @psalm-return array<string, array{line: int, value: string}>
+     */
+    public function getInlineAnnotations() : array
+    {
+        $code        = \file($this->reflector->getFileName());
+        $lineNumber  = $this->reflector->getStartLine();
+        $startLine   = $this->reflector->getStartLine() - 1;
+        $endLine     = $this->reflector->getEndLine() - 1;
+        $codeLines   = \array_slice($code, $startLine, $endLine - $startLine + 1);
+        $annotations = [];
+
+        foreach ($codeLines as $line) {
+            if (\preg_match('#/\*\*?\s*@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?\*/$#m', $line, $matches)) {
+                $annotations[\strtolower($matches['name'])] = [
+                    'line'  => $lineNumber,
+                    'value' => $matches['value'],
+                ];
+            }
+
+            $lineNumber++;
+        }
+
+        return $annotations;
+    }
+
     private function parseSymbolAnnotations() : array
     {
         $annotations = [];
