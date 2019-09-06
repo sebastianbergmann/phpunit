@@ -43,44 +43,103 @@ final class DocBlock
 
     private const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
 
-    /** @var \ReflectionClass|\ReflectionFunctionAbstract */
-    private $reflector;
+    /** @var string */
+    private $docComment;
 
-    private function __construct()
-    {
+    /** @var bool */
+    private $isClass;
+
+    /** @var bool */
+    private $isMethod;
+
+    /** @var array<string, array<int, string>> */
+    private $symbolAnnotations;
+
+    /** @var int */
+    private $startLine;
+
+    /** @var int */
+    private $endLine;
+
+    /** @var string */
+    private $name;
+
+    /** @var string|null */
+    private $className;
+
+    /**
+     * Note: we do not preserve an instance of the reflection object, since it cannot be safely (de-)serialized.
+     *
+     * @param array<string, array<int, string>> $symbolAnnotations
+     */
+    private function __construct(
+        string $docBlock,
+        bool $isClass,
+        bool $isMethod,
+        array $symbolAnnotations,
+        int $startLine,
+        int $endLine,
+        string $fileName,
+        string $name,
+        ?string $className
+    ) {
+        $this->docComment        = $docBlock;
+        $this->isClass           = $isClass;
+        $this->isMethod          = $isMethod;
+        $this->symbolAnnotations = $symbolAnnotations;
+        $this->startLine         = $startLine;
+        $this->endLine           = $endLine;
+        $this->fileName          = $fileName;
+        $this->name              = $name;
+        $this->className         = $className;
     }
 
     public static function ofClass(\ReflectionClass $class) : self
     {
-        $instance = new self();
+        $className = $class->getName();
 
-        $instance->reflector = $class;
-
-        return $instance;
+        return new self(
+            (string) $class->getDocComment(),
+            true,
+            false,
+            self::extractAnnotationsFromReflector($class),
+            $class->getStartLine(),
+            $class->getEndLine(),
+            $class->getFileName(),
+            $className,
+            $className
+        );
     }
 
     public static function ofFunction(\ReflectionFunctionAbstract $function) : self
     {
-        $instance = new self();
-
-        $instance->reflector = $function;
-
-        return $instance;
+        return new self(
+            (string) $function->getDocComment(),
+            false,
+            $function instanceof \ReflectionMethod,
+            self::extractAnnotationsFromReflector($function),
+            $function->getStartLine(),
+            $function->getEndLine(),
+            $function->getFileName(),
+            $function->getName(),
+            $function instanceof \ReflectionMethod
+                ? $function->getDeclaringClass()->getName()
+                : null
+        );
     }
 
     // @TODO accurately document returned type here
     public function requirements() : array
     {
-        $docComment = (string) $this->reflector->getDocComment();
-        $offset     = $this->reflector->getStartLine();
+        $offset     = $this->startLine;
         $requires   = [
             '__OFFSET' => [
-                '__FILE' => \realpath($this->reflector->getFileName()),
+                '__FILE' => \realpath($this->fileName),
             ],
         ];
 
         // Split docblock into lines and rewind offset to start of docblock
-        $lines  = \preg_split('/\r\n|\r|\n/', $docComment);
+        $lines  = \preg_split('/\r\n|\r|\n/', $this->docComment);
         $offset -= \count($lines);
 
         foreach ($lines as $line) {
@@ -160,13 +219,13 @@ final class DocBlock
      */
     public function expectedException()
     {
-        $docComment = (string) \substr((string) $this->reflector->getDocComment(), 3, -2);
+        $docComment = (string) \substr($this->docComment, 3, -2);
 
         if (1 !== \preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
             return false;
         }
 
-        $annotations   = $this->parseSymbolAnnotations();
+        $annotations   = $this->symbolAnnotations();
         $class         = $matches[1];
         $code          = null;
         $message       = '';
@@ -209,9 +268,8 @@ final class DocBlock
      */
     public function getProvidedData() : ?array
     {
-        $docComment = (string) $this->reflector->getDocComment();
-        $data       = $this->getDataFromDataProviderAnnotation($docComment)
-            ?? $this->getDataFromTestWithAnnotation($docComment);
+        $data = $this->getDataFromDataProviderAnnotation($this->docComment)
+            ?? $this->getDataFromTestWithAnnotation($this->docComment);
 
         if ($data === null) {
             return null;
@@ -240,10 +298,10 @@ final class DocBlock
      */
     public function getInlineAnnotations() : array
     {
-        $code        = \file($this->reflector->getFileName());
-        $lineNumber  = $this->reflector->getStartLine();
-        $startLine   = $this->reflector->getStartLine() - 1;
-        $endLine     = $this->reflector->getEndLine() - 1;
+        $code        = \file($this->fileName);
+        $lineNumber  = $this->startLine;
+        $startLine   = $this->startLine - 1;
+        $endLine     = $this->endLine - 1;
         $codeLines   = \array_slice($code, $startLine, $endLine - $startLine + 1);
         $annotations = [];
 
@@ -261,49 +319,35 @@ final class DocBlock
         return $annotations;
     }
 
-    public function parseSymbolAnnotations() : array
+    public function symbolAnnotations() : array
     {
-        $annotations = [];
-
-        if ($this->reflector instanceof \ReflectionClass) {
-            $annotations = \array_merge(
-                $annotations,
-                ...array_map(function (\ReflectionClass $trait) : array {
-                    return $this->parseDocBlock((string) $trait->getDocComment());
-                }, \array_values($this->reflector->getTraits()))
-            );
-        }
-
-        return \array_merge(
-            $annotations,
-            $this->parseDocBlock((string) $this->reflector->getDocComment())
-        );
+        return $this->symbolAnnotations;
     }
 
     public function isHookToBeExecutedBeforeClass() : bool
     {
-        return $this->reflector instanceof \ReflectionMethod
-            && false !== \strpos((string) $this->reflector->getDocComment(), '@beforeClass');
+        return $this->isMethod
+            && false !== \strpos($this->docComment, '@beforeClass');
     }
 
     public function isHookToBeExecutedAfterClass() : bool
     {
-        return $this->reflector instanceof \ReflectionMethod
-            && false !== \strpos((string) $this->reflector->getDocComment(), '@afterClass');
+        return $this->isMethod
+            && false !== \strpos($this->docComment, '@afterClass');
     }
 
     public function isToBeExecutedBeforeTest() : bool
     {
-        return 1 === \preg_match('/@before\b/', (string) $this->reflector->getDocComment());
+        return 1 === \preg_match('/@before\b/', $this->docComment);
     }
 
     public function isToBeExecutedAfterTest() : bool
     {
-        return 1 === \preg_match('/@after\b/', (string) $this->reflector->getDocComment());
+        return 1 === \preg_match('/@after\b/', $this->docComment);
     }
 
     /** @return array<string, array<int, string>> */
-    private function parseDocBlock(string $docBlock) : array
+    private static function parseDocBlock(string $docBlock) : array
     {
         // Strip away the docblock header and footer to ease parsing of one line annotations
         $docBlock    = (string) \substr($docBlock, 3, -2);
@@ -344,16 +388,11 @@ final class DocBlock
     private function getDataFromDataProviderAnnotation(string $docComment): ?iterable
     {
         $methodName = null;
-        $className  = null;
+        $className  = $this->className;
 
-        if ($this->reflector instanceof \ReflectionMethod) {
-            $methodName = $this->reflector->getName();
-            $className = $this->reflector->getDeclaringClass()
-                ->getName();
-        }
-
-        if ($this->reflector instanceof \ReflectionClass) {
-            $className = $this->reflector->getName();
+        if ($this->isMethod) {
+            $methodName = $this->name;
+            $className  = $this->className;
         }
 
         if (! \preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
@@ -482,5 +521,25 @@ final class DocBlock
         $docComment = (string) \substr($docComment, 0, -1);
 
         return \rtrim($docComment, "\n");
+    }
+
+    /** @param \ReflectionClass|\ReflectionFunctionAbstract $reflector */
+    private static function extractAnnotationsFromReflector(\Reflector $reflector) : array
+    {
+        $annotations = [];
+
+        if ($reflector instanceof \ReflectionClass) {
+            $annotations = \array_merge(
+                $annotations,
+                ...array_map(function (\ReflectionClass $trait) : array {
+                    return self::parseDocBlock((string) $trait->getDocComment());
+                }, \array_values($reflector->getTraits()))
+            );
+        }
+
+        return \array_merge(
+            $annotations,
+            self::parseDocBlock((string) $reflector->getDocComment())
+        );
     }
 }
