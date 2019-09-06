@@ -280,6 +280,28 @@ final class DocBlock
         );
     }
 
+    public function isHookToBeExecutedBeforeClass() : bool
+    {
+        return $this->reflector instanceof \ReflectionMethod
+            && false !== \strpos((string) $this->reflector->getDocComment(), '@beforeClass');
+    }
+
+    public function isHookToBeExecutedAfterClass() : bool
+    {
+        return $this->reflector instanceof \ReflectionMethod
+            && false !== \strpos((string) $this->reflector->getDocComment(), '@afterClass');
+    }
+
+    public function isToBeExecutedBeforeTest() : bool
+    {
+        return 1 === \preg_match('/@before\b/', (string) $this->reflector->getDocComment());
+    }
+
+    public function isToBeExecutedAfterTest() : bool
+    {
+        return 1 === \preg_match('/@after\b/', (string) $this->reflector->getDocComment());
+    }
+
     /** @return array<string, array<int, string>> */
     private function parseDocBlock(string $docBlock) : array
     {
