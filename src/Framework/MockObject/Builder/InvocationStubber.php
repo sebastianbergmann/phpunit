@@ -21,24 +21,47 @@ interface InvocationStubber
      */
     public function will(Stub $stub): Identity;
 
-    public function willReturn($value, ...$nextValues): self;
+    /** @return self */
+    public function willReturn($value, ...$nextValues);
 
-    /** @param mixed $reference */
-    public function willReturnReference(&$reference): self;
+    /**
+     * @param mixed $reference
+     *
+     * @return self
+     */
+    public function willReturnReference(&$reference);
 
-    /** @param array<int, array<int, mixed>> $valueMap */
-    public function willReturnMap(array $valueMap): self;
+    /**
+     * @param array<int, array<int, mixed>> $valueMap
+     *
+     * @return self
+     */
+    public function willReturnMap(array $valueMap);
 
-    /** @param int $argumentIndex */
-    public function willReturnArgument($argumentIndex): self;
+    /**
+     * @param int $argumentIndex
+     *
+     * @return self
+     */
+    public function willReturnArgument($argumentIndex);
 
-    /** @param callable $callback */
-    public function willReturnCallback($callback): self;
+    /**
+     * @param callable $callback
+     *
+     * @return self
+     */
+    public function willReturnCallback($callback);
 
-    public function willReturnSelf(): self;
+    /** @return self */
+    public function willReturnSelf();
 
-    /** @param mixed $values */
-    public function willReturnOnConsecutiveCalls(...$values): self;
+    /**
+     * @param mixed $values
+     *
+     * @return self
+     */
+    public function willReturnOnConsecutiveCalls(...$values);
 
-    public function willThrowException(\Throwable $exception): self;
+    /** @return self */
+    public function willThrowException(\Throwable $exception);
 }
