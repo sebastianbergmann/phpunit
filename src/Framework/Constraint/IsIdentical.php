@@ -56,7 +56,8 @@ final class IsIdentical extends Constraint
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {
         $epsilon = self::EPSILON;
-        if (defined('CUSTOM_EPSILON')) {
+
+        if (\defined('CUSTOM_EPSILON')) {
             $epsilon = CUSTOM_EPSILON;
         }
 
