@@ -107,9 +107,6 @@
       <code>$this-&gt;will($stub)</code>
       <code>$this-&gt;will($stub)</code>
     </LessSpecificReturnStatement>
-    <MethodSignatureMismatch occurrences="1">
-      <code>InvocationMocker</code>
-    </MethodSignatureMismatch>
     <MoreSpecificReturnType occurrences="8">
       <code>self</code>
       <code>self</code>
