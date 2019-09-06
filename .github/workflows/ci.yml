@@ -1,0 +1,20 @@
+# https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+
+on:
+  - push
+  - pull_request
+
+name: CI
+
+jobs:
+  php-cs-fixer:
+    name: Static Code Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Run friendsofphp/php-cs-fixer
+        uses: docker://php:7.3-cli
+        with:
+          args: ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
