@@ -776,6 +776,10 @@ class Command
 
         $this->handleCustomTestSuite();
 
+        if (!isset($this->arguments['testSuffixes'])) {
+            $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
+        }
+
         if (!isset($this->arguments['test'])) {
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
@@ -811,10 +815,6 @@ class Command
                 $suite->addTestFile($this->arguments['test']);
                 $this->arguments['test'] = $suite;
             }
-        }
-
-        if (!isset($this->arguments['testSuffixes'])) {
-            $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
         }
 
         if (isset($includePath)) {
