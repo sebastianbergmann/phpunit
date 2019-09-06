@@ -128,9 +128,15 @@
       <code>$interfaceName</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
+    <InvalidArgument occurrences="1">
+      <code>$e</code>
+    </InvalidArgument>
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($args[$i], '$')</code>
     </PossiblyFalseArgument>
+    <UndefinedConstant occurrences="1">
+      <code>\WSDL_CACHE_NONE</code>
+    </UndefinedConstant>
   </file>
   <file src="src/Framework/MockObject/InvocationMocker.php">
     <InvalidNullableReturnType occurrences="1">
