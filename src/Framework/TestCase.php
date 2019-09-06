@@ -27,6 +27,7 @@ use PHPUnit\Framework\MockObject\Matcher\InvokedAtMostCount as InvokedAtMostCoun
 use PHPUnit\Framework\MockObject\Matcher\InvokedCount as InvokedCountMatcher;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls as ConsecutiveCallsStub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnArgument as ReturnArgumentStub;
@@ -1541,6 +1542,18 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 'invalid.'
             );
         }
+    }
+
+    /**
+     * Makes configurable stub for the specified class.
+     *
+     * @psalm-template RealInstanceType of object
+     * @psalm-param    class-string<RealInstanceType> $originalClassName
+     * @psalm-return   Stub&RealInstanceType
+     */
+    protected function createStub(string $originalClassName): Stub
+    {
+        return $this->createMock($originalClassName);
     }
 
     /**
