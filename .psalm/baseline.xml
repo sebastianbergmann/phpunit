@@ -97,6 +97,9 @@
     <ImplementedReturnTypeMismatch occurrences="1">
       <code>self</code>
     </ImplementedReturnTypeMismatch>
+    <MethodSignatureMismatch occurrences="1">
+      <code>InvocationMocker</code>
+    </MethodSignatureMismatch>
     <UndefinedInterfaceMethod occurrences="1">
       <code>registerId</code>
     </UndefinedInterfaceMethod>
