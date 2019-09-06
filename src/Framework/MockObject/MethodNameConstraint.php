@@ -23,7 +23,7 @@ final class MethodNameConstraint extends Constraint
 
     public function __construct(string $methodName)
     {
-        $this->methodName = \strtolower($methodName);
+        $this->methodName = $methodName;
     }
 
     public function toString(): string
@@ -40,6 +40,6 @@ final class MethodNameConstraint extends Constraint
             return false;
         }
 
-        return $this->methodName === \strtolower($other);
+        return \strtolower($this->methodName) === \strtolower($other);
     }
 }
