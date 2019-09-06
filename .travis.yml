@@ -44,14 +44,3 @@ after_success:
 
 notifications:
   email: false
-
-jobs:
-  include:
-    - stage: "Static Code Analysis"
-      php: 7.3
-      env:
-        - TOOL="php-cs-fixer"
-      install:
-        - phpenv config-rm xdebug.ini
-      script:
-        - ./tools/php-cs-fixer fix --dry-run -v --show-progress=dots --diff-format=udiff
