@@ -14,11 +14,6 @@ use PHPUnit\Framework\MockObject\Stub\Stub;
 /** @internal This class is not covered by the backward compatibility promise for PHPUnit */
 interface InvocationStubber
 {
-    /**
-     * @TODO is "will" actually sensible in a stub context? Should a stub produce side-effects?
-     *
-     * Note: probably yes, since you want a stub of a promise to be able to resolve a real callback, for example
-     */
     public function will(Stub $stub): Identity;
 
     /** @return self */
