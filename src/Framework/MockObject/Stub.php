@@ -16,7 +16,7 @@ use PHPUnit\Framework\MockObject\Builder\InvocationStubber;
  */
 interface Stub
 {
-    public function __phpunit_getInvocationMocker(): InvocationMocker;
+    public function __phpunit_getInvocationMocker(): InvocationHandler;
 
     public function __phpunit_hasMatchers(): bool;
 

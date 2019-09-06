@@ -33,7 +33,7 @@ trait Api
     private $__phpunit_returnValueGeneration = true;
 
     /**
-     * @var InvocationMocker
+     * @var InvocationHandler
      */
     private $__phpunit_invocationMocker;
 
@@ -62,10 +62,10 @@ trait Api
     }
 
     /** @noinspection MagicMethodsValidityInspection */
-    public function __phpunit_getInvocationMocker(): InvocationMocker
+    public function __phpunit_getInvocationMocker(): InvocationHandler
     {
         if ($this->__phpunit_invocationMocker === null) {
-            $this->__phpunit_invocationMocker = new InvocationMocker(
+            $this->__phpunit_invocationMocker = new InvocationHandler(
                 static::$__phpunit_configurableMethods,
                 $this->__phpunit_returnValueGeneration
             );
