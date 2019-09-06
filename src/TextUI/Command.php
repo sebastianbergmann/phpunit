@@ -17,7 +17,6 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -808,9 +807,9 @@ class Command
             if (isset($this->arguments['test']) &&
                 \is_string($this->arguments['test']) &&
                 \substr($this->arguments['test'], -5, 5) === '.phpt') {
-                $test = new PhptTestCase($this->arguments['test']);
-                $this->arguments['test'] = new TestSuite;
-                $this->arguments['test']->addTest($test);
+                $suite = new TestSuite;
+                $suite->addTestFile($this->arguments['test']);
+                $this->arguments['test'] = $suite;
             }
         }
 
