@@ -19,6 +19,33 @@ If you want to do a very quick check health-check of most basic use cases you ca
 
 The `basic` suite of tests puts the core system through its paces and covers most of the basic use cases of PHPUnit including happy flows and common exceptions. 
 
+## Running the PHPUnit self-tests in PhpStorm
+
+First, please configure PhpStorm in the settings:
+
+Languages & Frameworks > PHP > Test Frameworks:
+- PHPUnit library:
+  - [x] Path to phpunit.phar: `phpunit` (relative to your local copy of PHPUnit)
+- Test Runner:
+  - [x] Default configuration file: `phpunit.xml` (relative to your local copy of PHPUnit)
+
+Note: These configuration steps are current as of PhpStorm 2019.2.
+In later versions, some settings might have been renamed or
+been moved around.
+
+Now you can execute all tests or only some tests as needed.
+Please note that there are some subfolders within the `tests/`
+folder that must not be included in the test scope. This breaks
+running tests by folders for the end-to-end tests and the complete
+test suite.
+
+- To run all tests, please select "Defined in the configuration file"
+  as test scope.
+- To run the unit tests, please select the `tests/unit/` folder
+  as test scope.
+- You can also select individual files or folders from the unit or
+  end-to-end tests as test scope.
+
 ## Structure of the self-test collection
 
 Note: this section will change often while `tests/` is being refactored.
