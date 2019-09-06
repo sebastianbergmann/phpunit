@@ -404,24 +404,6 @@ final class Test
             ->getInlineAnnotations();
     }
 
-    // @TODO remove
-    public static function parseAnnotations(string $docBlock): array
-    {
-        $annotations = [];
-        // Strip away the docblock header and footer to ease parsing of one line annotations
-        $docBlock = (string) \substr($docBlock, 3, -2);
-
-        if (\preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>[^\r\n]*?))?[ \t]*\r?$/m', $docBlock, $matches)) {
-            $numMatches = \count($matches[0]);
-
-            for ($i = 0; $i < $numMatches; ++$i) {
-                $annotations[$matches['name'][$i]][] = (string) $matches['value'][$i];
-            }
-        }
-
-        return $annotations;
-    }
-
     public static function getBackupSettings(string $className, string $methodName): array
     {
         return [
@@ -609,9 +591,11 @@ final class Test
             return true;
         }
 
-        $annotations = self::parseAnnotations((string) $method->getDocComment());
-
-        return isset($annotations['test']);
+        return \array_key_exists(
+            'test',
+            DocBlock::ofFunction($method)
+                ->parseSymbolAnnotations()
+        );
     }
 
     /**
