@@ -57,16 +57,6 @@ final class Test
     /**
      * @var string
      */
-    private const REGEX_TEST_WITH = '/@testWith\s+/';
-
-    /**
-     * @var string
-     */
-    private const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
-
-    /**
-     * @var string
-     */
     private const REGEX_REQUIRES_VERSION = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
 
     /**
@@ -450,72 +440,8 @@ final class Test
             );
         }
 
-        $docComment = (string) $reflector->getDocComment();
-
-        $data = self::getDataFromDataProviderAnnotation($docComment, $className, $methodName);
-
-        if ($data === null) {
-            $data = self::getDataFromTestWithAnnotation($docComment);
-        }
-
-        if ($data === []) {
-            throw new SkippedTestError;
-        }
-
-        if ($data !== null) {
-            foreach ($data as $key => $value) {
-                if (!\is_array($value)) {
-                    throw new Exception(
-                        \sprintf(
-                            'Data set %s is invalid.',
-                            \is_int($key) ? '#' . $key : '"' . $key . '"'
-                        )
-                    );
-                }
-            }
-        }
-
-        return $data;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public static function getDataFromTestWithAnnotation(string $docComment): ?array
-    {
-        $docComment = self::cleanUpMultiLineAnnotation($docComment);
-
-        if (\preg_match(self::REGEX_TEST_WITH, $docComment, $matches, \PREG_OFFSET_CAPTURE)) {
-            $offset            = \strlen($matches[0][0]) + $matches[0][1];
-            $annotationContent = \substr($docComment, $offset);
-            $data              = [];
-
-            foreach (\explode("\n", $annotationContent) as $candidateRow) {
-                $candidateRow = \trim($candidateRow);
-
-                if ($candidateRow[0] !== '[') {
-                    break;
-                }
-
-                $dataSet = \json_decode($candidateRow, true);
-
-                if (\json_last_error() !== \JSON_ERROR_NONE) {
-                    throw new Exception(
-                        'The data set for the @testWith annotation cannot be parsed: ' . \json_last_error_msg()
-                    );
-                }
-
-                $data[] = $dataSet;
-            }
-
-            if (!$data) {
-                throw new Exception('The data set for the @testWith annotation cannot be parsed.');
-            }
-
-            return $data;
-        }
-
-        return null;
+        return DocBlock::ofFunction($reflector)
+            ->getProvidedData();
     }
 
     public static function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
@@ -599,6 +525,7 @@ final class Test
         return $annotations;
     }
 
+    // @TODO remove
     public static function parseAnnotations(string $docBlock): array
     {
         $annotations = [];
@@ -883,89 +810,6 @@ final class Test
         }
 
         return $message;
-    }
-
-    /**
-     * @throws InvalidDataProviderException
-     */
-    private static function getDataFromDataProviderAnnotation(string $docComment, string $className, string $methodName): ?iterable
-    {
-        if (\preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
-            $result = [];
-
-            foreach ($matches[1] as $match) {
-                $dataProviderMethodNameNamespace = \explode('\\', $match);
-                $leaf                            = \explode('::', \array_pop($dataProviderMethodNameNamespace));
-                $dataProviderMethodName          = \array_pop($leaf);
-
-                if (empty($dataProviderMethodNameNamespace)) {
-                    $dataProviderMethodNameNamespace = '';
-                } else {
-                    $dataProviderMethodNameNamespace = \implode('\\', $dataProviderMethodNameNamespace) . '\\';
-                }
-
-                if (empty($leaf)) {
-                    $dataProviderClassName = $className;
-                } else {
-                    $dataProviderClassName = $dataProviderMethodNameNamespace . \array_pop($leaf);
-                }
-
-                try {
-                    $dataProviderClass = new \ReflectionClass($dataProviderClassName);
-
-                    $dataProviderMethod = $dataProviderClass->getMethod(
-                        $dataProviderMethodName
-                    );
-                } catch (\ReflectionException $e) {
-                    throw new Exception(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
-
-                if ($dataProviderMethod->isStatic()) {
-                    $object = null;
-                } else {
-                    $object = $dataProviderClass->newInstance();
-                }
-
-                if ($dataProviderMethod->getNumberOfParameters() === 0) {
-                    $data = $dataProviderMethod->invoke($object);
-                } else {
-                    $data = $dataProviderMethod->invoke($object, $methodName);
-                }
-
-                if ($data instanceof \Traversable) {
-                    $origData = $data;
-                    $data     = [];
-
-                    foreach ($origData as $key => $value) {
-                        if (\is_int($key)) {
-                            $data[] = $value;
-                        } elseif (\array_key_exists($key, $data)) {
-                            throw new InvalidDataProviderException(
-                                \sprintf(
-                                    'The key "%s" has already been defined in the data provider "%s".',
-                                    $key,
-                                    $match
-                                )
-                            );
-                        } else {
-                            $data[$key] = $value;
-                        }
-                    }
-                }
-
-                if (\is_array($data)) {
-                    $result = \array_merge($result, $data);
-                }
-            }
-
-            return $result;
-        }
-
-        return null;
     }
 
     private static function cleanUpMultiLineAnnotation(string $docComment): string
