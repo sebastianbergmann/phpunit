@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject\Matcher;
 
 use PHPUnit\Framework\Constraint\Constraint;
+use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\MockObject\MethodNameConstraint;
 
