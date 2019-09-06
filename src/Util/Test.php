@@ -429,54 +429,8 @@ final class Test
             );
         }
 
-        $docComment = (string) $reflector->getDocComment();
-        $docComment = (string) \substr($docComment, 3, -2);
-
-        if (\preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
-            $annotations = self::parseTestMethodAnnotations(
-                $className,
-                $methodName
-            );
-
-            $class         = $matches[1];
-            $code          = null;
-            $message       = '';
-            $messageRegExp = '';
-
-            if (isset($matches[2])) {
-                $message = \trim($matches[2]);
-            } elseif (isset($annotations['method']['expectedExceptionMessage'])) {
-                $message = self::parseAnnotationContent(
-                    $annotations['method']['expectedExceptionMessage'][0]
-                );
-            }
-
-            if (isset($annotations['method']['expectedExceptionMessageRegExp'])) {
-                $messageRegExp = self::parseAnnotationContent(
-                    $annotations['method']['expectedExceptionMessageRegExp'][0]
-                );
-            }
-
-            if (isset($matches[3])) {
-                $code = $matches[3];
-            } elseif (isset($annotations['method']['expectedExceptionCode'])) {
-                $code = self::parseAnnotationContent(
-                    $annotations['method']['expectedExceptionCode'][0]
-                );
-            }
-
-            if (\is_numeric($code)) {
-                $code = (int) $code;
-            } elseif (\is_string($code) && \defined($code)) {
-                $code = (int) \constant($code);
-            }
-
-            return [
-                'class' => $class, 'code' => $code, 'message' => $message, 'message_regex' => $messageRegExp,
-            ];
-        }
-
-        return false;
+        return DocBlock::ofFunction($reflector)
+            ->expectedException();
     }
 
     /**
