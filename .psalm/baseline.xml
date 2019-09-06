@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.x-dev@0279c6f6d9bbe22854526c45eaf1f5482c12ade3">
+<files psalm-version="3.4.12@86e5e50c1bb492045e70f2ebe1da3cad06e4e9b2">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -128,9 +128,15 @@
       <code>$interfaceName</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
+    <InvalidArgument occurrences="1">
+      <code>$e</code>
+    </InvalidArgument>
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($args[$i], '$')</code>
     </PossiblyFalseArgument>
+    <UndefinedConstant occurrences="1">
+      <code>\WSDL_CACHE_NONE</code>
+    </UndefinedConstant>
   </file>
   <file src="src/Framework/MockObject/InvocationMocker.php">
     <InvalidNullableReturnType occurrences="1">
@@ -397,9 +403,7 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/Log/TeamCity.php">
-    <ArgumentTypeCoercion occurrences="3">
-      <code>$split[0]</code>
-      <code>$split[0]</code>
+    <ArgumentTypeCoercion occurrences="1">
       <code>$className</code>
     </ArgumentTypeCoercion>
     <UndefinedInterfaceMethod occurrences="7">
@@ -455,18 +459,14 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Util/Test.php">
-    <ArgumentTypeCoercion occurrences="5">
+    <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
-      <code>$pieces[0]</code>
       <code>$className</code>
       <code>$className</code>
       <code>$dataProviderClassName</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="4">
+    <InvalidArgument occurrences="1">
       <code>$e</code>
-      <code>$operator</code>
-      <code>$operator</code>
-      <code>$operator</code>
     </InvalidArgument>
     <InvalidCatch occurrences="1"/>
     <InvalidReturnStatement occurrences="1">
