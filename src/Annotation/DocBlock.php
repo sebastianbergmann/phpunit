@@ -261,7 +261,7 @@ final class DocBlock
         return $annotations;
     }
 
-    private function parseSymbolAnnotations() : array
+    public function parseSymbolAnnotations() : array
     {
         $annotations = [];
 
@@ -270,7 +270,7 @@ final class DocBlock
                 $annotations,
                 ...array_map(function (\ReflectionClass $trait) : array {
                     return $this->parseDocBlock((string) $trait->getDocComment());
-                }, $this->reflector->getTraits())
+                }, \array_values($this->reflector->getTraits()))
             );
         }
 

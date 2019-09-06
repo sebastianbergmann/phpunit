@@ -364,33 +364,22 @@ final class Test
                 );
             }
 
-            $traits      = $class->getTraits();
-            $annotations = [];
-
-            foreach ($traits as $trait) {
-                $annotations = \array_merge(
-                    $annotations,
-                    self::parseAnnotations((string) $trait->getDocComment())
-                );
-            }
-
-            self::$annotationCache[$className] = \array_merge(
-                $annotations,
-                self::parseAnnotations((string) $class->getDocComment())
-            );
+            self::$annotationCache[$className] = DocBlock::ofClass($class)
+                ->parseSymbolAnnotations();
         }
 
         $cacheKey = $className . '::' . $methodName;
 
         if ($methodName !== null && !isset(self::$annotationCache[$cacheKey])) {
-            try {
-                $method      = new \ReflectionMethod($className, $methodName);
-                $annotations = self::parseAnnotations((string) $method->getDocComment());
-            } catch (\ReflectionException $e) {
-                $annotations = [];
-            }
+            self::$annotationCache[$cacheKey] = [];
 
-            self::$annotationCache[$cacheKey] = $annotations;
+            try {
+                $method                           = new \ReflectionMethod($className, $methodName);
+                self::$annotationCache[$cacheKey] = DocBlock::ofFunction($method)
+                    ->parseSymbolAnnotations();
+            } catch (\ReflectionException $e) {
+                self::$annotationCache[$cacheKey] = [];
+            }
         }
 
         return [
