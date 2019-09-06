@@ -9,6 +9,13 @@ namespace PHPSTORM_META {
     );
 
     override(
+        \PHPUnit\Framework\TestCase::createStub(0),
+        map([
+            '@&\PHPUnit\Framework\MockObject\Stub',
+        ])
+    );
+
+    override(
         \PHPUnit\Framework\TestCase::createConfiguredMock(0),
         map([
             '@&\PHPUnit\Framework\MockObject\MockObject',
