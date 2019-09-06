@@ -47,14 +47,3 @@ after_success:
 
 notifications:
   email: false
-
-jobs:
-  include:
-    - stage: "Static Code Analysis"
-      php: 7.3
-      env:
-        - TOOL="roave-backward-compatibility-check"
-      install:
-          - phpenv config-rm xdebug.ini
-      script:
-          - ./tools/roave-backward-compatibility-check --from=8.3.3
