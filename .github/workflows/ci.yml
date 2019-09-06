@@ -7,8 +7,8 @@ on:
 name: CI
 
 jobs:
-  php-cs-fixer:
-    name: Static Code Analysis
+  coding-guidelines:
+    name: Coding Guidelines
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
