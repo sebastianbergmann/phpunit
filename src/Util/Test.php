@@ -550,32 +550,30 @@ final class Test
                         continue;
                     }
 
-                    $methodComment = $method->getDocComment();
+                    $docBlock = DocBlock::ofFunction($method);
 
-                    if ($methodComment) {
-                        if ($method->isStatic()) {
-                            if (\strpos($methodComment, '@beforeClass') !== false) {
-                                \array_unshift(
-                                    self::$hookMethods[$className]['beforeClass'],
-                                    $method->getName()
-                                );
-                            }
-
-                            if (\strpos($methodComment, '@afterClass') !== false) {
-                                self::$hookMethods[$className]['afterClass'][] = $method->getName();
-                            }
-                        }
-
-                        if (\preg_match('/@before\b/', $methodComment) > 0) {
+                    if ($method->isStatic()) {
+                        if ($docBlock->isHookToBeExecutedBeforeClass()) {
                             \array_unshift(
-                                self::$hookMethods[$className]['before'],
+                                self::$hookMethods[$className]['beforeClass'],
                                 $method->getName()
                             );
                         }
 
-                        if (\preg_match('/@after\b/', $methodComment) > 0) {
-                            self::$hookMethods[$className]['after'][] = $method->getName();
+                        if ($docBlock->isHookToBeExecutedAfterClass()) {
+                            self::$hookMethods[$className]['afterClass'][] = $method->getName();
                         }
+                    }
+
+                    if ($docBlock->isToBeExecutedBeforeTest()) {
+                        \array_unshift(
+                            self::$hookMethods[$className]['before'],
+                            $method->getName()
+                        );
+                    }
+
+                    if ($docBlock->isToBeExecutedAfterTest()) {
+                        self::$hookMethods[$className]['after'][] = $method->getName();
                     }
                 }
             } catch (\ReflectionException $e) {
