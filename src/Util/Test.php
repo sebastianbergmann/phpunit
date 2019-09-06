@@ -436,25 +436,8 @@ final class Test
             );
         }
 
-        $code        = \file($method->getFileName());
-        $lineNumber  = $method->getStartLine();
-        $startLine   = $method->getStartLine() - 1;
-        $endLine     = $method->getEndLine() - 1;
-        $methodLines = \array_slice($code, $startLine, $endLine - $startLine + 1);
-        $annotations = [];
-
-        foreach ($methodLines as $line) {
-            if (\preg_match('#/\*\*?\s*@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?\*/$#m', $line, $matches)) {
-                $annotations[\strtolower($matches['name'])] = [
-                    'line'  => $lineNumber,
-                    'value' => $matches['value'],
-                ];
-            }
-
-            $lineNumber++;
-        }
-
-        return $annotations;
+        return DocBlock::ofFunction($method)
+            ->getInlineAnnotations();
     }
 
     // @TODO remove
