@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Util\Test as TestUtil;
 
@@ -832,8 +833,23 @@ final class TestCaseTest extends TestCase
 
     public function testCreateMockMocksAllMethods(): void
     {
-        /** @var \Mockable $mock */
         $mock = $this->createMock(\Mockable::class);
+
+        $this->assertNull($mock->mockableMethod());
+        $this->assertNull($mock->anotherMockableMethod());
+    }
+
+    public function testCreateStubFromClassName(): void
+    {
+        $mock = $this->createStub(\Mockable::class);
+
+        $this->assertInstanceOf(\Mockable::class, $mock);
+        $this->assertInstanceOf(Stub::class, $mock);
+    }
+
+    public function testCreateStubMocksAllMethods(): void
+    {
+        $mock = $this->createStub(\Mockable::class);
 
         $this->assertNull($mock->mockableMethod());
         $this->assertNull($mock->anotherMockableMethod());
@@ -879,7 +895,6 @@ final class TestCaseTest extends TestCase
 
     public function testCreateMockSkipsConstructor(): void
     {
-        /** @var \Mockable $mock */
         $mock = $this->createMock(\Mockable::class);
 
         $this->assertNull($mock->constructorArgs);
@@ -887,8 +902,22 @@ final class TestCaseTest extends TestCase
 
     public function testCreateMockDisablesOriginalClone(): void
     {
-        /** @var \Mockable $mock */
         $mock = $this->createMock(\Mockable::class);
+
+        $cloned = clone $mock;
+        $this->assertNull($cloned->cloned);
+    }
+
+    public function testCreateStubSkipsConstructor(): void
+    {
+        $mock = $this->createStub(\Mockable::class);
+
+        $this->assertNull($mock->constructorArgs);
+    }
+
+    public function testCreateStubDisablesOriginalClone(): void
+    {
+        $mock = $this->createStub(\Mockable::class);
 
         $cloned = clone $mock;
         $this->assertNull($cloned->cloned);
@@ -924,6 +953,7 @@ final class TestCaseTest extends TestCase
             [123],
             ['foo'],
             [$this->createMock(\Mockable::class)],
+            [$this->createStub(\Mockable::class)],
         ];
 
         $test = new \TestAutoreferenced('testJsonEncodeException', [$data]);

@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMocker;
+use PHPUnit\Framework\MockObject\Builder\InvocationStubber;
 
 /**
- * @method BuilderInvocationMocker method($constraint)
+ * @method InvocationStubber method($constraint)
  */
 interface Stub
 {
