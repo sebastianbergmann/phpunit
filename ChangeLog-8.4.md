@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.4 release series are documented in this fil
 
 ### Added
 
+* Implemented [#3120](https://github.com/sebastianbergmann/phpunit/issues/3120): Provide `TestCase::createStub()` method as alternative to `TestCase::createMock()`
 * Implemented [#3775](https://github.com/sebastianbergmann/phpunit/issues/3775): Explicit API for expecting PHP errors, warnings, and notices
 
 ### Changed
