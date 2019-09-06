@@ -68,7 +68,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         return $this;
     }
 
-    public function will(Stub $stub): self
+    public function will(Stub $stub): Identity
     {
         $this->matcher->setStub($stub);
 
