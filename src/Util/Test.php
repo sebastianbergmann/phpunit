@@ -306,14 +306,14 @@ final class Test
 
     public static function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
     {
+        $registry = Registry::singleton();
+
         if ($methodName !== null) {
             try {
                 return [
-                    'class' => Registry::singleton()
-                        ->forClassName($className)
+                    'method' => $registry->forMethod($className, $methodName)
                         ->symbolAnnotations(),
-                    'method' => Registry::singleton()
-                        ->forMethod($className, $methodName)
+                    'class'  => $registry->forClassName($className)
                         ->symbolAnnotations(),
                 ];
             } catch (Exception $methodNotFound) {
@@ -322,10 +322,9 @@ final class Test
         }
 
         return [
-            'class' => Registry::singleton()
-                ->forClassName($className)
-                ->symbolAnnotations(),
             'method' => null,
+            'class'  => $registry->forClassName($className)
+                ->symbolAnnotations(),
         ];
     }
 
