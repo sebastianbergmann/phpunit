@@ -800,6 +800,8 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
 
     /**
      * Returns the tests as an enumeration.
+     *
+     * @return Test[]
      */
     public function tests(): array
     {
@@ -808,6 +810,8 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
 
     /**
      * Set tests of the test suite
+     *
+     * @param Test[] $tests
      */
     public function setTests(array $tests): void
     {
