@@ -380,38 +380,38 @@ final class Test
         $groups = [];
 
         if (isset($annotations['method']['author'])) {
-            $groups = $annotations['method']['author'];
+            $groups[] = $annotations['method']['author'];
         } elseif (isset($annotations['class']['author'])) {
-            $groups = $annotations['class']['author'];
+            $groups[] = $annotations['class']['author'];
         }
 
         if (isset($annotations['class']['group'])) {
-            $groups = \array_merge($groups, $annotations['class']['group']);
+            $groups[] = $annotations['class']['group'];
         }
 
         if (isset($annotations['method']['group'])) {
-            $groups = \array_merge($groups, $annotations['method']['group']);
+            $groups[] = $annotations['method']['group'];
         }
 
         if (isset($annotations['class']['ticket'])) {
-            $groups = \array_merge($groups, $annotations['class']['ticket']);
+            $groups[] = $annotations['class']['ticket'];
         }
 
         if (isset($annotations['method']['ticket'])) {
-            $groups = \array_merge($groups, $annotations['method']['ticket']);
+            $groups[] = $annotations['method']['ticket'];
         }
 
         foreach (['method', 'class'] as $element) {
             foreach (['small', 'medium', 'large'] as $size) {
                 if (isset($annotations[$element][$size])) {
-                    $groups[] = $size;
+                    $groups[] = [$size];
 
                     break 2;
                 }
             }
         }
 
-        return \array_unique($groups);
+        return \array_unique(\array_merge([], ...$groups));
     }
 
     public static function getSize(string $className, ?string $methodName): int
