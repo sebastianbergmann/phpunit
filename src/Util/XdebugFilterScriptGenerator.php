@@ -57,9 +57,8 @@ EOF;
 
                 if (\is_string($path)) {
                     $files[] = \sprintf(
-                        '%s%s',
-                        $path,
-                        \DIRECTORY_SEPARATOR
+                        \addslashes('%s' . \DIRECTORY_SEPARATOR),
+                        $path
                     );
                 }
             }
