@@ -29,7 +29,7 @@ final class NullTestResultCache implements TestResultCache
 
     public function getTime(string $testName): float
     {
-        return 0;
+        return 0.0;
     }
 
     public function load(): void
