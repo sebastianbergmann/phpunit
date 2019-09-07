@@ -34,7 +34,7 @@ print $code;
             }
         }
 
-        $this->__phpunit_getInvocationMocker()->invoke(
+        $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
                 'Foo', 'bar', $__phpunit_arguments, ': void', $this, false, true
             )

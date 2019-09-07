@@ -7,14 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Matcher;
+namespace PHPUnit\Framework\MockObject\Rule;
 
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
+use PHPUnit\Framework\MockObject\Verifiable;
+use PHPUnit\Framework\SelfDescribing;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class InvokedRecorder implements Invocation
+abstract class InvocationOrder implements SelfDescribing, Verifiable
 {
     /**
      * @var BaseInvocation[]
@@ -26,26 +28,19 @@ abstract class InvokedRecorder implements Invocation
         return \count($this->invocations);
     }
 
-    /**
-     * @return BaseInvocation[]
-     */
-    public function getInvocations(): array
-    {
-        return $this->invocations;
-    }
-
     public function hasBeenInvoked(): bool
     {
         return \count($this->invocations) > 0;
     }
 
-    public function invoked(BaseInvocation $invocation): void
+    final public function invoked(BaseInvocation $invocation)
     {
         $this->invocations[] = $invocation;
+
+        return $this->invokedDo($invocation);
     }
 
-    public function matches(BaseInvocation $invocation): bool
-    {
-        return true;
-    }
+    abstract public function matches(BaseInvocation $invocation): bool;
+
+    abstract protected function invokedDo(BaseInvocation $invocation);
 }

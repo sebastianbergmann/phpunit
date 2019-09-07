@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker as InvocationMockerBuilder;
-use PHPUnit\Framework\MockObject\Matcher\Invocation;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
  * @internal This trait is not covered by the backward compatibility promise for PHPUnit
@@ -62,7 +62,7 @@ trait Api
     }
 
     /** @noinspection MagicMethodsValidityInspection */
-    public function __phpunit_getInvocationMocker(): InvocationHandler
+    public function __phpunit_getInvocationHandler(): InvocationHandler
     {
         if ($this->__phpunit_invocationMocker === null) {
             $this->__phpunit_invocationMocker = new InvocationHandler(
@@ -77,21 +77,21 @@ trait Api
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_hasMatchers(): bool
     {
-        return $this->__phpunit_getInvocationMocker()->hasMatchers();
+        return $this->__phpunit_getInvocationHandler()->hasMatchers();
     }
 
     /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_verify(bool $unsetInvocationMocker = true): void
     {
-        $this->__phpunit_getInvocationMocker()->verify();
+        $this->__phpunit_getInvocationHandler()->verify();
 
         if ($unsetInvocationMocker) {
             $this->__phpunit_invocationMocker = null;
         }
     }
 
-    public function expects(Invocation $matcher): InvocationMockerBuilder
+    public function expects(InvocationOrder $matcher): InvocationMockerBuilder
     {
-        return $this->__phpunit_getInvocationMocker()->expects($matcher);
+        return $this->__phpunit_getInvocationHandler()->expects($matcher);
     }
 }

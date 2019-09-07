@@ -19,10 +19,10 @@ use PHPUnit\Framework\TestCase;
  * @uses \PHPUnit\Framework\MockObject\Builder\InvocationMocker
  * @uses \PHPUnit\Framework\MockObject\Invocation
  * @uses \PHPUnit\Framework\MockObject\Matcher
- * @uses \PHPUnit\Framework\MockObject\Matcher\InvokedRecorder
- * @uses \PHPUnit\Framework\MockObject\Matcher\MethodName
+ * @uses \PHPUnit\Framework\MockObject\Rule\InvocationOrder
+ * @uses \PHPUnit\Framework\MockObject\Rule\MethodName
  * @uses \PHPUnit\Framework\MockObject\Stub\ReturnStub
- * @uses \PHPUnit\Framework\MockObject\Matcher\InvokedCount
+ * @uses \PHPUnit\Framework\MockObject\Rule\InvokedCount
  *
  * @small
  */

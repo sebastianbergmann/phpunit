@@ -7,22 +7,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Matcher;
+namespace PHPUnit\Framework\MockObject\Rule;
 
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class AnyParameters extends StatelessInvocation
+final class AnyParameters implements ParametersRule
 {
     public function toString(): string
     {
         return 'with any parameters';
     }
 
-    public function matches(BaseInvocation $invocation): bool
+    public function apply(BaseInvocation $invocation): void
     {
-        return true;
+    }
+
+    public function verify(): void
+    {
     }
 }
