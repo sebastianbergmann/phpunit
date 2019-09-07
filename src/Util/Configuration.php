@@ -1197,6 +1197,7 @@ final class Configuration
                 true
             );
         }
+
         return [
             'class'     => $class,
             'file'      => $file,
