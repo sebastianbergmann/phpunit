@@ -32,6 +32,8 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             );
         }
 
+        $loadedClasses = [];
+
         if (!\class_exists($suiteClassName, false)) {
             $loadedClasses = \get_declared_classes();
 
