@@ -66,7 +66,7 @@ final class InvocationHandler
      *
      * @param string $id The identification of the match builder
      */
-    public function lookupMatcher(string $id): Matcher
+    public function lookupMatcher(string $id): ?Matcher
     {
         if (isset($this->matcherMap[$id])) {
             return $this->matcherMap[$id];
