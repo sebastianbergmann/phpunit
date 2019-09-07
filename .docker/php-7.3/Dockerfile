@@ -11,7 +11,7 @@ RUN apt-get update \
     && docker-php-ext-install \
         zip
 
-RUN echo 'memory_limit = 256M' >> /usr/local/etc/php/conf.d/docker-php-memory-limit.ini
+RUN echo 'memory_limit=-1' >> /usr/local/etc/php/conf.d/docker-php-memory-limit.ini
 
 COPY --from=composer:1.9.0 /usr/bin/composer /usr/local/bin/composer
 
