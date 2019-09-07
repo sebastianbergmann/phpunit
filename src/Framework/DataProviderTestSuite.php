@@ -24,6 +24,10 @@ class DataProviderTestSuite extends TestSuite
         $this->dependencies = $dependencies;
 
         foreach ($this->tests as $test) {
+            if (!$test instanceof TestCase) {
+                continue;
+            }
+
             $test->setDependencies($dependencies);
         }
     }
