@@ -202,10 +202,7 @@ final class TestSuiteSorter
         }
 
         if ($resolveDependencies && !($suite instanceof DataProviderTestSuite) && $this->suiteOnlyContainsTests($suite)) {
-            /** @var TestCase[] $tests */
-            $tests = $suite->tests();
-
-            $suite->setTests($this->resolveDependencies($tests));
+            $suite->setTests($this->resolveDependencies($suite->tests()));
         }
     }
 

@@ -40,7 +40,7 @@ final class JUnit extends Printer implements TestListener
     /**
      * @var bool
      */
-    private $reportRiskyTests = false;
+    private $reportUselessTests = false;
 
     /**
      * @var \DOMElement[]
@@ -90,7 +90,7 @@ final class JUnit extends Printer implements TestListener
     /**
      * @param null|mixed $out
      */
-    public function __construct($out = null, bool $reportRiskyTests = false)
+    public function __construct($out = null, bool $reportUselessTests = false)
     {
         $this->document               = new \DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
@@ -100,7 +100,7 @@ final class JUnit extends Printer implements TestListener
 
         parent::__construct($out);
 
-        $this->reportRiskyTests = $reportRiskyTests;
+        $this->reportUselessTests = $reportUselessTests;
     }
 
     /**
@@ -153,7 +153,7 @@ final class JUnit extends Printer implements TestListener
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
-        if (!$this->reportRiskyTests || $this->currentTestCase === null) {
+        if (!$this->reportUselessTests || $this->currentTestCase === null) {
             return;
         }
 

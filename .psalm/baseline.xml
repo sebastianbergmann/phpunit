@@ -224,6 +224,20 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$afterClassMethod</code>
     </PossiblyUndefinedVariable>
+    <PropertyTypeCoercion occurrences="1">
+      <code>$this-&gt;tests</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Framework/TestSuiteIterator.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;tests[$this-&gt;position]</code>
+    </ArgumentTypeCoercion>
+    <InvalidNullableReturnType occurrences="1">
+      <code>Test</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;valid() ? $this-&gt;tests[$this-&gt;position] : null</code>
+    </NullableReturnStatement>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <InvalidPropertyAssignmentValue occurrences="2">

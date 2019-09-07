@@ -34,7 +34,7 @@ final class IsJson extends Constraint
             return false;
         }
 
-        \json_decode($other, true);
+        \json_decode($other);
 
         if (\json_last_error()) {
             return false;
@@ -59,7 +59,7 @@ final class IsJson extends Constraint
             return 'an empty string is valid JSON';
         }
 
-        \json_decode($other, true);
+        \json_decode($other);
         $error = JsonMatchesErrorMessageProvider::determineJsonError(
             (string) \json_last_error()
         );
