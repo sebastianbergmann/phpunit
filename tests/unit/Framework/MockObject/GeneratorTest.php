@@ -142,7 +142,19 @@ final class GeneratorTest extends TestCase
         $this->assertTrue(\method_exists($mock, 'doSomething'));
     }
 
-    public function testGetMockForSingletonWithReflectionSuccess(): void
+    public function testGetMockForTraitWithNonExistantTrait(): void
+    {
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $mock = $this->generator->getMockForTrait('NonExistantTrait');
+    }
+
+    public function testGetObjectForTraitWithNonExistantTrait(): void
+    {
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $mock = $this->generator->getObjectForTrait('NonExistantTrait');
+    }
+
+   public function testGetMockForSingletonWithReflectionSuccess(): void
     {
         $mock = $this->generator->getMock(SingletonClass::class, ['doSomething'], [], '', false);
 
