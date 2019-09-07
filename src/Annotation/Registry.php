@@ -23,7 +23,7 @@ use PHPUnit\Util\Exception;
  */
 final class Registry
 {
-    /** @var self|null */
+    /** @var null|self */
     private static $instance;
 
     /** @var array<string, DocBlock> indexed by class name */
@@ -32,21 +32,21 @@ final class Registry
     /** @var array<string, array<string, DocBlock>> indexed by class name and method name */
     private $methodDocBlocks = [];
 
-    private function __construct()
-    {
-    }
-
-    public static function singleton() : self
+    public static function singleton(): self
     {
         return self::$instance
             ?? self::$instance = new self();
+    }
+
+    private function __construct()
+    {
     }
 
     /**
      * @throws Exception
      * @psalm-param class-string $class
      */
-    public function forClassName(string $class) : DocBlock
+    public function forClassName(string $class): DocBlock
     {
         if (\array_key_exists($class, $this->classDocBlocks)) {
             return $this->classDocBlocks[$class];
@@ -69,7 +69,7 @@ final class Registry
      * @throws Exception
      * @psalm-param class-string $className
      */
-    public function forMethod(string $class, string $method) : DocBlock
+    public function forMethod(string $class, string $method): DocBlock
     {
         if (isset($this->methodDocBlocks[$class][$method])) {
             return $this->methodDocBlocks[$class][$method];

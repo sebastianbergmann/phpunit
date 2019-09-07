@@ -12,14 +12,14 @@ final class VariousDocblockDefinedDataProvider
     /**
      * @anotherAnnotation
      */
-    public function anotherAnnotation() : void
+    public function anotherAnnotation(): void
     {
     }
 
     /**
      * @testWith [1]
      */
-    public function testWith1() : void
+    public function testWith1(): void
     {
     }
 
@@ -27,7 +27,7 @@ final class VariousDocblockDefinedDataProvider
      * @testWith [1, 2]
      * [3, 4]
      */
-    public function testWith1234() : void
+    public function testWith1234(): void
     {
     }
 
@@ -36,7 +36,7 @@ final class VariousDocblockDefinedDataProvider
      * [true]
      * [null]
      */
-    public function testWithABTrueNull() : void
+    public function testWithABTrueNull(): void
     {
     }
 
@@ -45,7 +45,7 @@ final class VariousDocblockDefinedDataProvider
      *           [2]
      * @annotation
      */
-    public function testWith12AndAnotherAnnotation() : void
+    public function testWith12AndAnotherAnnotation(): void
     {
     }
 
@@ -54,21 +54,21 @@ final class VariousDocblockDefinedDataProvider
      *           [2]
      * blah blah
      */
-    public function testWith12AndBlahBlah() : void
+    public function testWith12AndBlahBlah(): void
     {
     }
 
     /**
      * @testWith ["\"", "\""]
      */
-    public function testWithEscapedString() : void
+    public function testWithEscapedString(): void
     {
     }
 
     /**
      * @testWith [s]
      */
-    public function testWithMalformedValue() : void
+    public function testWithMalformedValue(): void
     {
     }
 
@@ -76,8 +76,7 @@ final class VariousDocblockDefinedDataProvider
      * @testWith ["valid"]
      *           [invalid]
      */
-    public function testWithWellFormedAndMalformedValue() : void
+    public function testWithWellFormedAndMalformedValue(): void
     {
-
     }
 }
