@@ -112,7 +112,6 @@ final class TestSuiteIteratorTest extends TestCase
         $testSuite = new TestSuite();
         $testSuite->addTest(new \EmptyTestCaseTest());
         $subject = new TestSuiteIterator($testSuite);
-        $subject->rewind();
 
         $subject->next();
 
@@ -124,7 +123,6 @@ final class TestSuiteIteratorTest extends TestCase
         $testSuite = new TestSuite();
         $testSuite->addTest(new \EmptyTestCaseTest());
         $subject = new TestSuiteIterator($testSuite);
-        $subject->rewind();
 
         $subject->next();
 
@@ -136,7 +134,6 @@ final class TestSuiteIteratorTest extends TestCase
         $testSuite = new TestSuite();
         $testSuite->addTest(new \EmptyTestCaseTest());
         $subject = new TestSuiteIterator($testSuite);
-        $subject->rewind();
 
         $subject->next();
 
@@ -147,21 +144,42 @@ final class TestSuiteIteratorTest extends TestCase
      * tests for getChildren
      */
 
+    public function testGetChildrenForEmptyTestSuiteThrowsException(): void
+    {
+        $testSuite = new TestSuite();
+        $subject   = new TestSuiteIterator($testSuite);
+
+        $this->expectException(UnexpectedValueException::class);
+
+        $subject->getChildren();
+    }
+
+    public function testGetChildrenForCurrentTestThrowsException(): void
+    {
+        $testSuite = new TestSuite();
+        $testSuite->addTest(new \EmptyTestCaseTest());
+        $subject = new TestSuiteIterator($testSuite);
+
+        $this->expectException(UnexpectedValueException::class);
+
+        $subject->getChildren();
+    }
+
     public function testGetChildrenReturnsNewInstanceWithCurrentTestSuite(): void
     {
-        $this->markTestSkipped('This test needs a bug fix to pass.');
+        $childSuite = new TestSuite();
+        $test       = new \EmptyTestCaseTest();
+        $childSuite->addTest($test);
 
-        $testSuite       = new TestSuite();
-        $childSuite      = new TestSuite();
+        $testSuite  = new TestSuite();
         $testSuite->addTest($childSuite);
+
         $subject = new TestSuiteIterator($testSuite);
-        $subject->rewind();
 
         $children = $subject->getChildren();
-        $children->rewind();
 
         $this->assertNotSame($subject, $children);
-        $this->assertSame($childSuite, $children->current());
+        $this->assertSame($test, $children->current());
     }
 
     /*
@@ -170,33 +188,28 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testHasChildrenForCurrentTestSuiteReturnsTrue(): void
     {
-        $testSuite       = new TestSuite();
-        $childSuite      = new TestSuite();
+        $testSuite  = new TestSuite();
+        $childSuite = new TestSuite();
         $testSuite->addTest($childSuite);
         $subject = new TestSuiteIterator($testSuite);
-        $subject->rewind();
 
         $this->assertTrue($subject->hasChildren());
     }
 
-    public function testHasChildrenForCurrentTestSuiteReturnsFalse(): void
+    public function testHasChildrenForCurrentTestReturnsFalse(): void
     {
-        $testSuite       = new TestSuite();
-        $test            = new \EmptyTestCaseTest();
+        $testSuite = new TestSuite();
+        $test      = new \EmptyTestCaseTest();
         $testSuite->addTest($test);
         $subject = new TestSuiteIterator($testSuite);
-        $subject->rewind();
 
         $this->assertFalse($subject->hasChildren());
     }
 
     public function testHasChildrenForNoTestsReturnsFalse(): void
     {
-        $this->markTestSkipped('This test needs a bug fix to pass.');
-
-        $testSuite       = new TestSuite();
-        $subject         = new TestSuiteIterator($testSuite);
-        $subject->rewind();
+        $testSuite = new TestSuite();
+        $subject   = new TestSuiteIterator($testSuite);
 
         $this->assertFalse($subject->hasChildren());
     }
