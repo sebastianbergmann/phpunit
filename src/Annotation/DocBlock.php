@@ -61,7 +61,7 @@ final class DocBlock
     /** @var string */
     private $name;
 
-    /** @var string|null */
+    /** @var string */
     private $className;
 
     /**
@@ -77,7 +77,7 @@ final class DocBlock
         int $endLine,
         string $fileName,
         string $name,
-        ?string $className
+        string $className
     ) {
         $this->docComment        = $docComment;
         $this->isMethod          = $isMethod;
@@ -383,7 +383,6 @@ final class DocBlock
 
         if ($this->isMethod) {
             $methodName = $this->name;
-            $className  = $this->className;
         }
 
         if (! \preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
