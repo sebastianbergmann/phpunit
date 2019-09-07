@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Annotation;
 
 use PHPUnit\Framework\TestCase;
@@ -17,11 +16,12 @@ use PHPUnit\Util\Exception;
  * @small
  *
  * @covers \PHPUnit\Annotation\Registry
+ *
  * @uses   \PHPUnit\Annotation\DocBlock
  */
 final class RegistryTest extends TestCase
 {
-    public function testRegistryLookupWithExistingClassAnnotation() : void
+    public function testRegistryLookupWithExistingClassAnnotation(): void
     {
         $annotation = Registry::singleton()
             ->forClassName(self::class);
@@ -43,7 +43,7 @@ final class RegistryTest extends TestCase
         );
     }
 
-    public function testRegistryLookupWithExistingMethodAnnotation() : void
+    public function testRegistryLookupWithExistingMethodAnnotation(): void
     {
         $annotation = Registry::singleton()
             ->forMethod(
@@ -71,7 +71,7 @@ final class RegistryTest extends TestCase
         );
     }
 
-    public function testClassLookupForAClassThatDoesNotExistFails() : void
+    public function testClassLookupForAClassThatDoesNotExistFails(): void
     {
         $registry = Registry::singleton();
 
@@ -81,7 +81,7 @@ final class RegistryTest extends TestCase
         $registry->forClassName(\ThisClassDoesNotExist::class);
     }
 
-    public function testMethodLookupForAMethodThatDoesNotExistFails() : void
+    public function testMethodLookupForAMethodThatDoesNotExistFails(): void
     {
         $registry = Registry::singleton();
 
