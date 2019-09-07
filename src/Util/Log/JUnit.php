@@ -45,7 +45,7 @@ class JUnit extends Printer implements TestListener
     /**
      * @var bool
      */
-    protected $reportUselessTests = false;
+    protected $reportRiskyTests = false;
 
     /**
      * @var bool
@@ -104,7 +104,7 @@ class JUnit extends Printer implements TestListener
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($out = null, bool $reportUselessTests = false)
+    public function __construct($out = null, bool $reportRiskyTests = false)
     {
         $this->document               = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
@@ -114,7 +114,7 @@ class JUnit extends Printer implements TestListener
 
         parent::__construct($out);
 
-        $this->reportUselessTests = $reportUselessTests;
+        $this->reportRiskyTests = $reportRiskyTests;
     }
 
     /**
@@ -175,7 +175,7 @@ class JUnit extends Printer implements TestListener
      */
     public function addRiskyTest(Test $test, \Throwable $t, float $time): void
     {
-        if (!$this->reportUselessTests || $this->currentTestCase === null) {
+        if (!$this->reportRiskyTests || $this->currentTestCase === null) {
             return;
         }
 
