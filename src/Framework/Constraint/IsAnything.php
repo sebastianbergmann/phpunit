@@ -26,7 +26,11 @@ final class IsAnything extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
+     * @param mixed $other value or object to evaluate
+     *
      * @throws ExpectationFailedException
+     *
+     * @return null|bool
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {

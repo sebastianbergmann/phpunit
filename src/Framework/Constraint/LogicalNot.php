@@ -96,8 +96,12 @@ final class LogicalNot extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
+     * @param mixed $other value or object to evaluate
+     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return null|bool
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {
@@ -110,6 +114,8 @@ final class LogicalNot extends Constraint
         if (!$success) {
             $this->fail($other, $description);
         }
+
+        return null;
     }
 
     /**

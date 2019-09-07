@@ -59,6 +59,6 @@ final class MethodName extends StatelessInvocation
 
     public function matchesName(string $methodName): bool
     {
-        return $this->constraint->evaluate($methodName, '', true);
+        return (bool) $this->constraint->evaluate($methodName, '', true);
     }
 }

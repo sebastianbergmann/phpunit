@@ -44,6 +44,9 @@ final class IsEqual extends Constraint
      */
     private $ignoreCase;
 
+    /**
+     * @param mixed $value the expected value
+     */
     public function __construct($value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false)
     {
         $this->value        = $value;
@@ -62,7 +65,11 @@ final class IsEqual extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
+     * @param mixed $other value or object to evaluate
+     *
      * @throws ExpectationFailedException
+     *
+     * @return bool
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {

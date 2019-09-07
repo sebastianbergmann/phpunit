@@ -38,6 +38,8 @@ class Count extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
+     *
+     * @param mixed $other value or object to evaluate
      */
     protected function matches($other): bool
     {
@@ -45,7 +47,7 @@ class Count extends Constraint
     }
 
     /**
-     * @param iterable $other
+     * @param mixed $other object to count
      */
     protected function getCountOf($other): ?int
     {
@@ -116,7 +118,7 @@ class Count extends Constraint
     {
         return \sprintf(
             'actual size %d matches expected size %d',
-            $this->getCountOf($other),
+            (int) $this->getCountOf($other),
             $this->expectedCount
         );
     }

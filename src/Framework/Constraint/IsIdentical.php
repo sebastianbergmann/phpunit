@@ -35,6 +35,9 @@ final class IsIdentical extends Constraint
      */
     private $value;
 
+    /**
+     * @param mixed $value the expected value
+     */
     public function __construct($value)
     {
         $this->value = $value;
@@ -50,8 +53,12 @@ final class IsIdentical extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
+     * @param mixed $other value or object to evaluate
+     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return null|bool
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {
@@ -92,6 +99,8 @@ final class IsIdentical extends Constraint
 
             $this->fail($other, $description, $f);
         }
+
+        return null;
     }
 
     /**
