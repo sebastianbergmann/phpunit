@@ -23,7 +23,7 @@ use PHPUnit\Util\Exception;
  * @internal This class is part of PHPUnit internals, an not intended
  *           for downstream usage
  *
- * @psalm-immutable
+ * @psalm-mutation-free
  */
 final class DocBlock
 {
@@ -51,6 +51,20 @@ final class DocBlock
 
     /** @var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index */
     private $symbolAnnotations;
+
+    /**
+     * @var array<string, mixed>|null
+     *
+     * @psalm-var null|(array{
+     *   __OFFSET: array<string, int>&array{__FILE: string},
+     *   setting?: array<string, string>,
+     *   extension_versions?: array<string, array{version: string, operator: string}>
+     * }&array<
+     *   string,
+     *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
+     * >)
+     */
+    private $parsedRequirements;
 
     /** @var int */
     private $startLine;
@@ -137,9 +151,15 @@ final class DocBlock
      *   string,
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >
+     *
+     * @throws Warning if the requirements version constraint is not well-formed
      */
     public function requirements(): array
     {
+        if ($this->parsedRequirements !== null) {
+            return $this->parsedRequirements;
+        }
+
         $offset            = $this->startLine;
         $requires          = [];
         $recordedSettings  = [];
@@ -212,7 +232,7 @@ final class DocBlock
             $offset++;
         }
 
-        return \array_merge(
+        return $this->parsedRequirements = \array_merge(
             $requires,
             ['__OFFSET' => $recordedOffsets],
             \array_filter([
