@@ -19,7 +19,7 @@ final class TestSuiteIterator implements RecursiveIterator
     /**
      * @var int
      */
-    private $position;
+    private $position = 0;
 
     /**
      * @var Test[]
