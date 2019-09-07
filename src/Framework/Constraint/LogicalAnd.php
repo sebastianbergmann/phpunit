@@ -42,8 +42,7 @@ class LogicalAnd extends Constraint
         foreach ($constraints as $constraint) {
             if (!($constraint instanceof Constraint)) {
                 throw new \PHPUnit\Framework\Exception(
-                    'All parameters to ' . __CLASS__ .
-                    ' must be a constraint object.'
+                    'All parameters to ' . __CLASS__ . ' must be a constraint object.'
                 );
             }
 
@@ -67,6 +66,8 @@ class LogicalAnd extends Constraint
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return null|bool
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
@@ -87,6 +88,8 @@ class LogicalAnd extends Constraint
         if (!$success) {
             $this->fail($other, $description);
         }
+
+        return null;
     }
 
     /**

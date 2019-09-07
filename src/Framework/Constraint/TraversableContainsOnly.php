@@ -61,6 +61,8 @@ class TraversableContainsOnly extends Constraint
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return null|bool
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
@@ -81,6 +83,8 @@ class TraversableContainsOnly extends Constraint
         if (!$success) {
             $this->fail($other, $description);
         }
+
+        return null;
     }
 
     /**

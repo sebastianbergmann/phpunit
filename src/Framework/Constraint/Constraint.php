@@ -20,6 +20,9 @@ use SebastianBergmann\Exporter\Exporter;
  */
 abstract class Constraint implements Countable, SelfDescribing
 {
+    /**
+     * @var Exporter
+     */
     protected $exporter;
 
     public function __construct()
@@ -43,6 +46,8 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return null|bool
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {

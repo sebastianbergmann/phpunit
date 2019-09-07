@@ -35,6 +35,9 @@ class IsIdentical extends Constraint
      */
     private $value;
 
+    /**
+     * @param mixed $value the expected value
+     */
     public function __construct($value)
     {
         parent::__construct();
@@ -58,6 +61,8 @@ class IsIdentical extends Constraint
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return null|bool
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
@@ -98,6 +103,8 @@ class IsIdentical extends Constraint
 
             $this->fail($other, $description, $f);
         }
+
+        return null;
     }
 
     /**

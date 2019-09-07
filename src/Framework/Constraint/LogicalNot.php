@@ -104,6 +104,8 @@ class LogicalNot extends Constraint
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return null|bool
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
@@ -116,6 +118,8 @@ class LogicalNot extends Constraint
         if (!$success) {
             $this->fail($other, $description);
         }
+
+        return null;
     }
 
     /**

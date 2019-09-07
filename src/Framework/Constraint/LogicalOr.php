@@ -31,7 +31,7 @@ class LogicalOr extends Constraint
     }
 
     /**
-     * @param Constraint[] $constraints
+     * @param mixed[] $constraints
      */
     public function setConstraints(array $constraints): void
     {
@@ -64,6 +64,8 @@ class LogicalOr extends Constraint
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return null|bool
      */
     public function evaluate($other, $description = '', $returnResult = false)
     {
@@ -84,6 +86,8 @@ class LogicalOr extends Constraint
         if (!$success) {
             $this->fail($other, $description);
         }
+
+        return null;
     }
 
     /**

@@ -10,10 +10,8 @@
 namespace PHPUnit\Framework\Constraint;
 
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 
-/**
- * ...
- */
 class StringMatchesFormatDescription extends RegularExpression
 {
     /**
@@ -68,9 +66,7 @@ class StringMatchesFormatDescription extends RegularExpression
         $this->string = \implode("\n", $from);
         $other        = \implode("\n", $to);
 
-        $differ = new Differ("--- Expected\n+++ Actual\n");
-
-        return $differ->diff($this->string, $other);
+        return (new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n")))->diff($this->string, $other);
     }
 
     private function createPatternFromFormat(string $string): string
@@ -96,7 +92,7 @@ class StringMatchesFormatDescription extends RegularExpression
         return '/^' . $string . '$/s';
     }
 
-    private function convertNewlines($text): string
+    private function convertNewlines(string $text): string
     {
         return \preg_replace('/\r\n/', "\n", $text);
     }
