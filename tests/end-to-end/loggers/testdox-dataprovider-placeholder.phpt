@@ -1,5 +1,5 @@
 --TEST--
-phpunit --testdox --colors=always --verbose RouterTest ../unit/Util/TestDox/ColorTest.php
+phpunit --testdox --colors=always --verbose RouterTest ../unit/Util/ColorTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
@@ -7,7 +7,7 @@ $arguments = [
     '--testdox',
     '--colors=always',
     '--verbose',
-    realpath(__DIR__ . '/../../unit/Util/TestDox/ColorTest.php'),
+    realpath(__DIR__ . '/../../unit/Util/ColorTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
