@@ -17,7 +17,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 .                                                                   1 / 1 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="%s">
+  <testsuite name="" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="%s">
     <testcase name="%send-to-end%ephpt-stderr.phpt" assertions="1" time="%s">
       <system-out>PHPUnit must look at STDERR when running PHPT tests.</system-out>
     </testcase>
