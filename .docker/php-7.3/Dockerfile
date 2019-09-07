@@ -4,11 +4,13 @@ RUN apt-get update \
     && apt-get install --assume-yes \
         apt-utils \
         git \
+        libxml2-dev \
         libzip-dev \
         zip \
         zlib1g-dev \
     && apt-get clean --assume-yes \
     && docker-php-ext-install \
+        soap \
         zip
 
 RUN echo 'memory_limit=-1' >> /usr/local/etc/php/conf.d/docker-php-memory-limit.ini
