@@ -126,7 +126,7 @@ final class Configuration
         $result = [];
 
         foreach ($this->xpath->query('extensions/extension') as $extension) {
-            $result[] = $this->setResult($extension);
+            $result[] = $this->getElementConfigurationParameters($extension);
         }
 
         return $result;
@@ -222,7 +222,7 @@ final class Configuration
         $result = [];
 
         foreach ($this->xpath->query('listeners/listener') as $listener) {
-            $result[] = $this->setResult($listener);
+            $result[] = $this->getElementConfigurationParameters($listener);
         }
 
         return $result;
@@ -1183,10 +1183,8 @@ final class Configuration
         return $groups;
     }
 
-    private function setResult($element): array
+    private function getElementConfigurationParameters(DOMElement $element): array
     {
-        \assert($element instanceof DOMElement);
-
         $class     = (string) $element->getAttribute('class');
         $file      = '';
         $arguments = $this->getConfigurationArguments($element->childNodes);
