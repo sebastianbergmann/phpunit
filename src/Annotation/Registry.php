@@ -18,8 +18,6 @@ use PHPUnit\Util\Exception;
  *
  * @internal This class is part of PHPUnit internals, an not intended
  *           for downstream usage
- *
- * @TODO test me (srsly!)
  */
 final class Registry
 {
