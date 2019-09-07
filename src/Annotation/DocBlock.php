@@ -59,15 +59,24 @@ final class DocBlock
     private $endLine;
 
     /** @var string */
-    private $name;
+    private $fileName;
 
     /** @var string */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @psalm-var class-string
+     */
     private $className;
 
     /**
      * Note: we do not preserve an instance of the reflection object, since it cannot be safely (de-)serialized.
      *
      * @param array<string, array<int, string>> $symbolAnnotations
+     *
+     * @psalm-param class-string $className
      */
     private function __construct(
         string $docComment,
@@ -203,7 +212,7 @@ final class DocBlock
      *
      * @psalm-return false|array{
      *   class: class-string,
-     *   code: int|null,
+     *   code: int|string|null,
      *   message: string,
      *   message_regex: string
      * }
@@ -216,8 +225,9 @@ final class DocBlock
             return false;
         }
 
-        $annotations   = $this->symbolAnnotations();
+        /** @psalm-var class-string $class */
         $class         = $matches[1];
+        $annotations   = $this->symbolAnnotations();
         $code          = null;
         $message       = '';
         $messageRegExp = '';
@@ -376,7 +386,7 @@ final class DocBlock
         return $message;
     }
 
-    private function getDataFromDataProviderAnnotation(string $docComment): ?iterable
+    private function getDataFromDataProviderAnnotation(string $docComment): ?array
     {
         $methodName = null;
         $className  = $this->className;
@@ -405,6 +415,7 @@ final class DocBlock
             if (empty($leaf)) {
                 $dataProviderClassName = $className;
             } else {
+                /** @psalm-var class-string $dataProviderClassName */
                 $dataProviderClassName = $dataProviderMethodNameNamespace . \array_pop($leaf);
             }
 
