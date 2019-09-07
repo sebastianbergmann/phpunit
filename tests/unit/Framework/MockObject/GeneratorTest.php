@@ -59,6 +59,27 @@ final class GeneratorTest extends TestCase
         $this->generator->getMock(stdClass::class, false);
     }
 
+    public function testGetMockFailsWithNonExistingClass(): void
+    {
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+
+        $this->generator->getMock('Tux', [], [], '', true, true, false, true, false, null, false);
+    }
+
+    public function testGetMockFailsWithNonExistingClasses(): void
+    {
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+
+        $this->generator->getMock(['Tux', 'Bar'], [], [], '', true, true, false, true, false, null, false);
+    }
+
+    public function testGetMockWithExistingClassAsMockName(): void
+    {
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+
+        $this->generator->getMock(stdClass::class, [], [], RuntimeException::class);
+    }
+
     public function testGetMockCanCreateNonExistingFunctions(): void
     {
         $mock = $this->generator->getMock(stdClass::class, ['testFunction']);
