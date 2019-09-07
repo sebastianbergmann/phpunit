@@ -63,6 +63,8 @@ final class IsEqual extends Constraint
      * failure.
      *
      * @throws ExpectationFailedException
+     *
+     * @return bool
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {

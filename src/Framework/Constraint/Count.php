@@ -44,9 +44,6 @@ class Count extends Constraint
         return $this->expectedCount === $this->getCountOf($other);
     }
 
-    /**
-     * @param iterable $other
-     */
     protected function getCountOf($other): ?int
     {
         if ($other instanceof Countable || \is_array($other)) {
@@ -116,7 +113,7 @@ class Count extends Constraint
     {
         return \sprintf(
             'actual size %d matches expected size %d',
-            $this->getCountOf($other),
+            (int) $this->getCountOf($other),
             $this->expectedCount
         );
     }

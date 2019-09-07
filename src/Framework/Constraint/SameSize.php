@@ -13,6 +13,6 @@ final class SameSize extends Count
 {
     public function __construct(iterable $expected)
     {
-        parent::__construct($this->getCountOf($expected));
+        parent::__construct((int) $this->getCountOf($expected));
     }
 }

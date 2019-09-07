@@ -194,6 +194,9 @@ final class IsType extends Constraint
 
             case 'iterable':
                 return \is_iterable($other);
+
+            default:
+                return false;
         }
     }
 }
