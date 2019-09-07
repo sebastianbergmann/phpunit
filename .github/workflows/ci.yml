@@ -26,18 +26,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      - name: Build Docker image for PHP 7.3
+        uses: ./.docker/php-7.3
+        with:
+          args: php -v
+
       - name: Update dependencies with composer
-        uses: docker://composer:1.9.0
+        uses: ./.docker/php-7.3
         with:
           args: composer update --no-interaction --no-ansi --no-progress --no-suggest
 
       - name: Run vimeo/psalm on public API
-        uses: docker://php:7.3-cli
+        uses: ./.docker/php-7.3
         with:
           args: ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
 
       - name: Run vimeo/psalm on internal code
-        uses: docker://php:7.3-cli
+        uses: ./.docker/php-7.3
         with:
           args: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
 
