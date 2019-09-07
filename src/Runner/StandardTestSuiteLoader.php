@@ -32,19 +32,14 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             );
         }
 
-        $loadedClasses = [];
-
-        if (!\class_exists($suiteClassName, false)) {
-            $loadedClasses = \get_declared_classes();
-
-            $filename = FileLoader::checkAndLoad($suiteClassFile);
-
-            $loadedClasses = \array_values(
-                \array_diff(\get_declared_classes(), $loadedClasses)
-            );
-        }
+        $loadedClasses = \get_declared_classes();
+        $filename      = FileLoader::checkAndLoad($suiteClassFile);
+        $loadedClasses = \array_values(
+            \array_diff(\get_declared_classes(), $loadedClasses)
+        );
 
         $offset = 0 - \strlen($suiteClassName);
+        $class  = null;
 
         foreach ($loadedClasses as $loadedClass) {
             try {
@@ -65,7 +60,8 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             }
         }
 
-        if (!\class_exists($suiteClassName, false)) {
+        if (!\class_exists($suiteClassName, false) ||
+            !($class instanceof ReflectionClass)) {
             throw new Exception(
                 \sprintf(
                     "Class '%s' could not be found in '%s'.",
