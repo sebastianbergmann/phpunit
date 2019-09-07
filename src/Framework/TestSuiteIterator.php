@@ -58,7 +58,7 @@ final class TestSuiteIterator implements RecursiveIterator
     /**
      * Returns the current element.
      */
-    public function current(): Test
+    public function current(): ?Test
     {
         return $this->valid() ? $this->tests[$this->position] : null;
     }
