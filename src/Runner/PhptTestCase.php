@@ -177,7 +177,7 @@ class PhptTestCase implements SelfDescribing, Test
         }
 
         try {
-            $this->assertPhptExpectation($sections, $jobResult['stdout']);
+            $this->assertPhptExpectation($sections, $this->output);
         } catch (AssertionFailedError $e) {
             $failure = $e;
 
