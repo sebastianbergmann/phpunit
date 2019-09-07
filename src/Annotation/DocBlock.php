@@ -47,12 +47,9 @@ final class DocBlock
     private $docComment;
 
     /** @var bool */
-    private $isClass;
-
-    /** @var bool */
     private $isMethod;
 
-    /** @var array<string, array<int, string>> */
+    /** @var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index */
     private $symbolAnnotations;
 
     /** @var int */
@@ -73,8 +70,7 @@ final class DocBlock
      * @param array<string, array<int, string>> $symbolAnnotations
      */
     private function __construct(
-        string $docBlock,
-        bool $isClass,
+        string $docComment,
         bool $isMethod,
         array $symbolAnnotations,
         int $startLine,
@@ -83,8 +79,7 @@ final class DocBlock
         string $name,
         ?string $className
     ) {
-        $this->docComment        = $docBlock;
-        $this->isClass           = $isClass;
+        $this->docComment        = $docComment;
         $this->isMethod          = $isMethod;
         $this->symbolAnnotations = $symbolAnnotations;
         $this->startLine         = $startLine;
@@ -100,7 +95,6 @@ final class DocBlock
 
         return new self(
             (string) $class->getDocComment(),
-            true,
             false,
             self::extractAnnotationsFromReflector($class),
             $class->getStartLine(),
@@ -115,7 +109,6 @@ final class DocBlock
     {
         return new self(
             (string) $function->getDocComment(),
-            false,
             $function instanceof \ReflectionMethod,
             self::extractAnnotationsFromReflector($function),
             $function->getStartLine(),
