@@ -36,8 +36,6 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testCurrentForEmptyTestSuiteInitiallyReturnsNull(): void
     {
-        $this->markTestSkipped('This test needs a bug fix to pass.');
-
         $testSuite = new TestSuite();
         $subject   = new TestSuiteIterator($testSuite);
 
@@ -123,8 +121,6 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testCurrentAfterLastElementReturnsNull(): void
     {
-        $this->markTestSkipped('This test needs a bug fix to pass.');
-
         $testSuite = new TestSuite();
         $testSuite->addTest(new \EmptyTestCaseTest());
         $subject = new TestSuiteIterator($testSuite);
