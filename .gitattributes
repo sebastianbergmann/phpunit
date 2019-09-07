@@ -1,5 +1,6 @@
-/build export-ignore
-/tools export-ignore
+/.docker    export-ignore
+/build      export-ignore
+/tools      export-ignore
 
 *.php diff=php
 
