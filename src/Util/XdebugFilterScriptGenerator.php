@@ -56,7 +56,11 @@ EOF;
                 $path = \realpath($directory['path']);
 
                 if (\is_string($path)) {
-                    $files[] = \sprintf('%s/', $path);
+                    $files[] = \sprintf(
+                        '%s%s',
+                        $path,
+                        \DIRECTORY_SEPARATOR
+                    );
                 }
             }
         }
