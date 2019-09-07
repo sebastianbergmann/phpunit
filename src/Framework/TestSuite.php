@@ -510,7 +510,9 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             return $result;
         }
 
-        $hookMethods = TestUtil::getHookMethods($this->name);
+        /** @psalm-var class-string $className */
+        $className   = $this->name;
+        $hookMethods = TestUtil::getHookMethods($className);
 
         $result->startTestSuite($this);
 
