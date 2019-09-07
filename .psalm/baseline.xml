@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.4.12@86e5e50c1bb492045e70f2ebe1da3cad06e4e9b2">
+  <file src="src/Annotation/DocBlock.php">
+    <!-- see https://github.com/phar-io/version/issues/16 -->
+    <InvalidCatch occurrences="1"/>
+  </file>
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -445,28 +449,14 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Util/Test.php">
-    <ArgumentTypeCoercion occurrences="4">
+    <ArgumentTypeCoercion occurrences="3">
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
-      <code>$dataProviderClassName</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="1">
-      <code>$e</code>
-    </InvalidArgument>
-    <InvalidCatch occurrences="1"/>
-    <InvalidReturnStatement occurrences="1">
-      <code>$data</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
-      <code>?array</code>
-    </InvalidReturnType>
     <InvalidScalarArgument occurrences="1">
       <code>\array_flip($lineNumbers)</code>
     </InvalidScalarArgument>
-    <PossiblyNullOperand occurrences="1">
-      <code>$methodName</code>
-    </PossiblyNullOperand>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <PossiblyInvalidArrayOffset occurrences="6">
