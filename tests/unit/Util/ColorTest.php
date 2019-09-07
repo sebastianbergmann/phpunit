@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @covers \PHPUnit\Util\Color
  * @testdox Basic ANSI color highlighting support
  * @small
  */
