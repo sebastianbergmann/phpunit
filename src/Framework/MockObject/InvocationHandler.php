@@ -11,27 +11,23 @@ namespace PHPUnit\Framework\MockObject;
 
 use Exception;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMocker;
-use PHPUnit\Framework\MockObject\Builder\Match;
-use PHPUnit\Framework\MockObject\Builder\NamespaceMatch;
-use PHPUnit\Framework\MockObject\Matcher\DeferredError;
-use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
-use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class InvocationHandler implements MatcherCollection, NamespaceMatch
+final class InvocationHandler
 {
     /**
-     * @var MatcherInvocation[]
+     * @var Matcher[]
      */
     private $matchers = [];
 
     /**
-     * @var Match[]
+     * @var Matcher[]
      */
-    private $builderMap = [];
+    private $matcherMap = [];
 
     /**
      * @var ConfigurableMethod[]
@@ -43,18 +39,18 @@ final class InvocationHandler implements MatcherCollection, NamespaceMatch
      */
     private $returnValueGeneration;
 
+    /**
+     * @var \Throwable
+     */
+    private $deferredError;
+
     public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {
         $this->configurableMethods   = $configurableMethods;
         $this->returnValueGeneration = $returnValueGeneration;
     }
 
-    public function addMatcher(MatcherInvocation $matcher): void
-    {
-        $this->matchers[] = $matcher;
-    }
-
-    public function hasMatchers()
+    public function hasMatchers(): bool
     {
         foreach ($this->matchers as $matcher) {
             if ($matcher->hasMatchers()) {
@@ -65,32 +61,46 @@ final class InvocationHandler implements MatcherCollection, NamespaceMatch
         return false;
     }
 
-    public function lookupId($id): Match
+    /**
+     * Looks up the match builder with identification $id and returns it.
+     *
+     * @param string $id The identification of the match builder
+     */
+    public function lookupMatcher(string $id): Matcher
     {
-        if (isset($this->builderMap[$id])) {
-            return $this->builderMap[$id];
+        if (isset($this->matcherMap[$id])) {
+            return $this->matcherMap[$id];
         }
 
         return null;
     }
 
     /**
+     * Registers a matcher with the identification $id. The matcher can later be
+     * looked up using lookupMatcher() to figure out if it has been invoked.
+     *
+     * @param string  $id      The identification of the matcher
+     * @param Matcher $matcher The builder which is being registered
+     *
      * @throws RuntimeException
      */
-    public function registerId($id, Match $builder): void
+    public function registerMatcher(string $id, Matcher $matcher): void
     {
-        if (isset($this->builderMap[$id])) {
+        if (isset($this->matcherMap[$id])) {
             throw new RuntimeException(
-                'Match builder with id <' . $id . '> is already registered.'
+                'Matcher with id <' . $id . '> is already registered.'
             );
         }
 
-        $this->builderMap[$id] = $builder;
+        $this->matcherMap[$id] = $matcher;
     }
 
-    public function expects(MatcherInvocation $matcher): BuilderInvocationMocker
+    public function expects(InvocationOrder $rule): InvocationMocker
     {
-        return new BuilderInvocationMocker(
+        $matcher = new Matcher($rule);
+        $this->addMatcher($matcher);
+
+        return new InvocationMocker(
             $this,
             $matcher,
             ...$this->configurableMethods
@@ -99,6 +109,8 @@ final class InvocationHandler implements MatcherCollection, NamespaceMatch
 
     /**
      * @throws Exception
+     *
+     * @return mixed|void
      */
     public function invoke(Invocation $invocation)
     {
@@ -139,7 +151,7 @@ final class InvocationHandler implements MatcherCollection, NamespaceMatch
             );
 
             if (\strtolower($invocation->getMethodName()) === '__tostring') {
-                $this->addMatcher(new DeferredError($exception));
+                $this->deferredError = $exception;
 
                 return '';
             }
@@ -169,5 +181,14 @@ final class InvocationHandler implements MatcherCollection, NamespaceMatch
         foreach ($this->matchers as $matcher) {
             $matcher->verify();
         }
+
+        if ($this->deferredError) {
+            throw $this->deferredError;
+        }
+    }
+
+    private function addMatcher(Matcher $matcher): void
+    {
+        $this->matchers[] = $matcher;
     }
 }

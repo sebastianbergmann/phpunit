@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker as BuilderInvocationMocker;
-use PHPUnit\Framework\MockObject\Matcher\Invocation;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
  * @method BuilderInvocationMocker method($constraint)
@@ -21,5 +21,5 @@ interface MockObject extends Stub
 
     public function __phpunit_verify(bool $unsetInvocationMocker = true): void;
 
-    public function expects(Invocation $matcher): BuilderInvocationMocker;
+    public function expects(InvocationOrder $invocationRule): BuilderInvocationMocker;
 }

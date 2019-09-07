@@ -9,9 +9,13 @@
  * file that was distributed with this source code.
  */
 
+use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
-use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
+use PHPUnit\Framework\MockObject\InvocationHandler;
+use PHPUnit\Framework\MockObject\Matcher;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\MockObject\ClassWithImplicitProtocol;
 
 /**
  * @covers \PHPUnit\Framework\MockObject\Builder\InvocationMocker
@@ -81,11 +85,10 @@ final class InvocationMockerTest extends TestCase
 
     public function testWillFailWhenTryingToPerformExpectationUnconfigurableMethod(): void
     {
-        /** @var MatcherCollection|\PHPUnit\Framework\MockObject\MockObject $matcherCollection */
-        $matcherCollection = $this->createMock(MatcherCollection::class);
-        $invocationMocker  = new \PHPUnit\Framework\MockObject\Builder\InvocationMocker(
+        $matcherCollection = new InvocationHandler([], false);
+        $invocationMocker  = new InvocationMocker(
             $matcherCollection,
-            $this->any()
+            new Matcher($this->any())
         );
 
         $this->expectException(RuntimeException::class);
@@ -109,7 +112,7 @@ final class InvocationMockerTest extends TestCase
         $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
             ->getMock();
 
-        $invocationMocker = $mock->method(new \PHPUnit\Framework\Constraint\IsEqual('methodWithBoolReturnTypeDeclaration'));
+        $invocationMocker = $mock->method(new IsEqual('methodWithBoolReturnTypeDeclaration'));
 
         $this->expectException(IncompatibleReturnValueException::class);
         $this->expectExceptionMessage('Method methodWithBoolReturnTypeDeclaration may not return value of type integer, its return declaration is ": bool"');
@@ -201,5 +204,38 @@ final class InvocationMockerTest extends TestCase
         $this->expectException(IncompatibleReturnValueException::class);
         $this->expectExceptionMessage('Method methodWithVoidReturnTypeDeclaration may not return value of type boolean, its return declaration is ": void"');
         $method->willReturn(true);
+    }
+
+    public function testExpectationsAreEnabledByPreviousMethodCallWhenChainedWithAfter(): void
+    {
+        $mock = $this->createMock(ClassWithImplicitProtocol::class);
+
+        $mock->expects($this->once())
+            ->method('firstCall')
+            ->id($fristCallId = 'first-call-id');
+
+        $mock->expects($this->once())
+            ->method('secondCall')
+            ->after($fristCallId);
+
+        $mock->firstCall();
+        $mock->secondCall();
+    }
+
+    public function testExpectationsAreNotTriggeredUntilPreviousMethodWasCalled(): void
+    {
+        $mock = $this->createMock(ClassWithImplicitProtocol::class);
+
+        $mock->expects($this->once())
+            ->method('firstCall')
+            ->id($firstCallId = 'first-call-id');
+
+        $mock->expects($this->once())
+            ->method('secondCall')
+            ->after($firstCallId);
+
+        $mock->secondCall();
+        $mock->firstCall();
+        $mock->secondCall();
     }
 }

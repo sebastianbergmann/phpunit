@@ -49,7 +49,7 @@ class MockBar extends Bar implements PHPUnit\Framework\MockObject\MockObject
             }
         }
 
-        $__phpunit_result = $this->__phpunit_getInvocationMocker()->invoke(
+        $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
                 'Bar', 'baz', $__phpunit_arguments, ': Foo', $this, true
             )

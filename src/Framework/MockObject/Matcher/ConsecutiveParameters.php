@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Matcher;
+namespace PHPUnit\Framework\MockObject\Rule;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ConsecutiveParameters extends StatelessInvocation
+final class ConsecutiveParameters implements ParametersRule
 {
     /**
      * @var array
@@ -65,14 +65,12 @@ final class ConsecutiveParameters extends StatelessInvocation
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function matches(BaseInvocation $invocation): bool
+    public function apply(BaseInvocation $invocation): void
     {
         $this->invocations[] = $invocation;
         $callIndex           = \count($this->invocations) - 1;
 
         $this->verifyInvocation($invocation, $callIndex);
-
-        return false;
     }
 
     /**

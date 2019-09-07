@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Matcher;
+namespace PHPUnit\Framework\MockObject\Rule;
 
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsAnything;
@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Parameters extends StatelessInvocation
+final class Parameters implements ParametersRule
 {
     /**
      * @var Constraint[]
@@ -31,7 +31,7 @@ final class Parameters extends StatelessInvocation
     private $invocation;
 
     /**
-     * @var ExpectationFailedException
+     * @var bool|ExpectationFailedException
      */
     private $parameterVerificationResult;
 
@@ -69,15 +69,13 @@ final class Parameters extends StatelessInvocation
     /**
      * @throws \Exception
      */
-    public function matches(BaseInvocation $invocation): bool
+    public function apply(BaseInvocation $invocation): void
     {
         $this->invocation                  = $invocation;
         $this->parameterVerificationResult = null;
 
         try {
             $this->parameterVerificationResult = $this->doVerify();
-
-            return $this->parameterVerificationResult;
         } catch (ExpectationFailedException $e) {
             $this->parameterVerificationResult = $e;
 
@@ -87,7 +85,7 @@ final class Parameters extends StatelessInvocation
 
     /**
      * Checks if the invocation $invocation matches the current rules. If it
-     * does the matcher will get the invoked() method called which should check
+     * does the rule will get the invoked() method called which should check
      * if an expectation is met.
      *
      * @throws ExpectationFailedException

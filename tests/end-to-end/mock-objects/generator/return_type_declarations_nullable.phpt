@@ -42,7 +42,7 @@ class MockFoo implements PHPUnit\Framework\MockObject\MockObject, Foo
             }
         }
 
-        $__phpunit_result = $this->__phpunit_getInvocationMocker()->invoke(
+        $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
                 'Foo', 'bar', $__phpunit_arguments, ': ?string', $this, true
             )

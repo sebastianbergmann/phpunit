@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
+use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 
 /**
  * @internal This trait is not covered by the backward compatibility promise for PHPUnit

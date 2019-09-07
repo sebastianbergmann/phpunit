@@ -10,24 +10,24 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\MockObject\Matcher\AnyInvokedCount;
-use PHPUnit\Framework\MockObject\Matcher\AnyParameters;
-use PHPUnit\Framework\MockObject\Matcher\Invocation as MatcherInvocation;
-use PHPUnit\Framework\MockObject\Matcher\InvokedCount;
-use PHPUnit\Framework\MockObject\Matcher\MethodName;
-use PHPUnit\Framework\MockObject\Matcher\Parameters;
+use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
+use PHPUnit\Framework\MockObject\Rule\AnyParameters;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount;
+use PHPUnit\Framework\MockObject\Rule\MethodName;
+use PHPUnit\Framework\MockObject\Rule\ParametersRule;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Framework\TestFailure;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Matcher implements MatcherInvocation
+final class Matcher
 {
     /**
-     * @var MatcherInvocation
+     * @var InvocationOrder
      */
-    private $invocationMatcher;
+    private $invocationRule;
 
     /**
      * @var mixed
@@ -42,64 +42,59 @@ final class Matcher implements MatcherInvocation
     /**
      * @var MethodName
      */
-    private $methodNameMatcher;
+    private $methodNameRule;
 
     /**
-     * @var Parameters
+     * @var ParametersRule
      */
-    private $parametersMatcher;
+    private $parametersRule;
 
     /**
      * @var Stub
      */
     private $stub;
 
-    public function __construct(MatcherInvocation $invocationMatcher)
+    public function __construct(InvocationOrder $rule)
     {
-        $this->invocationMatcher = $invocationMatcher;
+        $this->invocationRule = $rule;
     }
 
     public function hasMatchers(): bool
     {
-        return $this->invocationMatcher !== null && !$this->invocationMatcher instanceof AnyInvokedCount;
+        return !$this->invocationRule instanceof AnyInvokedCount;
     }
 
-    public function hasMethodNameMatcher(): bool
+    public function hasMethodNameRule(): bool
     {
-        return $this->methodNameMatcher !== null;
+        return $this->methodNameRule !== null;
     }
 
-    public function getMethodNameMatcher(): MethodName
+    public function getMethodNameRule(): MethodName
     {
-        return $this->methodNameMatcher;
+        return $this->methodNameRule;
     }
 
-    public function setMethodNameMatcher(MethodName $matcher): void
+    public function setMethodNameRule(MethodName $rule): void
     {
-        $this->methodNameMatcher = $matcher;
+        $this->methodNameRule = $rule;
     }
 
-    public function hasParametersMatcher(): bool
+    public function hasParametersRule(): bool
     {
-        return $this->parametersMatcher !== null;
+        return $this->parametersRule !== null;
     }
 
-    public function getParametersMatcher(): Parameters
+    public function setParametersRule(ParametersRule $rule): void
     {
-        return $this->parametersMatcher;
+        $this->parametersRule = $rule;
     }
 
-    public function setParametersMatcher($matcher): void
-    {
-        $this->parametersMatcher = $matcher;
-    }
-
-    public function setStub($stub): void
+    public function setStub(Stub $stub): void
     {
         $this->stub = $stub;
     }
 
-    public function setAfterMatchBuilderId($id): void
+    public function setAfterMatchBuilderId(string $id): void
     {
         $this->afterMatchBuilderId = $id;
     }
@@ -111,22 +106,16 @@ final class Matcher implements MatcherInvocation
      */
     public function invoked(Invocation $invocation)
     {
-        if ($this->invocationMatcher === null) {
-            throw new RuntimeException(
-                'No invocation matcher is set'
-            );
-        }
-
-        if ($this->methodNameMatcher === null) {
-            throw new RuntimeException('No method matcher is set');
+        if ($this->methodNameRule === null) {
+            throw new RuntimeException('No method rule is set');
         }
 
         if ($this->afterMatchBuilderId !== null) {
-            $builder = $invocation->getObject()
-                                  ->__phpunit_getInvocationMocker()
-                                  ->lookupId($this->afterMatchBuilderId);
+            $matcher = $invocation->getObject()
+                                  ->__phpunit_getInvocationHandler()
+                                  ->lookupMatcher($this->afterMatchBuilderId);
 
-            if (!$builder) {
+            if (!$matcher) {
                 throw new RuntimeException(
                     \sprintf(
                         'No builder found for match builder identification <%s>',
@@ -134,27 +123,25 @@ final class Matcher implements MatcherInvocation
                     )
                 );
             }
+            \assert($matcher instanceof self);
 
-            $matcher = $builder->getMatcher();
-
-            if ($matcher && $matcher->invocationMatcher->hasBeenInvoked()) {
+            if ($matcher->invocationRule->hasBeenInvoked()) {
                 $this->afterMatchBuilderIsInvoked = true;
             }
         }
 
-        $this->invocationMatcher->invoked($invocation);
+        $this->invocationRule->invoked($invocation);
 
         try {
-            if ($this->parametersMatcher !== null &&
-                !$this->parametersMatcher->matches($invocation)) {
-                $this->parametersMatcher->verify();
+            if ($this->parametersRule !== null) {
+                $this->parametersRule->apply($invocation);
             }
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
                 \sprintf(
                     "Expectation failed for %s when %s\n%s",
-                    $this->methodNameMatcher->toString(),
-                    $this->invocationMatcher->toString(),
+                    $this->methodNameRule->toString(),
+                    $this->invocationRule->toString(),
                     $e->getMessage()
                 ),
                 $e->getComparisonFailure()
@@ -176,11 +163,11 @@ final class Matcher implements MatcherInvocation
     public function matches(Invocation $invocation): bool
     {
         if ($this->afterMatchBuilderId !== null) {
-            $builder = $invocation->getObject()
-                                  ->__phpunit_getInvocationMocker()
-                                  ->lookupId($this->afterMatchBuilderId);
+            $matcher = $invocation->getObject()
+                                  ->__phpunit_getInvocationHandler()
+                                  ->lookupMatcher($this->afterMatchBuilderId);
 
-            if (!$builder) {
+            if (!$matcher) {
                 throw new RuntimeException(
                     \sprintf(
                         'No builder found for match builder identification <%s>',
@@ -188,42 +175,31 @@ final class Matcher implements MatcherInvocation
                     )
                 );
             }
+            \assert($matcher instanceof self);
 
-            $matcher = $builder->getMatcher();
-
-            if (!$matcher) {
-                return false;
-            }
-
-            if (!$matcher->invocationMatcher->hasBeenInvoked()) {
+            if (!$matcher->invocationRule->hasBeenInvoked()) {
                 return false;
             }
         }
 
-        if ($this->invocationMatcher === null) {
-            throw new RuntimeException(
-                'No invocation matcher is set'
-            );
+        if ($this->methodNameRule === null) {
+            throw new RuntimeException('No method rule is set');
         }
 
-        if ($this->methodNameMatcher === null) {
-            throw new RuntimeException('No method matcher is set');
-        }
-
-        if (!$this->invocationMatcher->matches($invocation)) {
+        if (!$this->invocationRule->matches($invocation)) {
             return false;
         }
 
         try {
-            if (!$this->methodNameMatcher->matches($invocation)) {
+            if (!$this->methodNameRule->matches($invocation)) {
                 return false;
             }
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
                 \sprintf(
                     "Expectation failed for %s when %s\n%s",
-                    $this->methodNameMatcher->toString(),
-                    $this->invocationMatcher->toString(),
+                    $this->methodNameRule->toString(),
+                    $this->invocationRule->toString(),
                     $e->getMessage()
                 ),
                 $e->getComparisonFailure()
@@ -240,35 +216,29 @@ final class Matcher implements MatcherInvocation
      */
     public function verify(): void
     {
-        if ($this->invocationMatcher === null) {
-            throw new RuntimeException(
-                'No invocation matcher is set'
-            );
-        }
-
-        if ($this->methodNameMatcher === null) {
-            throw new RuntimeException('No method matcher is set');
+        if ($this->methodNameRule === null) {
+            throw new RuntimeException('No method rule is set');
         }
 
         try {
-            $this->invocationMatcher->verify();
+            $this->invocationRule->verify();
 
-            if ($this->parametersMatcher === null) {
-                $this->parametersMatcher = new AnyParameters;
+            if ($this->parametersRule === null) {
+                $this->parametersRule = new AnyParameters;
             }
 
-            $invocationIsAny   = $this->invocationMatcher instanceof AnyInvokedCount;
-            $invocationIsNever = $this->invocationMatcher instanceof InvokedCount && $this->invocationMatcher->isNever();
+            $invocationIsAny   = $this->invocationRule instanceof AnyInvokedCount;
+            $invocationIsNever = $this->invocationRule instanceof InvokedCount && $this->invocationRule->isNever();
 
             if (!$invocationIsAny && !$invocationIsNever) {
-                $this->parametersMatcher->verify();
+                $this->parametersRule->verify();
             }
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
                 \sprintf(
                     "Expectation failed for %s when %s.\n%s",
-                    $this->methodNameMatcher->toString(),
-                    $this->invocationMatcher->toString(),
+                    $this->methodNameRule->toString(),
+                    $this->invocationRule->toString(),
                     TestFailure::exceptionToString($e)
                 )
             );
@@ -279,16 +249,16 @@ final class Matcher implements MatcherInvocation
     {
         $list = [];
 
-        if ($this->invocationMatcher !== null) {
-            $list[] = $this->invocationMatcher->toString();
+        if ($this->invocationRule !== null) {
+            $list[] = $this->invocationRule->toString();
         }
 
-        if ($this->methodNameMatcher !== null) {
-            $list[] = 'where ' . $this->methodNameMatcher->toString();
+        if ($this->methodNameRule !== null) {
+            $list[] = 'where ' . $this->methodNameRule->toString();
         }
 
-        if ($this->parametersMatcher !== null) {
-            $list[] = 'and ' . $this->parametersMatcher->toString();
+        if ($this->parametersRule !== null) {
+            $list[] = 'and ' . $this->parametersRule->toString();
         }
 
         if ($this->afterMatchBuilderId !== null) {

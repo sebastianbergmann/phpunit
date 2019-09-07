@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\MockObject\Matcher;
+namespace PHPUnit\Framework\MockObject\Rule;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class InvokedCount extends InvokedRecorder
+final class InvokedCount extends InvocationOrder
 {
     /**
      * @var int
@@ -40,13 +40,38 @@ final class InvokedCount extends InvokedRecorder
         return 'invoked ' . $this->expectedCount . ' time(s)';
     }
 
+    public function matches(BaseInvocation $invocation): bool
+    {
+        return true;
+    }
+
+    /**
+     * Verifies that the current expectation is valid. If everything is OK the
+     * code should just return, if not it must throw an exception.
+     *
+     * @throws ExpectationFailedException
+     */
+    public function verify(): void
+    {
+        $count = $this->getInvocationCount();
+
+        if ($count !== $this->expectedCount) {
+            throw new ExpectationFailedException(
+                \sprintf(
+                    'Method was expected to be called %d times, ' .
+                    'actually called %d times.',
+                    $this->expectedCount,
+                    $count
+                )
+            );
+        }
+    }
+
     /**
      * @throws ExpectationFailedException
      */
-    public function invoked(BaseInvocation $invocation): void
+    protected function invokedDo(BaseInvocation $invocation): void
     {
-        parent::invoked($invocation);
-
         $count = $this->getInvocationCount();
 
         if ($count > $this->expectedCount) {
@@ -71,28 +96,6 @@ final class InvokedCount extends InvokedRecorder
             }
 
             throw new ExpectationFailedException($message);
-        }
-    }
-
-    /**
-     * Verifies that the current expectation is valid. If everything is OK the
-     * code should just return, if not it must throw an exception.
-     *
-     * @throws ExpectationFailedException
-     */
-    public function verify(): void
-    {
-        $count = $this->getInvocationCount();
-
-        if ($count !== $this->expectedCount) {
-            throw new ExpectationFailedException(
-                \sprintf(
-                    'Method was expected to be called %d times, ' .
-                    'actually called %d times.',
-                    $this->expectedCount,
-                    $count
-                )
-            );
         }
     }
 }
