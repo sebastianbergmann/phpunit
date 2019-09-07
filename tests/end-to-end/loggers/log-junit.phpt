@@ -18,7 +18,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 .FEISRW.FEISRW                                                    14 / 14 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="PHPUnit\SelfTest\Basic\StatusTest" file="%s%eStatusTest.php" tests="14" assertions="4" errors="4" failures="4" skipped="4" time="%f">
+  <testsuite name="PHPUnit\SelfTest\Basic\StatusTest" file="%s%eStatusTest.php" tests="14" assertions="4" errors="4" warnings="2" failures="2" skipped="4" time="%f">
     <testcase name="testSuccess" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" file="%s%eStatusTest.php" line="%d" assertions="1" time="%f"/>
     <testcase name="testFailure" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" file="%s%eStatusTest.php" line="%d" assertions="1" time="%f">
       <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\SelfTest\Basic\StatusTest::testFailure

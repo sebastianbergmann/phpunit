@@ -15,8 +15,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ..F.                                                                4 / 4 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%f">
-    <testsuite name="DataProviderTest::testAdd" tests="4" assertions="4" errors="0" failures="1" skipped="0" time="%f">
+  <testsuite name="DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
+    <testsuite name="DataProviderTest::testAdd" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
       <testcase name="testAdd with data set #0" class="DataProviderTest" classname="DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
       <testcase name="testAdd with data set #1" class="DataProviderTest" classname="DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
       <testcase name="testAdd with data set #2" class="DataProviderTest" classname="DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f">
