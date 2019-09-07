@@ -303,9 +303,6 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$color</code>
     </PossiblyUndefinedVariable>
-    <TooManyArguments occurrences="1">
-      <code>Color::colorize($color, \str_pad($line, $padding), false)</code>
-    </TooManyArguments>
   </file>
   <file src="src/TextUI/TestRunner.php">
     <LessSpecificReturnStatement occurrences="1"/>

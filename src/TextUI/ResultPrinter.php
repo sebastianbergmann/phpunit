@@ -522,7 +522,7 @@ class ResultPrinter extends Printer implements TestListener
         $styledLines = [];
 
         foreach ($lines as $line) {
-            $styledLines[] = Color::colorize($color, \str_pad($line, $padding), false);
+            $styledLines[] = Color::colorize($color, \str_pad($line, $padding));
         }
 
         return \implode(\PHP_EOL, $styledLines);
