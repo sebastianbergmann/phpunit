@@ -27,6 +27,8 @@ final class IsAnything extends Constraint
      * failure.
      *
      * @throws ExpectationFailedException
+     *
+     * @return null|bool
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {

@@ -31,7 +31,7 @@ final class LogicalXor extends Constraint
     }
 
     /**
-     * @param Constraint[] $constraints
+     * @param mixed[] $constraints
      */
     public function setConstraints(array $constraints): void
     {
@@ -60,6 +60,8 @@ final class LogicalXor extends Constraint
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @return null|bool
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {
@@ -85,6 +87,8 @@ final class LogicalXor extends Constraint
         if (!$success) {
             $this->fail($other, $description);
         }
+
+        return null;
     }
 
     /**
