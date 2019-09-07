@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use PharIo\Version\VersionConstraint;
+use PHPUnit\Annotation\DocBlock;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
@@ -937,84 +938,98 @@ final class TestTest extends TestCase
 
     public function testTestWithEmptyAnnotation(): void
     {
-        $result = Test::getDataFromTestWithAnnotation("/**\n * @anotherAnnotation\n */");
+        $result = DocBlock::ofMethod(new \ReflectionMethod(
+            \VariousDocblockDefinedDataProvider::class,
+            'anotherAnnotation'
+        ))->getProvidedData();
+
         $this->assertNull($result);
     }
 
     public function testTestWithSimpleCase(): void
     {
-        $result = Test::getDataFromTestWithAnnotation('/**
-                                                                     * @testWith [1]
-                                                                     */');
+        $result = DocBlock::ofMethod(new \ReflectionMethod(
+            \VariousDocblockDefinedDataProvider::class,
+            'testWith1'
+        ))->getProvidedData();
+
         $this->assertEquals([[1]], $result);
     }
 
     public function testTestWithMultiLineMultiParameterCase(): void
     {
-        $result = Test::getDataFromTestWithAnnotation('/**
-                                                                     * @testWith [1, 2]
-                                                                     * [3, 4]
-                                                                     */');
+        $result = DocBlock::ofMethod(new \ReflectionMethod(
+            \VariousDocblockDefinedDataProvider::class,
+            'testWith1234'
+        ))->getProvidedData();
+
         $this->assertEquals([[1, 2], [3, 4]], $result);
     }
 
     public function testTestWithVariousTypes(): void
     {
-        $result = Test::getDataFromTestWithAnnotation('/**
-            * @testWith ["ab"]
-            *           [true]
-            *           [null]
-         */');
+        $result = DocBlock::ofMethod(new \ReflectionMethod(
+            \VariousDocblockDefinedDataProvider::class,
+            'testWithABTrueNull'
+        ))->getProvidedData();
+
         $this->assertEquals([['ab'], [true], [null]], $result);
     }
 
     public function testTestWithAnnotationAfter(): void
     {
-        $result = Test::getDataFromTestWithAnnotation('/**
-                                                                     * @testWith [1]
-                                                                     *           [2]
-                                                                     * @annotation
-                                                                     */');
+        $result = DocBlock::ofMethod(new \ReflectionMethod(
+            \VariousDocblockDefinedDataProvider::class,
+            'testWith12AndAnotherAnnotation'
+        ))->getProvidedData();
+
         $this->assertEquals([[1], [2]], $result);
     }
 
     public function testTestWithSimpleTextAfter(): void
     {
-        $result = Test::getDataFromTestWithAnnotation('/**
-                                                                     * @testWith [1]
-                                                                     *           [2]
-                                                                     * blah blah
-                                                                     */');
+        $result = DocBlock::ofMethod(new \ReflectionMethod(
+            \VariousDocblockDefinedDataProvider::class,
+            'testWith12AndBlahBlah'
+        ))->getProvidedData();
+
         $this->assertEquals([[1], [2]], $result);
     }
 
     public function testTestWithCharacterEscape(): void
     {
-        $result = Test::getDataFromTestWithAnnotation('/**
-                                                                     * @testWith ["\"", "\""]
-                                                                     */');
+        $result = DocBlock::ofMethod(new \ReflectionMethod(
+            \VariousDocblockDefinedDataProvider::class,
+            'testWithEscapedString'
+        ))->getProvidedData();
+
         $this->assertEquals([['"', '"']], $result);
     }
 
     public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed(): void
     {
+        $docBlock = DocBlock::ofMethod(new \ReflectionMethod(
+            \VariousDocblockDefinedDataProvider::class,
+            'testWithMalformedValue'
+        ));
+
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The data set for the @testWith annotation cannot be parsed:/');
 
-        Test::getDataFromTestWithAnnotation('/**
-                                                           * @testWith [s]
-                                                           */');
+        $docBlock->getProvidedData();
     }
 
     public function testTestWithThrowsProperExceptionIfMultiLineDatasetCannotBeParsed(): void
     {
+        $docBlock = DocBlock::ofMethod(new \ReflectionMethod(
+            \VariousDocblockDefinedDataProvider::class,
+            'testWithWellFormedAndMalformedValue'
+        ));
+
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The data set for the @testWith annotation cannot be parsed:/');
 
-        Test::getDataFromTestWithAnnotation('/**
-                                                           * @testWith ["valid"]
-                                                           *           [invalid]
-                                                           */');
+        $docBlock->getProvidedData();
     }
 
     /**

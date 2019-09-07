@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.4.12@86e5e50c1bb492045e70f2ebe1da3cad06e4e9b2">
+  <file src="src/Annotation/DocBlock.php">
+    <InvalidCatch occurrences="1"/>
+  </file>
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -224,20 +227,6 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$afterClassMethod</code>
     </PossiblyUndefinedVariable>
-    <PropertyTypeCoercion occurrences="1">
-      <code>$this-&gt;tests</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/Framework/TestSuiteIterator.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$this-&gt;tests[$this-&gt;position]</code>
-    </ArgumentTypeCoercion>
-    <InvalidNullableReturnType occurrences="1">
-      <code>Test</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;valid() ? $this-&gt;tests[$this-&gt;position] : null</code>
-    </NullableReturnStatement>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <InvalidPropertyAssignmentValue occurrences="2">
@@ -254,11 +243,6 @@
     </PossiblyNullReference>
     <PossiblyUndefinedVariable occurrences="1">
       <code>$sectionOffset</code>
-    </PossiblyUndefinedVariable>
-  </file>
-  <file src="src/Runner/StandardTestSuiteLoader.php">
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$filename</code>
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
@@ -327,7 +311,9 @@
     </UndefinedClass>
   </file>
   <file src="src/Util/Configuration.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="4">
+      <code>$extension</code>
+      <code>$listener</code>
       <code>$testSuiteNodes-&gt;item(0)</code>
       <code>$testSuiteNode</code>
     </ArgumentTypeCoercion>
@@ -456,28 +442,14 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Util/Test.php">
-    <ArgumentTypeCoercion occurrences="4">
+    <ArgumentTypeCoercion occurrences="3">
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
-      <code>$dataProviderClassName</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="1">
-      <code>$e</code>
-    </InvalidArgument>
-    <InvalidCatch occurrences="1"/>
-    <InvalidReturnStatement occurrences="1">
-      <code>$data</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
-      <code>?array</code>
-    </InvalidReturnType>
     <InvalidScalarArgument occurrences="1">
       <code>\array_flip($lineNumbers)</code>
     </InvalidScalarArgument>
-    <PossiblyNullOperand occurrences="1">
-      <code>$methodName</code>
-    </PossiblyNullOperand>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <PossiblyInvalidArrayOffset occurrences="6">

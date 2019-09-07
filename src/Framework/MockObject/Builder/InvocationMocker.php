@@ -56,6 +56,11 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         $this->configurableMethods = $configurableMethods;
     }
 
+    public function getMatcher(): Matcher
+    {
+        return $this->matcher;
+    }
+
     public function id($id): self
     {
         $this->collection->registerId($id, $this);
