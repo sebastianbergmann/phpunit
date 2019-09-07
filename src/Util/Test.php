@@ -142,7 +142,7 @@ final class Test
      */
     public static function getRequirements(string $className, string $methodName): array
     {
-        return self::mergeThingsRecursivelyBecausePHPsArrayMergeRecursiveIsUselessBurningGarbage(
+        return self::mergeArraysRecursively(
             Registry::singleton()
                 ->forClassName($className)
                 ->requirements(),
@@ -851,18 +851,28 @@ final class Test
     }
 
     /**
-     * @TODO isolate to own file if used more than once
-     * @TODO add ZendFramework license note
-     * @TODO this is copied from https://github.com/zendframework/zend-stdlib/blob/master/src/ArrayUtils.php
+     * Merge two arrays together.
+     *
+     * If an integer key exists in both arrays and preserveNumericKeys is false, the value
+     * from the second array will be appended to the first array. If both values are arrays, they
+     * are merged together, else the value of the second array overwrites the one of the first array.
+     *
+     * This implementation is copied from https://github.com/zendframework/zend-stdlib/blob/76b653c5e99b40eccf5966e3122c90615134ae46/src/ArrayUtils.php
+     *
+     * Zend Framework (http://framework.zend.com/)
+     *
+     * @link      http://github.com/zendframework/zf2 for the canonical source repository
+     * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
+     * @license   http://framework.zend.com/license/new-bsd New BSD License
      */
-    private static function mergeThingsRecursivelyBecausePHPsArrayMergeRecursiveIsUselessBurningGarbage(array $a, array $b): array
+    private static function mergeArraysRecursively(array $a, array $b): array
     {
         foreach ($b as $key => $value) {
             if (\array_key_exists($key, $a)) {
                 if (\is_int($key)) {
                     $a[] = $value;
                 } elseif (\is_array($value) && \is_array($a[$key])) {
-                    $a[$key] = self::mergeThingsRecursivelyBecausePHPsArrayMergeRecursiveIsUselessBurningGarbage($a[$key], $value);
+                    $a[$key] = self::mergeArraysRecursively($a[$key], $value);
                 } else {
                     $a[$key] = $value;
                 }
