@@ -152,7 +152,8 @@ final class Matcher implements MatcherInvocation
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
                 \sprintf(
-                    "Expectation failed for %s when %s\n%s",
+                    "Expectation failed for class \"%s\" with %s when %s\n%s",
+                    $invocation->getClassName(),
                     $this->methodNameMatcher->toString(),
                     $this->invocationMatcher->toString(),
                     $e->getMessage()
@@ -221,7 +222,8 @@ final class Matcher implements MatcherInvocation
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
                 \sprintf(
-                    "Expectation failed for %s when %s\n%s",
+                    "Expectation failed for class \"%s\" with %s when %s\n%s",
+                    $this->getClassName(),
                     $this->methodNameMatcher->toString(),
                     $this->invocationMatcher->toString(),
                     $e->getMessage()
@@ -266,7 +268,8 @@ final class Matcher implements MatcherInvocation
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
                 \sprintf(
-                    "Expectation failed for %s when %s.\n%s",
+                    "Expectation failed for class \"%s\" with %s when %s.\n%s",
+                    '',
                     $this->methodNameMatcher->toString(),
                     $this->invocationMatcher->toString(),
                     TestFailure::exceptionToString($e)
