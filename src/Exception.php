@@ -12,6 +12,6 @@ namespace PHPUnit;
 /**
  * Marker interface for PHPUnit exceptions.
  */
-interface Exception
+interface Exception extends \Throwable
 {
 }

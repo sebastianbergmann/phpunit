@@ -12,6 +12,6 @@ namespace PHPUnit\Framework\MockObject;
 /**
  * Interface for exceptions used by PHPUnit_MockObject.
  */
-interface Exception
+interface Exception extends \Throwable
 {
 }
