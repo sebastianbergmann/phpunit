@@ -71,6 +71,36 @@ final class DocBlock
      */
     private $className;
 
+    public static function ofClass(\ReflectionClass $class): self
+    {
+        $className = $class->getName();
+
+        return new self(
+            (string) $class->getDocComment(),
+            false,
+            self::extractAnnotationsFromReflector($class),
+            $class->getStartLine(),
+            $class->getEndLine(),
+            $class->getFileName(),
+            $className,
+            $className
+        );
+    }
+
+    public static function ofMethod(\ReflectionMethod $method): self
+    {
+        return new self(
+            (string) $method->getDocComment(),
+            true,
+            self::extractAnnotationsFromReflector($method),
+            $method->getStartLine(),
+            $method->getEndLine(),
+            $method->getFileName(),
+            $method->getName(),
+            $method->getDeclaringClass()->getName()
+        );
+    }
+
     /**
      * Note: we do not preserve an instance of the reflection object, since it cannot be safely (de-)serialized.
      *
@@ -98,36 +128,6 @@ final class DocBlock
         $this->className         = $className;
     }
 
-    public static function ofClass(\ReflectionClass $class) : self
-    {
-        $className = $class->getName();
-
-        return new self(
-            (string) $class->getDocComment(),
-            false,
-            self::extractAnnotationsFromReflector($class),
-            $class->getStartLine(),
-            $class->getEndLine(),
-            $class->getFileName(),
-            $className,
-            $className
-        );
-    }
-
-    public static function ofMethod(\ReflectionMethod $method) : self
-    {
-        return new self(
-            (string) $method->getDocComment(),
-            true,
-            self::extractAnnotationsFromReflector($method),
-            $method->getStartLine(),
-            $method->getEndLine(),
-            $method->getFileName(),
-            $method->getName(),
-            $method->getDeclaringClass()->getName()
-        );
-    }
-
     /**
      * @psalm-return array{
      *   __OFFSET: array<string, int>&array{__FILE: string},
@@ -138,7 +138,7 @@ final class DocBlock
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >
      */
-    public function requirements() : array
+    public function requirements(): array
     {
         $offset            = $this->startLine;
         $requires          = [];
@@ -167,7 +167,7 @@ final class DocBlock
             }
 
             if (\preg_match(self::REGEX_REQUIRES_VERSION_CONSTRAINT, $line, $matches)) {
-                if (! empty($requires[$matches['name']])) {
+                if (!empty($requires[$matches['name']])) {
                     $offset++;
 
                     continue;
@@ -181,7 +181,7 @@ final class DocBlock
                     ];
                     $recordedOffsets[$matches['name'] . '_constraint'] = $offset;
                 } catch (\PharIo\Version\Exception $e) {
-                    /** @TODO this catch is currently not valid, see https://github.com/phar-io/version/issues/16 */
+                    /* @TODO this catch is currently not valid, see https://github.com/phar-io/version/issues/16 */
                     throw new Warning($e->getMessage(), $e->getCode(), $e);
                 }
             }
@@ -194,14 +194,14 @@ final class DocBlock
             if (\preg_match(self::REGEX_REQUIRES, $line, $matches)) {
                 $name = $matches['name'] . 's';
 
-                if (! isset($requires[$name])) {
+                if (!isset($requires[$name])) {
                     $requires[$name] = [];
                 }
 
                 $requires[$name][]                                           = $matches['value'];
                 $recordedOffsets[$matches['name'] . '_' . $matches['value']] = $offset;
 
-                if ($name === 'extensions' && ! empty($matches['version'])) {
+                if ($name === 'extensions' && !empty($matches['version'])) {
                     $extensionVersions[$matches['value']] = [
                         'version'  => $matches['version'],
                         'operator' => $matches['operator'],
@@ -223,7 +223,7 @@ final class DocBlock
     }
 
     /**
-     * @return bool|array
+     * @return array|bool
      *
      * @psalm-return false|array{
      *   class: class-string,
@@ -282,7 +282,7 @@ final class DocBlock
      *
      * @throws Exception
      */
-    public function getProvidedData() : ?array
+    public function getProvidedData(): ?array
     {
         $data = $this->getDataFromDataProviderAnnotation($this->docComment)
             ?? $this->getDataFromTestWithAnnotation($this->docComment);
@@ -312,7 +312,7 @@ final class DocBlock
     /**
      * @psalm-return array<string, array{line: int, value: string}>
      */
-    public function getInlineAnnotations() : array
+    public function getInlineAnnotations(): array
     {
         $code        = \file($this->fileName);
         $lineNumber  = $this->startLine;
@@ -335,49 +335,31 @@ final class DocBlock
         return $annotations;
     }
 
-    public function symbolAnnotations() : array
+    public function symbolAnnotations(): array
     {
         return $this->symbolAnnotations;
     }
 
-    public function isHookToBeExecutedBeforeClass() : bool
+    public function isHookToBeExecutedBeforeClass(): bool
     {
         return $this->isMethod
             && false !== \strpos($this->docComment, '@beforeClass');
     }
 
-    public function isHookToBeExecutedAfterClass() : bool
+    public function isHookToBeExecutedAfterClass(): bool
     {
         return $this->isMethod
             && false !== \strpos($this->docComment, '@afterClass');
     }
 
-    public function isToBeExecutedBeforeTest() : bool
+    public function isToBeExecutedBeforeTest(): bool
     {
         return 1 === \preg_match('/@before\b/', $this->docComment);
     }
 
-    public function isToBeExecutedAfterTest() : bool
+    public function isToBeExecutedAfterTest(): bool
     {
         return 1 === \preg_match('/@after\b/', $this->docComment);
-    }
-
-    /** @return array<string, array<int, string>> */
-    private static function parseDocBlock(string $docBlock) : array
-    {
-        // Strip away the docblock header and footer to ease parsing of one line annotations
-        $docBlock    = (string) \substr($docBlock, 3, -2);
-        $annotations = [];
-
-        if (\preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)) {
-            $numMatches = \count($matches[0]);
-
-            for ($i = 0; $i < $numMatches; ++$i) {
-                $annotations[$matches['name'][$i]][] = (string) $matches['value'][$i];
-            }
-        }
-
-        return $annotations;
     }
 
     /**
@@ -387,7 +369,7 @@ final class DocBlock
      *
      * If the constant is not found the string is used as is to ensure maximum BC.
      */
-    private function parseAnnotationContent(string $message) : string
+    private function parseAnnotationContent(string $message): string
     {
         if (\defined($message)
             && (
@@ -410,7 +392,7 @@ final class DocBlock
             $methodName = $this->name;
         }
 
-        if (! \preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
+        if (!\preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
             return null;
         }
 
@@ -496,7 +478,7 @@ final class DocBlock
     {
         $docComment = $this->cleanUpMultiLineAnnotation($docComment);
 
-        if (! \preg_match(self::REGEX_TEST_WITH, $docComment, $matches, \PREG_OFFSET_CAPTURE)) {
+        if (!\preg_match(self::REGEX_TEST_WITH, $docComment, $matches, \PREG_OFFSET_CAPTURE)) {
             return null;
         }
 
@@ -539,15 +521,33 @@ final class DocBlock
         return \rtrim($docComment, "\n");
     }
 
+    /** @return array<string, array<int, string>> */
+    private static function parseDocBlock(string $docBlock): array
+    {
+        // Strip away the docblock header and footer to ease parsing of one line annotations
+        $docBlock    = (string) \substr($docBlock, 3, -2);
+        $annotations = [];
+
+        if (\preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)) {
+            $numMatches = \count($matches[0]);
+
+            for ($i = 0; $i < $numMatches; ++$i) {
+                $annotations[$matches['name'][$i]][] = (string) $matches['value'][$i];
+            }
+        }
+
+        return $annotations;
+    }
+
     /** @param \ReflectionClass|\ReflectionFunctionAbstract $reflector */
-    private static function extractAnnotationsFromReflector(\Reflector $reflector) : array
+    private static function extractAnnotationsFromReflector(\Reflector $reflector): array
     {
         $annotations = [];
 
         if ($reflector instanceof \ReflectionClass) {
             $annotations = \array_merge(
                 $annotations,
-                ...array_map(function (\ReflectionClass $trait) : array {
+                ...\array_map(function (\ReflectionClass $trait): array {
                     return self::parseDocBlock((string) $trait->getDocComment());
                 }, \array_values($reflector->getTraits()))
             );
