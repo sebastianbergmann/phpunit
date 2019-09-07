@@ -128,15 +128,9 @@
       <code>$interfaceName</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="1">
-      <code>$e</code>
-    </InvalidArgument>
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($args[$i], '$')</code>
     </PossiblyFalseArgument>
-    <UndefinedConstant occurrences="1">
-      <code>\WSDL_CACHE_NONE</code>
-    </UndefinedConstant>
   </file>
   <file src="src/Framework/MockObject/InvocationMocker.php">
     <InvalidNullableReturnType occurrences="1">
@@ -224,20 +218,6 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$afterClassMethod</code>
     </PossiblyUndefinedVariable>
-    <PropertyTypeCoercion occurrences="1">
-      <code>$this-&gt;tests</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/Framework/TestSuiteIterator.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$this-&gt;tests[$this-&gt;position]</code>
-    </ArgumentTypeCoercion>
-    <InvalidNullableReturnType occurrences="1">
-      <code>Test</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;valid() ? $this-&gt;tests[$this-&gt;position] : null</code>
-    </NullableReturnStatement>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <InvalidPropertyAssignmentValue occurrences="2">
@@ -323,11 +303,6 @@
       <code>$this-&gt;createPrinter($arguments['printer'], $arguments)</code>
       <code>$this-&gt;createPrinter(ResultPrinter::class, $arguments)</code>
     </PropertyTypeCoercion>
-  </file>
-  <file src="src/Util/Blacklist.php">
-    <UndefinedClass occurrences="1">
-      <code>Invoker</code>
-    </UndefinedClass>
   </file>
   <file src="src/Util/Configuration.php">
     <ArgumentTypeCoercion occurrences="2">
