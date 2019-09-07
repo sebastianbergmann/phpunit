@@ -245,11 +245,6 @@
       <code>$sectionOffset</code>
     </PossiblyUndefinedVariable>
   </file>
-  <file src="src/Runner/StandardTestSuiteLoader.php">
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$filename</code>
-    </PossiblyUndefinedVariable>
-  </file>
   <file src="src/Runner/TestSuiteSorter.php">
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($test-&gt;getName(), '::')</code>
@@ -319,7 +314,9 @@
     </UndefinedClass>
   </file>
   <file src="src/Util/Configuration.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="4">
+      <code>$extension</code>
+      <code>$listener</code>
       <code>$testSuiteNodes-&gt;item(0)</code>
       <code>$testSuiteNode</code>
     </ArgumentTypeCoercion>

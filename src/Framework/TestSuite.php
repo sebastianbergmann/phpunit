@@ -617,7 +617,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     /**
      * Returns the tests as an enumeration.
      *
-     * @return TestCase[]
+     * @return Test[]
      */
     public function tests(): array
     {
@@ -627,7 +627,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     /**
      * Set tests of the test suite
      *
-     * @param TestCase[] $tests
+     * @param Test[] $tests
      */
     public function setTests(array $tests): void
     {
