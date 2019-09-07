@@ -58,7 +58,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                 }
 
                 if (\substr($loadedClass, $offset) === $suiteClassName &&
-                    $class->getFileName() == $filename) {
+                    $class->getFileName() === $filename) {
                     $suiteClassName = $loadedClass;
 
                     break;
@@ -86,7 +86,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                     $suiteClassName = $loadedClass;
                     $testCaseClass  = $loadedClass;
 
-                    if ($classFile == \realpath($suiteClassFile)) {
+                    if ($classFile === \realpath($suiteClassFile)) {
                         break;
                     }
                 }
@@ -105,7 +105,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                     if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
                         $suiteClassName = $loadedClass;
 
-                        if ($classFile == \realpath($suiteClassFile)) {
+                        if ($classFile === \realpath($suiteClassFile)) {
                             break;
                         }
                     }
@@ -124,7 +124,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                 );
             }
 
-            if ($class->getFileName() == \realpath($suiteClassFile)) {
+            if ($class->getFileName() === \realpath($suiteClassFile)) {
                 return $class;
             }
         }

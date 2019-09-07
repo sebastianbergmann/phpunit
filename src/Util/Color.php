@@ -93,7 +93,7 @@ final class Color
         $prevPath = \explode(\DIRECTORY_SEPARATOR, $prevPath);
 
         for ($i = 0; $i < \min(\count($path), \count($prevPath)); $i++) {
-            if ($path[$i] == $prevPath[$i]) {
+            if ($path[$i] === $prevPath[$i]) {
                 $path[$i] = self::dim($path[$i]);
             }
         }

@@ -444,7 +444,7 @@ final class TestResult implements Countable
      */
     public function allHarmless(): bool
     {
-        return $this->riskyCount() == 0;
+        return $this->riskyCount() === 0;
     }
 
     /**
@@ -460,7 +460,7 @@ final class TestResult implements Countable
      */
     public function allCompletelyImplemented(): bool
     {
-        return $this->notImplementedCount() == 0;
+        return $this->notImplementedCount() === 0;
     }
 
     /**
@@ -496,7 +496,7 @@ final class TestResult implements Countable
      */
     public function noneSkipped(): bool
     {
-        return $this->skippedCount() == 0;
+        return $this->skippedCount() === 0;
     }
 
     /**
@@ -648,7 +648,7 @@ final class TestResult implements Countable
 
         $monitorFunctions = $this->beStrictAboutResourceUsageDuringSmallTests &&
             !$test instanceof WarningTestCase &&
-            $test->getSize() == \PHPUnit\Util\Test::SMALL &&
+            $test->getSize() === \PHPUnit\Util\Test::SMALL &&
             \function_exists('xdebug_start_function_monitor');
 
         if ($monitorFunctions) {
@@ -770,7 +770,7 @@ final class TestResult implements Countable
         }
 
         if ($this->beStrictAboutTestsThatDoNotTestAnything &&
-            $test->getNumAssertions() == 0) {
+            $test->getNumAssertions() === 0) {
             $risky = true;
         }
 
@@ -856,7 +856,7 @@ final class TestResult implements Countable
             $this->addWarning($test, $e, $time);
         } elseif ($this->beStrictAboutTestsThatDoNotTestAnything &&
             !$test->doesNotPerformAssertions() &&
-            $test->getNumAssertions() == 0) {
+            $test->getNumAssertions() === 0) {
             try {
                 $reflected = new \ReflectionClass($test);
             } catch (\ReflectionException $e) {

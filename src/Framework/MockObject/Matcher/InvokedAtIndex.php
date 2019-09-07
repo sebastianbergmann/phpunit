@@ -44,7 +44,7 @@ class InvokedAtIndex implements Invocation
     {
         $this->currentIndex++;
 
-        return $this->currentIndex == $this->sequenceIndex;
+        return $this->currentIndex === $this->sequenceIndex;
     }
 
     public function invoked(BaseInvocation $invocation): void

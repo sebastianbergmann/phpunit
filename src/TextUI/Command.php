@@ -940,7 +940,7 @@ class Command
     protected function handleLoader(string $loaderClass, string $loaderFile = ''): ?TestSuiteLoader
     {
         if (!\class_exists($loaderClass, false)) {
-            if ($loaderFile == '') {
+            if ($loaderFile === '') {
                 $loaderFile = Filesystem::classNameToFilename(
                     $loaderClass
                 );
@@ -973,7 +973,7 @@ class Command
             }
         }
 
-        if ($loaderClass == StandardTestSuiteLoader::class) {
+        if ($loaderClass === StandardTestSuiteLoader::class) {
             return null;
         }
 
@@ -995,7 +995,7 @@ class Command
     protected function handlePrinter(string $printerClass, string $printerFile = '')
     {
         if (!\class_exists($printerClass, false)) {
-            if ($printerFile == '') {
+            if ($printerFile === '') {
                 $printerFile = Filesystem::classNameToFilename(
                     $printerClass
                 );
