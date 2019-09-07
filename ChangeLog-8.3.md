@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 8.3 release series are documented in this fil
 * Fixed [#3745](https://github.com/sebastianbergmann/phpunit/issues/3745): Performance degradation with test doubles
 * Fixed [#3801](https://github.com/sebastianbergmann/phpunit/issues/3801): Class constant as default parameter is undefined
 * Fixed [#3807](https://github.com/sebastianbergmann/phpunit/pull/3807): Fixed message of exception raised by `MockBuilder::addMethods()`
+* Fixed [#3834](https://github.com/sebastianbergmann/phpunit/issues/3834): Trailing slash breaks code coverage on Windows
 
 ## [8.3.4] - 2019-08-11
 

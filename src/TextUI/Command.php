@@ -17,7 +17,6 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -777,6 +776,10 @@ class Command
 
         $this->handleCustomTestSuite();
 
+        if (!isset($this->arguments['testSuffixes'])) {
+            $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
+        }
+
         if (!isset($this->arguments['test'])) {
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
@@ -804,10 +807,14 @@ class Command
                 $this->arguments['testFile'] = \realpath($this->arguments['test']);
                 $this->arguments['test']     = \substr($this->arguments['test'], 0, \strrpos($this->arguments['test'], '.'));
             }
-        }
 
-        if (!isset($this->arguments['testSuffixes'])) {
-            $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
+            if (isset($this->arguments['test']) &&
+                \is_string($this->arguments['test']) &&
+                \substr($this->arguments['test'], -5, 5) === '.phpt') {
+                $suite = new TestSuite;
+                $suite->addTestFile($this->arguments['test']);
+                $this->arguments['test'] = $suite;
+            }
         }
 
         if (isset($includePath)) {
@@ -919,13 +926,6 @@ class Command
         if (isset($this->arguments['printer']) &&
             \is_string($this->arguments['printer'])) {
             $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
-        }
-
-        if (isset($this->arguments['test']) && \is_string($this->arguments['test']) && \substr($this->arguments['test'], -5, 5) === '.phpt') {
-            $test = new PhptTestCase($this->arguments['test']);
-
-            $this->arguments['test'] = new TestSuite;
-            $this->arguments['test']->addTest($test);
         }
 
         if (!isset($this->arguments['test'])) {
