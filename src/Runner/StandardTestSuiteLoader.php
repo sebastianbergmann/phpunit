@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner;
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
 use ReflectionClass;
@@ -44,6 +43,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         }
 
         $offset = 0 - \strlen($suiteClassName);
+
         foreach ($loadedClasses as $loadedClass) {
             try {
                 $class = new ReflectionClass($loadedClass);
