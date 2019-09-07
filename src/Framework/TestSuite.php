@@ -56,7 +56,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     /**
      * The tests in the test suite.
      *
-     * @var TestCase[]
+     * @var Test[]
      */
     protected $tests = [];
 
