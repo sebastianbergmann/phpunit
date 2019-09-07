@@ -85,6 +85,6 @@ final class Registry
             );
         }
 
-        return $this->methodDocBlocks[$class][$method] = DocBlock::ofFunction($reflection);
+        return $this->methodDocBlocks[$class][$method] = DocBlock::ofMethod($reflection);
     }
 }

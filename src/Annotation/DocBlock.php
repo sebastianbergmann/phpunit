@@ -105,19 +105,17 @@ final class DocBlock
         );
     }
 
-    public static function ofFunction(\ReflectionFunctionAbstract $function) : self
+    public static function ofMethod(\ReflectionMethod $method) : self
     {
         return new self(
-            (string) $function->getDocComment(),
-            $function instanceof \ReflectionMethod,
-            self::extractAnnotationsFromReflector($function),
-            $function->getStartLine(),
-            $function->getEndLine(),
-            $function->getFileName(),
-            $function->getName(),
-            $function instanceof \ReflectionMethod
-                ? $function->getDeclaringClass()->getName()
-                : null
+            (string) $method->getDocComment(),
+            true,
+            self::extractAnnotationsFromReflector($method),
+            $method->getStartLine(),
+            $method->getEndLine(),
+            $method->getFileName(),
+            $method->getName(),
+            $method->getDeclaringClass()->getName()
         );
     }
 
