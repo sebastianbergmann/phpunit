@@ -40,3 +40,20 @@ jobs:
         uses: docker://php:7.3-cli
         with:
           args: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
+
+  backward-compatibility:
+    name: Backward Compatibility
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Build Docker image for PHP 7.3
+        uses: ./.docker/php-7.3
+        with:
+          args: php -v
+
+      - name: Run roave/backward-compatibility-check
+        uses: ./.docker/php-7.3
+        with:
+          args: ./tools/roave-backward-compatibility-check --from=8.3.3
