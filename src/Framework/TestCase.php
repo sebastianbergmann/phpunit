@@ -1962,11 +1962,16 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $passedKeys = \array_flip(\array_unique($passedKeys));
 
         foreach ($this->dependencies as $dependency) {
+            if (empty($dependency)) {
+                $this->markSkippedForNotSpecifyingDependency();
+                return false;
+            }
+
             if (\substr($dependency, -7) === '::class') {
                 $dependencyClassName = \substr($dependency, 0, -7);
 
                 if (\array_search($dependencyClassName, $this->result->passedClasses()) === false) {
-                    $this->markSkippedForMissingDependecy($dependency);
+                    $this->markSkippedForMissingDependency($dependency);
 
                     return false;
                 }
@@ -2001,7 +2006,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 if (!\is_callable($dependency, false, $callableName) || $dependency !== $callableName) {
                     $this->markWarningForUncallableDependency($dependency);
                 } else {
-                    $this->markSkippedForMissingDependecy($dependency);
+                    $this->markSkippedForMissingDependency($dependency);
                 }
 
                 return false;
@@ -2077,7 +2082,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->result->endTest($this, 0);
     }
 
-    private function warnAboutDependencyThatDoesNotExist(string $dependency): void
+    private function markWarningForUncallableDependency(string $dependency): void
     {
         $this->status = BaseTestRunner::STATUS_WARNING;
 

@@ -12,7 +12,6 @@ namespace PHPUnit\Framework;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Runner\BaseTestRunner;
-use PHPUnit\Util\Test as TestUtil;
 
 class TestCaseTest extends TestCase
 {
