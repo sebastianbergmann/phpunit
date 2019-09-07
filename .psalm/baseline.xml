@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.4.12@86e5e50c1bb492045e70f2ebe1da3cad06e4e9b2">
   <file src="src/Annotation/DocBlock.php">
-    <!-- see https://github.com/phar-io/version/issues/16 -->
     <InvalidCatch occurrences="1"/>
   </file>
   <file src="src/Framework/Assert.php">
