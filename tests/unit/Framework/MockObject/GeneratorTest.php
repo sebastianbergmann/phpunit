@@ -268,4 +268,11 @@ final class GeneratorTest extends TestCase
 
         $this->generator->getClassMethods('Tux');
     }
+
+    public function testCannotMockFinalClass(): void
+    {
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+
+        $mock = $this->createMock(FinalClass::class);
+    }
 }
