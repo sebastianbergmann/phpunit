@@ -8,7 +8,7 @@ $arguments = [
     '--testdox',
     '--colors=never',
     '--no-interaction',
-    realpath(__DIR__ . '/../../unit/Util/TestDox/ColorTest.php'),
+    realpath(__DIR__ . '/../../unit/Util/ColorTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 

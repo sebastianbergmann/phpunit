@@ -7,10 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\TestDox;
+namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Color;
 
 /**
  * @testdox Basic ANSI color highlighting support
