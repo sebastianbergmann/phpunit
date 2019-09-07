@@ -463,6 +463,7 @@ final class Test
         );
     }
 
+    /** @psalm-param class-string $className */
     public static function getHookMethods(string $className): array
     {
         if (!\class_exists($className, false)) {
