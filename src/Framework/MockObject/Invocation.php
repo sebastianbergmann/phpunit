@@ -174,7 +174,7 @@ final class Invocation implements SelfDescribing
         );
     }
 
-    public function getObject(): ?object
+    public function getObject(): object
     {
         return $this->object;
     }
