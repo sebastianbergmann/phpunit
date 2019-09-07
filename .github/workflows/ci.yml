@@ -61,4 +61,4 @@ jobs:
       - name: Run roave/backward-compatibility-check
         uses: ./.docker/php-7.3
         with:
-          args: ./tools/roave-backward-compatibility-check --from=8.3.3
+          args: ./tools/roave-backward-compatibility-check --from=dfad4702af08b4d706dbc57a8badfa1dfe0cd046
