@@ -85,7 +85,10 @@ final class TestSuiteIterator implements RecursiveIterator
             );
         }
 
-        return new self($this->current());
+        /** @var TestSuite $current */
+        $current = $this->current();
+
+        return new self($current);
     }
 
     /**
