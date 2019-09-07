@@ -128,14 +128,24 @@ final class DocBlock
         );
     }
 
-    // @TODO accurately document returned type here
+    /**
+     * @psalm-return array{
+     *   __OFFSET: array<string, int>&array{__FILE: string},
+     *   setting?: array<string, string>,
+     *   extension_versions?: array<string, array{version: string, operator: string}>
+     * }&array<
+     *   string,
+     *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
+     * >
+     */
     public function requirements() : array
     {
-        $offset     = $this->startLine;
-        $requires   = [
-            '__OFFSET' => [
-                '__FILE' => \realpath($this->fileName),
-            ],
+        $offset            = $this->startLine;
+        $requires          = [];
+        $recordedSettings  = [];
+        $extensionVersions = [];
+        $recordedOffsets   = [
+            '__FILE' => \realpath($this->fileName),
         ];
 
         // Split docblock into lines and rewind offset to start of docblock
@@ -144,16 +154,16 @@ final class DocBlock
 
         foreach ($lines as $line) {
             if (\preg_match(self::REGEX_REQUIRES_OS, $line, $matches)) {
-                $requires[$matches['name']]             = $matches['value'];
-                $requires['__OFFSET'][$matches['name']] = $offset;
+                $requires[$matches['name']]        = $matches['value'];
+                $recordedOffsets[$matches['name']] = $offset;
             }
 
             if (\preg_match(self::REGEX_REQUIRES_VERSION, $line, $matches)) {
-                $requires[$matches['name']]             = [
+                $requires[$matches['name']]        = [
                     'version'  => $matches['version'],
                     'operator' => $matches['operator'],
                 ];
-                $requires['__OFFSET'][$matches['name']] = $offset;
+                $recordedOffsets[$matches['name']] = $offset;
             }
 
             if (\preg_match(self::REGEX_REQUIRES_VERSION_CONSTRAINT, $line, $matches)) {
@@ -166,21 +176,19 @@ final class DocBlock
                 try {
                     $versionConstraintParser = new VersionConstraintParser;
 
-                    $requires[$matches['name'] . '_constraint']             = [
+                    $requires[$matches['name'] . '_constraint']        = [
                         'constraint' => $versionConstraintParser->parse(\trim($matches['constraint'])),
                     ];
-                    $requires['__OFFSET'][$matches['name'] . '_constraint'] = $offset;
+                    $recordedOffsets[$matches['name'] . '_constraint'] = $offset;
                 } catch (\PharIo\Version\Exception $e) {
+                    /** @TODO this catch is currently not valid, see https://github.com/phar-io/version/issues/16 */
                     throw new Warning($e->getMessage(), $e->getCode(), $e);
                 }
             }
 
             if (\preg_match(self::REGEX_REQUIRES_SETTING, $line, $matches)) {
-                if (! isset($requires['setting'])) {
-                    $requires['setting'] = [];
-                }
-                $requires['setting'][$matches['setting']]                 = $matches['value'];
-                $requires['__OFFSET']['__SETTING_' . $matches['setting']] = $offset;
+                $recordedSettings[$matches['setting']]               = $matches['value'];
+                $recordedOffsets['__SETTING_' . $matches['setting']] = $offset;
             }
 
             if (\preg_match(self::REGEX_REQUIRES, $line, $matches)) {
@@ -190,11 +198,11 @@ final class DocBlock
                     $requires[$name] = [];
                 }
 
-                $requires[$name][]                                                = $matches['value'];
-                $requires['__OFFSET'][$matches['name'] . '_' . $matches['value']] = $offset;
+                $requires[$name][]                                           = $matches['value'];
+                $recordedOffsets[$matches['name'] . '_' . $matches['value']] = $offset;
 
                 if ($name === 'extensions' && ! empty($matches['version'])) {
-                    $requires['extension_versions'][$matches['value']] = [
+                    $extensionVersions[$matches['value']] = [
                         'version'  => $matches['version'],
                         'operator' => $matches['operator'],
                     ];
@@ -204,7 +212,14 @@ final class DocBlock
             $offset++;
         }
 
-        return $requires;
+        return \array_merge(
+            $requires,
+            ['__OFFSET' => $recordedOffsets],
+            \array_filter([
+                'setting'            => $recordedSettings,
+                'extension_versions' => $extensionVersions,
+            ])
+        );
     }
 
     /**
