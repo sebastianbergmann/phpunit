@@ -53,7 +53,7 @@ final class DocBlock
     private $symbolAnnotations;
 
     /**
-     * @var array<string, mixed>|null
+     * @var null|array<string, mixed>
      *
      * @psalm-var null|(array{
      *   __OFFSET: array<string, int>&array{__FILE: string},
