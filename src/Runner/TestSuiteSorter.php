@@ -361,6 +361,10 @@ final class TestSuiteSorter
      * @param array<DataProviderTestSuite|TestCase> $tests
      *
      * @return array<DataProviderTestSuite|TestCase>
+     *
+     * @psalm-template T of array<DataProviderTestSuite|TestCase>
+     * @psalm-param    T $tests
+     * @psalm-return   T
      */
     private function resolveDependencies(array $tests): array
     {
