@@ -1,6 +1,6 @@
 ---
 name: ❓ Support Question
-about: Have a problem that you can't figure out?
+about: Have a problem that you cannot figure out?
 labels: support
 ---
 
