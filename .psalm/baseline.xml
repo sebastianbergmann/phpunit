@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="3.4.12@86e5e50c1bb492045e70f2ebe1da3cad06e4e9b2">
-  <file src="src/Annotation/DocBlock.php">
-    <InvalidCatch occurrences="1"/>
-  </file>
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -120,9 +117,6 @@
       <code>self</code>
       <code>self</code>
     </MoreSpecificReturnType>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>registerId</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -141,35 +135,12 @@
       <code>\WSDL_CACHE_NONE</code>
     </UndefinedConstant>
   </file>
-  <file src="src/Framework/MockObject/InvocationMocker.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>Match</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>null</code>
-    </NullableReturnStatement>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>hasMatchers</code>
-    </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Framework/MockObject/Matcher.php">
-    <InvalidPropertyAssignmentValue occurrences="1">
-      <code>new AnyParameters</code>
-    </InvalidPropertyAssignmentValue>
-    <PossiblyNullReference occurrences="2">
-      <code>__phpunit_getInvocationMocker</code>
-      <code>__phpunit_getInvocationMocker</code>
-    </PossiblyNullReference>
-  </file>
   <file src="src/Framework/MockObject/Matcher/ConsecutiveParameters.php">
     <TypeDoesNotContainNull occurrences="1">
       <code>$invocation === null</code>
     </TypeDoesNotContainNull>
   </file>
   <file src="src/Framework/MockObject/Matcher/Parameters.php">
-    <InvalidPropertyAssignmentValue occurrences="1">
-      <code>$this-&gt;doVerify()</code>
-    </InvalidPropertyAssignmentValue>
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
@@ -304,6 +275,14 @@
       <code>$this-&gt;createPrinter($arguments['printer'], $arguments)</code>
       <code>$this-&gt;createPrinter(ResultPrinter::class, $arguments)</code>
     </PropertyTypeCoercion>
+  </file>
+  <file src="src/Util/Annotation/DocBlock.php">
+    <InvalidCatch occurrences="1"/>
+  </file>
+  <file src="src/Util/Annotation/RegistryTest.php">
+    <UndefinedClass occurrences="1">
+      <code>\ThisClassDoesNotExist</code>
+    </UndefinedClass>
   </file>
   <file src="src/Util/Blacklist.php">
     <UndefinedClass occurrences="1">
