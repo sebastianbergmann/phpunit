@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Annotation;
+namespace PHPUnit\Util\Annotation;
 
 use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\InvalidDataProviderException;
@@ -20,13 +20,15 @@ use PHPUnit\Util\Exception;
  * allowing us to ask meaningful questions about a specific
  * reflection symbol.
  *
- * @internal This class is part of PHPUnit internals, an not intended
- *           for downstream usage
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
  * @psalm-mutation-free
  */
 final class DocBlock
 {
+    /**
+     * @todo This constant should be private (it's public because of TestTest::testGetProvidedDataRegEx)
+     */
     public const REGEX_DATA_PROVIDER = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
 
     private const REGEX_REQUIRES_VERSION = '/@requires\s+(?P<name>PHP(?:Unit)?)\s+(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
@@ -122,16 +124,8 @@ final class DocBlock
      *
      * @psalm-param class-string $className
      */
-    private function __construct(
-        string $docComment,
-        bool $isMethod,
-        array $symbolAnnotations,
-        int $startLine,
-        int $endLine,
-        string $fileName,
-        string $name,
-        string $className
-    ) {
+    private function __construct(string $docComment, bool $isMethod, array $symbolAnnotations, int $startLine, int $endLine, string $fileName, string $name, string $className)
+    {
         $this->docComment        = $docComment;
         $this->isMethod          = $isMethod;
         $this->symbolAnnotations = $symbolAnnotations;
@@ -304,8 +298,8 @@ final class DocBlock
      */
     public function getProvidedData(): ?array
     {
-        $data = $this->getDataFromDataProviderAnnotation($this->docComment)
-            ?? $this->getDataFromTestWithAnnotation($this->docComment);
+        /** @noinspection SuspiciousBinaryOperationInspection */
+        $data = $this->getDataFromDataProviderAnnotation($this->docComment) ?? $this->getDataFromTestWithAnnotation($this->docComment);
 
         if ($data === null) {
             return null;
@@ -391,12 +385,8 @@ final class DocBlock
      */
     private function parseAnnotationContent(string $message): string
     {
-        if (\defined($message)
-            && (
-                \strpos($message, '::') !== false
-                && \substr_count($message, '::') + 1 === 2
-            )
-        ) {
+        if (\defined($message) &&
+            (\strpos($message, '::') !== false && \substr_count($message, '::') + 1 === 2)) {
             return \constant($message);
         }
 
@@ -567,9 +557,12 @@ final class DocBlock
         if ($reflector instanceof \ReflectionClass) {
             $annotations = \array_merge(
                 $annotations,
-                ...\array_map(function (\ReflectionClass $trait): array {
-                    return self::parseDocBlock((string) $trait->getDocComment());
-                }, \array_values($reflector->getTraits()))
+                ...\array_map(
+                    function (\ReflectionClass $trait): array {
+                        return self::parseDocBlock((string) $trait->getDocComment());
+                    },
+                    \array_values($reflector->getTraits())
+                )
             );
         }
 

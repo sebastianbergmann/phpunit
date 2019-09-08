@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Annotation;
+namespace PHPUnit\Util\Annotation;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Exception;
@@ -15,41 +15,38 @@ use PHPUnit\Util\Exception;
 /**
  * @small
  *
- * @covers \PHPUnit\Annotation\Registry
+ * @covers \PHPUnit\Util\Annotation\Registry
  *
- * @uses   \PHPUnit\Annotation\DocBlock
+ * @uses   \PHPUnit\Util\Annotation\DocBlock
  */
 final class RegistryTest extends TestCase
 {
     public function testRegistryLookupWithExistingClassAnnotation(): void
     {
-        $annotation = Registry::singleton()
-            ->forClassName(self::class);
+        $annotation = Registry::getInstance()->forClassName(self::class);
 
         self::assertSame(
             [
                 'small'  => [''],
-                'covers' => ['\PHPUnit\Annotation\Registry'],
-                'uses'   => ['\PHPUnit\Annotation\DocBlock'],
+                'covers' => ['\PHPUnit\Util\Annotation\Registry'],
+                'uses'   => ['\PHPUnit\Util\Annotation\DocBlock'],
             ],
             $annotation->symbolAnnotations()
         );
 
         self::assertSame(
             $annotation,
-            Registry::singleton()
-                ->forClassName(self::class),
+            Registry::getInstance()->forClassName(self::class),
             'Registry memoizes retrieved DocBlock instances'
         );
     }
 
     public function testRegistryLookupWithExistingMethodAnnotation(): void
     {
-        $annotation = Registry::singleton()
-            ->forMethod(
-                \NumericGroupAnnotationTest::class,
-                'testTicketAnnotationSupportsNumericValue'
-            );
+        $annotation = Registry::getInstance()->forMethod(
+            \NumericGroupAnnotationTest::class,
+            'testTicketAnnotationSupportsNumericValue'
+        );
 
         self::assertSame(
             [
@@ -62,20 +59,18 @@ final class RegistryTest extends TestCase
 
         self::assertSame(
             $annotation,
-            Registry::singleton()
-                ->forMethod(
-                    \NumericGroupAnnotationTest::class,
-                    'testTicketAnnotationSupportsNumericValue'
-                ),
+            Registry::getInstance()->forMethod(
+                \NumericGroupAnnotationTest::class,
+                'testTicketAnnotationSupportsNumericValue'
+            ),
             'Registry memoizes retrieved DocBlock instances'
         );
     }
 
     public function testClassLookupForAClassThatDoesNotExistFails(): void
     {
-        $registry = Registry::singleton();
+        $registry = Registry::getInstance();
 
-        // Note: an exception from the \PHPUnit\Util component is thrown for BC compliance
         $this->expectException(Exception::class);
 
         $registry->forClassName(\ThisClassDoesNotExist::class);
@@ -83,9 +78,8 @@ final class RegistryTest extends TestCase
 
     public function testMethodLookupForAMethodThatDoesNotExistFails(): void
     {
-        $registry = Registry::singleton();
+        $registry = Registry::getInstance();
 
-        // Note: an exception from the \PHPUnit\Util component is thrown for BC compliance
         $this->expectException(Exception::class);
 
         $registry->forMethod(self::class, 'thisMethodDoesNotExist');

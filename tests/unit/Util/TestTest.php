@@ -10,11 +10,11 @@
 namespace PHPUnit\Util;
 
 use PharIo\Version\VersionConstraint;
-use PHPUnit\Annotation\DocBlock;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
+use PHPUnit\Util\Annotation\DocBlock;
 
 /**
  * @small
@@ -845,23 +845,23 @@ final class TestTest extends TestCase
      */
     public function testGetProvidedDataRegEx(): void
     {
-        $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
+        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('method', $matches[1]);
 
-        $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
+        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('class::method', $matches[1]);
 
-        $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
+        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\class::method', $matches[1]);
 
-        $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
+        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\namespace\class::method', $matches[1]);
 
-        $result = \preg_match(Test::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
+        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('メソッド', $matches[1]);
     }

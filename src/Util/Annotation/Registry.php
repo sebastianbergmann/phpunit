@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Annotation;
+namespace PHPUnit\Util\Annotation;
 
 use PHPUnit\Util\Exception;
 
@@ -16,8 +16,7 @@ use PHPUnit\Util\Exception;
  * without having kittens die is that reflection information (and therefore docblock
  * information) is static within a single process.
  *
- * @internal This class is part of PHPUnit internals, an not intended
- *           for downstream usage
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Registry
 {
@@ -30,10 +29,9 @@ final class Registry
     /** @var array<string, array<string, DocBlock>> indexed by class name and method name */
     private $methodDocBlocks = [];
 
-    public static function singleton(): self
+    public static function getInstance(): self
     {
-        return self::$instance
-            ?? self::$instance = new self();
+        return self::$instance ?? self::$instance = new self;
     }
 
     private function __construct()

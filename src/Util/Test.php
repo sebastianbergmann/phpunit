@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Annotation\Registry;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
@@ -17,6 +16,7 @@ use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
+use PHPUnit\Util\Annotation\Registry;
 use SebastianBergmann\Environment\OperatingSystem;
 
 /**
@@ -43,13 +43,6 @@ final class Test
      * @var int
      */
     public const LARGE = 2;
-
-    /**
-     * @var string
-     *
-     * @todo This constant should be private (it's public because of TestTest::testGetProvidedDataRegEx)
-     */
-    public const REGEX_DATA_PROVIDER = '/@dataProvider\s+([a-zA-Z0-9._:-\\\\x7f-\xff]+)/';
 
     /**
      * @var array
@@ -143,12 +136,8 @@ final class Test
     public static function getRequirements(string $className, string $methodName): array
     {
         return self::mergeArraysRecursively(
-            Registry::singleton()
-                ->forClassName($className)
-                ->requirements(),
-            Registry::singleton()
-                ->forMethod($className, $methodName)
-                ->requirements()
+            Registry::getInstance()->forClassName($className)->requirements(),
+            Registry::getInstance()->forMethod($className, $methodName)->requirements()
         );
     }
 
@@ -178,6 +167,7 @@ final class Test
                     'PHP version does not match the required constraint %s.',
                     $required['PHP_constraint']['constraint']->asString()
                 );
+
                 $hint = $hint ?? 'PHP_constraint';
             }
         }
@@ -199,6 +189,7 @@ final class Test
                     'PHPUnit version does not match the required constraint %s.',
                     $required['PHPUnit_constraint']['constraint']->asString()
                 );
+
                 $hint = $hint ?? 'PHPUnit_constraint';
             }
         }
@@ -236,7 +227,7 @@ final class Test
 
         if (!empty($required['setting'])) {
             foreach ($required['setting'] as $setting => $value) {
-                if (\ini_get($setting) != $value) {
+                if (\ini_get($setting) !== $value) {
                     $missing[] = \sprintf('Setting "%s" must be "%s".', $setting, $value);
                     $hint      = $hint ?? '__SETTING_' . $setting;
                 }
@@ -287,9 +278,7 @@ final class Test
      */
     public static function getExpectedException(string $className, string $methodName)
     {
-        return Registry::singleton()
-            ->forMethod($className, $methodName)
-            ->expectedException();
+        return Registry::getInstance()->forMethod($className, $methodName)->expectedException();
     }
 
     /**
@@ -299,22 +288,18 @@ final class Test
      */
     public static function getProvidedData(string $className, string $methodName): ?array
     {
-        return Registry::singleton()
-            ->forMethod($className, $methodName)
-            ->getProvidedData();
+        return Registry::getInstance()->forMethod($className, $methodName)->getProvidedData();
     }
 
     public static function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
     {
-        $registry = Registry::singleton();
+        $registry = Registry::getInstance();
 
         if ($methodName !== null) {
             try {
                 return [
-                    'method' => $registry->forMethod($className, $methodName)
-                        ->symbolAnnotations(),
-                    'class'  => $registry->forClassName($className)
-                        ->symbolAnnotations(),
+                    'method' => $registry->forMethod($className, $methodName)->symbolAnnotations(),
+                    'class'  => $registry->forClassName($className)->symbolAnnotations(),
                 ];
             } catch (Exception $methodNotFound) {
                 // ignored
@@ -323,16 +308,13 @@ final class Test
 
         return [
             'method' => null,
-            'class'  => $registry->forClassName($className)
-                ->symbolAnnotations(),
+            'class'  => $registry->forClassName($className)->symbolAnnotations(),
         ];
     }
 
     public static function getInlineAnnotations(string $className, string $methodName): array
     {
-        return Registry::singleton()
-            ->forMethod($className, $methodName)
-            ->getInlineAnnotations();
+        return Registry::getInstance()->forMethod($className, $methodName)->getInlineAnnotations();
     }
 
     public static function getBackupSettings(string $className, string $methodName): array
@@ -482,8 +464,7 @@ final class Test
                         continue;
                     }
 
-                    $docBlock = Registry::singleton()
-                        ->forMethod($className, $method->getName());
+                    $docBlock = Registry::getInstance()->forMethod($className, $method->getName());
 
                     if ($method->isStatic()) {
                         if ($docBlock->isHookToBeExecutedBeforeClass()) {
@@ -524,13 +505,11 @@ final class Test
 
         return \array_key_exists(
             'test',
-            Registry::singleton()
-                ->forMethod(
-                    $method->getDeclaringClass()
-                        ->getName(),
-                    $method->getName()
-                )
-                ->symbolAnnotations()
+            Registry::getInstance()->forMethod(
+                $method->getDeclaringClass()->getName(),
+                $method->getName()
+            )
+            ->symbolAnnotations()
         );
     }
 
