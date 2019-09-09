@@ -780,6 +780,13 @@ class Command
             $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
         }
 
+        if (isset($this->options[1][0]) &&
+            \substr($this->options[1][0], -5, 5) !== '.phpt' &&
+            \substr($this->options[1][0], -4, 4) !== '.php'
+        ) {
+            print 'Warning: Calling PHPUnit with a class name is deprecated and will be removed in PHPUnit 9.' . \PHP_EOL;
+        }
+
         if (!isset($this->arguments['test'])) {
             if (isset($this->options[1][0])) {
                 $this->arguments['test'] = $this->options[1][0];
