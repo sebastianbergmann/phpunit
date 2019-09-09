@@ -15,9 +15,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Run friendsofphp/php-cs-fixer
-        uses: docker://php:7.3-cli
-        with:
-          args: ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
+        run: php7.3 ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
 
   type-checker:
     name: Type Checker
@@ -26,25 +24,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Build Docker image for PHP 7.3
-        uses: ./.docker/php-7.3
-        with:
-          args: php -v
-
       - name: Update dependencies with composer
-        uses: ./.docker/php-7.3
-        with:
-          args: composer update --no-interaction --no-ansi --no-progress --no-suggest
+        run: php7.3 ./tools/composer update --no-interaction --no-ansi --no-progress --no-suggest
 
       - name: Run vimeo/psalm on public API
-        uses: ./.docker/php-7.3
-        with:
-          args: ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
+        run: php7.3 ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
 
       - name: Run vimeo/psalm on internal code
-        uses: ./.docker/php-7.3
-        with:
-          args: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
+        run: php7.3 ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
 
   backward-compatibility:
     name: Backward Compatibility
@@ -53,12 +40,5 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Build Docker image for PHP 7.3
-        uses: ./.docker/php-7.3
-        with:
-          args: php -v
-
       - name: Run roave/backward-compatibility-check
-        uses: ./.docker/php-7.3
-        with:
-          args: ./tools/roave-backward-compatibility-check --from=8.3.3
+        run: php7.3 ./tools/roave-backward-compatibility-check --from=8.3.3
