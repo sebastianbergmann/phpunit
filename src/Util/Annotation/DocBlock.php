@@ -21,8 +21,6 @@ use PHPUnit\Util\Exception;
  * reflection symbol.
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
- *
- * @psalm-mutation-free
  */
 final class DocBlock
 {
