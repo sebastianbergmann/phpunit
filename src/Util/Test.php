@@ -144,6 +144,7 @@ final class Test
     /**
      * Returns the missing requirements for a test.
      *
+     * @throws Exception
      * @throws Warning
      */
     public static function getMissingRequirements(string $className, string $methodName): array
@@ -154,6 +155,8 @@ final class Test
 
         if (!empty($required['PHP'])) {
             $operator = empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator'];
+
+            self::ensureOperatorIsValid($operator);
 
             if (!\version_compare(\PHP_VERSION, $required['PHP']['version'], $operator)) {
                 $missing[] = \sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
@@ -176,6 +179,8 @@ final class Test
             $phpunitVersion = Version::id();
 
             $operator = empty($required['PHPUnit']['operator']) ? '>=' : $required['PHPUnit']['operator'];
+
+            self::ensureOperatorIsValid($operator);
 
             if (!\version_compare($phpunitVersion, $required['PHPUnit']['version'], $operator)) {
                 $missing[] = \sprintf('PHPUnit %s %s is required.', $operator, $required['PHPUnit']['version']);
@@ -212,7 +217,7 @@ final class Test
             foreach ($required['functions'] as $function) {
                 $pieces = \explode('::', $function);
 
-                if (\count($pieces) === 2 && \method_exists($pieces[0], $pieces[1])) {
+                if (\count($pieces) === 2 && \class_exists($pieces[0]) && \method_exists($pieces[0], $pieces[1])) {
                     continue;
                 }
 
@@ -252,6 +257,8 @@ final class Test
                 $actualVersion = \phpversion($extension);
 
                 $operator = empty($req['operator']) ? '>=' : $req['operator'];
+
+                self::ensureOperatorIsValid($operator);
 
                 if ($actualVersion === false || !\version_compare($actualVersion, $req['version'], $operator)) {
                     $missing[] = \sprintf('Extension %s %s %s is required.', $extension, $operator, $req['version']);
@@ -858,5 +865,20 @@ final class Test
         }
 
         return $a;
+    }
+
+    /*
+     * @throws Exception
+     */
+    private static function ensureOperatorIsValid(string $operator): void
+    {
+        if (!\in_array($operator, ['<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>', 'ne'])) {
+            throw new Exception(
+                \sprintf(
+                    '"%s" is not a valid version_compare() operator',
+                    $operator
+                )
+            );
+        }
     }
 }
