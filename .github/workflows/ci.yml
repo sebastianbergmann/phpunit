@@ -15,6 +15,4 @@ jobs:
         uses: actions/checkout@master
 
       - name: Run friendsofphp/php-cs-fixer
-        uses: docker://php:7.3-cli
-        with:
-          args: ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
+        run: php7.3 tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
