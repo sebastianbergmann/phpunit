@@ -212,7 +212,7 @@ class TeamCity extends ResultPrinter
         } else {
             $split = \explode('::', $suiteName);
 
-            if (\count($split) === 2 && \method_exists($split[0], $split[1])) {
+            if (\count($split) === 2 && \class_exists($split[0]) && \method_exists($split[0], $split[1])) {
                 $fileName                   = self::getFileName($split[0]);
                 $parameters['locationHint'] = "php_qn://$fileName::\\$suiteName";
                 $parameters['name']         = $split[1];
@@ -238,7 +238,7 @@ class TeamCity extends ResultPrinter
         if (!\class_exists($suiteName, false)) {
             $split = \explode('::', $suiteName);
 
-            if (\count($split) === 2 && \method_exists($split[0], $split[1])) {
+            if (\count($split) === 2 && \class_exists($split[0]) && \method_exists($split[0], $split[1])) {
                 $parameters['name'] = $split[1];
             }
         }
