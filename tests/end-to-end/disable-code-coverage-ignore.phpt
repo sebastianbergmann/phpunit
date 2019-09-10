@@ -1,5 +1,5 @@
 --TEST--
-phpunit --colors=never --coverage-text=php://stdout --disable-coverage-ignore IgnoreCodeCoverageClassTest tests/_files/IgnoreCodeCoverageClassTest.php --whitelist ../../../tests/_files/IgnoreCodeCoverageClass.php
+phpunit --colors=never --coverage-text=php://stdout --disable-coverage-ignore tests/_files/IgnoreCodeCoverageClassTest.php --whitelist ../../../tests/_files/IgnoreCodeCoverageClass.php
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!extension_loaded('xdebug')) {

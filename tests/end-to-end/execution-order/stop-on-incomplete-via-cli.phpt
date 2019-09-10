@@ -1,11 +1,10 @@
 --TEST--
-phpunit --stop-on-error StopOnErrorTestSuite ./tests/_files/StopOnErrorTestSuite.php
+phpunit --stop-on-error ./tests/_files/StopOnErrorTestSuite.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--stop-on-incomplete',
-    'StopOnErrorTestSuite',
     \realpath(__DIR__ . '/../../_files/StopOnErrorTestSuite.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

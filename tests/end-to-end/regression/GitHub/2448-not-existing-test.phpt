@@ -3,7 +3,7 @@
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = 'Test';
+$_SERVER['argv'][2] = 'Test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main(false);

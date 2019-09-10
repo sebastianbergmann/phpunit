@@ -1,5 +1,5 @@
 --TEST--
-phpunit --order-by=no-depends,reverse --cache-result --cache-result-file MultiDependencyTest ./tests/_files/MultiDependencyTest.php
+phpunit --order-by=no-depends,reverse --cache-result --cache-result-file ./tests/_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
 $target = tempnam(sys_get_temp_dir(), __FILE__);
@@ -10,7 +10,6 @@ $arguments = [
     '--order-by=reverse',
     '--cache-result',
     '--cache-result-file=' . $target,
-    'MultiDependencyTest',
     realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

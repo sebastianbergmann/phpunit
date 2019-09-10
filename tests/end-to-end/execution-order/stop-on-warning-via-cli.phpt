@@ -1,11 +1,10 @@
 --TEST--
-phpunit --stop-on-warning StopOnWarningTestSuite ./tests/_files/StopOnWarningTestSuite.php
+phpunit --stop-on-warning ./tests/_files/StopOnWarningTestSuite.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--stop-on-warning',
-    'StopOnWarningTestSuite',
     \realpath(__DIR__ . '/../../_files/StopOnWarningTestSuite.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

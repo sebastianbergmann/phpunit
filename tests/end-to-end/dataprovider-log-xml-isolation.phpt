@@ -1,13 +1,12 @@
 --TEST--
-phpunit --process-isolation --log-junit php://stdout DataProviderTest ../../_files/DataProviderTest.php
+phpunit --process-isolation --log-junit php://stdout ../../_files/DataProviderTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--process-isolation';
 $_SERVER['argv'][3] = '--log-junit';
 $_SERVER['argv'][4] = 'php://stdout';
-$_SERVER['argv'][5] = 'DataProviderTest';
-$_SERVER['argv'][6] = __DIR__ . '/../_files/DataProviderTest.php';
+$_SERVER['argv'][5] = __DIR__ . '/../_files/DataProviderTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

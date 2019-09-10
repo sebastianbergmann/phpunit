@@ -1,11 +1,10 @@
 --TEST--
-phpunit --process-isolation MultiDependencyTest _files/MultiDependencyTest.php
+phpunit --process-isolation _files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--process-isolation',
-    'MultiDependencyTest',
     \realpath(__DIR__ . '/_files/MultiDependencyTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

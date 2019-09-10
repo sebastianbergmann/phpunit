@@ -1,10 +1,9 @@
 --TEST--
-phpunit StackTest _files/StackTest.php
+phpunit _files/StackTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
-    'StackTest',
     \realpath(__DIR__ . '/_files/StackTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
