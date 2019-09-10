@@ -12,9 +12,8 @@ namespace PHPUnit\Util\Annotation;
 use PHPUnit\Util\Exception;
 
 /**
- * Yes, this is a singleton registry. The reason why this can actually be a singleton
- * without having kittens die is that reflection information (and therefore docblock
- * information) is static within a single process.
+ * Reflection information, and therefore DocBlock information, is static within
+ * a single PHP process. It is therefore okay to use a Singleton registry here.
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
