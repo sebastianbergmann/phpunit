@@ -1,11 +1,10 @@
 --TEST--
-phpunit -c ../_files/configuration_stop_on_error.xml StopOnErrorTestSuite ./tests/_files/StopOnErrorTestSuite.php
+phpunit -c ../_files/configuration_stop_on_error.xml ./tests/_files/StopOnErrorTestSuite.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '-c',
     \realpath(__DIR__ . '/../../_files/configuration_stop_on_error.xml'),
-    'StopOnErrorTestSuite',
     \realpath(__DIR__ . '/../../_files/StopOnErrorTestSuite.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

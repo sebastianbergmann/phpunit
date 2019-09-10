@@ -1,11 +1,10 @@
 --TEST--
-phpunit --teamcity ExceptionStackTest ../../_files/ExceptionStackTest.php
+phpunit --teamcity ../../_files/ExceptionStackTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--teamcity',
-    'ExceptionStackTest',
     \realpath(__DIR__ . '/../../_files/ExceptionStackTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

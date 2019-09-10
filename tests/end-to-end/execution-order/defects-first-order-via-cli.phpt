@@ -1,5 +1,5 @@
 --TEST--
-phpunit --order-by=defects MultiDependencyTest ./tests/_files/MultiDependencyTest.php
+phpunit --order-by=defects ./tests/_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
 $tmpResultCache = \tempnam(sys_get_temp_dir(), __FILE__);
@@ -11,7 +11,6 @@ $arguments = [
     '--order-by=defects',
     '--cache-result',
     '--cache-result-file=' . $tmpResultCache,
-    'MultiDependencyTest',
     \realpath(__DIR__ . '/_files/MultiDependencyTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

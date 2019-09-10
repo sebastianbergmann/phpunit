@@ -1,12 +1,11 @@
 --TEST--
-phpunit --testdox-xml php://stdout StatusTest ../../_files/StatusTest.php
+phpunit --testdox-xml php://stdout ../../_files/StatusTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--testdox-xml',
     'php://stdout',
-    'StatusTest',
     \realpath(__DIR__ . '/../../basic/unit/StatusTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

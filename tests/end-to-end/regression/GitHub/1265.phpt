@@ -4,8 +4,7 @@ GH-1265: Could not use "PHPUnit\Runner\StandardTestSuiteLoader" as loader
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--configuration';
 $_SERVER['argv'][2] = __DIR__ . '/1265/phpunit1265.xml';
-$_SERVER['argv'][3] = 'Issue1265Test';
-$_SERVER['argv'][4] = __DIR__ . '/1265/Issue1265Test.php';
+$_SERVER['argv'][3] = __DIR__ . '/1265/Issue1265Test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

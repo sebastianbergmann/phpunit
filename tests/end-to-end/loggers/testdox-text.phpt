@@ -1,12 +1,11 @@
 --TEST--
-phpunit --testdox-text php://stdout BankAccountTest ../../_files/BankAccountTest.php
+phpunit --testdox-text php://stdout ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--testdox-text',
     'php://stdout',
-    'BankAccountTest',
     \realpath(__DIR__ . '/../../_files/BankAccountTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

@@ -1,11 +1,10 @@
 --TEST--
-phpunit --reverse-list FailureTest ../../_files/FailureTest.php
+phpunit --reverse-list ../../_files/FailureTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--reverse-list',
-    'FailureTest',
     \realpath(__DIR__ . '/../../_files/FailureTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

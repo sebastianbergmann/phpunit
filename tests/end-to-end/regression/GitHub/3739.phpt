@@ -3,8 +3,7 @@ https://github.com/sebastianbergmann/phpunit/issues/3739
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = 'Issue3739Test';
-$_SERVER['argv'][3] = __DIR__ . '/3739/Issue3739Test.php';
+$_SERVER['argv'][2] = __DIR__ . '/3739/Issue3739Test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 

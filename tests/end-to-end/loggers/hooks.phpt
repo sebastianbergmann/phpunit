@@ -1,11 +1,10 @@
 --TEST--
-phpunit --configuration _files/hooks.xml HookTest _files/HookTest.php
+phpunit --configuration _files/hooks.xml _files/HookTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--configuration',
     \realpath(__DIR__ . '/_files/hooks.xml'),
-    'HookTest',
     \realpath(__DIR__ . '/_files/HookTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
