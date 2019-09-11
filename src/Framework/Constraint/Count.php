@@ -49,12 +49,12 @@ class Count extends Constraint
      */
     protected function getCountOf($other): ?int
     {
-        if ($other instanceof \EmptyIterator) {
-            return 0;
-        }
-
         if ($other instanceof Countable || \is_array($other)) {
             return \count($other);
+        }
+
+        if ($other instanceof \EmptyIterator) {
+            return 0;
         }
 
         if ($other instanceof Traversable) {
