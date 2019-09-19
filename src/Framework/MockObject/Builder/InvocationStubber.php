@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\MockObject\Builder;
 
 use PHPUnit\Framework\MockObject\Stub\Stub;
 
-/** @internal This class is not covered by the backward compatibility promise for PHPUnit */
 interface InvocationStubber
 {
     public function will(Stub $stub): Identity;
