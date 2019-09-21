@@ -1,30 +1,38 @@
 language: php
 
-if: type = pull_request
+jobs:
+  include:
+    - &COLLECT_CODE_COVERAGE
 
-php:
-  - 7.1
-  - 7.2
-  - 7.3
+      stage: Collect Code Coverage
 
-matrix:
-  fast_finish: true
+      php: 7.1
 
-before_install:
-  - ./tools/composer clear-cache
+      if: type = pull_request
 
-install:
-  - travis_retry ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest
+      before_install:
+        - ./tools/composer clear-cache
 
-before_script:
-  - echo 'zend.assertions=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
-  - echo 'assert.exception=On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+      install:
+        - travis_retry ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest
 
-script:
-  - ./phpunit --coverage-clover=coverage.xml
+      before_script:
+        - echo 'zend.assertions=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+        - echo 'assert.exception=On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
+      script:
+        - ./phpunit --coverage-clover=coverage.xml
+
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
+
+    - <<: *COLLECT_CODE_COVERAGE
+
+      php: 7.2
+
+    - <<: *COLLECT_CODE_COVERAGE
+
+      php: 7.3
 
 notifications:
   email: false
