@@ -1,0 +1,30 @@
+language: php
+
+if: type = pull_request
+
+php:
+  - 7.1
+  - 7.2
+  - 7.3
+
+matrix:
+  fast_finish: true
+
+before_install:
+  - ./tools/composer clear-cache
+
+install:
+  - travis_retry ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest
+
+before_script:
+  - echo 'zend.assertions=1' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+  - echo 'assert.exception=On' >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
+
+script:
+  - ./phpunit --coverage-clover=coverage.xml
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  email: false
