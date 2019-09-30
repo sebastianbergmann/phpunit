@@ -1612,9 +1612,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         foreach ($class_names as $class_name) {
             $reflection = new \ReflectionClass($class_name);
 
-            $mockedMethodsThatDontExist = \array_filter($methods, function (string $method) use ($reflection) {
-                return !$reflection->hasMethod($method);
-            });
+            $mockedMethodsThatDontExist = \array_filter(
+                $methods,
+                static function (string $method) use ($reflection) {
+                    return !$reflection->hasMethod($method);
+                }
+            );
 
             if ($mockedMethodsThatDontExist) {
                 $this->addWarning(
