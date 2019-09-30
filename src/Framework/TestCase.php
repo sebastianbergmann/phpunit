@@ -1557,7 +1557,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * Returns a test double for the specified class.
+     * Returns a mock object for the specified class.
      *
      * @param string|string[] $originalClassName
      *
@@ -1576,7 +1576,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * Returns a configured test double for the specified class.
+     * Returns a configured mock object for the specified class.
      *
      * @param string|string[] $originalClassName
      *
@@ -1596,7 +1596,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * Returns a partial test double for the specified class.
+     * Returns a partial mock object for the specified class.
      *
      * @param string|string[] $originalClassName
      * @param string[]        $methods
