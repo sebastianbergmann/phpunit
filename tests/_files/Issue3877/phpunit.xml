@@ -1,0 +1,13 @@
+<phpunit>
+    <listeners>
+        <listener class="EchoWhenStartTestsuiteListener" file="EchoWhenStartTestsuiteListener.php"/>
+    </listeners>
+    <testsuites>
+        <testsuite name="Suite1">
+            <directory>./tests/Suite1/</directory>
+        </testsuite>
+        <testsuite name="Suite2">
+            <directory>./tests/Suite2/</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
