@@ -135,12 +135,12 @@
       <code>\WSDL_CACHE_NONE</code>
     </UndefinedConstant>
   </file>
-  <file src="src/Framework/MockObject/Matcher/ConsecutiveParameters.php">
+  <file src="src/Framework/MockObject/Rule/ConsecutiveParameters.php">
     <TypeDoesNotContainNull occurrences="1">
       <code>$invocation === null</code>
     </TypeDoesNotContainNull>
   </file>
-  <file src="src/Framework/MockObject/Matcher/Parameters.php">
+  <file src="src/Framework/MockObject/Rule/Parameters.php">
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
