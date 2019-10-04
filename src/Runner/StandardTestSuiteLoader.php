@@ -52,6 +52,10 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                 );
             }
 
+            if ($class->isAbstract()) {
+                continue;
+            }
+
             if (\substr($loadedClass, $offset) === $suiteClassName &&
                 $class->getFileName() == $filename) {
                 $suiteClassName = $loadedClass;
