@@ -11,7 +11,7 @@ namespace PHPUnit\Event;
 
 interface Subscriber
 {
-    public function wants(): Types;
+    public function subscribesTo(): Types;
 
     /**
      * @throws UnsupportedEvent

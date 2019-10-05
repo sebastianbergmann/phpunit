@@ -21,7 +21,7 @@ final class Subscribers
 
     public function add(Subscriber $subscriber): void
     {
-        foreach ($subscriber->wants() as $type) {
+        foreach ($subscriber->subscribesTo() as $type) {
             $this->subscribers[$type->asString()][] = $subscriber;
         }
     }

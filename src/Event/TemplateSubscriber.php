@@ -24,7 +24,7 @@ abstract class TemplateSubscriber implements Subscriber
      */
     private function ensureSupportedEventType(Event $event): void
     {
-        if (!$this->wants()->has($event->type())) {
+        if (!$this->subscribesTo()->has($event->type())) {
             throw UnsupportedEvent::type($event->type());
         }
     }
