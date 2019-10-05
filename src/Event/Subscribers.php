@@ -21,10 +21,12 @@ final class Subscribers
      */
     private array $subscribers = [];
 
-    public function add(Subscriber $subscriber): void
+    public function add(Subscriber ...$subscribers): void
     {
-        foreach ($subscriber->subscribesTo() as $type) {
-            $this->subscribers[$type->asString()][] = $subscriber;
+        foreach ($subscribers as $subscriber) {
+            foreach ($subscriber->subscribesTo() as $type) {
+                $this->subscribers[$type->asString()][] = $subscriber;
+            }
         }
     }
 
