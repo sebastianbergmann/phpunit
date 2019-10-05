@@ -47,6 +47,7 @@ final class UnsupportedEventTest extends TestCase
         );
 
         $this->assertInstanceOf(Exception::class, $exception);
+        $this->assertInstanceOf(\PHPUnit\Exception::class, $exception);
         $this->assertSame($message, $exception->getMessage());
     }
 }
