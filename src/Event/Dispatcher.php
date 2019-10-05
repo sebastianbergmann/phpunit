@@ -21,7 +21,7 @@ final class Dispatcher
     public function register(Subscriber ...$subscribers): void
     {
         foreach ($subscribers as $subscriber) {
-            foreach ($subscriber->subscribesTo() as $type) {
+            foreach ($subscriber->typesSubscribedTo() as $type) {
                 $this->subscribers[$type->asString()][] = $subscriber;
             }
         }

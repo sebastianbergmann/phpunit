@@ -25,7 +25,7 @@ final class SpyingSubscriber implements Subscriber
         $this->types = $types;
     }
 
-    public function subscribesTo(): Types
+    public function typesSubscribedTo(): Types
     {
         return $this->types;
     }

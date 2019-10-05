@@ -20,7 +20,7 @@ final class DummySubscriber implements Subscriber
         $this->types = $types;
     }
 
-    public function subscribesTo(): Types
+    public function typesSubscribedTo(): Types
     {
         return $this->types;
     }
