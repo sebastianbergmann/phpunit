@@ -30,7 +30,7 @@ final class Types implements IteratorAggregate
         return new ArrayIterator($this->types);
     }
 
-    public function has(Type $other): bool
+    public function contains(Type $other): bool
     {
         foreach ($this->types as $type) {
             if ($type->is($other)) {
