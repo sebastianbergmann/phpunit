@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Event;
 
+use function array_key_exists;
 use ArrayIterator;
+use EmptyIterator;
 use Iterator;
 
 final class Subscribers
@@ -31,6 +33,10 @@ final class Subscribers
      */
     public function for(Type $type): Iterator
     {
+        if (!array_key_exists($type->asString(), $this->subscribers)) {
+            return new EmptyIterator();
+        }
+
         return new ArrayIterator($this->subscribers[$type->asString()]);
     }
 }
