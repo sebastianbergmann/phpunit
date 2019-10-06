@@ -10,7 +10,6 @@
 namespace PHPUnit\Event;
 
 use DummyEvent;
-use NamedType;
 use PHPUnit\Framework\TestCase;
 use SpyingSubscriber;
 

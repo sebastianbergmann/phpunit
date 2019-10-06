@@ -10,7 +10,6 @@
 namespace PHPUnit\Event;
 
 use function iterator_to_array;
-use NamedType;
 use PHPUnit\Framework\TestCase;
 
 /**

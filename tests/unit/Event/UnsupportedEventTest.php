@@ -11,7 +11,6 @@ namespace PHPUnit\Event;
 
 use function sprintf;
 use Exception;
-use NamedType;
 use PHPUnit\Framework\TestCase;
 
 /**
