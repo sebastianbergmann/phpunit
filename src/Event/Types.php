@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use function count;
 use ArrayIterator;
 use Iterator;
 use IteratorAggregate;
@@ -17,8 +18,15 @@ final class Types implements IteratorAggregate
 {
     private array $types;
 
+    /**
+     * @throws TypeRequired
+     */
     public function __construct(Type ...$types)
     {
+        if (0 === count($types)) {
+            throw TypeRequired::create();
+        }
+
         $this->types = $types;
     }
 

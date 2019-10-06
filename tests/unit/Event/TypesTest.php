@@ -17,12 +17,11 @@ use PHPUnit\Framework\TestCase;
  */
 final class TypesTest extends TestCase
 {
-    public function testDefaults(): void
+    public function testConstructorRequiresAtLeastOneType(): void
     {
-        $types = new Types();
+        self::expectException(TypeRequired::class);
 
-        $this->assertIsIterable($types);
-        $this->assertEquals([], iterator_to_array($types));
+        new Types();
     }
 
     public function testConstructorSetsTypes(): void
