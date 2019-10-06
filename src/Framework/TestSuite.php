@@ -404,6 +404,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $className   = $this->name;
         $hookMethods = (new HookMethods)->hookMethods($className);
 
+        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-suite-started')));
+
         $result->startTestSuite($this);
 
         $test = null;
@@ -425,6 +427,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $result->addFailure($test, $error, 0);
                     $result->endTest($test, 0);
                 }
+
+                $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-suite-ended')));
 
                 $result->endTestSuite($this);
 
@@ -453,6 +457,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                     $result->endTest($test, 0);
                 }
+
+                $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-suite-ended')));
 
                 $result->endTestSuite($this);
 
@@ -503,6 +509,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 }
             }
         }
+
+        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-suite-ended')));
 
         $result->endTestSuite($this);
     }
