@@ -30,11 +30,15 @@ class DoubleTestCase implements Test
 
     public function run(Event\Dispatcher $dispatcher, TestResult $result): void
     {
+        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-started')));
+
         $result->startTest($this);
 
         $this->testCase->runBare();
         $this->testCase->runBare();
 
         $result->endTest($this, 0);
+
+        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-ended')));
     }
 }

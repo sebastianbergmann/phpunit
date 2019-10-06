@@ -113,9 +113,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         try {
             $sections = $this->parse();
         } catch (Exception $e) {
+            $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-started')));
+
             $result->startTest($this);
             $result->addFailure($this, new SkippedTestError($e->getMessage()), 0);
             $result->endTest($this, 0);
+
+            $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-ended')));
 
             return;
         }
@@ -123,6 +127,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $code     = $this->render($sections['FILE']);
         $xfail    = false;
         $settings = $this->parseIniSection($this->settings(CodeCoverage::isActive()));
+
+        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-started')));
 
         $result->startTest($this);
 
@@ -224,6 +230,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $this->runClean($sections, CodeCoverage::isActive());
 
         $result->endTest($this, $time);
+
+        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-ended')));
     }
 
     /**
