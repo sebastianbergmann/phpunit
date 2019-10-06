@@ -101,7 +101,7 @@ final class DocBlock
         );
     }
 
-    public static function ofMethod(\ReflectionMethod $method): self
+    public static function ofMethod(\ReflectionMethod $method, string $className = null): self
     {
         return new self(
             (string) $method->getDocComment(),
@@ -111,7 +111,7 @@ final class DocBlock
             $method->getEndLine(),
             $method->getFileName(),
             $method->getName(),
-            $method->getDeclaringClass()->getName()
+            $className ?? $method->getDeclaringClass()->getName()
         );
     }
 
