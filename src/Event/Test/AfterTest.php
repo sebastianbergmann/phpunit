@@ -17,6 +17,6 @@ final class AfterTest implements Event
 {
     public function type(): Type
     {
-        return new NamedType('test-ended');
+        return new NamedType('after-test');
     }
 }

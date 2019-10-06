@@ -17,6 +17,6 @@ final class AfterTestSuite implements Event
 {
     public function type(): Type
     {
-        return new NamedType('test-suite-ended');
+        return new NamedType('after-test-suite');
     }
 }

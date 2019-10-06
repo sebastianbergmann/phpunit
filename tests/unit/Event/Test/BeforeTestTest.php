@@ -17,10 +17,10 @@ use PHPUnit\Framework\TestCase;
  */
 final class BeforeTestTest extends TestCase
 {
-    public function testTypeIsTestStarted(): void
+    public function testTypeIsBeforeTest(): void
     {
         $event = new BeforeTest();
 
-        $this->assertTrue($event->type()->is(new NamedType('test-started')));
+        $this->assertTrue($event->type()->is(new NamedType('before-test')));
     }
 }

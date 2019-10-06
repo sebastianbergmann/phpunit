@@ -17,10 +17,10 @@ use PHPUnit\Framework\TestCase;
  */
 final class AfterTestSuiteTest extends TestCase
 {
-    public function testTypeIsTestSuiteEnded(): void
+    public function testTypeIsTestAfterTestSuite(): void
     {
         $event = new AfterTestSuite();
 
-        $this->assertTrue($event->type()->is(new NamedType('test-suite-ended')));
+        $this->assertTrue($event->type()->is(new NamedType('after-test-suite')));
     }
 }

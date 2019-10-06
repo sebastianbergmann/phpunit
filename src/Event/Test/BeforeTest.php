@@ -17,6 +17,6 @@ final class BeforeTest implements Event
 {
     public function type(): Type
     {
-        return new NamedType('test-started');
+        return new NamedType('before-test');
     }
 }

@@ -17,6 +17,6 @@ final class BeforeTestSuite implements Event
 {
     public function type(): Type
     {
-        return new NamedType('test-suite-started');
+        return new NamedType('before-test-suite');
     }
 }
