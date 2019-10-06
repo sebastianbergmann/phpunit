@@ -62,7 +62,7 @@ final class Registry
 
     /**
      * @throws Exception
-     * @psalm-param class-string $className
+     * @psalm-param class-string $class
      */
     public function forMethod(string $class, string $method): DocBlock
     {
