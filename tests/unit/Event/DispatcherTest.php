@@ -54,11 +54,9 @@ final class DispatcherTest extends TestCase
 
         $dispatcher = new Dispatcher();
 
-        $dispatcher->register(
-            $firstSubscriber,
-            $secondSubscriber,
-            $thirdSubscriber
-        );
+        $dispatcher->register($firstSubscriber);
+        $dispatcher->register($secondSubscriber);
+        $dispatcher->register($thirdSubscriber);
 
         $dispatcher->dispatch($event);
 
