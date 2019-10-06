@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\Test;
 
-use PHPUnit\Event\NamedType;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,7 +22,7 @@ final class AfterTestTest extends TestCase
 
         $event = new AfterTest($test);
 
-        $this->assertTrue($event->type()->is(new NamedType('after-test')));
+        $this->assertTrue($event->type()->is(new AfterTestType()));
         $this->assertSame($test, $event->test());
     }
 }
