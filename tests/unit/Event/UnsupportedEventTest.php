@@ -20,12 +20,18 @@ final class UnsupportedEventTest extends TestCase
 {
     public function testTypeReturnsUnsupportedEvent(): void
     {
+        $subscriberClassName = self::class;
+
         $type = new NamedType('foo');
 
-        $exception = UnsupportedEvent::type($type);
+        $exception = UnsupportedEvent::type(
+            $subscriberClassName,
+            $type
+        );
 
         $message = sprintf(
-            'Type "%s" not supported',
+            'Subscriber "%s" is not subscribed to events of type "%s".',
+            $subscriberClassName,
             $type->asString()
         );
 

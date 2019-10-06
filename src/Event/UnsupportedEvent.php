@@ -14,10 +14,11 @@ use PHPUnit\Exception;
 
 final class UnsupportedEvent extends \Exception implements Exception
 {
-    public static function type(Type $type): self
+    public static function type(string $subscriberClassName, Type $type): self
     {
         return new self(sprintf(
-            'Type "%s" not supported',
+            'Subscriber "%s" is not subscribed to events of type "%s".',
+            $subscriberClassName,
             $type->asString()
         ));
     }
