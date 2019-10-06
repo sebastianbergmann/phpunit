@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
+use PHPUnit\Event;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
 
@@ -24,7 +25,7 @@ class NotSelfDescribingTest implements Test
         return 0;
     }
 
-    public function run(TestResult $result): void
+    public function run(Event\Dispatcher $dispatcher, TestResult $result): void
     {
     }
 }

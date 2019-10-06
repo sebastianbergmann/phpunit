@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Event;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
 
@@ -17,7 +18,7 @@ class NotReorderableTest implements Test
         return 1;
     }
 
-    public function run(TestResult $result): void
+    public function run(Event\Dispatcher $dispatcher, TestResult $result): void
     {
     }
 

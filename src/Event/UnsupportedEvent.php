@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use function sprintf;
 use PHPUnit\Exception;
 
 final class UnsupportedEvent extends \Exception implements Exception

@@ -11,6 +11,7 @@ namespace PHPUnit\Framework;
 
 use function array_shift;
 use function sprintf;
+use PHPUnit\Event;
 
 final class IncompleteTestCaseTest extends TestCase
 {
@@ -70,7 +71,7 @@ final class IncompleteTestCaseTest extends TestCase
 
         $result = new TestResult;
 
-        $testCase->run($result);
+        $testCase->run(new Event\Dispatcher(), $result);
 
         $this->assertTrue($testCase->status()->isIncomplete());
         $this->assertSame(1, $result->notImplementedCount());

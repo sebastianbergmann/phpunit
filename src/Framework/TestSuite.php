@@ -31,6 +31,7 @@ use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
+use PHPUnit\Event;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -393,7 +394,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @throws CodeCoverageException
      * @throws Warning
      */
-    public function run(TestResult $result): void
+    public function run(Event\Dispatcher $dispatcher, TestResult $result): void
     {
         if (count($this) === 0) {
             return;
@@ -480,7 +481,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
 
-            $test->run($result);
+            $test->run($dispatcher, $result);
         }
 
         if (class_exists($this->name, false)) {

@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use function count;
+use PHPUnit\Event;
 use PHPUnit\TestFixture\DoubleTestCase;
 use PHPUnit\TestFixture\Success;
 
@@ -23,7 +24,7 @@ final class TestImplementorTest extends TestCase
         $result = new TestResult;
 
         $test = new DoubleTestCase(new Success('testOne'));
-        $test->run($result);
+        $test->run(new Event\Dispatcher(), $result);
 
         $this->assertCount(count($test), $result);
         $this->assertEquals(0, $result->errorCount());

@@ -55,6 +55,7 @@ use function str_contains;
 use function strpos;
 use function substr;
 use DeepCopy\DeepCopy;
+use PHPUnit\Event;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
@@ -523,7 +524,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws CodeCoverageException
      * @throws UtilException
      */
-    public function run(TestResult $result): void
+    public function run(Event\Dispatcher $dispatcher, TestResult $result): void
     {
         if (!$this instanceof ErrorTestCase && !$this instanceof WarningTestCase) {
             $this->result = $result;

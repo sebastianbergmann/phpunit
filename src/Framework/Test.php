@@ -11,10 +11,12 @@ namespace PHPUnit\Framework;
 
 use Countable;
 
+use PHPUnit\Event;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 interface Test extends Countable
 {
-    public function run(TestResult $result): void;
+    public function run(Event\Dispatcher $dispatcher, TestResult $result): void;
 }

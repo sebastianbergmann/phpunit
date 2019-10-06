@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\Event;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
@@ -57,7 +58,7 @@ final class ResultCacheExtensionTest extends TestCase
     public function testError(): void
     {
         $test = new TestError('testOne');
-        $test->run($this->result);
+        $test->run(new Event\Dispatcher(), $this->result);
 
         $this->assertTrue($this->cache->status(TestError::class . '::testOne')->isError());
     }
@@ -65,7 +66,7 @@ final class ResultCacheExtensionTest extends TestCase
     public function testFailure(): void
     {
         $test = new Failure('testOne');
-        $test->run($this->result);
+        $test->run(new Event\Dispatcher(), $this->result);
 
         $this->assertTrue($this->cache->status(Failure::class . '::testOne')->isFailure());
     }
@@ -73,7 +74,7 @@ final class ResultCacheExtensionTest extends TestCase
     public function testSkipped(): void
     {
         $test = new TestSkipped('testOne');
-        $test->run($this->result);
+        $test->run(new Event\Dispatcher(), $this->result);
 
         $this->assertTrue($this->cache->status(TestSkipped::class . '::testOne')->isSkipped());
     }
@@ -81,7 +82,7 @@ final class ResultCacheExtensionTest extends TestCase
     public function testIncomplete(): void
     {
         $test = new TestIncomplete('testOne');
-        $test->run($this->result);
+        $test->run(new Event\Dispatcher(), $this->result);
 
         $this->assertTrue($this->cache->status(TestIncomplete::class . '::testOne')->isIncomplete());
     }
@@ -89,7 +90,7 @@ final class ResultCacheExtensionTest extends TestCase
     public function testPassedTestsOnlyCacheTime(): void
     {
         $test = new Success('testOne');
-        $test->run($this->result);
+        $test->run(new Event\Dispatcher(), $this->result);
 
         $this->assertTrue($this->cache->status(Success::class . '::testOne')->isUnknown());
     }
@@ -97,7 +98,7 @@ final class ResultCacheExtensionTest extends TestCase
     public function testWarning(): void
     {
         $test = new TestWarning('testOne');
-        $test->run($this->result);
+        $test->run(new Event\Dispatcher(), $this->result);
 
         $this->assertTrue($this->cache->status(TestWarning::class . '::testOne')->isWarning());
     }
@@ -105,7 +106,7 @@ final class ResultCacheExtensionTest extends TestCase
     public function testRisky(): void
     {
         $test = new TestRisky('testOne');
-        $test->run($this->result);
+        $test->run(new Event\Dispatcher(), $this->result);
 
         $this->assertTrue($this->cache->status(TestRisky::class . '::testOne')->isRisky());
     }
@@ -114,7 +115,7 @@ final class ResultCacheExtensionTest extends TestCase
     {
         $suite = new TestSuite;
         $suite->addTestSuite(EmptyTestCaseTest::class);
-        $suite->run($this->result);
+        $suite->run(new Event\Dispatcher(), $this->result);
 
         $this->assertTrue($this->cache->status('Warning')->isWarning());
     }

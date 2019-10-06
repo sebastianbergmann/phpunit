@@ -14,6 +14,7 @@ use function file_put_contents;
 use function sys_get_temp_dir;
 use function touch;
 use function unlink;
+use PHPUnit\Event;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -127,7 +128,7 @@ EOF;
              ->with($skipifSection)
              ->willReturn(['stdout' => 'skip: Reason', 'stderr' => '']);
 
-        $this->testCase->run(new TestResult);
+        $this->testCase->run(new Event\Dispatcher(), new TestResult);
     }
 
     public function testShouldSkipTestWhenPhptFileIsEmpty(): void
@@ -136,7 +137,7 @@ EOF;
 
         $result = new TestResult;
 
-        $this->testCase->run($result);
+        $this->testCase->run(new Event\Dispatcher(), $result);
 
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
@@ -155,7 +156,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run($result);
+        $this->testCase->run(new Event\Dispatcher(), $result);
 
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
@@ -176,7 +177,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run($result);
+        $this->testCase->run(new Event\Dispatcher(), $result);
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
@@ -197,7 +198,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run($result);
+        $this->testCase->run(new Event\Dispatcher(), $result);
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
@@ -210,7 +211,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run($result);
+        $this->testCase->run(new Event\Dispatcher(), $result);
 
         $this->assertCount(1, $result->errors());
         $skipMessage = $result->errors()[0]->thrownException()->getMessage();
