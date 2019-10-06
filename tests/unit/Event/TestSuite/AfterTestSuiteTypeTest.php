@@ -9,36 +9,21 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
-use PHPUnit\Event\NamedType;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Event\AbstractTypeTestCase;
+use PHPUnit\Event\Type;
 
 /**
  * @covers \PHPUnit\Event\Test\AfterTestSuiteType
  */
-final class AfterTestSuiteTypeTest extends TestCase
+final class AfterTestSuiteTypeTest extends AbstractTypeTestCase
 {
-    public function testAsStringReturnsAfterTestSuite(): void
+    protected function asString(): string
     {
-        $type = new AfterTestSuiteType();
-
-        $this->assertSame('after-test-suite', $type->asString());
+        return 'after-test-suite';
     }
 
-    public function testIsReturnsFalseWhenTypeIsDifferentType(): void
+    protected function type(): Type
     {
-        $type = new AfterTestSuiteType();
-
-        $other = new NamedType('foo');
-
-        $this->assertFalse($type->is($other));
-    }
-
-    public function testIsReturnsTrueWhenTypeIsEqualType(): void
-    {
-        $type = new AfterTestSuiteType();
-
-        $other = new NamedType('after-test-suite');
-
-        $this->assertTrue($type->is($other));
+        return new AfterTestSuiteType();
     }
 }

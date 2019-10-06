@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -11,35 +9,18 @@ declare(strict_types=1);
  */
 namespace PHPUnit\Event;
 
-use PHPUnit\Framework\TestCase;
-
 /**
- * @covers \PHPUnit\Event\NamedType
+ * @covers \PHPUnit\Event\Test\AfterTestSuiteType
  */
-final class NamedTypeTest extends TestCase
+final class NamedTypeTest extends AbstractTypeTestCase
 {
-    public function testConstructorSetsName(): void
+    protected function asString(): string
     {
-        $name = 'foo';
-
-        $type = new NamedType($name);
-
-        $this->assertSame($name, $type->asString());
+        return 'name';
     }
 
-    public function testIsReturnsFalseWhenNameIsNotSame(): void
+    protected function type(): Type
     {
-        $type  = new NamedType('foo');
-        $other = new NamedType('bar');
-
-        $this->assertFalse($type->is($other));
-    }
-
-    public function testIsReturnsFalseWhenNameIsSame(): void
-    {
-        $type  = new NamedType('foo');
-        $other = new NamedType('foo');
-
-        $this->assertTrue($type->is($other));
+        return new NamedType('name');
     }
 }
