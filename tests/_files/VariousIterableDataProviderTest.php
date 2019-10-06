@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class VariousIterableDataProviderTest
+class VariousIterableDataProviderTest extends AbstractVariousIterableDataProviderTest
 {
-    public static function asArrayProvider()
+    public function asArrayProvider()
     {
         return [
             ['A'],
@@ -18,7 +18,7 @@ class VariousIterableDataProviderTest
         ];
     }
 
-    public static function asIteratorProvider()
+    public function asIteratorProvider()
     {
         yield ['D'];
 
@@ -27,7 +27,7 @@ class VariousIterableDataProviderTest
         yield ['F'];
     }
 
-    public static function asTraversableProvider()
+    public function asTraversableProvider()
     {
         return new WrapperIteratorAggregate([
             ['G'],
