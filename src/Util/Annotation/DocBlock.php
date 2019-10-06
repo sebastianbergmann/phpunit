@@ -101,6 +101,9 @@ final class DocBlock
         );
     }
 
+    /**
+     * @psalm-param class-string $className
+     */
     public static function ofMethod(\ReflectionMethod $method, string $className = null): self
     {
         return new self(
