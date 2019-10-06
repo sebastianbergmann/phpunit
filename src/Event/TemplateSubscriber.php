@@ -20,12 +20,12 @@ abstract class TemplateSubscriber implements Subscriber
     abstract protected function handle(Event $event): void;
 
     /**
-     * @throws UnsupportedEvent
+     * @throws UnexpectedEvent
      */
     private function ensureSupportedEventType(Event $event): void
     {
         if (!$this->typesSubscribedTo()->contains($event->type())) {
-            throw UnsupportedEvent::type(
+            throw UnexpectedEvent::for(
                 static::class,
                 $event->type()
             );

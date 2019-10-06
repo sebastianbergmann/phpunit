@@ -12,9 +12,9 @@ namespace PHPUnit\Event;
 use function sprintf;
 use PHPUnit\Exception;
 
-final class UnsupportedEvent extends \Exception implements Exception
+final class UnexpectedEvent extends \Exception implements Exception
 {
-    public static function type(string $subscriberClassName, Type $type): self
+    public static function for(string $subscriberClassName, Type $type): self
     {
         return new self(sprintf(
             'Subscriber "%s" is not subscribed to events of type "%s".',

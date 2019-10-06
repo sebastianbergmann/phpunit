@@ -14,7 +14,7 @@ interface Subscriber
     public function typesSubscribedTo(): Types;
 
     /**
-     * @throws UnsupportedEvent
+     * @throws UnexpectedEvent
      */
     public function notify(Event $event);
 }

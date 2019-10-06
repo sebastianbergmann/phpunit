@@ -14,17 +14,17 @@ use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PHPUnit\Event\UnsupportedEvent
+ * @covers \PHPUnit\Event\UnexpectedEvent
  */
-final class UnsupportedEventTest extends TestCase
+final class UnexpectedEventTest extends TestCase
 {
-    public function testTypeReturnsUnsupportedEvent(): void
+    public function testForReturnsUnexpectedEvent(): void
     {
         $subscriberClassName = self::class;
 
         $type = new NamedType('foo');
 
-        $exception = UnsupportedEvent::type(
+        $exception = UnexpectedEvent::for(
             $subscriberClassName,
             $type
         );
