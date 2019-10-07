@@ -102,7 +102,7 @@ final class DocBlock
     }
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string $classNameInHierarchy
      */
     public static function ofMethod(\ReflectionMethod $method, string $classNameInHierarchy): self
     {

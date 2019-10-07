@@ -79,14 +79,14 @@ class VariousIterableDataProviderTest extends AbstractVariousIterableDataProvide
      */
     public function testNonStatic(): void
     {
-	}
+    }
 
     /**
      * @dataProvider asArrayProviderInParent
      * @dataProvider asIteratorProviderInParent
      * @dataProvider asTraversableProviderInParent
      */
-	public function testFromParent(): void
-	{
-	}
+    public function testFromParent(): void
+    {
+    }
 }
