@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.4.12@86e5e50c1bb492045e70f2ebe1da3cad06e4e9b2">
+<files psalm-version="3.5.3@c3e781c4a06cbb17dc32068eb5d6de075f6babdc">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -83,6 +83,11 @@
       <code>"--- Expected\n+++ Actual\n"</code>
     </InvalidArgument>
   </file>
+  <file src="src/Framework/DataProviderTestSuite.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$className</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Framework/Exception/ExpectationFailedException.php">
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$comparisonFailure</code>
@@ -135,16 +140,6 @@
       <code>\WSDL_CACHE_NONE</code>
     </UndefinedConstant>
   </file>
-  <file src="src/Framework/MockObject/Rule/ConsecutiveParameters.php">
-    <TypeDoesNotContainNull occurrences="1">
-      <code>$invocation === null</code>
-    </TypeDoesNotContainNull>
-  </file>
-  <file src="src/Framework/MockObject/Rule/Parameters.php">
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
-      <code>null</code>
-    </PossiblyNullPropertyAssignmentValue>
-  </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$this-&gt;type</code>
@@ -158,6 +153,16 @@
     <PossiblyNullReference occurrences="1">
       <code>allowsNull</code>
     </PossiblyNullReference>
+  </file>
+  <file src="src/Framework/MockObject/Rule/ConsecutiveParameters.php">
+    <TypeDoesNotContainNull occurrences="1">
+      <code>$invocation === null</code>
+    </TypeDoesNotContainNull>
+  </file>
+  <file src="src/Framework/MockObject/Rule/Parameters.php">
+    <PossiblyNullPropertyAssignmentValue occurrences="1">
+      <code>null</code>
+    </PossiblyNullPropertyAssignmentValue>
   </file>
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion occurrences="2">
@@ -278,11 +283,6 @@
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
     <InvalidCatch occurrences="1"/>
-  </file>
-  <file src="src/Util/Annotation/RegistryTest.php">
-    <UndefinedClass occurrences="1">
-      <code>\ThisClassDoesNotExist</code>
-    </UndefinedClass>
   </file>
   <file src="src/Util/Blacklist.php">
     <UndefinedClass occurrences="1">
@@ -421,11 +421,6 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Util/Test.php">
-    <ArgumentTypeCoercion occurrences="3">
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-    </ArgumentTypeCoercion>
     <InvalidScalarArgument occurrences="1">
       <code>\array_flip($lineNumbers)</code>
     </InvalidScalarArgument>

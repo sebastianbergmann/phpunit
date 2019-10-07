@@ -56,7 +56,6 @@ final class DataProviderTestSuite extends TestSuite
     {
         [$className, $methodName] = \explode('::', $this->getName());
 
-        /* @psalm-suppress ArgumentTypeCoercion */
         return TestUtil::getSize($className, $methodName);
     }
 }
