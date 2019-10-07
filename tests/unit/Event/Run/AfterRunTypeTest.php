@@ -7,14 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Test;
+namespace PHPUnit\Event\Run;
 
 use PHPUnit\Event\AbstractTypeTestCase;
-use PHPUnit\Event\Run\AfterRunType;
 use PHPUnit\Event\Type;
 
 /**
- * @covers \PHPUnit\Event\Test\AfterRunType
+ * @covers \PHPUnit\Event\Run\AfterRunType
  */
 final class AfterRunTypeTest extends AbstractTypeTestCase
 {
