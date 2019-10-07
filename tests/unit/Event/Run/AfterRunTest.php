@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Event\Run;
 
-use PHPUnit\Event\NamedType;
+use PHPUnit\Event\GenericType;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,6 +21,6 @@ final class AfterRunTest extends TestCase
     {
         $event = new AfterRun();
 
-        $this->assertTrue($event->type()->is(new NamedType('after-run')));
+        $this->assertTrue($event->type()->is(new GenericType('after-run')));
     }
 }

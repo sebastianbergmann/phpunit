@@ -24,7 +24,7 @@ abstract class AbstractTypeTestCase extends TestCase
     {
         $type = static::type();
 
-        $other = new NamedType('foo');
+        $other = new GenericType('foo');
 
         $this->assertFalse($type->is($other));
     }
@@ -33,7 +33,7 @@ abstract class AbstractTypeTestCase extends TestCase
     {
         $type = static::type();
 
-        $other = new NamedType(static::asString());
+        $other = new GenericType(static::asString());
 
         $this->assertTrue($type->is($other));
     }

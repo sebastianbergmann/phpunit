@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Event;
 
-final class NamedType implements Type
+final class GenericType implements Type
 {
     private string $name;
 

@@ -21,11 +21,11 @@ final class DispatcherTest extends TestCase
     public function testDispatchDoesNotDispatchEventToSubscribersNotSubscribedToEventType(): void
     {
         $subscriber = new SpyingSubscriber(new Types(
-            new NamedType('bar'),
-            new NamedType('baz')
+            new GenericType('bar'),
+            new GenericType('baz')
         ));
 
-        $event = new DummyEvent(new NamedType('foo'));
+        $event = new DummyEvent(new GenericType('foo'));
 
         $dispatcher = new Dispatcher();
 
@@ -39,18 +39,18 @@ final class DispatcherTest extends TestCase
     public function testDispatchDispatchesToRegisteredSubscribersForEventType(): void
     {
         $firstSubscriber = new SpyingSubscriber(new Types(
-            new NamedType('foo'),
-            new NamedType('bar')
+            new GenericType('foo'),
+            new GenericType('bar')
         ));
 
         $secondSubscriber = new SpyingSubscriber(new Types(
-            new NamedType('bar'),
-            new NamedType('baz')
+            new GenericType('bar'),
+            new GenericType('baz')
         ));
 
-        $thirdSubscriber = new SpyingSubscriber(new Types(new NamedType('qux')));
+        $thirdSubscriber = new SpyingSubscriber(new Types(new GenericType('qux')));
 
-        $event = new DummyEvent(new NamedType('bar'));
+        $event = new DummyEvent(new GenericType('bar'));
 
         $dispatcher = new Dispatcher();
 

@@ -20,7 +20,7 @@ final class GenericEventTest extends TestCase
 {
     public function testConstructorSetType(): void
     {
-        $type = new NamedType('foo');
+        $type = new GenericType('foo');
 
         $event = new GenericEvent($type);
 

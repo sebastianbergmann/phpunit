@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Event\Run;
 
-use PHPUnit\Event\NamedType;
+use PHPUnit\Event\GenericType;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -21,6 +21,6 @@ final class BeforeRunTest extends TestCase
     {
         $event = new BeforeRun();
 
-        $this->assertTrue($event->type()->is(new NamedType('before-run')));
+        $this->assertTrue($event->type()->is(new GenericType('before-run')));
     }
 }

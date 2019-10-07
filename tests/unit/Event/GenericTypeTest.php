@@ -12,7 +12,7 @@ namespace PHPUnit\Event;
 /**
  * @covers \PHPUnit\Event\Test\AfterTestSuiteType
  */
-final class NamedTypeTest extends AbstractTypeTestCase
+final class GenericTypeTest extends AbstractTypeTestCase
 {
     protected function asString(): string
     {
@@ -21,6 +21,6 @@ final class NamedTypeTest extends AbstractTypeTestCase
 
     protected function type(): Type
     {
-        return new NamedType('name');
+        return new GenericType('name');
     }
 }
