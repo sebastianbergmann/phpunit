@@ -131,13 +131,13 @@ final class TestBuilder
         return $message;
     }
 
-    /** @psalm-param class-string $className **/
+    /** @psalm-param class-string $className */
     private function buildTestWithoutData(string $className)
     {
         return new $className;
     }
 
-    /** @psalm-param class-string $className **/
+    /** @psalm-param class-string $className */
     private function buildDataProviderTestSuite(
         string $methodName,
         string $className,
