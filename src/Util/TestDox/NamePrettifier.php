@@ -37,6 +37,7 @@ final class NamePrettifier
 
     /**
      * Prettifies the name of a test class.
+     *
      * @psalm-param class-string $className
      */
     public function prettifyTestClass(string $className): string
