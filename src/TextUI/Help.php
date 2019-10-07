@@ -155,7 +155,7 @@ final class Help
             $this->hasColor = $withColor;
         }
 
-        foreach (self::HELP_TEXT as $section => $options) {
+        foreach (self::HELP_TEXT as $options) {
             foreach ($options as $option) {
                 if (isset($option['arg'])) {
                     $this->maxArgLength = \max($this->maxArgLength, isset($option['arg']) ? \strlen($option['arg']) : 0);
