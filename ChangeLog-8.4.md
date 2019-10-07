@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.4 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#3879](https://github.com/sebastianbergmann/phpunit/issues/3879): Tests with data providers in parent class do not work anymore
 * Fixed [#3881](https://github.com/sebastianbergmann/phpunit/issues/3881): Regression with multiple test case classes declared in a single sourcecode file
 
 ## [8.4.0] - 2019-10-04
