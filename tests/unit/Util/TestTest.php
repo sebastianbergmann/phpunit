@@ -911,33 +911,6 @@ final class TestTest extends TestCase
         $this->assertEquals(3, $cCount);
     }
 
-    public function testWithAbstractVariousIterableDataProviders(): void
-    {
-        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testAbstract');
-
-        $this->assertEquals([
-            ['A'],
-            ['B'],
-            ['C'],
-            ['D'],
-            ['E'],
-            ['F'],
-            ['G'],
-            ['H'],
-            ['I'],
-            ['J'],
-            ['K'],
-            ['L'],
-            ['M'],
-            ['N'],
-            ['O'],
-            ['P'],
-            ['Q'],
-            ['R'],
-
-        ], $dataSets);
-    }
-
     public function testWithVariousIterableDataProviders(): void
     {
         $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'test');
