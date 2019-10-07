@@ -911,9 +911,63 @@ final class TestTest extends TestCase
         $this->assertEquals(3, $cCount);
     }
 
-    public function testWithVariousIterableDataProviders(): void
+    public function testWithVariousIterableDataProvidersFromParent(): void
     {
-        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'test');
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testFromParent');
+
+        $this->assertEquals([
+            ['J'],
+            ['K'],
+            ['L'],
+            ['M'],
+            ['N'],
+            ['O'],
+            ['P'],
+            ['Q'],
+            ['R'],
+
+        ], $dataSets);
+    }
+
+    public function testWithVariousIterableDataProvidersInParent(): void
+    {
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testInParent');
+
+        $this->assertEquals([
+            ['J'],
+            ['K'],
+            ['L'],
+            ['M'],
+            ['N'],
+            ['O'],
+            ['P'],
+            ['Q'],
+            ['R'],
+
+        ], $dataSets);
+    }
+
+    public function testWithVariousIterableAbstractDataProviders(): void
+    {
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testAbstract');
+
+        $this->assertEquals([
+            ['S'],
+            ['T'],
+            ['U'],
+            ['V'],
+            ['W'],
+            ['X'],
+            ['Y'],
+            ['Z'],
+            ['P'],
+
+        ], $dataSets);
+    }
+
+    public function testWithVariousIterableStaticDataProviders(): void
+    {
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testStatic');
 
         $this->assertEquals([
             ['A'],
@@ -925,6 +979,23 @@ final class TestTest extends TestCase
             ['G'],
             ['H'],
             ['I'],
+        ], $dataSets);
+    }
+
+    public function testWithVariousIterableNonStaticDataProviders(): void
+    {
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testNonStatic');
+
+        $this->assertEquals([
+            ['S'],
+            ['T'],
+            ['U'],
+            ['V'],
+            ['W'],
+            ['X'],
+            ['Y'],
+            ['Z'],
+            ['P'],
         ], $dataSets);
     }
 
