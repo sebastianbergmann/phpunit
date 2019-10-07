@@ -101,7 +101,10 @@ final class DocBlock
         );
     }
 
-    public static function ofMethod(\ReflectionMethod $method): self
+    /**
+     * @psalm-param class-string $classNameInHierarchy
+     */
+    public static function ofMethod(\ReflectionMethod $method, string $classNameInHierarchy): self
     {
         return new self(
             (string) $method->getDocComment(),
@@ -111,7 +114,7 @@ final class DocBlock
             $method->getEndLine(),
             $method->getFileName(),
             $method->getName(),
-            $method->getDeclaringClass()->getName()
+            $classNameInHierarchy
         );
     }
 

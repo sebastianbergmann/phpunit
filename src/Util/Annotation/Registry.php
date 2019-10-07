@@ -62,16 +62,16 @@ final class Registry
 
     /**
      * @throws Exception
-     * @psalm-param class-string $className
+     * @psalm-param class-string $classInHierarchy
      */
-    public function forMethod(string $class, string $method): DocBlock
+    public function forMethod(string $classInHierarchy, string $method): DocBlock
     {
-        if (isset($this->methodDocBlocks[$class][$method])) {
-            return $this->methodDocBlocks[$class][$method];
+        if (isset($this->methodDocBlocks[$classInHierarchy][$method])) {
+            return $this->methodDocBlocks[$classInHierarchy][$method];
         }
 
         try {
-            $reflection = new \ReflectionMethod($class, $method);
+            $reflection = new \ReflectionMethod($classInHierarchy, $method);
         } catch (\ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
@@ -80,6 +80,6 @@ final class Registry
             );
         }
 
-        return $this->methodDocBlocks[$class][$method] = DocBlock::ofMethod($reflection);
+        return $this->methodDocBlocks[$classInHierarchy][$method] = DocBlock::ofMethod($reflection, $classInHierarchy);
     }
 }

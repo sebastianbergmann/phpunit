@@ -911,9 +911,63 @@ final class TestTest extends TestCase
         $this->assertEquals(3, $cCount);
     }
 
-    public function testWithVariousIterableDataProviders(): void
+    public function testWithVariousIterableDataProvidersFromParent(): void
     {
-        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'test');
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testFromParent');
+
+        $this->assertEquals([
+            ['J'],
+            ['K'],
+            ['L'],
+            ['M'],
+            ['N'],
+            ['O'],
+            ['P'],
+            ['Q'],
+            ['R'],
+
+        ], $dataSets);
+    }
+
+    public function testWithVariousIterableDataProvidersInParent(): void
+    {
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testInParent');
+
+        $this->assertEquals([
+            ['J'],
+            ['K'],
+            ['L'],
+            ['M'],
+            ['N'],
+            ['O'],
+            ['P'],
+            ['Q'],
+            ['R'],
+
+        ], $dataSets);
+    }
+
+    public function testWithVariousIterableAbstractDataProviders(): void
+    {
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testAbstract');
+
+        $this->assertEquals([
+            ['S'],
+            ['T'],
+            ['U'],
+            ['V'],
+            ['W'],
+            ['X'],
+            ['Y'],
+            ['Z'],
+            ['P'],
+
+        ], $dataSets);
+    }
+
+    public function testWithVariousIterableStaticDataProviders(): void
+    {
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testStatic');
 
         $this->assertEquals([
             ['A'],
@@ -925,6 +979,23 @@ final class TestTest extends TestCase
             ['G'],
             ['H'],
             ['I'],
+        ], $dataSets);
+    }
+
+    public function testWithVariousIterableNonStaticDataProviders(): void
+    {
+        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testNonStatic');
+
+        $this->assertEquals([
+            ['S'],
+            ['T'],
+            ['U'],
+            ['V'],
+            ['W'],
+            ['X'],
+            ['Y'],
+            ['Z'],
+            ['P'],
         ], $dataSets);
     }
 
@@ -941,7 +1012,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'anotherAnnotation'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertNull($result);
     }
@@ -951,7 +1022,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWith1'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([[1]], $result);
     }
@@ -961,7 +1032,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWith1234'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([[1, 2], [3, 4]], $result);
     }
@@ -971,7 +1042,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWithABTrueNull'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([['ab'], [true], [null]], $result);
     }
@@ -981,7 +1052,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWith12AndAnotherAnnotation'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([[1], [2]], $result);
     }
@@ -991,7 +1062,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWith12AndBlahBlah'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([[1], [2]], $result);
     }
@@ -1001,7 +1072,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWithEscapedString'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([['"', '"']], $result);
     }
@@ -1011,7 +1082,7 @@ final class TestTest extends TestCase
         $docBlock = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWithMalformedValue'
-        ));
+        ), VariousDocblockDefinedDataProvider::class);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The data set for the @testWith annotation cannot be parsed:/');
@@ -1024,7 +1095,7 @@ final class TestTest extends TestCase
         $docBlock = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWithWellFormedAndMalformedValue'
-        ));
+        ), VariousDocblockDefinedDataProvider::class);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The data set for the @testWith annotation cannot be parsed:/');
