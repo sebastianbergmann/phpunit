@@ -1012,7 +1012,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'anotherAnnotation'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertNull($result);
     }
@@ -1022,7 +1022,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWith1'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([[1]], $result);
     }
@@ -1032,7 +1032,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWith1234'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([[1, 2], [3, 4]], $result);
     }
@@ -1042,7 +1042,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWithABTrueNull'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([['ab'], [true], [null]], $result);
     }
@@ -1052,7 +1052,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWith12AndAnotherAnnotation'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([[1], [2]], $result);
     }
@@ -1062,7 +1062,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWith12AndBlahBlah'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([[1], [2]], $result);
     }
@@ -1072,7 +1072,7 @@ final class TestTest extends TestCase
         $result = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWithEscapedString'
-        ))->getProvidedData();
+        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
         $this->assertEquals([['"', '"']], $result);
     }
@@ -1082,7 +1082,7 @@ final class TestTest extends TestCase
         $docBlock = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWithMalformedValue'
-        ));
+        ), VariousDocblockDefinedDataProvider::class);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The data set for the @testWith annotation cannot be parsed:/');
@@ -1095,7 +1095,7 @@ final class TestTest extends TestCase
         $docBlock = DocBlock::ofMethod(new \ReflectionMethod(
             \VariousDocblockDefinedDataProvider::class,
             'testWithWellFormedAndMalformedValue'
-        ));
+        ), VariousDocblockDefinedDataProvider::class);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessageRegExp('/^The data set for the @testWith annotation cannot be parsed:/');
