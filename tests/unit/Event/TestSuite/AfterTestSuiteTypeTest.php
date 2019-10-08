@@ -13,7 +13,7 @@ use PHPUnit\Event\AbstractTypeTestCase;
 use PHPUnit\Event\Type;
 
 /**
- * @covers \PHPUnit\Event\Test\AfterTestSuiteType
+ * @covers \PHPUnit\Event\TestSuite\AfterTestSuiteType
  */
 final class AfterTestSuiteTypeTest extends AbstractTypeTestCase
 {
