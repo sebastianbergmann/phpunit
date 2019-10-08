@@ -526,6 +526,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function run(Event\Dispatcher $dispatcher, TestResult $result): void
     {
+        $dispatcher->dispatch(new Event\Test\BeforeTest(new Event\Test\Test()));
+
         if (!$this instanceof ErrorTestCase && !$this instanceof WarningTestCase) {
             $this->result = $result;
         }
@@ -549,6 +551,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->result = null;
+
+        $dispatcher->dispatch(new Event\Test\AfterTest(
+            new Event\Test\Test(),
+            new Event\Test\Result\Unknown()
+        ));
     }
 
     /**
