@@ -583,6 +583,8 @@ final class TestRunner
         $this->processSuiteFilters($suite, $arguments);
         $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
 
+        $dispatcher->dispatch(new Event\Test\BeforeFirstTest());
+
         foreach ($this->extensions as $extension) {
             if ($extension instanceof BeforeFirstTestHook) {
                 $extension->executeBeforeFirstTest();
@@ -608,6 +610,8 @@ final class TestRunner
                 $extension->executeAfterLastTest();
             }
         }
+
+        $dispatcher->dispatch(new Event\Test\AfterLastTest());
 
         $result->flushListeners();
         $this->printer->printResult($result);
