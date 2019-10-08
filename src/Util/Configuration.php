@@ -15,6 +15,8 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
+use PHPUnit\Util\Configuration\_Object;
+use PHPUnit\Util\Configuration\ObjectCollection;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
@@ -121,15 +123,15 @@ final class Configuration
         return $this->filename;
     }
 
-    public function getExtensionConfiguration(): array
+    public function getExtensionConfiguration(): ObjectCollection
     {
-        $result = [];
+        $extensions = [];
 
         foreach ($this->xpath->query('extensions/extension') as $extension) {
-            $result[] = $this->getElementConfigurationParameters($extension);
+            $extensions[] = $this->getElementConfigurationParameters($extension);
         }
 
-        return $result;
+        return ObjectCollection::fromArray($extensions);
     }
 
     /**
@@ -217,15 +219,15 @@ final class Configuration
     /**
      * Returns the configuration for listeners.
      */
-    public function getListenerConfiguration(): array
+    public function getListenerConfiguration(): ObjectCollection
     {
-        $result = [];
+        $listeners = [];
 
         foreach ($this->xpath->query('listeners/listener') as $listener) {
-            $result[] = $this->getElementConfigurationParameters($listener);
+            $listeners[] = $this->getElementConfigurationParameters($listener);
         }
 
-        return $result;
+        return ObjectCollection::fromArray($listeners);
     }
 
     /**
@@ -1183,7 +1185,7 @@ final class Configuration
         return $groups;
     }
 
-    private function getElementConfigurationParameters(DOMElement $element): array
+    private function getElementConfigurationParameters(DOMElement $element): _Object
     {
         $class     = (string) $element->getAttribute('class');
         $file      = '';
@@ -1196,10 +1198,6 @@ final class Configuration
             );
         }
 
-        return [
-            'class'     => $class,
-            'file'      => $file,
-            'arguments' => $arguments,
-        ];
+        return new _Object($class, $file, $arguments);
     }
 }

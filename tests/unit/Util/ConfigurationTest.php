@@ -235,41 +235,55 @@ final class ConfigurationTest extends TestCase
 
         \ini_set('include_path', $dir . \PATH_SEPARATOR . $includePath);
 
-        $this->assertEquals(
-            [
-                0 => [
-                    'class'     => 'MyListener',
-                    'file'      => '/optional/path/to/MyListener.php',
-                    'arguments' => [
-                        0 => [
-                            0 => 'Sebastian',
+        $i = 1;
+
+        foreach ($this->configuration->getListenerConfiguration() as $listener) {
+            switch ($i) {
+                case 1:
+                    $this->assertSame('MyListener', $listener->className());
+                    $this->assertTrue($listener->hasSourceFile());
+                    $this->assertSame('/optional/path/to/MyListener.php', $listener->sourceFile());
+                    $this->assertTrue($listener->hasArguments());
+                    $this->assertEquals(
+                        [
+                            0 => [
+                                0 => 'Sebastian',
+                            ],
+                            1 => 22,
+                            2 => 'April',
+                            3 => 19.78,
+                            4 => null,
+                            5 => new \stdClass,
+                            6 => TEST_FILES_PATH . 'MyTestFile.php',
+                            7 => TEST_FILES_PATH . 'MyRelativePath',
+                            8 => true,
                         ],
-                        1 => 22,
-                        2 => 'April',
-                        3 => 19.78,
-                        4 => null,
-                        5 => new \stdClass,
-                        6 => TEST_FILES_PATH . 'MyTestFile.php',
-                        7 => TEST_FILES_PATH . 'MyRelativePath',
-                        8 => true,
-                    ],
-                ],
-                [
-                    'class'     => 'IncludePathListener',
-                    'file'      => __FILE__,
-                    'arguments' => [],
-                ],
-                [
-                    'class'     => 'CompactArgumentsListener',
-                    'file'      => '/CompactArgumentsListener.php',
-                    'arguments' => [
-                        0 => 42,
-                        1 => false,
-                    ],
-                ],
-            ],
-            $this->configuration->getListenerConfiguration()
-        );
+                        $listener->arguments()
+                    );
+
+                    break;
+
+                case 2:
+                    $this->assertSame('IncludePathListener', $listener->className());
+                    $this->assertTrue($listener->hasSourceFile());
+                    $this->assertSame(__FILE__, $listener->sourceFile());
+                    $this->assertFalse($listener->hasArguments());
+                    $this->assertSame([], $listener->arguments());
+
+                    break;
+
+                case 3:
+                    $this->assertSame('CompactArgumentsListener', $listener->className());
+                    $this->assertTrue($listener->hasSourceFile());
+                    $this->assertSame('/CompactArgumentsListener.php', $listener->sourceFile());
+                    $this->assertTrue($listener->hasArguments());
+                    $this->assertSame([0 => 42, 1 => false], $listener->arguments());
+
+                    break;
+            }
+
+            $i++;
+        }
 
         \ini_set('include_path', $includePath);
     }
@@ -281,39 +295,54 @@ final class ConfigurationTest extends TestCase
 
         \ini_set('include_path', $dir . \PATH_SEPARATOR . $includePath);
 
-        $this->assertEquals(
-            [
-                0 => [
-                    'class'     => 'MyExtension',
-                    'file'      => '/optional/path/to/MyExtension.php',
-                    'arguments' => [
-                        0 => [
-                            0 => 'Sebastian',
+        $i = 1;
+
+        foreach ($this->configuration->getExtensionConfiguration() as $extension) {
+            switch ($i) {
+                case 1:
+                    $this->assertSame('MyExtension', $extension->className());
+                    $this->assertTrue($extension->hasSourceFile());
+                    $this->assertSame('/optional/path/to/MyExtension.php', $extension->sourceFile());
+                    $this->assertTrue($extension->hasArguments());
+                    $this->assertEquals(
+                        [
+                            0 => [
+                                0 => 'Sebastian',
+                            ],
+                            1 => 22,
+                            2 => 'April',
+                            3 => 19.78,
+                            4 => null,
+                            5 => new \stdClass,
+                            6 => TEST_FILES_PATH . 'MyTestFile.php',
+                            7 => TEST_FILES_PATH . 'MyRelativePath',
                         ],
-                        1 => 22,
-                        2 => 'April',
-                        3 => 19.78,
-                        4 => null,
-                        5 => new \stdClass,
-                        6 => TEST_FILES_PATH . 'MyTestFile.php',
-                        7 => TEST_FILES_PATH . 'MyRelativePath',
-                    ],
-                ],
-                [
-                    'class'     => 'IncludePathExtension',
-                    'file'      => __FILE__,
-                    'arguments' => [],
-                ],
-                [
-                    'class'     => 'CompactArgumentsExtension',
-                    'file'      => '/CompactArgumentsExtension.php',
-                    'arguments' => [
-                        0 => 42,
-                    ],
-                ],
-            ],
-            $this->configuration->getExtensionConfiguration()
-        );
+                        $extension->arguments()
+                    );
+
+                    break;
+
+                case 2:
+                    $this->assertSame('IncludePathExtension', $extension->className());
+                    $this->assertTrue($extension->hasSourceFile());
+                    $this->assertSame(__FILE__, $extension->sourceFile());
+                    $this->assertFalse($extension->hasArguments());
+                    $this->assertSame([], $extension->arguments());
+
+                    break;
+
+                case 3:
+                    $this->assertSame('CompactArgumentsExtension', $extension->className());
+                    $this->assertTrue($extension->hasSourceFile());
+                    $this->assertSame('/CompactArgumentsExtension.php', $extension->sourceFile());
+                    $this->assertTrue($extension->hasArguments());
+                    $this->assertSame([0 => 42], $extension->arguments());
+
+                    break;
+            }
+
+            $i++;
+        }
 
         \ini_set('include_path', $includePath);
     }
