@@ -554,7 +554,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $dispatcher->dispatch(new Event\Test\AfterTest(
             new Event\Test\Test(),
-            new Event\Test\Result\Unknown()
+            new Event\Test\Result\NeedsClarification()
         ));
     }
 

@@ -12,17 +12,17 @@ namespace PHPUnit\Event\Test\Result;
 use PHPUnit\Event\Test\Result;
 
 /**
- * @covers \PHPUnit\Event\Test\Result\Unknown
+ * Placeholder, needs clarification where it is used.
  */
-final class UnknownTest extends AbstractResultTestCase
+final class NeedsClarification implements Result
 {
-    protected function asString(): string
+    public function is(Result $other): bool
     {
-        return 'unknown';
+        return $other->asString() === $this->asString();
     }
 
-    protected function result(): Result
+    public function asString(): string
     {
-        return new Unknown();
+        return 'needs-clarification';
     }
 }
