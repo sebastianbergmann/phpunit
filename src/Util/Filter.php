@@ -22,13 +22,6 @@ final class Filter
      */
     public static function getFilteredStacktrace(\Throwable $t): string
     {
-        $prefix = false;
-        $script = \realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
-
-        if (\defined('__PHPUNIT_PHAR_ROOT__')) {
-            $prefix = __PHPUNIT_PHAR_ROOT__;
-        }
-
         $filteredStacktrace = '';
 
         if ($t instanceof SyntheticError) {
@@ -56,14 +49,11 @@ final class Filter
             );
         }
 
+        $prefix    = \defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
         $blacklist = new Blacklist;
 
         foreach ($eTrace as $frame) {
-            if (isset($frame['file']) && \is_file($frame['file']) &&
-                (empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST']) || !\in_array($frame['file'], $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'])) &&
-                !$blacklist->isBlacklisted($frame['file']) &&
-                ($prefix === false || \strpos($frame['file'], $prefix) !== 0) &&
-                $frame['file'] !== $script) {
+            if (self::shouldPrintFrame($frame, $prefix, $blacklist)) {
                 $filteredStacktrace .= \sprintf(
                     "%s:%s\n",
                     $frame['file'],
@@ -73,6 +63,31 @@ final class Filter
         }
 
         return $filteredStacktrace;
+    }
+
+    private static function shouldPrintFrame($frame, $prefix, Blacklist $blacklist): bool
+    {
+        if (!isset($frame['file'])) {
+            return false;
+        }
+
+        $file              = $frame['file'];
+        $fileIsNotPrefixed = $prefix === false || \strpos($file, $prefix) !== 0;
+        $script            = \realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
+
+        return \is_file($file)
+            && self::fileIsBlacklisted($file, $blacklist)
+            && $fileIsNotPrefixed
+            && $file !== $script;
+    }
+
+    private static function fileIsBlacklisted($file, Blacklist $blacklist)
+    {
+        return (
+            empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'])
+         || !\in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'])
+        )
+        && !$blacklist->isBlacklisted($file);
     }
 
     private static function frameExists(array $trace, string $file, int $line): bool
