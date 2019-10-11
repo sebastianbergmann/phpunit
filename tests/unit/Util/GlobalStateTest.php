@@ -24,7 +24,7 @@ final class GlobalStateTest extends TestCase
             $dir . '/ConfigurationTest.php',
             $dir . '/GlobalStateTest.php',
             'vfs://' . $dir . '/RegexTest.php',
-            'phpvfs53e46260465c7://' . $dir . '/TestTest.php',
+            'phpvfs53e46260465c7://' . $dir . '/TestClassTest.php',
             'file://' . $dir . '/XmlTest.php',
         ];
 
