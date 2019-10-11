@@ -19,7 +19,7 @@ use PHPUnit\Util\Annotation\DocBlock;
 /**
  * @small
  */
-final class TestTest extends TestCase
+final class TestClassTest extends TestCase
 {
     /**
      * @var string
