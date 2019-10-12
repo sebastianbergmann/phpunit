@@ -10,6 +10,8 @@
 namespace PHPUnit\Util\Configuration;
 
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestListener;
+use PHPUnit\Runner\Hook;
 
 final class Extension
 {
@@ -35,27 +37,6 @@ final class Extension
         $this->arguments  = $arguments;
     }
 
-    public function createInstance(): object
-    {
-        $this->ensureClassExists();
-
-        try {
-            $reflector = new \ReflectionClass($this->className);
-        } catch (\ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-
-        if (!$this->hasArguments()) {
-            return $reflector->newInstance();
-        }
-
-        return $reflector->newInstanceArgs($this->arguments);
-    }
-
     public function className(): string
     {
         return $this->className;
@@ -79,6 +60,59 @@ final class Extension
     public function arguments(): array
     {
         return $this->arguments;
+    }
+
+    public function createHookInstance(): Hook
+    {
+        $object = $this->createInstance();
+
+        if (!$object instanceof Hook) {
+            throw new Exception(
+                \sprintf(
+                    'Class "%s" does not implement a PHPUnit\Runner\Hook interface',
+                    $this->className
+                )
+            );
+        }
+
+        return $object;
+    }
+
+    public function createTestListenerInstance(): TestListener
+    {
+        $object = $this->createInstance();
+
+        if (!$object instanceof TestListener) {
+            throw new Exception(
+                \sprintf(
+                    'Class "%s" does not implement the PHPUnit\Framework\TestListener interface',
+                    $this->className
+                )
+            );
+        }
+
+        return $object;
+    }
+
+    private function createInstance(): object
+    {
+        $this->ensureClassExists();
+
+        try {
+            $reflector = new \ReflectionClass($this->className);
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+
+        if (!$this->hasArguments()) {
+            return $reflector->newInstance();
+        }
+
+        return $reflector->newInstanceArgs($this->arguments);
     }
 
     /**
