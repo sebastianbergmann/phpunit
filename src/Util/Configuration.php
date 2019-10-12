@@ -15,8 +15,8 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
-use PHPUnit\Util\Configuration\_Object;
-use PHPUnit\Util\Configuration\ObjectCollection;
+use PHPUnit\Util\Configuration\Extension;
+use PHPUnit\Util\Configuration\ExtensionCollection;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
@@ -123,7 +123,7 @@ final class Configuration
         return $this->filename;
     }
 
-    public function getExtensionConfiguration(): ObjectCollection
+    public function getExtensionConfiguration(): ExtensionCollection
     {
         $extensions = [];
 
@@ -131,7 +131,7 @@ final class Configuration
             $extensions[] = $this->getElementConfigurationParameters($extension);
         }
 
-        return ObjectCollection::fromArray($extensions);
+        return ExtensionCollection::fromArray($extensions);
     }
 
     /**
@@ -219,7 +219,7 @@ final class Configuration
     /**
      * Returns the configuration for listeners.
      */
-    public function getListenerConfiguration(): ObjectCollection
+    public function getListenerConfiguration(): ExtensionCollection
     {
         $listeners = [];
 
@@ -227,7 +227,7 @@ final class Configuration
             $listeners[] = $this->getElementConfigurationParameters($listener);
         }
 
-        return ObjectCollection::fromArray($listeners);
+        return ExtensionCollection::fromArray($listeners);
     }
 
     /**
@@ -1185,7 +1185,7 @@ final class Configuration
         return $groups;
     }
 
-    private function getElementConfigurationParameters(DOMElement $element): _Object
+    private function getElementConfigurationParameters(DOMElement $element): Extension
     {
         $class     = (string) $element->getAttribute('class');
         $file      = '';
@@ -1198,6 +1198,6 @@ final class Configuration
             );
         }
 
-        return new _Object($class, $file, $arguments);
+        return new Extension($class, $file, $arguments);
     }
 }

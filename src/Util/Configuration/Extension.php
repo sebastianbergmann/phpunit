@@ -11,7 +11,7 @@ namespace PHPUnit\Util\Configuration;
 
 use PHPUnit\Framework\Exception;
 
-final class _Object
+final class Extension
 {
     /**
      * @var string
