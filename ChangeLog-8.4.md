@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.4 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#3889](https://github.com/sebastianbergmann/phpunit/issues/3889): Test(s) not found when source filename does not match test case class name
 * Fixed [#3893](https://github.com/sebastianbergmann/phpunit/issues/3893): `TypeError` when called with a filename without extension
 
 ## [8.4.1] - 2019-10-07
