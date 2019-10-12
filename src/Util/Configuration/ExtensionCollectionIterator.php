@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\Util\Configuration;
 
-final class ObjectCollectionIterator implements \Countable, \Iterator
+final class ExtensionCollectionIterator implements \Countable, \Iterator
 {
     /**
-     * @var _Object[]
+     * @var Extension[]
      */
     private $items;
 
@@ -21,7 +21,7 @@ final class ObjectCollectionIterator implements \Countable, \Iterator
      */
     private $position;
 
-    public function __construct(ObjectCollection $collection)
+    public function __construct(ExtensionCollection $collection)
     {
         $this->items = $collection->asArray();
     }
@@ -46,7 +46,7 @@ final class ObjectCollectionIterator implements \Countable, \Iterator
         return $this->position;
     }
 
-    public function current(): _Object
+    public function current(): Extension
     {
         return $this->items[$this->position];
     }

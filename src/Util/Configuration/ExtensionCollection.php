@@ -9,15 +9,15 @@
  */
 namespace PHPUnit\Util\Configuration;
 
-final class ObjectCollection implements \IteratorAggregate
+final class ExtensionCollection implements \IteratorAggregate
 {
     /**
-     * @var _Object[]
+     * @var Extension[]
      */
     private $items = [];
 
     /**
-     * @param _Object[] $items
+     * @param Extension[] $items
      */
     public static function fromArray(array $items): self
     {
@@ -35,19 +35,19 @@ final class ObjectCollection implements \IteratorAggregate
     }
 
     /**
-     * @return _Object[]
+     * @return Extension[]
      */
     public function asArray(): array
     {
         return $this->items;
     }
 
-    public function getIterator(): ObjectCollectionIterator
+    public function getIterator(): ExtensionCollectionIterator
     {
-        return new ObjectCollectionIterator($this);
+        return new ExtensionCollectionIterator($this);
     }
 
-    private function add(_Object $item): void
+    private function add(Extension $item): void
     {
         $this->items[] = $item;
     }
