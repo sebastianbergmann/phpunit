@@ -104,6 +104,8 @@ class Command
      */
     public function run(Event\Dispatcher $dispatcher, array $argv, bool $exit = true): int
     {
+        $dispatcher->dispatch(new Event\Execution\BeforeExecution());
+
         $this->handleArguments($argv);
 
         $runner = new TestRunner;

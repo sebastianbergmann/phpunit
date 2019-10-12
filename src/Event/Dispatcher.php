@@ -19,6 +19,7 @@ final class Dispatcher
      * @var array<class-string, class-string>
      */
     private static array $map = [
+        Execution\BeforeExecutionSubscriber::class => Execution\BeforeExecution::class,
         Run\AfterRunSubscriber::class              => Run\AfterRun::class,
         Run\BeforeRunSubscriber::class             => Run\BeforeRun::class,
         Test\AfterLastTestSubscriber::class        => Test\AfterLastTest::class,
