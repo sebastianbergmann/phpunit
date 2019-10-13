@@ -97,6 +97,7 @@ final class Help
             ['arg'    => '--testdox', 'desc' => 'Report test execution progress in TestDox format'],
             ['arg'    => '--testdox-group', 'desc' => 'Only include tests from the specified group(s)'],
             ['arg'    => '--testdox-exclude-group', 'desc' => 'Exclude tests from the specified group(s)'],
+            ['arg'    => '--no-interaction', 'desc' => 'Disable TestDox progress animation'],
             ['arg'    => '--printer <printer>', 'desc' => 'TestListener implementation to use'],
             ['spacer' => ''],
 
