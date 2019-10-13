@@ -75,6 +75,7 @@ Test Execution Options:
   --testdox                   Report test execution progress in TestDox format
   --testdox-group             Only include tests from the specified group(s)
   --testdox-exclude-group     Exclude tests from the specified group(s)
+  --no-interaction            Disable TestDox progress animation
   --printer <printer>         TestListener implementation to use
 
   --order-by=<order>          Run tests in order: default|defects|duration|no-depends|random|reverse|size
