@@ -126,4 +126,13 @@ class MockBuilderTest extends TestCase
 
         $this->assertInstanceOf(MockBuilder::class, $spec);
     }
+
+    public function testExceptMethodFromClassWithSinglePublicMethod(): void
+    {
+        $spec = $this->getMockBuilder(ClassWithSinglePublicMethod::class)
+                     ->setMethodsExcept(['falseReturn'])
+                     ->getMock();
+
+        $this->assertFalse($spec->falseReturn());
+    }
 }
