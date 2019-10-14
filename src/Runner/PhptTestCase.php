@@ -397,20 +397,20 @@ final class PhptTestCase implements SelfDescribing, Test
         $section  = '';
 
         $unsupportedSections = [
-            'REDIRECTTEST',
-            'REQUEST',
-            'POST',
-            'PUT',
-            'POST_RAW',
-            'GZIP_POST',
-            'DEFLATE_POST',
-            'GET',
-            'COOKIE',
-            'HEADERS',
             'CGI',
+            'COOKIE',
+            'DEFLATE_POST',
             'EXPECTHEADERS',
             'EXTENSIONS',
+            'GET',
+            'GZIP_POST',
+            'HEADERS',
             'PHPDBG',
+            'POST',
+            'POST_RAW',
+            'PUT',
+            'REDIRECTTEST',
+            'REQUEST',
         ];
 
         $lineNr = 0;
