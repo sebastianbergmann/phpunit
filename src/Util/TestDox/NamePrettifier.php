@@ -54,14 +54,16 @@ final class NamePrettifier
         $parts     = \explode('\\', $className);
         $className = \array_pop($parts);
 
-        if (\substr($className, -1 * \strlen('Test')) === 'Test') {
+        if ($className !== 'Test' && \substr($className, -1 * \strlen('Test')) === 'Test') {
             $className = \substr($className, 0, \strlen($className) - \strlen('Test'));
         }
 
-        if (\strpos($className, 'Tests') === 0) {
-            $className = \substr($className, \strlen('Tests'));
-        } elseif (\strpos($className, 'Test') === 0) {
-            $className = \substr($className, \strlen('Test'));
+        if ($className !== 'Tests' && $className !== 'Test') {
+            if (\strpos($className, 'Tests') === 0) {
+                $className = \substr($className, \strlen('Tests'));
+            } elseif (\strpos($className, 'Test') === 0) {
+                $className = \substr($className, \strlen('Test'));
+            }
         }
 
         if (!empty($parts)) {
