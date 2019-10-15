@@ -66,15 +66,12 @@ class Generator
      * @param object          $proxyTarget
      * @param bool            $allowMockingUnknownTypes
      * @param bool            $returnValueGeneration
-     *
-     * @throws Exception
-     * @throws RuntimeException
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \ReflectionException
+     * @param array           $methodsExcepted
      *
      * @return MockObject
+     * @throws \ReflectionException
      */
-    public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true, $returnValueGeneration = true)
+    public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true, $returnValueGeneration = true, array $methodsExcepted = [])
     {
         if (!\is_array($type) && !\is_string($type)) {
             throw InvalidArgumentHelper::factory(1, 'array or string');
@@ -185,7 +182,8 @@ class Generator
             $callOriginalClone,
             $callAutoload,
             $cloneArguments,
-            $callOriginalMethods
+            $callOriginalMethods,
+            $methodsExcepted
         );
 
         return $this->getObject(
@@ -207,12 +205,14 @@ class Generator
      * the last parameter
      *
      * @param string $originalClassName
+     * @param array  $arguments
      * @param string $mockClassName
      * @param bool   $callOriginalConstructor
      * @param bool   $callOriginalClone
      * @param bool   $callAutoload
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
+     * @param array  $methodsExcept
      *
      * @throws \ReflectionException
      * @throws RuntimeException
@@ -220,7 +220,7 @@ class Generator
      *
      * @return MockObject
      */
-    public function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true)
+    public function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true, array $methodsExcept = [])
     {
         if (!\is_string($originalClassName)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -253,7 +253,12 @@ class Generator
                 $callOriginalConstructor,
                 $callOriginalClone,
                 $callAutoload,
-                $cloneArguments
+                $cloneArguments,
+                false,
+                null,
+                true,
+                true,
+                $methodsExcept
             );
         }
 
@@ -268,12 +273,14 @@ class Generator
      * `$mockedMethods` parameter.
      *
      * @param string $traitName
+     * @param array  $arguments
      * @param string $mockClassName
      * @param bool   $callOriginalConstructor
      * @param bool   $callOriginalClone
      * @param bool   $callAutoload
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
+     * @param array  $methodsExcept
      *
      * @throws \ReflectionException
      * @throws RuntimeException
@@ -281,7 +288,7 @@ class Generator
      *
      * @return MockObject
      */
-    public function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true)
+    public function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = true, array $methodsExcept = [])
     {
         if (!\is_string($traitName)) {
             throw InvalidArgumentHelper::factory(1, 'string');
@@ -321,7 +328,7 @@ class Generator
             $className['className']
         );
 
-        return $this->getMockForAbstractClass($className['className'], $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments);
+        return $this->getMockForAbstractClass($className['className'], $arguments, $mockClassName, $callOriginalConstructor, $callOriginalClone, $callAutoload, $mockedMethods, $cloneArguments, $methodsExcept);
     }
 
     /**
@@ -392,13 +399,14 @@ class Generator
      * @param bool         $callAutoload
      * @param bool         $cloneArguments
      * @param bool         $callOriginalMethods
+     * @param array        $methodsExcepted
      *
      * @throws \ReflectionException
      * @throws \PHPUnit\Framework\MockObject\RuntimeException
      *
      * @return array
      */
-    public function generate($type, array $methods = null, $mockClassName = '', $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false)
+    public function generate($type, array $methods = null, $mockClassName = '', $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, array $methodsExcepted = [])
     {
         if (\is_array($type)) {
             \sort($type);
@@ -412,12 +420,14 @@ class Generator
                 $callOriginalClone,
                 $callAutoload,
                 $cloneArguments,
-                $callOriginalMethods
+                $callOriginalMethods,
+                $methodsExcepted
             );
         }
         $key = \md5(
             \is_array($type) ? \implode('_', $type) : $type .
             \serialize($methods) .
+            \serialize($methodsExcepted) .
             \serialize($callOriginalClone) .
             \serialize($cloneArguments) .
             \serialize($callOriginalMethods)
@@ -431,7 +441,8 @@ class Generator
                 $callOriginalClone,
                 $callAutoload,
                 $cloneArguments,
-                $callOriginalMethods
+                $callOriginalMethods,
+                $methodsExcepted
             );
         }
 
@@ -544,16 +555,23 @@ class Generator
     }
 
     /**
-     * @throws \ReflectionException
+     * @param string    $className
+     * @param bool      $callOriginalMethods
+     * @param bool      $cloneArguments
+     * @param array     $methodsExcepted
      *
      * @return MockMethod[]
+     * @throws \ReflectionException
      */
-    public function mockClassMethods(string $className, bool $callOriginalMethods, bool $cloneArguments): array
+    public function mockClassMethods(string $className, bool $callOriginalMethods, bool $cloneArguments, array $methodsExcepted = []): array
     {
         $class   = new ReflectionClass($className);
         $methods = [];
 
         foreach ($class->getMethods() as $method) {
+            if ($methodsExcepted !== [] && in_array($method->getName(), $methodsExcepted)) {
+                continue;
+            }
             if (($method->isPublic() || $method->isAbstract()) && $this->canMockMethod($method)) {
                 $methods[] = MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments);
             }
@@ -655,6 +673,7 @@ class Generator
      * @param bool         $callAutoload
      * @param bool         $cloneArguments
      * @param bool         $callOriginalMethods
+     * @param array        $methodsExcepted
      *
      * @throws \InvalidArgumentException
      * @throws \ReflectionException
@@ -662,7 +681,7 @@ class Generator
      *
      * @return array
      */
-    private function generateMock($type, $explicitMethods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods)
+    private function generateMock($type, $explicitMethods, $mockClassName, $callOriginalClone, $callAutoload, $cloneArguments, $callOriginalMethods, $methodsExcepted)
     {
         $classTemplate       = $this->getTemplate('mocked_class.tpl');
 
@@ -830,7 +849,7 @@ class Generator
         if ($explicitMethods === [] &&
             ($isClass || $isInterface)) {
             $mockMethods->addMethods(
-                ...$this->mockClassMethods($mockClassName['fullClassName'], $callOriginalMethods, $cloneArguments)
+                ...$this->mockClassMethods($mockClassName['fullClassName'], $callOriginalMethods, $cloneArguments, $methodsExcepted)
             );
         }
 

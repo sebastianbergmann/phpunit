@@ -120,7 +120,8 @@ class MockBuilder
             $this->callOriginalMethods,
             $this->proxyTarget,
             $this->allowMockingUnknownTypes,
-            $this->returnValueGeneration
+            $this->returnValueGeneration,
+            $this->methodsExcept
         );
 
         $this->testCase->registerMockObject($object);
@@ -143,7 +144,8 @@ class MockBuilder
             $this->originalClone,
             $this->autoload,
             $this->methods,
-            $this->cloneArguments
+            $this->cloneArguments,
+            $this->methodsExcept
         );
 
         $this->testCase->registerMockObject($object);
@@ -166,7 +168,8 @@ class MockBuilder
             $this->originalClone,
             $this->autoload,
             $this->methods,
-            $this->cloneArguments
+            $this->cloneArguments,
+            $this->methodsExcept
         );
 
         $this->testCase->registerMockObject($object);

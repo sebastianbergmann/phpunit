@@ -1487,18 +1487,20 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * `$mockedMethods` parameter.
      *
      * @param string $traitName
+     * @param array  $arguments
      * @param string $mockClassName
      * @param bool   $callOriginalConstructor
      * @param bool   $callOriginalClone
      * @param bool   $callAutoload
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
+     * @param array  $methodsExcept
      *
      * @throws Exception
      * @throws ReflectionException
      * @throws \InvalidArgumentException
      */
-    protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
+    protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false, array $methodsExcept = []): MockObject
     {
         $mockObject = $this->getMockObjectGenerator()->getMockForTrait(
             $traitName,
@@ -1508,7 +1510,8 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             $callOriginalClone,
             $callAutoload,
             $mockedMethods,
-            $cloneArguments
+            $cloneArguments,
+            $methodsExcept
         );
 
         $this->registerMockObject($mockObject);
