@@ -66,10 +66,10 @@ class Generator
      * @param object          $proxyTarget
      * @param bool            $allowMockingUnknownTypes
      * @param bool            $returnValueGeneration
-     * @param array           $methodsExcepted
+     *
+     * @throws \ReflectionException
      *
      * @return MockObject
-     * @throws \ReflectionException
      */
     public function getMock($type, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $cloneArguments = true, $callOriginalMethods = false, $proxyTarget = null, $allowMockingUnknownTypes = true, $returnValueGeneration = true, array $methodsExcepted = [])
     {
@@ -205,14 +205,12 @@ class Generator
      * the last parameter
      *
      * @param string $originalClassName
-     * @param array  $arguments
      * @param string $mockClassName
      * @param bool   $callOriginalConstructor
      * @param bool   $callOriginalClone
      * @param bool   $callAutoload
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
-     * @param array  $methodsExcept
      *
      * @throws \ReflectionException
      * @throws RuntimeException
@@ -273,14 +271,12 @@ class Generator
      * `$mockedMethods` parameter.
      *
      * @param string $traitName
-     * @param array  $arguments
      * @param string $mockClassName
      * @param bool   $callOriginalConstructor
      * @param bool   $callOriginalClone
      * @param bool   $callAutoload
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
-     * @param array  $methodsExcept
      *
      * @throws \ReflectionException
      * @throws RuntimeException
@@ -399,7 +395,6 @@ class Generator
      * @param bool         $callAutoload
      * @param bool         $cloneArguments
      * @param bool         $callOriginalMethods
-     * @param array        $methodsExcepted
      *
      * @throws \ReflectionException
      * @throws \PHPUnit\Framework\MockObject\RuntimeException
@@ -555,13 +550,9 @@ class Generator
     }
 
     /**
-     * @param string    $className
-     * @param bool      $callOriginalMethods
-     * @param bool      $cloneArguments
-     * @param array     $methodsExcepted
+     * @throws \ReflectionException
      *
      * @return MockMethod[]
-     * @throws \ReflectionException
      */
     public function mockClassMethods(string $className, bool $callOriginalMethods, bool $cloneArguments, array $methodsExcepted = []): array
     {
@@ -569,9 +560,10 @@ class Generator
         $methods = [];
 
         foreach ($class->getMethods() as $method) {
-            if ($methodsExcepted !== [] && in_array($method->getName(), $methodsExcepted)) {
+            if ($methodsExcepted !== [] && \in_array($method->getName(), $methodsExcepted)) {
                 continue;
             }
+
             if (($method->isPublic() || $method->isAbstract()) && $this->canMockMethod($method)) {
                 $methods[] = MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments);
             }

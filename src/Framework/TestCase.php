@@ -1487,14 +1487,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * `$mockedMethods` parameter.
      *
      * @param string $traitName
-     * @param array  $arguments
      * @param string $mockClassName
      * @param bool   $callOriginalConstructor
      * @param bool   $callOriginalClone
      * @param bool   $callAutoload
      * @param array  $mockedMethods
      * @param bool   $cloneArguments
-     * @param array  $methodsExcept
      *
      * @throws Exception
      * @throws ReflectionException
