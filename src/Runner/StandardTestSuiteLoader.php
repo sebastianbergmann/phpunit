@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner;
 
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
 use ReflectionClass;
@@ -59,12 +58,6 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
 
             if (\substr($loadedClass, $offset) === $suiteClassName &&
                 $class->getFileName() == $filename) {
-                $suiteClassName = $loadedClass;
-
-                break;
-            }
-
-            if ($class->isSubclassOf(TestCase::class)) {
                 $suiteClassName = $loadedClass;
 
                 break;
