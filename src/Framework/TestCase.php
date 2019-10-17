@@ -524,9 +524,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws CodeCoverageException
      * @throws UtilException
      */
-    public function run(Event\Dispatcher $dispatcher, TestResult $result): void
+    public function run(Event\Emitter $emitter, TestResult $result): void
     {
-        $dispatcher->dispatch(new Event\Test\BeforeTest(new Event\Test\Test()));
+        $emitter->testWasStarted();
 
         if (!$this instanceof ErrorTestCase && !$this instanceof WarningTestCase) {
             $this->result = $result;
@@ -535,7 +535,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if (!$this instanceof ErrorTestCase &&
             !$this instanceof WarningTestCase &&
             !$this instanceof SkippedTestCase &&
-            !$this->handleDependencies($dispatcher)) {
+            !$this->handleDependencies($emitter)) {
             return;
         }
 
@@ -552,10 +552,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result = null;
 
-        $dispatcher->dispatch(new Event\Test\AfterTest(
-            new Event\Test\Test(),
-            new Event\Test\Result\NeedsClarification()
-        ));
+        $emitter->testWasCompletedWithResultThatNeedsClarification();
     }
 
     /**
@@ -1529,7 +1526,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
-    private function handleDependencies(Event\Dispatcher $dispatcher): bool
+    private function handleDependencies(Event\Emitter $emitter): bool
     {
         if ([] === $this->dependencies || $this->inIsolation) {
             return true;
@@ -1551,7 +1548,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         foreach ($this->dependencies as $dependency) {
             if (!$dependency->isValid()) {
-                $this->markSkippedForNotSpecifyingDependency($dispatcher);
+                $this->markSkippedForNotSpecifyingDependency($emitter);
 
                 return false;
             }
@@ -1560,7 +1557,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $dependencyClassName = $dependency->getTargetClassName();
 
                 if (array_search($dependencyClassName, $this->result->passedClasses(), true) === false) {
-                    $this->markSkippedForMissingDependency($dispatcher, $dependency);
+                    $this->markSkippedForMissingDependency($emitter, $dependency);
 
                     return false;
                 }
@@ -1572,9 +1569,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if (!isset($passedKeys[$dependencyTarget])) {
                 if (!$this->isCallableTestMethod($dependencyTarget)) {
-                    $this->markWarningForUncallableDependency($dispatcher, $dependency);
+                    $this->markWarningForUncallableDependency($emitter, $dependency);
                 } else {
-                    $this->markSkippedForMissingDependency($dispatcher, $dependency);
+                    $this->markSkippedForMissingDependency($emitter, $dependency);
                 }
 
                 return false;
@@ -1613,13 +1610,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return true;
     }
 
-    private function markSkippedForNotSpecifyingDependency(Event\Dispatcher $dispatcher): void
+    private function markSkippedForNotSpecifyingDependency(Event\Emitter $emitter): void
     {
         $message = 'This method has an invalid @depends annotation.';
 
         $this->status = TestStatus::skipped($message);
 
-        $dispatcher->dispatch(new Event\Test\BeforeTest(new Event\Test\Test()));
+        $emitter->testWasStarted();
 
         $this->result->startTest($this);
 
@@ -1631,13 +1628,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result->endTest($this, 0);
 
-        $dispatcher->dispatch(new Event\Test\AfterTest(
-            new Event\Test\Test(),
-            new Event\Test\Result\Skipped()
-        ));
+        $emitter->testWasSkipped();
     }
 
-    private function markSkippedForMissingDependency(Event\Dispatcher $dispatcher, ExecutionOrderDependency $dependency): void
+    private function markSkippedForMissingDependency(Event\Emitter $emitter, ExecutionOrderDependency $dependency): void
     {
         $message = sprintf(
             'This test depends on "%s" to pass.',
@@ -1646,7 +1640,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->status = TestStatus::skipped($message);
 
-        $dispatcher->dispatch(new Event\Test\BeforeTest(new Event\Test\Test()));
+        $emitter->testWasStarted();
 
         $this->result->startTest($this);
 
@@ -1658,13 +1652,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result->endTest($this, 0);
 
-        $dispatcher->dispatch(new Event\Test\AfterTest(
-            new Event\Test\Test(),
-            new Event\Test\Result\Skipped()
-        ));
+        $emitter->testWasSkipped();
     }
 
-    private function markWarningForUncallableDependency(Event\Dispatcher $dispatcher, ExecutionOrderDependency $dependency): void
+    private function markWarningForUncallableDependency(Event\Emitter $emitter, ExecutionOrderDependency $dependency): void
     {
         $message = sprintf(
             'This test depends on "%s" which does not exist.',
@@ -1673,7 +1664,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->status = TestStatus::warning($message);
 
-        $dispatcher->dispatch(new Event\Test\BeforeTest(new Event\Test\Test()));
+        $emitter->testWasStarted();
 
         $this->result->startTest($this);
 
@@ -1685,10 +1676,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result->endTest($this, 0);
 
-        $dispatcher->dispatch(new Event\Test\AfterTest(
-            new Event\Test\Test(),
-            new Event\Test\Result\Warning()
-        ));
+        $emitter->testWasCompletedWithWarning();
     }
 
     /**

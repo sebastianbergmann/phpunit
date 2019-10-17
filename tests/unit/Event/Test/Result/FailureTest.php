@@ -21,7 +21,7 @@ final class FailureTest extends AbstractResultTestCase
         return 'failure';
     }
 
-    protected function result(): Result
+    protected function createResult(): Result
     {
         return new Failure();
     }

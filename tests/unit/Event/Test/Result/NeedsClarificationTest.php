@@ -21,7 +21,7 @@ final class NeedsClarificationTest extends AbstractResultTestCase
         return 'needs-clarification';
     }
 
-    protected function result(): Result
+    protected function createResult(): Result
     {
         return new NeedsClarification();
     }

@@ -21,7 +21,7 @@ final class NamedTest extends AbstractResultTestCase
         return 'name';
     }
 
-    protected function result(): Result
+    protected function createResult(): Result
     {
         return new Named('name');
     }

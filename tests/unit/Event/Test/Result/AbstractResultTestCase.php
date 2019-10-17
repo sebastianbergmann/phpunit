@@ -16,14 +16,14 @@ abstract class AbstractResultTestCase extends TestCase
 {
     final public function testAsStringReturnsStringRepresentation(): void
     {
-        $result = static::result();
+        $result = static::createResult();
 
         $this->assertSame(static::asString(), $result->asString());
     }
 
     final public function testIsReturnsFalseWhenStringRepresentationIsDifferent(): void
     {
-        $result = static::result();
+        $result = static::createResult();
 
         $other = new Named('foo');
 
@@ -32,7 +32,7 @@ abstract class AbstractResultTestCase extends TestCase
 
     final public function testIsReturnsTrueWhenStringRepresentationIsSame(): void
     {
-        $type = static::result();
+        $type = static::createResult();
 
         $other = new Named(static::asString());
 
@@ -41,5 +41,5 @@ abstract class AbstractResultTestCase extends TestCase
 
     abstract protected function asString(): string;
 
-    abstract protected function result(): Result;
+    abstract protected function createResult(): Result;
 }

@@ -9,69 +9,56 @@
  */
 namespace PHPUnit\Event;
 
-use PHPUnit\Event\Run\BeforeRun;
+use DummyEvent;
+use DummySubscriber;
+use NullSubscriber;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
+use SpyingDummySubscriber;
 
 /**
  * @covers \PHPUnit\Event\Dispatcher
  */
 final class DispatcherTest extends TestCase
 {
-    public function testDispatcherDoesNotDispatchEventToSubscriberImplementingUnknownSubscriberInterfaces(): void
+    public function testRegisterRejectsUnknownSubscriber(): void
     {
-        $event = new Run\BeforeRun(new Run\Run());
+        $subscriber = new NullSubscriber();
 
-        $subscriber         = new class implements Subscriber {
-            private $events = [];
+        $dispatcher = new Dispatcher(new TypeMap());
 
-            public function notify(BeforeRun $event): void
-            {
-                $this->events[] = $event;
-            }
-
-            public function events(): array
-            {
-                return $this->events;
-            }
-        };
-
-        $dispatcher = new Dispatcher();
+        self::expectException(RuntimeException::class);
 
         $dispatcher->register($subscriber);
-
-        $dispatcher->dispatch($event);
-
-        $this->assertSame([], $subscriber->events());
     }
 
-    public function testDispatcherDispatchesEventToSubscriberImplementingKnownSubscriberInterfaces(): void
+    public function testDispatchRejectsUnknownEventType(): void
     {
-        $event = new Run\BeforeRun(new Run\Run());
+        $event = new DummyEvent();
 
-        $subscriber         = new class implements Run\BeforeRunSubscriber {
-            private $events = [];
+        $dispatcher = new Dispatcher(new TypeMap());
 
-            public function notify(BeforeRun $event): void
-            {
-                $this->events[] = $event;
-            }
+        self::expectException(RuntimeException::class);
 
-            public function events(): array
-            {
-                return $this->events;
-            }
-        };
+        $dispatcher->dispatch($event);
+    }
 
-        $dispatcher = new Dispatcher();
+    public function testDispatchDispatchesEventToKnownSubscribers(): void
+    {
+        $event = new DummyEvent();
+
+        $typeMap = new TypeMap();
+
+        $typeMap->addMapping(DummySubscriber::class, DummyEvent::class);
+
+        $subscriber = new SpyingDummySubscriber();
+
+        $dispatcher = new Dispatcher($typeMap);
 
         $dispatcher->register($subscriber);
 
         $dispatcher->dispatch($event);
 
-        $expected = [
-            $event,
-        ];
-
-        $this->assertSame($expected, $subscriber->events());
+        $this->assertContains($event, $subscriber->events());
     }
 }

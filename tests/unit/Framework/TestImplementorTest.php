@@ -24,10 +24,17 @@ final class TestImplementorTest extends TestCase
         $result = new TestResult;
 
         $test = new DoubleTestCase(new Success('testOne'));
-        $test->run(new Event\Dispatcher(), $result);
+        $test->run(self::createEmitter(), $result);
 
         $this->assertCount(count($test), $result);
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
+    }
+
+    private static function createEmitter(): Event\Emitter
+    {
+        $facade = new Event\Facade();
+
+        return $facade->emitter();
     }
 }

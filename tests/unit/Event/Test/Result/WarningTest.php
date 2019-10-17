@@ -21,7 +21,7 @@ final class WarningTest extends AbstractResultTestCase
         return 'warning';
     }
 
-    protected function result(): Result
+    protected function createResult(): Result
     {
         return new Warning();
     }

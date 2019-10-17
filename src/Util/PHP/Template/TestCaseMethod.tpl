@@ -59,7 +59,8 @@ function __phpunit_run_isolated_test()
     $test->setInIsolation(true);
 
     ob_end_clean();
-    $test->run(new Event\Dispatcher(), $result);
+    $facade = new Event\Facade();
+    $test->run($facade->emitter(),$result);
     $output = '';
     if (!$test->hasExpectationOnOutput()) {
         $output = $test->output();

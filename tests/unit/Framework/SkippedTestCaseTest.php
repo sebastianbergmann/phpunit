@@ -71,7 +71,7 @@ final class SkippedTestCaseTest extends TestCase
 
         $result = new TestResult;
 
-        $testCase->run(new Event\Dispatcher(), $result);
+        $testCase->run(self::createEmitter(), $result);
 
         $this->assertTrue($testCase->status()->isSkipped());
         $this->assertSame(1, $result->skippedCount());
@@ -88,5 +88,12 @@ final class SkippedTestCaseTest extends TestCase
 
         $this->assertSame($name, $failure->getTestName());
         $this->assertSame($message, $failure->exceptionMessage());
+    }
+
+    private static function createEmitter(): Event\Emitter
+    {
+        $facade = new Event\Facade();
+
+        return $facade->emitter();
     }
 }

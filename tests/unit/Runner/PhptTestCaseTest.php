@@ -128,7 +128,7 @@ EOF;
              ->with($skipifSection)
              ->willReturn(['stdout' => 'skip: Reason', 'stderr' => '']);
 
-        $this->testCase->run(new Event\Dispatcher(), new TestResult);
+        $this->testCase->run(self::createEmitter(), new TestResult);
     }
 
     public function testShouldSkipTestWhenPhptFileIsEmpty(): void
@@ -137,7 +137,7 @@ EOF;
 
         $result = new TestResult;
 
-        $this->testCase->run(new Event\Dispatcher(), $result);
+        $this->testCase->run(self::createEmitter(), $result);
 
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
@@ -156,7 +156,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run(new Event\Dispatcher(), $result);
+        $this->testCase->run(self::createEmitter(), $result);
 
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
@@ -177,7 +177,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run(new Event\Dispatcher(), $result);
+        $this->testCase->run(self::createEmitter(), $result);
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
@@ -198,7 +198,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run(new Event\Dispatcher(), $result);
+        $this->testCase->run(self::createEmitter(), $result);
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
@@ -211,7 +211,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run(new Event\Dispatcher(), $result);
+        $this->testCase->run(self::createEmitter(), $result);
 
         $this->assertCount(1, $result->errors());
         $skipMessage = $result->errors()[0]->thrownException()->getMessage();
@@ -251,5 +251,12 @@ EOF
     private function setPhpContent($content): void
     {
         file_put_contents($this->filename, $content);
+    }
+
+    private static function createEmitter(): Event\Emitter
+    {
+        $facade = new Event\Facade();
+
+        return $facade->emitter();
     }
 }

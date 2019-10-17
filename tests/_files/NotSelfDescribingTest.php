@@ -25,7 +25,7 @@ class NotSelfDescribingTest implements Test
         return 0;
     }
 
-    public function run(Event\Dispatcher $dispatcher, TestResult $result): void
+    public function run(Event\Emitter $emitter, TestResult $result): void
     {
     }
 }

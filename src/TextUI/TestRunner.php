@@ -116,7 +116,7 @@ final class TestRunner
      * @throws \PHPUnit\Util\Exception
      * @throws Exception
      */
-    public function run(Event\Dispatcher $dispatcher, TestSuite $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
+    public function run(Event\Emitter $emitter, TestSuite $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
     {
         if (isset($arguments['configuration'])) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
@@ -583,7 +583,7 @@ final class TestRunner
         $this->processSuiteFilters($suite, $arguments);
         $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
 
-        $dispatcher->dispatch(new Event\Test\BeforeFirstTest());
+        $emitter->firstTestWasStarted();
 
         foreach ($this->extensions as $extension) {
             if ($extension instanceof BeforeFirstTestHook) {
@@ -603,7 +603,7 @@ final class TestRunner
             $this->write(PHP_EOL);
         }
 
-        $suite->run($dispatcher, $result);
+        $suite->run($emitter, $result);
 
         foreach ($this->extensions as $extension) {
             if ($extension instanceof AfterLastTestHook) {
@@ -611,7 +611,7 @@ final class TestRunner
             }
         }
 
-        $dispatcher->dispatch(new Event\Test\AfterLastTest());
+        $emitter->lastTestWasCompleted();
 
         $result->flushListeners();
         $this->printer->printResult($result);

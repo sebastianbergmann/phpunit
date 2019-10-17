@@ -30,7 +30,7 @@ final class SuccessTest extends AbstractResultTestCase
         return 'success';
     }
 
-    protected function result(): Result
+    protected function createResult(): Result
     {
         return new Success(3);
     }

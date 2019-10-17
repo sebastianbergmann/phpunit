@@ -21,7 +21,7 @@ final class SkippedTest extends AbstractResultTestCase
         return 'skipped';
     }
 
-    protected function result(): Result
+    protected function createResult(): Result
     {
         return new Skipped();
     }

@@ -18,5 +18,5 @@ use PHPUnit\Event;
  */
 interface Test extends Countable
 {
-    public function run(Event\Dispatcher $dispatcher, TestResult $result): void;
+    public function run(Event\Emitter $emitter, TestResult $result): void;
 }

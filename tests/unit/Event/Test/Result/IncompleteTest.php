@@ -21,7 +21,7 @@ final class IncompleteTest extends AbstractResultTestCase
         return 'incomplete';
     }
 
-    protected function result(): Result
+    protected function createResult(): Result
     {
         return new Incomplete();
     }
