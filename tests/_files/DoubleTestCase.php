@@ -30,15 +30,11 @@ class DoubleTestCase implements Test
 
     public function run(Event\Emitter $emitter, TestResult $result): void
     {
-        $emitter->testWasStarted();
-
         $result->startTest($this);
 
         $this->testCase->runBare();
         $this->testCase->runBare();
 
         $result->endTest($this, 0);
-
-        $emitter->testWasCompletedWithResultThatNeedsClarification();
     }
 }

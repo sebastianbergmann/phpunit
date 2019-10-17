@@ -106,8 +106,6 @@ class Command
      */
     public function run(Event\Emitter $emitter, array $argv, bool $exit = true): int
     {
-        $emitter->executionWasStarted();
-
         $this->handleArguments($argv);
 
         $runner = new TestRunner;
@@ -139,15 +137,11 @@ class Command
 
         unset($this->arguments['test'], $this->arguments['testFile']);
 
-        $emitter->runWasStarted();
-
         try {
             $result = $runner->run($emitter, $suite, $this->arguments, $this->warnings, $exit);
         } catch (Throwable $t) {
             print $t->getMessage() . PHP_EOL;
         }
-
-        $emitter->runWasCompleted();
 
         $return = TestRunner::FAILURE_EXIT;
 

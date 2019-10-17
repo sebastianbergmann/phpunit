@@ -113,13 +113,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         try {
             $sections = $this->parse();
         } catch (Exception $e) {
-            $emitter->testWasStarted();
-
             $result->startTest($this);
             $result->addFailure($this, new SkippedTestError($e->getMessage()), 0);
             $result->endTest($this, 0);
-
-            $emitter->testWasCompletedWithFailure();
 
             return;
         }
@@ -127,8 +123,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $code     = $this->render($sections['FILE']);
         $xfail    = false;
         $settings = $this->parseIniSection($this->settings(CodeCoverage::isActive()));
-
-        $emitter->testWasStarted();
 
         $result->startTest($this);
 
@@ -230,8 +224,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $this->runClean($sections, CodeCoverage::isActive());
 
         $result->endTest($this, $time);
-
-        $emitter->testWasCompletedWithResultThatNeedsClarification();
     }
 
     /**

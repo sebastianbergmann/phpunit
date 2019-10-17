@@ -404,11 +404,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $className   = $this->name;
         $hookMethods = (new HookMethods)->hookMethods($className);
 
-        $emitter->testSuiteWasStarted(
-            $this->name,
-            count($this)
-        );
-
         $result->startTestSuite($this);
 
         $test = null;
@@ -426,19 +421,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 }
             } catch (SkippedTestSuiteError $error) {
                 foreach ($this->tests() as $test) {
-                    $emitter->testWasStarted();
-
                     $result->startTest($test);
                     $result->addFailure($test, $error, 0);
                     $result->endTest($test, 0);
-
-                    $emitter->testWasCompletedWithFailure();
                 }
-
-                $emitter->testSuiteWasFinished(
-                    $this->name,
-                    count($this)
-                );
 
                 $result->endTestSuite($this);
 
@@ -450,8 +436,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     if ($result->shouldStop()) {
                         break;
                     }
-
-                    $emitter->testWasStarted();
 
                     $result->startTest($test);
 
@@ -468,14 +452,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     }
 
                     $result->endTest($test, 0);
-
-                    $emitter->testWasCompletedWithError();
                 }
-
-                $emitter->testSuiteWasFinished(
-                    $this->name,
-                    count($this)
-                );
 
                 $result->endTestSuite($this);
 
@@ -504,15 +481,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
 
-            if ($test instanceof TestCase) {
-                $emitter->testWasStarted();
-            }
-
             $test->run($emitter, $result);
-
-            if ($test instanceof TestCase) {
-                $emitter->testWasCompletedWithResultThatNeedsClarification();
-            }
         }
 
         if (class_exists($this->name, false)) {
@@ -527,22 +496,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $placeholderTest = clone $test;
                         $placeholderTest->setName($afterClassMethod);
 
-                        $emitter->testWasStarted();
-
                         $result->startTest($placeholderTest);
                         $result->addFailure($placeholderTest, $error, 0);
                         $result->endTest($placeholderTest, 0);
-
-                        $emitter->testWasCompletedWithFailure();
                     }
                 }
             }
         }
-
-        $emitter->testSuiteWasFinished(
-            $this->name,
-            count($this)
-        );
 
         $result->endTestSuite($this);
     }
