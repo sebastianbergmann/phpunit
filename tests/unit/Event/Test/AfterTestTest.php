@@ -20,7 +20,17 @@ final class AfterTestTest extends TestCase
     {
         $test = new Test();
 
-        $result = $this->createMock(Result::class);
+        $result = new class implements Result {
+            public function is(Result $other): bool
+            {
+                return false;
+            }
+
+            public function asString(): string
+            {
+                return get_class($this);
+            }
+        };
 
         $event = new AfterTest(
             $test,
