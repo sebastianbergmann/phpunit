@@ -28,7 +28,6 @@ use function range;
 use function realpath;
 use function sprintf;
 use function time;
-use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
@@ -116,7 +115,7 @@ final class TestRunner
      * @throws \PHPUnit\Util\Exception
      * @throws Exception
      */
-    public function run(Event\Emitter $emitter, TestSuite $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
+    public function run(TestSuite $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
     {
         if (isset($arguments['configuration'])) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
@@ -601,7 +600,7 @@ final class TestRunner
             $this->write(PHP_EOL);
         }
 
-        $suite->run($emitter, $result);
+        $suite->run($result);
 
         foreach ($this->extensions as $extension) {
             if ($extension instanceof AfterLastTestHook) {

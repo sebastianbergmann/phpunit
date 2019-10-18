@@ -42,7 +42,6 @@ use function unlink;
 use function unserialize;
 use function var_export;
 use function version_compare;
-use PHPUnit\Event;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -108,7 +107,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
-    public function run(Event\Emitter $emitter, TestResult $result): void
+    public function run(TestResult $result): void
     {
         try {
             $sections = $this->parse();

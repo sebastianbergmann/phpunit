@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use function array_shift;
 use function sprintf;
-use PHPUnit\Event;
 
 final class SkippedTestCaseTest extends TestCase
 {
@@ -71,7 +70,7 @@ final class SkippedTestCaseTest extends TestCase
 
         $result = new TestResult;
 
-        $testCase->run(self::createEmitter(), $result);
+        $testCase->run($result);
 
         $this->assertTrue($testCase->status()->isSkipped());
         $this->assertSame(1, $result->skippedCount());
@@ -88,12 +87,5 @@ final class SkippedTestCaseTest extends TestCase
 
         $this->assertSame($name, $failure->getTestName());
         $this->assertSame($message, $failure->exceptionMessage());
-    }
-
-    private static function createEmitter(): Event\Emitter
-    {
-        $facade = new Event\Facade();
-
-        return $facade->emitter();
     }
 }

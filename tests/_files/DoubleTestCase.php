@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TestFixture;
 
-use PHPUnit\Event;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
@@ -28,7 +27,7 @@ class DoubleTestCase implements Test
         return 2;
     }
 
-    public function run(Event\Emitter $emitter, TestResult $result): void
+    public function run(TestResult $result): void
     {
         $result->startTest($this);
 

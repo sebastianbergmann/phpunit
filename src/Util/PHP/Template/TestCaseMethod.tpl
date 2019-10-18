@@ -1,5 +1,4 @@
 <?php
-use PHPUnit\Event;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
@@ -59,8 +58,7 @@ function __phpunit_run_isolated_test()
     $test->setInIsolation(true);
 
     ob_end_clean();
-    $facade = new Event\Facade();
-    $test->run($facade->emitter(),$result);
+    $test->run($result);
     $output = '';
     if (!$test->hasExpectationOnOutput()) {
         $output = $test->output();

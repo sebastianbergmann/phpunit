@@ -55,7 +55,6 @@ use function str_contains;
 use function strpos;
 use function substr;
 use DeepCopy\DeepCopy;
-use PHPUnit\Event;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
@@ -524,7 +523,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws CodeCoverageException
      * @throws UtilException
      */
-    public function run(Event\Emitter $emitter, TestResult $result): void
+    public function run(TestResult $result): void
     {
         if (!$this instanceof ErrorTestCase && !$this instanceof WarningTestCase) {
             $this->result = $result;
@@ -533,7 +532,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if (!$this instanceof ErrorTestCase &&
             !$this instanceof WarningTestCase &&
             !$this instanceof SkippedTestCase &&
-            !$this->handleDependencies($emitter)) {
+            !$this->handleDependencies()) {
             return;
         }
 
@@ -1522,7 +1521,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
-    private function handleDependencies(Event\Emitter $emitter): bool
+    private function handleDependencies(): bool
     {
         if ([] === $this->dependencies || $this->inIsolation) {
             return true;
@@ -1544,7 +1543,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         foreach ($this->dependencies as $dependency) {
             if (!$dependency->isValid()) {
-                $this->markSkippedForNotSpecifyingDependency($emitter);
+                $this->markSkippedForNotSpecifyingDependency();
 
                 return false;
             }
@@ -1553,7 +1552,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $dependencyClassName = $dependency->getTargetClassName();
 
                 if (array_search($dependencyClassName, $this->result->passedClasses(), true) === false) {
-                    $this->markSkippedForMissingDependency($emitter, $dependency);
+                    $this->markSkippedForMissingDependency($dependency);
 
                     return false;
                 }
@@ -1565,9 +1564,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if (!isset($passedKeys[$dependencyTarget])) {
                 if (!$this->isCallableTestMethod($dependencyTarget)) {
-                    $this->markWarningForUncallableDependency($emitter, $dependency);
+                    $this->markWarningForUncallableDependency($dependency);
                 } else {
-                    $this->markSkippedForMissingDependency($emitter, $dependency);
+                    $this->markSkippedForMissingDependency($dependency);
                 }
 
                 return false;
@@ -1606,7 +1605,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return true;
     }
 
-    private function markSkippedForNotSpecifyingDependency(Event\Emitter $emitter): void
+    private function markSkippedForNotSpecifyingDependency(): void
     {
         $message = 'This method has an invalid @depends annotation.';
 
@@ -1623,7 +1622,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->result->endTest($this, 0);
     }
 
-    private function markSkippedForMissingDependency(Event\Emitter $emitter, ExecutionOrderDependency $dependency): void
+    private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
     {
         $message = sprintf(
             'This test depends on "%s" to pass.',
@@ -1643,7 +1642,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->result->endTest($this, 0);
     }
 
-    private function markWarningForUncallableDependency(Event\Emitter $emitter, ExecutionOrderDependency $dependency): void
+    private function markWarningForUncallableDependency(ExecutionOrderDependency $dependency): void
     {
         $message = sprintf(
             'This test depends on "%s" which does not exist.',

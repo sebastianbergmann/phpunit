@@ -394,7 +394,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @throws CodeCoverageException
      * @throws Warning
      */
-    public function run(Event\Emitter $emitter, TestResult $result): void
+    public function run(TestResult $result): void
     {
         if (count($this) === 0) {
             return;
@@ -481,7 +481,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
 
-            $test->run($emitter, $result);
+            $test->run($result);
         }
 
         if (class_exists($this->name, false)) {

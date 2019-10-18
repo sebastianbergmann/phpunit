@@ -14,7 +14,6 @@ use function file_put_contents;
 use function sys_get_temp_dir;
 use function touch;
 use function unlink;
-use PHPUnit\Event;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -128,7 +127,7 @@ EOF;
              ->with($skipifSection)
              ->willReturn(['stdout' => 'skip: Reason', 'stderr' => '']);
 
-        $this->testCase->run(self::createEmitter(), new TestResult);
+        $this->testCase->run(new TestResult);
     }
 
     public function testShouldSkipTestWhenPhptFileIsEmpty(): void
@@ -137,7 +136,7 @@ EOF;
 
         $result = new TestResult;
 
-        $this->testCase->run(self::createEmitter(), $result);
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
@@ -156,7 +155,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run(self::createEmitter(), $result);
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
@@ -177,7 +176,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run(self::createEmitter(), $result);
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
@@ -198,7 +197,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run(self::createEmitter(), $result);
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
@@ -211,7 +210,7 @@ EOF
 
         $result = new TestResult;
 
-        $this->testCase->run(self::createEmitter(), $result);
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->errors());
         $skipMessage = $result->errors()[0]->thrownException()->getMessage();
@@ -251,12 +250,5 @@ EOF
     private function setPhpContent($content): void
     {
         file_put_contents($this->filename, $content);
-    }
-
-    private static function createEmitter(): Event\Emitter
-    {
-        $facade = new Event\Facade();
-
-        return $facade->emitter();
     }
 }
