@@ -42,29 +42,33 @@ class Printer
      */
     public function __construct($out = null)
     {
-        if ($out !== null) {
-            if (\is_string($out)) {
-                if (\strpos($out, 'socket://') === 0) {
-                    $out = \explode(':', \str_replace('socket://', '', $out));
-
-                    if (\count($out) !== 2) {
-                        throw new Exception;
-                    }
-
-                    $this->out = \fsockopen($out[0], $out[1]);
-                } else {
-                    if (\strpos($out, 'php://') === false && !Filesystem::createDirectory(\dirname($out))) {
-                        throw new Exception(\sprintf('Directory "%s" was not created', \dirname($out)));
-                    }
-
-                    $this->out = \fopen($out, 'wt');
-                }
-
-                $this->outTarget = $out;
-            } else {
-                $this->out = $out;
-            }
+        if ($out === null) {
+            return;
         }
+
+        if (\is_string($out) === false) {
+            $this->out = $out;
+
+            return;
+        }
+
+        if (\strpos($out, 'socket://') === 0) {
+            $out = \explode(':', \str_replace('socket://', '', $out));
+
+            if (\count($out) !== 2) {
+                throw new Exception;
+            }
+
+            $this->out = \fsockopen($out[0], $out[1]);
+        } else {
+            if (\strpos($out, 'php://') === false && !Filesystem::createDirectory(\dirname($out))) {
+                throw new Exception(\sprintf('Directory "%s" was not created', \dirname($out)));
+            }
+
+            $this->out = \fopen($out, 'wt');
+        }
+
+        $this->outTarget = $out;
     }
 
     /**
