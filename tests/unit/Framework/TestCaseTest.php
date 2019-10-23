@@ -855,6 +855,14 @@ final class TestCaseTest extends TestCase
         $this->assertNull($mock->anotherMockableMethod());
     }
 
+    public function testCreateCallableMock(): void
+    {
+        $mock = $this->createCallableMock();
+
+        $this->assertIsCallable($mock);
+        $this->assertInstanceOf(MockObject::class, $mock);
+    }
+
     public function testCreatePartialMockDoesNotMockAllMethods(): void
     {
         /** @var \Mockable $mock */

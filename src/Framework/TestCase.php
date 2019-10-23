@@ -1596,6 +1596,18 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
+     * Returns a mock object for a callable.
+     *
+     * @psalm-return MockObject&callable
+     */
+    protected function createCallableMock(): MockObject
+    {
+        return $this->getMockBuilder(\stdClass::class)
+            ->addMethods(['__invoke'])
+            ->getMock();
+    }
+
+    /**
      * Returns a partial mock object for the specified class.
      *
      * @param string|string[] $originalClassName
