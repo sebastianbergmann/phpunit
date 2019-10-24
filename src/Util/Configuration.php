@@ -1187,6 +1187,7 @@ final class Configuration
 
     private function getElementConfigurationParameters(DOMElement $element): Extension
     {
+        /** @psalm-var class-string $class */
         $class     = (string) $element->getAttribute('class');
         $file      = '';
         $arguments = $this->getConfigurationArguments($element->childNodes);

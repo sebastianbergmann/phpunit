@@ -17,6 +17,7 @@ final class Extension
 {
     /**
      * @var string
+     * @psalm-var class-string
      */
     private $className;
 
@@ -30,6 +31,9 @@ final class Extension
      */
     private $arguments;
 
+    /**
+     * @psalm-param class-string $className
+     */
     public function __construct(string $className, string $sourceFile, array $arguments)
     {
         $this->className  = $className;
