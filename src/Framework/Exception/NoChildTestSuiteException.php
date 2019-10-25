@@ -9,6 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-final class UnexpectedValueException extends Exception
+final class NoChildTestSuiteException extends Exception
 {
 }
