@@ -41,4 +41,4 @@ jobs:
         uses: actions/checkout@master
 
       - name: Run roave/backward-compatibility-check
-        run: php7.3 ./tools/roave-backward-compatibility-check --from=dfad4702af08b4d706dbc57a8badfa1dfe0cd046
+        run: php7.3 ./tools/roave-backward-compatibility-check --from=42afe2b8b42077b26148272bd03da4ab6e46a072
