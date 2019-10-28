@@ -27,7 +27,7 @@ final class MockBuilder
     private $type;
 
     /**
-     * @var string[]
+     * @var string[]|null
      */
     private $methods = [];
 
@@ -90,11 +90,6 @@ final class MockBuilder
      * @var Generator
      */
     private $generator;
-
-    /**
-     * @var bool
-     */
-    private $alreadyUsedMockMethodConfiguration = false;
 
     /**
      * @param string|string[] $type
@@ -196,9 +191,11 @@ final class MockBuilder
      */
     public function setMethods(array $methods = null): self
     {
-        $this->methods = $methods;
-
-        $this->alreadyUsedMockMethodConfiguration = true;
+        if ($methods === null) {
+            $this->methods = $methods;
+        } else {
+            $this->methods = array_merge($this->methods ?? [], $methods);
+        }
 
         return $this;
     }
@@ -217,17 +214,6 @@ final class MockBuilder
 
             return $this;
         }
-
-        if ($this->alreadyUsedMockMethodConfiguration) {
-            throw new RuntimeException(
-                \sprintf(
-                    'Cannot use onlyMethods() on "%s" mock because mocked methods were already configured.',
-                    $this->type
-                )
-            );
-        }
-
-        $this->alreadyUsedMockMethodConfiguration = true;
 
         try {
             $reflector = new \ReflectionClass($this->type);
@@ -251,7 +237,7 @@ final class MockBuilder
             }
         }
 
-        $this->methods = $methods;
+        $this->methods = array_merge($this->methods ?? [], $methods);
 
         return $this;
     }
@@ -270,17 +256,6 @@ final class MockBuilder
 
             return $this;
         }
-
-        if ($this->alreadyUsedMockMethodConfiguration) {
-            throw new RuntimeException(
-                \sprintf(
-                    'Cannot use addMethods() on "%s" mock because mocked methods were already configured.',
-                    $this->type
-                )
-            );
-        }
-
-        $this->alreadyUsedMockMethodConfiguration = true;
 
         try {
             $reflector = new \ReflectionClass($this->type);
@@ -304,7 +279,7 @@ final class MockBuilder
             }
         }
 
-        $this->methods = $methods;
+        $this->methods = array_merge($this->methods ?? [], $methods);
 
         return $this;
     }
