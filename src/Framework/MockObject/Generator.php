@@ -185,7 +185,7 @@ final class Generator
      *
      * @throws RuntimeException
      */
-    public function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = true): MockObject
+    public function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = null, bool $cloneArguments = true): MockObject
     {
         if (\class_exists($originalClassName, $callAutoload) ||
             \interface_exists($originalClassName, $callAutoload)) {
@@ -202,7 +202,7 @@ final class Generator
             $methods = $mockedMethods;
 
             foreach ($reflector->getMethods() as $method) {
-                if ($method->isAbstract() && !\in_array($method->getName(), $methods, true)) {
+                if ($method->isAbstract() && !\in_array($method->getName(), $methods ?? [], true)) {
                     $methods[] = $method->getName();
                 }
             }
@@ -235,7 +235,7 @@ final class Generator
      *
      * @throws RuntimeException
      */
-    public function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = true): MockObject
+    public function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = null, bool $cloneArguments = true): MockObject
     {
         if (!\trait_exists($traitName, $callAutoload)) {
             throw new RuntimeException(
