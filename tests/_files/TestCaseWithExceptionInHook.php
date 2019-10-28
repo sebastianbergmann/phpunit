@@ -1,6 +1,4 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 /*
  * This file is part of PHPUnit.
  *
@@ -19,7 +17,7 @@ final class TestCaseWithExceptionInHook extends TestCase
      */
     public static function setUpBeforeClass(): void
     {
-        throw new Exception();
+        throw new Exception;
     }
 
     public function testTrue(): void

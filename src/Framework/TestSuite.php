@@ -539,7 +539,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
 
             return $result;
         } catch (\Throwable $t) {
-            $errorAddedOnce = false;
+            $errorAdded = false;
 
             foreach ($this->tests() as $test) {
                 if ($result->shouldStop()) {
@@ -548,9 +548,10 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
 
                 $result->startTest($test);
 
-                if (!$errorAddedOnce) {
+                if (!$errorAdded) {
                     $result->addError($test, $t, 0);
-                    $errorAddedOnce = true;
+
+                    $errorAdded = true;
                 } else {
                     $result->addFailure(
                         $test,
@@ -558,6 +559,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                         0
                     );
                 }
+
                 $result->endTest($test, 0);
             }
 
