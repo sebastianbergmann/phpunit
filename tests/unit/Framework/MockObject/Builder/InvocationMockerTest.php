@@ -14,6 +14,8 @@ use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
 use PHPUnit\Framework\MockObject\InvocationHandler;
 use PHPUnit\Framework\MockObject\Matcher;
+use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
+use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ClassWithImplicitProtocol;
 
@@ -237,5 +239,23 @@ final class InvocationMockerTest extends TestCase
         $mock->secondCall();
         $mock->firstCall();
         $mock->secondCall();
+    }
+
+    public function testWillReturnAlreadyInstantiatedStubs(): void
+    {
+        $mock = $this->getMockBuilder(stdClass::class)
+            ->setMethods(['foo', 'bar'])
+            ->getMock();
+
+        $mock->expects($this->any())
+            ->method('foo')
+            ->willReturn(new ReturnStub('foo'));
+
+        $mock->expects($this->any())
+            ->method('bar')
+            ->willReturn(new ReturnSelf());
+
+        $this->assertSame('foo', $mock->foo());
+        $this->assertSame($mock, $mock->bar());
     }
 }
