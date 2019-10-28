@@ -75,26 +75,23 @@ final class Filter
         $fileIsNotPrefixed = $prefix === false || \strpos($file, $prefix) !== 0;
         $script            = \realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
 
-        return \is_file($file)
-            && self::fileIsBlacklisted($file, $blacklist)
-            && $fileIsNotPrefixed
-            && $file !== $script;
+        return \is_file($file) &&
+               self::fileIsBlacklisted($file, $blacklist) &&
+               $fileIsNotPrefixed &&
+               $file !== $script;
     }
 
-    private static function fileIsBlacklisted($file, Blacklist $blacklist)
+    private static function fileIsBlacklisted($file, Blacklist $blacklist): bool
     {
-        return (
-            empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'])
-         || !\in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'])
-        )
-        && !$blacklist->isBlacklisted($file);
+        return (empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST']) ||
+                !\in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'], true)) &&
+               !$blacklist->isBlacklisted($file);
     }
 
     private static function frameExists(array $trace, string $file, int $line): bool
     {
         foreach ($trace as $frame) {
-            if (isset($frame['file']) && $frame['file'] === $file &&
-                isset($frame['line']) && $frame['line'] === $line) {
+            if (isset($frame['file'], $frame['line']) && $frame['file'] === $file && $frame['line'] === $line) {
                 return true;
             }
         }
