@@ -65,6 +65,11 @@ final class JUnit extends Printer implements TestListener
     /**
      * @var int[]
      */
+    private $testSuiteWarnings = [0];
+
+    /**
+     * @var int[]
+     */
     private $testSuiteFailures = [0];
 
     /**
@@ -128,7 +133,7 @@ final class JUnit extends Printer implements TestListener
     public function addWarning(Test $test, Warning $e, float $time): void
     {
         $this->doAddFault($test, $e, $time, 'warning');
-        $this->testSuiteFailures[$this->testSuiteLevel]++;
+        $this->testSuiteWarnings[$this->testSuiteLevel]++;
     }
 
     /**
@@ -208,6 +213,7 @@ final class JUnit extends Printer implements TestListener
         $this->testSuiteTests[$this->testSuiteLevel]      = 0;
         $this->testSuiteAssertions[$this->testSuiteLevel] = 0;
         $this->testSuiteErrors[$this->testSuiteLevel]     = 0;
+        $this->testSuiteWarnings[$this->testSuiteLevel]   = 0;
         $this->testSuiteFailures[$this->testSuiteLevel]   = 0;
         $this->testSuiteSkipped[$this->testSuiteLevel]    = 0;
         $this->testSuiteTimes[$this->testSuiteLevel]      = 0;
@@ -234,6 +240,11 @@ final class JUnit extends Printer implements TestListener
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
+            'warnings',
+            (string) $this->testSuiteWarnings[$this->testSuiteLevel]
+        );
+
+        $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'failures',
             (string) $this->testSuiteFailures[$this->testSuiteLevel]
         );
@@ -252,6 +263,7 @@ final class JUnit extends Printer implements TestListener
             $this->testSuiteTests[$this->testSuiteLevel - 1] += $this->testSuiteTests[$this->testSuiteLevel];
             $this->testSuiteAssertions[$this->testSuiteLevel - 1] += $this->testSuiteAssertions[$this->testSuiteLevel];
             $this->testSuiteErrors[$this->testSuiteLevel - 1] += $this->testSuiteErrors[$this->testSuiteLevel];
+            $this->testSuiteWarnings[$this->testSuiteLevel - 1] += $this->testSuiteWarnings[$this->testSuiteLevel];
             $this->testSuiteFailures[$this->testSuiteLevel - 1] += $this->testSuiteFailures[$this->testSuiteLevel];
             $this->testSuiteSkipped[$this->testSuiteLevel - 1] += $this->testSuiteSkipped[$this->testSuiteLevel];
             $this->testSuiteTimes[$this->testSuiteLevel - 1] += $this->testSuiteTimes[$this->testSuiteLevel];
