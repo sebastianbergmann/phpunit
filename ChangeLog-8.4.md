@@ -6,6 +6,9 @@ All notable changes of the PHPUnit 8.4 release series are documented in this fil
 
 ### Fixed
 
+* Fixed [#3727](https://github.com/sebastianbergmann/phpunit/issues/3727): Problem hidden by PHPUnit's error handler
+* Fixed [#3793](https://github.com/sebastianbergmann/phpunit/issues/3793): JUnit logger reports warnings as failures
+* Fixed [#3863](https://github.com/sebastianbergmann/phpunit/pull/3863): `\Countable` needs to be checked before `\EmptyIterator`
 * Fixed [#3889](https://github.com/sebastianbergmann/phpunit/issues/3889): Test(s) not found when source filename does not match test case class name
 * Fixed [#3893](https://github.com/sebastianbergmann/phpunit/issues/3893): `TypeError` when called with a filename without extension
 
