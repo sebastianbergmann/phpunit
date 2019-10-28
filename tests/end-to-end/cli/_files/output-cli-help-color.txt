@@ -96,6 +96,7 @@
   [32m--testdox-group            [0m Only include tests from the specified
                               group(s)
   [32m--testdox-exclude-group    [0m Exclude tests from the specified group(s)
+  [32m--no-interaction           [0m Disable TestDox progress animation
   [32m--printer [36m<printer>[0m        [0m TestListener implementation to use
 
   [32m--order-by=[36m<order>[0m         [0m Run tests in order:
