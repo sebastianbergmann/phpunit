@@ -27,7 +27,7 @@ final class MockBuilder
     private $type;
 
     /**
-     * @var string[]|null
+     * @var null|string[]
      */
     private $methods = [];
 
@@ -189,12 +189,12 @@ final class MockBuilder
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/pull/3687
      */
-    public function setMethods(array $methods = null): self
+    public function setMethods(?array $methods = null): self
     {
         if ($methods === null) {
             $this->methods = $methods;
         } else {
-            $this->methods = array_merge($this->methods ?? [], $methods);
+            $this->methods = \array_merge($this->methods ?? [], $methods);
         }
 
         return $this;
@@ -237,7 +237,7 @@ final class MockBuilder
             }
         }
 
-        $this->methods = array_merge($this->methods ?? [], $methods);
+        $this->methods = \array_merge($this->methods ?? [], $methods);
 
         return $this;
     }
@@ -279,7 +279,7 @@ final class MockBuilder
             }
         }
 
-        $this->methods = array_merge($this->methods ?? [], $methods);
+        $this->methods = \array_merge($this->methods ?? [], $methods);
 
         return $this;
     }
