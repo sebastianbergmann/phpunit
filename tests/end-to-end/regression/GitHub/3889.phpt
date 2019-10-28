@@ -7,14 +7,10 @@ $_SERVER['argv'][2] = __DIR__ . '/3889/MyIssue3889Test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+try {
+    PHPUnit\TextUI\Command::main();
+} catch (\Exception $e) {
+    echo $e->getMessage();
+}
 --EXPECTF--
-Fatal error: Uncaught PHPUnit\Runner\Exception: Class 'MyIssue3889Test' could not be found in %s
-%s
-%s
-%s
-%s
-%s
-%s
-%s
-%s
+Class 'MyIssue3889Test' could not be found in '%s/MyIssue3889Test.php'.
