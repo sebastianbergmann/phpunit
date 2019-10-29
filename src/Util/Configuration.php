@@ -130,14 +130,10 @@ final class Configuration
         return ExtensionCollection::fromArray($extensions);
     }
 
-    public function getFilterConfiguration(): array
+    public function getFilterConfiguration(): Filter
     {
         $addUncoveredFilesFromWhitelist     = true;
         $processUncoveredFilesFromWhitelist = false;
-        $includeDirectory                   = [];
-        $includeFile                        = [];
-        $excludeDirectory                   = [];
-        $excludeFile                        = [];
 
         $tmp = $this->xpath->query('filter/whitelist');
 
@@ -159,38 +155,16 @@ final class Configuration
                     false
                 );
             }
-
-            $includeDirectory = $this->readFilterDirectories(
-                'filter/whitelist/directory'
-            );
-
-            $includeFile = $this->readFilterFiles(
-                'filter/whitelist/file'
-            );
-
-            $excludeDirectory = $this->readFilterDirectories(
-                'filter/whitelist/exclude/directory'
-            );
-
-            $excludeFile = $this->readFilterFiles(
-                'filter/whitelist/exclude/file'
-            );
         }
 
-        return [
-            'whitelist' => [
-                'addUncoveredFilesFromWhitelist'     => $addUncoveredFilesFromWhitelist,
-                'processUncoveredFilesFromWhitelist' => $processUncoveredFilesFromWhitelist,
-                'include'                            => [
-                    'directory' => $includeDirectory,
-                    'file'      => $includeFile,
-                ],
-                'exclude' => [
-                    'directory' => $excludeDirectory,
-                    'file'      => $excludeFile,
-                ],
-            ],
-        ];
+        return new Filter(
+            $this->readFilterDirectories('filter/whitelist/directory'),
+            $this->readFilterFiles('filter/whitelist/file'),
+            $this->readFilterDirectories('filter/whitelist/exclude/directory'),
+            $this->readFilterFiles('filter/whitelist/exclude/file'),
+            $addUncoveredFilesFromWhitelist,
+            $processUncoveredFilesFromWhitelist
+        );
     }
 
     public function getGroupConfiguration(): array
@@ -1044,7 +1018,7 @@ final class Configuration
         return $default;
     }
 
-    private function readFilterDirectories(string $query): array
+    private function readFilterDirectories(string $query): FilterDirectoryCollection
     {
         $directories = [];
 
@@ -1057,21 +1031,18 @@ final class Configuration
                 continue;
             }
 
-            $directories[] = [
-                'path'   => $this->toAbsolutePath($directoryPath),
-                'prefix' => $directoryNode->hasAttribute('prefix') ? (string) $directoryNode->getAttribute('prefix') : '',
-                'suffix' => $directoryNode->hasAttribute('suffix') ? (string) $directoryNode->getAttribute('suffix') : '.php',
-                'group'  => $directoryNode->hasAttribute('group') ? (string) $directoryNode->getAttribute('group') : 'DEFAULT',
-            ];
+            $directories[] = new FilterDirectory(
+                $this->toAbsolutePath($directoryPath),
+                $directoryNode->hasAttribute('prefix') ? (string) $directoryNode->getAttribute('prefix') : '',
+                $directoryNode->hasAttribute('suffix') ? (string) $directoryNode->getAttribute('suffix') : '.php',
+                $directoryNode->hasAttribute('group') ? (string) $directoryNode->getAttribute('group') : 'DEFAULT'
+            );
         }
 
-        return $directories;
+        return FilterDirectoryCollection::fromArray($directories);
     }
 
-    /**
-     * @return string[]
-     */
-    private function readFilterFiles(string $query): array
+    private function readFilterFiles(string $query): FilterFileCollection
     {
         $files = [];
 
@@ -1079,11 +1050,11 @@ final class Configuration
             $filePath = (string) $file->textContent;
 
             if ($filePath) {
-                $files[] = $this->toAbsolutePath($filePath);
+                $files[] = new FilterFile($this->toAbsolutePath($filePath));
             }
         }
 
-        return $files;
+        return FilterFileCollection::fromArray($files);
     }
 
     private function toAbsolutePath(string $path, bool $useIncludePath = false): string
