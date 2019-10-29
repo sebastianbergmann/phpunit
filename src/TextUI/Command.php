@@ -20,7 +20,7 @@ use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
-use PHPUnit\Util\Configuration;
+use PHPUnit\Util\Configuration\Configuration;
 use PHPUnit\Util\ConfigurationGenerator;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;

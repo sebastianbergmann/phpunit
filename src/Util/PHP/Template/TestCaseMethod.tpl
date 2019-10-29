@@ -85,7 +85,7 @@ function __phpunit_run_isolated_test()
 $configurationFilePath = '{configurationFilePath}';
 
 if ('' !== $configurationFilePath) {
-    $configuration = PHPUnit\Util\Configuration::getInstance($configurationFilePath);
+    $configuration = PHPUnit\Util\Configuration\Configuration::getInstance($configurationFilePath);
     $configuration->handlePHPConfiguration();
     unset($configuration);
 }
