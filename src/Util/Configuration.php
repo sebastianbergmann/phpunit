@@ -115,9 +115,6 @@ final class Configuration
         return $result;
     }
 
-    /**
-     * Returns the real path to the configuration file.
-     */
     public function getFilename(): string
     {
         return $this->filename;
@@ -134,9 +131,6 @@ final class Configuration
         return ExtensionCollection::fromArray($extensions);
     }
 
-    /**
-     * Returns the configuration for SUT filtering.
-     */
     public function getFilterConfiguration(): array
     {
         $addUncoveredFilesFromWhitelist     = true;
@@ -200,25 +194,16 @@ final class Configuration
         ];
     }
 
-    /**
-     * Returns the configuration for groups.
-     */
     public function getGroupConfiguration(): array
     {
         return $this->parseGroupConfiguration('groups');
     }
 
-    /**
-     * Returns the configuration for testdox groups.
-     */
     public function getTestdoxGroupConfiguration(): array
     {
         return $this->parseGroupConfiguration('testdoxGroups');
     }
 
-    /**
-     * Returns the configuration for listeners.
-     */
     public function getListenerConfiguration(): ExtensionCollection
     {
         $listeners = [];
@@ -230,9 +215,6 @@ final class Configuration
         return ExtensionCollection::fromArray($listeners);
     }
 
-    /**
-     * Returns the logging configuration.
-     */
     public function getLoggingConfiguration(): array
     {
         $result = [];
@@ -292,9 +274,6 @@ final class Configuration
         return $result;
     }
 
-    /**
-     * Returns the PHP configuration.
-     */
     public function getPHPConfiguration(): array
     {
         $result = [
@@ -366,9 +345,6 @@ final class Configuration
         return $result;
     }
 
-    /**
-     * Handles the PHP configuration.
-     */
     public function handlePHPConfiguration(): void
     {
         $configuration = $this->getPHPConfiguration();
@@ -446,9 +422,6 @@ final class Configuration
         }
     }
 
-    /**
-     * Returns the PHPUnit configuration.
-     */
     public function getPHPUnitConfiguration(): array
     {
         $result = [];
@@ -859,11 +832,6 @@ final class Configuration
         return $result;
     }
 
-    /**
-     * Returns the test suite configuration.
-     *
-     * @throws Exception
-     */
     public function getTestSuiteConfiguration(string $testSuiteFilter = ''): TestSuite
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
@@ -887,9 +855,6 @@ final class Configuration
         return $suite;
     }
 
-    /**
-     * Returns the test suite names from the configuration.
-     */
     public function getTestSuiteNames(): array
     {
         $names = [];
@@ -917,10 +882,6 @@ final class Configuration
         \libxml_use_internal_errors($original);
     }
 
-    /**
-     * Collects and returns the configuration arguments from the PHPUnit
-     * XML configuration
-     */
     private function getConfigurationArguments(\DOMNodeList $nodes): array
     {
         $arguments = [];
@@ -954,9 +915,6 @@ final class Configuration
         return $arguments;
     }
 
-    /**
-     * @throws \PHPUnit\Framework\Exception
-     */
     private function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
     {
         if ($testSuiteNode->hasAttribute('name')) {
