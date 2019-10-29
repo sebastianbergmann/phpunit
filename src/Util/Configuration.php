@@ -157,6 +157,9 @@ final class Configuration
             }
         }
 
+        \assert(\is_bool($addUncoveredFilesFromWhitelist));
+        \assert(\is_bool($processUncoveredFilesFromWhitelist));
+
         return new Filter(
             $this->readFilterDirectories('filter/whitelist/directory'),
             $this->readFilterFiles('filter/whitelist/file'),
