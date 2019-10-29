@@ -139,7 +139,7 @@ final class Configuration
 
         if ($tmp->length === 1) {
             if ($tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
-                $addUncoveredFilesFromWhitelist = $this->getBoolean(
+                $addUncoveredFilesFromWhitelist = (bool) $this->getBoolean(
                     (string) $tmp->item(0)->getAttribute(
                         'addUncoveredFilesFromWhitelist'
                     ),
@@ -148,7 +148,7 @@ final class Configuration
             }
 
             if ($tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
-                $processUncoveredFilesFromWhitelist = $this->getBoolean(
+                $processUncoveredFilesFromWhitelist = (bool) $this->getBoolean(
                     (string) $tmp->item(0)->getAttribute(
                         'processUncoveredFilesFromWhitelist'
                     ),
@@ -156,9 +156,6 @@ final class Configuration
                 );
             }
         }
-
-        \assert(\is_bool($addUncoveredFilesFromWhitelist));
-        \assert(\is_bool($processUncoveredFilesFromWhitelist));
 
         return new Filter(
             $this->readFilterDirectories('filter/whitelist/directory'),
