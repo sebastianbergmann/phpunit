@@ -160,42 +160,36 @@ final class ConfigurationTest extends TestCase
 
     public function testFilterConfigurationIsReadCorrectly(): void
     {
-        $this->assertEquals(
-            [
-                'whitelist' => [
-                    'addUncoveredFilesFromWhitelist'     => true,
-                    'processUncoveredFilesFromWhitelist' => false,
-                    'include'                            => [
-                        'directory' => [
-                            0 => [
-                                'path'   => '/path/to/files',
-                                'prefix' => '',
-                                'suffix' => '.php',
-                                'group'  => 'DEFAULT',
-                            ],
-                        ],
-                        'file' => [
-                            0 => '/path/to/file',
-                            1 => '/path/to/file',
-                        ],
-                    ],
-                    'exclude' => [
-                        'directory' => [
-                            0 => [
-                                'path'   => '/path/to/files',
-                                'prefix' => '',
-                                'suffix' => '.php',
-                                'group'  => 'DEFAULT',
-                            ],
-                        ],
-                        'file' => [
-                            0 => '/path/to/file',
-                        ],
-                    ],
-                ],
-            ],
-            $this->configuration->getFilterConfiguration()
-        );
+        $filter = $this->configuration->getFilterConfiguration();
+
+        $this->assertTrue($filter->addUncoveredFilesFromWhitelist());
+        $this->assertFalse($filter->processUncoveredFilesFromWhitelist());
+
+        /** @var FilterDirectory $directory */
+        $directory = \iterator_to_array($filter->directories(), false)[0];
+        $this->assertSame('/path/to/files', $directory->path());
+        $this->assertSame('', $directory->prefix());
+        $this->assertSame('.php', $directory->suffix());
+        $this->assertSame('DEFAULT', $directory->group());
+
+        /** @var FilterFile $file */
+        $file = \iterator_to_array($filter->files(), false)[0];
+        $this->assertSame('/path/to/file', $file->path());
+
+        /** @var FilterFile $file */
+        $file = \iterator_to_array($filter->files(), false)[1];
+        $this->assertSame('/path/to/file', $file->path());
+
+        /** @var FilterDirectory $directory */
+        $directory = \iterator_to_array($filter->excludeDirectories(), false)[0];
+        $this->assertSame('/path/to/files', $directory->path());
+        $this->assertSame('', $directory->prefix());
+        $this->assertSame('.php', $directory->suffix());
+        $this->assertSame('DEFAULT', $directory->group());
+
+        /** @var FilterFile $file */
+        $file = \iterator_to_array($filter->excludeFiles(), false)[0];
+        $this->assertSame('/path/to/file', $file->path());
     }
 
     public function testGroupConfigurationIsReadCorrectly(): void
@@ -556,36 +550,6 @@ final class ConfigurationTest extends TestCase
             $this->configuration,
             $configurationWithXinclude
         );
-    }
-
-    /**
-     * @ticket 1311
-     */
-    public function testWithEmptyConfigurations(): void
-    {
-        $emptyConfiguration = Configuration::getInstance(
-            TEST_FILES_PATH . 'configuration_empty.xml'
-        );
-
-        $logging = $emptyConfiguration->getLoggingConfiguration();
-        $this->assertEmpty($logging);
-
-        $php = $emptyConfiguration->getPHPConfiguration();
-        $this->assertEmpty($php['include_path']);
-
-        $phpunit = $emptyConfiguration->getPHPUnitConfiguration();
-        $this->assertArrayNotHasKey('bootstrap', $phpunit);
-        $this->assertArrayNotHasKey('testSuiteLoaderFile', $phpunit);
-        $this->assertArrayNotHasKey('printerFile', $phpunit);
-
-        $suite = $emptyConfiguration->getTestSuiteConfiguration();
-        $this->assertEmpty($suite->getGroups());
-
-        $filter = $emptyConfiguration->getFilterConfiguration();
-        $this->assertEmpty($filter['whitelist']['include']['directory']);
-        $this->assertEmpty($filter['whitelist']['include']['file']);
-        $this->assertEmpty($filter['whitelist']['exclude']['directory']);
-        $this->assertEmpty($filter['whitelist']['exclude']['file']);
     }
 
     public function testGetTestSuiteNamesReturnsTheNamesIfDefined(): void
