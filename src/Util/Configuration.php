@@ -135,23 +135,23 @@ final class Configuration
         $addUncoveredFilesFromWhitelist     = true;
         $processUncoveredFilesFromWhitelist = false;
 
-        $tmp = $this->xpath->query('filter/whitelist');
+        $nodes = $this->xpath->query('filter/whitelist');
 
-        if ($tmp->length === 1) {
-            if ($tmp->item(0)->hasAttribute('addUncoveredFilesFromWhitelist')) {
+        if ($nodes->length === 1) {
+            $node = $nodes->item(0);
+
+            \assert($node instanceof \DOMNode);
+
+            if ($node->hasAttribute('addUncoveredFilesFromWhitelist')) {
                 $addUncoveredFilesFromWhitelist = (bool) $this->getBoolean(
-                    (string) $tmp->item(0)->getAttribute(
-                        'addUncoveredFilesFromWhitelist'
-                    ),
+                    (string) $node->getAttribute('addUncoveredFilesFromWhitelist'),
                     true
                 );
             }
 
-            if ($tmp->item(0)->hasAttribute('processUncoveredFilesFromWhitelist')) {
+            if ($node->hasAttribute('processUncoveredFilesFromWhitelist')) {
                 $processUncoveredFilesFromWhitelist = (bool) $this->getBoolean(
-                    (string) $tmp->item(0)->getAttribute(
-                        'processUncoveredFilesFromWhitelist'
-                    ),
+                    (string) $node->getAttribute('processUncoveredFilesFromWhitelist'),
                     false
                 );
             }
