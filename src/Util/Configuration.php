@@ -425,9 +425,6 @@ final class Configuration
             }
         }
 
-        /*
-         * @see https://github.com/sebastianbergmann/phpunit/issues/657
-         */
         if ($root->hasAttribute('stderr')) {
             $result['stderr'] = $this->getBoolean(
                 (string) $root->getAttribute('stderr'),
