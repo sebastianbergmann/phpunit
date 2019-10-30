@@ -570,15 +570,15 @@ final class Configuration
             );
         }
 
-        if ($root->hasAttribute('defaultTestSuite')) {
-            $result['defaultTestSuite'] = (string) $root->getAttribute(
-                'defaultTestSuite'
-            );
-        }
-
         if ($root->getAttribute('testSuiteLoaderFile')) {
             $result['testSuiteLoaderFile'] = $this->toAbsolutePath(
                 (string) $root->getAttribute('testSuiteLoaderFile')
+            );
+        }
+
+        if ($root->hasAttribute('defaultTestSuite')) {
+            $result['defaultTestSuite'] = (string) $root->getAttribute(
+                'defaultTestSuite'
             );
         }
 
@@ -636,13 +636,6 @@ final class Configuration
             );
         }
 
-        if ($root->hasAttribute('defaultTimeLimit')) {
-            $result['defaultTimeLimit'] = $this->getInteger(
-                (string) $root->getAttribute('defaultTimeLimit'),
-                1
-            );
-        }
-
         if ($root->hasAttribute('enforceTimeLimit')) {
             $result['enforceTimeLimit'] = $this->getBoolean(
                 (string) $root->getAttribute('enforceTimeLimit'),
@@ -650,10 +643,10 @@ final class Configuration
             );
         }
 
-        if ($root->hasAttribute('ignoreDeprecatedCodeUnitsFromCodeCoverage')) {
-            $result['ignoreDeprecatedCodeUnitsFromCodeCoverage'] = $this->getBoolean(
-                (string) $root->getAttribute('ignoreDeprecatedCodeUnitsFromCodeCoverage'),
-                false
+        if ($root->hasAttribute('defaultTimeLimit')) {
+            $result['defaultTimeLimit'] = $this->getInteger(
+                (string) $root->getAttribute('defaultTimeLimit'),
+                1
             );
         }
 
@@ -675,6 +668,13 @@ final class Configuration
             $result['timeoutForLargeTests'] = $this->getInteger(
                 (string) $root->getAttribute('timeoutForLargeTests'),
                 60
+            );
+        }
+
+        if ($root->hasAttribute('ignoreDeprecatedCodeUnitsFromCodeCoverage')) {
+            $result['ignoreDeprecatedCodeUnitsFromCodeCoverage'] = $this->getBoolean(
+                (string) $root->getAttribute('ignoreDeprecatedCodeUnitsFromCodeCoverage'),
+                false
             );
         }
 
