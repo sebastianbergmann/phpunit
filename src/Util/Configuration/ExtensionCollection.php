@@ -9,29 +9,27 @@
  */
 namespace PHPUnit\Util\Configuration;
 
+/**
+ * @psalm-immutable
+ */
 final class ExtensionCollection implements \IteratorAggregate
 {
     /**
      * @var Extension[]
      */
-    private $items = [];
+    private $extensions;
 
     /**
      * @param Extension[] $items
      */
     public static function fromArray(array $items): self
     {
-        $collection = new self;
-
-        foreach ($items as $item) {
-            $collection->add($item);
-        }
-
-        return $collection;
+        return new self(...$items);
     }
 
-    private function __construct()
+    private function __construct(Extension ...$extensions)
     {
+        $this->extensions = $extensions;
     }
 
     /**
@@ -39,16 +37,11 @@ final class ExtensionCollection implements \IteratorAggregate
      */
     public function asArray(): array
     {
-        return $this->items;
+        return $this->extensions;
     }
 
     public function getIterator(): ExtensionCollectionIterator
     {
         return new ExtensionCollectionIterator($this);
-    }
-
-    private function add(Extension $item): void
-    {
-        $this->items[] = $item;
     }
 }

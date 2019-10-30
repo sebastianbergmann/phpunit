@@ -14,16 +14,16 @@ final class ExtensionCollectionIterator implements \Countable, \Iterator
     /**
      * @var Extension[]
      */
-    private $items;
+    private $extensions;
 
     /**
      * @var int
      */
     private $position;
 
-    public function __construct(ExtensionCollection $collection)
+    public function __construct(ExtensionCollection $extensions)
     {
-        $this->items = $collection->asArray();
+        $this->extensions = $extensions->asArray();
     }
 
     public function count(): int
@@ -38,7 +38,7 @@ final class ExtensionCollectionIterator implements \Countable, \Iterator
 
     public function valid(): bool
     {
-        return $this->position < \count($this->items);
+        return $this->position < \count($this->extensions);
     }
 
     public function key(): int
@@ -48,7 +48,7 @@ final class ExtensionCollectionIterator implements \Countable, \Iterator
 
     public function current(): Extension
     {
-        return $this->items[$this->position];
+        return $this->extensions[$this->position];
     }
 
     public function next(): void
