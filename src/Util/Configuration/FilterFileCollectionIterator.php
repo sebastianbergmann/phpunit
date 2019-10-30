@@ -14,16 +14,16 @@ final class FilterFileCollectionIterator implements \Countable, \Iterator
     /**
      * @var FilterFile[]
      */
-    private $items;
+    private $files;
 
     /**
      * @var int
      */
     private $position;
 
-    public function __construct(FilterFileCollection $collection)
+    public function __construct(FilterFileCollection $files)
     {
-        $this->items = $collection->asArray();
+        $this->files = $files->asArray();
     }
 
     public function count(): int
@@ -38,7 +38,7 @@ final class FilterFileCollectionIterator implements \Countable, \Iterator
 
     public function valid(): bool
     {
-        return $this->position < \count($this->items);
+        return $this->position < \count($this->files);
     }
 
     public function key(): int
@@ -48,7 +48,7 @@ final class FilterFileCollectionIterator implements \Countable, \Iterator
 
     public function current(): FilterFile
     {
-        return $this->items[$this->position];
+        return $this->files[$this->position];
     }
 
     public function next(): void
