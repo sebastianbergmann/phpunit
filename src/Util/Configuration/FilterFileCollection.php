@@ -9,29 +9,27 @@
  */
 namespace PHPUnit\Util\Configuration;
 
+/**
+ * @psalm-immutable
+ */
 final class FilterFileCollection implements \Countable, \IteratorAggregate
 {
     /**
      * @var FilterFile[]
      */
-    private $items = [];
+    private $files;
 
     /**
-     * @param FilterFile[] $items
+     * @param FilterFile[] $files
      */
-    public static function fromArray(array $items): self
+    public static function fromArray(array $files): self
     {
-        $collection = new self;
-
-        foreach ($items as $item) {
-            $collection->add($item);
-        }
-
-        return $collection;
+        return new self(...$files);
     }
 
-    private function __construct()
+    private function __construct(FilterFile ...$files)
     {
+        $this->files = $files;
     }
 
     /**
@@ -39,21 +37,16 @@ final class FilterFileCollection implements \Countable, \IteratorAggregate
      */
     public function asArray(): array
     {
-        return $this->items;
+        return $this->files;
     }
 
     public function count(): int
     {
-        return \count($this->items);
+        return \count($this->files);
     }
 
     public function getIterator(): FilterFileCollectionIterator
     {
         return new FilterFileCollectionIterator($this);
-    }
-
-    private function add(FilterFile $item): void
-    {
-        $this->items[] = $item;
     }
 }
