@@ -14,16 +14,16 @@ final class FilterDirectoryCollectionIterator implements \Countable, \Iterator
     /**
      * @var FilterDirectory[]
      */
-    private $items;
+    private $directories;
 
     /**
      * @var int
      */
     private $position;
 
-    public function __construct(FilterDirectoryCollection $collection)
+    public function __construct(FilterDirectoryCollection $directories)
     {
-        $this->items = $collection->asArray();
+        $this->directories = $directories->asArray();
     }
 
     public function count(): int
@@ -38,7 +38,7 @@ final class FilterDirectoryCollectionIterator implements \Countable, \Iterator
 
     public function valid(): bool
     {
-        return $this->position < \count($this->items);
+        return $this->position < \count($this->directories);
     }
 
     public function key(): int
@@ -48,7 +48,7 @@ final class FilterDirectoryCollectionIterator implements \Countable, \Iterator
 
     public function current(): FilterDirectory
     {
-        return $this->items[$this->position];
+        return $this->directories[$this->position];
     }
 
     public function next(): void

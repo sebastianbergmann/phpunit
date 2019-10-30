@@ -9,29 +9,27 @@
  */
 namespace PHPUnit\Util\Configuration;
 
+/**
+ * @psalm-immutable
+ */
 final class FilterDirectoryCollection implements \Countable, \IteratorAggregate
 {
     /**
      * @var FilterDirectory[]
      */
-    private $items = [];
+    private $directories;
 
     /**
-     * @param FilterDirectory[] $items
+     * @param FilterDirectory[] $directories
      */
-    public static function fromArray(array $items): self
+    public static function fromArray(array $directories): self
     {
-        $collection = new self;
-
-        foreach ($items as $item) {
-            $collection->add($item);
-        }
-
-        return $collection;
+        return new self(...$directories);
     }
 
-    private function __construct()
+    private function __construct(FilterDirectory ...$directories)
     {
+        $this->directories = $directories;
     }
 
     /**
@@ -39,21 +37,16 @@ final class FilterDirectoryCollection implements \Countable, \IteratorAggregate
      */
     public function asArray(): array
     {
-        return $this->items;
+        return $this->directories;
     }
 
     public function count(): int
     {
-        return \count($this->items);
+        return \count($this->directories);
     }
 
     public function getIterator(): FilterDirectoryCollectionIterator
     {
         return new FilterDirectoryCollectionIterator($this);
-    }
-
-    private function add(FilterDirectory $item): void
-    {
-        $this->items[] = $item;
     }
 }
