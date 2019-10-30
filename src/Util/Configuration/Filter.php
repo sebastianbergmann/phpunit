@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Util\Configuration;
 
+/**
+ * @psalm-immutable
+ */
 final class Filter
 {
     /**
