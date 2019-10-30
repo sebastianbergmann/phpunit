@@ -13,6 +13,9 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\Hook;
 
+/**
+ * @psalm-immutable
+ */
 final class Extension
 {
     /**
