@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Util\Configuration;
 
-use DOMElement;
-use DOMXPath;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -35,7 +33,7 @@ final class Configuration
     private $document;
 
     /**
-     * @var DOMXPath
+     * @var \DOMXPath
      */
     private $xpath;
 
@@ -83,7 +81,7 @@ final class Configuration
     {
         $this->filename = $filename;
         $this->document = Xml::loadFile($filename, false, true, true);
-        $this->xpath    = new DOMXPath($this->document);
+        $this->xpath    = new \DOMXPath($this->document);
 
         $this->validateConfigurationAgainstSchema();
     }
@@ -193,7 +191,7 @@ final class Configuration
         $result = [];
 
         foreach ($this->xpath->query('logging/log') as $log) {
-            \assert($log instanceof DOMElement);
+            \assert($log instanceof \DOMElement);
 
             $type   = (string) $log->getAttribute('type');
             $target = (string) $log->getAttribute('target');
@@ -272,7 +270,7 @@ final class Configuration
         }
 
         foreach ($this->xpath->query('php/ini') as $ini) {
-            \assert($ini instanceof DOMElement);
+            \assert($ini instanceof \DOMElement);
 
             $name  = (string) $ini->getAttribute('name');
             $value = (string) $ini->getAttribute('value');
@@ -281,7 +279,7 @@ final class Configuration
         }
 
         foreach ($this->xpath->query('php/const') as $const) {
-            \assert($const instanceof  DOMElement);
+            \assert($const instanceof \DOMElement);
 
             $name  = (string) $const->getAttribute('name');
             $value = (string) $const->getAttribute('value');
@@ -291,7 +289,7 @@ final class Configuration
 
         foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($this->xpath->query('php/' . $array) as $var) {
-                \assert($var instanceof DOMElement);
+                \assert($var instanceof \DOMElement);
 
                 $name     = (string) $var->getAttribute('name');
                 $value    = (string) $var->getAttribute('value');
@@ -833,7 +831,7 @@ final class Configuration
         $names = [];
 
         foreach ($this->xpath->query('*/testsuite') as $node) {
-            /* @var DOMElement $node */
+            /* @var \DOMElement $node */
             $names[] = $node->getAttribute('name');
         }
 
@@ -864,7 +862,7 @@ final class Configuration
         }
 
         foreach ($nodes as $node) {
-            if (!$node instanceof DOMElement) {
+            if (!$node instanceof \DOMElement) {
                 continue;
             }
 
@@ -873,7 +871,7 @@ final class Configuration
             }
 
             foreach ($node->childNodes as $argument) {
-                if (!$argument instanceof DOMElement) {
+                if (!$argument instanceof \DOMElement) {
                     continue;
                 }
 
@@ -888,7 +886,7 @@ final class Configuration
         return $arguments;
     }
 
-    private function getTestSuite(DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
+    private function getTestSuite(\DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new TestSuite(
@@ -912,7 +910,7 @@ final class Configuration
         $testSuiteFilter    = $testSuiteFilter ? \explode(',', $testSuiteFilter) : [];
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
-            \assert($directoryNode instanceof DOMElement);
+            \assert($directoryNode instanceof \DOMElement);
 
             if (!empty($testSuiteFilter) && !\in_array($directoryNode->parentNode->getAttribute('name'), $testSuiteFilter)) {
                 continue;
@@ -939,7 +937,7 @@ final class Configuration
         }
 
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
-            \assert($fileNode instanceof DOMElement);
+            \assert($fileNode instanceof \DOMElement);
 
             if (!empty($testSuiteFilter) && !\in_array($fileNode->parentNode->getAttribute('name'), $testSuiteFilter)) {
                 continue;
@@ -971,7 +969,7 @@ final class Configuration
         return $suite;
     }
 
-    private function satisfiesPhpVersion(DOMElement $node): bool
+    private function satisfiesPhpVersion(\DOMElement $node): bool
     {
         $phpVersion         = \PHP_VERSION;
         $phpVersionOperator = '>=';
@@ -1023,7 +1021,7 @@ final class Configuration
         $directories = [];
 
         foreach ($this->xpath->query($query) as $directoryNode) {
-            \assert($directoryNode instanceof DOMElement);
+            \assert($directoryNode instanceof \DOMElement);
 
             $directoryPath = (string) $directoryNode->textContent;
 
@@ -1113,7 +1111,7 @@ final class Configuration
         return $groups;
     }
 
-    private function getElementConfigurationParameters(DOMElement $element): Extension
+    private function getElementConfigurationParameters(\DOMElement $element): Extension
     {
         /** @psalm-var class-string $class */
         $class     = (string) $element->getAttribute('class');
