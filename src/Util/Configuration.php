@@ -812,7 +812,11 @@ final class Configuration
         }
 
         if ($testSuiteNodes->length === 1) {
-            return $this->getTestSuite($testSuiteNodes->item(0), $testSuiteFilter);
+            $element = $testSuiteNodes->item(0);
+
+            \assert($element instanceof \DOMElement);
+
+            return $this->getTestSuite($element, $testSuiteFilter);
         }
 
         $suite = new TestSuite;
