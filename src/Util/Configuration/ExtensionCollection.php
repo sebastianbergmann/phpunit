@@ -20,11 +20,11 @@ final class ExtensionCollection implements \IteratorAggregate
     private $extensions;
 
     /**
-     * @param Extension[] $items
+     * @param Extension[] $extensions
      */
-    public static function fromArray(array $items): self
+    public static function fromArray(array $extensions): self
     {
-        return new self(...$items);
+        return new self(...$extensions);
     }
 
     private function __construct(Extension ...$extensions)
