@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ### Added
 
-* Implemented [#3872](https://github.com/sebastianbergmann/phpunit/issues/3872): Support `PHPUnit\Framework\MockObject\Stub` instances in `createConfiguredMock()`
+* Implemented [#3911](https://github.com/sebastianbergmann/phpunit/issues/3911): Support combined use of `addMethods()` and `onlyMethods()`
 
 [8.5.0]: https://github.com/sebastianbergmann/phpunit/compare/8.4...master
 
