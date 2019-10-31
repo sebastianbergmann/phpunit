@@ -194,32 +194,24 @@ final class ConfigurationTest extends TestCase
 
     public function testGroupConfigurationIsReadCorrectly(): void
     {
-        $this->assertEquals(
-            [
-                'include' => [
-                    0 => 'name',
-                ],
-                'exclude' => [
-                    0 => 'name',
-                ],
-            ],
-            $this->configuration->getGroupConfiguration()
-        );
+        $groupConfiguration = $this->configuration->getGroupConfiguration();
+
+        $this->assertTrue($groupConfiguration->hasInclude());
+        $this->assertSame(['name'], $groupConfiguration->include()->asArrayOfStrings());
+
+        $this->assertTrue($groupConfiguration->hasExclude());
+        $this->assertSame(['name'], $groupConfiguration->exclude()->asArrayOfStrings());
     }
 
     public function testTestdoxGroupConfigurationIsReadCorrectly(): void
     {
-        $this->assertEquals(
-            [
-                'include' => [
-                    0 => 'name',
-                ],
-                'exclude' => [
-                    0 => 'name',
-                ],
-            ],
-            $this->configuration->getTestdoxGroupConfiguration()
-        );
+        $testDoxGroupConfiguration = $this->configuration->getTestdoxGroupConfiguration();
+
+        $this->assertTrue($testDoxGroupConfiguration->hasInclude());
+        $this->assertSame(['name'], $testDoxGroupConfiguration->include()->asArrayOfStrings());
+
+        $this->assertTrue($testDoxGroupConfiguration->hasExclude());
+        $this->assertSame(['name'], $testDoxGroupConfiguration->exclude()->asArrayOfStrings());
     }
 
     public function testListenerConfigurationIsReadCorrectly(): void
