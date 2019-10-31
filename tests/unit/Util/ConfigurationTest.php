@@ -46,7 +46,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_AUTO, $configurationValues['colors']);
+        $this->assertEquals(DefaultResultPrinter::COLOR_AUTO, $configurationValues->colors());
     }
 
     public function testShouldReadColorsWhenFalseInConfigurationFile(): void
@@ -55,7 +55,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
     }
 
     public function testShouldReadColorsWhenEmptyInConfigurationFile(): void
@@ -64,7 +64,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
     }
 
     public function testShouldReadColorsWhenInvalidInConfigurationFile(): void
@@ -73,7 +73,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
     }
 
     public function testInvalidConfigurationGeneratesValidationErrors(): void
@@ -90,7 +90,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(80, $configurationValues['columns']);
+        $this->assertEquals(80, $configurationValues->columns());
     }
 
     /**
@@ -111,7 +111,7 @@ final class ConfigurationTest extends TestCase
         $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
 
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
-        $this->assertEquals($expected, $configurationValues[$optionName]);
+        $this->assertEquals($expected, $configurationValues->$optionName());
 
         @\unlink($tmpFilename);
     }
@@ -151,9 +151,9 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($tmpFilename);
         $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
 
-        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
-        $this->assertSame(TestSuiteSorter::ORDER_DEFECTS_FIRST, $configurationValues['executionOrderDefects']);
-        $this->assertSame(true, $configurationValues['resolveDependencies']);
+        $configurationValues = $configurationInstance->getPHPUnitConfiguration();
+        $this->assertTrue($configurationValues->defectsFirst());
+        $this->assertTrue($configurationValues->resolveDependencies());
 
         @\unlink($tmpFilename);
     }
@@ -496,48 +496,45 @@ final class ConfigurationTest extends TestCase
      */
     public function testPHPUnitConfigurationIsReadCorrectly(): void
     {
-        $this->assertEquals(
-            [
-                'backupGlobals'                              => true,
-                'backupStaticAttributes'                     => false,
-                'beStrictAboutChangesToGlobalState'          => false,
-                'bootstrap'                                  => '/path/to/bootstrap.php',
-                'cacheTokens'                                => false,
-                'columns'                                    => 80,
-                'colors'                                     => 'never',
-                'stderr'                                     => false,
-                'convertDeprecationsToExceptions'            => true,
-                'convertErrorsToExceptions'                  => true,
-                'convertNoticesToExceptions'                 => true,
-                'convertWarningsToExceptions'                => true,
-                'forceCoversAnnotation'                      => false,
-                'stopOnFailure'                              => false,
-                'stopOnWarning'                              => false,
-                'reportUselessTests'                         => false,
-                'strictCoverage'                             => false,
-                'disallowTestOutput'                         => false,
-                'defaultTimeLimit'                           => 123,
-                'enforceTimeLimit'                           => false,
-                'extensionsDirectory'                        => '/tmp',
-                'printerClass'                               => DefaultResultPrinter::class,
-                'testSuiteLoaderClass'                       => StandardTestSuiteLoader::class,
-                'defaultTestSuite'                           => 'My Test Suite',
-                'verbose'                                    => false,
-                'timeoutForSmallTests'                       => 1,
-                'timeoutForMediumTests'                      => 10,
-                'timeoutForLargeTests'                       => 60,
-                'beStrictAboutResourceUsageDuringSmallTests' => false,
-                'disallowTodoAnnotatedTests'                 => false,
-                'failOnWarning'                              => false,
-                'failOnRisky'                                => false,
-                'ignoreDeprecatedCodeUnitsFromCodeCoverage'  => false,
-                'executionOrder'                             => TestSuiteSorter::ORDER_DEFAULT,
-                'executionOrderDefects'                      => TestSuiteSorter::ORDER_DEFAULT,
-                'resolveDependencies'                        => false,
-                'noInteraction'                              => true,
-            ],
-            $this->configuration->getPHPUnitConfiguration()
-        );
+        $configuration = $this->configuration->getPHPUnitConfiguration();
+
+        $this->assertTrue($configuration->backupGlobals());
+        $this->assertFalse($configuration->backupStaticAttributes());
+        $this->assertFalse($configuration->beStrictAboutChangesToGlobalState());
+        $this->assertSame('/path/to/bootstrap.php', $configuration->bootstrap());
+        $this->assertFalse($configuration->cacheTokens());
+        $this->assertSame(80, $configuration->columns());
+        $this->assertSame('never', $configuration->colors());
+        $this->assertFalse($configuration->stderr());
+        $this->assertTrue($configuration->convertDeprecationsToExceptions());
+        $this->assertTrue($configuration->convertErrorsToExceptions());
+        $this->assertTrue($configuration->convertNoticesToExceptions());
+        $this->assertTrue($configuration->convertWarningsToExceptions());
+        $this->assertFalse($configuration->forceCoversAnnotation());
+        $this->assertFalse($configuration->stopOnFailure());
+        $this->assertFalse($configuration->stopOnWarning());
+        $this->assertFalse($configuration->beStrictAboutTestsThatDoNotTestAnything());
+        $this->assertFalse($configuration->beStrictAboutCoversAnnotation());
+        $this->assertFalse($configuration->beStrictAboutOutputDuringTests());
+        $this->assertSame(123, $configuration->defaultTimeLimit());
+        $this->assertFalse($configuration->enforceTimeLimit());
+        $this->assertSame('/tmp', $configuration->extensionsDirectory());
+        $this->assertSame(DefaultResultPrinter::class, $configuration->printerClass());
+        $this->assertSame(StandardTestSuiteLoader::class, $configuration->testSuiteLoaderClass());
+        $this->assertSame('My Test Suite', $configuration->defaultTestSuite());
+        $this->assertFalse($configuration->verbose());
+        $this->assertSame(1, $configuration->timeoutForSmallTests());
+        $this->assertSame(10, $configuration->timeoutForMediumTests());
+        $this->assertSame(60, $configuration->timeoutForLargeTests());
+        $this->assertFalse($configuration->beStrictAboutResourceUsageDuringSmallTests());
+        $this->assertFalse($configuration->beStrictAboutTodoAnnotatedTests());
+        $this->assertFalse($configuration->failOnWarning());
+        $this->assertFalse($configuration->failOnRisky());
+        $this->assertFalse($configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage());
+        $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $configuration->executionOrder());
+        $this->assertFalse($configuration->defectsFirst());
+        $this->assertTrue($configuration->resolveDependencies());
+        $this->assertTrue($configuration->noInteraction());
     }
 
     public function testXincludeInConfiguration(): void
@@ -583,7 +580,7 @@ final class ConfigurationTest extends TestCase
 
         $config = $configuration->getPHPUnitConfiguration();
 
-        $this->assertSame(CliTestDoxPrinter::class, $config['printerClass']);
+        $this->assertSame(CliTestDoxPrinter::class, $config->printerClass());
     }
 
     public function test_Conflict_between_testdox_and_printerClass_is_detected(): void
@@ -594,8 +591,8 @@ final class ConfigurationTest extends TestCase
 
         $config = $configuration->getPHPUnitConfiguration();
 
-        $this->assertSame('foo', $config['printerClass']);
-        $this->assertTrue($config['conflictBetweenPrinterClassAndTestdox']);
+        $this->assertSame(CliTestDoxPrinter::class, $config->printerClass());
+        $this->assertTrue($config->conflictBetweenPrinterClassAndTestdox());
     }
 
     /**
