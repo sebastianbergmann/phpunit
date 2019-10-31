@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+xmllint --noout --schema phpunit.xsd phpunit.xml
+xmllint --noout --schema phpunit.xsd tests/_files/configuration.xml
+xmllint --noout --schema phpunit.xsd tests/_files/configuration_empty.xml
+xmllint --noout --schema phpunit.xsd tests/_files/configuration_xinclude.xml -xinclude
