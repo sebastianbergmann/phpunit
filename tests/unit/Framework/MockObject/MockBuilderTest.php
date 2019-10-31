@@ -173,9 +173,9 @@ final class MockBuilderTest extends TestCase
     public function testAbleToUseAddMethodsAfterSetMethods(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-              ->setMethods(['mockableMethod'])
-              ->addMethods(['mockableMethodWithFakeMethod'])
-              ->getMock();
+                     ->setMethods(['mockableMethod'])
+                     ->addMethods(['mockableMethodWithFakeMethod'])
+                     ->getMock();
 
         $this->assertNull($mock->mockableMethod());
         $this->assertNull($mock->mockableMethodWithFakeMethod());
@@ -184,9 +184,9 @@ final class MockBuilderTest extends TestCase
     public function testAbleToUseOnlyMethodsAfterSetMethods(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-             ->setMethods(['mockableMethodWithFakeMethod'])
-             ->onlyMethods(['mockableMethod'])
-             ->getMock();
+                     ->setMethods(['mockableMethodWithFakeMethod'])
+                     ->onlyMethods(['mockableMethod'])
+                     ->getMock();
 
         $this->assertNull($mock->mockableMethod());
         $this->assertNull($mock->mockableMethodWithFakeMethod());
@@ -195,9 +195,9 @@ final class MockBuilderTest extends TestCase
     public function testAbleToUseAddMethodsAfterSetMethodsWithNull(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-              ->setMethods()
-              ->addMethods(['mockableMethodWithFakeMethod'])
-              ->getMock();
+                     ->setMethods()
+                     ->addMethods(['mockableMethodWithFakeMethod'])
+                     ->getMock();
 
         $this->assertNull($mock->mockableMethodWithFakeMethod());
     }
