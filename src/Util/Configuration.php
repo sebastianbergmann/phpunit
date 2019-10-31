@@ -652,13 +652,13 @@ final class Configuration
             }
         }
 
-        $fileIteratorFacade = new FileIteratorFacade;
-        $testSuiteFilter    = $testSuiteFilter ? \explode(',', $testSuiteFilter) : [];
+        $fileIteratorFacade     = new FileIteratorFacade;
+        $testSuiteFilterAsArray = $testSuiteFilter ? \explode(',', $testSuiteFilter) : [];
 
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
             \assert($directoryNode instanceof \DOMElement);
 
-            if (!empty($testSuiteFilter) && !\in_array($directoryNode->parentNode->getAttribute('name'), $testSuiteFilter)) {
+            if (!empty($testSuiteFilterAsArray) && !\in_array($directoryNode->parentNode->getAttribute('name'), $testSuiteFilterAsArray, true)) {
                 continue;
             }
 
@@ -685,7 +685,7 @@ final class Configuration
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
             \assert($fileNode instanceof \DOMElement);
 
-            if (!empty($testSuiteFilter) && !\in_array($fileNode->parentNode->getAttribute('name'), $testSuiteFilter)) {
+            if (!empty($testSuiteFilterAsArray) && !\in_array($fileNode->parentNode->getAttribute('name'), $testSuiteFilterAsArray, true)) {
                 continue;
             }
 
