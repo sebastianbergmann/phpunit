@@ -165,12 +165,12 @@ final class Configuration
         );
     }
 
-    public function getGroupConfiguration(): array
+    public function getGroupConfiguration(): Groups
     {
         return $this->parseGroupConfiguration('groups');
     }
 
-    public function getTestdoxGroupConfiguration(): array
+    public function getTestdoxGroupConfiguration(): Groups
     {
         return $this->parseGroupConfiguration('testdoxGroups');
     }
@@ -872,22 +872,23 @@ final class Configuration
         return $file;
     }
 
-    private function parseGroupConfiguration(string $root): array
+    private function parseGroupConfiguration(string $root): Groups
     {
-        $groups = [
-            'include' => [],
-            'exclude' => [],
-        ];
+        $include = [];
+        $exclude = [];
 
         foreach ($this->xpath->query($root . '/include/group') as $group) {
-            $groups['include'][] = (string) $group->textContent;
+            $include[] = new Group((string) $group->textContent);
         }
 
         foreach ($this->xpath->query($root . '/exclude/group') as $group) {
-            $groups['exclude'][] = (string) $group->textContent;
+            $exclude[] = new Group((string) $group->textContent);
         }
 
-        return $groups;
+        return new Groups(
+            GroupCollection::fromArray($include),
+            GroupCollection::fromArray($exclude)
+        );
     }
 
     private function getElementConfigurationParameters(\DOMElement $element): Extension
