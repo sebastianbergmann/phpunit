@@ -847,50 +847,44 @@ class Command
 
             $configuration->handlePHPConfiguration();
 
-            /*
-             * Issue #1216
-             */
             if (isset($this->arguments['bootstrap'])) {
                 $this->handleBootstrap($this->arguments['bootstrap']);
-            } elseif (isset($phpunitConfiguration['bootstrap'])) {
-                $this->handleBootstrap($phpunitConfiguration['bootstrap']);
+            } elseif ($phpunitConfiguration->hasBootstrap()) {
+                $this->handleBootstrap($phpunitConfiguration->bootstrap());
             }
 
-            /*
-             * Issue #657
-             */
-            if (isset($phpunitConfiguration['stderr']) && !isset($this->arguments['stderr'])) {
-                $this->arguments['stderr'] = $phpunitConfiguration['stderr'];
+            if (!isset($this->arguments['stderr'])) {
+                $this->arguments['stderr'] = $phpunitConfiguration->stderr();
             }
 
-            if (isset($phpunitConfiguration['extensionsDirectory']) && !isset($this->arguments['noExtensions']) && \extension_loaded('phar')) {
-                $this->handleExtensions($phpunitConfiguration['extensionsDirectory']);
+            if (!isset($this->arguments['noExtensions']) && $phpunitConfiguration->hasExtensionsDirectory() && \extension_loaded('phar')) {
+                $this->handleExtensions($phpunitConfiguration->extensionsDirectory());
             }
 
-            if (isset($phpunitConfiguration['columns']) && !isset($this->arguments['columns'])) {
-                $this->arguments['columns'] = $phpunitConfiguration['columns'];
+            if (!isset($this->arguments['columns'])) {
+                $this->arguments['columns'] = $phpunitConfiguration->columns();
             }
 
-            if (!isset($this->arguments['printer']) && isset($phpunitConfiguration['printerClass'])) {
-                $file = $phpunitConfiguration['printerFile'] ?? '';
+            if (!isset($this->arguments['printer']) && $phpunitConfiguration->hasPrinterClass()) {
+                $file = $phpunitConfiguration->hasPrinterFile() ? $phpunitConfiguration->printerFile() : '';
 
                 $this->arguments['printer'] = $this->handlePrinter(
-                    $phpunitConfiguration['printerClass'],
+                    $phpunitConfiguration->printerClass(),
                     $file
                 );
             }
 
-            if (isset($phpunitConfiguration['testSuiteLoaderClass'])) {
-                $file = $phpunitConfiguration['testSuiteLoaderFile'] ?? '';
+            if ($phpunitConfiguration->hasTestSuiteLoaderClass()) {
+                $file = $phpunitConfiguration->hasTestSuiteLoaderFile() ? $phpunitConfiguration->testSuiteLoaderFile() : '';
 
                 $this->arguments['loader'] = $this->handleLoader(
-                    $phpunitConfiguration['testSuiteLoaderClass'],
+                    $phpunitConfiguration->testSuiteLoaderClass(),
                     $file
                 );
             }
 
-            if (!isset($this->arguments['testsuite']) && isset($phpunitConfiguration['defaultTestSuite'])) {
-                $this->arguments['testsuite'] = $phpunitConfiguration['defaultTestSuite'];
+            if (!isset($this->arguments['testsuite']) && $phpunitConfiguration->hasDefaultTestSuite()) {
+                $this->arguments['testsuite'] = $phpunitConfiguration->defaultTestSuite();
             }
 
             if (!isset($this->arguments['test'])) {
@@ -904,8 +898,7 @@ class Command
             $this->handleBootstrap($this->arguments['bootstrap']);
         }
 
-        if (isset($this->arguments['printer']) &&
-            \is_string($this->arguments['printer'])) {
+        if (isset($this->arguments['printer']) && \is_string($this->arguments['printer'])) {
             $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
         }
 

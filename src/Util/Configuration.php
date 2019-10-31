@@ -393,411 +393,155 @@ final class Configuration
         }
     }
 
-    public function getPHPUnitConfiguration(): array
+    public function getPHPUnitConfiguration(): PHPUnit
     {
-        $result = [];
-        $root   = $this->document->documentElement;
+        $executionOrder      = TestSuiteSorter::ORDER_DEFAULT;
+        $defectsFirst        = false;
+        $resolveDependencies = $this->getBooleanAttribute($this->document->documentElement, 'resolveDependencies', true);
 
-        if ($root->hasAttribute('cacheTokens')) {
-            $result['cacheTokens'] = $this->getBoolean(
-                (string) $root->getAttribute('cacheTokens'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('columns')) {
-            $columns = (string) $root->getAttribute('columns');
-
-            if ($columns === 'max') {
-                $result['columns'] = 'max';
-            } else {
-                $result['columns'] = $this->getInteger($columns, 80);
-            }
-        }
-
-        if ($root->hasAttribute('colors')) {
-            /* only allow boolean for compatibility with previous versions
-              'always' only allowed from command line */
-            if ($this->getBoolean($root->getAttribute('colors'), false)) {
-                $result['colors'] = DefaultResultPrinter::COLOR_AUTO;
-            } else {
-                $result['colors'] = DefaultResultPrinter::COLOR_NEVER;
-            }
-        }
-
-        if ($root->hasAttribute('stderr')) {
-            $result['stderr'] = $this->getBoolean(
-                (string) $root->getAttribute('stderr'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('backupGlobals')) {
-            $result['backupGlobals'] = $this->getBoolean(
-                (string) $root->getAttribute('backupGlobals'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('backupStaticAttributes')) {
-            $result['backupStaticAttributes'] = $this->getBoolean(
-                (string) $root->getAttribute('backupStaticAttributes'),
-                false
-            );
-        }
-
-        if ($root->getAttribute('bootstrap')) {
-            $result['bootstrap'] = $this->toAbsolutePath(
-                (string) $root->getAttribute('bootstrap')
-            );
-        }
-
-        if ($root->hasAttribute('convertDeprecationsToExceptions')) {
-            $result['convertDeprecationsToExceptions'] = $this->getBoolean(
-                (string) $root->getAttribute('convertDeprecationsToExceptions'),
-                true
-            );
-        }
-
-        if ($root->hasAttribute('convertErrorsToExceptions')) {
-            $result['convertErrorsToExceptions'] = $this->getBoolean(
-                (string) $root->getAttribute('convertErrorsToExceptions'),
-                true
-            );
-        }
-
-        if ($root->hasAttribute('convertNoticesToExceptions')) {
-            $result['convertNoticesToExceptions'] = $this->getBoolean(
-                (string) $root->getAttribute('convertNoticesToExceptions'),
-                true
-            );
-        }
-
-        if ($root->hasAttribute('convertWarningsToExceptions')) {
-            $result['convertWarningsToExceptions'] = $this->getBoolean(
-                (string) $root->getAttribute('convertWarningsToExceptions'),
-                true
-            );
-        }
-
-        if ($root->hasAttribute('forceCoversAnnotation')) {
-            $result['forceCoversAnnotation'] = $this->getBoolean(
-                (string) $root->getAttribute('forceCoversAnnotation'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('disableCodeCoverageIgnore')) {
-            $result['disableCodeCoverageIgnore'] = $this->getBoolean(
-                (string) $root->getAttribute('disableCodeCoverageIgnore'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('processIsolation')) {
-            $result['processIsolation'] = $this->getBoolean(
-                (string) $root->getAttribute('processIsolation'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('stopOnDefect')) {
-            $result['stopOnDefect'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnDefect'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('stopOnError')) {
-            $result['stopOnError'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnError'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('stopOnFailure')) {
-            $result['stopOnFailure'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnFailure'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('stopOnWarning')) {
-            $result['stopOnWarning'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnWarning'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('stopOnIncomplete')) {
-            $result['stopOnIncomplete'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnIncomplete'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('stopOnRisky')) {
-            $result['stopOnRisky'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnRisky'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('stopOnSkipped')) {
-            $result['stopOnSkipped'] = $this->getBoolean(
-                (string) $root->getAttribute('stopOnSkipped'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('failOnWarning')) {
-            $result['failOnWarning'] = $this->getBoolean(
-                (string) $root->getAttribute('failOnWarning'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('failOnRisky')) {
-            $result['failOnRisky'] = $this->getBoolean(
-                (string) $root->getAttribute('failOnRisky'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('testSuiteLoaderClass')) {
-            $result['testSuiteLoaderClass'] = (string) $root->getAttribute(
-                'testSuiteLoaderClass'
-            );
-        }
-
-        if ($root->getAttribute('testSuiteLoaderFile')) {
-            $result['testSuiteLoaderFile'] = $this->toAbsolutePath(
-                (string) $root->getAttribute('testSuiteLoaderFile')
-            );
-        }
-
-        if ($root->hasAttribute('defaultTestSuite')) {
-            $result['defaultTestSuite'] = (string) $root->getAttribute(
-                'defaultTestSuite'
-            );
-        }
-
-        if ($root->hasAttribute('printerClass')) {
-            $result['printerClass'] = (string) $root->getAttribute(
-                'printerClass'
-            );
-        }
-
-        if ($root->getAttribute('printerFile')) {
-            $result['printerFile'] = $this->toAbsolutePath(
-                (string) $root->getAttribute('printerFile')
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutChangesToGlobalState')) {
-            $result['beStrictAboutChangesToGlobalState'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutChangesToGlobalState'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutOutputDuringTests')) {
-            $result['disallowTestOutput'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutOutputDuringTests'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutResourceUsageDuringSmallTests')) {
-            $result['beStrictAboutResourceUsageDuringSmallTests'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutResourceUsageDuringSmallTests'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutTestsThatDoNotTestAnything')) {
-            $result['reportUselessTests'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTestsThatDoNotTestAnything'),
-                true
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutTodoAnnotatedTests')) {
-            $result['disallowTodoAnnotatedTests'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutTodoAnnotatedTests'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('beStrictAboutCoversAnnotation')) {
-            $result['strictCoverage'] = $this->getBoolean(
-                (string) $root->getAttribute('beStrictAboutCoversAnnotation'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('enforceTimeLimit')) {
-            $result['enforceTimeLimit'] = $this->getBoolean(
-                (string) $root->getAttribute('enforceTimeLimit'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('defaultTimeLimit')) {
-            $result['defaultTimeLimit'] = $this->getInteger(
-                (string) $root->getAttribute('defaultTimeLimit'),
-                1
-            );
-        }
-
-        if ($root->hasAttribute('timeoutForSmallTests')) {
-            $result['timeoutForSmallTests'] = $this->getInteger(
-                (string) $root->getAttribute('timeoutForSmallTests'),
-                1
-            );
-        }
-
-        if ($root->hasAttribute('timeoutForMediumTests')) {
-            $result['timeoutForMediumTests'] = $this->getInteger(
-                (string) $root->getAttribute('timeoutForMediumTests'),
-                10
-            );
-        }
-
-        if ($root->hasAttribute('timeoutForLargeTests')) {
-            $result['timeoutForLargeTests'] = $this->getInteger(
-                (string) $root->getAttribute('timeoutForLargeTests'),
-                60
-            );
-        }
-
-        if ($root->hasAttribute('ignoreDeprecatedCodeUnitsFromCodeCoverage')) {
-            $result['ignoreDeprecatedCodeUnitsFromCodeCoverage'] = $this->getBoolean(
-                (string) $root->getAttribute('ignoreDeprecatedCodeUnitsFromCodeCoverage'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('reverseDefectList')) {
-            $result['reverseDefectList'] = $this->getBoolean(
-                (string) $root->getAttribute('reverseDefectList'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('verbose')) {
-            $result['verbose'] = $this->getBoolean(
-                (string) $root->getAttribute('verbose'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('testdox')) {
-            $testdox = $this->getBoolean(
-                (string) $root->getAttribute('testdox'),
-                false
-            );
-
-            if ($testdox) {
-                if (isset($result['printerClass'])) {
-                    $result['conflictBetweenPrinterClassAndTestdox'] = true;
-                } else {
-                    $result['printerClass'] = CliTestDoxPrinter::class;
-                }
-            }
-        }
-
-        if ($root->hasAttribute('registerMockObjectsFromTestArgumentsRecursively')) {
-            $result['registerMockObjectsFromTestArgumentsRecursively'] = $this->getBoolean(
-                (string) $root->getAttribute('registerMockObjectsFromTestArgumentsRecursively'),
-                false
-            );
-        }
-
-        if ($root->hasAttribute('extensionsDirectory')) {
-            $result['extensionsDirectory'] = $this->toAbsolutePath(
-                (string) $root->getAttribute(
-                    'extensionsDirectory'
-                )
-            );
-        }
-
-        if ($root->hasAttribute('cacheResult')) {
-            $result['cacheResult'] = $this->getBoolean(
-                (string) $root->getAttribute('cacheResult'),
-                true
-            );
-        }
-
-        if ($root->hasAttribute('cacheResultFile')) {
-            $result['cacheResultFile'] = $this->toAbsolutePath(
-                (string) $root->getAttribute('cacheResultFile')
-            );
-        }
-
-        if ($root->hasAttribute('executionOrder')) {
-            foreach (\explode(',', $root->getAttribute('executionOrder')) as $order) {
+        if ($this->document->documentElement->hasAttribute('executionOrder')) {
+            foreach (\explode(',', $this->document->documentElement->getAttribute('executionOrder')) as $order) {
                 switch ($order) {
                     case 'default':
-                        $result['executionOrder']        = TestSuiteSorter::ORDER_DEFAULT;
-                        $result['executionOrderDefects'] = TestSuiteSorter::ORDER_DEFAULT;
-                        $result['resolveDependencies']   = false;
-
-                        break;
-
-                    case 'defects':
-                        $result['executionOrderDefects'] = TestSuiteSorter::ORDER_DEFECTS_FIRST;
+                        $executionOrder      = TestSuiteSorter::ORDER_DEFAULT;
+                        $defectsFirst        = false;
+                        $resolveDependencies = true;
 
                         break;
 
                     case 'depends':
-                        $result['resolveDependencies'] = true;
-
-                        break;
-
-                    case 'duration':
-                        $result['executionOrder'] = TestSuiteSorter::ORDER_DURATION;
+                        $resolveDependencies = true;
 
                         break;
 
                     case 'no-depends':
-                        $result['resolveDependencies'] = false;
+                        $resolveDependencies = false;
+
+                        break;
+
+                    case 'defects':
+                        $defectsFirst = true;
+
+                        break;
+
+                    case 'duration':
+                        $executionOrder = TestSuiteSorter::ORDER_DURATION;
 
                         break;
 
                     case 'random':
-                        $result['executionOrder'] = TestSuiteSorter::ORDER_RANDOMIZED;
+                        $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;
 
                         break;
 
                     case 'reverse':
-                        $result['executionOrder'] = TestSuiteSorter::ORDER_REVERSED;
+                        $executionOrder = TestSuiteSorter::ORDER_REVERSED;
 
                         break;
 
                     case 'size':
-                        $result['executionOrder'] = TestSuiteSorter::ORDER_SIZE;
+                        $executionOrder = TestSuiteSorter::ORDER_SIZE;
 
                         break;
                 }
             }
         }
 
-        if ($root->hasAttribute('resolveDependencies')) {
-            $result['resolveDependencies'] = $this->getBoolean(
-                (string) $root->getAttribute('resolveDependencies'),
-                false
-            );
+        $printerClass                          = $this->getStringAttribute($this->document->documentElement, 'printerClass');
+        $testdox                               = $this->getBooleanAttribute($this->document->documentElement, 'testdox', false);
+        $conflictBetweenPrinterClassAndTestdox = false;
+
+        if ($testdox) {
+            if ($printerClass !== null) {
+                $conflictBetweenPrinterClassAndTestdox = true;
+            }
+
+            $printerClass = CliTestDoxPrinter::class;
         }
 
-        if ($root->hasAttribute('noInteraction')) {
-            $result['noInteraction'] = $this->getBoolean(
-                (string) $root->getAttribute('noInteraction'),
-                false
-            );
+        $cacheResultFile = $this->getStringAttribute($this->document->documentElement, 'cacheResultFile');
+
+        if ($cacheResultFile !== null) {
+            $cacheResultFile = $this->toAbsolutePath($cacheResultFile);
         }
 
-        return $result;
+        $bootstrap = $this->getStringAttribute($this->document->documentElement, 'bootstrap');
+
+        if ($bootstrap !== null) {
+            $bootstrap = $this->toAbsolutePath($bootstrap);
+        }
+
+        $extensionsDirectory = $this->getStringAttribute($this->document->documentElement, 'extensionsDirectory');
+
+        if ($extensionsDirectory !== null) {
+            $extensionsDirectory = $this->toAbsolutePath($extensionsDirectory);
+        }
+
+        $testSuiteLoaderFile = $this->getStringAttribute($this->document->documentElement, 'testSuiteLoaderFile');
+
+        if ($testSuiteLoaderFile !== null) {
+            $testSuiteLoaderFile = $this->toAbsolutePath($testSuiteLoaderFile);
+        }
+
+        $printerFile = $this->getStringAttribute($this->document->documentElement, 'printerFile');
+
+        if ($printerFile !== null) {
+            $printerFile = $this->toAbsolutePath($printerFile);
+        }
+
+        return new PHPUnit(
+            $this->getBooleanAttribute($this->document->documentElement, 'cacheResult', false),
+            $cacheResultFile,
+            $this->getBooleanAttribute($this->document->documentElement, 'cacheTokens', false),
+            $this->getColumns(),
+            $this->getColors(),
+            $this->getBooleanAttribute($this->document->documentElement, 'stderr', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'noInteraction', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'verbose', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'reverseDefectList', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'convertDeprecationsToExceptions', true),
+            $this->getBooleanAttribute($this->document->documentElement, 'convertErrorsToExceptions', true),
+            $this->getBooleanAttribute($this->document->documentElement, 'convertNoticesToExceptions', true),
+            $this->getBooleanAttribute($this->document->documentElement, 'convertWarningsToExceptions', true),
+            $this->getBooleanAttribute($this->document->documentElement, 'forceCoversAnnotation', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'ignoreDeprecatedCodeUnitsFromCodeCoverage', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'disableCodeCoverageIgnore', false),
+            $bootstrap,
+            $this->getBooleanAttribute($this->document->documentElement, 'processIsolation', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'failOnWarning', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'failOnRisky', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'stopOnDefect', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'stopOnError', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'stopOnFailure', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'stopOnWarning', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'stopOnIncomplete', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'stopOnRisky', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'stopOnSkipped', false),
+            $extensionsDirectory,
+            $this->getStringAttribute($this->document->documentElement, 'testSuiteLoaderClass'),
+            $testSuiteLoaderFile,
+            $printerClass,
+            $printerFile,
+            $this->getBooleanAttribute($this->document->documentElement, 'beStrictAboutChangesToGlobalState', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'beStrictAboutOutputDuringTests', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'beStrictAboutResourceUsageDuringSmallTests', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'beStrictAboutTestsThatDoNotTestAnything', true),
+            $this->getBooleanAttribute($this->document->documentElement, 'beStrictAboutTodoAnnotatedTests', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'beStrictAboutCoversAnnotation', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'enforceTimeLimit', false),
+            $this->getIntegerAttribute($this->document->documentElement, 'defaultTimeLimit', 1),
+            $this->getIntegerAttribute($this->document->documentElement, 'timeoutForSmallTests', 1),
+            $this->getIntegerAttribute($this->document->documentElement, 'timeoutForMediumTests', 10),
+            $this->getIntegerAttribute($this->document->documentElement, 'timeoutForLargeTests', 60),
+            $this->getStringAttribute($this->document->documentElement, 'defaultTestSuite'),
+            $executionOrder,
+            $resolveDependencies,
+            $defectsFirst,
+            $this->getBooleanAttribute($this->document->documentElement, 'backupGlobals', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'backupStaticAttributes', false),
+            $this->getBooleanAttribute($this->document->documentElement, 'registerMockObjectsFromTestArgumentsRecursively', false),
+            $conflictBetweenPrinterClassAndTestdox
+        );
     }
 
     public function getTestSuiteConfiguration(string $testSuiteFilter = ''): TestSuite
@@ -832,7 +576,8 @@ final class Configuration
         $names = [];
 
         foreach ($this->xpath->query('*/testsuite') as $node) {
-            /* @var \DOMElement $node */
+            \assert($node instanceof \DOMElement);
+
             $names[] = $node->getAttribute('name');
         }
 
@@ -986,6 +731,39 @@ final class Configuration
         return (bool) \version_compare(\PHP_VERSION, $phpVersion, $phpVersionOperator);
     }
 
+    private function getBooleanAttribute(\DOMElement $element, string $attribute, bool $default): bool
+    {
+        if (!$element->hasAttribute($attribute)) {
+            return $default;
+        }
+
+        return (bool) $this->getBoolean(
+            (string) $element->getAttribute($attribute),
+            false
+        );
+    }
+
+    private function getIntegerAttribute(\DOMElement $element, string $attribute, int $default): int
+    {
+        if (!$element->hasAttribute($attribute)) {
+            return $default;
+        }
+
+        return $this->getInteger(
+            (string) $element->getAttribute($attribute),
+            $default
+        );
+    }
+
+    private function getStringAttribute(\DOMElement $element, string $attribute): ?string
+    {
+        if (!$element->hasAttribute($attribute)) {
+            return null;
+        }
+
+        return (string) $element->getAttribute($attribute);
+    }
+
     /**
      * if $value is 'false' or 'true', this returns the value that $value represents.
      * Otherwise, returns $default, which may be a string in rare cases.
@@ -1127,5 +905,40 @@ final class Configuration
         }
 
         return new Extension($class, $file, $arguments);
+    }
+
+    private function getColors(): string
+    {
+        $colors = DefaultResultPrinter::COLOR_DEFAULT;
+
+        if ($this->document->documentElement->hasAttribute('colors')) {
+            /* only allow boolean for compatibility with previous versions
+              'always' only allowed from command line */
+            if ($this->getBoolean($this->document->documentElement->getAttribute('colors'), false)) {
+                $colors = DefaultResultPrinter::COLOR_AUTO;
+            } else {
+                $colors = DefaultResultPrinter::COLOR_NEVER;
+            }
+        }
+
+        return $colors;
+    }
+
+    /**
+     * @return int|string
+     */
+    private function getColumns()
+    {
+        $columns = 80;
+
+        if ($this->document->documentElement->hasAttribute('columns')) {
+            $columns = (string) $this->document->documentElement->getAttribute('columns');
+
+            if ($columns !== 'max') {
+                $columns = $this->getInteger($columns, 80);
+            }
+        }
+
+        return $columns;
     }
 }
