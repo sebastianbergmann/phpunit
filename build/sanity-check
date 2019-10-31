@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+PHP_BINARY=${PHP_BINARY:-php}
+
+${PHP_BINARY} -d assert.exception=On -d zend.assertions=1 ./phpunit --configuration ./build/github-ci-fail.xml
+
+if [ $? -eq 0 ]; then
+  echo "This test should have failed.";
+  false;
+else
+  echo "This test has failed as expected.";
+fi
