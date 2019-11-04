@@ -9,7 +9,9 @@ name: CI
 jobs:
   coding-guidelines:
     name: Coding Guidelines
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -19,7 +21,9 @@ jobs:
 
   type-checker:
     name: Type Checker
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -35,10 +39,70 @@ jobs:
 
   backward-compatibility:
     name: Backward Compatibility
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@master
 
       - name: Run roave/backward-compatibility-check
         run: php7.3 ./tools/roave-backward-compatibility-check --from=42afe2b8b42077b26148272bd03da4ab6e46a072
+
+  lint-xml-configuration:
+    name: Lint XML Configuration
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Build Docker image
+        uses: ./.docker/lint-xml-configuration
+
+      - name: Lint XML configuration files
+        uses: ./.docker/lint-xml-configuration
+        with:
+          args: bash ./build/lint-xml-configuration
+
+  tests:
+    name: Tests
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-binary:
+          - php7.2
+          - php7.3
+
+        dependencies:
+          - lowest
+          - highest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Install lowest dependencies with composer
+        if: matrix.dependencies == 'lowest'
+        run: ${{ matrix.php-binary }} ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest --prefer-lowest
+
+      - name: Install highest dependencies with composer
+        if: matrix.dependencies == 'highest'
+        run: ${{ matrix.php-binary }} ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest
+
+      - name: Run sanity check
+        run: PHP_BINARY=${{ matrix.php-binary }} bash ./build/sanity-check
+
+      - name: Run tests with phpunit
+        run: ${{ matrix.php-binary }} -d assert.exception=1 -d zend.assertions=1 ./phpunit --coverage-clover=coverage.xml
+
+      - name: Download code coverage uploader for Codecov.io
+        run: curl -s https://codecov.io/bash -o codecov
+
+      - name: Send code coverage report to Codecov.io
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: bash codecov

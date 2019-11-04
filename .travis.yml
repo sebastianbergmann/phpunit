@@ -1,10 +1,5 @@
 language: php
 
-addons:
-  apt:
-    packages:
-      - libxml2-utils
-
 php:
   - 7.2
   - 7.3
@@ -36,11 +31,6 @@ before_script:
 
 script:
   - ./phpunit --coverage-clover=coverage.xml
-  - ./phpunit --configuration ./build/travis-ci-fail.xml > /dev/null; if [ $? -eq 0 ]; then echo "SHOULD FAIL"; false; else echo "fail checked"; fi;
-  - xmllint --noout --schema phpunit.xsd phpunit.xml
-  - xmllint --noout --schema phpunit.xsd tests/_files/configuration.xml
-  - xmllint --noout --schema phpunit.xsd tests/_files/configuration_empty.xml
-  - xmllint --noout --schema phpunit.xsd tests/_files/configuration_xinclude.xml -xinclude
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
