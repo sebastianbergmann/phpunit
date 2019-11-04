@@ -105,4 +105,4 @@ jobs:
       - name: Send code coverage report to Codecov.io
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: bash codecov -Z
+        run: bash codecov
