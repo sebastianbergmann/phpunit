@@ -372,6 +372,8 @@
             <arg path="${basedir}/build/phar" />
         </exec>
 
+        <copy file="${basedir}/.phpstorm.meta.php" tofile="${basedir}/build/phar-scoped/.phpstorm.meta.php"/>
+
         <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
             <arg value="--static" />
