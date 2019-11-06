@@ -85,6 +85,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      - name: "Cache dependencies installed with composer"
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache
+          key: ${{ matrix.php-binary }}-composer-${{ matrix.dependencies }}-${{ github.sha }}
+          restore-keys: |
+            ${{ matrix.php-binary }}-composer-${{ matrix.dependencies }}-
+
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
         run: ${{ matrix.php-binary }} ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest --prefer-lowest
