@@ -107,10 +107,7 @@ jobs:
       - name: Run tests with phpunit
         run: ${{ matrix.php-binary }} -d assert.exception=1 -d zend.assertions=1 ./phpunit --coverage-clover=coverage.xml
 
-      - name: Download code coverage uploader for Codecov.io
-        run: curl -s https://codecov.io/bash -o codecov
-
       - name: Send code coverage report to Codecov.io
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: bash codecov
+        run: bash <(curl -s https://codecov.io/bash)
