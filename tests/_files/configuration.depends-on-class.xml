@@ -1,0 +1,9 @@
+<phpunit verbose="true">
+    <testsuites>
+        <testsuite name="depends on whole class">
+            <file>../../tests/_files/DependencyFailureTest.php</file>
+            <file>../../tests/_files/DependencySuccessTest.php</file>
+            <file>../../tests/_files/DependencyOnClassTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

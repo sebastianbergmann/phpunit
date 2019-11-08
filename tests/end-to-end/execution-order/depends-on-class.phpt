@@ -1,0 +1,56 @@
+--TEST--
+phpunit -c ../../_files/configuration.depends-on-class.php
+--FILE--
+<?php declare(strict_types=1);
+$arguments = [
+    '-c',
+    \realpath(__DIR__ . '/../../_files/configuration.depends-on-class.xml'),
+];
+\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+
+require __DIR__ . '/../../bootstrap.php';
+PHPUnit\TextUI\Command::main();
+--EXPECTF--
+PHPUnit %s by Sebastian Bergmann and contributors.
+
+Runtime:       %s
+Configuration: %sphpunit%etests%e_files%econfiguration.depends-on-class.xml
+
+FSSSWS....S                                                       11 / 11 (100%)
+
+Time: %s ms, Memory: %s
+
+There was 1 warning:
+
+1) DependencyFailureTest::testHandlesDependsAnnotationForNonexistentTests
+This test depends on "DependencyFailureTest::doesNotExist" which does not exist.
+
+--
+
+There was 1 failure:
+
+1) DependencyFailureTest::testOne
+
+/Users/ewout/proj/phpunit/tests/_files/DependencyFailureTest.php:16
+
+--
+
+There were 5 skipped tests:
+
+1) DependencyFailureTest::testTwo
+This test depends on "DependencyFailureTest::testOne" to pass.
+
+2) DependencyFailureTest::testThree
+This test depends on "DependencyFailureTest::testTwo" to pass.
+
+3) DependencyFailureTest::testFour
+This test depends on "DependencyFailureTest::testOne" to pass.
+
+4) DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
+This method has an invalid @depends annotation.
+
+5) DependencyOnClassTest::testThatDependsOnAFailingClass
+This test depends on "DependencyFailureTest::class" to pass.
+
+FAILURES!
+Tests: 11, Assertions: 5, Failures: 1, Warnings: 1, Skipped: 5.

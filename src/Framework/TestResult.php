@@ -38,6 +38,11 @@ final class TestResult implements \Countable
     private $passedClasses = [];
 
     /**
+     * @var bool
+     */
+    private $currentTestSuiteIsFailed = false;
+
+    /**
      * @var TestFailure[]
      */
     private $errors = [];
@@ -384,6 +389,8 @@ final class TestResult implements \Countable
      */
     public function startTestSuite(TestSuite $suite): void
     {
+        $this->currentTestSuiteIsFailed = false;
+
         if ($this->topTestSuite === null) {
             $this->topTestSuite = $suite;
         }
@@ -398,7 +405,7 @@ final class TestResult implements \Countable
      */
     public function endTestSuite(TestSuite $suite): void
     {
-        if ($this->wasSuccessful()) {
+        if (!$this->currentTestSuiteIsFailed) {
             $this->passedClasses[] = $suite->getName();
         }
 
@@ -444,6 +451,10 @@ final class TestResult implements \Countable
             ];
 
             $this->time += $time;
+        }
+
+        if ($this->lastTestFailed && $test instanceof TestCase) {
+            $this->currentTestSuiteIsFailed = true;
         }
     }
 
