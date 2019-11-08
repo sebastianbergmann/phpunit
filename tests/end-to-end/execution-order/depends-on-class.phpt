@@ -31,7 +31,7 @@ There was 1 failure:
 
 1) DependencyFailureTest::testOne
 
-/Users/ewout/proj/phpunit/tests/_files/DependencyFailureTest.php:16
+%s%ephpunit%etests%e_files%eDependencyFailureTest.php:16
 
 --
 
