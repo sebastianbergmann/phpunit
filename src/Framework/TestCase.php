@@ -1964,6 +1964,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         foreach ($this->dependencies as $dependency) {
             if (empty($dependency)) {
                 $this->markSkippedForNotSpecifyingDependency();
+
                 return false;
             }
 
