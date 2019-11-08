@@ -2004,7 +2004,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             }
 
             if (!isset($passedKeys[$dependency])) {
-                if (!\is_callable($dependency, false, $callableName) || $dependency !== $callableName) {
+                if (!$this->isCallableTestMethod($dependency)) {
                     $this->markWarningForUncallableDependency($dependency);
                 } else {
                     $this->markSkippedForMissingDependency($dependency);
