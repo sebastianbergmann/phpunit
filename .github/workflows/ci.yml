@@ -60,7 +60,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.composer/cache
-          key: ${{ matrix.php-binary }}-composer-${{ matrix.dependencies }}-${{ github.sha }}
+          key: ${{ matrix.php-binary }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             ${{ matrix.php-binary }}-composer-${{ matrix.dependencies }}-
 
