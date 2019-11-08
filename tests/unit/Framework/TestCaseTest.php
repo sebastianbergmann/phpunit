@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Runner\BaseTestRunner;
+use PHPUnit\Util\Test as TestUtil;
 
 class TestCaseTest extends TestCase
 {
@@ -963,6 +964,58 @@ class TestCaseTest extends TestCase
     {
         $test = new \Success;
         $this->assertNull($test->getTestResultObject());
+    }
+
+    public function testSizeUnknown(): void
+    {
+        $test = new \TestWithDifferentSizes('testWithSizeUnknown');
+
+        $this->assertFalse($test->hasSize());
+
+        $this->assertSame(TestUtil::UNKNOWN, $test->getSize());
+
+        $this->assertFalse($test->isLarge());
+        $this->assertFalse($test->isMedium());
+        $this->assertFalse($test->isSmall());
+    }
+
+    public function testSizeLarge(): void
+    {
+        $test = new \TestWithDifferentSizes('testWithSizeLarge');
+
+        $this->assertTrue($test->hasSize());
+
+        $this->assertSame(TestUtil::LARGE, $test->getSize());
+
+        $this->assertTrue($test->isLarge());
+        $this->assertFalse($test->isMedium());
+        $this->assertFalse($test->isSmall());
+    }
+
+    public function testSizeMedium(): void
+    {
+        $test = new \TestWithDifferentSizes('testWithSizeMedium');
+
+        $this->assertTrue($test->hasSize());
+
+        $this->assertSame(TestUtil::MEDIUM, $test->getSize());
+
+        $this->assertFalse($test->isLarge());
+        $this->assertTrue($test->isMedium());
+        $this->assertFalse($test->isSmall());
+    }
+
+    public function testSizeSmall(): void
+    {
+        $test = new \TestWithDifferentSizes('testWithSizeSmall');
+
+        $this->assertTrue($test->hasSize());
+
+        $this->assertSame(TestUtil::SMALL, $test->getSize());
+
+        $this->assertFalse($test->isLarge());
+        $this->assertFalse($test->isMedium());
+        $this->assertTrue($test->isSmall());
     }
 
     public function testCanUseDependsToDependOnSuccessfulClass(): void
