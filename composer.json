@@ -29,6 +29,7 @@
         "ext-mbstring": "*",
         "ext-xml": "*",
         "ext-xmlwriter": "*",
+        "composer/xdebug-handler": "^1.4",
         "doctrine/instantiator": "^1.2.0",
         "myclabs/deep-copy": "^1.9.1",
         "phar-io/manifest": "^1.0.3",

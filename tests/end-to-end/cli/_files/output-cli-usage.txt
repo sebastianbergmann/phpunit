@@ -95,6 +95,7 @@ Configuration Options:
   -d <key[=value]>            Sets a php.ini value
   --generate-configuration    Generate configuration file with suggested settings
   --cache-result-file=<file>  Specify result cache path and filename
+  --no-xdebug                 Remove Xdebug from a CLI process if it is loaded
 
 Miscellaneous Options:
 

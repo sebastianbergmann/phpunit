@@ -30,6 +30,7 @@ use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\TextTestListRenderer;
+use PHPUnit\Util\XdebugManager;
 use PHPUnit\Util\XmlTestListRenderer;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
@@ -144,6 +145,7 @@ class Command
         'version'                   => null,
         'whitelist='                => null,
         'dump-xdebug-filter='       => null,
+        'no-xdebug'                 => null,
     ];
 
     /**
@@ -195,6 +197,10 @@ class Command
         }
 
         unset($this->arguments['test'], $this->arguments['testFile']);
+
+        $xdebug = new XdebugManager($this->arguments);
+        $xdebug->check();
+        unset($xdebug);
 
         try {
             $result = $runner->doRun($suite, $this->arguments, $exit);
@@ -754,6 +760,11 @@ class Command
 
                 case '--dump-xdebug-filter':
                     $this->arguments['xdebugFilterFile'] = $option[1];
+
+                    break;
+
+                case '--no-xdebug':
+                    $this->arguments['noXdebug'] = true;
 
                     break;
 

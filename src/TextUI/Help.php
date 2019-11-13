@@ -118,6 +118,7 @@ final class Help
             ['arg' => '-d <key[=value]>', 'desc' => 'Sets a php.ini value'],
             ['arg' => '--generate-configuration', 'desc' => 'Generate configuration file with suggested settings'],
             ['arg' => '--cache-result-file=<file>', 'desc' => 'Specify result cache path and filename'],
+            ['arg' => '--no-xdebug', 'desc' => 'Remove Xdebug from a CLI process if it is loaded'],
         ],
 
         'Miscellaneous Options' => [

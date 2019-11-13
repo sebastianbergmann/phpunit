@@ -122,6 +122,8 @@
   [32m--generate-configuration   [0m Generate configuration file with
                               suggested settings
   [32m--cache-result-file=[36m<file>[0m [0m Specify result cache path and filename
+  [32m--no-xdebug                [0m Remove Xdebug from a CLI process if it is
+                              loaded
 
 [33mMiscellaneous Options:[0m
   [32m-h|--help                  [0m Prints this usage information
