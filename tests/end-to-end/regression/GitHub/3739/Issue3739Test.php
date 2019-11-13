@@ -15,12 +15,27 @@ class Issue3739
 {
     public function unlinkFileThatDoesNotExistWithErrorSuppression(): bool
     {
-        return @\unlink(__DIR__ . '/DOES_NOT_EXIST');
+        $path = $this->getPath();
+
+        return @\unlink($path);
     }
 
     public function unlinkFileThatDoesNotExistWithoutErrorSuppression(): bool
     {
-        return \unlink(__DIR__ . '/DOES_NOT_EXIST');
+        $path = $this->getPath();
+
+        return \unlink($path);
+    }
+
+    private function getPath()
+    {
+        $path = __DIR__ . '/DOES_NOT_EXIST';
+
+        if (\DIRECTORY_SEPARATOR === '\\') {
+            $path = \strtr($path, '\\', '/');
+        }
+
+        return $path;
     }
 }
 

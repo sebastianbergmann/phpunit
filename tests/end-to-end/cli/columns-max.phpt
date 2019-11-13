@@ -1,5 +1,10 @@
 --TEST--
 phpunit --columns=max BankAccountTest ../../_files/BankAccountTest.php
+--SKIPIF--
+<?php declare(strict_types=1);
+if (\defined('PHP_WINDOWS_VERSION_BUILD')) {
+    print 'skip: Fails on Windows.';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
