@@ -1,0 +1,44 @@
+build: false
+clone_depth: 5
+
+environment:
+  # Set the PHP version (from Chocolatey)
+  PHPCI_CHOCO_VERSION: 7.3.11
+  # Set appropriate Xdebug download link from https://pecl.php.net/package/xdebug
+  PHPCI_XDEBUG_URL: https://windows.php.net/downloads/pecl/releases/xdebug/2.8.0/php_xdebug-2.8.0-7.3-nts-vc15-x64.zip
+  PHPCI_CACHE: C:\phpci
+  PHPCI_PHP: C:\phpci\php
+  PHPCI_COMPOSER: C:\phpci\composer
+
+cache:
+  - '%PHPCI_CACHE% -> appveyor.yml'
+
+init:
+  - SET PATH=%PHPCI_PHP%;%PHPCI_COMPOSER%;%PATH%
+  - SET COMPOSER_HOME=%PHPCI_COMPOSER%\home
+  - SET COMPOSER_CACHE_DIR=%PHPCI_COMPOSER%\cache
+  - SET COMPOSER_NO_INTERACTION=1
+  - SET PHP=0
+
+install:
+  - IF EXIST %PHPCI_CACHE% (SET PHP=1)
+  - IF %PHP%==0 mkdir %PHPCI_CACHE% && cd %PHPCI_CACHE%
+  - IF %PHP%==0 curl -fsSL -o xdebug.zip %PHPCI_XDEBUG_URL%
+  - IF %PHP%==0 7z e xdebug.zip -y -o%PHPCI_PHP%\ext php_xdebug.dll >nul && del /q xdebug.zip
+  - IF %PHP%==0 cinst php -i -y --version %PHPCI_CHOCO_VERSION%  --params "/InstallDir:%PHPCI_PHP%"
+  - IF %PHP%==0 cinst composer -i -y --ia "/DEV=%PHPCI_COMPOSER%"
+  - IF %PHP%==0 echo extension=curl >> %PHPCI_PHP%\php.ini
+  - IF %PHP%==0 echo extension=intl >> %PHPCI_PHP%\php.ini
+  - IF %PHP%==0 echo extension=pdo_sqlite >> %PHPCI_PHP%\php.ini
+  - IF %PHP%==0 echo extension=soap >> %PHPCI_PHP%\php.ini
+  - IF %PHP%==0 echo zend_extension=xdebug >> %PHPCI_PHP%\php.ini
+  - IF %PHP%==0 echo zend.assertions=1 >> %PHPCI_PHP%\php.ini
+  - IF %PHP%==0 echo assert.exception=On >> %PHPCI_PHP%\php.ini
+  - php -v
+  - IF %PHP%==0 (composer --version) ELSE (composer self-update)
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - composer install --ansi --prefer-dist --optimize-autoloader --no-suggest --no-progress
+
+test_script:
+  - cd %APPVEYOR_BUILD_FOLDER%
+  - php phpunit
