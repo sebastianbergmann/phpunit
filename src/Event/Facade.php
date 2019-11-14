@@ -9,6 +9,12 @@
  */
 namespace PHPUnit\Event;
 
+use function date_default_timezone_get;
+use DateTimeZone;
+use PHPUnit\Event\Telemetry\System;
+use PHPUnit\Event\Telemetry\SystemClock;
+use PHPUnit\Event\Telemetry\SystemMemoryMeter;
+
 final class Facade
 {
     private ?TypeMap $typeMap = null;
@@ -27,7 +33,13 @@ final class Facade
     public function emitter(): Emitter
     {
         if ($this->emitter === null) {
-            $this->emitter = new Emitter(new Dispatcher($this->typeMap()));
+            $this->emitter = new Emitter(
+                new Dispatcher($this->typeMap()),
+                new System(
+                    new SystemClock(new DateTimeZone(date_default_timezone_get())),
+                    new SystemMemoryMeter()
+                )
+            );
         }
 
         return $this->emitter;
