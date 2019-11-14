@@ -16,11 +16,11 @@ final class SystemMemoryMeter implements MemoryMeter
 {
     public function usage(): MemoryUsage
     {
-        return new MemoryUsage(memory_get_usage(true));
+        return MemoryUsage::fromBytes(memory_get_usage(true));
     }
 
     public function peak(): MemoryUsage
     {
-        return new MemoryUsage(memory_get_peak_usage(true));
+        return MemoryUsage::fromBytes(memory_get_peak_usage(true));
     }
 }

@@ -20,12 +20,17 @@ final class MemoryUsage
     /**
      * @throws Exception\InvalidMemoryUsage
      */
-    public function __construct(int $bytes)
+    public static function fromBytes(int $bytes): self
     {
         if (0 > $bytes) {
             throw Exception\InvalidMemoryUsage::bytes($bytes);
         }
 
+        return new self($bytes);
+    }
+
+    private function __construct(int $bytes)
+    {
         $this->bytes = $bytes;
     }
 

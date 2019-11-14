@@ -17,19 +17,19 @@ use PHPUnit\Framework\TestCase;
  */
 final class MemoryUsageTest extends TestCase
 {
-    public function testConstructorRejectsInvalidBytes(): void
+    public function testFromBytesRejectsInvalidBytes(): void
     {
         $this->expectException(Exception\InvalidMemoryUsage::class);
 
-        new MemoryUsage(-1);
+        MemoryUsage::fromBytes(-1);
     }
 
     /**
      * @dataProvider provideValidBytes
      */
-    public function testConstructorSetsBytes(int $bytes): void
+    public function testFromBytesReturnsMemoryUsage(int $bytes): void
     {
-        $memoryUsage = new MemoryUsage($bytes);
+        $memoryUsage = MemoryUsage::fromBytes($bytes);
 
         $this->assertSame($bytes, $memoryUsage->bytes());
     }

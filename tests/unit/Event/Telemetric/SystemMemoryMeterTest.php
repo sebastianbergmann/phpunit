@@ -21,7 +21,7 @@ final class SystemMemoryMeterTest extends TestCase
     {
         $memoryMeter = new SystemMemoryMeter();
 
-        $usage = new MemoryUsage(memory_get_usage(true));
+        $usage = MemoryUsage::fromBytes(memory_get_usage(true));
 
         $this->assertEquals($usage, $memoryMeter->usage());
     }
@@ -30,7 +30,7 @@ final class SystemMemoryMeterTest extends TestCase
     {
         $memoryMeter = new SystemMemoryMeter();
 
-        $peak = new MemoryUsage(memory_get_usage(true));
+        $peak = MemoryUsage::fromBytes(memory_get_usage(true));
 
         $this->assertEquals($peak, $memoryMeter->peak());
     }
