@@ -7,13 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Telemetric;
+namespace PHPUnit\Event\Telemetry;
 
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PHPUnit\Event\Telemetric\SysInfo
+ * @covers \PHPUnit\Event\Telemetry\SysInfo
  */
 final class SysInfoTest extends TestCase
 {

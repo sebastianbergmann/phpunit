@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Telemetric;
+namespace PHPUnit\Event\Telemetry;
 
 use function memory_get_peak_usage;
 use function memory_get_usage;
