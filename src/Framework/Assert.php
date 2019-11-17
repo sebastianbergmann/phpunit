@@ -53,6 +53,8 @@ use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContains;
+use PHPUnit\Framework\Constraint\TraversableContainsEqual;
+use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml;
@@ -229,7 +231,7 @@ abstract class Assert
 
     public static function assertContainsEquals($needle, iterable $haystack, string $message = ''): void
     {
-        $constraint = new TraversableContains($needle, false, false);
+        $constraint = new TraversableContainsEqual($needle);
 
         static::assertThat($haystack, $constraint, $message);
     }
@@ -323,7 +325,7 @@ abstract class Assert
 
     public static function assertNotContainsEquals($needle, iterable $haystack, string $message = ''): void
     {
-        $constraint = new LogicalNot(new TraversableContains($needle, false, false));
+        $constraint = new LogicalNot(new TraversableContainsEqual($needle));
 
         static::assertThat($haystack, $constraint, $message);
     }
@@ -2898,9 +2900,22 @@ abstract class Assert
         return new Attribute($constraint, $attributeName);
     }
 
+    /**
+     * @deprecated Use containsEqual() or containsIdentical() instead
+     */
     public static function contains($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): TraversableContains
     {
         return new TraversableContains($value, $checkForObjectIdentity, $checkForNonObjectIdentity);
+    }
+
+    public static function containsEqual($value): TraversableContainsEqual
+    {
+        return new TraversableContainsEqual($value);
+    }
+
+    public static function containsIdentical($value): TraversableContainsIdentical
+    {
+        return new TraversableContainsIdentical($value);
     }
 
     public static function containsOnly(string $type): TraversableContainsOnly

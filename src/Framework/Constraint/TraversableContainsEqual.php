@@ -13,32 +13,18 @@ use SplObjectStorage;
 
 /**
  * Constraint that asserts that the Traversable it is applied to contains
- * a given value.
- *
- * @deprecated Use TraversableContainsEqual or TraversableContainsIdentical instead
+ * a given value (using non-strict comparison).
  */
-final class TraversableContains extends Constraint
+final class TraversableContainsEqual extends Constraint
 {
-    /**
-     * @var bool
-     */
-    private $checkForObjectIdentity;
-
-    /**
-     * @var bool
-     */
-    private $checkForNonObjectIdentity;
-
     /**
      * @var mixed
      */
     private $value;
 
-    public function __construct($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false)
+    public function __construct($value)
     {
-        $this->checkForObjectIdentity    = $checkForObjectIdentity;
-        $this->checkForNonObjectIdentity = $checkForNonObjectIdentity;
-        $this->value                     = $value;
+        $this->value = $value;
     }
 
     /**
@@ -67,27 +53,10 @@ final class TraversableContains extends Constraint
             return $other->contains($this->value);
         }
 
-        if (\is_object($this->value)) {
-            foreach ($other as $element) {
-                if ($this->checkForObjectIdentity && $element === $this->value) {
-                    return true;
-                }
-
-                /* @noinspection TypeUnsafeComparisonInspection */
-                if (!$this->checkForObjectIdentity && $element == $this->value) {
-                    return true;
-                }
-            }
-        } else {
-            foreach ($other as $element) {
-                if ($this->checkForNonObjectIdentity && $element === $this->value) {
-                    return true;
-                }
-
-                /* @noinspection TypeUnsafeComparisonInspection */
-                if (!$this->checkForNonObjectIdentity && $element == $this->value) {
-                    return true;
-                }
+        foreach ($other as $element) {
+            /* @noinspection TypeUnsafeComparisonInspection */
+            if ($this->value == $element) {
+                return true;
             }
         }
 
