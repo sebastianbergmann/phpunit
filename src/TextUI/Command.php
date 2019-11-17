@@ -957,6 +957,7 @@ class Command
         if (\class_exists($loaderClass, false)) {
             try {
                 $class = new ReflectionClass($loaderClass);
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
@@ -964,6 +965,7 @@ class Command
                     $e
                 );
             }
+            // @codeCoverageIgnoreEnd
 
             if ($class->implementsInterface(TestSuiteLoader::class) && $class->isInstantiable()) {
                 $object = $class->newInstance();
@@ -1020,12 +1022,14 @@ class Command
 
         try {
             $class = new ReflectionClass($printerClass);
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e
             );
+            // @codeCoverageIgnoreEnd
         }
 
         if (!$class->implementsInterface(TestListener::class)) {

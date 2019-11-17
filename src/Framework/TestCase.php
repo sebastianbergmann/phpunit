@@ -434,6 +434,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     {
         try {
             $class = new \ReflectionClass($this);
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
@@ -441,6 +442,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
 
         $buffer = \sprintf(
             '%s::%s',
@@ -640,6 +642,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
             try {
                 $class = new \ReflectionClass($this);
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
@@ -647,6 +650,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                     $e
                 );
             }
+            // @codeCoverageIgnoreEnd
 
             if ($runEntireClass) {
                 $template = new \Text_Template(
@@ -2424,6 +2428,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         if (\is_string($this->expectedException)) {
             try {
                 $reflector = new \ReflectionClass($this->expectedException);
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
@@ -2431,6 +2436,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                     $e
                 );
             }
+            // @codeCoverageIgnoreEnd
 
             if ($this->expectedException === 'PHPUnit\Framework\Exception' ||
                 $this->expectedException === '\PHPUnit\Framework\Exception' ||

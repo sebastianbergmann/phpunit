@@ -358,6 +358,7 @@ final class TeamCity extends ResultPrinter
     {
         try {
             return (new ReflectionClass($className))->getFileName();
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
@@ -365,6 +366,7 @@ final class TeamCity extends ResultPrinter
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**

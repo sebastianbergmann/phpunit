@@ -221,6 +221,7 @@ final class Xml
 
                     try {
                         $variable = (new ReflectionClass($className))->newInstanceArgs($constructorArgs);
+                        // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new Exception(
                             $e->getMessage(),
@@ -228,6 +229,7 @@ final class Xml
                             $e
                         );
                     }
+                    // @codeCoverageIgnoreEnd
                 } else {
                     $variable = new $className;
                 }

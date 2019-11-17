@@ -275,6 +275,7 @@ final class TestRunner extends BaseTestRunner
                 } elseif (\is_string($arguments['printer']) && \class_exists($arguments['printer'], false)) {
                     try {
                         $class = new ReflectionClass($arguments['printer']);
+                        // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new Exception(
                             $e->getMessage(),
@@ -282,6 +283,7 @@ final class TestRunner extends BaseTestRunner
                             $e
                         );
                     }
+                    // @codeCoverageIgnoreEnd
 
                     if ($class->isSubclassOf(ResultPrinter::class)) {
                         $this->printer = $this->createPrinter($arguments['printer'], $arguments);
@@ -1038,6 +1040,7 @@ final class TestRunner extends BaseTestRunner
 
                 try {
                     $extensionClass = new ReflectionClass($extension['class']);
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
@@ -1045,6 +1048,7 @@ final class TestRunner extends BaseTestRunner
                         $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
 
                 if (!$extensionClass->implementsInterface(Hook::class)) {
                     throw new Exception(
@@ -1084,6 +1088,7 @@ final class TestRunner extends BaseTestRunner
 
                 try {
                     $listenerClass = new ReflectionClass($listener['class']);
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
@@ -1091,6 +1096,7 @@ final class TestRunner extends BaseTestRunner
                         $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
 
                 if (!$listenerClass->implementsInterface(TestListener::class)) {
                     throw new Exception(

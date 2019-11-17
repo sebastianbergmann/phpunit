@@ -3155,6 +3155,7 @@ abstract class Assert
 
         try {
             $class = new ReflectionClass($className);
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
@@ -3162,6 +3163,7 @@ abstract class Assert
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
 
         while ($class) {
             $attributes = $class->getStaticProperties();

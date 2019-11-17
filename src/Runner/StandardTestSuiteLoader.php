@@ -50,6 +50,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             foreach ($loadedClasses as $loadedClass) {
                 try {
                     $class = new ReflectionClass($loadedClass);
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
@@ -57,6 +58,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                         $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
 
                 if (\substr($loadedClass, $offset) === $suiteClassName &&
                     $class->getFileName() == $filename) {
@@ -73,6 +75,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             foreach ($loadedClasses as $loadedClass) {
                 try {
                     $class = new ReflectionClass($loadedClass);
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
@@ -80,6 +83,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                         $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
 
                 $classFile = $class->getFileName();
 
@@ -95,6 +99,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                 if ($class->hasMethod('suite')) {
                     try {
                         $method = $class->getMethod('suite');
+                        // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new Exception(
                             $e->getMessage(),
@@ -102,6 +107,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                             $e
                         );
                     }
+                    // @codeCoverageIgnoreEnd
 
                     if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
                         $suiteClassName = $loadedClass;
@@ -117,6 +123,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         if (\class_exists($suiteClassName, false)) {
             try {
                 $class = new ReflectionClass($suiteClassName);
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
@@ -124,6 +131,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                     $e
                 );
             }
+            // @codeCoverageIgnoreEnd
 
             if ($class->getFileName() == \realpath($suiteClassFile)) {
                 return $class;

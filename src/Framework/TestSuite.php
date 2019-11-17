@@ -139,6 +139,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
 
                 try {
                     $theClass = new \ReflectionClass($theClass);
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
@@ -146,6 +147,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                         $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
             } else {
                 $this->setName($theClass);
 
@@ -224,6 +226,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     {
         try {
             $class = new \ReflectionClass($test);
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
@@ -231,6 +234,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
 
         if (!$class->isAbstract()) {
             $this->tests[]  = $test;
@@ -277,6 +281,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
         if (!\is_object($testClass)) {
             try {
                 $testClass = new \ReflectionClass($testClass);
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
@@ -284,6 +289,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                     $e
                 );
             }
+            // @codeCoverageIgnoreEnd
         }
 
         if ($testClass instanceof self) {
@@ -296,6 +302,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                     $method = $testClass->getMethod(
                         BaseTestRunner::SUITE_METHODNAME
                     );
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
@@ -303,6 +310,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                         $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
 
                 if ($method->isStatic()) {
                     $this->addTest(
@@ -369,6 +377,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             if (\preg_match($shortNameRegEx, $className)) {
                 try {
                     $class = new \ReflectionClass($className);
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
@@ -376,6 +385,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                         $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
 
                 if ($class->getFileName() == $filename) {
                     $newClasses = [$className];
@@ -389,6 +399,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
         foreach ($newClasses as $className) {
             try {
                 $class = new \ReflectionClass($className);
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
@@ -396,6 +407,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                     $e
                 );
             }
+            // @codeCoverageIgnoreEnd
 
             if (\dirname($class->getFileName()) === __DIR__) {
                 continue;
@@ -407,6 +419,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                         $method = $class->getMethod(
                             BaseTestRunner::SUITE_METHODNAME
                         );
+                        // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new Exception(
                             $e->getMessage(),
@@ -414,6 +427,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                             $e
                         );
                     }
+                    // @codeCoverageIgnoreEnd
 
                     if ($method->isStatic()) {
                         $this->addTest($method->invoke(null, $className));

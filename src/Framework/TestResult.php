@@ -859,6 +859,7 @@ final class TestResult implements Countable
             $test->getNumAssertions() == 0) {
             try {
                 $reflected = new \ReflectionClass($test);
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
@@ -866,12 +867,14 @@ final class TestResult implements Countable
                     $e
                 );
             }
+            // @codeCoverageIgnoreEnd
 
             $name = $test->getName(false);
 
             if ($name && $reflected->hasMethod($name)) {
                 try {
                     $reflected = $reflected->getMethod($name);
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
@@ -879,6 +882,7 @@ final class TestResult implements Countable
                         $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
             }
 
             $this->addFailure(

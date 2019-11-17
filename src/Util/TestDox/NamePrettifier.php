@@ -218,6 +218,7 @@ final class NamePrettifier
     {
         try {
             $reflector = new \ReflectionMethod(\get_class($test), $test->getName(false));
+            // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new UtilException(
                 $e->getMessage(),
@@ -225,6 +226,7 @@ final class NamePrettifier
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
 
         $providedData       = [];
         $providedDataValues = \array_values($test->getProvidedData());
@@ -236,6 +238,7 @@ final class NamePrettifier
             if (!\array_key_exists($i, $providedDataValues) && $parameter->isDefaultValueAvailable()) {
                 try {
                     $providedDataValues[$i] = $parameter->getDefaultValue();
+                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new UtilException(
                         $e->getMessage(),
@@ -243,6 +246,7 @@ final class NamePrettifier
                         $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
             }
 
             $value = $providedDataValues[$i++] ?? null;

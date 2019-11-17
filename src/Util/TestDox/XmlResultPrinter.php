@@ -223,6 +223,7 @@ final class XmlResultPrinter extends Printer implements TestListener
 
             try {
                 $file = (new ReflectionClass($test))->getFileName();
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
@@ -230,6 +231,7 @@ final class XmlResultPrinter extends Printer implements TestListener
                     $e
                 );
             }
+            // @codeCoverageIgnoreEnd
 
             foreach ($steps as $step) {
                 if (isset($step['file']) && $step['file'] === $file) {

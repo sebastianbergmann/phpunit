@@ -433,12 +433,14 @@ final class DocBlock
                 $dataProviderMethod = $dataProviderClass->getMethod(
                     $dataProviderMethodName
                 );
+                // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
                     (int) $e->getCode(),
                     $e
                 );
+                // @codeCoverageIgnoreEnd
             }
 
             if ($dataProviderMethod->isStatic()) {
