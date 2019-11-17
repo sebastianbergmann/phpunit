@@ -52,7 +52,6 @@ use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
-use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
@@ -178,51 +177,9 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
-    public static function assertContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
+    public static function assertContains($needle, iterable $haystack, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if (\is_string($haystack)) {
-            self::createWarning('Using assertContains() with string haystacks is deprecated and will not be supported in PHPUnit 9. Refactor your test to use assertStringContainsString() or assertStringContainsStringIgnoringCase() instead.');
-        }
-
-        if (!$checkForObjectIdentity) {
-            self::createWarning('The optional $checkForObjectIdentity parameter of assertContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertContainsEquals() instead.');
-        }
-
-        if ($checkForNonObjectIdentity) {
-            self::createWarning('The optional $checkForNonObjectIdentity parameter of assertContains() is deprecated and will be removed in PHPUnit 9.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertContains() is deprecated and will be removed in PHPUnit 9.');
-        }
-        // @codeCoverageIgnoreEnd
-
-        if (\is_array($haystack) ||
-            (\is_object($haystack) && $haystack instanceof Traversable)) {
-            $constraint = new TraversableContains(
-                $needle,
-                $checkForObjectIdentity,
-                $checkForNonObjectIdentity
-            );
-        } elseif (\is_string($haystack)) {
-            if (!\is_string($needle)) {
-                throw InvalidArgumentException::create(
-                    1,
-                    'string'
-                );
-            }
-
-            $constraint = new StringContains(
-                $needle,
-                $ignoreCase
-            );
-        } else {
-            throw InvalidArgumentException::create(
-                2,
-                'array, traversable or string'
-            );
-        }
+        $constraint = new TraversableContainsIdentical($needle);
 
         static::assertThat($haystack, $constraint, $message);
     }
@@ -241,55 +198,11 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
-    public static function assertNotContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
+    public static function assertNotContains($needle, iterable $haystack, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if (\is_string($haystack)) {
-            self::createWarning('Using assertNotContains() with string haystacks is deprecated and will not be supported in PHPUnit 9. Refactor your test to use assertStringNotContainsString() or assertStringNotContainsStringIgnoringCase() instead.');
-        }
-
-        if (!$checkForObjectIdentity) {
-            self::createWarning('The optional $checkForObjectIdentity parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotContainsEquals() instead.');
-        }
-
-        if ($checkForNonObjectIdentity) {
-            self::createWarning('The optional $checkForNonObjectIdentity parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertNotContains() is deprecated and will be removed in PHPUnit 9.');
-        }
-        // @codeCoverageIgnoreEnd
-
-        if (\is_array($haystack) ||
-            (\is_object($haystack) && $haystack instanceof Traversable)) {
-            $constraint = new LogicalNot(
-                new TraversableContains(
-                    $needle,
-                    $checkForObjectIdentity,
-                    $checkForNonObjectIdentity
-                )
-            );
-        } elseif (\is_string($haystack)) {
-            if (!\is_string($needle)) {
-                throw InvalidArgumentException::create(
-                    1,
-                    'string'
-                );
-            }
-
-            $constraint = new LogicalNot(
-                new StringContains(
-                    $needle,
-                    $ignoreCase
-                )
-            );
-        } else {
-            throw InvalidArgumentException::create(
-                2,
-                'array, traversable or string'
-            );
-        }
+        $constraint = new LogicalNot(
+            new TraversableContainsIdentical($needle)
+        );
 
         static::assertThat($haystack, $constraint, $message);
     }
@@ -2394,14 +2307,6 @@ abstract class Assert
     public static function isNan(): IsNan
     {
         return new IsNan;
-    }
-
-    /**
-     * @deprecated Use containsEqual() or containsIdentical() instead
-     */
-    public static function contains($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): TraversableContains
-    {
-        return new TraversableContains($value, $checkForObjectIdentity, $checkForNonObjectIdentity);
     }
 
     public static function containsEqual($value): TraversableContainsEqual
