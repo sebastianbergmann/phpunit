@@ -45,7 +45,6 @@ use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
-use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
@@ -127,7 +126,7 @@ function assertArrayNotHasKey($key, $array, string $message = ''): void
  *
  * @see Assert::assertContains
  */
-function assertContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
+function assertContains($needle, iterable $haystack, string $message = ''): void
 {
     Assert::assertContains(...\func_get_args());
 }
@@ -146,7 +145,7 @@ function assertContainsEquals($needle, iterable $haystack, string $message = '')
  *
  * @see Assert::assertNotContains
  */
-function assertNotContains($needle, $haystack, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
+function assertNotContains($needle, iterable $haystack, string $message = ''): void
 {
     Assert::assertNotContains(...\func_get_args());
 }
@@ -1934,11 +1933,6 @@ function isInfinite(): IsInfinite
 function isNan(): IsNan
 {
     return Assert::isNan(...\func_get_args());
-}
-
-function contains($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): TraversableContains
-{
-    return Assert::contains(...\func_get_args());
 }
 
 function containsEqual($value): TraversableContainsEqual

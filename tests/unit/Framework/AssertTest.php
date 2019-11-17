@@ -1205,7 +1205,7 @@ XML;
 
     public function testAssertThatContains(): void
     {
-        $this->assertThat(['foo'], $this->contains('foo'));
+        $this->assertThat(['foo'], $this->containsIdentical('foo'));
     }
 
     public function testAssertThatStringContains(): void

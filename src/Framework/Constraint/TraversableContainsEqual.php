@@ -15,32 +15,8 @@ use SplObjectStorage;
  * Constraint that asserts that the Traversable it is applied to contains
  * a given value (using non-strict comparison).
  */
-final class TraversableContainsEqual extends Constraint
+final class TraversableContainsEqual extends TraversableContains
 {
-    /**
-     * @var mixed
-     */
-    private $value;
-
-    public function __construct($value)
-    {
-        $this->value = $value;
-    }
-
-    /**
-     * Returns a string representation of the constraint.
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function toString(): string
-    {
-        if (\is_string($this->value) && \strpos($this->value, "\n") !== false) {
-            return 'contains "' . $this->value . '"';
-        }
-
-        return 'contains ' . $this->exporter()->export($this->value);
-    }
-
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
@@ -50,35 +26,16 @@ final class TraversableContainsEqual extends Constraint
     protected function matches($other): bool
     {
         if ($other instanceof SplObjectStorage) {
-            return $other->contains($this->value);
+            return $other->contains($this->value());
         }
 
         foreach ($other as $element) {
             /* @noinspection TypeUnsafeComparisonInspection */
-            if ($this->value == $element) {
+            if ($this->value() == $element) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    /**
-     * Returns the description of the failure
-     *
-     * The beginning of failure messages is "Failed asserting that" in most
-     * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other evaluated value or object
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    protected function failureDescription($other): string
-    {
-        return \sprintf(
-            '%s %s',
-            \is_array($other) ? 'an array' : 'a traversable',
-            $this->toString()
-        );
     }
 }
