@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <psalm
-    totallyTyped="false"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     errorBaseline=".psalm/baseline.xml"
+    totallyTyped="false"
 >
     <projectFiles>
         <directory name="src" />
