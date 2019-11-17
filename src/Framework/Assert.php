@@ -58,7 +58,6 @@ use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml;
-use ReflectionClass;
 use ReflectionObject;
 use Traversable;
 
@@ -3154,7 +3153,7 @@ abstract class Assert
         }
 
         try {
-            $class = new ReflectionClass($className);
+            $class = new \ReflectionClass($className);
             // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new Exception(

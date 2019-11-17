@@ -12,7 +12,6 @@ namespace PHPUnit\Runner;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
-use ReflectionClass;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -23,7 +22,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
      * @throws Exception
      * @throws \PHPUnit\Framework\Exception
      */
-    public function load(string $suiteClassName, string $suiteClassFile = ''): ReflectionClass
+    public function load(string $suiteClassName, string $suiteClassFile = ''): \ReflectionClass
     {
         $suiteClassName = \str_replace('.php', '', $suiteClassName);
         $filename       = null;
@@ -49,7 +48,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
 
             foreach ($loadedClasses as $loadedClass) {
                 try {
-                    $class = new ReflectionClass($loadedClass);
+                    $class = new \ReflectionClass($loadedClass);
                     // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
@@ -74,7 +73,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
 
             foreach ($loadedClasses as $loadedClass) {
                 try {
-                    $class = new ReflectionClass($loadedClass);
+                    $class = new \ReflectionClass($loadedClass);
                     // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
@@ -122,7 +121,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
 
         if (\class_exists($suiteClassName, false)) {
             try {
-                $class = new ReflectionClass($suiteClassName);
+                $class = new \ReflectionClass($suiteClassName);
                 // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
@@ -147,7 +146,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         );
     }
 
-    public function reload(ReflectionClass $aClass): ReflectionClass
+    public function reload(\ReflectionClass $aClass): \ReflectionClass
     {
         return $aClass;
     }

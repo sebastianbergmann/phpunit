@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use ReflectionClass;
-use ReflectionException;
-
 /**
  * Constraint that asserts that the object it is evaluated for is an instance
  * of a given class.
@@ -76,12 +73,12 @@ final class IsInstanceOf extends Constraint
     private function getType(): string
     {
         try {
-            $reflection = new ReflectionClass($this->className);
+            $reflection = new \ReflectionClass($this->className);
 
             if ($reflection->isInterface()) {
                 return 'interface';
             }
-        } catch (ReflectionException $e) {
+        } catch (\ReflectionException $e) {
         }
 
         return 'class';

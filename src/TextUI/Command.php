@@ -31,7 +31,6 @@ use PHPUnit\Util\Printer;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
-use ReflectionClass;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 use Throwable;
@@ -956,7 +955,7 @@ class Command
 
         if (\class_exists($loaderClass, false)) {
             try {
-                $class = new ReflectionClass($loaderClass);
+                $class = new \ReflectionClass($loaderClass);
                 // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
                 throw new Exception(
@@ -1021,7 +1020,7 @@ class Command
         }
 
         try {
-            $class = new ReflectionClass($printerClass);
+            $class = new \ReflectionClass($printerClass);
             // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
             throw new Exception(

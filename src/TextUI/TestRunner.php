@@ -42,7 +42,6 @@ use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
 use PHPUnit\Util\XdebugFilterScriptGenerator;
-use ReflectionClass;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
@@ -274,7 +273,7 @@ final class TestRunner extends BaseTestRunner
                     $this->printer = $arguments['printer'];
                 } elseif (\is_string($arguments['printer']) && \class_exists($arguments['printer'], false)) {
                     try {
-                        $class = new ReflectionClass($arguments['printer']);
+                        $class = new \ReflectionClass($arguments['printer']);
                         // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new Exception(
@@ -1039,7 +1038,7 @@ final class TestRunner extends BaseTestRunner
                 }
 
                 try {
-                    $extensionClass = new ReflectionClass($extension['class']);
+                    $extensionClass = new \ReflectionClass($extension['class']);
                     // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
@@ -1087,7 +1086,7 @@ final class TestRunner extends BaseTestRunner
                 }
 
                 try {
-                    $listenerClass = new ReflectionClass($listener['class']);
+                    $listenerClass = new \ReflectionClass($listener['class']);
                     // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
@@ -1261,21 +1260,21 @@ final class TestRunner extends BaseTestRunner
 
         if (!empty($arguments['excludeGroups'])) {
             $filterFactory->addFilter(
-                new ReflectionClass(ExcludeGroupFilterIterator::class),
+                new \ReflectionClass(ExcludeGroupFilterIterator::class),
                 $arguments['excludeGroups']
             );
         }
 
         if (!empty($arguments['groups'])) {
             $filterFactory->addFilter(
-                new ReflectionClass(IncludeGroupFilterIterator::class),
+                new \ReflectionClass(IncludeGroupFilterIterator::class),
                 $arguments['groups']
             );
         }
 
         if ($arguments['filter']) {
             $filterFactory->addFilter(
-                new ReflectionClass(NameFilterIterator::class),
+                new \ReflectionClass(NameFilterIterator::class),
                 $arguments['filter']
             );
         }
