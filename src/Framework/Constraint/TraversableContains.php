@@ -32,9 +32,6 @@ final class TraversableContains extends Constraint
      */
     private $value;
 
-    /**
-     * @throws \PHPUnit\Framework\Exception
-     */
     public function __construct($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false)
     {
         $this->checkForObjectIdentity    = $checkForObjectIdentity;
