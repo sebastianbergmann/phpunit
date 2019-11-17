@@ -2,6 +2,7 @@
 /.idea
 /.php_cs
 /.php_cs.cache
+/.psalm/cache
 /build/documentation
 /build/logfiles
 /build/phar
