@@ -70,6 +70,7 @@ final class TestBuilder
                     $className,
                     $methodName
                 );
+
                 $message = $this->appendExceptionMessageIfAvailable($e, $message);
                 $data    = new IncompleteTestCase($className, $methodName, $message);
             } catch (SkippedTestError $e) {
@@ -78,6 +79,7 @@ final class TestBuilder
                     $className,
                     $methodName
                 );
+
                 $message = $this->appendExceptionMessageIfAvailable($e, $message);
                 $data    = new SkippedTestCase($className, $methodName, $message);
             } catch (\Throwable $t) {
@@ -86,6 +88,7 @@ final class TestBuilder
                     $className,
                     $methodName
                 );
+
                 $message = $this->appendExceptionMessageIfAvailable($t, $message);
                 $data    = new WarningTestCase($message);
             }
