@@ -21,7 +21,8 @@ There was 1 warning:
 
 1) Warning
 The data provider specified for Issue498Test::shouldBeFalse is invalid.
-Can't create the data
+Exception: Can't create the data
+%s/Issue498Test.php:%d
 
 WARNINGS!
 Tests: 1, Assertions: 0, Warnings: 1.

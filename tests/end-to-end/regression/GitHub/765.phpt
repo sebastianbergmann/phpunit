@@ -19,6 +19,8 @@ There was 1 warning:
 
 1) Warning
 The data provider specified for Issue765Test::testDependent is invalid.
+Exception: <no message>
+%s/Issue765Test.php:%d
 
 WARNINGS!
 Tests: 2, Assertions: 1, Warnings: 1.
