@@ -332,7 +332,6 @@ abstract class Assert
         $constraint = new IsEqual(
             $expected,
             0.0,
-            10,
             false,
             false
         );
@@ -351,7 +350,6 @@ abstract class Assert
         $constraint = new IsEqual(
             $expected,
             0.0,
-            10,
             true,
             false
         );
@@ -370,7 +368,6 @@ abstract class Assert
         $constraint = new IsEqual(
             $expected,
             0.0,
-            10,
             false,
             true
         );
@@ -406,7 +403,6 @@ abstract class Assert
             new IsEqual(
                 $expected,
                 0.0,
-                10,
                 false,
                 false
             )
@@ -427,7 +423,6 @@ abstract class Assert
             new IsEqual(
                 $expected,
                 0.0,
-                10,
                 true,
                 false
             )
@@ -448,7 +443,6 @@ abstract class Assert
             new IsEqual(
                 $expected,
                 0.0,
-                10,
                 false,
                 true
             )
@@ -574,7 +568,6 @@ abstract class Assert
         $constraint = new IsEqual(
             \file_get_contents($expected),
             0.0,
-            10,
             $canonicalize,
             $ignoreCase
         );
@@ -653,7 +646,6 @@ abstract class Assert
             new IsEqual(
                 \file_get_contents($expected),
                 0.0,
-                10,
                 $canonicalize,
                 $ignoreCase
             )
@@ -735,7 +727,6 @@ abstract class Assert
         $constraint = new IsEqual(
             \file_get_contents($expectedFile),
             0.0,
-            10,
             $canonicalize,
             $ignoreCase
         );
@@ -811,7 +802,6 @@ abstract class Assert
             new IsEqual(
                 \file_get_contents($expectedFile),
                 0.0,
-                10,
                 $canonicalize,
                 $ignoreCase
             )
@@ -2521,7 +2511,7 @@ abstract class Assert
 
     public static function equalTo($value): IsEqual
     {
-        return new IsEqual($value, 0.0, 10, false, false);
+        return new IsEqual($value, 0.0, false, false);
     }
 
     public static function isEmpty(): IsEmpty
