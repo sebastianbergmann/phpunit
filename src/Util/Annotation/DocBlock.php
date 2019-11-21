@@ -42,8 +42,6 @@ final class DocBlock
 
     private const REGEX_TEST_WITH = '/@testWith\s+/';
 
-    private const REGEX_EXPECTED_EXCEPTION = '(@expectedException\s+([:.\w\\\\x7f-\xff]+)(?:[\t ]+(\S*))?(?:[\t ]+(\S*))?\s*$)m';
-
     /** @var string */
     private $docComment;
 
@@ -236,61 +234,6 @@ final class DocBlock
                 'extension_versions' => $extensionVersions,
             ])
         );
-    }
-
-    /**
-     * @return array|bool
-     *
-     * @psalm-return false|array{
-     *   class: class-string,
-     *   code: int|string|null,
-     *   message: string,
-     *   message_regex: string
-     * }
-     */
-    public function expectedException()
-    {
-        $docComment = (string) \substr($this->docComment, 3, -2);
-
-        if (1 !== \preg_match(self::REGEX_EXPECTED_EXCEPTION, $docComment, $matches)) {
-            return false;
-        }
-
-        /** @psalm-var class-string $class */
-        $class         = $matches[1];
-        $annotations   = $this->symbolAnnotations();
-        $code          = null;
-        $message       = '';
-        $messageRegExp = '';
-
-        if (isset($matches[2])) {
-            $message = \trim($matches[2]);
-        } elseif (isset($annotations['expectedExceptionMessage'])) {
-            $message = $this->parseAnnotationContent($annotations['expectedExceptionMessage'][0]);
-        }
-
-        if (isset($annotations['expectedExceptionMessageRegExp'])) {
-            $messageRegExp = $this->parseAnnotationContent($annotations['expectedExceptionMessageRegExp'][0]);
-        }
-
-        if (isset($matches[3])) {
-            $code = $matches[3];
-        } elseif (isset($annotations['expectedExceptionCode'])) {
-            $code = $this->parseAnnotationContent($annotations['expectedExceptionCode'][0]);
-        }
-
-        if (\is_numeric($code)) {
-            $code = (int) $code;
-        } elseif (\is_string($code) && \defined($code)) {
-            $code = (int) \constant($code);
-        }
-
-        return [
-            'class'         => $class,
-            'code'          => $code,
-            'message'       => $message,
-            'message_regex' => $messageRegExp,
-        ];
     }
 
     /**

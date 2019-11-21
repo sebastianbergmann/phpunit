@@ -280,20 +280,6 @@ final class Test
     }
 
     /**
-     * Returns the expected exception for a test.
-     *
-     * @return array|false
-     *
-     * @deprecated
-     * @codeCoverageIgnore
-     * @psalm-param class-string $className
-     */
-    public static function getExpectedException(string $className, string $methodName)
-    {
-        return Registry::getInstance()->forMethod($className, $methodName)->expectedException();
-    }
-
-    /**
      * Returns the provided data for a method.
      *
      * @throws Exception
