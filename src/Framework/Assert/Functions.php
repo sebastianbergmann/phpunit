@@ -711,6 +711,34 @@ function assertFileEquals(string $expected, string $actual, string $message = ''
 }
 
 /**
+ * Asserts that the contents of one file is equal to the contents of another
+ * file (canonicalizing).
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
+ * @see Assert::assertFileEqualsCanonicalizing
+ */
+function assertFileEqualsCanonicalizing(string $expected, string $actual, string $message = ''): void
+{
+    Assert::assertFileEqualsCanonicalizing(...\func_get_args());
+}
+
+/**
+ * Asserts that the contents of one file is equal to the contents of another
+ * file (ignoring case).
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
+ * @see Assert::assertFileEqualsIgnoringCase
+ */
+function assertFileEqualsIgnoringCase(string $expected, string $actual, string $message = ''): void
+{
+    Assert::assertFileEqualsIgnoringCase(...\func_get_args());
+}
+
+/**
  * Asserts that the contents of one file is not equal to the contents of
  * another file.
  *
@@ -722,6 +750,34 @@ function assertFileEquals(string $expected, string $actual, string $message = ''
 function assertFileNotEquals(string $expected, string $actual, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
 {
     Assert::assertFileNotEquals(...\func_get_args());
+}
+
+/**
+ * Asserts that the contents of one file is not equal to the contents of another
+ * file (canonicalizing).
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
+ * @see Assert::assertFileNotEqualsCanonicalizing
+ */
+function assertFileNotEqualsCanonicalizing(string $expected, string $actual, string $message = ''): void
+{
+    Assert::assertFileNotEqualsCanonicalizing(...\func_get_args());
+}
+
+/**
+ * Asserts that the contents of one file is not equal to the contents of another
+ * file (ignoring case).
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
+ * @see Assert::assertFileNotEqualsIgnoringCase
+ */
+function assertFileNotEqualsIgnoringCase(string $expected, string $actual, string $message = ''): void
+{
+    Assert::assertFileNotEqualsIgnoringCase(...\func_get_args());
 }
 
 /**
@@ -739,6 +795,34 @@ function assertStringEqualsFile(string $expectedFile, string $actualString, stri
 }
 
 /**
+ * Asserts that the contents of a string is equal
+ * to the contents of a file (canonicalizing).
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
+ * @see Assert::assertStringEqualsFileCanonicalizing
+ */
+function assertStringEqualsFileCanonicalizing(string $expectedFile, string $actualString, string $message = ''): void
+{
+    Assert::assertStringEqualsFileCanonicalizing(...\func_get_args());
+}
+
+/**
+ * Asserts that the contents of a string is equal
+ * to the contents of a file (ignoring case).
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
+ * @see Assert::assertStringEqualsFileIgnoringCase
+ */
+function assertStringEqualsFileIgnoringCase(string $expectedFile, string $actualString, string $message = ''): void
+{
+    Assert::assertStringEqualsFileIgnoringCase(...\func_get_args());
+}
+
+/**
  * Asserts that the contents of a string is not equal
  * to the contents of a file.
  *
@@ -750,6 +834,34 @@ function assertStringEqualsFile(string $expectedFile, string $actualString, stri
 function assertStringNotEqualsFile(string $expectedFile, string $actualString, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
 {
     Assert::assertStringNotEqualsFile(...\func_get_args());
+}
+
+/**
+ * Asserts that the contents of a string is not equal
+ * to the contents of a file (canonicalizing).
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
+ * @see Assert::assertStringNotEqualsFileCanonicalizing
+ */
+function assertStringNotEqualsFileCanonicalizing(string $expectedFile, string $actualString, string $message = ''): void
+{
+    Assert::assertStringNotEqualsFileCanonicalizing(...\func_get_args());
+}
+
+/**
+ * Asserts that the contents of a string is not equal
+ * to the contents of a file (ignoring case).
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
+ * @see Assert::assertStringNotEqualsFileIgnoringCase
+ */
+function assertStringNotEqualsFileIgnoringCase(string $expectedFile, string $actualString, string $message = ''): void
+{
+    Assert::assertStringNotEqualsFileIgnoringCase(...\func_get_args());
 }
 
 /**
