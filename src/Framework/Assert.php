@@ -26,6 +26,9 @@ use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\Constraint\IsEqualCanonicalizing;
+use PHPUnit\Framework\Constraint\IsEqualIgnoringCase;
+use PHPUnit\Framework\Constraint\IsEqualWithDelta;
 use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsFinite;
 use PHPUnit\Framework\Constraint\IsIdentical;
@@ -347,12 +350,7 @@ abstract class Assert
      */
     public static function assertEqualsCanonicalizing($expected, $actual, string $message = ''): void
     {
-        $constraint = new IsEqual(
-            $expected,
-            0.0,
-            true,
-            false
-        );
+        $constraint = new IsEqualCanonicalizing($expected);
 
         static::assertThat($actual, $constraint, $message);
     }
@@ -365,12 +363,7 @@ abstract class Assert
      */
     public static function assertEqualsIgnoringCase($expected, $actual, string $message = ''): void
     {
-        $constraint = new IsEqual(
-            $expected,
-            0.0,
-            false,
-            true
-        );
+        $constraint = new IsEqualIgnoringCase($expected);
 
         static::assertThat($actual, $constraint, $message);
     }
@@ -383,7 +376,7 @@ abstract class Assert
      */
     public static function assertEqualsWithDelta($expected, $actual, float $delta, string $message = ''): void
     {
-        $constraint = new IsEqual(
+        $constraint = new IsEqualWithDelta(
             $expected,
             $delta
         );
@@ -420,12 +413,7 @@ abstract class Assert
     public static function assertNotEqualsCanonicalizing($expected, $actual, string $message = ''): void
     {
         $constraint = new LogicalNot(
-            new IsEqual(
-                $expected,
-                0.0,
-                true,
-                false
-            )
+            new IsEqualCanonicalizing($expected)
         );
 
         static::assertThat($actual, $constraint, $message);
@@ -440,12 +428,7 @@ abstract class Assert
     public static function assertNotEqualsIgnoringCase($expected, $actual, string $message = ''): void
     {
         $constraint = new LogicalNot(
-            new IsEqual(
-                $expected,
-                0.0,
-                false,
-                true
-            )
+            new IsEqualIgnoringCase($expected)
         );
 
         static::assertThat($actual, $constraint, $message);
@@ -460,7 +443,7 @@ abstract class Assert
     public static function assertNotEqualsWithDelta($expected, $actual, float $delta, string $message = ''): void
     {
         $constraint = new LogicalNot(
-            new IsEqual(
+            new IsEqualWithDelta(
                 $expected,
                 $delta
             )
@@ -2512,6 +2495,21 @@ abstract class Assert
     public static function equalTo($value): IsEqual
     {
         return new IsEqual($value, 0.0, false, false);
+    }
+
+    public static function equalToCanonicalizing($value): IsEqualCanonicalizing
+    {
+        return new IsEqualCanonicalizing($value);
+    }
+
+    public static function equalToIgnoringCase($value): IsEqualIgnoringCase
+    {
+        return new IsEqualIgnoringCase($value);
+    }
+
+    public static function equalToWithDelta($value, float $delta): IsEqualWithDelta
+    {
+        return new IsEqualWithDelta($value, $delta);
     }
 
     public static function isEmpty(): IsEmpty
