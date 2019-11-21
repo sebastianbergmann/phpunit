@@ -327,32 +327,14 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertEquals($expected, $actual, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): void
+    public static function assertEquals($expected, $actual, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($delta !== 0.0) {
-            self::createWarning('The optional $delta parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsWithDelta() instead.');
-        }
-
-        if ($maxDepth !== 10) {
-            self::createWarning('The optional $maxDepth parameter of assertEquals() is deprecated and will be removed in PHPUnit 9.');
-        }
-
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertEqualsIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         $constraint = new IsEqual(
             $expected,
-            $delta,
-            $maxDepth,
-            $canonicalize,
-            $ignoreCase
+            0.0,
+            10,
+            false,
+            false
         );
 
         static::assertThat($actual, $constraint, $message);
@@ -415,41 +397,18 @@ abstract class Assert
     /**
      * Asserts that two variables are not equal.
      *
-     * @param float $delta
-     * @param int   $maxDepth
-     * @param bool  $canonicalize
-     * @param bool  $ignoreCase
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertNotEquals($expected, $actual, string $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false): void
+    public static function assertNotEquals($expected, $actual, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($delta !== 0.0) {
-            self::createWarning('The optional $delta parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsWithDelta() instead.');
-        }
-
-        if ($maxDepth !== 10) {
-            self::createWarning('The optional $maxDepth parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9.');
-        }
-
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertNotEqualsIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         $constraint = new LogicalNot(
             new IsEqual(
                 $expected,
-                $delta,
-                $maxDepth,
-                $canonicalize,
-                $ignoreCase
+                0.0,
+                10,
+                false,
+                false
             )
         );
 
@@ -2560,9 +2519,9 @@ abstract class Assert
         return new ArrayHasKey($key);
     }
 
-    public static function equalTo($value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): IsEqual
+    public static function equalTo($value): IsEqual
     {
-        return new IsEqual($value, $delta, $maxDepth, $canonicalize, $ignoreCase);
+        return new IsEqual($value, 0.0, 10, false, false);
     }
 
     public static function isEmpty(): IsEmpty
