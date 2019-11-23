@@ -408,6 +408,7 @@
         <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
 
         <delete dir="${basedir}/build/phar"/>
+        <delete dir="${basedir}/build/phar-scoped"/>
         <delete file="${basedir}/build/binary-phar-autoload.php"/>
     </target>
 
