@@ -4,10 +4,10 @@
     <target name="validate" depends="php-syntax-check,validate-composer-json,validate-phpunit-xsd"/>
 
     <target name="clean" unless="clean.done" description="Cleanup build artifacts">
-        <delete dir="${basedir}/vendor"/>
-        <delete file="${basedir}/composer.lock"/>
         <delete dir="${basedir}/build/artifacts"/>
         <delete dir="${basedir}/build/tmp"/>
+        <delete dir="${basedir}/vendor"/>
+        <delete file="${basedir}/composer.lock"/>
 
         <property name="clean.done" value="true"/>
     </target>
