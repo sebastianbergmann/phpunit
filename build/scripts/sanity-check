@@ -2,7 +2,7 @@
 
 PHP_BINARY=${PHP_BINARY:-php}
 
-${PHP_BINARY} -d assert.exception=On -d zend.assertions=1 ./phpunit --configuration ./build/github-ci-fail.xml
+${PHP_BINARY} -d assert.exception=On -d zend.assertions=1 ./phpunit --configuration ./build/config/github-ci-fail.xml
 
 if [ $? -eq 0 ]; then
   echo "This test should have failed.";

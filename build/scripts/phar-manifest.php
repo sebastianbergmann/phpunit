@@ -14,7 +14,7 @@ if (\strpos($tag, '-') === false && \strpos($tag, 'No names found') === false) {
 
 print "\n";
 
-$lock = \json_decode(\file_get_contents(__DIR__ . '/../composer.lock'));
+$lock = \json_decode(\file_get_contents(__DIR__ . '/../../composer.lock'));
 
 foreach ($lock->packages as $package) {
     print $package->name . ': ' . $package->version;

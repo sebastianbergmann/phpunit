@@ -7,23 +7,15 @@
         <delete dir="${basedir}/bin"/>
         <delete dir="${basedir}/vendor"/>
         <delete file="${basedir}/composer.lock"/>
-        <delete dir="${basedir}/build/documentation"/>
-        <delete dir="${basedir}/build/logfiles"/>
+        <delete dir="${basedir}/build/artifacts"/>
         <delete dir="${basedir}/build/phar"/>
         <delete dir="${basedir}/build/phar-scoped"/>
-        <delete>
-            <fileset dir="${basedir}/build">
-                <include name="**/phpunit*.phar"/>
-                <include name="**/phpunit*.phar.asc"/>
-            </fileset>
-        </delete>
 
         <property name="clean.done" value="true"/>
     </target>
 
     <target name="prepare" unless="prepare.done" depends="clean" description="Prepare for build">
-        <mkdir dir="${basedir}/build/documentation"/>
-        <mkdir dir="${basedir}/build/logfiles"/>
+        <mkdir dir="${basedir}/build/artifacts/logfiles"/>
         <property name="prepare.done" value="true"/>
     </target>
 
@@ -134,12 +126,13 @@
     </target>
 
     <target name="-phar-prepare" depends="clean,install-dependencies">
+        <mkdir dir="${basedir}/build/artifacts"/>
         <mkdir dir="${basedir}/build/phar"/>
         <mkdir dir="${basedir}/build/phar-scoped"/>
 
         <copy file="${basedir}/phpunit.xsd" tofile="${basedir}/build/phar/phpunit.xsd"/>
 
-        <exec executable="${basedir}/build/phar-manifest.php" output="${basedir}/build/phar/manifest.txt" failonerror="true"/>
+        <exec executable="${basedir}/build/scripts/phar-manifest.php" output="${basedir}/build/phar/manifest.txt" failonerror="true"/>
 
         <copy file="${basedir}/vendor/phpunit/php-code-coverage/LICENSE" tofile="${basedir}/build/phar/php-code-coverage/LICENSE"/>
         <copy todir="${basedir}/build/phar/php-code-coverage">
@@ -352,7 +345,7 @@
             </fileset>
         </copy>
 
-        <exec executable="${basedir}/build/phar-version.php" outputproperty="_version" failonerror="true">
+        <exec executable="${basedir}/build/scripts/phar-version.php" outputproperty="_version" failonerror="true">
             <arg value="${version}"/>
             <arg value="${type}"/>
         </exec>
@@ -362,7 +355,7 @@
             <arg value="--no-ansi" />
             <arg value="--force" />
             <arg value="--config" />
-            <arg path="${basedir}/build/scoper.inc.php" />
+            <arg path="${basedir}/build/config/php-scoper.php" />
             <arg value="--no-interaction" />
             <arg value="--stop-on-failure" />
             <arg value="--output-dir" />
@@ -386,13 +379,13 @@
             <arg value="--hash" />
             <arg value="SHA-1" />
             <arg value="--output" />
-            <arg path="${basedir}/build/phpunit-library-${_version}.phar" />
+            <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
             <arg value="--template" />
-            <arg path="${basedir}/build/library-phar-autoload.php.in" />
+            <arg path="${basedir}/build/templates/library-phar-autoload.php.in" />
             <arg path="${basedir}/build/phar-scoped" />
         </exec>
 
-        <copy file="${basedir}/build/binary-phar-autoload.php.in" tofile="${basedir}/build/binary-phar-autoload.php"/>
+        <copy file="${basedir}/build/templates/binary-phar-autoload.php.in" tofile="${basedir}/build/binary-phar-autoload.php"/>
         <replace file="${basedir}/build/binary-phar-autoload.php" token="X.Y.Z" value="${_version}"/>
 
         <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
@@ -403,13 +396,13 @@
             <arg value="--hash" />
             <arg value="SHA-1" />
             <arg value="--output" />
-            <arg path="${basedir}/build/phpunit-${_version}.phar" />
+            <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar" />
             <arg value="--template" />
             <arg path="${basedir}/build/binary-phar-autoload.php" />
             <arg path="${basedir}/build/phar-scoped" />
         </exec>
 
-        <chmod file="${basedir}/build/phpunit-${_version}.phar" perm="ugo+rx"/>
+        <chmod file="${basedir}/build/artifacts/phpunit-${_version}.phar" perm="ugo+rx"/>
 
         <delete dir="${basedir}/build/phar"/>
         <delete dir="${basedir}/build/phar-scoped"/>
@@ -417,11 +410,11 @@
     </target>
 
     <target name="-phar-determine-version">
-        <exec executable="${basedir}/build/version.php" outputproperty="version" failonerror="true" />
+        <exec executable="${basedir}/build/scripts/version.php" outputproperty="version" failonerror="true" />
     </target>
 
     <target name="generate-project-documentation" depends="-phploc,-checkstyle,-phpunit">
-        <exec executable="${basedir}/tools/phpdox" dir="${basedir}/build" taskname="phpdox"/>
+        <exec executable="${basedir}/tools/phpdox" dir="${basedir}/build/config" taskname="phpdox"/>
     </target>
 
     <target name="update-tools">
@@ -436,7 +429,7 @@
     </target>
 
     <target name="generate-global-assert-wrappers" description="Generate global function wrappers for static methods in Assert and TestCase that are commonly used">
-        <exec executable="${basedir}/build/generate_global_assert_wrappers.php" taskname="generate-global-assert-wrappers" failonerror="true"/>
+        <exec executable="${basedir}/build/scripts/generate-global-assert-wrappers.php" taskname="generate-global-assert-wrappers" failonerror="true"/>
         <exec executable="${basedir}/tools/php-cs-fixer" taskname="php-cs-fixer" failonerror="true">
             <arg value="fix"/>
             <arg path="${basedir}/src/Framework/Assert/Functions.php"/>
@@ -447,14 +440,14 @@
         <exec executable="${basedir}/tools/phploc" output="/dev/null" taskname="phploc">
             <arg value="--count-tests"/>
             <arg value="--log-xml"/>
-            <arg path="${basedir}/build/logfiles/phploc.xml"/>
+            <arg path="${basedir}/build/artifacts/logfiles/phploc.xml"/>
             <arg path="${basedir}/src"/>
             <arg path="${basedir}/tests"/>
         </exec>
     </target>
 
     <target name="-checkstyle" depends="prepare">
-        <exec executable="${basedir}/tools/php-cs-fixer" output="${basedir}/build/logfiles/checkstyle.xml" error="/dev/null" taskname="php-cs-fixer">
+        <exec executable="${basedir}/tools/php-cs-fixer" output="${basedir}/build/artifacts/logfiles/checkstyle.xml" error="/dev/null" taskname="php-cs-fixer">
             <arg value="--diff"/>
             <arg value="--dry-run"/>
             <arg value="fix"/>
@@ -465,9 +458,9 @@
     <target name="-phpunit" depends="setup">
         <exec executable="${basedir}/phpunit" taskname="phpunit">
             <arg value="--coverage-xml"/>
-            <arg path="${basedir}/build/logfiles/coverage"/>
+            <arg path="${basedir}/build/artifacts/logfiles/coverage"/>
             <arg value="--log-junit"/>
-            <arg path="${basedir}/build/logfiles/junit.xml"/>
+            <arg path="${basedir}/build/artifacts/logfiles/junit.xml"/>
         </exec>
     </target>
 </project>
