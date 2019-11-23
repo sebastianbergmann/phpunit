@@ -34,7 +34,7 @@
     </target>
 
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
-        <copy file="${basedir}/composer.json" tofile="${basedir}/composer.json.bak"/>
+        <copy file="${basedir}/composer.json" tofile="${basedir}/build/tmp/composer.json"/>
 
         <exec executable="${basedir}/tools/composer" taskname="composer">
             <arg value="require"/>
@@ -50,7 +50,7 @@
             <arg value="--no-suggest"/>
         </exec>
 
-        <move file="${basedir}/composer.json.bak" tofile="${basedir}/composer.json"/>
+        <move file="${basedir}/build/tmp/composer.json" tofile="${basedir}/composer.json"/>
     </target>
 
     <target name="check-dependencies" description="Performs check for outdated dependencies">
