@@ -4,10 +4,10 @@
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\Constraint\Constraint;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../../vendor/autoload.php';
 
 /** @var string[] $lines */
-$lines = \file(__DIR__ . '/../src/Framework/Assert.php');
+$lines = \file(__DIR__ . '/../../src/Framework/Assert.php');
 
 $buffer = '<?php declare(strict_types=1);
 /*
@@ -213,4 +213,4 @@ function onConsecutiveCalls(): ConsecutiveCallsStub
 }
 ';
 
-\file_put_contents(__DIR__ . '/../src/Framework/Assert/Functions.php', $buffer);
+\file_put_contents(__DIR__ . '/../../src/Framework/Assert/Functions.php', $buffer);

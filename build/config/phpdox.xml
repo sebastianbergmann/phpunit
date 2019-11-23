@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpdox xmlns="http://xml.phpdox.net/config">
-    <project name="PHPUnit" source="../src" workdir="phpdox">
+    <project name="PHPUnit" source="../../src" workdir="../artifacts/phpdox">
         <collector publiconly="false">
             <include mask="*.php" />
         </collector>
 
         <generator output=".">
-            <enrich base="logfiles">
+            <enrich base="../artifacts/logfiles">
                 <source type="build" />
                 <source type="git" />
                 <source type="phploc" />
@@ -14,7 +14,7 @@
                 <source type="phpunit" />
             </enrich>
 
-            <build engine="html" enabled="true" output="documentation">
+            <build engine="html" enabled="true" output="../artifacts/documentation">
                 <file extension="html" />
             </build>
         </generator>

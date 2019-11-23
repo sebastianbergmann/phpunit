@@ -6,11 +6,11 @@ if (!isset($argv[1]) || !isset($argv[2])) {
 }
 
 \file_put_contents(
-    __DIR__ . '/phar/phpunit/Runner/Version.php',
+    __DIR__ . '/../phar/phpunit/Runner/Version.php',
     \str_replace(
         'private static $pharVersion;',
         'private static $pharVersion = "' . $argv[1] . '";',
-        \file_get_contents(__DIR__ . '/phar/phpunit/Runner/Version.php')
+        \file_get_contents(__DIR__ . '/../phar/phpunit/Runner/Version.php')
     )
 );
 

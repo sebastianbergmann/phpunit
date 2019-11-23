@@ -68,7 +68,7 @@ jobs:
       - name: Lint XML configuration files
         uses: ./.docker/lint-xml-configuration
         with:
-          args: bash ./build/lint-xml-configuration
+          args: bash ./build/scripts/lint-xml-configuration
 
   tests:
     name: Tests
@@ -106,7 +106,7 @@ jobs:
         run: ${{ matrix.php-binary }} ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest
 
       - name: Run sanity check
-        run: PHP_BINARY=${{ matrix.php-binary }} bash ./build/sanity-check
+        run: PHP_BINARY=${{ matrix.php-binary }} bash ./build/scripts/sanity-check
 
       - name: Run tests with phpunit
         run: ${{ matrix.php-binary }} -d assert.exception=1 -d zend.assertions=1 ./phpunit --coverage-clover=coverage.xml
