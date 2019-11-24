@@ -772,6 +772,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     public function getMockBuilder($className): MockBuilder
     {
+        if (!\is_string($className)) {
+            $this->addWarning('Passing an array of interface names to getMockBuilder() for creating a test double that implements multiple interfaces is deprecated and will no longer be supported in PHPUnit 9.');
+        }
+
         $this->recordDoubledType($className);
 
         return new MockBuilder($this, $className);
@@ -1571,6 +1575,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     protected function createMock($originalClassName): MockObject
     {
+        if (!\is_string($originalClassName)) {
+            $this->addWarning('Passing an array of interface names to createMock() for creating a test double that implements multiple interfaces is deprecated and will no longer be supported in PHPUnit 9.');
+        }
+
         return $this->getMockBuilder($originalClassName)
                     ->disableOriginalConstructor()
                     ->disableOriginalClone()
@@ -1611,6 +1619,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     protected function createPartialMock($originalClassName, array $methods): MockObject
     {
+        if (!\is_string($originalClassName)) {
+            $this->addWarning('Passing an array of interface names to createPartialMock() for creating a test double that implements multiple interfaces is deprecated and will no longer be supported in PHPUnit 9.');
+        }
+
         $class_names = \is_array($originalClassName) ? $originalClassName : [$originalClassName];
 
         foreach ($class_names as $class_name) {
