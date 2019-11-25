@@ -755,18 +755,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * Returns a builder object to create mock objects using a fluent interface.
      *
-     * @param string|string[] $className
-     *
      * @psalm-template RealInstanceType of object
-     * @psalm-param class-string<RealInstanceType>|string[] $className
+     * @psalm-param class-string<RealInstanceType> $className
      * @psalm-return MockBuilder<RealInstanceType>
      */
-    public function getMockBuilder($className): MockBuilder
+    public function getMockBuilder(string $className): MockBuilder
     {
-        if (!\is_string($className)) {
-            $this->addWarning('Passing an array of interface names to getMockBuilder() for creating a test double that implements multiple interfaces is deprecated and will no longer be supported in PHPUnit 9.');
-        }
-
         $this->recordDoubledType($className);
 
         return new MockBuilder($this, $className);
@@ -1548,18 +1542,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * Returns a mock object for the specified class.
      *
-     * @param string|string[] $originalClassName
-     *
      * @psalm-template RealInstanceType of object
-     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
-    protected function createMock($originalClassName): MockObject
+    protected function createMock(string $originalClassName): MockObject
     {
-        if (!\is_string($originalClassName)) {
-            $this->addWarning('Passing an array of interface names to createMock() for creating a test double that implements multiple interfaces is deprecated and will no longer be supported in PHPUnit 9.');
-        }
-
         return $this->getMockBuilder($originalClassName)
                     ->disableOriginalConstructor()
                     ->disableOriginalClone()
@@ -1571,13 +1559,11 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * Returns a configured mock object for the specified class.
      *
-     * @param string|string[] $originalClassName
-     *
      * @psalm-template RealInstanceType of object
-     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
-    protected function createConfiguredMock($originalClassName, array $configuration): MockObject
+    protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
     {
         $o = $this->createMock($originalClassName);
 
@@ -1591,40 +1577,41 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * Returns a partial mock object for the specified class.
      *
-     * @param string|string[] $originalClassName
-     * @param string[]        $methods
+     * @param string[] $methods
      *
      * @psalm-template RealInstanceType of object
-     * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
-    protected function createPartialMock($originalClassName, array $methods): MockObject
+    protected function createPartialMock(string $originalClassName, array $methods): MockObject
     {
-        if (!\is_string($originalClassName)) {
-            $this->addWarning('Passing an array of interface names to createPartialMock() for creating a test double that implements multiple interfaces is deprecated and will no longer be supported in PHPUnit 9.');
-        }
-
-        $class_names = \is_array($originalClassName) ? $originalClassName : [$originalClassName];
-
-        foreach ($class_names as $class_name) {
-            $reflection = new \ReflectionClass($class_name);
-
-            $mockedMethodsThatDontExist = \array_filter(
-                $methods,
-                static function (string $method) use ($reflection) {
-                    return !$reflection->hasMethod($method);
-                }
+        try {
+            $reflector = new \ReflectionClass($originalClassName);
+            // @codeCoverageIgnoreStart
+        } catch (\ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
             );
+        }
+        // @codeCoverageIgnoreEnd
 
-            if ($mockedMethodsThatDontExist) {
-                $this->addWarning(
-                    \sprintf(
-                        'createPartialMock called with method(s) %s that do not exist in %s. This will not be allowed in future versions of PHPUnit.',
-                        \implode(', ', $mockedMethodsThatDontExist),
-                        $class_name
-                    )
-                );
+        $mockedMethodsThatDontExist = \array_filter(
+            $methods,
+            static function (string $method) use ($reflector) {
+                return !$reflector->hasMethod($method);
             }
+        );
+
+        if ($mockedMethodsThatDontExist) {
+            $this->addWarning(
+                \sprintf(
+                    'createPartialMock() called with method(s) %s that do not exist in %s. This will not be allowed in future versions of PHPUnit.',
+                    \implode(', ', $mockedMethodsThatDontExist),
+                    $originalClassName
+                )
+            );
         }
 
         return $this->getMockBuilder($originalClassName)

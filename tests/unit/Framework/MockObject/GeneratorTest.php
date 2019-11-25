@@ -45,13 +45,6 @@ final class GeneratorTest extends TestCase
         $this->generator->getMock(stdClass::class, [0]);
     }
 
-    public function testGetMockThrowsExceptionWithInvalidClassArgumentType(): void
-    {
-        $this->expectException(\PHPUnit\Framework\InvalidArgumentException::class);
-
-        $this->generator->getMock(false);
-    }
-
     public function testGetMockThrowsExceptionWithInvalidMethods(): void
     {
         $this->expectException(\PHPUnit\Framework\InvalidArgumentException::class);
@@ -74,7 +67,7 @@ final class GeneratorTest extends TestCase
 
         $this->assertFalse(\class_exists('Tux'));
 
-        $this->generator->getMock(['Tux', false], [], [], '', true, true, false, true, false, null, false);
+        $this->generator->getMock('Tux', [], [], '', true, true, false, true, false, null, false);
     }
 
     public function testGetMockThrowsExceptionWithExistingClassAsMockName(): void
@@ -218,10 +211,9 @@ final class GeneratorTest extends TestCase
 
     public function testCanImplementInterfacesThatHaveMethodsWithReturnTypes(): void
     {
-        $stub = $this->generator->getMock([AnInterfaceWithReturnType::class, AnInterface::class]);
+        $stub = $this->generator->getMock(AnInterfaceWithReturnType::class);
 
         $this->assertInstanceOf(AnInterfaceWithReturnType::class, $stub);
-        $this->assertInstanceOf(AnInterface::class, $stub);
         $this->assertInstanceOf(MockObject::class, $stub);
     }
 
