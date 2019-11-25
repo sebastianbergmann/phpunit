@@ -402,7 +402,7 @@ function assertLessThanOrEqual($expected, $actual, string $message = ''): void
  *
  * @see Assert::assertFileEquals
  */
-function assertFileEquals(string $expected, string $actual, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+function assertFileEquals(string $expected, string $actual, string $message = ''): void
 {
     Assert::assertFileEquals(...\func_get_args());
 }
@@ -444,7 +444,7 @@ function assertFileEqualsIgnoringCase(string $expected, string $actual, string $
  *
  * @see Assert::assertFileNotEquals
  */
-function assertFileNotEquals(string $expected, string $actual, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+function assertFileNotEquals(string $expected, string $actual, string $message = ''): void
 {
     Assert::assertFileNotEquals(...\func_get_args());
 }
@@ -486,7 +486,7 @@ function assertFileNotEqualsIgnoringCase(string $expected, string $actual, strin
  *
  * @see Assert::assertStringEqualsFile
  */
-function assertStringEqualsFile(string $expectedFile, string $actualString, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+function assertStringEqualsFile(string $expectedFile, string $actualString, string $message = ''): void
 {
     Assert::assertStringEqualsFile(...\func_get_args());
 }
@@ -528,7 +528,7 @@ function assertStringEqualsFileIgnoringCase(string $expectedFile, string $actual
  *
  * @see Assert::assertStringNotEqualsFile
  */
-function assertStringNotEqualsFile(string $expectedFile, string $actualString, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+function assertStringNotEqualsFile(string $expectedFile, string $actualString, string $message = ''): void
 {
     Assert::assertStringNotEqualsFile(...\func_get_args());
 }

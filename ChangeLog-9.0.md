@@ -17,6 +17,7 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 * Implemented [#3370](https://github.com/sebastianbergmann/phpunit/issues/3370): Remove `assertInternalType()` and `assertNotInternalType()`
 * Implemented [#3426](https://github.com/sebastianbergmann/phpunit/issues/3426): Clean up `assertContains()` and `assertNotContains()`
 * Implemented [#3495](https://github.com/sebastianbergmann/phpunit/issues/3495): Remove `assertArraySubset()`
+* Implemented [#3951](https://github.com/sebastianbergmann/phpunit/issues/3951): Remove optional parameters of `assertFileEquals()` etc.
 
 [9.0.0]: https://github.com/sebastianbergmann/phpunit/compare/8.5...master
 

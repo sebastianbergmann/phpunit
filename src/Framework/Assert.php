@@ -495,27 +495,12 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertFileEquals(string $expected, string $actual, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+    public static function assertFileEquals(string $expected, string $actual, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertFileEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertFileEqualsCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertFileEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertFileEqualsIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         static::assertFileExists($expected, $message);
         static::assertFileExists($actual, $message);
 
-        $constraint = new IsEqual(
-            \file_get_contents($expected),
-            0.0,
-            $canonicalize,
-            $ignoreCase
-        );
+        $constraint = new IsEqual(\file_get_contents($expected));
 
         static::assertThat(\file_get_contents($actual), $constraint, $message);
     }
@@ -572,28 +557,13 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertFileNotEquals(string $expected, string $actual, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+    public static function assertFileNotEquals(string $expected, string $actual, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertFileNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertFileNotEqualsCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertFileNotEquals() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertFileNotEqualsIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         static::assertFileExists($expected, $message);
         static::assertFileExists($actual, $message);
 
         $constraint = new LogicalNot(
-            new IsEqual(
-                \file_get_contents($expected),
-                0.0,
-                $canonicalize,
-                $ignoreCase
-            )
+            new IsEqual(\file_get_contents($expected),)
         );
 
         static::assertThat(\file_get_contents($actual), $constraint, $message);
@@ -655,26 +625,11 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertStringEqualsFile(string $expectedFile, string $actualString, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+    public static function assertStringEqualsFile(string $expectedFile, string $actualString, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertStringEqualsFile() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringEqualsFileCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertStringEqualsFile() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringEqualsFileIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         static::assertFileExists($expectedFile, $message);
 
-        $constraint = new IsEqual(
-            \file_get_contents($expectedFile),
-            0.0,
-            $canonicalize,
-            $ignoreCase
-        );
+        $constraint = new IsEqual(\file_get_contents($expectedFile),);
 
         static::assertThat($actualString, $constraint, $message);
     }
@@ -729,27 +684,12 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public static function assertStringNotEqualsFile(string $expectedFile, string $actualString, string $message = '', bool $canonicalize = false, bool $ignoreCase = false): void
+    public static function assertStringNotEqualsFile(string $expectedFile, string $actualString, string $message = ''): void
     {
-        // @codeCoverageIgnoreStart
-        if ($canonicalize) {
-            self::createWarning('The optional $canonicalize parameter of assertStringNotEqualsFile() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringNotEqualsFileCanonicalizing() instead.');
-        }
-
-        if ($ignoreCase) {
-            self::createWarning('The optional $ignoreCase parameter of assertStringNotEqualsFile() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertStringNotEqualsFileIgnoringCase() instead.');
-        }
-        // @codeCoverageIgnoreEnd
-
         static::assertFileExists($expectedFile, $message);
 
         $constraint = new LogicalNot(
-            new IsEqual(
-                \file_get_contents($expectedFile),
-                0.0,
-                $canonicalize,
-                $ignoreCase
-            )
+            new IsEqual(\file_get_contents($expectedFile))
         );
 
         static::assertThat($actualString, $constraint, $message);
