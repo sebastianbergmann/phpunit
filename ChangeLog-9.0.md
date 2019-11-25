@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 
 ## [9.0.0] - 2020-02-07
 
+### Changed
+
+* Implemented [3746](https://github.com/sebastianbergmann/phpunit/issues/3746): Improve developer experience of global wrapper functions for assertions
+
 ### Removed
 
 * Implemented [#3333](https://github.com/sebastianbergmann/phpunit/issues/3333): Remove annotation(s) for expecting exceptions
