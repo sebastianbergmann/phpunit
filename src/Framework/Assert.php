@@ -544,7 +544,7 @@ abstract class Assert
         static::assertFileExists($actual, $message);
 
         $constraint = new LogicalNot(
-            new IsEqual(\file_get_contents($expected),)
+            new IsEqual(\file_get_contents($expected))
         );
 
         static::assertThat(\file_get_contents($actual), $constraint, $message);
@@ -599,7 +599,7 @@ abstract class Assert
     {
         static::assertFileExists($expectedFile, $message);
 
-        $constraint = new IsEqual(\file_get_contents($expectedFile),);
+        $constraint = new IsEqual(\file_get_contents($expectedFile));
 
         static::assertThat($actualString, $constraint, $message);
     }
