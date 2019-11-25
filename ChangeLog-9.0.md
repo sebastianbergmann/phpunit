@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 ### Changed
 
 * Implemented [#3746](https://github.com/sebastianbergmann/phpunit/issues/3746): Improve developer experience of global wrapper functions for assertions
+* Implemented [#3954](https://github.com/sebastianbergmann/phpunit/issues/3954): Change the default of `@preserveGlobalState` from `enabled` to `disabled`
 
 ### Removed
 

@@ -87,7 +87,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * @var bool
      */
-    protected $preserveGlobalState = true;
+    protected $preserveGlobalState = false;
 
     /**
      * @var bool
