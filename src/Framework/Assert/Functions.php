@@ -1057,22 +1057,6 @@ function assertNotInstanceOf(string $expected, $actual, string $message = ''): v
 }
 
 /**
- * Asserts that a variable is of a given type.
- *
- * @throws ExpectationFailedException
- * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- *
- * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
- * @codeCoverageIgnore
- *
- * @see Assert::assertInternalType
- */
-function assertInternalType(string $expected, $actual, string $message = ''): void
-{
-    Assert::assertInternalType(...\func_get_args());
-}
-
-/**
  * Asserts that a variable is of type array.
  *
  * @throws ExpectationFailedException
@@ -1235,22 +1219,6 @@ function assertIsCallable($actual, string $message = ''): void
 function assertIsIterable($actual, string $message = ''): void
 {
     Assert::assertIsIterable(...\func_get_args());
-}
-
-/**
- * Asserts that a variable is not of a given type.
- *
- * @throws ExpectationFailedException
- * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- *
- * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
- * @codeCoverageIgnore
- *
- * @see Assert::assertNotInternalType
- */
-function assertNotInternalType(string $expected, $actual, string $message = ''): void
-{
-    Assert::assertNotInternalType(...\func_get_args());
 }
 
 /**

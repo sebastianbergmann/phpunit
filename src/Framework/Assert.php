@@ -1342,26 +1342,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a variable is of a given type.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
-     * @codeCoverageIgnore
-     */
-    public static function assertInternalType(string $expected, $actual, string $message = ''): void
-    {
-        self::createWarning('assertInternalType() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertIsArray(), assertIsBool(), assertIsFloat(), assertIsInt(), assertIsNumeric(), assertIsObject(), assertIsResource(), assertIsString(), assertIsScalar(), assertIsCallable(), or assertIsIterable() instead.');
-
-        static::assertThat(
-            $actual,
-            new IsType($expected),
-            $message
-        );
-    }
-
-    /**
      * Asserts that a variable is of type array.
      *
      * @throws ExpectationFailedException
@@ -1544,28 +1524,6 @@ abstract class Assert
         static::assertThat(
             $actual,
             new IsType(IsType::TYPE_ITERABLE),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that a variable is not of a given type.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
-     * @codeCoverageIgnore
-     */
-    public static function assertNotInternalType(string $expected, $actual, string $message = ''): void
-    {
-        self::createWarning('assertNotInternalType() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertIsNotArray(), assertIsNotBool(), assertIsNotFloat(), assertIsNotInt(), assertIsNotNumeric(), assertIsNotObject(), assertIsNotResource(), assertIsNotString(), assertIsNotScalar(), assertIsNotCallable(), or assertIsNotIterable() instead.');
-
-        static::assertThat(
-            $actual,
-            new LogicalNot(
-                new IsType($expected)
-            ),
             $message
         );
     }
