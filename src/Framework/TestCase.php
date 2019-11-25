@@ -789,15 +789,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     *
-     * @deprecated Invoking this method has no effect; it will be removed in PHPUnit 9
-     */
-    public function setUseErrorHandler(bool $useErrorHandler): void
-    {
-    }
-
-    /**
      * @return string[]
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
