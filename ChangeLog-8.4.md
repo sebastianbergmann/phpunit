@@ -1,6 +1,6 @@
 # Changes in PHPUnit 8.4
 
-All notable changes of the PHPUnit 8.4 release series are documented in this file using the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
+All notable changes of the PHPUnit 8.4 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
 ## [8.4.4] - 2019-MM-DD
 
