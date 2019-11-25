@@ -22,6 +22,9 @@ use PHPUnit\Framework\Constraint\GreaterThan;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
+use PHPUnit\Framework\Constraint\IsEqualCanonicalizing;
+use PHPUnit\Framework\Constraint\IsEqualIgnoringCase;
+use PHPUnit\Framework\Constraint\IsEqualWithDelta;
 use PHPUnit\Framework\Constraint\IsFalse;
 use PHPUnit\Framework\Constraint\IsFinite;
 use PHPUnit\Framework\Constraint\IsIdentical;
@@ -234,7 +237,7 @@ function assertNotCount(int $expectedCount, $haystack, string $message = ''): vo
  *
  * @see Assert::assertEquals
  */
-function assertEquals($expected, $actual, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): void
+function assertEquals($expected, $actual, string $message = ''): void
 {
     Assert::assertEquals(...\func_get_args());
 }
@@ -281,17 +284,12 @@ function assertEqualsWithDelta($expected, $actual, float $delta, string $message
 /**
  * Asserts that two variables are not equal.
  *
- * @param float $delta
- * @param int   $maxDepth
- * @param bool  $canonicalize
- * @param bool  $ignoreCase
- *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
  * @see Assert::assertNotEquals
  */
-function assertNotEquals($expected, $actual, string $message = '', $delta = 0.0, $maxDepth = 10, $canonicalize = false, $ignoreCase = false): void
+function assertNotEquals($expected, $actual, string $message = ''): void
 {
     Assert::assertNotEquals(...\func_get_args());
 }
@@ -1960,9 +1958,24 @@ function arrayHasKey($key): ArrayHasKey
     return Assert::arrayHasKey(...\func_get_args());
 }
 
-function equalTo($value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): IsEqual
+function equalTo($value): IsEqual
 {
     return Assert::equalTo(...\func_get_args());
+}
+
+function equalToCanonicalizing($value): IsEqualCanonicalizing
+{
+    return Assert::equalToCanonicalizing(...\func_get_args());
+}
+
+function equalToIgnoringCase($value): IsEqualIgnoringCase
+{
+    return Assert::equalToIgnoringCase(...\func_get_args());
+}
+
+function equalToWithDelta($value, float $delta): IsEqualWithDelta
+{
+    return Assert::equalToWithDelta(...\func_get_args());
 }
 
 function isEmpty(): IsEmpty
