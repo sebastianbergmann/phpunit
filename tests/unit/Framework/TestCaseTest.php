@@ -458,6 +458,20 @@ final class TestCaseTest extends TestCase
         $this->assertFalse($result->wasSuccessful());
     }
 
+    public function testExpectExceptionCallbackWithDifferentExceptionClass(): void
+    {
+        $test = new \ThrowExceptionTestCase('test');
+        $test->expectExceptionCallback(function (\InvalidArgumentException $e): void {
+            // this is never called, because the exception type doesn't match
+        });
+
+        $result = $test->run();
+
+        $this->assertEquals(1, $result->failureCount());
+        $this->assertCount(1, $result);
+        $this->assertFalse($result->wasSuccessful());
+    }
+
     public function testExpectExceptionObjectWithEqualException(): void
     {
         $exception = new \RuntimeException(

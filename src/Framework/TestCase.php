@@ -531,10 +531,36 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     public function expectExceptionCallback(callable $callback): void
     {
         if (!$this->expectedException) {
-            // TODO: If we could find the argument type of the callback,
-            // we could both tighten this expectation to provide better
-            // diagnostics and validate the callback argument.
-            $this->expectedException = \Exception::class;
+            // default to a regular exception
+            $expectedException = \Exception::class;
+
+            do { // once
+                $fn = new \ReflectionFunction($callback);
+
+                if ($fn->getNumberOfRequiredParameters() > 1) {
+                    throw new Exception('Callback requires more than one parameter.');
+                }
+
+                $params = $fn->getParameters();
+
+                if (\count($params) == 0) {
+                    // callback doesn't have any fixed parameters
+                    break;
+                }
+
+                $type = $params[0]->getType();
+
+                if ($type === null) {
+                    // no type annotation found
+                    break;
+                }
+
+                // use the type of the first parameter
+                $expectedException = $type->getName();
+            } while (false);
+
+            // register type
+            $this->expectException($expectedException);
         }
         $this->expectedExceptionCallback = $callback;
     }
