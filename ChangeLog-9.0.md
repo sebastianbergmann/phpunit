@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 ### Removed
 
 * Implemented [#3334](https://github.com/sebastianbergmann/phpunit/issues/3334): Drop support for PHP 7.2
+* Implemented [#3339](https://github.com/sebastianbergmann/phpunit/issues/3339): Remove assertions (and helper methods) that operate on (non-public) attributes
 
 [9.0.0]: https://github.com/sebastianbergmann/phpunit/compare/8.5...master
 
