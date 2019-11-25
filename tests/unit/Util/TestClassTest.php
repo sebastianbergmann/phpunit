@@ -1085,7 +1085,7 @@ final class TestClassTest extends TestCase
         ), VariousDocblockDefinedDataProvider::class);
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessageRegExp('/^The data set for the @testWith annotation cannot be parsed:/');
+        $this->expectExceptionMessageMatches('/^The data set for the @testWith annotation cannot be parsed:/');
 
         $docBlock->getProvidedData();
     }
@@ -1098,7 +1098,7 @@ final class TestClassTest extends TestCase
         ), VariousDocblockDefinedDataProvider::class);
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessageRegExp('/^The data set for the @testWith annotation cannot be parsed:/');
+        $this->expectExceptionMessageMatches('/^The data set for the @testWith annotation cannot be parsed:/');
 
         $docBlock->getProvidedData();
     }

@@ -501,14 +501,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @deprecated Use expectExceptionMessageMatches() instead
-     */
-    public function expectExceptionMessageRegExp(string $regularExpression): void
-    {
-        $this->expectExceptionMessageMatches($regularExpression);
-    }
-
-    /**
      * Sets up an expectation for an exception to be raised by the code under test.
      * Information for expected exception class, expected exception message, and
      * expected exception code are retrieved from a given Exception object.
@@ -537,7 +529,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectDeprecationMessageMatches(string $regularExpression): void
     {
-        $this->expectExceptionMessageRegExp($regularExpression);
+        $this->expectExceptionMessageMatches($regularExpression);
     }
 
     public function expectNotice(): void
@@ -552,7 +544,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectNoticeMessageMatches(string $regularExpression): void
     {
-        $this->expectExceptionMessageRegExp($regularExpression);
+        $this->expectExceptionMessageMatches($regularExpression);
     }
 
     public function expectWarning(): void
@@ -567,7 +559,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectWarningMessageMatches(string $regularExpression): void
     {
-        $this->expectExceptionMessageRegExp($regularExpression);
+        $this->expectExceptionMessageMatches($regularExpression);
     }
 
     public function expectError(): void
@@ -582,7 +574,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectErrorMessageMatches(string $regularExpression): void
     {
-        $this->expectExceptionMessageRegExp($regularExpression);
+        $this->expectExceptionMessageMatches($regularExpression);
     }
 
     public function getStatus(): int
