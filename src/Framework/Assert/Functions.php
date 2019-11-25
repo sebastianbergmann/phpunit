@@ -82,26 +82,6 @@ function assertArrayHasKey($key, $array, string $message = ''): void
 }
 
 /**
- * Asserts that an array has a specified subset.
- *
- * @param array|ArrayAccess $subset
- * @param array|ArrayAccess $array
- *
- * @throws ExpectationFailedException
- * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws Exception
- *
- * @codeCoverageIgnore
- *
- * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3494
- * @see Assert::assertArraySubset
- */
-function assertArraySubset($subset, $array, bool $checkForObjectIdentity = false, string $message = ''): void
-{
-    Assert::assertArraySubset(...\func_get_args());
-}
-
-/**
  * Asserts that an array does not have a specified key.
  *
  * @param int|string        $key

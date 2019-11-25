@@ -14,7 +14,6 @@ use Countable;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
-use PHPUnit\Framework\Constraint\ArraySubset;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
@@ -98,43 +97,6 @@ abstract class Assert
         }
 
         $constraint = new ArrayHasKey($key);
-
-        static::assertThat($array, $constraint, $message);
-    }
-
-    /**
-     * Asserts that an array has a specified subset.
-     *
-     * @param array|ArrayAccess $subset
-     * @param array|ArrayAccess $array
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3494
-     */
-    public static function assertArraySubset($subset, $array, bool $checkForObjectIdentity = false, string $message = ''): void
-    {
-        self::createWarning('assertArraySubset() is deprecated and will be removed in PHPUnit 9.');
-
-        if (!(\is_array($subset) || $subset instanceof ArrayAccess)) {
-            throw InvalidArgumentException::create(
-                1,
-                'array or ArrayAccess'
-            );
-        }
-
-        if (!(\is_array($array) || $array instanceof ArrayAccess)) {
-            throw InvalidArgumentException::create(
-                2,
-                'array or ArrayAccess'
-            );
-        }
-
-        $constraint = new ArraySubset($subset, $checkForObjectIdentity);
 
         static::assertThat($array, $constraint, $message);
     }
