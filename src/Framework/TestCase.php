@@ -1017,7 +1017,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 }
             }
 
-            $this->setExpectedExceptionFromAnnotation();
             $this->setDoesNotPerformAssertionsFromAnnotation();
 
             foreach ($hookMethods['before'] as $method) {
@@ -1901,37 +1900,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     protected function onNotSuccessfulTest(\Throwable $t): void
     {
         throw $t;
-    }
-
-    private function setExpectedExceptionFromAnnotation(): void
-    {
-        if ($this->name === null) {
-            return;
-        }
-
-        try {
-            $expectedException = TestUtil::getExpectedException(
-                \get_class($this),
-                $this->name
-            );
-
-            if ($expectedException !== false) {
-                $this->addWarning('The @expectedException, @expectedExceptionCode, @expectedExceptionMessage, and @expectedExceptionMessageRegExp annotations are deprecated. They will be removed in PHPUnit 9. Refactor your test to use expectException(), expectExceptionCode(), expectExceptionMessage(), or expectExceptionMessageRegExp() instead.');
-
-                $this->expectException($expectedException['class']);
-
-                if ($expectedException['code'] !== null) {
-                    $this->expectExceptionCode($expectedException['code']);
-                }
-
-                if ($expectedException['message'] !== '') {
-                    $this->expectExceptionMessage($expectedException['message']);
-                } elseif ($expectedException['message_regex'] !== '') {
-                    $this->expectExceptionMessageRegExp($expectedException['message_regex']);
-                }
-            }
-        } catch (UtilException $e) {
-        }
     }
 
     /**
