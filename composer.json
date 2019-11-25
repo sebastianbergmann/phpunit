@@ -21,7 +21,7 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-libxml": "*",
@@ -52,7 +52,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.2.0"
+            "php": "7.3.0"
         },
         "optimize-autoloader": true,
         "sort-packages": true
@@ -83,7 +83,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "8.5-dev"
+            "dev-master": "9.0-dev"
         }
     }
 }

@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - 7.5
+      - 8.5
     tags:
       - "**"
 
@@ -78,7 +78,6 @@ jobs:
     strategy:
       matrix:
         php-binary:
-          - php7.2
           - php7.3
 
         dependencies:

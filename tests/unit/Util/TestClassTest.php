@@ -195,7 +195,7 @@ final class TestClassTest extends TestCase
                         '__SETTING_not_a_setting' => 108,
                     ],
                     'PHP'       => ['version' => '99-dev', 'operator' => ''],
-                    'PHPUnit'   => ['version' => '9-dev', 'operator' => ''],
+                    'PHPUnit'   => ['version' => '99-dev', 'operator' => ''],
                     'OS'        => 'DOESNOTEXIST',
                     'functions' => [
                         'testFuncOne',
@@ -711,7 +711,7 @@ final class TestClassTest extends TestCase
                 '__OFFSET_LINE=100',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP >= 99-dev is required.',
-                'PHPUnit >= 9-dev is required.',
+                'PHPUnit >= 99-dev is required.',
                 'Operating system matching /DOESNOTEXIST/i is required.',
                 'Function testFuncOne is required.',
                 'Function testFunc2 is required.',

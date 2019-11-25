@@ -98,7 +98,7 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires PHP 99-dev
-     * @requires PHPUnit 9-dev
+     * @requires PHPUnit 99-dev
      * @requires OS DOESNOTEXIST
      * @requires function testFuncOne
      * @requires function testFunc2
