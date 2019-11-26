@@ -179,8 +179,7 @@ class JUnit extends Printer implements TestListener
             return;
         }
 
-        $this->doAddFault($test, $t, $time, 'warning');
-        $this->testSuiteErrors[$this->testSuiteLevel]++;
+        $this->addError($test, $t, $time);
     }
 
     /**

@@ -39,12 +39,12 @@ RuntimeException:%w
       <skipped/>
     </testcase>
     <testcase name="testRisky" class="vendor\project\StatusTest" classname="vendor.project.StatusTest" file="%s%eStatusTest.php" line="%d" assertions="0" time="%s">
-      <warning type="PHPUnit\Framework\RiskyTestError">vendor\project\StatusTest::testRisky
+      <error type="PHPUnit\Framework\RiskyTestError">vendor\project\StatusTest::testRisky
 This test did not perform any assertions
 
 %s%eStatusTest.php:%d
 
-</warning>
+</error>
     </testcase>
     <testcase name="testWarning" class="vendor\project\StatusTest" classname="vendor.project.StatusTest" file="%s%eStatusTest.php" line="%d" assertions="0" time="%s">
       <warning type="PHPUnit\Framework\Warning">vendor\project\StatusTest::testWarning
