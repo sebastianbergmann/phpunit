@@ -179,18 +179,7 @@ class JUnit extends Printer implements TestListener
             return;
         }
 
-        $error = $this->document->createElement(
-            'error',
-            Xml::prepareString(
-                "Risky Test\n" .
-                Filter::getFilteredStacktrace($t)
-            )
-        );
-
-        $error->setAttribute('type', \get_class($t));
-
-        $this->currentTestCase->appendChild($error);
-
+        $this->doAddFault($test, $t, $time, 'warning');
         $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
 
