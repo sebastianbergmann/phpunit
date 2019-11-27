@@ -7,7 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Configuration;
+namespace PHPUnit\Util\Configuration\Logging;
+
+use PHPUnit\Util\Configuration\Exception;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Clover;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Crap4j;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Html as CodeCoverageHtml;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Php;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Text as CodeCoverageText;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Xml as CodeCoverageXml;
+use PHPUnit\Util\Configuration\Logging\TestDox\Html as TestDoxHtml;
+use PHPUnit\Util\Configuration\Logging\TestDox\Text as TestDoxText;
+use PHPUnit\Util\Configuration\Logging\TestDox\Xml as TestDoxXml;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -16,12 +27,12 @@ namespace PHPUnit\Util\Configuration;
 final class Logging
 {
     /**
-     * @var ?CodeCoverageClover
+     * @var ?Clover
      */
     private $codeCoverageClover;
 
     /**
-     * @var ?CodeCoverageCrap4j
+     * @var ?Crap4j
      */
     private $codeCoverageCrap4j;
 
@@ -31,7 +42,7 @@ final class Logging
     private $codeCoverageHtml;
 
     /**
-     * @var ?CodeCoveragePhp
+     * @var ?Php
      */
     private $codeCoveragePhp;
 
@@ -75,7 +86,7 @@ final class Logging
      */
     private $testDoxXml;
 
-    public function __construct(?CodeCoverageClover $codeCoverageClover, ?CodeCoverageCrap4j $codeCoverageCrap4j, ?CodeCoverageHtml $codeCoverageHtml, ?CodeCoveragePhp $codeCoveragePhp, ?CodeCoverageText $codeCoverageText, ?CodeCoverageXml $codeCoverageXml, ?Junit $junit, ?PlainText $plainText, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText, ?TestDoxXml $testDoxXml)
+    public function __construct(?Clover $codeCoverageClover, ?Crap4j $codeCoverageCrap4j, ?CodeCoverageHtml $codeCoverageHtml, ?Php $codeCoveragePhp, ?CodeCoverageText $codeCoverageText, ?CodeCoverageXml $codeCoverageXml, ?Junit $junit, ?PlainText $plainText, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText, ?TestDoxXml $testDoxXml)
     {
         $this->codeCoverageClover = $codeCoverageClover;
         $this->codeCoverageCrap4j = $codeCoverageCrap4j;
@@ -96,7 +107,7 @@ final class Logging
         return $this->codeCoverageClover !== null;
     }
 
-    public function codeCoverageClover(): CodeCoverageClover
+    public function codeCoverageClover(): Clover
     {
         if ($this->codeCoverageClover === null) {
             throw new Exception('Logger "Clover XML" is not configured');
@@ -110,7 +121,7 @@ final class Logging
         return $this->codeCoverageCrap4j !== null;
     }
 
-    public function codeCoverageCrap4j(): CodeCoverageCrap4j
+    public function codeCoverageCrap4j(): Crap4j
     {
         if ($this->codeCoverageCrap4j === null) {
             throw new Exception('Logger "Crap4j XML" is not configured');
@@ -138,7 +149,7 @@ final class Logging
         return $this->codeCoveragePhp !== null;
     }
 
-    public function codeCoveragePhp(): CodeCoveragePhp
+    public function codeCoveragePhp(): Php
     {
         if ($this->codeCoveragePhp === null) {
             throw new Exception('Logger "Code Coverage PHP" is not configured');
