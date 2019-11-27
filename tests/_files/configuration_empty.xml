@@ -33,9 +33,7 @@
   <logging>
     <log type="coverage-html" target=""/>
     <log type="coverage-clover" target=""/>
-    <log type="json" target=""/>
     <log type="plain" target=""/>
-    <log type="tap" target=""/>
     <log type="junit" target=""/>
     <log type="testdox-html" target=""/>
     <log type="testdox-text" target=""/>

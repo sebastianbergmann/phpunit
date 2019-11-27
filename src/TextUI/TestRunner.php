@@ -922,69 +922,69 @@ final class TestRunner extends BaseTestRunner
 
             $loggingConfiguration = $arguments['configuration']->getLoggingConfiguration();
 
-            if (isset($loggingConfiguration['coverage-clover']) && !isset($arguments['coverageClover'])) {
-                $arguments['coverageClover'] = $loggingConfiguration['coverage-clover'];
+            if (!isset($arguments['coverageClover']) && $loggingConfiguration->hasCodeCoverageClover()) {
+                $arguments['coverageClover'] = $loggingConfiguration->codeCoverageClover()->target()->path();
             }
 
-            if (isset($loggingConfiguration['coverage-crap4j']) && !isset($arguments['coverageCrap4J'])) {
-                $arguments['coverageCrap4J'] = $loggingConfiguration['coverage-crap4j'];
+            if (!isset($arguments['coverageCrap4J']) && $loggingConfiguration->hasCodeCoverageCrap4j()) {
+                $arguments['coverageCrap4J'] = $loggingConfiguration->codeCoverageCrap4j()->target()->path();
 
-                if (isset($loggingConfiguration['crap4jThreshold']) && !isset($arguments['crap4jThreshold'])) {
-                    $arguments['crap4jThreshold'] = $loggingConfiguration['crap4jThreshold'];
+                if (!isset($arguments['crap4jThreshold'])) {
+                    $arguments['crap4jThreshold'] = $loggingConfiguration->codeCoverageCrap4j()->threshold();
                 }
             }
 
-            if (isset($loggingConfiguration['coverage-html']) && !isset($arguments['coverageHtml'])) {
-                if (isset($loggingConfiguration['lowUpperBound']) && !isset($arguments['reportLowUpperBound'])) {
-                    $arguments['reportLowUpperBound'] = $loggingConfiguration['lowUpperBound'];
+            if (!isset($arguments['coverageHtml']) && $loggingConfiguration->hasCodeCoverageHtml()) {
+                $arguments['coverageHtml'] = $loggingConfiguration->codeCoverageHtml()->target()->path();
+
+                if (!isset($arguments['reportLowUpperBound'])) {
+                    $arguments['reportLowUpperBound'] = $loggingConfiguration->codeCoverageHtml()->lowUpperBound();
                 }
 
-                if (isset($loggingConfiguration['highLowerBound']) && !isset($arguments['reportHighLowerBound'])) {
-                    $arguments['reportHighLowerBound'] = $loggingConfiguration['highLowerBound'];
+                if (!isset($arguments['reportHighLowerBound'])) {
+                    $arguments['reportHighLowerBound'] = $loggingConfiguration->codeCoverageHtml()->highLowerBound();
                 }
-
-                $arguments['coverageHtml'] = $loggingConfiguration['coverage-html'];
             }
 
-            if (isset($loggingConfiguration['coverage-php']) && !isset($arguments['coveragePHP'])) {
-                $arguments['coveragePHP'] = $loggingConfiguration['coverage-php'];
+            if (!isset($arguments['coveragePHP']) && $loggingConfiguration->hasCodeCoveragePhp()) {
+                $arguments['coveragePHP'] = $loggingConfiguration->codeCoveragePhp()->target()->path();
             }
 
-            if (isset($loggingConfiguration['coverage-text']) && !isset($arguments['coverageText'])) {
-                $arguments['coverageText']                   = $loggingConfiguration['coverage-text'];
-                $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration['coverageTextShowUncoveredFiles'] ?? false;
-                $arguments['coverageTextShowOnlySummary']    = $loggingConfiguration['coverageTextShowOnlySummary'] ?? false;
+            if (!isset($arguments['coverageText']) && $loggingConfiguration->hasCodeCoverageText()) {
+                $arguments['coverageText']                   = $loggingConfiguration->codeCoverageText()->target()->path();
+                $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration->codeCoverageText()->showUncoveredFiles();
+                $arguments['coverageTextShowOnlySummary']    = $loggingConfiguration->codeCoverageText()->showOnlySummary();
             }
 
-            if (isset($loggingConfiguration['coverage-xml']) && !isset($arguments['coverageXml'])) {
-                $arguments['coverageXml'] = $loggingConfiguration['coverage-xml'];
+            if (!isset($arguments['coverageXml']) && $loggingConfiguration->hasCodeCoverageXml()) {
+                $arguments['coverageXml'] = $loggingConfiguration->codeCoverageXml()->target()->path();
             }
 
-            if (isset($loggingConfiguration['plain'])) {
+            if ($loggingConfiguration->hasPainText()) {
                 $arguments['listeners'][] = new DefaultResultPrinter(
-                    $loggingConfiguration['plain'],
+                    $loggingConfiguration->plainText()->target()->path(),
                     true
                 );
             }
 
-            if (isset($loggingConfiguration['teamcity']) && !isset($arguments['teamcityLogfile'])) {
-                $arguments['teamcityLogfile'] = $loggingConfiguration['teamcity'];
+            if (!isset($arguments['teamcityLogfile']) && $loggingConfiguration->hasTeamCity()) {
+                $arguments['teamcityLogfile'] = $loggingConfiguration->teamCity()->target()->path();
             }
 
-            if (isset($loggingConfiguration['junit']) && !isset($arguments['junitLogfile'])) {
-                $arguments['junitLogfile'] = $loggingConfiguration['junit'];
+            if (!isset($arguments['junitLogfile']) && $loggingConfiguration->hasJunit()) {
+                $arguments['junitLogfile'] = $loggingConfiguration->junit()->target()->path();
             }
 
-            if (isset($loggingConfiguration['testdox-html']) && !isset($arguments['testdoxHTMLFile'])) {
-                $arguments['testdoxHTMLFile'] = $loggingConfiguration['testdox-html'];
+            if (!isset($arguments['testdoxHTMLFile']) && $loggingConfiguration->hasTestDoxHtml()) {
+                $arguments['testdoxHTMLFile'] = $loggingConfiguration->testDoxHtml()->target()->path();
             }
 
-            if (isset($loggingConfiguration['testdox-text']) && !isset($arguments['testdoxTextFile'])) {
-                $arguments['testdoxTextFile'] = $loggingConfiguration['testdox-text'];
+            if (!isset($arguments['testdoxTextFile']) && $loggingConfiguration->hasTestDoxText()) {
+                $arguments['testdoxTextFile'] = $loggingConfiguration->testDoxText()->target()->path();
             }
 
-            if (isset($loggingConfiguration['testdox-xml']) && !isset($arguments['testdoxXMLFile'])) {
-                $arguments['testdoxXMLFile'] = $loggingConfiguration['testdox-xml'];
+            if (!isset($arguments['testdoxXMLFile']) && $loggingConfiguration->hasTestDoxXml()) {
+                $arguments['testdoxXMLFile'] = $loggingConfiguration->testDoxXml()->target()->path();
             }
 
             $testdoxGroupConfiguration = $arguments['configuration']->getTestdoxGroupConfiguration();
