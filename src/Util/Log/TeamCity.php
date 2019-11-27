@@ -324,6 +324,9 @@ final class TeamCity extends ResultPrinter
         return ' ' . \str_replace("\n", "\n ", $stackTrace);
     }
 
+    /**
+     * @param mixed $value
+     */
     private static function getPrimitiveValueAsString($value): ?string
     {
         if ($value === null) {
