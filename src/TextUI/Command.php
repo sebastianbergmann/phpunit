@@ -21,7 +21,7 @@ use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Configuration\Configuration;
-use PHPUnit\Util\ConfigurationGenerator;
+use PHPUnit\Util\Configuration\Generator;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Getopt;
@@ -419,7 +419,7 @@ class Command
                         $src = 'src';
                     }
 
-                    $generator = new ConfigurationGenerator;
+                    $generator = new Generator;
 
                     \file_put_contents(
                         'phpunit.xml',
