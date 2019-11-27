@@ -378,7 +378,7 @@ final class JUnit extends Printer implements TestListener
         return $this->document->saveXML();
     }
 
-    private function doAddFault(Test $test, \Throwable $t, $type): void
+    private function doAddFault(Test $test, \Throwable $t, string $type): void
     {
         if ($this->currentTestCase === null) {
             return;
