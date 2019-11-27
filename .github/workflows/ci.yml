@@ -37,18 +37,6 @@ jobs:
       - name: Run vimeo/psalm on internal code
         run: php7.3 ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
 
-  backward-compatibility:
-    name: Backward Compatibility
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@master
-
-      - name: Run roave/backward-compatibility-check
-        run: php7.3 ./tools/roave-backward-compatibility-check --from=42afe2b8b42077b26148272bd03da4ab6e46a072
-
   lint-xml-configuration:
     name: Lint XML Configuration
 
