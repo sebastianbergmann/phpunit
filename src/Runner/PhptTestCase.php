@@ -263,7 +263,7 @@ final class PhptTestCase implements SelfDescribing, Test
      *
      * @param array|string $content
      */
-    private function parseIniSection($content, $ini = []): array
+    private function parseIniSection($content, array $ini = []): array
     {
         if (\is_string($content)) {
             $content = \explode("\n", \trim($content));
