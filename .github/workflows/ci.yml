@@ -1,12 +1,8 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
 
 on:
-  pull_request:
-  push:
-    branches:
-      - 7.5
-    tags:
-      - "**"
+  - pull_request
+  - push
 
 name: CI
 
