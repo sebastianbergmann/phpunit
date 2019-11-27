@@ -106,6 +106,7 @@ final class Configuration
             if (!isset($result[$error->line])) {
                 $result[$error->line] = [];
             }
+
             $result[$error->line][] = \trim($error->message);
         }
 
