@@ -7,37 +7,28 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Configuration;
+namespace PHPUnit\Util\Configuration\Logging;
+
+use PHPUnit\Util\Configuration\File;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class CodeCoverageCrap4j
+final class PlainText
 {
     /**
      * @var File
      */
     private $target;
 
-    /**
-     * @var int
-     */
-    private $threshold;
-
-    public function __construct(File $target, int $threshold)
+    public function __construct(File $target)
     {
-        $this->target    = $target;
-        $this->threshold = $threshold;
+        $this->target = $target;
     }
 
     public function target(): File
     {
         return $this->target;
-    }
-
-    public function threshold(): int
-    {
-        return $this->threshold;
     }
 }

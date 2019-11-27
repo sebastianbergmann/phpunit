@@ -7,13 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Configuration;
+namespace PHPUnit\Util\Configuration\Logging\TestDox;
+
+use PHPUnit\Util\Configuration\File;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class PlainText
+final class Xml
 {
     /**
      * @var File

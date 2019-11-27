@@ -13,6 +13,19 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Clover;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Crap4j;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Html as CodeCoverageHtml;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Php as CodeCoveragePhp;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Text as CodeCoverageText;
+use PHPUnit\Util\Configuration\Logging\CodeCoverage\Xml as CodeCoverageXml;
+use PHPUnit\Util\Configuration\Logging\Junit;
+use PHPUnit\Util\Configuration\Logging\Logging;
+use PHPUnit\Util\Configuration\Logging\PlainText;
+use PHPUnit\Util\Configuration\Logging\TeamCity;
+use PHPUnit\Util\Configuration\Logging\TestDox\Html as TestDoxHtml;
+use PHPUnit\Util\Configuration\Logging\TestDox\Text as TestDoxText;
+use PHPUnit\Util\Configuration\Logging\TestDox\Xml as TestDoxXml;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\Xml;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
@@ -216,14 +229,14 @@ final class Configuration
 
             switch ($type) {
                 case 'coverage-clover':
-                    $codeCoverageClover = new CodeCoverageClover(
+                    $codeCoverageClover = new Clover(
                         new File($target)
                     );
 
                     break;
 
                 case 'coverage-crap4j':
-                    $codeCoverageCrap4j = new CodeCoverageCrap4j(
+                    $codeCoverageCrap4j = new Crap4j(
                         new File($target),
                         $this->getIntegerAttribute($log, 'threshold', 30)
                     );
