@@ -155,7 +155,7 @@ final class TeamCity extends ResultPrinter
         }
     }
 
-    public function printIgnoredTest($testName, \Throwable $t, float $time): void
+    public function printIgnoredTest(string $testName, \Throwable $t, float $time): void
     {
         $this->printEvent(
             'testIgnored',
