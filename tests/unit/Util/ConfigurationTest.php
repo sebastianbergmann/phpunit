@@ -335,27 +335,39 @@ final class ConfigurationTest extends TestCase
 
     public function testLoggingConfigurationIsReadCorrectly(): void
     {
-        $this->assertEquals(
-            [
-                'lowUpperBound'                  => '50',
-                'highLowerBound'                 => '90',
-                'coverage-html'                  => '/tmp/report',
-                'coverage-clover'                => '/tmp/clover.xml',
-                'coverage-crap4j'                => '/tmp/crap4j.xml',
-                'crap4jThreshold'                => 50,
-                'coverage-text'                  => '/tmp/coverage.txt',
-                'coverageTextShowUncoveredFiles' => true,
-                'coverageTextShowOnlySummary'    => true,
-                'json'                           => '/tmp/logfile.json',
-                'plain'                          => '/tmp/logfile.txt',
-                'tap'                            => '/tmp/logfile.tap',
-                'junit'                          => '/tmp/logfile.xml',
-                'testdox-html'                   => '/tmp/testdox.html',
-                'testdox-text'                   => '/tmp/testdox.txt',
-                'testdox-xml'                    => '/tmp/testdox.xml',
-            ],
-            $this->configuration->getLoggingConfiguration()
-        );
+        $loggingConfiguration = $this->configuration->getLoggingConfiguration();
+
+        $this->assertTrue($loggingConfiguration->hasCodeCoverageHtml());
+        $this->assertSame('/tmp/report', $loggingConfiguration->codeCoverageHtml()->target()->path());
+        $this->assertSame(50, $loggingConfiguration->codeCoverageHtml()->lowUpperBound());
+        $this->assertSame(90, $loggingConfiguration->codeCoverageHtml()->highLowerBound());
+
+        $this->assertTrue($loggingConfiguration->hasCodeCoverageClover());
+        $this->assertSame('/tmp/clover.xml', $loggingConfiguration->codeCoverageClover()->target()->path());
+
+        $this->assertTrue($loggingConfiguration->hasCodeCoverageCrap4j());
+        $this->assertSame('/tmp/crap4j.xml', $loggingConfiguration->codeCoverageCrap4j()->target()->path());
+        $this->assertSame(50, $loggingConfiguration->codeCoverageCrap4j()->threshold());
+
+        $this->assertTrue($loggingConfiguration->hasCodeCoverageText());
+        $this->assertSame('/tmp/coverage.txt', $loggingConfiguration->codeCoverageText()->target()->path());
+        $this->assertTrue($loggingConfiguration->codeCoverageText()->showUncoveredFiles());
+        $this->assertTrue($loggingConfiguration->codeCoverageText()->showOnlySummary());
+
+        $this->assertTrue($loggingConfiguration->hasPainText());
+        $this->assertSame('/tmp/logfile.txt', $loggingConfiguration->plainText()->target()->path());
+
+        $this->assertTrue($loggingConfiguration->hasJunit());
+        $this->assertSame('/tmp/logfile.xml', $loggingConfiguration->junit()->target()->path());
+
+        $this->assertTrue($loggingConfiguration->hasTestDoxHtml());
+        $this->assertSame('/tmp/testdox.html', $loggingConfiguration->testDoxHtml()->target()->path());
+
+        $this->assertTrue($loggingConfiguration->hasTestDoxText());
+        $this->assertSame('/tmp/testdox.txt', $loggingConfiguration->testDoxText()->target()->path());
+
+        $this->assertTrue($loggingConfiguration->hasTestDoxXml());
+        $this->assertSame('/tmp/testdox.xml', $loggingConfiguration->testDoxXml()->target()->path());
     }
 
     /**

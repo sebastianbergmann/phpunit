@@ -187,9 +187,20 @@ final class Configuration
         return ExtensionCollection::fromArray($listeners);
     }
 
-    public function getLoggingConfiguration(): array
+    public function getLoggingConfiguration(): Logging
     {
-        $result = [];
+        $codeCoverageClover = null;
+        $codeCoverageCrap4j = null;
+        $codeCoverageHtml   = null;
+        $codeCoveragePhp    = null;
+        $codeCoverageText   = null;
+        $codeCoverageXml    = null;
+        $junit              = null;
+        $plainText          = null;
+        $teamCity           = null;
+        $testDoxHtml        = null;
+        $testDoxText        = null;
+        $testDoxXml         = null;
 
         foreach ($this->xpath->query('logging/log') as $log) {
             \assert($log instanceof \DOMElement);
@@ -203,47 +214,112 @@ final class Configuration
 
             $target = $this->toAbsolutePath($target);
 
-            if ($type === 'coverage-html') {
-                if ($log->hasAttribute('lowUpperBound')) {
-                    $result['lowUpperBound'] = $this->getInteger(
-                        (string) $log->getAttribute('lowUpperBound'),
-                        50
+            switch ($type) {
+                case 'coverage-clover':
+                    $codeCoverageClover = new CodeCoverageClover(
+                        new File($target)
                     );
-                }
 
-                if ($log->hasAttribute('highLowerBound')) {
-                    $result['highLowerBound'] = $this->getInteger(
-                        (string) $log->getAttribute('highLowerBound'),
-                        90
-                    );
-                }
-            } elseif ($type === 'coverage-crap4j') {
-                if ($log->hasAttribute('threshold')) {
-                    $result['crap4jThreshold'] = $this->getInteger(
-                        (string) $log->getAttribute('threshold'),
-                        30
-                    );
-                }
-            } elseif ($type === 'coverage-text') {
-                if ($log->hasAttribute('showUncoveredFiles')) {
-                    $result['coverageTextShowUncoveredFiles'] = $this->getBoolean(
-                        (string) $log->getAttribute('showUncoveredFiles'),
-                        false
-                    );
-                }
+                    break;
 
-                if ($log->hasAttribute('showOnlySummary')) {
-                    $result['coverageTextShowOnlySummary'] = $this->getBoolean(
-                        (string) $log->getAttribute('showOnlySummary'),
-                        false
+                case 'coverage-crap4j':
+                    $codeCoverageCrap4j = new CodeCoverageCrap4j(
+                        new File($target),
+                        $this->getIntegerAttribute($log, 'threshold', 30)
                     );
-                }
+
+                    break;
+
+                case 'coverage-html':
+                    $codeCoverageHtml = new CodeCoverageHtml(
+                        new Directory($target),
+                        $this->getIntegerAttribute($log, 'lowUpperBound', 50),
+                        $this->getIntegerAttribute($log, 'highLowerBound', 90)
+                    );
+
+                    break;
+
+                case 'coverage-php':
+                    $codeCoveragePhp = new CodeCoveragePhp(
+                        new File($target)
+                    );
+
+                    break;
+
+                case 'coverage-text':
+                    $codeCoverageText = new CodeCoverageText(
+                        new File($target),
+                        $this->getBooleanAttribute($log, 'showUncoveredFiles', false),
+                        $this->getBooleanAttribute($log, 'showOnlySummary', false)
+                    );
+
+                    break;
+
+                case 'coverage-xml':
+                    $codeCoverageXml = new CodeCoverageXml(
+                        new Directory($target)
+                    );
+
+                    break;
+
+                case 'plain':
+                    $plainText = new PlainText(
+                        new File($target)
+                    );
+
+                    break;
+
+                case 'junit':
+                    $junit = new Junit(
+                        new File($target)
+                    );
+
+                    break;
+
+                case 'teamcity':
+                    $teamCity = new TeamCity(
+                        new File($target)
+                    );
+
+                    break;
+
+                case 'testdox-html':
+                    $testDoxHtml = new TestDoxHtml(
+                        new File($target)
+                    );
+
+                    break;
+
+                case 'testdox-text':
+                    $testDoxText = new TestDoxText(
+                        new File($target)
+                    );
+
+                    break;
+
+                case 'testdox-xml':
+                    $testDoxXml = new TestDoxXml(
+                        new File($target)
+                    );
+
+                    break;
             }
-
-            $result[$type] = $target;
         }
 
-        return $result;
+        return new Logging(
+            $codeCoverageClover,
+            $codeCoverageCrap4j,
+            $codeCoverageHtml,
+            $codeCoveragePhp,
+            $codeCoverageText,
+            $codeCoverageXml,
+            $junit,
+            $plainText,
+            $teamCity,
+            $testDoxHtml,
+            $testDoxText,
+            $testDoxXml
+        );
     }
 
     public function getPHPConfiguration(): array
