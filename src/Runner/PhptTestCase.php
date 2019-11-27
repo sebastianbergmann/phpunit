@@ -261,7 +261,7 @@ final class PhptTestCase implements SelfDescribing, Test
     /**
      * Parse --INI-- section key value pairs and return as array.
      *
-     * @param array|string
+     * @param array|string $content
      */
     private function parseIniSection($content, $ini = []): array
     {
