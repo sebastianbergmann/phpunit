@@ -197,6 +197,9 @@ class DefaultPhpProcess extends AbstractPhpProcess
         return ['stdout' => $stdout, 'stderr' => $stderr];
     }
 
+    /**
+     * @param resource $pipe
+     */
     protected function process($pipe, string $job): void
     {
         \fwrite($pipe, $job);
