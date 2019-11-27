@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Util\Configuration;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class GroupCollectionIterator implements \Countable, \Iterator
 {
     /**

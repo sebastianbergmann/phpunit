@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\Hook;
 
 /**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
 final class Extension
