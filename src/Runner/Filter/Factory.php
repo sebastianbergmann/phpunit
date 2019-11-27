@@ -51,6 +51,8 @@ final class Factory
             $iterator       = $class->newInstance($iterator, $args, $suite);
         }
 
+        \assert($iterator instanceof FilterIterator);
+
         return $iterator;
     }
 }
