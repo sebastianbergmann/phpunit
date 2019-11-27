@@ -137,9 +137,7 @@
                     <xs:enumeration value="coverage-crap4j"/>
                     <xs:enumeration value="coverage-xml"/>
                     <xs:enumeration value="coverage-php"/>
-                    <xs:enumeration value="json"/>
                     <xs:enumeration value="plain"/>
-                    <xs:enumeration value="tap"/>
                     <xs:enumeration value="teamcity"/>
                     <xs:enumeration value="junit"/>
                     <xs:enumeration value="testdox-html"/>
