@@ -26,7 +26,7 @@ final class Factory
     private $filters = [];
 
     /**
-     * @param  array|string $args
+     * @param array|string $args
      *
      * @throws InvalidArgumentException
      */
