@@ -1852,9 +1852,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @throws \Prophecy\Exception\Doubler\DoubleException
      * @throws \Prophecy\Exception\Doubler\InterfaceNotFoundException
      *
-     * @psalm-template RealInstanceType of object
-     * @psalm-param class-string<RealInstanceType>|null $classOrInterface
-     * @psalm-return ObjectProphecy<RealInstanceType>
+     * @psalm-param class-string|null $classOrInterface
      */
     protected function prophesize($classOrInterface = null): ObjectProphecy
     {
