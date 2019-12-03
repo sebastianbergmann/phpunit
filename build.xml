@@ -34,14 +34,6 @@
     </target>
 
     <target name="install-dependencies" unless="dependencies-installed" depends="-dependencies-installed,validate-composer-json" description="Install dependencies with Composer">
-        <copy file="${basedir}/composer.json" tofile="${basedir}/build/tmp/composer.json"/>
-
-        <exec executable="${basedir}/tools/composer" taskname="composer">
-            <arg value="require"/>
-            <arg value="--no-update"/>
-            <arg value="phpunit/php-invoker:^2.0"/>
-        </exec>
-
         <exec executable="${basedir}/tools/composer" taskname="composer">
             <arg value="update"/>
             <arg value="--no-interaction"/>
@@ -49,8 +41,6 @@
             <arg value="--no-ansi"/>
             <arg value="--no-suggest"/>
         </exec>
-
-        <move file="${basedir}/build/tmp/composer.json" tofile="${basedir}/composer.json"/>
     </target>
 
     <target name="check-dependencies" description="Performs check for outdated dependencies">

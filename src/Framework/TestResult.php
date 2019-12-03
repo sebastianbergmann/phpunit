@@ -662,7 +662,7 @@ final class TestResult implements Countable
             if (!$test instanceof WarningTestCase &&
                 $this->enforceTimeLimit &&
                 ($this->defaultTimeLimit || $test->getSize() != \PHPUnit\Util\Test::UNKNOWN) &&
-                \extension_loaded('pcntl') && \class_exists(Invoker::class)) {
+                \extension_loaded('pcntl')) {
                 switch ($test->getSize()) {
                     case \PHPUnit\Util\Test::SMALL:
                         $_timeout = $this->timeoutForSmallTests;
