@@ -63,7 +63,7 @@ final class LogicalAnd extends Constraint
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
-     * @return null|bool
+     * @return ?bool
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {
