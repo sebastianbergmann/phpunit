@@ -52,10 +52,8 @@ final class IsIdentical extends Constraint
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return ?bool
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false)
+    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
         if (\is_float($this->value) && \is_float($other) &&
             !\is_infinite($this->value) && !\is_infinite($other) &&

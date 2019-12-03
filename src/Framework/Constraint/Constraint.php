@@ -37,10 +37,8 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @return ?bool
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false)
+    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
         $success = false;
 
@@ -55,6 +53,8 @@ abstract class Constraint implements Countable, SelfDescribing
         if (!$success) {
             $this->fail($other, $description);
         }
+
+        return null;
     }
 
     /**

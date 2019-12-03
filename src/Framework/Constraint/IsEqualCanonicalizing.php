@@ -37,7 +37,7 @@ final class IsEqualCanonicalizing extends Constraint
      *
      * @throws ExpectationFailedException
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false)
+    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
         // If $this->value and $other are identical, they are also equal.
         // This is the most common path and will allow us to skip
