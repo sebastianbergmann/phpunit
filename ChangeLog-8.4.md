@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 8.4 release series are documented in this fil
 ### Fixed
 
 * Fixed [#3922](https://github.com/sebastianbergmann/phpunit/issues/3922): Wrong test case executed with test case inheritance
+* Fixed [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 
 ## [8.4.2] - 2019-10-28
 
