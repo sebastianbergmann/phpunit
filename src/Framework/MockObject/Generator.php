@@ -468,11 +468,11 @@ final class Generator
     /**
      * @return \ReflectionMethod[]
      */
-    private function getInterfaceOwnMethods(string $interfaceName): array
+    private function userDefinedInterfaceMethods(string $interfaceName): array
     {
         try {
-            $reflect = new \ReflectionClass($interfaceName);
             // @codeCoverageIgnoreStart
+            $interface = new \ReflectionClass($interfaceName);
         } catch (\ReflectionException $e) {
             throw new RuntimeException(
                 $e->getMessage(),
@@ -484,10 +484,12 @@ final class Generator
 
         $methods = [];
 
-        foreach ($reflect->getMethods() as $method) {
-            if ($method->getDeclaringClass()->getName() === $interfaceName) {
-                $methods[] = $method;
+        foreach ($interface->getMethods() as $method) {
+            if (!$method->isUserDefined()) {
+                continue;
             }
+
+            $methods[] = $method;
         }
 
         return $methods;
@@ -632,8 +634,8 @@ final class Generator
                 }
                 // @codeCoverageIgnoreEnd
 
-                foreach ($this->getInterfaceOwnMethods($_mockClassName['fullClassName']) as $methodTrait) {
-                    $methodName = $methodTrait->getName();
+                foreach ($this->userDefinedInterfaceMethods($_mockClassName['fullClassName']) as $method) {
+                    $methodName = $method->getName();
 
                     if ($class->hasMethod($methodName)) {
                         try {
@@ -654,13 +656,13 @@ final class Generator
                     }
 
                     $mockMethods->addMethods(
-                        MockMethod::fromReflection($methodTrait, $callOriginalMethods, $cloneArguments)
+                        MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments)
                     );
                 }
 
                 $_mockClassName = $this->generateClassName(
                     $actualClassName,
-                    '',
+                    $_mockClassName['className'],
                     'Mock_'
                 );
             }
@@ -712,7 +714,7 @@ final class Generator
             foreach ($explicitMethods as $methodName) {
                 if ($class !== null && $class->hasMethod($methodName)) {
                     try {
-                        $methodTrait = $class->getMethod($methodName);
+                        $method = $class->getMethod($methodName);
                         // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new RuntimeException(
@@ -723,9 +725,9 @@ final class Generator
                     }
                     // @codeCoverageIgnoreEnd
 
-                    if ($this->canMockMethod($methodTrait)) {
+                    if ($this->canMockMethod($method)) {
                         $mockMethods->addMethods(
-                            MockMethod::fromReflection($methodTrait, $callOriginalMethods, $cloneArguments)
+                            MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments)
                         );
                     }
                 } else {
@@ -748,10 +750,10 @@ final class Generator
             $configurable[] = new ConfigurableMethod($mockMethod->getName(), $mockMethod->getReturnType());
         }
 
-        $methodTrait = '';
+        $method = '';
 
         if (!$mockMethods->hasMethod('method') && (!isset($class) || !$class->hasMethod('method'))) {
-            $methodTrait = \PHP_EOL . '    use \PHPUnit\Framework\MockObject\Method;';
+            $method = \PHP_EOL . '    use \PHPUnit\Framework\MockObject\Method;';
         }
 
         $cloneTrait = '';
@@ -776,7 +778,7 @@ final class Generator
                 'clone'             => $cloneTrait,
                 'mock_class_name'   => $_mockClassName['className'],
                 'mocked_methods'    => $mockedMethods,
-                'method'            => $methodTrait,
+                'method'            => $method,
             ]
         );
 
