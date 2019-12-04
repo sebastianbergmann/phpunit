@@ -508,11 +508,11 @@ final class Generator
     /**
      * @return \ReflectionMethod[]
      */
-    private function getInterfaceOwnMethods(string $interfaceName): array
+    private function userDefinedInterfaceMethods(string $interfaceName): array
     {
         try {
-            $reflect = new \ReflectionClass($interfaceName);
             // @codeCoverageIgnoreStart
+            $interface = new \ReflectionClass($interfaceName);
         } catch (\ReflectionException $e) {
             throw new RuntimeException(
                 $e->getMessage(),
@@ -524,10 +524,12 @@ final class Generator
 
         $methods = [];
 
-        foreach ($reflect->getMethods() as $method) {
-            if ($method->getDeclaringClass()->getName() === $interfaceName) {
-                $methods[] = $method;
+        foreach ($interface->getMethods() as $method) {
+            if (!$method->isUserDefined()) {
+                continue;
             }
+
+            $methods[] = $method;
         }
 
         return $methods;
@@ -637,18 +639,18 @@ final class Generator
                 }
                 // @codeCoverageIgnoreEnd
 
-                foreach ($this->getClassMethods($_type) as $methodTrait) {
-                    if (\in_array($methodTrait, $interfaceMethods, true)) {
+                foreach ($this->getClassMethods($_type) as $method) {
+                    if (\in_array($method, $interfaceMethods, true)) {
                         throw new RuntimeException(
                             \sprintf(
                                 'Duplicate method "%s" not allowed.',
-                                $methodTrait
+                                $method
                             )
                         );
                     }
 
                     try {
-                        $methodReflection = $typeClass->getMethod($methodTrait);
+                        $methodReflection = $typeClass->getMethod($method);
                         // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new RuntimeException(
@@ -664,7 +666,7 @@ final class Generator
                             MockMethod::fromReflection($methodReflection, $callOriginalMethods, $cloneArguments)
                         );
 
-                        $interfaceMethods[] = $methodTrait;
+                        $interfaceMethods[] = $method;
                     }
                 }
             }
@@ -736,8 +738,8 @@ final class Generator
                 }
                 // @codeCoverageIgnoreEnd
 
-                foreach ($this->getInterfaceOwnMethods($mockClassName['fullClassName']) as $methodTrait) {
-                    $methodName = $methodTrait->getName();
+                foreach ($this->userDefinedInterfaceMethods($mockClassName['fullClassName']) as $method) {
+                    $methodName = $method->getName();
 
                     if ($class->hasMethod($methodName)) {
                         try {
@@ -758,13 +760,13 @@ final class Generator
                     }
 
                     $mockMethods->addMethods(
-                        MockMethod::fromReflection($methodTrait, $callOriginalMethods, $cloneArguments)
+                        MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments)
                     );
                 }
 
                 $mockClassName = $this->generateClassName(
                     $actualClassName,
-                    '',
+                    $mockClassName['className'],
                     'Mock_'
                 );
             }
@@ -816,7 +818,7 @@ final class Generator
             foreach ($explicitMethods as $methodName) {
                 if ($class !== null && $class->hasMethod($methodName)) {
                     try {
-                        $methodTrait = $class->getMethod($methodName);
+                        $method = $class->getMethod($methodName);
                         // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new RuntimeException(
@@ -827,9 +829,9 @@ final class Generator
                     }
                     // @codeCoverageIgnoreEnd
 
-                    if ($this->canMockMethod($methodTrait)) {
+                    if ($this->canMockMethod($method)) {
                         $mockMethods->addMethods(
-                            MockMethod::fromReflection($methodTrait, $callOriginalMethods, $cloneArguments)
+                            MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments)
                         );
                     }
                 } else {
@@ -852,10 +854,10 @@ final class Generator
             $configurable[] = new ConfigurableMethod($mockMethod->getName(), $mockMethod->getReturnType());
         }
 
-        $methodTrait = '';
+        $method = '';
 
         if (!$mockMethods->hasMethod('method') && (!isset($class) || !$class->hasMethod('method'))) {
-            $methodTrait = \PHP_EOL . '    use \PHPUnit\Framework\MockObject\Method;';
+            $method = \PHP_EOL . '    use \PHPUnit\Framework\MockObject\Method;';
         }
 
         $cloneTrait = '';
@@ -880,7 +882,7 @@ final class Generator
                 'clone'             => $cloneTrait,
                 'mock_class_name'   => $mockClassName['className'],
                 'mocked_methods'    => $mockedMethods,
-                'method'            => $methodTrait,
+                'method'            => $method,
             ]
         );
 
