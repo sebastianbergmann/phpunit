@@ -10,8 +10,17 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-..                                                                  2 / 2 (100%)
+FF                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s
 
-OK (2 tests, 0 assertions)
+There were 2 failures:
+
+1) SeparateProcessesTest::testFoo
+Test was run in child process and ended unexpectedly
+
+2) SeparateProcessesTest::testBar
+Test was run in child process and ended unexpectedly
+
+FAILURES!
+Tests: 2, Assertions: 0, Failures: 2.
