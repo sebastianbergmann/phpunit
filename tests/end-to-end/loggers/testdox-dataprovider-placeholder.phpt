@@ -1,5 +1,5 @@
 --TEST--
-phpunit --testdox --colors=always --verbose RouterTest ../unit/Util/ColorTest.php
+phpunit --testdox --colors=always --verbose ../unit/Util/TestDox/ColorTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [

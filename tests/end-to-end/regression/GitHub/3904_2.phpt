@@ -15,4 +15,5 @@ try {
 }
 ?>
 --EXPECTF--
+Warning: Calling PHPUnit with a class name is deprecated and will be removed in PHPUnit 9.
 Class 'Issue3904' could not be found in '%s'.

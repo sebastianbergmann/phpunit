@@ -7,7 +7,6 @@ $arguments = [
     '--debug',
     '--verbose',
     '--order-by=no-depends,reverse',
-    'MultiDependencyTest',
     \realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

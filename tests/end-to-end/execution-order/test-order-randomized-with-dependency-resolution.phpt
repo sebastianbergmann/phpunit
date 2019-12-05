@@ -7,7 +7,6 @@ $arguments = [
     '--verbose',
     '--resolve-dependencies',     // keep coverage for legacy CLI option
     '--order-by=depends,random',
-    'MultiDependencyTest',
     \realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

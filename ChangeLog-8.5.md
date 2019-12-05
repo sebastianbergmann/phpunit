@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ### Changed
 
+* Implemented [#3860](https://github.com/sebastianbergmann/phpunit/pull/3860): Deprecate invoking PHPUnit commandline test runner with just a class name
 * Implemented [#3950](https://github.com/sebastianbergmann/phpunit/issues/3950): Deprecate optional parameters of `assertFileEquals()` etc.
 * Implemented [#3955](https://github.com/sebastianbergmann/phpunit/issues/3955): Deprecate support for doubling multiple interfaces
 

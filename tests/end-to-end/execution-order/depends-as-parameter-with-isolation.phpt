@@ -1,11 +1,10 @@
 --TEST--
-phpunit --process-isolation StackTest _files/StackTest.php
+phpunit --process-isolation _files/StackTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--no-configuration',
     '--process-isolation',
-    'StackTest',
     \realpath(__DIR__ . '/_files/StackTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

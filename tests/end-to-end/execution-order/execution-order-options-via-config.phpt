@@ -1,12 +1,11 @@
 --TEST--
-phpunit -c ../_files/configuration_stop_on_defect.xml MultiDependencyTest ./tests/_files/MultiDependencyTest.php
+phpunit -c ../_files/configuration_stop_on_defect.xml ./tests/_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
     '--debug',
     '-c',
     \realpath(__DIR__ . '/../../_files/configuration_execution_order_options.xml'),
-    'MultiDependencyTest',
     \realpath(__DIR__ . '/_files/MultiDependencyTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
