@@ -46,8 +46,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      - name: "Install PHP with extensions"
+        uses: shivammathur/setup-php@master
+        with:
+          php-version: 7.3
+          coverage: none
+          extension-csv: intl
+
       - name: Run roave/backward-compatibility-check
-        run: php7.3 ./tools/roave-backward-compatibility-check --from=42afe2b8b42077b26148272bd03da4ab6e46a072
+        run: php ./tools/roave-backward-compatibility-check --from=42afe2b8b42077b26148272bd03da4ab6e46a072
 
   lint-xml-configuration:
     name: Lint XML Configuration
