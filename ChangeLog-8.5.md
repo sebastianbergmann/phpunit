@@ -14,5 +14,9 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * Implemented [#3950](https://github.com/sebastianbergmann/phpunit/issues/3950): Deprecate optional parameters of `assertFileEquals()` etc.
 * Implemented [#3955](https://github.com/sebastianbergmann/phpunit/issues/3955): Deprecate support for doubling multiple interfaces
 
-[8.5.0]: https://github.com/sebastianbergmann/phpunit/compare/8.4...8.5
+### Fixed
 
+* Fixed [#3953](https://github.com/sebastianbergmann/phpunit/issues/3953): Code Coverage for test executed in isolation does not work when the PHAR is used
+* Fixed [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
+
+[8.5.0]: https://github.com/sebastianbergmann/phpunit/compare/8.4.3...8.5
