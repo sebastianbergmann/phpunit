@@ -10,8 +10,9 @@ require __DIR__ . '/../../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-Warning: Calling PHPUnit with a class name is deprecated and will be removed in PHPUnit 9.
 PHPUnit %s by Sebastian Bergmann and contributors.
+
+Warning:       Invocation with class name is deprecated
 
 .                                                                   1 / 1 (100%)
 

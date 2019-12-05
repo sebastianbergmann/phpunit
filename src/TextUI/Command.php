@@ -53,6 +53,7 @@ class Command
         'useDefaultConfiguration' => true,
         'loadedExtensions'        => [],
         'notLoadedExtensions'     => [],
+        'warnings'                => [],
     ];
 
     /**
@@ -782,9 +783,8 @@ class Command
         if (isset($this->options[1][0]) &&
             \substr($this->options[1][0], -5, 5) !== '.phpt' &&
             \substr($this->options[1][0], -4, 4) !== '.php' &&
-            \substr($this->options[1][0], -1, 1) !== '/'
-        ) {
-            print 'Warning: Calling PHPUnit with a class name is deprecated and will be removed in PHPUnit 9.' . \PHP_EOL;
+            \substr($this->options[1][0], -1, 1) !== '/') {
+            $this->arguments['warnings'][] = 'Invocation with class name is deprecated';
         }
 
         if (!isset($this->arguments['test'])) {
