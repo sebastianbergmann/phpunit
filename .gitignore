@@ -18,3 +18,4 @@
 /tests/end-to-end/*.php
 /vendor
 .phpunit.result.cache
+.psalm
