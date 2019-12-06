@@ -48,9 +48,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: "Fetch tags"
-        run: git fetch --tags
-
       - name: "Install PHP with extensions"
         uses: shivammathur/setup-php@master
         with:
