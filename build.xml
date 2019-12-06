@@ -101,7 +101,7 @@
             <arg value="sb@sebastian-bergmann.de"/>
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
-            <arg path="${basedir}/build/phpunit-library-${version}.phar"/>
+            <arg path="${basedir}/build/artifacts/phpunit-library-${version}.phar"/>
         </exec>
 
         <exec executable="gpg" failonerror="true">
@@ -109,7 +109,7 @@
             <arg value="sb@sebastian-bergmann.de"/>
             <arg value="--armor"/>
             <arg value="--detach-sign"/>
-            <arg path="${basedir}/build/phpunit-${version}.phar"/>
+            <arg path="${basedir}/build/artifacts/phpunit-${version}.phar"/>
         </exec>
     </target>
 
