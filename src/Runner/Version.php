@@ -54,13 +54,4 @@ final class Version
     {
         return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann and contributors.';
     }
-
-    public static function getReleaseChannel(): string
-    {
-        if (\strpos(self::$pharVersion, '-') !== false) {
-            return '-nightly';
-        }
-
-        return '';
-    }
 }
