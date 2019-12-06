@@ -30,7 +30,7 @@ class Version
         }
 
         if (self::$version === null) {
-            $version       = new VersionId('7.5.17', \dirname(__DIR__, 2));
+            $version       = new VersionId('7.5.18', \dirname(__DIR__, 2));
             self::$version = $version->getVersion();
         }
 
