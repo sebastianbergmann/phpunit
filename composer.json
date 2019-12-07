@@ -19,6 +19,7 @@
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit/issues"
     },
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": "^7.3",
@@ -35,6 +36,7 @@
         "phpspec/prophecy": "^1.8.1",
         "phpunit/php-code-coverage": "^7.0.7",
         "phpunit/php-file-iterator": "^2.0.2",
+        "phpunit/php-invoker": "^3.0",
         "phpunit/php-text-template": "^1.2.1",
         "phpunit/php-timer": "^2.1.2",
         "sebastian/comparator": "^3.0.2",
@@ -58,7 +60,6 @@
         "sort-packages": true
     },
     "suggest": {
-        "phpunit/php-invoker": "^2.0.0",
         "ext-soap": "*",
         "ext-xdebug": "*"
     },
