@@ -331,8 +331,7 @@ final class TestRunner extends BaseTestRunner
             }
         }
         
-        if(isset($arguments['warnings']))
-        {
+        if (isset($arguments['warnings'])) {
             foreach ($arguments['warnings'] as $warning) {
                 $this->writeMessage('Warning', $warning);
             }
