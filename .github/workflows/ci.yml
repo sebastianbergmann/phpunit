@@ -99,7 +99,7 @@ jobs:
         uses: shivammathur/setup-php@v1
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: xdebug
+          coverage: pcov
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1
 
