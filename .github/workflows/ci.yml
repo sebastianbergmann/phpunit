@@ -53,7 +53,7 @@ jobs:
         with:
           php-version: 7.3
           coverage: none
-          extension-csv: intl
+          extensions: intl
 
       - name: Run roave/backward-compatibility-check
         run: php ./tools/roave-backward-compatibility-check --from=8.5.0
@@ -100,8 +100,8 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: xdebug
-          extension-csv: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-          ini-values-csv: assert.exception=1, zend.assertions=1
+          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
+          ini-values: assert.exception=1, zend.assertions=1
 
       - name: "Cache dependencies installed with composer"
         uses: actions/cache@v1
