@@ -78,8 +78,8 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: xdebug
-          extension-csv: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-          ini-values-csv: assert.exception=1, zend.assertions=1
+          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
+          ini-values: assert.exception=1, zend.assertions=1
 
       - name: "Cache dependencies installed with composer"
         uses: actions/cache@v1
