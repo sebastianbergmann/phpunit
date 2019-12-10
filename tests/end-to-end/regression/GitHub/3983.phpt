@@ -1,5 +1,5 @@
 --TEST--
-phpunit 3983/
+phpunit 3983
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
