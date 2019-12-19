@@ -67,10 +67,10 @@ EOF
 
     public function testConstraintArrayHasKey0(): void
     {
-        $contraint = new ArrayHasKey(0);
+        $constraint = new ArrayHasKey(0);
 
         try {
-            $contraint->evaluate(0, '');
+            $constraint->evaluate(0, '');
         } catch (ExpectationFailedException  $e) {
             $this->assertEquals(
                 <<<EOF
