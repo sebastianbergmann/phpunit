@@ -1305,7 +1305,9 @@ final class TestRunner extends BaseTestRunner
 
     /**
      * @template T as Printer
+     *
      * @param  class-string<T> $class
+     *
      * @return T
      */
     private function createPrinter(string $class, array $arguments): Printer
