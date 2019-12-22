@@ -284,7 +284,7 @@ final class TestRunner extends BaseTestRunner
                     }
                     // @codeCoverageIgnoreEnd
 
-                    if (is_subclass_of($arguments['printer'], ResultPrinter::class)) {
+                    if (\is_subclass_of($arguments['printer'], ResultPrinter::class)) {
                         $this->printer = $this->createPrinter($arguments['printer'], $arguments);
                     }
                 }
