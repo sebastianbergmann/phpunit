@@ -1306,7 +1306,7 @@ final class TestRunner extends BaseTestRunner
     /**
      * @template T as Printer
      *
-     * @param  class-string<T> $class
+     * @param class-string<T> $class
      *
      * @return T
      */
