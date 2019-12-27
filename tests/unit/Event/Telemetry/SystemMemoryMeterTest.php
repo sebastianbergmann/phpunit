@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
+use function memory_get_peak_usage;
 use function memory_get_usage;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +31,7 @@ final class SystemMemoryMeterTest extends TestCase
     {
         $memoryMeter = new SystemMemoryMeter();
 
-        $peakMemoryUsage = MemoryUsage::fromBytes(memory_get_usage(true));
+        $peakMemoryUsage = MemoryUsage::fromBytes(memory_get_peak_usage(true));
 
         $this->assertEquals($peakMemoryUsage, $memoryMeter->peakMemoryUsage());
     }
