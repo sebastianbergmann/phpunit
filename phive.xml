@@ -4,5 +4,5 @@
   <phar name="php-cs-fixer" version="^2.16" installed="2.16.1" location="./tools/php-cs-fixer" copy="true"/>
   <phar name="phpdox" version="^0.12" installed="0.12.0" location="./tools/phpdox" copy="true"/>
   <phar name="phploc" version="^4.0" installed="4.0.1" location="./tools/phploc" copy="true"/>
-  <phar name="psalm" version="^3.6" installed="3.7.2" location="./tools/psalm" copy="true"/>
+  <phar name="psalm" version="^3.6" installed="3.8.1" location="./tools/psalm" copy="true"/>
 </phive>
