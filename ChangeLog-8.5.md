@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ## [8.5.1] - 2019-12-25
 
+### Changed
+
+* `eval-stdin.php` can now only be executed with `cli` and `phpdbg`
+
 ### Fixed
 
 * Fixed [#3983](https://github.com/sebastianbergmann/phpunit/issues/3983): Deprecation warning given too eagerly
