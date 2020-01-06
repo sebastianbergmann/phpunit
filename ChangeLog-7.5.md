@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 7.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [7.5.19] - 2020-01-06
+
+### Changed
+
+* `eval-stdin.php` can now only be executed with `cli` and `phpdbg`
+
 ## [7.5.18] - 2019-12-06
 
 ### Fixed
@@ -159,6 +165,7 @@ All notable changes of the PHPUnit 7.5 release series are documented in this fil
 * Fixed [#3429](https://github.com/sebastianbergmann/phpunit/pull/3429): Inefficient loop in `getHookMethods()`
 * Fixed [#3437](https://github.com/sebastianbergmann/phpunit/pull/3437): JUnit logger skips PHPT tests
 
+[7.5.19]: https://github.com/sebastianbergmann/phpunit/compare/7.5.18...7.5.19
 [7.5.18]: https://github.com/sebastianbergmann/phpunit/compare/7.5.17...7.5.18
 [7.5.17]: https://github.com/sebastianbergmann/phpunit/compare/7.5.16...7.5.17
 [7.5.16]: https://github.com/sebastianbergmann/phpunit/compare/7.5.15...7.5.16
