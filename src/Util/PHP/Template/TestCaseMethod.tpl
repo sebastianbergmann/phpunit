@@ -1,6 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
+use PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage;
 
 if (!defined('STDOUT')) {
     // php://stdout does not obey output buffering. Any output would break
