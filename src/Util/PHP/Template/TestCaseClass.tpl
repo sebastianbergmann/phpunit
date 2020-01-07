@@ -1,5 +1,5 @@
 <?php
-use SebastianBergmann\CodeCoverage\CodeCoverage;
+use PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage;
 
 if (!defined('STDOUT')) {
     // php://stdout does not obey output buffering. Any output would break
