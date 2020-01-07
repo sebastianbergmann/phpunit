@@ -1,5 +1,5 @@
 <?php
-use SebastianBergmann\CodeCoverage\CodeCoverage;
+use PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage;
 
 $composerAutoload = {composerAutoload};
 $phar             = {phar};
@@ -22,7 +22,7 @@ if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
     require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
 }
 
-if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
+if (class_exists('PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage')) {
     $coverage =	new CodeCoverage(null);
     $coverage->start(__FILE__);
 }
