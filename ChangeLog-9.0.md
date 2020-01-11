@@ -27,6 +27,7 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 * Implemented [#3951](https://github.com/sebastianbergmann/phpunit/issues/3951): Remove optional parameters of `assertFileEquals()` etc.
 * Implemented [#3956](https://github.com/sebastianbergmann/phpunit/issues/3956): Remove support for doubling multiple interfaces
 * Implemented [#3957](https://github.com/sebastianbergmann/phpunit/issues/3957): Remove `expectExceptionMessageRegExp()`
+* Implemented [#4012](https://github.com/sebastianbergmann/phpunit/issues/4012): Remove class name as CLI option
 
 [9.0.0]: https://github.com/sebastianbergmann/phpunit/compare/8.5...master
 
