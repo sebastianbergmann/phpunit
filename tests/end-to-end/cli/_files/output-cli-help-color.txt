@@ -1,5 +1,5 @@
 [33mUsage:[0m
-  phpunit [options] UnitTest [UnitTest.php]
+  phpunit [options] UnitTest.php
   phpunit [options] <directory>
 
 [33mCode Coverage Options:[0m
