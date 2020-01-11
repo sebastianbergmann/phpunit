@@ -21,7 +21,7 @@ final class Help
 
     private const HELP_TEXT = [
         'Usage'                 => [
-            ['text' => 'phpunit [options] UnitTest [UnitTest.php]'],
+            ['text' => 'phpunit [options] UnitTest.php'],
             ['text' => 'phpunit [options] <directory>'],
         ],
         'Code Coverage Options' => [
