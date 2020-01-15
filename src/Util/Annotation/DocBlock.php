@@ -327,8 +327,11 @@ final class DocBlock
      * Constants are specified using a starting '@'. For example: @ClassName::CONST_NAME
      *
      * If the constant is not found the string is used as is to ensure maximum BC.
+     *
+     * NOTE: This should not have a return type.
+     * If it did, then '(at)expectedExceptionCode ClassName::SOME_INT_CONSTANT' would cause a TypeError.
      */
-    private function parseAnnotationContent(string $message): string
+    private function parseAnnotationContent(string $message)
     {
         if (\defined($message) &&
             (\strpos($message, '::') !== false && \substr_count($message, '::') + 1 === 2)) {
