@@ -479,6 +479,30 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     public function expectException(string $exception): void
     {
+        // @codeCoverageIgnoreStart
+        switch ($exception) {
+            case Deprecated::class:
+                $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Deprecated is deprecated and will be removed in PHPUnit 10. Use expectDeprecation() instead.');
+
+            break;
+
+            case Error::class:
+                $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Error is deprecated and will be removed in PHPUnit 10. Use expectError() instead.');
+
+            break;
+
+            case Notice::class:
+                $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Notice is deprecated and will be removed in PHPUnit 10. Use expectNotice() instead.');
+
+            break;
+
+            case WarningError::class:
+                $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Warning is deprecated and will be removed in PHPUnit 10. Use expectWarning() instead.');
+
+            break;
+        }
+        // @codeCoverageIgnoreEnd
+
         $this->expectedException = $exception;
     }
 
@@ -519,7 +543,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectDeprecation(): void
     {
-        $this->expectException(Deprecated::class);
+        $this->expectedException = Deprecated::class;
     }
 
     public function expectDeprecationMessage(string $message): void
@@ -534,7 +558,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectNotice(): void
     {
-        $this->expectException(Notice::class);
+        $this->expectedException = Notice::class;
     }
 
     public function expectNoticeMessage(string $message): void
@@ -549,7 +573,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectWarning(): void
     {
-        $this->expectException(WarningError::class);
+        $this->expectedException = WarningError::class;
     }
 
     public function expectWarningMessage(string $message): void
@@ -564,7 +588,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectError(): void
     {
-        $this->expectException(Error::class);
+        $this->expectedException = Error::class;
     }
 
     public function expectErrorMessage(string $message): void

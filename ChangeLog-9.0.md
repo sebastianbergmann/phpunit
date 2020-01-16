@@ -18,6 +18,7 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 * Implemented [#3426](https://github.com/sebastianbergmann/phpunit/issues/3426): Clean up `assertContains()` and `assertNotContains()`
 * Implemented [#3495](https://github.com/sebastianbergmann/phpunit/issues/3495): Remove `assertArraySubset()`
 * Implemented [#3523](https://github.com/sebastianbergmann/phpunit/issues/3523): Remove the `setUseErrorHandler()` method
+* Implemented [#3776](https://github.com/sebastianbergmann/phpunit/issues/3776): Deprecate `expectException(PHPUnit\Framework\Error\*)`
 * Implemented [#3951](https://github.com/sebastianbergmann/phpunit/issues/3951): Remove optional parameters of `assertFileEquals()` etc.
 * Implemented [#3956](https://github.com/sebastianbergmann/phpunit/issues/3956): Remove support for doubling multiple interfaces
 * Implemented [#3957](https://github.com/sebastianbergmann/phpunit/issues/3957): Remove `expectExceptionMessageRegExp()`

@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Error;
 
+/**
+ * @internal
+ */
 final class Notice extends Error
 {
 }
