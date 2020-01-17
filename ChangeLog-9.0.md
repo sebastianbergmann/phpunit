@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 
 ## [9.0.0] - 2020-02-07
 
+### Added
+
+* Implemented [#3797](https://github.com/sebastianbergmann/phpunit/pull/3797): Add support for multiple `--whitelist` options
+
 ### Changed
 
 * Implemented [#3746](https://github.com/sebastianbergmann/phpunit/issues/3746): Improve developer experience of global wrapper functions for assertions
