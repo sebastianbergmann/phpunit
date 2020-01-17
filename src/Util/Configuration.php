@@ -1051,7 +1051,7 @@ final class Configuration
             $phpVersionOperator = (string) $node->getAttribute('phpVersionOperator');
         }
 
-        return \version_compare(\PHP_VERSION, $phpVersion, $phpVersionOperator);
+        return (bool) \version_compare(\PHP_VERSION, $phpVersion, $phpVersionOperator);
     }
 
     /**
