@@ -126,12 +126,7 @@ abstract class BaseTestRunner
 
             $test = $suiteMethod->invoke(null, $testClass->getName());
         } catch (\ReflectionException $e) {
-            try {
-                $test = new TestSuite($testClass);
-            } catch (Exception $e) {
-                $test = new TestSuite;
-                $test->setName($suiteClassName); // TODO
-            }
+            $test = new TestSuite($testClass);
         }
 
         $this->clearStatus();
