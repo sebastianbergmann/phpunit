@@ -99,6 +99,7 @@ abstract class BaseTestRunner
         if (\is_file($suiteClassFile) && \substr($suiteClassFile, -5, 5) === '.phpt') {
             $suite = new TestSuite;
             $suite->addTestFile($suiteClassFile);
+
             return $suite;
         }
 
