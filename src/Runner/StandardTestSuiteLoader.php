@@ -22,9 +22,9 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
      * @throws Exception
      * @throws \PHPUnit\Framework\Exception
      */
-    public function load(string $suiteClassName, string $suiteClassFile = ''): \ReflectionClass
+    public function load(string $suiteClassFile): \ReflectionClass
     {
-        $suiteClassName = \str_replace('.php', '', $suiteClassName);
+        $suiteClassName = \str_replace('.php', '', \basename($suiteClassFile));
         $filename       = null;
 
         if (empty($suiteClassFile)) {

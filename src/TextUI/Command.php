@@ -172,7 +172,6 @@ class Command
         } else {
             $suite = $runner->getTest(
                 $this->arguments['test'],
-                $this->arguments['testFile'],
                 $this->arguments['testSuffixes']
             );
         }
@@ -783,38 +782,23 @@ class Command
             $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
         }
 
-        if (!isset($this->arguments['test'])) {
-            if (isset($this->options[1][0])) {
-                $this->arguments['test'] = $this->options[1][0];
+        if (
+            !isset($this->arguments['test']) &&
+            isset($this->options[1][0])
+        ) {
+            $test = \realpath($this->options[1][0]);
+            if ($test === false) {
+                $this->exitWithErrorMessage(
+                    \sprintf(
+                        'Cannot open file "%s".',
+                        $this->options[1][0]
+                    )
+                );
             }
+            $this->arguments['test'] = $test;
 
-            if (isset($this->options[1][1])) {
-                $testFile = \realpath($this->options[1][1]);
-
-                if ($testFile === false) {
-                    $this->exitWithErrorMessage(
-                        \sprintf(
-                            'Cannot open file "%s".',
-                            $this->options[1][1]
-                        )
-                    );
-                }
-                $this->arguments['testFile'] = $testFile;
-            } else {
-                $this->arguments['testFile'] = '';
-            }
-
-            if (isset($this->arguments['test']) &&
-                \is_file($this->arguments['test']) &&
-                \strrpos($this->arguments['test'], '.') !== false &&
-                \substr($this->arguments['test'], -5, 5) !== '.phpt') {
-                $this->arguments['testFile'] = \realpath($this->arguments['test']);
-                $this->arguments['test']     = \substr($this->arguments['test'], 0, \strrpos($this->arguments['test'], '.'));
-            }
-
-            if (isset($this->arguments['test']) &&
-                \is_string($this->arguments['test']) &&
-                \substr($this->arguments['test'], -5, 5) === '.phpt') {
+            // TODO: should be moved to BaseTestRunner::getTest
+            if (\substr($this->arguments['test'], -5, 5) === '.phpt') {
                 $suite = new TestSuite;
                 $suite->addTestFile($this->arguments['test']);
                 $this->arguments['test'] = $suite;

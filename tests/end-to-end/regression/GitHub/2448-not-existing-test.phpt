@@ -10,4 +10,6 @@ PHPUnit\TextUI\Command::main(false);
 
 @unlink(__DIR__ . '/2448/.phpunit.result.cache');
 --EXPECTF--
+PHPUnit %s by Sebastian Bergmann and contributors.
+
 Cannot open file "Test.php".
