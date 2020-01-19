@@ -60,12 +60,12 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
 
         if (!\class_exists($suiteClassName, false)) {
             throw new Exception(
-                 \sprintf(
+                \sprintf(
                     "Class '%s' could not be found in '%s'.",
                     $suiteClassName,
                     $suiteClassFile
                 )
-             );
+            );
         }
 
         try {
