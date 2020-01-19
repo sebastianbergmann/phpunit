@@ -81,16 +81,16 @@ abstract class BaseTestRunner
      *
      * @throws Exception
      */
-    public function getTest(string $suiteClassName, string $suiteClassFile = '', $suffixes = ''): ?Test
+    public function getTest(string $suiteClassFile, $suffixes = ''): ?Test
     {
-        if (empty($suiteClassFile) && \is_dir($suiteClassName) && !\is_file($suiteClassName . '.php')) {
+        if (\is_dir($suiteClassFile) && !\is_file($suiteClassFile . '.php')) {
             /** @var string[] $files */
             $files = (new FileIteratorFacade)->getFilesAsArray(
-                $suiteClassName,
+                $suiteClassFile,
                 $suffixes
             );
 
-            $suite = new TestSuite($suiteClassName);
+            $suite = new TestSuite($suiteClassFile);
             $suite->addTestFiles($files);
 
             return $suite;
@@ -98,7 +98,6 @@ abstract class BaseTestRunner
 
         try {
             $testClass = $this->loadSuiteClass(
-                $suiteClassName,
                 $suiteClassFile
             );
         } catch (Exception $e) {
@@ -124,7 +123,7 @@ abstract class BaseTestRunner
                 $test = new TestSuite($testClass);
             } catch (Exception $e) {
                 $test = new TestSuite;
-                $test->setName($suiteClassName);
+                $test->setName($suiteClassName); // TODO
             }
         }
 
@@ -136,9 +135,9 @@ abstract class BaseTestRunner
     /**
      * Returns the loaded ReflectionClass for a suite name.
      */
-    protected function loadSuiteClass(string $suiteClassName, string $suiteClassFile = ''): \ReflectionClass
+    protected function loadSuiteClass(string $suiteClassFile): \ReflectionClass
     {
-        return $this->getLoader()->load($suiteClassName, $suiteClassFile);
+        return $this->getLoader()->load($suiteClassFile);
     }
 
     /**

@@ -7,4 +7,6 @@ Test incorrect testFile is reported
 require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
+PHPUnit %s by Sebastian Bergmann and contributors.
+
 Cannot open file "nonExistingFile.php".
