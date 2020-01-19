@@ -11,7 +11,6 @@ namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\FileLoader;
-use PHPUnit\Util\Filesystem;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -49,6 +48,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
 
         if (!\class_exists($suiteClassName, false)) {
             $offset = 0 - \strlen($suiteClassName);
+
             foreach ($loadedClasses as $loadedClass) {
                 if (\substr($loadedClass, $offset) === $suiteClassName) {
                     $suiteClassName = $loadedClass;
@@ -59,13 +59,13 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         }
 
         if (!\class_exists($suiteClassName, false)) {
-             throw new Exception(
-                \sprintf(
+            throw new Exception(
+                 \sprintf(
                     "Class '%s' could not be found in '%s'.",
                     $suiteClassName,
                     $suiteClassFile
                 )
-            );
+             );
         }
 
         try {
