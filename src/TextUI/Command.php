@@ -796,13 +796,6 @@ class Command
                 );
             }
             $this->arguments['test'] = $test;
-
-            // TODO: should be moved to BaseTestRunner::getTest
-            if (\substr($this->arguments['test'], -5, 5) === '.phpt') {
-                $suite = new TestSuite;
-                $suite->addTestFile($this->arguments['test']);
-                $this->arguments['test'] = $suite;
-            }
         }
 
         if (isset($includePath)) {
