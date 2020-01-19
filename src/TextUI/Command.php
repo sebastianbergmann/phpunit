@@ -787,6 +787,7 @@ class Command
             isset($this->options[1][0])
         ) {
             $test = \realpath($this->options[1][0]);
+
             if ($test === false) {
                 $this->exitWithErrorMessage(
                     \sprintf(
