@@ -6,10 +6,6 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/AbstractTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-try {
-    PHPUnit\TextUI\Command::main();
-} catch (\Exception $e) {
-    echo $e->getMessage();
-}    
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 Class 'AbstractTest' could not be found in '%s/tests/_files/AbstractTest.php'.
