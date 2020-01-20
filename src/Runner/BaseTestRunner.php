@@ -103,7 +103,6 @@ abstract class BaseTestRunner
             return $suite;
         }
 
-
         try {
             $testClass = $this->loadSuiteClass(
                 $suiteClassFile
