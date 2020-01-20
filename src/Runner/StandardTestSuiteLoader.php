@@ -18,7 +18,6 @@ use PHPUnit\Util\FileLoader;
 final class StandardTestSuiteLoader implements TestSuiteLoader
 {
     /**
-     * @throws Exception
      * @throws \PHPUnit\Framework\Exception
      */
     public function load(string $suiteClassFile): \ReflectionClass
