@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\Framework\ClassNotFoundException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\FileLoader;
 
@@ -18,7 +19,7 @@ use PHPUnit\Util\FileLoader;
 final class StandardTestSuiteLoader implements TestSuiteLoader
 {
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Framework\ClassNotFoundException
      */
     public function load(string $suiteClassFile): \ReflectionClass
     {
@@ -35,13 +36,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         }
 
         if (empty($loadedClasses)) {
-            throw new Exception(
-                \sprintf(
-                    "Class '%s' could not be found in '%s'.",
-                    $suiteClassName,
-                    $suiteClassFile
-                )
-            );
+            throw ClassNotFoundException::byFilename($suiteClassName, $suiteClassFile);
         }
 
         if (!\class_exists($suiteClassName, false)) {
@@ -57,20 +52,14 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         }
 
         if (!\class_exists($suiteClassName, false)) {
-            throw new Exception(
-                \sprintf(
-                    "Class '%s' could not be found in '%s'.",
-                    $suiteClassName,
-                    $suiteClassFile
-                )
-            );
+            throw ClassNotFoundException::byFilename($suiteClassName, $suiteClassFile);
         }
 
         try {
             $class = new \ReflectionClass($suiteClassName);
             // @codeCoverageIgnoreStart
         } catch (\ReflectionException $e) {
-            throw new Exception(
+            throw new \Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e
@@ -87,7 +76,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                 $method = $class->getMethod('suite');
                 // @codeCoverageIgnoreStart
             } catch (\ReflectionException $e) {
-                throw new Exception(
+                throw new \Exception(
                     $e->getMessage(),
                     (int) $e->getCode(),
                     $e
@@ -100,13 +89,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             }
         }
 
-        throw new Exception(
-            \sprintf(
-                "Class '%s' could not be found in '%s'.",
-                $suiteClassName,
-                $suiteClassFile
-            )
-        );
+        throw ClassNotFoundException::byFilename($suiteClassName, $suiteClassFile);
     }
 
     public function reload(\ReflectionClass $aClass): \ReflectionClass
