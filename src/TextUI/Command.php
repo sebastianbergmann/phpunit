@@ -786,9 +786,9 @@ class Command
             !isset($this->arguments['test']) &&
             isset($this->options[1][0])
         ) {
-            $test = \realpath($this->options[1][0]);
+            $this->arguments['test'] = \realpath($this->options[1][0]);
 
-            if ($test === false) {
+            if ($this->arguments['test'] === false) {
                 $this->exitWithErrorMessage(
                     \sprintf(
                         'Cannot open file "%s".',
@@ -796,7 +796,6 @@ class Command
                     )
                 );
             }
-            $this->arguments['test'] = $test;
         }
 
         if (isset($includePath)) {
