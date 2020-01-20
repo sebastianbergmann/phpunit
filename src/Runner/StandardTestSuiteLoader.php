@@ -24,12 +24,11 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
     public function load(string $suiteClassFile): \ReflectionClass
     {
         $suiteClassName = \str_replace('.php', '', \basename($suiteClassFile));
-        $filename       = null;
 
         if (!\class_exists($suiteClassName, false)) {
             $loadedClasses = \get_declared_classes();
 
-            $filename = FileLoader::checkAndLoad($suiteClassFile);
+            FileLoader::checkAndLoad($suiteClassFile);
 
             $loadedClasses = \array_values(
                 \array_diff(\get_declared_classes(), $loadedClasses)
