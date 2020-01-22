@@ -9,7 +9,6 @@
  */
 use PHPUnit\TextUI\DefaultResultPrinter;
 
-/** @todo */
 class CustomPrinter extends DefaultResultPrinter
 {
 }
