@@ -14,7 +14,7 @@ use DOMXPath;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteSorter;
-use PHPUnit\TextUI\ResultPrinter;
+use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
@@ -473,9 +473,9 @@ final class Configuration
             /* only allow boolean for compatibility with previous versions
               'always' only allowed from command line */
             if ($this->getBoolean($root->getAttribute('colors'), false)) {
-                $result['colors'] = ResultPrinter::COLOR_AUTO;
+                $result['colors'] = DefaultResultPrinter::COLOR_AUTO;
             } else {
-                $result['colors'] = ResultPrinter::COLOR_NEVER;
+                $result['colors'] = DefaultResultPrinter::COLOR_NEVER;
             }
         }
 

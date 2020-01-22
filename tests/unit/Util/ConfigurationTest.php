@@ -12,7 +12,7 @@ namespace PHPUnit\Util;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
-use PHPUnit\TextUI\ResultPrinter;
+use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 
 /**
@@ -45,7 +45,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(ResultPrinter::COLOR_AUTO, $configurationValues['colors']);
+        $this->assertEquals(DefaultResultPrinter::COLOR_AUTO, $configurationValues['colors']);
     }
 
     public function testShouldReadColorsWhenFalseInConfigurationFile(): void
@@ -54,7 +54,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
     public function testShouldReadColorsWhenEmptyInConfigurationFile(): void
@@ -63,7 +63,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
     public function testShouldReadColorsWhenInvalidInConfigurationFile(): void
@@ -72,7 +72,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($configurationFilename);
         $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
 
-        $this->assertEquals(ResultPrinter::COLOR_NEVER, $configurationValues['colors']);
+        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues['colors']);
     }
 
     public function testInvalidConfigurationGeneratesValidationErrors(): void

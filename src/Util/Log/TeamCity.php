@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
-use PHPUnit\TextUI\ResultPrinter;
+use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\Exception;
 use PHPUnit\Util\Filter;
 use SebastianBergmann\Comparator\ComparisonFailure;
@@ -26,7 +26,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TeamCity extends ResultPrinter
+final class TeamCity extends DefaultResultPrinter
 {
     /**
      * @var bool

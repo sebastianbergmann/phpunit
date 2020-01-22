@@ -9,11 +9,17 @@
  */
 namespace PHPUnit\Util\TestDox;
 
+use PHPUnit\Framework\TestResult;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TextResultPrinter extends ResultPrinter
 {
+    public function printResult(TestResult $result): void
+    {
+    }
+
     /**
      * Handler for 'start class' event.
      */

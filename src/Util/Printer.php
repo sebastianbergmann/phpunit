@@ -12,7 +12,7 @@ namespace PHPUnit\Util;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class Printer
+class Printer
 {
     /**
      * @var resource

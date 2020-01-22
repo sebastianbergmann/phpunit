@@ -18,12 +18,12 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteSorter;
-use PHPUnit\TextUI\ResultPrinter;
+use PHPUnit\TextUI\DefaultResultPrinter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class TestDoxPrinter extends ResultPrinter
+class TestDoxPrinter extends DefaultResultPrinter
 {
     /**
      * @var NamePrettifier

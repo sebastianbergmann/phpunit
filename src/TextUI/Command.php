@@ -15,7 +15,6 @@ use PharIo\Manifest\ManifestLoader;
 use PharIo\Version\Version as PharIoVersion;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -285,7 +284,7 @@ class Command
         foreach ($this->options[0] as $option) {
             switch ($option[0]) {
                 case '--colors':
-                    $this->arguments['colors'] = $option[1] ?: ResultPrinter::COLOR_AUTO;
+                    $this->arguments['colors'] = $option[1] ?: DefaultResultPrinter::COLOR_AUTO;
 
                     break;
 
@@ -1010,7 +1009,7 @@ class Command
     protected function handlePrinter(string $printerClass, string $printerFile = '')
     {
         if (!\class_exists($printerClass, false)) {
-            if ($printerFile == '') {
+            if ($printerFile === '') {
                 $printerFile = Filesystem::classNameToFilename(
                     $printerClass
                 );
@@ -1044,22 +1043,12 @@ class Command
             // @codeCoverageIgnoreEnd
         }
 
-        if (!$class->implementsInterface(TestListener::class)) {
+        if (!$class->implementsInterface(ResultPrinter::class)) {
             $this->exitWithErrorMessage(
                 \sprintf(
                     'Could not use "%s" as printer: class does not implement %s',
                     $printerClass,
-                    TestListener::class
-                )
-            );
-        }
-
-        if (!$class->isSubclassOf(Printer::class)) {
-            $this->exitWithErrorMessage(
-                \sprintf(
-                    'Could not use "%s" as printer: class does not extend %s',
-                    $printerClass,
-                    Printer::class
+                    ResultPrinter::class
                 )
             );
         }

@@ -259,7 +259,7 @@
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
-  <file src="src/TextUI/ResultPrinter.php">
+  <file src="src/TextUI/DefaultResultPrinter.php">
     <PossiblyUndefinedVariable occurrences="1">
       <code>$color</code>
     </PossiblyUndefinedVariable>

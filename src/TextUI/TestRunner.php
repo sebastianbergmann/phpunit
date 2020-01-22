@@ -83,7 +83,7 @@ final class TestRunner extends BaseTestRunner
     private $loader;
 
     /**
-     * @var Printer&TestListener
+     * @var ResultPrinter
      */
     private $printer;
 
@@ -269,11 +269,16 @@ final class TestRunner extends BaseTestRunner
 
         if ($this->printer === null) {
             if (isset($arguments['printer'])) {
-                if ($arguments['printer'] instanceof Printer && $arguments['printer'] instanceof TestListener) {
+                if ($arguments['printer'] instanceof ResultPrinter) {
                     $this->printer = $arguments['printer'];
                 } elseif (\is_string($arguments['printer']) && \class_exists($arguments['printer'], false)) {
                     try {
-                        new \ReflectionClass($arguments['printer']);
+                        $reflector = new \ReflectionClass($arguments['printer']);
+
+                        if ($reflector->implementsInterface(ResultPrinter::class)) {
+                            $this->printer = $this->createPrinter($arguments['printer'], $arguments);
+                        }
+
                         // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new Exception(
@@ -283,13 +288,9 @@ final class TestRunner extends BaseTestRunner
                         );
                     }
                     // @codeCoverageIgnoreEnd
-
-                    if (\is_subclass_of($arguments['printer'], ResultPrinter::class)) {
-                        $this->printer = $this->createPrinter($arguments['printer'], $arguments);
-                    }
                 }
             } else {
-                $this->printer = $this->createPrinter(ResultPrinter::class, $arguments);
+                $this->printer = $this->createPrinter(DefaultResultPrinter::class, $arguments);
             }
         }
 
@@ -630,10 +631,7 @@ final class TestRunner extends BaseTestRunner
         }
 
         $result->flushListeners();
-
-        if ($this->printer instanceof ResultPrinter) {
-            $this->printer->printResult($result);
-        }
+        $this->printer->printResult($result);
 
         if (isset($codeCoverage)) {
             if (isset($arguments['coverageClover'])) {
@@ -1160,7 +1158,7 @@ final class TestRunner extends BaseTestRunner
             }
 
             if (isset($loggingConfiguration['plain'])) {
-                $arguments['listeners'][] = new ResultPrinter(
+                $arguments['listeners'][] = new DefaultResultPrinter(
                     $loggingConfiguration['plain'],
                     true
                 );
@@ -1206,7 +1204,7 @@ final class TestRunner extends BaseTestRunner
         $arguments['beStrictAboutResourceUsageDuringSmallTests']          = $arguments['beStrictAboutResourceUsageDuringSmallTests'] ?? false;
         $arguments['cacheResult']                                         = $arguments['cacheResult'] ?? true;
         $arguments['cacheTokens']                                         = $arguments['cacheTokens'] ?? false;
-        $arguments['colors']                                              = $arguments['colors'] ?? ResultPrinter::COLOR_DEFAULT;
+        $arguments['colors']                                              = $arguments['colors'] ?? DefaultResultPrinter::COLOR_DEFAULT;
         $arguments['columns']                                             = $arguments['columns'] ?? 80;
         $arguments['convertDeprecationsToExceptions']                     = $arguments['convertDeprecationsToExceptions'] ?? true;
         $arguments['convertErrorsToExceptions']                           = $arguments['convertErrorsToExceptions'] ?? true;
@@ -1301,16 +1299,9 @@ final class TestRunner extends BaseTestRunner
         $this->messagePrinted = true;
     }
 
-    /**
-     * @template T as Printer
-     *
-     * @param class-string<T> $class
-     *
-     * @return T
-     */
-    private function createPrinter(string $class, array $arguments): Printer
+    private function createPrinter(string $class, array $arguments): ResultPrinter
     {
-        return new $class(
+        $object = new $class(
             (isset($arguments['stderr']) && $arguments['stderr'] === true) ? 'php://stderr' : null,
             $arguments['verbose'],
             $arguments['colors'],
@@ -1318,6 +1309,10 @@ final class TestRunner extends BaseTestRunner
             $arguments['columns'],
             $arguments['reverseList']
         );
+
+        \assert($object instanceof ResultPrinter);
+
+        return $object;
     }
 
     private function codeCoverageGenerationStart(string $format): void
