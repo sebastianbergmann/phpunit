@@ -766,11 +766,6 @@ final class TestRunner extends BaseTestRunner
         return $result;
     }
 
-    public function setPrinter(ResultPrinter $resultPrinter): void
-    {
-        $this->printer = $resultPrinter;
-    }
-
     /**
      * Returns the loader to be used.
      */
