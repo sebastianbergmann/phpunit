@@ -705,7 +705,7 @@ final class TestRunner extends BaseTestRunner
             if (isset($arguments['coverageText'])) {
                 if ($arguments['coverageText'] === 'php://stdout') {
                     $outputStream = $this->printer;
-                    $colors       = $arguments['colors'] && $arguments['colors'] !== ResultPrinter::COLOR_NEVER;
+                    $colors       = $arguments['colors'] && $arguments['colors'] !== DefaultResultPrinter::COLOR_NEVER;
                 } else {
                     $outputStream = new Printer($arguments['coverageText']);
                     $colors       = false;

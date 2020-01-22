@@ -9,12 +9,11 @@
  */
 namespace PHPUnit\Test;
 
-use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestListenerDefaultImplementation;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\TextUI\ResultPrinter;
 
-final class NullPrinter implements ResultPrinter, TestListener
+final class NullPrinter implements ResultPrinter
 {
     use TestListenerDefaultImplementation;
 
