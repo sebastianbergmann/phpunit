@@ -152,7 +152,7 @@ final class Configuration
         if ($nodes->length === 1) {
             $node = $nodes->item(0);
 
-            \assert($node instanceof \DOMNode);
+            \assert($node instanceof \DOMElement);
 
             if ($node->hasAttribute('addUncoveredFilesFromWhitelist')) {
                 $addUncoveredFilesFromWhitelist = (bool) $this->getBoolean(
