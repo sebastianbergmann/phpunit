@@ -289,7 +289,7 @@
       <code>Invoker</code>
     </UndefinedClass>
   </file>
-  <file src="src/Util/Configuration.php">
+  <file src="src/TextUI/Configuration/Configuration.php">
     <ArgumentTypeCoercion occurrences="4">
       <code>$extension</code>
       <code>$listener</code>
