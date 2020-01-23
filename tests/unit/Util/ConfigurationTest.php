@@ -496,7 +496,7 @@ final class ConfigurationTest extends TestCase
                 'defaultTimeLimit'                           => 123,
                 'enforceTimeLimit'                           => false,
                 'extensionsDirectory'                        => '/tmp',
-                'printerClass'                               => 'PHPUnit\TextUI\ResultPrinter',
+                'printerClass'                               => DefaultResultPrinter::class,
                 'testSuiteLoaderClass'                       => StandardTestSuiteLoader::class,
                 'defaultTestSuite'                           => 'My Test Suite',
                 'verbose'                                    => false,
