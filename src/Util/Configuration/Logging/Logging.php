@@ -200,7 +200,7 @@ final class Logging
         return $this->junit;
     }
 
-    public function hasPainText(): bool
+    public function hasPlainText(): bool
     {
         return $this->plainText !== null;
     }

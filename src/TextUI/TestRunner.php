@@ -960,7 +960,7 @@ final class TestRunner extends BaseTestRunner
                 $arguments['coverageXml'] = $loggingConfiguration->codeCoverageXml()->target()->path();
             }
 
-            if ($loggingConfiguration->hasPainText()) {
+            if ($loggingConfiguration->hasPlainText()) {
                 $arguments['listeners'][] = new DefaultResultPrinter(
                     $loggingConfiguration->plainText()->target()->path(),
                     true

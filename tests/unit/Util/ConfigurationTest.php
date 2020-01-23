@@ -354,7 +354,7 @@ final class ConfigurationTest extends TestCase
         $this->assertTrue($loggingConfiguration->codeCoverageText()->showUncoveredFiles());
         $this->assertTrue($loggingConfiguration->codeCoverageText()->showOnlySummary());
 
-        $this->assertTrue($loggingConfiguration->hasPainText());
+        $this->assertTrue($loggingConfiguration->hasPlainText());
         $this->assertSame('/tmp/logfile.txt', $loggingConfiguration->plainText()->target()->path());
 
         $this->assertTrue($loggingConfiguration->hasJunit());
