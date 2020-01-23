@@ -31,7 +31,7 @@ use PHPUnit\Runner\TestListenerAdapter;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
-use PHPUnit\Util\Configuration\Configuration;
+use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;

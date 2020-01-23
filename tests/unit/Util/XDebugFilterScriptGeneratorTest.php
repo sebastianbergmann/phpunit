@@ -10,11 +10,11 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Configuration\Filter as FilterConfiguration;
-use PHPUnit\Util\Configuration\FilterDirectory;
-use PHPUnit\Util\Configuration\FilterDirectoryCollection;
-use PHPUnit\Util\Configuration\FilterFile;
-use PHPUnit\Util\Configuration\FilterFileCollection;
+use PHPUnit\TextUI\Configuration\Filter as FilterConfiguration;
+use PHPUnit\TextUI\Configuration\FilterDirectory;
+use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
+use PHPUnit\TextUI\Configuration\FilterFile;
+use PHPUnit\TextUI\Configuration\FilterFileCollection;
 
 /**
  * @small
