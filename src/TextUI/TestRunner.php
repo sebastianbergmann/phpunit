@@ -32,6 +32,7 @@ use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\TextUI\Configuration\Handler;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
@@ -836,7 +837,7 @@ final class TestRunner extends BaseTestRunner
         $arguments['listeners'] = $arguments['listeners'] ?? [];
 
         if (isset($arguments['configuration'])) {
-            $arguments['configuration']->handlePHPConfiguration();
+            (new Handler)->handlePhp($arguments['configuration']->getPHPConfiguration());
 
             $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
 

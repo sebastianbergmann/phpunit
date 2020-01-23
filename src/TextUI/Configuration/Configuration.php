@@ -335,47 +335,52 @@ final class Configuration
         );
     }
 
-    public function getPHPConfiguration(): array
+    public function getPHPConfiguration(): Php
     {
-        $result = [
-            'include_path' => [],
-            'ini'          => [],
-            'const'        => [],
-            'var'          => [],
-            'env'          => [],
-            'post'         => [],
-            'get'          => [],
-            'cookie'       => [],
-            'server'       => [],
-            'files'        => [],
-            'request'      => [],
-        ];
+        $includePaths = [];
 
         foreach ($this->xpath->query('php/includePath') as $includePath) {
             $path = (string) $includePath->textContent;
 
             if ($path) {
-                $result['include_path'][] = $this->toAbsolutePath($path);
+                $includePaths[] = new Directory($this->toAbsolutePath($path));
             }
         }
+
+        $iniSettings = [];
 
         foreach ($this->xpath->query('php/ini') as $ini) {
             \assert($ini instanceof \DOMElement);
 
-            $name  = (string) $ini->getAttribute('name');
-            $value = (string) $ini->getAttribute('value');
-
-            $result['ini'][$name]['value'] = $value;
+            $iniSettings[] = new IniSetting(
+                (string) $ini->getAttribute('name'),
+                (string) $ini->getAttribute('value')
+            );
         }
+
+        $constants = [];
 
         foreach ($this->xpath->query('php/const') as $const) {
             \assert($const instanceof \DOMElement);
 
-            $name  = (string) $const->getAttribute('name');
             $value = (string) $const->getAttribute('value');
 
-            $result['const'][$name]['value'] = $this->getBoolean($value, $value);
+            $constants[] = new Constant(
+                (string) $const->getAttribute('name'),
+                $this->getBoolean($value, $value)
+            );
         }
+
+        $variables = [
+            'var'     => [],
+            'env'     => [],
+            'post'    => [],
+            'get'     => [],
+            'cookie'  => [],
+            'server'  => [],
+            'files'   => [],
+            'request' => [],
+        ];
 
         foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($this->xpath->query('php/' . $array) as $var) {
@@ -383,104 +388,38 @@ final class Configuration
 
                 $name     = (string) $var->getAttribute('name');
                 $value    = (string) $var->getAttribute('value');
+                $force    = false;
                 $verbatim = false;
 
-                if ($var->hasAttribute('verbatim')) {
-                    $verbatim                          = $this->getBoolean($var->getAttribute('verbatim'), false);
-                    $result[$array][$name]['verbatim'] = $verbatim;
+                if ($var->hasAttribute('force')) {
+                    $force = (bool) $this->getBoolean($var->getAttribute('force'), false);
                 }
 
-                if ($var->hasAttribute('force')) {
-                    $force                          = $this->getBoolean($var->getAttribute('force'), false);
-                    $result[$array][$name]['force'] = $force;
+                if ($var->hasAttribute('verbatim')) {
+                    $verbatim = $this->getBoolean($var->getAttribute('verbatim'), false);
                 }
 
                 if (!$verbatim) {
                     $value = $this->getBoolean($value, $value);
                 }
 
-                $result[$array][$name]['value'] = $value;
+                $variables[$array][] = new Variable($name, $value, $force);
             }
         }
 
-        return $result;
-    }
-
-    public function handlePHPConfiguration(): void
-    {
-        $configuration = $this->getPHPConfiguration();
-
-        if (!empty($configuration['include_path'])) {
-            \ini_set(
-                'include_path',
-                \implode(\PATH_SEPARATOR, $configuration['include_path']) .
-                \PATH_SEPARATOR .
-                \ini_get('include_path')
-            );
-        }
-
-        foreach ($configuration['ini'] as $name => $data) {
-            $value = $data['value'];
-
-            if (\defined($value)) {
-                $value = (string) \constant($value);
-            }
-
-            \ini_set($name, $value);
-        }
-
-        foreach ($configuration['const'] as $name => $data) {
-            $value = $data['value'];
-
-            if (!\defined($name)) {
-                \define($name, $value);
-            }
-        }
-
-        foreach (['var', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
-            /*
-             * @see https://github.com/sebastianbergmann/phpunit/issues/277
-             */
-            switch ($array) {
-                case 'var':
-                    $target = &$GLOBALS;
-
-                    break;
-
-                case 'server':
-                    $target = &$_SERVER;
-
-                    break;
-
-                default:
-                    $target = &$GLOBALS['_' . \strtoupper($array)];
-
-                    break;
-            }
-
-            foreach ($configuration[$array] as $name => $data) {
-                $target[$name] = $data['value'];
-            }
-        }
-
-        foreach ($configuration['env'] as $name => $data) {
-            $value = $data['value'];
-            $force = $data['force'] ?? false;
-
-            if ($force || \getenv($name) === false) {
-                \putenv("{$name}={$value}");
-            }
-
-            $value = \getenv($name);
-
-            if (!isset($_ENV[$name])) {
-                $_ENV[$name] = $value;
-            }
-
-            if ($force) {
-                $_ENV[$name] = $value;
-            }
-        }
+        return new Php(
+            DirectoryCollection::fromArray($includePaths),
+            IniSettingCollection::fromArray($iniSettings),
+            ConstantCollection::fromArray($constants),
+            VariableCollection::fromArray($variables['var']),
+            VariableCollection::fromArray($variables['env']),
+            VariableCollection::fromArray($variables['post']),
+            VariableCollection::fromArray($variables['get']),
+            VariableCollection::fromArray($variables['cookie']),
+            VariableCollection::fromArray($variables['server']),
+            VariableCollection::fromArray($variables['files']),
+            VariableCollection::fromArray($variables['request']),
+        );
     }
 
     public function getPHPUnitConfiguration(): PHPUnit

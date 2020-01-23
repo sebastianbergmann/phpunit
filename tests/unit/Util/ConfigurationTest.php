@@ -24,7 +24,7 @@ final class ConfigurationTest extends TestCase
     /**
      * @var Configuration
      */
-    protected $configuration;
+    private $configuration;
 
     protected function setUp(): void
     {
@@ -375,25 +375,53 @@ final class ConfigurationTest extends TestCase
      */
     public function testPHPConfigurationIsReadCorrectly(): void
     {
-        $this->assertEquals(
-            [
-                'include_path' => [
-                    TEST_FILES_PATH . '.',
-                    '/path/to/lib',
-                ],
-                'ini'    => ['foo' => ['value' => 'bar'], 'highlight.keyword' => ['value' => '#123456'], 'highlight.string' => ['value' => 'TEST_FILES_PATH']],
-                'const'  => ['FOO' => ['value' => false], 'BAR' => ['value' => true]],
-                'var'    => ['foo' => ['value' => false]],
-                'env'    => ['foo' => ['value' => true], 'bar' => ['value' => 'true', 'verbatim' => true], 'foo_force' => ['value' => 'forced', 'force' => true]],
-                'post'   => ['foo' => ['value' => 'bar']],
-                'get'    => ['foo' => ['value' => 'bar']],
-                'cookie' => ['foo' => ['value' => 'bar']],
-                'server' => ['foo' => ['value' => 'bar']],
-                'files'  => ['foo' => ['value' => 'bar']],
-                'request'=> ['foo' => ['value' => 'bar']],
-            ],
-            $this->configuration->getPHPConfiguration()
-        );
+        $configuration = $this->configuration->getPHPConfiguration();
+
+        $this->assertSame(TEST_FILES_PATH . '.', $configuration->includePaths()->asArray()[0]->path());
+        $this->assertSame('/path/to/lib', $configuration->includePaths()->asArray()[1]->path());
+
+        $this->assertSame('foo', $configuration->iniSettings()->asArray()[0]->name());
+        $this->assertSame('bar', $configuration->iniSettings()->asArray()[0]->value());
+        $this->assertSame('highlight.keyword', $configuration->iniSettings()->asArray()[1]->name());
+        $this->assertSame('#123456', $configuration->iniSettings()->asArray()[1]->value());
+
+        $this->assertSame('FOO', $configuration->constants()->asArray()[0]->name());
+        $this->assertFalse($configuration->constants()->asArray()[0]->value());
+        $this->assertSame('BAR', $configuration->constants()->asArray()[1]->name());
+        $this->assertTrue($configuration->constants()->asArray()[1]->value());
+
+        $this->assertSame('foo', $configuration->globalVariables()->asArray()[0]->name());
+        $this->assertFalse($configuration->globalVariables()->asArray()[0]->value());
+
+        $this->assertSame('foo', $configuration->postVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $configuration->postVariables()->asArray()[0]->value());
+
+        $this->assertSame('foo', $configuration->getVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $configuration->getVariables()->asArray()[0]->value());
+
+        $this->assertSame('foo', $configuration->cookieVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $configuration->cookieVariables()->asArray()[0]->value());
+
+        $this->assertSame('foo', $configuration->serverVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $configuration->serverVariables()->asArray()[0]->value());
+
+        $this->assertSame('foo', $configuration->filesVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $configuration->filesVariables()->asArray()[0]->value());
+
+        $this->assertSame('foo', $configuration->requestVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $configuration->requestVariables()->asArray()[0]->value());
+
+        $this->assertSame('foo', $configuration->envVariables()->asArray()[0]->name());
+        $this->assertTrue($configuration->envVariables()->asArray()[0]->value());
+        $this->assertFalse($configuration->envVariables()->asArray()[0]->force());
+
+        $this->assertSame('foo_force', $configuration->envVariables()->asArray()[1]->name());
+        $this->assertSame('forced', $configuration->envVariables()->asArray()[1]->value());
+        $this->assertTrue($configuration->envVariables()->asArray()[1]->force());
+
+        $this->assertSame('bar', $configuration->envVariables()->asArray()[2]->name());
+        $this->assertSame('true', $configuration->envVariables()->asArray()[2]->value());
+        $this->assertFalse($configuration->envVariables()->asArray()[2]->force());
     }
 
     /**
@@ -403,14 +431,12 @@ final class ConfigurationTest extends TestCase
     public function testPHPConfigurationIsHandledCorrectly(): void
     {
         $savedIniHighlightKeyword = \ini_get('highlight.keyword');
-        $savedIniHighlightString  = \ini_get('highlight.string');
 
-        $this->configuration->handlePHPConfiguration();
+        (new Handler)->handlePhp($this->configuration->getPHPConfiguration());
 
         $path = TEST_FILES_PATH . '.' . \PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, \ini_get('include_path'));
         $this->assertEquals('#123456', \ini_get('highlight.keyword'));
-        $this->assertEquals(TEST_FILES_PATH, \ini_get('highlight.string'));
         $this->assertFalse(\FOO);
         $this->assertTrue(\BAR);
         $this->assertFalse($GLOBALS['foo']);
@@ -424,7 +450,6 @@ final class ConfigurationTest extends TestCase
         $this->assertEquals('bar', $_REQUEST['foo']);
 
         \ini_set('highlight.keyword', $savedIniHighlightKeyword);
-        \ini_set('highlight.string', $savedIniHighlightString);
     }
 
     /**
@@ -436,7 +461,8 @@ final class ConfigurationTest extends TestCase
     public function testHandlePHPConfigurationDoesNotOverwriteExistingEnvArrayVariables(): void
     {
         $_ENV['foo'] = false;
-        $this->configuration->handlePHPConfiguration();
+
+        (new Handler)->handlePhp($this->configuration->getPHPConfiguration());
 
         $this->assertFalse($_ENV['foo']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -451,7 +477,8 @@ final class ConfigurationTest extends TestCase
     public function testHandlePHPConfigurationDoesForceOverwrittenExistingEnvArrayVariables(): void
     {
         $_ENV['foo_force'] = false;
-        $this->configuration->handlePHPConfiguration();
+
+        (new Handler)->handlePhp($this->configuration->getPHPConfiguration());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -468,7 +495,8 @@ final class ConfigurationTest extends TestCase
         $backupFoo = \getenv('foo');
 
         \putenv('foo=putenv');
-        $this->configuration->handlePHPConfiguration();
+
+        (new Handler)->handlePhp($this->configuration->getPHPConfiguration());
 
         $this->assertEquals('putenv', $_ENV['foo']);
         $this->assertEquals('putenv', \getenv('foo'));
@@ -489,7 +517,8 @@ final class ConfigurationTest extends TestCase
     public function testHandlePHPConfigurationDoesOverwriteVariablesFromPutEnvWhenForced(): void
     {
         \putenv('foo_force=putenv');
-        $this->configuration->handlePHPConfiguration();
+
+        (new Handler)->handlePhp($this->configuration->getPHPConfiguration());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -541,18 +570,6 @@ final class ConfigurationTest extends TestCase
         $this->assertTrue($configuration->noInteraction());
     }
 
-    public function testXincludeInConfiguration(): void
-    {
-        $configurationWithXinclude = Configuration::getInstance(
-            TEST_FILES_PATH . 'configuration_xinclude.xml'
-        );
-
-        $this->assertConfigurationEquals(
-            $this->configuration,
-            $configurationWithXinclude
-        );
-    }
-
     public function testGetTestSuiteNamesReturnsTheNamesIfDefined(): void
     {
         $configuration = Configuration::getInstance(
@@ -597,50 +614,5 @@ final class ConfigurationTest extends TestCase
 
         $this->assertSame(CliTestDoxPrinter::class, $config->printerClass());
         $this->assertTrue($config->conflictBetweenPrinterClassAndTestdox());
-    }
-
-    /**
-     * Asserts that the values in $actualConfiguration equal $expectedConfiguration.
-     *
-     * @throws Exception
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    protected function assertConfigurationEquals(Configuration $expectedConfiguration, Configuration $actualConfiguration): void
-    {
-        $this->assertEquals(
-            $expectedConfiguration->getFilterConfiguration(),
-            $actualConfiguration->getFilterConfiguration()
-        );
-
-        $this->assertEquals(
-            $expectedConfiguration->getGroupConfiguration(),
-            $actualConfiguration->getGroupConfiguration()
-        );
-
-        $this->assertEquals(
-            $expectedConfiguration->getListenerConfiguration(),
-            $actualConfiguration->getListenerConfiguration()
-        );
-
-        $this->assertEquals(
-            $expectedConfiguration->getLoggingConfiguration(),
-            $actualConfiguration->getLoggingConfiguration()
-        );
-
-        $this->assertEquals(
-            $expectedConfiguration->getPHPConfiguration(),
-            $actualConfiguration->getPHPConfiguration()
-        );
-
-        $this->assertEquals(
-            $expectedConfiguration->getPHPUnitConfiguration(),
-            $actualConfiguration->getPHPUnitConfiguration()
-        );
-
-        $this->assertEquals(
-            $expectedConfiguration->getTestSuiteConfiguration()->tests(),
-            $actualConfiguration->getTestSuiteConfiguration()->tests()
-        );
     }
 }
