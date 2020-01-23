@@ -22,6 +22,7 @@ use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Generator;
+use PHPUnit\TextUI\Configuration\Handler;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Getopt;
@@ -845,7 +846,7 @@ class Command
 
             $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
 
-            $configuration->handlePHPConfiguration();
+            (new Handler)->handlePhp($configuration->getPHPConfiguration());
 
             if (isset($this->arguments['bootstrap'])) {
                 $this->handleBootstrap($this->arguments['bootstrap']);
