@@ -11,6 +11,7 @@ namespace PHPUnit\Util;
 
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
@@ -496,7 +497,7 @@ final class ConfigurationTest extends TestCase
                 'enforceTimeLimit'                           => false,
                 'extensionsDirectory'                        => '/tmp',
                 'printerClass'                               => 'PHPUnit\TextUI\ResultPrinter',
-                'testSuiteLoaderClass'                       => 'PHPUnit\Runner\StandardTestSuiteLoader',
+                'testSuiteLoaderClass'                       => StandardTestSuiteLoader::class,
                 'defaultTestSuite'                           => 'My Test Suite',
                 'verbose'                                    => false,
                 'timeoutForSmallTests'                       => 1,
