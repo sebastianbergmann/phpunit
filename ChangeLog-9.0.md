@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 ### Changed
 
 * Implemented [#3746](https://github.com/sebastianbergmann/phpunit/issues/3746): Improve developer experience of global wrapper functions for assertions
+* Implemented [#3914](https://github.com/sebastianbergmann/phpunit/pull/3914): Refactor `PHPUnit\Util\Configuration`
 * Implemented [#4024](https://github.com/sebastianbergmann/phpunit/issues/4024): Make `PHPUnit\TextUI\ResultPrinter` an interface
 
 ### Removed
