@@ -28,7 +28,7 @@ final class ConfigurationTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->configuration = Configuration::getInstance(
+        $this->configuration = Registry::getInstance()->get(
             TEST_FILES_PATH . 'configuration.xml'
         );
     }
@@ -37,13 +37,13 @@ final class ConfigurationTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        Configuration::getInstance('not_existing_file.xml');
+        Registry::getInstance()->get('not_existing_file.xml');
     }
 
     public function testShouldReadColorsWhenTrueInConfigurationFile(): void
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.colors.true.xml';
-        $configurationInstance = Configuration::getInstance($configurationFilename);
+        $configurationInstance = Registry::getInstance()->get($configurationFilename);
         $configurationValues   = $configurationInstance->phpunit();
 
         $this->assertEquals(DefaultResultPrinter::COLOR_AUTO, $configurationValues->colors());
@@ -52,7 +52,7 @@ final class ConfigurationTest extends TestCase
     public function testShouldReadColorsWhenFalseInConfigurationFile(): void
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.colors.false.xml';
-        $configurationInstance = Configuration::getInstance($configurationFilename);
+        $configurationInstance = Registry::getInstance()->get($configurationFilename);
         $configurationValues   = $configurationInstance->phpunit();
 
         $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
@@ -61,7 +61,7 @@ final class ConfigurationTest extends TestCase
     public function testShouldReadColorsWhenEmptyInConfigurationFile(): void
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.colors.empty.xml';
-        $configurationInstance = Configuration::getInstance($configurationFilename);
+        $configurationInstance = Registry::getInstance()->get($configurationFilename);
         $configurationValues   = $configurationInstance->phpunit();
 
         $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
@@ -70,7 +70,7 @@ final class ConfigurationTest extends TestCase
     public function testShouldReadColorsWhenInvalidInConfigurationFile(): void
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.colors.invalid.xml';
-        $configurationInstance = Configuration::getInstance($configurationFilename);
+        $configurationInstance = Registry::getInstance()->get($configurationFilename);
         $configurationValues   = $configurationInstance->phpunit();
 
         $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
@@ -79,7 +79,7 @@ final class ConfigurationTest extends TestCase
     public function testInvalidConfigurationGeneratesValidationErrors(): void
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.colors.invalid.xml';
-        $configurationInstance = Configuration::getInstance($configurationFilename);
+        $configurationInstance = Registry::getInstance()->get($configurationFilename);
 
         $this->assertTrue($configurationInstance->hasValidationErrors());
     }
@@ -87,7 +87,7 @@ final class ConfigurationTest extends TestCase
     public function testShouldUseDefaultValuesForInvalidIntegers(): void
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.columns.default.xml';
-        $configurationInstance = Configuration::getInstance($configurationFilename);
+        $configurationInstance = Registry::getInstance()->get($configurationFilename);
         $configurationValues   = $configurationInstance->phpunit();
 
         $this->assertEquals(80, $configurationValues->columns());
@@ -107,7 +107,7 @@ final class ConfigurationTest extends TestCase
         $xml         = "<phpunit $optionName='$optionValue'></phpunit>" . \PHP_EOL;
         \file_put_contents($tmpFilename, $xml);
 
-        $configurationInstance = Configuration::getInstance($tmpFilename);
+        $configurationInstance = Registry::getInstance()->get($tmpFilename);
         $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
 
         $configurationValues   = $configurationInstance->phpunit();
@@ -148,7 +148,7 @@ final class ConfigurationTest extends TestCase
         $xml         = "<phpunit executionOrder='depends,defects'></phpunit>" . \PHP_EOL;
         \file_put_contents($tmpFilename, $xml);
 
-        $configurationInstance = Configuration::getInstance($tmpFilename);
+        $configurationInstance = Registry::getInstance()->get($tmpFilename);
         $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
 
         $configurationValues = $configurationInstance->phpunit();
@@ -252,7 +252,7 @@ final class ConfigurationTest extends TestCase
                 case 2:
                     $this->assertSame('IncludePathListener', $listener->className());
                     $this->assertTrue($listener->hasSourceFile());
-                    $this->assertSame(__FILE__, $listener->sourceFile());
+                    $this->assertSame(TEST_FILES_PATH . 'ConfigurationTest.php', $listener->sourceFile());
                     $this->assertFalse($listener->hasArguments());
                     $this->assertSame([], $listener->arguments());
 
@@ -311,7 +311,7 @@ final class ConfigurationTest extends TestCase
                 case 2:
                     $this->assertSame('IncludePathExtension', $extension->className());
                     $this->assertTrue($extension->hasSourceFile());
-                    $this->assertSame(__FILE__, $extension->sourceFile());
+                    $this->assertSame(TEST_FILES_PATH . 'ConfigurationTest.php', $extension->sourceFile());
                     $this->assertFalse($extension->hasArguments());
                     $this->assertSame([], $extension->arguments());
 
@@ -572,7 +572,7 @@ final class ConfigurationTest extends TestCase
 
     public function test_TestDox_configuration_is_parsed_correctly(): void
     {
-        $configuration = Configuration::getInstance(
+        $configuration = Registry::getInstance()->get(
             TEST_FILES_PATH . 'configuration_testdox.xml'
         );
 
@@ -583,7 +583,7 @@ final class ConfigurationTest extends TestCase
 
     public function test_Conflict_between_testdox_and_printerClass_is_detected(): void
     {
-        $configuration = Configuration::getInstance(
+        $configuration = Registry::getInstance()->get(
             TEST_FILES_PATH . 'configuration_testdox_printerClass.xml'
         );
 
@@ -595,7 +595,7 @@ final class ConfigurationTest extends TestCase
 
     public function testConfigurationForSingleTestSuiteCanBeLoaded(): void
     {
-        $configuration = Configuration::getInstance(
+        $configuration = Registry::getInstance()->get(
             TEST_FILES_PATH . 'configuration_testsuite.xml'
         )->testSuite();
 
@@ -615,7 +615,7 @@ final class ConfigurationTest extends TestCase
 
     public function testConfigurationForMultipleTestSuitesCanBeLoaded(): void
     {
-        $configuration = Configuration::getInstance(
+        $configuration = Registry::getInstance()->get(
             TEST_FILES_PATH . 'configuration_testsuites.xml'
         )->testSuite();
 

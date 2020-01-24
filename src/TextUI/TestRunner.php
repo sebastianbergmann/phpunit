@@ -33,6 +33,7 @@ use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
@@ -827,9 +828,7 @@ final class TestRunner extends BaseTestRunner
     {
         if (isset($arguments['configuration']) &&
             !$arguments['configuration'] instanceof Configuration) {
-            $arguments['configuration'] = Configuration::getInstance(
-                $arguments['configuration']
-            );
+            $arguments['configuration'] = Registry::getInstance()->get($arguments['configuration']);
         }
 
         $arguments['debug']     = $arguments['debug'] ?? false;

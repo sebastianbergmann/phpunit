@@ -1,7 +1,7 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 
 if (!defined('STDOUT')) {
@@ -87,7 +87,7 @@ function __phpunit_run_isolated_test()
 $configurationFilePath = '{configurationFilePath}';
 
 if ('' !== $configurationFilePath) {
-    $configuration = Configuration::getInstance($configurationFilePath);
+    $configuration = Registry::getInstance()->get($configurationFilePath);
 
     (new PhpHandler)->handle($configuration->php());
 

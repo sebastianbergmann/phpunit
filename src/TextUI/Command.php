@@ -20,9 +20,9 @@ use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
-use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Generator;
 use PHPUnit\TextUI\Configuration\PhpHandler;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteMapper;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
@@ -837,9 +837,7 @@ class Command
 
         if (isset($this->arguments['configuration'])) {
             try {
-                $configuration = Configuration::getInstance(
-                    $this->arguments['configuration']
-                );
+                $configuration = Registry::getInstance()->get($this->arguments['configuration']);
             } catch (Throwable $t) {
                 print $t->getMessage() . \PHP_EOL;
                 exit(TestRunner::FAILURE_EXIT);
@@ -1171,9 +1169,7 @@ class Command
 
         print 'Available test suite(s):' . \PHP_EOL;
 
-        $configuration = Configuration::getInstance(
-            $this->arguments['configuration']
-        );
+        $configuration = Registry::getInstance()->get($this->arguments['configuration']);
 
         foreach ($configuration->testSuite() as $testSuite) {
             \printf(
