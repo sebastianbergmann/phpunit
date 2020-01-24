@@ -1,7 +1,0 @@
-<phpunit>
-    <testsuites>
-        <testsuite name="One File Suite">
-            <file>../../tests/end-to-end/loggers/debug.phpt</file>
-        </testsuite>
-    </testsuites>
-</phpunit>

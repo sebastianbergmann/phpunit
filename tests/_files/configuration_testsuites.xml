@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../phpunit.xsd">
+    <testsuites>
+        <testsuite name="first">
+            <directory>tests/first</directory>
+        </testsuite>
+
+        <testsuite name="second">
+            <directory prefix="test" suffix=".phpt" phpVersion="1.2.3" phpVersionOperator="==">tests/second</directory>
+            <file phpVersion="4.5.6" phpVersionOperator="!=">tests/file.php</file>
+            <exclude>tests/second/_files</exclude>
+        </testsuite>
+    </testsuites>
+</phpunit>
