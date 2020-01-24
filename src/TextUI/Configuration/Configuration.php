@@ -705,10 +705,8 @@ final class Configuration
     {
         $names = [];
 
-        foreach ($this->xpath->query('*/testsuite') as $node) {
-            \assert($node instanceof \DOMElement);
-
-            $names[] = $node->getAttribute('name');
+        foreach ($this->getTestSuiteConfiguration() as $testSuite) {
+            $names[] = $testSuite->name();
         }
 
         return $names;
