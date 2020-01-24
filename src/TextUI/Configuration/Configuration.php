@@ -112,7 +112,7 @@ final class Configuration
         return \count($this->errors) > 0;
     }
 
-    public function getValidationErrors(): array
+    public function validationErrors(): array
     {
         $result = [];
 
@@ -127,12 +127,12 @@ final class Configuration
         return $result;
     }
 
-    public function getFilename(): string
+    public function filename(): string
     {
         return $this->filename;
     }
 
-    public function getExtensionConfiguration(): ExtensionCollection
+    public function extensions(): ExtensionCollection
     {
         $extensions = [];
 
@@ -143,7 +143,7 @@ final class Configuration
         return ExtensionCollection::fromArray($extensions);
     }
 
-    public function getFilterConfiguration(): Filter
+    public function filter(): Filter
     {
         $addUncoveredFilesFromWhitelist     = true;
         $processUncoveredFilesFromWhitelist = false;
@@ -180,17 +180,17 @@ final class Configuration
         );
     }
 
-    public function getGroupConfiguration(): Groups
+    public function groups(): Groups
     {
         return $this->parseGroupConfiguration('groups');
     }
 
-    public function getTestdoxGroupConfiguration(): Groups
+    public function testdoxGroups(): Groups
     {
         return $this->parseGroupConfiguration('testdoxGroups');
     }
 
-    public function getListenerConfiguration(): ExtensionCollection
+    public function listeners(): ExtensionCollection
     {
         $listeners = [];
 
@@ -201,7 +201,7 @@ final class Configuration
         return ExtensionCollection::fromArray($listeners);
     }
 
-    public function getLoggingConfiguration(): Logging
+    public function logging(): Logging
     {
         $codeCoverageClover = null;
         $codeCoverageCrap4j = null;
@@ -336,7 +336,7 @@ final class Configuration
         );
     }
 
-    public function getPHPConfiguration(): Php
+    public function php(): Php
     {
         $includePaths = [];
 
@@ -423,7 +423,7 @@ final class Configuration
         );
     }
 
-    public function getPHPUnitConfiguration(): PHPUnit
+    public function phpunit(): PHPUnit
     {
         $executionOrder      = TestSuiteSorter::ORDER_DEFAULT;
         $defectsFirst        = false;
@@ -574,7 +574,7 @@ final class Configuration
         );
     }
 
-    public function getTestSuiteConfiguration(): TestSuiteCollection
+    public function testSuite(): TestSuiteCollection
     {
         $testSuites = [];
 

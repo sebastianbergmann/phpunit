@@ -86,7 +86,7 @@ $configurationFilePath = '{configurationFilePath}';
 if ('' !== $configurationFilePath) {
     $configuration = Configuration::getInstance($configurationFilePath);
 
-    (new PhpHandler)->handle($configuration->getPhpConfiguration());
+    (new PhpHandler)->handle($configuration->php());
 
     unset($configuration);
 }

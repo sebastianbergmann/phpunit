@@ -844,9 +844,9 @@ class Command
                 exit(TestRunner::FAILURE_EXIT);
             }
 
-            $phpunitConfiguration = $configuration->getPHPUnitConfiguration();
+            $phpunitConfiguration = $configuration->phpunit();
 
-            (new PhpHandler)->handle($configuration->getPHPConfiguration());
+            (new PhpHandler)->handle($configuration->php());
 
             if (isset($this->arguments['bootstrap'])) {
                 $this->handleBootstrap($this->arguments['bootstrap']);
@@ -1175,7 +1175,7 @@ class Command
             $this->arguments['configuration']
         );
 
-        foreach ($configuration->getTestSuiteConfiguration() as $testSuite) {
+        foreach ($configuration->testSuite() as $testSuite) {
             \printf(
                 ' - %s' . \PHP_EOL,
                 $testSuite->name()
