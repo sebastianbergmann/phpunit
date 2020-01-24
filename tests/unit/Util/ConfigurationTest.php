@@ -581,18 +581,6 @@ final class ConfigurationTest extends TestCase
         $this->assertEquals(['Suite One', 'Suite Two'], $names);
     }
 
-    public function testTestSuiteConfigurationForASingleFileInASuite(): void
-    {
-        $configuration = Configuration::getInstance(
-            TEST_FILES_PATH . 'configuration.one-file-suite.xml'
-        );
-
-        $config = $configuration->getTestSuiteConfiguration();
-        $tests  = $config->tests();
-
-        $this->assertCount(1, $tests);
-    }
-
     public function test_TestDox_configuration_is_parsed_correctly(): void
     {
         $configuration = Configuration::getInstance(
@@ -614,5 +602,59 @@ final class ConfigurationTest extends TestCase
 
         $this->assertSame(CliTestDoxPrinter::class, $config->printerClass());
         $this->assertTrue($config->conflictBetweenPrinterClassAndTestdox());
+    }
+
+    public function testConfigurationForSingleTestSuiteCanBeLoaded(): void
+    {
+        $configuration = Configuration::getInstance(
+            TEST_FILES_PATH . 'configuration_testsuite.xml'
+        )->getTestSuiteConfiguration();
+
+        $this->assertCount(1, $configuration);
+
+        $first = $configuration->asArray()[0];
+        $this->assertSame('first', $first->name());
+        $this->assertCount(1, $first->directories());
+        $this->assertSame(TEST_FILES_PATH . 'tests/first', $first->directories()->asArray()[0]->path());
+        $this->assertSame('', $first->directories()->asArray()[0]->prefix());
+        $this->assertSame('Test.php', $first->directories()->asArray()[0]->suffix());
+        $this->assertSame(\PHP_VERSION, $first->directories()->asArray()[0]->phpVersion());
+        $this->assertSame('>=', $first->directories()->asArray()[0]->phpVersionOperator());
+        $this->assertCount(0, $first->files());
+        $this->assertCount(0, $first->exclude());
+    }
+
+    public function testConfigurationForMultipleTestSuitesCanBeLoaded(): void
+    {
+        $configuration = Configuration::getInstance(
+            TEST_FILES_PATH . 'configuration_testsuites.xml'
+        )->getTestSuiteConfiguration();
+
+        $this->assertCount(2, $configuration);
+
+        $first = $configuration->asArray()[0];
+        $this->assertSame('first', $first->name());
+        $this->assertCount(1, $first->directories());
+        $this->assertSame(TEST_FILES_PATH . 'tests/first', $first->directories()->asArray()[0]->path());
+        $this->assertSame('', $first->directories()->asArray()[0]->prefix());
+        $this->assertSame('Test.php', $first->directories()->asArray()[0]->suffix());
+        $this->assertSame(\PHP_VERSION, $first->directories()->asArray()[0]->phpVersion());
+        $this->assertSame('>=', $first->directories()->asArray()[0]->phpVersionOperator());
+        $this->assertCount(0, $first->files());
+        $this->assertCount(0, $first->exclude());
+
+        $second = $configuration->asArray()[1];
+        $this->assertSame('second', $second->name());
+        $this->assertSame(TEST_FILES_PATH . 'tests/second', $second->directories()->asArray()[0]->path());
+        $this->assertSame('test', $second->directories()->asArray()[0]->prefix());
+        $this->assertSame('.phpt', $second->directories()->asArray()[0]->suffix());
+        $this->assertSame('1.2.3', $second->directories()->asArray()[0]->phpVersion());
+        $this->assertSame('==', $second->directories()->asArray()[0]->phpVersionOperator());
+        $this->assertCount(1, $second->files());
+        $this->assertSame(TEST_FILES_PATH . 'tests/file.php', $second->files()->asArray()[0]->path());
+        $this->assertSame('4.5.6', $second->files()->asArray()[0]->phpVersion());
+        $this->assertSame('!=', $second->files()->asArray()[0]->phpVersionOperator());
+        $this->assertCount(1, $second->exclude());
+        $this->assertSame(TEST_FILES_PATH . 'tests/second/_files', $second->exclude()->asArray()[0]->path());
     }
 }

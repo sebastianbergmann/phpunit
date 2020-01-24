@@ -25,6 +25,7 @@ use PHPUnit\TextUI\Configuration\Logging\TeamCity;
 use PHPUnit\TextUI\Configuration\Logging\TestDox\Html as TestDoxHtml;
 use PHPUnit\TextUI\Configuration\Logging\TestDox\Text as TestDoxText;
 use PHPUnit\TextUI\Configuration\Logging\TestDox\Xml as TestDoxXml;
+use PHPUnit\TextUI\Configuration\TestSuite as TestSuiteConfiguration;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\Xml;
@@ -573,7 +574,107 @@ final class Configuration
         );
     }
 
-    public function getTestSuiteConfiguration(string $testSuiteFilter = ''): TestSuite
+    public function getTestSuiteConfiguration(): TestSuiteCollection
+    {
+        $testSuites = [];
+
+        foreach ($this->getTestSuiteElements() as $element) {
+            $exclude = [];
+
+            foreach ($element->getElementsByTagName('exclude') as $excludeNode) {
+                $excludeFile = (string) $excludeNode->textContent;
+
+                if ($excludeFile) {
+                    $exclude[] = new File($this->toAbsolutePath($excludeFile));
+                }
+            }
+
+            $directories = [];
+
+            foreach ($element->getElementsByTagName('directory') as $directoryNode) {
+                \assert($directoryNode instanceof \DOMElement);
+
+                $directory = (string) $directoryNode->textContent;
+
+                if (empty($directory)) {
+                    continue;
+                }
+
+                $prefix = '';
+
+                if ($directoryNode->hasAttribute('prefix')) {
+                    $prefix = (string) $directoryNode->getAttribute('prefix');
+                }
+
+                $suffix = 'Test.php';
+
+                if ($directoryNode->hasAttribute('suffix')) {
+                    $suffix = (string) $directoryNode->getAttribute('suffix');
+                }
+
+                $phpVersion = \PHP_VERSION;
+
+                if ($directoryNode->hasAttribute('phpVersion')) {
+                    $phpVersion = (string) $directoryNode->getAttribute('phpVersion');
+                }
+
+                $phpVersionOperator = '>=';
+
+                if ($directoryNode->hasAttribute('phpVersionOperator')) {
+                    $phpVersionOperator = (string) $directoryNode->getAttribute('phpVersionOperator');
+                }
+
+                $directories[] = new TestDirectory(
+                    $this->toAbsolutePath($directory),
+                    $prefix,
+                    $suffix,
+                    $phpVersion,
+                    $phpVersionOperator
+                );
+            }
+
+            $files = [];
+
+            foreach ($element->getElementsByTagName('file') as $fileNode) {
+                \assert($fileNode instanceof \DOMElement);
+
+                $file = (string) $fileNode->textContent;
+
+                if (empty($file)) {
+                    continue;
+                }
+
+                $phpVersion = \PHP_VERSION;
+
+                if ($fileNode->hasAttribute('phpVersion')) {
+                    $phpVersion = (string) $fileNode->getAttribute('phpVersion');
+                }
+
+                $phpVersionOperator = '>=';
+
+                if ($fileNode->hasAttribute('phpVersionOperator')) {
+                    $phpVersionOperator = (string) $fileNode->getAttribute('phpVersionOperator');
+                }
+
+                $files[] = new TestFile(
+                    $this->toAbsolutePath($file),
+                    $phpVersion,
+                    $phpVersionOperator
+                );
+            }
+
+            $testSuites[] = new TestSuiteConfiguration(
+                (string) $element->getAttribute('name'),
+                TestDirectoryCollection::fromArray($directories),
+                TestFileCollection::fromArray($files),
+                FileCollection::fromArray($exclude)
+            );
+        }
+
+        return TestSuiteCollection::fromArray($testSuites);
+    }
+
+    public function getTestSuite(string $testSuiteFilter = ''): TestSuite
     {
         $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
 
@@ -586,14 +687,14 @@ final class Configuration
 
             \assert($element instanceof \DOMElement);
 
-            return $this->getTestSuite($element, $testSuiteFilter);
+            return $this->createTestSuite($element, $testSuiteFilter);
         }
 
         $suite = new TestSuite;
 
         foreach ($testSuiteNodes as $testSuiteNode) {
             $suite->addTestSuite(
-                $this->getTestSuite($testSuiteNode, $testSuiteFilter)
+                $this->createTestSuite($testSuiteNode, $testSuiteFilter)
             );
         }
 
@@ -661,7 +762,7 @@ final class Configuration
         return $arguments;
     }
 
-    private function getTestSuite(\DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
+    private function createTestSuite(\DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
     {
         if ($testSuiteNode->hasAttribute('name')) {
             $suite = new TestSuite(
@@ -970,5 +1071,36 @@ final class Configuration
         }
 
         return $columns;
+    }
+
+    /**
+     * @return \DOMElement[]
+     */
+    private function getTestSuiteElements(): array
+    {
+        /** @var \DOMElement[] $elements */
+        $elements = [];
+
+        $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
+
+        if ($testSuiteNodes->length === 0) {
+            $testSuiteNodes = $this->xpath->query('testsuite');
+        }
+
+        if ($testSuiteNodes->length === 1) {
+            $element = $testSuiteNodes->item(0);
+
+            \assert($element instanceof \DOMElement);
+
+            $elements[] = $element;
+        } else {
+            foreach ($testSuiteNodes as $testSuiteNode) {
+                \assert($testSuiteNode instanceof \DOMElement);
+
+                $elements[] = $testSuiteNode;
+            }
+        }
+
+        return $elements;
     }
 }
