@@ -2,7 +2,7 @@
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Configuration;
-use PHPUnit\TextUI\Configuration\Handler as ConfigurationHandler;
+use PHPUnit\TextUI\Configuration\PhpHandler;
 
 if (!defined('STDOUT')) {
     // php://stdout does not obey output buffering. Any output would break
@@ -89,7 +89,7 @@ $configurationFilePath = '{configurationFilePath}';
 if ('' !== $configurationFilePath) {
     $configuration = Configuration::getInstance($configurationFilePath);
 
-    (new ConfigurationHandler)->handlePhp($configuration->getPhpConfiguration());
+    (new PhpHandler)->handle($configuration->getPhpConfiguration());
 
     unset($configuration);
 }

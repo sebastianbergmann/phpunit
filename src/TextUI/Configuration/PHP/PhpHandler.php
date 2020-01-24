@@ -12,9 +12,9 @@ namespace PHPUnit\TextUI\Configuration;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Handler
+final class PhpHandler
 {
-    public function handlePhp(Php $configuration): void
+    public function handle(Php $configuration): void
     {
         $this->handleIncludePaths($configuration->includePaths());
         $this->handleIniSettings($configuration->iniSettings());
