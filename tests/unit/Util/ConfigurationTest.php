@@ -570,17 +570,6 @@ final class ConfigurationTest extends TestCase
         $this->assertTrue($configuration->noInteraction());
     }
 
-    public function testGetTestSuiteNamesReturnsTheNamesIfDefined(): void
-    {
-        $configuration = Configuration::getInstance(
-            TEST_FILES_PATH . 'configuration.suites.xml'
-        );
-
-        $names = $configuration->getTestSuiteNames();
-
-        $this->assertEquals(['Suite One', 'Suite Two'], $names);
-    }
-
     public function test_TestDox_configuration_is_parsed_correctly(): void
     {
         $configuration = Configuration::getInstance(

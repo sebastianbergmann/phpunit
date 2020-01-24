@@ -1175,10 +1175,10 @@ class Command
             $this->arguments['configuration']
         );
 
-        foreach ($configuration->getTestSuiteNames() as $suiteName) {
+        foreach ($configuration->getTestSuiteConfiguration() as $testSuite) {
             \printf(
                 ' - %s' . \PHP_EOL,
-                $suiteName
+                $testSuite->name()
             );
         }
 

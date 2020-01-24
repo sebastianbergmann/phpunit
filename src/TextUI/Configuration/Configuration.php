@@ -701,17 +701,6 @@ final class Configuration
         return $suite;
     }
 
-    public function getTestSuiteNames(): array
-    {
-        $names = [];
-
-        foreach ($this->getTestSuiteConfiguration() as $testSuite) {
-            $names[] = $testSuite->name();
-        }
-
-        return $names;
-    }
-
     private function validateConfigurationAgainstSchema(): void
     {
         $original    = \libxml_use_internal_errors(true);
