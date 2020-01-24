@@ -23,6 +23,7 @@ use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Generator;
 use PHPUnit\TextUI\Configuration\PhpHandler;
+use PHPUnit\TextUI\Configuration\TestSuiteMapper;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Getopt;
@@ -889,11 +890,10 @@ class Command
             }
 
             if (!isset($this->arguments['test'])) {
-                $testSuite = $configuration->getTestSuite($this->arguments['testsuite'] ?? '');
-
-                if ($testSuite !== null) {
-                    $this->arguments['test'] = $testSuite;
-                }
+                $this->arguments['test'] = (new TestSuiteMapper)->map(
+                    $configuration->testSuite(),
+                    $this->arguments['testsuite'] ?? ''
+                );
             }
         } elseif (isset($this->arguments['bootstrap'])) {
             $this->handleBootstrap($this->arguments['bootstrap']);
