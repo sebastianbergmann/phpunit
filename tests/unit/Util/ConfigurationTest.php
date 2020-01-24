@@ -432,7 +432,7 @@ final class ConfigurationTest extends TestCase
     {
         $savedIniHighlightKeyword = \ini_get('highlight.keyword');
 
-        (new Handler)->handlePhp($this->configuration->getPHPConfiguration());
+        (new PhpHandler)->handle($this->configuration->getPHPConfiguration());
 
         $path = TEST_FILES_PATH . '.' . \PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, \ini_get('include_path'));
@@ -462,7 +462,7 @@ final class ConfigurationTest extends TestCase
     {
         $_ENV['foo'] = false;
 
-        (new Handler)->handlePhp($this->configuration->getPHPConfiguration());
+        (new PhpHandler)->handle($this->configuration->getPHPConfiguration());
 
         $this->assertFalse($_ENV['foo']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -478,7 +478,7 @@ final class ConfigurationTest extends TestCase
     {
         $_ENV['foo_force'] = false;
 
-        (new Handler)->handlePhp($this->configuration->getPHPConfiguration());
+        (new PhpHandler)->handle($this->configuration->getPHPConfiguration());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -496,7 +496,7 @@ final class ConfigurationTest extends TestCase
 
         \putenv('foo=putenv');
 
-        (new Handler)->handlePhp($this->configuration->getPHPConfiguration());
+        (new PhpHandler)->handle($this->configuration->getPHPConfiguration());
 
         $this->assertEquals('putenv', $_ENV['foo']);
         $this->assertEquals('putenv', \getenv('foo'));
@@ -518,7 +518,7 @@ final class ConfigurationTest extends TestCase
     {
         \putenv('foo_force=putenv');
 
-        (new Handler)->handlePhp($this->configuration->getPHPConfiguration());
+        (new PhpHandler)->handle($this->configuration->getPHPConfiguration());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', \getenv('foo_force'));
