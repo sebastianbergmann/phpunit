@@ -44,7 +44,7 @@ final class ConfigurationTest extends TestCase
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.colors.true.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
-        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $configurationValues   = $configurationInstance->phpunit();
 
         $this->assertEquals(DefaultResultPrinter::COLOR_AUTO, $configurationValues->colors());
     }
@@ -53,7 +53,7 @@ final class ConfigurationTest extends TestCase
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.colors.false.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
-        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $configurationValues   = $configurationInstance->phpunit();
 
         $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
     }
@@ -62,7 +62,7 @@ final class ConfigurationTest extends TestCase
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.colors.empty.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
-        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $configurationValues   = $configurationInstance->phpunit();
 
         $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
     }
@@ -71,7 +71,7 @@ final class ConfigurationTest extends TestCase
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.colors.invalid.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
-        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $configurationValues   = $configurationInstance->phpunit();
 
         $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
     }
@@ -88,7 +88,7 @@ final class ConfigurationTest extends TestCase
     {
         $configurationFilename = TEST_FILES_PATH . 'configuration.columns.default.xml';
         $configurationInstance = Configuration::getInstance($configurationFilename);
-        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $configurationValues   = $configurationInstance->phpunit();
 
         $this->assertEquals(80, $configurationValues->columns());
     }
@@ -110,7 +110,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($tmpFilename);
         $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
 
-        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $configurationValues   = $configurationInstance->phpunit();
         $this->assertEquals($expected, $configurationValues->$optionName());
 
         @\unlink($tmpFilename);
@@ -151,7 +151,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($tmpFilename);
         $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
 
-        $configurationValues = $configurationInstance->getPHPUnitConfiguration();
+        $configurationValues = $configurationInstance->phpunit();
         $this->assertTrue($configurationValues->defectsFirst());
         $this->assertTrue($configurationValues->resolveDependencies());
 
@@ -160,7 +160,7 @@ final class ConfigurationTest extends TestCase
 
     public function testFilterConfigurationIsReadCorrectly(): void
     {
-        $filter = $this->configuration->getFilterConfiguration();
+        $filter = $this->configuration->filter();
 
         $this->assertTrue($filter->addUncoveredFilesFromWhitelist());
         $this->assertFalse($filter->processUncoveredFilesFromWhitelist());
@@ -194,7 +194,7 @@ final class ConfigurationTest extends TestCase
 
     public function testGroupConfigurationIsReadCorrectly(): void
     {
-        $groupConfiguration = $this->configuration->getGroupConfiguration();
+        $groupConfiguration = $this->configuration->groups();
 
         $this->assertTrue($groupConfiguration->hasInclude());
         $this->assertSame(['name'], $groupConfiguration->include()->asArrayOfStrings());
@@ -205,7 +205,7 @@ final class ConfigurationTest extends TestCase
 
     public function testTestdoxGroupConfigurationIsReadCorrectly(): void
     {
-        $testDoxGroupConfiguration = $this->configuration->getTestdoxGroupConfiguration();
+        $testDoxGroupConfiguration = $this->configuration->testdoxGroups();
 
         $this->assertTrue($testDoxGroupConfiguration->hasInclude());
         $this->assertSame(['name'], $testDoxGroupConfiguration->include()->asArrayOfStrings());
@@ -223,7 +223,7 @@ final class ConfigurationTest extends TestCase
 
         $i = 1;
 
-        foreach ($this->configuration->getListenerConfiguration() as $listener) {
+        foreach ($this->configuration->listeners() as $listener) {
             switch ($i) {
                 case 1:
                     $this->assertSame('MyListener', $listener->className());
@@ -283,7 +283,7 @@ final class ConfigurationTest extends TestCase
 
         $i = 1;
 
-        foreach ($this->configuration->getExtensionConfiguration() as $extension) {
+        foreach ($this->configuration->extensions() as $extension) {
             switch ($i) {
                 case 1:
                     $this->assertSame('MyExtension', $extension->className());
@@ -335,7 +335,7 @@ final class ConfigurationTest extends TestCase
 
     public function testLoggingConfigurationIsReadCorrectly(): void
     {
-        $loggingConfiguration = $this->configuration->getLoggingConfiguration();
+        $loggingConfiguration = $this->configuration->logging();
 
         $this->assertTrue($loggingConfiguration->hasCodeCoverageHtml());
         $this->assertSame('/tmp/report', $loggingConfiguration->codeCoverageHtml()->target()->path());
@@ -375,7 +375,7 @@ final class ConfigurationTest extends TestCase
      */
     public function testPHPConfigurationIsReadCorrectly(): void
     {
-        $configuration = $this->configuration->getPHPConfiguration();
+        $configuration = $this->configuration->php();
 
         $this->assertSame(TEST_FILES_PATH . '.', $configuration->includePaths()->asArray()[0]->path());
         $this->assertSame('/path/to/lib', $configuration->includePaths()->asArray()[1]->path());
@@ -432,7 +432,7 @@ final class ConfigurationTest extends TestCase
     {
         $savedIniHighlightKeyword = \ini_get('highlight.keyword');
 
-        (new PhpHandler)->handle($this->configuration->getPHPConfiguration());
+        (new PhpHandler)->handle($this->configuration->php());
 
         $path = TEST_FILES_PATH . '.' . \PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, \ini_get('include_path'));
@@ -462,7 +462,7 @@ final class ConfigurationTest extends TestCase
     {
         $_ENV['foo'] = false;
 
-        (new PhpHandler)->handle($this->configuration->getPHPConfiguration());
+        (new PhpHandler)->handle($this->configuration->php());
 
         $this->assertFalse($_ENV['foo']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -478,7 +478,7 @@ final class ConfigurationTest extends TestCase
     {
         $_ENV['foo_force'] = false;
 
-        (new PhpHandler)->handle($this->configuration->getPHPConfiguration());
+        (new PhpHandler)->handle($this->configuration->php());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -496,7 +496,7 @@ final class ConfigurationTest extends TestCase
 
         \putenv('foo=putenv');
 
-        (new PhpHandler)->handle($this->configuration->getPHPConfiguration());
+        (new PhpHandler)->handle($this->configuration->php());
 
         $this->assertEquals('putenv', $_ENV['foo']);
         $this->assertEquals('putenv', \getenv('foo'));
@@ -518,7 +518,7 @@ final class ConfigurationTest extends TestCase
     {
         \putenv('foo_force=putenv');
 
-        (new PhpHandler)->handle($this->configuration->getPHPConfiguration());
+        (new PhpHandler)->handle($this->configuration->php());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -529,7 +529,7 @@ final class ConfigurationTest extends TestCase
      */
     public function testPHPUnitConfigurationIsReadCorrectly(): void
     {
-        $configuration = $this->configuration->getPHPUnitConfiguration();
+        $configuration = $this->configuration->phpunit();
 
         $this->assertTrue($configuration->backupGlobals());
         $this->assertFalse($configuration->backupStaticAttributes());
@@ -576,7 +576,7 @@ final class ConfigurationTest extends TestCase
             TEST_FILES_PATH . 'configuration_testdox.xml'
         );
 
-        $config = $configuration->getPHPUnitConfiguration();
+        $config = $configuration->phpunit();
 
         $this->assertSame(CliTestDoxPrinter::class, $config->printerClass());
     }
@@ -587,7 +587,7 @@ final class ConfigurationTest extends TestCase
             TEST_FILES_PATH . 'configuration_testdox_printerClass.xml'
         );
 
-        $config = $configuration->getPHPUnitConfiguration();
+        $config = $configuration->phpunit();
 
         $this->assertSame(CliTestDoxPrinter::class, $config->printerClass());
         $this->assertTrue($config->conflictBetweenPrinterClassAndTestdox());
@@ -597,7 +597,7 @@ final class ConfigurationTest extends TestCase
     {
         $configuration = Configuration::getInstance(
             TEST_FILES_PATH . 'configuration_testsuite.xml'
-        )->getTestSuiteConfiguration();
+        )->testSuite();
 
         $this->assertCount(1, $configuration);
 
@@ -617,7 +617,7 @@ final class ConfigurationTest extends TestCase
     {
         $configuration = Configuration::getInstance(
             TEST_FILES_PATH . 'configuration_testsuites.xml'
-        )->getTestSuiteConfiguration();
+        )->testSuite();
 
         $this->assertCount(2, $configuration);
 

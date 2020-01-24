@@ -157,7 +157,7 @@ final class TestRunner extends BaseTestRunner
                 if (isset($arguments['configuration'])) {
                     \assert($arguments['configuration'] instanceof Configuration);
 
-                    $cacheLocation = $arguments['configuration']->getFilename();
+                    $cacheLocation = $arguments['configuration']->filename();
                 } else {
                     $cacheLocation = $_SERVER['PHP_SELF'];
                 }
@@ -317,7 +317,7 @@ final class TestRunner extends BaseTestRunner
 
                 $this->writeMessage(
                     'Configuration',
-                    $arguments['configuration']->getFilename()
+                    $arguments['configuration']->filename()
                 );
             }
 
@@ -359,7 +359,7 @@ final class TestRunner extends BaseTestRunner
                     "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
                 );
 
-                foreach ($arguments['configuration']->getValidationErrors() as $line => $errors) {
+                foreach ($arguments['configuration']->validationErrors() as $line => $errors) {
                     $this->write(\sprintf("\n  Line %d:\n", $line));
 
                     foreach ($errors as $msg) {
@@ -483,7 +483,7 @@ final class TestRunner extends BaseTestRunner
             if (isset($arguments['configuration'])) {
                 \assert($arguments['configuration'] instanceof Configuration);
 
-                $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
+                $filterConfiguration = $arguments['configuration']->filter();
 
                 if ($filterConfiguration->hasNonEmptyWhitelist()) {
                     $whitelistFromConfigurationFile = true;
@@ -552,7 +552,7 @@ final class TestRunner extends BaseTestRunner
             if (isset($arguments['configuration'])) {
                 \assert($arguments['configuration'] instanceof Configuration);
 
-                $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
+                $filterConfiguration = $arguments['configuration']->filter();
 
                 if ($filterConfiguration->hasNonEmptyWhitelist()) {
                     $codeCoverage->setAddUncoveredFilesFromWhitelist(
@@ -837,9 +837,9 @@ final class TestRunner extends BaseTestRunner
         $arguments['listeners'] = $arguments['listeners'] ?? [];
 
         if (isset($arguments['configuration'])) {
-            (new PhpHandler)->handle($arguments['configuration']->getPHPConfiguration());
+            (new PhpHandler)->handle($arguments['configuration']->php());
 
-            $phpunitConfiguration = $arguments['configuration']->getPHPUnitConfiguration();
+            $phpunitConfiguration = $arguments['configuration']->phpunit();
 
             $arguments['backupGlobals']                                   = $arguments['backupGlobals'] ?? $phpunitConfiguration->backupGlobals();
             $arguments['backupStaticAttributes']                          = $arguments['backupStaticAttributes'] ?? $phpunitConfiguration->backupStaticAttributes();
@@ -903,7 +903,7 @@ final class TestRunner extends BaseTestRunner
                 $groupCliArgs = $arguments['groups'];
             }
 
-            $groupConfiguration = $arguments['configuration']->getGroupConfiguration();
+            $groupConfiguration = $arguments['configuration']->groups();
 
             if (!isset($arguments['groups']) && $groupConfiguration->hasInclude()) {
                 $arguments['groups'] = $groupConfiguration->include()->asArrayOfStrings();
@@ -913,15 +913,15 @@ final class TestRunner extends BaseTestRunner
                 $arguments['excludeGroups'] = \array_diff($groupConfiguration->exclude()->asArrayOfStrings(), $groupCliArgs);
             }
 
-            foreach ($arguments['configuration']->getExtensionConfiguration() as $extension) {
+            foreach ($arguments['configuration']->extensions() as $extension) {
                 $this->addExtension($extension->createHookInstance());
             }
 
-            foreach ($arguments['configuration']->getListenerConfiguration() as $listener) {
+            foreach ($arguments['configuration']->listeners() as $listener) {
                 $arguments['listeners'][] = $listener->createTestListenerInstance();
             }
 
-            $loggingConfiguration = $arguments['configuration']->getLoggingConfiguration();
+            $loggingConfiguration = $arguments['configuration']->logging();
 
             if (!isset($arguments['coverageClover']) && $loggingConfiguration->hasCodeCoverageClover()) {
                 $arguments['coverageClover'] = $loggingConfiguration->codeCoverageClover()->target()->path();
@@ -988,7 +988,7 @@ final class TestRunner extends BaseTestRunner
                 $arguments['testdoxXMLFile'] = $loggingConfiguration->testDoxXml()->target()->path();
             }
 
-            $testdoxGroupConfiguration = $arguments['configuration']->getTestdoxGroupConfiguration();
+            $testdoxGroupConfiguration = $arguments['configuration']->testdoxGroups();
 
             if (!isset($arguments['testdoxGroups']) && $testdoxGroupConfiguration->hasInclude()) {
                 $arguments['testdoxGroups'] = $testdoxGroupConfiguration->include()->asArrayOfStrings();
