@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Clover;
 use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Crap4j;
@@ -29,7 +28,6 @@ use PHPUnit\TextUI\Configuration\TestSuite as TestSuiteConfiguration;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\Xml;
-use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -674,33 +672,6 @@ final class Configuration
         return TestSuiteCollection::fromArray($testSuites);
     }
 
-    public function getTestSuite(string $testSuiteFilter = ''): TestSuite
-    {
-        $testSuiteNodes = $this->xpath->query('testsuites/testsuite');
-
-        if ($testSuiteNodes->length === 0) {
-            $testSuiteNodes = $this->xpath->query('testsuite');
-        }
-
-        if ($testSuiteNodes->length === 1) {
-            $element = $testSuiteNodes->item(0);
-
-            \assert($element instanceof \DOMElement);
-
-            return $this->createTestSuite($element, $testSuiteFilter);
-        }
-
-        $suite = new TestSuite;
-
-        foreach ($testSuiteNodes as $testSuiteNode) {
-            $suite->addTestSuite(
-                $this->createTestSuite($testSuiteNode, $testSuiteFilter)
-            );
-        }
-
-        return $suite;
-    }
-
     private function validateConfigurationAgainstSchema(): void
     {
         $original    = \libxml_use_internal_errors(true);
@@ -747,105 +718,6 @@ final class Configuration
         }
 
         return $arguments;
-    }
-
-    private function createTestSuite(\DOMElement $testSuiteNode, string $testSuiteFilter = ''): TestSuite
-    {
-        if ($testSuiteNode->hasAttribute('name')) {
-            $suite = new TestSuite(
-                (string) $testSuiteNode->getAttribute('name')
-            );
-        } else {
-            $suite = new TestSuite;
-        }
-
-        $exclude = [];
-
-        foreach ($testSuiteNode->getElementsByTagName('exclude') as $excludeNode) {
-            $excludeFile = (string) $excludeNode->textContent;
-
-            if ($excludeFile) {
-                $exclude[] = $this->toAbsolutePath($excludeFile);
-            }
-        }
-
-        $fileIteratorFacade     = new FileIteratorFacade;
-        $testSuiteFilterAsArray = $testSuiteFilter ? \explode(',', $testSuiteFilter) : [];
-
-        foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
-            \assert($directoryNode instanceof \DOMElement);
-
-            if (!empty($testSuiteFilterAsArray) && !\in_array($directoryNode->parentNode->getAttribute('name'), $testSuiteFilterAsArray, true)) {
-                continue;
-            }
-
-            $directory = (string) $directoryNode->textContent;
-
-            if (empty($directory)) {
-                continue;
-            }
-
-            if (!$this->satisfiesPhpVersion($directoryNode)) {
-                continue;
-            }
-
-            $files = $fileIteratorFacade->getFilesAsArray(
-                $this->toAbsolutePath($directory),
-                $directoryNode->hasAttribute('suffix') ? (string) $directoryNode->getAttribute('suffix') : 'Test.php',
-                $directoryNode->hasAttribute('prefix') ? (string) $directoryNode->getAttribute('prefix') : '',
-                $exclude
-            );
-
-            $suite->addTestFiles($files);
-        }
-
-        foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
-            \assert($fileNode instanceof \DOMElement);
-
-            if (!empty($testSuiteFilterAsArray) && !\in_array($fileNode->parentNode->getAttribute('name'), $testSuiteFilterAsArray, true)) {
-                continue;
-            }
-
-            $file = (string) $fileNode->textContent;
-
-            if (empty($file)) {
-                continue;
-            }
-
-            $file = $fileIteratorFacade->getFilesAsArray(
-                $this->toAbsolutePath($file)
-            );
-
-            if (!isset($file[0])) {
-                continue;
-            }
-
-            $file = $file[0];
-
-            if (!$this->satisfiesPhpVersion($fileNode)) {
-                continue;
-            }
-
-            $suite->addTestFile($file);
-        }
-
-        return $suite;
-    }
-
-    private function satisfiesPhpVersion(\DOMElement $node): bool
-    {
-        $phpVersion         = \PHP_VERSION;
-        $phpVersionOperator = '>=';
-
-        if ($node->hasAttribute('phpVersion')) {
-            $phpVersion = (string) $node->getAttribute('phpVersion');
-        }
-
-        if ($node->hasAttribute('phpVersionOperator')) {
-            $phpVersionOperator = (string) $node->getAttribute('phpVersionOperator');
-        }
-
-        return (bool) \version_compare(\PHP_VERSION, $phpVersion, $phpVersionOperator);
     }
 
     private function getBooleanAttribute(\DOMElement $element, string $attribute, bool $default): bool
