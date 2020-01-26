@@ -197,7 +197,7 @@ class Command
         unset($this->arguments['test'], $this->arguments['testFile']);
 
         try {
-            $result = $runner->doRun($suite, $this->arguments, $exit);
+            $result = $runner->run($suite, $this->arguments, $exit);
         } catch (Exception $e) {
             print $e->getMessage() . \PHP_EOL;
         }
