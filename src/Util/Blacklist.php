@@ -32,10 +32,10 @@ use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
 use SebastianBergmann\RecursionContext\Context;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
+use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Type\TypeName;
 use SebastianBergmann\Version;
-use Text_Template;
 use TheSeer\Tokenizer\Tokenizer;
 use Webmozart\Assert\Assert;
 
@@ -88,7 +88,7 @@ final class Blacklist
         Invoker::class => 1,
 
         // phpunit/php-text-template
-        Text_Template::class => 1,
+        Template::class => 1,
 
         // phpunit/php-timer
         Timer::class => 1,

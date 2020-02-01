@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use SebastianBergmann\Template\Template;
 use SebastianBergmann\Type\ObjectType;
 use SebastianBergmann\Type\Type;
 use SebastianBergmann\Type\UnknownType;
@@ -20,7 +21,7 @@ use SebastianBergmann\Type\VoidType;
 final class MockMethod
 {
     /**
-     * @var \Text_Template[]
+     * @var Template[]
      */
     private static $templates = [];
 
@@ -228,12 +229,12 @@ final class MockMethod
         return $this->returnType;
     }
 
-    private function getTemplate(string $template): \Text_Template
+    private function getTemplate(string $template): Template
     {
         $filename = __DIR__ . \DIRECTORY_SEPARATOR . 'Generator' . \DIRECTORY_SEPARATOR . $template;
 
         if (!isset(self::$templates[$filename])) {
-            self::$templates[$filename] = new \Text_Template($filename);
+            self::$templates[$filename] = new Template($filename);
         }
 
         return self::$templates[$filename];

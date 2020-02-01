@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use Doctrine\Instantiator\Exception\ExceptionInterface as InstantiatorException;
 use Doctrine\Instantiator\Instantiator;
 use PHPUnit\Framework\InvalidArgumentException;
+use SebastianBergmann\Template\Template;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -40,7 +41,7 @@ final class Generator
     private static $cache = [];
 
     /**
-     * @var \Text_Template[]
+     * @var Template[]
      */
     private static $templates = [];
 
@@ -867,12 +868,12 @@ final class Generator
         return isset(self::BLACKLISTED_METHOD_NAMES[$name]);
     }
 
-    private function getTemplate(string $template): \Text_Template
+    private function getTemplate(string $template): Template
     {
         $filename = __DIR__ . \DIRECTORY_SEPARATOR . 'Generator' . \DIRECTORY_SEPARATOR . $template;
 
         if (!isset(self::$templates[$filename])) {
-            self::$templates[$filename] = new \Text_Template($filename);
+            self::$templates[$filename] = new Template($filename);
         }
 
         return self::$templates[$filename];
