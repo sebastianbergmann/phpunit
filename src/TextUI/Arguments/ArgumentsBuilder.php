@@ -131,6 +131,7 @@ final class ArgumentsBuilder
         $coverageText                               = null;
         $coverageTextShowUncoveredFiles             = null;
         $coverageTextShowOnlySummary                = null;
+        $coverageXml                                = null;
         $debug                                      = null;
         $defaultTimeLimit                           = null;
         $disableCodeCoverageIgnore                  = null;
@@ -138,6 +139,8 @@ final class ArgumentsBuilder
         $disallowTodoAnnotatedTests                 = null;
         $enforceTimeLimit                           = null;
         $excludeGroups                              = null;
+        $executionOrder                             = null;
+        $executionOrderDefects                      = null;
         $failOnRisky                                = null;
         $failOnWarning                              = null;
         $filter                                     = null;
@@ -161,6 +164,7 @@ final class ArgumentsBuilder
         $randomOrderSeed                            = null;
         $repeat                                     = null;
         $reportUselessTests                         = null;
+        $resolveDependencies                        = null;
         $reverseList                                = null;
         $stderr                                     = null;
         $strictCoverage                             = null;
@@ -693,6 +697,7 @@ final class ArgumentsBuilder
             $coverageText,
             $coverageTextShowUncoveredFiles,
             $coverageTextShowOnlySummary,
+            $coverageXml,
             $debug,
             $defaultTimeLimit,
             $disableCodeCoverageIgnore,
@@ -700,6 +705,8 @@ final class ArgumentsBuilder
             $disallowTodoAnnotatedTests,
             $enforceTimeLimit,
             $excludeGroups,
+            $executionOrder,
+            $executionOrderDefects,
             $failOnRisky,
             $failOnWarning,
             $filter,
@@ -723,6 +730,7 @@ final class ArgumentsBuilder
             $randomOrderSeed,
             $repeat,
             $reportUselessTests,
+            $resolveDependencies,
             $reverseList,
             $stderr,
             $strictCoverage,

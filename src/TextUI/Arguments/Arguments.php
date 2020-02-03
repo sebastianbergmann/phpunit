@@ -111,6 +111,11 @@ final class Arguments
     private $coverageTextShowOnlySummary;
 
     /**
+     * @var ?string
+     */
+    private $coverageXml;
+
+    /**
      * @var ?bool
      */
     private $debug;
@@ -144,6 +149,16 @@ final class Arguments
      * @var null|string[]
      */
     private $excludeGroups;
+
+    /**
+     * @var ?int
+     */
+    private $executionOrder;
+
+    /**
+     * @var ?int
+     */
+    private $executionOrderDefects;
 
     /**
      * @var ?bool
@@ -259,6 +274,11 @@ final class Arguments
      * @var ?bool
      */
     private $reportUselessTests;
+
+    /**
+     * @var ?bool
+     */
+    private $resolveDependencies;
 
     /**
      * @var ?bool
@@ -388,7 +408,7 @@ final class Arguments
     /**
      * @param null|int|string $columns
      */
-    public function __construct(?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticAttributes, ?bool $beStrictAboutChangesToGlobalState, ?bool $beStrictAboutResourceUsageDuringSmallTests, ?string $bootstrap, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $disallowTodoAnnotatedTests, ?bool $enforceTimeLimit, ?array $excludeGroups, ?bool $failOnRisky, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?array $groups, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?string $loader, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?string $printer, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $whitelist, ?string $xdebugFilterFile)
+    public function __construct(?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticAttributes, ?bool $beStrictAboutChangesToGlobalState, ?bool $beStrictAboutResourceUsageDuringSmallTests, ?string $bootstrap, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $disallowTodoAnnotatedTests, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnRisky, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?array $groups, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?string $loader, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?string $printer, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $whitelist, ?string $xdebugFilterFile)
     {
         $this->atLeastVersion                             = $atLeastVersion;
         $this->backupGlobals                              = $backupGlobals;
@@ -409,6 +429,7 @@ final class Arguments
         $this->coverageText                               = $coverageText;
         $this->coverageTextShowUncoveredFiles             = $coverageTextShowUncoveredFiles;
         $this->coverageTextShowOnlySummary                = $coverageTextShowOnlySummary;
+        $this->coverageXml                                = $coverageXml;
         $this->debug                                      = $debug;
         $this->defaultTimeLimit                           = $defaultTimeLimit;
         $this->disableCodeCoverageIgnore                  = $disableCodeCoverageIgnore;
@@ -416,6 +437,8 @@ final class Arguments
         $this->disallowTodoAnnotatedTests                 = $disallowTodoAnnotatedTests;
         $this->enforceTimeLimit                           = $enforceTimeLimit;
         $this->excludeGroups                              = $excludeGroups;
+        $this->executionOrder                             = $executionOrder;
+        $this->executionOrderDefects                      = $executionOrderDefects;
         $this->failOnRisky                                = $failOnRisky;
         $this->failOnWarning                              = $failOnWarning;
         $this->filter                                     = $filter;
@@ -439,6 +462,7 @@ final class Arguments
         $this->randomOrderSeed                            = $randomOrderSeed;
         $this->repeat                                     = $repeat;
         $this->reportUselessTests                         = $reportUselessTests;
+        $this->resolveDependencies                        = $resolveDependencies;
         $this->reverseList                                = $reverseList;
         $this->stderr                                     = $stderr;
         $this->strictCoverage                             = $strictCoverage;
@@ -732,6 +756,20 @@ final class Arguments
         return $this->coverageTextShowOnlySummary;
     }
 
+    public function hasCoverageXml(): bool
+    {
+        return $this->coverageXml !== null;
+    }
+
+    public function coverageXml(): string
+    {
+        if ($this->coverageXml === null) {
+            throw new Exception;
+        }
+
+        return $this->coverageXml;
+    }
+
     public function hasDebug(): bool
     {
         return $this->debug !== null;
@@ -828,6 +866,34 @@ final class Arguments
         }
 
         return $this->excludeGroups;
+    }
+
+    public function hasExecutionOrder(): bool
+    {
+        return $this->executionOrder !== null;
+    }
+
+    public function executionOrder(): int
+    {
+        if ($this->executionOrder === null) {
+            throw new Exception;
+        }
+
+        return $this->executionOrder;
+    }
+
+    public function hasExecutionOrderDefects(): bool
+    {
+        return $this->executionOrderDefects !== null;
+    }
+
+    public function executionOrderDefects(): int
+    {
+        if ($this->executionOrderDefects === null) {
+            throw new Exception;
+        }
+
+        return $this->executionOrderDefects;
     }
 
     public function hasFailOnRisky(): bool
@@ -1150,6 +1216,20 @@ final class Arguments
         }
 
         return $this->reportUselessTests;
+    }
+
+    public function hasResolveDependencies(): bool
+    {
+        return $this->resolveDependencies !== null;
+    }
+
+    public function resolveDependencies(): bool
+    {
+        if ($this->resolveDependencies === null) {
+            throw new Exception;
+        }
+
+        return $this->resolveDependencies;
     }
 
     public function hasReverseList(): bool
