@@ -274,9 +274,9 @@ final class ArgumentsBuilder
 
                     if (isset($tmp[0])) {
                         if (isset($tmp[1])) {
-                            $iniSettings[] = [$tmp[0] => $tmp[1]];
+                            $iniSettings[$tmp[0]] = $tmp[1];
                         } else {
-                            $iniSettings[] = [$tmp[0] => '1'];
+                            $iniSettings[$tmp[0]] = '1';
                         }
                     }
 
