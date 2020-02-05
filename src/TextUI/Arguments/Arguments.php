@@ -826,7 +826,7 @@ final class Arguments
         return $this->disallowTestOutput;
     }
 
-    public function hasDisallowTodoAnnotatedTest(): bool
+    public function hasDisallowTodoAnnotatedTests(): bool
     {
         return $this->disallowTodoAnnotatedTests !== null;
     }
