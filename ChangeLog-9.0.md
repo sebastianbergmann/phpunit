@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 
 ### Changed
 
+* Implemented [#3630](https://github.com/sebastianbergmann/phpunit/issues/3630): Deprecate support for `ClassName<*>` as values for `@covers` and `@uses` annotations (this deprecation is not implemented in code, you will not get a deprecation warning when you use this feature in PHPUnit 9)
 * Implemented [#3746](https://github.com/sebastianbergmann/phpunit/issues/3746): Improve developer experience of global wrapper functions for assertions
 * Implemented [#3914](https://github.com/sebastianbergmann/phpunit/pull/3914): Refactor `PHPUnit\Util\Configuration`
 * Implemented [#4024](https://github.com/sebastianbergmann/phpunit/issues/4024): Make `PHPUnit\TextUI\ResultPrinter` an interface
@@ -31,5 +32,5 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 * Implemented [#3957](https://github.com/sebastianbergmann/phpunit/issues/3957): Remove `expectExceptionMessageRegExp()`
 * Implemented [#4012](https://github.com/sebastianbergmann/phpunit/issues/4012): Remove class name as CLI argument
 
-[9.0.0]: https://github.com/sebastianbergmann/phpunit/compare/8.5...master
+[9.0.0]: https://github.com/sebastianbergmann/phpunit/compare/8.5.2...master
 
