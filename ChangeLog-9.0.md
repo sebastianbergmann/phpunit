@@ -10,8 +10,6 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 
 ### Changed
 
-* Implemented [#3630](https://github.com/sebastianbergmann/phpunit/issues/3630): Deprecate support for `ClassName<*>` as values for `@covers` and `@uses` annotations (this deprecation is not implemented in code, you will not get a deprecation warning when you use this feature in PHPUnit 9)
-* Implemented [#3770](https://github.com/sebastianbergmann/phpunit/issues/3770): Deprecate `MockBuilder::setMethods()` (this deprecation is not implemented in code, you will not get a deprecation warning when you use this feature in PHPUnit 9)
 * Implemented [#3746](https://github.com/sebastianbergmann/phpunit/issues/3746): Improve developer experience of global wrapper functions for assertions
 * Implemented [#3914](https://github.com/sebastianbergmann/phpunit/pull/3914): Refactor `PHPUnit\Util\Configuration`
 * Implemented [#4024](https://github.com/sebastianbergmann/phpunit/issues/4024): Make `PHPUnit\TextUI\ResultPrinter` an interface
@@ -27,6 +25,8 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 * Implemented [#3426](https://github.com/sebastianbergmann/phpunit/issues/3426): Clean up `assertContains()` and `assertNotContains()`
 * Implemented [#3495](https://github.com/sebastianbergmann/phpunit/issues/3495): Remove `assertArraySubset()`
 * Implemented [#3523](https://github.com/sebastianbergmann/phpunit/issues/3523): Remove the `setUseErrorHandler()` method
+* Implemented [#3630](https://github.com/sebastianbergmann/phpunit/issues/3630): Deprecate support for `ClassName<*>` as values for `@covers` and `@uses` annotations (this deprecation is not implemented in code, you will not get a deprecation warning when you use this feature in PHPUnit 9)
+* Implemented [#3770](https://github.com/sebastianbergmann/phpunit/issues/3770): Deprecate `MockBuilder::setMethods()` (this deprecation is not implemented in code, you will not get a deprecation warning when you use this feature in PHPUnit 9)
 * Implemented [#3776](https://github.com/sebastianbergmann/phpunit/issues/3776): Deprecate `expectException(PHPUnit\Framework\Error\*)`
 * Implemented [#3951](https://github.com/sebastianbergmann/phpunit/issues/3951): Remove optional parameters of `assertFileEquals()` etc.
 * Implemented [#3956](https://github.com/sebastianbergmann/phpunit/issues/3956): Remove support for doubling multiple interfaces
