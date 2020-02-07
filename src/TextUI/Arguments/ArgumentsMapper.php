@@ -28,6 +28,28 @@ final class ArgumentsMapper
             'warnings'                => [],
         ];
 
+        // TODO Move somewhere else vvv
+
+        if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
+        }
+
+        if ($arguments->hasAtLeastVersion() && $arguments->atLeastVersion()) {
+        }
+
+        if ($arguments->hasVersion() && $arguments->version()) {
+        }
+
+        if ($arguments->hasCheckVersion() && $arguments->checkVersion()) {
+        }
+
+        if ($arguments->hasIniSettings()) {
+            foreach ($arguments->iniSettings() as $name => $value) {
+                \ini_set($name, $value);
+            }
+        }
+
+        // TODO Move somewhere else ^^^
+
         if ($arguments->hasColors()) {
             $result['colors'] = $arguments->colors();
         }
