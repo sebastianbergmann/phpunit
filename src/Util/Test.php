@@ -898,7 +898,7 @@ final class Test
         return $a;
     }
 
-    /*
+    /**
      * @throws Exception
      */
     private static function ensureOperatorIsValid(string $operator): void
