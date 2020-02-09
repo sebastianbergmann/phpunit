@@ -902,6 +902,15 @@ final class Generator
             $type = \implode('_', $type);
         }
 
+        // in case of an anonymous class we have to use an alias because of the special characters
+        if (\strpos($type, '@') !== false && \class_exists($type, false)) {
+            do {
+                $alias = 'anonymous_class_' . \md5($type) . '_' .
+                \substr(\md5((string) \mt_rand()), 0, 8);
+            } while (\class_exists($alias, false) || !\class_alias($type, $alias, false));
+            $type = $alias;
+        }
+
         if ($type[0] === '\\') {
             $type = \substr($type, 1);
         }

@@ -831,6 +831,16 @@ final class TestCaseTest extends TestCase
         $this->assertInstanceOf(MockObject::class, $mock);
     }
 
+    public function testCreateMockFromAnonymousClassName(): void
+    {
+        $anonymousClassName = \get_class(new class extends \Mockable {
+        });
+        $mock = $this->createMock($anonymousClassName);
+
+        $this->assertInstanceOf($anonymousClassName, $mock);
+        $this->assertInstanceOf(MockObject::class, $mock);
+    }
+
     public function testCreateMockMocksAllMethods(): void
     {
         $mock = $this->createMock(\Mockable::class);
