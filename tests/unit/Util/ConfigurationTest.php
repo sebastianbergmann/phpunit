@@ -608,7 +608,7 @@ final class ConfigurationTest extends TestCase
         $this->assertSame('', $first->directories()->asArray()[0]->prefix());
         $this->assertSame('Test.php', $first->directories()->asArray()[0]->suffix());
         $this->assertSame(\PHP_VERSION, $first->directories()->asArray()[0]->phpVersion());
-        $this->assertSame('>=', $first->directories()->asArray()[0]->phpVersionOperator());
+        $this->assertSame('>=', $first->directories()->asArray()[0]->phpVersionOperator()->asString());
         $this->assertCount(0, $first->files());
         $this->assertCount(0, $first->exclude());
     }
@@ -628,7 +628,7 @@ final class ConfigurationTest extends TestCase
         $this->assertSame('', $first->directories()->asArray()[0]->prefix());
         $this->assertSame('Test.php', $first->directories()->asArray()[0]->suffix());
         $this->assertSame(\PHP_VERSION, $first->directories()->asArray()[0]->phpVersion());
-        $this->assertSame('>=', $first->directories()->asArray()[0]->phpVersionOperator());
+        $this->assertSame('>=', $first->directories()->asArray()[0]->phpVersionOperator()->asString());
         $this->assertCount(0, $first->files());
         $this->assertCount(0, $first->exclude());
 
@@ -638,11 +638,11 @@ final class ConfigurationTest extends TestCase
         $this->assertSame('test', $second->directories()->asArray()[0]->prefix());
         $this->assertSame('.phpt', $second->directories()->asArray()[0]->suffix());
         $this->assertSame('1.2.3', $second->directories()->asArray()[0]->phpVersion());
-        $this->assertSame('==', $second->directories()->asArray()[0]->phpVersionOperator());
+        $this->assertSame('==', $second->directories()->asArray()[0]->phpVersionOperator()->asString());
         $this->assertCount(1, $second->files());
         $this->assertSame(TEST_FILES_PATH . 'tests/file.php', $second->files()->asArray()[0]->path());
         $this->assertSame('4.5.6', $second->files()->asArray()[0]->phpVersion());
-        $this->assertSame('!=', $second->files()->asArray()[0]->phpVersionOperator());
+        $this->assertSame('!=', $second->files()->asArray()[0]->phpVersionOperator()->asString());
         $this->assertCount(1, $second->exclude());
         $this->assertSame(TEST_FILES_PATH . 'tests/second/_files', $second->exclude()->asArray()[0]->path());
     }

@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use PHPUnit\Util\VersionComparisonOperator;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
@@ -36,11 +38,11 @@ final class TestDirectory
     private $phpVersion;
 
     /**
-     * @var string
+     * @var VersionComparisonOperator
      */
     private $phpVersionOperator;
 
-    public function __construct(string $path, string $prefix, string $suffix, string $phpVersion, $phpVersionOperator)
+    public function __construct(string $path, string $prefix, string $suffix, string $phpVersion, VersionComparisonOperator $phpVersionOperator)
     {
         $this->path               = $path;
         $this->prefix             = $prefix;
@@ -69,7 +71,7 @@ final class TestDirectory
         return $this->phpVersion;
     }
 
-    public function phpVersionOperator(): string
+    public function phpVersionOperator(): VersionComparisonOperator
     {
         return $this->phpVersionOperator;
     }
