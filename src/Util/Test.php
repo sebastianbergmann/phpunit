@@ -158,12 +158,10 @@ final class Test
         $hint     = null;
 
         if (!empty($required['PHP'])) {
-            $operator = empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator'];
+            $operator = new VersionComparisonOperator(empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator']);
 
-            self::ensureOperatorIsValid($operator);
-
-            if (!\version_compare(\PHP_VERSION, $required['PHP']['version'], $operator)) {
-                $missing[] = \sprintf('PHP %s %s is required.', $operator, $required['PHP']['version']);
+            if (!\version_compare(\PHP_VERSION, $required['PHP']['version'], $operator->asString())) {
+                $missing[] = \sprintf('PHP %s %s is required.', $operator->asString(), $required['PHP']['version']);
                 $hint      = $hint ?? 'PHP';
             }
         } elseif (!empty($required['PHP_constraint'])) {
@@ -182,12 +180,10 @@ final class Test
         if (!empty($required['PHPUnit'])) {
             $phpunitVersion = Version::id();
 
-            $operator = empty($required['PHPUnit']['operator']) ? '>=' : $required['PHPUnit']['operator'];
+            $operator = new VersionComparisonOperator(empty($required['PHPUnit']['operator']) ? '>=' : $required['PHPUnit']['operator']);
 
-            self::ensureOperatorIsValid($operator);
-
-            if (!\version_compare($phpunitVersion, $required['PHPUnit']['version'], $operator)) {
-                $missing[] = \sprintf('PHPUnit %s %s is required.', $operator, $required['PHPUnit']['version']);
+            if (!\version_compare($phpunitVersion, $required['PHPUnit']['version'], $operator->asString())) {
+                $missing[] = \sprintf('PHPUnit %s %s is required.', $operator->asString(), $required['PHPUnit']['version']);
                 $hint      = $hint ?? 'PHPUnit';
             }
         } elseif (!empty($required['PHPUnit_constraint'])) {
@@ -260,12 +256,10 @@ final class Test
             foreach ($required['extension_versions'] as $extension => $req) {
                 $actualVersion = \phpversion($extension);
 
-                $operator = empty($req['operator']) ? '>=' : $req['operator'];
+                $operator = new VersionComparisonOperator(empty($req['operator']) ? '>=' : $req['operator']);
 
-                self::ensureOperatorIsValid($operator);
-
-                if ($actualVersion === false || !\version_compare($actualVersion, $req['version'], $operator)) {
-                    $missing[] = \sprintf('Extension %s %s %s is required.', $extension, $operator, $req['version']);
+                if ($actualVersion === false || !\version_compare($actualVersion, $req['version'], $operator->asString())) {
+                    $missing[] = \sprintf('Extension %s %s %s is required.', $extension, $operator->asString(), $req['version']);
                     $hint      = $hint ?? 'extension_' . $extension;
                 }
             }
@@ -882,20 +876,5 @@ final class Test
         }
 
         return $a;
-    }
-
-    /*
-     * @throws Exception
-     */
-    private static function ensureOperatorIsValid(string $operator): void
-    {
-        if (!\in_array($operator, ['<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>', 'ne'])) {
-            throw new Exception(
-                \sprintf(
-                    '"%s" is not a valid version_compare() operator',
-                    $operator
-                )
-            );
-        }
     }
 }

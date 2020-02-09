@@ -31,7 +31,7 @@ final class TestSuiteMapper
             $testSuiteEmpty = true;
 
             foreach ($testSuiteConfiguration->directories() as $directory) {
-                if (!\version_compare(\PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator())) {
+                if (!\version_compare(\PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator()->asString())) {
                     continue;
                 }
 
@@ -54,7 +54,7 @@ final class TestSuiteMapper
             }
 
             foreach ($testSuiteConfiguration->files() as $file) {
-                if (!\version_compare(\PHP_VERSION, $file->phpVersion(), $file->phpVersionOperator())) {
+                if (!\version_compare(\PHP_VERSION, $file->phpVersion(), $file->phpVersionOperator()->asString())) {
                     continue;
                 }
 
