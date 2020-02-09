@@ -37,6 +37,27 @@ jobs:
       - name: Run vimeo/psalm on internal code
         run: php7.3 ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
 
+  backward-compatibility:
+    name: Backward Compatibility
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 0
+
+      - name: "Install PHP with extensions"
+        uses: shivammathur/setup-php@v1
+        with:
+          php-version: 7.3
+          coverage: none
+          extensions: intl
+
+      - name: Run roave/backward-compatibility-check
+        run: php ./tools/roave-backward-compatibility-check --from=9.0.0
+
   lint-xml-configuration:
     name: Lint XML Configuration
 
