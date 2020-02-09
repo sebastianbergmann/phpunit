@@ -162,7 +162,7 @@ final class Test
 
             if (!\version_compare(\PHP_VERSION, $required['PHP']['version'], $operator->asString())) {
                 $missing[] = \sprintf('PHP %s %s is required.', $operator->asString(), $required['PHP']['version']);
-                $hint      = $hint ?? 'PHP';
+                $hint      = 'PHP';
             }
         } elseif (!empty($required['PHP_constraint'])) {
             $version = new \PharIo\Version\Version(self::sanitizeVersionNumber(\PHP_VERSION));
@@ -173,7 +173,7 @@ final class Test
                     $required['PHP_constraint']['constraint']->asString()
                 );
 
-                $hint = $hint ?? 'PHP_constraint';
+                $hint = 'PHP_constraint';
             }
         }
 
