@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.0.1] - 2020-02-DD
+
+### Fixed
+
+* Fixed [#4036](https://github.com/sebastianbergmann/phpunit/issues/4036): Annotations for ignoring code from code coverage are unintentionally ignored by default
+
 ## [9.0.0] - 2020-02-07
 
 ### Added
@@ -33,5 +39,6 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 * Implemented [#3957](https://github.com/sebastianbergmann/phpunit/issues/3957): Remove `expectExceptionMessageRegExp()`
 * Implemented [#4012](https://github.com/sebastianbergmann/phpunit/issues/4012): Remove class name as CLI argument
 
+[9.0.1]: https://github.com/sebastianbergmann/phpunit/compare/9.0.0...9.0
 [9.0.0]: https://github.com/sebastianbergmann/phpunit/compare/8.5.2...master
 
