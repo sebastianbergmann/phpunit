@@ -15,6 +15,8 @@ use PHPUnit\Util\FileLoader;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
  */
 final class StandardTestSuiteLoader implements TestSuiteLoader
 {

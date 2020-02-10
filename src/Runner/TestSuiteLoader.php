@@ -13,6 +13,8 @@ use ReflectionClass;
 
 /**
  * An interface to define how a test suite should be loaded.
+ *
+ * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
  */
 interface TestSuiteLoader
 {
