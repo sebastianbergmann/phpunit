@@ -337,6 +337,10 @@ final class TestRunner extends BaseTestRunner
             }
         }
 
+        foreach ($arguments['warnings'] as $warning) {
+            $this->writeMessage('Warning', $warning);
+        }
+
         if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
             $this->writeMessage(
                 'Random seed',
