@@ -1,5 +1,5 @@
 --TEST--
-https://github.com/sebastianbergmann/phpunit/issues/4037
+https://github.com/sebastianbergmann/phpunit/pull/4037
 --FILE--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../../bootstrap.php';
