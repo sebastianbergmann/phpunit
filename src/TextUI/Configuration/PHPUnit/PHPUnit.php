@@ -157,11 +157,15 @@ final class PHPUnit
 
     /**
      * @var ?string
+     *
+     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
      */
     private $testSuiteLoaderClass;
 
     /**
      * @var ?string
+     *
+     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
      */
     private $testSuiteLoaderFile;
 
@@ -501,6 +505,9 @@ final class PHPUnit
         return (string) $this->extensionsDirectory;
     }
 
+    /**
+     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
+     */
     public function hasTestSuiteLoaderClass(): bool
     {
         return $this->testSuiteLoaderClass !== null;
@@ -508,6 +515,8 @@ final class PHPUnit
 
     /**
      * @throws Exception
+     *
+     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
      */
     public function testSuiteLoaderClass(): string
     {
@@ -518,6 +527,9 @@ final class PHPUnit
         return (string) $this->testSuiteLoaderClass;
     }
 
+    /**
+     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
+     */
     public function hasTestSuiteLoaderFile(): bool
     {
         return $this->testSuiteLoaderFile !== null;
@@ -525,6 +537,8 @@ final class PHPUnit
 
     /**
      * @throws Exception
+     *
+     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
      */
     public function testSuiteLoaderFile(): string
     {

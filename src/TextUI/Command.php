@@ -912,6 +912,8 @@ class Command
 
     /**
      * Handles the loading of the PHPUnit\Runner\TestSuiteLoader implementation.
+     *
+     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
      */
     protected function handleLoader(string $loaderClass, string $loaderFile = ''): ?TestSuiteLoader
     {
