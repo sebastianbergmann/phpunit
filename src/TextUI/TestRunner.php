@@ -546,7 +546,7 @@ final class TestRunner extends BaseTestRunner
                 );
             }
 
-            if (isset($arguments['disableCodeCoverageIgnore']) && $arguments['disableCodeCoverageIgnore'] === true) {
+            if ($arguments['disableCodeCoverageIgnore']) {
                 $codeCoverage->setDisableIgnoredLines(true);
             }
 
