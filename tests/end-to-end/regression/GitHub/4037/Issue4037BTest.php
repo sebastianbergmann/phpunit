@@ -11,13 +11,13 @@ use PHPUnit\Framework\TestCase;
 
 final class Issue4037BTest extends TestCase
 {
-    public function testB(): void
-    {
-        $this->assertTrue(true);
-    }
-
     public static function ok(): bool
     {
         return true;
+    }
+
+    public function testB(): void
+    {
+        $this->assertTrue(true);
     }
 }
