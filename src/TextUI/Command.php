@@ -808,7 +808,8 @@ class Command
         }
 
         if ($this->arguments['loader'] !== null) {
-            $this->arguments['loader'] = $this->handleLoader($this->arguments['loader']);
+            $this->arguments['warnings'][] = 'Usage of custom test suite loader is deprecated';
+            $this->arguments['loader']     = $this->handleLoader($this->arguments['loader']);
         }
 
         if (isset($this->arguments['configuration']) &&
@@ -875,6 +876,8 @@ class Command
             }
 
             if ($phpunitConfiguration->hasTestSuiteLoaderClass()) {
+                $this->arguments['warnings'][] = 'Usage of custom test suite loader is deprecated';
+
                 $file = $phpunitConfiguration->hasTestSuiteLoaderFile() ? $phpunitConfiguration->testSuiteLoaderFile() : '';
 
                 $this->arguments['loader'] = $this->handleLoader(
