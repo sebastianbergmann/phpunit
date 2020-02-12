@@ -1567,6 +1567,9 @@ function assertDoesNotMatchRegularExpression(string $pattern, string $string, st
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @codeCoverageIgnore
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4089
  * @see Assert::assertNotRegExp
  */
 function assertNotRegExp(string $pattern, string $string, string $message = ''): void
