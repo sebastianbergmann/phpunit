@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 
 ## [9.1.0] - 2020-04-10
 
+### Added
+
+* Implemented [#4061](https://github.com/sebastianbergmann/phpunit/issues/4061): Implement `assertIsNotReadable()` as alternative for `assertNotIsReadable()` with a more readable name
+
 ### Changed
 
 * Implemented [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): Deprecate custom test suite loader

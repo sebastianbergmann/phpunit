@@ -585,6 +585,19 @@ function assertIsReadable(string $filename, string $message = ''): void
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @see Assert::assertIsNotReadable
+ */
+function assertIsNotReadable(string $filename, string $message = ''): void
+{
+    Assert::assertIsNotReadable(...\func_get_args());
+}
+
+/**
+ * Asserts that a file/dir exists and is not readable.
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
  * @see Assert::assertNotIsReadable
  */
 function assertNotIsReadable(string $filename, string $message = ''): void

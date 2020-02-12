@@ -554,13 +554,13 @@ XML;
         $this->assertIsReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
-    public function testAssertNotIsReadable(): void
+    public function testAssertIsNotReadable(): void
     {
-        $this->assertNotIsReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertIsNotReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNotIsReadable(__FILE__);
+        $this->assertIsNotReadable(__FILE__);
     }
 
     public function testAssertIsWritable(): void
