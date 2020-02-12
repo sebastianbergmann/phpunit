@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 ### Added
 
 * Implemented [#4061](https://github.com/sebastianbergmann/phpunit/issues/4061): Implement `assertIsNotReadable()` as alternative for `assertNotIsReadable()` with a more readable name
+* Implemented [#4064](https://github.com/sebastianbergmann/phpunit/issues/4064): Implement `assertIsNotWritable()` as alternative for `assertNotIsWritable()` with a more readable name
 
 ### Changed
 

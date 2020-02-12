@@ -624,6 +624,19 @@ function assertIsWritable(string $filename, string $message = ''): void
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @see Assert::assertIsNotWritable
+ */
+function assertIsNotWritable(string $filename, string $message = ''): void
+{
+    Assert::assertIsNotWritable(...\func_get_args());
+}
+
+/**
+ * Asserts that a file/dir exists and is not writable.
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
  * @see Assert::assertNotIsWritable
  */
 function assertNotIsWritable(string $filename, string $message = ''): void

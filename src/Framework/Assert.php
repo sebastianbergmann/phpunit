@@ -740,6 +740,17 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
+    public static function assertIsNotWritable(string $filename, string $message = ''): void
+    {
+        static::assertThat($filename, new LogicalNot(new IsWritable), $message);
+    }
+
+    /**
+     * Asserts that a file/dir exists and is not writable.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public static function assertNotIsWritable(string $filename, string $message = ''): void
     {
         static::assertThat($filename, new LogicalNot(new IsWritable), $message);
@@ -812,7 +823,7 @@ abstract class Assert
     public static function assertDirectoryNotIsWritable(string $directory, string $message = ''): void
     {
         self::assertDirectoryExists($directory, $message);
-        self::assertNotIsWritable($directory, $message);
+        self::assertIsNotWritable($directory, $message);
     }
 
     /**
@@ -882,7 +893,7 @@ abstract class Assert
     public static function assertFileNotIsWritable(string $file, string $message = ''): void
     {
         self::assertFileExists($file, $message);
-        self::assertNotIsWritable($file, $message);
+        self::assertIsNotWritable($file, $message);
     }
 
     /**

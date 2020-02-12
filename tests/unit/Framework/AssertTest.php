@@ -574,11 +574,11 @@ XML;
 
     public function testAssertNotIsWritable(): void
     {
-        $this->assertNotIsWritable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertIsNotWritable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNotIsWritable(__FILE__);
+        $this->assertIsNotWritable(__FILE__);
     }
 
     public function testAssertDirectoryExists(): void
