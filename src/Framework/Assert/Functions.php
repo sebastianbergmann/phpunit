@@ -663,6 +663,19 @@ function assertDirectoryExists(string $directory, string $message = ''): void
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @see Assert::assertDirectoryDoesNotExist
+ */
+function assertDirectoryDoesNotExist(string $directory, string $message = ''): void
+{
+    Assert::assertDirectoryDoesNotExist(...\func_get_args());
+}
+
+/**
+ * Asserts that a directory does not exist.
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
  * @see Assert::assertDirectoryNotExists
  */
 function assertDirectoryNotExists(string $directory, string $message = ''): void

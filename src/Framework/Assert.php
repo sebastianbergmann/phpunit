@@ -773,6 +773,17 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
+    public static function assertDirectoryDoesNotExist(string $directory, string $message = ''): void
+    {
+        static::assertThat($directory, new LogicalNot(new DirectoryExists), $message);
+    }
+
+    /**
+     * Asserts that a directory does not exist.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public static function assertDirectoryNotExists(string $directory, string $message = ''): void
     {
         static::assertThat($directory, new LogicalNot(new DirectoryExists), $message);

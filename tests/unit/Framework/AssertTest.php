@@ -592,11 +592,11 @@ XML;
 
     public function testAssertDirectoryNotExists(): void
     {
-        $this->assertDirectoryNotExists(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertDirectoryDoesNotExist(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertDirectoryNotExists(__DIR__);
+        $this->assertDirectoryDoesNotExist(__DIR__);
     }
 
     public function testAssertDirectoryIsReadable(): void

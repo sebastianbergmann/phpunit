@@ -46,7 +46,7 @@ if (!\\function_exists('xdebug_set_filter')) {
 EOF;
 
         $directoryPathThatDoesNotExist = \sprintf('%s/path/that/does/not/exist', __DIR__);
-        $this->assertDirectoryNotExists($directoryPathThatDoesNotExist);
+        $this->assertDirectoryDoesNotExist($directoryPathThatDoesNotExist);
 
         $filterConfiguration = new FilterConfiguration(
             FilterDirectoryCollection::fromArray(
