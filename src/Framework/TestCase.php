@@ -1108,7 +1108,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         if (!isset($e)) {
             try {
                 if ($this->outputExpectedRegex !== null) {
-                    $this->assertRegExp($this->outputExpectedRegex, $this->output);
+                    $this->assertMatchesRegularExpression($this->outputExpectedRegex, $this->output);
                 } elseif ($this->outputExpectedString !== null) {
                     $this->assertEquals($this->outputExpectedString, $this->output);
                 }

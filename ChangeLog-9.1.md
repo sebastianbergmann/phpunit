@@ -14,6 +14,7 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 * Implemented [#4076](https://github.com/sebastianbergmann/phpunit/issues/4076): Implement `assertFileDoesNotExist()` as alternative for `assertFileNotExists()` with a more readable name
 * Implemented [#4079](https://github.com/sebastianbergmann/phpunit/issues/4079): Implement `assertFileIsNotReadable()` as alternative for `assertFileNotIsReadable()` with a more readable name
 * Implemented [#4082](https://github.com/sebastianbergmann/phpunit/issues/4082): Implement `assertFileIsNotWritable()` as alternative for `assertFileNotIsWritable()` with a more readable name
+* Implemented [#4085](https://github.com/sebastianbergmann/phpunit/issues/4085): Implement `assertMatchesRegularExpression()` as alternative for `assertRegExp()` with a more readable name
 
 ### Changed
 

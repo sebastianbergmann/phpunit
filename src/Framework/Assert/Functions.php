@@ -1501,6 +1501,19 @@ function assertIsNotIterable($actual, string $message = ''): void
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @see Assert::assertMatchesRegularExpression
+ */
+function assertMatchesRegularExpression(string $pattern, string $string, string $message = ''): void
+{
+    Assert::assertMatchesRegularExpression(...\func_get_args());
+}
+
+/**
+ * Asserts that a string matches a given regular expression.
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
  * @see Assert::assertRegExp
  */
 function assertRegExp(string $pattern, string $string, string $message = ''): void
