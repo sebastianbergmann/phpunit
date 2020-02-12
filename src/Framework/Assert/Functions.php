@@ -702,6 +702,19 @@ function assertDirectoryIsReadable(string $directory, string $message = ''): voi
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @see Assert::assertDirectoryIsNotReadable
+ */
+function assertDirectoryIsNotReadable(string $directory, string $message = ''): void
+{
+    Assert::assertDirectoryIsNotReadable(...\func_get_args());
+}
+
+/**
+ * Asserts that a directory exists and is not readable.
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
  * @see Assert::assertDirectoryNotIsReadable
  */
 function assertDirectoryNotIsReadable(string $directory, string $message = ''): void

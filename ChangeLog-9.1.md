@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 * Implemented [#4061](https://github.com/sebastianbergmann/phpunit/issues/4061): Implement `assertIsNotReadable()` as alternative for `assertNotIsReadable()` with a more readable name
 * Implemented [#4064](https://github.com/sebastianbergmann/phpunit/issues/4064): Implement `assertIsNotWritable()` as alternative for `assertNotIsWritable()` with a more readable name
 * Implemented [#4067](https://github.com/sebastianbergmann/phpunit/issues/4067): Implement `assertDirectoryDoesNotExist()` as alternative for `assertDirectoryNotExists()` with a more readable name
+* Implemented [#4070](https://github.com/sebastianbergmann/phpunit/issues/4070): Implement `assertDirectoryIsNotReadable()` as alternative for `assertDirectoryNotIsReadable()` with a more readable name
 
 ### Changed
 
