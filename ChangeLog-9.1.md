@@ -30,5 +30,6 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 * Implemented [#4083](https://github.com/sebastianbergmann/phpunit/issues/4083): Deprecate `assertFileNotIsWritable()`
 * Implemented [#4086](https://github.com/sebastianbergmann/phpunit/issues/4086): Deprecate `assertRegExp()`
 * Implemented [#4089](https://github.com/sebastianbergmann/phpunit/issues/4089): Deprecate `assertNotRegExp()`
+* Implemented [#4091](https://github.com/sebastianbergmann/phpunit/issues/4091): Deprecate `assertEqualXMLStructure()`
 
 [9.1.0]: https://github.com/sebastianbergmann/phpunit/compare/9.0...master

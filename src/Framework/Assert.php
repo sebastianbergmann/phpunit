@@ -2146,9 +2146,15 @@ abstract class Assert
      * @throws AssertionFailedError
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4091
      */
     public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, bool $checkAttributes = false, string $message = ''): void
     {
+        self::createWarning('assertEqualXMLStructure() is deprecated and will be removed in PHPUnit 10.');
+
         $expectedElement = Xml::import($expectedElement);
         $actualElement   = Xml::import($actualElement);
 
