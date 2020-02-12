@@ -20,5 +20,6 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 ### Changed
 
 * Implemented [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): Deprecate custom test suite loader
+* Implemented [#4062](https://github.com/sebastianbergmann/phpunit/issues/4062): Deprecate `assertNotIsReadable()`
 
 [9.1.0]: https://github.com/sebastianbergmann/phpunit/compare/9.0...master
