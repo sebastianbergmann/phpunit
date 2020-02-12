@@ -11,7 +11,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Warning:       Usage of custom test suite loader is deprecated
+Warning:       Using a custom test suite loader is deprecated
 
 .                                                                   1 / 1 (100%)
 
