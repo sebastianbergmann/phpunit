@@ -850,6 +850,9 @@ function assertFileIsNotReadable(string $file, string $message = ''): void
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @codeCoverageIgnore
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4080
  * @see Assert::assertFileNotIsReadable
  */
 function assertFileNotIsReadable(string $file, string $message = ''): void

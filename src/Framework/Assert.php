@@ -959,9 +959,15 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4080
      */
     public static function assertFileNotIsReadable(string $file, string $message = ''): void
     {
+        self::createWarning('assertFileNotIsReadable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertFileIsNotReadable() instead.');
+
         self::assertFileExists($file, $message);
         self::assertIsNotReadable($file, $message);
     }
