@@ -91,7 +91,6 @@ final class Help
             ['arg'    => '--debug', 'desc' => 'Display debugging information'],
             ['spacer' => ''],
 
-            ['arg'    => '--loader <loader>', 'desc' => 'TestSuiteLoader implementation to use'],
             ['arg'    => '--repeat <times>', 'desc' => 'Runs the test(s) repeatedly'],
             ['arg'    => '--teamcity', 'desc' => 'Report test execution progress in TeamCity format'],
             ['arg'    => '--testdox', 'desc' => 'Report test execution progress in TestDox format'],

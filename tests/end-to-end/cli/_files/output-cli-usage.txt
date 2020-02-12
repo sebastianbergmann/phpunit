@@ -69,7 +69,6 @@ Test Execution Options:
   -v|--verbose                Output more verbose information
   --debug                     Display debugging information
 
-  --loader <loader>           TestSuiteLoader implementation to use
   --repeat <times>            Runs the test(s) repeatedly
   --teamcity                  Report test execution progress in TeamCity format
   --testdox                   Report test execution progress in TestDox format

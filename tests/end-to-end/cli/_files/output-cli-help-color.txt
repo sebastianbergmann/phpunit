@@ -87,7 +87,6 @@
   [32m-v|--verbose               [0m Output more verbose information
   [32m--debug                    [0m Display debugging information
 
-  [32m--loader [36m<loader>[0m          [0m TestSuiteLoader implementation to use
   [32m--repeat [36m<times>[0m           [0m Runs the test(s) repeatedly
   [32m--teamcity                 [0m Report test execution progress in
                               TeamCity format
