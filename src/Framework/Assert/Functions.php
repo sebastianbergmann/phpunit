@@ -892,6 +892,9 @@ function assertFileIsNotWritable(string $file, string $message = ''): void
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @codeCoverageIgnore
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4083
  * @see Assert::assertFileNotIsWritable
  */
 function assertFileNotIsWritable(string $file, string $message = ''): void

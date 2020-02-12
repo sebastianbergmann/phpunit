@@ -1001,9 +1001,15 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4083
      */
     public static function assertFileNotIsWritable(string $file, string $message = ''): void
     {
+        self::createWarning('assertFileNotIsWritable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertFileIsNotWritable() instead.');
+
         self::assertFileExists($file, $message);
         self::assertIsNotWritable($file, $message);
     }
