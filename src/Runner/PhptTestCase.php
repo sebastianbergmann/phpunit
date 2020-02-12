@@ -319,7 +319,7 @@ final class PhptTestCase implements SelfDescribing, Test
         $assertions = [
             'EXPECT'      => 'assertEquals',
             'EXPECTF'     => 'assertStringMatchesFormat',
-            'EXPECTREGEX' => 'assertRegExp',
+            'EXPECTREGEX' => 'assertMatchesRegularExpression',
         ];
 
         $actual = \preg_replace('/\r\n/', "\n", \trim($output));
