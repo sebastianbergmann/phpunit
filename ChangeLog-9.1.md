@@ -28,5 +28,6 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 * Implemented [#4077](https://github.com/sebastianbergmann/phpunit/issues/4077): Deprecate `assertFileNotExists()`
 * Implemented [#4080](https://github.com/sebastianbergmann/phpunit/issues/4080): Deprecate `assertFileNotIsReadable()`
 * Implemented [#4083](https://github.com/sebastianbergmann/phpunit/issues/4083): Deprecate `assertFileNotIsWritable()`
+* Implemented [#4086](https://github.com/sebastianbergmann/phpunit/issues/4086): Deprecate `assertRegExp()`
 
 [9.1.0]: https://github.com/sebastianbergmann/phpunit/compare/9.0...master
