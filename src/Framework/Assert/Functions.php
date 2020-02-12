@@ -724,6 +724,9 @@ function assertDirectoryIsNotReadable(string $directory, string $message = ''): 
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @codeCoverageIgnore
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4071
  * @see Assert::assertDirectoryNotIsReadable
  */
 function assertDirectoryNotIsReadable(string $directory, string $message = ''): void
