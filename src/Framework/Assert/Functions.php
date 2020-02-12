@@ -682,6 +682,9 @@ function assertDirectoryDoesNotExist(string $directory, string $message = ''): v
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @codeCoverageIgnore
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4068
  * @see Assert::assertDirectoryNotExists
  */
 function assertDirectoryNotExists(string $directory, string $message = ''): void
