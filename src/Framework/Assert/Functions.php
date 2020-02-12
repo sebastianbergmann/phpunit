@@ -741,6 +741,19 @@ function assertDirectoryIsWritable(string $directory, string $message = ''): voi
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @see Assert::assertDirectoryIsNotWritable
+ */
+function assertDirectoryIsNotWritable(string $directory, string $message = ''): void
+{
+    Assert::assertDirectoryIsNotWritable(...\func_get_args());
+}
+
+/**
+ * Asserts that a directory exists and is not writable.
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
  * @see Assert::assertDirectoryNotIsWritable
  */
 function assertDirectoryNotIsWritable(string $directory, string $message = ''): void
