@@ -4,7 +4,7 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 
 ## [9.1.0] - 2020-04-10
 
-### Removed
+### Changed
 
 * Implemented [#4039](https://github.com/sebastianbergmann/phpunit/issues/4039): Deprecate custom test suite loader
 
