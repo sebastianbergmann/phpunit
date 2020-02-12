@@ -628,11 +628,11 @@ XML;
 
     public function testAssertFileNotExists(): void
     {
-        $this->assertFileNotExists(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertFileDoesNotExist(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertFileNotExists(__FILE__);
+        $this->assertFileDoesNotExist(__FILE__);
     }
 
     public function testAssertFileIsReadable(): void

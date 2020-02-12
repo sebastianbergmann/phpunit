@@ -780,6 +780,19 @@ function assertFileExists(string $filename, string $message = ''): void
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @see Assert::assertFileDoesNotExist
+ */
+function assertFileDoesNotExist(string $filename, string $message = ''): void
+{
+    Assert::assertFileDoesNotExist(...\func_get_args());
+}
+
+/**
+ * Asserts that a file does not exist.
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
  * @see Assert::assertFileNotExists
  */
 function assertFileNotExists(string $filename, string $message = ''): void
