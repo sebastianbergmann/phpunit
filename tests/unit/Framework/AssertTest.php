@@ -817,13 +817,13 @@ XML;
         $this->assertMatchesRegularExpression('/foo/', 'bar');
     }
 
-    public function testAssertNotRegExp(): void
+    public function testAssertDoesNotMatchRegularExpression(): void
     {
-        $this->assertNotRegExp('/foo/', 'bar');
+        $this->assertDoesNotMatchRegularExpression('/foo/', 'bar');
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNotRegExp('/foo/', 'foobar');
+        $this->assertDoesNotMatchRegularExpression('/foo/', 'foobar');
     }
 
     public function testAssertSame(): void
