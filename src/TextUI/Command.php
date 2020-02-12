@@ -808,8 +808,7 @@ class Command
         }
 
         if ($this->arguments['loader'] !== null) {
-            $this->arguments['warnings'][] = 'Using a custom test suite loader is deprecated';
-            $this->arguments['loader']     = $this->handleLoader($this->arguments['loader']);
+            $this->arguments['loader'] = $this->handleLoader($this->arguments['loader']);
         }
 
         if (isset($this->arguments['configuration']) &&
@@ -876,8 +875,6 @@ class Command
             }
 
             if ($phpunitConfiguration->hasTestSuiteLoaderClass()) {
-                $this->arguments['warnings'][] = 'Using a custom test suite loader is deprecated';
-
                 $file = $phpunitConfiguration->hasTestSuiteLoaderFile() ? $phpunitConfiguration->testSuiteLoaderFile() : '';
 
                 $this->arguments['loader'] = $this->handleLoader(
@@ -917,6 +914,8 @@ class Command
      */
     protected function handleLoader(string $loaderClass, string $loaderFile = ''): ?TestSuiteLoader
     {
+        $this->arguments['warnings'][] = 'Using a custom test suite loader is deprecated';
+
         if (!\class_exists($loaderClass, false)) {
             if ($loaderFile == '') {
                 $loaderFile = Filesystem::classNameToFilename(
