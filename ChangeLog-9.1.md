@@ -24,5 +24,6 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 * Implemented [#4065](https://github.com/sebastianbergmann/phpunit/issues/4065): Deprecate `assertNotIsWritable()`
 * Implemented [#4068](https://github.com/sebastianbergmann/phpunit/issues/4068): Deprecate `assertDirectoryNotExists()`
 * Implemented [#4071](https://github.com/sebastianbergmann/phpunit/issues/4071): Deprecate `assertDirectoryNotIsReadable()`
+* Implemented [#4074](https://github.com/sebastianbergmann/phpunit/issues/4074): Deprecate `assertDirectoryNotIsWritable()`
 
 [9.1.0]: https://github.com/sebastianbergmann/phpunit/compare/9.0...master

@@ -766,6 +766,9 @@ function assertDirectoryIsNotWritable(string $directory, string $message = ''): 
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @codeCoverageIgnore
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4074
  * @see Assert::assertDirectoryNotIsWritable
  */
 function assertDirectoryNotIsWritable(string $directory, string $message = ''): void
