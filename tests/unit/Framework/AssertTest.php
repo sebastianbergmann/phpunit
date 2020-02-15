@@ -1203,11 +1203,6 @@ XML;
         );
     }
 
-    public function testAssertThatContains(): void
-    {
-        $this->assertThat(['foo'], $this->contains('foo'));
-    }
-
     public function testAssertThatStringContains(): void
     {
         $this->assertThat('barfoobar', $this->stringContains('foo'));

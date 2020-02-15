@@ -506,6 +506,8 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     public function expectExceptionMessageRegExp(string $regularExpression): void
     {
+        $this->addWarning('expectExceptionMessageRegExp() is deprecated and will be removed in PHPUnit 9. Use expectExceptionMessageMatches() instead.');
+
         $this->expectExceptionMessageMatches($regularExpression);
     }
 
@@ -538,7 +540,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectDeprecationMessageMatches(string $regularExpression): void
     {
-        $this->expectExceptionMessageRegExp($regularExpression);
+        $this->expectExceptionMessageMatches($regularExpression);
     }
 
     public function expectNotice(): void
@@ -553,7 +555,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectNoticeMessageMatches(string $regularExpression): void
     {
-        $this->expectExceptionMessageRegExp($regularExpression);
+        $this->expectExceptionMessageMatches($regularExpression);
     }
 
     public function expectWarning(): void
@@ -568,7 +570,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectWarningMessageMatches(string $regularExpression): void
     {
-        $this->expectExceptionMessageRegExp($regularExpression);
+        $this->expectExceptionMessageMatches($regularExpression);
     }
 
     public function expectError(): void
@@ -583,7 +585,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     public function expectErrorMessageMatches(string $regularExpression): void
     {
-        $this->expectExceptionMessageRegExp($regularExpression);
+        $this->expectExceptionMessageMatches($regularExpression);
     }
 
     public function getStatus(): int
@@ -795,6 +797,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     public function setUseErrorHandler(bool $useErrorHandler): void
     {
+        $this->addWarning('setUseErrorHandler() is deprecated and will be removed in PHPUnit 9.');
     }
 
     /**
@@ -1925,7 +1928,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 if ($expectedException['message'] !== '') {
                     $this->expectExceptionMessage($expectedException['message']);
                 } elseif ($expectedException['message_regex'] !== '') {
-                    $this->expectExceptionMessageRegExp($expectedException['message_regex']);
+                    $this->expectExceptionMessageMatches($expectedException['message_regex']);
                 }
             }
         } catch (UtilException $e) {

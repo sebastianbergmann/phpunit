@@ -3128,6 +3128,8 @@ abstract class Assert
      */
     public static function contains($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): TraversableContains
     {
+        self::createWarning('contains() is deprecated and will be removed in PHPUnit 9. Use containsEqual() or containsIdentical() instead.');
+
         return new TraversableContains($value, $checkForObjectIdentity, $checkForNonObjectIdentity);
     }
 
