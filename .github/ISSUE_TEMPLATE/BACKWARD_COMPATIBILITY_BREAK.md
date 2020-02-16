@@ -1,7 +1,7 @@
 ---
 name: 💥 Backward Compatibility Break
 about: Have you encountered an issue during upgrade?
-labels: backward-compatibility-break, bug
+labels: type/backward-compatibility, type/bug
 ---
 
 <!--
