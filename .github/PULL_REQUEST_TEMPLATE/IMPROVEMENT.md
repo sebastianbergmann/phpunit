@@ -1,7 +1,7 @@
 ---
 name: ⚙ Improvement
 about: You have some improvement to make PHPUnit better?
-labels: enhancement
+labels: type/enhancement
 ---
 
 <!--
