@@ -16,6 +16,7 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 * Implemented [#4082](https://github.com/sebastianbergmann/phpunit/issues/4082): Implement `assertFileIsNotWritable()` as alternative for `assertFileNotIsWritable()` with a more readable name
 * Implemented [#4085](https://github.com/sebastianbergmann/phpunit/issues/4085): Implement `assertMatchesRegularExpression()` as alternative for `assertRegExp()` with a more readable name
 * Implemented [#4088](https://github.com/sebastianbergmann/phpunit/issues/4088): Implement `assertDoesNotMatchRegularExpression()` as alternative for `assertNotRegExp()` with a more readable name
+* Implemented [#4100](https://github.com/sebastianbergmann/phpunit/issues/4100): Implement `failOnIncomplete` and `failOnSkipped` configuration options as well as `--fail-on-incomplete` and `--fail-on-skipped` commandline options 
 
 ### Changed
 

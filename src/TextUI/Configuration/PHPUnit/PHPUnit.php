@@ -108,12 +108,22 @@ final class PHPUnit
     /**
      * @var bool
      */
-    private $failOnWarning;
+    private $failOnIncomplete;
 
     /**
      * @var bool
      */
     private $failOnRisky;
+
+    /**
+     * @var bool
+     */
+    private $failOnSkipped;
+
+    /**
+     * @var bool
+     */
+    private $failOnWarning;
 
     /**
      * @var bool
@@ -274,7 +284,7 @@ final class PHPUnit
      */
     private $conflictBetweenPrinterClassAndTestdox;
 
-    public function __construct(bool $cacheResult, ?string $cacheResultFile, bool $cacheTokens, $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, ?string $bootstrap, bool $processIsolation, bool $failOnWarning, bool $failOnRisky, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, ?string $testSuiteLoaderClass, ?string $testSuiteLoaderFile, ?string $printerClass, ?string $printerFile, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutResourceUsageDuringSmallTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutTodoAnnotatedTests, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticAttributes, bool $registerMockObjectsFromTestArgumentsRecursively, bool $conflictBetweenPrinterClassAndTestdox)
+    public function __construct(bool $cacheResult, ?string $cacheResultFile, bool $cacheTokens, $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, ?string $bootstrap, bool $processIsolation, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, ?string $testSuiteLoaderClass, ?string $testSuiteLoaderFile, ?string $printerClass, ?string $printerFile, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutResourceUsageDuringSmallTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutTodoAnnotatedTests, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticAttributes, bool $registerMockObjectsFromTestArgumentsRecursively, bool $conflictBetweenPrinterClassAndTestdox)
     {
         $this->cacheResult                                     = $cacheResult;
         $this->cacheResultFile                                 = $cacheResultFile;
@@ -294,8 +304,10 @@ final class PHPUnit
         $this->disableCodeCoverageIgnore                       = $disableCodeCoverageIgnore;
         $this->bootstrap                                       = $bootstrap;
         $this->processIsolation                                = $processIsolation;
-        $this->failOnWarning                                   = $failOnWarning;
+        $this->failOnIncomplete                                = $failOnIncomplete;
         $this->failOnRisky                                     = $failOnRisky;
+        $this->failOnSkipped                                   = $failOnSkipped;
+        $this->failOnWarning                                   = $failOnWarning;
         $this->stopOnDefect                                    = $stopOnDefect;
         $this->stopOnError                                     = $stopOnError;
         $this->stopOnFailure                                   = $stopOnFailure;
@@ -443,14 +455,24 @@ final class PHPUnit
         return $this->processIsolation;
     }
 
-    public function failOnWarning(): bool
+    public function failOnIncomplete(): bool
     {
-        return $this->failOnWarning;
+        return $this->failOnIncomplete;
     }
 
     public function failOnRisky(): bool
     {
         return $this->failOnRisky;
+    }
+
+    public function failOnSkipped(): bool
+    {
+        return $this->failOnSkipped;
+    }
+
+    public function failOnWarning(): bool
+    {
+        return $this->failOnWarning;
     }
 
     public function stopOnDefect(): bool

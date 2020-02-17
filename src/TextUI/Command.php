@@ -127,8 +127,10 @@ class Command
         'stop-on-incomplete'        => null,
         'stop-on-risky'             => null,
         'stop-on-skipped'           => null,
-        'fail-on-warning'           => null,
+        'fail-on-incomplete'        => null,
         'fail-on-risky'             => null,
+        'fail-on-skipped'           => null,
+        'fail-on-warning'           => null,
         'strict-coverage'           => null,
         'disable-coverage-ignore'   => null,
         'strict-global-state'       => null,
@@ -560,13 +562,23 @@ class Command
 
                     break;
 
-                case '--fail-on-warning':
-                    $this->arguments['failOnWarning'] = true;
+                case '--fail-on-incomplete':
+                    $this->arguments['failOnIncomplete'] = true;
 
                     break;
 
                 case '--fail-on-risky':
                     $this->arguments['failOnRisky'] = true;
+
+                    break;
+
+                case '--fail-on-skipped':
+                    $this->arguments['failOnSkipped'] = true;
+
+                    break;
+
+                case '--fail-on-warning':
+                    $this->arguments['failOnWarning'] = true;
 
                     break;
 

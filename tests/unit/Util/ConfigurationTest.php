@@ -561,8 +561,10 @@ final class ConfigurationTest extends TestCase
         $this->assertSame(60, $configuration->timeoutForLargeTests());
         $this->assertFalse($configuration->beStrictAboutResourceUsageDuringSmallTests());
         $this->assertFalse($configuration->beStrictAboutTodoAnnotatedTests());
-        $this->assertFalse($configuration->failOnWarning());
+        $this->assertFalse($configuration->failOnIncomplete());
         $this->assertFalse($configuration->failOnRisky());
+        $this->assertFalse($configuration->failOnSkipped());
+        $this->assertFalse($configuration->failOnWarning());
         $this->assertFalse($configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage());
         $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $configuration->executionOrder());
         $this->assertFalse($configuration->defectsFirst());

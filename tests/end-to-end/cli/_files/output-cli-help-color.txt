@@ -82,8 +82,10 @@
   [32m--stop-on-risky            [0m Stop execution upon first risky test
   [32m--stop-on-skipped          [0m Stop execution upon first skipped test
   [32m--stop-on-incomplete       [0m Stop execution upon first incomplete test
-  [32m--fail-on-warning          [0m Treat tests with warnings as failures
+  [32m--fail-on-incomplete       [0m Treat incomplete tests as failures
   [32m--fail-on-risky            [0m Treat risky tests as failures
+  [32m--fail-on-skipped          [0m Treat skipped tests as failures
+  [32m--fail-on-warning          [0m Treat tests with warnings as failures
   [32m-v|--verbose               [0m Output more verbose information
   [32m--debug                    [0m Display debugging information
 
