@@ -222,12 +222,20 @@ final class ArgumentsMapper
             $result['stopOnSkipped'] = $arguments->stopOnSkipped();
         }
 
-        if ($arguments->hasFailOnWarning()) {
-            $result['failOnWarning'] = $arguments->failOnWarning();
+        if ($arguments->hasFailOnIncomplete()) {
+            $result['failOnIncomplete'] = $arguments->failOnIncomplete();
         }
 
         if ($arguments->hasFailOnRisky()) {
             $result['failOnRisky'] = $arguments->failOnRisky();
+        }
+
+        if ($arguments->hasFailOnSkipped()) {
+            $result['failOnSkipped'] = $arguments->failOnSkipped();
+        }
+
+        if ($arguments->hasFailOnWarning()) {
+            $result['failOnWarning'] = $arguments->failOnWarning();
         }
 
         if ($arguments->hasTestdoxGroups()) {

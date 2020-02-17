@@ -141,7 +141,9 @@ final class ArgumentsBuilder
         $excludeGroups                              = null;
         $executionOrder                             = null;
         $executionOrderDefects                      = null;
+        $failOnIncomplete                           = null;
         $failOnRisky                                = null;
+        $failOnSkipped                              = null;
         $failOnWarning                              = null;
         $filter                                     = null;
         $generateConfiguration                      = null;
@@ -470,13 +472,23 @@ final class ArgumentsBuilder
 
                     break;
 
-                case '--fail-on-warning':
-                    $failOnWarning = true;
+                case '--fail-on-incomplete':
+                    $failOnIncomplete = true;
 
                     break;
 
                 case '--fail-on-risky':
                     $failOnRisky = true;
+
+                    break;
+
+                case '--fail-on-Skipped':
+                    $failOnSkipped = true;
+
+                    break;
+
+                case '--fail-on-warning':
+                    $failOnWarning = true;
 
                     break;
 
@@ -707,7 +719,9 @@ final class ArgumentsBuilder
             $excludeGroups,
             $executionOrder,
             $executionOrderDefects,
+            $failOnIncomplete,
             $failOnRisky,
+            $failOnSkipped,
             $failOnWarning,
             $filter,
             $generateConfiguration,
