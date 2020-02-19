@@ -429,7 +429,6 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             }
 
             if (!$class->isAbstract()) {
-
                 if ($class->hasMethod(BaseTestRunner::SUITE_METHODNAME)) {
                     try {
                         $method = $class->getMethod(
@@ -449,8 +448,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                         $this->addTest($method->invoke(null, $className));
                     }
                 } elseif ($class->implementsInterface(Test::class)) {
-
-                    $classFileName = \basename($class->getFilename());
+                    $classFileName     = \basename($class->getFilename());
                     $expectedClassName = \substr(
                         $classFileName,
                         0,
@@ -570,9 +568,9 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
 
         if (\count($this->warnings) !== 0) {
             echo \implode(
-                PHP_EOL,
+                \PHP_EOL,
                 \array_unique($this->warnings)
-            ), PHP_EOL, PHP_EOL;
+            ), \PHP_EOL, \PHP_EOL;
         }
 
         /** @psalm-var class-string $className */
