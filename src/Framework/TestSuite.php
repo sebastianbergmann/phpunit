@@ -448,12 +448,15 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                         $this->addTest($method->invoke(null, $className));
                     }
                 } elseif ($class->implementsInterface(Test::class)) {
-                    $classFileName     = \basename($class->getFilename());
-                    $expectedClassName = \substr(
-                        $classFileName,
-                        0,
-                        \strpos($classFileName, '.')
-                    );
+                    $expectedClassName = $shortName;
+
+                    if (($pos = \strpos($expectedClassName, '.')) !== false) {
+                        $expectedClassName = \substr(
+                            $expectedClassName,
+                            0,
+                            $pos
+                        );
+                    }
 
                     if ($class->getShortName() !== $expectedClassName) {
                         $this->addWarning(
