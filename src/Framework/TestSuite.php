@@ -359,6 +359,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                 new PhptTestCase($filename)
             );
 
+            $this->declaredClasses = \get_declared_classes();
             return;
         }
 
