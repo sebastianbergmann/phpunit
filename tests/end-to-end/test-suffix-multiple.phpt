@@ -12,6 +12,13 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Warning: Test case class not matching filename is deprecated
+         in %s/BankAccountTest.test.php
+         see #4105, class name was 'BankAccountWithCustomExtensionTest', expected 'BankAccountTest'
+Warning: Test case class not matching filename is deprecated
+         in %s/ConcreteTest.my.php
+         see #4105, class name was 'ConcreteWithMyCustomExtensionTest', expected 'ConcreteTest'
+
 .....                                                               5 / 5 (100%)
 
 Time: %s, Memory: %s
