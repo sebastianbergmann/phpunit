@@ -12,7 +12,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Warning: Test case class not matching filename is deprecated
          in %s/unconventiallyNamedIssue2972Test.php
-         see #4105, class name was 'Issue2972Test', expected 'unconventiallyNamedIssue2972Test'
+         class name was 'Issue2972Test', expected 'unconventiallyNamedIssue2972Test', see #4105
 
 ..                                                                  2 / 2 (100%)
 

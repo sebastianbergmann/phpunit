@@ -358,8 +358,8 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             $this->addTest(
                 new PhptTestCase($filename)
             );
-
             $this->declaredClasses = \get_declared_classes();
+
             return;
         }
 
@@ -462,7 +462,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                     if ($class->getShortName() !== $expectedClassName) {
                         $this->addWarning(
                             \sprintf(
-                                "Warning: Test case class not matching filename is deprecated\n         in %s\n         see #4105, class name was '%s', expected '%s'",
+                                "Warning: Test case class not matching filename is deprecated\n         in %s\n         class name was '%s', expected '%s', see #4105",
                                 $filename,
                                 $class->getShortName(),
                                 $expectedClassName
@@ -478,7 +478,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
         if (\count($this->tests) > ++$numTests) {
             $this->addWarning(
                 \sprintf(
-                    'Warning: Multiple test case classes per file is deprecated (in "%s", see #4105)',
+                    "Warning: Multiple test case classes per file is deprecated\n         in %s, see #4105",
                     $filename
                 )
             );
