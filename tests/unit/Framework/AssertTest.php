@@ -550,6 +550,26 @@ XML;
         $this->assertFileIsReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
+    public function testAssertFileIsNotReadable(): void
+    {
+        $tempFile = \tempnam(
+            \sys_get_temp_dir(),
+            'unreadable'
+        );
+        \chmod($tempFile, \octdec('0'));
+
+        $this->assertFileIsNotReadable($tempFile);
+
+        \chmod($tempFile, \octdec('755'));
+
+        try {
+            $this->assertFileIsNotReadable($tempFile);
+        } catch (AssertionFailedError $e) {
+        }
+
+        \unlink($tempFile);
+    }
+
     public function testAssertFileIsWritable(): void
     {
         $this->assertFileIsWritable(__FILE__);
