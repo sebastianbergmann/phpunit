@@ -559,12 +559,12 @@ XML;
 
         \chmod($tempFile, \octdec('0'));
 
-        $this->assertFileNotIsReadable($tempFile);
+        $this->assertFileIsNotReadable($tempFile);
 
         \chmod($tempFile, \octdec('755'));
 
         try {
-            $this->assertFileNotIsReadable($tempFile);
+            $this->assertFileIsNotReadable($tempFile);
         } catch (AssertionFailedError $e) {
         }
 
