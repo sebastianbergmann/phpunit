@@ -650,6 +650,7 @@ XML;
             \sys_get_temp_dir(),
             'unreadable'
         );
+
         \chmod($tempFile, \octdec('0'));
 
         $this->assertFileIsNotReadable($tempFile);
