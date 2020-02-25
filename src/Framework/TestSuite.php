@@ -144,7 +144,6 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
 
                 try {
                     $theClass = new \ReflectionClass($theClass);
-                    // @codeCoverageIgnoreStart
                 } catch (\ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
@@ -776,6 +775,34 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     public function warnings(): array
     {
         return \array_unique($this->warnings);
+    }
+
+    /**
+     * Get a list of external dependencies of this TestSuite
+     * Inter-Test dependencies that can be resolved within the the TestSuite are filtered out
+     *
+     * @return array<string>
+     */
+    public function getDependencies(): array
+    {
+        $dependencies = [];
+
+        foreach ($this->tests as $test) {
+            foreach ($test->getDependencies() as $tdep) {
+                $testNameParts = \explode('::', $tdep);
+
+                if (count($testNameParts) === 2 && ($this->getName() !== $testNameParts[0])) {
+                    $dependencies[] = $tdep;
+                }
+            }
+        }
+
+        return $dependencies;
+    }
+
+    public function hasDependencies(): bool
+    {
+        return !empty($this->getDependencies());
     }
 
     /**
