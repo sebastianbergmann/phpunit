@@ -264,6 +264,19 @@ final class PhptTestCase implements SelfDescribing, Test
     }
 
     /**
+     * @return Test[]
+     */
+    public function getDependencies(): array
+    {
+        return [];
+    }
+
+    public function hasDependencies(): bool
+    {
+        return false;
+    }
+
+    /**
      * Parse --INI-- section key value pairs and return as array.
      *
      * @param array|string $content
