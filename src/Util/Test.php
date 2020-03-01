@@ -19,6 +19,7 @@ use PHPUnit\Runner\Version;
 use PHPUnit\Util\Annotation\Registry;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
+use SebastianBergmann\CodeUnit\Mapper;
 use SebastianBergmann\Environment\OperatingSystem;
 
 /**
@@ -555,6 +556,7 @@ final class Test
         }
 
         $codeUnits = CodeUnitCollection::fromArray([]);
+        $mapper    = new Mapper;
 
         foreach (\array_unique($list) as $element) {
             if ($classShortcut && \strncmp($element, '::', 2) === 0) {
@@ -575,7 +577,7 @@ final class Test
             }
 
             try {
-                $codeUnits = $codeUnits->mergeWith(CodeUnitCollection::fromString($element));
+                $codeUnits = $codeUnits->mergeWith($mapper->stringToCodeUnits($element));
             } catch (InvalidCodeUnitException $e) {
                 throw new CodeCoverageException(
                     \sprintf(
@@ -589,7 +591,7 @@ final class Test
             }
         }
 
-        return $codeUnits->sourceLines();
+        return $mapper->codeUnitsToSourceLines($codeUnits);
     }
 
     private static function emptyHookMethodsArray(): array
