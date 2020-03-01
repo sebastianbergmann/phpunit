@@ -1169,7 +1169,7 @@ final class TestClassTest extends TestCase
             $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
         }
 
-        $this->assertEquals(
+        $this->assertEqualsCanonicalizing(
             $expected,
             Test::getLinesToBeCovered(
                 $test,
@@ -1414,7 +1414,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertSame(
             [
-                TEST_FILES_PATH . '3194.php' => \array_merge(\range(21, 29), \range(13, 19)),
+                TEST_FILES_PATH . '3194.php' => \array_merge(\range(13, 19), \range(21, 29)),
             ],
             Test::getLinesToBeCovered(
                 \Test3194::class,
