@@ -82,8 +82,12 @@ final class JsonMatchesTest extends ConstraintTestCase
         } catch (ExpectationFailedException $expectedException) {
             $comparisonFailure = $expectedException->getComparisonFailure();
             $this->assertNotNull($comparisonFailure);
-            $this->assertSame(Json::prettify($jsonOther), $comparisonFailure->getActualAsString());
-            $this->assertSame(Json::prettify($jsonValue), $comparisonFailure->getExpectedAsString());
+
+            [$error, $jsonOtherCanonicalized] = Json::canonicalize($jsonOther);
+            [$error, $jsonValueCanonicalized] = Json::canonicalize($jsonValue);
+
+            $this->assertSame(Json::prettify($jsonOtherCanonicalized), $comparisonFailure->getActualAsString());
+            $this->assertSame(Json::prettify($jsonValueCanonicalized), $comparisonFailure->getExpectedAsString());
             $this->assertSame('Failed asserting that two json values are equal.', $comparisonFailure->getMessage());
         }
     }
