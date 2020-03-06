@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.8.3@389af1bfc739bfdff3f9e3dc7bd6499aee51a831">
+<files psalm-version="3.9.3@2e4154d76e24d1b4e59e6cc2bebef7790cb9e550">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -9,16 +9,6 @@
       <code>$expected</code>
       <code>$expected</code>
     </PossiblyInvalidArgument>
-    <PossiblyNullArgument occurrences="2">
-      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
-      <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
-    </PossiblyNullArgument>
-    <PossiblyNullPropertyFetch occurrences="1">
-      <code>$expectedAttribute-&gt;name</code>
-    </PossiblyNullPropertyFetch>
-    <UndefinedPropertyFetch occurrences="1">
-      <code>$expectedAttribute-&gt;name</code>
-    </UndefinedPropertyFetch>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <TooManyArguments occurrences="13">
@@ -217,16 +207,16 @@
       <code>$suite</code>
     </PossiblyNullArgument>
   </file>
+  <file src="src/TextUI/DefaultResultPrinter.php">
+    <PossiblyUndefinedVariable occurrences="1">
+      <code>$color</code>
+    </PossiblyUndefinedVariable>
+  </file>
   <file src="src/TextUI/Help.php">
     <PossiblyUndefinedArrayOffset occurrences="2">
       <code>$option['desc']</code>
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
-  </file>
-  <file src="src/TextUI/DefaultResultPrinter.php">
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$color</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/TextUI/TestRunner.php">
     <PossiblyNullPropertyAssignmentValue occurrences="1">
@@ -322,11 +312,6 @@
       <code>$matches</code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Util/Test.php">
-    <InvalidScalarArgument occurrences="1">
-      <code>\array_flip($lineNumbers)</code>
-    </InvalidScalarArgument>
-  </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <PossiblyInvalidArrayOffset occurrences="6">
       <code>$prefix['start']</code>
@@ -356,11 +341,6 @@
       <code>getName</code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="src/Util/TestDox/TextResultPrinter.php">
-    <PossiblyNullOperand occurrences="1">
-      <code>$this-&gt;currentTestClassPrettified</code>
-    </PossiblyNullOperand>
-  </file>
   <file src="src/Util/TextTestListRenderer.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$suite-&gt;getIterator()</code>
@@ -376,15 +356,6 @@
     <MoreSpecificReturnType occurrences="1">
       <code>DOMElement</code>
     </MoreSpecificReturnType>
-    <PossiblyNullArgument occurrences="1">
-      <code>$item</code>
-    </PossiblyNullArgument>
-    <PossiblyNullIterator occurrences="1">
-      <code>$arguments</code>
-    </PossiblyNullIterator>
-    <PossiblyNullPropertyFetch occurrences="1">
-      <code>$element-&gt;childNodes-&gt;item(0)-&gt;childNodes</code>
-    </PossiblyNullPropertyFetch>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">
     <ArgumentTypeCoercion occurrences="1">
