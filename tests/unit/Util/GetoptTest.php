@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
