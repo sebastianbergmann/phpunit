@@ -104,14 +104,15 @@ final class ArgumentsBuilder
 
     private const SHORT_OPTIONS = 'd:c:hv';
 
-    public function fromArgv(): Arguments
+    public function fromParameters(array $parameters, array $additionalLongOptions): Arguments
     {
         $options = Getopt::getopt(
-            $_SERVER['argv'],
+            $parameters,
             self::SHORT_OPTIONS,
-            self::LONG_OPTIONS
+            \array_merge(self::LONG_OPTIONS, $additionalLongOptions)
         );
 
+        $argument                                   = null;
         $atLeastVersion                             = null;
         $backupGlobals                              = null;
         $backupStaticAttributes                     = null;
@@ -192,6 +193,10 @@ final class ArgumentsBuilder
         $version                                    = null;
         $whitelist                                  = null;
         $xdebugFilterFile                           = null;
+
+        if (isset($options[1][0])) {
+            $argument = $options[1][0];
+        }
 
         foreach ($options[0] as $option) {
             switch ($option[0]) {
@@ -690,6 +695,7 @@ final class ArgumentsBuilder
         }
 
         return new Arguments(
+            $argument,
             $atLeastVersion,
             $backupGlobals,
             $backupStaticAttributes,
