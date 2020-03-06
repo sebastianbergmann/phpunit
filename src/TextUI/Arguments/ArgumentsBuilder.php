@@ -687,7 +687,7 @@ final class ArgumentsBuilder
                     break;
 
                 default:
-                    $unrecognizedOptions[] = [\str_replace('--', '', $option[0]) => $option[1]];
+                    $unrecognizedOptions[\str_replace('--', '', $option[0])] = $option[1];
             }
         }
 
