@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\Arguments;
 
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
+use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\Getopt;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
@@ -106,11 +107,19 @@ final class ArgumentsBuilder
 
     public function fromParameters(array $parameters, array $additionalLongOptions): Arguments
     {
-        $options = Getopt::getopt(
-            $parameters,
-            self::SHORT_OPTIONS,
-            \array_merge(self::LONG_OPTIONS, $additionalLongOptions)
-        );
+        try {
+            $options = Getopt::getopt(
+                $parameters,
+                self::SHORT_OPTIONS,
+                \array_merge(self::LONG_OPTIONS, $additionalLongOptions)
+            );
+        } catch (UtilException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
 
         $argument                                   = null;
         $atLeastVersion                             = null;
