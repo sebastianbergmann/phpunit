@@ -178,7 +178,7 @@ class Command
     protected function handleArguments(array $argv): void
     {
         try {
-            $arguments = (new ArgumentsBuilder)->fromParameters($argv, $this->longOptions);
+            $arguments = (new ArgumentsBuilder)->fromParameters($argv, \array_keys($this->longOptions));
         } catch (ArgumentsException $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
