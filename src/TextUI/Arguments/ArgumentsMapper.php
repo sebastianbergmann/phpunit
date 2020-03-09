@@ -156,6 +156,8 @@ final class ArgumentsMapper
             $result['executionOrderDefects'] = $arguments->executionOrderDefects();
         }
 
+        $result['extensions'] = $arguments->getExtensions();
+
         if ($arguments->hasResolveDependencies()) {
             $result['resolveDependencies'] = $arguments->resolveDependencies();
         }

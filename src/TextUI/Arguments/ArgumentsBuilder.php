@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Arguments;
 
 use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\TextUI\Configuration\Extension;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\Getopt;
@@ -45,7 +46,7 @@ final class ArgumentsBuilder
         'default-time-limit=',
         'enforce-time-limit',
         'exclude-group=',
-        'extensions',
+        'extensions=',
         'filter=',
         'generate-configuration',
         'globals-backup',
@@ -549,7 +550,9 @@ final class ArgumentsBuilder
                     break;
 
                 case '--extensions':
-                    $extensions = explode(',', $option[1]);
+                    foreach (\explode(',', $option[1]) as $extensionClass) {
+                        $extensions[] = new Extension($extensionClass, '', []);
+                    }
 
                     break;
 
