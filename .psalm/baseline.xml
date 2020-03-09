@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.9.3@2e4154d76e24d1b4e59e6cc2bebef7790cb9e550">
+<files psalm-version="3.9.4@352bd3f5c5789db04e4010856c2f4e01ed354f4e">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -94,15 +94,30 @@
       <code>$interfaceName</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
+    <InvalidReturnStatement occurrences="1"/>
+    <InvalidReturnType occurrences="1">
+      <code>MockObject&amp;RealInstanceType</code>
+    </InvalidReturnType>
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($args[$i], '$')</code>
     </PossiblyFalseArgument>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="3">
+      <code>$this-&gt;type</code>
       <code>$this-&gt;type</code>
       <code>$this-&gt;type</code>
     </ArgumentTypeCoercion>
+    <InvalidReturnStatement occurrences="3">
+      <code>$object</code>
+      <code>$object</code>
+      <code>$object</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="3">
+      <code>MockObject&amp;MockedType</code>
+      <code>MockObject&amp;MockedType</code>
+      <code>MockObject&amp;MockedType</code>
+    </InvalidReturnType>
     <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$type</code>
     </PossiblyInvalidPropertyAssignmentValue>
@@ -130,6 +145,17 @@
       <code>$header</code>
     </InvalidArgument>
     <InvalidCatch occurrences="1"/>
+    <InvalidReturnStatement occurrences="5">
+      <code>\get_class($mock)</code>
+      <code>$mockObject</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="5">
+      <code>MockObject&amp;RealInstanceType</code>
+      <code>MockObject&amp;RealInstanceType</code>
+      <code>MockObject&amp;RealInstanceType</code>
+      <code>class-string&lt;MockObject&amp;RealInstanceType&gt;</code>
+      <code>MockObject&amp;RealInstanceType</code>
+    </InvalidReturnType>
     <PossiblyNullPropertyAssignmentValue occurrences="3">
       <code>null</code>
       <code>$beStrictAboutChangesToGlobalState</code>
