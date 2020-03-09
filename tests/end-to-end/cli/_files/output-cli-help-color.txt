@@ -116,6 +116,8 @@
   [32m--no-configuration         [0m Ignore default configuration file
                               (phpunit.xml)
   [32m--no-logging               [0m Ignore logging configuration
+  [32m--extensions [36m<extensions>[0m  [0m A comma separated list of PHPUnit
+                              extensions to load
   [32m--no-extensions            [0m Do not load PHPUnit extensions
   [32m--include-path [36m<path(s)>[0m   [0m Prepend PHP's include_path with given
                               path(s)
