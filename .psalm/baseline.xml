@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.5.3@c3e781c4a06cbb17dc32068eb5d6de075f6babdc">
+<files psalm-version="3.9.4@352bd3f5c5789db04e4010856c2f4e01ed354f4e">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -10,16 +10,6 @@
       <code>$expected</code>
       <code>$expected</code>
     </PossiblyInvalidArgument>
-    <PossiblyNullArgument occurrences="2">
-      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
-      <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
-    </PossiblyNullArgument>
-    <PossiblyNullPropertyFetch occurrences="1">
-      <code>$expectedAttribute-&gt;name</code>
-    </PossiblyNullPropertyFetch>
-    <UndefinedPropertyFetch occurrences="1">
-      <code>$expectedAttribute-&gt;name</code>
-    </UndefinedPropertyFetch>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <TooManyArguments occurrences="13">
@@ -130,21 +120,30 @@
       <code>$interfaceName</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="1">
-      <code>$e</code>
-    </InvalidArgument>
+    <InvalidReturnStatement occurrences="1"/>
+    <InvalidReturnType occurrences="1">
+      <code>MockObject&amp;RealInstanceType</code>
+    </InvalidReturnType>
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($args[$i], '$')</code>
     </PossiblyFalseArgument>
-    <UndefinedConstant occurrences="1">
-      <code>\WSDL_CACHE_NONE</code>
-    </UndefinedConstant>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="3">
+      <code>$this-&gt;type</code>
       <code>$this-&gt;type</code>
       <code>$this-&gt;type</code>
     </ArgumentTypeCoercion>
+    <InvalidReturnStatement occurrences="3">
+      <code>$object</code>
+      <code>$object</code>
+      <code>$object</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="3">
+      <code>MockObject&amp;MockedType</code>
+      <code>MockObject&amp;MockedType</code>
+      <code>MockObject&amp;MockedType</code>
+    </InvalidReturnType>
     <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$type</code>
     </PossiblyInvalidPropertyAssignmentValue>
@@ -173,6 +172,17 @@
       <code>$header</code>
     </InvalidArgument>
     <InvalidCatch occurrences="1"/>
+    <InvalidReturnStatement occurrences="5">
+      <code>\get_class($mock)</code>
+      <code>$mockObject</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="5">
+      <code>MockObject&amp;RealInstanceType</code>
+      <code>MockObject&amp;RealInstanceType</code>
+      <code>MockObject&amp;RealInstanceType</code>
+      <code>class-string&lt;MockObject&amp;RealInstanceType&gt;</code>
+      <code>MockObject&amp;RealInstanceType</code>
+    </InvalidReturnType>
     <PossiblyNullPropertyAssignmentValue occurrences="3">
       <code>null</code>
       <code>$beStrictAboutChangesToGlobalState</code>
@@ -265,29 +275,15 @@
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <LessSpecificReturnStatement occurrences="1"/>
-    <MoreSpecificReturnType occurrences="1">
-      <code>Printer</code>
-    </MoreSpecificReturnType>
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
     <PossiblyUndefinedVariable occurrences="1">
       <code>$whitelistFromConfigurationFile</code>
     </PossiblyUndefinedVariable>
-    <PropertyTypeCoercion occurrences="3">
-      <code>$arguments['printer']</code>
-      <code>$this-&gt;createPrinter($arguments['printer'], $arguments)</code>
-      <code>$this-&gt;createPrinter(ResultPrinter::class, $arguments)</code>
-    </PropertyTypeCoercion>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
     <InvalidCatch occurrences="1"/>
-  </file>
-  <file src="src/Util/Blacklist.php">
-    <UndefinedClass occurrences="1">
-      <code>Invoker</code>
-    </UndefinedClass>
   </file>
   <file src="src/Util/Configuration.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -296,24 +292,13 @@
       <code>$testSuiteNodes-&gt;item(0)</code>
       <code>$testSuiteNode</code>
     </ArgumentTypeCoercion>
-    <InvalidNullableReturnType occurrences="1">
-      <code>bool</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>\version_compare(\PHP_VERSION, $phpVersion, $phpVersionOperator)</code>
-    </NullableReturnStatement>
     <PossiblyInvalidArrayOffset occurrences="3">
       <code>$result[$array][$name]['verbatim']</code>
       <code>$result[$array][$name]['force']</code>
       <code>$result[$array][$name]['value']</code>
     </PossiblyInvalidArrayOffset>
-    <PossiblyNullArgument occurrences="1">
-      <code>$testSuiteNodes-&gt;item(0)</code>
-    </PossiblyNullArgument>
-    <PossiblyNullReference occurrences="4">
-      <code>hasAttribute</code>
+    <PossiblyNullReference occurrences="2">
       <code>getAttribute</code>
-      <code>hasAttribute</code>
       <code>getAttribute</code>
     </PossiblyNullReference>
     <UndefinedMethod occurrences="7">
@@ -444,8 +429,7 @@
     <InvalidCast occurrences="1">
       <code>$value</code>
     </InvalidCast>
-    <PossiblyInvalidArgument occurrences="3">
-      <code>$test-&gt;dataName()</code>
+    <PossiblyInvalidArgument occurrences="2">
       <code>$name</code>
       <code>$name</code>
     </PossiblyInvalidArgument>
@@ -454,11 +438,6 @@
     <UndefinedInterfaceMethod occurrences="1">
       <code>getName</code>
     </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Util/TestDox/TextResultPrinter.php">
-    <PossiblyNullOperand occurrences="1">
-      <code>$this-&gt;currentTestClassPrettified</code>
-    </PossiblyNullOperand>
   </file>
   <file src="src/Util/TextTestListRenderer.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -475,15 +454,6 @@
     <MoreSpecificReturnType occurrences="1">
       <code>DOMElement</code>
     </MoreSpecificReturnType>
-    <PossiblyNullArgument occurrences="1">
-      <code>$item</code>
-    </PossiblyNullArgument>
-    <PossiblyNullIterator occurrences="1">
-      <code>$arguments</code>
-    </PossiblyNullIterator>
-    <PossiblyNullPropertyFetch occurrences="1">
-      <code>$element-&gt;childNodes-&gt;item(0)-&gt;childNodes</code>
-    </PossiblyNullPropertyFetch>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">
     <ArgumentTypeCoercion occurrences="1">
