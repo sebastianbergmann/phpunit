@@ -930,6 +930,10 @@ final class TestRunner extends BaseTestRunner
                 $this->addExtension($extension->createHookInstance());
             }
 
+            foreach ($arguments['extensions'] as $extension) {
+                $this->addExtension($extension->createHookInstance());
+            }
+
             foreach ($arguments['configuration']->listeners() as $listener) {
                 $arguments['listeners'][] = $listener->createTestListenerInstance();
             }
