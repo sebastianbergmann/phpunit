@@ -45,6 +45,7 @@ final class ArgumentsBuilder
         'default-time-limit=',
         'enforce-time-limit',
         'exclude-group=',
+        'extensions',
         'filter=',
         'generate-configuration',
         'globals-backup',
@@ -151,6 +152,7 @@ final class ArgumentsBuilder
         $excludeGroups                              = null;
         $executionOrder                             = null;
         $executionOrderDefects                      = null;
+        $extensions                                 = [];
         $failOnIncomplete                           = null;
         $failOnRisky                                = null;
         $failOnSkipped                              = null;
@@ -546,6 +548,11 @@ final class ArgumentsBuilder
 
                     break;
 
+                case '--extensions':
+                    $extensions = explode(',', $option[1]);
+
+                    break;
+
                 case '--no-extensions':
                     $noExtensions = true;
 
@@ -734,6 +741,7 @@ final class ArgumentsBuilder
             $excludeGroups,
             $executionOrder,
             $executionOrderDefects,
+            $extensions,
             $failOnIncomplete,
             $failOnRisky,
             $failOnSkipped,
