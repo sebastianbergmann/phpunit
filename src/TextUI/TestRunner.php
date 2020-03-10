@@ -938,6 +938,13 @@ final class TestRunner extends BaseTestRunner
                 $arguments['listeners'][] = $listener->createTestListenerInstance();
             }
 
+            foreach ($arguments['unavailableExtensions'] as $extension) {
+                $arguments['warnings'][] = \sprintf(
+                    'Extension "%s" is not available',
+                    $extension
+                );
+            }
+
             $loggingConfiguration = $arguments['configuration']->logging();
 
             if (!isset($arguments['coverageClover']) && $loggingConfiguration->hasCodeCoverageClover()) {

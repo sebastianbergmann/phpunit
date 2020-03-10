@@ -17,6 +17,7 @@ final class ArgumentsMapper
     public function mapToLegacyArray(Arguments $arguments): array
     {
         $result = [
+            'extensions'              => [],
             'listGroups'              => false,
             'listSuites'              => false,
             'listTests'               => false,
@@ -24,6 +25,7 @@ final class ArgumentsMapper
             'loader'                  => null,
             'useDefaultConfiguration' => true,
             'loadedExtensions'        => [],
+            'unavailableExtensions'   => [],
             'notLoadedExtensions'     => [],
             'warnings'                => [],
         ];
@@ -156,7 +158,13 @@ final class ArgumentsMapper
             $result['executionOrderDefects'] = $arguments->executionOrderDefects();
         }
 
-        $result['extensions'] = $arguments->getExtensions();
+        if ($arguments->hasExtensions()) {
+            $result['extensions'] = $arguments->extensions();
+        }
+
+        if ($arguments->hasUnavailableExtensions()) {
+            $result['unavailableExtensions'] = $arguments->unavailableExtensions();
+        }
 
         if ($arguments->hasResolveDependencies()) {
             $result['resolveDependencies'] = $arguments->resolveDependencies();

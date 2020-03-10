@@ -154,6 +154,7 @@ final class ArgumentsBuilder
         $executionOrder                             = null;
         $executionOrderDefects                      = null;
         $extensions                                 = [];
+        $unavailableExtensions                      = [];
         $failOnIncomplete                           = null;
         $failOnRisky                                = null;
         $failOnSkipped                              = null;
@@ -551,6 +552,12 @@ final class ArgumentsBuilder
 
                 case '--extensions':
                     foreach (\explode(',', $option[1]) as $extensionClass) {
+                        if (!\class_exists($extensionClass)) {
+                            $unavailableExtensions[] = $extensionClass;
+
+                            continue;
+                        }
+
                         $extensions[] = new Extension($extensionClass, '', []);
                     }
 
@@ -701,6 +708,14 @@ final class ArgumentsBuilder
             }
         }
 
+        if (empty($extensions)) {
+            $extensions = null;
+        }
+
+        if (empty($unavailableExtensions)) {
+            $unavailableExtensions = null;
+        }
+
         if (empty($iniSettings)) {
             $iniSettings = null;
         }
@@ -745,6 +760,7 @@ final class ArgumentsBuilder
             $executionOrder,
             $executionOrderDefects,
             $extensions,
+            $unavailableExtensions,
             $failOnIncomplete,
             $failOnRisky,
             $failOnSkipped,
