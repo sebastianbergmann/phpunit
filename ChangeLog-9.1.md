@@ -18,6 +18,7 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 * Implemented [#4088](https://github.com/sebastianbergmann/phpunit/issues/4088): Implement `assertDoesNotMatchRegularExpression()` as alternative for `assertNotRegExp()` with a more readable name
 * Implemented [#4100](https://github.com/sebastianbergmann/phpunit/issues/4100): Implement `failOnIncomplete` and `failOnSkipped` configuration options as well as `--fail-on-incomplete` and `--fail-on-skipped` commandline options
 * Implemented [#4130](https://github.com/sebastianbergmann/phpunit/pull/4130): Canonicalize JSON values in failure message
+* Implemented [#4136](https://github.com/sebastianbergmann/phpunit/pull/4136): Allow loading PHPUnit extensions via command-line options
 
 ### Changed
 
