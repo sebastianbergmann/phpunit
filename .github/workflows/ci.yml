@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run friendsofphp/php-cs-fixer
-        run: php7.3 ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
+        run: php7.4 ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
 
   type-checker:
     name: Type Checker
@@ -29,13 +29,13 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Update dependencies with composer
-        run: php7.3 ./tools/composer update --no-interaction --no-ansi --no-progress --no-suggest
+        run: php7.4 ./tools/composer update --no-interaction --no-ansi --no-progress --no-suggest
 
       - name: Run vimeo/psalm on public API
-        run: php7.3 ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
+        run: php7.4 ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
 
       - name: Run vimeo/psalm on internal code
-        run: php7.3 ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
+        run: php7.4 ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
 
   backward-compatibility:
     name: Backward Compatibility
@@ -51,7 +51,7 @@ jobs:
       - name: "Install PHP with extensions"
         uses: shivammathur/setup-php@v1
         with:
-          php-version: 7.3
+          php-version: 7.4
           coverage: none
           extensions: intl
 
