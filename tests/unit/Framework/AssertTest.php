@@ -1312,6 +1312,21 @@ XML;
         );
     }
 
+    public function testAssertFileEqualsIgnoringCase(): void
+    {
+        $this->assertFileEqualsIgnoringCase(
+            TEST_FILES_PATH . 'foo.xml',
+            TEST_FILES_PATH . 'fooUppercase.xml'
+        );
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertFileEqualsIgnoringCase(
+            TEST_FILES_PATH . 'foo.xml',
+            TEST_FILES_PATH . 'bar.xml'
+        );
+    }
+
     public function testAssertStringStartsNotWithThrowsException2(): void
     {
         $this->expectException(Exception::class);
