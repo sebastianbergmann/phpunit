@@ -23,6 +23,6 @@ PHPUnit\Test\Extension::executeAfterTest: ConcreteTest::testOne
 .                                                                  2 / 2 (100%)PHPUnit\Test\Extension::executeAfterLastTest
 
 
-Time: 18 ms, Memory: 4.00 MB
+Time: %s ms, Memory: %s MB
 
 OK (2 tests, 2 assertions)
