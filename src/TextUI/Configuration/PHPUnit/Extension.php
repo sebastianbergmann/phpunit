@@ -41,6 +41,9 @@ final class Extension
         $this->arguments  = $arguments;
     }
 
+    /**
+     * @psalm-return class-string
+     */
     public function className(): string
     {
         return $this->className;
