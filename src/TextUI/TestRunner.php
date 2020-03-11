@@ -933,10 +933,6 @@ final class TestRunner extends BaseTestRunner
                 $this->addExtension($extensionHandler->createHookInstance($extension));
             }
 
-            foreach ($arguments['extensions'] as $extension) {
-                $this->addExtension($extension->createHookInstance());
-            }
-
             foreach ($arguments['configuration']->listeners() as $listener) {
                 $arguments['listeners'][] = $extensionHandler->createTestListenerInstance($listener);
             }
@@ -1027,6 +1023,12 @@ final class TestRunner extends BaseTestRunner
                 $arguments['testdoxExcludeGroups'] = $testdoxGroupConfiguration->exclude()->asArrayOfStrings();
             }
         }
+
+        $extensionHandler = new ExtensionHandler();
+        foreach ($arguments['extensions'] as $extension) {
+            $this->addExtension($extensionHandler->createHookInstance($extension));
+        }
+        unset($extensionHandler);
 
         $arguments['addUncoveredFilesFromWhitelist']                  = $arguments['addUncoveredFilesFromWhitelist'] ?? true;
         $arguments['backupGlobals']                                   = $arguments['backupGlobals'] ?? null;
