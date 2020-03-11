@@ -255,6 +255,11 @@
   <file src="src/Util/Annotation/DocBlock.php">
     <InvalidCatch occurrences="1"/>
   </file>
+  <file src="src/Util/Blacklist.php">
+    <UndefinedClass occurrences="1">
+      <code>Invoker</code>
+    </UndefinedClass>
+  </file>
   <file src="src/Util/ErrorHandler.php">
     <InvalidArgument occurrences="1"/>
   </file>
