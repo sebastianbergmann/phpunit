@@ -1025,6 +1025,7 @@ final class TestRunner extends BaseTestRunner
         }
 
         $extensionHandler = new ExtensionHandler();
+
         foreach ($arguments['extensions'] as $extension) {
             $this->addExtension($extensionHandler->createHookInstance($extension));
         }
