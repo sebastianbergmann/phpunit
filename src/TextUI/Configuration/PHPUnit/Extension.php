@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestListener;
-use PHPUnit\Runner\Hook;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
@@ -68,82 +64,5 @@ final class Extension
     public function arguments(): array
     {
         return $this->arguments;
-    }
-
-    public function createHookInstance(): Hook
-    {
-        $object = $this->createInstance();
-
-        if (!$object instanceof Hook) {
-            throw new Exception(
-                \sprintf(
-                    'Class "%s" does not implement a PHPUnit\Runner\Hook interface',
-                    $this->className
-                )
-            );
-        }
-
-        return $object;
-    }
-
-    public function createTestListenerInstance(): TestListener
-    {
-        $object = $this->createInstance();
-
-        if (!$object instanceof TestListener) {
-            throw new Exception(
-                \sprintf(
-                    'Class "%s" does not implement the PHPUnit\Framework\TestListener interface',
-                    $this->className
-                )
-            );
-        }
-
-        return $object;
-    }
-
-    private function createInstance(): object
-    {
-        $this->ensureClassExists();
-
-        try {
-            $reflector = new \ReflectionClass($this->className);
-        } catch (\ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-
-        if (!$this->hasArguments()) {
-            return $reflector->newInstance();
-        }
-
-        return $reflector->newInstanceArgs($this->arguments);
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function ensureClassExists(): void
-    {
-        if (\class_exists($this->className, false)) {
-            return;
-        }
-
-        if ($this->hasSourceFile()) {
-            /** @noinspection PhpIncludeInspection */
-            require_once $this->sourceFile;
-        }
-
-        if (!\class_exists($this->className)) {
-            throw new Exception(
-                \sprintf(
-                    'Class "%s" does not exist',
-                    $this->className
-                )
-            );
-        }
     }
 }
