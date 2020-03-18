@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use Countable;
-
 /**
  * Constraint that checks whether a variable is empty().
  */
@@ -36,7 +34,7 @@ final class IsEmpty extends Constraint
             return true;
         }
 
-        if ($other instanceof Countable) {
+        if ($other instanceof \Countable) {
             return \count($other) === 0;
         }
 

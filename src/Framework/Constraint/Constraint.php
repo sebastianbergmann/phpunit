@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\SelfDescribing;
 use SebastianBergmann\Comparator\ComparisonFailure;
@@ -18,7 +17,7 @@ use SebastianBergmann\Exporter\Exporter;
 /**
  * Abstract base class for constraints which can be applied to any value.
  */
-abstract class Constraint implements Countable, SelfDescribing
+abstract class Constraint implements \Countable, SelfDescribing
 {
     /**
      * @var ?Exporter

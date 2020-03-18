@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use Closure;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -118,7 +116,7 @@ final class GlobalState
         foreach (self::SUPER_GLOBAL_ARRAYS as $superGlobalArray) {
             if (isset($GLOBALS[$superGlobalArray]) && \is_array($GLOBALS[$superGlobalArray])) {
                 foreach (\array_keys($GLOBALS[$superGlobalArray]) as $key) {
-                    if ($GLOBALS[$superGlobalArray][$key] instanceof Closure) {
+                    if ($GLOBALS[$superGlobalArray][$key] instanceof \Closure) {
                         continue;
                     }
 
@@ -136,7 +134,7 @@ final class GlobalState
         $blacklist[] = 'GLOBALS';
 
         foreach (\array_keys($GLOBALS) as $key) {
-            if (!$GLOBALS[$key] instanceof Closure && !\in_array($key, $blacklist, true)) {
+            if (!$GLOBALS[$key] instanceof \Closure && !\in_array($key, $blacklist, true)) {
                 $result .= \sprintf(
                     '$GLOBALS[\'%s\'] = %s;' . "\n",
                     $key,

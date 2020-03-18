@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Util\TestDox;
 
-use DOMDocument;
-use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
@@ -26,12 +24,12 @@ use PHPUnit\Util\Printer;
 final class XmlResultPrinter extends Printer implements TestListener
 {
     /**
-     * @var DOMDocument
+     * @var \DOMDocument
      */
     private $document;
 
     /**
-     * @var DOMElement
+     * @var \DOMElement
      */
     private $root;
 
@@ -52,7 +50,7 @@ final class XmlResultPrinter extends Printer implements TestListener
      */
     public function __construct($out = null)
     {
-        $this->document               = new DOMDocument('1.0', 'UTF-8');
+        $this->document               = new \DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
 
         $this->root = $this->document->createElement('tests');

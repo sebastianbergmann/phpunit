@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Error\Error;
-use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -23,7 +22,7 @@ final class TestFailure
     private $failedTest;
 
     /**
-     * @var Throwable
+     * @var \Throwable
      */
     private $thrownException;
 
@@ -35,7 +34,7 @@ final class TestFailure
     /**
      * Returns a description for an exception.
      */
-    public static function exceptionToString(Throwable $e): string
+    public static function exceptionToString(\Throwable $e): string
     {
         if ($e instanceof SelfDescribing) {
             $buffer = $e->toString();
@@ -68,10 +67,8 @@ final class TestFailure
 
     /**
      * Constructs a TestFailure with the given test and exception.
-     *
-     * @param Throwable $t
      */
-    public function __construct(Test $failedTest, $t)
+    public function __construct(Test $failedTest, \Throwable $t)
     {
         if ($failedTest instanceof SelfDescribing) {
             $this->testName = $failedTest->toString();
@@ -130,7 +127,7 @@ final class TestFailure
     /**
      * Gets the thrown exception.
      */
-    public function thrownException(): Throwable
+    public function thrownException(): \Throwable
     {
         return $this->thrownException;
     }

@@ -34,8 +34,6 @@ use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
-use Throwable;
-
 /**
  * A TestRunner for the Command Line Interface (CLI)
  * PHP SAPI Module.
@@ -342,7 +340,7 @@ class Command
         if (isset($this->arguments['configuration'])) {
             try {
                 $configuration = Registry::getInstance()->get($this->arguments['configuration']);
-            } catch (Throwable $e) {
+            } catch (\Throwable $e) {
                 print $e->getMessage() . \PHP_EOL;
                 exit(TestRunner::FAILURE_EXIT);
             }
