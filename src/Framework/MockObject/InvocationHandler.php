@@ -108,8 +108,7 @@ final class InvocationHandler
 
     /**
      * @throws Exception
-     *
-     * @return mixed|void
+     * @throws \Throwable
      */
     public function invoke(Invocation $invocation)
     {
@@ -173,7 +172,8 @@ final class InvocationHandler
     }
 
     /**
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws ExpectationFailedException
+     * @throws \Throwable
      */
     public function verify(): void
     {
