@@ -28,7 +28,6 @@ final class TraversableContainsIdentical extends TraversableContains
         }
 
         foreach ($other as $element) {
-            /* @noinspection TypeUnsafeComparisonInspection */
             if ($this->value() === $element) {
                 return true;
             }
