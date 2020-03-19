@@ -2293,7 +2293,7 @@ function returnSelf(): ReturnSelfStub
     return new ReturnSelfStub;
 }
 
-function throwException(Throwable $exception): ExceptionStub
+function throwException(\Throwable $exception): ExceptionStub
 {
     return new ExceptionStub($exception);
 }

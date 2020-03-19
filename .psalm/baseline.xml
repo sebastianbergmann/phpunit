@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.9.4@352bd3f5c5789db04e4010856c2f4e01ed354f4e">
+<files psalm-version="3.9.5@0cfe565d0afbcd31eadcc281b9017b5692911661">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -382,10 +382,10 @@
       <code>$item</code>
     </ArgumentTypeCoercion>
     <LessSpecificReturnStatement occurrences="1">
-      <code>(new DOMDocument)-&gt;importNode($element, true)</code>
+      <code>(new \DOMDocument)-&gt;importNode($element, true)</code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType occurrences="1">
-      <code>DOMElement</code>
+      <code>\DOMElement</code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">

@@ -193,10 +193,7 @@ function returnSelf(): ReturnSelfStub
     return new ReturnSelfStub;
 }
 
-/**
- * @param Throwable $exception
- */
-function throwException(Throwable $exception): ExceptionStub
+function throwException(\Throwable $exception): ExceptionStub
 {
     return new ExceptionStub($exception);
 }
