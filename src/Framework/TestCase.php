@@ -1868,31 +1868,15 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         throw $t;
     }
 
-    /**
-     * @throws Warning
-     * @throws SkippedTestError
-     * @throws SyntheticSkippedError
-     */
-    private function checkRequirements(): void
+    protected function recordDoubledType(string $originalClassName): void
     {
-        if (!$this->name || !\method_exists($this, $this->name)) {
-            return;
-        }
-
-        $missingRequirements = TestUtil::getMissingRequirements(
-            \get_class($this),
-            $this->name
-        );
-
-        if (!empty($missingRequirements)) {
-            $this->markTestSkipped(\implode(\PHP_EOL, $missingRequirements));
-        }
+        $this->doubledTypes[] = $originalClassName;
     }
 
     /**
      * @throws \Throwable
      */
-    private function verifyMockObjects(): void
+    protected function verifyMockObjects(): void
     {
         foreach ($this->mockObjects as $mockObject) {
             if ($mockObject->__phpunit_hasMatchers()) {
@@ -1918,6 +1902,27 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * @throws Warning
+     * @throws SkippedTestError
+     * @throws SyntheticSkippedError
+     */
+    private function checkRequirements(): void
+    {
+        if (!$this->name || !\method_exists($this, $this->name)) {
+            return;
+        }
+
+        $missingRequirements = TestUtil::getMissingRequirements(
+            \get_class($this),
+            $this->name
+        );
+
+        if (!empty($missingRequirements)) {
+            $this->markTestSkipped(\implode(\PHP_EOL, $missingRequirements));
         }
     }
 
@@ -2398,11 +2403,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     {
         return ($this->runTestInSeparateProcess || $this->runClassInSeparateProcess) &&
             !$this->inIsolation && !$this instanceof PhptTestCase;
-    }
-
-    private function recordDoubledType(string $originalClassName): void
-    {
-        $this->doubledTypes[] = $originalClassName;
     }
 
     private function isCallableTestMethod(string $dependency): bool
