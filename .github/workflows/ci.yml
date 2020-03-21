@@ -56,7 +56,7 @@ jobs:
           extensions: intl
 
       - name: Run roave/backward-compatibility-check
-        run: php ./tools/roave-backward-compatibility-check --from=90de7dc0c9e1d80981b794b001434779c2a26acd
+        run: php ./tools/roave-backward-compatibility-check --from=a4b7e9f2ffd9336326d86a83f0cc944bb0c0698b
 
   lint-xml-configuration:
     name: Lint XML Configuration
