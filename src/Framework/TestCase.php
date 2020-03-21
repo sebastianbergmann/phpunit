@@ -1809,15 +1809,13 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @param null|string $classOrInterface
-     *
      * @throws \Prophecy\Exception\Doubler\ClassNotFoundException
      * @throws \Prophecy\Exception\Doubler\DoubleException
      * @throws \Prophecy\Exception\Doubler\InterfaceNotFoundException
      *
      * @psalm-param class-string|null $classOrInterface
      */
-    protected function prophesize($classOrInterface = null): ObjectProphecy
+    protected function prophesize(?string $classOrInterface = null): ObjectProphecy
     {
         if (\is_string($classOrInterface)) {
             $this->recordDoubledType($classOrInterface);
