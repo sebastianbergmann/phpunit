@@ -106,7 +106,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $data;
 
     /**
-     * @var string
+     * @var int|string
      */
     private $dataName;
 
@@ -382,7 +382,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @param string $dataName
+     * @param int|string $dataName
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
