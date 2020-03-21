@@ -1734,7 +1734,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = []): MockObject
     {
-        $this->recordDoubledType('SoapClient');
+        $this->recordDoubledType(SoapClient::class);
 
         if ($originalClassName === '') {
             $fileName          = \pathinfo(\basename(\parse_url($wsdlFile)['path']), \PATHINFO_FILENAME);
