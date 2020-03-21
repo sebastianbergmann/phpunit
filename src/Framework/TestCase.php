@@ -2396,22 +2396,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             !$this->inIsolation && !$this instanceof PhptTestCase;
     }
 
-    /**
-     * @param string|string[] $originalClassName
-     */
-    private function recordDoubledType($originalClassName): void
+    private function recordDoubledType(string $originalClassName): void
     {
-        if (\is_string($originalClassName)) {
-            $this->doubledTypes[] = $originalClassName;
-        }
-
-        if (\is_array($originalClassName)) {
-            foreach ($originalClassName as $_originalClassName) {
-                if (\is_string($_originalClassName)) {
-                    $this->doubledTypes[] = $_originalClassName;
-                }
-            }
-        }
+        $this->doubledTypes[] = $originalClassName;
     }
 
     private function isCallableTestMethod(string $dependency): bool
