@@ -403,10 +403,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
             return;
         }
 
-        if ($result->wasSuccessful() &&
-            $result->allHarmless() &&
-            $result->allCompletelyImplemented() &&
-            $result->noneSkipped()) {
+        if ($result->wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete()) {
             $this->writeWithColor(
                 'fg-black, bg-green',
                 \sprintf(
@@ -417,55 +414,57 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
                     ($this->numAssertions === 1) ? '' : 's'
                 )
             );
-        } else {
-            if ($result->wasSuccessful()) {
-                $color = 'fg-black, bg-yellow';
 
-                if ($this->verbose || !$result->allHarmless()) {
-                    $this->write("\n");
-                }
+            return;
+        }
+
+        $color = 'fg-black, bg-yellow';
+
+        if ($result->wasSuccessful()) {
+            if ($this->verbose || !$result->allHarmless()) {
+                $this->write("\n");
+            }
+
+            $this->writeWithColor(
+                $color,
+                'OK, but incomplete, skipped, or risky tests!'
+            );
+        } else {
+            $this->write("\n");
+
+            if ($result->errorCount()) {
+                $color = 'fg-white, bg-red';
 
                 $this->writeWithColor(
                     $color,
-                    'OK, but incomplete, skipped, or risky tests!'
+                    'ERRORS!'
                 );
-            } else {
-                $this->write("\n");
+            } elseif ($result->failureCount()) {
+                $color = 'fg-white, bg-red';
 
-                if ($result->errorCount()) {
-                    $color = 'fg-white, bg-red';
+                $this->writeWithColor(
+                    $color,
+                    'FAILURES!'
+                );
+            } elseif ($result->warningCount()) {
+                $color = 'fg-black, bg-yellow';
 
-                    $this->writeWithColor(
-                        $color,
-                        'ERRORS!'
-                    );
-                } elseif ($result->failureCount()) {
-                    $color = 'fg-white, bg-red';
-
-                    $this->writeWithColor(
-                        $color,
-                        'FAILURES!'
-                    );
-                } elseif ($result->warningCount()) {
-                    $color = 'fg-black, bg-yellow';
-
-                    $this->writeWithColor(
-                        $color,
-                        'WARNINGS!'
-                    );
-                }
+                $this->writeWithColor(
+                    $color,
+                    'WARNINGS!'
+                );
             }
-
-            $this->writeCountString(\count($result), 'Tests', $color, true);
-            $this->writeCountString($this->numAssertions, 'Assertions', $color, true);
-            $this->writeCountString($result->errorCount(), 'Errors', $color);
-            $this->writeCountString($result->failureCount(), 'Failures', $color);
-            $this->writeCountString($result->warningCount(), 'Warnings', $color);
-            $this->writeCountString($result->skippedCount(), 'Skipped', $color);
-            $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
-            $this->writeCountString($result->riskyCount(), 'Risky', $color);
-            $this->writeWithColor($color, '.');
         }
+
+        $this->writeCountString(\count($result), 'Tests', $color, true);
+        $this->writeCountString($this->numAssertions, 'Assertions', $color, true);
+        $this->writeCountString($result->errorCount(), 'Errors', $color);
+        $this->writeCountString($result->failureCount(), 'Failures', $color);
+        $this->writeCountString($result->warningCount(), 'Warnings', $color);
+        $this->writeCountString($result->skippedCount(), 'Skipped', $color);
+        $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
+        $this->writeCountString($result->riskyCount(), 'Risky', $color);
+        $this->writeWithColor($color, '.');
     }
 
     protected function writeProgress(string $progress): void

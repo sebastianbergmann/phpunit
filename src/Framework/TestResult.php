@@ -1165,6 +1165,11 @@ final class TestResult implements \Countable
         return empty($this->errors) && empty($this->failures);
     }
 
+    public function wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete(): bool
+    {
+        return $this->wasSuccessful() && $this->allHarmless() && $this->allCompletelyImplemented() && $this->noneSkipped();
+    }
+
     /**
      * Sets the default timeout for tests
      */
