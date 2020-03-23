@@ -1751,8 +1751,8 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->recordDoubledType('SoapClient');
 
         if ($originalClassName === '') {
-            $fileName          = \pathinfo(\basename(\parse_url($wsdlFile)['path']), \PATHINFO_FILENAME);
-            $originalClassName = \preg_replace('/[^a-zA-Z0-9_]/', '', $fileName);
+            $fileName          = \pathinfo(\basename(\parse_url($wsdlFile, \PHP_URL_PATH)), \PATHINFO_FILENAME);
+            $originalClassName = \preg_replace('/\W/', '', $fileName);
         }
 
         if (!\class_exists($originalClassName)) {
