@@ -1811,6 +1811,8 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     protected function prophesize(?string $classOrInterface = null): ObjectProphecy
     {
+        $this->addWarning('PHPUnit\Framework\TestCase::prophesize() is deprecated and will be removed in PHPUnit 10. Please extend Prophecy\PhpUnit\ProphecyTestCase instead of PHPUnit\Framework\TestCase.');
+
         if (\is_string($classOrInterface)) {
             $this->recordDoubledType($classOrInterface);
         }
