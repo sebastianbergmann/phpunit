@@ -23,7 +23,7 @@ final class Json
      */
     public static function prettify(string $json): string
     {
-        $decodedJson = \json_decode($json, true);
+        $decodedJson = \json_decode($json, false);
 
         if (\json_last_error()) {
             throw new Exception(
@@ -81,6 +81,57 @@ final class Json
 
         foreach ($json as $key => &$value) {
             self::recursiveSort($value);
+        }
+    }
+
+    public function testEmptyObjectNotConvertedToArrayInDiff(): void
+    {
+        $constraint = new JsonMatches('{"obj": {}, "val": 1}');
+
+        try {
+            $constraint->evaluate('{"obj": {}, "val": 2}', '', false);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that '{"obj": {}, "val": 2}' matches JSON string "{"obj": {}, "val": 1}".
+--- Expected
++++ Actual
+@@ @@
+ {
+     "obj": {},
+-    "val": 1
++    "val": 2
+ }
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+        }
+    }
+
+    public function testObjectAreCanonicalizedInDiff(): void
+    {
+        $constraint = new JsonMatches('{"obj": {"x": 1, "y": 2}, "val": 1}');
+
+        try {
+            $constraint->evaluate('{"obj": {"y": 2, "x": 1}, "val": 2}', '', false);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that '{"obj": {"y": 2, "x": 1}, "val": 2}' matches JSON string "{"obj": {"x": 1, "y": 2}, "val": 1}".
+--- Expected
++++ Actual
+@@ @@
+         "x": 1,
+         "y": 2
+     },
+-    "val": 1
++    "val": 2
+ }
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
         }
     }
 }
