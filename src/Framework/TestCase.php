@@ -1866,7 +1866,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * @throws \Throwable
      */
-    protected function verifyMockObjects(): void
+    private function verifyMockObjects(): void
     {
         foreach ($this->mockObjects as $mockObject) {
             if ($mockObject->__phpunit_hasMatchers()) {
