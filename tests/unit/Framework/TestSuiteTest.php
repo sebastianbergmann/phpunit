@@ -129,7 +129,7 @@ final class TestSuiteTest extends TestCase
         $this->assertTrue(\BeforeClassWithOnlyDataProviderTest::$beforeClassWasCalled, '@beforeClass method was not run.');
     }
 
-    public function testBeforeAnnotation(): void
+    public function testBeforeAndAfterAnnotations(): void
     {
         $test = new TestSuite(\BeforeAndAfterTest::class);
 
@@ -138,6 +138,17 @@ final class TestSuiteTest extends TestCase
 
         $this->assertEquals(2, \BeforeAndAfterTest::$beforeWasRun);
         $this->assertEquals(2, \BeforeAndAfterTest::$afterWasRun);
+    }
+
+    public function testPreConditionAndPostConditionAnnotations(): void
+    {
+        $test = new TestSuite(\PreConditionAndPostConditionTest::class);
+
+        \PreConditionAndPostConditionTest::resetProperties();
+        $test->run();
+
+        $this->assertSame(1, \PreConditionAndPostConditionTest::$preConditionWasVerified);
+        $this->assertSame(1, \PreConditionAndPostConditionTest::$postConditionWasVerified);
     }
 
     public function testTestWithAnnotation(): void

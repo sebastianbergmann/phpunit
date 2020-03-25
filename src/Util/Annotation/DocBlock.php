@@ -321,6 +321,16 @@ final class DocBlock
         return 1 === \preg_match('/@after\b/', $this->docComment);
     }
 
+    public function isToBeExecutedAsPreCondition(): bool
+    {
+        return 1 === \preg_match('/@preCondition\b/', $this->docComment);
+    }
+
+    public function isToBeExecutedAsPostCondition(): bool
+    {
+        return 1 === \preg_match('/@postCondition\b/', $this->docComment);
+    }
+
     /**
      * Parse annotation content to use constant/class constant values
      *

@@ -495,6 +495,17 @@ final class Test
                         );
                     }
 
+                    if ($docBlock->isToBeExecutedAsPreCondition()) {
+                        \array_unshift(
+                            self::$hookMethods[$className]['preCondition'],
+                            $method->getName()
+                        );
+                    }
+
+                    if ($docBlock->isToBeExecutedAsPostCondition()) {
+                        self::$hookMethods[$className]['postCondition'][] = $method->getName();
+                    }
+
                     if ($docBlock->isToBeExecutedAfterTest()) {
                         self::$hookMethods[$className]['after'][] = $method->getName();
                     }
@@ -597,10 +608,12 @@ final class Test
     private static function emptyHookMethodsArray(): array
     {
         return [
-            'beforeClass' => ['setUpBeforeClass'],
-            'before'      => ['setUp'],
-            'after'       => ['tearDown'],
-            'afterClass'  => ['tearDownAfterClass'],
+            'beforeClass'   => ['setUpBeforeClass'],
+            'before'        => ['setUp'],
+            'preCondition'  => ['assertPreConditions'],
+            'postCondition' => ['assertPostConditions'],
+            'after'         => ['tearDown'],
+            'afterClass'    => ['tearDownAfterClass'],
         ];
     }
 

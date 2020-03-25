@@ -1024,10 +1024,16 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 $this->$method();
             }
 
-            $this->assertPreConditions();
+            foreach ($hookMethods['preCondition'] as $method) {
+                $this->$method();
+            }
+
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
-            $this->assertPostConditions();
+
+            foreach ($hookMethods['postCondition'] as $method) {
+                $this->$method();
+            }
 
             if (!empty($this->warnings)) {
                 throw new Warning(
