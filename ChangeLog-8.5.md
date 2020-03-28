@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 ### Fixed
 
 * Fixed [#4017](https://github.com/sebastianbergmann/phpunit/issues/4017): Do not suggest refactoring to something that is also deprecated
+* Fixed [#4139](https://github.com/sebastianbergmann/phpunit/issues/4139): Cannot double interfaces that declare a constructor with PHP 8
 
 ## [8.5.2] - 2020-01-08
 

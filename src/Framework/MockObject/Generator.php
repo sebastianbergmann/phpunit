@@ -510,6 +510,34 @@ final class Generator
     }
 
     /**
+     * @throws RuntimeException
+     *
+     * @return MockMethod[]
+     */
+    public function mockInterfaceMethods(string $interfaceName, bool $cloneArguments): array
+    {
+        try {
+            $class = new \ReflectionClass($interfaceName);
+            // @codeCoverageIgnoreStart
+        } catch (\ReflectionException $e) {
+            throw new RuntimeException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+        // @codeCoverageIgnoreEnd
+
+        $methods = [];
+
+        foreach ($class->getMethods() as $method) {
+            $methods[] = MockMethod::fromReflection($method, false, $cloneArguments);
+        }
+
+        return $methods;
+    }
+
+    /**
      * @return \ReflectionMethod[]
      */
     private function userDefinedInterfaceMethods(string $interfaceName): array
@@ -811,10 +839,15 @@ final class Generator
             }
         }
 
-        if ($explicitMethods === [] &&
-            ($isClass || $isInterface)) {
+        if ($isClass && $explicitMethods === [] ) {
             $mockMethods->addMethods(
                 ...$this->mockClassMethods($mockClassName['fullClassName'], $callOriginalMethods, $cloneArguments)
+            );
+        }
+
+        if ($isInterface && ($explicitMethods === [] || $explicitMethods === null)) {
+            $mockMethods->addMethods(
+                ...$this->mockInterfaceMethods($mockClassName['fullClassName'], $cloneArguments)
             );
         }
 
