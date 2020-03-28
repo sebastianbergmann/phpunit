@@ -974,7 +974,7 @@ final class Generator
 
     private function canMockMethod(\ReflectionMethod $method): bool
     {
-        return !($method->isConstructor() || $method->isFinal() || $method->isPrivate() || $this->isMethodNameBlacklisted($method->getName()));
+        return !($this->isConstructor($method) || $method->isFinal() || $method->isPrivate() || $this->isMethodNameBlacklisted($method->getName()));
     }
 
     private function isMethodNameBlacklisted(string $name): bool
@@ -991,5 +991,21 @@ final class Generator
         }
 
         return self::$templates[$filename];
+    }
+
+    /**
+     * @see https://github.com/sebastianbergmann/phpunit/issues/4139#issuecomment-605409765
+     */
+    private function isConstructor(\ReflectionMethod $method): bool
+    {
+        $methodName = \strtolower($method->getName());
+
+        if ($methodName === '__construct') {
+            return true;
+        }
+
+        $className  = \strtolower($method->getDeclaringClass()->getName());
+
+        return $methodName === $className;
     }
 }
