@@ -538,6 +538,8 @@ final class Generator
     }
 
     /**
+     * @psalm-param class-string $interfaceName
+     *
      * @return \ReflectionMethod[]
      */
     private function userDefinedInterfaceMethods(string $interfaceName): array
