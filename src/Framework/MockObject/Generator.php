@@ -839,7 +839,7 @@ final class Generator
             }
         }
 
-        if ($isClass && $explicitMethods === [] ) {
+        if ($isClass && $explicitMethods === []) {
             $mockMethods->addMethods(
                 ...$this->mockClassMethods($mockClassName['fullClassName'], $callOriginalMethods, $cloneArguments)
             );
