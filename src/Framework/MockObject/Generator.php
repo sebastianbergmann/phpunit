@@ -499,6 +499,8 @@ final class Generator
     }
 
     /**
+     * @psalm-param class-string $interfaceName
+     *
      * @return \ReflectionMethod[]
      */
     private function userDefinedInterfaceMethods(string $interfaceName): array
@@ -736,7 +738,7 @@ final class Generator
             }
         }
 
-        if ($isClass && $explicitMethods === [] ) {
+        if ($isClass && $explicitMethods === []) {
             $mockMethods->addMethods(
                 ...$this->mockClassMethods($_mockClassName['fullClassName'], $callOriginalMethods, $cloneArguments)
             );
