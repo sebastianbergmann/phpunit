@@ -106,10 +106,14 @@ jobs:
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1
 
-      - name: "Cache dependencies installed with composer"
+      - name: Determine composer cache directory
+        id: determine-composer-cache-directory
+        run: echo "::set-output name=directory::$(./tools/composer config cache-dir)"
+
+      - name: Cache dependencies installed with composer
         uses: actions/cache@v1
         with:
-          path: ~/.composer/cache
+          path: ${{ steps.determine-composer-cache-directory.outputs.directory }}
           key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
