@@ -93,10 +93,14 @@ jobs:
   tests:
     name: Tests
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
         php-version:
           - "7.3"
           - "7.4"
@@ -118,14 +122,18 @@ jobs:
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1
 
-      - name: Determine composer cache directory
-        id: determine-composer-cache-directory
-        run: echo "::set-output name=directory::$(./tools/composer config cache-dir)"
+      - name: Determine composer cache directory on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: echo "::set-env name=COMPOSER_CACHE_DIR::$(./tools/composer config cache-dir)"
+
+      - name: Determine composer cache directory on Windows
+        if: matrix.os == 'windows-latest'
+        run: ECHO "::set-env name=COMPOSER_CACHE_DIR::~\AppData\Local\Composer"
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v1
         with:
-          path: ${{ steps.determine-composer-cache-directory.outputs.directory }}
+          path: ${{ env.COMPOSER_CACHE_DIR }}
           key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
@@ -145,6 +153,6 @@ jobs:
         run: ./phpunit --coverage-clover=coverage.xml
 
       - name: Send code coverage report to Codecov.io
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: bash <(curl -s https://codecov.io/bash) || true
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
