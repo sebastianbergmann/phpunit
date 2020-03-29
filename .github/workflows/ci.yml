@@ -16,8 +16,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
+
       - name: Run friendsofphp/php-cs-fixer
-        run: php7.4 ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
+        run: ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
 
   type-checker:
     name: Type Checker
@@ -28,14 +34,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
+
       - name: Update dependencies with composer
-        run: php7.4 ./tools/composer update --no-interaction --no-ansi --no-progress --no-suggest
+        run: ./tools/composer update --no-interaction --no-ansi --no-progress --no-suggest
 
       - name: Run vimeo/psalm on public API
-        run: php7.4 ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
+        run: ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
 
       - name: Run vimeo/psalm on internal code
-        run: php7.4 ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
+        run: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
 
   backward-compatibility:
     name: Backward Compatibility
@@ -51,7 +63,7 @@ jobs:
       - name: Fetch tags
         run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
 
-      - name: "Install PHP with extensions"
+      - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
           php-version: 7.4
@@ -59,7 +71,7 @@ jobs:
           extensions: intl
 
       - name: Run roave/backward-compatibility-check
-        run: php ./tools/roave-backward-compatibility-check --from=9.0.0
+        run: ./tools/roave-backward-compatibility-check --from=9.0.0
 
   lint-xml-configuration:
     name: Lint XML Configuration
@@ -98,7 +110,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: "Install PHP with extensions"
+      - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
