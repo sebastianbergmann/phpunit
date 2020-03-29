@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 ### Fixed
 
 * Fixed [#4139](https://github.com/sebastianbergmann/phpunit/issues/4139): Cannot double interfaces that declare a constructor with PHP 8
+* Fixed [#4144](https://github.com/sebastianbergmann/phpunit/issues/4144): Empty objects are converted to empty arrays in JSON comparison failure diff
 
 ## [9.0.1] - 2020-02-13
 
