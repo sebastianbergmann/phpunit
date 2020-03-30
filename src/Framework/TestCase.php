@@ -270,6 +270,11 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $doubledTypes = [];
 
     /**
+     * @var bool
+     */
+    private $deprecatedExpectExceptionMessageRegExpUsed = false;
+
+    /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
      */
@@ -506,6 +511,8 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     public function expectExceptionMessageRegExp(string $regularExpression): void
     {
+        $this->deprecatedExpectExceptionMessageRegExpUsed = true;
+
         $this->expectExceptionMessageMatches($regularExpression);
     }
 
@@ -1445,6 +1452,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                         $this->expectedExceptionCode
                     )
                 );
+            }
+
+            if ($this->deprecatedExpectExceptionMessageRegExpUsed) {
+                $this->addWarning('expectExceptionMessageRegExp() is deprecated in PHPUnit 8 and will be removed in PHPUnit 9.');
             }
 
             return;
