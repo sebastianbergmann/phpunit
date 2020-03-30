@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 ### Fixed
 
 * [#4017](https://github.com/sebastianbergmann/phpunit/issues/4017): Do not suggest refactoring to something that is also deprecated
+* [#4133](https://github.com/sebastianbergmann/phpunit/issues/4133): `expectExceptionMessageRegExp()` has been removed in PHPUnit 9 without a deprecation warning being given in PHPUnit 8
 * [#4139](https://github.com/sebastianbergmann/phpunit/issues/4139): Cannot double interfaces that declare a constructor with PHP 8
 * [#4144](https://github.com/sebastianbergmann/phpunit/issues/4144): Empty objects are converted to empty arrays in JSON comparison failure diff
 
