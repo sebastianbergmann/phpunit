@@ -929,6 +929,10 @@ final class Generator
             return true;
         }
 
+        if (\PHP_MAJOR_VERSION >= 8) {
+            return false;
+        }
+
         $className  = \strtolower($method->getDeclaringClass()->getName());
 
         return $methodName === $className;
