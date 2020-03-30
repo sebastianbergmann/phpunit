@@ -15,7 +15,7 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class InvokedAtIndex extends InvocationOrder
+final class InvokedAtIndex extends InvocationOrder
 {
     /**
      * @var int
