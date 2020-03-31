@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 9.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [9.0.2] - 2020-MM-DD
+## [9.0.2] - 2020-03-31
 
 ### Fixed
 
@@ -46,7 +46,7 @@ All notable changes of the PHPUnit 9.0 release series are documented in this fil
 * [#3957](https://github.com/sebastianbergmann/phpunit/issues/3957): Remove `expectExceptionMessageRegExp()`
 * [#4012](https://github.com/sebastianbergmann/phpunit/issues/4012): Remove class name as CLI argument
 
-[9.0.2]: https://github.com/sebastianbergmann/phpunit/compare/9.0.1...9.0
+[9.0.2]: https://github.com/sebastianbergmann/phpunit/compare/9.0.1...9.0.2
 [9.0.1]: https://github.com/sebastianbergmann/phpunit/compare/9.0.0...9.0.1
 [9.0.0]: https://github.com/sebastianbergmann/phpunit/compare/8.5.2...9.0.0
 
