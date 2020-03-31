@@ -638,6 +638,10 @@ final class TestRunner extends BaseTestRunner
             }
         }
 
+        if ($suite->hasWarnings()) {
+            $this->write($suite->warningsAsString() . \PHP_EOL . \PHP_EOL);
+        }
+
         $suite->run($result);
 
         foreach ($this->extensions as $extension) {

@@ -566,15 +566,6 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             return $result;
         }
 
-        if (\count($this->warnings) !== 0) {
-            echo \implode(
-                \PHP_EOL,
-                \array_unique($this->warnings)
-            ),
-            \PHP_EOL,
-            \PHP_EOL;
-        }
-
         /** @psalm-var class-string $className */
         $className   = $this->name;
         $hookMethods = TestUtil::getHookMethods($className);
@@ -778,6 +769,19 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                 $test->injectFilter($filter);
             }
         }
+    }
+
+    public function hasWarnings(): bool
+    {
+        return !empty($this->warnings);
+    }
+
+    public function warningsAsString(): string
+    {
+        return \implode(
+            \PHP_EOL,
+            \array_unique($this->warnings)
+        );
     }
 
     /**
