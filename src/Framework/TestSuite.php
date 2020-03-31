@@ -334,9 +334,6 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
         }
     }
 
-    /**
-     * @internal This class is not covered by the backward compatibility promise for PHPUnit
-     */
     public function addWarning(string $warning): void
     {
         $this->warnings[] = $warning;
