@@ -100,7 +100,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     private $declaredClasses;
 
     /**
-     * @var string[]
+     * @psalm-var array<int,string>
      */
     private $warnings = [];
 
