@@ -352,9 +352,8 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     public function addTestFile(string $filename): void
     {
         if (\file_exists($filename) && \substr($filename, -5) === '.phpt') {
-            $this->addTest(
-                new PhptTestCase($filename)
-            );
+            $this->addTest(new PhptTestCase($filename));
+
             $this->declaredClasses = \get_declared_classes();
 
             return;
@@ -571,7 +570,9 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             echo \implode(
                 \PHP_EOL,
                 \array_unique($this->warnings)
-            ), \PHP_EOL, \PHP_EOL;
+            ),
+            \PHP_EOL,
+            \PHP_EOL;
         }
 
         /** @psalm-var class-string $className */
