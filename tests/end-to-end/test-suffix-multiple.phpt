@@ -14,10 +14,10 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Warning: Test case class not matching filename is deprecated
          in %s/BankAccountTest.test.php
-         class name was 'BankAccountWithCustomExtensionTest', expected 'BankAccountTest', see #4105
+         class name was 'BankAccountWithCustomExtensionTest', expected 'BankAccountTest'
 Warning: Test case class not matching filename is deprecated
          in %s/ConcreteTest.my.php
-         class name was 'ConcreteWithMyCustomExtensionTest', expected 'ConcreteTest', see #4105
+         class name was 'ConcreteWithMyCustomExtensionTest', expected 'ConcreteTest'
 
 .....                                                               5 / 5 (100%)
 

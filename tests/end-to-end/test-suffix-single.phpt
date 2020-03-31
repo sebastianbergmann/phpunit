@@ -14,7 +14,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Warning: Test case class not matching filename is deprecated
          in %s/BankAccountTest.test.php
-         class name was 'BankAccountWithCustomExtensionTest', expected 'BankAccountTest', see #4105
+         class name was 'BankAccountWithCustomExtensionTest', expected 'BankAccountTest'
 
 ...                                                                 3 / 3 (100%)
 
