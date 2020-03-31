@@ -1,7 +1,7 @@
 --TEST--
 phpunit --version
 --FILE--
-<?php
+<?php declare(strict_types=1);
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/OneClassPerFile/failing/';
 
