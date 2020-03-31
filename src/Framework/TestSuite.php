@@ -458,7 +458,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
                     if ($class->getShortName() !== $expectedClassName) {
                         $this->addWarning(
                             \sprintf(
-                                "Warning: Test case class not matching filename is deprecated\n         in %s\n         class name was '%s', expected '%s'",
+                                "Test case class not matching filename is deprecated\n               in %s\n               Class name was '%s', expected '%s'",
                                 $filename,
                                 $class->getShortName(),
                                 $expectedClassName
@@ -474,7 +474,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
         if (\count($this->tests) > ++$numTests) {
             $this->addWarning(
                 \sprintf(
-                    "Warning: Multiple test case classes per file is deprecated\n         in %s",
+                    "Multiple test case classes per file is deprecated\n               in %s",
                     $filename
                 )
             );
@@ -771,17 +771,12 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
         }
     }
 
-    public function hasWarnings(): bool
+    /**
+     * @psalm-return array<int,string>
+     */
+    public function warnings(): array
     {
-        return !empty($this->warnings);
-    }
-
-    public function warningsAsString(): string
-    {
-        return \implode(
-            \PHP_EOL,
-            \array_unique($this->warnings)
-        );
+        return \array_unique($this->warnings);
     }
 
     /**
