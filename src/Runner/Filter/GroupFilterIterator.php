@@ -10,20 +10,18 @@
 namespace PHPUnit\Runner\Filter;
 
 use PHPUnit\Framework\TestSuite;
-use RecursiveFilterIterator;
-use RecursiveIterator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class GroupFilterIterator extends RecursiveFilterIterator
+abstract class GroupFilterIterator extends \RecursiveFilterIterator
 {
     /**
      * @var string[]
      */
     protected $groupTests = [];
 
-    public function __construct(RecursiveIterator $iterator, array $groups, TestSuite $suite)
+    public function __construct(\RecursiveIterator $iterator, array $groups, TestSuite $suite)
     {
         parent::__construct($iterator);
 

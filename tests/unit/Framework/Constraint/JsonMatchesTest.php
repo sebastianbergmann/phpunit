@@ -46,7 +46,7 @@ final class JsonMatchesTest extends ConstraintTestCase
             'string type not equals number'           => ['{"age": "5"}', '{"age": 5}'],
             'string type not equals boolean'          => ['{"age": "true"}', '{"age": true}'],
             'string type not equals null'             => ['{"age": "null"}', '{"age": null}'],
-            'null field different from missing field' => ['{"present": true, "missing": null}', '{"present": true}'],
+            'null field different from missing field' => ['{"missing": null, "present": true}', '{"present": true}'],
             'array elements are ordered'              => ['["first", "second"]', '["second", "first"]'],
         ];
     }
@@ -82,8 +82,12 @@ final class JsonMatchesTest extends ConstraintTestCase
         } catch (ExpectationFailedException $expectedException) {
             $comparisonFailure = $expectedException->getComparisonFailure();
             $this->assertNotNull($comparisonFailure);
-            $this->assertSame(Json::prettify($jsonOther), $comparisonFailure->getActualAsString());
-            $this->assertSame(Json::prettify($jsonValue), $comparisonFailure->getExpectedAsString());
+
+            [$error, $jsonOtherCanonicalized] = Json::canonicalize($jsonOther);
+            [$error, $jsonValueCanonicalized] = Json::canonicalize($jsonValue);
+
+            $this->assertSame(Json::prettify($jsonOtherCanonicalized), $comparisonFailure->getActualAsString());
+            $this->assertSame(Json::prettify($jsonValueCanonicalized), $comparisonFailure->getExpectedAsString());
             $this->assertSame('Failed asserting that two json values are equal.', $comparisonFailure->getMessage());
         }
     }
@@ -126,6 +130,59 @@ EOF
             $this->assertEquals(
                 <<<EOF
 Failed asserting that '{"Mascott":"Tux"}' matches JSON string "{"Mascott"::}".
+
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+        }
+    }
+
+    public function testEmptyObjectNotConvertedToArrayInDiff(): void
+    {
+        $constraint = new JsonMatches('{"obj": {}, "val": 1}');
+
+        try {
+            $constraint->evaluate('{"obj": {}, "val": 2}', '', false);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that '{"obj": {}, "val": 2}' matches JSON string "{"obj": {}, "val": 1}".
+--- Expected
++++ Actual
+@@ @@
+ {
+     "obj": {},
+-    "val": 1
++    "val": 2
+ }
+
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+        }
+    }
+
+    public function testObjectAreCanonicalizedInDiff(): void
+    {
+        $constraint = new JsonMatches('{"obj": {"x": 1, "y": 2}, "val": 1}');
+
+        try {
+            $constraint->evaluate('{"obj": {"y": 2, "x": 1}, "val": 2}', '', false);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that '{"obj": {"y": 2, "x": 1}, "val": 2}' matches JSON string "{"obj": {"x": 1, "y": 2}, "val": 1}".
+--- Expected
++++ Actual
+@@ @@
+         "x": 1,
+         "y": 2
+     },
+-    "val": 1
++    "val": 2
+ }
 
 EOF
                 ,

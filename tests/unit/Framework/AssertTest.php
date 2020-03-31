@@ -550,6 +550,27 @@ XML;
         $this->assertFileIsReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
+    public function testAssertFileIsNotReadable(): void
+    {
+        $tempFile = \tempnam(
+            \sys_get_temp_dir(),
+            'unreadable'
+        );
+
+        \chmod($tempFile, \octdec('0'));
+
+        $this->assertFileIsNotReadable($tempFile);
+
+        \chmod($tempFile, \octdec('755'));
+
+        try {
+            $this->assertFileIsNotReadable($tempFile);
+        } catch (AssertionFailedError $e) {
+        }
+
+        \unlink($tempFile);
+    }
+
     public function testAssertFileIsWritable(): void
     {
         $this->assertFileIsWritable(__FILE__);
@@ -1288,6 +1309,21 @@ XML;
         $this->assertStringNotEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
             \file_get_contents(TEST_FILES_PATH . 'foo.xml')
+        );
+    }
+
+    public function testAssertFileEqualsIgnoringCase(): void
+    {
+        $this->assertFileEqualsIgnoringCase(
+            TEST_FILES_PATH . 'foo.xml',
+            TEST_FILES_PATH . 'fooUppercase.xml'
+        );
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertFileEqualsIgnoringCase(
+            TEST_FILES_PATH . 'foo.xml',
+            TEST_FILES_PATH . 'bar.xml'
         );
     }
 

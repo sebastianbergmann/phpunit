@@ -22,7 +22,6 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
-use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -207,7 +206,7 @@ final class PhptTestCase implements SelfDescribing, Test
             }
 
             $result->addFailure($this, $failure, $time);
-        } catch (Throwable $t) {
+        } catch (\Throwable $t) {
             $result->addError($this, $t, $time);
         }
 

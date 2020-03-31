@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use SplObjectStorage;
-
 /**
  * Constraint that asserts that the Traversable it is applied to contains
  * a given value (using non-strict comparison).
@@ -25,7 +23,7 @@ final class TraversableContainsEqual extends TraversableContains
      */
     protected function matches($other): bool
     {
-        if ($other instanceof SplObjectStorage) {
+        if ($other instanceof \SplObjectStorage) {
             return $other->contains($this->value());
         }
 

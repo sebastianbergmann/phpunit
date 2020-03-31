@@ -32,6 +32,7 @@ use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\TextUI\Configuration\ExtensionHandler;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\Filesystem;
@@ -926,12 +927,23 @@ final class TestRunner extends BaseTestRunner
                 $arguments['excludeGroups'] = \array_diff($groupConfiguration->exclude()->asArrayOfStrings(), $groupCliArgs);
             }
 
+            $extensionHandler = new ExtensionHandler;
+
             foreach ($arguments['configuration']->extensions() as $extension) {
-                $this->addExtension($extension->createHookInstance());
+                $this->addExtension($extensionHandler->createHookInstance($extension));
             }
 
             foreach ($arguments['configuration']->listeners() as $listener) {
-                $arguments['listeners'][] = $listener->createTestListenerInstance();
+                $arguments['listeners'][] = $extensionHandler->createTestListenerInstance($listener);
+            }
+
+            unset($extensionHandler);
+
+            foreach ($arguments['unavailableExtensions'] as $extension) {
+                $arguments['warnings'][] = \sprintf(
+                    'Extension "%s" is not available',
+                    $extension
+                );
             }
 
             $loggingConfiguration = $arguments['configuration']->logging();
@@ -1011,6 +1023,14 @@ final class TestRunner extends BaseTestRunner
                 $arguments['testdoxExcludeGroups'] = $testdoxGroupConfiguration->exclude()->asArrayOfStrings();
             }
         }
+
+        $extensionHandler = new ExtensionHandler;
+
+        foreach ($arguments['extensions'] as $extension) {
+            $this->addExtension($extensionHandler->createHookInstance($extension));
+        }
+
+        unset($extensionHandler);
 
         $arguments['addUncoveredFilesFromWhitelist']                  = $arguments['addUncoveredFilesFromWhitelist'] ?? true;
         $arguments['backupGlobals']                                   = $arguments['backupGlobals'] ?? null;

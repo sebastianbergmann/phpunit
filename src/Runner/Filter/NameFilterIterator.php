@@ -12,13 +12,11 @@ namespace PHPUnit\Runner\Filter;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Util\RegularExpression;
-use RecursiveFilterIterator;
-use RecursiveIterator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class NameFilterIterator extends RecursiveFilterIterator
+final class NameFilterIterator extends \RecursiveFilterIterator
 {
     /**
      * @var string
@@ -38,7 +36,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
     /**
      * @throws \Exception
      */
-    public function __construct(RecursiveIterator $iterator, string $filter)
+    public function __construct(\RecursiveIterator $iterator, string $filter)
     {
         parent::__construct($iterator);
 

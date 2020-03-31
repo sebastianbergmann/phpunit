@@ -6,6 +6,9 @@ on:
 
 name: CI
 
+env:
+  COMPOSER_ROOT_VERSION: "9.1-dev"
+
 jobs:
   coding-guidelines:
     name: Coding Guidelines
@@ -16,8 +19,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
+
       - name: Run friendsofphp/php-cs-fixer
-        run: php7.3 ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
+        run: ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
 
   type-checker:
     name: Type Checker
@@ -26,16 +35,22 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
 
       - name: Update dependencies with composer
-        run: php7.3 ./tools/composer update --no-interaction --no-ansi --no-progress --no-suggest
+        run: ./tools/composer update --no-interaction --no-ansi --no-progress --no-suggest
 
       - name: Run vimeo/psalm on public API
-        run: php7.3 ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
+        run: ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
 
       - name: Run vimeo/psalm on internal code
-        run: php7.3 ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
+        run: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
 
   backward-compatibility:
     name: Backward Compatibility
@@ -44,19 +59,22 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0
 
-      - name: "Install PHP with extensions"
-        uses: shivammathur/setup-php@v1
+      - name: Fetch tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.3
+          php-version: 7.4
           coverage: none
           extensions: intl
 
       - name: Run roave/backward-compatibility-check
-        run: php ./tools/roave-backward-compatibility-check --from=3ceec4ca23599aa9cec26c5d306f4f65f9751241
+        run: ./tools/roave-backward-compatibility-check --from=0c85ee127b497a9a226b2f2d2475f444d02692ea
 
   lint-xml-configuration:
     name: Lint XML Configuration
@@ -78,10 +96,14 @@ jobs:
   tests:
     name: Tests
 
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
         php-version:
           - "7.3"
           - "7.4"
@@ -95,18 +117,26 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: "Install PHP with extensions"
-        uses: shivammathur/setup-php@v1
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           coverage: pcov
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1
 
-      - name: "Cache dependencies installed with composer"
+      - name: Determine composer cache directory on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: echo "::set-env name=COMPOSER_CACHE_DIR::$(./tools/composer config cache-dir)"
+
+      - name: Determine composer cache directory on Windows
+        if: matrix.os == 'windows-latest'
+        run: ECHO "::set-env name=COMPOSER_CACHE_DIR::~\AppData\Local\Composer"
+
+      - name: Cache dependencies installed with composer
         uses: actions/cache@v1
         with:
-          path: ~/.composer/cache
+          path: ${{ env.COMPOSER_CACHE_DIR }}
           key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
           restore-keys: |
             php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
@@ -126,6 +156,6 @@ jobs:
         run: ./phpunit --coverage-clover=coverage.xml
 
       - name: Send code coverage report to Codecov.io
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: bash <(curl -s https://codecov.io/bash) || true
+        uses: codecov/codecov-action@v1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

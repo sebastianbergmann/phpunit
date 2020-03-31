@@ -106,7 +106,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $data;
 
     /**
-     * @var string
+     * @var int|string
      */
     private $dataName;
 
@@ -382,7 +382,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @param string $dataName
+     * @param int|string $dataName
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
@@ -1024,10 +1024,16 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 $this->$method();
             }
 
-            $this->assertPreConditions();
+            foreach ($hookMethods['preCondition'] as $method) {
+                $this->$method();
+            }
+
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
-            $this->assertPostConditions();
+
+            foreach ($hookMethods['postCondition'] as $method) {
+                $this->$method();
+            }
 
             if (!empty($this->warnings)) {
                 throw new Warning(
@@ -1666,19 +1672,13 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * Mocks the specified class and returns the name of the mocked class.
      *
-     * @param string $originalClassName
-     * @param array  $methods
-     * @param string $mockClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
-     * @param bool   $cloneArguments
+     * @param null|array $methods $methods
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
      * @psalm-return class-string<MockObject&RealInstanceType>
      */
-    protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false): string
+    protected function getMockClass(string $originalClassName, $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = false, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = false): string
     {
         $this->recordDoubledType($originalClassName);
 
@@ -1701,19 +1701,11 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * methods of the class mocked. Concrete methods are not mocked by default.
      * To mock concrete methods, use the 7th parameter ($mockedMethods).
      *
-     * @param string $originalClassName
-     * @param string $mockClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
-     * @param array  $mockedMethods
-     * @param bool   $cloneArguments
-     *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
-    protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
+    protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
         $this->recordDoubledType($originalClassName);
 
@@ -1736,23 +1728,17 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * Returns a mock object based on the given WSDL file.
      *
-     * @param string $wsdlFile
-     * @param string $originalClassName
-     * @param string $mockClassName
-     * @param bool   $callOriginalConstructor
-     * @param array  $options                 An array of options passed to SOAPClient::_construct
-     *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
-    protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = []): MockObject
+    protected function getMockFromWsdl(string $wsdlFile, string $originalClassName = '', string $mockClassName = '', array $methods = [], bool $callOriginalConstructor = true, array $options = []): MockObject
     {
-        $this->recordDoubledType('SoapClient');
+        $this->recordDoubledType(\SoapClient::class);
 
         if ($originalClassName === '') {
-            $fileName          = \pathinfo(\basename(\parse_url($wsdlFile)['path']), \PATHINFO_FILENAME);
-            $originalClassName = \preg_replace('/[^a-zA-Z0-9_]/', '', $fileName);
+            $fileName          = \pathinfo(\basename(\parse_url($wsdlFile, \PHP_URL_PATH)), \PATHINFO_FILENAME);
+            $originalClassName = \preg_replace('/\W/', '', $fileName);
         }
 
         if (!\class_exists($originalClassName)) {
@@ -1785,16 +1771,8 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * Returns a mock object for the specified trait with all abstract methods
      * of the trait mocked. Concrete methods to mock can be specified with the
      * `$mockedMethods` parameter.
-     *
-     * @param string $traitName
-     * @param string $mockClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
-     * @param array  $mockedMethods
-     * @param bool   $cloneArguments
      */
-    protected function getMockForTrait($traitName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
+    protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
         $this->recordDoubledType($traitName);
 
@@ -1816,16 +1794,8 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     /**
      * Returns an object for the specified trait.
-     *
-     * @param string $traitName
-     * @param string $traitClassName
-     * @param bool   $callOriginalConstructor
-     * @param bool   $callOriginalClone
-     * @param bool   $callAutoload
-     *
-     * @return object
      */
-    protected function getObjectForTrait($traitName, array $arguments = [], $traitClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true)/*: object*/
+    protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
     {
         $this->recordDoubledType($traitName);
 
@@ -1839,16 +1809,16 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @param null|string $classOrInterface
-     *
      * @throws \Prophecy\Exception\Doubler\ClassNotFoundException
      * @throws \Prophecy\Exception\Doubler\DoubleException
      * @throws \Prophecy\Exception\Doubler\InterfaceNotFoundException
      *
      * @psalm-param class-string|null $classOrInterface
      */
-    protected function prophesize($classOrInterface = null): ObjectProphecy
+    protected function prophesize(?string $classOrInterface = null): ObjectProphecy
     {
+        $this->addWarning('PHPUnit\Framework\TestCase::prophesize() is deprecated and will be removed in PHPUnit 10. Please use the trait provided by phpspec/prophecy-phpunit.');
+
         if (\is_string($classOrInterface)) {
             $this->recordDoubledType($classOrInterface);
         }
@@ -1894,25 +1864,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         throw $t;
     }
 
-    /**
-     * @throws Warning
-     * @throws SkippedTestError
-     * @throws SyntheticSkippedError
-     */
-    private function checkRequirements(): void
+    protected function recordDoubledType(string $originalClassName): void
     {
-        if (!$this->name || !\method_exists($this, $this->name)) {
-            return;
-        }
-
-        $missingRequirements = TestUtil::getMissingRequirements(
-            \get_class($this),
-            $this->name
-        );
-
-        if (!empty($missingRequirements)) {
-            $this->markTestSkipped(\implode(\PHP_EOL, $missingRequirements));
-        }
+        $this->doubledTypes[] = $originalClassName;
     }
 
     /**
@@ -1944,6 +1898,27 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * @throws Warning
+     * @throws SkippedTestError
+     * @throws SyntheticSkippedError
+     */
+    private function checkRequirements(): void
+    {
+        if (!$this->name || !\method_exists($this, $this->name)) {
+            return;
+        }
+
+        $missingRequirements = TestUtil::getMissingRequirements(
+            \get_class($this),
+            $this->name
+        );
+
+        if (!empty($missingRequirements)) {
+            $this->markTestSkipped(\implode(\PHP_EOL, $missingRequirements));
         }
     }
 
@@ -2424,24 +2399,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     {
         return ($this->runTestInSeparateProcess || $this->runClassInSeparateProcess) &&
             !$this->inIsolation && !$this instanceof PhptTestCase;
-    }
-
-    /**
-     * @param string|string[] $originalClassName
-     */
-    private function recordDoubledType($originalClassName): void
-    {
-        if (\is_string($originalClassName)) {
-            $this->doubledTypes[] = $originalClassName;
-        }
-
-        if (\is_array($originalClassName)) {
-            foreach ($originalClassName as $_originalClassName) {
-                if (\is_string($_originalClassName)) {
-                    $this->doubledTypes[] = $_originalClassName;
-                }
-            }
-        }
     }
 
     private function isCallableTestMethod(string $dependency): bool

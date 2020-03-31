@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
@@ -109,8 +108,7 @@ final class InvocationHandler
 
     /**
      * @throws Exception
-     *
-     * @return mixed|void
+     * @throws \Throwable
      */
     public function invoke(Invocation $invocation)
     {
@@ -174,7 +172,8 @@ final class InvocationHandler
     }
 
     /**
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws ExpectationFailedException
+     * @throws \Throwable
      */
     public function verify(): void
     {

@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use ReflectionObject;
-
 /**
  * Constraint that asserts that the object it is evaluated for has a given
  * attribute.
@@ -27,6 +25,6 @@ final class ObjectHasAttribute extends ClassHasAttribute
      */
     protected function matches($other): bool
     {
-        return (new ReflectionObject($other))->hasProperty($this->attributeName());
+        return (new \ReflectionObject($other))->hasProperty($this->attributeName());
     }
 }

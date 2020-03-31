@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use ArrayAccess;
-use Countable;
-use DOMDocument;
-use DOMElement;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
@@ -67,13 +63,12 @@ use PHPUnit\Framework\MockObject\Stub\ReturnCallback as ReturnCallbackStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf as ReturnSelfStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
-use Throwable;
 
 /**
  * Asserts that an array has a specified key.
  *
- * @param int|string        $key
- * @param array|ArrayAccess $array
+ * @param int|string         $key
+ * @param array|\ArrayAccess $array
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -89,8 +84,8 @@ function assertArrayHasKey($key, $array, string $message = ''): void
 /**
  * Asserts that an array does not have a specified key.
  *
- * @param int|string        $key
- * @param array|ArrayAccess $array
+ * @param int|string         $key
+ * @param array|\ArrayAccess $array
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -183,7 +178,7 @@ function assertNotContainsOnly(string $type, iterable $haystack, ?bool $isNative
 /**
  * Asserts the number of elements of an array, Countable or Traversable.
  *
- * @param Countable|iterable $haystack
+ * @param \Countable|iterable $haystack
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -199,7 +194,7 @@ function assertCount(int $expectedCount, $haystack, string $message = ''): void
 /**
  * Asserts the number of elements of an array, Countable or Traversable.
  *
- * @param Countable|iterable $haystack
+ * @param \Countable|iterable $haystack
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1581,8 +1576,8 @@ function assertNotRegExp(string $pattern, string $string, string $message = ''):
  * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
  * is the same.
  *
- * @param Countable|iterable $expected
- * @param Countable|iterable $actual
+ * @param \Countable|iterable $expected
+ * @param \Countable|iterable $actual
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1599,8 +1594,8 @@ function assertSameSize($expected, $actual, string $message = ''): void
  * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
  * is not the same.
  *
- * @param Countable|iterable $expected
- * @param Countable|iterable $actual
+ * @param \Countable|iterable $expected
+ * @param \Countable|iterable $actual
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1795,7 +1790,7 @@ function assertXmlFileNotEqualsXmlFile(string $expectedFile, string $actualFile,
 /**
  * Asserts that two XML documents are equal.
  *
- * @param DOMDocument|string $actualXml
+ * @param \DOMDocument|string $actualXml
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1811,7 +1806,7 @@ function assertXmlStringEqualsXmlFile(string $expectedFile, $actualXml, string $
 /**
  * Asserts that two XML documents are not equal.
  *
- * @param DOMDocument|string $actualXml
+ * @param \DOMDocument|string $actualXml
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1827,8 +1822,8 @@ function assertXmlStringNotEqualsXmlFile(string $expectedFile, $actualXml, strin
 /**
  * Asserts that two XML documents are equal.
  *
- * @param DOMDocument|string $expectedXml
- * @param DOMDocument|string $actualXml
+ * @param \DOMDocument|string $expectedXml
+ * @param \DOMDocument|string $actualXml
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1844,8 +1839,8 @@ function assertXmlStringEqualsXmlString($expectedXml, $actualXml, string $messag
 /**
  * Asserts that two XML documents are not equal.
  *
- * @param DOMDocument|string $expectedXml
- * @param DOMDocument|string $actualXml
+ * @param \DOMDocument|string $expectedXml
+ * @param \DOMDocument|string $actualXml
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1870,7 +1865,7 @@ function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, string $mes
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4091
  * @see Assert::assertEqualXMLStructure
  */
-function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, bool $checkAttributes = false, string $message = ''): void
+function assertEqualXMLStructure(\DOMElement $expectedElement, \DOMElement $actualElement, bool $checkAttributes = false, string $message = ''): void
 {
     Assert::assertEqualXMLStructure(...\func_get_args());
 }
@@ -2298,7 +2293,7 @@ function returnSelf(): ReturnSelfStub
     return new ReturnSelfStub;
 }
 
-function throwException(Throwable $exception): ExceptionStub
+function throwException(\Throwable $exception): ExceptionStub
 {
     return new ExceptionStub($exception);
 }

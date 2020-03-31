@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use ArrayAccess;
-use Countable;
-use DOMDocument;
-use DOMElement;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
@@ -58,7 +54,6 @@ use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml;
-use Traversable;
 
 /**
  * A set of assertion methods.
@@ -73,8 +68,8 @@ abstract class Assert
     /**
      * Asserts that an array has a specified key.
      *
-     * @param int|string        $key
-     * @param array|ArrayAccess $array
+     * @param int|string         $key
+     * @param array|\ArrayAccess $array
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -89,7 +84,7 @@ abstract class Assert
             );
         }
 
-        if (!(\is_array($array) || $array instanceof ArrayAccess)) {
+        if (!(\is_array($array) || $array instanceof \ArrayAccess)) {
             throw InvalidArgumentException::create(
                 2,
                 'array or ArrayAccess'
@@ -104,8 +99,8 @@ abstract class Assert
     /**
      * Asserts that an array does not have a specified key.
      *
-     * @param int|string        $key
-     * @param array|ArrayAccess $array
+     * @param int|string         $key
+     * @param array|\ArrayAccess $array
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -120,7 +115,7 @@ abstract class Assert
             );
         }
 
-        if (!(\is_array($array) || $array instanceof ArrayAccess)) {
+        if (!(\is_array($array) || $array instanceof \ArrayAccess)) {
             throw InvalidArgumentException::create(
                 2,
                 'array or ArrayAccess'
@@ -245,7 +240,7 @@ abstract class Assert
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
-     * @param Countable|iterable $haystack
+     * @param \Countable|iterable $haystack
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -253,7 +248,7 @@ abstract class Assert
      */
     public static function assertCount(int $expectedCount, $haystack, string $message = ''): void
     {
-        if (!$haystack instanceof Countable && !\is_iterable($haystack)) {
+        if (!$haystack instanceof \Countable && !\is_iterable($haystack)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
         }
 
@@ -267,7 +262,7 @@ abstract class Assert
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
-     * @param Countable|iterable $haystack
+     * @param \Countable|iterable $haystack
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -275,7 +270,7 @@ abstract class Assert
      */
     public static function assertNotCount(int $expectedCount, $haystack, string $message = ''): void
     {
-        if (!$haystack instanceof Countable && !\is_iterable($haystack)) {
+        if (!$haystack instanceof \Countable && !\is_iterable($haystack)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
         }
 
@@ -1815,8 +1810,8 @@ abstract class Assert
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is the same.
      *
-     * @param Countable|iterable $expected
-     * @param Countable|iterable $actual
+     * @param \Countable|iterable $expected
+     * @param \Countable|iterable $actual
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1824,11 +1819,11 @@ abstract class Assert
      */
     public static function assertSameSize($expected, $actual, string $message = ''): void
     {
-        if (!$expected instanceof Countable && !\is_iterable($expected)) {
+        if (!$expected instanceof \Countable && !\is_iterable($expected)) {
             throw InvalidArgumentException::create(1, 'countable or iterable');
         }
 
-        if (!$actual instanceof Countable && !\is_iterable($actual)) {
+        if (!$actual instanceof \Countable && !\is_iterable($actual)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
         }
 
@@ -1843,8 +1838,8 @@ abstract class Assert
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is not the same.
      *
-     * @param Countable|iterable $expected
-     * @param Countable|iterable $actual
+     * @param \Countable|iterable $expected
+     * @param \Countable|iterable $actual
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1852,11 +1847,11 @@ abstract class Assert
      */
     public static function assertNotSameSize($expected, $actual, string $message = ''): void
     {
-        if (!$expected instanceof Countable && !\is_iterable($expected)) {
+        if (!$expected instanceof \Countable && !\is_iterable($expected)) {
             throw InvalidArgumentException::create(1, 'countable or iterable');
         }
 
-        if (!$actual instanceof Countable && !\is_iterable($actual)) {
+        if (!$actual instanceof \Countable && !\is_iterable($actual)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
         }
 
@@ -2073,7 +2068,7 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param DOMDocument|string $actualXml
+     * @param \DOMDocument|string $actualXml
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -2090,7 +2085,7 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param DOMDocument|string $actualXml
+     * @param \DOMDocument|string $actualXml
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -2107,8 +2102,8 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param DOMDocument|string $expectedXml
-     * @param DOMDocument|string $actualXml
+     * @param \DOMDocument|string $expectedXml
+     * @param \DOMDocument|string $actualXml
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -2125,8 +2120,8 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param DOMDocument|string $expectedXml
-     * @param DOMDocument|string $actualXml
+     * @param \DOMDocument|string $expectedXml
+     * @param \DOMDocument|string $actualXml
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -2151,7 +2146,7 @@ abstract class Assert
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4091
      */
-    public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, bool $checkAttributes = false, string $message = ''): void
+    public static function assertEqualXMLStructure(\DOMElement $expectedElement, \DOMElement $actualElement, bool $checkAttributes = false, string $message = ''): void
     {
         self::createWarning('assertEqualXMLStructure() is deprecated and will be removed in PHPUnit 10.');
 

@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Util\PHP;
 
-use __PHP_Incomplete_Class;
-use ErrorException;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
@@ -257,10 +255,10 @@ abstract class AbstractPhpProcess
         } else {
             \set_error_handler(
                 /**
-                 * @throws ErrorException
+                 * @throws \ErrorException
                  */
                 static function ($errno, $errstr, $errfile, $errline): void {
-                    throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
+                    throw new \ErrorException($errstr, $errno, $errno, $errfile, $errline);
                 }
             );
 
@@ -279,7 +277,7 @@ abstract class AbstractPhpProcess
                         $time
                     );
                 }
-            } catch (ErrorException $e) {
+            } catch (\ErrorException $e) {
                 \restore_error_handler();
                 $childResult = false;
 
@@ -373,7 +371,7 @@ abstract class AbstractPhpProcess
     {
         $exception = $error->thrownException();
 
-        if ($exception instanceof __PHP_Incomplete_Class) {
+        if ($exception instanceof \__PHP_Incomplete_Class) {
             $exceptionArray = [];
 
             foreach ((array) $exception as $key => $value) {
