@@ -1,5 +1,10 @@
 --TEST--
 #578: Double printing of trace line for exceptions from notices and warnings
+--SKIPIF--
+<?php declare(strict_types=1);
+if (\PHP_MAJOR_VERSION >= 8) {
+    print 'skip: PHP < 8 is required.';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
