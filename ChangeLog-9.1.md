@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 9.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [9.1.0] - 2020-04-10
+## [9.1.0] - 2020-04-03
 
 ### Added
 
@@ -39,4 +39,4 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 * [#4105](https://github.com/sebastianbergmann/phpunit/issues/4105): Deprecate multiple test case classes in single file and test case class name differing from filename
 * [#4141](https://github.com/sebastianbergmann/phpunit/pull/4141): Deprecate Prophecy integration
 
-[9.1.0]: https://github.com/sebastianbergmann/phpunit/compare/9.0...master
+[9.1.0]: https://github.com/sebastianbergmann/phpunit/compare/9.0...9.1.0
