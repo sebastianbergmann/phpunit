@@ -126,7 +126,7 @@ final class InvocationHandler
                         $hasReturnValue = true;
                     }
                 }
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 $exception = $e;
             }
         }
