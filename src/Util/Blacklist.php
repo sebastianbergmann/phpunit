@@ -21,6 +21,7 @@ use phpDocumentor\Reflection\Type;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeUnit\CodeUnit;
 use SebastianBergmann\CodeUnitReverseLookup\Wizard;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Diff\Diff;
@@ -95,6 +96,9 @@ final class Blacklist
 
         // phpunit/php-token-stream
         PHP_Token::class => 1,
+
+        // sebastian/code-unit
+        CodeUnit::class => 1,
 
         // sebastian/code-unit-reverse-lookup
         Wizard::class => 1,
