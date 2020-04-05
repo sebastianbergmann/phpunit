@@ -47,7 +47,7 @@ final class Blacklist
     /**
      * @var array<string,int>
      */
-    public static $blacklistedClassNames = [
+    private const BLACKLISTED_CLASS_NAMES = [
         // composer
         ClassLoader::class => 1,
 
@@ -181,7 +181,7 @@ final class Blacklist
         if (self::$directories === null) {
             self::$directories = [];
 
-            foreach (self::$blacklistedClassNames as $className => $parent) {
+            foreach (self::BLACKLISTED_CLASS_NAMES as $className => $parent) {
                 if (!\class_exists($className)) {
                     continue;
                 }
