@@ -42,10 +42,6 @@ use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
-use Prophecy\Exception\Prediction\PredictionException;
-use Prophecy\Prophecy\MethodProphecy;
-use Prophecy\Prophecy\ObjectProphecy;
-use Prophecy\Prophet;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
@@ -229,11 +225,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @var Snapshot
      */
     private $snapshot;
-
-    /**
-     * @var \Prophecy\Prophet
-     */
-    private $prophet;
 
     /**
      * @var bool
@@ -1055,9 +1046,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         } catch (AssertionFailedError $e) {
             $this->status        = BaseTestRunner::STATUS_FAILURE;
             $this->statusMessage = $e->getMessage();
-        } catch (PredictionException $e) {
-            $this->status        = BaseTestRunner::STATUS_FAILURE;
-            $this->statusMessage = $e->getMessage();
         } catch (\Throwable $_e) {
             $e                   = $_e;
             $this->status        = BaseTestRunner::STATUS_ERROR;
@@ -1065,7 +1053,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         }
 
         $this->mockObjects = [];
-        $this->prophet     = null;
 
         // Tear down the fixture. An exception raised in tearDown() will be
         // caught and passed on when no exception was raised before.
@@ -1123,10 +1110,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
         // Workaround for missing "finally".
         if (isset($e)) {
-            if ($e instanceof PredictionException) {
-                $e = new AssertionFailedError($e->getMessage());
-            }
-
             $this->onNotSuccessfulTest($e);
         }
     }
@@ -1807,24 +1790,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @throws \Prophecy\Exception\Doubler\ClassNotFoundException
-     * @throws \Prophecy\Exception\Doubler\DoubleException
-     * @throws \Prophecy\Exception\Doubler\InterfaceNotFoundException
-     *
-     * @psalm-param class-string|null $classOrInterface
-     */
-    protected function prophesize(?string $classOrInterface = null): ObjectProphecy
-    {
-        $this->addWarning('PHPUnit\Framework\TestCase::prophesize() is deprecated and will be removed in PHPUnit 10. Please use the trait provided by phpspec/prophecy-phpunit.');
-
-        if (\is_string($classOrInterface)) {
-            $this->recordDoubledType($classOrInterface);
-        }
-
-        return $this->getProphet()->prophesize($classOrInterface);
-    }
-
-    /**
      * Creates a default TestResult object.
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
@@ -1880,22 +1845,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             $mockObject->__phpunit_verify(
                 $this->shouldInvocationMockerBeReset($mockObject)
             );
-        }
-
-        if ($this->prophet !== null) {
-            try {
-                $this->prophet->checkPredictions();
-            } finally {
-                foreach ($this->prophet->getProphecies() as $objectProphecy) {
-                    foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
-                        foreach ($methodProphecies as $methodProphecy) {
-                            \assert($methodProphecy instanceof MethodProphecy);
-
-                            $this->numAssertions += \count($methodProphecy->getCheckedPredictions());
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -2179,9 +2128,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             $blacklist->addClassNamePrefix('SebastianBergmann\Template');
             $blacklist->addClassNamePrefix('SebastianBergmann\Timer');
             $blacklist->addClassNamePrefix('PHP_Token');
-            $blacklist->addClassNamePrefix('Symfony');
             $blacklist->addClassNamePrefix('Doctrine\Instantiator');
-            $blacklist->addClassNamePrefix('Prophecy');
 
             foreach ($this->backupStaticAttributesBlacklist as $class => $attributes) {
                 foreach ($attributes as $attribute) {
@@ -2253,15 +2200,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 $diff
             );
         }
-    }
-
-    private function getProphet(): Prophet
-    {
-        if ($this->prophet === null) {
-            $this->prophet = new Prophet;
-        }
-
-        return $this->prophet;
     }
 
     /**
