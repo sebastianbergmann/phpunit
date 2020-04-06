@@ -539,6 +539,22 @@ XML;
         $this->assertDirectoryIsWritable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
+    public function testAssertDirectoryIsNotWritable(): void
+    {
+        $dirName = TEST_FILES_PATH . \uniqid('unwritable_dir_', true);
+        \mkdir($dirName, \octdec('444'));
+        $this->assertDirectoryIsNotWritable($dirName);
+
+        \chmod($dirName, \octdec('755'));
+
+        try {
+            $this->assertDirectoryIsNotWritable($dirName);
+        } catch (AssertionFailedError $e) {
+        }
+
+        \rmdir($dirName);
+    }
+
     public function testAssertFileExists(): void
     {
         $this->assertFileExists(__FILE__);
