@@ -1327,6 +1327,21 @@ XML;
         );
     }
 
+    public function testAssertStringNotEqualsFileIgnoringCase(): void
+    {
+        $this->assertStringNotEqualsFileIgnoringCase(
+            TEST_FILES_PATH . 'foo.xml',
+            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
+        );
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertStringNotEqualsFileIgnoringCase(
+            TEST_FILES_PATH . 'foo.xml',
+            \file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
+        );
+    }
+
     public function testAssertFileEqualsIgnoringCase(): void
     {
         $this->assertFileEqualsIgnoringCase(
