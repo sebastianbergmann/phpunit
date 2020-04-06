@@ -514,6 +514,22 @@ XML;
         $this->assertDirectoryIsReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
+    public function testAssertDirectoryIsNotReadable(): void
+    {
+        $dirName = TEST_FILES_PATH . \uniqid('unreadable_dir_', true);
+        \mkdir($dirName, \octdec('0'));
+        $this->assertDirectoryIsNotReadable($dirName);
+
+        \chmod($dirName, \octdec('444'));
+
+        try {
+            $this->assertDirectoryIsNotReadable($dirName);
+        } catch (AssertionFailedError $e) {
+        }
+
+        \rmdir($dirName);
+    }
+
     public function testAssertDirectoryIsWritable(): void
     {
         $this->assertDirectoryIsWritable(__DIR__);
