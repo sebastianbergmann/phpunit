@@ -50,7 +50,8 @@
         "sebastian/version": "^3.0"
     },
     "require-dev": {
-        "ext-PDO": "*"
+        "ext-PDO": "*",
+        "phpspec/prophecy-phpunit": "^2.0"
     },
     "config": {
         "platform": {
