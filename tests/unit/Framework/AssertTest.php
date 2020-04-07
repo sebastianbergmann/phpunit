@@ -514,6 +514,22 @@ XML;
         $this->assertDirectoryIsReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
+    public function testAssertDirectoryIsNotReadable(): void
+    {
+        $dirName = TEST_FILES_PATH . \uniqid('unreadable_dir_', true);
+        \mkdir($dirName, \octdec('0'));
+        $this->assertDirectoryIsNotReadable($dirName);
+
+        \chmod($dirName, \octdec('444'));
+
+        try {
+            $this->assertDirectoryIsNotReadable($dirName);
+        } catch (AssertionFailedError $e) {
+        }
+
+        \rmdir($dirName);
+    }
+
     public function testAssertDirectoryIsWritable(): void
     {
         $this->assertDirectoryIsWritable(__DIR__);
@@ -521,6 +537,22 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertDirectoryIsWritable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+    }
+
+    public function testAssertDirectoryIsNotWritable(): void
+    {
+        $dirName = TEST_FILES_PATH . \uniqid('unwritable_dir_', true);
+        \mkdir($dirName, \octdec('444'));
+        $this->assertDirectoryIsNotWritable($dirName);
+
+        \chmod($dirName, \octdec('755'));
+
+        try {
+            $this->assertDirectoryIsNotWritable($dirName);
+        } catch (AssertionFailedError $e) {
+        }
+
+        \rmdir($dirName);
     }
 
     public function testAssertFileExists(): void
