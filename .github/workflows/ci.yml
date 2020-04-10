@@ -44,7 +44,7 @@ jobs:
           coverage: none
 
       - name: Update dependencies with composer
-        run: ./tools/composer update --no-interaction --no-ansi --no-progress --no-suggest
+        run: ./tools/composer update --no-interaction --no-ansi --no-progress
 
       - name: Run vimeo/psalm on public API
         run: ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
@@ -143,11 +143,11 @@ jobs:
 
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest --prefer-lowest
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
 
       - name: Install highest dependencies with composer
         if: matrix.dependencies == 'highest'
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress --no-suggest
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Run sanity check
         run: bash ./build/scripts/sanity-check
