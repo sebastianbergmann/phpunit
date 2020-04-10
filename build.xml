@@ -423,6 +423,7 @@
 
         <exec executable="${basedir}/tools/composer">
             <arg value="self-update"/>
+            <arg value="--1"/>
         </exec>
     </target>
 
