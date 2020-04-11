@@ -121,6 +121,10 @@ final class TestRunner extends BaseTestRunner
      */
     public function run(Test $suite, array $arguments = [], bool $exit = true): TestResult
     {
+        if (!isset($arguments['warnings']) || !\is_array($arguments['warnings'])) {
+            $arguments['warnings'] = [];
+        }
+
         if (isset($arguments['configuration'])) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
         }
