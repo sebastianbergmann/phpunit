@@ -56,6 +56,11 @@ class Command
     private $versionStringPrinted = false;
 
     /**
+     * @psalm-var list<string>
+     */
+    private $warnings = [];
+
+    /**
      * @throws \PHPUnit\Framework\Exception
      */
     public static function main(bool $exit = true): int
@@ -100,7 +105,7 @@ class Command
         unset($this->arguments['test'], $this->arguments['testFile']);
 
         try {
-            $result = $runner->run($suite, $this->arguments, $exit);
+            $result = $runner->run($suite, $this->arguments, $this->warnings, $exit);
         } catch (Exception $e) {
             print $e->getMessage() . \PHP_EOL;
         }
@@ -416,7 +421,7 @@ class Command
      */
     protected function handleLoader(string $loaderClass, string $loaderFile = ''): ?TestSuiteLoader
     {
-        $this->arguments['warnings'][] = 'Using a custom test suite loader is deprecated';
+        $this->warnings[] = 'Using a custom test suite loader is deprecated';
 
         if (!\class_exists($loaderClass, false)) {
             if ($loaderFile == '') {
