@@ -24,6 +24,6 @@ Warning:       Multiple test case classes per file is deprecated
 
 ..                                                                  2 / 2 (100%)
 
-Time: %d ms, Memory: %f MB
+Time: %s, Memory: %s
 
 OK (2 tests, 2 assertions)
