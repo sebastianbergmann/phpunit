@@ -19,6 +19,6 @@ Warning:       Test case class not matching filename is deprecated
 
 .                                                                   1 / 1 (100%)
 
-Time: %d ms, Memory: %f MB
+Time: %s, Memory: %s
 
 OK (1 test, 1 assertion)
