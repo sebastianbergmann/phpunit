@@ -635,13 +635,13 @@ final class TestClassTest extends TestCase
         $expectedAnnotations = [
             '__OFFSET' => [
                 '__FILE'                  => $file,
-                'PHP'                     => 21,
-                'PHPUnit'                 => 22,
-                'OS'                      => 23,
-                'function_testFuncClass'  => 15,
-                'extension_testExtClass'  => 16,
-                'function_testFuncMethod' => 24,
-                'extension_testExtMethod' => 25,
+                'PHP'                     => 20,
+                'PHPUnit'                 => 21,
+                'OS'                      => 22,
+                'function_testFuncClass'  => 14,
+                'extension_testExtClass'  => 15,
+                'function_testFuncMethod' => 23,
+                'extension_testExtMethod' => 24,
             ],
             'PHP'       => ['version' => '5.4', 'operator' => ''],
             'PHPUnit'   => ['version' => '3.7', 'operator' => ''],
@@ -1414,7 +1414,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertSame(
             [
-                TEST_FILES_PATH . '3194.php' => \array_merge(\range(21, 29), \range(13, 19)),
+                TEST_FILES_PATH . '3194.php' => \array_merge(\range(20, 28), \range(12, 18)),
             ],
             Test::getLinesToBeCovered(
                 \Test3194::class,
