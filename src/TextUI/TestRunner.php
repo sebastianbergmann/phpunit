@@ -83,7 +83,7 @@ final class TestRunner extends BaseTestRunner
     private $loader;
 
     /**
-     * @var Printer&TestListener
+     * @psalm-var Printer&TestListener
      */
     private $printer;
 
