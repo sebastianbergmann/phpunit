@@ -16,7 +16,7 @@ namespace PHPUnit\Util;
 final class VersionComparisonOperator
 {
     /**
-     * @var '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
+     * @psalm-var '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
      */
     private $operator;
 
