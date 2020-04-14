@@ -98,6 +98,10 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    env:
+      PHP_EXTENSIONS: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
+      PHP_INI_VALUES: assert.exception=1, zend.assertions=1
+
     strategy:
       matrix:
         os:
@@ -109,21 +113,39 @@ jobs:
           - "7.4"
           - "8.0"
 
+        compiler:
+          - default
+
         dependencies:
           - lowest
           - highest
 
+        include:
+          - os: ubuntu-latest
+            php-version: "8.0"
+            compiler: jit
+            dependencies: highest
+
+          - os: windows-latest
+            php-version: "8.0"
+            compiler: jit
+            dependencies: highest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+
+      - name: Override PHP ini values for JIT compiler
+        if: matrix.compiler == 'jit'
+        run: echo "::set-env name=PHP_INI_VALUES::assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit=1205, opcache.jit_buffer_size=4096M"
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
           coverage: pcov
-          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-          ini-values: assert.exception=1, zend.assertions=1
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: ${{ env.PHP_INI_VALUES }}
 
       - name: Determine composer cache directory on Linux
         if: matrix.os == 'ubuntu-latest'
