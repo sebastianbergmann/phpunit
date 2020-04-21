@@ -104,6 +104,11 @@ final class TestRunner extends BaseTestRunner
      */
     private $extensions = [];
 
+    /**
+     * @var Timer
+     */
+    private $timer;
+
     public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
     {
         if ($filter === null) {
@@ -113,6 +118,7 @@ final class TestRunner extends BaseTestRunner
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
         $this->runtime            = new Runtime;
+        $this->timer              = new Timer;
     }
 
     /**
@@ -1173,7 +1179,7 @@ final class TestRunner extends BaseTestRunner
             )
         );
 
-        Timer::start();
+        $this->timer->start();
     }
 
     private function codeCoverageGenerationSucceeded(): void
@@ -1181,7 +1187,7 @@ final class TestRunner extends BaseTestRunner
         $this->printer->write(
             \sprintf(
                 "done [%s]\n",
-                Timer::secondsToShortTimeString(Timer::stop())
+                $this->timer->stop()->asString()
             )
         );
     }
@@ -1191,7 +1197,7 @@ final class TestRunner extends BaseTestRunner
         $this->printer->write(
             \sprintf(
                 "failed [%s]\n%s\n",
-                Timer::secondsToShortTimeString(Timer::stop()),
+                $this->timer->stop()->asString(),
                 $e->getMessage()
             )
         );

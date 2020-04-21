@@ -652,7 +652,8 @@ final class TestResult implements \Countable
             \xdebug_start_function_monitor(ResourceOperations::getFunctions());
         }
 
-        Timer::start();
+        $timer = new Timer;
+        $timer->start();
 
         try {
             $invoker = new Invoker;
@@ -736,7 +737,8 @@ final class TestResult implements \Countable
             $error = true;
         }
 
-        $time = Timer::stop();
+        $time = $timer->stop()->asSeconds();
+
         $test->addToAssertionCount(Assert::getCount());
 
         if ($monitorFunctions) {

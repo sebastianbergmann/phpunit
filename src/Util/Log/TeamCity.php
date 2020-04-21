@@ -43,9 +43,6 @@ final class TeamCity extends DefaultResultPrinter
      */
     private $flowId;
 
-    /**
-     * @throws \SebastianBergmann\Timer\RuntimeException
-     */
     public function printResult(TestResult $result): void
     {
         $this->printHeader();

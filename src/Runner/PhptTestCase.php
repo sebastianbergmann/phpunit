@@ -167,10 +167,11 @@ final class PhptTestCase implements SelfDescribing, Test
             $this->renderForCoverage($code);
         }
 
-        Timer::start();
+        $timer = new Timer;
+        $timer->start();
 
         $jobResult    = $this->phpUtil->runJob($code, $this->stringifyIni($settings));
-        $time         = Timer::stop();
+        $time         = $timer->stop()->asSeconds();
         $this->output = $jobResult['stdout'] ?? '';
 
         if ($result->getCollectCodeCoverageInformation() && ($coverage = $this->cleanupForCoverage())) {

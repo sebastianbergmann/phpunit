@@ -22,6 +22,7 @@ use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
 use SebastianBergmann\Environment\Console;
+use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
 
 /**
@@ -113,6 +114,11 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
     private $defectListPrinted = false;
 
     /**
+     * @var Timer
+     */
+    private $timer;
+
+    /**
      * Constructor.
      *
      * @param null|resource|string $out
@@ -152,11 +158,12 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         } else {
             $this->colors = (self::COLOR_ALWAYS === $colors);
         }
+
+        $this->timer = new Timer;
+
+        $this->timer->start();
     }
 
-    /**
-     * @throws \SebastianBergmann\Timer\RuntimeException
-     */
     public function printResult(TestResult $result): void
     {
         $this->printHeader();
@@ -384,12 +391,9 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         $this->printDefects($result->skipped(), 'skipped test');
     }
 
-    /**
-     * @throws \SebastianBergmann\Timer\RuntimeException
-     */
     protected function printHeader(): void
     {
-        $this->write("\n\n" . Timer::resourceUsage() . "\n\n");
+        $this->write("\n\n" . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . "\n\n");
     }
 
     protected function printFooter(TestResult $result): void
