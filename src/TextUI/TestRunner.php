@@ -1181,7 +1181,7 @@ final class TestRunner extends BaseTestRunner
         $this->printer->write(
             \sprintf(
                 "done [%s]\n",
-                Timer::secondsToTimeString(Timer::stop())
+                Timer::secondsToShortTimeString(Timer::stop())
             )
         );
     }
@@ -1191,7 +1191,7 @@ final class TestRunner extends BaseTestRunner
         $this->printer->write(
             \sprintf(
                 "failed [%s]\n%s\n",
-                Timer::secondsToTimeString(Timer::stop()),
+                Timer::secondsToShortTimeString(Timer::stop()),
                 $e->getMessage()
             )
         );
