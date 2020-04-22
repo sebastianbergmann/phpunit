@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.9.4@352bd3f5c5789db04e4010856c2f4e01ed354f4e">
+<files psalm-version="3.11.2@d470903722cfcbc1cd04744c5491d3e6d13ec3d9">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -88,31 +88,6 @@
       <code>$t-&gt;getPrevious()</code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
-    <ImplementedReturnTypeMismatch occurrences="1">
-      <code>self</code>
-    </ImplementedReturnTypeMismatch>
-    <LessSpecificReturnStatement occurrences="8">
-      <code>$this-&gt;will($stub)</code>
-      <code>$this-&gt;will($stub)</code>
-      <code>$this-&gt;will($stub)</code>
-      <code>$this-&gt;will($stub)</code>
-      <code>$this-&gt;will($stub)</code>
-      <code>$this-&gt;will($stub)</code>
-      <code>$this-&gt;will($stub)</code>
-      <code>$this-&gt;will($stub)</code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="8">
-      <code>self</code>
-      <code>self</code>
-      <code>self</code>
-      <code>self</code>
-      <code>self</code>
-      <code>self</code>
-      <code>self</code>
-      <code>self</code>
-    </MoreSpecificReturnType>
-  </file>
   <file src="src/Framework/MockObject/Generator.php">
     <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
@@ -172,14 +147,11 @@
       <code>$header</code>
     </InvalidArgument>
     <InvalidCatch occurrences="1"/>
-    <InvalidReturnStatement occurrences="5">
+    <InvalidReturnStatement occurrences="2">
       <code>\get_class($mock)</code>
       <code>$mockObject</code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="5">
-      <code>MockObject&amp;RealInstanceType</code>
-      <code>MockObject&amp;RealInstanceType</code>
-      <code>MockObject&amp;RealInstanceType</code>
+    <InvalidReturnType occurrences="2">
       <code>class-string&lt;MockObject&amp;RealInstanceType&gt;</code>
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
@@ -268,11 +240,6 @@
       <code>$option['desc']</code>
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
-  </file>
-  <file src="src/TextUI/ResultPrinter.php">
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$color</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/TextUI/TestRunner.php">
     <PossiblyNullPropertyAssignmentValue occurrences="1">
