@@ -40,9 +40,6 @@ use SebastianBergmann\Version;
 use TheSeer\Tokenizer\Tokenizer;
 use Webmozart\Assert\Assert;
 
-/**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
- */
 final class Blacklist
 {
     /**
@@ -144,6 +141,20 @@ final class Blacklist
      * @var string[]
      */
     private static $directories;
+
+    public static function addDirectory(string $directory): void
+    {
+        if (!\is_dir($directory)) {
+            throw new Exception(
+                \sprintf(
+                    '"%s" is not a directory',
+                    $directory
+                )
+            );
+        }
+
+        self::$directories[] = \realpath($directory);
+    }
 
     /**
      * @throws Exception
