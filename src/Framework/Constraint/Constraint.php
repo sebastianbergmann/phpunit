@@ -95,6 +95,8 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @psalm-return never-return
      */
     protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
     {
