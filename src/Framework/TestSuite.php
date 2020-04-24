@@ -710,6 +710,8 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
      * @param string $message
      *
      * @throws SkippedTestSuiteError
+     *
+     * @psalm-return never-return
      */
     public function markTestSuiteSkipped($message = ''): void
     {
