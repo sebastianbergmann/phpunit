@@ -2677,7 +2677,7 @@ abstract class Assert
     private static function detectLocationHint(string $message): ?array
     {
         $hint  = null;
-        $lines = \preg_split('/\r\n|\r|\n/', $message);
+        $lines = \pattern('\r\n|\r|\n')->split($message);
 
         while (\strpos($lines[0], '__OFFSET') !== false) {
             $offset = \explode('=', \array_shift($lines));
@@ -2700,12 +2700,12 @@ abstract class Assert
 
     private static function isValidObjectAttributeName(string $attributeName): bool
     {
-        return (bool) \preg_match('/[^\x00-\x1f\x7f-\x9f]+/', $attributeName);
+        return \pattern('[^\x00-\x1f\x7f-\x9f]+')->test($attributeName);
     }
 
     private static function isValidClassAttributeName(string $attributeName): bool
     {
-        return (bool) \preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName);
+        return \pattern('[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*')->test($attributeName);
     }
 
     /**
