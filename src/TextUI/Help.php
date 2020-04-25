@@ -11,6 +11,8 @@ namespace PHPUnit\TextUI;
 
 use PHPUnit\Util\Color;
 use SebastianBergmann\Environment\Console;
+use TRegx\CleanRegex\Match\Details\Match;
+use TRegx\CleanRegex\Pattern;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -225,13 +227,9 @@ final class Help
 
                 if (isset($option['arg'])) {
                     $arg = Color::colorize('fg-green', \str_pad($option['arg'], $this->maxArgLength));
-                    $arg = \preg_replace_callback(
-                        '/(<[^>]+>)/',
-                        static function ($matches) {
-                            return Color::colorize('fg-cyan', $matches[0]);
-                        },
-                        $arg
-                    );
+                    $arg = Pattern::of('(<[^>]+>)')->replace($arg)->all()->callback(static function (Match $match) {
+                        return Color::colorize('fg-cyan', $match->text());
+                    });
                     $desc = \explode(\PHP_EOL, \wordwrap($option['desc'], $this->maxDescLength, \PHP_EOL));
 
                     print self::LEFT_MARGIN . $arg . ' ' . $desc[0] . \PHP_EOL;
