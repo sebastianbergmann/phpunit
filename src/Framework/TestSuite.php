@@ -14,6 +14,7 @@ use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Test as TestUtil;
+use TRegx\CleanRegex\Pattern;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -383,10 +384,10 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
         // PSR-1 local short name ('NameSpace\ShortName'). The comparison must be
         // anchored to prevent false-positive matches (e.g., 'OtherShortName').
         $shortName      = \basename($filename, '.php');
-        $shortNameRegEx = '/(?:^|_|\\\\)' . \preg_quote($shortName, '/') . '$/';
+        $shortNameRegEx = Pattern::inject('(?:^|_|\\\\)@$', [$shortName]);
 
         foreach ($this->foundClasses as $i => $className) {
-            if (\preg_match($shortNameRegEx, $className)) {
+            if ($shortNameRegEx->test($className)) {
                 try {
                     $class = new \ReflectionClass($className);
                     // @codeCoverageIgnoreStart
