@@ -27,9 +27,9 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
     {
         $suiteClassName = \str_replace('.php', '', \basename($suiteClassFile));
 
-        if (!\class_exists($suiteClassName, false)) {
-            $loadedClasses = \get_declared_classes();
+        $loadedClasses = \get_declared_classes();
 
+        if (!\class_exists($suiteClassName, false)) {
             FileLoader::checkAndLoad($suiteClassFile);
 
             $loadedClasses = \array_values(
