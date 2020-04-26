@@ -35,10 +35,10 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             $loadedClasses = \array_values(
                 \array_diff(\get_declared_classes(), $loadedClasses)
             );
-        }
 
-        if (empty($loadedClasses)) {
-            throw ClassNotFoundException::byFilename($suiteClassName, $suiteClassFile);
+            if (empty($loadedClasses)) {
+                throw ClassNotFoundException::byFilename($suiteClassName, $suiteClassFile);
+            }
         }
 
         if (!\class_exists($suiteClassName, false)) {
