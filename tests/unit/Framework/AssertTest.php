@@ -603,6 +603,23 @@ XML;
         \unlink($tempFile);
     }
 
+    public function testAssertFileIsNotWritable(): void
+    {
+        $tempFile = \tempnam(\sys_get_temp_dir(), 'unwriteable');
+
+        \chmod($tempFile, \octdec('0'));
+
+        $this->assertFileIsNotWritable($tempFile);
+
+        \chmod($tempFile, \octdec('755'));
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertFileIsNotWritable($tempFile);
+
+        \unlink($tempFile);
+    }
+
     public function testAssertFileIsWritable(): void
     {
         $this->assertFileIsWritable(__FILE__);
