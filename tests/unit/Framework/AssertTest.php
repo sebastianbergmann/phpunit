@@ -1621,6 +1621,17 @@ XML;
         $this->assertStringNotMatchesFormatFile(TEST_FILES_PATH . 'expectedFileFormat.txt', "FOO\n");
     }
 
+    public function testAssertFileEqualsCanonicalizing(): void
+    {
+        $this->assertFileEqualsCanonicalizing(TEST_FILES_PATH . 'foo.txt', TEST_FILES_PATH . 'foo.txt');
+
+        $this->assertFileEqualsCanonicalizing(TEST_FILES_PATH . 'foo.txt', TEST_FILES_PATH . 'bar.txt');
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertFileEqualsCanonicalizing(TEST_FILES_PATH . 'foo.txt', TEST_FILES_PATH . 'foo.xml');
+    }
+
     public function testStringsCanBeComparedForEqualityIgnoringCase(): void
     {
         $this->assertEqualsIgnoringCase('a', 'A');
