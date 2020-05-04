@@ -42,7 +42,7 @@ final class StringContains extends Constraint
     public function toString(): string
     {
         if ($this->ignoreCase) {
-            $string = \mb_strtolower($this->string);
+            $string = \mb_strtolower($this->string, 'UTF-8');
         } else {
             $string = $this->string;
         }
@@ -70,7 +70,7 @@ final class StringContains extends Constraint
              * We must use the multi byte safe version so we can accurately compare non latin upper characters with
              * their lowercase equivalents.
              */
-            return \mb_stripos($other, $this->string) !== false;
+            return \mb_stripos($other, $this->string, 0, 'UTF-8') !== false;
         }
 
         /*
