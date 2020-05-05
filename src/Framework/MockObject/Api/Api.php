@@ -23,12 +23,12 @@ trait Api
     private static $__phpunit_configurableMethods;
 
     /**
-     * @var @object
+     * @var object
      */
     private $__phpunit_originalObject;
 
     /**
-     * @var @bool
+     * @var bool
      */
     private $__phpunit_returnValueGeneration = true;
 
