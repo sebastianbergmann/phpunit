@@ -516,7 +516,7 @@ XML;
 
     public function testAssertDirectoryIsNotReadable(): void
     {
-        $dirName = sys_get_temp_dir() . \DIRECTORY_SEPARATOR .\uniqid('unreadable_dir_', true);
+        $dirName = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR .\uniqid('unreadable_dir_', true);
         \mkdir($dirName, \octdec('0'));
         $this->assertDirectoryIsNotReadable($dirName);
 
@@ -541,7 +541,7 @@ XML;
 
     public function testAssertDirectoryIsNotWritable(): void
     {
-        $dirName = sys_get_temp_dir() . \DIRECTORY_SEPARATOR . \uniqid('unwritable_dir_', true);
+        $dirName = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . \uniqid('unwritable_dir_', true);
         \mkdir($dirName, \octdec('444'));
         $this->assertDirectoryIsNotWritable($dirName);
 
