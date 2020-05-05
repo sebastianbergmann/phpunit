@@ -54,10 +54,11 @@ final class IsEmpty extends Constraint
         $type = \gettype($other);
 
         return \sprintf(
-            '%s %s %s',
+            "%s %s %s \n+++ Actual\n %s",
             \strpos($type, 'a') === 0 || \strpos($type, 'o') === 0 ? 'an' : 'a',
             $type,
-            $this->toString()
+            $this->toString(),
+            $this->exporter()->export($other)
         );
     }
 }
