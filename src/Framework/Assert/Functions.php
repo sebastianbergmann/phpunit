@@ -1898,6 +1898,19 @@ function assertRegExp(string $pattern, string $string, string $message = ''): vo
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
  *
+ * @see Assert::assertDoesNotMatchRegularExpression
+ */
+function assertDoesNotMatchRegularExpression(string $pattern, string $string, string $message = ''): void
+{
+    Assert::assertDoesNotMatchRegularExpression(...\func_get_args());
+}
+
+/**
+ * Asserts that a string does not match a given regular expression.
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
  * @see Assert::assertNotRegExp
  */
 function assertNotRegExp(string $pattern, string $string, string $message = ''): void
