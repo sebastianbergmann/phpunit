@@ -1566,6 +1566,18 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
+    public static function assertFileIsNotReadable(string $file, string $message = ''): void
+    {
+        self::assertFileExists($file, $message);
+        self::assertIsNotReadable($file, $message);
+    }
+
+    /**
+     * Asserts that a file exists and is not readable.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public static function assertFileNotIsReadable(string $file, string $message = ''): void
     {
         self::assertFileExists($file, $message);
