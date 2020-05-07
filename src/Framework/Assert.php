@@ -1497,6 +1497,18 @@ abstract class Assert
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
+    public static function assertDirectoryIsNotWritable(string $directory, string $message = ''): void
+    {
+        self::assertDirectoryExists($directory, $message);
+        self::assertIsNotWritable($directory, $message);
+    }
+
+    /**
+     * Asserts that a directory exists and is not writable.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
     public static function assertDirectoryNotIsWritable(string $directory, string $message = ''): void
     {
         self::assertDirectoryExists($directory, $message);
