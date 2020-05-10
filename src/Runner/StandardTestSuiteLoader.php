@@ -21,7 +21,7 @@ use PHPUnit\Util\FileLoader;
 final class StandardTestSuiteLoader implements TestSuiteLoader
 {
     /**
-     * @throws \PHPUnit\Framework\ClassNotFoundException
+     * @throws ClassNotFoundException
      */
     public function load(string $suiteClassFile): \ReflectionClass
     {
