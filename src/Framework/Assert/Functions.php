@@ -1557,22 +1557,6 @@ function assertDoesNotMatchRegularExpression(string $pattern, string $string, st
 }
 
 /**
- * Asserts that a string does not match a given regular expression.
- *
- * @throws ExpectationFailedException
- * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- *
- * @codeCoverageIgnore
- *
- * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4089
- * @see Assert::assertNotRegExp
- */
-function assertNotRegExp(string $pattern, string $string, string $message = ''): void
-{
-    Assert::assertNotRegExp(...\func_get_args());
-}
-
-/**
  * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
  * is the same.
  *
