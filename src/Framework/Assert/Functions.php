@@ -1854,23 +1854,6 @@ function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, string $mes
 }
 
 /**
- * Asserts that a hierarchy of DOMElements matches.
- *
- * @throws AssertionFailedError
- * @throws ExpectationFailedException
- * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- *
- * @codeCoverageIgnore
- *
- * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4091
- * @see Assert::assertEqualXMLStructure
- */
-function assertEqualXMLStructure(\DOMElement $expectedElement, \DOMElement $actualElement, bool $checkAttributes = false, string $message = ''): void
-{
-    Assert::assertEqualXMLStructure(...\func_get_args());
-}
-
-/**
  * Evaluates a PHPUnit\Framework\Constraint matcher object.
  *
  * @throws ExpectationFailedException
