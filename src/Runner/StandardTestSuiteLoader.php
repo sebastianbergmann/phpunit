@@ -26,8 +26,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
     public function load(string $suiteClassFile): \ReflectionClass
     {
         $suiteClassName = \basename($suiteClassFile, '.php');
-
-        $loadedClasses = \get_declared_classes();
+        $loadedClasses  = \get_declared_classes();
 
         if (!\class_exists($suiteClassName, false)) {
             FileLoader::checkAndLoad($suiteClassFile);
