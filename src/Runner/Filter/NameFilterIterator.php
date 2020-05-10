@@ -92,8 +92,8 @@ final class NameFilterIterator extends RecursiveFilterIterator
                         $matches[1]
                     );
 
-                    $this->filterMin = $matches[2];
-                    $this->filterMax = $matches[3];
+                    $this->filterMin = (int) $matches[2];
+                    $this->filterMax = (int) $matches[3];
                 } else {
                     $filter = \sprintf(
                         '%s.*with data set #%s$',
