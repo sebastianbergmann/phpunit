@@ -107,7 +107,7 @@ abstract class BaseTestRunner
             $testClass = $this->loadSuiteClass(
                 $suiteClassFile
             );
-        } catch (Exception $e) {
+        } catch (\PHPUnit\Exception $e) {
             $this->runFailed($e->getMessage());
 
             return null;
