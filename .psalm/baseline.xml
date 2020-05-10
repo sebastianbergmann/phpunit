@@ -176,6 +176,11 @@
       <code>$sectionOffset</code>
     </PossiblyUndefinedVariable>
   </file>
+  <file src="src/Runner/StandardTestSuiteLoader.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$suiteClassName</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Runner/TestSuiteSorter.php">
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($test-&gt;getName(), '::')</code>
