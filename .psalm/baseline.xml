@@ -159,12 +159,6 @@
       <code>$afterClassMethod</code>
     </PossiblyUndefinedVariable>
   </file>
-  <file src="src/Runner/Filter/NameFilterIterator.php">
-    <InvalidPropertyAssignmentValue occurrences="2">
-      <code>$matches[2]</code>
-      <code>$matches[3]</code>
-    </InvalidPropertyAssignmentValue>
-  </file>
   <file src="src/Runner/PhptTestCase.php">
     <PossiblyInvalidArgument occurrences="1">
       <code>$sections['FILEEOF']</code>
