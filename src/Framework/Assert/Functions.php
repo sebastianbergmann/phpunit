@@ -840,22 +840,6 @@ function assertFileIsNotReadable(string $file, string $message = ''): void
 }
 
 /**
- * Asserts that a file exists and is not readable.
- *
- * @throws ExpectationFailedException
- * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- *
- * @codeCoverageIgnore
- *
- * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4080
- * @see Assert::assertFileNotIsReadable
- */
-function assertFileNotIsReadable(string $file, string $message = ''): void
-{
-    Assert::assertFileNotIsReadable(...\func_get_args());
-}
-
-/**
  * Asserts that a file exists and is writable.
  *
  * @throws ExpectationFailedException
