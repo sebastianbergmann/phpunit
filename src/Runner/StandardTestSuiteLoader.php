@@ -29,6 +29,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         $loadedClasses  = \get_declared_classes();
 
         if (!\class_exists($suiteClassName, false)) {
+            /* @noinspection UnusedFunctionResultInspection */
             FileLoader::checkAndLoad($suiteClassFile);
 
             $loadedClasses = \array_values(
