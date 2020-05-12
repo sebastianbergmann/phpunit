@@ -47,7 +47,7 @@
         "sebastian/global-state": "^4.0",
         "sebastian/object-enumerator": "^4.0",
         "sebastian/resource-operations": "^3.0",
-        "sebastian/type": "^2.0",
+        "sebastian/type": "^2.1",
         "sebastian/version": "^3.0"
     },
     "require-dev": {

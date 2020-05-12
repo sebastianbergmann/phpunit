@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Type\ObjectType;
+use SebastianBergmann\Type\ReflectionMapper;
 use SebastianBergmann\Type\Type;
 use SebastianBergmann\Type\UnknownType;
 use SebastianBergmann\Type\VoidType;
@@ -124,7 +125,7 @@ final class MockMethod
             $modifier,
             self::getMethodParameters($method),
             self::getMethodParameters($method, true),
-            self::deriveReturnType($method),
+            (new ReflectionMapper)->fromMethodReturnType($method),
             $reference,
             $callOriginalMethod,
             $method->isStatic(),
@@ -330,41 +331,5 @@ final class MockMethod
         }
 
         return \implode(', ', $parameters);
-    }
-
-    private static function deriveReturnType(\ReflectionMethod $method): Type
-    {
-        if (!$method->hasReturnType()) {
-            return new UnknownType;
-        }
-
-        $returnType = $method->getReturnType();
-
-        \assert($returnType instanceof \ReflectionNamedType);
-
-        // @see https://bugs.php.net/bug.php?id=70722
-        if ($returnType->getName() === 'self') {
-            return ObjectType::fromName($method->getDeclaringClass()->getName(), $returnType->allowsNull());
-        }
-
-        // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/406
-        if ($returnType->getName() === 'parent') {
-            $parentClass = $method->getDeclaringClass()->getParentClass();
-
-            if ($parentClass === false) {
-                throw new RuntimeException(
-                    \sprintf(
-                        'Cannot mock %s::%s because "parent" return type declaration is used but %s does not have a parent class',
-                        $method->getDeclaringClass()->getName(),
-                        $method->getName(),
-                        $method->getDeclaringClass()->getName()
-                    )
-                );
-            }
-
-            return ObjectType::fromName($parentClass->getName(), $returnType->allowsNull());
-        }
-
-        return Type::fromName($returnType->getName(), $returnType->allowsNull());
     }
 }
