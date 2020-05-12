@@ -280,28 +280,11 @@ final class MockMethod
                 if ($parameter->hasType()) {
                     $type = $parameter->getType();
 
-                    if ($type instanceof \ReflectionNamedType && $type->getName() !== 'self') {
-                        $typeDeclaration = $type->getName() . ' ';
-                    } else {
-                        try {
-                            $class = $parameter->getClass();
-                            // @codeCoverageIgnoreStart
-                        } catch (\ReflectionException $e) {
-                            throw new RuntimeException(
-                                \sprintf(
-                                    'Cannot mock %s::%s() because a class or ' .
-                                    'interface used in the signature is not loaded',
-                                    $method->getDeclaringClass()->getName(),
-                                    $method->getName()
-                                ),
-                                0,
-                                $e
-                            );
-                        }
-                        // @codeCoverageIgnoreEnd
-
-                        if ($class !== null) {
-                            $typeDeclaration = $class->getName() . ' ';
+                    if ($type instanceof \ReflectionNamedType) {
+                        if ($type->getName() !== 'self') {
+                            $typeDeclaration = $type->getName() . ' ';
+                        } else {
+                            $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
                         }
                     }
                 }
