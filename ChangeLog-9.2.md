@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 9.2 release series are documented in this fil
 
 ## [9.2.0] - 2020-06-05
 
+### Added
+
+* [#4224](https://github.com/sebastianbergmann/phpunit/issues/4224): Support for Union Types for test double code generation
+
 ### Changed
 
 * The test runner no longer relies on `$_SERVER['REQUEST_TIME_FLOAT']` for printing the elapsed time
