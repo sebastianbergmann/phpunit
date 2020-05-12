@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 use SebastianBergmann\Template\Template;
-use SebastianBergmann\Type\ObjectType;
 use SebastianBergmann\Type\ReflectionMapper;
 use SebastianBergmann\Type\Type;
 use SebastianBergmann\Type\UnknownType;
