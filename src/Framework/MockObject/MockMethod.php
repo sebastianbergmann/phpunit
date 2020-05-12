@@ -286,6 +286,18 @@ final class MockMethod
                         } else {
                             $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
                         }
+                    } elseif ($type instanceof \ReflectionUnionType) {
+                        $types = [];
+
+                        foreach ($type->getTypes() as $_type) {
+                            if ($_type === 'self') {
+                                $types[] = $method->getDeclaringClass()->getName();
+                            } else {
+                                $types[] = $_type;
+                            }
+                        }
+
+                        $typeDeclaration = \implode('|', $types) . ' ';
                     }
                 }
 
