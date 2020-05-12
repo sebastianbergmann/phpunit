@@ -61,8 +61,6 @@ final class Invocation implements SelfDescribing
         $this->object      = $object;
         $this->proxiedCall = $proxiedCall;
 
-        $returnType = \ltrim($returnType, ': ');
-
         if (\strtolower($methodName) === '__tostring') {
             $returnType = 'string';
         }

@@ -210,7 +210,8 @@ final class MockMethod
             [
                 'arguments_decl'     => $this->argumentsForDeclaration,
                 'arguments_call'     => $this->argumentsForCall,
-                'return_declaration' => $this->returnType->asReturnTypeDeclaration(),
+                'return_declaration' => !empty($this->returnType->asString()) ? (': ' . $this->returnType->asString()) : '',
+                'return_type'        => $this->returnType->asString(),
                 'arguments_count'    => !empty($this->argumentsForCall) ? \substr_count($this->argumentsForCall, ',') + 1 : 0,
                 'class_name'         => $this->className,
                 'method_name'        => $this->methodName,
