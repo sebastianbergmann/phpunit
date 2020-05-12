@@ -134,7 +134,7 @@ final class Invocation implements SelfDescribing
 
             case 'callable':
             case 'closure':
-                return function (): void {
+                return static function (): void {
                 };
 
             case 'traversable':
