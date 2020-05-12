@@ -322,11 +322,13 @@ final class MockMethod
 
     private static function deriveReturnType(\ReflectionMethod $method): Type
     {
+        if (!$method->hasReturnType()) {
+            return new UnknownType;
+        }
+
         $returnType = $method->getReturnType();
 
-        if ($returnType === null) {
-            return new UnknownType();
-        }
+        \assert($returnType instanceof \ReflectionNamedType);
 
         // @see https://bugs.php.net/bug.php?id=70722
         if ($returnType->getName() === 'self') {
