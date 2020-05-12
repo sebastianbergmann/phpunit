@@ -10,6 +10,7 @@
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\ClassWithUnionReturnTypes;
 
 /**
  * @small
@@ -1102,6 +1103,28 @@ final class MockObjectTest extends TestCase
         $stub = $this->createMock(ClassWithAllPossibleReturnTypes::class);
 
         $this->assertInstanceOf(stdClass::class, $stub->methodWithObjectReturnTypeDeclaration());
+    }
+
+    /**
+     * @requires PHP > 8.0
+     */
+    public function testUnionReturnTypeIsDoubledCorrectly(): void
+    {
+        /** @var ClassWithUnionReturnTypes|MockObject $stub */
+        $stub = $this->createMock(ClassWithUnionReturnTypes::class);
+
+        $this->assertFalse($stub->boolOrInt());
+    }
+
+    /**
+     * @requires PHP > 8.0
+     */
+    public function testNullableUnionReturnTypeIsDoubledCorrectly(): void
+    {
+        /** @var ClassWithUnionReturnTypes|MockObject $stub */
+        $stub = $this->createMock(ClassWithUnionReturnTypes::class);
+
+        $this->assertNull($stub->boolOrIntOrNull());
     }
 
     public function testTraitCanBeDoubled(): void
