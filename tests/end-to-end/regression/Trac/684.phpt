@@ -17,7 +17,7 @@ Time: %s, Memory: %s
 There was 1 warning:
 
 1) Warning
-No tests found in class "Foo_Bar_Issue684Test".
+No tests found in class "Issue684Test".
 
 WARNINGS!
 Tests: 1, Assertions: 0, Warnings: 1.
