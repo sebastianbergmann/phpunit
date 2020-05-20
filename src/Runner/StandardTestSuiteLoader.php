@@ -45,7 +45,10 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             $offset = 0 - \strlen($suiteClassName);
 
             foreach ($loadedClasses as $loadedClass) {
-                if (\substr($loadedClass, $offset) === $suiteClassName) {
+                if (
+                    \substr($loadedClass, $offset) === $suiteClassName &&
+                    \basename(\str_replace('\\', '/', $loadedClass)) == $suiteClassName
+                ) {
                     $suiteClassName = $loadedClass;
 
                     break;
