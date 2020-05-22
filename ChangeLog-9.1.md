@@ -11,6 +11,8 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 
 ## [9.1.4] - 2020-04-30
 
+### Fixed
+
 * [#4196](https://github.com/sebastianbergmann/phpunit/issues/4196): Invalid `@covers` annotation crashes test runner
 
 ## [9.1.3] - 2020-04-23
