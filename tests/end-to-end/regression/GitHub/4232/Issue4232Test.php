@@ -7,8 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\TestCase;
+namespace Foo\Bar;
 
-class Issue684Test extends TestCase
+require __DIR__ . '/ParentIssue4232Test.php';
+
+final class Issue4232Test extends ParentIssue4232Test
 {
+    public function testOne(): void
+    {
+        $this->assertTrue(true);
+    }
 }
