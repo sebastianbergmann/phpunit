@@ -6,8 +6,8 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 
 ### Fixed
 
-* [#4033](https://github.com/sebastianbergmann/phpunit/issues/4033: Unexpected behaviour when `$GLOBALS` is deleted
-* [#4232](https://github.com/sebastianbergmann/phpunit/issues/4232: `StandardTestSuiteLoader` produces warning and does not run any tests if the test class name is partially similar to the parent test case name
+* [#4033](https://github.com/sebastianbergmann/phpunit/issues/4033): Unexpected behaviour when `$GLOBALS` is deleted
+* [#4232](https://github.com/sebastianbergmann/phpunit/issues/4232): `StandardTestSuiteLoader` produces warning and does not run any tests if the test class name is partially similar to the parent test case name
 
 ## [9.1.4] - 2020-04-30
 
