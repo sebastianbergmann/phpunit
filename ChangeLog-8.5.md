@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [8.5.5] - 2020-MM-DD
+
+### Fixed
+
+* [#4033](https://github.com/sebastianbergmann/phpunit/issues/4033: Unexpected behaviour when `$GLOBALS` is deleted
+
 ## [8.5.4] - 2020-04-23
 
 ### Changed
@@ -52,6 +58,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
+[8.5.5]: https://github.com/sebastianbergmann/phpunit/compare/8.5.4...8.5.5
 [8.5.4]: https://github.com/sebastianbergmann/phpunit/compare/8.5.3...8.5.4
 [8.5.3]: https://github.com/sebastianbergmann/phpunit/compare/8.5.2...8.5.3
 [8.5.2]: https://github.com/sebastianbergmann/phpunit/compare/8.5.1...8.5.2
