@@ -2,6 +2,13 @@
 
 All notable changes of the PHPUnit 9.1 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.1.5] - 2020-MM-DD
+
+### Fixed
+
+* [#4033](https://github.com/sebastianbergmann/phpunit/issues/4033: Unexpected behaviour when `$GLOBALS` is deleted
+* [#4232](https://github.com/sebastianbergmann/phpunit/issues/4232: `StandardTestSuiteLoader` produces warning and does not run any tests if the test class name is partially similar to the parent test case name
+
 ## [9.1.4] - 2020-04-30
 
 * [#4196](https://github.com/sebastianbergmann/phpunit/issues/4196): Invalid `@covers` annotation crashes test runner
@@ -65,6 +72,7 @@ All notable changes of the PHPUnit 9.1 release series are documented in this fil
 * [#4105](https://github.com/sebastianbergmann/phpunit/issues/4105): Deprecate multiple test case classes in single file and test case class name differing from filename
 * [#4141](https://github.com/sebastianbergmann/phpunit/pull/4141): Deprecate Prophecy integration
 
+[9.1.5]: https://github.com/sebastianbergmann/phpunit/compare/9.1.4...9.1
 [9.1.4]: https://github.com/sebastianbergmann/phpunit/compare/9.1.3...9.1.4
 [9.1.3]: https://github.com/sebastianbergmann/phpunit/compare/9.1.2...9.1.3
 [9.1.2]: https://github.com/sebastianbergmann/phpunit/compare/9.1.1...9.1.2
