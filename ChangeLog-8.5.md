@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ### Fixed
 
-* [#4033](https://github.com/sebastianbergmann/phpunit/issues/4033: Unexpected behaviour when `$GLOBALS` is deleted
+* [#4033](https://github.com/sebastianbergmann/phpunit/issues/4033): Unexpected behaviour when `$GLOBALS` is deleted
 
 ## [8.5.4] - 2020-04-23
 
