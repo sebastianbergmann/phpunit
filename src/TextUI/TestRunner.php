@@ -541,11 +541,9 @@ final class TestRunner extends BaseTestRunner
                 $arguments['strictCoverage']
             );
 
-            if (isset($arguments['forceCoversAnnotation'])) {
-                $codeCoverage->setForceCoversAnnotation(
-                    $arguments['forceCoversAnnotation']
-                );
-            }
+            $codeCoverage->setForceCoversAnnotation(
+                $arguments['forceCoversAnnotation']
+            );
 
             if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
                 $codeCoverage->setIgnoreDeprecatedCode(
