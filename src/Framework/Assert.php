@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\ArrayHasDeepKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
@@ -92,6 +93,37 @@ abstract class Assert
         }
 
         $constraint = new ArrayHasKey($key);
+
+        static::assertThat($array, $constraint, $message);
+    }
+
+     /**
+     * Asserts that an array has a specified key in deep.
+     *
+     * @param int|string         $key
+     * @param array|\ArrayAccess $array
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
+     */
+    public static function assertArrayHasDeepKey($key, $array, string $message = ''): void
+    {
+        if (!(\is_int($key) || \is_string($key))) {
+            throw InvalidArgumentException::create(
+                1,
+                'integer or string'
+            );
+        }
+
+        if (!(\is_array($array) || $array instanceof \ArrayAccess)) {
+            throw InvalidArgumentException::create(
+                2,
+                'array or ArrayAccess'
+            );
+        }
+
+        $constraint = new ArrayHasDeepKey($key);
 
         static::assertThat($array, $constraint, $message);
     }
@@ -2479,6 +2511,11 @@ abstract class Assert
     public static function arrayHasKey($key): ArrayHasKey
     {
         return new ArrayHasKey($key);
+    }
+    
+    public static function arrayHasDeepKey($key): ArrayHasDeepKey
+    {
+        return new ArrayHasDeepKey($key);
     }
 
     public static function equalTo($value): IsEqual

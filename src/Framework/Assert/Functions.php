@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\ArrayHasDeepKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
@@ -79,6 +80,23 @@ use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 function assertArrayHasKey($key, $array, string $message = ''): void
 {
     Assert::assertArrayHasKey(...\func_get_args());
+}
+
+/**
+ * Asserts that an array has a specified key in deep.
+ *
+ * @param int|string         $key
+ * @param array|\ArrayAccess $array
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ * @throws Exception
+ *
+ * @see Assert::assertArrayHasDeepKey
+ */
+function assertArrayHasDeepKey($key, $array, string $message = ''): void
+{
+    Assert::assertArrayHasDeepKey(...\func_get_args());
 }
 
 /**
@@ -2065,6 +2083,11 @@ function containsOnlyInstancesOf(string $className): TraversableContainsOnly
 function arrayHasKey($key): ArrayHasKey
 {
     return Assert::arrayHasKey(...\func_get_args());
+}
+
+function arrayHasDeepKey($key): ArrayHasDeepKey
+{
+    return Assert::arrayHasDeepKey(...\func_get_args());
 }
 
 function equalTo($value): IsEqual
