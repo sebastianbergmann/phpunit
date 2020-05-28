@@ -10,8 +10,6 @@
 namespace PHPUnit\TextUI;
 
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\AfterLastTestHook;
@@ -125,7 +123,7 @@ final class TestRunner extends BaseTestRunner
      * @throws \PHPUnit\Runner\Exception
      * @throws Exception
      */
-    public function run(Test $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
+    public function run(TestSuite $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
     {
         if (isset($arguments['configuration'])) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
@@ -142,18 +140,16 @@ final class TestRunner extends BaseTestRunner
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
         }
 
-        if ($suite instanceof TestCase || $suite instanceof TestSuite) {
-            if ($arguments['backupGlobals'] === true) {
-                $suite->setBackupGlobals(true);
-            }
+        if ($arguments['backupGlobals'] === true) {
+            $suite->setBackupGlobals(true);
+        }
 
-            if ($arguments['backupStaticAttributes'] === true) {
-                $suite->setBackupStaticAttributes(true);
-            }
+        if ($arguments['backupStaticAttributes'] === true) {
+            $suite->setBackupStaticAttributes(true);
+        }
 
-            if ($arguments['beStrictAboutChangesToGlobalState'] === true) {
-                $suite->setBeStrictAboutChangesToGlobalState(true);
-            }
+        if ($arguments['beStrictAboutChangesToGlobalState'] === true) {
+            $suite->setBeStrictAboutChangesToGlobalState(true);
         }
 
         if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
@@ -633,10 +629,8 @@ final class TestRunner extends BaseTestRunner
         $result->setTimeoutForMediumTests($arguments['timeoutForMediumTests']);
         $result->setTimeoutForLargeTests($arguments['timeoutForLargeTests']);
 
-        if ($suite instanceof TestSuite) {
-            $this->processSuiteFilters($suite, $arguments);
-            $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
-        }
+        $this->processSuiteFilters($suite, $arguments);
+        $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
 
         foreach ($this->extensions as $extension) {
             if ($extension instanceof BeforeFirstTestHook) {

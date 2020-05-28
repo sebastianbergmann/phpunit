@@ -77,7 +77,7 @@ class Command
 
         $runner = $this->createRunner();
 
-        if ($this->arguments['test'] instanceof Test) {
+        if ($this->arguments['test'] instanceof TestSuite) {
             $suite = $this->arguments['test'];
         } else {
             $suite = $runner->getTest(

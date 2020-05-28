@@ -62,11 +62,6 @@
       <code>$t-&gt;getPrevious()</code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Framework/MockObject/ConfigurableMethod.php">
-    <UndefinedMethod occurrences="1">
-      <code>asString</code>
-    </UndefinedMethod>
-  </file>
   <file src="src/Framework/MockObject/Generator.php">
     <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
@@ -109,16 +104,10 @@
     <TypeDoesNotContainType occurrences="1">
       <code>$type instanceof \ReflectionUnionType</code>
     </TypeDoesNotContainType>
-    <UndefinedClass occurrences="3">
-      <code>ReflectionMapper</code>
+    <UndefinedClass occurrences="2">
       <code>\ReflectionUnionType</code>
       <code>$type</code>
     </UndefinedClass>
-    <UndefinedMethod occurrences="3">
-      <code>asString</code>
-      <code>asString</code>
-      <code>asString</code>
-    </UndefinedMethod>
   </file>
   <file src="src/Framework/MockObject/Rule/ConsecutiveParameters.php">
     <TypeDoesNotContainNull occurrences="1">
@@ -178,9 +167,6 @@
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/Runner/PhptTestCase.php">
-    <InvalidMethodCall occurrences="1">
-      <code>asSeconds</code>
-    </InvalidMethodCall>
     <PossiblyInvalidArgument occurrences="1">
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
@@ -205,10 +191,7 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/TextUI/Command.php">
-    <ArgumentTypeCoercion occurrences="4">
-      <code>$suite</code>
-      <code>$suite</code>
-      <code>$suite</code>
+    <ArgumentTypeCoercion occurrences="1">
       <code>$printerClass</code>
     </ArgumentTypeCoercion>
     <InvalidCatch occurrences="1"/>
@@ -225,11 +208,6 @@
       <code>$suite</code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/TextUI/DefaultResultPrinter.php">
-    <UndefinedClass occurrences="1">
-      <code>ResourceUsageFormatter</code>
-    </UndefinedClass>
-  </file>
   <file src="src/TextUI/Help.php">
     <PossiblyUndefinedArrayOffset occurrences="2">
       <code>$option['desc']</code>
@@ -237,10 +215,6 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <InvalidMethodCall occurrences="2">
-      <code>asString</code>
-      <code>asString</code>
-    </InvalidMethodCall>
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
@@ -343,9 +317,6 @@
       <code>$prefix['trace']</code>
       <code>$prefix['last']</code>
     </PossiblyInvalidArrayOffset>
-    <UndefinedClass occurrences="1">
-      <code>ResourceUsageFormatter</code>
-    </UndefinedClass>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">
     <PossiblyNullArgument occurrences="1">
