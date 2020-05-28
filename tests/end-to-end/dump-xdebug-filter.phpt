@@ -3,7 +3,7 @@ phpunit -c ../_files/configuration_whitelist.xml --dump-xdebug-filter 'php://std
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!extension_loaded('xdebug')) {
-    print 'skip: xdebug not loaded';
+    print 'skip: Extension xdebug is required.';
 }
 --FILE--
 <?php declare(strict_types=1);
