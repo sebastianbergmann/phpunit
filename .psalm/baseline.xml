@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.11.2@d470903722cfcbc1cd04744c5491d3e6d13ec3d9">
+<files psalm-version="3.11.5@3c60609c218d4d4b3b257728b8089094e5c6c6c2">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -170,6 +170,11 @@
       <code>$sectionOffset</code>
     </PossiblyUndefinedVariable>
   </file>
+  <file src="src/Runner/StandardTestSuiteLoader.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$suiteClassName</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Runner/TestSuiteSorter.php">
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($test-&gt;getName(), '::')</code>
@@ -223,11 +228,6 @@
   </file>
   <file src="src/Util/ErrorHandler.php">
     <InvalidArgument occurrences="1"/>
-  </file>
-  <file src="src/Util/Filter.php">
-    <PossiblyNullReference occurrences="1">
-      <code>getTrace</code>
-    </PossiblyNullReference>
   </file>
   <file src="src/Util/Getopt.php">
     <InvalidOperand occurrences="3">
