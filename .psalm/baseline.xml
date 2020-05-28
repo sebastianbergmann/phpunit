@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.11.4@58e1d8e68e5098bf4fbfdfb420c38d563f882549">
+<files psalm-version="3.11.5@3c60609c218d4d4b3b257728b8089094e5c6c6c2">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -62,6 +62,11 @@
       <code>$t-&gt;getPrevious()</code>
     </PossiblyNullArgument>
   </file>
+  <file src="src/Framework/MockObject/ConfigurableMethod.php">
+    <UndefinedMethod occurrences="1">
+      <code>asString</code>
+    </UndefinedMethod>
+  </file>
   <file src="src/Framework/MockObject/Generator.php">
     <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
@@ -104,10 +109,16 @@
     <TypeDoesNotContainType occurrences="1">
       <code>$type instanceof \ReflectionUnionType</code>
     </TypeDoesNotContainType>
-    <UndefinedClass occurrences="2">
+    <UndefinedClass occurrences="3">
+      <code>ReflectionMapper</code>
       <code>\ReflectionUnionType</code>
       <code>$type</code>
     </UndefinedClass>
+    <UndefinedMethod occurrences="3">
+      <code>asString</code>
+      <code>asString</code>
+      <code>asString</code>
+    </UndefinedMethod>
   </file>
   <file src="src/Framework/MockObject/Rule/ConsecutiveParameters.php">
     <TypeDoesNotContainNull occurrences="1">
@@ -167,6 +178,9 @@
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/Runner/PhptTestCase.php">
+    <InvalidMethodCall occurrences="1">
+      <code>asSeconds</code>
+    </InvalidMethodCall>
     <PossiblyInvalidArgument occurrences="1">
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
@@ -211,6 +225,11 @@
       <code>$suite</code>
     </PossiblyNullArgument>
   </file>
+  <file src="src/TextUI/DefaultResultPrinter.php">
+    <UndefinedClass occurrences="1">
+      <code>ResourceUsageFormatter</code>
+    </UndefinedClass>
+  </file>
   <file src="src/TextUI/Help.php">
     <PossiblyUndefinedArrayOffset occurrences="2">
       <code>$option['desc']</code>
@@ -218,6 +237,10 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
+    <InvalidMethodCall occurrences="2">
+      <code>asString</code>
+      <code>asString</code>
+    </InvalidMethodCall>
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
@@ -235,11 +258,6 @@
   </file>
   <file src="src/Util/ErrorHandler.php">
     <InvalidArgument occurrences="1"/>
-  </file>
-  <file src="src/Util/Filter.php">
-    <PossiblyNullReference occurrences="1">
-      <code>getTrace</code>
-    </PossiblyNullReference>
   </file>
   <file src="src/Util/Getopt.php">
     <InvalidOperand occurrences="3">
@@ -325,6 +343,9 @@
       <code>$prefix['trace']</code>
       <code>$prefix['last']</code>
     </PossiblyInvalidArrayOffset>
+    <UndefinedClass occurrences="1">
+      <code>ResourceUsageFormatter</code>
+    </UndefinedClass>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">
     <PossiblyNullArgument occurrences="1">
