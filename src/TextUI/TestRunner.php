@@ -541,10 +541,6 @@ final class TestRunner extends BaseTestRunner
                 $arguments['strictCoverage']
             );
 
-            $codeCoverage->setForceCoversAnnotation(
-                $arguments['forceCoversAnnotation']
-            );
-
             if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
                 $codeCoverage->setIgnoreDeprecatedCode(
                     $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']
@@ -626,6 +622,10 @@ final class TestRunner extends BaseTestRunner
         $result->setTimeoutForSmallTests($arguments['timeoutForSmallTests']);
         $result->setTimeoutForMediumTests($arguments['timeoutForMediumTests']);
         $result->setTimeoutForLargeTests($arguments['timeoutForLargeTests']);
+
+        if (isset($arguments['forceCoversAnnotation']) && $arguments['forceCoversAnnotation'] === true) {
+            $result->forceCoversAnnotation();
+        }
 
         $this->processSuiteFilters($suite, $arguments);
         $suite->setRunTestInSeparateProcess($arguments['processIsolation']);

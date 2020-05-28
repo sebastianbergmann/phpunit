@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 9.2 release series are documented in this fil
 
 ### Changed
 
+* [#4246](https://github.com/sebastianbergmann/phpunit/issues/4246): Tests that are supposed to have a `@covers` annotation are now marked as risky even if code coverage is not collected
 * The test runner no longer relies on `$_SERVER['REQUEST_TIME_FLOAT']` for printing the elapsed time
 
 [9.2.0]: https://github.com/sebastianbergmann/phpunit/compare/9.1...master
