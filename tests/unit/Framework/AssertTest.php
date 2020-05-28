@@ -72,6 +72,29 @@ final class AssertTest extends TestCase
         $this->assertArrayHasKey(1, ['foo']);
     }
 
+    public function testAssertArrayHasDeepKeyThrowsExceptionForInvalidFirstArgument(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertArrayHasDeepKey(null, []);
+    }
+
+    public function testAssertArrayHasDeepKeyThrowsExceptionForInvalidSecondArgument(): void
+    {
+        $this->expectException(Exception::class);
+
+        $this->assertArrayHasDeepKey(0, null);
+    }
+
+    public function testAssertArrayHasDeepIntegerKey(): void
+    {
+        $this->assertArrayHasDeepKey(0, ['bar' => ['foo']]);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasDeepKey(1, ['bar' => ['foo']]);
+    }
+
     public function testAssertArrayNotHasKeyThrowsExceptionForInvalidFirstArgument(): void
     {
         $this->expectException(Exception::class);
@@ -102,6 +125,15 @@ final class AssertTest extends TestCase
         $this->expectException(AssertionFailedError::class);
 
         $this->assertArrayHasKey('bar', ['foo' => 'bar']);
+    }
+
+    public function testAssertArrayHasStringDeepKey(): void
+    {
+        $this->assertArrayHasDeepKey('foo', ['foo' => 'bar']);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasDeepKey('bar', ['foo' => 'bar']);
     }
 
     public function testAssertArrayNotHasStringKey(): void
@@ -147,6 +179,41 @@ final class AssertTest extends TestCase
         $this->expectException(AssertionFailedError::class);
 
         $this->assertArrayHasKey('foo', $array);
+    }
+
+    public function testAssertArrayHasDeepKeyAcceptsArrayObjectValue(): void
+    {
+        $array        = new \ArrayObject;
+        $array['bar'] = ['foo' => 'bar'];
+
+        $this->assertArrayHasDeepKey('foo', $array);
+    }
+
+    public function testAssertArrayHasDeepKeyProperlyFailsWithArrayObjectValue(): void
+    {
+        $array        = new \ArrayObject;
+        $array['bar'] = 'bar';
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasDeepKey('foo', $array);
+    }
+
+    public function testAssertArrayHasDeepKeyAcceptsArrayAccessValue(): void
+    {
+        $array        = new \SampleArrayAccess;
+        $array['bar'] = ['foo' => 'bar'];
+        $this->assertArrayHasDeepKey('foo', $array);
+    }
+
+    public function testAssertArrayHasDeepKeyProperlyFailsWithArrayAccessValue(): void
+    {
+        $array        = new \SampleArrayAccess;
+        $array['bar'] = 'bar';
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasDeepKey('foo', $array);
     }
 
     public function testAssertArrayNotHasKeyAcceptsArrayAccessValue(): void
@@ -1202,6 +1269,11 @@ XML;
     public function testAssertThatArrayHasKey(): void
     {
         $this->assertThat(['foo' => 'bar'], $this->arrayHasKey('foo'));
+    }
+
+    public function testAssertThatArrayHasDeepKey(): void
+    {
+        $this->assertThat(['foo' => ['foo2' => 'bar']], $this->arrayHasDeepKey('foo2'));
     }
 
     public function testAssertThatClassHasAttribute(): void

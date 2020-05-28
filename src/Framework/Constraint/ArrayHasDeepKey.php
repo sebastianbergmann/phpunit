@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use ArrayAccess;
+use ArrayObject;
 
 /**
  * Constraint that asserts that the array it is evaluated for has a given key in deep.
@@ -53,7 +54,13 @@ final class ArrayHasDeepKey extends Constraint
     protected function matches($other): bool
     {
         if (\is_array($other)) {
-            return strpos(json_encode($other),"\"$this->key\":") ? true : false;
+            return \strpos(\json_encode($other, \JSON_FORCE_OBJECT), "\"$this->key\":") ? true : false;
+        }
+
+        if ($other instanceof ArrayAccess) {
+            $other = new ArrayObject($other);
+
+            return \strpos(\json_encode($other->getArrayCopy(), \JSON_FORCE_OBJECT), "\"$this->key\":") ? true : false;
         }
 
         return false;

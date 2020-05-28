@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\ArrayHasDeepKey;
+use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
@@ -97,7 +97,7 @@ abstract class Assert
         static::assertThat($array, $constraint, $message);
     }
 
-     /**
+    /**
      * Asserts that an array has a specified key in deep.
      *
      * @param int|string         $key
@@ -2512,7 +2512,7 @@ abstract class Assert
     {
         return new ArrayHasKey($key);
     }
-    
+
     public static function arrayHasDeepKey($key): ArrayHasDeepKey
     {
         return new ArrayHasDeepKey($key);
