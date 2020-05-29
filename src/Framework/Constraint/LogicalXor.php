@@ -63,19 +63,19 @@ final class LogicalXor extends Constraint
      */
     public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
-        $success    = true;
-        $lastResult = null;
+        $constraints = $this->constraints;
 
-        foreach ($this->constraints as $constraint) {
-            $result = $constraint->evaluate($other, $description, true);
-
-            if ($result === $lastResult) {
-                $success = false;
-
-                break;
-            }
-
-            $lastResult = $result;
+        if (($initial = \array_shift($constraints)) !== null) {
+            $success = \array_reduce(
+                $constraints,
+                function ($carry, Constraint $constraint) use ($other, $description) {
+                    return $carry xor $constraint->evaluate($other, $description, true);
+                },
+                $initial->evaluate($other, $description, true)
+            );
+        } else {
+            // $constraints was empty or not an array...
+            $success = false;
         }
 
         if ($returnResult) {

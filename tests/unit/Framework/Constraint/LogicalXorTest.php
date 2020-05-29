@@ -18,31 +18,26 @@ use PHPUnit\Framework\TestCase;
  */
 final class LogicalXorTest extends TestCase
 {
-    public function testFromConstraintsReturnsConstraint(): void
+    public function providerFromConstraintsReturnsConstraint()
     {
-        $other = 'Foo';
-        $count = 5;
+        return [
+            [0], [0, 1], [0, 1, 0],
+        ];
+    }
 
-        $constraints = \array_map(function () use ($other) {
-            static $count = 0;
-
-            $constraint = $this->getMockBuilder(Constraint::class)->getMock();
-
-            $constraint
-                ->expects($this->once())
-                ->method('evaluate')
-                ->with($this->identicalTo($other))
-                ->willReturn($count % 2 === 1);
-
-            ++$count;
-
-            return $constraint;
-        }, \array_fill(0, $count, null));
+    /**
+     * @dataProvider providerFromConstraintsReturnsConstraint
+     */
+    public function testFromConstraintsReturnsConstraint(int ...$args): void
+    {
+        $other       = 'Foo';
+        $constraints = \array_map(function (bool $arg) use ($other) {
+            return $this->getMockBuilder(Constraint::class)->getMock();
+        }, $args);
 
         $constraint = LogicalXor::fromConstraints(...$constraints);
 
         $this->assertInstanceOf(LogicalXor::class, $constraint);
-        $this->assertTrue($constraint->evaluate($other, '', true));
     }
 
     public function testSetConstraintsWithNonConstraintsObjectArrayIsTreatedAsIsEqual(): void
@@ -68,9 +63,9 @@ final class LogicalXorTest extends TestCase
     /**
      * @dataProvider providerEvaluateReturnsCorrectResult
      */
-    public function testEvaluateReturnsCorrectResult(int ...$args)
+    public function testEvaluateReturnsCorrectResult(int ...$args): void
     {
-        $other = 'Foo';
+        $other       = 'Foo';
         $constraints = \array_map(function (bool $arg) use ($other) {
             $constraint = $this->getMockBuilder(Constraint::class)->getMock();
 
@@ -84,17 +79,18 @@ final class LogicalXorTest extends TestCase
                 ->method('toString')
                 ->with()
                 ->willReturn($arg ? 'true' : 'false');
+
             return $constraint;
         }, $args);
 
-        $initial = (bool)\array_shift($args);
+        $initial  = (bool) \array_shift($args);
         $expected = \array_reduce($args, function (bool $carry, bool $item) {
             return $carry xor $item;
         }, $initial);
 
         $constraint = LogicalXor::fromConstraints(...$constraints);
 
-        $message = 'Failed asserting that '.$constraint->toString().' is '. ($expected ? 'true' : 'false');
+        $message = 'Failed asserting that ' . $constraint->toString() . ' is ' . ($expected ? 'true' : 'false');
         $this->assertSame($expected, $constraint->evaluate($other, '', true), $message);
     }
 }
