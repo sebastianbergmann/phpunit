@@ -152,4 +152,52 @@ abstract class Constraint implements \Countable, SelfDescribing
     {
         return $this->exporter()->export($other) . ' ' . $this->toString();
     }
+
+    /**
+     * Returns a custom string representation of the constraint object when it
+     * appears in context of an $operator expression
+     *
+     * The purpose of this method is to provide meaningful messages in context
+     * of operators such as LogicalNot. Native PHPUnit constraints are supported
+     * out of the box by LogicalNot, but externally developed ones had no way to
+     * provide correct messages in this context.
+     *
+     * The method shall return null, if there is no need for customization in the
+     * context of given $operator. The $position starts with 0 for connective
+     * operators, but for unary operator, such as "not" operator, it equals 1 to
+     * denote that this constraint is on the right hand side of the $operator.
+     *
+     * @param Operator $operator the $operator of the expression
+     * @param int      $position position in $operator expression
+     */
+    protected function toStringInContext(Operator $operator, int $position): ?string
+    {
+        return null;
+    }
+
+    /**
+     * Returns the description of the failure when this constraint appears in
+     * context of an $operator expression
+     *
+     * The purpose of this method is to provide meaningful messages in context
+     * of operators such as LogicalNot. Native PHPUnit constraints are supported
+     * out of the box by LogicalNot, but externally developed ones had no way to
+     * provide correct messages in this context.
+     *
+     * The method shall return null, if there is no need for customization in
+     * the context of given $operator. The $position starts with 0 for
+     * connective operators, but for unary operator, such as "not" operator, it
+     * equals 1 to denote that this constraint is on the right hand side of the
+     * $operator.
+     *
+     * @param Operator $operator the $operator of the expression
+     * @param int      $position position in $operator expression
+     * @param mixed    $other    evaluated value or object
+     */
+    protected function failureDescriptionInContext(Operator $operator, int $position, $other): ?string
+    {
+        $string = $this->toStringInContext($operator, $position);
+
+        return ($string !== null) ? $this->exporter()->export($other) . ' ' . $string : null;
+    }
 }

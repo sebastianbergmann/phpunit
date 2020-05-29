@@ -9,115 +9,49 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\ExpectationFailedException;
-
 /**
  * Logical XOR.
  */
-final class LogicalXor extends Constraint
+final class LogicalXor extends Connective
 {
     /**
-     * @var Constraint[]
+     * Returns the name of this operator.
      */
-    private $constraints = [];
-
-    public static function fromConstraints(Constraint ...$constraints): self
+    public function operator(): string
     {
-        $constraint = new self;
-
-        $constraint->constraints = \array_values($constraints);
-
-        return $constraint;
+        return 'xor';
     }
 
     /**
-     * @param mixed[] $constraints
+     * Returns this operator's precedence, as defined in
+     * https://www.php.net/manual/en/language.operators.precedence.php
      */
-    public function setConstraints(array $constraints): void
+    public function precedence(): int
     {
-        $this->constraints = [];
-
-        foreach ($constraints as $constraint) {
-            if (!($constraint instanceof Constraint)) {
-                $constraint = new IsEqual(
-                    $constraint
-                );
-            }
-
-            $this->constraints[] = $constraint;
-        }
+        return 23;
     }
 
     /**
-     * Evaluates the constraint for parameter $other
+     * Evaluates the constraint for parameter $other. Returns true if the
+     * constraint is met, false otherwise.
      *
-     * If $returnResult is set to false (the default), an exception is thrown
-     * in case of a failure. null is returned otherwise.
-     *
-     * If $returnResult is true, the result of the evaluation is returned as
-     * a boolean value instead: true in case of success, false in case of a
-     * failure.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @param mixed $other value or object to evaluate
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
+    public function matches($other): bool
     {
-        $success    = true;
-        $lastResult = null;
+        $constraints = $this->constraints();
 
-        foreach ($this->constraints as $constraint) {
-            $result = $constraint->evaluate($other, $description, true);
-
-            if ($result === $lastResult) {
-                $success = false;
-
-                break;
-            }
-
-            $lastResult = $result;
+        if (($initial = \array_shift($constraints)) !== null) {
+            return \array_reduce(
+                $constraints,
+                function ($carry, Constraint $constraint) use ($other) {
+                    return $carry xor $constraint->evaluate($other, '', true);
+                },
+                $initial->evaluate($other, '', true)
+            );
+        } else {
+            // $constraints was empty or not an array...
+            return false;
         }
-
-        if ($returnResult) {
-            return $success;
-        }
-
-        if (!$success) {
-            $this->fail($other, $description);
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns a string representation of the constraint.
-     */
-    public function toString(): string
-    {
-        $text = '';
-
-        foreach ($this->constraints as $key => $constraint) {
-            if ($key > 0) {
-                $text .= ' xor ';
-            }
-
-            $text .= $constraint->toString();
-        }
-
-        return $text;
-    }
-
-    /**
-     * Counts the number of constraint elements.
-     */
-    public function count(): int
-    {
-        $count = 0;
-
-        foreach ($this->constraints as $constraint) {
-            $count += \count($constraint);
-        }
-
-        return $count;
     }
 }
