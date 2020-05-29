@@ -53,4 +53,48 @@ final class LogicalXorTest extends TestCase
 
         $this->assertSame('is equal to \'cuckoo\'', $constraint->toString());
     }
+
+    public function providerEvaluateReturnsCorrectResult()
+    {
+        return [
+            [],
+            [0],       [1],
+            [0, 0],    [0, 1],    [1, 0],    [1, 1],
+            [0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1],
+            [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1],
+        ];
+    }
+
+    /**
+     * @dataProvider providerEvaluateReturnsCorrectResult
+     */
+    public function testEvaluateReturnsCorrectResult(int ...$args)
+    {
+        $other = 'Foo';
+        $constraints = \array_map(function (bool $arg) use ($other) {
+            $constraint = $this->getMockBuilder(Constraint::class)->getMock();
+
+            $constraint
+                ->expects($this->once())
+                ->method('evaluate')
+                ->with($this->identicalTo($other))
+                ->willReturn($arg);
+            $constraint
+                ->expects($this->any())
+                ->method('toString')
+                ->with()
+                ->willReturn($arg ? 'true' : 'false');
+            return $constraint;
+        }, $args);
+
+        $initial = (bool)\array_shift($args);
+        $expected = \array_reduce($args, function (bool $carry, bool $item) {
+            return $carry xor $item;
+        }, $initial);
+
+        $constraint = LogicalXor::fromConstraints(...$constraints);
+
+        $message = 'Failed asserting that '.$constraint->toString().' is '. ($expected ? 'true' : 'false');
+        $this->assertSame($expected, $constraint->evaluate($other, '', true), $message);
+    }
 }
