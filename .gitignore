@@ -1,6 +1,26 @@
 # PhpStorm
 /.idea
 
+# Various IDEs and editors
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.swp
+*.bkp
+*.bak
+*~
+.~lock.*
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
 # Composer
 /vendor
 /composer.lock
