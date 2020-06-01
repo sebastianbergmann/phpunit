@@ -9,7 +9,7 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
 
 ## Installation
 
-We distribute a [PHP Archive (PHAR)](https://php.net/phar) that has all required (as well as some optional) dependencies of PHPUnit 9.2 bundled in a single file:
+We distribute a [PHP Archive (PHAR)](https://php.net/phar) that has all required (as well as some optional) dependencies of PHPUnit 9.3 bundled in a single file:
 
 ```bash
 $ wget https://phar.phpunit.de/phpunit-nightly.phar
