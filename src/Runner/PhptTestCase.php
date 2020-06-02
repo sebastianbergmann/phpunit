@@ -20,6 +20,7 @@ use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
+use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 
@@ -594,13 +595,13 @@ final class PhptTestCase implements SelfDescribing, Test
         $job = $template->render();
     }
 
-    private function cleanupForCoverage(): array
+    private function cleanupForCoverage(): RawCodeCoverageData
     {
         $files    = $this->getCoverageFiles();
         $coverage = @\unserialize(\file_get_contents($files['coverage']));
 
         if ($coverage === false) {
-            $coverage = [];
+            return RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
         }
 
         foreach ($files as $file) {
