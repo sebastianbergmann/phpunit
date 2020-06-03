@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
 
-abstract class UnaryTestCase extends OperatorTestCase
+abstract class UnaryOperatorTestCase extends OperatorTestCase
 {
     /**
      * Shall return the name of the operator under test
@@ -47,21 +47,21 @@ abstract class UnaryTestCase extends OperatorTestCase
         ));
     }
 
-    public function testOperatorName(): void
+    final public function testOperatorName(): void
     {
         $className  = $this->className();
         $constraint = new $className($this->getMockBuilder(Constraint::class)->getMock());
         $this->assertSame($this->getOperatorName(), $constraint->operator());
     }
 
-    public function testOperatorPrecedence(): void
+    final public function testOperatorPrecedence(): void
     {
         $className  = $this->className();
         $constraint = new $className($this->getMockBuilder(Constraint::class)->getMock());
         $this->assertSame($this->getOperatorPrecedence(), $constraint->precedence());
     }
 
-    public function testOperatorCount(): void
+    final public function testOperatorCount(): void
     {
         $className = $this->className();
 
@@ -70,7 +70,7 @@ abstract class UnaryTestCase extends OperatorTestCase
         $this->assertSame(3, $constraint->count());
     }
 
-    public function testOperatorArity(): void
+    final public function testOperatorArity(): void
     {
         $className = $this->className();
 
@@ -79,7 +79,7 @@ abstract class UnaryTestCase extends OperatorTestCase
         $this->assertSame(1, $constraint->arity());
     }
 
-    public function testConstructorAcceptsConstraintArgument(): void
+    final public function testConstructorAcceptsConstraintArgument(): void
     {
         $className = $this->className();
 
@@ -99,7 +99,7 @@ abstract class UnaryTestCase extends OperatorTestCase
         $this->assertSame($string, $constraint->toString());
     }
 
-    public function testNonRestrictedConstructParameterIsTreatedAsIsEqual(): void
+    public function testNonRestrictedConstructParameterIsHandled(): void
     {
         $className = $this->className();
 
@@ -110,7 +110,7 @@ abstract class UnaryTestCase extends OperatorTestCase
         $this->assertSame($withIsEqual->toString(), $constraint->toString());
     }
 
-    public function providerUnaryTruthTable()
+    final public function providerUnaryTruthTable()
     {
         return \array_map(function (bool $input): array {
             return [$input, $this->evaluateExpectedResult($input)];
@@ -120,7 +120,7 @@ abstract class UnaryTestCase extends OperatorTestCase
     /**
      * @dataProvider providerUnaryTruthTable
      */
-    public function testEvaluateReturnsCorrectBooleanResult(bool $input, bool $expected): void
+    final public function testEvaluateReturnsCorrectBooleanResult(bool $input, bool $expected): void
     {
         $operand = \BooleanConstraint::fromBool($input);
 
@@ -135,7 +135,7 @@ abstract class UnaryTestCase extends OperatorTestCase
     /**
      * @dataProvider providerUnaryTruthTable
      */
-    public function testEvaluateReturnsNullOnSuccessAndThrowsExceptionOnFailure(bool $input, bool $expected): void
+    final public function testEvaluateReturnsNullOnSuccessAndThrowsExceptionOnFailure(bool $input, bool $expected): void
     {
         $operand = \BooleanConstraint::fromBool($input);
 
@@ -159,7 +159,7 @@ abstract class UnaryTestCase extends OperatorTestCase
     /**
      * @dataProvider providerToStringWithNativeTransformations
      */
-    public function testToStringWithNativeTransformations(string $input, string $expected): void
+    final public function testToStringWithNativeTransformations(string $input, string $expected): void
     {
         $operand = \NamedConstraint::fromName($input);
 
@@ -170,7 +170,7 @@ abstract class UnaryTestCase extends OperatorTestCase
         $this->assertSame($expected, $constraint->toString());
     }
 
-    public function testToStringWithNonContextualNonOperatorConstraint(): void
+    public function testToStringWithNonContextualTerminalConstraint(): void
     {
         $methods = [
             'toStringInContext',
@@ -199,7 +199,7 @@ abstract class UnaryTestCase extends OperatorTestCase
         $this->assertSame($string, $operator->toString());
     }
 
-    public function testToStringWithContextualNonOperatorConstraint(): void
+    public function testToStringWithContextualTerminalConstraint(): void
     {
         $methods = [
             'toStringInContext',
@@ -392,7 +392,7 @@ abstract class UnaryTestCase extends OperatorTestCase
         $this->assertSame("'whatever' " . $expected, $method->invokeArgs($constraint, ['whatever']));
     }
 
-    public function testFailureDescriptionWithNonContextualNonOperatorConstraint(): void
+    public function testFailureDescriptionWithNonContextualTerminalConstraint(): void
     {
         $methods = [
             'toStringInContext',
@@ -426,7 +426,7 @@ abstract class UnaryTestCase extends OperatorTestCase
         $this->assertSame($expected, $method->invokeArgs($operator, ['whatever']));
     }
 
-    public function testFailureDescriptionWithContextualNonOperatorConstraint(): void
+    public function testFailureDescriptionWithContextualTerminalConstraint(): void
     {
         $methods = [
             'toStringInContext',

@@ -204,4 +204,69 @@ abstract class Constraint implements \Countable, SelfDescribing
 
         return $this->exporter()->export($other) . ' ' . $string;
     }
+
+    /**
+     * Reduces the sub-expression starting at $this by skipping degenerate
+     * sub-expression and returns first descendant constraint that starts
+     * a non-reducible sub-expression
+     *
+     * Returns $this for terminal constraints and for operators that start
+     * non-reducible sub-expression, or the nearest descendant of $this that
+     * starts a non-reducible sub-expression.
+     *
+     * A constraint expression may be modelled as a tree with non-terminal
+     * nodes (operators) and terminal nodes. For example:
+     *
+     *      LogicalOr           (operator, non-terminal)
+     *      + LogicalAnd        (operator, non-terminal)
+     *      | + IsType('int')   (terminal)
+     *      | + GreaterThan(10) (terminal)
+     *      + LogicalNot        (operator, non-terminal)
+     *        + IsType('array') (terminal)
+     *
+     * A degenerate sub-expression is a part of the tree, that effectively does
+     * not contribute to the evaluation of the expression it appears in. An example
+     * of degenerate sub-expression is a BinaryOperator constructed with single
+     * operand or nested BinaryOperators, each with single operand. An
+     * expression involving a degenerate sub-expression is equivalent to a
+     * reduced expression with the degenerate sub-expression removed, for example
+     *
+     *      LogicalAnd          (operator)
+     *      + LogicalOr         (degenerate operator)
+     *      | + LogicalAnd      (degenerate operator)
+     *      |   + IsType('int') (terminal)
+     *      + GreaterThan(10)   (terminal)
+     *
+     * is equivalent to
+     *
+     *      LogicalAnd          (operator)
+     *      + IsType('int')     (terminal)
+     *      + GreaterThan(10)   (terminal)
+     *
+     * because the subexpression
+     *
+     *      + LogicalOr
+     *        + LogicalAnd
+     *          + -
+     *
+     * is degenerate. Calling reduce() on the LogicalOr object above, as well
+     * as on LogicalAnd, shall return the IsType('int') instance.
+     *
+     * Other specific reductions can be implemented, for example cascade of
+     * LogicalNot operators
+     *
+     *      + LogicalNot
+     *        + LogicalNot
+     *          +LogicalNot
+     *           + IsTrue
+     *
+     * can be reduced to
+     *
+     *      LogicalNot
+     *      + IsTrue
+     */
+    protected function reduce(): self
+    {
+        return $this;
+    }
 }

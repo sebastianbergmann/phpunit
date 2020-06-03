@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-final class LogicalOr extends Connective
+final class LogicalOr extends BinaryOperator
 {
     /**
      * Returns the name of this operator.

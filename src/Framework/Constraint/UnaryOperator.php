@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-abstract class Unary extends Operator
+abstract class UnaryOperator extends Operator
 {
     /**
      * @var Constraint
@@ -37,14 +37,22 @@ abstract class Unary extends Operator
      */
     public function toString(): string
     {
-        if ($this->constraintNeedsParentheses($this->constraint)) {
-            return $this->operator() . '( ' . $this->constraint->toString() . ' )';
+        $reduced = $this->reduce();
+
+        if ($reduced !== $this) {
+            return $reduced->toString();
         }
 
-        $string = $this->constraint->toStringInContext($this, 1);
+        $constraint = $this->constraint->reduce();
+
+        if ($this->constraintNeedsParentheses($constraint)) {
+            return $this->operator() . '( ' . $constraint->toString() . ' )';
+        }
+
+        $string = $constraint->toStringInContext($this, 1);
 
         if ($string === null) {
-            return $this->transformString($this->constraint->toString());
+            return $this->transformString($constraint->toString());
         }
 
         return $string;
@@ -70,14 +78,22 @@ abstract class Unary extends Operator
      */
     protected function failureDescription($other): string
     {
-        if ($this->constraintNeedsParentheses($this->constraint)) {
-            return $this->operator() . '( ' . $this->constraint->failureDescription($other) . ' )';
+        $reduced = $this->reduce();
+
+        if ($reduced !== $this) {
+            return $reduced->failureDescription($other);
         }
 
-        $string = $this->constraint->failureDescriptionInContext($this, 1, $other);
+        $constraint = $this->constraint->reduce();
+
+        if ($this->constraintNeedsParentheses($constraint)) {
+            return $this->operator() . '( ' . $constraint->failureDescription($other) . ' )';
+        }
+
+        $string = $constraint->failureDescriptionInContext($this, 1, $other);
 
         if ($string === null) {
-            return $this->transformString($this->constraint->failureDescription($other));
+            return $this->transformString($constraint->failureDescription($other));
         }
 
         return $string;
@@ -108,10 +124,12 @@ abstract class Unary extends Operator
     }
 
     /**
-     * Returns true if the $constraint needs to be wrapped with braces.
+     * Returns true if the $constraint needs to be wrapped with parentheses.
      */
     protected function constraintNeedsParentheses(Constraint $constraint): bool
     {
+        $constraint = $constraint->reduce();
+
         return $constraint instanceof self || parent::constraintNeedsParentheses($constraint);
     }
 }
