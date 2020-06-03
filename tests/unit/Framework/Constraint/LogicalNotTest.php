@@ -174,11 +174,10 @@ final class LogicalNotTest extends UnaryTestCase
 
         $expected = 'not( \'apple\' ' . \implode(' and ', $names) . ' )';
 
-        $reflectionClass  = new \ReflectionClass(LogicalNot::class);
-        $reflectionMethod = $reflectionClass->getMethod('failureDescription');
-        $reflectionMethod->setAccessible(true);
+        $method = new \ReflectionMethod(LogicalNot::class, 'failureDescription');
+        $method->setAccessible(true);
 
-        $this->assertSame($expected, $reflectionMethod->invokeArgs($constraint, ['apple']));
+        $this->assertSame($expected, $method->invokeArgs($constraint, ['apple']));
     }
 
     public function testLogicalNotOfLogicalAndFailureDescription2(): void
@@ -191,11 +190,10 @@ final class LogicalNotTest extends UnaryTestCase
 
         $expected = '\'apple\' is not healthy';
 
-        $reflectionClass  = new \ReflectionClass(LogicalNot::class);
-        $reflectionMethod = $reflectionClass->getMethod('failureDescription');
-        $reflectionMethod->setAccessible(true);
+        $method = new \ReflectionMethod(LogicalNot::class, 'failureDescription');
+        $method->setAccessible(true);
 
-        $this->assertSame($expected, $reflectionMethod->invokeArgs($constraint, ['apple']));
+        $this->assertSame($expected, $method->invokeArgs($constraint, ['apple']));
     }
 
     public function testLogicalNotOfLogicalOrFailureDescription(): void
@@ -214,11 +212,10 @@ final class LogicalNotTest extends UnaryTestCase
 
         $expected = 'not( \'apple\' ' . \implode(' or ', $names) . ' )';
 
-        $reflectionClass  = new \ReflectionClass(LogicalNot::class);
-        $reflectionMethod = $reflectionClass->getMethod('failureDescription');
-        $reflectionMethod->setAccessible(true);
+        $method = new \ReflectionMethod(LogicalNot::class, 'failureDescription');
+        $method->setAccessible(true);
 
-        $this->assertSame($expected, $reflectionMethod->invokeArgs($constraint, ['apple']));
+        $this->assertSame($expected, $method->invokeArgs($constraint, ['apple']));
     }
 
     public function testLogicalNotOfLogicalOrFailureDescription2(): void
@@ -231,11 +228,10 @@ final class LogicalNotTest extends UnaryTestCase
 
         $expected = '\'apple\' is not healthy';
 
-        $reflectionClass  = new \ReflectionClass(LogicalNot::class);
-        $reflectionMethod = $reflectionClass->getMethod('failureDescription');
-        $reflectionMethod->setAccessible(true);
+        $method = new \ReflectionMethod(LogicalNot::class, 'failureDescription');
+        $method->setAccessible(true);
 
-        $this->assertSame($expected, $reflectionMethod->invokeArgs($constraint, ['apple']));
+        $this->assertSame($expected, $method->invokeArgs($constraint, ['apple']));
     }
 
     public function testLogicalNotOfLogicalXorFailureDescription(): void
@@ -254,11 +250,10 @@ final class LogicalNotTest extends UnaryTestCase
 
         $expected = 'not( \'apple\' ' . \implode(' xor ', $names) . ' )';
 
-        $reflectionClass  = new \ReflectionClass(LogicalNot::class);
-        $reflectionMethod = $reflectionClass->getMethod('failureDescription');
-        $reflectionMethod->setAccessible(true);
+        $method = new \ReflectionMethod(LogicalNot::class, 'failureDescription');
+        $method->setAccessible(true);
 
-        $this->assertSame($expected, $reflectionMethod->invokeArgs($constraint, ['apple']));
+        $this->assertSame($expected, $method->invokeArgs($constraint, ['apple']));
     }
 
     public function testLogicalNotOfLogicalXorFailureDescription2(): void
@@ -271,10 +266,145 @@ final class LogicalNotTest extends UnaryTestCase
 
         $expected = '\'apple\' is not healthy';
 
-        $reflectionClass  = new \ReflectionClass(LogicalNot::class);
-        $reflectionMethod = $reflectionClass->getMethod('failureDescription');
-        $reflectionMethod->setAccessible(true);
+        $method = new \ReflectionMethod(LogicalNot::class, 'failureDescription');
+        $method->setAccessible(true);
 
-        $this->assertSame($expected, $reflectionMethod->invokeArgs($constraint, ['apple']));
+        $this->assertSame($expected, $method->invokeArgs($constraint, ['apple']));
+    }
+
+    public function testNestedLogicalNotOfIsEqualToString(): void
+    {
+        $constraint = new LogicalNot(
+            new LogicalNot(
+                new IsEqual(5)
+            )
+        );
+
+        $expected = 'not( is not equal to 5 )';
+
+        $this->assertSame($expected, $constraint->toString());
+    }
+
+    public function testNestedLogicalNotOfIsEqualFailureDescription(): void
+    {
+        $constraint = new LogicalNot(
+            new LogicalNot(
+                new IsEqual(5)
+            )
+        );
+
+        $method = new \ReflectionMethod(LogicalNot::class, 'failureDescription');
+        $method->setAccessible(true);
+
+        $expected = 'not( 3 is not equal to 5 )';
+
+        $this->assertSame($expected, $method->invokeArgs($constraint, [3]));
+    }
+
+    public function testNestedLogicalNotOfLogicalOrWithSingleOperandToString(): void
+    {
+        $constraint = new LogicalNot(
+            new LogicalNot(
+                LogicalOr::fromConstraints(
+                    new IsEqual(5)
+                )
+            )
+        );
+
+        $expected = 'not( is not equal to 5 )';
+
+        $this->assertSame($expected, $constraint->toString());
+    }
+
+    public function testNestedLogicalNotOfLogicalOrWithSingleOperandFailureDescription(): void
+    {
+        $constraint = new LogicalNot(
+            new LogicalNot(
+                LogicalOr::fromConstraints(
+                    new IsEqual(5)
+                )
+            )
+        );
+
+        $method = new \ReflectionMethod(LogicalNot::class, 'failureDescription');
+        $method->setAccessible(true);
+
+        $expected = 'not( 3 is not equal to 5 )';
+
+        $this->assertSame($expected, $method->invokeArgs($constraint, [3]));
+    }
+
+    public function testNestedLogicalNotOfNestedLogicalOrWithSingleOperandToString(): void
+    {
+        $constraint = new LogicalNot(
+            new LogicalNot(
+                LogicalOr::fromConstraints(
+                    LogicalOr::fromConstraints(
+                        new IsEqual(5)
+                    )
+                )
+            )
+        );
+
+        $expected = 'not( is not equal to 5 )';
+
+        $this->assertSame($expected, $constraint->toString());
+    }
+
+    public function testNestedLogicalNotOfNestedLogicalOrWithSingleOperandFailureDescription(): void
+    {
+        $constraint = new LogicalNot(
+            new LogicalNot(
+                LogicalOr::fromConstraints(
+                    LogicalOr::fromConstraints(
+                        new IsEqual(5)
+                    )
+                )
+            )
+        );
+
+        $method = new \ReflectionMethod(LogicalNot::class, 'failureDescription');
+        $method->setAccessible(true);
+
+        $expected = 'not( 3 is not equal to 5 )';
+
+        $this->assertSame($expected, $method->invokeArgs($constraint, [3]));
+    }
+
+    public function testNestedLogicalNotOfLogicalOrWithMultipleOperandsToString(): void
+    {
+        $constraint = new LogicalNot(
+            new LogicalNot(
+                LogicalOr::fromConstraints(
+                    new LessThan(5),
+                    new IsEqual(10),
+                    new GreaterThan(15)
+                )
+            )
+        );
+
+        $expected = 'not( not( is less than 5 or is equal to 10 or is greater than 15 ) )';
+
+        $this->assertSame($expected, $constraint->toString());
+    }
+
+    public function testNestedLogicalNotOfLogicalOrWithMultipleOperandsFailureDescription(): void
+    {
+        $constraint = new LogicalNot(
+            new LogicalNot(
+                LogicalOr::fromConstraints(
+                    new LessThan(5),
+                    new IsEqual(10),
+                    new GreaterThan(15)
+                )
+            )
+        );
+
+        $method = new \ReflectionMethod(LogicalNot::class, 'failureDescription');
+        $method->setAccessible(true);
+
+        $expected = 'not( not( 7 is less than 5 or is equal to 10 or is greater than 15 ) )';
+
+        $this->assertSame($expected, $method->invokeArgs($constraint, [7]));
     }
 }
