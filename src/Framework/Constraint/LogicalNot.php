@@ -41,12 +41,16 @@ final class LogicalNot extends Unary
 
         \preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
 
+        $positives = \array_map(function (string $s) {
+            return '/\\b' . \preg_quote($s, '/') . '/';
+        }, $positives);
+
         if (\count($matches) > 0) {
             $nonInput = $matches[2];
 
-            $negatedString = \str_replace(
-                $nonInput,
-                \str_replace(
+            $negatedString = \preg_replace(
+                '/' . \preg_quote($nonInput, '/') . '/',
+                \preg_replace(
                     $positives,
                     $negatives,
                     $nonInput
@@ -54,7 +58,7 @@ final class LogicalNot extends Unary
                 $string
             );
         } else {
-            $negatedString = \str_replace(
+            $negatedString = \preg_replace(
                 $positives,
                 $negatives,
                 $string
