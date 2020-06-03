@@ -35,14 +35,21 @@ final class LogicalNotTest extends UnaryTestCase
     {
         return [
             ['ocean contains water', 'ocean does not contain water'],
+            [
+                '\'this is water\' contains "water" and contains "is"',
+                '\'this is water\' does not contain "water" and does not contain "is"',
+            ],
             ['what it contains', 'what it contains'],
             ['life exists in outer space', 'life does not exist in outer space'],
             ['alien exists', 'alien does not exist'],
+            ['it coexists', 'it coexists'],
             ['the dog has a bone', 'the dog does not have a bone'],
             ['whatever it has', 'whatever it has'],
             ['apple is red', 'apple is not red'],
             ['yes, it is', 'yes, it is'],
+            ['this is clock', 'this is not clock'],
             ['how are you?', 'how are not you?'],
+            ['how dare you!', 'how dare you!'],
             ['what they are', 'what they are'],
             ['that matches my preferences', 'that does not match my preferences'],
             ['dinner starts with desert', 'dinner starts not with desert'],
