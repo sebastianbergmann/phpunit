@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-/**
- * Abstract base class for logical operators.
- */
 abstract class Operator extends Constraint
 {
     /**
@@ -35,8 +32,8 @@ abstract class Operator extends Constraint
      */
     protected function checkConstraint($constraint): Constraint
     {
-        if (!($constraint instanceof Constraint)) {
-            $constraint = new IsEqual($constraint);
+        if (!$constraint instanceof Constraint) {
+            return new IsEqual($constraint);
         }
 
         return $constraint;

@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-/**
- * Logical NOT.
- */
 final class LogicalNot extends Unary
 {
     public static function negate(string $string): string

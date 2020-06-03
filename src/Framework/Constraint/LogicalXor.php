@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-/**
- * Logical XOR.
- */
 final class LogicalXor extends Connective
 {
     /**

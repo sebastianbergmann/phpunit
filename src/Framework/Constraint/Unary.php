@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-/**
- * Abstract base class for unary logical operators.
- */
 abstract class Unary extends Operator
 {
     /**
@@ -43,8 +40,6 @@ abstract class Unary extends Operator
         if ($this->constraintNeedsParentheses($this->constraint)) {
             return $this->operator() . '( ' . $this->constraint->toString() . ' )';
         }
-
-        $string = $this->constraint->toStringInContext($this, 1);
 
         $string = $this->constraint->toStringInContext($this, 1);
 

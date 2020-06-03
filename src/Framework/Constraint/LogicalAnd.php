@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-/**
- * Logical AND.
- */
 final class LogicalAnd extends Connective
 {
     /**
