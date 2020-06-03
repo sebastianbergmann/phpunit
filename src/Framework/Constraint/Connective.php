@@ -85,6 +85,14 @@ abstract class Connective extends Operator
     }
 
     /**
+     * Returns true if the $constraint needs to be wrapped with braces.
+     */
+    final protected function constraintNeedsParentheses(Constraint $constraint): bool
+    {
+        return $this->arity() > 1 && parent::constraintNeedsParentheses($constraint);
+    }
+
+    /**
      * Returns string representation of given operand in context of this operator
      *
      * @param Constraint $constraint operand constraint
@@ -105,13 +113,5 @@ abstract class Connective extends Operator
         $string = $constraint->toStringInContext($this, $position);
 
         return $prefix . ($string ?? $constraint->toString());
-    }
-
-    /**
-     * Returns true if the $constraint needs to be wrapped with braces.
-     */
-    final protected function constraintNeedsParentheses(Constraint $constraint): bool
-    {
-        return $this->arity() > 1 && parent::constraintNeedsParentheses($constraint);
     }
 }
