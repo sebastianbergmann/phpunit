@@ -106,4 +106,12 @@ abstract class Unary extends Operator
     {
         return $this->constraint;
     }
+
+    /**
+     * Returns true if the $constraint needs to be wrapped with braces.
+     */
+    protected function constraintNeedsParentheses(Constraint $constraint): bool
+    {
+        return $constraint instanceof self || parent::constraintNeedsParentheses($constraint);
+    }
 }
