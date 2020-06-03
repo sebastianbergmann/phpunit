@@ -112,7 +112,7 @@ abstract class UnaryTestCase extends OperatorTestCase
 
     public function providerUnaryTruthTable()
     {
-        return \array_map(function (bool $input) {
+        return \array_map(function (bool $input): array {
             return [$input, $this->evaluateExpectedResult($input)];
         }, [false, true]);
     }
@@ -145,13 +145,15 @@ abstract class UnaryTestCase extends OperatorTestCase
 
         if ($expected) {
             $this->assertNull($constraint->evaluate(null));
-        } else {
-            $expectedString = $operand->toString();
-            $message        = "Failed asserting that 'the following expression is not true' " . $expectedString;
-            $this->expectException(ExpectationFailedException::class);
-            $this->expectExceptionMessage($message);
-            $constraint->evaluate('the following expression is true');
+
+            return;
         }
+
+        $expectedString = $operand->toString();
+        $message        = "Failed asserting that 'the following expression is not true' " . $expectedString;
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage($message);
+        $constraint->evaluate('the following expression is true');
     }
 
     /**
