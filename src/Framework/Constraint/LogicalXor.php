@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-final class LogicalXor extends Connective
+final class LogicalXor extends BinaryOperator
 {
     /**
      * Returns the name of this operator.

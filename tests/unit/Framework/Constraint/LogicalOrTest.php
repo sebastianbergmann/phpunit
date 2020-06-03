@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 /**
  * @small
  */
-final class LogicalOrTest extends ConnectiveTestCase
+final class LogicalOrTest extends BinaryOperatorTestCase
 {
     public static function getOperatorName(): string
     {

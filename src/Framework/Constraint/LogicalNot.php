@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-final class LogicalNot extends Unary
+final class LogicalNot extends UnaryOperator
 {
     public static function negate(string $string): string
     {
@@ -103,5 +103,21 @@ final class LogicalNot extends Unary
     protected function transformString(string $string): string
     {
         return self::negate($string);
+    }
+
+    /**
+     * Reduces the sub-expression starting at $this by skipping degenerate
+     * sub-expression and returns first descendant constraint that starts
+     * a non-reducible sub-expression
+     *
+     * See Constraint::reduce() for more.
+     */
+    protected function reduce(): Constraint
+    {
+        if ($this->constraint() instanceof self) {
+            return $this->constraint()->constraint()->reduce();
+        }
+
+        return parent::reduce();
     }
 }

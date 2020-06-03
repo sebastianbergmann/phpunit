@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
 
-abstract class ConnectiveTestCase extends OperatorTestCase
+abstract class BinaryOperatorTestCase extends OperatorTestCase
 {
     /**
      * Shall return the name of the operator under test
@@ -42,21 +42,21 @@ abstract class ConnectiveTestCase extends OperatorTestCase
         ));
     }
 
-    public function testOperatorName(): void
+    final public function testOperatorName(): void
     {
         $className  = $this->className();
         $constraint = new $className;
         $this->assertSame($this->getOperatorName(), $constraint->operator());
     }
 
-    public function testOperatorPrecedence(): void
+    final public function testOperatorPrecedence(): void
     {
         $className  = $this->className();
         $constraint = new $className;
         $this->assertSame($this->getOperatorPrecedence(), $constraint->precedence());
     }
 
-    public function testOperatorCount(): void
+    final public function testOperatorCount(): void
     {
         $counts = [
             3,
@@ -79,7 +79,7 @@ abstract class ConnectiveTestCase extends OperatorTestCase
         $this->assertSame($expected, $constraint->count());
     }
 
-    public function testOperatorArity(): void
+    final public function testOperatorArity(): void
     {
         $constraints = [
             \CountConstraint::fromCount(3),
@@ -126,7 +126,7 @@ abstract class ConnectiveTestCase extends OperatorTestCase
         $this->assertSame("is equal to 'whatever'", $constraint->toString());
     }
 
-    public function providerConnectiveTruthTable()
+    final public function providerConnectiveTruthTable()
     {
         $inputs = self::getBooleanTuples(0, 5);
 
@@ -138,7 +138,7 @@ abstract class ConnectiveTestCase extends OperatorTestCase
     /**
      * @dataProvider providerConnectiveTruthTable
      */
-    public function testEvaluateReturnsCorrectBooleanResult(array $inputs, bool $expected): void
+    final public function testEvaluateReturnsCorrectBooleanResult(array $inputs, bool $expected): void
     {
         $constraints = \array_map(function (bool $input) {
             return \BooleanConstraint::fromBool($input);
@@ -155,7 +155,7 @@ abstract class ConnectiveTestCase extends OperatorTestCase
     /**
      * @dataProvider providerConnectiveTruthTable
      */
-    public function testEvaluateReturnsNullOnSuccessAndThrowsExceptionOnFailure(array $inputs, bool $expected): void
+    final public function testEvaluateReturnsNullOnSuccessAndThrowsExceptionOnFailure(array $inputs, bool $expected): void
     {
         $constraints = \array_map(function (bool $input) {
             return \BooleanConstraint::fromBool($input);
@@ -221,7 +221,16 @@ abstract class ConnectiveTestCase extends OperatorTestCase
         $this->assertSame($expected, $constraint->toString());
     }
 
-    public function testToStringWithSingleNonContextualOperand(): void
+    public function testToStringWithoutOperands(): void
+    {
+        $className = $this->className();
+
+        $operator = $className::fromConstraints();
+
+        $this->assertSame('', $operator->toString());
+    }
+
+    public function testToStringWithSingleOperand(): void
     {
         $methods = [
             'arity',
@@ -243,48 +252,14 @@ abstract class ConnectiveTestCase extends OperatorTestCase
                 ->method('arity');
         $operand->expects($this->never())
                 ->method('precedence');
-        $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn(null);
+        $operand->expects($this->never())
+                ->method('toStringInContext');
         $operand->expects($this->once())
                 ->method('toString')
                 ->with()
                 ->willReturn('is the only');
 
         $this->assertSame('is the only', $operator->toString());
-    }
-
-    public function testToStringWithSingleContextualOperand(): void
-    {
-        $methods = [
-            'arity',
-            'precedence',
-            'toStringInContext',
-            'toString',
-        ];
-
-        $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
-                        ->getMockForAbstractClass();
-
-        $className = $this->className();
-
-        $operator = $className::fromConstraints($operand);
-
-        // A contextual operator
-        $operand->expects($this->never())
-                    ->method('arity');
-        $operand->expects($this->never())
-                    ->method('precedence');
-        $operand->expects($this->once())
-                    ->method('toStringInContext')
-                    ->with($this->identicalTo($operator), 0)
-                    ->willReturn('is at position zero');
-        $operand->expects($this->never())
-                    ->method('toString');
-
-        $this->assertSame('is at position zero', $operator->toString());
     }
 
     public function testToStringWithMultipleOperands(): void
@@ -400,7 +375,7 @@ abstract class ConnectiveTestCase extends OperatorTestCase
         $this->assertSame($expected, $constraint->toString());
     }
 
-    public function testFailureDescriptionWithSingleNonContextualOperand(): void
+    public function testFailureDescriptionWithSingleOperand(): void
     {
         $methods = [
             'arity',
@@ -422,10 +397,8 @@ abstract class ConnectiveTestCase extends OperatorTestCase
                 ->method('arity');
         $operand->expects($this->never())
                 ->method('precedence');
-        $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn(null);
+        $operand->expects($this->never())
+                ->method('toStringInContext');
         $operand->expects($this->once())
                 ->method('toString')
                 ->with()
@@ -435,41 +408,6 @@ abstract class ConnectiveTestCase extends OperatorTestCase
         $method->setAccessible(true);
 
         $this->assertSame("'whatever' is the only", $method->invoke($operator, 'whatever'));
-    }
-
-    public function testFailureDescriptionWithSingleContextualOperand(): void
-    {
-        $methods = [
-            'arity',
-            'precedence',
-            'toStringInContext',
-            'toString',
-        ];
-
-        $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
-                        ->getMockForAbstractClass();
-
-        $className = $this->className();
-
-        $operator = $className::fromConstraints($operand);
-
-        // A contextual operator with toStringInContext()
-        $operand->expects($this->never())
-                ->method('arity');
-        $operand->expects($this->never())
-                ->method('precedence');
-        $operand->expects($this->once())
-                ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 0)
-                ->willReturn('is at position zero');
-        $operand->expects($this->never())
-                ->method('toString');
-
-        $method = new \ReflectionMethod($className, 'failureDescription');
-        $method->setAccessible(true);
-
-        $this->assertSame("'whatever' is at position zero", $method->invoke($operator, 'whatever'));
     }
 
     public function testFailureDescriptionWithMultipleOperands(): void
@@ -595,15 +533,15 @@ abstract class ConnectiveTestCase extends OperatorTestCase
      * A "binary tuple" is an array of 0s an 1s. The method generates all
      * possible combinations of 0s and 1s of size $minSize up to $maxSize.
      */
-    protected static function getBinaryTuples(int $minSize, int $maxSize): array
+    final protected static function getBinaryTuples(int $minSize, int $maxSize): array
     {
         $tuples = [];
 
         for ($size = $minSize; $size <= $maxSize; $size++) {
             for ($num = 0; $num < 2 ** $size; $num++) {
                 $str      = \decbin($num | 2 ** $size);                      // "1xyz" (extra "1" on the left)
-                $bits     = \array_map(\intval::class, \str_split($str));   // ["1", "x", "y", "z"]
-                $tuple    = \array_slice($bits, 1);                        // ["x", "y", "z"]
+                $bits     = \array_map('intval', \str_split($str));          // ["1", "x", "y", "z"]
+                $tuple    = \array_slice($bits, 1);                          // ["x", "y", "z"]
                 $tuples[] = $tuple;
             }
         }
@@ -615,12 +553,12 @@ abstract class ConnectiveTestCase extends OperatorTestCase
      * Same as getBinaryTuples(), but returns tuples of boolean values
      * instead of integers.
      */
-    protected static function getBooleanTuples(int $minSize, int $maxSize): array
+    final protected static function getBooleanTuples(int $minSize, int $maxSize): array
     {
         $tuples = self::getBinaryTuples($minSize, $maxSize);
 
         return \array_map(function ($tuple) {
-            return \array_map(\boolval::class, $tuple);
+            return \array_map('boolval', $tuple);
         }, $tuples);
     }
 
