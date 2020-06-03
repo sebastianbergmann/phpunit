@@ -238,7 +238,6 @@ abstract class ConnectiveTestCase extends OperatorTestCase
 
         $operator = $className::fromConstraints($operand);
 
-
         // A non-contextual operator
         $operand->expects($this->never())
                 ->method('arity');
@@ -431,7 +430,6 @@ abstract class ConnectiveTestCase extends OperatorTestCase
                 ->method('toString')
                 ->with()
                 ->willReturn('is the only');
-
 
         $method = new \ReflectionMethod($className, 'failureDescription');
         $method->setAccessible(true);
