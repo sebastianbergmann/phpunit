@@ -12,7 +12,7 @@ use PHPUnit\Framework\Constraint\Constraint;
 final class BooleanConstraint extends Constraint
 {
     /**
-     * @var int
+     * @var bool
      */
     private $matches;
 

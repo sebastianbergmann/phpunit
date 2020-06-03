@@ -46,9 +46,13 @@ abstract class Unary extends Operator
 
         $string = $this->constraint->toStringInContext($this, 1);
 
-        return $string ?? $this->transformString(
-            $this->constraint->toString()
-        );
+        $string = $this->constraint->toStringInContext($this, 1);
+
+        if ($string === null) {
+            return $this->transformString($this->constraint->toString());
+        }
+
+        return $string;
     }
 
     /**
@@ -77,9 +81,11 @@ abstract class Unary extends Operator
 
         $string = $this->constraint->failureDescriptionInContext($this, 1, $other);
 
-        return $string ?? $this->transformString(
-            $this->constraint->failureDescription($other)
-        );
+        if ($string === null) {
+            return $this->transformString($this->constraint->failureDescription($other));
+        }
+
+        return $string;
     }
 
     /**
@@ -101,7 +107,7 @@ abstract class Unary extends Operator
     /**
      * Provides access to $this->constraint for subclasses.
      */
-    protected function constraint(): Constraint
+    final protected function constraint(): Constraint
     {
         return $this->constraint;
     }

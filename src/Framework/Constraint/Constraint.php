@@ -198,6 +198,10 @@ abstract class Constraint implements \Countable, SelfDescribing
     {
         $string = $this->toStringInContext($operator, $position);
 
-        return ($string !== null) ? $this->exporter()->export($other) . ' ' . $string : null;
+        if ($string === null) {
+            return null;
+        }
+
+        return $this->exporter()->export($other) . ' ' . $string;
     }
 }
