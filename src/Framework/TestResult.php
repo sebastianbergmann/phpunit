@@ -602,7 +602,6 @@ final class TestResult implements \Countable
      * @throws OriginalCoveredCodeNotExecutedException
      * @throws UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
-     * @throws \SebastianBergmann\CodeCoverage\RuntimeException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function run(Test $test): void
