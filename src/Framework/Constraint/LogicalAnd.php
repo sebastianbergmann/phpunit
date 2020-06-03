@@ -45,6 +45,6 @@ final class LogicalAnd extends Connective
             }
         }
 
-        return !empty($this->constraints());
+        return [] !== $this->constraints();
     }
 }

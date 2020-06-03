@@ -35,7 +35,7 @@ abstract class Connective extends Operator
      */
     public function setConstraints(array $constraints): void
     {
-        $this->constraints = \array_map(function ($constraint) {
+        $this->constraints = \array_map(function ($constraint): Constraint {
             return $this->checkConstraint($constraint);
         }, \array_values($constraints));
     }
@@ -43,7 +43,7 @@ abstract class Connective extends Operator
     /**
      * Returns the number of operands (constraints).
      */
-    public function arity(): int
+    final public function arity(): int
     {
         return \count($this->constraints);
     }
@@ -51,7 +51,7 @@ abstract class Connective extends Operator
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    final public function toString(): string
     {
         $text = '';
 
@@ -65,7 +65,7 @@ abstract class Connective extends Operator
     /**
      * Counts the number of constraint elements.
      */
-    public function count(): int
+    final public function count(): int
     {
         $count = 0;
 
@@ -79,7 +79,7 @@ abstract class Connective extends Operator
     /**
      * Returns the nested constraints.
      */
-    protected function constraints(): array
+    final protected function constraints(): array
     {
         return $this->constraints;
     }
@@ -90,9 +90,13 @@ abstract class Connective extends Operator
      * @param Constraint $constraint operand constraint
      * @param int        $position   position of $constraint in this expression
      */
-    protected function constraintToString(Constraint $constraint, int $position): string
+    private function constraintToString(Constraint $constraint, int $position): string
     {
-        $prefix = $position > 0 ? (' ' . $this->operator() . ' ') : '';
+        $prefix = '';
+
+        if ($position > 0) {
+            $prefix = (' ' . $this->operator() . ' ');
+        }
 
         if ($this->constraintNeedsParentheses($constraint)) {
             return $prefix . '( ' . $constraint->toString() . ' )';
@@ -106,7 +110,7 @@ abstract class Connective extends Operator
     /**
      * Returns true if the $constraint needs to be wrapped with braces.
      */
-    protected function constraintNeedsParentheses(Constraint $constraint): bool
+    final protected function constraintNeedsParentheses(Constraint $constraint): bool
     {
         return $this->arity() > 1 && parent::constraintNeedsParentheses($constraint);
     }

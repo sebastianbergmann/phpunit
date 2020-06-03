@@ -28,7 +28,7 @@ final class LogicalXorTest extends ConnectiveTestCase
     {
         $initial = (bool) \array_shift($input);
 
-        return \array_reduce($input, function ($carry, bool $item) {
+        return \array_reduce($input, static function ($carry, bool $item): bool {
             return $carry xor $item;
         }, $initial);
     }

@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-class LogicalNotTest extends UnaryTestCase
+final class LogicalNotTest extends UnaryTestCase
 {
     public static function getOperatorName(): string
     {
@@ -70,7 +70,8 @@ class LogicalNotTest extends UnaryTestCase
             'is rich in unsaturated fats',
         ];
 
-        $constraints = \array_map(function (string $name) {
+        $constraints = \array_map(static function (string $name): \NamedConstraint {
+
             return \NamedConstraint::fromName($name);
         }, $names);
 
@@ -102,7 +103,8 @@ class LogicalNotTest extends UnaryTestCase
             'is rich in unsaturated fats',
         ];
 
-        $constraints = \array_map(function (string $name) {
+        $constraints = \array_map(static function (string $name): \NamedConstraint {
+
             return \NamedConstraint::fromName($name);
         }, $names);
 
@@ -134,7 +136,7 @@ class LogicalNotTest extends UnaryTestCase
             'is rich in unsaturated fats',
         ];
 
-        $constraints = \array_map(function (string $name) {
+        $constraints = \array_map(static function (string $name): \NamedConstraint {
             return \NamedConstraint::fromName($name);
         }, $names);
 

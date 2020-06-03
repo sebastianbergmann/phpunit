@@ -41,17 +41,18 @@ final class LogicalXor extends Connective
     {
         $constraints = $this->constraints();
 
-        if (($initial = \array_shift($constraints)) !== null) {
-            return \array_reduce(
-                $constraints,
-                function ($carry, Constraint $constraint) use ($other) {
-                    return $carry xor $constraint->evaluate($other, '', true);
-                },
-                $initial->evaluate($other, '', true)
-            );
-        } else {
-            // $constraints was empty or not an array...
+        $initial = \array_shift($constraints);
+
+        if ($initial === null) {
             return false;
         }
+
+        return \array_reduce(
+            $constraints,
+            static function (bool $matches, Constraint $constraint) use ($other): bool {
+                return $matches xor $constraint->evaluate($other, '', true);
+            },
+            $initial->evaluate($other, '', true)
+        );
     }
 }
