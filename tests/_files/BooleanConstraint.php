@@ -32,6 +32,10 @@ final class BooleanConstraint extends Constraint
 
     public function toString(): string
     {
-        return $this->matches ? 'true' : 'false';
+        if ($this->matches) {
+            return 'true';
+        }
+        
+        return 'false';
     }
 }
