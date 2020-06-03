@@ -221,7 +221,7 @@ abstract class ConnectiveTestCase extends OperatorTestCase
         $this->assertSame($expected, $constraint->toString());
     }
 
-    public function testToStringWithSingleOperand(): void
+    public function testToStringWithSingleNonContextualOperand(): void
     {
         $methods = [
             'arity',
@@ -230,49 +230,62 @@ abstract class ConnectiveTestCase extends OperatorTestCase
             'toString',
         ];
 
-        $operands = [
-            $this->getMockBuilder(Operator::class)
-                 ->setMethods($methods)
-                 ->getMockForAbstractClass(),
-            $this->getMockBuilder(Operator::class)
-                 ->setMethods($methods)
-                 ->getMockForAbstractClass(),
-        ];
+        $operand = $this->getMockBuilder(Operator::class)
+                        ->setMethods($methods)
+                        ->getMockForAbstractClass();
 
         $className = $this->className();
 
-        $operators = \array_map(function (Constraint $operand) use ($className) {
-            return $className::fromConstraints($operand);
-        }, $operands);
+        $operator = $className::fromConstraints($operand);
+
 
         // A non-contextual operator
-        $operands[0]->expects($this->never())
-                    ->method('arity');
-        $operands[0]->expects($this->never())
-                    ->method('precedence');
-        $operands[0]->expects($this->once())
-                    ->method('toStringInContext')
-                    ->with($this->identicalTo($operators[0]), 0)
-                    ->willReturn(null);
-        $operands[0]->expects($this->once())
-                    ->method('toString')
-                    ->with()
-                    ->willReturn('is the only');
+        $operand->expects($this->never())
+                ->method('arity');
+        $operand->expects($this->never())
+                ->method('precedence');
+        $operand->expects($this->once())
+                ->method('toStringInContext')
+                ->with($this->identicalTo($operator), 0)
+                ->willReturn(null);
+        $operand->expects($this->once())
+                ->method('toString')
+                ->with()
+                ->willReturn('is the only');
+
+        $this->assertSame('is the only', $operator->toString());
+    }
+
+    public function testToStringWithSingleContextualOperand(): void
+    {
+        $methods = [
+            'arity',
+            'precedence',
+            'toStringInContext',
+            'toString',
+        ];
+
+        $operand = $this->getMockBuilder(Operator::class)
+                        ->setMethods($methods)
+                        ->getMockForAbstractClass();
+
+        $className = $this->className();
+
+        $operator = $className::fromConstraints($operand);
 
         // A contextual operator
-        $operands[1]->expects($this->never())
+        $operand->expects($this->never())
                     ->method('arity');
-        $operands[1]->expects($this->never())
+        $operand->expects($this->never())
                     ->method('precedence');
-        $operands[1]->expects($this->once())
+        $operand->expects($this->once())
                     ->method('toStringInContext')
-                    ->with($this->identicalTo($operators[1]), 0)
+                    ->with($this->identicalTo($operator), 0)
                     ->willReturn('is at position zero');
-        $operands[1]->expects($this->never())
+        $operand->expects($this->never())
                     ->method('toString');
 
-        $this->assertSame('is the only', $operators[0]->toString());
-        $this->assertSame('is at position zero', $operators[1]->toString());
+        $this->assertSame('is at position zero', $operator->toString());
     }
 
     public function testToStringWithMultipleOperands(): void
@@ -388,7 +401,7 @@ abstract class ConnectiveTestCase extends OperatorTestCase
         $this->assertSame($expected, $constraint->toString());
     }
 
-    public function testFailureDescriptionWithSingleOperand(): void
+    public function testFailureDescriptionWithSingleNonContextualOperand(): void
     {
         $methods = [
             'arity',
@@ -397,52 +410,68 @@ abstract class ConnectiveTestCase extends OperatorTestCase
             'toString',
         ];
 
-        $operands = [
-            $this->getMockBuilder(Operator::class)
-                 ->setMethods($methods)
-                 ->getMockForAbstractClass(),
-            $this->getMockBuilder(Operator::class)
-                 ->setMethods($methods)
-                 ->getMockForAbstractClass(),
-        ];
+        $operand = $this->getMockBuilder(Operator::class)
+                        ->setMethods($methods)
+                        ->getMockForAbstractClass();
 
         $className = $this->className();
 
-        $operators = \array_map(function (Constraint $operand) use ($className) {
-            return $className::fromConstraints($operand);
-        }, $operands);
+        $operator = $className::fromConstraints($operand);
 
         // A non-contextual operator with toString()
-        $operands[0]->expects($this->never())
-                    ->method('arity');
-        $operands[0]->expects($this->never())
-                    ->method('precedence');
-        $operands[0]->expects($this->once())
-                    ->method('toStringInContext')
-                    ->with($this->identicalTo($operators[0]), 0)
-                    ->willReturn(null);
-        $operands[0]->expects($this->once())
-                    ->method('toString')
-                    ->with()
-                    ->willReturn('is the only');
+        $operand->expects($this->never())
+                ->method('arity');
+        $operand->expects($this->never())
+                ->method('precedence');
+        $operand->expects($this->once())
+                ->method('toStringInContext')
+                ->with($this->identicalTo($operator), 0)
+                ->willReturn(null);
+        $operand->expects($this->once())
+                ->method('toString')
+                ->with()
+                ->willReturn('is the only');
 
-        // A contextual operator with toStringInContext()
-        $operands[1]->expects($this->never())
-                    ->method('arity');
-        $operands[1]->expects($this->never())
-                    ->method('precedence');
-        $operands[1]->expects($this->once())
-                    ->method('toStringInContext')
-                    ->with($this->identicalTo($operators[1]), 0)
-                    ->willReturn('is at position zero');
-        $operands[1]->expects($this->never())
-                    ->method('toString');
 
         $method = new \ReflectionMethod($className, 'failureDescription');
         $method->setAccessible(true);
 
-        $this->assertSame("'whatever' is the only", $method->invoke($operators[0], 'whatever'));
-        $this->assertSame("'whatever' is at position zero", $method->invoke($operators[1], 'whatever'));
+        $this->assertSame("'whatever' is the only", $method->invoke($operator, 'whatever'));
+    }
+
+    public function testFailureDescriptionWithSingleContextualOperand(): void
+    {
+        $methods = [
+            'arity',
+            'precedence',
+            'toStringInContext',
+            'toString',
+        ];
+
+        $operand = $this->getMockBuilder(Operator::class)
+                        ->setMethods($methods)
+                        ->getMockForAbstractClass();
+
+        $className = $this->className();
+
+        $operator = $className::fromConstraints($operand);
+
+        // A contextual operator with toStringInContext()
+        $operand->expects($this->never())
+                ->method('arity');
+        $operand->expects($this->never())
+                ->method('precedence');
+        $operand->expects($this->once())
+                ->method('toStringInContext')
+                ->with($this->identicalTo($operator), 0)
+                ->willReturn('is at position zero');
+        $operand->expects($this->never())
+                ->method('toString');
+
+        $method = new \ReflectionMethod($className, 'failureDescription');
+        $method->setAccessible(true);
+
+        $this->assertSame("'whatever' is at position zero", $method->invoke($operator, 'whatever'));
     }
 
     public function testFailureDescriptionWithMultipleOperands(): void
