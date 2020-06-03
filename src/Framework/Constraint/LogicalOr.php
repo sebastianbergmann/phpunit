@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-/**
- * Logical OR.
- */
 final class LogicalOr extends Connective
 {
     /**
