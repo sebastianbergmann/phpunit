@@ -71,7 +71,6 @@ final class LogicalNotTest extends UnaryTestCase
         ];
 
         $constraints = \array_map(static function (string $name): \NamedConstraint {
-
             return \NamedConstraint::fromName($name);
         }, $names);
 
@@ -104,7 +103,6 @@ final class LogicalNotTest extends UnaryTestCase
         ];
 
         $constraints = \array_map(static function (string $name): \NamedConstraint {
-
             return \NamedConstraint::fromName($name);
         }, $names);
 
