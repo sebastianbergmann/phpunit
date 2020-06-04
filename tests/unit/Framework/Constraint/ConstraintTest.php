@@ -56,12 +56,12 @@ final class ConstraintTest extends ConstraintTestCase
                 return parent::failureDescription($other);
             }
 
-            final protected function toStringInContext(Operator $operator, int $position): ?string
+            final protected function toStringInContext(Operator $operator, int $position): string
             {
                 return parent::toStringInContext($operator, $position);
             }
 
-            final protected function failureDescriptionInContext(Operator $operator, int $position, $other): ?string
+            final protected function failureDescriptionInContext(Operator $operator, int $position, $other): string
             {
                 return parent::failureDescriptionInContext($operator, $position, $other);
             }
@@ -96,12 +96,12 @@ final class ConstraintTest extends ConstraintTestCase
                 return $this->failureDescription($other);
             }
 
-            final public function exposedToStringInContext(Operator $operator, int $position): ?string
+            final public function exposedToStringInContext(Operator $operator, int $position): string
             {
                 return $this->toStringInContext($operator, $position);
             }
 
-            final public function exposedFailureDescriptionInContext(Operator $operator, int $position, $other): ?string
+            final public function exposedFailureDescriptionInContext(Operator $operator, int $position, $other): string
             {
                 return $this->failureDescriptionInContext($operator, $position, $other);
             }
@@ -197,20 +197,20 @@ final class ConstraintTest extends ConstraintTestCase
         $this->assertSame("'whatever' is ok", $constraint->exposedFailureDescription('whatever'));
     }
 
-    public function testToStringInContextReturnsNull(): void
+    public function testToStringInContextReturnsEmptyString(): void
     {
         $constraint = $this->getDummyConstraintInstance();
         $operator   = $this->getMockBuilder(Operator::class)->getMockForAbstractClass();
 
-        $this->assertNull($constraint->exposedToStringInContext($operator, 0));
+        $this->assertSame('', $constraint->exposedToStringInContext($operator, 0));
     }
 
-    public function testFailureDescriptionInContextReturnsNull(): void
+    public function testFailureDescriptionInContextReturnsEmptyString(): void
     {
         $constraint = $this->getDummyConstraintInstance();
         $operator   = $this->getMockBuilder(Operator::class)->getMockForAbstractClass();
 
-        $this->assertNull($constraint->exposedFailureDescriptionInContext($operator, 0, 'whatever'));
+        $this->assertSame('', $constraint->exposedFailureDescriptionInContext($operator, 0, 'whatever'));
     }
 
     public function testReduceReturnsThis(): void

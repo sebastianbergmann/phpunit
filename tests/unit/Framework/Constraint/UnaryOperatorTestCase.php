@@ -93,7 +93,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
 
         $nice->expects($this->once())
              ->method('toStringInContext')
-             ->with($this->identicalTo($constraint), 1)
+             ->with($this->identicalTo($constraint), 0)
              ->willReturn($string);
 
         $this->assertSame($string, $constraint->toString());
@@ -189,8 +189,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
 
         $operand->expects($this->once())
                 ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 1)
-                ->willReturn(null);
+                ->with($this->identicalTo($operator), 0)
+                ->willReturn('');
         $operand->expects($this->once())
                 ->method('toString')
                 ->with()
@@ -218,7 +218,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
 
         $operand->expects($this->once())
                 ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 1)
+                ->with($this->identicalTo($operator), 0)
                 ->willReturn($string);
         $operand->expects($this->never())
                 ->method('toString');
@@ -253,7 +253,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
                 ->method('precedence');
         $operand->expects($this->once())
                 ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 1)
+                ->with($this->identicalTo($operator), 0)
                 ->willReturn($string);
         $operand->expects($this->never())
                 ->method('toString');
@@ -290,8 +290,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
                 ->willReturn(-1);
         $operand->expects($this->once())
                 ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 1)
-                ->willReturn(null);
+                ->with($this->identicalTo($operator), 0)
+                ->willReturn('');
         $operand->expects($this->once())
                 ->method('toString')
                 ->with()
@@ -329,7 +329,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
                 ->willReturn(-1);
         $operand->expects($this->once())
                 ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 1)
+                ->with($this->identicalTo($operator), 0)
                 ->willReturn($string);
         $operand->expects($this->never())
                 ->method('toString');
@@ -411,8 +411,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
 
         $operand->expects($this->once())
                 ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 1)
-                ->willReturn(null);
+                ->with($this->identicalTo($operator), 0)
+                ->willReturn('');
         $operand->expects($this->once())
                 ->method('toString')
                 ->with()
@@ -445,7 +445,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
 
         $operand->expects($this->once())
                 ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 1)
+                ->with($this->identicalTo($operator), 0)
                 ->willReturn($string);
         $operand->expects($this->never())
                 ->method('toString');
@@ -485,7 +485,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
                 ->method('precedence');
         $operand->expects($this->once())
                 ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 1)
+                ->with($this->identicalTo($operator), 0)
                 ->willReturn($string);
         $operand->expects($this->never())
                 ->method('toString');
@@ -527,8 +527,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
                 ->willReturn(-1);
         $operand->expects($this->once())
                 ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 1)
-                ->willReturn(null);
+                ->with($this->identicalTo($operator), 0)
+                ->willReturn('');
         $operand->expects($this->once())
                 ->method('toString')
                 ->with()
@@ -571,7 +571,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
                 ->willReturn(-1);
         $operand->expects($this->once())
                 ->method('toStringInContext')
-                ->with($this->identicalTo($operator), 1)
+                ->with($this->identicalTo($operator), 0)
                 ->willReturn($string);
         $operand->expects($this->never())
                 ->method('toString');
