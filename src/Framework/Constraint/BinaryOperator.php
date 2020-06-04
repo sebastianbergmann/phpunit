@@ -147,6 +147,10 @@ abstract class BinaryOperator extends Operator
 
         $string = $constraint->toStringInContext($this, $position);
 
-        return $prefix . ($string ?? $constraint->toString());
+        if ($string === '') {
+            $string = $constraint->toString();
+        }
+
+        return $prefix . $string;
     }
 }

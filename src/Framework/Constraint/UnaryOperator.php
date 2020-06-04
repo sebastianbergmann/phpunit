@@ -49,9 +49,9 @@ abstract class UnaryOperator extends Operator
             return $this->operator() . '( ' . $constraint->toString() . ' )';
         }
 
-        $string = $constraint->toStringInContext($this, 1);
+        $string = $constraint->toStringInContext($this, 0);
 
-        if ($string === null) {
+        if ($string === '') {
             return $this->transformString($constraint->toString());
         }
 
@@ -90,9 +90,9 @@ abstract class UnaryOperator extends Operator
             return $this->operator() . '( ' . $constraint->failureDescription($other) . ' )';
         }
 
-        $string = $constraint->failureDescriptionInContext($this, 1, $other);
+        $string = $constraint->failureDescriptionInContext($this, 0, $other);
 
-        if ($string === null) {
+        if ($string === '') {
             return $this->transformString($constraint->failureDescription($other));
         }
 

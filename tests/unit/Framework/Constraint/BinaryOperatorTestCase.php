@@ -302,7 +302,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $constraints[0]->expects($this->once())
                        ->method('toStringInContext')
                        ->with($this->identicalTo($constraint), 0)
-                       ->willReturn(null);
+                       ->willReturn('');
         $constraints[0]->expects($this->once())
                        ->method('toString')
                        ->with()
@@ -328,7 +328,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $constraints[2]->expects($this->once())
                        ->method('toStringInContext')
                        ->with($this->identicalTo($constraint), 2)
-                       ->willReturn(null);
+                       ->willReturn('');
         $constraints[2]->expects($this->once())
                        ->method('toString')
                        ->with()
@@ -450,7 +450,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $constraints[0]->expects($this->once())
                        ->method('toStringInContext')
                        ->with($this->identicalTo($constraint), 0)
-                       ->willReturn(null);
+                       ->willReturn('');
         $constraints[0]->expects($this->once())
                        ->method('toString')
                        ->with()
@@ -476,7 +476,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $constraints[2]->expects($this->once())
                        ->method('toStringInContext')
                        ->with($this->identicalTo($constraint), 2)
-                       ->willReturn(null);
+                       ->willReturn('');
         $constraints[2]->expects($this->once())
                        ->method('toString')
                        ->with()

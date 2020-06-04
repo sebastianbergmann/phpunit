@@ -157,49 +157,44 @@ abstract class Constraint implements \Countable, SelfDescribing
      * Returns a custom string representation of the constraint object when it
      * appears in context of an $operator expression
      *
-     * The purpose of this method is to provide meaningful messages in context
-     * of operators such as LogicalNot. Native PHPUnit constraints are supported
-     * out of the box by LogicalNot, but externally developed ones had no way to
-     * provide correct messages in this context.
+     * The purpose of this method is to provide meaningful descriptive string
+     * in context of operators such as LogicalNot. Native PHPUnit constraints
+     * are supported out of the box by LogicalNot, but externally developed
+     * ones had no way to provide correct strings in this context.
      *
-     * The method shall return null, if there is no need for customization in the
-     * context of given $operator. The $position starts with 0 for connective
-     * operators, but for unary operator, such as "not" operator, it equals 1 to
-     * denote that this constraint is on the right hand side of the $operator.
+     * The method shall return empty string, when it does not handle
+     * customization by itself.
      *
      * @param Operator $operator the $operator of the expression
      * @param int      $position position in $operator expression
      */
-    protected function toStringInContext(Operator $operator, int $position): ?string
+    protected function toStringInContext(Operator $operator, int $position): string
     {
-        return null;
+        return '';
     }
 
     /**
      * Returns the description of the failure when this constraint appears in
      * context of an $operator expression
      *
-     * The purpose of this method is to provide meaningful messages in context
-     * of operators such as LogicalNot. Native PHPUnit constraints are supported
-     * out of the box by LogicalNot, but externally developed ones had no way to
-     * provide correct messages in this context.
+     * The purpose of this method is to provide meaningful failue description
+     * in context of operators such as LogicalNot. Native PHPUnit constraints
+     * are supported out of the box by LogicalNot, but externally developed
+     * ones had no way to provide correct messages in this context.
      *
-     * The method shall return null, if there is no need for customization in
-     * the context of given $operator. The $position starts with 0 for
-     * connective operators, but for unary operator, such as "not" operator, it
-     * equals 1 to denote that this constraint is on the right hand side of the
-     * $operator.
+     * The method shall return empty string, when it does not handle
+     * customization by itself.
      *
      * @param Operator $operator the $operator of the expression
      * @param int      $position position in $operator expression
      * @param mixed    $other    evaluated value or object
      */
-    protected function failureDescriptionInContext(Operator $operator, int $position, $other): ?string
+    protected function failureDescriptionInContext(Operator $operator, int $position, $other): string
     {
         $string = $this->toStringInContext($operator, $position);
 
-        if ($string === null) {
-            return null;
+        if ($string === '') {
+            return '';
         }
 
         return $this->exporter()->export($other) . ' ' . $string;
