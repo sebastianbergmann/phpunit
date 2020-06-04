@@ -21,7 +21,7 @@ abstract class Connective extends Operator
      */
     private $constraints = [];
 
-    final public static function fromConstraints(Constraint ...$constraints): self
+    public static function fromConstraints(Constraint ...$constraints): self
     {
         $constraint = new static;
 
@@ -33,7 +33,7 @@ abstract class Connective extends Operator
     /**
      * @param mixed[] $constraints
      */
-    final public function setConstraints(array $constraints): void
+    public function setConstraints(array $constraints): void
     {
         $this->constraints = \array_map(function ($constraint): Constraint {
             return $this->checkConstraint($constraint);
@@ -51,7 +51,7 @@ abstract class Connective extends Operator
     /**
      * Returns a string representation of the constraint.
      */
-    final public function toString(): string
+    public function toString(): string
     {
         $text = '';
 
@@ -65,7 +65,7 @@ abstract class Connective extends Operator
     /**
      * Counts the number of constraint elements.
      */
-    final public function count(): int
+    public function count(): int
     {
         $count = 0;
 
