@@ -114,8 +114,10 @@ final class LogicalNot extends UnaryOperator
      */
     protected function reduce(): Constraint
     {
-        if ($this->constraint() instanceof self) {
-            return $this->constraint()->constraint()->reduce();
+        $constraint = $this->constraint();
+
+        if ($constraint instanceof self) {
+            return $constraint->constraint()->reduce();
         }
 
         return parent::reduce();
