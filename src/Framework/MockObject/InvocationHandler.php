@@ -181,7 +181,7 @@ final class InvocationHandler
         if (\count($result) > 1) {
             throw new RuntimeException(
                 \sprintf(
-                    'Non unique mocked method invocation: %s::%s',
+                    'More than one invocation handler has been configured for %s::%s()',
                     $invocation->getClassName(),
                     $invocation->getMethodName()
                 )

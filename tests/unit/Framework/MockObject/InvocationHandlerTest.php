@@ -53,7 +53,7 @@ class InvocationHandlerTest extends TestCase
             ->willReturn('result');
 
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Non unique mocked method invocation: stdClass::foo');
+        $this->expectExceptionMessage('More than one invocation handler has been configured for stdClass::foo()');
 
         $mock->foo();
     }
