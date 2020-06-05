@@ -166,9 +166,9 @@ abstract class Constraint implements \Countable, SelfDescribing
      * customization by itself.
      *
      * @param Operator $operator the $operator of the expression
-     * @param int      $position position in $operator expression
+     * @param mixed    $role     role of $this constraint in the $operator expression
      */
-    protected function toStringInContext(Operator $operator, int $position): string
+    protected function toStringInContext(Operator $operator, $role): string
     {
         return '';
     }
@@ -186,12 +186,12 @@ abstract class Constraint implements \Countable, SelfDescribing
      * customization by itself.
      *
      * @param Operator $operator the $operator of the expression
-     * @param int      $position position in $operator expression
+     * @param mixed    $role     role of $this constraint in the $operator expression
      * @param mixed    $other    evaluated value or object
      */
-    protected function failureDescriptionInContext(Operator $operator, int $position, $other): string
+    protected function failureDescriptionInContext(Operator $operator, $role, $other): string
     {
-        $string = $this->toStringInContext($operator, $position);
+        $string = $this->toStringInContext($operator, $role);
 
         if ($string === '') {
             return '';

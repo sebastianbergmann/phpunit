@@ -56,14 +56,14 @@ final class ConstraintTest extends ConstraintTestCase
                 return parent::failureDescription($other);
             }
 
-            final protected function toStringInContext(Operator $operator, int $position): string
+            final protected function toStringInContext(Operator $operator, $role): string
             {
-                return parent::toStringInContext($operator, $position);
+                return parent::toStringInContext($operator, $role);
             }
 
-            final protected function failureDescriptionInContext(Operator $operator, int $position, $other): string
+            final protected function failureDescriptionInContext(Operator $operator, $role, $other): string
             {
-                return parent::failureDescriptionInContext($operator, $position, $other);
+                return parent::failureDescriptionInContext($operator, $role, $other);
             }
 
             final public function exposedMatches($other): bool
@@ -96,14 +96,14 @@ final class ConstraintTest extends ConstraintTestCase
                 return $this->failureDescription($other);
             }
 
-            final public function exposedToStringInContext(Operator $operator, int $position): string
+            final public function exposedToStringInContext(Operator $operator, $role): string
             {
-                return $this->toStringInContext($operator, $position);
+                return $this->toStringInContext($operator, $role);
             }
 
-            final public function exposedFailureDescriptionInContext(Operator $operator, int $position, $other): string
+            final public function exposedFailureDescriptionInContext(Operator $operator, $role, $other): string
             {
-                return $this->failureDescriptionInContext($operator, $position, $other);
+                return $this->failureDescriptionInContext($operator, $role, $other);
             }
         };
     }
