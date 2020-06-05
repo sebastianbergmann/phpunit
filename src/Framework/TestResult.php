@@ -790,6 +790,8 @@ final class TestResult implements \Countable
                     ),
                     $time
                 );
+
+                $risky = true;
             }
         }
 
