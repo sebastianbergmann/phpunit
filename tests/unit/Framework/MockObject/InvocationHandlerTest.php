@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
 class InvocationHandlerTest extends TestCase
@@ -53,8 +52,8 @@ class InvocationHandlerTest extends TestCase
             ->with('bar')
             ->willReturn('result');
 
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Non unique mocked method invocation: stdClass::foo');
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('More than one invocation handler has been configured for stdClass::foo()');
 
         $mock->foo();
     }

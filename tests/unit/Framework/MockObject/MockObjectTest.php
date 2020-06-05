@@ -1059,7 +1059,7 @@ final class MockObjectTest extends TestCase
             ->disableAutoReturnValueGeneration()
             ->getMock();
 
-        $this->expectException(ExpectationFailedException::class);
+        $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
             'Return value inference disabled and no expectation set up for SomeClass::doSomethingElse()'
         );
@@ -1079,7 +1079,7 @@ final class MockObjectTest extends TestCase
         try {
             $mock->__phpunit_verify();
             $this->fail('Exception expected');
-        } catch (ExpectationFailedException $e) {
+        } catch (RuntimeException $e) {
             $this->assertSame(
                 'Return value inference disabled and no expectation set up for StringableClass::__toString()',
                 $e->getMessage()
