@@ -778,7 +778,10 @@ final class TestResult implements \Countable
         if ($this->forceCoversAnnotation) {
             $annotations = $test->getAnnotations();
 
-            if (!isset($annotations['class']['covers']) && !isset($annotations['method']['covers'])) {
+            if (!isset($annotations['class']['covers']) &&
+                !isset($annotations['method']['covers']) &&
+                !isset($annotations['class']['coversNothing']) &&
+                !isset($annotations['method']['coversNothing'])) {
                 $this->addFailure(
                     $test,
                     new MissingCoversAnnotationException(
