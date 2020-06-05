@@ -775,7 +775,7 @@ final class TestResult implements \Countable
             $risky = true;
         }
 
-        if ($this->forceCoversAnnotation) {
+        if ($this->forceCoversAnnotation && !$incomplete && !$skipped) {
             $annotations = $test->getAnnotations();
 
             if (!isset($annotations['class']['covers']) &&
@@ -789,6 +789,8 @@ final class TestResult implements \Countable
                     ),
                     $time
                 );
+
+                $risky = true;
             }
         }
 
