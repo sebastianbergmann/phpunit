@@ -524,8 +524,7 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($codeCoverageReports > 0) {
-            $codeCoverage = new CodeCoverage(
-                null,
+            $codeCoverage = CodeCoverage::createWithFilter(
                 $this->codeCoverageFilter
             );
 

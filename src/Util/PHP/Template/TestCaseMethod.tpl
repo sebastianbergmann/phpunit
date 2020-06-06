@@ -37,8 +37,7 @@ function __phpunit_run_isolated_test()
 
     if ({collectCodeCoverageInformation}) {
         $result->setCodeCoverage(
-            new CodeCoverage(
-                null,
+            CodeCoverage::createWithFilter(
                 unserialize('{codeCoverageFilter}')
             )
         );

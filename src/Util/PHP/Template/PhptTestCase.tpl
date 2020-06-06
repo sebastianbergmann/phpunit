@@ -24,7 +24,7 @@ if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
 }
 
 if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
-    $coverage = new CodeCoverage(null);
+    $coverage = new CodeCoverage::create();
 
     $coverage->start(__FILE__);
 }
