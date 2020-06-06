@@ -29,7 +29,8 @@ if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
     $coverage->start(__FILE__);
 }
 
-register_shutdown_function(function() use ($coverage) {
+register_shutdown_function(
+    function() use ($coverage) {
         $output = null;
 
         if ($coverage) {
