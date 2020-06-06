@@ -27,22 +27,22 @@
       <code>Assert::fileExists(...\func_get_args())</code>
     </TooManyArguments>
   </file>
-  <file src="src/Framework/Constraint/ExceptionCode.php">
+  <file src="src/Framework/Constraint/Exception/ExceptionCode.php">
     <MoreSpecificImplementedParamType occurrences="1">
       <code>$other</code>
     </MoreSpecificImplementedParamType>
   </file>
-  <file src="src/Framework/Constraint/ExceptionMessage.php">
+  <file src="src/Framework/Constraint/Exception/ExceptionMessage.php">
     <MoreSpecificImplementedParamType occurrences="1">
       <code>$other</code>
     </MoreSpecificImplementedParamType>
   </file>
-  <file src="src/Framework/Constraint/ExceptionMessageRegularExpression.php">
+  <file src="src/Framework/Constraint/Exception/ExceptionMessageRegularExpression.php">
     <MoreSpecificImplementedParamType occurrences="1">
       <code>$other</code>
     </MoreSpecificImplementedParamType>
   </file>
-  <file src="src/Framework/Constraint/IsInstanceOf.php">
+  <file src="src/Framework/Constraint/Type/IsInstanceOf.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$this-&gt;className</code>
     </ArgumentTypeCoercion>
