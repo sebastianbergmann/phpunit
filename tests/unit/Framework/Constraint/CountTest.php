@@ -174,6 +174,32 @@ EOF
         }
     }
 
+    public function testCachedActualCountFailureDescriptionForGenerators(): void
+    {
+        // Generators can only be iterated over once and cannot be cloned.
+        // Validate actual count is cached for failure message
+        $generator = static function () {
+            yield 1;
+
+            yield 2;
+
+            yield 3;
+        };
+
+        try {
+            $this->assertCount(4, $generator());
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<EOF
+Failed asserting that actual size 3 matches expected size 4.
+
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+        }
+    }
+
     /**
      * @ticket https://github.com/sebastianbergmann/phpunit/issues/3743
      */

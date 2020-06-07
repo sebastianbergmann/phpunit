@@ -22,6 +22,15 @@ class Count extends Constraint
      */
     private $expectedCount;
 
+    /**
+     * Cache the actual count value for use in the failure
+     * description for things like generators that cannot be
+     * cloned and can only be iterated once
+     *
+     * @var int
+     */
+    private $actualCount;
+
     public function __construct(int $expected)
     {
         $this->expectedCount = $expected;
@@ -41,7 +50,9 @@ class Count extends Constraint
      */
     protected function matches($other): bool
     {
-        return $this->expectedCount === $this->getCountOf($other);
+        $this->actualCount = $this->getCountOf($other);
+
+        return $this->expectedCount === $this->actualCount;
     }
 
     /**
@@ -116,7 +127,7 @@ class Count extends Constraint
     {
         return \sprintf(
             'actual size %d matches expected size %d',
-            $this->getCountOf($other),
+            $this->actualCount,
             $this->expectedCount
         );
     }
