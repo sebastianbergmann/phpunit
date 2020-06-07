@@ -44,7 +44,7 @@
         "sebastian/diff": "^4.0",
         "sebastian/environment": "^5.0.1",
         "sebastian/exporter": "^4.0",
-        "sebastian/global-state": "^4.0",
+        "sebastian/global-state": "^5.0",
         "sebastian/object-enumerator": "^4.0",
         "sebastian/resource-operations": "^3.0",
         "sebastian/type": "^2.1",
