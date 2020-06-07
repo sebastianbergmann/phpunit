@@ -27,7 +27,7 @@ class Count extends Constraint
      * description for things like generators that cannot be
      * cloned and can only be iterated once
      *
-     * @var int|null
+     * @var null|int
      */
     private $actualCount;
 
@@ -126,8 +126,8 @@ class Count extends Constraint
     protected function failureDescription($other): string
     {
         return \sprintf(
-            'actual size %s matches expected size %d',
-            $this->actualCount ?? 'null',
+            'actual size %d matches expected size %d',
+            $this->actualCount ?? 0,
             $this->expectedCount
         );
     }
