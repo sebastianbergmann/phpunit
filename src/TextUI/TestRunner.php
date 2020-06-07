@@ -482,7 +482,7 @@ final class TestRunner extends BaseTestRunner
                 }
 
                 foreach ($whitelistDirectories as $whitelistDirectory) {
-                    $this->codeCoverageFilter->addDirectoryToWhitelist($whitelistDirectory);
+                    $this->codeCoverageFilter->includeDirectory($whitelistDirectory);
                 }
 
                 $whitelistFromOption = true;
@@ -497,7 +497,7 @@ final class TestRunner extends BaseTestRunner
                     $whitelistFromConfigurationFile = true;
 
                     foreach ($filterConfiguration->directories() as $directory) {
-                        $this->codeCoverageFilter->addDirectoryToWhitelist(
+                        $this->codeCoverageFilter->includeDirectory(
                             $directory->path(),
                             $directory->suffix(),
                             $directory->prefix()
@@ -505,11 +505,11 @@ final class TestRunner extends BaseTestRunner
                     }
 
                     foreach ($filterConfiguration->files() as $file) {
-                        $this->codeCoverageFilter->addFileToWhitelist($file->path());
+                        $this->codeCoverageFilter->includeFile($file->path());
                     }
 
                     foreach ($filterConfiguration->excludeDirectories() as $directory) {
-                        $this->codeCoverageFilter->removeDirectoryFromWhitelist(
+                        $this->codeCoverageFilter->excludeDirectory(
                             $directory->path(),
                             $directory->suffix(),
                             $directory->prefix()
@@ -517,7 +517,7 @@ final class TestRunner extends BaseTestRunner
                     }
 
                     foreach ($filterConfiguration->excludeFiles() as $file) {
-                        $this->codeCoverageFilter->removeFileFromWhitelist($file->path());
+                        $this->codeCoverageFilter->excludeFile($file->path());
                     }
                 }
             }
@@ -528,26 +528,26 @@ final class TestRunner extends BaseTestRunner
                 $this->codeCoverageFilter
             );
 
-            $codeCoverage->setUnintentionallyCoveredSubclassesWhitelist(
-                [Comparator::class]
-            );
+            $codeCoverage->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
 
-            $codeCoverage->setCheckForUnintentionallyCoveredCode(
-                $arguments['strictCoverage']
-            );
-
-            $codeCoverage->setCheckForMissingCoversAnnotation(
-                $arguments['strictCoverage']
-            );
-
-            if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
-                $codeCoverage->setIgnoreDeprecatedCode(
-                    $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']
-                );
+            if ($arguments['strictCoverage']) {
+                $codeCoverage->enableCheckForUnintentionallyCoveredCode();
             }
 
-            if (isset($arguments['disableCodeCoverageIgnore']) && $arguments['disableCodeCoverageIgnore'] === true) {
-                $codeCoverage->setDisableIgnoredLines(true);
+            if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
+                if ($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']) {
+                    $codeCoverage->ignoreDeprecatedCode();
+                } else {
+                    $codeCoverage->doNotIgnoreDeprecatedCode();
+                }
+            }
+
+            if (isset($arguments['disableCodeCoverageIgnore'])) {
+                if ($arguments['disableCodeCoverageIgnore']) {
+                    $codeCoverage->disableAnnotationsForIgnoringCode();
+                } else {
+                    $codeCoverage->enableAnnotationsForIgnoringCode();
+                }
             }
 
             if (isset($arguments['configuration'])) {
@@ -556,17 +556,21 @@ final class TestRunner extends BaseTestRunner
                 $filterConfiguration = $arguments['configuration']->filter();
 
                 if ($filterConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-                    $codeCoverage->setAddUncoveredFilesFromWhitelist(
-                        $filterConfiguration->includeUncoveredFilesInCodeCoverageReport()
-                    );
+                    if ($filterConfiguration->includeUncoveredFilesInCodeCoverageReport()) {
+                        $codeCoverage->includeUncoveredFiles();
+                    } else {
+                        $codeCoverage->excludeUncoveredFiles();
+                    }
 
-                    $codeCoverage->setProcessUncoveredFilesFromWhitelist(
-                        $filterConfiguration->processUncoveredFilesForCodeCoverageReport()
-                    );
+                    if ($filterConfiguration->processUncoveredFilesForCodeCoverageReport()) {
+                        $codeCoverage->processUncoveredFiles();
+                    } else {
+                        $codeCoverage->doNotProcessUncoveredFiles();
+                    }
                 }
             }
 
-            if (!$this->codeCoverageFilter->hasWhitelist()) {
+            if ($this->codeCoverageFilter->isEmpty()) {
                 if (!$whitelistFromConfigurationFile && !$whitelistFromOption) {
                     $this->writeMessage('Error', 'No whitelist is configured, no code coverage will be generated.');
                 } else {
@@ -603,7 +607,11 @@ final class TestRunner extends BaseTestRunner
             $result->setCodeCoverage($codeCoverage);
 
             if ($codeCoverageReports > 1 && isset($arguments['cacheTokens'])) {
-                $codeCoverage->setCacheTokens($arguments['cacheTokens']);
+                if ($arguments['cacheTokens']) {
+                    $codeCoverage->enableTokenCaching();
+                } else {
+                    $codeCoverage->disableTokenCaching();
+                }
             }
         }
 

@@ -644,7 +644,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      *
      * @throws CodeCoverageException
      * @throws UtilException
-     * @throws \SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException

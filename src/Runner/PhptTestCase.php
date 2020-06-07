@@ -102,7 +102,6 @@ final class PhptTestCase implements SelfDescribing, Test
      * Runs a test and collects its result in a TestResult instance.
      *
      * @throws Exception
-     * @throws \SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -174,7 +173,7 @@ final class PhptTestCase implements SelfDescribing, Test
         $this->output = $jobResult['stdout'] ?? '';
 
         if ($result->getCollectCodeCoverageInformation() && ($coverage = $this->cleanupForCoverage())) {
-            $result->getCodeCoverage()->append($coverage, $this, true, [], [], true);
+            $result->getCodeCoverage()->append($coverage, $this, true, [], []);
         }
 
         try {

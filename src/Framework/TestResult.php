@@ -15,7 +15,6 @@ use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Test as TestUtil;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\CoveredCodeNotExecutedException as OriginalCoveredCodeNotExecutedException;
 use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Invoker\Invoker;
@@ -599,7 +598,6 @@ final class TestResult implements \Countable
      * Runs a TestCase.
      *
      * @throws CodeCoverageException
-     * @throws OriginalCoveredCodeNotExecutedException
      * @throws UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -832,15 +830,6 @@ final class TestResult implements \Countable
                     $test,
                     new UnintentionallyCoveredCodeError(
                         'This test executed code that is not listed as code to be covered or used:' .
-                        \PHP_EOL . $cce->getMessage()
-                    ),
-                    $time
-                );
-            } catch (OriginalCoveredCodeNotExecutedException $cce) {
-                $this->addFailure(
-                    $test,
-                    new CoveredCodeNotExecutedException(
-                        'This test did not execute all the code that is listed as code to be covered:' .
                         \PHP_EOL . $cce->getMessage()
                     ),
                     $time
