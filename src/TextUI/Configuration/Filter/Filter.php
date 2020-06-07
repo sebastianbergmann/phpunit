@@ -38,24 +38,24 @@ final class Filter
     /**
      * @var bool
      */
-    private $addUncoveredFilesFromWhitelist;
+    private $includeUncoveredFilesInCodeCoverageReport;
 
     /**
      * @var bool
      */
-    private $processUncoveredFilesFromWhitelist;
+    private $processUncoveredFilesForCodeCoverageReport;
 
-    public function __construct(FilterDirectoryCollection $directories, FilterFileCollection $files, FilterDirectoryCollection $excludeDirectories, FilterFileCollection $excludeFiles, bool $addUncoveredFilesFromWhitelist, bool $processUncoveredFilesFromWhitelist)
+    public function __construct(FilterDirectoryCollection $directories, FilterFileCollection $files, FilterDirectoryCollection $excludeDirectories, FilterFileCollection $excludeFiles, bool $includeUncoveredFilesInCodeCoverageReport, bool $processUncoveredFilesForCodeCoverageReport)
     {
-        $this->directories                        = $directories;
-        $this->files                              = $files;
-        $this->excludeDirectories                 = $excludeDirectories;
-        $this->excludeFiles                       = $excludeFiles;
-        $this->addUncoveredFilesFromWhitelist     = $addUncoveredFilesFromWhitelist;
-        $this->processUncoveredFilesFromWhitelist = $processUncoveredFilesFromWhitelist;
+        $this->directories                                = $directories;
+        $this->files                                      = $files;
+        $this->excludeDirectories                         = $excludeDirectories;
+        $this->excludeFiles                               = $excludeFiles;
+        $this->includeUncoveredFilesInCodeCoverageReport  = $includeUncoveredFilesInCodeCoverageReport;
+        $this->processUncoveredFilesForCodeCoverageReport = $processUncoveredFilesForCodeCoverageReport;
     }
 
-    public function hasNonEmptyWhitelist(): bool
+    public function hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport(): bool
     {
         return \count($this->directories) > 0 || \count($this->files) > 0;
     }
@@ -80,13 +80,13 @@ final class Filter
         return $this->excludeFiles;
     }
 
-    public function addUncoveredFilesFromWhitelist(): bool
+    public function includeUncoveredFilesInCodeCoverageReport(): bool
     {
-        return $this->addUncoveredFilesFromWhitelist;
+        return $this->includeUncoveredFilesInCodeCoverageReport;
     }
 
-    public function processUncoveredFilesFromWhitelist(): bool
+    public function processUncoveredFilesForCodeCoverageReport(): bool
     {
-        return $this->processUncoveredFilesFromWhitelist;
+        return $this->processUncoveredFilesForCodeCoverageReport;
     }
 }

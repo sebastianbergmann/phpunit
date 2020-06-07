@@ -323,8 +323,8 @@ final class Loader
 
     private function filter(string $filename, \DOMXPath $xpath): Filter
     {
-        $addUncoveredFilesFromWhitelist     = true;
-        $processUncoveredFilesFromWhitelist = false;
+        $includeUncoveredFilesInCodeCoverageReport  = true;
+        $processUncoveredFilesForCodeCoverageReport = false;
 
         $nodes = $xpath->query('filter/whitelist');
 
@@ -334,14 +334,14 @@ final class Loader
             \assert($node instanceof \DOMElement);
 
             if ($node->hasAttribute('addUncoveredFilesFromWhitelist')) {
-                $addUncoveredFilesFromWhitelist = (bool) $this->getBoolean(
+                $includeUncoveredFilesInCodeCoverageReport = (bool) $this->getBoolean(
                     (string) $node->getAttribute('addUncoveredFilesFromWhitelist'),
                     true
                 );
             }
 
             if ($node->hasAttribute('processUncoveredFilesFromWhitelist')) {
-                $processUncoveredFilesFromWhitelist = (bool) $this->getBoolean(
+                $processUncoveredFilesForCodeCoverageReport = (bool) $this->getBoolean(
                     (string) $node->getAttribute('processUncoveredFilesFromWhitelist'),
                     false
                 );
@@ -353,8 +353,8 @@ final class Loader
             $this->readFilterFiles($filename, $xpath, 'filter/whitelist/file'),
             $this->readFilterDirectories($filename, $xpath, 'filter/whitelist/exclude/directory'),
             $this->readFilterFiles($filename, $xpath, 'filter/whitelist/exclude/file'),
-            $addUncoveredFilesFromWhitelist,
-            $processUncoveredFilesFromWhitelist
+            $includeUncoveredFilesInCodeCoverageReport,
+            $processUncoveredFilesForCodeCoverageReport
         );
     }
 

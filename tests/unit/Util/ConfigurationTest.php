@@ -162,8 +162,8 @@ final class ConfigurationTest extends TestCase
     {
         $filter = $this->configuration->filter();
 
-        $this->assertTrue($filter->addUncoveredFilesFromWhitelist());
-        $this->assertFalse($filter->processUncoveredFilesFromWhitelist());
+        $this->assertTrue($filter->includeUncoveredFilesInCodeCoverageReport());
+        $this->assertFalse($filter->processUncoveredFilesForCodeCoverageReport());
 
         /** @var FilterDirectory $directory */
         $directory = \iterator_to_array($filter->directories(), false)[0];

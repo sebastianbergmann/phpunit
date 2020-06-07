@@ -493,7 +493,7 @@ final class TestRunner extends BaseTestRunner
 
                 $filterConfiguration = $arguments['configuration']->filter();
 
-                if ($filterConfiguration->hasNonEmptyWhitelist()) {
+                if ($filterConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
                     $whitelistFromConfigurationFile = true;
 
                     foreach ($filterConfiguration->directories() as $directory) {
@@ -555,13 +555,13 @@ final class TestRunner extends BaseTestRunner
 
                 $filterConfiguration = $arguments['configuration']->filter();
 
-                if ($filterConfiguration->hasNonEmptyWhitelist()) {
+                if ($filterConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
                     $codeCoverage->setAddUncoveredFilesFromWhitelist(
-                        $filterConfiguration->addUncoveredFilesFromWhitelist()
+                        $filterConfiguration->includeUncoveredFilesInCodeCoverageReport()
                     );
 
                     $codeCoverage->setProcessUncoveredFilesFromWhitelist(
-                        $filterConfiguration->processUncoveredFilesFromWhitelist()
+                        $filterConfiguration->processUncoveredFilesForCodeCoverageReport()
                     );
                 }
             }
@@ -1041,7 +1041,6 @@ final class TestRunner extends BaseTestRunner
 
         unset($extensionHandler);
 
-        $arguments['addUncoveredFilesFromWhitelist']                  = $arguments['addUncoveredFilesFromWhitelist'] ?? true;
         $arguments['backupGlobals']                                   = $arguments['backupGlobals'] ?? null;
         $arguments['backupStaticAttributes']                          = $arguments['backupStaticAttributes'] ?? null;
         $arguments['beStrictAboutChangesToGlobalState']               = $arguments['beStrictAboutChangesToGlobalState'] ?? null;
@@ -1067,9 +1066,10 @@ final class TestRunner extends BaseTestRunner
         $arguments['failOnSkipped']                                   = $arguments['failOnSkipped'] ?? false;
         $arguments['failOnWarning']                                   = $arguments['failOnWarning'] ?? false;
         $arguments['groups']                                          = $arguments['groups'] ?? [];
+        $arguments['includeUncoveredFilesInCodeCoverageReport']       = $arguments['includeUncoveredFilesInCodeCoverageReport'] ?? true;
         $arguments['noInteraction']                                   = $arguments['noInteraction'] ?? false;
         $arguments['processIsolation']                                = $arguments['processIsolation'] ?? false;
-        $arguments['processUncoveredFilesFromWhitelist']              = $arguments['processUncoveredFilesFromWhitelist'] ?? false;
+        $arguments['processUncoveredFilesForCodeCoverageReport']      = $arguments['processUncoveredFilesForCodeCoverageReport'] ?? false;
         $arguments['randomOrderSeed']                                 = $arguments['randomOrderSeed'] ?? \time();
         $arguments['registerMockObjectsFromTestArgumentsRecursively'] = $arguments['registerMockObjectsFromTestArgumentsRecursively'] ?? false;
         $arguments['repeat']                                          = $arguments['repeat'] ?? false;

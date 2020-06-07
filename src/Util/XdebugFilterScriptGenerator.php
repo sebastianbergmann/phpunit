@@ -25,7 +25,7 @@ final class XdebugFilterScriptGenerator
                     $item
                 );
             },
-            $this->getWhitelistItems($filter)
+            $this->getItems($filter)
         );
 
         $files = \implode(",\n", $files);
@@ -47,7 +47,7 @@ $files
 EOF;
     }
 
-    private function getWhitelistItems(FilterConfiguration $filter): array
+    private function getItems(FilterConfiguration $filter): array
     {
         $files = [];
 
