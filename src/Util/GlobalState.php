@@ -42,9 +42,9 @@ final class GlobalState
      */
     public static function processIncludedFilesAsString(array $files): string
     {
-        $blacklist = new Blacklist;
-        $prefix    = false;
-        $result    = '';
+        $excludeList = new ExcludeList;
+        $prefix      = false;
+        $result      = '';
 
         if (\defined('__PHPUNIT_PHAR__')) {
             $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
@@ -53,8 +53,8 @@ final class GlobalState
         for ($i = \count($files) - 1; $i > 0; $i--) {
             $file = $files[$i];
 
-            if (!empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST']) &&
-                \in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'])) {
+            if (!empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) &&
+                \in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'])) {
                 continue;
             }
 
@@ -67,7 +67,7 @@ final class GlobalState
                 continue;
             }
 
-            if (!$blacklist->isBlacklisted($file) && \is_file($file)) {
+            if (!$excludeList->isExcluded($file) && \is_file($file)) {
                 $result = 'require_once \'' . $file . "';\n" . $result;
             }
         }
@@ -130,11 +130,11 @@ final class GlobalState
             }
         }
 
-        $blacklist   = self::SUPER_GLOBAL_ARRAYS;
-        $blacklist[] = 'GLOBALS';
+        $excludeList   = self::SUPER_GLOBAL_ARRAYS;
+        $excludeList[] = 'GLOBALS';
 
         foreach (\array_keys($GLOBALS) as $key) {
-            if (!$GLOBALS[$key] instanceof \Closure && !\in_array($key, $blacklist, true)) {
+            if (!$GLOBALS[$key] instanceof \Closure && !\in_array($key, $excludeList, true)) {
                 $result .= \sprintf(
                     '$GLOBALS[\'%s\'] = %s;' . "\n",
                     $key,

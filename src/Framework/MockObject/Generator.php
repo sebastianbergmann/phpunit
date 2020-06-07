@@ -22,7 +22,7 @@ final class Generator
     /**
      * @var array
      */
-    private const BLACKLISTED_METHOD_NAMES = [
+    private const EXCLUDED_METHOD_NAMES = [
         '__CLASS__'       => true,
         '__DIR__'         => true,
         '__FILE__'        => true,
@@ -899,12 +899,12 @@ final class Generator
 
     private function canMockMethod(\ReflectionMethod $method): bool
     {
-        return !($this->isConstructor($method) || $method->isFinal() || $method->isPrivate() || $this->isMethodNameBlacklisted($method->getName()));
+        return !($this->isConstructor($method) || $method->isFinal() || $method->isPrivate() || $this->isMethodNameExcluded($method->getName()));
     }
 
-    private function isMethodNameBlacklisted(string $name): bool
+    private function isMethodNameExcluded(string $name): bool
     {
-        return isset(self::BLACKLISTED_METHOD_NAMES[$name]);
+        return isset(self::EXCLUDED_METHOD_NAMES[$name]);
     }
 
     private function getTemplate(string $template): Template

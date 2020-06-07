@@ -49,11 +49,11 @@ final class Filter
             );
         }
 
-        $prefix    = \defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
-        $blacklist = new Blacklist;
+        $prefix      = \defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
+        $excludeList = new ExcludeList;
 
         foreach ($eTrace as $frame) {
-            if (self::shouldPrintFrame($frame, $prefix, $blacklist)) {
+            if (self::shouldPrintFrame($frame, $prefix, $excludeList)) {
                 $filteredStacktrace .= \sprintf(
                     "%s:%s\n",
                     $frame['file'],
@@ -68,7 +68,7 @@ final class Filter
     /**
      * @param false|string $prefix
      */
-    private static function shouldPrintFrame(array $frame, $prefix, Blacklist $blacklist): bool
+    private static function shouldPrintFrame(array $frame, $prefix, ExcludeList $excludeList): bool
     {
         if (!isset($frame['file'])) {
             return false;
@@ -85,16 +85,16 @@ final class Filter
         }
 
         return \is_file($file) &&
-               self::fileIsBlacklisted($file, $blacklist) &&
+               self::fileIsExcluded($file, $excludeList) &&
                $fileIsNotPrefixed &&
                $file !== $script;
     }
 
-    private static function fileIsBlacklisted(string $file, Blacklist $blacklist): bool
+    private static function fileIsExcluded(string $file, ExcludeList $excludeList): bool
     {
-        return (empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST']) ||
-                !\in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'], true)) &&
-               !$blacklist->isBlacklisted($file);
+        return (empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) ||
+                !\in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) &&
+                !$excludeList->isExcluded($file);
     }
 
     private static function frameExists(array $trace, string $file, int $line): bool

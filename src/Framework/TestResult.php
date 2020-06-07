@@ -10,8 +10,8 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
-use PHPUnit\Util\Blacklist;
 use PHPUnit\Util\ErrorHandler;
+use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Test as TestUtil;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -744,7 +744,7 @@ final class TestResult implements \Countable
         $test->addToAssertionCount(Assert::getCount());
 
         if ($monitorFunctions) {
-            $blacklist = new Blacklist;
+            $excludeList = new ExcludeList;
 
             /** @noinspection ForgottenDebugOutputInspection */
             $functions = \xdebug_get_monitored_functions();
@@ -753,7 +753,7 @@ final class TestResult implements \Countable
             \xdebug_stop_function_monitor();
 
             foreach ($functions as $function) {
-                if (!$blacklist->isBlacklisted($function['filename'])) {
+                if (!$excludeList->isExcluded($function['filename'])) {
                     $this->addFailure(
                         $test,
                         new RiskyTestError(

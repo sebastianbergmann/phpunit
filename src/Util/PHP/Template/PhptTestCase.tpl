@@ -6,7 +6,7 @@ $phar             = {phar};
 
 ob_start();
 
-$GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'][] = '{job}';
+$GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'][] = '{job}';
 
 if ($composerAutoload) {
     require_once $composerAutoload;
