@@ -37,7 +37,7 @@
         "phpunit/php-file-iterator": "^3.0",
         "phpunit/php-invoker": "^3.0",
         "phpunit/php-text-template": "^2.0",
-        "phpunit/php-timer": "^4.0",
+        "phpunit/php-timer": "^5.0",
         "sebastian/code-unit": "^1.0.2",
         "sebastian/comparator": "^4.0",
         "sebastian/diff": "^4.0",
