@@ -68,6 +68,13 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * @var string[]
      */
+    protected $backupGlobalsExcludeList = [];
+
+    /**
+     * @var string[]
+     *
+     * @deprecated Use $backupGlobalsExcludeList instead
+     */
     protected $backupGlobalsBlacklist = [];
 
     /**
@@ -77,6 +84,13 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     /**
      * @var array<string,array<int,string>>
+     */
+    protected $backupStaticAttributesExcludeList = [];
+
+    /**
+     * @var array<string,array<int,string>>
+     *
+     * @deprecated Use $backupStaticAttributesExcludeList instead
      */
     protected $backupStaticAttributesBlacklist = [];
 
@@ -2167,6 +2181,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     {
         $excludeList = new ExcludeList;
 
+        foreach ($this->backupGlobalsExcludeList as $globalVariable) {
+            $excludeList->addGlobalVariable($globalVariable);
+        }
+
         foreach ($this->backupGlobalsBlacklist as $globalVariable) {
             $excludeList->addGlobalVariable($globalVariable);
         }
@@ -2182,6 +2200,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             $excludeList->addClassNamePrefix('Symfony');
             $excludeList->addClassNamePrefix('Doctrine\Instantiator');
             $excludeList->addClassNamePrefix('Prophecy');
+
+            foreach ($this->backupStaticAttributesExcludeList as $class => $attributes) {
+                foreach ($attributes as $attribute) {
+                    $excludeList->addStaticAttribute($class, $attribute);
+                }
+            }
 
             foreach ($this->backupStaticAttributesBlacklist as $class => $attributes) {
                 foreach ($attributes as $attribute) {
