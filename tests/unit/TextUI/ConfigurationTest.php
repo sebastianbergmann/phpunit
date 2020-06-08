@@ -17,7 +17,7 @@ use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 
 /**
- * @small
+ * @medium
  */
 final class ConfigurationTest extends TestCase
 {
