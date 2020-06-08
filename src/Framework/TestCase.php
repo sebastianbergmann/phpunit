@@ -2184,8 +2184,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             $excludeList->addGlobalVariable($globalVariable);
         }
 
-        foreach ($this->backupGlobalsBlacklist as $globalVariable) {
-            $excludeList->addGlobalVariable($globalVariable);
+        if (!empty($this->backupGlobalsBlacklist)) {
+            $this->addWarning('PHPUnit\Framework\TestCase::$backupGlobalsBlacklist is deprecated and will be removed in PHPUnit 10. Please use PHPUnit\Framework\TestCase::$backupGlobalsExcludeList instead.');
+
+            foreach ($this->backupGlobalsBlacklist as $globalVariable) {
+                $excludeList->addGlobalVariable($globalVariable);
+            }
         }
 
         if (!\defined('PHPUNIT_TESTSUITE')) {
@@ -2206,9 +2210,13 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 }
             }
 
-            foreach ($this->backupStaticAttributesBlacklist as $class => $attributes) {
-                foreach ($attributes as $attribute) {
-                    $excludeList->addStaticAttribute($class, $attribute);
+            if (!empty($this->backupStaticAttributesBlacklist)) {
+                $this->addWarning('PHPUnit\Framework\TestCase::$backupStaticAttributesBlacklist is deprecated and will be removed in PHPUnit 10. Please use PHPUnit\Framework\TestCase::$backupStaticAttributesExcludeList instead.');
+
+                foreach ($this->backupStaticAttributesBlacklist as $class => $attributes) {
+                    foreach ($attributes as $attribute) {
+                        $excludeList->addStaticAttribute($class, $attribute);
+                    }
                 }
             }
         }
