@@ -25,7 +25,7 @@ final class ConfigurationTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        /** @noinspection UnusedFunctionResultInspection */
+        /* @noinspection UnusedFunctionResultInspection */
         $this->configuration('not_existing_file.xml');
     }
 
