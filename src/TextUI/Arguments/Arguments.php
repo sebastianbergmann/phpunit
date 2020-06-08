@@ -83,6 +83,11 @@ final class Arguments
     private $configuration;
 
     /**
+     * @var null|string[]
+     */
+    private $coverageFilter;
+
+    /**
      * @var ?string
      */
     private $coverageClover;
@@ -423,11 +428,6 @@ final class Arguments
     private $version;
 
     /**
-     * @var null|string[]
-     */
-    private $whitelist;
-
-    /**
      * @var ?string
      */
     private $xdebugFilterFile;
@@ -435,7 +435,7 @@ final class Arguments
     /**
      * @param null|int|string $columns
      */
-    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticAttributes, ?bool $beStrictAboutChangesToGlobalState, ?bool $beStrictAboutResourceUsageDuringSmallTests, ?string $bootstrap, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $disallowTodoAnnotatedTests, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?array $extensions, ?array $unavailableExtensions, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?array $groups, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?string $loader, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?string $printer, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $whitelist, ?string $xdebugFilterFile)
+    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticAttributes, ?bool $beStrictAboutChangesToGlobalState, ?bool $beStrictAboutResourceUsageDuringSmallTests, ?string $bootstrap, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $disallowTodoAnnotatedTests, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?array $extensions, ?array $unavailableExtensions, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?array $groups, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?string $loader, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?string $printer, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $coverageFilter, ?string $xdebugFilterFile)
     {
         $this->argument                                   = $argument;
         $this->atLeastVersion                             = $atLeastVersion;
@@ -450,6 +450,7 @@ final class Arguments
         $this->colors                                     = $colors;
         $this->columns                                    = $columns;
         $this->configuration                              = $configuration;
+        $this->coverageFilter                             = $coverageFilter;
         $this->coverageClover                             = $coverageClover;
         $this->coverageCrap4J                             = $coverageCrap4J;
         $this->coverageHtml                               = $coverageHtml;
@@ -518,7 +519,6 @@ final class Arguments
         $this->useDefaultConfiguration                    = $useDefaultConfiguration;
         $this->verbose                                    = $verbose;
         $this->version                                    = $version;
-        $this->whitelist                                  = $whitelist;
         $this->xdebugFilterFile                           = $xdebugFilterFile;
     }
 
@@ -702,6 +702,20 @@ final class Arguments
         }
 
         return $this->configuration;
+    }
+
+    public function hasCoverageFilter(): bool
+    {
+        return $this->coverageFilter !== null;
+    }
+
+    public function coverageFilter(): array
+    {
+        if ($this->coverageFilter === null) {
+            throw new Exception;
+        }
+
+        return $this->coverageFilter;
     }
 
     public function hasCoverageClover(): bool
@@ -1654,20 +1668,6 @@ final class Arguments
         }
 
         return $this->version;
-    }
-
-    public function hasWhitelist(): bool
-    {
-        return $this->whitelist !== null;
-    }
-
-    public function whitelist(): array
-    {
-        if ($this->whitelist === null) {
-            throw new Exception;
-        }
-
-        return $this->whitelist;
     }
 
     public function hasXdebugFilterFile(): bool

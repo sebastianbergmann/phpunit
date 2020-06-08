@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 * `PHPUnit\Framework\TestCase::$backupGlobalsBlacklist` is deprecated, please use `PHPUnit\Framework\TestCase::$backupGlobalsExcludeList` instead
 * `PHPUnit\Framework\TestCase::$backupStaticAttributesBlacklist` is deprecated, please use `PHPUnit\Framework\TestCase::$backupStaticAttributesExcludeList` instead
 * `PHPUnit\Util\Blacklist` is now deprecated, please use `PHPUnit\Util\ExcludeList` instead
+* `--whitelist` is now deprecated, please use `--coverage-filter` instead
 * `<filter><whitelist>...</whitelist></filter` is now deprecated, please use `<filter>...</filter` instead
 
 [9.3.0]: https://github.com/sebastianbergmann/phpunit/compare/9.2...master

@@ -471,21 +471,21 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile'])) {
-            $whitelistFromConfigurationFile = false;
-            $whitelistFromOption            = false;
+            $coverageFilterFromConfigurationFile = false;
+            $coverageFilterFromOption            = false;
 
-            if (isset($arguments['whitelist'])) {
-                if (!\is_array($arguments['whitelist'])) {
-                    $whitelistDirectories = [$arguments['whitelist']];
+            if (isset($arguments['coverageFilter'])) {
+                if (!\is_array($arguments['coverageFilter'])) {
+                    $coverageFilterDirectories = [$arguments['coverageFilter']];
                 } else {
-                    $whitelistDirectories = $arguments['whitelist'];
+                    $coverageFilterDirectories = $arguments['coverageFilter'];
                 }
 
-                foreach ($whitelistDirectories as $whitelistDirectory) {
-                    $this->codeCoverageFilter->includeDirectory($whitelistDirectory);
+                foreach ($coverageFilterDirectories as $coverageFilterDirectory) {
+                    $this->codeCoverageFilter->includeDirectory($coverageFilterDirectory);
                 }
 
-                $whitelistFromOption = true;
+                $coverageFilterFromOption = true;
             }
 
             if (isset($arguments['configuration'])) {
@@ -494,7 +494,7 @@ final class TestRunner extends BaseTestRunner
                 $filterConfiguration = $arguments['configuration']->filter();
 
                 if ($filterConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-                    $whitelistFromConfigurationFile = true;
+                    $coverageFilterFromConfigurationFile = true;
 
                     foreach ($filterConfiguration->directories() as $directory) {
                         $this->codeCoverageFilter->includeDirectory(
@@ -571,10 +571,10 @@ final class TestRunner extends BaseTestRunner
             }
 
             if ($this->codeCoverageFilter->isEmpty()) {
-                if (!$whitelistFromConfigurationFile && !$whitelistFromOption) {
-                    $this->writeMessage('Error', 'No whitelist is configured, no code coverage will be generated.');
+                if (!$coverageFilterFromConfigurationFile && !$coverageFilterFromOption) {
+                    $this->writeMessage('Error', 'No filter is configured, no code coverage will be generated.');
                 } else {
-                    $this->writeMessage('Error', 'Incorrect whitelist config, no code coverage will be generated.');
+                    $this->writeMessage('Error', 'Incorrect filter configuration, no code coverage will be generated.');
                 }
 
                 $codeCoverageReports = 0;

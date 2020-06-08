@@ -33,6 +33,7 @@ final class ArgumentsBuilder
         'colors==',
         'columns=',
         'configuration=',
+        'coverage-filter=',
         'coverage-clover=',
         'coverage-crap4j=',
         'coverage-html=',
@@ -136,6 +137,7 @@ final class ArgumentsBuilder
         $colors                                     = null;
         $columns                                    = null;
         $configuration                              = null;
+        $coverageFilter                             = null;
         $coverageClover                             = null;
         $coverageCrap4J                             = null;
         $coverageHtml                               = null;
@@ -204,7 +206,6 @@ final class ArgumentsBuilder
         $useDefaultConfiguration                    = null;
         $verbose                                    = null;
         $version                                    = null;
-        $whitelist                                  = null;
         $xdebugFilterFile                           = null;
 
         if (isset($options[1][0])) {
@@ -664,12 +665,13 @@ final class ArgumentsBuilder
 
                     break;
 
+                case '--coverage-filter':
                 case '--whitelist':
-                    if ($whitelist === null) {
-                        $whitelist = [];
+                    if ($coverageFilter === null) {
+                        $coverageFilter = [];
                     }
 
-                    $whitelist[] = $option[1];
+                    $coverageFilter[] = $option[1];
 
                     break;
 
@@ -724,8 +726,8 @@ final class ArgumentsBuilder
             $unrecognizedOptions = null;
         }
 
-        if (empty($whitelist)) {
-            $whitelist = null;
+        if (empty($coverageFilter)) {
+            $coverageFilter = null;
         }
 
         return new Arguments(
@@ -810,7 +812,7 @@ final class ArgumentsBuilder
             $useDefaultConfiguration,
             $verbose,
             $version,
-            $whitelist,
+            $coverageFilter,
             $xdebugFilterFile
         );
     }

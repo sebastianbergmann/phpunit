@@ -317,8 +317,8 @@ final class ArgumentsMapper
             $result['reverseList'] = $arguments->reverseList();
         }
 
-        if ($arguments->hasWhitelist()) {
-            $result['whitelist'] = $arguments->whitelist();
+        if ($arguments->hasCoverageFilter()) {
+            $result['coverageFilter'] = $arguments->coverageFilter();
         }
 
         if ($arguments->hasRandomOrderSeer()) {

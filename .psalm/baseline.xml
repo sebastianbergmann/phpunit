@@ -219,7 +219,7 @@
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
     <PossiblyUndefinedVariable occurrences="1">
-      <code>$whitelistFromConfigurationFile</code>
+      <code>$coverageFilterFromConfigurationFile</code>
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
