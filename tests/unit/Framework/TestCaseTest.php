@@ -21,7 +21,7 @@ final class TestCaseTest extends TestCase
 {
     protected static $testStatic = 456;
 
-    protected $backupGlobalsBlacklist = ['i', 'singleton'];
+    protected $backupGlobalsExcludeList = ['i', 'singleton'];
 
     public static function setUpBeforeClass(): void
     {
