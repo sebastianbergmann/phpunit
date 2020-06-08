@@ -26,15 +26,15 @@ final class Help
         ],
         'Code Coverage Options' => [
             ['arg' => '--coverage-clover <file>', 'desc' => 'Generate code coverage report in Clover XML format'],
-            ['arg'  => '--coverage-crap4j <file>', 'desc' => 'Generate code coverage report in Crap4J XML format'],
-            ['arg'  => '--coverage-html <dir>', 'desc' => 'Generate code coverage report in HTML format'],
-            ['arg'  => '--coverage-php <file>', 'desc' => 'Export PHP_CodeCoverage object to file'],
-            ['arg'  => '--coverage-text=<file>', 'desc' => 'Generate code coverage report in text format [default: standard output]'],
-            ['arg'  => '--coverage-xml <dir>', 'desc' => 'Generate code coverage report in PHPUnit XML format'],
-            ['arg'  => '--whitelist <dir>', 'desc' => 'Whitelist <dir> for code coverage analysis'],
-            ['arg'  => '--disable-coverage-ignore', 'desc' => 'Disable annotations for ignoring code coverage'],
-            ['arg'  => '--no-coverage', 'desc' => 'Ignore code coverage configuration'],
-            ['arg'  => '--dump-xdebug-filter <file>', 'desc' => 'Generate script to set Xdebug code coverage filter'],
+            ['arg' => '--coverage-crap4j <file>', 'desc' => 'Generate code coverage report in Crap4J XML format'],
+            ['arg' => '--coverage-html <dir>', 'desc' => 'Generate code coverage report in HTML format'],
+            ['arg' => '--coverage-php <file>', 'desc' => 'Export PHP_CodeCoverage object to file'],
+            ['arg' => '--coverage-text=<file>', 'desc' => 'Generate code coverage report in text format [default: standard output]'],
+            ['arg' => '--coverage-xml <dir>', 'desc' => 'Generate code coverage report in PHPUnit XML format'],
+            ['arg' => '--whitelist <dir>', 'desc' => 'Whitelist <dir> for code coverage analysis'],
+            ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable annotations for ignoring code coverage'],
+            ['arg' => '--no-coverage', 'desc' => 'Ignore code coverage configuration'],
+            ['arg' => '--dump-xdebug-filter <file>', 'desc' => 'Generate script to set Xdebug code coverage filter'],
         ],
 
         'Logging Options' => [
@@ -48,18 +48,18 @@ final class Help
 
         'Test Selection Options' => [
             ['arg' => '--filter <pattern>', 'desc' => 'Filter which tests to run'],
-            ['arg'  => '--testsuite <name>', 'desc' => 'Filter which testsuite to run'],
-            ['arg'  => '--group <name>', 'desc' => 'Only runs tests from the specified group(s)'],
-            ['arg'  => '--exclude-group <name>', 'desc' => 'Exclude tests from the specified group(s)'],
-            ['arg'  => '--list-groups', 'desc' => 'List available test groups'],
-            ['arg'  => '--list-suites', 'desc' => 'List available test suites'],
-            ['arg'  => '--list-tests', 'desc' => 'List available tests'],
-            ['arg'  => '--list-tests-xml <file>', 'desc' => 'List available tests in XML format'],
-            ['arg'  => '--test-suffix <suffixes>', 'desc' => 'Only search for test in files with specified suffix(es). Default: Test.php,.phpt'],
+            ['arg' => '--testsuite <name>', 'desc' => 'Filter which testsuite to run'],
+            ['arg' => '--group <name>', 'desc' => 'Only runs tests from the specified group(s)'],
+            ['arg' => '--exclude-group <name>', 'desc' => 'Exclude tests from the specified group(s)'],
+            ['arg' => '--list-groups', 'desc' => 'List available test groups'],
+            ['arg' => '--list-suites', 'desc' => 'List available test suites'],
+            ['arg' => '--list-tests', 'desc' => 'List available tests'],
+            ['arg' => '--list-tests-xml <file>', 'desc' => 'List available tests in XML format'],
+            ['arg' => '--test-suffix <suffixes>', 'desc' => 'Only search for test in files with specified suffix(es). Default: Test.php,.phpt'],
         ],
 
         'Test Execution Options' => [
-            ['arg' => '--dont-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
+            ['arg'    => '--dont-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
             ['arg'    => '--strict-coverage', 'desc' => 'Be strict about @covers annotation usage'],
             ['arg'    => '--strict-global-state', 'desc' => 'Be strict about changes to global state'],
             ['arg'    => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],
@@ -102,10 +102,10 @@ final class Help
             ['arg'    => '--printer <printer>', 'desc' => 'TestListener implementation to use'],
             ['spacer' => ''],
 
-            ['arg'  => '--order-by=<order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
-            ['arg'  => '--random-order-seed=<N>', 'desc' => 'Use a specific random seed <N> for random order'],
-            ['arg'  => '--cache-result', 'desc' => 'Write test results to cache file'],
-            ['arg'  => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
+            ['arg' => '--order-by=<order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
+            ['arg' => '--random-order-seed=<N>', 'desc' => 'Use a specific random seed <N> for random order'],
+            ['arg' => '--cache-result', 'desc' => 'Write test results to cache file'],
+            ['arg' => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
         ],
 
         'Configuration Options' => [
