@@ -61,19 +61,17 @@
         </exclude>
     </testdoxGroups>
 
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true"
-                   processUncoveredFilesFromWhitelist="false">
+    <filter addUncoveredFilesFromWhitelist="true"
+            processUncoveredFilesFromWhitelist="false">
+        <directory suffix=".php">/path/to/files</directory>
+        <file>/path/to/file</file>
+        <file>
+            /path/to/file
+        </file>
+        <exclude>
             <directory suffix=".php">/path/to/files</directory>
             <file>/path/to/file</file>
-            <file>
-                /path/to/file
-            </file>
-            <exclude>
-                <directory suffix=".php">/path/to/files</directory>
-                <file>/path/to/file</file>
-            </exclude>
-        </whitelist>
+        </exclude>
     </filter>
 
     <listeners>

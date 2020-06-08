@@ -39,10 +39,8 @@ final class ConfigurationGeneratorTest extends TestCase
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">src</directory>
-        </whitelist>
+    <filter processUncoveredFilesForCodeCoverageReport="true">
+        <directory suffix=".php">src</directory>
     </filter>
 </phpunit>
 ',

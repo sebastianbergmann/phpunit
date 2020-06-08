@@ -20,14 +20,12 @@
   </groups>
 
   <filter>
-    <whitelist>
+    <directory></directory>
+    <file></file>
+    <exclude>
       <directory></directory>
       <file></file>
-      <exclude>
-        <directory></directory>
-        <file></file>
-      </exclude>
-    </whitelist>
+    </exclude>
   </filter>
 
   <logging>

@@ -25,7 +25,7 @@ final class ConfigurationTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        /** @noinspection UnusedFunctionResultInspection */
+        /* @noinspection UnusedFunctionResultInspection */
         $this->configuration('not_existing_file.xml');
     }
 
@@ -138,7 +138,41 @@ final class ConfigurationTest extends TestCase
 
     public function testFilterConfigurationIsReadCorrectly(): void
     {
-        $filter = $this->configuration('configuration.xml')->filter();
+        $filter = $this->configuration('configuration_filter.xml')->filter();
+
+        $this->assertTrue($filter->includeUncoveredFilesInCodeCoverageReport());
+        $this->assertFalse($filter->processUncoveredFilesForCodeCoverageReport());
+
+        /** @var FilterDirectory $directory */
+        $directory = \iterator_to_array($filter->directories(), false)[0];
+        $this->assertSame('/path/to/files', $directory->path());
+        $this->assertSame('', $directory->prefix());
+        $this->assertSame('.php', $directory->suffix());
+        $this->assertSame('DEFAULT', $directory->group());
+
+        /** @var FilterFile $file */
+        $file = \iterator_to_array($filter->files(), false)[0];
+        $this->assertSame('/path/to/file', $file->path());
+
+        /** @var FilterFile $file */
+        $file = \iterator_to_array($filter->files(), false)[1];
+        $this->assertSame('/path/to/file', $file->path());
+
+        /** @var FilterDirectory $directory */
+        $directory = \iterator_to_array($filter->excludeDirectories(), false)[0];
+        $this->assertSame('/path/to/files', $directory->path());
+        $this->assertSame('', $directory->prefix());
+        $this->assertSame('.php', $directory->suffix());
+        $this->assertSame('DEFAULT', $directory->group());
+
+        /** @var FilterFile $file */
+        $file = \iterator_to_array($filter->excludeFiles(), false)[0];
+        $this->assertSame('/path/to/file', $file->path());
+    }
+
+    public function testLegacyFilterConfigurationIsReadCorrectly(): void
+    {
+        $filter = $this->configuration('configuration_legacy_filter.xml')->filter();
 
         $this->assertTrue($filter->includeUncoveredFilesInCodeCoverageReport());
         $this->assertFalse($filter->processUncoveredFilesForCodeCoverageReport());

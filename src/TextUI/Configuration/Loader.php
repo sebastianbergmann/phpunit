@@ -323,6 +323,50 @@ final class Loader
 
     private function filter(string $filename, \DOMXPath $xpath): Filter
     {
+        if ($xpath->query('filter/whitelist')->length !== 0) {
+            return $this->legacyFilter($filename, $xpath);
+        }
+
+        $includeUncoveredFilesInCodeCoverageReport  = true;
+        $processUncoveredFilesForCodeCoverageReport = false;
+
+        $nodes = $xpath->query('filter');
+
+        if ($nodes->length === 1) {
+            $node = $nodes->item(0);
+
+            \assert($node instanceof \DOMElement);
+
+            if ($node->hasAttribute('includeUncoveredFilesInCodeCoverageReport')) {
+                $includeUncoveredFilesInCodeCoverageReport = (bool) $this->getBoolean(
+                    (string) $node->getAttribute('includeUncoveredFilesInCodeCoverageReport'),
+                    true
+                );
+            }
+
+            if ($node->hasAttribute('processUncoveredFilesForCodeCoverageReport')) {
+                $processUncoveredFilesForCodeCoverageReport = (bool) $this->getBoolean(
+                    (string) $node->getAttribute('processUncoveredFilesForCodeCoverageReport'),
+                    false
+                );
+            }
+        }
+
+        return new Filter(
+            $this->readFilterDirectories($filename, $xpath, 'filter/directory'),
+            $this->readFilterFiles($filename, $xpath, 'filter/file'),
+            $this->readFilterDirectories($filename, $xpath, 'filter/exclude/directory'),
+            $this->readFilterFiles($filename, $xpath, 'filter/exclude/file'),
+            $includeUncoveredFilesInCodeCoverageReport,
+            $processUncoveredFilesForCodeCoverageReport
+        );
+    }
+
+    /**
+     * @deprecated
+     */
+    private function legacyFilter(string $filename, \DOMXPath $xpath): Filter
+    {
         $includeUncoveredFilesInCodeCoverageReport  = true;
         $processUncoveredFilesForCodeCoverageReport = false;
 

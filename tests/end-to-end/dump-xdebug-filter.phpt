@@ -1,5 +1,5 @@
 --TEST--
-phpunit -c ../_files/configuration_whitelist.xml --dump-xdebug-filter 'php://stdout'
+phpunit -c ../_files/configuration_xdebug_filter.xml --dump-xdebug-filter 'php://stdout'
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!extension_loaded('xdebug')) {
@@ -8,7 +8,7 @@ if (!extension_loaded('xdebug')) {
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '-c';
-$_SERVER['argv'][2] = __DIR__ . '/../_files/configuration_whitelist.xml';
+$_SERVER['argv'][2] = __DIR__ . '/../_files/configuration_xdebug_filter.xml';
 $_SERVER['argv'][3] = '--dump-xdebug-filter';
 $_SERVER['argv'][4] = 'php://stderr';
 

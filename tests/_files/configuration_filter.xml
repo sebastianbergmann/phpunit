@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit>
+    <filter addUncoveredFilesFromWhitelist="true"
+            processUncoveredFilesFromWhitelist="false">
+        <directory suffix=".php">/path/to/files</directory>
+        <file>/path/to/file</file>
+        <file>
+            /path/to/file
+        </file>
+        <exclude>
+            <directory suffix=".php">/path/to/files</directory>
+            <file>/path/to/file</file>
+        </exclude>
+    </filter>
+</phpunit>

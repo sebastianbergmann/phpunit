@@ -34,10 +34,8 @@ final class Generator
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">{src_directory}</directory>
-        </whitelist>
+    <filter processUncoveredFilesForCodeCoverageReport="true">
+        <directory suffix=".php">{src_directory}</directory>
     </filter>
 </phpunit>
 

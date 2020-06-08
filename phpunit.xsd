@@ -11,11 +11,6 @@
             <xs:documentation>Root Element</xs:documentation>
         </xs:annotation>
     </xs:element>
-    <xs:complexType name="filtersType">
-        <xs:sequence>
-            <xs:element name="whitelist" type="whiteListType" minOccurs="0"/>
-        </xs:sequence>
-    </xs:complexType>
     <xs:complexType name="filterType">
         <xs:sequence>
             <xs:choice maxOccurs="unbounded" minOccurs="0">
@@ -27,14 +22,8 @@
                 </xs:element>
             </xs:choice>
         </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="whiteListType">
-        <xs:complexContent>
-            <xs:extension base="filterType">
-                <xs:attribute name="addUncoveredFilesFromWhitelist" default="true" type="xs:boolean"/>
-                <xs:attribute name="processUncoveredFilesFromWhitelist" default="false" type="xs:boolean"/>
-            </xs:extension>
-        </xs:complexContent>
+        <xs:attribute name="includeUncoveredFilesInCodeCoverageReport" default="true" type="xs:boolean"/>
+        <xs:attribute name="processUncoveredFilesForCodeCoverageReport" default="false" type="xs:boolean"/>
     </xs:complexType>
     <xs:complexType name="groupsType">
         <xs:choice>
@@ -292,7 +281,7 @@
             <xs:element ref="testSuiteFacet" minOccurs="0"/>
             <xs:element name="groups" type="groupsType" minOccurs="0"/>
             <xs:element name="testdoxGroups" type="groupsType" minOccurs="0"/>
-            <xs:element name="filter" type="filtersType" minOccurs="0"/>
+            <xs:element name="filter" type="filterType" minOccurs="0"/>
             <xs:element name="logging" type="loggersType" minOccurs="0"/>
             <xs:element name="extensions" type="extensionsType" minOccurs="0"/>
             <xs:element name="listeners" type="listenersType" minOccurs="0"/>
