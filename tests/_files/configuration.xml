@@ -61,8 +61,8 @@
         </exclude>
     </testdoxGroups>
 
-    <filter addUncoveredFilesFromWhitelist="true"
-            processUncoveredFilesFromWhitelist="false">
+    <filter includeUncoveredFilesInCodeCoverageReport="true"
+            processUncoveredFilesForCodeCoverageReport="false">
         <directory suffix=".php">/path/to/files</directory>
         <file>/path/to/file</file>
         <file>
