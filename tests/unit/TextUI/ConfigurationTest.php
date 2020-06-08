@@ -21,76 +21,54 @@ use PHPUnit\Util\TestDox\CliTestDoxPrinter;
  */
 final class ConfigurationTest extends TestCase
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    protected function setUp(): void
-    {
-        $this->configuration = Registry::getInstance()->get(
-            TEST_FILES_PATH . 'configuration.xml'
-        );
-    }
-
     public function testExceptionIsThrownForNotExistingConfigurationFile(): void
     {
         $this->expectException(Exception::class);
 
-        Registry::getInstance()->get('not_existing_file.xml');
+        /** @noinspection UnusedFunctionResultInspection */
+        $this->configuration('not_existing_file.xml');
     }
 
     public function testShouldReadColorsWhenTrueInConfigurationFile(): void
     {
-        $configurationFilename = TEST_FILES_PATH . 'configuration.colors.true.xml';
-        $configurationInstance = Registry::getInstance()->get($configurationFilename);
-        $configurationValues   = $configurationInstance->phpunit();
+        $phpunit = $this->configuration('configuration.colors.true.xml')->phpunit();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_AUTO, $configurationValues->colors());
+        $this->assertEquals(DefaultResultPrinter::COLOR_AUTO, $phpunit->colors());
     }
 
     public function testShouldReadColorsWhenFalseInConfigurationFile(): void
     {
-        $configurationFilename = TEST_FILES_PATH . 'configuration.colors.false.xml';
-        $configurationInstance = Registry::getInstance()->get($configurationFilename);
-        $configurationValues   = $configurationInstance->phpunit();
+        $phpunit = $this->configuration('configuration.colors.false.xml')->phpunit();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
+        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $phpunit->colors());
     }
 
     public function testShouldReadColorsWhenEmptyInConfigurationFile(): void
     {
-        $configurationFilename = TEST_FILES_PATH . 'configuration.colors.empty.xml';
-        $configurationInstance = Registry::getInstance()->get($configurationFilename);
-        $configurationValues   = $configurationInstance->phpunit();
+        $phpunit = $this->configuration('configuration.colors.empty.xml')->phpunit();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
+        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $phpunit->colors());
     }
 
     public function testShouldReadColorsWhenInvalidInConfigurationFile(): void
     {
-        $configurationFilename = TEST_FILES_PATH . 'configuration.colors.invalid.xml';
-        $configurationInstance = Registry::getInstance()->get($configurationFilename);
-        $configurationValues   = $configurationInstance->phpunit();
+        $phpunit = $this->configuration('configuration.colors.invalid.xml')->phpunit();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $configurationValues->colors());
+        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $phpunit->colors());
     }
 
     public function testInvalidConfigurationGeneratesValidationErrors(): void
     {
-        $configurationFilename = TEST_FILES_PATH . 'configuration.colors.invalid.xml';
-        $configurationInstance = Registry::getInstance()->get($configurationFilename);
+        $configuration = $this->configuration('configuration.colors.invalid.xml');
 
-        $this->assertTrue($configurationInstance->hasValidationErrors());
+        $this->assertTrue($configuration->hasValidationErrors());
     }
 
     public function testShouldUseDefaultValuesForInvalidIntegers(): void
     {
-        $configurationFilename = TEST_FILES_PATH . 'configuration.columns.default.xml';
-        $configurationInstance = Registry::getInstance()->get($configurationFilename);
-        $configurationValues   = $configurationInstance->phpunit();
+        $phpunit = $this->configuration('configuration.columns.default.xml')->phpunit();
 
-        $this->assertEquals(80, $configurationValues->columns());
+        $this->assertEquals(80, $phpunit->columns());
     }
 
     /**
@@ -103,15 +81,15 @@ final class ConfigurationTest extends TestCase
      */
     public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, $expected): void
     {
-        $tmpFilename = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . \uniqid() . '.xml';
+        $tmpFilename = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . \uniqid('', true) . '.xml';
         $xml         = "<phpunit $optionName='$optionValue'></phpunit>" . \PHP_EOL;
         \file_put_contents($tmpFilename, $xml);
 
-        $configurationInstance = Registry::getInstance()->get($tmpFilename);
-        $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
+        $configuration = Registry::getInstance()->get($tmpFilename);
 
-        $configurationValues   = $configurationInstance->phpunit();
-        $this->assertEquals($expected, $configurationValues->$optionName());
+        $this->assertFalse($configuration->hasValidationErrors());
+
+        $this->assertEquals($expected, $configuration->phpunit()->$optionName());
 
         @\unlink($tmpFilename);
     }
@@ -144,23 +122,23 @@ final class ConfigurationTest extends TestCase
 
     public function testShouldParseXmlConfigurationExecutionOrderCombined(): void
     {
-        $tmpFilename = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit.' . \uniqid() . '.xml';
+        $tmpFilename = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit.' . \uniqid('', true) . '.xml';
         $xml         = "<phpunit executionOrder='depends,defects'></phpunit>" . \PHP_EOL;
         \file_put_contents($tmpFilename, $xml);
 
-        $configurationInstance = Registry::getInstance()->get($tmpFilename);
-        $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
+        $configuration = Registry::getInstance()->get($tmpFilename);
 
-        $configurationValues = $configurationInstance->phpunit();
-        $this->assertTrue($configurationValues->defectsFirst());
-        $this->assertTrue($configurationValues->resolveDependencies());
+        $this->assertFalse($configuration->hasValidationErrors());
+
+        $this->assertTrue($configuration->phpunit()->defectsFirst());
+        $this->assertTrue($configuration->phpunit()->resolveDependencies());
 
         @\unlink($tmpFilename);
     }
 
     public function testFilterConfigurationIsReadCorrectly(): void
     {
-        $filter = $this->configuration->filter();
+        $filter = $this->configuration('configuration.xml')->filter();
 
         $this->assertTrue($filter->addUncoveredFilesFromWhitelist());
         $this->assertFalse($filter->processUncoveredFilesFromWhitelist());
@@ -194,24 +172,24 @@ final class ConfigurationTest extends TestCase
 
     public function testGroupConfigurationIsReadCorrectly(): void
     {
-        $groupConfiguration = $this->configuration->groups();
+        $groups = $this->configuration('configuration.xml')->groups();
 
-        $this->assertTrue($groupConfiguration->hasInclude());
-        $this->assertSame(['name'], $groupConfiguration->include()->asArrayOfStrings());
+        $this->assertTrue($groups->hasInclude());
+        $this->assertSame(['name'], $groups->include()->asArrayOfStrings());
 
-        $this->assertTrue($groupConfiguration->hasExclude());
-        $this->assertSame(['name'], $groupConfiguration->exclude()->asArrayOfStrings());
+        $this->assertTrue($groups->hasExclude());
+        $this->assertSame(['name'], $groups->exclude()->asArrayOfStrings());
     }
 
     public function testTestdoxGroupConfigurationIsReadCorrectly(): void
     {
-        $testDoxGroupConfiguration = $this->configuration->testdoxGroups();
+        $testdox = $this->configuration('configuration.xml')->testdoxGroups();
 
-        $this->assertTrue($testDoxGroupConfiguration->hasInclude());
-        $this->assertSame(['name'], $testDoxGroupConfiguration->include()->asArrayOfStrings());
+        $this->assertTrue($testdox->hasInclude());
+        $this->assertSame(['name'], $testdox->include()->asArrayOfStrings());
 
-        $this->assertTrue($testDoxGroupConfiguration->hasExclude());
-        $this->assertSame(['name'], $testDoxGroupConfiguration->exclude()->asArrayOfStrings());
+        $this->assertTrue($testdox->hasExclude());
+        $this->assertSame(['name'], $testdox->exclude()->asArrayOfStrings());
     }
 
     public function testListenerConfigurationIsReadCorrectly(): void
@@ -223,7 +201,7 @@ final class ConfigurationTest extends TestCase
 
         $i = 1;
 
-        foreach ($this->configuration->listeners() as $listener) {
+        foreach ($this->configuration('configuration.xml')->listeners() as $listener) {
             switch ($i) {
                 case 1:
                     $this->assertSame('MyListener', $listener->className());
@@ -283,7 +261,7 @@ final class ConfigurationTest extends TestCase
 
         $i = 1;
 
-        foreach ($this->configuration->extensions() as $extension) {
+        foreach ($this->configuration('configuration.xml')->extensions() as $extension) {
             switch ($i) {
                 case 1:
                     $this->assertSame('MyExtension', $extension->className());
@@ -335,39 +313,39 @@ final class ConfigurationTest extends TestCase
 
     public function testLoggingConfigurationIsReadCorrectly(): void
     {
-        $loggingConfiguration = $this->configuration->logging();
+        $logging = $this->configuration('configuration.xml')->logging();
 
-        $this->assertTrue($loggingConfiguration->hasCodeCoverageHtml());
-        $this->assertSame('/tmp/report', $loggingConfiguration->codeCoverageHtml()->target()->path());
-        $this->assertSame(50, $loggingConfiguration->codeCoverageHtml()->lowUpperBound());
-        $this->assertSame(90, $loggingConfiguration->codeCoverageHtml()->highLowerBound());
+        $this->assertTrue($logging->hasCodeCoverageHtml());
+        $this->assertSame('/tmp/report', $logging->codeCoverageHtml()->target()->path());
+        $this->assertSame(50, $logging->codeCoverageHtml()->lowUpperBound());
+        $this->assertSame(90, $logging->codeCoverageHtml()->highLowerBound());
 
-        $this->assertTrue($loggingConfiguration->hasCodeCoverageClover());
-        $this->assertSame('/tmp/clover.xml', $loggingConfiguration->codeCoverageClover()->target()->path());
+        $this->assertTrue($logging->hasCodeCoverageClover());
+        $this->assertSame('/tmp/clover.xml', $logging->codeCoverageClover()->target()->path());
 
-        $this->assertTrue($loggingConfiguration->hasCodeCoverageCrap4j());
-        $this->assertSame('/tmp/crap4j.xml', $loggingConfiguration->codeCoverageCrap4j()->target()->path());
-        $this->assertSame(50, $loggingConfiguration->codeCoverageCrap4j()->threshold());
+        $this->assertTrue($logging->hasCodeCoverageCrap4j());
+        $this->assertSame('/tmp/crap4j.xml', $logging->codeCoverageCrap4j()->target()->path());
+        $this->assertSame(50, $logging->codeCoverageCrap4j()->threshold());
 
-        $this->assertTrue($loggingConfiguration->hasCodeCoverageText());
-        $this->assertSame('/tmp/coverage.txt', $loggingConfiguration->codeCoverageText()->target()->path());
-        $this->assertTrue($loggingConfiguration->codeCoverageText()->showUncoveredFiles());
-        $this->assertTrue($loggingConfiguration->codeCoverageText()->showOnlySummary());
+        $this->assertTrue($logging->hasCodeCoverageText());
+        $this->assertSame('/tmp/coverage.txt', $logging->codeCoverageText()->target()->path());
+        $this->assertTrue($logging->codeCoverageText()->showUncoveredFiles());
+        $this->assertTrue($logging->codeCoverageText()->showOnlySummary());
 
-        $this->assertTrue($loggingConfiguration->hasPlainText());
-        $this->assertSame('/tmp/logfile.txt', $loggingConfiguration->plainText()->target()->path());
+        $this->assertTrue($logging->hasPlainText());
+        $this->assertSame('/tmp/logfile.txt', $logging->plainText()->target()->path());
 
-        $this->assertTrue($loggingConfiguration->hasJunit());
-        $this->assertSame('/tmp/logfile.xml', $loggingConfiguration->junit()->target()->path());
+        $this->assertTrue($logging->hasJunit());
+        $this->assertSame('/tmp/logfile.xml', $logging->junit()->target()->path());
 
-        $this->assertTrue($loggingConfiguration->hasTestDoxHtml());
-        $this->assertSame('/tmp/testdox.html', $loggingConfiguration->testDoxHtml()->target()->path());
+        $this->assertTrue($logging->hasTestDoxHtml());
+        $this->assertSame('/tmp/testdox.html', $logging->testDoxHtml()->target()->path());
 
-        $this->assertTrue($loggingConfiguration->hasTestDoxText());
-        $this->assertSame('/tmp/testdox.txt', $loggingConfiguration->testDoxText()->target()->path());
+        $this->assertTrue($logging->hasTestDoxText());
+        $this->assertSame('/tmp/testdox.txt', $logging->testDoxText()->target()->path());
 
-        $this->assertTrue($loggingConfiguration->hasTestDoxXml());
-        $this->assertSame('/tmp/testdox.xml', $loggingConfiguration->testDoxXml()->target()->path());
+        $this->assertTrue($logging->hasTestDoxXml());
+        $this->assertSame('/tmp/testdox.xml', $logging->testDoxXml()->target()->path());
     }
 
     /**
@@ -375,53 +353,53 @@ final class ConfigurationTest extends TestCase
      */
     public function testPHPConfigurationIsReadCorrectly(): void
     {
-        $configuration = $this->configuration->php();
+        $php = $this->configuration('configuration.xml')->php();
 
-        $this->assertSame(TEST_FILES_PATH . '.', $configuration->includePaths()->asArray()[0]->path());
-        $this->assertSame('/path/to/lib', $configuration->includePaths()->asArray()[1]->path());
+        $this->assertSame(TEST_FILES_PATH . '.', $php->includePaths()->asArray()[0]->path());
+        $this->assertSame('/path/to/lib', $php->includePaths()->asArray()[1]->path());
 
-        $this->assertSame('foo', $configuration->iniSettings()->asArray()[0]->name());
-        $this->assertSame('bar', $configuration->iniSettings()->asArray()[0]->value());
-        $this->assertSame('highlight.keyword', $configuration->iniSettings()->asArray()[1]->name());
-        $this->assertSame('#123456', $configuration->iniSettings()->asArray()[1]->value());
+        $this->assertSame('foo', $php->iniSettings()->asArray()[0]->name());
+        $this->assertSame('bar', $php->iniSettings()->asArray()[0]->value());
+        $this->assertSame('highlight.keyword', $php->iniSettings()->asArray()[1]->name());
+        $this->assertSame('#123456', $php->iniSettings()->asArray()[1]->value());
 
-        $this->assertSame('FOO', $configuration->constants()->asArray()[0]->name());
-        $this->assertFalse($configuration->constants()->asArray()[0]->value());
-        $this->assertSame('BAR', $configuration->constants()->asArray()[1]->name());
-        $this->assertTrue($configuration->constants()->asArray()[1]->value());
+        $this->assertSame('FOO', $php->constants()->asArray()[0]->name());
+        $this->assertFalse($php->constants()->asArray()[0]->value());
+        $this->assertSame('BAR', $php->constants()->asArray()[1]->name());
+        $this->assertTrue($php->constants()->asArray()[1]->value());
 
-        $this->assertSame('foo', $configuration->globalVariables()->asArray()[0]->name());
-        $this->assertFalse($configuration->globalVariables()->asArray()[0]->value());
+        $this->assertSame('foo', $php->globalVariables()->asArray()[0]->name());
+        $this->assertFalse($php->globalVariables()->asArray()[0]->value());
 
-        $this->assertSame('foo', $configuration->postVariables()->asArray()[0]->name());
-        $this->assertSame('bar', $configuration->postVariables()->asArray()[0]->value());
+        $this->assertSame('foo', $php->postVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $php->postVariables()->asArray()[0]->value());
 
-        $this->assertSame('foo', $configuration->getVariables()->asArray()[0]->name());
-        $this->assertSame('bar', $configuration->getVariables()->asArray()[0]->value());
+        $this->assertSame('foo', $php->getVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $php->getVariables()->asArray()[0]->value());
 
-        $this->assertSame('foo', $configuration->cookieVariables()->asArray()[0]->name());
-        $this->assertSame('bar', $configuration->cookieVariables()->asArray()[0]->value());
+        $this->assertSame('foo', $php->cookieVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $php->cookieVariables()->asArray()[0]->value());
 
-        $this->assertSame('foo', $configuration->serverVariables()->asArray()[0]->name());
-        $this->assertSame('bar', $configuration->serverVariables()->asArray()[0]->value());
+        $this->assertSame('foo', $php->serverVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $php->serverVariables()->asArray()[0]->value());
 
-        $this->assertSame('foo', $configuration->filesVariables()->asArray()[0]->name());
-        $this->assertSame('bar', $configuration->filesVariables()->asArray()[0]->value());
+        $this->assertSame('foo', $php->filesVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $php->filesVariables()->asArray()[0]->value());
 
-        $this->assertSame('foo', $configuration->requestVariables()->asArray()[0]->name());
-        $this->assertSame('bar', $configuration->requestVariables()->asArray()[0]->value());
+        $this->assertSame('foo', $php->requestVariables()->asArray()[0]->name());
+        $this->assertSame('bar', $php->requestVariables()->asArray()[0]->value());
 
-        $this->assertSame('foo', $configuration->envVariables()->asArray()[0]->name());
-        $this->assertTrue($configuration->envVariables()->asArray()[0]->value());
-        $this->assertFalse($configuration->envVariables()->asArray()[0]->force());
+        $this->assertSame('foo', $php->envVariables()->asArray()[0]->name());
+        $this->assertTrue($php->envVariables()->asArray()[0]->value());
+        $this->assertFalse($php->envVariables()->asArray()[0]->force());
 
-        $this->assertSame('foo_force', $configuration->envVariables()->asArray()[1]->name());
-        $this->assertSame('forced', $configuration->envVariables()->asArray()[1]->value());
-        $this->assertTrue($configuration->envVariables()->asArray()[1]->force());
+        $this->assertSame('foo_force', $php->envVariables()->asArray()[1]->name());
+        $this->assertSame('forced', $php->envVariables()->asArray()[1]->value());
+        $this->assertTrue($php->envVariables()->asArray()[1]->force());
 
-        $this->assertSame('bar', $configuration->envVariables()->asArray()[2]->name());
-        $this->assertSame('true', $configuration->envVariables()->asArray()[2]->value());
-        $this->assertFalse($configuration->envVariables()->asArray()[2]->force());
+        $this->assertSame('bar', $php->envVariables()->asArray()[2]->name());
+        $this->assertSame('true', $php->envVariables()->asArray()[2]->value());
+        $this->assertFalse($php->envVariables()->asArray()[2]->force());
     }
 
     /**
@@ -432,7 +410,7 @@ final class ConfigurationTest extends TestCase
     {
         $savedIniHighlightKeyword = \ini_get('highlight.keyword');
 
-        (new PhpHandler)->handle($this->configuration->php());
+        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
 
         $path = TEST_FILES_PATH . '.' . \PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, \ini_get('include_path'));
@@ -462,7 +440,7 @@ final class ConfigurationTest extends TestCase
     {
         $_ENV['foo'] = false;
 
-        (new PhpHandler)->handle($this->configuration->php());
+        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
 
         $this->assertFalse($_ENV['foo']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -478,7 +456,7 @@ final class ConfigurationTest extends TestCase
     {
         $_ENV['foo_force'] = false;
 
-        (new PhpHandler)->handle($this->configuration->php());
+        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -496,7 +474,7 @@ final class ConfigurationTest extends TestCase
 
         \putenv('foo=putenv');
 
-        (new PhpHandler)->handle($this->configuration->php());
+        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
 
         $this->assertEquals('putenv', $_ENV['foo']);
         $this->assertEquals('putenv', \getenv('foo'));
@@ -518,7 +496,7 @@ final class ConfigurationTest extends TestCase
     {
         \putenv('foo_force=putenv');
 
-        (new PhpHandler)->handle($this->configuration->php());
+        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', \getenv('foo_force'));
@@ -529,81 +507,72 @@ final class ConfigurationTest extends TestCase
      */
     public function testPHPUnitConfigurationIsReadCorrectly(): void
     {
-        $configuration = $this->configuration->phpunit();
+        $phpunit = $this->configuration('configuration.xml')->phpunit();
 
-        $this->assertTrue($configuration->backupGlobals());
-        $this->assertFalse($configuration->backupStaticAttributes());
-        $this->assertFalse($configuration->beStrictAboutChangesToGlobalState());
-        $this->assertSame('/path/to/bootstrap.php', $configuration->bootstrap());
-        $this->assertFalse($configuration->cacheTokens());
-        $this->assertSame(80, $configuration->columns());
-        $this->assertSame('never', $configuration->colors());
-        $this->assertFalse($configuration->stderr());
-        $this->assertTrue($configuration->convertDeprecationsToExceptions());
-        $this->assertTrue($configuration->convertErrorsToExceptions());
-        $this->assertTrue($configuration->convertNoticesToExceptions());
-        $this->assertTrue($configuration->convertWarningsToExceptions());
-        $this->assertFalse($configuration->forceCoversAnnotation());
-        $this->assertFalse($configuration->stopOnFailure());
-        $this->assertFalse($configuration->stopOnWarning());
-        $this->assertFalse($configuration->beStrictAboutTestsThatDoNotTestAnything());
-        $this->assertFalse($configuration->beStrictAboutCoversAnnotation());
-        $this->assertFalse($configuration->beStrictAboutOutputDuringTests());
-        $this->assertSame(123, $configuration->defaultTimeLimit());
-        $this->assertFalse($configuration->enforceTimeLimit());
-        $this->assertSame('/tmp', $configuration->extensionsDirectory());
-        $this->assertSame(DefaultResultPrinter::class, $configuration->printerClass());
-        $this->assertSame(StandardTestSuiteLoader::class, $configuration->testSuiteLoaderClass());
-        $this->assertSame('My Test Suite', $configuration->defaultTestSuite());
-        $this->assertFalse($configuration->verbose());
-        $this->assertSame(1, $configuration->timeoutForSmallTests());
-        $this->assertSame(10, $configuration->timeoutForMediumTests());
-        $this->assertSame(60, $configuration->timeoutForLargeTests());
-        $this->assertFalse($configuration->beStrictAboutResourceUsageDuringSmallTests());
-        $this->assertFalse($configuration->beStrictAboutTodoAnnotatedTests());
-        $this->assertFalse($configuration->failOnIncomplete());
-        $this->assertFalse($configuration->failOnRisky());
-        $this->assertFalse($configuration->failOnSkipped());
-        $this->assertFalse($configuration->failOnWarning());
-        $this->assertFalse($configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage());
-        $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $configuration->executionOrder());
-        $this->assertFalse($configuration->defectsFirst());
-        $this->assertTrue($configuration->resolveDependencies());
-        $this->assertTrue($configuration->noInteraction());
+        $this->assertTrue($phpunit->backupGlobals());
+        $this->assertFalse($phpunit->backupStaticAttributes());
+        $this->assertFalse($phpunit->beStrictAboutChangesToGlobalState());
+        $this->assertSame('/path/to/bootstrap.php', $phpunit->bootstrap());
+        $this->assertFalse($phpunit->cacheTokens());
+        $this->assertSame(80, $phpunit->columns());
+        $this->assertSame('never', $phpunit->colors());
+        $this->assertFalse($phpunit->stderr());
+        $this->assertTrue($phpunit->convertDeprecationsToExceptions());
+        $this->assertTrue($phpunit->convertErrorsToExceptions());
+        $this->assertTrue($phpunit->convertNoticesToExceptions());
+        $this->assertTrue($phpunit->convertWarningsToExceptions());
+        $this->assertFalse($phpunit->forceCoversAnnotation());
+        $this->assertFalse($phpunit->stopOnFailure());
+        $this->assertFalse($phpunit->stopOnWarning());
+        $this->assertFalse($phpunit->beStrictAboutTestsThatDoNotTestAnything());
+        $this->assertFalse($phpunit->beStrictAboutCoversAnnotation());
+        $this->assertFalse($phpunit->beStrictAboutOutputDuringTests());
+        $this->assertSame(123, $phpunit->defaultTimeLimit());
+        $this->assertFalse($phpunit->enforceTimeLimit());
+        $this->assertSame('/tmp', $phpunit->extensionsDirectory());
+        $this->assertSame(DefaultResultPrinter::class, $phpunit->printerClass());
+        $this->assertSame(StandardTestSuiteLoader::class, $phpunit->testSuiteLoaderClass());
+        $this->assertSame('My Test Suite', $phpunit->defaultTestSuite());
+        $this->assertFalse($phpunit->verbose());
+        $this->assertSame(1, $phpunit->timeoutForSmallTests());
+        $this->assertSame(10, $phpunit->timeoutForMediumTests());
+        $this->assertSame(60, $phpunit->timeoutForLargeTests());
+        $this->assertFalse($phpunit->beStrictAboutResourceUsageDuringSmallTests());
+        $this->assertFalse($phpunit->beStrictAboutTodoAnnotatedTests());
+        $this->assertFalse($phpunit->failOnIncomplete());
+        $this->assertFalse($phpunit->failOnRisky());
+        $this->assertFalse($phpunit->failOnSkipped());
+        $this->assertFalse($phpunit->failOnWarning());
+        $this->assertFalse($phpunit->ignoreDeprecatedCodeUnitsFromCodeCoverage());
+        $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $phpunit->executionOrder());
+        $this->assertFalse($phpunit->defectsFirst());
+        $this->assertTrue($phpunit->resolveDependencies());
+        $this->assertTrue($phpunit->noInteraction());
     }
 
     public function test_TestDox_configuration_is_parsed_correctly(): void
     {
-        $configuration = Registry::getInstance()->get(
-            TEST_FILES_PATH . 'configuration_testdox.xml'
+        $this->assertSame(
+            CliTestDoxPrinter::class,
+            $this->configuration('configuration_testdox.xml')->phpunit()->printerClass()
         );
-
-        $config = $configuration->phpunit();
-
-        $this->assertSame(CliTestDoxPrinter::class, $config->printerClass());
     }
 
     public function test_Conflict_between_testdox_and_printerClass_is_detected(): void
     {
-        $configuration = Registry::getInstance()->get(
-            TEST_FILES_PATH . 'configuration_testdox_printerClass.xml'
-        );
+        $phpunit = $this->configuration('configuration_testdox_printerClass.xml')->phpunit();
 
-        $config = $configuration->phpunit();
-
-        $this->assertSame(CliTestDoxPrinter::class, $config->printerClass());
-        $this->assertTrue($config->conflictBetweenPrinterClassAndTestdox());
+        $this->assertSame(CliTestDoxPrinter::class, $phpunit->printerClass());
+        $this->assertTrue($phpunit->conflictBetweenPrinterClassAndTestdox());
     }
 
     public function testConfigurationForSingleTestSuiteCanBeLoaded(): void
     {
-        $configuration = Registry::getInstance()->get(
-            TEST_FILES_PATH . 'configuration_testsuite.xml'
-        )->testSuite();
+        $testsuites = $this->configuration('configuration_testsuite.xml')->testSuite();
 
-        $this->assertCount(1, $configuration);
+        $this->assertCount(1, $testsuites);
 
-        $first = $configuration->asArray()[0];
+        $first = $testsuites->asArray()[0];
         $this->assertSame('first', $first->name());
         $this->assertCount(1, $first->directories());
         $this->assertSame(TEST_FILES_PATH . 'tests/first', $first->directories()->asArray()[0]->path());
@@ -617,13 +586,11 @@ final class ConfigurationTest extends TestCase
 
     public function testConfigurationForMultipleTestSuitesCanBeLoaded(): void
     {
-        $configuration = Registry::getInstance()->get(
-            TEST_FILES_PATH . 'configuration_testsuites.xml'
-        )->testSuite();
+        $testsuites = $this->configuration('configuration_testsuites.xml')->testSuite();
 
-        $this->assertCount(2, $configuration);
+        $this->assertCount(2, $testsuites);
 
-        $first = $configuration->asArray()[0];
+        $first = $testsuites->asArray()[0];
         $this->assertSame('first', $first->name());
         $this->assertCount(1, $first->directories());
         $this->assertSame(TEST_FILES_PATH . 'tests/first', $first->directories()->asArray()[0]->path());
@@ -634,7 +601,7 @@ final class ConfigurationTest extends TestCase
         $this->assertCount(0, $first->files());
         $this->assertCount(0, $first->exclude());
 
-        $second = $configuration->asArray()[1];
+        $second = $testsuites->asArray()[1];
         $this->assertSame('second', $second->name());
         $this->assertSame(TEST_FILES_PATH . 'tests/second', $second->directories()->asArray()[0]->path());
         $this->assertSame('test', $second->directories()->asArray()[0]->prefix());
@@ -647,5 +614,10 @@ final class ConfigurationTest extends TestCase
         $this->assertSame('!=', $second->files()->asArray()[0]->phpVersionOperator()->asString());
         $this->assertCount(1, $second->exclude());
         $this->assertSame(TEST_FILES_PATH . 'tests/second/_files', $second->exclude()->asArray()[0]->path());
+    }
+
+    private function configuration(string $filename): Configuration
+    {
+        return Registry::getInstance()->get(TEST_FILES_PATH . $filename);
     }
 }
