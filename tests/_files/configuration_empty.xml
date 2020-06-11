@@ -31,10 +31,6 @@
   </coverage>
 
   <logging>
-    <log type="plain" target=""/>
-    <log type="junit" target=""/>
-    <log type="testdox-html" target=""/>
-    <log type="testdox-text" target=""/>
   </logging>
 
   <php>

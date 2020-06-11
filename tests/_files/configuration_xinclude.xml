@@ -50,15 +50,15 @@
 
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-      href="configuration.xml"
+      href="configuration_codecoverage.xml"
       parse="xml"
-      xpointer="xpointer(/phpunit/filter)" />
+      xpointer="xpointer(/phpunit/coverage)" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
       href="configuration.xml"
       parse="xml"
       xpointer="xpointer(/phpunit/listeners)" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-      href="configuration.xml"
+      href="configuration_logging.xml"
       parse="xml"
       xpointer="xpointer(/phpunit/logging)" />
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpunit>
-    <coverage addUncoveredFilesFromWhitelist="true"
-              processUncoveredFilesFromWhitelist="false">
+    <coverage includeUncoveredFiles="true"
+              processUncoveredFiles="false">
         <include>
             <directory suffix=".php">/path/to/files</directory>
             <file>/path/to/file</file>
