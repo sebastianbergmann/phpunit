@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\Configuration\Logging\CodeCoverage;
+namespace PHPUnit\TextUI\Configuration\CodeCoverage\Report;
 
 use PHPUnit\TextUI\Configuration\Directory;
 

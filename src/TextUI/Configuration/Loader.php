@@ -10,12 +10,15 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use PHPUnit\Runner\TestSuiteSorter;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Clover;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Crap4j;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Html as CodeCoverageHtml;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Php as CodeCoveragePhp;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Text as CodeCoverageText;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Xml as CodeCoverageXml;
+use PHPUnit\TextUI\Configuration\CodeCoverage\CodeCoverage;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Filter\Directory as FilterDirectory;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Filter\DirectoryCollection as FilterDirectoryCollection;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Clover;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Crap4j;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Html as CodeCoverageHtml;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Php as CodeCoveragePhp;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Text as CodeCoverageText;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Xml as CodeCoverageXml;
 use PHPUnit\TextUI\Configuration\Logging\Junit;
 use PHPUnit\TextUI\Configuration\Logging\Logging;
 use PHPUnit\TextUI\Configuration\Logging\PlainText;
@@ -43,7 +46,7 @@ final class Loader
             $filename,
             $this->validate($document),
             $this->extensions($filename, $xpath),
-            $this->filter($filename, $xpath),
+            $this->codeCoverage($filename, $xpath),
             $this->groups($xpath),
             $this->testdoxGroups($xpath),
             $this->listeners($filename, $xpath),
@@ -321,10 +324,10 @@ final class Loader
         return $arguments;
     }
 
-    private function filter(string $filename, \DOMXPath $xpath): Filter
+    private function codeCoverage(string $filename, \DOMXPath $xpath): CodeCoverage
     {
         if ($xpath->query('filter/whitelist')->length !== 0) {
-            return $this->legacyFilter($filename, $xpath);
+            return $this->legacyCodeCoverage($filename, $xpath);
         }
 
         $includeUncoveredFilesInCodeCoverageReport  = true;
@@ -352,7 +355,7 @@ final class Loader
             }
         }
 
-        return new Filter(
+        return new CodeCoverage(
             $this->readFilterDirectories($filename, $xpath, 'filter/directory'),
             $this->readFilterFiles($filename, $xpath, 'filter/file'),
             $this->readFilterDirectories($filename, $xpath, 'filter/exclude/directory'),
@@ -365,7 +368,7 @@ final class Loader
     /**
      * @deprecated
      */
-    private function legacyFilter(string $filename, \DOMXPath $xpath): Filter
+    private function legacyCodeCoverage(string $filename, \DOMXPath $xpath): CodeCoverage
     {
         $includeUncoveredFilesInCodeCoverageReport  = true;
         $processUncoveredFilesForCodeCoverageReport = false;
@@ -392,7 +395,7 @@ final class Loader
             }
         }
 
-        return new Filter(
+        return new CodeCoverage(
             $this->readFilterDirectories($filename, $xpath, 'filter/whitelist/directory'),
             $this->readFilterFiles($filename, $xpath, 'filter/whitelist/file'),
             $this->readFilterDirectories($filename, $xpath, 'filter/whitelist/exclude/directory'),
@@ -448,7 +451,7 @@ final class Loader
         return FilterDirectoryCollection::fromArray($directories);
     }
 
-    private function readFilterFiles(string $filename, \DOMXPath $xpath, string $query): FilterFileCollection
+    private function readFilterFiles(string $filename, \DOMXPath $xpath, string $query): FileCollection
     {
         $files = [];
 
@@ -456,11 +459,11 @@ final class Loader
             $filePath = (string) $file->textContent;
 
             if ($filePath) {
-                $files[] = new FilterFile($this->toAbsolutePath($filename, $filePath));
+                $files[] = new File($this->toAbsolutePath($filename, $filePath));
             }
         }
 
-        return FilterFileCollection::fromArray($files);
+        return FileCollection::fromArray($files);
     }
 
     private function groups(\DOMXPath $xpath): Groups

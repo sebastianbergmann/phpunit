@@ -9,13 +9,13 @@
  */
 namespace PHPUnit\TextUI\Configuration\Logging;
 
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Clover;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Crap4j;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Html as CodeCoverageHtml;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Php;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Text as CodeCoverageText;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Xml as CodeCoverageXml;
 use PHPUnit\TextUI\Configuration\Exception;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Clover;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Crap4j;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Html as CodeCoverageHtml;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Php;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Text as CodeCoverageText;
-use PHPUnit\TextUI\Configuration\Logging\CodeCoverage\Xml as CodeCoverageXml;
 use PHPUnit\TextUI\Configuration\Logging\TestDox\Html as TestDoxHtml;
 use PHPUnit\TextUI\Configuration\Logging\TestDox\Text as TestDoxText;
 use PHPUnit\TextUI\Configuration\Logging\TestDox\Xml as TestDoxXml;

@@ -7,26 +7,28 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\Configuration;
+namespace PHPUnit\TextUI\Configuration\CodeCoverage\Report;
+
+use PHPUnit\TextUI\Configuration\Directory;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class FilterFile
+final class Xml
 {
     /**
-     * @var string
+     * @var Directory
      */
-    private $path;
+    private $target;
 
-    public function __construct(string $path)
+    public function __construct(Directory $target)
     {
-        $this->path = $path;
+        $this->target = $target;
     }
 
-    public function path(): string
+    public function target(): Directory
     {
-        return $this->path;
+        return $this->target;
     }
 }

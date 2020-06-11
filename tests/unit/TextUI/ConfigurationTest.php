@@ -13,6 +13,7 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Filter\Directory;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 
@@ -136,71 +137,71 @@ final class ConfigurationTest extends TestCase
         @\unlink($tmpFilename);
     }
 
-    public function testFilterConfigurationIsReadCorrectly(): void
+    public function testCodeCoverageConfigurationIsReadCorrectly(): void
     {
-        $filter = $this->configuration('configuration_filter.xml')->filter();
+        $codeCoverage = $this->configuration('configuration_codecoverage.xml')->codeCoverage();
 
-        $this->assertTrue($filter->includeUncoveredFilesInCodeCoverageReport());
-        $this->assertFalse($filter->processUncoveredFilesForCodeCoverageReport());
+        $this->assertTrue($codeCoverage->includeUncoveredFilesInCodeCoverageReport());
+        $this->assertFalse($codeCoverage->processUncoveredFilesForCodeCoverageReport());
 
-        /** @var FilterDirectory $directory */
-        $directory = \iterator_to_array($filter->directories(), false)[0];
+        /** @var Directory $directory */
+        $directory = \iterator_to_array($codeCoverage->directories(), false)[0];
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
         $this->assertSame('DEFAULT', $directory->group());
 
-        /** @var FilterFile $file */
-        $file = \iterator_to_array($filter->files(), false)[0];
+        /** @var File $file */
+        $file = \iterator_to_array($codeCoverage->files(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
 
-        /** @var FilterFile $file */
-        $file = \iterator_to_array($filter->files(), false)[1];
+        /** @var File $file */
+        $file = \iterator_to_array($codeCoverage->files(), false)[1];
         $this->assertSame('/path/to/file', $file->path());
 
-        /** @var FilterDirectory $directory */
-        $directory = \iterator_to_array($filter->excludeDirectories(), false)[0];
+        /** @var Directory $directory */
+        $directory = \iterator_to_array($codeCoverage->excludeDirectories(), false)[0];
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
         $this->assertSame('DEFAULT', $directory->group());
 
-        /** @var FilterFile $file */
-        $file = \iterator_to_array($filter->excludeFiles(), false)[0];
+        /** @var File $file */
+        $file = \iterator_to_array($codeCoverage->excludeFiles(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
     }
 
-    public function testLegacyFilterConfigurationIsReadCorrectly(): void
+    public function testLegacyCodeCoverageConfigurationIsReadCorrectly(): void
     {
-        $filter = $this->configuration('configuration_legacy_filter.xml')->filter();
+        $codeCoverage = $this->configuration('configuration_legacy_codecoverage.xml')->codeCoverage();
 
-        $this->assertTrue($filter->includeUncoveredFilesInCodeCoverageReport());
-        $this->assertFalse($filter->processUncoveredFilesForCodeCoverageReport());
+        $this->assertTrue($codeCoverage->includeUncoveredFilesInCodeCoverageReport());
+        $this->assertFalse($codeCoverage->processUncoveredFilesForCodeCoverageReport());
 
-        /** @var FilterDirectory $directory */
-        $directory = \iterator_to_array($filter->directories(), false)[0];
+        /** @var Directory $directory */
+        $directory = \iterator_to_array($codeCoverage->directories(), false)[0];
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
         $this->assertSame('DEFAULT', $directory->group());
 
-        /** @var FilterFile $file */
-        $file = \iterator_to_array($filter->files(), false)[0];
+        /** @var File $file */
+        $file = \iterator_to_array($codeCoverage->files(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
 
-        /** @var FilterFile $file */
-        $file = \iterator_to_array($filter->files(), false)[1];
+        /** @var File $file */
+        $file = \iterator_to_array($codeCoverage->files(), false)[1];
         $this->assertSame('/path/to/file', $file->path());
 
-        /** @var FilterDirectory $directory */
-        $directory = \iterator_to_array($filter->excludeDirectories(), false)[0];
+        /** @var Directory $directory */
+        $directory = \iterator_to_array($codeCoverage->excludeDirectories(), false)[0];
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
         $this->assertSame('DEFAULT', $directory->group());
 
-        /** @var FilterFile $file */
-        $file = \iterator_to_array($filter->excludeFiles(), false)[0];
+        /** @var File $file */
+        $file = \iterator_to_array($codeCoverage->excludeFiles(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
     }
 

@@ -10,11 +10,11 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TextUI\Configuration\Filter as FilterConfiguration;
-use PHPUnit\TextUI\Configuration\FilterDirectory;
-use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
-use PHPUnit\TextUI\Configuration\FilterFile;
-use PHPUnit\TextUI\Configuration\FilterFileCollection;
+use PHPUnit\TextUI\Configuration\CodeCoverage\CodeCoverage;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Filter\Directory;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Filter\DirectoryCollection;
+use PHPUnit\TextUI\Configuration\File;
+use PHPUnit\TextUI\Configuration\FileCollection;
 
 /**
  * @small
@@ -48,28 +48,28 @@ EOF;
         $directoryPathThatDoesNotExist = \sprintf('%s/path/that/does/not/exist', __DIR__);
         $this->assertDirectoryDoesNotExist($directoryPathThatDoesNotExist);
 
-        $filterConfiguration = new FilterConfiguration(
-            FilterDirectoryCollection::fromArray(
+        $filterConfiguration = new CodeCoverage(
+            DirectoryCollection::fromArray(
                 [
-                    new FilterDirectory(
+                    new Directory(
                         __DIR__,
                         '',
                         '.php',
                         'DEFAULT'
                     ),
-                    new FilterDirectory(
+                    new Directory(
                         \sprintf('%s/', __DIR__),
                         '',
                         '.php',
                         'DEFAULT'
                     ),
-                    new FilterDirectory(
+                    new Directory(
                         \sprintf('%s/./%s', \dirname(__DIR__), \basename(__DIR__)),
                         '',
                         '.php',
                         'DEFAULT'
                     ),
-                    new FilterDirectory(
+                    new Directory(
                         $directoryPathThatDoesNotExist,
                         '',
                         '.php',
@@ -77,14 +77,14 @@ EOF;
                     ),
                 ]
             ),
-            FilterFileCollection::fromArray(
+            FileCollection::fromArray(
                 [
-                    new FilterFile('src/foo.php'),
-                    new FilterFile('src/bar.php'),
+                    new File('src/foo.php'),
+                    new File('src/bar.php'),
                 ]
             ),
-            FilterDirectoryCollection::fromArray([]),
-            FilterFileCollection::fromArray([]),
+            DirectoryCollection::fromArray([]),
+            FileCollection::fromArray([]),
             true,
             true
         );

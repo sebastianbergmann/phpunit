@@ -7,34 +7,34 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\Configuration;
+namespace PHPUnit\TextUI\Configuration\CodeCoverage\Filter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class FilterDirectoryCollection implements \Countable, \IteratorAggregate
+final class DirectoryCollection implements \Countable, \IteratorAggregate
 {
     /**
-     * @var FilterDirectory[]
+     * @var Directory[]
      */
     private $directories;
 
     /**
-     * @param FilterDirectory[] $directories
+     * @param Directory[] $directories
      */
     public static function fromArray(array $directories): self
     {
         return new self(...$directories);
     }
 
-    private function __construct(FilterDirectory ...$directories)
+    private function __construct(Directory ...$directories)
     {
         $this->directories = $directories;
     }
 
     /**
-     * @return FilterDirectory[]
+     * @return Directory[]
      */
     public function asArray(): array
     {
@@ -46,8 +46,8 @@ final class FilterDirectoryCollection implements \Countable, \IteratorAggregate
         return \count($this->directories);
     }
 
-    public function getIterator(): FilterDirectoryCollectionIterator
+    public function getIterator(): DirectoryCollectionIterator
     {
-        return new FilterDirectoryCollectionIterator($this);
+        return new DirectoryCollectionIterator($this);
     }
 }

@@ -7,31 +7,34 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\Configuration;
+namespace PHPUnit\TextUI\Configuration\CodeCoverage;
+
+use PHPUnit\TextUI\Configuration\CodeCoverage\Filter\DirectoryCollection;
+use PHPUnit\TextUI\Configuration\FileCollection;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class Filter
+final class CodeCoverage
 {
     /**
-     * @var FilterDirectoryCollection
+     * @var DirectoryCollection
      */
     private $directories;
 
     /**
-     * @var FilterFileCollection
+     * @var FileCollection
      */
     private $files;
 
     /**
-     * @var FilterDirectoryCollection
+     * @var DirectoryCollection
      */
     private $excludeDirectories;
 
     /**
-     * @var FilterFileCollection
+     * @var FileCollection
      */
     private $excludeFiles;
 
@@ -45,7 +48,7 @@ final class Filter
      */
     private $processUncoveredFilesForCodeCoverageReport;
 
-    public function __construct(FilterDirectoryCollection $directories, FilterFileCollection $files, FilterDirectoryCollection $excludeDirectories, FilterFileCollection $excludeFiles, bool $includeUncoveredFilesInCodeCoverageReport, bool $processUncoveredFilesForCodeCoverageReport)
+    public function __construct(DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $includeUncoveredFilesInCodeCoverageReport, bool $processUncoveredFilesForCodeCoverageReport)
     {
         $this->directories                                = $directories;
         $this->files                                      = $files;
@@ -60,22 +63,22 @@ final class Filter
         return \count($this->directories) > 0 || \count($this->files) > 0;
     }
 
-    public function directories(): FilterDirectoryCollection
+    public function directories(): DirectoryCollection
     {
         return $this->directories;
     }
 
-    public function files(): FilterFileCollection
+    public function files(): FileCollection
     {
         return $this->files;
     }
 
-    public function excludeDirectories(): FilterDirectoryCollection
+    public function excludeDirectories(): DirectoryCollection
     {
         return $this->excludeDirectories;
     }
 
-    public function excludeFiles(): FilterFileCollection
+    public function excludeFiles(): FileCollection
     {
         return $this->excludeFiles;
     }

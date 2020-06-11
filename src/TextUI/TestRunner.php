@@ -491,12 +491,12 @@ final class TestRunner extends BaseTestRunner
             if (isset($arguments['configuration'])) {
                 \assert($arguments['configuration'] instanceof Configuration);
 
-                $filterConfiguration = $arguments['configuration']->filter();
+                $codeCoverageConfiguration = $arguments['configuration']->codeCoverage();
 
-                if ($filterConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
+                if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
                     $coverageFilterFromConfigurationFile = true;
 
-                    foreach ($filterConfiguration->directories() as $directory) {
+                    foreach ($codeCoverageConfiguration->directories() as $directory) {
                         $this->codeCoverageFilter->includeDirectory(
                             $directory->path(),
                             $directory->suffix(),
@@ -504,11 +504,11 @@ final class TestRunner extends BaseTestRunner
                         );
                     }
 
-                    foreach ($filterConfiguration->files() as $file) {
+                    foreach ($codeCoverageConfiguration->files() as $file) {
                         $this->codeCoverageFilter->includeFile($file->path());
                     }
 
-                    foreach ($filterConfiguration->excludeDirectories() as $directory) {
+                    foreach ($codeCoverageConfiguration->excludeDirectories() as $directory) {
                         $this->codeCoverageFilter->excludeDirectory(
                             $directory->path(),
                             $directory->suffix(),
@@ -516,7 +516,7 @@ final class TestRunner extends BaseTestRunner
                         );
                     }
 
-                    foreach ($filterConfiguration->excludeFiles() as $file) {
+                    foreach ($codeCoverageConfiguration->excludeFiles() as $file) {
                         $this->codeCoverageFilter->excludeFile($file->path());
                     }
                 }
@@ -553,16 +553,16 @@ final class TestRunner extends BaseTestRunner
             if (isset($arguments['configuration'])) {
                 \assert($arguments['configuration'] instanceof Configuration);
 
-                $filterConfiguration = $arguments['configuration']->filter();
+                $codeCoverageConfiguration = $arguments['configuration']->codeCoverage();
 
-                if ($filterConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-                    if ($filterConfiguration->includeUncoveredFilesInCodeCoverageReport()) {
+                if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
+                    if ($codeCoverageConfiguration->includeUncoveredFilesInCodeCoverageReport()) {
                         $codeCoverage->includeUncoveredFiles();
                     } else {
                         $codeCoverage->excludeUncoveredFiles();
                     }
 
-                    if ($filterConfiguration->processUncoveredFilesForCodeCoverageReport()) {
+                    if ($codeCoverageConfiguration->processUncoveredFilesForCodeCoverageReport()) {
                         $codeCoverage->processUncoveredFiles();
                     } else {
                         $codeCoverage->doNotProcessUncoveredFiles();
@@ -583,10 +583,10 @@ final class TestRunner extends BaseTestRunner
             }
         }
 
-        if (isset($arguments['xdebugFilterFile'], $filterConfiguration)) {
+        if (isset($arguments['xdebugFilterFile'], $codeCoverageConfiguration)) {
             $this->write("\n");
 
-            $script = (new XdebugFilterScriptGenerator)->generate($filterConfiguration);
+            $script = (new XdebugFilterScriptGenerator)->generate($codeCoverageConfiguration);
 
             if ($arguments['xdebugFilterFile'] !== 'php://stdout' && $arguments['xdebugFilterFile'] !== 'php://stderr' && !Filesystem::createDirectory(\dirname($arguments['xdebugFilterFile']))) {
                 $this->write(\sprintf('Cannot write Xdebug filter script to %s ' . \PHP_EOL, $arguments['xdebugFilterFile']));

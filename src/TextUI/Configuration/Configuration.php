@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use PHPUnit\TextUI\Configuration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Logging\Logging;
 
 /**
@@ -34,9 +35,9 @@ final class Configuration
     private $extensions;
 
     /**
-     * @var Filter
+     * @var CodeCoverage
      */
-    private $filter;
+    private $codeCoverage;
 
     /**
      * @var Groups
@@ -76,12 +77,12 @@ final class Configuration
     /**
      * @psalm-param array<int,array<int,string>> $validationErrors
      */
-    public function __construct(string $filename, array $validationErrors, ExtensionCollection $extensions, Filter $filter, Groups $groups, Groups $testdoxGroups, ExtensionCollection $listeners, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(string $filename, array $validationErrors, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, ExtensionCollection $listeners, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {
         $this->filename         = $filename;
         $this->validationErrors = $validationErrors;
         $this->extensions       = $extensions;
-        $this->filter           = $filter;
+        $this->codeCoverage     = $codeCoverage;
         $this->groups           = $groups;
         $this->testdoxGroups    = $testdoxGroups;
         $this->listeners        = $listeners;
@@ -111,9 +112,9 @@ final class Configuration
         return $this->extensions;
     }
 
-    public function filter(): Filter
+    public function codeCoverage(): CodeCoverage
     {
-        return $this->filter;
+        return $this->codeCoverage;
     }
 
     public function groups(): Groups

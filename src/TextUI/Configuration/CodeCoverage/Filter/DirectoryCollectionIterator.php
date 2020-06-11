@@ -7,15 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\Configuration;
+namespace PHPUnit\TextUI\Configuration\CodeCoverage\Filter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class FilterDirectoryCollectionIterator implements \Countable, \Iterator
+final class DirectoryCollectionIterator implements \Countable, \Iterator
 {
     /**
-     * @var FilterDirectory[]
+     * @var Directory[]
      */
     private $directories;
 
@@ -24,7 +24,7 @@ final class FilterDirectoryCollectionIterator implements \Countable, \Iterator
      */
     private $position;
 
-    public function __construct(FilterDirectoryCollection $directories)
+    public function __construct(DirectoryCollection $directories)
     {
         $this->directories = $directories->asArray();
     }
@@ -49,7 +49,7 @@ final class FilterDirectoryCollectionIterator implements \Countable, \Iterator
         return $this->position;
     }
 
-    public function current(): FilterDirectory
+    public function current(): Directory
     {
         return $this->directories[$this->position];
     }
