@@ -1003,9 +1003,9 @@ final class TestRunner extends BaseTestRunner
 
             $loggingConfiguration = $arguments['configuration']->logging();
 
-            if ($loggingConfiguration->hasPlainText()) {
+            if ($loggingConfiguration->hasText()) {
                 $arguments['listeners'][] = new DefaultResultPrinter(
-                    $loggingConfiguration->plainText()->target()->path(),
+                    $loggingConfiguration->text()->target()->path(),
                     true
                 );
             }

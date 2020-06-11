@@ -15,7 +15,7 @@ use PHPUnit\TextUI\Configuration\File;
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class PlainText
+final class Text
 {
     /**
      * @var File

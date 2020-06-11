@@ -61,22 +61,6 @@
         </exclude>
     </testdoxGroups>
 
-    <coverage addUncoveredFilesFromWhitelist="true"
-              processUncoveredFilesFromWhitelist="false">
-        <include>
-            <directory suffix=".php">/path/to/files</directory>
-            <file>/path/to/file</file>
-            <file>
-                /path/to/file
-            </file>
-        </include>
-
-        <exclude>
-            <directory suffix=".php">/path/to/files</directory>
-            <file>/path/to/file</file>
-        </exclude>
-    </coverage>
-
     <listeners>
         <listener class="MyListener" file="/optional/path/to/MyListener.php">
             <arguments>
@@ -128,14 +112,6 @@
             </arguments>
         </extension>
     </extensions>
-
-    <logging>
-        <log type="plain" target="/tmp/logfile.txt"/>
-        <log type="junit" target="/tmp/logfile.xml"/>
-        <log type="testdox-html" target="/tmp/testdox.html"/>
-        <log type="testdox-text" target="/tmp/testdox.txt"/>
-        <log type="testdox-xml" target="/tmp/testdox.xml"/>
-    </logging>
 
     <php>
         <includePath>.</includePath>

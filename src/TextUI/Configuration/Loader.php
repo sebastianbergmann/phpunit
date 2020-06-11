@@ -21,11 +21,11 @@ use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Text as CodeCoverageText;
 use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Xml as CodeCoverageXml;
 use PHPUnit\TextUI\Configuration\Logging\Junit;
 use PHPUnit\TextUI\Configuration\Logging\Logging;
-use PHPUnit\TextUI\Configuration\Logging\PlainText;
 use PHPUnit\TextUI\Configuration\Logging\TeamCity;
 use PHPUnit\TextUI\Configuration\Logging\TestDox\Html as TestDoxHtml;
 use PHPUnit\TextUI\Configuration\Logging\TestDox\Text as TestDoxText;
 use PHPUnit\TextUI\Configuration\Logging\TestDox\Xml as TestDoxXml;
+use PHPUnit\TextUI\Configuration\Logging\Text;
 use PHPUnit\TextUI\Configuration\TestSuite as TestSuiteConfiguration;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
@@ -59,12 +59,112 @@ final class Loader
 
     public function logging(string $filename, \DOMXPath $xpath): Logging
     {
+        if ($xpath->query('logging/log')->length !== 0) {
+            return $this->legacyLogging($filename, $xpath);
+        }
+
+        $junit   = null;
+        $element = $this->element($xpath, 'logging/junit');
+
+        if ($element) {
+            $junit = new Junit(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                )
+            );
+        }
+
+        $text    = null;
+        $element = $this->element($xpath, 'logging/text');
+
+        if ($element) {
+            $text = new Text(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                )
+            );
+        }
+
+        $teamCity = null;
+        $element  = $this->element($xpath, 'logging/teamcity');
+
+        if ($element) {
+            $teamCity = new TeamCity(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                )
+            );
+        }
+
+        $testDoxHtml = null;
+        $element     = $this->element($xpath, 'logging/testdoxHtml');
+
+        if ($element) {
+            $testDoxHtml = new TestDoxHtml(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                )
+            );
+        }
+
+        $testDoxText = null;
+        $element     = $this->element($xpath, 'logging/testdoxText');
+
+        if ($element) {
+            $testDoxText = new TestDoxText(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                )
+            );
+        }
+
+        $testDoxXml = null;
+        $element    = $this->element($xpath, 'logging/testdoxXml');
+
+        if ($element) {
+            $testDoxXml = new TestDoxXml(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                )
+            );
+        }
+
+        return new Logging(
+            $junit,
+            $text,
+            $teamCity,
+            $testDoxHtml,
+            $testDoxText,
+            $testDoxXml
+        );
+    }
+
+    public function legacyLogging(string $filename, \DOMXPath $xpath): Logging
+    {
         $junit       = null;
-        $plainText   = null;
         $teamCity    = null;
         $testDoxHtml = null;
         $testDoxText = null;
         $testDoxXml  = null;
+        $text        = null;
 
         foreach ($xpath->query('logging/log') as $log) {
             \assert($log instanceof \DOMElement);
@@ -80,7 +180,7 @@ final class Loader
 
             switch ($type) {
                 case 'plain':
-                    $plainText = new PlainText(
+                    $text = new Text(
                         new File($target)
                     );
 
@@ -125,7 +225,7 @@ final class Loader
 
         return new Logging(
             $junit,
-            $plainText,
+            $text,
             $teamCity,
             $testDoxHtml,
             $testDoxText,
@@ -271,7 +371,7 @@ final class Loader
             return $this->legacyCodeCoverage($filename, $xpath);
         }
 
-        $includeUncoveredFiles  = true;
+        $includeUncoveredFiles = true;
         $processUncoveredFiles = false;
 
         $element = $this->element($xpath, 'coverage');
@@ -402,7 +502,7 @@ final class Loader
      */
     private function legacyCodeCoverage(string $filename, \DOMXPath $xpath): CodeCoverage
     {
-        $includeUncoveredFiles  = true;
+        $includeUncoveredFiles = true;
         $processUncoveredFiles = false;
 
         $element = $this->element($xpath, 'filter/whitelist');

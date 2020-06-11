@@ -32,7 +32,9 @@
         <xs:attribute name="includeUncoveredFiles" type="xs:boolean" default="true"/>
         <xs:attribute name="processUncoveredFiles" type="xs:boolean" default="false"/>
     </xs:complexType>
-
+    <xs:complexType name="loggingType">
+        <xs:group ref="loggingGroup"/>
+    </xs:complexType>
     <xs:complexType name="groupsType">
         <xs:choice>
             <xs:sequence>
@@ -119,31 +121,6 @@
             </xs:simpleType>
         </xs:union>
     </xs:simpleType>
-    <xs:complexType name="loggersType">
-        <xs:sequence>
-            <xs:element name="log" type="loggerType" maxOccurs="unbounded"/>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="loggerType">
-        <xs:attribute name="type">
-            <xs:simpleType>
-                <xs:restriction base="xs:string">
-                    <xs:enumeration value="plain"/>
-                    <xs:enumeration value="teamcity"/>
-                    <xs:enumeration value="junit"/>
-                    <xs:enumeration value="testdox-html"/>
-                    <xs:enumeration value="testdox-text"/>
-                    <xs:enumeration value="testdox-xml"/>
-                </xs:restriction>
-            </xs:simpleType>
-        </xs:attribute>
-        <xs:attribute name="target" type="xs:anyURI"/>
-        <xs:attribute name="lowUpperBound" type="xs:nonNegativeInteger" default="50"/>
-        <xs:attribute name="highLowerBound" type="xs:nonNegativeInteger" default="90"/>
-        <xs:attribute name="showUncoveredFiles" type="xs:boolean" default="false"/>
-        <xs:attribute name="showOnlySummary" type="xs:boolean" default="false"/>
-        <xs:attribute name="threshold" type="xs:nonNegativeInteger" default="30"/>
-    </xs:complexType>
     <xs:group name="pathGroup">
         <xs:sequence>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -284,7 +261,7 @@
             <xs:element name="groups" type="groupsType" minOccurs="0"/>
             <xs:element name="testdoxGroups" type="groupsType" minOccurs="0"/>
             <xs:element name="coverage" type="coverageType" minOccurs="0"/>
-            <xs:element name="logging" type="loggersType" minOccurs="0"/>
+            <xs:element name="logging" type="loggingType" minOccurs="0"/>
             <xs:element name="extensions" type="extensionsType" minOccurs="0"/>
             <xs:element name="listeners" type="listenersType" minOccurs="0"/>
             <xs:element name="php" type="phpType" minOccurs="0"/>
@@ -313,6 +290,16 @@
             <xs:element name="php" type="logToFileType" minOccurs="0" />
             <xs:element name="text" type="coverageReportTextType" minOccurs="0" />
             <xs:element name="xml" type="logToDirectoryType" minOccurs="0" />
+        </xs:all>
+    </xs:group>
+    <xs:group name="loggingGroup">
+        <xs:all>
+            <xs:element name="junit" type="logToFileType" minOccurs="0" />
+            <xs:element name="teamcity" type="logToFileType" minOccurs="0" />
+            <xs:element name="testdoxHtml" type="logToFileType" minOccurs="0" />
+            <xs:element name="testdoxText" type="logToFileType" minOccurs="0" />
+            <xs:element name="testdoxXml" type="logToFileType" minOccurs="0" />
+            <xs:element name="text" type="logToFileType" minOccurs="0"/>
         </xs:all>
     </xs:group>
     <xs:complexType name="logToFileType">

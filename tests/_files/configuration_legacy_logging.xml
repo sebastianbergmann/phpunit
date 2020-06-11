@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit>
+    <logging>
+        <log type="junit" target="junit.xml"/>
+        <log type="teamcity" target="teamcity.txt"/>
+        <log type="testdox-html" target="testdox.html"/>
+        <log type="testdox-text" target="testdox.txt"/>
+        <log type="testdox-xml" target="testdox.xml"/>
+        <log type="plain" target="logfile.txt"/>
+    </logging>
+</phpunit>

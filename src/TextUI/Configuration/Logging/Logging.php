@@ -26,9 +26,9 @@ final class Logging
     private $junit;
 
     /**
-     * @var ?PlainText
+     * @var ?Text
      */
-    private $plainText;
+    private $text;
 
     /**
      * @var ?TeamCity
@@ -50,10 +50,10 @@ final class Logging
      */
     private $testDoxXml;
 
-    public function __construct(?Junit $junit, ?PlainText $plainText, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText, ?TestDoxXml $testDoxXml)
+    public function __construct(?Junit $junit, ?Text $text, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText, ?TestDoxXml $testDoxXml)
     {
         $this->junit       = $junit;
-        $this->plainText   = $plainText;
+        $this->text        = $text;
         $this->teamCity    = $teamCity;
         $this->testDoxHtml = $testDoxHtml;
         $this->testDoxText = $testDoxText;
@@ -74,18 +74,18 @@ final class Logging
         return $this->junit;
     }
 
-    public function hasPlainText(): bool
+    public function hasText(): bool
     {
-        return $this->plainText !== null;
+        return $this->text !== null;
     }
 
-    public function plainText(): PlainText
+    public function text(): Text
     {
-        if ($this->plainText === null) {
-            throw new Exception('Logger "Plain Text" is not configured');
+        if ($this->text === null) {
+            throw new Exception('Logger "Text" is not configured');
         }
 
-        return $this->plainText;
+        return $this->text;
     }
 
     public function hasTeamCity(): bool
