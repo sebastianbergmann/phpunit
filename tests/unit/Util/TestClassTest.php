@@ -1103,13 +1103,15 @@ final class TestClassTest extends TestCase
         $docBlock->getProvidedData();
     }
 
-    /**
-     * @todo Not sure what this test tests (name is misleading at least)
-     */
-    public function testParseAnnotation(): void
+    public function testParseDependsAnnotation(): void
     {
         $this->assertEquals(
-            ['Foo', 'ほげ'],
+            [
+                \get_class($this) . '::Foo',
+                \get_class($this) . '::ほげ',
+                '',
+                'AnotherClass::Foo',
+            ],
             Test::getDependencies(\get_class($this), 'methodForTestParseAnnotation')
         );
     }
@@ -1117,8 +1119,10 @@ final class TestClassTest extends TestCase
     /**
      * @depends Foo
      * @depends ほげ
+     * @depends
+     * @depends AnotherClass::Foo
      *
-     * @todo Remove fixture from test class
+     * @xtodo Remove fixture from test class
      */
     public function methodForTestParseAnnotation(): void
     {
@@ -1127,7 +1131,7 @@ final class TestClassTest extends TestCase
     public function testParseAnnotationThatIsOnlyOneLine(): void
     {
         $this->assertEquals(
-            ['Bar'],
+            [\get_class($this) . '::Bar'],
             Test::getDependencies(\get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
         );
     }
