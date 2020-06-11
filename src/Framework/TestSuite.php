@@ -791,7 +791,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             foreach ($test->getDependencies() as $tdep) {
                 $testNameParts = \explode('::', $tdep);
 
-                if (count($testNameParts) === 2 && ($this->getName() !== $testNameParts[0])) {
+                if (\count($testNameParts) === 2 && ($this->getName() !== $testNameParts[0])) {
                     $dependencies[] = $tdep;
                 }
             }

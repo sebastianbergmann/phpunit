@@ -353,6 +353,24 @@ final class Test
             );
         }
 
+        // Normalize dependency name to className::methodName
+        foreach ($dependencies as &$name) {
+            // Store '[!][shallow]clone' modifier
+            $parts = \explode(' ', $name, 2);
+
+            if (\count($parts) == 1) {
+                $modifier = '';
+                $testName = $parts[0];
+            } else {
+                $modifier = $parts[0] . ' ';
+                $testName = $parts[1];
+            }
+
+            if (!empty($testName) && \strpos($testName, '::') === false) {
+                $name = $modifier . $className . '::' . $testName;
+            }
+        }
+
         return \array_unique($dependencies);
     }
 

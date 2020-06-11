@@ -228,17 +228,6 @@ final class TestSuiteSorter
         $this->defectSortOrder[$suite->getName()] = $max;
     }
 
-    private function suiteOnlyContainsTests(TestSuite $suite): bool
-    {
-        return \array_reduce(
-            $suite->tests(),
-            static function ($carry, $test) {
-                return $carry && ($test instanceof TestCase || $test instanceof DataProviderTestSuite);
-            },
-            true
-        );
-    }
-
     private function reverse(array $tests): array
     {
         return \array_reverse($tests);
@@ -379,7 +368,7 @@ final class TestSuiteSorter
                 $tests
             );
 
-            if (!$tests[$i]->hasDependencies() || empty(\array_intersect($this->getNormalizedDependencyNames($tests[$i]), $todoNames))) {
+            if (!$tests[$i]->hasDependencies() || empty(\array_intersect($tests[$i]->getDependencies(), $todoNames))) {
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($tests, $i, 1));
                 $i            = 0;
             } else {
@@ -388,29 +377,6 @@ final class TestSuiteSorter
         } while (!empty($tests) && ($i < \count($tests)));
 
         return \array_merge($newTestOrder, $tests);
-    }
-
-    /**
-     * @param DataProviderTestSuite|TestCase $test
-     *
-     * @return array<string> A list of full test names as "TestSuiteClassName::testMethodName"
-     */
-    private function getNormalizedDependencyNames($test): array
-    {
-        if ($test instanceof DataProviderTestSuite) {
-            $testClass = \substr($test->getName(), 0, \strpos($test->getName(), '::'));
-        } else {
-            $testClass = \get_class($test);
-        }
-
-        $names = \array_map(
-            static function ($name) use ($testClass) {
-                return \strpos($name, '::') === false ? $testClass . '::' . $name : $name;
-            },
-            $test->getDependencies()
-        );
-
-        return $names;
     }
 
     /**
