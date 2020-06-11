@@ -59,18 +59,12 @@ final class Loader
 
     public function logging(string $filename, \DOMXPath $xpath): Logging
     {
-        $codeCoverageClover = null;
-        $codeCoverageCrap4j = null;
-        $codeCoverageHtml   = null;
-        $codeCoveragePhp    = null;
-        $codeCoverageText   = null;
-        $codeCoverageXml    = null;
-        $junit              = null;
-        $plainText          = null;
-        $teamCity           = null;
-        $testDoxHtml        = null;
-        $testDoxText        = null;
-        $testDoxXml         = null;
+        $junit       = null;
+        $plainText   = null;
+        $teamCity    = null;
+        $testDoxHtml = null;
+        $testDoxText = null;
+        $testDoxXml  = null;
 
         foreach ($xpath->query('logging/log') as $log) {
             \assert($log instanceof \DOMElement);
@@ -85,53 +79,6 @@ final class Loader
             $target = $this->toAbsolutePath($filename, $target);
 
             switch ($type) {
-                case 'coverage-clover':
-                    $codeCoverageClover = new Clover(
-                        new File($target)
-                    );
-
-                    break;
-
-                case 'coverage-crap4j':
-                    $codeCoverageCrap4j = new Crap4j(
-                        new File($target),
-                        $this->getIntegerAttribute($log, 'threshold', 30)
-                    );
-
-                    break;
-
-                case 'coverage-html':
-                    $codeCoverageHtml = new CodeCoverageHtml(
-                        new Directory($target),
-                        $this->getIntegerAttribute($log, 'lowUpperBound', 50),
-                        $this->getIntegerAttribute($log, 'highLowerBound', 90)
-                    );
-
-                    break;
-
-                case 'coverage-php':
-                    $codeCoveragePhp = new CodeCoveragePhp(
-                        new File($target)
-                    );
-
-                    break;
-
-                case 'coverage-text':
-                    $codeCoverageText = new CodeCoverageText(
-                        new File($target),
-                        $this->getBooleanAttribute($log, 'showUncoveredFiles', false),
-                        $this->getBooleanAttribute($log, 'showOnlySummary', false)
-                    );
-
-                    break;
-
-                case 'coverage-xml':
-                    $codeCoverageXml = new CodeCoverageXml(
-                        new Directory($target)
-                    );
-
-                    break;
-
                 case 'plain':
                     $plainText = new PlainText(
                         new File($target)
@@ -177,12 +124,6 @@ final class Loader
         }
 
         return new Logging(
-            $codeCoverageClover,
-            $codeCoverageCrap4j,
-            $codeCoverageHtml,
-            $codeCoveragePhp,
-            $codeCoverageText,
-            $codeCoverageXml,
             $junit,
             $plainText,
             $teamCity,
@@ -330,38 +271,129 @@ final class Loader
             return $this->legacyCodeCoverage($filename, $xpath);
         }
 
-        $includeUncoveredFilesInCodeCoverageReport  = true;
-        $processUncoveredFilesForCodeCoverageReport = false;
+        $includeUncoveredFiles  = true;
+        $processUncoveredFiles = false;
 
-        $nodes = $xpath->query('filter');
+        $element = $this->element($xpath, 'coverage');
 
-        if ($nodes->length === 1) {
-            $node = $nodes->item(0);
-
-            \assert($node instanceof \DOMElement);
-
-            if ($node->hasAttribute('includeUncoveredFilesInCodeCoverageReport')) {
-                $includeUncoveredFilesInCodeCoverageReport = (bool) $this->getBoolean(
-                    (string) $node->getAttribute('includeUncoveredFilesInCodeCoverageReport'),
+        if ($element) {
+            if ($element->hasAttribute('includeUncoveredFiles')) {
+                $includeUncoveredFiles = (bool) $this->getBoolean(
+                    (string) $element->getAttribute('includeUncoveredFiles'),
                     true
                 );
             }
 
-            if ($node->hasAttribute('processUncoveredFilesForCodeCoverageReport')) {
-                $processUncoveredFilesForCodeCoverageReport = (bool) $this->getBoolean(
-                    (string) $node->getAttribute('processUncoveredFilesForCodeCoverageReport'),
+            if ($element->hasAttribute('processUncoveredFiles')) {
+                $processUncoveredFiles = (bool) $this->getBoolean(
+                    (string) $element->getAttribute('processUncoveredFiles'),
                     false
                 );
             }
         }
 
+        $clover  = null;
+        $element = $this->element($xpath, 'coverage/report/clover');
+
+        if ($element) {
+            $clover = new Clover(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                )
+            );
+        }
+
+        $crap4j  = null;
+        $element = $this->element($xpath, 'coverage/report/crap4j');
+
+        if ($element) {
+            $crap4j = new Crap4j(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                ),
+                $this->getIntegerAttribute($element, 'threshold', 30)
+            );
+        }
+
+        $html    = null;
+        $element = $this->element($xpath, 'coverage/report/html');
+
+        if ($element) {
+            $html = new CodeCoverageHtml(
+                new Directory(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputDirectory')
+                    )
+                ),
+                $this->getIntegerAttribute($element, 'lowUpperBound', 50),
+                $this->getIntegerAttribute($element, 'highLowerBound', 90)
+            );
+        }
+
+        $php     = null;
+        $element = $this->element($xpath, 'coverage/report/php');
+
+        if ($element) {
+            $php = new CodeCoveragePhp(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                )
+            );
+        }
+
+        $text    = null;
+        $element = $this->element($xpath, 'coverage/report/text');
+
+        if ($element) {
+            $text = new CodeCoverageText(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                ),
+                $this->getBooleanAttribute($element, 'showUncoveredFiles', false),
+                $this->getBooleanAttribute($element, 'showOnlySummary', false)
+            );
+        }
+
+        $xml     = null;
+        $element = $this->element($xpath, 'coverage/report/xml');
+
+        if ($element) {
+            $xml = new CodeCoverageXml(
+                new Directory(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputDirectory')
+                    )
+                )
+            );
+        }
+
         return new CodeCoverage(
-            $this->readFilterDirectories($filename, $xpath, 'filter/directory'),
-            $this->readFilterFiles($filename, $xpath, 'filter/file'),
-            $this->readFilterDirectories($filename, $xpath, 'filter/exclude/directory'),
-            $this->readFilterFiles($filename, $xpath, 'filter/exclude/file'),
-            $includeUncoveredFilesInCodeCoverageReport,
-            $processUncoveredFilesForCodeCoverageReport
+            $this->readFilterDirectories($filename, $xpath, 'coverage/include/directory'),
+            $this->readFilterFiles($filename, $xpath, 'coverage/include/file'),
+            $this->readFilterDirectories($filename, $xpath, 'coverage/exclude/directory'),
+            $this->readFilterFiles($filename, $xpath, 'coverage/exclude/file'),
+            $includeUncoveredFiles,
+            $processUncoveredFiles,
+            $clover,
+            $crap4j,
+            $html,
+            $php,
+            $text,
+            $xml
         );
     }
 
@@ -370,28 +402,93 @@ final class Loader
      */
     private function legacyCodeCoverage(string $filename, \DOMXPath $xpath): CodeCoverage
     {
-        $includeUncoveredFilesInCodeCoverageReport  = true;
-        $processUncoveredFilesForCodeCoverageReport = false;
+        $includeUncoveredFiles  = true;
+        $processUncoveredFiles = false;
 
-        $nodes = $xpath->query('filter/whitelist');
+        $element = $this->element($xpath, 'filter/whitelist');
 
-        if ($nodes->length === 1) {
-            $node = $nodes->item(0);
-
-            \assert($node instanceof \DOMElement);
-
-            if ($node->hasAttribute('addUncoveredFilesFromWhitelist')) {
-                $includeUncoveredFilesInCodeCoverageReport = (bool) $this->getBoolean(
-                    (string) $node->getAttribute('addUncoveredFilesFromWhitelist'),
+        if ($element) {
+            if ($element->hasAttribute('addUncoveredFilesFromWhitelist')) {
+                $includeUncoveredFiles = (bool) $this->getBoolean(
+                    (string) $element->getAttribute('addUncoveredFilesFromWhitelist'),
                     true
                 );
             }
 
-            if ($node->hasAttribute('processUncoveredFilesFromWhitelist')) {
-                $processUncoveredFilesForCodeCoverageReport = (bool) $this->getBoolean(
-                    (string) $node->getAttribute('processUncoveredFilesFromWhitelist'),
+            if ($element->hasAttribute('processUncoveredFilesFromWhitelist')) {
+                $processUncoveredFiles = (bool) $this->getBoolean(
+                    (string) $element->getAttribute('processUncoveredFilesFromWhitelist'),
                     false
                 );
+            }
+        }
+
+        $clover = null;
+        $crap4j = null;
+        $html   = null;
+        $php    = null;
+        $text   = null;
+        $xml    = null;
+
+        foreach ($xpath->query('logging/log') as $log) {
+            \assert($log instanceof \DOMElement);
+
+            $type   = (string) $log->getAttribute('type');
+            $target = (string) $log->getAttribute('target');
+
+            if (!$target) {
+                continue;
+            }
+
+            $target = $this->toAbsolutePath($filename, $target);
+
+            switch ($type) {
+                case 'coverage-clover':
+                    $clover = new Clover(
+                        new File($target)
+                    );
+
+                    break;
+
+                case 'coverage-crap4j':
+                    $crap4j = new Crap4j(
+                        new File($target),
+                        $this->getIntegerAttribute($log, 'threshold', 30)
+                    );
+
+                    break;
+
+                case 'coverage-html':
+                    $html = new CodeCoverageHtml(
+                        new Directory($target),
+                        $this->getIntegerAttribute($log, 'lowUpperBound', 50),
+                        $this->getIntegerAttribute($log, 'highLowerBound', 90)
+                    );
+
+                    break;
+
+                case 'coverage-php':
+                    $php = new CodeCoveragePhp(
+                        new File($target)
+                    );
+
+                    break;
+
+                case 'coverage-text':
+                    $text = new CodeCoverageText(
+                        new File($target),
+                        $this->getBooleanAttribute($log, 'showUncoveredFiles', false),
+                        $this->getBooleanAttribute($log, 'showOnlySummary', false)
+                    );
+
+                    break;
+
+                case 'coverage-xml':
+                    $xml = new CodeCoverageXml(
+                        new Directory($target)
+                    );
+
+                    break;
             }
         }
 
@@ -400,8 +497,14 @@ final class Loader
             $this->readFilterFiles($filename, $xpath, 'filter/whitelist/file'),
             $this->readFilterDirectories($filename, $xpath, 'filter/whitelist/exclude/directory'),
             $this->readFilterFiles($filename, $xpath, 'filter/whitelist/exclude/file'),
-            $includeUncoveredFilesInCodeCoverageReport,
-            $processUncoveredFilesForCodeCoverageReport
+            $includeUncoveredFiles,
+            $processUncoveredFiles,
+            $clover,
+            $crap4j,
+            $html,
+            $php,
+            $text,
+            $xml
         );
     }
 
@@ -954,5 +1057,20 @@ final class Loader
         }
 
         return $elements;
+    }
+
+    private function element(\DOMXPath $xpath, string $element): ?\DOMElement
+    {
+        $nodes = $xpath->query($element);
+
+        if ($nodes->length === 1) {
+            $node = $nodes->item(0);
+
+            \assert($node instanceof \DOMElement);
+
+            return $node;
+        }
+
+        return null;
     }
 }

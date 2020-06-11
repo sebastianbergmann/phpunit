@@ -86,7 +86,13 @@ EOF;
             DirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
             true,
-            true
+            true,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
         );
 
         $writer = new XdebugFilterScriptGenerator;

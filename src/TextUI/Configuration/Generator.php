@@ -34,9 +34,11 @@ final class Generator
         </testsuite>
     </testsuites>
 
-    <filter processUncoveredFilesForCodeCoverageReport="true">
-        <directory suffix=".php">{src_directory}</directory>
-    </filter>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">{src_directory}</directory>
+        </include>
+    </coverage>
 </phpunit>
 
 EOT;

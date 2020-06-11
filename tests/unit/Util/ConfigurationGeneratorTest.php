@@ -39,9 +39,11 @@ final class ConfigurationGeneratorTest extends TestCase
         </testsuite>
     </testsuites>
 
-    <filter processUncoveredFilesForCodeCoverageReport="true">
-        <directory suffix=".php">src</directory>
-    </filter>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
 </phpunit>
 ',
             $generator->generateDefaultConfiguration(

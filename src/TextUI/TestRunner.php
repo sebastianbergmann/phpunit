@@ -520,6 +520,44 @@ final class TestRunner extends BaseTestRunner
                         $this->codeCoverageFilter->excludeFile($file->path());
                     }
                 }
+
+                if (!isset($arguments['coverageClover']) && $codeCoverageConfiguration->hasClover()) {
+                    $arguments['coverageClover'] = $codeCoverageConfiguration->clover()->target()->path();
+                }
+
+                if (!isset($arguments['coverageCrap4J']) && $codeCoverageConfiguration->hasCrap4j()) {
+                    $arguments['coverageCrap4J'] = $codeCoverageConfiguration->crap4j()->target()->path();
+
+                    if (!isset($arguments['crap4jThreshold'])) {
+                        $arguments['crap4jThreshold'] = $codeCoverageConfiguration->crap4j()->threshold();
+                    }
+                }
+
+                if (!isset($arguments['coverageHtml']) && $codeCoverageConfiguration->hasHtml()) {
+                    $arguments['coverageHtml'] = $codeCoverageConfiguration->html()->target()->path();
+
+                    if (!isset($arguments['reportLowUpperBound'])) {
+                        $arguments['reportLowUpperBound'] = $codeCoverageConfiguration->html()->lowUpperBound();
+                    }
+
+                    if (!isset($arguments['reportHighLowerBound'])) {
+                        $arguments['reportHighLowerBound'] = $codeCoverageConfiguration->html()->highLowerBound();
+                    }
+                }
+
+                if (!isset($arguments['coveragePHP']) && $codeCoverageConfiguration->hasPhp()) {
+                    $arguments['coveragePHP'] = $codeCoverageConfiguration->php()->target()->path();
+                }
+
+                if (!isset($arguments['coverageText']) && $codeCoverageConfiguration->hasText()) {
+                    $arguments['coverageText']                   = $codeCoverageConfiguration->text()->target()->path();
+                    $arguments['coverageTextShowUncoveredFiles'] = $codeCoverageConfiguration->text()->showUncoveredFiles();
+                    $arguments['coverageTextShowOnlySummary']    = $codeCoverageConfiguration->text()->showOnlySummary();
+                }
+
+                if (!isset($arguments['coverageXml']) && $codeCoverageConfiguration->hasXml()) {
+                    $arguments['coverageXml'] = $codeCoverageConfiguration->xml()->target()->path();
+                }
             }
         }
 
@@ -556,13 +594,13 @@ final class TestRunner extends BaseTestRunner
                 $codeCoverageConfiguration = $arguments['configuration']->codeCoverage();
 
                 if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-                    if ($codeCoverageConfiguration->includeUncoveredFilesInCodeCoverageReport()) {
+                    if ($codeCoverageConfiguration->includeUncoveredFiles()) {
                         $codeCoverage->includeUncoveredFiles();
                     } else {
                         $codeCoverage->excludeUncoveredFiles();
                     }
 
-                    if ($codeCoverageConfiguration->processUncoveredFilesForCodeCoverageReport()) {
+                    if ($codeCoverageConfiguration->processUncoveredFiles()) {
                         $codeCoverage->processUncoveredFiles();
                     } else {
                         $codeCoverage->doNotProcessUncoveredFiles();
@@ -965,44 +1003,6 @@ final class TestRunner extends BaseTestRunner
 
             $loggingConfiguration = $arguments['configuration']->logging();
 
-            if (!isset($arguments['coverageClover']) && $loggingConfiguration->hasCodeCoverageClover()) {
-                $arguments['coverageClover'] = $loggingConfiguration->codeCoverageClover()->target()->path();
-            }
-
-            if (!isset($arguments['coverageCrap4J']) && $loggingConfiguration->hasCodeCoverageCrap4j()) {
-                $arguments['coverageCrap4J'] = $loggingConfiguration->codeCoverageCrap4j()->target()->path();
-
-                if (!isset($arguments['crap4jThreshold'])) {
-                    $arguments['crap4jThreshold'] = $loggingConfiguration->codeCoverageCrap4j()->threshold();
-                }
-            }
-
-            if (!isset($arguments['coverageHtml']) && $loggingConfiguration->hasCodeCoverageHtml()) {
-                $arguments['coverageHtml'] = $loggingConfiguration->codeCoverageHtml()->target()->path();
-
-                if (!isset($arguments['reportLowUpperBound'])) {
-                    $arguments['reportLowUpperBound'] = $loggingConfiguration->codeCoverageHtml()->lowUpperBound();
-                }
-
-                if (!isset($arguments['reportHighLowerBound'])) {
-                    $arguments['reportHighLowerBound'] = $loggingConfiguration->codeCoverageHtml()->highLowerBound();
-                }
-            }
-
-            if (!isset($arguments['coveragePHP']) && $loggingConfiguration->hasCodeCoveragePhp()) {
-                $arguments['coveragePHP'] = $loggingConfiguration->codeCoveragePhp()->target()->path();
-            }
-
-            if (!isset($arguments['coverageText']) && $loggingConfiguration->hasCodeCoverageText()) {
-                $arguments['coverageText']                   = $loggingConfiguration->codeCoverageText()->target()->path();
-                $arguments['coverageTextShowUncoveredFiles'] = $loggingConfiguration->codeCoverageText()->showUncoveredFiles();
-                $arguments['coverageTextShowOnlySummary']    = $loggingConfiguration->codeCoverageText()->showOnlySummary();
-            }
-
-            if (!isset($arguments['coverageXml']) && $loggingConfiguration->hasCodeCoverageXml()) {
-                $arguments['coverageXml'] = $loggingConfiguration->codeCoverageXml()->target()->path();
-            }
-
             if ($loggingConfiguration->hasPlainText()) {
                 $arguments['listeners'][] = new DefaultResultPrinter(
                     $loggingConfiguration->plainText()->target()->path(),
@@ -1074,10 +1074,8 @@ final class TestRunner extends BaseTestRunner
         $arguments['failOnSkipped']                                   = $arguments['failOnSkipped'] ?? false;
         $arguments['failOnWarning']                                   = $arguments['failOnWarning'] ?? false;
         $arguments['groups']                                          = $arguments['groups'] ?? [];
-        $arguments['includeUncoveredFilesInCodeCoverageReport']       = $arguments['includeUncoveredFilesInCodeCoverageReport'] ?? true;
         $arguments['noInteraction']                                   = $arguments['noInteraction'] ?? false;
         $arguments['processIsolation']                                = $arguments['processIsolation'] ?? false;
-        $arguments['processUncoveredFilesForCodeCoverageReport']      = $arguments['processUncoveredFilesForCodeCoverageReport'] ?? false;
         $arguments['randomOrderSeed']                                 = $arguments['randomOrderSeed'] ?? \time();
         $arguments['registerMockObjectsFromTestArgumentsRecursively'] = $arguments['registerMockObjectsFromTestArgumentsRecursively'] ?? false;
         $arguments['repeat']                                          = $arguments['repeat'] ?? false;

@@ -15,13 +15,16 @@
         </testsuite>
     </testsuites>
 
-    <filter processUncoveredFilesForCodeCoverageReport="true">
-        <directory suffix=".php">src</directory>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+
         <exclude>
             <file>src/Framework/Assert/Functions.php</file>
             <file>src/Util/PHP/eval-stdin.php</file>
         </exclude>
-    </filter>
+    </coverage>
 
     <php>
         <const name="PHPUNIT_TESTSUITE" value="true"/>

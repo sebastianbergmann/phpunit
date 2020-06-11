@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-
 <phpunit>
-
-  <filter>
-    <file>AbstractTest.php</file>
-    <exclude>
-      <file>Foo.php</file>
-    </exclude>
-  </filter>
-
+    <coverage>
+        <include>
+            <file>AbstractTest.php</file>
+        </include>
+        <exclude>
+            <file>Foo.php</file>
+        </exclude>
+    </coverage>
 </phpunit>
-

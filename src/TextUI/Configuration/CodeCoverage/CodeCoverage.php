@@ -10,6 +10,13 @@
 namespace PHPUnit\TextUI\Configuration\CodeCoverage;
 
 use PHPUnit\TextUI\Configuration\CodeCoverage\Filter\DirectoryCollection;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Clover;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Crap4j;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Html;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Php;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Text;
+use PHPUnit\TextUI\Configuration\CodeCoverage\Report\Xml;
+use PHPUnit\TextUI\Configuration\Exception;
 use PHPUnit\TextUI\Configuration\FileCollection;
 
 /**
@@ -41,21 +48,57 @@ final class CodeCoverage
     /**
      * @var bool
      */
-    private $includeUncoveredFilesInCodeCoverageReport;
+    private $includeUncoveredFiles;
 
     /**
      * @var bool
      */
-    private $processUncoveredFilesForCodeCoverageReport;
+    private $processUncoveredFiles;
 
-    public function __construct(DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $includeUncoveredFilesInCodeCoverageReport, bool $processUncoveredFilesForCodeCoverageReport)
+    /**
+     * @var ?Clover
+     */
+    private $clover;
+
+    /**
+     * @var ?Crap4j
+     */
+    private $crap4j;
+
+    /**
+     * @var ?Html
+     */
+    private $html;
+
+    /**
+     * @var ?Php
+     */
+    private $php;
+
+    /**
+     * @var ?Text
+     */
+    private $text;
+
+    /**
+     * @var ?Xml
+     */
+    private $xml;
+
+    public function __construct(DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $includeUncoveredFiles, bool $processUncoveredFiles, ?Clover $clover, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
-        $this->directories                                = $directories;
-        $this->files                                      = $files;
-        $this->excludeDirectories                         = $excludeDirectories;
-        $this->excludeFiles                               = $excludeFiles;
-        $this->includeUncoveredFilesInCodeCoverageReport  = $includeUncoveredFilesInCodeCoverageReport;
-        $this->processUncoveredFilesForCodeCoverageReport = $processUncoveredFilesForCodeCoverageReport;
+        $this->directories           = $directories;
+        $this->files                 = $files;
+        $this->excludeDirectories    = $excludeDirectories;
+        $this->excludeFiles          = $excludeFiles;
+        $this->includeUncoveredFiles = $includeUncoveredFiles;
+        $this->processUncoveredFiles = $processUncoveredFiles;
+        $this->clover                = $clover;
+        $this->crap4j                = $crap4j;
+        $this->html                  = $html;
+        $this->php                   = $php;
+        $this->text                  = $text;
+        $this->xml                   = $xml;
     }
 
     public function hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport(): bool
@@ -83,13 +126,127 @@ final class CodeCoverage
         return $this->excludeFiles;
     }
 
-    public function includeUncoveredFilesInCodeCoverageReport(): bool
+    public function includeUncoveredFiles(): bool
     {
-        return $this->includeUncoveredFilesInCodeCoverageReport;
+        return $this->includeUncoveredFiles;
     }
 
-    public function processUncoveredFilesForCodeCoverageReport(): bool
+    public function processUncoveredFiles(): bool
     {
-        return $this->processUncoveredFilesForCodeCoverageReport;
+        return $this->processUncoveredFiles;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->clover
+     */
+    public function hasClover(): bool
+    {
+        return $this->clover !== null;
+    }
+
+    public function clover(): Clover
+    {
+        if (!$this->hasClover()) {
+            throw new Exception(
+                'Code Coverage report "Clover XML" has not been configured'
+            );
+        }
+
+        return $this->clover;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->crap4j
+     */
+    public function hasCrap4j(): bool
+    {
+        return $this->crap4j !== null;
+    }
+
+    public function crap4j(): Crap4j
+    {
+        if (!$this->hasCrap4j()) {
+            throw new Exception(
+                'Code Coverage report "Crap4J" has not been configured'
+            );
+        }
+
+        return $this->crap4j;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->html
+     */
+    public function hasHtml(): bool
+    {
+        return $this->html !== null;
+    }
+
+    public function html(): Html
+    {
+        if (!$this->hasHtml()) {
+            throw new Exception(
+                'Code Coverage report "HTML" has not been configured'
+            );
+        }
+
+        return $this->html;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->php
+     */
+    public function hasPhp(): bool
+    {
+        return $this->php !== null;
+    }
+
+    public function php(): Php
+    {
+        if (!$this->hasPhp()) {
+            throw new Exception(
+                'Code Coverage report "PHP" has not been configured'
+            );
+        }
+
+        return $this->php;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->text
+     */
+    public function hasText(): bool
+    {
+        return $this->text !== null;
+    }
+
+    public function text(): Text
+    {
+        if (!$this->hasText()) {
+            throw new Exception(
+                'Code Coverage report "Text" has not been configured'
+            );
+        }
+
+        return $this->text;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->xml
+     */
+    public function hasXml(): bool
+    {
+        return $this->xml !== null;
+    }
+
+    public function xml(): Xml
+    {
+        if (!$this->hasXml()) {
+            throw new Exception(
+                'Code Coverage report "XML" has not been configured'
+            );
+        }
+
+        return $this->xml;
     }
 }

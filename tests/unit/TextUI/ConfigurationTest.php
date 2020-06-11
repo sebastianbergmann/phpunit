@@ -141,8 +141,8 @@ final class ConfigurationTest extends TestCase
     {
         $codeCoverage = $this->configuration('configuration_codecoverage.xml')->codeCoverage();
 
-        $this->assertTrue($codeCoverage->includeUncoveredFilesInCodeCoverageReport());
-        $this->assertFalse($codeCoverage->processUncoveredFilesForCodeCoverageReport());
+        $this->assertTrue($codeCoverage->includeUncoveredFiles());
+        $this->assertFalse($codeCoverage->processUncoveredFiles());
 
         /** @var Directory $directory */
         $directory = \iterator_to_array($codeCoverage->directories(), false)[0];
@@ -169,14 +169,36 @@ final class ConfigurationTest extends TestCase
         /** @var File $file */
         $file = \iterator_to_array($codeCoverage->excludeFiles(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
+
+        $this->assertTrue($codeCoverage->hasClover());
+        $this->assertSame(TEST_FILES_PATH . 'clover.xml', $codeCoverage->clover()->target()->path());
+
+        $this->assertTrue($codeCoverage->hasCrap4j());
+        $this->assertSame(TEST_FILES_PATH . 'crap4j.xml', $codeCoverage->crap4j()->target()->path());
+
+        $this->assertTrue($codeCoverage->hasHtml());
+        $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->html()->target()->path());
+        $this->assertSame(50, $codeCoverage->html()->lowUpperBound());
+        $this->assertSame(90, $codeCoverage->html()->highLowerBound());
+
+        $this->assertTrue($codeCoverage->hasPhp());
+        $this->assertSame(TEST_FILES_PATH . 'coverage.php', $codeCoverage->php()->target()->path());
+
+        $this->assertTrue($codeCoverage->hasText());
+        $this->assertSame(TEST_FILES_PATH . 'coverage.txt', $codeCoverage->text()->target()->path());
+        $this->assertFalse($codeCoverage->text()->showUncoveredFiles());
+        $this->assertTrue($codeCoverage->text()->showOnlySummary());
+
+        $this->assertTrue($codeCoverage->hasXml());
+        $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->xml()->target()->path());
     }
 
     public function testLegacyCodeCoverageConfigurationIsReadCorrectly(): void
     {
         $codeCoverage = $this->configuration('configuration_legacy_codecoverage.xml')->codeCoverage();
 
-        $this->assertTrue($codeCoverage->includeUncoveredFilesInCodeCoverageReport());
-        $this->assertFalse($codeCoverage->processUncoveredFilesForCodeCoverageReport());
+        $this->assertTrue($codeCoverage->includeUncoveredFiles());
+        $this->assertFalse($codeCoverage->processUncoveredFiles());
 
         /** @var Directory $directory */
         $directory = \iterator_to_array($codeCoverage->directories(), false)[0];
@@ -203,6 +225,28 @@ final class ConfigurationTest extends TestCase
         /** @var File $file */
         $file = \iterator_to_array($codeCoverage->excludeFiles(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
+
+        $this->assertTrue($codeCoverage->hasClover());
+        $this->assertSame(TEST_FILES_PATH . 'clover.xml', $codeCoverage->clover()->target()->path());
+
+        $this->assertTrue($codeCoverage->hasCrap4j());
+        $this->assertSame(TEST_FILES_PATH . 'crap4j.xml', $codeCoverage->crap4j()->target()->path());
+
+        $this->assertTrue($codeCoverage->hasHtml());
+        $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->html()->target()->path());
+        $this->assertSame(50, $codeCoverage->html()->lowUpperBound());
+        $this->assertSame(90, $codeCoverage->html()->highLowerBound());
+
+        $this->assertTrue($codeCoverage->hasPhp());
+        $this->assertSame(TEST_FILES_PATH . 'coverage.php', $codeCoverage->php()->target()->path());
+
+        $this->assertTrue($codeCoverage->hasText());
+        $this->assertSame(TEST_FILES_PATH . 'coverage.txt', $codeCoverage->text()->target()->path());
+        $this->assertFalse($codeCoverage->text()->showUncoveredFiles());
+        $this->assertTrue($codeCoverage->text()->showOnlySummary());
+
+        $this->assertTrue($codeCoverage->hasXml());
+        $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->xml()->target()->path());
     }
 
     public function testGroupConfigurationIsReadCorrectly(): void
@@ -349,23 +393,6 @@ final class ConfigurationTest extends TestCase
     public function testLoggingConfigurationIsReadCorrectly(): void
     {
         $logging = $this->configuration('configuration.xml')->logging();
-
-        $this->assertTrue($logging->hasCodeCoverageHtml());
-        $this->assertSame('/tmp/report', $logging->codeCoverageHtml()->target()->path());
-        $this->assertSame(50, $logging->codeCoverageHtml()->lowUpperBound());
-        $this->assertSame(90, $logging->codeCoverageHtml()->highLowerBound());
-
-        $this->assertTrue($logging->hasCodeCoverageClover());
-        $this->assertSame('/tmp/clover.xml', $logging->codeCoverageClover()->target()->path());
-
-        $this->assertTrue($logging->hasCodeCoverageCrap4j());
-        $this->assertSame('/tmp/crap4j.xml', $logging->codeCoverageCrap4j()->target()->path());
-        $this->assertSame(50, $logging->codeCoverageCrap4j()->threshold());
-
-        $this->assertTrue($logging->hasCodeCoverageText());
-        $this->assertSame('/tmp/coverage.txt', $logging->codeCoverageText()->target()->path());
-        $this->assertTrue($logging->codeCoverageText()->showUncoveredFiles());
-        $this->assertTrue($logging->codeCoverageText()->showOnlySummary());
 
         $this->assertTrue($logging->hasPlainText());
         $this->assertSame('/tmp/logfile.txt', $logging->plainText()->target()->path());

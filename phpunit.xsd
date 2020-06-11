@@ -11,20 +11,28 @@
             <xs:documentation>Root Element</xs:documentation>
         </xs:annotation>
     </xs:element>
-    <xs:complexType name="filterType">
-        <xs:sequence>
-            <xs:choice maxOccurs="unbounded" minOccurs="0">
-                <xs:group ref="pathGroup"/>
-                <xs:element name="exclude">
-                    <xs:complexType>
-                        <xs:group ref="pathGroup"/>
-                    </xs:complexType>
-                </xs:element>
-            </xs:choice>
-        </xs:sequence>
-        <xs:attribute name="includeUncoveredFilesInCodeCoverageReport" default="true" type="xs:boolean"/>
-        <xs:attribute name="processUncoveredFilesForCodeCoverageReport" default="false" type="xs:boolean"/>
+    <xs:complexType name="coverageType">
+        <xs:all>
+            <xs:element name="include" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:group ref="pathGroup"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="exclude" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:group ref="pathGroup"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="report" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                    <xs:group ref="coverageReportGroup"/>
+                </xs:complexType>
+            </xs:element>
+        </xs:all>
+        <xs:attribute name="includeUncoveredFiles" type="xs:boolean" default="true"/>
+        <xs:attribute name="processUncoveredFiles" type="xs:boolean" default="false"/>
     </xs:complexType>
+
     <xs:complexType name="groupsType">
         <xs:choice>
             <xs:sequence>
@@ -120,12 +128,6 @@
         <xs:attribute name="type">
             <xs:simpleType>
                 <xs:restriction base="xs:string">
-                    <xs:enumeration value="coverage-html"/>
-                    <xs:enumeration value="coverage-text"/>
-                    <xs:enumeration value="coverage-clover"/>
-                    <xs:enumeration value="coverage-crap4j"/>
-                    <xs:enumeration value="coverage-xml"/>
-                    <xs:enumeration value="coverage-php"/>
                     <xs:enumeration value="plain"/>
                     <xs:enumeration value="teamcity"/>
                     <xs:enumeration value="junit"/>
@@ -281,7 +283,7 @@
             <xs:element ref="testSuiteFacet" minOccurs="0"/>
             <xs:element name="groups" type="groupsType" minOccurs="0"/>
             <xs:element name="testdoxGroups" type="groupsType" minOccurs="0"/>
-            <xs:element name="filter" type="filterType" minOccurs="0"/>
+            <xs:element name="coverage" type="coverageType" minOccurs="0"/>
             <xs:element name="logging" type="loggersType" minOccurs="0"/>
             <xs:element name="extensions" type="extensionsType" minOccurs="0"/>
             <xs:element name="listeners" type="listenersType" minOccurs="0"/>
@@ -302,5 +304,35 @@
             <xs:element name="exclude" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+    <xs:group name="coverageReportGroup">
+        <xs:all>
+            <xs:element name="clover" type="logToFileType" minOccurs="0"/>
+            <xs:element name="crap4j" type="coverageReportCrap4JType" minOccurs="0" />
+            <xs:element name="html" type="coverageReportHtmlType" minOccurs="0" />
+            <xs:element name="php" type="logToFileType" minOccurs="0" />
+            <xs:element name="text" type="coverageReportTextType" minOccurs="0" />
+            <xs:element name="xml" type="logToDirectoryType" minOccurs="0" />
+        </xs:all>
+    </xs:group>
+    <xs:complexType name="logToFileType">
+        <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="logToDirectoryType">
+        <xs:attribute name="outputDirectory" type="xs:anyURI" use="required"/>
+    </xs:complexType>
+    <xs:complexType name="coverageReportCrap4JType">
+        <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
+        <xs:attribute name="threshold" type="xs:integer"/>
+    </xs:complexType>
+    <xs:complexType name="coverageReportHtmlType">
+        <xs:attribute name="outputDirectory" type="xs:anyURI" use="required"/>
+        <xs:attribute name="lowUpperBound" type="xs:integer" default="50"/>
+        <xs:attribute name="highLowerBound" type="xs:integer" default="90"/>
+    </xs:complexType>
+    <xs:complexType name="coverageReportTextType">
+        <xs:attribute name="outputFile" type="xs:anyURI" use="required"/>
+        <xs:attribute name="showUncoveredFiles" type="xs:boolean" default="false"/>
+        <xs:attribute name="showOnlySummary" type="xs:boolean" default="false"/>
     </xs:complexType>
 </xs:schema>
