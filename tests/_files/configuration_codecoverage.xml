@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpunit>
     <coverage includeUncoveredFiles="true"
-              processUncoveredFiles="false">
+              processUncoveredFiles="true"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true"
+              cacheTokens="true">
         <include>
             <directory suffix=".php">/path/to/files</directory>
             <file>/path/to/file</file>

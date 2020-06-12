@@ -56,6 +56,21 @@ final class CodeCoverage
     private $processUncoveredFiles;
 
     /**
+     * @var bool
+     */
+    private $cacheTokens;
+
+    /**
+     * @var bool
+     */
+    private $ignoreDeprecatedCodeUnits;
+
+    /**
+     * @var bool
+     */
+    private $disableCodeCoverageIgnore;
+
+    /**
      * @var ?Clover
      */
     private $clover;
@@ -85,20 +100,23 @@ final class CodeCoverage
      */
     private $xml;
 
-    public function __construct(DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $includeUncoveredFiles, bool $processUncoveredFiles, ?Clover $clover, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $cacheTokens, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
-        $this->directories           = $directories;
-        $this->files                 = $files;
-        $this->excludeDirectories    = $excludeDirectories;
-        $this->excludeFiles          = $excludeFiles;
-        $this->includeUncoveredFiles = $includeUncoveredFiles;
-        $this->processUncoveredFiles = $processUncoveredFiles;
-        $this->clover                = $clover;
-        $this->crap4j                = $crap4j;
-        $this->html                  = $html;
-        $this->php                   = $php;
-        $this->text                  = $text;
-        $this->xml                   = $xml;
+        $this->directories               = $directories;
+        $this->files                     = $files;
+        $this->excludeDirectories        = $excludeDirectories;
+        $this->excludeFiles              = $excludeFiles;
+        $this->includeUncoveredFiles     = $includeUncoveredFiles;
+        $this->processUncoveredFiles     = $processUncoveredFiles;
+        $this->cacheTokens               = $cacheTokens;
+        $this->ignoreDeprecatedCodeUnits = $ignoreDeprecatedCodeUnits;
+        $this->disableCodeCoverageIgnore = $disableCodeCoverageIgnore;
+        $this->clover                    = $clover;
+        $this->crap4j                    = $crap4j;
+        $this->html                      = $html;
+        $this->php                       = $php;
+        $this->text                      = $text;
+        $this->xml                       = $xml;
     }
 
     public function hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport(): bool
@@ -129,6 +147,21 @@ final class CodeCoverage
     public function includeUncoveredFiles(): bool
     {
         return $this->includeUncoveredFiles;
+    }
+
+    public function cacheTokens(): bool
+    {
+        return $this->cacheTokens;
+    }
+
+    public function ignoreDeprecatedCodeUnits(): bool
+    {
+        return $this->ignoreDeprecatedCodeUnits;
+    }
+
+    public function disableCodeCoverageIgnore(): bool
+    {
+        return $this->disableCodeCoverageIgnore;
     }
 
     public function processUncoveredFiles(): bool

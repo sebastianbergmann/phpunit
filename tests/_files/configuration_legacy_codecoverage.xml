@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<phpunit>
+<phpunit cacheTokens="true"
+         disableCodeCoverageIgnore="true"
+         ignoreDeprecatedCodeUnitsFromCodeCoverage="true">
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true"
-                   processUncoveredFilesFromWhitelist="false">
+                   processUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">/path/to/files</directory>
             <file>/path/to/file</file>
             <file>

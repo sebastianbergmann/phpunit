@@ -46,7 +46,7 @@ final class Loader
             $filename,
             $this->validate($document),
             $this->extensions($filename, $xpath),
-            $this->codeCoverage($filename, $xpath),
+            $this->codeCoverage($filename, $xpath, $document),
             $this->groups($xpath),
             $this->testdoxGroups($xpath),
             $this->listeners($filename, $xpath),
@@ -365,14 +365,17 @@ final class Loader
         return $arguments;
     }
 
-    private function codeCoverage(string $filename, \DOMXPath $xpath): CodeCoverage
+    private function codeCoverage(string $filename, \DOMXPath $xpath, \DOMDocument $document): CodeCoverage
     {
         if ($xpath->query('filter/whitelist')->length !== 0) {
-            return $this->legacyCodeCoverage($filename, $xpath);
+            return $this->legacyCodeCoverage($filename, $xpath, $document);
         }
 
-        $includeUncoveredFiles = true;
-        $processUncoveredFiles = false;
+        $includeUncoveredFiles     = true;
+        $processUncoveredFiles     = false;
+        $cacheTokens               = false;
+        $ignoreDeprecatedCodeUnits = false;
+        $disableCodeCoverageIgnore = false;
 
         $element = $this->element($xpath, 'coverage');
 
@@ -386,6 +389,24 @@ final class Loader
             $processUncoveredFiles = $this->getBooleanAttribute(
                 $element,
                 'processUncoveredFiles',
+                false
+            );
+
+            $cacheTokens = $this->getBooleanAttribute(
+                $element,
+                'cacheTokens',
+                false
+            );
+
+            $ignoreDeprecatedCodeUnits = $this->getBooleanAttribute(
+                $element,
+                'ignoreDeprecatedCodeUnits',
+                false
+            );
+
+            $disableCodeCoverageIgnore = $this->getBooleanAttribute(
+                $element,
+                'disableCodeCoverageIgnore',
                 false
             );
         }
@@ -486,6 +507,9 @@ final class Loader
             $this->readFilterFiles($filename, $xpath, 'coverage/exclude/file'),
             $includeUncoveredFiles,
             $processUncoveredFiles,
+            $cacheTokens,
+            $ignoreDeprecatedCodeUnits,
+            $disableCodeCoverageIgnore,
             $clover,
             $crap4j,
             $html,
@@ -498,25 +522,45 @@ final class Loader
     /**
      * @deprecated
      */
-    private function legacyCodeCoverage(string $filename, \DOMXPath $xpath): CodeCoverage
+    private function legacyCodeCoverage(string $filename, \DOMXPath $xpath, \DOMDocument $document): CodeCoverage
     {
+        $cacheTokens = $this->getBooleanAttribute(
+            $document->documentElement,
+            'cacheTokens',
+            false
+        );
+
+        $ignoreDeprecatedCodeUnits = $this->getBooleanAttribute(
+            $document->documentElement,
+            'ignoreDeprecatedCodeUnitsFromCodeCoverage',
+            false
+        );
+
+        $disableCodeCoverageIgnore = $this->getBooleanAttribute(
+            $document->documentElement,
+            'disableCodeCoverageIgnore',
+            false
+        );
+
         $includeUncoveredFiles = true;
         $processUncoveredFiles = false;
 
         $element = $this->element($xpath, 'filter/whitelist');
 
         if ($element) {
-            $includeUncoveredFiles = $this->getBooleanAttribute(
-                $element,
-                'addUncoveredFilesFromWhitelist',
-                false
-            );
+            if ($element->hasAttribute('addUncoveredFilesFromWhitelist')) {
+                $includeUncoveredFiles = (bool) $this->getBoolean(
+                    (string) $element->getAttribute('addUncoveredFilesFromWhitelist'),
+                    true
+                );
+            }
 
-            $processUncoveredFiles = $this->getBooleanAttribute(
-                $element,
-                'processUncoveredFilesFromWhitelist',
-                false
-            );
+            if ($element->hasAttribute('processUncoveredFilesFromWhitelist')) {
+                $processUncoveredFiles = (bool) $this->getBoolean(
+                    (string) $element->getAttribute('processUncoveredFilesFromWhitelist'),
+                    false
+                );
+            }
         }
 
         $clover = null;
@@ -595,6 +639,9 @@ final class Loader
             $this->readFilterFiles($filename, $xpath, 'filter/whitelist/exclude/file'),
             $includeUncoveredFiles,
             $processUncoveredFiles,
+            $cacheTokens,
+            $ignoreDeprecatedCodeUnits,
+            $disableCodeCoverageIgnore,
             $clover,
             $crap4j,
             $html,
@@ -935,7 +982,6 @@ final class Loader
         return new PHPUnit(
             $this->getBooleanAttribute($document->documentElement, 'cacheResult', false),
             $cacheResultFile,
-            $this->getBooleanAttribute($document->documentElement, 'cacheTokens', false),
             $this->getColumns($document),
             $this->getColors($document),
             $this->getBooleanAttribute($document->documentElement, 'stderr', false),
@@ -947,8 +993,6 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'convertNoticesToExceptions', true),
             $this->getBooleanAttribute($document->documentElement, 'convertWarningsToExceptions', true),
             $this->getBooleanAttribute($document->documentElement, 'forceCoversAnnotation', false),
-            $this->getBooleanAttribute($document->documentElement, 'ignoreDeprecatedCodeUnitsFromCodeCoverage', false),
-            $this->getBooleanAttribute($document->documentElement, 'disableCodeCoverageIgnore', false),
             $bootstrap,
             $this->getBooleanAttribute($document->documentElement, 'processIsolation', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnIncomplete', false),

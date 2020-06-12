@@ -207,14 +207,12 @@
         <xs:attribute name="bootstrap" type="xs:anyURI"/>
         <xs:attribute name="cacheResult" type="xs:boolean" default="true"/>
         <xs:attribute name="cacheResultFile" type="xs:anyURI"/>
-        <xs:attribute name="cacheTokens" type="xs:boolean" default="false"/>
         <xs:attribute name="colors" type="xs:boolean" default="false"/>
         <xs:attribute name="columns" type="columnsType" default="80"/>
         <xs:attribute name="convertDeprecationsToExceptions" type="xs:boolean" default="true"/>
         <xs:attribute name="convertErrorsToExceptions" type="xs:boolean" default="true"/>
         <xs:attribute name="convertNoticesToExceptions" type="xs:boolean" default="true"/>
         <xs:attribute name="convertWarningsToExceptions" type="xs:boolean" default="true"/>
-        <xs:attribute name="disableCodeCoverageIgnore" type="xs:boolean" default="false"/>
         <xs:attribute name="forceCoversAnnotation" type="xs:boolean" default="false"/>
         <xs:attribute name="printerClass" type="xs:string" default="PHPUnit\TextUI\ResultPrinter"/>
         <xs:attribute name="printerFile" type="xs:anyURI"/>
@@ -238,7 +236,6 @@
         <xs:attribute name="beStrictAboutCoversAnnotation" type="xs:boolean" default="false"/>
         <xs:attribute name="defaultTimeLimit" type="xs:integer" default="0"/>
         <xs:attribute name="enforceTimeLimit" type="xs:boolean" default="false"/>
-        <xs:attribute name="ignoreDeprecatedCodeUnitsFromCodeCoverage" type="xs:boolean" default="false"/>
         <xs:attribute name="timeoutForSmallTests" type="xs:integer" default="1"/>
         <xs:attribute name="timeoutForMediumTests" type="xs:integer" default="10"/>
         <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>

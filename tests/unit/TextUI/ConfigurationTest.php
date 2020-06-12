@@ -113,7 +113,6 @@ final class ConfigurationTest extends TestCase
             'stopOnSkipped'                                  => ['stopOnSkipped', 'true', true],
             'failOnWarning'                                  => ['failOnWarning', 'true', true],
             'failOnRisky'                                    => ['failOnRisky', 'true', true],
-            'disableCodeCoverageIgnore'                      => ['disableCodeCoverageIgnore', 'true', true],
             'processIsolation'                               => ['processIsolation', 'true', true],
             'testSuiteLoaderFile absolute path'              => ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
             'reverseDefectList'                              => ['reverseDefectList', 'true', true],
@@ -142,7 +141,10 @@ final class ConfigurationTest extends TestCase
         $codeCoverage = $this->configuration('configuration_codecoverage.xml')->codeCoverage();
 
         $this->assertTrue($codeCoverage->includeUncoveredFiles());
-        $this->assertFalse($codeCoverage->processUncoveredFiles());
+        $this->assertTrue($codeCoverage->processUncoveredFiles());
+        $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
+        $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
+        $this->assertTrue($codeCoverage->cacheTokens());
 
         /** @var Directory $directory */
         $directory = \iterator_to_array($codeCoverage->directories(), false)[0];
@@ -198,7 +200,10 @@ final class ConfigurationTest extends TestCase
         $codeCoverage = $this->configuration('configuration_legacy_codecoverage.xml')->codeCoverage();
 
         $this->assertTrue($codeCoverage->includeUncoveredFiles());
-        $this->assertFalse($codeCoverage->processUncoveredFiles());
+        $this->assertTrue($codeCoverage->processUncoveredFiles());
+        $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
+        $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
+        $this->assertTrue($codeCoverage->cacheTokens());
 
         /** @var Directory $directory */
         $directory = \iterator_to_array($codeCoverage->directories(), false)[0];
@@ -601,7 +606,6 @@ final class ConfigurationTest extends TestCase
         $this->assertFalse($phpunit->backupStaticAttributes());
         $this->assertFalse($phpunit->beStrictAboutChangesToGlobalState());
         $this->assertSame('/path/to/bootstrap.php', $phpunit->bootstrap());
-        $this->assertFalse($phpunit->cacheTokens());
         $this->assertSame(80, $phpunit->columns());
         $this->assertSame('never', $phpunit->colors());
         $this->assertFalse($phpunit->stderr());
@@ -631,7 +635,6 @@ final class ConfigurationTest extends TestCase
         $this->assertFalse($phpunit->failOnRisky());
         $this->assertFalse($phpunit->failOnSkipped());
         $this->assertFalse($phpunit->failOnWarning());
-        $this->assertFalse($phpunit->ignoreDeprecatedCodeUnitsFromCodeCoverage());
         $this->assertSame(TestSuiteSorter::ORDER_DEFAULT, $phpunit->executionOrder());
         $this->assertFalse($phpunit->defectsFirst());
         $this->assertTrue($phpunit->resolveDependencies());

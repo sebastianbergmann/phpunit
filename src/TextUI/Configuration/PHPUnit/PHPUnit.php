@@ -26,11 +26,6 @@ final class PHPUnit
     private $cacheResultFile;
 
     /**
-     * @var bool
-     */
-    private $cacheTokens;
-
-    /**
      * @var int|string
      */
     private $columns;
@@ -84,16 +79,6 @@ final class PHPUnit
      * @var bool
      */
     private $forceCoversAnnotation;
-
-    /**
-     * @var bool
-     */
-    private $ignoreDeprecatedCodeUnitsFromCodeCoverage;
-
-    /**
-     * @var bool
-     */
-    private $disableCodeCoverageIgnore;
 
     /**
      * @var ?string
@@ -284,11 +269,10 @@ final class PHPUnit
      */
     private $conflictBetweenPrinterClassAndTestdox;
 
-    public function __construct(bool $cacheResult, ?string $cacheResultFile, bool $cacheTokens, $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, ?string $bootstrap, bool $processIsolation, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, ?string $testSuiteLoaderClass, ?string $testSuiteLoaderFile, ?string $printerClass, ?string $printerFile, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutResourceUsageDuringSmallTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutTodoAnnotatedTests, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticAttributes, bool $registerMockObjectsFromTestArgumentsRecursively, bool $conflictBetweenPrinterClassAndTestdox)
+    public function __construct(bool $cacheResult, ?string $cacheResultFile, $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, ?string $bootstrap, bool $processIsolation, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, ?string $testSuiteLoaderClass, ?string $testSuiteLoaderFile, ?string $printerClass, ?string $printerFile, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutResourceUsageDuringSmallTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutTodoAnnotatedTests, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticAttributes, bool $registerMockObjectsFromTestArgumentsRecursively, bool $conflictBetweenPrinterClassAndTestdox)
     {
         $this->cacheResult                                     = $cacheResult;
         $this->cacheResultFile                                 = $cacheResultFile;
-        $this->cacheTokens                                     = $cacheTokens;
         $this->columns                                         = $columns;
         $this->colors                                          = $colors;
         $this->stderr                                          = $stderr;
@@ -300,8 +284,6 @@ final class PHPUnit
         $this->convertNoticesToExceptions                      = $convertNoticesToExceptions;
         $this->convertWarningsToExceptions                     = $convertWarningsToExceptions;
         $this->forceCoversAnnotation                           = $forceCoversAnnotation;
-        $this->ignoreDeprecatedCodeUnitsFromCodeCoverage       = $ignoreDeprecatedCodeUnitsFromCodeCoverage;
-        $this->disableCodeCoverageIgnore                       = $disableCodeCoverageIgnore;
         $this->bootstrap                                       = $bootstrap;
         $this->processIsolation                                = $processIsolation;
         $this->failOnIncomplete                                = $failOnIncomplete;
@@ -363,11 +345,6 @@ final class PHPUnit
         return (string) $this->cacheResultFile;
     }
 
-    public function cacheTokens(): bool
-    {
-        return $this->cacheTokens;
-    }
-
     public function columns()
     {
         return $this->columns;
@@ -421,16 +398,6 @@ final class PHPUnit
     public function forceCoversAnnotation(): bool
     {
         return $this->forceCoversAnnotation;
-    }
-
-    public function ignoreDeprecatedCodeUnitsFromCodeCoverage(): bool
-    {
-        return $this->ignoreDeprecatedCodeUnitsFromCodeCoverage;
-    }
-
-    public function disableCodeCoverageIgnore(): bool
-    {
-        return $this->disableCodeCoverageIgnore;
     }
 
     public function hasBootstrap(): bool
