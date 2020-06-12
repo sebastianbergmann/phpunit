@@ -377,19 +377,17 @@ final class Loader
         $element = $this->element($xpath, 'coverage');
 
         if ($element) {
-            if ($element->hasAttribute('includeUncoveredFiles')) {
-                $includeUncoveredFiles = (bool) $this->getBoolean(
-                    (string) $element->getAttribute('includeUncoveredFiles'),
-                    true
-                );
-            }
+            $includeUncoveredFiles  = $this->getBooleanAttribute(
+                $element,
+                'includeUncoveredFiles',
+                false
+            );
 
-            if ($element->hasAttribute('processUncoveredFiles')) {
-                $processUncoveredFiles = (bool) $this->getBoolean(
-                    (string) $element->getAttribute('processUncoveredFiles'),
-                    false
-                );
-            }
+            $processUncoveredFiles = $this->getBooleanAttribute(
+                $element,
+                'processUncoveredFiles',
+                false
+            );
         }
 
         $clover  = null;
@@ -508,19 +506,17 @@ final class Loader
         $element = $this->element($xpath, 'filter/whitelist');
 
         if ($element) {
-            if ($element->hasAttribute('addUncoveredFilesFromWhitelist')) {
-                $includeUncoveredFiles = (bool) $this->getBoolean(
-                    (string) $element->getAttribute('addUncoveredFilesFromWhitelist'),
-                    true
-                );
-            }
+            $includeUncoveredFiles = $this->getBooleanAttribute(
+                $element,
+                'addUncoveredFilesFromWhitelist',
+                false
+            );
 
-            if ($element->hasAttribute('processUncoveredFilesFromWhitelist')) {
-                $processUncoveredFiles = (bool) $this->getBoolean(
-                    (string) $element->getAttribute('processUncoveredFilesFromWhitelist'),
-                    false
-                );
-            }
+            $processUncoveredFiles = $this->getBooleanAttribute(
+                $element,
+                'processUncoveredFilesFromWhitelist',
+                false
+            );
         }
 
         $clover = null;
