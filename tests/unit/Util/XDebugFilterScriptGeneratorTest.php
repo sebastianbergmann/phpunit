@@ -10,11 +10,11 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TextUI\Configuration\CodeCoverage\CodeCoverage;
-use PHPUnit\TextUI\Configuration\CodeCoverage\Filter\Directory;
-use PHPUnit\TextUI\Configuration\CodeCoverage\Filter\DirectoryCollection;
-use PHPUnit\TextUI\Configuration\File;
-use PHPUnit\TextUI\Configuration\FileCollection;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection;
+use PHPUnit\TextUI\XmlConfiguration\File;
+use PHPUnit\TextUI\XmlConfiguration\FileCollection;
 
 /**
  * @small

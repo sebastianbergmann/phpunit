@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use PHPUnit\TextUI\Configuration\CodeCoverage\CodeCoverage as FilterConfiguration;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage as FilterConfiguration;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

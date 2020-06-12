@@ -10,11 +10,11 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TextUI\Configuration\Generator;
+use PHPUnit\TextUI\XmlConfiguration\Generator;
 
 /**
  * @small
- * @covers \PHPUnit\TextUI\Configuration\Generator
+ * @covers \PHPUnit\TextUI\XmlConfiguration\Generator
  */
 final class ConfigurationGeneratorTest extends TestCase
 {

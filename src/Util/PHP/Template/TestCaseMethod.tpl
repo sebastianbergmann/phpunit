@@ -1,8 +1,8 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use PHPUnit\TextUI\Configuration\Registry;
-use PHPUnit\TextUI\Configuration\PhpHandler;
+use PHPUnit\TextUI\XmlConfiguration\Registry;
+use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 
 if (!defined('STDOUT')) {
     // php://stdout does not obey output buffering. Any output would break
