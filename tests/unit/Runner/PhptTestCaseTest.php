@@ -322,6 +322,15 @@ EOF
     }
 
     /**
+     * @testdox PHPT tests do not affect dependency resolution
+     */
+    public function testPHPTDoesNotAffectDependencyResolution(): void
+    {
+        $this->assertSame([], $this->testCase->provides());
+        $this->assertSame([], $this->testCase->requires());
+    }
+
+    /**
      * Defines the content of the current PHPT test.
      *
      * @param string $content

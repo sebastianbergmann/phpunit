@@ -277,6 +277,22 @@ final class PhptTestCase implements SelfDescribing, Test
     }
 
     /**
+     * @return string[]
+     */
+    public function provides(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function requires(): array
+    {
+        return [];
+    }
+
+    /**
      * Parse --INI-- section key value pairs and return as array.
      *
      * @param array|string $content
