@@ -1179,17 +1179,8 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     public function setDependencies(array $dependencies): void
     {
-        $this->dependencies = $dependencies;
-
-        // Remove superfluous annotation detail for dependency resolver
-        $this->requiredTests = [];
-
-        foreach ($dependencies as $annotationValue) {
-            if (\trim($annotationValue) !== '') {
-                $annotation            = \explode(' ', $annotationValue, 2);
-                $this->requiredTests[] = \end($annotation);
-            }
-        }
+        $this->dependencies  = $dependencies;
+        $this->requiredTests = \PHPUnit\Util\Test::trimDependencyOptions($dependencies);
     }
 
     /**

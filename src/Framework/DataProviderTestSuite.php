@@ -26,7 +26,8 @@ final class DataProviderTestSuite extends TestSuite
      */
     public function setDependencies(array $dependencies): void
     {
-        $this->dependencies = $dependencies;
+        $this->dependencies  = $dependencies;
+        $this->requiredTests = \PHPUnit\Util\Test::trimDependencyOptions($dependencies);
 
         foreach ($this->tests as $test) {
             if (!$test instanceof TestCase) {
@@ -35,16 +36,6 @@ final class DataProviderTestSuite extends TestSuite
 
             $test->setDependencies($dependencies);
         }
-    }
-
-    public function getDependencies(): array
-    {
-        return $this->dependencies;
-    }
-
-    public function hasDependencies(): bool
-    {
-        return \count($this->dependencies) > 0;
     }
 
     /**
@@ -60,7 +51,9 @@ final class DataProviderTestSuite extends TestSuite
      */
     public function requires(): array
     {
-        return [];
+        // A DataProviderTestSuite does not have to traverse its child tests
+        // as these are inherited and cannot reference dataProvider rows directly
+        return $this->requiredTests ?? [];
     }
 
     /**

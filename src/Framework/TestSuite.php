@@ -788,34 +788,6 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     }
 
     /**
-     * Get a list of external dependencies of this TestSuite
-     * Inter-Test dependencies that can be resolved within the the TestSuite are filtered out
-     *
-     * @return array<string>
-     */
-    public function getDependencies(): array
-    {
-        $dependencies = [];
-
-        foreach ($this->tests as $test) {
-            foreach ($test->getDependencies() as $tdep) {
-                $testNameParts = \explode('::', $tdep);
-
-                if (\count($testNameParts) === 2 && ($this->getName() !== $testNameParts[0])) {
-                    $dependencies[] = $tdep;
-                }
-            }
-        }
-
-        return $dependencies;
-    }
-
-    public function hasDependencies(): bool
-    {
-        return !empty($this->getDependencies());
-    }
-
-    /**
      * @return string[]
      */
     public function provides(): array
