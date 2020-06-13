@@ -16,9 +16,9 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime:       %s
 Configuration: %sphpunit%etests%e_files%econfiguration.depends-on-class.xml
 
-FSSSWS....S                                                       11 / 11 (100%)
+....SFSSSSW                                                       11 / 11 (100%)
 
-Time: %s ms, Memory: %s
+Time: %s, Memory: %s
 
 There was 1 warning:
 
@@ -37,20 +37,20 @@ There was 1 failure:
 
 There were 5 skipped tests:
 
-1) DependencyFailureTest::testTwo
+1) DependencyOnClassTest::testThatDependsOnAFailingClass
+This test depends on "DependencyFailureTest::class" to pass.
+
+2) DependencyFailureTest::testTwo
 This test depends on "DependencyFailureTest::testOne" to pass.
 
-2) DependencyFailureTest::testThree
+3) DependencyFailureTest::testThree
 This test depends on "DependencyFailureTest::testTwo" to pass.
 
-3) DependencyFailureTest::testFour
+4) DependencyFailureTest::testFour
 This test depends on "DependencyFailureTest::testOne" to pass.
 
-4) DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
+5) DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
 This method has an invalid @depends annotation.
-
-5) DependencyOnClassTest::testThatDependsOnAFailingClass
-This test depends on "DependencyFailureTest::class" to pass.
 
 FAILURES!
 Tests: 11, Assertions: 5, Failures: 1, Warnings: 1, Skipped: 5.
