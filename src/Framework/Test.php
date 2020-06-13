@@ -18,14 +18,4 @@ interface Test extends \Countable
      * Runs a test and collects its result in a TestResult instance.
      */
     public function run(TestResult $result = null): TestResult;
-
-    /**
-     * @return string[]
-     */
-    public function provides(): array;
-
-    /**
-     * @return string[]
-     */
-    public function requires(): array;
 }

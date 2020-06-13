@@ -264,19 +264,6 @@ final class PhptTestCase implements SelfDescribing, Test
     }
 
     /**
-     * @return Test[]
-     */
-    public function getDependencies(): array
-    {
-        return [];
-    }
-
-    public function hasDependencies(): bool
-    {
-        return false;
-    }
-
-    /**
      * @return string[]
      */
     public function provides(): array

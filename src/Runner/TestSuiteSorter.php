@@ -111,6 +111,14 @@ final class TestSuiteSorter
             return $testName;
         }
 
+        if ($test instanceof DataProviderTestSuite) {
+            return $test->getName();
+        }
+
+        if ($test instanceof TestSuite) {
+            return $test->getName() . '::class';
+        }
+
         return $test->getName();
     }
 
@@ -225,7 +233,7 @@ final class TestSuiteSorter
             }
         }
 
-        $this->defectSortOrder[$suite->getName()] = $max;
+        $this->defectSortOrder[self::getTestSorterUID($suite)] = $max;
     }
 
     private function reverse(array $tests): array
