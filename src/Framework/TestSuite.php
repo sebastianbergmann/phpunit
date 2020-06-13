@@ -797,7 +797,9 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
 
             foreach ($this->tests as $test) {
                 if (!($test instanceof self || $test instanceof TestCase)) {
+                    // @codeCoverageIgnoreStart
                     continue;
+                    // @codeCoverageIgnoreEnd
                 }
                 $this->providedTests = \array_merge($this->providedTests, $test->provides());
             }
@@ -816,7 +818,9 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
 
             foreach ($this->tests as $test) {
                 if (!($test instanceof self || $test instanceof TestCase)) {
+                    // @codeCoverageIgnoreStart
                     continue;
+                    // @codeCoverageIgnoreEnd
                 }
                 $this->requiredTests = \array_merge($this->requiredTests, $test->requires());
             }
