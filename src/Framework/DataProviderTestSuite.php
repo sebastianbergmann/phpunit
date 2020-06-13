@@ -48,6 +48,22 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
+     * @return string[]
+     */
+    public function provides(): array
+    {
+        return [$this->getName()];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function requires(): array
+    {
+        return [];
+    }
+
+    /**
      * Returns the size of the each test created using the data provider(s).
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException

@@ -105,6 +105,16 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     protected $preserveGlobalState = true;
 
     /**
+     * @var string[]
+     */
+    protected $providedTests = [];
+
+    /**
+     * @var string[]
+     */
+    protected $requiredTests = [];
+
+    /**
      * @var bool
      */
     private $runClassInSeparateProcess;
@@ -1157,6 +1167,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     public function setName(string $name): void
     {
         $this->name = $name;
+
+        // Normalized name for dependency resolver
+        $this->providedTests = [\get_class($this) . '::' . $name];
     }
 
     /**
@@ -1167,6 +1180,16 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     public function setDependencies(array $dependencies): void
     {
         $this->dependencies = $dependencies;
+
+        // Remove superfluous annotation detail for dependency resolver
+        $this->requiredTests = [];
+
+        foreach ($dependencies as $annotationValue) {
+            if (\trim($annotationValue) !== '') {
+                $annotation            = \explode(' ', $annotationValue, 2);
+                $this->requiredTests[] = \end($annotation);
+            }
+        }
     }
 
     /**
@@ -1405,6 +1428,28 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     public function addWarning(string $warning): void
     {
         $this->warnings[] = $warning;
+    }
+
+    /**
+     * Returns the normalized test name as class::method
+     *
+     * @return string[]
+     */
+    public function provides(): array
+    {
+        return $this->providedTests;
+    }
+
+    /**
+     * Returns a list of normalized dependency names, class::method
+     * This list can differ from the raw dependencies as the resolver has
+     * no need for the
+     *
+     * @return string[]
+     */
+    public function requires(): array
+    {
+        return $this->requiredTests;
     }
 
     /**

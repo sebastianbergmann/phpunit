@@ -78,6 +78,16 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     protected $foundClasses = [];
 
     /**
+     * @var null|string[]
+     */
+    protected $providedTests;
+
+    /**
+     * @var null|string[]
+     */
+    protected $requiredTests;
+
+    /**
      * Last count of tests in this suite.
      *
      * @var null|int
@@ -242,7 +252,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
 
         if (!$class->isAbstract()) {
             $this->tests[]  = $test;
-            $this->numTests = -1;
+            $this->clearCaches();
 
             if ($test instanceof self && empty($groups)) {
                 $groups = $test->getGroups();
@@ -806,6 +816,40 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     }
 
     /**
+     * @return string[]
+     */
+    public function provides(): array
+    {
+        if ($this->providedTests === null) {
+            $this->providedTests = [$this->getName() . '::class'];
+
+            foreach ($this->tests as $test) {
+                $this->providedTests = \array_merge($this->providedTests, $test->provides());
+            }
+        }
+
+        return $this->providedTests;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function requires(): array
+    {
+        if ($this->requiredTests === null) {
+            $this->requiredTests = [];
+
+            foreach ($this->tests as $test) {
+                $this->requiredTests = \array_merge($this->requiredTests, $test->requires());
+            }
+
+            $this->requiredTests = \array_values(\array_diff($this->requiredTests, $this->provides()));
+        }
+
+        return $this->requiredTests;
+    }
+
+    /**
      * Creates a default TestResult object.
      */
     protected function createResult(): TestResult
@@ -850,5 +894,12 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             $test,
             TestUtil::getGroups($class->getName(), $methodName)
         );
+    }
+
+    private function clearCaches(): void
+    {
+        $this->numTests      = -1;
+        $this->providedTests = null;
+        $this->requiredTests = null;
     }
 }

@@ -250,4 +250,69 @@ final class TestSuiteTest extends TestCase
             $failure->thrownException()->getMessage()
         );
     }
+
+    public function testNormalizeProvidedDependencies(): void
+    {
+        $suite = new TestSuite(\MultiDependencyTest::class);
+
+        $this->assertEquals([
+            \MultiDependencyTest::class . '::class',
+            \MultiDependencyTest::class . '::testOne',
+            \MultiDependencyTest::class . '::testTwo',
+            \MultiDependencyTest::class . '::testThree',
+            \MultiDependencyTest::class . '::testFour',
+            \MultiDependencyTest::class . '::testFive',
+        ], $suite->provides());
+    }
+
+    public function testNormalizeRequiredDependencies(): void
+    {
+        $suite = new TestSuite(\MultiDependencyTest::class);
+
+        $this->assertSame([], $suite->requires());
+    }
+
+    public function testDetectMissingDependenciesBetweenTestSuites(): void
+    {
+        $suite = new TestSuite(\DependencyOnClassTest::class);
+
+        $this->assertEquals([
+            \DependencyOnClassTest::class . '::class',
+            \DependencyOnClassTest::class . '::testThatDependsOnASuccessfulClass',
+            \DependencyOnClassTest::class . '::testThatDependsOnAFailingClass',
+        ], $suite->provides(), 'Provided test names incorrect');
+
+        $this->assertEquals([
+            \DependencySuccessTest::class . '::class',
+            \DependencyFailureTest::class . '::class',
+        ], $suite->requires(), 'Required test names incorrect');
+    }
+
+    public function testResolveDependenciesBetweenTestSuites(): void
+    {
+        $suite = new TestSuite(\DependencyOnClassTest::class);
+        $suite->addTestSuite(\DependencyFailureTest::class);
+        $suite->addTestSuite(\DependencySuccessTest::class);
+
+        $this->assertEquals([
+            \DependencyOnClassTest::class . '::class',
+            \DependencyOnClassTest::class . '::testThatDependsOnASuccessfulClass',
+            \DependencyOnClassTest::class . '::testThatDependsOnAFailingClass',
+            \DependencyFailureTest::class . '::class',
+            \DependencyFailureTest::class . '::testOne',
+            \DependencyFailureTest::class . '::testTwo',
+            \DependencyFailureTest::class . '::testThree',
+            \DependencyFailureTest::class . '::testFour',
+            \DependencyFailureTest::class . '::testHandlesDependsAnnotationForNonexistentTests',
+            \DependencyFailureTest::class . '::testHandlesDependsAnnotationWithNoMethodSpecified',
+            \DependencySuccessTest::class . '::class',
+            \DependencySuccessTest::class . '::testOne',
+            \DependencySuccessTest::class . '::testTwo',
+            \DependencySuccessTest::class . '::testThree',
+        ], $suite->provides(), 'Provided test names incorrect');
+
+        $this->assertEquals([
+            \DependencyFailureTest::class . '::doesNotExist',
+        ], $suite->requires(), 'Required test names incorrect');
+    }
 }
