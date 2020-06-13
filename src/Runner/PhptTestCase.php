@@ -162,7 +162,14 @@ final class PhptTestCase implements SelfDescribing, Test
         }
 
         if ($result->getCollectCodeCoverageInformation()) {
-            $this->renderForCoverage($code, $result->getCodeCoverage()->collectsBranchAndPathCoverage());
+            $pathCoverage = false;
+            $codeCoverage = $result->getCodeCoverage();
+
+            if ($codeCoverage) {
+                $pathCoverage = $codeCoverage->collectsBranchAndPathCoverage();
+            }
+
+            $this->renderForCoverage($code, $pathCoverage);
         }
 
         $timer = new Timer;
@@ -172,8 +179,8 @@ final class PhptTestCase implements SelfDescribing, Test
         $time         = $timer->stop()->asSeconds();
         $this->output = $jobResult['stdout'] ?? '';
 
-        if ($result->getCollectCodeCoverageInformation() && ($coverage = $this->cleanupForCoverage())) {
-            $result->getCodeCoverage()->append($coverage, $this, true, [], []);
+        if (isset($codeCoverage) && ($coverage = $this->cleanupForCoverage())) {
+            $codeCoverage->append($coverage, $this, true, [], []);
         }
 
         try {

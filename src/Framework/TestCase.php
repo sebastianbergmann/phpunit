@@ -726,16 +726,16 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 $phar = '\'\'';
             }
 
-            $driverMethod = 'forLineCoverage';
+            $codeCoverage       = $result->getCodeCoverage();
+            $codeCoverageFilter = null;
+            $driverMethod       = 'forLineCoverage';
 
-            if ($result->getCodeCoverage()) {
-                $codeCoverageFilter = $result->getCodeCoverage()->filter();
+            if ($codeCoverage) {
+                $codeCoverageFilter = $codeCoverage->filter();
 
-                if ($result->getCodeCoverage()->collectsBranchAndPathCoverage()) {
+                if ($codeCoverage->collectsBranchAndPathCoverage()) {
                     $driverMethod = 'forLineAndPathCoverage';
                 }
-            } else {
-                $codeCoverageFilter = null;
             }
 
             $data               = \var_export(\serialize($this->data), true);

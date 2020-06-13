@@ -140,9 +140,6 @@
       <code>$beStrictAboutChangesToGlobalState</code>
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PossiblyNullReference occurrences="1">
-      <code>filter</code>
-    </PossiblyNullReference>
     <PossiblyUndefinedVariable occurrences="1">
       <code>$categories</code>
     </PossiblyUndefinedVariable>
@@ -170,9 +167,6 @@
     <PossiblyInvalidArgument occurrences="1">
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
-    <PossiblyNullReference occurrences="1">
-      <code>append</code>
-    </PossiblyNullReference>
     <PossiblyUndefinedVariable occurrences="1">
       <code>$sectionOffset</code>
     </PossiblyUndefinedVariable>
