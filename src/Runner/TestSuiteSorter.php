@@ -115,11 +115,7 @@ final class TestSuiteSorter
             return $test->getName();
         }
 
-        if ($test instanceof TestSuite) {
-            return $test->getName() . '::class';
-        }
-
-        return $test->getName();
+        return $test->getName() . '::class';
     }
 
     public function __construct(?TestResultCache $cache = null)

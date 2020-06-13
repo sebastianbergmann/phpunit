@@ -31,9 +31,10 @@ final class DataProviderTestSuite extends TestSuite
 
         foreach ($this->tests as $test) {
             if (!$test instanceof TestCase) {
+                // @codeCoverageIgnoreStart
                 continue;
+                // @codeCoverageIgnoreStart
             }
-
             $test->setDependencies($dependencies);
         }
     }
