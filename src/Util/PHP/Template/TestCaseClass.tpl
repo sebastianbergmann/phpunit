@@ -1,5 +1,6 @@
 <?php
 use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Driver\Driver;
 use PHPUnit\TextUI\XmlConfiguration\Registry;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 
@@ -35,9 +36,12 @@ function __phpunit_run_isolated_test()
     $result = new PHPUnit\Framework\TestResult;
 
     if ({collectCodeCoverageInformation}) {
+        $filter = unserialize('{codeCoverageFilter}');
+
         $result->setCodeCoverage(
-            CodeCoverage::createWithFilter(
-                unserialize('{codeCoverageFilter}')
+            new CodeCoverage(
+                Driver::forLineCoverage($filter),
+                $filter
             )
         );
     }

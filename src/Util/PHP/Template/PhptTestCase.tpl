@@ -1,5 +1,7 @@
 <?php
 use SebastianBergmann\CodeCoverage\CodeCoverage;
+use SebastianBergmann\CodeCoverage\Driver\Driver;
+use SebastianBergmann\CodeCoverage\Filter;
 
 $composerAutoload = {composerAutoload};
 $phar             = {phar};
@@ -24,7 +26,12 @@ if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
 }
 
 if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
-    $coverage = CodeCoverage::create();
+    $filter = new Filter;
+
+    $coverage = new CodeCoverage(
+        Driver::forLineCoverage($filter),
+        $filter
+    );
 
     $coverage->start(__FILE__);
 }
