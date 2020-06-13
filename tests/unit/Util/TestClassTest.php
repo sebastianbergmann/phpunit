@@ -1452,6 +1452,23 @@ final class TestClassTest extends TestCase
         ];
     }
 
+    public function testTrimDependencyOptions(): void
+    {
+        $this->assertSame([
+            'methodNameA',
+            'methodNameB',
+            'ClassName1::methodName1',
+            'ClassName2::methodName2',
+            'ClassName3::methodName3',
+        ], Test::trimDependencyOptions([
+            'methodNameA',
+            '!clone methodNameB',
+            'ClassName1::methodName1',
+            'shallowClone ClassName2::methodName2',
+            '!shallowClone ClassName3::methodName3',
+        ]));
+    }
+
     private function getRequirementsTestClassFile(): string
     {
         if (!$this->fileRequirementsTest) {

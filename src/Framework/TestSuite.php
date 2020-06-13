@@ -796,6 +796,9 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             $this->providedTests = [$this->getName() . '::class'];
 
             foreach ($this->tests as $test) {
+                if (!($test instanceof self || $test instanceof TestCase)) {
+                    continue;
+                }
                 $this->providedTests = \array_merge($this->providedTests, $test->provides());
             }
         }
@@ -812,6 +815,9 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             $this->requiredTests = [];
 
             foreach ($this->tests as $test) {
+                if (!($test instanceof self || $test instanceof TestCase)) {
+                    continue;
+                }
                 $this->requiredTests = \array_merge($this->requiredTests, $test->requires());
             }
 
