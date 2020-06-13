@@ -89,11 +89,6 @@ final class TestRunner extends BaseTestRunner
     private $printer;
 
     /**
-     * @var Runtime
-     */
-    private $runtime;
-
-    /**
      * @var bool
      */
     private $messagePrinted = false;
@@ -116,7 +111,6 @@ final class TestRunner extends BaseTestRunner
 
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
-        $this->runtime            = new Runtime;
         $this->timer              = new Timer;
     }
 
@@ -314,76 +308,6 @@ final class TestRunner extends BaseTestRunner
 
         self::$versionStringPrinted = true;
 
-        if ($arguments['verbose']) {
-            $this->writeMessage('Runtime', $this->runtime->getNameWithVersionAndCodeCoverageDriver());
-
-            if (isset($arguments['configuration'])) {
-                \assert($arguments['configuration'] instanceof Configuration);
-
-                $this->writeMessage(
-                    'Configuration',
-                    $arguments['configuration']->filename()
-                );
-            }
-
-            foreach ($arguments['loadedExtensions'] as $extension) {
-                $this->writeMessage(
-                    'Extension',
-                    $extension
-                );
-            }
-
-            foreach ($arguments['notLoadedExtensions'] as $extension) {
-                $this->writeMessage(
-                    'Extension',
-                    $extension
-                );
-            }
-        }
-
-        foreach ($warnings as $warning) {
-            $this->writeMessage('Warning', $warning);
-        }
-
-        if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
-            $this->writeMessage(
-                'Random seed',
-                (string) $arguments['randomOrderSeed']
-            );
-        }
-
-        if (isset($tooFewColumnsRequested)) {
-            $this->writeMessage('Error', 'Less than 16 columns requested, number of columns set to 16');
-        }
-
-        if ($this->runtime->discardsComments()) {
-            $this->writeMessage('Warning', 'opcache.save_comments=0 set; annotations will not work');
-        }
-
-        if (isset($arguments['configuration'])) {
-            \assert($arguments['configuration'] instanceof Configuration);
-
-            if ($arguments['configuration']->hasValidationErrors()) {
-                $this->write(
-                    "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
-                );
-
-                foreach ($arguments['configuration']->validationErrors() as $line => $errors) {
-                    $this->write(\sprintf("\n  Line %d:\n", $line));
-
-                    foreach ($errors as $msg) {
-                        $this->write(\sprintf("  - %s\n", $msg));
-                    }
-                }
-
-                $this->write("\n  Test results may not be as expected.\n\n");
-            }
-        }
-
-        if (isset($arguments['conflictBetweenPrinterClassAndTestdox'])) {
-            $this->writeMessage('Warning', 'Directives printerClass and testdox are mutually exclusive');
-        }
-
         foreach ($arguments['listeners'] as $listener) {
             $result->addListener($listener);
         }
@@ -559,13 +483,13 @@ final class TestRunner extends BaseTestRunner
         if ($codeCoverageReports > 0) {
             try {
                 if ($codeCoverageConfiguration->pathCoverage()) {
-                    $driver = Driver::forLineAndPathCoverage($this->codeCoverageFilter);
+                    $codeCoverageDriver = Driver::forLineAndPathCoverage($this->codeCoverageFilter);
                 } else {
-                    $driver = Driver::forLineCoverage($this->codeCoverageFilter);
+                    $codeCoverageDriver = Driver::forLineCoverage($this->codeCoverageFilter);
                 }
 
                 $codeCoverage = new CodeCoverage(
-                    $driver,
+                    $codeCoverageDriver,
                     $this->codeCoverageFilter
                 );
 
@@ -613,9 +537,9 @@ final class TestRunner extends BaseTestRunner
 
                 if ($this->codeCoverageFilter->isEmpty()) {
                     if (!$coverageFilterFromConfigurationFile && !$coverageFilterFromOption) {
-                        $this->writeMessage('Warning', 'No filter is configured, code coverage will not be processed');
+                        $warnings[] = 'No filter is configured, code coverage will not be processed';
                     } else {
-                        $this->writeMessage('Warning', 'Incorrect filter configuration, code coverage will not be processed');
+                        $warnings[] = 'Incorrect filter configuration, code coverage will not be processed';
                     }
 
                     $codeCoverageReports = 0;
@@ -623,9 +547,89 @@ final class TestRunner extends BaseTestRunner
                     unset($codeCoverage);
                 }
             } catch (CodeCoverageException $e) {
-                $this->writeMessage('Warning', $e->getMessage());
+                $warnings[] = $e->getMessage();
 
                 $codeCoverageReports = 0;
+            }
+        }
+
+        if ($arguments['verbose']) {
+            if (\PHP_SAPI === 'phpdbg') {
+                $this->writeMessage('Runtime', 'PHPDBG ' . \PHP_VERSION);
+            } else {
+                $runtime = 'PHP ' . \PHP_VERSION;
+
+                if (isset($codeCoverageDriver)) {
+                    $runtime .= ' with ' . $codeCoverageDriver->nameAndVersion();
+                }
+
+                $this->writeMessage('Runtime', $runtime);
+            }
+
+            if (isset($arguments['configuration'])) {
+                \assert($arguments['configuration'] instanceof Configuration);
+
+                $this->writeMessage(
+                    'Configuration',
+                    $arguments['configuration']->filename()
+                );
+            }
+
+            foreach ($arguments['loadedExtensions'] as $extension) {
+                $this->writeMessage(
+                    'Extension',
+                    $extension
+                );
+            }
+
+            foreach ($arguments['notLoadedExtensions'] as $extension) {
+                $this->writeMessage(
+                    'Extension',
+                    $extension
+                );
+            }
+        }
+
+        if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
+            $this->writeMessage(
+                'Random Seed',
+                (string) $arguments['randomOrderSeed']
+            );
+        }
+
+        if (isset($tooFewColumnsRequested)) {
+            $warnings[] = 'Less than 16 columns requested, number of columns set to 16';
+        }
+
+        if ((new Runtime)->discardsComments()) {
+            $warnings[] = 'opcache.save_comments=0 set; annotations will not work';
+        }
+
+        if (isset($arguments['conflictBetweenPrinterClassAndTestdox'])) {
+            $warnings[] = 'Directives printerClass and testdox are mutually exclusive';
+        }
+
+        foreach ($warnings as $warning) {
+            $this->writeMessage('Warning', $warning);
+        }
+
+        if (isset($arguments['configuration'])) {
+            \assert($arguments['configuration'] instanceof Configuration);
+
+            if ($arguments['configuration']->hasValidationErrors()) {
+                $this->write(
+                    "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
+                );
+
+                foreach ($arguments['configuration']->validationErrors() as $line => $errors) {
+                    $this->write(\sprintf("\n  Line %d:\n", $line));
+
+                    foreach ($errors as $msg) {
+                        $this->write(\sprintf("  - %s\n", $msg));
+                    }
+                }
+
+                $this->write("\n  Test results may not be as expected.\n\n");
             }
         }
 
