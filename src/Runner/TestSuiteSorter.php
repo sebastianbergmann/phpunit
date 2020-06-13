@@ -368,7 +368,7 @@ final class TestSuiteSorter
                 $tests
             );
 
-            if (!$tests[$i]->hasDependencies() || empty(\array_intersect($tests[$i]->getDependencies(), $todoNames))) {
+            if (empty(\array_intersect($tests[$i]->requires(), $todoNames))) {
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($tests, $i, 1));
                 $i            = 0;
             } else {

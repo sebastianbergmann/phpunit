@@ -374,6 +374,27 @@ final class Test
         return \array_unique($dependencies);
     }
 
+    /**
+     * Remove superfluous annotation detail not needed by dependency resolver
+     *
+     * @param string[] $dependencies
+     *
+     * @return string[]
+     */
+    public static function trimDependencyOptions(array $dependencies): array
+    {
+        $requires = [];
+
+        foreach ($dependencies as $annotationValue) {
+            if (\trim($annotationValue) !== '') {
+                $annotation            = \explode(' ', $annotationValue, 2);
+                $requires[]            = \end($annotation);
+            }
+        }
+
+        return $requires;
+    }
+
     /** @psalm-param class-string $className */
     public static function getGroups(string $className, ?string $methodName = ''): array
     {
