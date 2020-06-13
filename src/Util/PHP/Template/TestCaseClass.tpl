@@ -40,7 +40,7 @@ function __phpunit_run_isolated_test()
 
         $result->setCodeCoverage(
             new CodeCoverage(
-                Driver::forLineCoverage($filter),
+                Driver::{driverMethod}($filter),
                 $filter
             )
         );

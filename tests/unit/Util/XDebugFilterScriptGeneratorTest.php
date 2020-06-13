@@ -85,6 +85,7 @@ EOF;
             ),
             DirectoryCollection::fromArray([]),
             FileCollection::fromArray([]),
+            false,
             true,
             true,
             false,

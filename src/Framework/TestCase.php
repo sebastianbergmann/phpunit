@@ -726,8 +726,14 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 $phar = '\'\'';
             }
 
+            $driverMethod = 'forLineCoverage';
+
             if ($result->getCodeCoverage()) {
                 $codeCoverageFilter = $result->getCodeCoverage()->filter();
+
+                if ($result->getCodeCoverage()->collectsBranchAndPathCoverage()) {
+                    $driverMethod = 'forLineAndPathCoverage';
+                }
             } else {
                 $codeCoverageFilter = null;
             }
@@ -753,6 +759,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 'filename'                                   => $class->getFileName(),
                 'className'                                  => $class->getName(),
                 'collectCodeCoverageInformation'             => $coverage,
+                'driverMethod'                               => $driverMethod,
                 'data'                                       => $data,
                 'dataName'                                   => $dataName,
                 'dependencyInput'                            => $dependencyInput,

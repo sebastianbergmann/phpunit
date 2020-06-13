@@ -48,6 +48,11 @@ final class CodeCoverage
     /**
      * @var bool
      */
+    private $pathCoverage;
+
+    /**
+     * @var bool
+     */
     private $includeUncoveredFiles;
 
     /**
@@ -100,12 +105,13 @@ final class CodeCoverage
      */
     private $xml;
 
-    public function __construct(DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $cacheTokens, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $cacheTokens, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
         $this->directories               = $directories;
         $this->files                     = $files;
         $this->excludeDirectories        = $excludeDirectories;
         $this->excludeFiles              = $excludeFiles;
+        $this->pathCoverage              = $pathCoverage;
         $this->includeUncoveredFiles     = $includeUncoveredFiles;
         $this->processUncoveredFiles     = $processUncoveredFiles;
         $this->cacheTokens               = $cacheTokens;
@@ -142,6 +148,11 @@ final class CodeCoverage
     public function excludeFiles(): FileCollection
     {
         return $this->excludeFiles;
+    }
+
+    public function pathCoverage(): bool
+    {
+        return $this->pathCoverage;
     }
 
     public function includeUncoveredFiles(): bool

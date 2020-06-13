@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 
 ## [9.3.0] - 2020-08-07
 
+### Added
+
+* [#4260](https://github.com/sebastianbergmann/phpunit/issues/4260): `pathCoverage` attribute on the `phpunit/coverage` element of the XML configuration file for enabling path coverage for code coverage drivers that support it
+
 ### Changed
 
 * [#4264](https://github.com/sebastianbergmann/phpunit/pull/4264): Refactor logical operator constraints

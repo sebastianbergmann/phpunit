@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpunit>
-    <coverage includeUncoveredFiles="true"
+    <coverage pathCoverage="true"
+              includeUncoveredFiles="true"
               processUncoveredFiles="true"
               ignoreDeprecatedCodeUnits="true"
               disableCodeCoverageIgnore="true"

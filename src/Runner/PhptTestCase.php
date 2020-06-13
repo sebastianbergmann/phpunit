@@ -162,7 +162,7 @@ final class PhptTestCase implements SelfDescribing, Test
         }
 
         if ($result->getCollectCodeCoverageInformation()) {
-            $this->renderForCoverage($code);
+            $this->renderForCoverage($code, $result->getCodeCoverage()->collectsBranchAndPathCoverage());
         }
 
         $timer = new Timer;
@@ -550,7 +550,7 @@ final class PhptTestCase implements SelfDescribing, Test
         ];
     }
 
-    private function renderForCoverage(string &$job): void
+    private function renderForCoverage(string &$job, bool $pathCoverage): void
     {
         $files = $this->getCoverageFiles();
 
@@ -586,10 +586,12 @@ final class PhptTestCase implements SelfDescribing, Test
                 'globals'          => $globals,
                 'job'              => $files['job'],
                 'coverageFile'     => $files['coverage'],
+                'driverMethod'     => $pathCoverage ? 'forLineAndPathCoverage' : 'forLineCoverage',
             ]
         );
 
         \file_put_contents($files['job'], $job);
+
         $job = $template->render();
     }
 

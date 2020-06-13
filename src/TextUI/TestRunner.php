@@ -465,12 +465,6 @@ final class TestRunner extends BaseTestRunner
             $codeCoverageReports = 0;
         }
 
-        if ($codeCoverageReports > 0 && !$this->runtime->canCollectCodeCoverage()) {
-            $this->writeMessage('Error', 'No code coverage driver is available');
-
-            $codeCoverageReports = 0;
-        }
-
         if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile'])) {
             $coverageFilterFromConfigurationFile = false;
             $coverageFilterFromOption            = false;
@@ -563,63 +557,75 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($codeCoverageReports > 0) {
-            $codeCoverage = new CodeCoverage(
-                Driver::forLineCoverage($this->codeCoverageFilter),
-                $this->codeCoverageFilter
-            );
-
-            $codeCoverage->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
-
-            if ($arguments['strictCoverage']) {
-                $codeCoverage->enableCheckForUnintentionallyCoveredCode();
-            }
-
-            if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
-                if ($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']) {
-                    $codeCoverage->ignoreDeprecatedCode();
+            try {
+                if ($codeCoverageConfiguration->pathCoverage()) {
+                    $driver = Driver::forLineAndPathCoverage($this->codeCoverageFilter);
                 } else {
-                    $codeCoverage->doNotIgnoreDeprecatedCode();
+                    $driver = Driver::forLineCoverage($this->codeCoverageFilter);
                 }
-            }
 
-            if (isset($arguments['disableCodeCoverageIgnore'])) {
-                if ($arguments['disableCodeCoverageIgnore']) {
-                    $codeCoverage->disableAnnotationsForIgnoringCode();
-                } else {
-                    $codeCoverage->enableAnnotationsForIgnoringCode();
+                $codeCoverage = new CodeCoverage(
+                    $driver,
+                    $this->codeCoverageFilter
+                );
+
+                $codeCoverage->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
+
+                if ($arguments['strictCoverage']) {
+                    $codeCoverage->enableCheckForUnintentionallyCoveredCode();
                 }
-            }
 
-            if (isset($arguments['configuration'])) {
-                \assert($arguments['configuration'] instanceof Configuration);
-
-                $codeCoverageConfiguration = $arguments['configuration']->codeCoverage();
-
-                if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-                    if ($codeCoverageConfiguration->includeUncoveredFiles()) {
-                        $codeCoverage->includeUncoveredFiles();
+                if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
+                    if ($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']) {
+                        $codeCoverage->ignoreDeprecatedCode();
                     } else {
-                        $codeCoverage->excludeUncoveredFiles();
-                    }
-
-                    if ($codeCoverageConfiguration->processUncoveredFiles()) {
-                        $codeCoverage->processUncoveredFiles();
-                    } else {
-                        $codeCoverage->doNotProcessUncoveredFiles();
+                        $codeCoverage->doNotIgnoreDeprecatedCode();
                     }
                 }
-            }
 
-            if ($this->codeCoverageFilter->isEmpty()) {
-                if (!$coverageFilterFromConfigurationFile && !$coverageFilterFromOption) {
-                    $this->writeMessage('Error', 'No filter is configured, no code coverage will be generated.');
-                } else {
-                    $this->writeMessage('Error', 'Incorrect filter configuration, no code coverage will be generated.');
+                if (isset($arguments['disableCodeCoverageIgnore'])) {
+                    if ($arguments['disableCodeCoverageIgnore']) {
+                        $codeCoverage->disableAnnotationsForIgnoringCode();
+                    } else {
+                        $codeCoverage->enableAnnotationsForIgnoringCode();
+                    }
                 }
+
+                if (isset($arguments['configuration'])) {
+                    \assert($arguments['configuration'] instanceof Configuration);
+
+                    $codeCoverageConfiguration = $arguments['configuration']->codeCoverage();
+
+                    if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
+                        if ($codeCoverageConfiguration->includeUncoveredFiles()) {
+                            $codeCoverage->includeUncoveredFiles();
+                        } else {
+                            $codeCoverage->excludeUncoveredFiles();
+                        }
+
+                        if ($codeCoverageConfiguration->processUncoveredFiles()) {
+                            $codeCoverage->processUncoveredFiles();
+                        } else {
+                            $codeCoverage->doNotProcessUncoveredFiles();
+                        }
+                    }
+                }
+
+                if ($this->codeCoverageFilter->isEmpty()) {
+                    if (!$coverageFilterFromConfigurationFile && !$coverageFilterFromOption) {
+                        $this->writeMessage('Warning', 'No filter is configured, code coverage will not be processed');
+                    } else {
+                        $this->writeMessage('Warning', 'Incorrect filter configuration, code coverage will not be processed');
+                    }
+
+                    $codeCoverageReports = 0;
+
+                    unset($codeCoverage);
+                }
+            } catch (CodeCoverageException $e) {
+                $this->writeMessage('Warning', $e->getMessage());
 
                 $codeCoverageReports = 0;
-
-                unset($codeCoverage);
             }
         }
 

@@ -371,6 +371,7 @@ final class Loader
             return $this->legacyCodeCoverage($filename, $xpath, $document);
         }
 
+        $pathCoverage              = false;
         $includeUncoveredFiles     = true;
         $processUncoveredFiles     = false;
         $cacheTokens               = false;
@@ -380,6 +381,12 @@ final class Loader
         $element = $this->element($xpath, 'coverage');
 
         if ($element) {
+            $pathCoverage = $this->getBooleanAttribute(
+                $element,
+                'pathCoverage',
+                false
+            );
+
             $includeUncoveredFiles  = $this->getBooleanAttribute(
                 $element,
                 'includeUncoveredFiles',
@@ -505,6 +512,7 @@ final class Loader
             $this->readFilterFiles($filename, $xpath, 'coverage/include/file'),
             $this->readFilterDirectories($filename, $xpath, 'coverage/exclude/directory'),
             $this->readFilterFiles($filename, $xpath, 'coverage/exclude/file'),
+            $pathCoverage,
             $includeUncoveredFiles,
             $processUncoveredFiles,
             $cacheTokens,
@@ -637,6 +645,7 @@ final class Loader
             $this->readFilterFiles($filename, $xpath, 'filter/whitelist/file'),
             $this->readFilterDirectories($filename, $xpath, 'filter/whitelist/exclude/directory'),
             $this->readFilterFiles($filename, $xpath, 'filter/whitelist/exclude/file'),
+            false,
             $includeUncoveredFiles,
             $processUncoveredFiles,
             $cacheTokens,
