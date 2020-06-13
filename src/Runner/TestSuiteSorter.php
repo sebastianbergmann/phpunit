@@ -364,19 +364,11 @@ final class TestSuiteSorter
     {
         $newTestOrder = [];
         $i            = 0;
+        $provided     = [];
 
         do {
-            $todoNames = \array_map(
-                /**
-                 * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-                 */
-                static function ($test) {
-                    return self::getTestSorterUID($test);
-                },
-                $tests
-            );
-
-            if (empty(\array_intersect($tests[$i]->requires(), $todoNames))) {
+            if (empty(\array_diff($tests[$i]->requires(), $provided))) {
+                $provided     = \array_merge($provided, $tests[$i]->provides());
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($tests, $i, 1));
                 $i            = 0;
             } else {
