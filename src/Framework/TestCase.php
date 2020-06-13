@@ -2035,10 +2035,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 $dependency   = \substr($dependency, \strlen('!shallowClone '));
             }
 
-            if (\strpos($dependency, '::') === false) {
-                $dependency = $className . '::' . $dependency;
-            }
-
             if (!isset($passedKeys[$dependency])) {
                 if (!$this->isCallableTestMethod($dependency)) {
                     $this->markWarningForUncallableDependency($dependency);
