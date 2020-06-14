@@ -1186,33 +1186,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function getDependencies(): array
-    {
-        return $this->dependencies;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function hasDependencies(): bool
-    {
-        return \count($this->dependencies) > 0;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     public function setDependencyInput(array $dependencyInput): void
     {
         $this->dependencyInput = $dependencyInput;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function getDependencyInput(): array
-    {
-        return $this->dependencyInput;
     }
 
     /**
@@ -1359,14 +1335,6 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     public function usesDataProvider(): bool
     {
         return !empty($this->data);
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function dataDescription(): string
-    {
-        return \is_string($this->dataName) ? $this->dataName : '';
     }
 
     /**
