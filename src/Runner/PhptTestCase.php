@@ -350,7 +350,7 @@ final class PhptTestCase implements SelfDescribing, Test
                 $sectionContent = \preg_replace('/\r\n/', "\n", \trim($sections[$sectionName]));
                 $expected       = $sectionName === 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
 
-                if ($expected === null) {
+                if ($expected === '') {
                     throw new Exception('No PHPT expectation found');
                 }
 

@@ -44,6 +44,14 @@ EXPECTREGEX test
 Hello [HPU]{4}[nit]{3}!
 EOF;
 
+    private const EXPECT_MISSING_ASSERTION_CONTENT = <<<EOF
+--TEST--
+Missing EXPECTF value test
+--EXPECTF--
+--FILE--
+<?php echo "Hello PHPUnit!"; ?>
+EOF;
+
     private const FILE_SECTION = <<<EOF
 <?php echo "Hello PHPUnit!"; ?>
 
@@ -319,6 +327,17 @@ EOF
         $result = $this->testCase->run();
 
         $this->assertTrue($result->wasSuccessful());
+    }
+
+    public function testShouldSkipTestWhenExpectHasNoValue(): void
+    {
+        $this->setPhpContent(self::EXPECT_MISSING_ASSERTION_CONTENT);
+
+        $result = $this->testCase->run();
+
+        $this->assertCount(1, $result->errors());
+        $skipMessage = $result->errors()[0]->thrownException()->getMessage();
+        $this->assertSame('No PHPT expectation found', $skipMessage);
     }
 
     /**
