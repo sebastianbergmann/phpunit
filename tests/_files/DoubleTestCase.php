@@ -36,14 +36,4 @@ class DoubleTestCase implements Test
 
         return $result;
     }
-
-    public function provides(): array
-    {
-        return [\get_class($this) . '::' . $this->testCase->getName(false)];
-    }
-
-    public function requires(): array
-    {
-        return [];
-    }
 }
