@@ -52,6 +52,7 @@ final class RegistryTest extends TestCase
             [
                 'testdox' => ['Empty test for @ticket numeric annotation values'],
                 'ticket'  => ['3502'],
+                'author'  => ['C. Lippy'],
                 'see'     => ['https://github.com/sebastianbergmann/phpunit/issues/3502'],
             ],
             $annotation->symbolAnnotations()

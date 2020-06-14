@@ -1469,6 +1469,36 @@ final class TestClassTest extends TestCase
         ]));
     }
 
+    /**
+     * @testdox Parse @author/@ticket for $class::$method
+     * @dataProvider getGroupsProvider
+     */
+    public function testGetGroupsFromAuthorAndTicketAnnotations(string $class, string $method, array $groups): void
+    {
+        self::assertSame($groups, Test::getGroups($class, $method));
+    }
+
+    public function getGroupsProvider(): array
+    {
+        return [
+            [
+                \NumericGroupAnnotationTest::class,
+                '',
+                ['Companion Cube'],
+            ],
+            [
+                \NumericGroupAnnotationTest::class,
+                'testTicketAnnotationSupportsNumericValue',
+                ['C. Lippy', '3502'],
+            ],
+            [
+                \NumericGroupAnnotationTest::class,
+                'testGroupAnnotationSupportsNumericValue',
+                ['Companion Cube', '3502'],
+            ],
+        ];
+    }
+
     private function getRequirementsTestClassFile(): string
     {
         if (!$this->fileRequirementsTest) {
