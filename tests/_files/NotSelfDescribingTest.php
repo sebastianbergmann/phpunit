@@ -26,14 +26,4 @@ class NotSelfDescribingTest implements Test
     {
         return new TestResult();
     }
-
-    public function provides(): array
-    {
-        return [];
-    }
-
-    public function requires(): array
-    {
-        return [];
-    }
 }
