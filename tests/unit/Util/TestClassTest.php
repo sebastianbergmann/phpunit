@@ -1484,17 +1484,17 @@ final class TestClassTest extends TestCase
             [
                 \NumericGroupAnnotationTest::class,
                 '',
-                ['Companion Cube'],
+                ['Companion Cube', 't123456'],
             ],
             [
                 \NumericGroupAnnotationTest::class,
                 'testTicketAnnotationSupportsNumericValue',
-                ['C. Lippy', '3502'],
+                ['C. Lippy', 't123456', '3502'],
             ],
             [
                 \NumericGroupAnnotationTest::class,
                 'testGroupAnnotationSupportsNumericValue',
-                ['Companion Cube', '3502'],
+                ['Companion Cube', '3502', 't123456'],
             ],
         ];
     }
