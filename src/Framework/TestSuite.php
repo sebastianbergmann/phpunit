@@ -88,13 +88,6 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     protected $requiredTests;
 
     /**
-     * Last count of tests in this suite.
-     *
-     * @var null|int
-     */
-    private $cachedNumTests;
-
-    /**
      * @var bool
      */
     private $beStrictAboutChangesToGlobalState;
@@ -506,22 +499,18 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
 
     /**
      * Counts the number of test cases that will be run by this test.
+     *
+     * @todo refactor usage of numTests in DefaultResultPrinter
      */
-    public function count(bool $preferCache = false): int
+    public function count(): int
     {
-        if ($preferCache && $this->cachedNumTests !== null) {
-            return $this->cachedNumTests;
-        }
-
-        $numTests = 0;
+        $this->numTests = 0;
 
         foreach ($this as $test) {
-            $numTests += \count($test);
+            $this->numTests += \count($test);
         }
 
-        $this->cachedNumTests = $numTests;
-
-        return $numTests;
+        return $this->numTests;
     }
 
     /**
@@ -678,16 +667,6 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     public function setName(string $name): void
     {
         $this->name = $name;
-    }
-
-    /**
-     * Returns the test at the given index.
-     *
-     * @return false|Test
-     */
-    public function testAt(int $index)
-    {
-        return $this->tests[$index] ?? false;
     }
 
     /**
