@@ -18,8 +18,6 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-Test 'TestWithDifferentSizes::testWithSizeSmall' started
-Test 'TestWithDifferentSizes::testWithSizeSmall' ended
 Test 'TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #0 (false)' started
 Test 'TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #0 (false)' ended
 Test 'TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #1 (true)' started
@@ -38,4 +36,10 @@ Test 'TestWithDifferentSizes::testWithSizeUnknown' ended
 
 Time: %s, Memory: %s
 
-OK (8 tests, 8 assertions)
+There was 1 skipped test:
+
+1) TestWithDifferentSizes::testWithSizeSmall
+This test depends on a test that is larger than itself.
+
+OK, but incomplete, skipped, or risky tests!
+Tests: 7, Assertions: 7, Skipped: 1.

@@ -622,13 +622,13 @@ final class TestSuiteSorterTest extends TestCase
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE, true, TestSuiteSorter::ORDER_DEFAULT);
 
         $expectedOrder = [
-            \TestWithDifferentSizes::class . '::testWithSizeSmall',
             \TestWithDifferentSizes::class . '::testDataProviderWithSizeSmall with data set #0',
             \TestWithDifferentSizes::class . '::testDataProviderWithSizeSmall with data set #1',
             \TestWithDifferentSizes::class . '::testDataProviderWithSizeMedium with data set #0',
             \TestWithDifferentSizes::class . '::testDataProviderWithSizeMedium with data set #1',
             \TestWithDifferentSizes::class . '::testWithSizeMedium',
             \TestWithDifferentSizes::class . '::testWithSizeLarge',
+            \TestWithDifferentSizes::class . '::testWithSizeSmall',
             \TestWithDifferentSizes::class . '::testWithSizeUnknown',
         ];
 
