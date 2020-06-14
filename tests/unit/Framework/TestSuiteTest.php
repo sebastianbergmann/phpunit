@@ -315,4 +315,23 @@ final class TestSuiteTest extends TestCase
             \DependencyFailureTest::class . '::doesNotExist',
         ], $suite->requires(), 'Required test names incorrect');
     }
+
+    public function testResolverOnlyUsesSuitesAndCases(): void
+    {
+        $suite = new TestSuite('SomeName');
+        $suite->addTest(new \DoubleTestCase(new \Success));
+        $suite->addTestSuite(new TestSuite(\DependencyOnClassTest::class));
+
+        $this->assertEquals([
+            'SomeName::class',
+            \DependencyOnClassTest::class . '::class',
+            \DependencyOnClassTest::class . '::testThatDependsOnASuccessfulClass',
+            \DependencyOnClassTest::class . '::testThatDependsOnAFailingClass',
+        ], $suite->provides(), 'Provided test names incorrect');
+
+        $this->assertEquals([
+            \DependencySuccessTest::class . '::class',
+            \DependencyFailureTest::class . '::class',
+        ], $suite->requires(), 'Required test names incorrect');
+    }
 }
