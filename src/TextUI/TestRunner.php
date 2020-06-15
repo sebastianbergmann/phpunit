@@ -596,7 +596,7 @@ final class TestRunner extends BaseTestRunner
         }
 
         if (isset($arguments['xdebugFilterFile'], $codeCoverageConfiguration)) {
-            $this->write("\n");
+            $this->write(\PHP_EOL . 'Please note that --dump-xdebug-filter and --prepend are deprecated and will be removed in PHPUnit 10.' . \PHP_EOL);
 
             $script = (new XdebugFilterScriptGenerator)->generate($codeCoverageConfiguration);
 
@@ -608,7 +608,7 @@ final class TestRunner extends BaseTestRunner
 
             \file_put_contents($arguments['xdebugFilterFile'], $script);
 
-            $this->write(\sprintf('Wrote Xdebug filter script to %s ' . \PHP_EOL, $arguments['xdebugFilterFile']));
+            $this->write(\sprintf('Wrote Xdebug filter script to %s ' . \PHP_EOL . \PHP_EOL, $arguments['xdebugFilterFile']));
 
             exit(self::SUCCESS_EXIT);
         }

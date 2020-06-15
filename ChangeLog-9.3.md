@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 
 ### Changed
 
+* [#4226](https://github.com/sebastianbergmann/phpunit/issues/4226): Deprecate `--dump-xdebug-filter` and `--prepend`
 * [#4264](https://github.com/sebastianbergmann/phpunit/pull/4264): Refactor logical operator constraints
 * `PHPUnit\Framework\TestCase::$backupGlobalsBlacklist` is now deprecated, please use `PHPUnit\Framework\TestCase::$backupGlobalsExcludeList` instead
 * `PHPUnit\Framework\TestCase::$backupStaticAttributesBlacklist` is now deprecated, please use `PHPUnit\Framework\TestCase::$backupStaticAttributesExcludeList` instead

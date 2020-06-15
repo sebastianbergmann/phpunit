@@ -18,8 +18,6 @@
   [32m--disable-coverage-ignore  [0m Disable annotations for ignoring code
                               coverage
   [32m--no-coverage              [0m Ignore code coverage configuration
-  [32m--dump-xdebug-filter [36m<file>[0m[0m Generate script to set Xdebug code
-                              coverage filter
 
 [33mLogging Options:[0m
   [32m--log-junit [36m<file>[0m         [0m Log test execution in JUnit XML format to

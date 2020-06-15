@@ -13,6 +13,8 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage as FilterConfigura
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @deprecated
  */
 final class XdebugFilterScriptGenerator
 {

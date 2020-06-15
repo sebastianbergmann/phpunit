@@ -34,7 +34,6 @@ final class Help
             ['arg' => '--coverage-filter <dir>', 'desc' => 'Include <dir> in code coverage analysis'],
             ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable annotations for ignoring code coverage'],
             ['arg' => '--no-coverage', 'desc' => 'Ignore code coverage configuration'],
-            ['arg' => '--dump-xdebug-filter <file>', 'desc' => 'Generate script to set Xdebug code coverage filter'],
         ],
 
         'Logging Options' => [

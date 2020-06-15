@@ -17,6 +17,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Please note that --dump-xdebug-filter and --prepend are deprecated and will be removed in PHPUnit 10.
 <?php declare(strict_types=1);
 if (!\function_exists('xdebug_set_filter')) {
     return;
