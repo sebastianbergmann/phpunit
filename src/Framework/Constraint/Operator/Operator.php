@@ -17,8 +17,9 @@ abstract class Operator extends Constraint
     abstract public function operator(): string;
 
     /**
-     * Returns this operator's precedence, as defined in
-     * https://www.php.net/manual/en/language.operators.precedence.php.
+     * Returns this operator's precedence.
+     *
+     * @see https://www.php.net/manual/en/language.operators.precedence.php
      */
     abstract public function precedence(): int;
 

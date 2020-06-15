@@ -661,9 +661,10 @@ final class Loader
     }
 
     /**
-     * if $value is 'false' or 'true', this returns the value that $value represents.
+     * If $value is 'false' or 'true', this returns the value that $value represents.
      * Otherwise, returns $default, which may be a string in rare cases.
-     * See PHPUnit\TextUI\XmlConfigurationTest::testPHPConfigurationIsReadCorrectly.
+     *
+     * @see \PHPUnit\TextUI\XmlConfigurationTest::testPHPConfigurationIsReadCorrectly
      *
      * @param bool|string $default
      *
