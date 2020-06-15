@@ -189,48 +189,7 @@ class Command
         \assert(isset($arguments) && $arguments instanceof Arguments);
 
         if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
-            $this->printVersionString();
-
-            print 'Generating phpunit.xml in ' . \getcwd() . \PHP_EOL . \PHP_EOL;
-            print 'Bootstrap script (relative to path shown above; default: vendor/autoload.php): ';
-
-            $bootstrapScript = \trim(\fgets(\STDIN));
-
-            print 'Tests directory (relative to path shown above; default: tests): ';
-
-            $testsDirectory = \trim(\fgets(\STDIN));
-
-            print 'Source directory (relative to path shown above; default: src): ';
-
-            $src = \trim(\fgets(\STDIN));
-
-            if ($bootstrapScript === '') {
-                $bootstrapScript = 'vendor/autoload.php';
-            }
-
-            if ($testsDirectory === '') {
-                $testsDirectory = 'tests';
-            }
-
-            if ($src === '') {
-                $src = 'src';
-            }
-
-            $generator = new Generator;
-
-            \file_put_contents(
-                'phpunit.xml',
-                $generator->generateDefaultConfiguration(
-                    Version::series(),
-                    $bootstrapScript,
-                    $testsDirectory,
-                    $src
-                )
-            );
-
-            print \PHP_EOL . 'Generated phpunit.xml in ' . \getcwd() . \PHP_EOL;
-
-            exit(TestRunner::SUCCESS_EXIT);
+            $this->generateConfiguration();
         }
 
         if ($arguments->hasAtLeastVersion()) {
@@ -735,5 +694,51 @@ class Command
         }
 
         return TestRunner::SUCCESS_EXIT;
+    }
+
+    private function generateConfiguration(): void
+    {
+        $this->printVersionString();
+
+        print 'Generating phpunit.xml in ' . \getcwd() . \PHP_EOL . \PHP_EOL;
+        print 'Bootstrap script (relative to path shown above; default: vendor/autoload.php): ';
+
+        $bootstrapScript = \trim(\fgets(\STDIN));
+
+        print 'Tests directory (relative to path shown above; default: tests): ';
+
+        $testsDirectory = \trim(\fgets(\STDIN));
+
+        print 'Source directory (relative to path shown above; default: src): ';
+
+        $src = \trim(\fgets(\STDIN));
+
+        if ($bootstrapScript === '') {
+            $bootstrapScript = 'vendor/autoload.php';
+        }
+
+        if ($testsDirectory === '') {
+            $testsDirectory = 'tests';
+        }
+
+        if ($src === '') {
+            $src = 'src';
+        }
+
+        $generator = new Generator;
+
+        \file_put_contents(
+            'phpunit.xml',
+            $generator->generateDefaultConfiguration(
+                Version::series(),
+                $bootstrapScript,
+                $testsDirectory,
+                $src
+            )
+        );
+
+        print \PHP_EOL . 'Generated phpunit.xml in ' . \getcwd() . \PHP_EOL;
+
+        exit(TestRunner::SUCCESS_EXIT);
     }
 }
