@@ -14,12 +14,12 @@ use PHPUnit\Framework\ExpectationFailedException;
 abstract class BinaryOperatorTestCase extends OperatorTestCase
 {
     /**
-     * Shall return the name of the operator under test
+     * Shall return the name of the operator under test.
      */
     abstract public static function getOperatorName(): string;
 
     /**
-     * Shall return the precedence of the operator under test
+     * Shall return the precedence of the operator under test.
      */
     abstract public static function getOperatorPrecedence(): int;
 

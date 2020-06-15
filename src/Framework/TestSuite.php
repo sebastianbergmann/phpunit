@@ -105,7 +105,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     private $warnings = [];
 
     /**
-     * Constructs a new TestSuite:
+     * Constructs a new TestSuite:.
      *
      *   - PHPUnit\Framework\TestSuite() constructs an empty TestSuite.
      *
@@ -537,7 +537,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     }
 
     /**
-     * Set tests groups of the test case
+     * Set tests groups of the test case.
      */
     public function setGroupDetails(array $groups): void
     {
@@ -692,7 +692,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     }
 
     /**
-     * Set tests of the test suite
+     * Set tests of the test suite.
      *
      * @param Test[] $tests
      */

@@ -43,7 +43,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
     }
 
     /**
-     * Returns an array of file handles to be used in place of pipes
+     * Returns an array of file handles to be used in place of pipes.
      */
     protected function getHandles(): array
     {
@@ -51,7 +51,7 @@ class DefaultPhpProcess extends AbstractPhpProcess
     }
 
     /**
-     * Handles creating the child process and returning the STDOUT and STDERR
+     * Handles creating the child process and returning the STDOUT and STDERR.
      *
      * @throws Exception
      */

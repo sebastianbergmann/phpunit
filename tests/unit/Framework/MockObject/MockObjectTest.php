@@ -813,7 +813,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * See https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81
+     * See https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81.
      */
     public function testMockArgumentsPassedByReference(): void
     {
@@ -835,7 +835,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * See https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81
+     * See https://github.com/sebastianbergmann/phpunit-mock-objects/issues/81.
      */
     public function testMockArgumentsPassedByReference2(): void
     {

@@ -169,7 +169,7 @@ final class Help
     }
 
     /**
-     * Write the help file to the CLI, adapting width and colors to the console
+     * Write the help file to the CLI, adapting width and colors to the console.
      */
     public function writeToConsole(): void
     {

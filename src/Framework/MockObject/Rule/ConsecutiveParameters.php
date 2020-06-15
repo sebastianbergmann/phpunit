@@ -85,7 +85,7 @@ final class ConsecutiveParameters implements ParametersRule
     }
 
     /**
-     * Verify a single invocation
+     * Verify a single invocation.
      *
      * @param int $callIndex
      *

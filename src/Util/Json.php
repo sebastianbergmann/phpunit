@@ -17,7 +17,7 @@ use PHPUnit\Framework\Exception;
 final class Json
 {
     /**
-     * Prettify json string
+     * Prettify json string.
      *
      * @throws \PHPUnit\Framework\Exception
      */

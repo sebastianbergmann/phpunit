@@ -86,7 +86,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Sets the input string to be sent via STDIN
+     * Sets the input string to be sent via STDIN.
      */
     public function setStdin(string $stdin): void
     {
@@ -94,7 +94,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Returns the input string to be sent via STDIN
+     * Returns the input string to be sent via STDIN.
      */
     public function getStdin(): string
     {
@@ -102,7 +102,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Sets the string of arguments to pass to the php job
+     * Sets the string of arguments to pass to the php job.
      */
     public function setArgs(string $args): void
     {
@@ -110,7 +110,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Returns the string of arguments to pass to the php job
+     * Returns the string of arguments to pass to the php job.
      */
     public function getArgs(): string
     {
@@ -118,7 +118,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Sets the array of environment variables to start the child process with
+     * Sets the array of environment variables to start the child process with.
      *
      * @param array<string, string> $env
      */
@@ -128,7 +128,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Returns the array of environment variables to start the child process with
+     * Returns the array of environment variables to start the child process with.
      */
     public function getEnv(): array
     {
@@ -136,7 +136,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Sets the amount of seconds to wait before timing out
+     * Sets the amount of seconds to wait before timing out.
      */
     public function setTimeout(int $timeout): void
     {
@@ -144,7 +144,7 @@ abstract class AbstractPhpProcess
     }
 
     /**
-     * Returns the amount of seconds to wait before timing out
+     * Returns the amount of seconds to wait before timing out.
      */
     public function getTimeout(): int
     {

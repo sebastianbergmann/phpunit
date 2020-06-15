@@ -12,7 +12,7 @@ namespace PHPUnit\SelfTest\Basic;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class TearDownAfterClassTest
+ * Class TearDownAfterClassTest.
  *
  * Behaviour to test:
  * - tearDownAfterClass() errors do reach the user

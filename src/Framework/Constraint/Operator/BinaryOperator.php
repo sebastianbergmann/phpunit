@@ -114,7 +114,7 @@ abstract class BinaryOperator extends Operator
     /**
      * Reduces the sub-expression starting at $this by skipping degenerate
      * sub-expression and returns first descendant constraint that starts
-     * a non-reducible sub-expression
+     * a non-reducible sub-expression.
      *
      * See Constraint::reduce() for more.
      */
@@ -128,7 +128,7 @@ abstract class BinaryOperator extends Operator
     }
 
     /**
-     * Returns string representation of given operand in context of this operator
+     * Returns string representation of given operand in context of this operator.
      *
      * @param Constraint $constraint operand constraint
      * @param int        $position   position of $constraint in this expression

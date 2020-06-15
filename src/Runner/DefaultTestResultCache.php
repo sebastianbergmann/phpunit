@@ -23,7 +23,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
     public const DEFAULT_RESULT_CACHE_FILENAME = '.phpunit.result.cache';
 
     /**
-     * Provide extra protection against incomplete or corrupt caches
+     * Provide extra protection against incomplete or corrupt caches.
      *
      * @var int[]
      */
@@ -37,14 +37,14 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
     ];
 
     /**
-     * Path and filename for result cache file
+     * Path and filename for result cache file.
      *
      * @var string
      */
     private $cacheFilename;
 
     /**
-     * The list of defective tests
+     * The list of defective tests.
      *
      * <code>
      * // Mark a test skipped
@@ -56,7 +56,7 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
     private $defects = [];
 
     /**
-     * The list of execution duration of suites and tests (in seconds)
+     * The list of execution duration of suites and tests (in seconds).
      *
      * <code>
      * // Record running time for test

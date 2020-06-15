@@ -203,7 +203,7 @@ final class MockBuilder
     }
 
     /**
-     * Specifies the subset of methods to mock, requiring each to exist in the class
+     * Specifies the subset of methods to mock, requiring each to exist in the class.
      *
      * @param string[] $methods
      *
@@ -249,7 +249,7 @@ final class MockBuilder
     }
 
     /**
-     * Specifies methods that don't exist in the class which you want to mock
+     * Specifies methods that don't exist in the class which you want to mock.
      *
      * @param string[] $methods
      *

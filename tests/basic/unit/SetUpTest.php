@@ -12,7 +12,7 @@ namespace PHPUnit\SelfTest\Basic;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class SetUpBeforeClassTest
+ * Class SetUpBeforeClassTest.
  *
  * Behaviour to test:
  * - setUp() errors reacht he the user

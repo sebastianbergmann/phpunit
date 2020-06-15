@@ -332,7 +332,7 @@ EOF
     }
 
     /**
-     * Ensures the correct line ending is used for comparison
+     * Ensures the correct line ending is used for comparison.
      *
      * @param string $content
      *

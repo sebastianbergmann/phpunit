@@ -148,7 +148,7 @@ final class Generator
     /**
      * Returns a mock object for the specified abstract class with all abstract
      * methods of the class mocked. Concrete methods to mock can be specified with
-     * the $mockedMethods parameter
+     * the $mockedMethods parameter.
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $originalClassName
