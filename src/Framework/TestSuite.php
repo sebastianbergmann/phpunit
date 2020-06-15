@@ -78,12 +78,12 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     protected $foundClasses = [];
 
     /**
-     * @var null|array<string>
+     * @var null|array<callable-string>
      */
     protected $providedTests;
 
     /**
-     * @var null|array<string>
+     * @var null|array<callable-string>
      */
     protected $requiredTests;
 
@@ -767,12 +767,18 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     }
 
     /**
-     * @return array<string>
+     * @return array<callable-string>
      */
     public function provides(): array
     {
         if ($this->providedTests === null) {
-            $this->providedTests = [$this->getName() . '::class'];
+            $this->providedTests = [];
+
+            $callableName = $this->getName() . '::class';
+
+            if (\is_callable($callableName, true)) {
+                $this->providedTests = [$callableName];
+            }
 
             foreach ($this->tests as $test) {
                 if (!($test instanceof self || $test instanceof TestCase)) {
@@ -788,7 +794,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     }
 
     /**
-     * @return array<string>
+     * @return array<callable-string>
      */
     public function requires(): array
     {

@@ -105,12 +105,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     protected $preserveGlobalState = true;
 
     /**
-     * @var array<string>
+     * @var array<callable-string>
      */
     protected $providedTests = [];
 
     /**
-     * @var array<string>
+     * @var array<callable-string>
      */
     protected $requiredTests = [];
 
@@ -1169,7 +1169,11 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->name = $name;
 
         // Normalized name for dependency resolver
-        $this->providedTests = [\get_class($this) . '::' . $name];
+        $callableName = \get_class($this) . '::' . $name;
+
+        if (\is_callable($callableName, true)) {
+            $this->providedTests = [$callableName];
+        }
     }
 
     /**
@@ -1392,7 +1396,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * Returns the normalized test name as class::method
      *
-     * @return array<string>
+     * @return array<callable-string>
      */
     public function provides(): array
     {
@@ -1406,7 +1410,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * no need for the [!][shallow]clone prefix that is filtered out
      * during normalization.
      *
-     * @return array<string>
+     * @return array<callable-string>
      */
     public function requires(): array
     {
