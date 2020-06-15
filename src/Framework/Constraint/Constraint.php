@@ -25,7 +25,7 @@ abstract class Constraint implements \Countable, SelfDescribing
     private $exporter;
 
     /**
-     * Evaluates the constraint for parameter $other
+     * Evaluates the constraint for parameter $other.
      *
      * If $returnResult is set to false (the default), an exception is thrown
      * in case of a failure. null is returned otherwise.
@@ -88,7 +88,7 @@ abstract class Constraint implements \Countable, SelfDescribing
     }
 
     /**
-     * Throws an exception for the given compared value and test description
+     * Throws an exception for the given compared value and test description.
      *
      * @param mixed             $other             evaluated value or object
      * @param string            $description       Additional information about the test
@@ -123,7 +123,7 @@ abstract class Constraint implements \Countable, SelfDescribing
     }
 
     /**
-     * Return additional failure description where needed
+     * Return additional failure description where needed.
      *
      * The function can be overridden to provide additional failure
      * information like a diff
@@ -136,7 +136,7 @@ abstract class Constraint implements \Countable, SelfDescribing
     }
 
     /**
-     * Returns the description of the failure
+     * Returns the description of the failure.
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
@@ -155,7 +155,7 @@ abstract class Constraint implements \Countable, SelfDescribing
 
     /**
      * Returns a custom string representation of the constraint object when it
-     * appears in context of an $operator expression
+     * appears in context of an $operator expression.
      *
      * The purpose of this method is to provide meaningful descriptive string
      * in context of operators such as LogicalNot. Native PHPUnit constraints
@@ -175,7 +175,7 @@ abstract class Constraint implements \Countable, SelfDescribing
 
     /**
      * Returns the description of the failure when this constraint appears in
-     * context of an $operator expression
+     * context of an $operator expression.
      *
      * The purpose of this method is to provide meaningful failue description
      * in context of operators such as LogicalNot. Native PHPUnit constraints
@@ -203,7 +203,7 @@ abstract class Constraint implements \Countable, SelfDescribing
     /**
      * Reduces the sub-expression starting at $this by skipping degenerate
      * sub-expression and returns first descendant constraint that starts
-     * a non-reducible sub-expression
+     * a non-reducible sub-expression.
      *
      * Returns $this for terminal constraints and for operators that start
      * non-reducible sub-expression, or the nearest descendant of $this that

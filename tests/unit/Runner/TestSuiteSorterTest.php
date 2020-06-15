@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestSuite;
 final class TestSuiteSorterTest extends TestCase
 {
     /**
-     * Constants to improve clarity of @dataprovider
+     * Constants to improve clarity of @dataprovider.
      */
     private const IGNORE_DEPENDENCIES  = false;
 
@@ -302,7 +302,7 @@ final class TestSuiteSorterTest extends TestCase
      * - it has five tests 'testOne' ... 'testFive'
      * - 'testThree' @depends on both 'testOne' and 'testTwo'
      * - 'testFour' @depends on 'MultiDependencyTest::testThree' to test FQN @depends
-     * - 'testFive' has no dependencies
+     * - 'testFive' has no dependencies.
      */
     public function commonSorterOptionsProvider(): array
     {
@@ -366,7 +366,7 @@ final class TestSuiteSorterTest extends TestCase
      * - it has five tests 'testOne' ... 'testFive'
      * - 'testThree' @depends on both 'testOne' and 'testTwo'
      * - 'testFour' @depends on 'MultiDependencyTest::testThree' to test FQN @depends
-     * - 'testFive' has no dependencies
+     * - 'testFive' has no dependencies.
      */
     public function defectsSorterOptionsProvider(): array
     {

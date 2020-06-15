@@ -318,7 +318,7 @@ EOF
     }
 
     /**
-     * Removes spaces in front of newlines
+     * Removes spaces in front of newlines.
      *
      * @param string $string
      *

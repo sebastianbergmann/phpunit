@@ -78,7 +78,7 @@ final class LogicalNot extends UnaryOperator
 
     /**
      * Returns this operator's precedence, as defined in
-     * https://www.php.net/manual/en/language.operators.precedence.php
+     * https://www.php.net/manual/en/language.operators.precedence.php.
      */
     public function precedence(): int
     {
@@ -108,7 +108,7 @@ final class LogicalNot extends UnaryOperator
     /**
      * Reduces the sub-expression starting at $this by skipping degenerate
      * sub-expression and returns first descendant constraint that starts
-     * a non-reducible sub-expression
+     * a non-reducible sub-expression.
      *
      * See Constraint::reduce() for more.
      */

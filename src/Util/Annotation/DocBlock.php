@@ -332,7 +332,7 @@ final class DocBlock
     }
 
     /**
-     * Parse annotation content to use constant/class constant values
+     * Parse annotation content to use constant/class constant values.
      *
      * Constants are specified using a starting '@'. For example: @ClassName::CONST_NAME
      *

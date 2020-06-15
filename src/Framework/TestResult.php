@@ -471,7 +471,7 @@ final class TestResult implements \Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the risky tests
+     * Returns an array of TestFailure objects for the risky tests.
      *
      * @return TestFailure[]
      */
@@ -481,7 +481,7 @@ final class TestResult implements \Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the incomplete tests
+     * Returns an array of TestFailure objects for the incomplete tests.
      *
      * @return TestFailure[]
      */
@@ -507,7 +507,7 @@ final class TestResult implements \Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the skipped tests
+     * Returns an array of TestFailure objects for the skipped tests.
      *
      * @return TestFailure[]
      */
@@ -525,7 +525,7 @@ final class TestResult implements \Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the errors
+     * Returns an array of TestFailure objects for the errors.
      *
      * @return TestFailure[]
      */
@@ -543,7 +543,7 @@ final class TestResult implements \Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the failures
+     * Returns an array of TestFailure objects for the failures.
      *
      * @return TestFailure[]
      */
@@ -561,7 +561,7 @@ final class TestResult implements \Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the warnings
+     * Returns an array of TestFailure objects for the warnings.
      *
      * @return TestFailure[]
      */
@@ -1149,7 +1149,7 @@ final class TestResult implements \Countable
     }
 
     /**
-     * Enables or disables the stopping for defects: error, failure, warning
+     * Enables or disables the stopping for defects: error, failure, warning.
      */
     public function stopOnDefect(bool $flag): void
     {
@@ -1183,7 +1183,7 @@ final class TestResult implements \Countable
     }
 
     /**
-     * Sets the default timeout for tests
+     * Sets the default timeout for tests.
      */
     public function setDefaultTimeLimit(int $timeout): void
     {

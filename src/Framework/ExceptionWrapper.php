@@ -99,7 +99,7 @@ final class ExceptionWrapper extends Exception
     /**
      * Method to contain static originalException to exclude it from stacktrace to prevent the stacktrace contents,
      * which can be quite big, from being garbage-collected, thus blocking memory until shutdown.
-     * Approach works both for var_dump() and var_export() and print_r()
+     * Approach works both for var_dump() and var_export() and print_r().
      */
     private function originalException(\Throwable $exceptionToStore = null): ?\Throwable
     {

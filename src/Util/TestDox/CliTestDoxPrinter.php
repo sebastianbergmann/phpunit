@@ -24,7 +24,7 @@ use SebastianBergmann\Timer\Timer;
 class CliTestDoxPrinter extends TestDoxPrinter
 {
     /**
-     * The default Testdox left margin for messages is a vertical line
+     * The default Testdox left margin for messages is a vertical line.
      */
     private const PREFIX_SIMPLE = [
         'default' => '│',
@@ -36,7 +36,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     ];
 
     /**
-     * Colored Testdox use box-drawing for a more textured map of the message
+     * Colored Testdox use box-drawing for a more textured map of the message.
      */
     private const PREFIX_DECORATED = [
         'default' => '│',

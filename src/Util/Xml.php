@@ -149,7 +149,7 @@ final class Xml
     }
 
     /**
-     * Escapes a string for the use in XML documents
+     * Escapes a string for the use in XML documents.
      *
      * Any Unicode character is allowed, excluding the surrogate blocks, FFFE,
      * and FFFF (not even as character reference).

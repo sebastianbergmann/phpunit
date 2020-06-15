@@ -46,7 +46,7 @@ final class TestSuiteSorter
     public const ORDER_DURATION = 4;
 
     /**
-     * Order tests by @size annotation 'small', 'medium', 'large'
+     * Order tests by @size annotation 'small', 'medium', 'large'.
      *
      * @var int
      */
@@ -300,7 +300,7 @@ final class TestSuiteSorter
      * Comparator callback function to sort tests for "reach failure as fast as possible":
      * 1. sort tests by defect weight defined in self::DEFECT_SORT_WEIGHT
      * 2. when tests are equally defective, sort the fastest to the front
-     * 3. do not reorder successful tests
+     * 3. do not reorder successful tests.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
@@ -333,7 +333,7 @@ final class TestSuiteSorter
     }
 
     /**
-     * Compares test size for sorting tests small->medium->large->unknown
+     * Compares test size for sorting tests small->medium->large->unknown.
      */
     private function cmpSize(Test $a, Test $b): int
     {
