@@ -1394,7 +1394,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * Returns the normalized test name as class::method
+     * Returns the normalized test name as class::method.
      *
      * @return array<callable-string>
      */
