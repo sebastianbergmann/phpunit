@@ -40,15 +40,27 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @return array<string>
+     * @return array<callable-string>
      */
     public function provides(): array
     {
-        return [$this->getName()];
+        if ($this->providedTests !== null) {
+            return $this->providedTests;
+        }
+
+        $callableName = $this->getName();
+
+        if (\is_callable($callableName, true)) {
+            $this->providedTests = [$callableName];
+        } else {
+            $this->providedTests = [];
+        }
+
+        return $this->providedTests;
     }
 
     /**
-     * @return array<string>
+     * @return array<callable-string>
      */
     public function requires(): array
     {

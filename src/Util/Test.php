@@ -366,7 +366,7 @@ final class Test
                 $testName = $parts[1];
             }
 
-            if (!empty($testName) && \strpos($testName, '::') === false) {
+            if ($testName !== '' && \strpos($testName, '::') === false) {
                 $name = $modifier . $className . '::' . $testName;
             }
         }
@@ -379,7 +379,7 @@ final class Test
      *
      * @param array<string> $dependencies
      *
-     * @return array<string>
+     * @return array<callable-string>
      */
     public static function trimDependencyOptions(array $dependencies): array
     {
@@ -391,7 +391,11 @@ final class Test
             }
 
             $annotation = \explode(' ', $annotationValue, 2);
-            $requires[] = \end($annotation);
+            $name       = \end($annotation);
+
+            if (\is_callable($name, true)) {
+                $requires[] = $name;
+            }
         }
 
         return $requires;
