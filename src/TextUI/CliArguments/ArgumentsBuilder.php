@@ -722,10 +722,6 @@ final class ArgumentsBuilder
             $iniSettings = null;
         }
 
-        if (empty($unrecognizedOptions)) {
-            $unrecognizedOptions = null;
-        }
-
         if (empty($coverageFilter)) {
             $coverageFilter = null;
         }

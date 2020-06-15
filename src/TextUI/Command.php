@@ -240,22 +240,7 @@ class Command
 
         $this->arguments = (new ArgumentsMapper)->mapToLegacyArray($arguments);
 
-        if ($arguments->hasUnrecognizedOptions()) {
-            foreach ($arguments->unrecognizedOptions() as $name => $value) {
-                if (isset($this->longOptions[$name])) {
-                    $handler = $this->longOptions[$name];
-                } elseif (isset($this->longOptions[$name . '='])) {
-                    $handler = $this->longOptions[$name . '='];
-                }
-
-                if (isset($handler) && \is_callable([$this, $handler])) {
-                    $this->$handler($value);
-
-                    unset($handler);
-                }
-            }
-        }
-
+        $this->handleCustomOptions($arguments->unrecognizedOptions());
         $this->handleCustomTestSuite();
 
         if (!isset($this->arguments['testSuffixes'])) {
@@ -740,5 +725,22 @@ class Command
         print \PHP_EOL . 'Generated phpunit.xml in ' . \getcwd() . \PHP_EOL;
 
         exit(TestRunner::SUCCESS_EXIT);
+    }
+
+    private function handleCustomOptions(array $unrecognizedOptions): void
+    {
+        foreach ($unrecognizedOptions as $name => $value) {
+            if (isset($this->longOptions[$name])) {
+                $handler = $this->longOptions[$name];
+            } elseif (isset($this->longOptions[$name . '='])) {
+                $handler = $this->longOptions[$name . '='];
+            }
+
+            if (isset($handler) && \is_callable([$this, $handler])) {
+                $this->$handler($value);
+
+                unset($handler);
+            }
+        }
     }
 }
