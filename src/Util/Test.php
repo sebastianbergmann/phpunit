@@ -375,7 +375,7 @@ final class Test
     }
 
     /**
-     * Remove superfluous annotation detail not needed by dependency resolver
+     * Remove superfluous annotation detail not needed by dependency resolver.
      *
      * @param array<string> $dependencies
      *
@@ -386,10 +386,12 @@ final class Test
         $requires = [];
 
         foreach ($dependencies as $annotationValue) {
-            if (\trim($annotationValue) !== '') {
-                $annotation            = \explode(' ', $annotationValue, 2);
-                $requires[]            = \end($annotation);
+            if (\trim($annotationValue) === '') {
+                continue;
             }
+
+            $annotation = \explode(' ', $annotationValue, 2);
+            $requires[] = \end($annotation);
         }
 
         return $requires;

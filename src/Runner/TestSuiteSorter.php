@@ -363,7 +363,7 @@ final class TestSuiteSorter
         $provided     = [];
 
         do {
-            if (empty(\array_diff($tests[$i]->requires(), $provided))) {
+            if ([] === \array_diff($tests[$i]->requires(), $provided)) {
                 $provided     = \array_merge($provided, $tests[$i]->provides());
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($tests, $i, 1));
                 $i            = 0;
