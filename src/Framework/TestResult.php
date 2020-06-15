@@ -35,12 +35,12 @@ final class TestResult implements \Countable
     /**
      * @var array<string>
      */
-    private $passedClasses = [];
+    private $passedTestClasses = [];
 
     /**
      * @var bool
      */
-    private $currentTestSuiteIsFailed = false;
+    private $currentTestSuiteFailed = false;
 
     /**
      * @var TestFailure[]
@@ -389,7 +389,7 @@ final class TestResult implements \Countable
      */
     public function startTestSuite(TestSuite $suite): void
     {
-        $this->currentTestSuiteIsFailed = false;
+        $this->currentTestSuiteFailed = false;
 
         if ($this->topTestSuite === null) {
             $this->topTestSuite = $suite;
@@ -405,8 +405,8 @@ final class TestResult implements \Countable
      */
     public function endTestSuite(TestSuite $suite): void
     {
-        if (!$this->currentTestSuiteIsFailed) {
-            $this->passedClasses[] = $suite->getName();
+        if (!$this->currentTestSuiteFailed) {
+            $this->passedTestClasses[] = $suite->getName();
         }
 
         foreach ($this->listeners as $listener) {
@@ -454,7 +454,7 @@ final class TestResult implements \Countable
         }
 
         if ($this->lastTestFailed && $test instanceof TestCase) {
-            $this->currentTestSuiteIsFailed = true;
+            $this->currentTestSuiteFailed = true;
         }
     }
 
@@ -600,11 +600,12 @@ final class TestResult implements \Countable
 
     /**
      * Returns the names of the TestSuites that have passed.
+     *
      * This enables @depends-annotations for TestClasName::class
      */
     public function passedClasses(): array
     {
-        return $this->passedClasses;
+        return $this->passedTestClasses;
     }
 
     /**
