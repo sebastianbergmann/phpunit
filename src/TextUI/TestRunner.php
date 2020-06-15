@@ -439,44 +439,6 @@ final class TestRunner extends BaseTestRunner
                         $this->codeCoverageFilter->excludeFile($file->path());
                     }
                 }
-
-                if (!isset($arguments['coverageClover']) && $codeCoverageConfiguration->hasClover()) {
-                    $arguments['coverageClover'] = $codeCoverageConfiguration->clover()->target()->path();
-                }
-
-                if (!isset($arguments['coverageCrap4J']) && $codeCoverageConfiguration->hasCrap4j()) {
-                    $arguments['coverageCrap4J'] = $codeCoverageConfiguration->crap4j()->target()->path();
-
-                    if (!isset($arguments['crap4jThreshold'])) {
-                        $arguments['crap4jThreshold'] = $codeCoverageConfiguration->crap4j()->threshold();
-                    }
-                }
-
-                if (!isset($arguments['coverageHtml']) && $codeCoverageConfiguration->hasHtml()) {
-                    $arguments['coverageHtml'] = $codeCoverageConfiguration->html()->target()->path();
-
-                    if (!isset($arguments['reportLowUpperBound'])) {
-                        $arguments['reportLowUpperBound'] = $codeCoverageConfiguration->html()->lowUpperBound();
-                    }
-
-                    if (!isset($arguments['reportHighLowerBound'])) {
-                        $arguments['reportHighLowerBound'] = $codeCoverageConfiguration->html()->highLowerBound();
-                    }
-                }
-
-                if (!isset($arguments['coveragePHP']) && $codeCoverageConfiguration->hasPhp()) {
-                    $arguments['coveragePHP'] = $codeCoverageConfiguration->php()->target()->path();
-                }
-
-                if (!isset($arguments['coverageText']) && $codeCoverageConfiguration->hasText()) {
-                    $arguments['coverageText']                   = $codeCoverageConfiguration->text()->target()->path();
-                    $arguments['coverageTextShowUncoveredFiles'] = $codeCoverageConfiguration->text()->showUncoveredFiles();
-                    $arguments['coverageTextShowOnlySummary']    = $codeCoverageConfiguration->text()->showOnlySummary();
-                }
-
-                if (!isset($arguments['coverageXml']) && $codeCoverageConfiguration->hasXml()) {
-                    $arguments['coverageXml'] = $codeCoverageConfiguration->xml()->target()->path();
-                }
             }
         }
 
@@ -919,7 +881,46 @@ final class TestRunner extends BaseTestRunner
             (new PhpHandler)->handle($arguments['configuration']->php());
 
             $codeCoverageConfiguration = $arguments['configuration']->codeCoverage();
-            $phpunitConfiguration      = $arguments['configuration']->phpunit();
+
+            if (!isset($arguments['coverageClover']) && $codeCoverageConfiguration->hasClover()) {
+                $arguments['coverageClover'] = $codeCoverageConfiguration->clover()->target()->path();
+            }
+
+            if (!isset($arguments['coverageCrap4J']) && $codeCoverageConfiguration->hasCrap4j()) {
+                $arguments['coverageCrap4J'] = $codeCoverageConfiguration->crap4j()->target()->path();
+
+                if (!isset($arguments['crap4jThreshold'])) {
+                    $arguments['crap4jThreshold'] = $codeCoverageConfiguration->crap4j()->threshold();
+                }
+            }
+
+            if (!isset($arguments['coverageHtml']) && $codeCoverageConfiguration->hasHtml()) {
+                $arguments['coverageHtml'] = $codeCoverageConfiguration->html()->target()->path();
+
+                if (!isset($arguments['reportLowUpperBound'])) {
+                    $arguments['reportLowUpperBound'] = $codeCoverageConfiguration->html()->lowUpperBound();
+                }
+
+                if (!isset($arguments['reportHighLowerBound'])) {
+                    $arguments['reportHighLowerBound'] = $codeCoverageConfiguration->html()->highLowerBound();
+                }
+            }
+
+            if (!isset($arguments['coveragePHP']) && $codeCoverageConfiguration->hasPhp()) {
+                $arguments['coveragePHP'] = $codeCoverageConfiguration->php()->target()->path();
+            }
+
+            if (!isset($arguments['coverageText']) && $codeCoverageConfiguration->hasText()) {
+                $arguments['coverageText']                   = $codeCoverageConfiguration->text()->target()->path();
+                $arguments['coverageTextShowUncoveredFiles'] = $codeCoverageConfiguration->text()->showUncoveredFiles();
+                $arguments['coverageTextShowOnlySummary']    = $codeCoverageConfiguration->text()->showOnlySummary();
+            }
+
+            if (!isset($arguments['coverageXml']) && $codeCoverageConfiguration->hasXml()) {
+                $arguments['coverageXml'] = $codeCoverageConfiguration->xml()->target()->path();
+            }
+
+            $phpunitConfiguration = $arguments['configuration']->phpunit();
 
             $arguments['backupGlobals']                                   = $arguments['backupGlobals'] ?? $phpunitConfiguration->backupGlobals();
             $arguments['backupStaticAttributes']                          = $arguments['backupStaticAttributes'] ?? $phpunitConfiguration->backupStaticAttributes();
