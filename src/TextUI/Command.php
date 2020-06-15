@@ -19,10 +19,10 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\Version;
-use PHPUnit\TextUI\CliArguments\Arguments;
-use PHPUnit\TextUI\CliArguments\ArgumentsBuilder;
-use PHPUnit\TextUI\CliArguments\ArgumentsMapper;
+use PHPUnit\TextUI\CliArguments\Builder;
+use PHPUnit\TextUI\CliArguments\Configuration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
+use PHPUnit\TextUI\CliArguments\Mapper;
 use PHPUnit\TextUI\XmlConfiguration\Generator;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use PHPUnit\TextUI\XmlConfiguration\Registry;
@@ -181,12 +181,12 @@ class Command
     protected function handleArguments(array $argv): void
     {
         try {
-            $arguments = (new ArgumentsBuilder)->fromParameters($argv, \array_keys($this->longOptions));
+            $arguments = (new Builder)->fromParameters($argv, \array_keys($this->longOptions));
         } catch (ArgumentsException $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
 
-        \assert(isset($arguments) && $arguments instanceof Arguments);
+        \assert(isset($arguments) && $arguments instanceof Configuration);
 
         if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
             $this->generateConfiguration();
@@ -238,7 +238,7 @@ class Command
             );
         }
 
-        $this->arguments = (new ArgumentsMapper)->mapToLegacyArray($arguments);
+        $this->arguments = (new Mapper)->mapToLegacyArray($arguments);
 
         $this->handleCustomOptions($arguments->unrecognizedOptions());
         $this->handleCustomTestSuite();

@@ -12,9 +12,9 @@ namespace PHPUnit\TextUI\CliArguments;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ArgumentsMapper
+final class Mapper
 {
-    public function mapToLegacyArray(Arguments $arguments): array
+    public function mapToLegacyArray(Configuration $arguments): array
     {
         $result = [
             'extensions'              => [],

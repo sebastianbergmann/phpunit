@@ -20,7 +20,7 @@ use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ArgumentsBuilder
+final class Builder
 {
     private const LONG_OPTIONS = [
         'atleast-version=',
@@ -108,7 +108,7 @@ final class ArgumentsBuilder
 
     private const SHORT_OPTIONS = 'd:c:hv';
 
-    public function fromParameters(array $parameters, array $additionalLongOptions): Arguments
+    public function fromParameters(array $parameters, array $additionalLongOptions): Configuration
     {
         try {
             $options = Getopt::getopt(
@@ -726,7 +726,7 @@ final class ArgumentsBuilder
             $coverageFilter = null;
         }
 
-        return new Arguments(
+        return new Configuration(
             $argument,
             $atLeastVersion,
             $backupGlobals,
