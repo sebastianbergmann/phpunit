@@ -17,17 +17,17 @@ use PHPUnit\Util\Test as TestUtil;
 final class DataProviderTestSuite extends TestSuite
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
     private $dependencies = [];
 
     /**
-     * @param string[] $dependencies
+     * @param array<string> $dependencies
      */
     public function setDependencies(array $dependencies): void
     {
         $this->dependencies  = $dependencies;
-        $this->requiredTests = \PHPUnit\Util\Test::trimDependencyOptions($dependencies);
+        $this->requiredTests = TestUtil::trimDependencyOptions($dependencies);
 
         foreach ($this->tests as $test) {
             if (!$test instanceof TestCase) {
@@ -40,7 +40,7 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function provides(): array
     {
@@ -48,7 +48,7 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function requires(): array
     {

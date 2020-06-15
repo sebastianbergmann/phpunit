@@ -78,12 +78,12 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     protected $foundClasses = [];
 
     /**
-     * @var null|string[]
+     * @var null|array<string>
      */
     protected $providedTests;
 
     /**
-     * @var null|string[]
+     * @var null|array<string>
      */
     protected $requiredTests;
 
@@ -767,7 +767,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function provides(): array
     {
@@ -788,7 +788,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function requires(): array
     {

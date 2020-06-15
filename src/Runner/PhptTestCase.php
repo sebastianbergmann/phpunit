@@ -264,7 +264,7 @@ final class PhptTestCase implements SelfDescribing, Test
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function provides(): array
     {
@@ -272,7 +272,7 @@ final class PhptTestCase implements SelfDescribing, Test
     }
 
     /**
-     * @return string[]
+     * @return array<string>
      */
     public function requires(): array
     {
