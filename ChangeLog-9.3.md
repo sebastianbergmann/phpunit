@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 
 ### Added
 
-* [#3936](https://github.com/sebastianbergmann/phpunit/issues/3936): Support using `@depends` to depend on classes
+* [#3936](https://github.com/sebastianbergmann/phpunit/pull/3936): Support using `@depends` to depend on classes
 * [#4260](https://github.com/sebastianbergmann/phpunit/issues/4260): `pathCoverage` attribute on the `phpunit/coverage` element of the XML configuration file for enabling path coverage for code coverage drivers that support it
 
 ### Changed
