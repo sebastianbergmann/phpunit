@@ -105,12 +105,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     protected $preserveGlobalState = true;
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected $providedTests = [];
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     protected $requiredTests = [];
 
@@ -160,7 +160,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $name = '';
 
     /**
-     * @var string[]
+     * @var array<string>
      */
     private $dependencies = [];
 
@@ -1173,14 +1173,14 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * @param string[] $dependencies
+     * @param array<string> $dependencies
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function setDependencies(array $dependencies): void
     {
         $this->dependencies  = $dependencies;
-        $this->requiredTests = \PHPUnit\Util\Test::trimDependencyOptions($dependencies);
+        $this->requiredTests = TestUtil::trimDependencyOptions($dependencies);
     }
 
     /**
@@ -1392,7 +1392,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     /**
      * Returns the normalized test name as class::method
      *
-     * @return string[]
+     * @return array<string>
      */
     public function provides(): array
     {
@@ -1400,11 +1400,13 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
-     * Returns a list of normalized dependency names, class::method
-     * This list can differ from the raw dependencies as the resolver has
-     * no need for the
+     * Returns a list of normalized dependency names, class::method.
      *
-     * @return string[]
+     * This list can differ from the raw dependencies as the resolver has
+     * no need for the [!][shallow]clone prefix that is filtered out
+     * during normalization.
+     *
+     * @return array<string>
      */
     public function requires(): array
     {
@@ -1946,11 +1948,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     private function handleDependencies(): bool
     {
-        if (empty($this->dependencies) || $this->inIsolation) {
+        if ([] === $this->dependencies || $this->inIsolation) {
             return true;
         }
 
-        $className  = \get_class($this);
         $passed     = $this->result->passed();
         $passedKeys = \array_keys($passed);
         $numKeys    = \count($passedKeys);
@@ -1966,7 +1967,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $passedKeys = \array_flip(\array_unique($passedKeys));
 
         foreach ($this->dependencies as $dependency) {
-            if (empty($dependency)) {
+            if ($dependency === '') {
                 $this->markSkippedForNotSpecifyingDependency();
 
                 return false;

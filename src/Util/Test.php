@@ -377,9 +377,9 @@ final class Test
     /**
      * Remove superfluous annotation detail not needed by dependency resolver
      *
-     * @param string[] $dependencies
+     * @param array<string> $dependencies
      *
-     * @return string[]
+     * @return array<string>
      */
     public static function trimDependencyOptions(array $dependencies): array
     {
