@@ -24,8 +24,8 @@ use PHPUnit\TextUI\CliArguments\Configuration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\CliArguments\Mapper;
 use PHPUnit\TextUI\XmlConfiguration\Generator;
+use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use PHPUnit\TextUI\XmlConfiguration\Registry;
 use PHPUnit\TextUI\XmlConfiguration\TestSuiteMapper;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
@@ -288,7 +288,7 @@ class Command
 
         if (isset($this->arguments['configuration'])) {
             try {
-                $configuration = Registry::getInstance()->get($this->arguments['configuration']);
+                $configuration = (new Loader)->load($this->arguments['configuration']);
             } catch (\Throwable $e) {
                 print $e->getMessage() . \PHP_EOL;
                 exit(TestRunner::FAILURE_EXIT);
@@ -624,7 +624,7 @@ class Command
 
         print 'Available test suite(s):' . \PHP_EOL;
 
-        $configuration = Registry::getInstance()->get($this->arguments['configuration']);
+        $configuration = (new Loader)->load($this->arguments['configuration']);
 
         foreach ($configuration->testSuite() as $testSuite) {
             \printf(

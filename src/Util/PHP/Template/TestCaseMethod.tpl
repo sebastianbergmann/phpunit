@@ -2,7 +2,7 @@
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
-use PHPUnit\TextUI\XmlConfiguration\Registry;
+use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 
 if (!defined('STDOUT')) {
@@ -90,7 +90,7 @@ function __phpunit_run_isolated_test()
 $configurationFilePath = '{configurationFilePath}';
 
 if ('' !== $configurationFilePath) {
-    $configuration = Registry::getInstance()->get($configurationFilePath);
+    $configuration = (new Loader)->load($configurationFilePath);
 
     (new PhpHandler)->handle($configuration->php());
 

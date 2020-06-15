@@ -20,7 +20,7 @@ use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 /**
  * @medium
  */
-final class ConfigurationTest extends TestCase
+final class XmlConfigurationTest extends TestCase
 {
     public function testExceptionIsThrownForNotExistingConfigurationFile(): void
     {
@@ -86,7 +86,7 @@ final class ConfigurationTest extends TestCase
         $xml         = "<phpunit $optionName='$optionValue'></phpunit>" . \PHP_EOL;
         \file_put_contents($tmpFilename, $xml);
 
-        $configuration = Registry::getInstance()->get($tmpFilename);
+        $configuration = (new Loader)->load($tmpFilename);
 
         $this->assertFalse($configuration->hasValidationErrors());
 
@@ -126,7 +126,7 @@ final class ConfigurationTest extends TestCase
         $xml         = "<phpunit executionOrder='depends,defects'></phpunit>" . \PHP_EOL;
         \file_put_contents($tmpFilename, $xml);
 
-        $configuration = Registry::getInstance()->get($tmpFilename);
+        $configuration = (new Loader)->load($tmpFilename);
 
         $this->assertFalse($configuration->hasValidationErrors());
 
@@ -710,6 +710,6 @@ final class ConfigurationTest extends TestCase
 
     private function configuration(string $filename): Configuration
     {
-        return Registry::getInstance()->get(TEST_FILES_PATH . $filename);
+        return (new Loader)->load(TEST_FILES_PATH . $filename);
     }
 }
