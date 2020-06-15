@@ -1122,7 +1122,7 @@ final class TestClassTest extends TestCase
      * @depends
      * @depends AnotherClass::Foo
      *
-     * @xtodo Remove fixture from test class
+     * @todo Remove fixture from test class
      */
     public function methodForTestParseAnnotation(): void
     {
