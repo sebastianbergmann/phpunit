@@ -732,8 +732,12 @@ class Command
         foreach ($unrecognizedOptions as $name => $value) {
             if (isset($this->longOptions[$name])) {
                 $handler = $this->longOptions[$name];
-            } elseif (isset($this->longOptions[$name . '='])) {
-                $handler = $this->longOptions[$name . '='];
+            }
+
+            $name .= '=';
+
+            if (isset($this->longOptions[$name])) {
+                $handler = $this->longOptions[$name];
             }
 
             if (isset($handler) && \is_callable([$this, $handler])) {
