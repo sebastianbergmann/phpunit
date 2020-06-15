@@ -103,11 +103,7 @@ final class PhpHandler
 
             $value = \getenv($name);
 
-            if (!isset($_ENV[$name])) {
-                $_ENV[$name] = $value;
-            }
-
-            if ($force) {
+            if ($force || !isset($_ENV[$name])) {
                 $_ENV[$name] = $value;
             }
         }
