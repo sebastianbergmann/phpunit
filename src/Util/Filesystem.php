@@ -15,9 +15,10 @@ namespace PHPUnit\Util;
 final class Filesystem
 {
     /**
-     * Maps class names to source file names:
+     * Maps class names to source file names.
+     *
      *   - PEAR CS:   Foo_Bar_Baz -> Foo/Bar/Baz.php
-     *   - Namespace: Foo\Bar\Baz -> Foo/Bar/Baz.php.
+     *   - Namespace: Foo\Bar\Baz -> Foo/Bar/Baz.php
      */
     public static function classNameToFilename(string $className): string
     {

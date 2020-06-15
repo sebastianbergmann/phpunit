@@ -20,8 +20,9 @@ final class LogicalAnd extends BinaryOperator
     }
 
     /**
-     * Returns this operator's precedence, as defined in
-     * https://www.php.net/manual/en/language.operators.precedence.php.
+     * Returns this operator's precedence.
+     *
+     * @see https://www.php.net/manual/en/language.operators.precedence.php
      */
     public function precedence(): int
     {

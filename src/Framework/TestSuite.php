@@ -105,7 +105,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
     private $warnings = [];
 
     /**
-     * Constructs a new TestSuite:.
+     * Constructs a new TestSuite.
      *
      *   - PHPUnit\Framework\TestSuite() constructs an empty TestSuite.
      *
