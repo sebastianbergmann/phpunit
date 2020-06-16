@@ -1,17 +1,17 @@
 --TEST--
 Can parse --INI-- and --ENV-- sections
 --INI--
-cli.prompt=PHPUNIT_PROMPT
+date.default_latitude=1.337
 dummy.key
 --ENV--
 PHPUNIT_ENV=phpunit-env-section
 --FILE--
 <?php
-echo ini_get('cli.prompt') . "\n";
-echo ini_get('dummy.key') . "\n";
-echo getenv('PHPUNIT_ENV') . "\n";
+var_dump(ini_get('date.default_latitude'));
+var_dump(ini_get('dummy.key'));
+var_dump(getenv('PHPUNIT_ENV'));
 ?>
 --EXPECT--
-PHPUNIT_PROMPT
-
-phpunit-env-section
+string(5) "1.337"
+bool(false)
+string(19) "phpunit-env-section"
