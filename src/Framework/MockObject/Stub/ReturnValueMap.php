@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject\Stub;
 
+use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\Invocation;
 
 /**
@@ -28,17 +29,19 @@ final class ReturnValueMap implements Stub
 
     public function invoke(Invocation $invocation)
     {
-        $parameterCount = \count($invocation->getParameters());
+        $parameters = $invocation->getParameters();
+
+        $parameterCount = \count($parameters);
 
         foreach ($this->valueMap as $map) {
             if (!\is_array($map) || $parameterCount !== (\count($map) - 1)) {
                 continue;
             }
 
-            $return = \array_pop($map);
+            $returnValue = $this->getReturnValue(\array_pop($map));
 
-            if ($invocation->getParameters() === $map) {
-                return $return;
+            if ($this->compare($parameters, $map)) {
+                return $returnValue->invoke($invocation);
             }
         }
     }
@@ -46,5 +49,31 @@ final class ReturnValueMap implements Stub
     public function toString(): string
     {
         return 'return value from a map';
+    }
+
+    private function compare(array $actual, array $expected): bool
+    {
+        foreach ($expected as $index => $value) {
+            if ($value instanceof Constraint) {
+                if ($value->evaluate($actual[$index], '', true) === false) {
+                    return false;
+                }
+            } else {
+                if ($value !== $actual[$index]) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private function getReturnValue($value): Stub
+    {
+        if (!$value instanceof Stub) {
+            return new ReturnStub($value);
+        }
+
+        return $value;
     }
 }
