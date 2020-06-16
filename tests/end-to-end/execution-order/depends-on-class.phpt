@@ -14,7 +14,7 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
-Configuration: %sphpunit%etests%e_files%econfiguration.depends-on-class.xml
+Configuration: %s%etests%e_files%econfiguration.depends-on-class.xml
 
 ....SFSSSSW                                                       11 / 11 (100%)
 
@@ -31,7 +31,7 @@ There was 1 failure:
 
 1) DependencyFailureTest::testOne
 
-%s%ephpunit%etests%e_files%eDependencyFailureTest.php:16
+%s%etests%e_files%eDependencyFailureTest.php:16
 
 --
 
