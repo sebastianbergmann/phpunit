@@ -771,14 +771,21 @@ final class PhptTestCase implements SelfDescribing, Test
             'report_memleaks=0',
             'report_zend_debug=0',
             'safe_mode=0',
-            'xdebug.default_enable=0',
         ];
 
-        if (\extension_loaded('xdebug') && \version_compare(\phpversion('xdebug'), '3', '>=')) {
-            if ($collectCoverage) {
-                $settings[] = 'xdebug.mode=coverage';
+        if (\extension_loaded('xdebug')) {
+            if (\version_compare(\phpversion('xdebug'), '3', '>=')) {
+                if ($collectCoverage) {
+                    $settings[] = 'xdebug.mode=coverage';
+                } else {
+                    $settings[] = 'xdebug.mode=off';
+                }
             } else {
-                $settings[] = 'xdebug.mode=off';
+                if ($collectCoverage) {
+                    $settings[] = 'xdebug.coverage_enable=1';
+                } else {
+                    $settings[] = 'xdebug.default_enable=0';
+                }
             }
         }
 
