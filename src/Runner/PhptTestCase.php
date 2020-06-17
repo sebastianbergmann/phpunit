@@ -30,33 +30,6 @@ use SebastianBergmann\Timer\Timer;
 final class PhptTestCase implements SelfDescribing, Test
 {
     /**
-     * @var string[]
-     */
-    private const SETTINGS = [
-        'allow_url_fopen=1',
-        'auto_append_file=',
-        'auto_prepend_file=',
-        'disable_functions=',
-        'display_errors=1',
-        'docref_ext=.html',
-        'docref_root=',
-        'error_append_string=',
-        'error_prepend_string=',
-        'error_reporting=-1',
-        'html_errors=0',
-        'log_errors=0',
-        'magic_quotes_runtime=0',
-        'open_basedir=',
-        'output_buffering=Off',
-        'output_handler=',
-        'report_memleaks=0',
-        'report_zend_debug=0',
-        'safe_mode=0',
-        'xdebug.default_enable=0',
-        'xdebug.mode=off',
-    ];
-
-    /**
      * @var string
      */
     private $filename;
@@ -125,7 +98,7 @@ final class PhptTestCase implements SelfDescribing, Test
 
         $code     = $this->render($sections['FILE']);
         $xfail    = false;
-        $settings = $this->parseIniSection(self::SETTINGS);
+        $settings = $this->parseIniSection($this->settings($result->getCollectCodeCoverageInformation()));
 
         $result->startTest($this);
 
@@ -221,7 +194,7 @@ final class PhptTestCase implements SelfDescribing, Test
             $result->addFailure($this, new IncompleteTestError('XFAIL section but test passes'), $time);
         }
 
-        $this->runClean($sections);
+        $this->runClean($sections, $result->getCollectCodeCoverageInformation());
 
         $result->endTest($this, $time);
 
@@ -398,7 +371,7 @@ final class PhptTestCase implements SelfDescribing, Test
         return false;
     }
 
-    private function runClean(array &$sections): void
+    private function runClean(array &$sections, bool $collectCoverage): void
     {
         $this->phpUtil->setStdin('');
         $this->phpUtil->setArgs('');
@@ -406,7 +379,7 @@ final class PhptTestCase implements SelfDescribing, Test
         if (isset($sections['CLEAN'])) {
             $cleanCode = $this->render($sections['CLEAN']);
 
-            $this->phpUtil->runJob($cleanCode, self::SETTINGS);
+            $this->phpUtil->runJob($cleanCode, $this->settings($collectCoverage));
         }
     }
 
@@ -771,5 +744,44 @@ final class PhptTestCase implements SelfDescribing, Test
             'file' => \realpath($this->filename),
             'line' => 1,
         ]];
+    }
+
+    /**
+     * @psalm-return list<string>
+     */
+    private function settings(bool $collectCoverage): array
+    {
+        $settings = [
+            'allow_url_fopen=1',
+            'auto_append_file=',
+            'auto_prepend_file=',
+            'disable_functions=',
+            'display_errors=1',
+            'docref_ext=.html',
+            'docref_root=',
+            'error_append_string=',
+            'error_prepend_string=',
+            'error_reporting=-1',
+            'html_errors=0',
+            'log_errors=0',
+            'magic_quotes_runtime=0',
+            'open_basedir=',
+            'output_buffering=Off',
+            'output_handler=',
+            'report_memleaks=0',
+            'report_zend_debug=0',
+            'safe_mode=0',
+            'xdebug.default_enable=0',
+        ];
+
+        if (\extension_loaded('xdebug') && \version_compare(\phpversion('xdebug'), '3', '>=')) {
+            if ($collectCoverage) {
+                $settings[] = 'xdebug.mode=coverage';
+            } else {
+                $settings[] = 'xdebug.mode=off';
+            }
+        }
+
+        return $settings;
     }
 }
