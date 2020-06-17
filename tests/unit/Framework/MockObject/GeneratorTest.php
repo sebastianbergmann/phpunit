@@ -133,8 +133,7 @@ final class GeneratorTest extends TestCase
     {
         $mock = $this->generator->getMockForAbstractClass(AbstractMockTestClass::class);
 
-        $mock->expects($this->any())
-             ->method('doSomething')
+        $mock->method('doSomething')
              ->willReturn('testing');
 
         $this->assertEquals('testing', $mock->doSomething());
@@ -198,7 +197,7 @@ final class GeneratorTest extends TestCase
     {
         $mock = $this->generator->getMock(SingletonClass::class, ['doSomething'], [], '', false);
 
-        $this->assertInstanceOf('SingletonClass', $mock);
+        $this->assertInstanceOf(SingletonClass::class, $mock);
     }
 
     public function testExceptionIsRaisedForMutuallyExclusiveOptions(): void

@@ -115,7 +115,7 @@ EOF;
              ->expects($this->once())
              ->method('runJob')
              ->with($fileSection)
-             ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+             ->willReturn(['stdout' => '', 'stderr' => '']);
 
         $this->testCase->run();
     }
@@ -139,7 +139,7 @@ EOF
              ->expects($this->once())
              ->method('runJob')
              ->with($renderedCode)
-             ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+             ->willReturn(['stdout' => '', 'stderr' => '']);
 
         $this->testCase->run();
     }
@@ -158,7 +158,7 @@ EOF
              ->expects($this->at(0))
              ->method('runJob')
              ->with($renderedCode)
-             ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+             ->willReturn(['stdout' => '', 'stderr' => '']);
 
         $this->testCase->run();
     }
@@ -177,7 +177,7 @@ EOF
              ->expects($this->at(0))
              ->method('runJob')
              ->with($skipifSection)
-             ->will($this->returnValue(['stdout' => '', 'stderr' => '']));
+             ->willReturn(['stdout' => '', 'stderr' => '']);
 
         $this->testCase->run();
     }
@@ -196,7 +196,7 @@ EOF
              ->expects($this->once())
              ->method('runJob')
              ->with($skipifSection)
-             ->will($this->returnValue(['stdout' => 'skip: Reason', 'stderr' => '']));
+             ->willReturn(['stdout' => 'skip: Reason', 'stderr' => '']);
 
         $this->testCase->run();
     }
@@ -292,7 +292,7 @@ EOF
              ->expects($this->once())
              ->method('runJob')
              ->with(self::FILE_SECTION)
-             ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
+             ->willReturn(['stdout' => 'Hello PHPUnit!', 'stderr' => '']);
 
         $result = $this->testCase->run();
 
@@ -307,7 +307,7 @@ EOF
              ->expects($this->once())
              ->method('runJob')
              ->with(self::FILE_SECTION)
-             ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
+             ->willReturn(['stdout' => 'Hello PHPUnit!', 'stderr' => '']);
 
         $result = $this->testCase->run();
 
@@ -322,7 +322,7 @@ EOF
              ->expects($this->once())
              ->method('runJob')
              ->with(self::FILE_SECTION)
-             ->will($this->returnValue(['stdout' => 'Hello PHPUnit!', 'stderr' => '']));
+             ->willReturn(['stdout' => 'Hello PHPUnit!', 'stderr' => '']);
 
         $result = $this->testCase->run();
 
