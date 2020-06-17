@@ -23,36 +23,4 @@ class InvocationHandlerTest extends TestCase
         $this->expectExceptionMessage('planned error');
         $mock->__toString();
     }
-
-    public function testSingleMatcherIsHandled(): void
-    {
-        $mock = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['foo'])
-            ->getMock();
-
-        $mock->expects($this->once())
-            ->method('foo')
-            ->willReturn('result');
-
-        $this->assertSame('result', $mock->foo());
-    }
-
-    public function testNonUniqueMatchThrowsException(): void
-    {
-        $mock = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['foo'])
-            ->getMock();
-
-        $mock->method($this->stringStartsWith('foo'))
-             ->willReturn('result');
-
-        $mock->method('foo')
-             ->with('bar')
-             ->willReturn('result');
-
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('More than one invocation handler has been configured for stdClass::foo()');
-
-        $mock->foo();
-    }
 }
