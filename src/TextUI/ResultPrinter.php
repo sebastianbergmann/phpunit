@@ -390,13 +390,9 @@ class ResultPrinter extends Printer implements TestListener
      */
     protected function printHeader(TestResult $result): void
     {
-        $this->write(\PHP_EOL);
-
         if (\count($result) > 0) {
-            $this->write(\PHP_EOL);
+            $this->write(\PHP_EOL . \PHP_EOL . Timer::resourceUsage() . \PHP_EOL . \PHP_EOL);
         }
-
-        $this->write(Timer::resourceUsage() . "\n\n");
     }
 
     protected function printFooter(TestResult $result): void
