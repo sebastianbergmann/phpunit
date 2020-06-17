@@ -123,14 +123,14 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     public function printResult(TestResult $result): void
     {
-        $this->printHeader();
+        $this->printHeader($result);
 
         $this->printNonSuccessfulTestsSummary($result->count());
 
         $this->printFooter($result);
     }
 
-    protected function printHeader(): void
+    protected function printHeader(TestResult $result): void
     {
         $this->write("\n" . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . "\n\n");
     }

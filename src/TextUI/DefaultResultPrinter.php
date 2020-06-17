@@ -166,7 +166,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
     public function printResult(TestResult $result): void
     {
-        $this->printHeader();
+        $this->printHeader($result);
         $this->printErrors($result);
         $this->printWarnings($result);
         $this->printFailures($result);
@@ -391,9 +391,11 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         $this->printDefects($result->skipped(), 'skipped test');
     }
 
-    protected function printHeader(): void
+    protected function printHeader(TestResult $result): void
     {
-        $this->write("\n\n" . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . "\n\n");
+        if (\count($result) > 0) {
+            $this->write(\PHP_EOL . \PHP_EOL . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . \PHP_EOL . \PHP_EOL);
+        }
     }
 
     protected function printFooter(TestResult $result): void
