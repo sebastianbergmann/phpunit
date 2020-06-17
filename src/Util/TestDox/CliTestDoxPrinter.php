@@ -105,7 +105,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
      */
     public function printResult(TestResult $result): void
     {
-        $this->printHeader();
+        $this->printHeader($result);
 
         $this->printNonSuccessfulTestsSummary($result->count());
 
@@ -115,7 +115,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     /**
      * @throws \SebastianBergmann\Timer\RuntimeException
      */
-    protected function printHeader(): void
+    protected function printHeader(TestResult $result): void
     {
         $this->write("\n" . Timer::resourceUsage() . "\n\n");
     }
