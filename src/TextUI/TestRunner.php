@@ -156,9 +156,9 @@ final class TestRunner extends BaseTestRunner
                 if (isset($arguments['configuration'])) {
                     \assert($arguments['configuration'] instanceof Configuration);
 
-                    $cacheLocation = $arguments['configuration']->filename();
+                    $cacheLocation = \dirname($arguments['configuration']->filename());
                 } else {
-                    $cacheLocation = $_SERVER['PHP_SELF'];
+                    $cacheLocation = \getcwd();
                 }
 
                 $arguments['cacheResultFile'] = null;
@@ -166,7 +166,7 @@ final class TestRunner extends BaseTestRunner
                 $cacheResultFile = \realpath($cacheLocation);
 
                 if ($cacheResultFile !== false) {
-                    $arguments['cacheResultFile'] = \dirname($cacheResultFile);
+                    $arguments['cacheResultFile'] = $cacheResultFile;
                 }
             }
 
