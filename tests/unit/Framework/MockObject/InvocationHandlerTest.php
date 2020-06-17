@@ -43,14 +43,12 @@ class InvocationHandlerTest extends TestCase
             ->addMethods(['foo'])
             ->getMock();
 
-        $mock->expects($this->any())
-            ->method($this->stringStartsWith('foo'))
-            ->willReturn('result');
+        $mock->method($this->stringStartsWith('foo'))
+             ->willReturn('result');
 
-        $mock->expects($this->any())
-            ->method('foo')
-            ->with('bar')
-            ->willReturn('result');
+        $mock->method('foo')
+             ->with('bar')
+             ->willReturn('result');
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('More than one invocation handler has been configured for stdClass::foo()');
