@@ -53,6 +53,7 @@ final class PhptTestCase implements SelfDescribing, Test
         'report_zend_debug=0',
         'safe_mode=0',
         'xdebug.default_enable=0',
+        'xdebug.mode=off',
     ];
 
     /**
