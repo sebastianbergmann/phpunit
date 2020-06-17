@@ -457,7 +457,7 @@ class RequirementsTest extends TestCase
      * @requires   PHP        ~5.6.22 || ~7.0.17
      * @requires   PHPUnit    ~5.6.22 || ~7.0.17
      */
-    public function testVersionConstraintRegexpIgnoresWhitespace(): void
+    public function testVersionConstraintRegexpIgnoresEmptyspace(): void
     {
     }
 

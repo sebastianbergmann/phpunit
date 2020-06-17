@@ -29,11 +29,11 @@ Basic ANSI color highlighting support
  ✔ Colorize path %ephp%eunit%etest.phpt after %ephp%e
  ✔ Colorize path %e_d-i.r%et-e_s.t.phpt after ''
  ✔ dim($m) and colorize('dim',$m) return different ANSI codes
- ✔ Visualize all whitespace characters in no-spaces
- ✔ Visualize all whitespace characters in  space   invaders
- ✔ Visualize all whitespace characters in 	indent, space and \n
+ ✔ Visualize all emptyspace characters in no-spaces
+ ✔ Visualize all emptyspace characters in  space   invaders
+ ✔ Visualize all emptyspace characters in 	indent, space and \n
 \r
- ✔ Visualize whitespace but ignore EOL
+ ✔ Visualize emptyspace but ignore EOL
  ✔ Prettify unnamed dataprovider with data set #0
  ✔ Prettify unnamed dataprovider with data set #1
  ✔ Prettify named dataprovider with data set "one"

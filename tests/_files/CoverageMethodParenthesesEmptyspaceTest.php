@@ -9,13 +9,14 @@
  */
 use PHPUnit\Framework\TestCase;
 
-class CoverageFunctionParenthesesWhitespaceTest extends TestCase
+class CoverageMethodParenthesesEmptyspaceTest extends TestCase
 {
     /**
-     * @covers ::globalFunction ( )
+     * @covers CoveredClass::publicMethod ( )
      */
     public function testSomething(): void
     {
-        globalFunction();
+        $o = new CoveredClass;
+        $o->publicMethod();
     }
 }

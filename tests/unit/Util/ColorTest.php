@@ -46,21 +46,21 @@ final class ColorTest extends TestCase
     }
 
     /**
-     * @testdox Visualize all whitespace characters in $actual
-     * @dataProvider whitespacedStringProvider
+     * @testdox Visualize all emptyspace characters in $actual
+     * @dataProvider emptyspacedStringProvider
      */
-    public function testVisibleWhitespace(string $actual, string $expected): void
+    public function testVisibleEmptyspace(string $actual, string $expected): void
     {
-        $this->assertSame($expected, Color::visualizeWhitespace($actual, true));
+        $this->assertSame($expected, Color::visualizeEmptyspace($actual, true));
     }
 
     /**
-     * @testdox Visualize whitespace but ignore EOL
+     * @testdox Visualize emptyspace but ignore EOL
      */
-    public function testVisibleWhitespaceWithoutEOL(): void
+    public function testVisibleEmptyspaceWithoutEOL(): void
     {
         $string = "line1\nline2\n";
-        $this->assertSame($string, Color::visualizeWhitespace($string, false));
+        $this->assertSame($string, Color::visualizeEmptyspace($string, false));
     }
 
     /**
@@ -138,7 +138,7 @@ final class ColorTest extends TestCase
         ];
     }
 
-    public function whitespacedStringProvider(): array
+    public function emptyspacedStringProvider(): array
     {
         return [
             ['no-spaces',

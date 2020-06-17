@@ -223,9 +223,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
                 $message[] = $line;
             } else {
                 if (\strpos($line, '-') === 0) {
-                    $line = Color::colorize('fg-red', Color::visualizeWhitespace($line, true));
+                    $line = Color::colorize('fg-red', Color::visualizeEmptyspace($line, true));
                 } elseif (\strpos($line, '+') === 0) {
-                    $line = Color::colorize('fg-green', Color::visualizeWhitespace($line, true));
+                    $line = Color::colorize('fg-green', Color::visualizeEmptyspace($line, true));
                 } elseif ($line === '@@ @@') {
                     $line = Color::colorize('fg-cyan', $line);
                 }

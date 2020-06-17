@@ -87,7 +87,7 @@ final class StringMatchesFormatDescriptionTest extends ConstraintTestCase
         $this->assertCount(1, $constraint);
     }
 
-    public function testConstraintStringMatchesWhitespace(): void
+    public function testConstraintStringMatchesEmptyspace(): void
     {
         $constraint = new StringMatchesFormatDescription('*%w*');
 

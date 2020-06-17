@@ -595,7 +595,7 @@ final class TestClassTest extends TestCase
                 ],
             ],
             [
-                'testVersionConstraintRegexpIgnoresWhitespace',
+                'testVersionConstraintRegexpIgnoresEmptyspace',
                 [
                     'PHP' => [
                         'constraint' => '~5.6.22 || ~7.0.17',
@@ -1244,12 +1244,12 @@ final class TestClassTest extends TestCase
         );
     }
 
-    public function testFunctionParenthesesAreAllowedWithWhitespace(): void
+    public function testFunctionParenthesesAreAllowedWithEmptyspace(): void
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => \range(10, 12)],
             Test::getLinesToBeCovered(
-                'CoverageFunctionParenthesesWhitespaceTest',
+                'CoverageFunctionParenthesesEmptyspaceTest',
                 'testSomething'
             )
         );
@@ -1266,12 +1266,12 @@ final class TestClassTest extends TestCase
         );
     }
 
-    public function testMethodParenthesesAreAllowedWithWhitespace(): void
+    public function testMethodParenthesesAreAllowedWithEmptyspace(): void
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => \range(29, 33)],
             Test::getLinesToBeCovered(
-                'CoverageMethodParenthesesWhitespaceTest',
+                'CoverageMethodParenthesesEmptyspaceTest',
                 'testSomething'
             )
         );

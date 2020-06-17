@@ -17,7 +17,7 @@ final class Color
     /**
      * @var array<string,string>
      */
-    private const WHITESPACE_MAP = [
+    private const EMPTYSPACE_MAP = [
         ' '  => '·',
         "\t" => '⇥',
     ];
@@ -25,7 +25,7 @@ final class Color
     /**
      * @var array<string,string>
      */
-    private const WHITESPACE_EOL_MAP = [
+    private const EMPTYSPACE_EOL_MAP = [
         ' '  => '·',
         "\t" => '⇥',
         "\n" => '↵',
@@ -121,9 +121,9 @@ final class Color
         return "\e[2m$buffer\e[22m";
     }
 
-    public static function visualizeWhitespace(string $buffer, bool $visualizeEOL = false): string
+    public static function visualizeEmptyspace(string $buffer, bool $visualizeEOL = false): string
     {
-        $replaceMap = $visualizeEOL ? self::WHITESPACE_EOL_MAP : self::WHITESPACE_MAP;
+        $replaceMap = $visualizeEOL ? self::EMPTYSPACE_EOL_MAP : self::EMPTYSPACE_MAP;
 
         return \preg_replace_callback('/\s+/', static function ($matches) use ($replaceMap) {
             return self::dim(\strtr($matches[0], $replaceMap));

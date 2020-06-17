@@ -1,5 +1,5 @@
 --TEST--
-PHPT for testing coverage using multiple whitespace arguments
+PHPT for testing coverage using multiple emptyspace arguments
 --FILE--
 <?php declare(strict_types=1);
 require __DIR__ . '/../bootstrap.php';
