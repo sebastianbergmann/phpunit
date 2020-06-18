@@ -27,6 +27,8 @@ final class Generator
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
+         failOnRisky="true"
+         failOnWarning="true"
          verbose="true">
     <testsuites>
         <testsuite name="default">

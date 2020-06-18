@@ -36,5 +36,6 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 * Using `<logging><log type="testdox-text" target="testdox.txt"/></logging>` to configure the TestDox Text logger is now deprecated, please use `<logging><testdoxText outputFile="testdox.txt"/></logging>` instead
 * Using `<logging><log type="testdox-xml" target="testdox.xml"/></logging>` to configure the TestDox XML logger is now deprecated, please use `<logging><testdoxXml outputFile="testdox.xml"/></logging>` instead
 * Using `<logging><log type="plain" target="logfile.txt"/></logging>` to configure the plain text logger is now deprecated, please use `<logging><text outputFile="logfile.txt"/></logging>` instead
+* `--generate-configuration` generates a configuration file with `failOnRisky="true"` and `failOnWarning="true"`
 
 [9.3.0]: https://github.com/sebastianbergmann/phpunit/compare/9.2...master
