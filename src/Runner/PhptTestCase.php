@@ -764,13 +764,11 @@ final class PhptTestCase implements SelfDescribing, Test
             'error_reporting=-1',
             'html_errors=0',
             'log_errors=0',
-            'magic_quotes_runtime=0',
             'open_basedir=',
             'output_buffering=Off',
             'output_handler=',
             'report_memleaks=0',
             'report_zend_debug=0',
-            'safe_mode=0',
         ];
 
         if (\extension_loaded('pcov')) {
