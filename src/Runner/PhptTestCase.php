@@ -773,6 +773,14 @@ final class PhptTestCase implements SelfDescribing, Test
             'safe_mode=0',
         ];
 
+        if (\extension_loaded('pcov')) {
+            if ($collectCoverage) {
+                $settings[] = 'pcov.enabled=1';
+            } else {
+                $settings[] = 'pcov.enabled=0';
+            }
+        }
+
         if (\extension_loaded('xdebug')) {
             if (\version_compare(\phpversion('xdebug'), '3', '>=')) {
                 if ($collectCoverage) {
