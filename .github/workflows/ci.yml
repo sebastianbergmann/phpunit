@@ -7,7 +7,7 @@ on:
 name: CI
 
 env:
-  COMPOSER_ROOT_VERSION: "9.2-dev"
+  COMPOSER_ROOT_VERSION: "9.3-dev"
 
 jobs:
   coding-guidelines:
