@@ -16,18 +16,18 @@ final class Duration
 {
     private int $seconds;
 
-    private int $nanoSeconds;
+    private int $nanoseconds;
 
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(int $seconds, int $nanoSeconds)
+    public function __construct(int $seconds, int $nanoseconds)
     {
         $this->ensureNotNegativeInt($seconds, 'second');
-        $this->ensureNotNegativeInt($nanoSeconds, 'nanosecond');
+        $this->ensureNotNegativeInt($nanoseconds, 'nanosecond');
 
         $this->seconds     = $seconds;
-        $this->nanoSeconds = $nanoSeconds;
+        $this->nanoseconds = $nanoseconds;
     }
 
     public function seconds(): int
@@ -35,9 +35,9 @@ final class Duration
         return $this->seconds;
     }
 
-    public function nanoSeconds(): int
+    public function nanoseconds(): int
     {
-        return $this->nanoSeconds;
+        return $this->nanoseconds;
     }
 
     public function asString(DurationFormatter $formatter = null): string
@@ -62,7 +62,7 @@ final class Duration
         }
 
         $formatted .= \sprintf('%02d', $seconds) . '.';
-        $formatted .= \sprintf('%09d', $this->nanoSeconds());
+        $formatted .= \sprintf('%09d', $this->nanoseconds());
 
         return $formatted;
     }

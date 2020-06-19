@@ -15,18 +15,18 @@ final class HRTime
 {
     private int $seconds;
 
-    private int $nanoSeconds;
+    private int $nanoseconds;
 
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(int $seconds, int $nanoSeconds)
+    public function __construct(int $seconds, int $nanoseconds)
     {
         $this->ensureNotNegativeInt($seconds, 'second');
-        $this->ensureNotNegativeInt($nanoSeconds, 'nanosecond');
+        $this->ensureNotNegativeInt($nanoseconds, 'nanosecond');
 
         $this->seconds     = $seconds;
-        $this->nanoSeconds = $nanoSeconds;
+        $this->nanoseconds = $nanoseconds;
     }
 
     public function seconds(): int
@@ -34,23 +34,23 @@ final class HRTime
         return $this->seconds;
     }
 
-    public function nanoSeconds(): int
+    public function nanoseconds(): int
     {
-        return $this->nanoSeconds;
+        return $this->nanoseconds;
     }
 
     public function duration(self $other): Duration
     {
         $seconds     = $this->seconds;
-        $nanoSeconds = $this->nanoSeconds;
+        $nanoseconds = $this->nanoseconds;
 
-        $nanoDuration = $nanoSeconds - $other->nanoSeconds();
+        $nanoDuration = $nanoseconds - $other->nanoseconds();
 
         if ($nanoDuration < 0) {
             $seconds--;
-            $nanoSeconds += 1000000000;
+            $nanoseconds += 1000000000;
 
-            $nanoDuration = $nanoSeconds - $other->nanoSeconds();
+            $nanoDuration = $nanoseconds - $other->nanoseconds();
         }
 
         $secondDuration = $seconds - $other->seconds();
