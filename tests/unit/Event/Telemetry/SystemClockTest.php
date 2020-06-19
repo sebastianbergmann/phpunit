@@ -15,7 +15,7 @@ use DateTimeZone;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PHPUnit\Event\Telemetry\SystemClock
+ * @covers \PHPUnit\Event\Telemetry\SystemStopWatch
  */
 final class SystemClockTest extends TestCase
 {
@@ -23,9 +23,9 @@ final class SystemClockTest extends TestCase
     {
         $dateTimeZone = new DateTimeZone('Europe/Berlin');
 
-        $clock = new SystemClock($dateTimeZone);
+        $stopWatch = new SystemStopWatch($dateTimeZone);
 
-        $now = $clock->now();
+        $now = $stopWatch->now();
 
         $expected = new DateTimeImmutable(
             'now',

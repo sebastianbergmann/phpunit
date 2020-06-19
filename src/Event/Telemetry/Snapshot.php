@@ -9,24 +9,22 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
-use DateTimeImmutable;
-
 final class Snapshot
 {
-    private DateTimeImmutable $time;
+    private HRTime $time;
 
     private MemoryUsage $memoryUsage;
 
     private MemoryUsage $peakMemoryUsage;
 
-    public function __construct(DateTimeImmutable $time, MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage)
+    public function __construct(HRTime $time, MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage)
     {
         $this->time            = $time;
         $this->memoryUsage     = $memoryUsage;
         $this->peakMemoryUsage = $peakMemoryUsage;
     }
 
-    public function time(): DateTimeImmutable
+    public function time(): HRTime
     {
         return $this->time;
     }

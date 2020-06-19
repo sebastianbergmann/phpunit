@@ -1014,7 +1014,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
     private static function createTelemetrySystem(): Telemetry\System
     {
         return new Telemetry\System(
-            new Telemetry\SystemClock(new DateTimeZone('Europe/Berlin')),
+            new Telemetry\SystemStopWatch(new DateTimeZone('Europe/Berlin')),
             new Telemetry\SystemMemoryMeter()
         );
     }

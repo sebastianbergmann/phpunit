@@ -9,26 +9,23 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
-use DateInterval;
-use DateTimeImmutable;
-
 final class Info
 {
     private Snapshot $current;
 
-    private DateInterval $timeSinceStart;
+    private Duration $timeSinceStart;
 
     private MemoryUsage $memorySinceStart;
 
-    private DateInterval $timeSincePrevious;
+    private Duration $timeSincePrevious;
 
     private MemoryUsage $memorySincePrevious;
 
     public function __construct(
         Snapshot $current,
-        DateInterval $timeSinceStart,
+        Duration $timeSinceStart,
         MemoryUsage $memorySinceStart,
-        DateInterval $timeSincePrevious,
+        Duration $timeSincePrevious,
         MemoryUsage $memorySincePrevious
     ) {
         $this->current             = $current;
@@ -38,7 +35,7 @@ final class Info
         $this->memorySincePrevious = $memorySincePrevious;
     }
 
-    public function time(): DateTimeImmutable
+    public function time(): HRTime
     {
         return $this->current->time();
     }
@@ -53,7 +50,7 @@ final class Info
         return $this->current->peakMemoryUsage();
     }
 
-    public function timeSinceStart(): DateInterval
+    public function timeSinceStart(): Duration
     {
         return $this->timeSinceStart;
     }
@@ -63,7 +60,7 @@ final class Info
         return $this->memorySinceStart;
     }
 
-    public function timeSincePrevious(): DateInterval
+    public function timeSincePrevious(): Duration
     {
         return $this->timeSincePrevious;
     }

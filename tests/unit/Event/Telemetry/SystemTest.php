@@ -21,8 +21,11 @@ final class SystemTest extends TestCase
     {
         $time = new DateTimeImmutable('now');
 
-        $clock = new class($time) implements Clock {
-            private DateTimeImmutable $time;
+        $clock = new class($time) implements StopWatch {
+            /**
+             * @var DateTimeImmutable
+             */
+            private $time;
 
             public function __construct(DateTimeImmutable $time)
             {

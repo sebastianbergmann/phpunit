@@ -12,7 +12,6 @@ namespace PHPUnit\Event;
 use function date_default_timezone_get;
 use DateTimeZone;
 use PHPUnit\Event\Telemetry\System;
-use PHPUnit\Event\Telemetry\SystemClock;
 use PHPUnit\Event\Telemetry\SystemMemoryMeter;
 
 final class Registry

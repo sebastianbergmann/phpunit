@@ -237,9 +237,9 @@ final class DispatchingEmitter implements Emitter
 
         $info = new Info(
             $current,
-            $current->time()->diff($this->startSnapshot->time()),
+            $current->time()->duration($this->startSnapshot->time()),
             $current->memoryUsage()->diff($this->startSnapshot->memoryUsage()),
-            $current->time()->diff($this->previousSnapshot->time()),
+            $current->time()->duration($this->previousSnapshot->time()),
             $current->memoryUsage()->diff($this->previousSnapshot->memoryUsage())
         );
 

@@ -9,22 +9,22 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
-final class System
+class System
 {
-    private Clock $clock;
+    private StopWatch $stopWatch;
 
     private MemoryMeter $memoryMeter;
 
-    public function __construct(Clock $clock, MemoryMeter $memoryMeter)
+    public function __construct(StopWatch $stopWatch, MemoryMeter $memoryMeter)
     {
-        $this->clock       = $clock;
+        $this->stopWatch   = $stopWatch;
         $this->memoryMeter = $memoryMeter;
     }
 
     public function snapshot(): Snapshot
     {
         return new Snapshot(
-            $this->clock->now(),
+            $this->stopWatch->current(),
             $this->memoryMeter->memoryUsage(),
             $this->memoryMeter->peakMemoryUsage()
         );

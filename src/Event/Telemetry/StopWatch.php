@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
-use DateTimeImmutable;
-
-interface Clock
+interface StopWatch
 {
-    public function now(): DateTimeImmutable;
+    public function current(): HRTime;
 }
