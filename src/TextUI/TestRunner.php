@@ -524,59 +524,65 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($codeCoverageReports > 0) {
-            $codeCoverage = new CodeCoverage(
-                null,
-                $this->codeCoverageFilter
-            );
-
-            $codeCoverage->setUnintentionallyCoveredSubclassesWhitelist(
-                [Comparator::class]
-            );
-
-            $codeCoverage->setCheckForUnintentionallyCoveredCode(
-                $arguments['strictCoverage']
-            );
-
-            $codeCoverage->setCheckForMissingCoversAnnotation(
-                $arguments['strictCoverage']
-            );
-
-            if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
-                $codeCoverage->setIgnoreDeprecatedCode(
-                    $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']
+            try {
+                $codeCoverage = new CodeCoverage(
+                    null,
+                    $this->codeCoverageFilter
                 );
-            }
 
-            if (isset($arguments['disableCodeCoverageIgnore']) && $arguments['disableCodeCoverageIgnore'] === true) {
-                $codeCoverage->setDisableIgnoredLines(true);
-            }
+                $codeCoverage->setUnintentionallyCoveredSubclassesWhitelist(
+                    [Comparator::class]
+                );
 
-            if (isset($arguments['configuration'])) {
-                \assert($arguments['configuration'] instanceof Configuration);
+                $codeCoverage->setCheckForUnintentionallyCoveredCode(
+                    $arguments['strictCoverage']
+                );
 
-                $filterConfiguration = $arguments['configuration']->filter();
+                $codeCoverage->setCheckForMissingCoversAnnotation(
+                    $arguments['strictCoverage']
+                );
 
-                if ($filterConfiguration->hasNonEmptyWhitelist()) {
-                    $codeCoverage->setAddUncoveredFilesFromWhitelist(
-                        $filterConfiguration->addUncoveredFilesFromWhitelist()
-                    );
-
-                    $codeCoverage->setProcessUncoveredFilesFromWhitelist(
-                        $filterConfiguration->processUncoveredFilesFromWhitelist()
+                if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
+                    $codeCoverage->setIgnoreDeprecatedCode(
+                        $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']
                     );
                 }
-            }
 
-            if (!$this->codeCoverageFilter->hasWhitelist()) {
-                if (!$whitelistFromConfigurationFile && !$whitelistFromOption) {
-                    $this->writeMessage('Error', 'No whitelist is configured, no code coverage will be generated.');
-                } else {
-                    $this->writeMessage('Error', 'Incorrect whitelist config, no code coverage will be generated.');
+                if (isset($arguments['disableCodeCoverageIgnore']) && $arguments['disableCodeCoverageIgnore'] === true) {
+                    $codeCoverage->setDisableIgnoredLines(true);
                 }
+
+                if (isset($arguments['configuration'])) {
+                    \assert($arguments['configuration'] instanceof Configuration);
+
+                    $filterConfiguration = $arguments['configuration']->filter();
+
+                    if ($filterConfiguration->hasNonEmptyWhitelist()) {
+                        $codeCoverage->setAddUncoveredFilesFromWhitelist(
+                            $filterConfiguration->addUncoveredFilesFromWhitelist()
+                        );
+
+                        $codeCoverage->setProcessUncoveredFilesFromWhitelist(
+                            $filterConfiguration->processUncoveredFilesFromWhitelist()
+                        );
+                    }
+                }
+
+                if (!$this->codeCoverageFilter->hasWhitelist()) {
+                    if (!$whitelistFromConfigurationFile && !$whitelistFromOption) {
+                        $this->writeMessage('Error', 'No whitelist is configured, no code coverage will be generated.');
+                    } else {
+                        $this->writeMessage('Error', 'Incorrect whitelist config, no code coverage will be generated.');
+                    }
+
+                    $codeCoverageReports = 0;
+
+                    unset($codeCoverage);
+                }
+            } catch (CodeCoverageException $e) {
+                $this->writeMessage('Error', $e->getMessage());
 
                 $codeCoverageReports = 0;
-
-                unset($codeCoverage);
             }
         }
 

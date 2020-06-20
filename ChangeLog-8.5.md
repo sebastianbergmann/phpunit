@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 ### Fixed
 
 * [#4299](https://github.com/sebastianbergmann/phpunit/issues/4299): "No tests executed" does not always result in exit code `1`
+* [#4306](https://github.com/sebastianbergmann/phpunit/issues/4306): Exceptions during code coverage driver initialization are not handled correctly
 
 ## [8.5.6] - 2020-06-15
 
