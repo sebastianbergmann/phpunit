@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 9.2 release series are documented in this fil
 
 * [#4291](https://github.com/sebastianbergmann/phpunit/issues/4291): [#4258](https://github.com/sebastianbergmann/phpunit/pull/4258) breaks backward compatibility
 * [#4299](https://github.com/sebastianbergmann/phpunit/issues/4299): "No tests executed" does not always result in exit code `1`
+* [#4306](https://github.com/sebastianbergmann/phpunit/issues/4306): Exceptions during code coverage driver initialization are not handled correctly
 
 ## [9.2.3] - 2020-06-15
 
