@@ -53,6 +53,7 @@ use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestDependency;
 use PHPUnit\Framework\Warning;
 use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
@@ -1188,10 +1189,9 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             [
-                get_class($this) . '::Foo',
-                get_class($this) . '::ほげ',
-                '',
-                'AnotherClass::Foo',
+                new TestDependency(get_class($this), 'Foo'),
+                new TestDependency(get_class($this), 'ほげ'),
+                new TestDependency('AnotherClass::Foo'),
             ],
             Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
         );
@@ -1200,7 +1200,6 @@ final class TestClassTest extends TestCase
     /**
      * @depends Foo
      * @depends ほげ
-     * @depends
      * @depends AnotherClass::Foo
      *
      * @todo Remove fixture from test class
@@ -1212,7 +1211,7 @@ final class TestClassTest extends TestCase
     public function testParseAnnotationThatIsOnlyOneLine(): void
     {
         $this->assertEquals(
-            [get_class($this) . '::Bar'],
+            [new TestDependency(get_class($this), 'Bar')],
             Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
         );
     }
@@ -1531,28 +1530,6 @@ final class TestClassTest extends TestCase
             [CoverageClassNothingTest::class, true],
             [CoverageMethodNothingTest::class, true],
         ];
-    }
-
-    public function testTrimDependencyOptions(): void
-    {
-        $this->assertSame(
-            [
-                'methodNameA',
-                'methodNameB',
-                'ClassName1::methodName1',
-                'ClassName2::methodName2',
-                'ClassName3::methodName3',
-            ],
-            Test::trimDependencyOptions(
-                [
-                    'methodNameA',
-                    '!clone methodNameB',
-                    'ClassName1::methodName1',
-                    'shallowClone ClassName2::methodName2',
-                    '!shallowClone ClassName3::methodName3',
-                ]
-            )
-        );
     }
 
     /**
