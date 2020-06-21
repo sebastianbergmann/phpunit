@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.11.2@d470903722cfcbc1cd04744c5491d3e6d13ec3d9">
+<files psalm-version="3.11.6@7fc1f50f54bd6b174b1c43a37c1b0b151915d55c">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -279,11 +279,6 @@
   </file>
   <file src="src/Util/ErrorHandler.php">
     <InvalidArgument occurrences="1"/>
-  </file>
-  <file src="src/Util/Filter.php">
-    <PossiblyNullReference occurrences="1">
-      <code>getTrace</code>
-    </PossiblyNullReference>
   </file>
   <file src="src/Util/Getopt.php">
     <InvalidOperand occurrences="3">
