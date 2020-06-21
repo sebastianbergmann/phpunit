@@ -71,7 +71,7 @@ jobs:
           extensions: intl
 
       - name: Run roave/backward-compatibility-check
-        run: ./tools/roave-backward-compatibility-check --from=8.5.4
+        run: ./tools/roave-backward-compatibility-check --from=8.5.7
 
   lint-xml-configuration:
     name: Lint XML Configuration
