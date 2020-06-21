@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.11.5@3c60609c218d4d4b3b257728b8089094e5c6c6c2">
+<files psalm-version="3.11.6@7fc1f50f54bd6b174b1c43a37c1b0b151915d55c">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -177,9 +177,6 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
-    <PossiblyFalseArgument occurrences="1">
-      <code>\strpos($test-&gt;getName(), '::')</code>
-    </PossiblyFalseArgument>
     <UndefinedInterfaceMethod occurrences="1">
       <code>getName</code>
     </UndefinedInterfaceMethod>
