@@ -54,12 +54,9 @@ final class TestDependency
      */
     public static function filterInvalid(array $dependencies): array
     {
-        return \array_filter(
-            $dependencies,
-            function (self $d) {
+        return \array_filter($dependencies, function (self $d) {
             return $d->isValid();
-        }
-        );
+        });
     }
 
     /**
