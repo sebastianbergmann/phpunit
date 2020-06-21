@@ -47,10 +47,12 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\PHPTAssertionFailedError;
+use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestDependency;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
@@ -61,7 +63,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class PhptTestCase implements SelfDescribing, Test
+final class PhptTestCase implements Reorderable, SelfDescribing, Test
 {
     /**
      * @var string
@@ -272,7 +274,15 @@ final class PhptTestCase implements SelfDescribing, Test
     }
 
     /**
-     * @return array<string>
+     * @return string<callable-string>
+     */
+    public function sortId(): string
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @return array<TestDependency>
      */
     public function provides(): array
     {
@@ -280,7 +290,7 @@ final class PhptTestCase implements SelfDescribing, Test
     }
 
     /**
-     * @return array<string>
+     * @return array<TestDependency>
      */
     public function requires(): array
     {

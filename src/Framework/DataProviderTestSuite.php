@@ -19,17 +19,16 @@ use PHPUnit\Util\Test as TestUtil;
 final class DataProviderTestSuite extends TestSuite
 {
     /**
-     * @var array<string>
+     * @var array<TestDependency>
      */
     private $dependencies = [];
 
     /**
-     * @param array<string> $dependencies
+     * @param array<TestDependency> $dependencies
      */
     public function setDependencies(array $dependencies): void
     {
         $this->dependencies  = $dependencies;
-        $this->requiredTests = TestUtil::trimDependencyOptions($dependencies);
 
         foreach ($this->tests as $test) {
             if (!$test instanceof TestCase) {
@@ -42,33 +41,25 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @return array<callable-string>
+     * @return array<TestDependency>
      */
     public function provides(): array
     {
-        if ($this->providedTests !== null) {
-            return $this->providedTests;
-        }
-
-        $callableName = $this->getName();
-
-        if (is_callable($callableName, true)) {
-            $this->providedTests = [$callableName];
-        } else {
-            $this->providedTests = [];
+        if ($this->providedTests === null) {
+            $this->providedTests = [new TestDependency($this->getName())];
         }
 
         return $this->providedTests;
     }
 
     /**
-     * @return array<callable-string>
+     * @return array<TestDependency>
      */
     public function requires(): array
     {
         // A DataProviderTestSuite does not have to traverse its child tests
         // as these are inherited and cannot reference dataProvider rows directly
-        return $this->requiredTests ?? [];
+        return $this->dependencies;
     }
 
     /**

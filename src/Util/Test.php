@@ -43,6 +43,7 @@ use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestDependency;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Annotation\Registry;
@@ -368,7 +369,11 @@ final class Test
         ];
     }
 
-    /** @psalm-param class-string $className */
+    /**
+     * @psalm-param class-string $className
+     *
+     * @return TestDependency[]
+     */
     public static function getDependencies(string $className, string $methodName): array
     {
         $annotations = self::parseTestMethodAnnotations(
@@ -376,61 +381,23 @@ final class Test
             $methodName
         );
 
-        $dependencies = $annotations['class']['depends'] ?? [];
+        $dependsAnnotations = $annotations['class']['depends'] ?? [];
 
         if (isset($annotations['method']['depends'])) {
-            $dependencies = array_merge(
-                $dependencies,
+            $dependsAnnotations = array_merge(
+                $dependsAnnotations,
                 $annotations['method']['depends']
             );
         }
 
         // Normalize dependency name to className::methodName
-        foreach ($dependencies as &$name) {
-            // Store '[!][shallow]clone' modifier
-            $parts = explode(' ', $name, 2);
+        $dependencies = [];
 
-            if (count($parts) == 1) {
-                $modifier = '';
-                $testName = $parts[0];
-            } else {
-                $modifier = $parts[0] . ' ';
-                $testName = $parts[1];
-            }
-
-            if ($testName !== '' && strpos($testName, '::') === false) {
-                $name = $modifier . $className . '::' . $testName;
-            }
+        foreach ($dependsAnnotations as $value) {
+            $dependencies[] = TestDependency::createFromDependsAnnotation($className, $value);
         }
 
         return array_unique($dependencies);
-    }
-
-    /**
-     * Remove superfluous annotation detail not needed by dependency resolver.
-     *
-     * @param array<string> $dependencies
-     *
-     * @return array<callable-string>
-     */
-    public static function trimDependencyOptions(array $dependencies): array
-    {
-        $requires = [];
-
-        foreach ($dependencies as $annotationValue) {
-            if (trim($annotationValue) === '') {
-                continue;
-            }
-
-            $annotation = explode(' ', $annotationValue, 2);
-            $name       = end($annotation);
-
-            if (is_callable($name, true)) {
-                $requires[] = $name;
-            }
-        }
-
-        return $requires;
     }
 
     /** @psalm-param class-string $className */

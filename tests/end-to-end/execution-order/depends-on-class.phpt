@@ -16,7 +16,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime:       %s
 Configuration: %s%etests%e_files%econfiguration.depends-on-class.xml
 
-....SFSSSSW                                                       11 / 11 (100%)
+....SFSSSWS                                                       11 / 11 (100%)
 
 Time: %s, Memory: %s
 

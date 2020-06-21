@@ -48,7 +48,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class TestSuite implements IteratorAggregate, SelfDescribing, Test
+class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
@@ -108,12 +108,12 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
     protected $foundClasses = [];
 
     /**
-     * @var null|array<callable-string>
+     * @var null|array<TestDependency>
      */
     protected $providedTests;
 
     /**
-     * @var null|array<callable-string>
+     * @var null|array<TestDependency>
      */
     protected $requiredTests;
 
@@ -797,34 +797,36 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
     }
 
     /**
-     * @return array<callable-string>
+     * @return array<TestDependency>
      */
     public function provides(): array
     {
         if ($this->providedTests === null) {
             $this->providedTests = [];
 
-            $callableName = $this->getName() . '::class';
-
-            if (is_callable($callableName, true)) {
-                $this->providedTests = [$callableName];
+            if (is_callable($this->sortId(), true)) {
+                $this->providedTests[] = new TestDependency($this->sortId());
             }
 
             foreach ($this->tests as $test) {
-                if (!($test instanceof self || $test instanceof TestCase)) {
+                if (!($test instanceof Reorderable)) {
                     // @codeCoverageIgnoreStart
                     continue;
                     // @codeCoverageIgnoreEnd
                 }
-                $this->providedTests = array_merge($this->providedTests, $test->provides());
+                $this->providedTests = TestDependency::mergeUnique($this->providedTests, $test->provides());
             }
         }
+
+//        print "*** {$this->getName()} provides " . \implode(',', \array_map(function ($d) {
+//            return $d->getTarget();
+//        }, $this->providedTests ?? [])) . "\n";
 
         return $this->providedTests;
     }
 
     /**
-     * @return array<callable-string>
+     * @return array<TestDependency>
      */
     public function requires(): array
     {
@@ -832,18 +834,28 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
             $this->requiredTests = [];
 
             foreach ($this->tests as $test) {
-                if (!($test instanceof self || $test instanceof TestCase)) {
+                if (!($test instanceof Reorderable)) {
                     // @codeCoverageIgnoreStart
                     continue;
                     // @codeCoverageIgnoreEnd
                 }
-                $this->requiredTests = array_merge($this->requiredTests, $test->requires());
+                $this->requiredTests = TestDependency::filterInvalid($this->requiredTests);
+                $this->requiredTests = TestDependency::mergeUnique($this->requiredTests, $test->requires());
             }
 
-            $this->requiredTests = array_values(array_diff($this->requiredTests, $this->provides()));
+            $this->requiredTests = TestDependency::diff($this->requiredTests, $this->provides());
         }
 
+//        print "*** {$this->getName()} requires " . \implode(',', \array_map(function ($d) {
+//            return $d->getTarget();
+//        }, $this->providedTests ?? [])) . "\n";
+
         return $this->requiredTests;
+    }
+
+    public function sortId(): string
+    {
+        return $this->getName() . '::class';
     }
 
     /**

@@ -114,7 +114,7 @@ use SebastianBergmann\Template\Template;
 use SoapClient;
 use Throwable;
 
-abstract class TestCase extends Assert implements SelfDescribing, Test
+abstract class TestCase extends Assert implements Reorderable, SelfDescribing, Test
 {
     private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
 
@@ -163,12 +163,12 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     protected $preserveGlobalState = true;
 
     /**
-     * @var array<callable-string>
+     * @var array<TestDependency>
      */
     protected $providedTests = [];
 
     /**
-     * @var array<callable-string>
+     * @var array<TestDependency>
      */
     protected $requiredTests = [];
 
@@ -218,7 +218,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private $name = '';
 
     /**
-     * @var array<string>
+     * @var array<TestDependency>
      */
     private $dependencies = [];
 
@@ -1226,23 +1226,19 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     {
         $this->name = $name;
 
-        // Normalized name for dependency resolver
-        $callableName = get_class($this) . '::' . $name;
-
-        if (is_callable($callableName, true)) {
-            $this->providedTests = [$callableName];
+        if (is_callable($this->sortId(), true)) {
+            $this->providedTests = [new TestDependency($this->sortId())];
         }
     }
 
     /**
-     * @param array<string> $dependencies
+     * @param array<TestDependency> $dependencies
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function setDependencies(array $dependencies): void
     {
         $this->dependencies  = $dependencies;
-        $this->requiredTests = TestUtil::trimDependencyOptions($dependencies);
     }
 
     /**
@@ -1452,9 +1448,17 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     }
 
     /**
+     * @return string<callable-string>
+     */
+    public function sortId(): string
+    {
+        return \get_class($this) . '::' . $this->name;
+    }
+
+    /**
      * Returns the normalized test name as class::method.
      *
-     * @return array<callable-string>
+     * @return array<TestDependency>
      */
     public function provides(): array
     {
@@ -1468,11 +1472,11 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * no need for the [!][shallow]clone prefix that is filtered out
      * during normalization.
      *
-     * @return array<callable-string>
+     * @return array<TestDependency>
      */
     public function requires(): array
     {
-        return $this->requiredTests;
+        return $this->dependencies;
     }
 
     /**
@@ -2029,14 +2033,14 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $passedKeys = array_flip(array_unique($passedKeys));
 
         foreach ($this->dependencies as $dependency) {
-            if ($dependency === '') {
+            if (!$dependency->isValid()) {
                 $this->markSkippedForNotSpecifyingDependency();
 
                 return false;
             }
 
-            if (substr($dependency, -7) === '::class') {
-                $dependencyClassName = substr($dependency, 0, -7);
+            if ($dependency->targetIsClass()) {
+                $dependencyClassName = $dependency->getTargetClassName();
 
                 if (array_search($dependencyClassName, $this->result->passedClasses()) === false) {
                     $this->markSkippedForMissingDependency($dependency);
@@ -2047,27 +2051,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 continue;
             }
 
-            $deepClone    = false;
-            $shallowClone = false;
+            $dependencyTarget = $dependency->getTarget();
 
-            if (strpos($dependency, 'clone ') === 0) {
-                $deepClone  = true;
-                $dependency = substr($dependency, strlen('clone '));
-            } elseif (strpos($dependency, '!clone ') === 0) {
-                $deepClone  = false;
-                $dependency = substr($dependency, strlen('!clone '));
-            }
-
-            if (strpos($dependency, 'shallowClone ') === 0) {
-                $shallowClone = true;
-                $dependency   = substr($dependency, strlen('shallowClone '));
-            } elseif (strpos($dependency, '!shallowClone ') === 0) {
-                $shallowClone = false;
-                $dependency   = substr($dependency, strlen('!shallowClone '));
-            }
-
-            if (!isset($passedKeys[$dependency])) {
-                if (!$this->isCallableTestMethod($dependency)) {
+            if (!isset($passedKeys[$dependencyTarget])) {
+                if (!$this->isCallableTestMethod($dependencyTarget)) {
                     $this->markWarningForUncallableDependency($dependency);
                 } else {
                     $this->markSkippedForMissingDependency($dependency);
@@ -2076,10 +2063,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 return false;
             }
 
-            if (isset($passed[$dependency])) {
-                if ($passed[$dependency]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
+            if (isset($passed[$dependencyTarget])) {
+                if ($passed[$dependencyTarget]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
                     $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
-                    $passed[$dependency]['size'] > $this->getSize()) {
+                    $passed[$dependencyTarget]['size'] > $this->getSize()) {
                     $this->result->addError(
                         $this,
                         new SkippedTestError(
@@ -2091,18 +2078,18 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                     return false;
                 }
 
-                if ($deepClone) {
+                if ($dependency->useDeepClone()) {
                     $deepCopy = new DeepCopy;
                     $deepCopy->skipUncloneable(false);
 
-                    $this->dependencyInput[$dependency] = $deepCopy->copy($passed[$dependency]['result']);
-                } elseif ($shallowClone) {
-                    $this->dependencyInput[$dependency] = clone $passed[$dependency]['result'];
+                    $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($passed[$dependencyTarget]['result']);
+                } elseif ($dependency->useShallowClone()) {
+                    $this->dependencyInput[$dependencyTarget] = clone $passed[$dependencyTarget]['result'];
                 } else {
-                    $this->dependencyInput[$dependency] = $passed[$dependency]['result'];
+                    $this->dependencyInput[$dependencyTarget] = $passed[$dependencyTarget]['result'];
                 }
             } else {
-                $this->dependencyInput[$dependency] = null;
+                $this->dependencyInput[$dependencyTarget] = null;
             }
         }
 
@@ -2126,7 +2113,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->result->endTest($this, 0);
     }
 
-    private function markSkippedForMissingDependency(string $dependency): void
+    private function markSkippedForMissingDependency(TestDependency $dependency): void
     {
         $this->status = BaseTestRunner::STATUS_SKIPPED;
 
@@ -2137,7 +2124,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             new SkippedTestError(
                 sprintf(
                     'This test depends on "%s" to pass.',
-                    $dependency
+                    $dependency->getTarget()
                 )
             ),
             0
@@ -2146,7 +2133,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         $this->result->endTest($this, 0);
     }
 
-    private function markWarningForUncallableDependency(string $dependency): void
+    private function markWarningForUncallableDependency(TestDependency $dependency): void
     {
         $this->status = BaseTestRunner::STATUS_WARNING;
 
@@ -2157,7 +2144,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             new Warning(
                 sprintf(
                     'This test depends on "%s" which does not exist.',
-                    $dependency
+                    $dependency->getTarget()
                 )
             ),
             0
