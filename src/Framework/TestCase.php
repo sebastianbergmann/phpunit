@@ -1447,9 +1447,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->warnings[] = $warning;
     }
 
-    /**
-     * @return string<callable-string>
-     */
     public function sortId(): string
     {
         return \get_class($this) . '::' . $this->name;
