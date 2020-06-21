@@ -61,7 +61,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     private const LOCALE_CATEGORIES = [\LC_ALL, \LC_COLLATE, \LC_CTYPE, \LC_MONETARY, \LC_NUMERIC, \LC_TIME];
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $backupGlobals;
 
