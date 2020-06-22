@@ -107,12 +107,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     protected $foundClasses = [];
 
     /**
-     * @var null|array<TestDependency>
+     * @var null|array<ExecutionOrderDependency>
      */
     protected $providedTests;
 
     /**
-     * @var null|array<TestDependency>
+     * @var null|array<ExecutionOrderDependency>
      */
     protected $requiredTests;
 
@@ -796,7 +796,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return array<TestDependency>
+     * @return array<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -804,7 +804,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $this->providedTests = [];
 
             if (is_callable($this->sortId(), true)) {
-                $this->providedTests[] = new TestDependency($this->sortId());
+                $this->providedTests[] = new ExecutionOrderDependency($this->sortId());
             }
 
             foreach ($this->tests as $test) {
@@ -813,7 +813,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     continue;
                     // @codeCoverageIgnoreEnd
                 }
-                $this->providedTests = TestDependency::mergeUnique($this->providedTests, $test->provides());
+                $this->providedTests = ExecutionOrderDependency::mergeUnique($this->providedTests, $test->provides());
             }
         }
 
@@ -821,7 +821,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return array<TestDependency>
+     * @return array<ExecutionOrderDependency>
      */
     public function requires(): array
     {
@@ -834,11 +834,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     continue;
                     // @codeCoverageIgnoreEnd
                 }
-                $this->requiredTests = TestDependency::filterInvalid($this->requiredTests);
-                $this->requiredTests = TestDependency::mergeUnique($this->requiredTests, $test->requires());
+                $this->requiredTests = ExecutionOrderDependency::filterInvalid($this->requiredTests);
+                $this->requiredTests = ExecutionOrderDependency::mergeUnique($this->requiredTests, $test->requires());
             }
 
-            $this->requiredTests = TestDependency::diff($this->requiredTests, $this->provides());
+            $this->requiredTests = ExecutionOrderDependency::diff($this->requiredTests, $this->provides());
         }
 
         return $this->requiredTests;

@@ -44,6 +44,7 @@ use function var_export;
 use function version_compare;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\PHPTAssertionFailedError;
@@ -52,7 +53,6 @@ use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestDependency;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
@@ -279,7 +279,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return array<TestDependency>
+     * @return array<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -287,7 +287,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return array<TestDependency>
+     * @return array<ExecutionOrderDependency>
      */
     public function requires(): array
     {

@@ -51,9 +51,9 @@ use NamespaceCoverageProtectedTest;
 use NamespaceCoveragePublicTest;
 use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\CodeCoverageException;
+use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestDependency;
 use PHPUnit\Framework\Warning;
 use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
@@ -1189,9 +1189,9 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             [
-                new TestDependency(get_class($this), 'Foo'),
-                new TestDependency(get_class($this), 'ほげ'),
-                new TestDependency('AnotherClass::Foo'),
+                new ExecutionOrderDependency(get_class($this), 'Foo'),
+                new ExecutionOrderDependency(get_class($this), 'ほげ'),
+                new ExecutionOrderDependency('AnotherClass::Foo'),
             ],
             Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
         );
@@ -1211,7 +1211,7 @@ final class TestClassTest extends TestCase
     public function testParseAnnotationThatIsOnlyOneLine(): void
     {
         $this->assertEquals(
-            [new TestDependency(get_class($this), 'Bar')],
+            [new ExecutionOrderDependency(get_class($this), 'Bar')],
             Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
         );
     }

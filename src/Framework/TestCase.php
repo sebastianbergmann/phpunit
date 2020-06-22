@@ -162,12 +162,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     protected $preserveGlobalState = true;
 
     /**
-     * @var array<TestDependency>
+     * @var array<ExecutionOrderDependency>
      */
     protected $providedTests = [];
 
     /**
-     * @var array<TestDependency>
+     * @var array<ExecutionOrderDependency>
      */
     protected $requiredTests = [];
 
@@ -217,7 +217,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private $name = '';
 
     /**
-     * @var array<TestDependency>
+     * @var array<ExecutionOrderDependency>
      */
     private $dependencies = [];
 
@@ -1226,12 +1226,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->name = $name;
 
         if (is_callable($this->sortId(), true)) {
-            $this->providedTests = [new TestDependency($this->sortId())];
+            $this->providedTests = [new ExecutionOrderDependency($this->sortId())];
         }
     }
 
     /**
-     * @param array<TestDependency> $dependencies
+     * @param array<ExecutionOrderDependency> $dependencies
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
@@ -1464,7 +1464,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * Returns the normalized test name as class::method.
      *
-     * @return array<TestDependency>
+     * @return array<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -1478,7 +1478,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * no need for the [!][shallow]clone prefix that is filtered out
      * during normalization.
      *
-     * @return array<TestDependency>
+     * @return array<ExecutionOrderDependency>
      */
     public function requires(): array
     {
@@ -2119,7 +2119,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->result->endTest($this, 0);
     }
 
-    private function markSkippedForMissingDependency(TestDependency $dependency): void
+    private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
     {
         $this->status = BaseTestRunner::STATUS_SKIPPED;
 
@@ -2139,7 +2139,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->result->endTest($this, 0);
     }
 
-    private function markWarningForUncallableDependency(TestDependency $dependency): void
+    private function markWarningForUncallableDependency(ExecutionOrderDependency $dependency): void
     {
         $this->status = BaseTestRunner::STATUS_WARNING;
 
