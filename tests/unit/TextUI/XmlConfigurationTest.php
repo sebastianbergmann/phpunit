@@ -127,6 +127,7 @@ final class XmlConfigurationTest extends TestCase
             'stopOnIncomplete'                                => ['stopOnIncomplete', 'true', true],
             'stopOnRisky'                                     => ['stopOnRisky', 'true', true],
             'stopOnSkipped'                                   => ['stopOnSkipped', 'true', true],
+            'failOnEmptyTestSuite'                            => ['failOnEmptyTestSuite', 'true', true],
             'failOnWarning'                                   => ['failOnWarning', 'true', true],
             'failOnRisky'                                     => ['failOnRisky', 'true', true],
             'processIsolation'                                => ['processIsolation', 'true', true],
@@ -648,6 +649,7 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(60, $phpunit->timeoutForLargeTests());
         $this->assertFalse($phpunit->beStrictAboutResourceUsageDuringSmallTests());
         $this->assertFalse($phpunit->beStrictAboutTodoAnnotatedTests());
+        $this->assertFalse($phpunit->failOnEmptyTestSuite());
         $this->assertFalse($phpunit->failOnIncomplete());
         $this->assertFalse($phpunit->failOnRisky());
         $this->assertFalse($phpunit->failOnSkipped());

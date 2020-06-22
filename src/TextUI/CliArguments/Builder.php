@@ -91,6 +91,7 @@ final class Builder
         'stop-on-incomplete',
         'stop-on-risky',
         'stop-on-skipped',
+        'fail-on-empty-test-suite',
         'fail-on-warning',
         'fail-on-risky',
         'strict-coverage',
@@ -162,6 +163,7 @@ final class Builder
         $executionOrderDefects                      = null;
         $extensions                                 = [];
         $unavailableExtensions                      = [];
+        $failOnEmptyTestSuite                       = null;
         $failOnIncomplete                           = null;
         $failOnRisky                                = null;
         $failOnSkipped                              = null;
@@ -496,6 +498,11 @@ final class Builder
 
                     break;
 
+                case '--fail-on-empty-test-suite':
+                    $failOnEmptyTestSuite = true;
+
+                    break;
+
                 case '--fail-on-incomplete':
                     $failOnIncomplete = true;
 
@@ -764,6 +771,7 @@ final class Builder
             $executionOrderDefects,
             $extensions,
             $unavailableExtensions,
+            $failOnEmptyTestSuite,
             $failOnIncomplete,
             $failOnRisky,
             $failOnSkipped,

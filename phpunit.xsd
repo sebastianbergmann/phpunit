@@ -228,6 +228,7 @@
         <xs:attribute name="stopOnIncomplete" type="xs:boolean" default="false"/>
         <xs:attribute name="stopOnRisky" type="xs:boolean" default="false"/>
         <xs:attribute name="stopOnSkipped" type="xs:boolean" default="false"/>
+        <xs:attribute name="failOnEmptyTestSuite" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnIncomplete" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnRisky" type="xs:boolean" default="false"/>
         <xs:attribute name="failOnSkipped" type="xs:boolean" default="false"/>

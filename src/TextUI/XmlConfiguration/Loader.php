@@ -1027,6 +1027,7 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'forceCoversAnnotation', false),
             $bootstrap,
             $this->getBooleanAttribute($document->documentElement, 'processIsolation', false),
+            $this->getBooleanAttribute($document->documentElement, 'failOnEmptyTestSuite', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnIncomplete', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnRisky', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnSkipped', false),
