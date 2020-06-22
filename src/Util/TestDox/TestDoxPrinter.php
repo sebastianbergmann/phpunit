@@ -16,6 +16,7 @@ use function implode;
 use function preg_split;
 use function trim;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
@@ -23,7 +24,6 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use Throwable;
 
@@ -188,7 +188,7 @@ class TestDoxPrinter extends DefaultResultPrinter
      */
     protected function registerTestResult(Test $test, ?Throwable $t, int $status, float $time, bool $verbose): void
     {
-        $testName = TestSuiteSorter::getTestSorterUID($test);
+        $testName = $test instanceof Reorderable ? $test->sortId() : $test->getName();
 
         $result = [
             'className'  => $this->formatClassName($test),
